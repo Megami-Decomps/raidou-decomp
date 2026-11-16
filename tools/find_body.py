@@ -12,8 +12,12 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-EPILOG = ("Trees are read at a git revision (default origin/main), so their working copies do not matter. "
-          "A hit is matched, nonmatching (a NON_MATCHING draft in its tree) or disabled (#if 0).")
+import body_check
+
+EPILOG = ("Trees are read at a git revision (default origin/main); identity uses each tree's build/ ELF. "
+          "A hit is matched, nonmatching (a NON_MATCHING draft in its tree) or disabled (#if 0). "
+          "body_source is CLASS:TREE:STATUS:VIA:CONFIDENCE, CLASS one of match, near (usable), adapt, rework, "
+          "other (reference only), found (not compiled), or none.")
 ROOT = Path(__file__).resolve().parents[1]
 HOME = Path.home()
 BATCHES = HOME / ".local/state/raidou-decomp-work/port/rest/batches.tsv"
@@ -248,6 +252,79 @@ def set_column(path, sources):
     path.write_text("\n".join(out) + "\n")
 
 
+class Checker:
+    """Identity of each hit against the Raidou function, and an optional compile of the best one in its unit."""
+
+    def __init__(self, names, trees, version, compile_bodies):
+        self.names, self.version, self.compile = names, version, compile_bodies
+        rd = ROOT / "build" / version / f"{VERSIONS_SERIAL[version]}.elf"
+        self.raidou = body_check.Image(rd) if rd.exists() else None
+        self.images = {t.name: body_check.tree_images(t.name, t.repo, t.rev) for t in trees}
+        self.alias_at = {}
+        for a in set(names.alias) | set(names.hd):
+            self.alias_at[a] = set(names.alias.get(a, ())) | ({names.hd[a]} if a in names.hd else set())
+
+    def raidou_names(self, addr):
+        out = set(self.raidou.names.get(addr, ())) if self.raidou else set()
+        return out | self.alias_at.get(addr, set())
+
+    def raidou_profile(self, name, addr, words):
+        if self.raidou is None or addr is None:
+            return None
+        size = words * 4 if words else (self.raidou.size_of(name) if name in self.raidou.funcs else 0)
+        if not size:
+            return None
+        return body_check.profile(self.raidou.code(addr, size), addr, self.raidou_names)
+
+    def identity(self, mine, hit):
+        if mine is None:
+            return None
+        images = self.images.get(hit.tree, {})
+        # The version the body's path names first, then the others.
+        order = sorted(images, key=lambda v: f"/{v}/" not in f"/{hit.path}")
+        for v in order:
+            theirs = images[v].profile(hit.found)
+            if theirs is not None:
+                return body_check.identity(mine, theirs)
+        return None
+
+    def check(self, name, addr, words, unit, hits):
+        """(class, best hit, identity, compile result); class is one of CLASSES."""
+        if not hits:
+            return "none", None, None, None
+        mine = self.raidou_profile(name, addr, words)
+        scored = [(h, self.identity(mine, h)) for h in hits]
+        # A hit that is the same function beats a better ranked one that is not.
+        same = [(h, i) for h, i in scored if i is None or i.confidence >= body_check.SAME_FUNCTION]
+        hit, ident = (same or scored)[0]
+        if ident is not None and ident.confidence < body_check.SAME_FUNCTION:
+            return "other", hit, ident, None
+        if not self.compile or not unit:
+            return "found", hit, ident, None
+        tried = body_check.try_compile(ROOT, sys.executable, unit, name, renamed(hit.body, hit.found, name),
+                                       self.version)
+        cls = {"ok": "match", "fail": "adapt" if tried.light() else "rework", "no-unit": "found",
+               "no-asm-line": "found"}.get(tried.result, "near")
+        return cls, hit, ident, tried
+
+
+# body_source classes. usable: match, near (compiles in the unit as found). adapt: same function, fails only on
+# its signature, callee arity or one global. Reference only: rework (same function, the unit lacks several of
+# its names), other (a different function under the same name or alias). found: not compiled (no unit .c yet,
+# or no --compile).
+CLASSES = ("match", "near", "adapt", "rework", "other", "found", "none")
+GROUPS = {"match": "usable", "near": "usable", "adapt": "adapt", "rework": "reference", "other": "reference",
+          "found": "untried", "none": "none"}
+VERSIONS_SERIAL = {"raidou1": "SLUS_214.31", "raidou2": "SLUS_218.45"}
+
+
+def source_label(cls, hit, ident):
+    if hit is None:
+        return "none"
+    conf = f":{ident.confidence:.2f}" if ident else ""
+    return f"{cls}:{hit.label()}{conf}"
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0], epilog=EPILOG)
     ap.add_argument("names", nargs="*")
@@ -262,14 +339,18 @@ def main():
     ap.add_argument("--all", action="store_true", help="print every hit's body, not only the best")
     ap.add_argument("--summary", action="store_true", help="one tab-separated line per function, no bodies")
     ap.add_argument("--write", type=Path, metavar="DIR", help="write each best body to DIR/NAME.c")
+    ap.add_argument("--compile", action="store_true",
+                    help="splice each same-function body into its unit and run check_unit.py on it")
+    ap.add_argument("--unit", help="unit for --compile with plain NAMEs (src/shared/...); --batch uses its column")
     ap.add_argument("--set-column", action="store_true", help="write body_source into --batches (needs --batch)")
     a = ap.parse_args()
     if a.set_column and not a.batch:
         ap.error("--set-column needs --batch")
 
-    todo = [(None, n, None) for n in a.names]
+    todo = [(None, n, None, 0, a.unit) for n in a.names]
     if a.batch:
-        todo += [(r["batch"], r["name"], int(r["addr"], 16)) for r in batch_rows(a.batches, a.batch)]
+        todo += [(r["batch"], r["name"], int(r["addr"], 16), int(r.get("words") or 0), r.get("unit"))
+                 for r in batch_rows(a.batches, a.batch)]
     if not todo:
         ap.error("no function names")
     if a.fetch:
@@ -277,40 +358,55 @@ def main():
             git(repo, "fetch", "-q", "origin")
     trees = [Tree("smt3", a.smt3, a.rev), Tree("dds", a.dds, a.rev)]
     names = Names(a.version, a.hd)
+    checker = Checker(names, trees, a.version, a.compile)
 
-    sources, missing = {}, 0
-    for batch, name, addr in todo:
+    sources, counts, errors = {}, {}, {}
+    for batch, name, addr, words, unit in todo:
         lookups = names.lookups(name, addr)
         hits = find_bodies(trees, lookups)
-        best = hits[0].label() if hits else "none"
+        addr = addr if addr is not None else names.addr.get(name)
+        cls, best, ident, tried = checker.check(name, addr, words, unit, hits)
+        counts[cls] = counts.get(cls, 0) + 1
+        for cause, msgs in (tried.errors if tried else {}).items():
+            errors.setdefault(cause, []).extend(f"{name}: {m}" for m in msgs)
+        label = source_label(cls, best, ident)
         if batch:
-            sources[(batch, name)] = best
-        if a.write and hits:
-            h = hits[0]
+            sources[(batch, name)] = label
+        if a.write and best:
             a.write.mkdir(parents=True, exist_ok=True)
-            (a.write / f"{name}.c").write_text(f"/* body: {h.status} in {h.tree} @ {h.rev}: {h.path}:{h.line} */\n"
-                                               + renamed(h.body, h.found, name))
+            note = f", same function {ident.text()}" if ident else ""
+            (a.write / f"{name}.c").write_text(
+                f"/* body: {best.status} in {best.tree} @ {best.rev}: {best.path}:{best.line}, {cls}{note} */\n"
+                + renamed(best.body, best.found, name))
         if a.summary:
-            where = f"{hits[0].tree}@{hits[0].rev}:{hits[0].path}:{hits[0].line}" if hits else ""
-            print(f"{name}\t{best}\t{where}")
+            where = f"{best.tree}@{best.rev}:{best.path}:{best.line}" if best else ""
+            extra = "\t".join(x for x in (ident.text() if ident else "", tried.text() if tried else "") if x)
+            print(f"{name}\t{label}\t{where}" + (f"\t{extra}" if extra else ""))
             continue
         others = ", ".join(n for n, via in lookups[1:])
         print(f"== {name}" + (f" (also {others})" if others else ""))
         if not hits:
             print("-- no body\n")
-            missing += 1
+        print(f"-- class {cls}" + (f", same function {ident.text()}" if ident else "")
+              + (f", compile {tried.text()}" if tried else ""))
+        for msgs in (tried.errors if tried else {}).values():
+            for m in msgs[:5]:
+                print(f"   {m}")
         for i, h in enumerate(hits):
             print(f"-- {h.status} in {h.tree} @ {h.rev}: {h.path}:{h.line}, as {h.found} ({h.via})")
-            if i == 0 or a.all:
+            if h is best or a.all:
                 print(renamed(h.body, h.found, name))
     if a.set_column:
         set_column(a.batches, sources)
-    if a.batch:
-        counts = {}
-        for v in sources.values():
-            k = v.rsplit(":", 1)[0] if v != "none" else v
-            counts[k] = counts.get(k, 0) + 1
-        print(f"# {a.batch}: " + ", ".join(f"{k} {n}" for k, n in sorted(counts.items())), file=sys.stderr)
+    groups = {}
+    for cls, n in counts.items():
+        groups[GROUPS[cls]] = groups.get(GROUPS[cls], 0) + n
+    print("# " + (f"{a.batch}: " if a.batch else "") + ", ".join(f"{c} {counts[c]}" for c in CLASSES if c in counts)
+          + " (" + ", ".join(f"{g} {n}" for g, n in sorted(groups.items())) + ")", file=sys.stderr)
+    if errors:
+        print("# compile errors by cause: " + ", ".join(f"{c} {len(v)}" for c, v in
+                                                       sorted(errors.items(), key=lambda kv: -len(kv[1]))),
+              file=sys.stderr)
 
 
 if __name__ == "__main__":

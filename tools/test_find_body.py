@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import body_check  # noqa: E402
 import find_body  # noqa: E402
 
 UNIT = """\
@@ -107,6 +108,59 @@ class ColumnTests(unittest.TestCase):
             p = pathlib.Path(d) / "batches.tsv"
             p.write_text("batch\tname\taddr\nR07-a\tf\t1\nR08-b\tg\t2\n")
             self.assertEqual([r["name"] for r in find_body.batch_rows(p, "R07")], ["f"])
+
+
+class IdentityTests(unittest.TestCase):
+    def test_same_code_and_calls_is_certain(self) -> None:
+        p = body_check.Profile(["addiu", "jal", "nop", "jr"], [{"a", "smtA"}])
+        q = body_check.Profile(["addiu", "jal", "nop", "jr"], [{"smtA"}])
+        self.assertEqual(body_check.identity(p, q).confidence, 1.0)
+
+    def test_other_calls_and_size_lower_it(self) -> None:
+        p = body_check.Profile(["addiu", "jal", "nop", "jr"], [{"a"}])
+        q = body_check.Profile(["lw", "lw", "jal", "sw", "sw", "jal", "nop", "jr"], [{"b"}, {"c"}])
+        self.assertLess(body_check.identity(p, q).confidence, body_check.SAME_FUNCTION)
+
+    def test_no_calls_on_either_side(self) -> None:
+        self.assertEqual(body_check.call_score([], []), 1.0)
+        self.assertEqual(body_check.call_score([{"a"}], []), 0.0)
+
+
+class CompileTests(unittest.TestCase):
+    ERRORS = ("u.c: In function `f':\n"
+              "u.c:3: conflicting types for `f'\n"
+              "include/h.h:9: previous declaration of `f'\n"
+              "u.c:4: `viewerinfo' undeclared (first use in this function)\n"
+              "u.c:4: (Each undeclared identifier is reported only once\n"
+              "u.c:9: structure has no member named `effect'\n"
+              "u.c:12: case label not within a switch statement\n"
+              "u.c:13: too few arguments to function `g'\n"
+              "u.c:14: warning: unused variable `x'\n")
+
+    def test_errors_by_cause(self) -> None:
+        self.assertEqual(body_check.classify_errors(self.ERRORS), {
+            "signature": ["conflicting types for `f'"],
+            "undeclared": ["`viewerinfo' undeclared (first use in this function)"],
+            "member": ["structure has no member named `effect'"],
+            "arity": ["too few arguments to function `g'"]})
+
+    def test_light_adaptation(self) -> None:
+        tried = body_check.Tried("fail", body_check.classify_errors(self.ERRORS))
+        self.assertEqual(tried.missing(), {"viewerinfo", "effect"})
+        self.assertFalse(tried.light())
+        del tried.errors["member"]
+        self.assertTrue(tried.light())
+
+    def test_splice_replaces_the_include_asm(self) -> None:
+        unit = 'a;\nINCLUDE_ASM(const s32, "u", f);\nb;\n'
+        self.assertEqual(body_check.splice(unit, "f", "void f(void) {}\n"), "a;\nvoid f(void) {}\nb;\n")
+        self.assertIsNone(body_check.splice(unit, "g", ""))
+
+    def test_label(self) -> None:
+        hit = find_body.Hit("smt3", "r", "p", 1, "f", "alias", "matched", "")
+        ident = body_check.Identity((10, 12), 1.0, 0.9)
+        self.assertEqual(find_body.source_label("near", hit, ident), "near:smt3:matched:alias:0.91")
+        self.assertEqual(find_body.source_label("none", None, None), "none")
 
 
 if __name__ == "__main__":

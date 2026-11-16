@@ -137,7 +137,14 @@ draft, or the index is stale.
 
 Before drafting, `python3 tools/find_body.py NAME...` looks for an existing body
 in smt3-decomp and dds-decomp under the function's name, its SMT3 alias and its
-Raidou HD name, and says whether that body matches in its own tree. For a draft a
+Raidou HD name, and says whether that body matches in its own tree. It compares
+the retail code of both functions (instruction count, call targets, opcode
+sequence) and prints a confidence that they are the same function; below 0.6 the
+hit is a different function sharing the name. `--compile` splices the body into
+the Raidou unit and runs `check_unit.py`: `match` and `near` compile as found,
+`adapt` fails only on its signature, callee arity or one global (usually a
+global the SMT3 code reads that Raidou passes as an argument), `rework` lacks
+several declarations or struct members and is a reference only. For a draft a
 few words off, `python3 tools/perm_unit.py import <unit> NAME` sets up
 [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) on the unit's
 NON_MATCHING draft, scored on both games for a shared unit. A permuter result
