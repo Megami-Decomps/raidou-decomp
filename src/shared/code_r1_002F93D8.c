@@ -45,7 +45,7 @@ void mselNameNEFLASH(void)
     if (fldTitleMiniWork4 == NULL) {
         fldTitleMiniWork4 = sdfDevLoadFileEx("/name/NE_FLASH.EPL", &mselNameNEFLASHData, NULL);
         fldTitleMiniTex3 = dds3EffectLoadEPL((void *)mselNameNEFLASHData);
-        fclInitDstEff2Sub(fldTitleMiniTex3->instance);
+        fclInitDstEff2Sub((struct plistHandle_t *)fldTitleMiniTex3->instance);
         dds3EffectReset(fldTitleMiniTex3);
         dds3EffectSetPosition(fldTitleMiniTex3, &position);
         dds3EffectSetLoop_dds3Effect(fldTitleMiniTex3, 1);

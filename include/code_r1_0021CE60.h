@@ -198,7 +198,7 @@ fileJobPayload_t *fileCreateJob(fileJobType_t type);
 void texRelease(fileJobPayload_t *job);
 void fileJobFreePrimaryBuffer(fileJobPayload_t *job);
 void fileJobFreeSecondaryBuffer(fileJobPayload_t *job);
-s32 effSRAnimation(void);
+u32 effGetFlags(void);
 
 /* Protocol IDs use distinct byte-sized storage codes in sdfFileCmdHandle_t. */
 typedef u8 SdfDevOperationCode;

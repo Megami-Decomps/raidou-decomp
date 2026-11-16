@@ -18,9 +18,6 @@
 extern dds3ProcessID_t *addressprocess_id;
 extern const char evtMoonProcessName[];
 extern s32 Shutdown_evtMoon(dds3ProcessID_t *id);
-void sndCallGetRandIntA(void);
-void sndCallGetRandIntA2(void);
-void sndCallGetRandIntA3(void);
 
 extern s32 gMoonFade;
 extern s32 gMoonFadeFrame;
@@ -534,10 +531,10 @@ void evtMoonInitProcess(void) {
         evtEnableMoonCalc();
         evtDisableMoonDraw();
         evtSetAgeOfMoon(0);
-        sndCallGetRandIntA();
-        sndCallGetRandIntA2();
-        sndCallGetRandIntA3();
-        sndRefDDS3GBWK();
+        evtMoonTakaraCntReset();
+        evtMoonZeniCntReset();
+        evtMoonTakumiCntReset();
+        evtMoonTeisatuCntReset();
     }
 }
 

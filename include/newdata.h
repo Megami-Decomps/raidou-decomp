@@ -150,7 +150,9 @@ typedef struct
     /* 0xE */ s16 transition;
     /* 0x10 */ u8 unk10[0x11];
     /* 0x21 */ u8 unk21;
-    /* 0x22 */ u8 unk22[0x123E];
+    /* 0x22 */ u8 unk22[0xE];
+    /* 0x30 */ u8 unk30[0x10];
+    /* 0x40 */ u8 unk40[0x1220];
     /* 0x1260 */ u8 unk1260[0x2];
     /* 0x1262 */ u8 unk1262[0xE];
     /* 0x1270 */ sdfMemHandle_t *memHandle;
@@ -171,7 +173,7 @@ typedef struct
     /* 0x1C90 */ u32 configFlag;
     /* 0x1C94 */ u32 unk1C94;
     /* 0x1C98 */ u32 unk1C98;
-    /* 0x1C9C */ u32 unk1C9C;
+    /* 0x1C9C */ s32 mapSummonID;
     /* 0x1CA0 */ SBTL_PLAYER_DATA playerData;
     /* 0x2C40 */ u32 unk2C40;
     /* 0x2C44 */ u32 unk2C44;
@@ -179,8 +181,8 @@ typedef struct
     /* 0x2C70 */ u16 unk2C70;
     /* 0x2C72 */ u16 unk2C72;
     /* 0x2C74 */ u8 unk2C74[0x4];
-    /* 0x2C78 */ u32 unk2C78;
-    /* 0x2C7C */ u8 unk2C7C[0xA34];
+    /* 0x2C78 */ u32 unk2C78[14];
+    /* 0x2CB0 */ u8 automapmask[80][32];
     /* 0x36B0 */ u32 unk36B0;
     /* 0x36B4 */ u32 unk36B4;
     /* 0x36B8 */ u8 unk36B8[0x8];
@@ -197,7 +199,8 @@ typedef struct
     /* 0x6F70 */ union { u32 word; s16 half; } pointTable[26];
     /* 0x6FD8 */ u8 unk6FD8[0x18];
     /* 0x6FF0 */ u32 unk6FF0;
-    /* 0x6FF4 */ u8 unk6FF4[0x27C];
+    /* 0x6FF4 */ u8 unk6FF4[0x7C];
+    /* 0x7070 */ u8 automapmask2[16][32];
 #else
     /* 0x0 */ u8 ver[8];
     /* 0x8 */ s32 word08;
@@ -235,7 +238,7 @@ typedef struct
     /* 0x1F90 */ u32 configFlag;
     /* 0x1F94 */ u32 unk1F94;
     /* 0x1F98 */ u32 unk1F98;
-    /* 0x1F9C */ u32 unk1F9C;
+    /* 0x1F9C */ s32 mapSummonID;
     /* 0x1FA0 */ u8 unk1FA0[0x20];
     /* 0x1FC0 */ u32 unk1FC0;
     /* 0x1FC4 */ u32 unk1FC4;

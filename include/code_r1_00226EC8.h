@@ -15,6 +15,26 @@ struct opcHandle_t;
 struct ptexHandle_t;
 struct fileJobPayload_t;
 
+#define EFFOPRT_FLAG_IGNORESTOP 1
+
+/* Object particle, file job type 24 (0x80, Create_effObjectParticle). */
+typedef struct opcHandle_t {
+    void *option;  /* 0x00 */
+    u32 abgr;      /* 0x04 */
+    f32 scale;     /* 0x08 */
+    u8 unkC[0x54];
+    void *unk60;
+    void *unk64;
+    void *unk68;
+    void *unk6C;
+    void *unk70;
+    u8 unk74[8];
+    u16 state;     /* 0x7C */
+    u16 flags;     /* 0x7E: EFFOPRT_FLAG_* */
+} opcHandle_t;
+
+typedef char opcHandleSizeCheck[sizeof(opcHandle_t) == 0x80 ? 1 : -1];
+
 void BehaviorSet(struct opcHandle_t *hParticle, EFFBEHAVIOR_TYPE type, struct effBehavior_Params_Basic_t *pParams);
 void Calc(struct opcHandle_t *hParticle);
 void CalcAndDraw(struct effPartsHandle_t *handle);
@@ -32,6 +52,9 @@ void Render(struct ptexHandle_t *hPolygon, struct effPolygonTexTemp_t *wk);
 void ResourceCopy_effPolygonTex(struct ptexHandle_t *dst, struct ptexHandle_t *src);
 void Update_effPolygonTex(struct ptexHandle_t *hPolygon, struct effPolygonTexTemp_t *wk);
 void eff2Draw(struct effPartsHandle_t *handle);
+void effLoadFlashTextures(void);
+void effLoadWindTexture(void);
+void effLoadScalyTexture(void);
 struct opcHandle_t *effCreateSlotNodeFromFileJob(struct Standard *pParts);
 
 typedef struct effActiveResource_t {
@@ -54,21 +77,6 @@ typedef struct effActiveResource_t {
 typedef char effActiveResource_size_must_be_0x40[
     (sizeof(effActiveResource_t) == 0x40) ? 1 : -1];
 
-/* Quake request slot: 32 of these at effLeaf345Work, each forwarded to dds3SetQuake. */
-typedef struct effQuakeSlot_t {
-    s32 frame;
-    s32 range;
-    u16 flags;
-    u16 timed;
-    u16 counter;
-    u16 order;
-} effQuakeSlot_t;
-
-typedef char effQuakeSlotSizeCheck[(sizeof(effQuakeSlot_t) == 0x10) ? 1 : -1];
-
-effQuakeSlot_t *effLeaf345(void);
-void fclLeaf7(effQuakeSlot_t *slot, s32 range);
-void fclDrawSprite(effQuakeSlot_t *slot, s32 range, s32 frame);
-void fclFunc2(effQuakeSlot_t *slot);
+#include "effQuake.h"
 
 #endif

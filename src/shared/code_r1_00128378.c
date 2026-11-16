@@ -3,6 +3,9 @@
 #include "dds3ObjectBase.h"
 #include "dds3MatterObjectBasic.h"
 #include "fldProcess.h"
+#include "fldFileResolver.h"
+#include "evtStage.h"
+#include "fld.h"
 
 #include "dds3obj.h"
 #include "field.h"
@@ -17,6 +20,17 @@
 #include "dds3UnitObjectBasic.h"
 #include "dds3WorldBasic.h"
 #include "code_r1_00128378.h"
+#include "fldDraw.h"
+#include "mapData.h"
+#include "sdfMemory.h"
+#include "sdfTex.h"
+#include "sdfQuat.h"
+#include "EventBit.h"
+#include "fldMain.h"
+#include "dds3SceneBasic.h"
+#include "mdlManager.h"
+#include "datCalc.h"
+#include "dat.h"
 
 /* Cursor advancement returns whether cursorIndex refers to a linked entry. */
 typedef u32 Dds3BasicArrayCursorResult;
@@ -86,7 +100,27 @@ f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz) {
     return fsqrtf(dx * dx + dy * dy + dz * dz);
 }
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapGetCircleCircleH);
+s32 mapGetCircleCircleH(f32 x1, f32 y1, f32 r1, f32 x2, f32 y2, f32 r2, f32 *x3, f32 *y3) {
+    f32 dx;
+    f32 dy;
+    f32 r;
+    f32 len;
+
+    dx = x1 - x2;
+    dy = y1 - y2;
+    r = r1 + r2;
+    len = fsqrtf(dx * dx + dy * dy);
+    if (len <= r) {
+        dx /= len;
+        dy /= len;
+        *x3 = x2 + dx * r;
+        *y3 = y2 + dy * r;
+        return 1;
+    }
+    *x3 = x1;
+    *y3 = y1;
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapGetEyeTgtRot);
 
@@ -126,56 +160,334 @@ void fldToggleWorldNodeState(s64 clearMode) {
 }
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK);
+void mapAM_MaskClear(void) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 80; i++) {
+        for (j = 0; j < 32; j++) {
+            DDS3_GBWK->automapmask[i][j] = 0;
+        }
+    }
+    for (i = 0; i < 16; i++) {
+        for (j = 0; j < 32; j++) {
+            DDS3_GBWK->automapmask2[i][j] = 0;
+        }
+    }
+}
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", NewGameInit);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapProcSequenceSub);
-#ifdef VERSION_RAIDOU2
-
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK);
 #endif
 
+#ifdef VERSION_RAIDOU1
+void mapProcSequenceSub(s32 map, s32 floor) {
+    s32 i;
+
+    if (map == 0) {
+        map = fldGlobalBase.amSBlock;
+    }
+    if (map == 4) {
+        if (floor == 4) {
+            floor = 0;
+        }
+        if (floor == 5) {
+            floor = 0;
+        }
+    }
+    if (map == 8 && floor == 4) {
+        floor = 0;
+    }
+    if (map == 10 && floor == 5) {
+        floor = 3;
+    }
+    if (map == 15) {
+        if (floor == 1) {
+            floor = 0;
+        }
+        if (floor == 2) {
+            floor = 0;
+        }
+    }
+    if (map == 25) {
+        if (floor == 1) {
+            floor = 0;
+        }
+        if (floor == 2) {
+            floor = 0;
+        }
+        if (floor == 3) {
+            floor = 0;
+        }
+    }
+    for (i = 0; i < 80; i++) {
+        if (mapProcSequenceSubData[i][0] == map && mapProcSequenceSubData[i][1] == floor) {
+            fldGlobalBase.automapMaskCurrentIdx = i;
+            return;
+        }
+    }
+    for (i = 0; i < 16; i++) {
+        if (mapProcSequenceSubData2[i][0] == map && mapProcSequenceSubData2[i][1] == floor) {
+            fldGlobalBase.automapMaskCurrentIdx = i + 80;
+            return;
+        }
+    }
+    fldGlobalBase.automapMaskCurrentIdx = -1;
+}
+
+void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 id) {
+    s32 idx;
+
+    if (map < 32 && fldGlobalBase.automapMaskCurrentIdx != -1) {
+        idx = fldGlobalBase.automapMaskCurrentIdx;
+        if (idx < 80) {
+            DDS3_GBWK->automapmask[idx][id / 8] |= 1 << (id - (id / 8) * 8);
+        } else {
+            DDS3_GBWK->automapmask2[idx - 80][id / 8] |= 1 << (id - (id / 8) * 8);
+        }
+    }
+}
+#else
+INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK);
+
 INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK2);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK3);
 #ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 36 of 43 words match.  */
+#ifdef NON_MATCHING
+s32 mapAM_MaskChk_ID(s32 map, s32 floor, s32 id) {
+    s32 idx;
+    s32 byte;
+    s32 bit;
+    u8 bits;
+    s32 one;
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK4);
+    if (map >= 32) {
+        return 1;
+    }
+    idx = fldGlobalBase.automapMaskCurrentIdx;
+    if (idx == -1) {
+        return 1;
+    }
+    if (idx < 80) {
+        one = 1;
+        byte = id / 8;
+        bits = DDS3_GBWK->automapmask[idx][byte];
+        bit = id - byte * 8;
+    } else {
+        one = 1;
+        byte = id / 8;
+        bits = DDS3_GBWK->automapmask2[idx - 80][byte];
+        bit = id - byte * 8;
+    }
+    return (bits & (one << bit)) != 0;
+}
+#else
+INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskChk_ID);
 #endif
 
+void mapCallBitCheck(void) {
+    s32 i;
+
+    fldGlobalBase.initScript = NULL;
+    fldGlobalBase.startScript = NULL;
+    for (i = 0; i < 96; i++) {
+        if (mapCallBitCheckData[i].map != fldGlobalBase.amSBlock) {
+            continue;
+        }
+        if (mapCallBitCheckData[i].floor != fldGlobalBase.nameU) {
+            continue;
+        }
+        if (mapCallBitCheckData[i].bit != 0) {
+            if (mapCallBitCheckData[i].bitOn == 0) {
+                if (evtBitCheck(mapCallBitCheckData[i].bit)) {
+                    continue;
+                }
+            } else if (!evtBitCheck(mapCallBitCheckData[i].bit)) {
+                continue;
+            }
+        }
+        if (mapCallBitCheckData[i].bit2 != 0) {
+            if (mapCallBitCheckData[i].bit2On == 0) {
+                if (evtBitCheck(mapCallBitCheckData[i].bit2)) {
+                    continue;
+                }
+            } else if (!evtBitCheck(mapCallBitCheckData[i].bit2)) {
+                continue;
+            }
+        }
+        if (mapCallBitCheckData[i].kind == 0) {
+            if (fldGlobalBase.initScript != NULL) {
+                continue;
+            }
+            fldGlobalBase.initScript = mapCallBitCheckData[i].name;
+        } else {
+            if (fldGlobalBase.startScript != NULL) {
+                continue;
+            }
+            fldGlobalBase.startScript = mapCallBitCheckData[i].name;
+            if (mapCallBitCheckData[i].once == 0) {
+                fldGlobalBase.word2D4 = 1;
+            } else {
+                fldGlobalBase.word2D4 = 0;
+            }
+        }
+    }
+}
+#else
+
 INCLUDE_ASM(const s32, "code_r1_00128378", mapCallBitCheck);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRndEncParamSet);
+void mapRndEncParamSet(void) {
+    if (playerBasic != NULL) {
+        fldGlobalBase.rndEncMode = 1;
+        fldGlobalBase.rndEncFieldID = fldGlobalBase.amSBlock;
+        fldGlobalBase.rndEncFloorID = fldGlobalBase.nameU;
+        fldGlobalBase.rndEncX = fldGlobalBase.focusX;
+        fldGlobalBase.rndEncY = fldGlobalBase.focusY;
+        fldGlobalBase.rndEncZ = fldGlobalBase.focusZ;
+    }
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapGetPlayersBasic);
+dds3Basic_t *mapGetPlayersBasic(s32 type) {
+    switch (type) {
+        case 0:
+            return playerBasic;
+        case 1:
+            if (fldGlobalBase.summonStop == 0) {
+                return playerBasic;
+            }
+            return raidoBasic;
+        case 2:
+            fldGlobalBase.aiboRunStop = 1;
+            return aiboBasic;
+        case 3:
+            if (DDS3_GBWK->mapSummonID == 0) {
+                return NULL;
+            }
+            return summonDvBasic;
+        default:
+            return NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapSetPlayersVisible);
 
 #ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 33 of 63 words match.  */
+#ifdef NON_MATCHING
+s32 mapCheckDying(s32 mode) {
+    s32 index;
+    s32 status;
+
+    if (mode == 0) {
+        if (fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 2) {
+            return 0;
+        }
+        if (datCheckDying(&DDS3_GBWK->playerData.unit)) {
+            return 1;
+        }
+        status = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.unit);
+        return status == 6 || status == 11;
+    }
+    index = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
+    if (index == -1) {
+        return 0;
+    }
+    if (datCheckDying(&DDS3_GBWK->playerData.stock[index])) {
+        return 1;
+    }
+    status = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[index]);
+    if (status == 6 || status == 11) {
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00128378", mapCheckDying);
+#endif
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", mapCallProcessCheck);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRefBasic);
+s32 mapGetRaidouSerialID(void) {
+    if (!fldGlobalBase.summonStop) {
+        return playerBasic->serialID;
+    }
+    return raidoBasic->serialID;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapCallObjectBaseCheckFlag);
+s32 mapGetAiboSerialID(void) {
+    if (aiboBasic != NULL && dds3ObjectBaseCheckFlag(aiboBasic, 1)) {
+        return aiboBasic->serialID;
+    }
+    return -1;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRefBasic2);
+s32 mapGetAiboSerialID2(void) {
+    if (aiboBasic == NULL) {
+        return -1;
+    }
+    return aiboBasic->serialID;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", effCallObjectBaseCheckFlag);
+s32 mapGetNakamaSerialID(void) {
+    if (summonDvBasic != NULL && dds3ObjectBaseCheckFlag(summonDvBasic, 1)) {
+        return summonDvBasic->serialID;
+    }
+    return -1;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", effRefDvBasic);
+s32 mapGetNakamaSerialID2(void) {
+    if (summonDvBasic == NULL) {
+        return -1;
+    }
+    return summonDvBasic->serialID;
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", effBTLFieldColorDraw);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", effRefDvBasic2);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldFreeInputPanel);
+void mapNakamaOikakeBuffReset2(void) {
+    if (summonDvBasic == NULL && playerBasic != NULL) {
+        mapSummonDvFoceSet(playerBasic->poseset->pos.x, playerBasic->poseset->pos.y, playerBasic->poseset->pos.z);
+    }
+}
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_RODATA(const s32, "code_r1_00128378", mapGetEyeTgtRotTable);
+
+void mapRaidouBackUpPosReset(void) {
+    f32 axis[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+
+    if (fldGlobalBase.summonStop) {
+        SDF_VU0_LOADVECTOR(axis);
+        fldGlobalBase.word190 = fldGlobalBase.amSBlock;
+        fldGlobalBase.word194 = fldGlobalBase.nameU;
+        fldGlobalBase.float184 = raidoBasic->poseset->pos.x;
+        fldGlobalBase.float188 = raidoBasic->poseset->pos.y;
+        fldGlobalBase.float18C = raidoBasic->poseset->pos.z;
+        dds3GetRotPoseSet(raidoBasic);
+        fldGlobalBase.float198 = (EulerAngleAxisY() * 180.0f) / 3.14f;
+    } else {
+        SDF_VU0_LOADVECTOR(axis);
+        fldGlobalBase.focusX = playerBasic->poseset->pos.x;
+        fldGlobalBase.focusY = playerBasic->poseset->pos.y;
+        fldGlobalBase.focusZ = playerBasic->poseset->pos.z;
+        dds3GetRotPoseSet(playerBasic);
+        fldGlobalBase.floatC4 = fldGlobalBase.floatC0 = (EulerAngleAxisY() * 180.0f) / 3.14f;
+        mapHamidasiCheck();
+        fldPlayerForceSetPos_NoHokan(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00128378", mapRaidouBackUpPosReset);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapCallGetRotPoseSet);
 
@@ -206,17 +518,39 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fldGbLocationSavePointStore);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapChkTakaraEX);
 
-#endif
 INCLUDE_RODATA(const s32, "code_r1_00128378", mapGetEyeTgtRotTable);
 
 INCLUDE_RODATA(const s32, "code_r1_00128378", mapRaidouBackUpPosResetTable);
 
+#endif
 INCLUDE_RODATA(const s32, "code_r1_00128378", mapCallGetRotPoseSetTable);
 
 INCLUDE_RODATA(const s32, "code_r1_00128378", mapCallGetRotPoseSet2Table);
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "code_r1_00128378", fldFirstInit);
+void fldFirstInit(void) {
+    sdfMemHandle_t *file;
+    TMX_HEADER_t *tmx;
+
+    tmx = NULL;
+    fldDrawInit();
+    mapCutFileLoad();
+    fldCallFptodp();
+    fldGlobalBase.word30 = 0;
+    fldGlobalBase.texture2B0 = NULL;
+    fldGlobalBase.texSlot[0].texture = NULL;
+    fldGlobalBase.texSlot[0].file = NULL;
+    sdfRandomize(&fldRandomBuf, 123456);
+    fldCallMemset4();
+    fldAllTblPacLoad();
+    fldAllTblLoad();
+    file = sdfDevLoadFileEx("/map/all/shadow01.tmx", (u32 *)&tmx, NULL);
+    fldGlobalBase.texture220 = sdfTexSet(tmx);
+    sdfMemFreeDelayedDirect(file);
+    fldData9 = dds3CallMatNew2(fldGlobalBase.texture220);
+    fldClearDoorEvents();
+    mefMistFastCreate();
+}
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", fldReturnSavePointPositionRestore);
 
@@ -237,45 +571,208 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fclCombineDraw);
 INCLUDE_ASM(const s32, "code_r1_00128378", fclMapAllShadow);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapCutFileLoad);
+void mapCutFileLoad(void) {
+    playerBasic = NULL;
+    cameraBasic = NULL;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapCallMemset);
+#ifdef VERSION_RAIDOU1
+void mapSetSceneParam(fldSceneParam_t *param, s32 field, s32 floor, s32 point) {
+    param->flag = 0;
+    param->loadField = field;
+    param->loadFloor = floor;
+    param->loadPoint = point;
+    param->loadMode = 0;
+    memset(param->FoceScript, 0, 0x10);
+    fldRefTexLoadLast();
+    fldGlobalBase.cutIdx = 0;
+    fldGlobalBase.cutIdxPrev = 0;
+    fldGlobalBase.cutState = 0;
+    fldGlobalBase.playerSeTable = 0;
+    fldGlobalBase.hitMatterIndex = 0;
+    fldGlobalBase.focusX = 0.0f;
+    fldGlobalBase.focusY = 0.0f;
+    fldGlobalBase.focusZ = 0.0f;
+}
+#else
+INCLUDE_ASM(const s32, "code_r1_00128378", mapSetSceneParam);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapSetSceneParam_BattleReturn);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldElvReset);
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "code_r1_00128378", fldReadyScene);
+void fldReadyScene(void) {
+    evtLoadArea(gfldSceneParam.loadField, gfldSceneParam.loadFloor);
+    if (fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 2) {
+        fldGlobalBase.nakamaTaskOff = 1;
+    } else {
+        fldGlobalBase.nakamaTaskOff = 0;
+    }
+    fldSetUnit();
+    if (!evtBitCheck(184) || evtBitCheck(206)) {
+        if (fldGlobalBase.amSBlock == 1 && fldGlobalBase.nameU == 0 && (!evtBitCheck(177) || evtBitCheck(179))) {
+            mapCtnLoad();
+        }
+        if (fldGlobalBase.amSBlock == 2 && (fldGlobalBase.nameU == 0 || fldGlobalBase.nameU == 2)) {
+            mapCtnLoad();
+        }
+        if (fldGlobalBase.amSBlock == 3) {
+            if (fldGlobalBase.nameU == 0) {
+                mapCtnLoad();
+            }
+            if (fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 1 && (!evtBitCheck(65) || evtBitCheck(96))) {
+                mapCtnLoad();
+            }
+        }
+        if (fldGlobalBase.amSBlock == 4 && fldGlobalBase.nameU == 0) {
+            mapCtnLoad();
+        }
+        if (fldGlobalBase.amSBlock == 7 && fldGlobalBase.nameU == 0 && (!evtBitCheck(131) || evtBitCheck(144))) {
+            mapCtnLoad();
+        }
+    }
+    fldRegistUnitPad();
+    fldSetUnitFollowCamera();
+    dds3SetActiveUnitSceneBasic(dds3GetControlScene(), playerBasic);
+}
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", fldCallLoadArea);
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "code_r1_00128378", fldModelFieldLB);
+s32 PlayerGetMdlLoadID(char *path) {
+    s32 type;
+
+    if (evtBitCheck(161) && !evtBitCheck(163)) {
+        if (fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 2) {
+            fldGlobalBase.wordE0 = 3;
+            type = 7;
+        } else {
+            fldGlobalBase.wordE0 = 2;
+            type = 6;
+        }
+    } else if (fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 2) {
+        type = 8;
+        fldGlobalBase.wordE0 = 1;
+    } else {
+        type = 0;
+        fldGlobalBase.wordE0 = 0;
+    }
+    if (path != NULL) {
+        switch (type) {
+        case 0:
+            sprintf(path, "/model/field/000.LB");
+            break;
+        case 6:
+            sprintf(path, "/model/field/000_j.LB");
+            break;
+        case 7:
+            sprintf(path, "/model/field/naked_f_j.LB");
+            break;
+        case 8:
+            sprintf(path, "/model/field/naked_f.LB");
+            break;
+        }
+    }
+    return type;
+}
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", PlayerGetMdlLoadID);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldPlayerALoad);
+void fldPlayerALoad(void) {
+    char path[32];
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldPlayerALoad_OnDataCheck);
+    if (fldPlayerAnimData == NULL) {
+        PlayerGetMdlLoadID(path);
+        fldPlayerAnimData = sdfDevLoadFileEx(path, (u32 *)&gfldPlayerPtr, &gfldPlayerSizeBk);
+    }
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldPlayerALoadStart);
+s32 fldPlayerALoad_OnDataCheck(void) {
+    return fldPlayerAnimData != NULL;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldPlayerALoadEndCheck);
+void fldPlayerALoadStart(void) {
+    char path[32];
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldPlayerAFree);
+    if (fldPlayerAnimData == NULL) {
+        fldPlayerAnimData = NULL;
+        PlayerGetMdlLoadID(path);
+        gMapCash_pacHandle = pacLoad(path);
+    }
+}
+
+s32 fldPlayerALoadEndCheck(void) {
+    sdfPacDecodeResrc_t *resrc;
+    s32 n = 0;
+
+    if (fldPlayerAnimData != NULL) {
+        return 1;
+    }
+    if (pacCheckEnd(gMapCash_pacHandle) == 0) {
+        return 0;
+    }
+    for (resrc = gMapCash_pacHandle->pac.resrcHead; resrc != NULL; resrc = resrc->next, n++) {
+        if (n == 0) {
+            fldPlayerAnimData = resrc->resrc;
+            gfldPlayerPtr = resrc->data;
+            gfldPlayerSizeBk = sdfMemGetSize(fldPlayerAnimData);
+        }
+        else {
+            sdfMemFreeDirect(resrc->resrc);
+        }
+    }
+    pacFileHandleFree_(gMapCash_pacHandle);
+    return 1;
+}
+
+void fldPlayerAFree(void) {
+    if (fldPlayerAnimData != NULL) {
+        sdfMemFreeDirect(fldPlayerAnimData);
+        fldPlayerAnimData = NULL;
+    }
+}
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "code_r1_00128378", fldJDataLoad);
+void fldJDataLoad(void) {
+    void *src;
+    void *dst;
+
+    fldPlayerALoad();
+    fldJDataLoadData2 = gfldPlayerSizeBk;
+    effQueuedResourceNameRecord3 = sdfMemAllocDirect(gfldPlayerSizeBk);
+    src = sdfMemGetPtr(fldPlayerAnimData);
+    dst = sdfMemGetPtr(effQueuedResourceNameRecord3);
+    memcpy(dst, src, fldJDataLoadData2);
+    gfldPlayerPtr = dst;
+    mdlPackDecode(2, PlayerGetMdlLoadID(NULL), 0x101, gfldPlayerPtr, fldJDataLoadData2);
+    sdfMemFreeDelayedDirect(effQueuedResourceNameRecord3);
+    effQueuedResourceNameRecord3 = NULL;
+}
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", fldCallPlayerALoad);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldCallMemFreeDelayedDirect);
+void fldCallMemFreeDelayedDirect(void) {
+    if (effQueuedResourceNameRecord3 != NULL) {
+        sdfMemFreeDelayedDirect(effQueuedResourceNameRecord3);
+        effQueuedResourceNameRecord3 = NULL;
+    }
+    fldPlayerAFree();
+}
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldCallMemFreeDelayedDirect2);
+void fldCallMemFreeDelayedDirect2(void) {
+    if (fldData11 != NULL) {
+        sdfMemFreeDelayedDirect(fldData11);
+        fldData11 = NULL;
+        nbResultFreeTexturesData = NULL;
+        nbResultFreeTexturesData2 = 0;
+    }
+    fldNakamaCashLoad_EndCheckData = 0;
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldNakamaCashLoad_Start);
 
@@ -312,13 +809,32 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fldAiboCashLoad_EndCheck);
 INCLUDE_ASM(const s32, "code_r1_00128378", fldSetUnitSub2);
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "code_r1_00128378", cmpModelFreeResource);
+void cmpModelFreeResource(void) {
+    if (playerBasic != NULL) {
+        mapCtnFree();
+        cameraBasic = NULL;
+        playerBasic = NULL;
+        playerModel = NULL;
+        raidoBasic = NULL;
+        raidoModel = NULL;
+        aiboBasic = NULL;
+        aiboModel = NULL;
+        summonDvBasic = NULL;
+        summonDvModel = NULL;
+        fldCallMemFreeDelayedDirect();
+        fldCallMemFreeDelayedDirect2();
+    }
+}
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", fldLoadMapResourceSub);
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "code_r1_00128378", cmpCallModelFreeResource);
+void cmpCallModelFreeResource(void) {
+    cmpModelFreeResource();
+    evtFreeStage();
+    fldProcShutDown();
+}
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", fldLoadMapResourceSub2);
 
@@ -327,7 +843,17 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fldCallCtnFree);
 INCLUDE_ASM(const s32, "code_r1_00128378", fldCleanupFieldScene);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldRegistUnitPad);
+void fldRegistUnitPad(void) {
+    if (playerBasic != NULL) {
+        fldEncountSetFlag(0x40);
+        dds3ObjectBaseSetPrimaryControl(playerBasic, fldLeaf6);
+    }
+    fldGlobalBase.noEncountCnt = 4;
+    fldGlobalBase.noInpPlCnt = 4;
+    fldGlobalBase.ifDrawOn = 1;
+    mapWaitCbScreenFadeBSub(0);
+    fldGlobalBase.aiboRunStop = 0;
+}
 
 void fldReleaseUnitPad(void) {
     if (fldPlayerObject != 0) {
@@ -364,17 +890,17 @@ INCLUDE_SDATA(const s32, "code_r1_00128378", nbData21);
 INCLUDE_SDATA(const s32, "code_r1_00128378", Process_WarpIdx);
 #endif
 
-INCLUDE_SDATA(const s32, "code_r1_00128378", effQueuedResourceNameRecord2);
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldPlayerAnimData);
 
 INCLUDE_SDATA(const s32, "code_r1_00128378", effQueuedResourceNameRecord3);
 
-INCLUDE_SDATA(const s32, "code_r1_00128378", fldJDataLoadData);
+INCLUDE_SDATA(const s32, "code_r1_00128378", gfldPlayerPtr);
 
 INCLUDE_SDATA(const s32, "code_r1_00128378", fldJDataLoadData2);
 
-INCLUDE_SDATA(const s32, "code_r1_00128378", fldData10);
+INCLUDE_SDATA(const s32, "code_r1_00128378", gfldPlayerSizeBk);
 
-INCLUDE_SDATA(const s32, "code_r1_00128378", fldPlayerALoadEndCheckData);
+INCLUDE_SDATA(const s32, "code_r1_00128378", gMapCash_pacHandle);
 
 INCLUDE_SDATA(const s32, "code_r1_00128378", fldData11);
 

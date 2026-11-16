@@ -3,6 +3,9 @@
 
 #include "common.h"
 
-s32 sndRefDDS3GBWK(void);
+s32 evtMoonTakaraCntReset(void);
+s32 evtMoonZeniCntReset(void);
+s32 evtMoonTakumiCntReset(void);
+s32 evtMoonTeisatuCntReset(void);
 
 #endif

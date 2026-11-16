@@ -71,7 +71,7 @@ void mapNakamaTask(void) {
     if (fldGlobalBase.nakamaTaskOff != 0) {
         return;
     }
-    if ((s32)DDS3_GBWK->unk1C9C <= 0) {
+    if (DDS3_GBWK->mapSummonID <= 0) {
         mapNakamaTaskData = 0;
         mapSummonDvTask();
         return;
@@ -188,7 +188,7 @@ void mapNakamaTask(void) {
         mdlSetColor(summonDvModel, color);
     }
     if (mapData140 != -1 && summonDvModel != NULL && summonDvModel->first->stat == 5) {
-        mapNakamaMotion(summonDvModel, DDS3_GBWK->unk1C9C, mapData140, 3);
+        mapNakamaMotion(summonDvModel, DDS3_GBWK->mapSummonID, mapData140, 3);
     }
     if (mapNakamaTaskData2 != 0 && summonDvBasic != NULL) {
         pose = summonDvBasic->poseset;

@@ -160,7 +160,10 @@ typedef struct fldAreaWork_t
     u32 consumedFlags;          /* 0x014 */
     s32 mode;                   /* 0x018 */
     s32 word1C;                 /* 0x01C */
-    char requestedSceneName[0x10]; /* 0x020 */
+    s32 word20;                 /* 0x020 */
+    s32 word24;                 /* 0x024 */
+    s32 word28;                 /* 0x028 */
+    s32 word2C;                 /* 0x02C */
     s32 word30;                 /* 0x030: bg loaded flag, zeroed by mapBgFree2 */
     s32 cutIdx;                 /* 0x034: index into the fldWork6 cut table */
     s32 cutIdxPrev;             /* 0x038: cutIdx before the last change */
@@ -169,7 +172,7 @@ typedef struct fldAreaWork_t
     s32 word44;                 /* 0x044 */
     s32 hitMatterIndex;         /* 0x048 */
     s32 word4C;                 /* 0x04C */
-    char *retryScript;          /* 0x050 */
+    struct dds3Basic_t *fastArea; /* 0x050: the first area object built from the FL2 block table */
     s32 mapCallMode;            /* 0x054: set to 1 by mapCallMap, tested by mapReturnFromShop */
     u8 unk58[4];
     s32 word5C;                 /* 0x05C */
@@ -186,8 +189,8 @@ typedef struct fldAreaWork_t
     s32 resourceArea;           /* 0x088 */
     s32 resourceFloor;          /* 0x08C */
     s32 word90;                 /* 0x090 */
-    s32 word94;                 /* 0x094 */
-    s32 word98;                 /* 0x098 */
+    s32 noEncountCnt;           /* 0x094 */
+    s32 noInpPlCnt;             /* 0x098 */
     f32 focusX;                 /* 0x09C: camera focus point */
     f32 focusY;                 /* 0x0A0 */
     f32 focusZ;                 /* 0x0A4 */
@@ -212,7 +215,7 @@ typedef struct fldAreaWork_t
     s32 camId;                  /* 0x0F0: first word of the fldWork6 cut entry */
     u8 unkF4[4];
     s32 wordF8;                 /* 0x0F8 */
-    u8 unkFC[4];
+    s32 wordFC;                 /* 0x0FC */
     f32 x;                      /* 0x100 */
     f32 y;                      /* 0x104 */
     f32 z;                      /* 0x108 */
@@ -224,7 +227,7 @@ typedef struct fldAreaWork_t
     f32 hitZ;
     f32 camAngle;               /* 0x124 */
     f32 camAngle2;              /* 0x128 */
-    f32 float12C;               /* 0x12C */
+    union { f32 float12C; s32 word12C; }; /* 0x12C: Raidou stores -1 */
     s32 mskIndex;               /* 0x130: MSK index from mapNpcTableGetMSK */
     s32 hitValid;               /* 0x134 */
 #ifdef VERSION_RAIDOU1
@@ -272,13 +275,13 @@ typedef struct fldAreaWork_t
     s32 word1DC;                /* 0x1DC */
     s32 word1E0;                /* 0x1E0 */
     s32 word1E4;                /* 0x1E4 */
-    s32 word1E8;                /* 0x1E8 */
-    s32 word1EC;                /* 0x1EC */
-    s32 word1F0;                /* 0x1F0 */
-    s32 word1F4;                /* 0x1F4 */
-    f32 float1F8;               /* 0x1F8 */
-    f32 float1FC;               /* 0x1FC */
-    f32 float200;               /* 0x200 */
+    s32 rndEncMode;             /* 0x1E8 */
+    s32 rndEncFieldID;          /* 0x1EC */
+    s32 rndEncFloorID;          /* 0x1F0 */
+    s32 rndEncNo;               /* 0x1F4 */
+    f32 rndEncX;                /* 0x1F8 */
+    f32 rndEncY;                /* 0x1FC */
+    f32 rndEncZ;                /* 0x200 */
     s32 word204;                /* 0x204 */
     f32 float208;               /* 0x208 */
     f32 float20C;               /* 0x20C */
@@ -286,14 +289,14 @@ typedef struct fldAreaWork_t
     f32 float214;               /* 0x214 */
     s32 word218;                /* 0x218 */
     s32 word21C;                /* 0x21C */
-    s32 word220;                /* 0x220 */
+    struct sdfTexHandle_t *texture220; /* 0x220 */
     fldTexSlot_t texSlot[3];    /* 0x224 */
     u8 unk23C[0x4];
     s32 word240;                /* 0x240 */
-    s32 word244;                /* 0x244 */
+    s32 automapMaskCurrentIdx;  /* 0x244 */
     s32 word248;                /* 0x248 */
     s32 word24C;                /* 0x24C */
-    s32 word250;                /* 0x250 */
+    s32 ifDrawOn;               /* 0x250 */
     char scriptName[0x40];      /* 0x254 */
     s32 word294;                /* 0x294 */
     s32 word298;                /* 0x298 */
@@ -321,7 +324,7 @@ typedef struct fldAreaWork_t
     s32 word2F0;                /* 0x2F0 */
     s32 word2F4;                /* 0x2F4 */
     s32 nakamaTaskOff;          /* 0x2F8 */
-    s32 word2FC;                /* 0x2FC */
+    s32 aiboRunStop;            /* 0x2FC */
     s32 word300;                /* 0x300 */
     s32 word304;                /* 0x304 */
     s32 word308;                /* 0x308 */
@@ -403,13 +406,13 @@ typedef struct fldAreaWork_t
     s32 word220;                /* 0x220 */
     s32 word224;                /* 0x224 */
     s32 word228;                /* 0x228 */
-    s32 word22C;                /* 0x22C */
-    s32 word230;                /* 0x230 */
-    s32 word234;                /* 0x234 */
-    s32 word238;                /* 0x238 */
-    f32 float23C;               /* 0x23C */
-    f32 float240;               /* 0x240 */
-    f32 float244;               /* 0x244 */
+    s32 rndEncMode;             /* 0x22C */
+    s32 rndEncFieldID;          /* 0x230 */
+    s32 rndEncFloorID;          /* 0x234 */
+    s32 rndEncNo;               /* 0x238 */
+    f32 rndEncX;                /* 0x23C */
+    f32 rndEncY;                /* 0x240 */
+    f32 rndEncZ;                /* 0x244 */
     s32 word248;                /* 0x248 */
     f32 float24C;               /* 0x24C */
     f32 float250;               /* 0x250 */
@@ -421,10 +424,10 @@ typedef struct fldAreaWork_t
     fldTexSlot_t texSlot[3];    /* 0x268 */
     u8 unk280[0x4];
     s32 word284;                /* 0x284 */
-    s32 word288;                /* 0x288 */
+    s32 automapMaskCurrentIdx;  /* 0x288 */
     s32 word28C;                /* 0x28C */
     s32 word290;                /* 0x290 */
-    s32 word294;                /* 0x294 */
+    s32 ifDrawOn;               /* 0x294 */
     u8 bytes298[0x10];          /* 0x298: two unaligned 8-byte copies */
     s32 word2A8;                /* 0x2A8 */
     u8 byte2AC;                 /* 0x2AC */
@@ -455,7 +458,7 @@ typedef struct fldAreaWork_t
     s32 word334;                /* 0x334 */
     s32 word338;                /* 0x338 */
     s32 nakamaTaskOff;          /* 0x33C */
-    s32 word340;                /* 0x340 */
+    s32 aiboRunStop;            /* 0x340 */
     s32 word344;                /* 0x344 */
     s32 word348;                /* 0x348 */
     s32 word34C;                /* 0x34C */
@@ -543,13 +546,15 @@ typedef struct {
     s32 word5C;
 } fldDanteGunState_t;
 
-/* gfldSceneParam: the pending scene request, 0x48 bytes. */
-typedef struct {
-    char FoceScript[0x28];
-    s32 loadField;
-    s32 loadFloor;
-    s32 loadPoint;
-    u8 unk34[0x14];
+/* gfldSceneParam: the pending scene request, 0x38 bytes (HD SceneParam_t). */
+typedef struct fldSceneParam_t {
+    char FoceScript[0x20];
+    u32 flag;                   /* 0x20 */
+    s32 mode;                   /* 0x24 */
+    s32 loadField;              /* 0x28 */
+    s32 loadFloor;              /* 0x2C */
+    s32 loadPoint;              /* 0x30 */
+    u32 loadMode;               /* 0x34 */
 } fldSceneParam_t;
 
 extern fldSceneParam_t gfldSceneParam;

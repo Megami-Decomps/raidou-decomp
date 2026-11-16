@@ -859,7 +859,7 @@ void effPartsDraw(plistHandle_t *queue) {
         }
         fileJobInvokeTypeCallback((fileJobPayload_t *)job->id);
     }
-    if ((effSRAnimation() & 1) == 0) {
+    if ((effGetFlags() & 1) == 0) {
         queue->updateFrame++;
     }
 }
@@ -2050,7 +2050,7 @@ void fileDrawLoadObjectSlots(effQueuedSurfaceNode_t *obj) {
 }
 
 void effCallSRAnimation(effQueuedSurfaceNode_t *node) {
-    if ((effSRAnimation() & 1) == 0) {
+    if ((effGetFlags() & 1) == 0) {
         fileAcquireLoadObjectRecord(node);
     }
     fileDrawLoadObjectSlots(node);

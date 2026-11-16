@@ -1,6 +1,6 @@
 # Draft notes: code_001AD4E8
 
-## sndRefDDS3GBWK (code_001AD4E8, raidou1 0x10)
+## evtMoonTeisatuCntReset (code_001AD4E8, raidou1 0x10)
 
 Raidou 1: 4 of 4 words differ, first at +0x0; emitted 20 bytes, native 16 bytes.
 

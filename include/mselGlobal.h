@@ -37,4 +37,6 @@ typedef struct
 
 extern u32 mselNameNEFLASHData;
 
+void mselCallMInitSceneMjn(void);
+
 #endif

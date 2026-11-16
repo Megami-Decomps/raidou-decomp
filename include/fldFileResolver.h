@@ -24,5 +24,7 @@ void mapSummonDvGet(f32 *x, f32 *y, f32 *z);
 void mapSummonDvTask(void);
 void rstDrawEvoBgFade(s32 Motion, f32 spd);
 s32 sndSeStatus(void);
+void mapAiboInit(void);
+void mapSummonDvInit(void);
 
 #endif

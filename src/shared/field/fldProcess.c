@@ -151,7 +151,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (fldGlobalBase.word2E8) {
             datDebugPrintf("EISEI TAIITU devil:[%02x]\n", fldGlobalBase.word2EC);
             fldGlobalBase.summonStop = 1;
-            DDS3_GBWK->unk1C9C = fldGlobalBase.word2EC;
+            DDS3_GBWK->mapSummonID = fldGlobalBase.word2EC;
             fldGlobalBase.word2E8 = 0;
             fldGlobalBase.word2EC = 0;
         }
@@ -216,7 +216,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         DecisionFeedIn();
         dds3VisibleSceneBasic(dds3GetActiveScene(), 1);
         dds3ProcSequenceSub(1);
-        fldGlobalBase.word250 = 1;
+        fldGlobalBase.ifDrawOn = 1;
         mapBgDrawOnOff(1);
         evtEnableMoonDraw();
         if (fldGlobalBase.amSBlock != 31) {
@@ -245,12 +245,12 @@ s32 ProcSequence(dds3ProcessID_t *id)
             dds3SetRotPoseSet(playerBasic, &rotation);
         }
         fldGlobalBase.word1D0 = 0;
-        if (fldGlobalBase.word1E8) {
+        if (fldGlobalBase.rndEncMode) {
             datDebugPrintf("returnToMap RndEnc\n");
-            fldGlobalBase.word1E8 = 0;
-            fldGlobalBase.focusX = fldGlobalBase.float1F8;
-            fldGlobalBase.focusY = fldGlobalBase.float1FC;
-            fldGlobalBase.focusZ = fldGlobalBase.float200;
+            fldGlobalBase.rndEncMode = 0;
+            fldGlobalBase.focusX = fldGlobalBase.rndEncX;
+            fldGlobalBase.focusY = fldGlobalBase.rndEncY;
+            fldGlobalBase.focusZ = fldGlobalBase.rndEncZ;
             fldPlayerForceSetRot_NoHokan(fldGlobalBase.floatC4);
             fldGlobalBase.word1D0 = 1;
         } else {
@@ -282,7 +282,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             mdlSetMotionSpeed(0);
         }
         mdlChkMotionEnd();
-        mapNakamaSkilIs_SetBit(DDS3_GBWK->unk1C9C);
+        mapNakamaSkilIs_SetBit(DDS3_GBWK->mapSummonID);
         fldGlobalBase.nameD = fldGetFldBgNameList();
         datDebugPrintf("fld_process_init:4 SEVOL:%d\n", sndProcSequenceSub4());
         fldGlobalBase.prevY = 0;
@@ -551,11 +551,11 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if ((fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && mapBadMafuHajiki()) {
             goto bad_mafu;
         }
-        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.word98) {
+        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.noInpPlCnt) {
             goto menu_key;
         }
     e_encounter_key:
-        if (fldEncountTestFlag(0x40) && fldGlobalBase.word240 != 2 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x22] < 0 && !fldGlobalBase.word98) {
+        if (fldEncountTestFlag(0x40) && fldGlobalBase.word240 != 2 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x22] < 0 && !fldGlobalBase.noInpPlCnt) {
             p2sdPlaySE(17, 127, 63);
             fldAutoMapSeqFlags.stage = 19;
             fldReleaseUnitPad();
@@ -584,7 +584,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapWallObjTask(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
         fldGlobalBase.word78 = mapCallSetPlayerTargetData6(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         mapProcSequenceSub(fldGlobalBase.amSBlock, fldGlobalBase.nameU);
-        mapRefDDS3GBWK2(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.word78);
+        mapAM_MaskOpen_ID(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.word78);
         goto map_tail;
     case 0xF:
         fldGlobalBase.word308 = fldGlobalBase.amSBlock;
@@ -600,7 +600,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             ProcMskSub_B();
             return 0;
         }
-        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.word98) {
+        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.noInpPlCnt) {
         menu_key:
             fldAutoMapSeqFlags.stage = 21;
             fldReleaseUnitPad();
@@ -612,7 +612,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             return 0;
         }
     f_encounter_key:
-        if (fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && fldGlobalBase.word240 != 2 && dds3PadButtonState[0x22] < 0 && !fldGlobalBase.word98) {
+        if (fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && fldGlobalBase.word240 != 2 && dds3PadButtonState[0x22] < 0 && !fldGlobalBase.noInpPlCnt) {
             p2sdPlaySE(17, 127, 63);
             fldAutoMapSeqFlags.stage = 19;
             fldReleaseUnitPad();
@@ -676,7 +676,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapWallObjTask(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
         fldGlobalBase.word78 = mapCallSetPlayerTargetData6(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         mapProcSequenceSub(fldGlobalBase.amSBlock, fldGlobalBase.nameU);
-        mapRefDDS3GBWK2(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.word78);
+        mapAM_MaskOpen_ID(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.word78);
     map_tail:
         if (fldGlobalBase.word344) {
             mapCtnGet();
@@ -705,7 +705,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             dds3VisibleSceneBasic(dds3GetActiveScene(), 0);
             dds3ProcSequenceSub(0);
             evtDisableMoonDraw();
-            fldGlobalBase.word250 = 0;
+            fldGlobalBase.ifDrawOn = 0;
             mapBgDrawOnOff(0);
             mapWaitCbScreenFadeBSub(1);
             if (fldGlobalBase.summonStop) {
@@ -733,7 +733,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             }
             fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
             dds3VisibleSceneBasic(dds3GetActiveScene(), 1);
-            fldGlobalBase.word250 = 1;
+            fldGlobalBase.ifDrawOn = 1;
             mapBgDrawOnOff(1);
             dds3ProcSequenceSub(1);
         } else {
@@ -742,7 +742,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             }
             fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
             dds3VisibleSceneBasic(dds3GetActiveScene(), 1);
-            fldGlobalBase.word250 = 1;
+            fldGlobalBase.ifDrawOn = 1;
             mapBgDrawOnOff(1);
             mapWaitCbScreenFadeBSub(0);
             dds3ProcSequenceSub(1);
@@ -764,7 +764,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             dds3VisibleSceneBasic(dds3GetActiveScene(), 0);
             dds3ProcSequenceSub(0);
             evtDisableMoonDraw();
-            fldGlobalBase.word250 = 0;
+            fldGlobalBase.ifDrawOn = 0;
             mapBgDrawOnOff(0);
             mapBgSetScrollReset();
             mapWaitCbScreenFadeBSub(1);
@@ -791,7 +791,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         } else if (badStatus == 11) {
             mapBadEffLoad(0, 11);
         }
-        if (datCallGetStockDevilID(DDS3_GBWK->unk1C9C) != -1) {
+        if (datCallGetStockDevilID(DDS3_GBWK->mapSummonID) != -1) {
             badStatus = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[0]);
             if (badStatus == 6) {
                 mapBadEffLoad(1, 6);
@@ -803,7 +803,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
         dds3VisibleSceneBasic(dds3GetActiveScene(), 1);
         dds3ProcSequenceSub(1);
-        fldGlobalBase.word250 = 1;
+        fldGlobalBase.ifDrawOn = 1;
         mapBgDrawOnOff(1);
         mapWaitCbScreenFadeBSub(0);
     moon_pad:
@@ -827,7 +827,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         dds3VisibleSceneBasic(dds3GetActiveScene(), 0);
         dds3ProcSequenceSub(0);
         evtDisableMoonDraw();
-        fldGlobalBase.word250 = 0;
+        fldGlobalBase.ifDrawOn = 0;
         mapBgDrawOnOff(0);
         mapBgSetScrollReset();
         cmpProcessStartEx_cmpMain(1);
@@ -995,7 +995,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
                 }
             }
             ProcSequenceData7 = 0;
-            sndBgmLoadId_XF(sbtlProcSequenceSub(fldGlobalBase.word1F4));
+            sndBgmLoadId_XF(sbtlProcSequenceSub(fldGlobalBase.rndEncNo));
         }
         if (fldGlobalBase.word300 == 10) {
             p2sdPlaySE(15, 127, 63);
@@ -1023,7 +1023,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (fldGlobalBase.word2BC == 1) {
             gMapRndEncLoad_Mode = 1;
             ProcSequenceData5 = sndProcSequenceSub3();
-            sndBgmLoadId_XF(sbtlProcSequenceSub(fldGlobalBase.word1F4));
+            sndBgmLoadId_XF(sbtlProcSequenceSub(fldGlobalBase.rndEncNo));
         }
         if (fldGlobalBase.word2BC == 20) {
             fldBgZoomTest(8);
@@ -1537,11 +1537,11 @@ void mapCallMap(s32 map, s32 flor, s32 point, char *label)
 reload:
     fldGlobalBase.mapCallMode = 1;
     fldGlobalBase.word1D8 = 0;
-    mapCallMemset(mapCallScriptBuf, map, flor, point);
+    mapSetSceneParam(&mapCallScriptBuf, map, flor, point);
     if (label != NULL) {
-        sprintf(mapCallScriptBuf, mapCallMapFmt, label);
+        sprintf(mapCallScriptBuf.FoceScript, mapCallMapFmt, label);
     }
-    dds3AdminiCallSequence(7, mapCallScriptBuf, 56, 0);
+    dds3AdminiCallSequence(7, &mapCallScriptBuf, sizeof(mapCallScriptBuf), 0);
     scrAllReleaseScript();
 }
 #else

@@ -287,7 +287,6 @@ u32 frGetMessageResult(u32 Flag);
 extern u32 gMessageRequestResult;
 void frSetVariableRequest(s32 VarNo, s32 pStr);
 extern s8 gMessageSpaceX;
-extern frFontHandle_t *frSetFontString(u8 *text, s8 fontIndex, s8 firstOption, s8 secondOption, frFontHandle_t *chain);
 frFontHandle_t *MessageRequestNS(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1, s32 channel2, s32 channel3, u8 *encodedText, frFontHandle_t *unusedPrevious);
 
 typedef struct {
@@ -322,7 +321,6 @@ void frCreateDrawFontPacket_20550848(s32 x, s32 y, s32 width, s32 height, u8 sty
 
 void frLoadFontData(s32 StyleNo, const char *pFileName);
 frFontHandle_t *frDestroyFontRequestNow(frFontHandle_t *pFRQ);
-frFontHandle_t *frSetFontString(u8 *text, s8 style, s8 firstOption, s8 secondOption, frFontHandle_t *chain);
 frFontHandle_t *frCombineFontRequestEx(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2, s32 Mode);
 
 #ifdef VERSION_RAIDOU1
@@ -1015,7 +1013,7 @@ INCLUDE_ASM(const s32, "interface/frFont", frCallSetFontSpace);
 
 INCLUDE_ASM(const s32, "interface/frFont", frCallSetFontSpace2);
 
-INCLUDE_ASM(const s32, "interface/frFont", frCallGetStrWidth);
+INCLUDE_ASM(const s32, "interface/frFont", frSetFontSize);
 
 INCLUDE_ASM(const s32, "interface/frFont", frCallGetStrWidth2);
 

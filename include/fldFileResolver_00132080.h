@@ -4,6 +4,9 @@
 #include "draw.h"
 #include "common.h"
 #include "field.h"
+#include "basic.h"
+#include "model.h"
+#include "motion.h"
 
 /* sdfGrPacketHeader_t stored as four plain words. The dmatag union in sdfGrPacketHeader_t reorders
  * ee-gcc's stores in effDrawGeneratedTextureQuad; retail stores in this type's order. */
@@ -61,7 +64,11 @@ enum {
 
 typedef char fldFileNameEntrySizeCheck[(sizeof(fldFileNameEntry_t) == 0x0C) ? 1 : -1];
 
-struct fldConstructAreaFL2_t;
+struct fldConstruntAreaFL2_t;
+struct fldTransferChunk_t;
+struct fldFileInfoHeaderFL1_t;
+struct fldFileInfoHeaderFL2_t;
+struct sdfTextureOffsetListHeader_t;
 
 /* The collision batch fldMakeResouceBasicFL2 last spawned, searched by MakeObjectBasic2. */
 extern fldResHead_t *g_pHitData;
@@ -69,8 +76,38 @@ extern u32 g_nHitData;
 extern u32 MakeResouceBasicFL2Data;
 
 void MakeObjectBasic2(void);
+void fldMakeResouceBasicFL1(void *typeTable, u32 batchCount);
 void fldMakeResouceBasicFL2(fldSpawnBatch_t *batch, u32 batchCount, s32 mode);
-void fldLoadFile(void);
-void fldMakeBlockBasicFL2(struct fldConstructAreaFL2_t *pBlockTable, u32 nBlock);
+
+/* FL1 resource file names, and the handle and data of each loaded file. */
+extern char *fldResolverFL1Data[4];
+extern struct sdfMemHandle_t *fldD3pHandle[4];
+extern void *fldD3pData[4];
+u32 fldLoadFile(void);
+void fldMakeBlockBasicFL2(struct fldConstruntAreaFL2_t *pBlockTable, u32 nBlock);
+void fldFileResolverFL1(struct fldFileInfoHeaderFL1_t *info);
+void fldFileResolverFL2(struct fldFileInfoHeaderFL2_t *info);
+u8 *fldGetInfoHeader(struct fldTransferChunk_t *pData);
+void fldAddressResolver(addr_t pFileTop, struct fldTransferChunk_t *pData);
+u32 fldLoadFile_FromMemory(u32 field, u32 area, saddr_t pF1, saddr_t pF2,
+                           const struct sdfTextureOffsetListHeader_t *pTB, s32 pBF);
+
+/* State fldLoadFile_FromMemory resets and fills: the reset mode, file
+ * buffers, the texture list, and the FL2 and FL1 base and chunk addresses. */
+extern s32 fldData16;
+extern u32 fldData17;
+extern void *fldCallTexListFreeData8;
+extern void *fldCallTexListFreeData9;
+extern void *fldCallTexListFreeData10;
+struct sdfItemArray_t;
+struct sdfTextureOffsetListHeader_t;
+extern void *fldData15;
+struct sdfItemArray_t *sdfTexSetTB(const struct sdfTextureOffsetListHeader_t *aData);
+extern saddr_t fldCallTexListFreeData;
+extern saddr_t fldCallTexListFreeData2;
+extern saddr_t fldCallTexListFreeData3;
+extern saddr_t fldCallTexListFreeData4;
+extern s32 fldCallTexListFreeData5;
+dds3Basic_t *dds3AddModelBasic2(s32 serialID, sdfModelDef_t *pModelDef, sdfMotionPlayBook_t *pMotDef, void *pTexList, char *pName);
 
 #endif

@@ -11,7 +11,7 @@
 extern fldResHead_t *fldScriptResource;
 extern u32 fldScriptResourceCount;
 
-void SetBattleLight(void *typeTable, u32 batchCount) {
+void fldMakeResouceBasicFL1(void *typeTable, u32 batchCount) {
     fldSpawnBatch_t *batch;
     sdfVector4_t position;
     sdfVector4_t rotation;

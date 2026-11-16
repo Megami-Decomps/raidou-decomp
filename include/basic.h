@@ -264,6 +264,7 @@ struct dds3PathBasicControl_t
 dds3ObjectBaseControlWorkData_t *dds3ObjectBaseInitControlWorkData(dds3Basic_t *pObjectBasic);
 void dds3ObjectBaseFreeControlWorkData(dds3ObjectBaseControlWorkData_t *pControl);
 dds3ObjectBaseControlWorkData_t *dds3GetBaseControlWorkData(dds3Basic_t *pObjectBasic);
+void dds3GetRotPoseSet(dds3Basic_t *pBasic);
 dds3ObjectBaseControlWorkData_t *dds3UnitObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 dds3ObjectBaseControlWorkData_t *dds3MatterObjectBasicGetControlWorkData(const dds3Basic_t *pBasic);
 void dds3PathBasicControlAlterMode(dds3PathBasicControl_t *pControl, s32 mode);

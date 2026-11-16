@@ -524,6 +524,42 @@ extern u8 mapData6[][32];
 extern u32 mapFileLoadData;
 extern s32 mapData18;
 extern fldMapFlagRec_t mapData7[64];
+
+#ifdef VERSION_RAIDOU1
+/* Map script table: the script of (map, floor) when both event bits agree.
+ * kind 0 sets initScript, otherwise startScript. */
+typedef struct mapCallBitCheckData_t {
+    s16 map;
+    s16 floor;
+    s16 kind;
+    s16 once;
+    u16 bit;
+    u16 bitOn;
+    u16 bit2;
+    u16 bit2On;
+    char name[32];
+} mapCallBitCheckData_t;
+
+extern mapCallBitCheckData_t mapCallBitCheckData[96];
+
+/* The other MAPALL.TBL tables, loaded by fldAllTblLoad. */
+extern u8 mapData[6400];
+extern u8 mapData2[3456];
+extern u8 nbCallGetIntParaData[4096];
+extern u8 mapData3[1024];
+extern u8 p2sdData[1536];
+extern u8 mapData4[5120];
+extern u8 mapData5[3072];
+extern u8 fldData2[48];
+extern u8 mapMapObjectRefreshData[512];
+extern u8 nbCallGetIntParaData4[192];
+extern u8 nbData[16];
+extern u8 mapData8[1024];
+extern u8 mapData9[1024];
+extern u8 mapData10[1024];
+extern u8 mapData11[1024];
+extern u8 mapMskEveHitTbl[320];
+#endif
 extern s32 mapBtlReLoadMapSBtlSceneSub2Data;
 void mapBtlReLoadMapSBtlSceneSub2(void);
 extern s32 mapNpcTblRefresh_WaitData;

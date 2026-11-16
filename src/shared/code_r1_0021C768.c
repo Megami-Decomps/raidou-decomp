@@ -419,7 +419,7 @@ fileJobPayload_t *Create_effParts(fileJobPayload_t *request) {
 }
 
 void Delete_effParts(fileJobPayload_t *job) {
-    effSRAnimation();
+    effGetFlags();
     if (job->data != NULL) {
         fileJobTypeOperations[job->type].destroy(job->data);
     }

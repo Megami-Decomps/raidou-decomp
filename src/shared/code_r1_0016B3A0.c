@@ -32,7 +32,7 @@ void mapFunc10(void) {
         if (mapFunc10Data[i].id != mapCallSetOt2Data6) {
             continue;
         }
-        if (mapRefDDS3GBWK4(mapFunc10Data[i].scene, mapFunc10Data[i].id, mapFunc10Data[i].flag)) {
+        if (mapAM_MaskChk_ID(mapFunc10Data[i].scene, mapFunc10Data[i].id, mapFunc10Data[i].flag)) {
             for (j = 0; j < 16; j++) {
                 if (mapWork13[j] == -1) {
                     mapWork13[j] = i;

@@ -1614,7 +1614,7 @@ mdlObj_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
 typedef struct effFadeHeaderWork_t {
     s32 frame;
     s32 payload[2];
-    effQuakeSlot_t *quake;
+    effQuakeRequest_t *quake;
 } effFadeHeaderWork_t;
 
 typedef char effFadeHeaderWorkSizeCheck[(sizeof(effFadeHeaderWork_t) == 0x10) ? 1 : -1];
@@ -1874,7 +1874,6 @@ struct sdfMat_t;
 /* Draw track-set positions/colors/UVs; a null matrix selects the identity transform. */
 void effDrawTrackSet(effTrackSet_t *track, const effMatrix4_t *matrix);
 extern struct sdfMemHandle_t *effLoadFlashTexturesData[2];
-void effLoadFlashTextures(void);
 
 typedef struct effCounterHeader_t {
     u32 unk00;
@@ -2190,7 +2189,6 @@ u32 effCreateTexturedStripWithSharedTexture(u32 count, u32 repeat);
 u32 effAllocateStripFromWorkAndRetainTexture(u8 *work);
 
 void effDrawScalyTexturedStrip(effStripWork_t *work, void *matrix);
-void effLoadScalyTexture(void);
 u32 effGetScalyTextureHandle(void);
 
 typedef char effModelResource_size_must_be_0x40[
@@ -2415,7 +2413,7 @@ effFadeHeaderWork_t *effDuplicateSmallHeader(const void *source) {
     effFadeHeaderWork_t *buffer = sdfChipAllocDirect(sizeof(effFadeHeaderWork_t));
     buffer->frame = 0;
     memcpy(buffer->payload, source, sizeof(buffer->payload));
-    buffer->quake = effLeaf345();
+    buffer->quake = effRegist();
     return buffer;
 }
 
@@ -2427,7 +2425,7 @@ effFadeHeaderWork_t *effCreateSmallHeaderFromFile(void *work) {
 }
 
 void effReleaseFadeHeaderAllocation(effFadeHeaderWork_t *allocation) {
-    fclFunc2(allocation->quake);
+    effRemove(allocation->quake);
     sdfChipFreeDirect(allocation);
 }
 
@@ -2442,13 +2440,13 @@ void effResetSmallHeaderFrame(effFadeHeaderWork_t *work) {
 void effFadeFrameAdvance(effFadeHeaderWork_t *counter) {
     s32 frame;
 
-    if ((effSRAnimation() & 1) == 0) {
+    if ((effGetFlags() & 1) == 0) {
         frame = counter->frame;
         if (frame == 0) {
             if (counter->payload[0] == 0) {
-                fclLeaf7(counter->quake, counter->payload[1]);
+                effStart(counter->quake, counter->payload[1]);
             } else {
-                fclDrawSprite(counter->quake, counter->payload[1], counter->payload[0]);
+                effStartDamp(counter->quake, counter->payload[1], counter->payload[0]);
             }
             frame = counter->frame;
         }
@@ -3271,7 +3269,7 @@ void Draw_effMuzzleFlash(effBillboardWork_t *work) {
         dds3BillboardSetRotate(work->billboard, rot);
         dds3BillboardSetPosition(work->billboard, &work->position);
         dds3BillboardDraw(work->billboard);
-        if ((effSRAnimation() & 1) == 0) {
+        if ((effGetFlags() & 1) == 0) {
             work->frame++;
         }
     }
@@ -5565,7 +5563,7 @@ void effDispatchActiveInstanceDraw(effClassWork_t *work) {
 }
 
 void effCallSRAnimation7(effClassWork_t *work) {
-    if ((effSRAnimation() & 1) == 0) {
+    if ((effGetFlags() & 1) == 0) {
         effAdvanceActiveInstanceFrame(work);
     }
     effDispatchActiveInstanceDraw(work);
@@ -6407,7 +6405,7 @@ void effInitializeClassFrame(effClassWork_t *work) {
 
 void effCallSRAnimation8(effClassWork_t *work) {
     effClassWorkOperations[work->kind].update(work);
-    if ((effSRAnimation() & 1) == 0) {
+    if ((effGetFlags() & 1) == 0) {
         work->frame++;
     }
 }
@@ -8256,7 +8254,7 @@ void effDrawClassResourceWork(effClassWork_t *work) {
 }
 
 void effCallSRAnimation10(effClassWork_t *work) {
-    if ((effSRAnimation() & 1) == 0) {
+    if ((effGetFlags() & 1) == 0) {
         effAdvanceClassResourceFrame(work);
     }
     effDrawClassResourceWork(work);
@@ -9782,7 +9780,7 @@ void effDrawBlockResourceWork(effClassWork_t *work) {
 }
 
 void effCallSRAnimation11(effClassWork_t *work) {
-    if ((effSRAnimation() & 1) == 0) {
+    if ((effGetFlags() & 1) == 0) {
         effAdvanceBlockResourceFrame(work);
     }
     effDrawBlockResourceWork(work);

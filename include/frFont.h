@@ -14,10 +14,12 @@ u8 frEnableMode(s32 Flag);
 u32 frGetFontHandleNum(void);
 s32 frGetTextHandleNum(void);
 void frSetDrawPosition(frFontHandle_t *pFRQ, u32 X, u32 Y);
+s32 frCallFlushGsFontTable(frFontHandle_t *pFRQ);
 void frSetExtDic(u8 *pExtFontData);
 void frSetFontColor(frFontHandle_t *pFRQ, u32 Color);
 void frSetFontColorNo(frFontHandle_t *pFRQ, u8 ColorNo);
 void frSetFontSpace(frFontHandle_t *pFRQ, s32 Space);
+void frSetFontSize(frFontHandle_t *pFRQ, s32 Width, s32 Height);
 void frSetPriority(frFontHandle_t *pFRQ, u32 Pri);
 void frSetVariableRequest(s32 VarNo, s32 pStr);
 

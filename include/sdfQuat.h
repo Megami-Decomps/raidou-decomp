@@ -3,6 +3,7 @@
 
 #include "common.h"
 
+f32 EulerAngleAxisY(void);
 void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
 void FromRotation(f32 aAngle);
 void Lerp(f32 aRatio);

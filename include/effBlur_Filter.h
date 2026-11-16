@@ -11,6 +11,8 @@ dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_P
 effBlurScaleWork_t *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *pParam);
 void dds3EffectRippleBlurReset(effBlurScaleWork_t *hRippleBlur);
 void effBlurStepScaleSlotsAndDraw(void *);
+f32 effBlurGetBlurValid(void);
+void effBlurSetBlurValid(f32 val);
 
 #include "sdf_resource.h"
 

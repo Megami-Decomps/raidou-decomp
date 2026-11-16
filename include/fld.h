@@ -117,6 +117,7 @@ void mapNakamaWakeUp(s32 mode);
 void mapNpcPathControlGetPos(struct mapNpcPathControl_t *pControl);
 void mapNpcPathControlGetRot(struct mapNpcPathControl_t *pControl);
 void mapNpcPathFastInit(void);
+void mapLeaf12(void);
 struct mapNpcPathControl_t *mapNpcPathMakeControl(s16 uniq);
 void mapNpcPathMake_KeyFrame(s32 num, f32 spd, struct mapNpcPathData_t *pathdata);
 void mapNpcPathMake_Rot(s32 num, struct mapNpcPathData_t *pathdataT, struct mapNpcPathData_t *pathdataR);
@@ -153,7 +154,7 @@ void mapObjRotQ(s16 uniq, const sdfVector4_t *rot);
 void mapObjScale(s16 uniq, f32, f32 sz, f32 sh);
 void mapObjTask(void);
 void mapObjVisible(u16 uniq, s32 visible);
-s32 mapRefDDS3GBWK4(s32 scene, s32 id, s32 flag);
+s32 mapAM_MaskChk_ID(s32 scene, s32 id, s32 flag);
 void mapRetuenFromLoad(void);
 void mapRetuenFromSave(void);
 s32 mapRndEncReturn_BgmLoadEndCheck(void);
@@ -195,5 +196,12 @@ void scrClearProcessGlobals(void);
 extern s32 gSubFloorID;
 
 void fldGbInit_System(s32 mode);
+void fldAllTblLoad(void);
+void fldAllTblPacLoad(void);
+void fldCallFptodp(void);
+void fldCallMemset4(void);
+void fldClearDoorEvents(void);
+void fldDrawInit(void);
+void mefMistFastCreate(void);
 
 #endif

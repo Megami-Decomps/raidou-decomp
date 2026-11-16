@@ -79,7 +79,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00124468	00124468	facility/fclShare	c	smt3:names:1 of 1	facility/fclShare
 001244B8	00126678	fclMenu	asm	none	
 001266A0	001266A0	pb/pbGame	c	smt3:names:1 of 1	pb/pbGame
-001266C0	00127470	fclDrawBack	asm	none	
+001266C0	00127470	fclDrawBack	c	none	
 001274A8	00127B88	field/fldPlayer	c	smt3:names:2+smt3:map:1 of 4	field/fldPlayer
 00127D50	00127D50	code_00127D50	asm	none	
 00127E20	00127E78	field/fldCamera	c	smt3:names:1+smt3:map:1 of 2	field/fldCamera
@@ -283,7 +283,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00219508	0021ACB8	effect/effPCPBoss	c	smt3:names:13+smt3:map:6 of 72	effect/effPCPBoss
 0021ACF0	0021AD08	code_0021ACF0	asm	none	
 0021AD10	0021B910	newbattle/nbCameraHelper	c	smt3:names:7+smt3:map:4 literal-cores:1 of 17	newbattle/nbCameraHelper
-0021BA28	0021C558	code_0021BA28	asm	none	
+0021BA28	0021C558	code_0021BA28	c	none	
 0021C560	0021C578	code_r1_0021C560	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 0021C5F8	0021C5F8	newbattle/nbMisc	c	smt3:map:1 of 1	newbattle/nbMisc
 0021C768	0021CDB8	code_r1_0021C768	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
@@ -367,7 +367,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 002F96C8	002F96C8	code_r1_002F96C8	c	none	
 002F97C0	002FA3A0	code_002F97C0	asm	none	
 002FA480	002FA480	code_r1_002FA480	c	none	
-002FA4F0	003003E8	code_002FA4F0	asm	none	
+002FA4F0	003003E8	code_002FA4F0	c	none	
 00300488	00300488	code_r1_00300488	c	dds:1 of 1	
 003004B0	003004E0	code_003004B0	asm	none	
 00300530	00300530	code_r1_00300530	c	dds:1 of 1	

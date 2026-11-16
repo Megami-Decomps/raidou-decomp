@@ -27,6 +27,9 @@
 #include "sdf2D.h"
 #include "sdfBillBoard.h"
 #include "sdf3D.h"
+#include "dds3KernelDraw.h"
+#include "mapData.h"
+#include "sdfMat.h"
 #include "fldDraw.h"
 
 typedef struct TMX_HEADER_t TMX_HEADER_t;
@@ -119,7 +122,16 @@ void fldDrwZFree(void);
 void LF(dbgConsCtl_tag *cons);
 void initDrawTag(dbgConsCtl_tag *cons);
 
-INCLUDE_ASM(const s32, "field/fldDraw", mapEffEplInit);
+void fldDrawInit(void) {
+    if (fldDrawInitDone == 0) {
+        sdfMat_t *object;
+        fldDrawInitDone = 1;
+        object = sdfMatNew();
+        fldDrawEnv = EE_ADDR(object);
+        object->constant = 1.0f;
+        mapEffEplInitWork = EE_ADDR(sdfMatNew());
+    }
+}
 
 sdfGrOt_t *fldDrawGetOt(void)
 {
@@ -246,7 +258,23 @@ void fldPoint3To2(f32 *x3, f32 *y3, f32 z3, f32 x2, f32 y2) {
     *y3 = result.y;
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3ToZ);
+s32 fldPoint3ToZ(f32 x3, f32 y3, f32 z3) {
+    sdfVector4_t vec = { x3, y3, z3, 1.0f };
+    sdfVector4_t result;
+
+    SDF_VU0_LOADMATRIX(sdfViewMatrix);
+    MultMatrixRev(&dds3ScreenParam.TM);
+    SDF_VU0_COPYMATRIX_A_TO_B();
+    SDF_VU0_LOADVECTOR_MEMOPS(*(const u128 *)&vec);
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.scale);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.trans);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&result);
+    return result.z * 16.0f;
+}
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3To2H);
 
@@ -777,13 +805,48 @@ INCLUDE_ASM(const s32, "field/fldDraw", fldCallSetOt);
 #endif
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawMaruKage);
 
-INCLUDE_ASM(const s32, "field/fldDraw", nbProcSequenceSub);
+void nbProcSequenceSub(s32 arg) {
+    nbData4 = arg;
+}
 
-INCLUDE_ASM(const s32, "field/fldDraw", nbSetEncountMode);
+void nbSetEncountMode(s32 mode) {
+    fldDbgFmtHex = mode;
+}
 
+#ifdef VERSION_RAIDOU1
+void nbCallSetOt4(f32 x, f32 y, f32 z, f32 size, s32 alpha) {
+    f32 r;
+    s32 color;
+    f32 y0;
+    f32 y1;
+    f32 y2;
+
+    r = size * 1.19999993f;
+    if (alpha != 0) {
+        color = alpha & 0xFF;
+        eglSetOt(nbData4);
+        if (color > 128) {
+            color = 128;
+        }
+        color = (color << 24) | 0x808080;
+        if (fldDbgFmtHex != 0 && z < -900.0f) {
+            y0 = mapGetY(x, z + r) - 3.0f;
+            y1 = mapGetY(x, z) - 3.0f;
+            y2 = mapGetY(x, z - r) - 3.0f;
+            dds3CallGrAllocPacketBuff8(x - r, y0, z + r, x + r, y0, z + r, x - r, y1, z, x + r, y1, z, color, color, color, color, fldData9, 0.0f, 0.0f, 1.0f, 0.5f);
+            dds3CallGrAllocPacketBuff8(x - r, y1, z, x + r, y1, z, x - r, y2, z - r, x + r, y2, z - r, color, color, color, color, fldData9, 0.0f, 0.5f, 1.0f, 1.0f);
+        } else {
+            dds3CallGrAllocPacketBuff8(x - r, y - 1.0f, z + r, x + r, y - 1.0f, z + r, x - r, y - 1.0f, z - r, x + r, y - 1.0f, z - r, color, color, color, color, fldData9, 0.0f, 0.0f, 1.0f, 1.0f);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "field/fldDraw", nbCallSetOt4);
+#endif
 
-INCLUDE_ASM(const s32, "field/fldDraw", nbCallGetY);
+void nbCallGetY(f32 x, f32 y, f32 z, f32 size, s32 alpha) {
+    nbCallSetOt4(x, mapGetY(x, z), z, size, alpha);
+}
 
 INCLUDE_SDATA(const s32, "field/fldDraw", fldDrawInitDone);
 

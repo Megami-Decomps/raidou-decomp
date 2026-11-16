@@ -290,7 +290,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", fldRefModel);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboWakeUp);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldGbInitSystemSub);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboInit);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldProcMskSubBSub);
 
@@ -314,7 +314,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboTask);
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapEnemy_SetFAtk_PlayerDir);
 
 #endif
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet_NotRot);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvInit);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAtumaru);
 

@@ -57,6 +57,7 @@ void dds3FreeRenderTexture(void);
 
 struct SDF_GS_TEST;
 struct sdfTexHandle_t;
+struct sdfMat_t;
 
 s32 dds3BistaCheck(void);
 void dds3BistaClear(void);
@@ -82,6 +83,9 @@ void eglSetOt(u32 ot);
 extern u32 egl_OT_Offset;
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 struct sdfDrawTag_t *dds3CallGrAllocPacketBuff9(void);
+void dds3CallGrAllocPacketBuff8(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 x3, f32 y3,
+                                f32 z3, u32 color0, u32 color1, u32 color2, u32 color3, struct sdfMat_t *mat, f32 u0,
+                                f32 v0, f32 u1, f32 v1);
 void eglCallDLinkTexPacket(f32 x, f32 y, f32 width, f32 height, s32 u, s32 v, s32 textureWidth, s32 textureHeight,
                            u32 color0, u32 color1, u32 color2, u32 color3, struct sdfTexHandle_t *texture);
 void eglCallDLinkTexPacket2(f32 x, f32 y, f32 width, f32 height, f32 u, f32 v, f32 textureWidth, f32 textureHeight,

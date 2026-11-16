@@ -6,6 +6,8 @@
 void fldEncountClearFlag(u32 flag);
 
 struct SceneParam_t;
+struct fldSceneParam_t;
+struct dds3PoseSet_t;
 
 void fldProcTrigSequence(struct SceneParam_t *srcParam, s32 mode);
 void mapCallMap(s32 map, s32 flor, s32 point, char *label);
@@ -30,7 +32,9 @@ extern struct dds3Basic_t *summonDvBasic;
 extern struct dds3ModelHandle_t *playerModel;
 extern struct dds3ModelHandle_t *aiboModel;
 extern struct dds3ModelHandle_t *summonDvModel;
+extern struct dds3ModelHandle_t *raidoModel;
 
+void fldProcShutDown(void);
 s32 sndProcSequenceSub4(void);
 s32 sndProcSequenceSub3(void);
 s32 sndProcSequenceSub2(void);
@@ -58,8 +62,11 @@ void fldReleaseUnitPad(void);
 void mdlSetMotionSpeed(s32 speed);
 void mdlMotionPause(struct dds3ModelHandle_t *model);
 void mapWaitCbScreenFadeBSub(s32 mode);
+void fldRefTexLoadLast(void);
 s32 mapGetFloorLight(s32 floor, f32 x, f32 z);
 s32 fldEncountTestFlag(u32 flag);
+void fldEncountSetFlag(u32 flag);
+s32 fldLeaf6(struct dds3PoseSet_t *pose, struct dds3Basic_t *basic);
 void mapSoundKankyoSeSet(s32 map, s32 floor, s32 cut);
 s32 mapSoundSmgLoadChk(s32 map);
 s32 mapBigClipChkF(s32 cut, f32 x, f32 y, f32 z);
@@ -71,7 +78,7 @@ void mapWallObjTask(f32 x, f32 y, f32 z);
 s32 sbtlProcSequenceSub(s32 arg);
 s32 pbProcSequenceSub(void);
 s32 scrSearchScriptName(char *name);
-void mapRefDDS3GBWK2(s32 map, s32 floor, s32 arg);
+void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 arg);
 void mapProcSequenceSub(s32 map, s32 floor);
 s32 mapProcSequenceSub5(f32 x, f32 z);
 void mapProcSequenceSub9(s32 arg);
@@ -125,6 +132,7 @@ void fldCallNakamaWakeUp(void);
 void fldCallNakamaWakeUp2(void);
 void fldDestroyTitleTask(void);
 void fldGbInit_Field(void);
+s32 cfgChkFlagChange(void);
 void fldHirukoYukaClear(void);
 void fldPlayerMotion_Single(void);
 void fldProcSequenceSub3(void);
@@ -159,7 +167,7 @@ void fldDrwZAlloc(void);
 
 extern struct dds3Basic_t *playerBasic;
 /* The last mapCallMap request (map 0 repeats it) and its script name buffer. */
-extern char mapCallScriptBuf[];
+extern struct fldSceneParam_t mapCallScriptBuf;
 extern char mapCallMapFmt[];
 extern s32 mapCallLastMap;
 extern s32 mapCallLastFloor;
@@ -167,7 +175,7 @@ extern s32 mapCallLastPoint;
 extern char *mapCallLastLabel;
 void fldBgZoomTest(s32 mode);
 void fldPlayerMotReset(void);
-void mapCallMemset(char *dst, s32 map, s32 floor, s32 point);
+void mapSetSceneParam(struct fldSceneParam_t *param, s32 field, s32 floor, s32 point);
 void scrAllReleaseScript(void);
 
 #endif

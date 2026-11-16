@@ -5,6 +5,13 @@
 #include "field.h"
 #include "fileManager.h"
 #include "dds3LightObjectBasic.h"
+#include "sdfAddrResolve.h"
+#include "fldProcess.h"
+#include "fld.h"
+#include "dds3SceneBasic.h"
+#include "dds3AreaBasic.h"
+#include "fldCommand.h"
+#include "dds3ObjectBase.h"
 
 enum fldPackedResourceKind
 {
@@ -85,7 +92,7 @@ extern u8 *FildMaskObj, *mat_black, *mat_white, *mat_line;
 
 typedef struct fldConstruntAreaFL2_t {
     u32 flag; /* 0x00 */
-    const char *areaName; /* 0x04 */
+    char *areaName; /* 0x04 */
     u32 areaID; /* 0x08 */
 } fldConstruntAreaFL2_t;
 
@@ -383,7 +390,17 @@ enum {
 extern s32 D_003BADB8, D_003BADBC;
 extern f32 D_003BADC0, D_003BADC4;
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldMakeBlockBasicFL2);
+void fldMakeBlockBasicFL2(fldConstruntAreaFL2_t *pBlockTable, u32 nBlock) {
+    u32 i;
+
+    dds3GetControlScene();
+    for (i = 0; i < nBlock; i++) {
+        dds3Basic_t *area = dds3AddAreaBasic(pBlockTable[i].areaID, pBlockTable[i].areaName);
+        if (i == 0) {
+            fldGlobalBase.fastArea = area;
+        }
+    }
+}
 
 typedef struct fldObjectPlacement_t {
     s32 serialID;
@@ -401,7 +418,6 @@ extern u32 fldScriptResourceCount;
 extern void *fldData15;
 extern void dds3SetUnitObjectId(dds3Basic_t *basic, char *name);
 extern void dds3ObjectBaseMakeMatter(dds3Basic_t *basic);
-extern void dds3ObjectBaseRegistArea(dds3Basic_t *basic);
 
 void MakeObjectBasic2(void)
 {
@@ -451,16 +467,46 @@ void MakeObjectBasic2(void)
     }
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldFileResolverFL1);
+void fldFileResolverFL1(fldFileInfoHeaderFL1_t *info) {
+    fldFileAreaDataFL1_t *areaData;
+    char **files;
+    char *filename0;
+    char *filename1;
+    char *filename2;
+    char *filename3;
+    s32 i;
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldFileResolverFL2);
+    files = fldResolverFL1Data;
+    areaData = info->pAreaData;
+    filename0 = areaData->filename0;
+    filename1 = areaData->filename1;
+    filename2 = areaData->filename2;
+    filename3 = areaData->filename3;
+    files[0] = filename0;
+    files[1] = filename1;
+    files[2] = filename2;
+    files[3] = filename3;
+    for (i = 0; i < 4; i++) {
+        fldD3pHandle[i] = NULL;
+        fldD3pData[i] = NULL;
+    }
+    fldMakeResouceBasicFL1(info->pResourceTypeTable, info->nResourceTypeTable);
+}
+
+void fldFileResolverFL2(fldFileInfoHeaderFL2_t *info) {
+    fldMakeBlockBasicFL2(info->pAreaTable, info->nArea);
+    fldSpawnPlacementObjectsFromBatches(info->pResourceTypeTable, info->nResourceTypeTable, FLD_PLACEMENT_BATCH_MODE_INITIAL);
+}
 
 void fldProcessFieldRequestAlternate(const fldSceneRequest_t *request) {
     fldSpawnPlacementObjectsFromBatches(request->spawnBatches, request->spawnBatchCount,
                                         FLD_PLACEMENT_BATCH_MODE_APPEND);
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldGetInfoHeader);
+/* body: matched in smt3 @ 9401f79e: src/smt3/field/fldFileResolver.c:1114, found, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+u8 *fldGetInfoHeader(fldTransferChunk_t *pData) {
+    return (u8 *)pData + sizeof(*pData);
+}
 
 void sdfAddressResolverReset(u32 *aDataBody, u32 aOffset, const u8 *aAddrInfoPtr, s32 aAddrInfoLeng) {
     const u8 *p = aAddrInfoPtr;
@@ -489,9 +535,11 @@ void sdfAddressResolverReset(u32 *aDataBody, u32 aOffset, const u8 *aAddrInfoPtr
     }
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldAddressResolverReset);
+void fldAddressResolver(addr_t pFileTop, fldTransferChunk_t *pData) {
+    sdfAddressResolver(EE_ADDR_AS(void *, pFileTop), pFileTop, EE_ADDR_AS(const u8 *, ((s32)pFileTop + pData->offset)), pData->size);
+}
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldAddressResolver);
+INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldAddressResolverReset);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLeaf9);
 
@@ -510,9 +558,74 @@ INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLeaf15);
 void fldLeaf16(void) {
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile);
+/* NON_MATCHING: 26 of 28 words match.  */
+#ifdef NON_MATCHING
+#ifdef NON_MATCHING
+u32 fldLoadFile(void) {
+    s32 field;
 
+    fldData16 = 0;
+    MakeResouceBasicFL2Data = 0;
+    fldData17 = 0;
+    fldCallTexListFreeData9 = NULL;
+    fldCallTexListFreeData10 = NULL;
+    field = dds3GetMapNo(dds3GetControlScene()) >> 16;
+    fldGlobalBase.nameU = dds3GetMapNo(dds3GetControlScene()) & 0xFFFF;
+    fldGlobalBase.amSBlock = field;
+    fldGlobalBase.amFloor = 0;
+    mapFileLoad(field);
+    return 0;
+}
+#else
+INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile);
+#endif
+#else
+INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile);
+#endif
+
+/* NON_MATCHING: 50 of 58 words match.  */
+#ifdef NON_MATCHING
+#ifdef NON_MATCHING
+u32 fldLoadFile_FromMemory(u32 field, u32 area, saddr_t pF1, saddr_t pF2,
+                           const struct sdfTextureOffsetListHeader_t *pTB, s32 pBF) {
+    saddr_t chunk;
+
+    fldGlobalBase.amSBlock = field;
+    fldGlobalBase.amFloor = area;
+    fldGbInit_Field();
+    fldData16 = 0;
+    MakeResouceBasicFL2Data = 0;
+    fldData17 = 0;
+    fldCallTexListFreeData9 = NULL;
+    fldCallTexListFreeData10 = NULL;
+    fldCallTexListFreeData8 = NULL;
+    fldData15 = NULL;
+    if (pTB != NULL) {
+        fldData15 = sdfTexSetTB(pTB);
+    }
+    chunk = pF2 + 8;
+    fldCallTexListFreeData3 = chunk;
+    fldCallTexListFreeData4 = pF2;
+    fldAddressResolver(pF2, EE_ADDR_AS(fldTransferChunk_t *, chunk));
+    fldFileResolverFL2((fldFileInfoHeaderFL2_t *)fldGetInfoHeader(EE_ADDR_AS(fldTransferChunk_t *, chunk)));
+    if (pF1 != 0) {
+        pF2 = pF1;
+    }
+    fldCallTexListFreeData5 = 0;
+    chunk = pF2 + 8;
+    fldCallTexListFreeData = chunk;
+    fldCallTexListFreeData2 = pF2;
+    fldAddressResolver(pF2, EE_ADDR_AS(fldTransferChunk_t *, chunk));
+    fldFileResolverFL1((fldFileInfoHeaderFL1_t *)fldGetInfoHeader(EE_ADDR_AS(fldTransferChunk_t *, chunk)));
+    MakeObjectBasic2();
+    return fldData17;
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile_FromMemory);
+#endif
+#else
+INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile_FromMemory);
+#endif
 INCLUDE_SDATA(const s32, "field/fldFileResolver_00132080", fldData15);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver_00132080", fldCallTexListFreeData);

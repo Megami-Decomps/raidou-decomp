@@ -68,7 +68,7 @@ void sndCallCheckLastSkipStat(void) {
     scrSetIntReturnValue(evtCheckLastSkipStat());
 }
 
-s32 sndCallGetRandIntA(void) {
+s32 evtMoonTakaraCntReset(void) {
     s32 count;
 
     count = dds3GetRandIntA(NULL, 5) + 6;
@@ -76,7 +76,7 @@ s32 sndCallGetRandIntA(void) {
     return count;
 }
 
-s32 sndCallGetRandIntA2(void) {
+s32 evtMoonZeniCntReset(void) {
     s32 count;
 
     count = dds3GetRandIntA(NULL, 5) + 6;
@@ -84,7 +84,7 @@ s32 sndCallGetRandIntA2(void) {
     return count;
 }
 
-s32 sndCallGetRandIntA3(void) {
+s32 evtMoonTakumiCntReset(void) {
     s32 count;
 
     count = dds3GetRandIntA(NULL, 5) + 16;
@@ -94,12 +94,12 @@ s32 sndCallGetRandIntA3(void) {
 
 /* NON_MATCHING: 0 of 4 words match.  */
 #ifdef NON_MATCHING
-s32 sndRefDDS3GBWK(void) {
+s32 evtMoonTeisatuCntReset(void) {
     DDS3_GBWK->teisatuCnt = 1;
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "code_001AD4E8", sndRefDDS3GBWK);
+INCLUDE_ASM(const s32, "code_001AD4E8", evtMoonTeisatuCntReset);
 #endif
 
 INCLUDE_RODATA(const s32, "code_001AD4E8", evtMsgTexLoadNoProc2);

@@ -31,5 +31,11 @@ void rsetAlpha(s32 mode);
 void aDrawBoxF(s32 x, s32 y, s32 w, s32 h, u32 r, u32 g, u32 b, u32 a);
 
 extern s32 rsetFrameMaskOtOffset;
+extern s32 nbData4;
+extern addr_t mapEffEplInitWork;
+extern s32 fldDbgFmtHex;
+extern struct sdfMat_t *fldData9;
+void nbCallSetOt4(f32 x, f32 y, f32 z, f32 size, s32 alpha);
+void nbCallGetY(f32 x, f32 y, f32 z, f32 size, s32 alpha);
 
 #endif

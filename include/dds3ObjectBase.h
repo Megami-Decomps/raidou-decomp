@@ -30,5 +30,6 @@ void dds3ObjectBaseModelLinkOt(sdfModelOt_t *pModelOt, dds3Basic_t *pObjectBasic
 s32 dds3ObjectBaseRegistArea(dds3Basic_t *pObjectBasic);
 void dds3ObjectBaseSetControlBasicCamLen(dds3Basic_t *pObjectBasic);
 void *dds3ObjectBaseSetUserValue(dds3Basic_t *pObjectBasic, void *pUserValue);
+dds3Basic_t *dds3ObjectBaseSetControlBasic(dds3Basic_t *pObjectBasic, dds3Basic_t *pItemBasic);
 
 #endif

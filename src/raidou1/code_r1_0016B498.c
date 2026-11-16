@@ -212,7 +212,7 @@ void mapCallSetOt2(void) {
                 id = tiles[(i + w * j) * 2];
                 spr = tiles[(i + w * j) * 2 + 1] & 0x1F;
                 flip = tiles[(i + w * j) * 2 + 1] & 0xC0;
-                if (mapRefDDS3GBWK4(mapCallSetOt2Data5, mapCallSetOt2Data6, id) == 0) {
+                if (mapAM_MaskChk_ID(mapCallSetOt2Data5, mapCallSetOt2Data6, id) == 0) {
                     color = 0x80808080;
                     if (mapCallSetOt2Data11 != 0) {
                         spr = 0;
@@ -262,7 +262,7 @@ void mapCallSetOt2(void) {
         }
         idx = mk->y * w + mk->x;
         tile = tiles[idx * 2];
-        if (mapRefDDS3GBWK4(mapCallSetOt2Data5, mapCallSetOt2Data6, tile) == 0) {
+        if (mapAM_MaskChk_ID(mapCallSetOt2Data5, mapCallSetOt2Data6, tile) == 0) {
             tile2 = tile;
             if (mk->dir == 4) {
                 tile2 = tiles[idx * 2 - 2];
@@ -273,7 +273,7 @@ void mapCallSetOt2(void) {
             } else if (mk->dir == 12) {
                 tile2 = tiles[idx * 2 + 2];
             }
-            if (mapRefDDS3GBWK4(mapCallSetOt2Data5, mapCallSetOt2Data6, tile2) == 0) {
+            if (mapAM_MaskChk_ID(mapCallSetOt2Data5, mapCallSetOt2Data6, tile2) == 0) {
                 continue;
             }
         }
@@ -321,7 +321,7 @@ void mapCallSetOt2(void) {
         flip = sp->uvIdx & 0xC0;
         sw = uv->w;
         sh = uv->h;
-        if (mapRefDDS3GBWK4(mapCallSetOt2Data5, mapCallSetOt2Data6, sp->tile) == 0) {
+        if (mapAM_MaskChk_ID(mapCallSetOt2Data5, mapCallSetOt2Data6, sp->tile) == 0) {
             color = 0x80808080;
             if (mapCallSetOt2Data11 != 0) {
                 continue;

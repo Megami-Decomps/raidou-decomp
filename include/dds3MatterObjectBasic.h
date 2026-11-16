@@ -11,5 +11,7 @@ s32 MainProcedure(dds3Basic_t *aPtr);
 s32 dds3MatterObjectBasicDrawProcedure(dds3Basic_t *aPtr);
 
 dds3Basic_t *dds3AddMatterObjectBasic(s32 serialID, f32 *pos, f32 *rot);
+void dds3MatterObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx);
+void dds3MatterObjectBasicSetHojiID(dds3Basic_t *aPtr, u32 hojiID);
 
 #endif

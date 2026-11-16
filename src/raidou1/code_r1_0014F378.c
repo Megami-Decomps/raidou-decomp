@@ -458,7 +458,7 @@ s32 mapFileLoad(s32 mapid)
                 mapObjNoClip(-16384);
                 mapFileLoadSub3(-16384, 13);
                 mapFileLoadSub8(48);
-                if (fldGlobalBase.word1E8 == 0)
+                if (fldGlobalBase.rndEncMode == 0)
                 {
                     sdfMotionSeek(mdlGetMotionCtrlr(dds3ObjectBaseGetModelHandle(mapObjGetBasic(-16384)), 0), 810.0f);
                 }
@@ -466,7 +466,7 @@ s32 mapFileLoad(s32 mapid)
                 mapObjNoClip(-16383);
                 mapFileLoadSub3(-16383, 14);
                 mapFileLoadSub8(48);
-                if (fldGlobalBase.word1E8 == 0)
+                if (fldGlobalBase.rndEncMode == 0)
                 {
                     sdfMotionSeek(mdlGetMotionCtrlr(dds3ObjectBaseGetModelHandle(mapObjGetBasic(-16383)), 0), 690.0f);
                 }

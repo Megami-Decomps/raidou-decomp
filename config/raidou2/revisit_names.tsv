@@ -457,11 +457,6 @@
 0x0012D068	mapRefDDS3GBWK3	func	tier=D	derived-data	na	unit code_0012C998, neighbour mapRndEncParamSet; references DDS3_GBWK
 0x0012D0E0	mapCallBitCheck	func	tier=D	derived-callee	na	unit code_0012C998, neighbour mapRndEncParamSet; calls evtBitCheck
 0x0012D5C8	mapCallProcessCheck	func	tier=D	derived-callee	na	unit code_0012C998, neighbour mapSetPlayersVisible; calls tipsProcessCheck
-0x0012D690	mapRefBasic	func	tier=D	derived-data	na	unit code_00128378, neighbour mapCheckDying; references raidoBasic
-0x0012D6B8	mapCallObjectBaseCheckFlag	func	tier=D	derived-callee	na	unit code_00128378, neighbour mapCheckDying; calls dds3ObjectBaseCheckFlag
-0x0012D6F8	mapRefBasic2	func	tier=D	derived-data	na	unit code_00128378, neighbour mapCheckDying; references aiboBasic
-0x0012D710	effCallObjectBaseCheckFlag	func	tier=D	derived-callee	na	unit code_00128378, neighbour effBTLFieldColorDraw; calls dds3ObjectBaseCheckFlag
-0x0012D750	effRefDvBasic	func	tier=D	derived-data	na	unit code_00128378, neighbour effBTLFieldColorDraw; references summonDvBasic
 0x0012D7A8	effRefDvBasic2	func	tier=D	derived-data	na	unit code_00128378, neighbour effBTLFieldColorDraw; references summonDvBasic
 0x0012D960	mapCallGetRotPoseSet	func	tier=D	derived-callee	na	unit code_00128378, neighbour mapRaidouBackUpPosReset; calls dds3GetRotPoseSet
 0x0012DA20	mapCallGetRotPoseSet2	func	tier=D	derived-callee	na	unit code_00128378, neighbour mapRaidouBackUpPosReset; calls dds3GetRotPoseSet
@@ -478,7 +473,6 @@
 0x0012DEF0	sbtlRefDDS3GBWK	func	tier=D	derived-data	na	unit code_0012C998, neighbour sbtlCountClear; references DDS3_GBWK
 0x0012DF20	sbtlTitleNewGameStartSub	func	tier=D	derived-caller	na	unit code_0012C998, neighbour sbtlCountClear; called by TitleNewGameStart
 0x0012DF68	fclMapAllShadow	func	tier=D	derived-string	na	unit code_0012C998, neighbour fclCombineDraw; string '/map/all/shadow01.tmx'
-0x0012E048	mapCallMemset	func	tier=D	derived-callee	na	unit code_00128378, neighbour mapCutFileLoad; calls memset
 0x0012E1C0	fldCallLoadArea	func	tier=D	derived-callee	na	unit code_0012C998, neighbour fldElvReset; calls evtLoadArea
 0x0012E488	fldPlayerALoadStart	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldPlayerALoadStart, score 8.5 band B
 0x0012E4C0	fldPlayerALoadEndCheck	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldPlayerALoadEndCheck, score 9.8 band B
@@ -525,7 +519,6 @@
 0x00138560	mapGitaiSpcLabel	func	tier=D	derived-string	na	unit code_00138560, nearest named function mapCallMap; string 'gitai_spc00_label'
 0x00138A50	fldCommandOBJPATHMOVESub	func	tier=D	derived-caller	na	unit code_001318F8, nearest named function fldMakeBlockBasicFL2; called by evtCommand_OBJ_PATH_MOVE
 0x00138A58	fldLeaf8	func	tier=D	derived-unit	na	unit code_001318F8, nearest named function fldMakeBlockBasicFL2; no named callee, caller or string
-0x00138A60	SetBattleLight	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00139520	fldProcessFieldRequestAlternate	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00127788, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00139540	fldGetInfoHeader	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00139680	fldLeaf9	func	tier=D	derived-unit	na	unit field/fldFileResolver_00132080; no named callee, caller or string
@@ -564,7 +557,6 @@
 0x0013D530	sdfFirePendingCallback	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00118110, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0013D560	fldAiboTaskSub	func	tier=D	derived-caller	na	unit field/fldFileResolver; called by mapAiboTask
 0x0013D620	fldRefModel	func	tier=D	derived-data	na	unit field/fldFileResolver; references aiboModel
-0x0013D688	fldGbInitSystemSub	func	tier=D	derived-caller	na	unit field/fldFileResolver; called by fldGbInit_System
 0x0013D6F0	fldProcMskSubBSub	func	tier=D	derived-caller	na	unit field/fldFileResolver; called by ProcMskSub_B
 0x0013D788	fldNakamaBranchTaskSub	func	tier=D	derived-caller	na	unit field/fldFileResolver; called by mapNakamaBranchTask
 0x0013EB90	fldCatGetNakamaSub	func	tier=D	derived-caller	na	unit field/fldFileResolver; called by mapCatGetNakama
@@ -1078,7 +1070,6 @@
 0x00193D90	frLeaf	func	tier=D	derived-unit	na	unit interface/frFont; no named callee, caller or string
 0x00193DF8	frCallSetFontSpace	func	tier=D	derived-callee	na	unit interface/frFont; calls frSetFontSpace
 0x00193E40	frCallSetFontSpace2	func	tier=D	derived-callee	na	unit interface/frFont; calls frSetFontSpace
-0x00193E88	frCallGetStrWidth	func	tier=D	derived-callee	na	unit interface/frFont; calls frGetStrWidth
 0x00193F68	frCallGetStrWidth2	func	tier=D	derived-callee	na	unit interface/frFont; calls frGetStrWidth
 0x001940D8	frDrawMesFlowSub	func	tier=D	derived-caller	na	unit interface/frFont; called by DrawMesFlow
 0x00194158	frBtlEnemyDataSub	func	tier=D	derived-caller	na	unit interface/frFont; called by sbtlEnemyData
@@ -1504,10 +1495,6 @@
 0x001C3630	sndFunc	func	tier=D	derived-unit	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; no named callee, caller or string
 0x001C3650	sndCallProcTrigSequenceSlMain	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls fmProcTrigSequence_slMain
 0x001C36D8	sndCallCheckLastSkipStat	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls evtCheckLastSkipStat
-0x001C3780	sndCallGetRandIntA	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
-0x001C37B0	sndCallGetRandIntA2	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
-0x001C37E0	sndCallGetRandIntA3	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
-0x001C3810	sndRefDDS3GBWK	func	tier=D	derived-data	na	unit code_001C32D8, neighbour prm_DH_PLUS; references DDS3_GBWK
 0x001C3820	prmRefDDS3GBWK5	func	tier=D	derived-data	na	unit code_001C32D8, neighbour prm_DH_PLUS; references DDS3_GBWK
 0x001C3848	prmCallGetRandIntA	func	tier=D	derived-callee	na	unit code_001C32D8, neighbour prm_DH_PLUS; calls dds3GetRandIntA
 0x001C3878	prmCallGetRandIntA2	func	tier=D	derived-callee	na	unit code_001C32D8, neighbour prm_DH_PLUS; calls dds3GetRandIntA
@@ -2167,8 +2154,6 @@
 0x00210B78	effBTLSysEncountDeleteSub	func	tier=D	derived-caller	na	unit effect/effBlur_Filter; called by effBTLSys_Encount_Delete
 0x00210B90	effPCPMultiFilterExpDrawSub	func	tier=D	derived-caller	na	unit effect/effBlur_Filter; called by effPCPMultiFilterExpDraw
 0x00210C00	effComputeBlurRectBounds	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001880D8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00210C78	dds3BlurBuildSamplingQuadSub	func	tier=D	derived-caller	na	unit code_001F9908, neighbour dds3EffectPartGetType; called by effBlurBuildSamplingQuad
-0x00210C80	dds3Leaf38	func	tier=D	derived-unit	na	unit code_001F9908, neighbour dds3EffectPartGetType; no named callee, caller or string
 0x00210C88	dds3PCPHama01PartInitSub	func	tier=D	derived-caller	na	unit code_001F9908, neighbour dds3EffectPartGetType; called by effPCPHama01PartInit
 0x00210C90	dds3EffectPartGetType	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00210DF8	effAPPoint4DrawSub	func	tier=D	derived-caller	na	unit effect/effPart; called by effAPPoint4Draw
@@ -2656,23 +2641,14 @@
 0x00232B88	nbLeaf61	func	tier=D	derived-unit	na	unit newbattle/nbCameraHelper; no named callee, caller or string
 0x00232D20	effLeaf338	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effSRAnimation; no named callee, caller or string
 0x00232D48	effLeaf339	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effSRAnimation; no named callee, caller or string
-0x00232D70	effSRAnimation	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD effBehavior.effSRAnimation, score 7.25 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2
 0x00232D78	effLeaf	func	tier=D	derived-unit	na	unit code_00232D20, neighbour effSRAnimation; no named callee, caller or string
 0x00232D88	effCallStopStat	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour effSRAnimation; calls effStopStat
 0x00232E38	effCallRestoreStat	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour effFadeInBlur; calls effRestoreStat
 0x00232E68	effLeaf340	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effFadeInBlur; no named callee, caller or string
 0x00232E90	effLeaf341	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effFadeInBlur; no named callee, caller or string
-0x00232F08	effCallFadeInBlur	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour effFadeInBlur; calls effFadeInBlur
 0x00232F80	effLeaf342	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
 0x00232F88	effLeaf343	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
 0x00233018	effLeaf344	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
-0x002330A8	effFunc11	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
-0x002332F0	effFunc12	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effInit; no named callee, caller or string
-0x002333D0	effLeaf345	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effInit; no named callee, caller or string
-0x00233440	fclLeaf7	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour fclDrawSprite; no named callee, caller or string
-0x00233488	fclLeaf8	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour fclDrawSprite; no named callee, caller or string
-0x00233520	fclCallStopQuake	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour fclDrawSprite; calls dds3StopQuake
-0x00233568	fclFunc2	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour fclDrawSprite; no named callee, caller or string
 0x002335B8	fclCallDrawSprite	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour fclDrawSprite; calls fclDrawSprite
 0x00233630	fclInitDstEff2Sub	func	tier=D	derived-caller	na	unit code_0021BA28, neighbour fclDrawSprite; called by cmpInitDstEff2
 0x00233678	fclCallSingleMotion	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour fclDrawSprite; calls mdlSingleMotion
@@ -18340,10 +18316,7 @@
 0x004DE76C	fldData9	data	tier=D	derived-shared	na	used by 3 functions: nbCallSetOt4, fldCallSin3, fldFirstInit
 0x004DE770	fldReturnSavePointPositionRestoreData	data	tier=D	derived-sole	na	used by fldReturnSavePointPositionRestore
 0x004DE778	nbData21	data	tier=D	derived-shared	na	used by 2 functions: nbMapBossFirst, fldSetUnit
-0x004DE78C	fldJDataLoadData	data	tier=D	derived-dominant	na	used by fldJDataLoad (2 of 4 refs, 3 functions)
 0x004DE790	fldJDataLoadData2	data	tier=D	derived-sole	na	used by fldJDataLoad
-0x004DE794	fldData10	data	tier=D	derived-shared	na	used by 3 functions: fldPlayerALoad, fldPlayerALoadEndCheck, fldJDataLoad
-0x004DE798	fldPlayerALoadEndCheckData	data	tier=D	derived-dominant	na	used by fldPlayerALoadEndCheck (3 of 4 refs, 2 functions)
 0x004DE79C	fldData11	data	tier=D	derived-shared	na	used by 4 functions: fldCallMemFreeDelayedDirect2, nbResultFreeTextures, fldNakamaCashLoad_Resrc
 0x004DE7A0	nbResultFreeTexturesData	data	tier=D	derived-dominant	na	used by nbResultFreeTextures (2 of 4 refs, 3 functions)
 0x004DE7A4	nbResultFreeTexturesData2	data	tier=D	derived-dominant	na	used by nbResultFreeTextures (2 of 4 refs, 3 functions)
@@ -20004,15 +19977,9 @@
 0x004E17BC	evtUpdateEffectViewerGroupData3	data	tier=D	derived-sole	na	used by evtUpdateEffectViewerGroup
 0x004E17C7	effProcSequenceSubData	data	tier=D	derived-sole	na	used by effProcSequenceSub
 0x004E17C8	effData29	data	tier=D	derived-shared	na	used by 3 functions: effLeaf50, effLeaf51, effLeaf52
-0x004E17CC	dds3Data46	data	tier=D	derived-shared	na	used by 2 functions: dds3BlurBuildSamplingQuadSub, dds3Leaf38
 0x004E17D0	effPartPCPDataTableEntry9	data	tier=D	derived-table	na	pointed to by effPartPCPDataTableEntry5
 0x004E17DC	effLeaf150Data	data	tier=D	derived-dominant	na	used by effLeaf150 (2 of 4 refs, 3 functions)
 0x004E17E8	dds3EffectFileNameTableEntry	data	tier=D	derived-table	na	pointed to by dds3EffectFileNameTable
-0x004E1800	effData30	data	tier=D	derived-shared	na	used by 9 functions: effCallStopStat, effLeaf340, effLeaf341
-0x004E1804	Init_effStatData	data	tier=D	derived-sole	na	used by Init_effStat
-0x004E1808	effData31	data	tier=D	derived-shared	na	used by 4 functions: effFunc11, effLeaf343, effLeaf344
-0x004E180C	effFunc11Data	data	tier=D	derived-dominant	na	used by effFunc11 (2 of 4 refs, 3 functions)
-0x004E1810	effData32	data	tier=D	derived-shared	na	used by 4 functions: effStopStat, effRestoreStat, effInit
 0x004E1820	fileWriteToPfsData	data	tier=D	derived-shared	na	used by 3 functions: fileWriteToPfs, fileQueueSaveImage, fileQueueSaveVersionedImage
 0x004E1828	fileWriteToPfsData2	data	tier=D	derived-shared	na	used by 3 functions: fileWriteToPfs, fileQueueSaveImage, fileQueueSaveVersionedImage
 0x004E1830	fileWriteToPfsData3	data	tier=D	derived-shared	na	used by 3 functions: fileWriteToPfs, fileQueueSaveImage, fileQueueSaveVersionedImage
@@ -21688,9 +21655,6 @@
 0x004EA200	ProcSequenceWork	data	tier=D	derived-dominant	na	used by ProcSequence (4 of 8 refs, 3 functions)
 0x004EA238	mapCallMapNextWork	data	tier=D	derived-sole	na	used by mapCallMapNext
 0x004EA258	mapCallMapWork	data	tier=D	derived-sole	na	used by mapCallMap
-0x004EA290	fldFileResolverFL1Work	data	tier=D	derived-sole	na	used by fldFileResolverFL1
-0x004EA2A0	fldWork4	data	tier=D	derived-shared	na	used by 2 functions: fldCallTexListFree, fldFileResolverFL1
-0x004EA2B0	fldWork5	data	tier=D	derived-shared	na	used by 2 functions: fldCallTexListFree, fldFileResolverFL1
 0x004EA2C0	mapWork	data	tier=D	derived-shared	na	used by 4 functions: fldGbInitSystemSub, mapAiboFoceSet, mapAiboAdd
 0x004EA8C0	mapAiboTaskWork	data	tier=D	derived-dominant	na	used by mapAiboTask (16 of 24 refs, 5 functions)
 0x004EA8D0	mapWork2	data	tier=D	derived-shared	na	used by 5 functions: mapSummonDvFoceSet_NotRot, mapSummonDvFoceSet, mapSummonDvFoceSet_DeadReturn
@@ -22078,7 +22042,6 @@
 0x005612A8	filterDebugMenu3Entry4	data	tier=D	derived-table	na	pointed to by filterDebugMenu3
 0x005612C0	mfilterDebugMenuEntry2	data	tier=D	derived-table	na	pointed to by mfilterDebugMenu
 0x005612E8	rblurDebugMenuEntry5	data	tier=D	derived-table	na	pointed to by rblurDebugMenu
-0x00561600	effLeaf345Work	data	tier=D	derived-dominant	na	used by effLeaf345 (4 of 14 refs, 6 functions)
 0x00561800	effDrawTrackSetWork	data	tier=D	derived-dominant	na	used by effDrawTrackSet (4 of 6 refs, 2 functions)
 0x00561830	effWork	data	tier=D	derived-shared	na	used by 2 functions: effDrawFourPointGroups, effCreatePointSet4
 0x00561860	effDrawSurfaceTrailHistoryWork	data	tier=D	derived-dominant	na	used by effDrawSurfaceTrailHistory (5 of 7 refs, 2 functions)
@@ -23532,11 +23495,13 @@
 0x00135710	IsFldKeyFree	func	tier=C	hd-c	0.69 (n=45)	Raidou HD AtlFieldUtil.IsFldKeyFree score 6.7 flag -: calls3 callers-of-match votes4 st2:call r2-only
 0x00135DD8	mapReturnFromRndEncBattle	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fld.mapReturnFromRndEncBattle score 4.3 flag -: calls1 calls-of-match st2:call r2-only
 0x00135ED0	mapReturnFromGohmaden	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fld.mapReturnFromGohmaden score 3.5 flag -: calls1 gap5/6 votes2 st2:gap r2-only
-0x00139630	fldAddressResolverReset	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x127340 sim 1.000 margin 0.00 pair
-0x00139658	fldAddressResolver	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x127340 sim 1.000 margin 0.00 pair
-0x001399A8	mapEffEplInit	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.mapEffEplInit score 4.3 flag -: calls1 calls-of-match st1:call r1+r2
+0x00138A60	fldMakeResouceBasicFL1	func	tier=C	derived-derived-role	na	same function as raidou1 0x00131908 (r1_r2 pair at 0x00138A60, unique-reloc-hash); replaces SetBattleLight
+0x00139630	fldAddressResolver	func	tier=C	derived-derived-role	na	swap pair of the row above; replaces fldAddressResolverSwapTmp
+0x00139658	fldAddressResolverReset	func	tier=C	derived-derived-role	na	swap pair of the row above; replaces fldAddressResolver
 0x0013A048	fldPoint3To2H	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x128e30 sim 1.000 margin 0.00 pair
 0x0013D4B0	fldGetPlayerCameraPos	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.fldGetPlayerCameraPos score 4.7 flag I: calls1 callers-of-match-uniq st1:call r1+r2
+0x0013D688	mapAiboInit	func	tier=C	derived-derived-role	na	same function as raidou1 0x00135E48 (r1_r2 pair at 0x0013D688, unique-masked-hash); replaces fldGbInitSystemSub
+0x0013E6C8	mapSummonDvInit	func	tier=C	derived-derived-role	na	same function as raidou1 0x00136DA0 (r1_r2 pair at 0x0013E6C8, unique-masked-hash); replaces mapSummonDvFoceSet_NotRot
 0x0013E738	mapSummonDvAtumaru	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapSummonDvAtumaru score 6.3 flag -: calls2 calls-of-match-uniq votes2 st1:call r1-only
 0x0013F840	PlayerMotionSe2	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fld.PlayerMotionSe2 score 3.1 flag -: calls1 calls-of-match st2:call r2-only
 0x00140030	PlayerMotionSe	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.PlayerMotionSe score 4.7 flag -: calls1 calls-of-match st1:call r1+r2
@@ -23612,6 +23577,7 @@
 0x00193B60	frSetFontString	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x1c7890 sim 0.622 margin 0.31 single
 0x00193D38	frSetDrawSpeed	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1c7a60 sim 0.696 margin 0.43 pair
 0x00193D70	SwitchOK	func	tier=C	hd-both	0.71 (n=206)	Raidou HD itf.SwitchOK score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
+0x00193E88	frSetFontSize	func	tier=C	derived-derived-role	na	same function as raidou1 0x0017F1C8 (r1_r2 pair at 0x00193E88, unique-reloc-hash); replaces frCallGetStrWidth
 0x00198680	ButtonLineHelpTextSet	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD ButtonGuide.ButtonLineHelpTextSet score 3.1 flag I: calls1 calls-of-match st2:call r2-only
 0x00198C58	mjnDeleteScene	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD mjn.mjnDeleteScene score 3.5 flag I: calls1 callers-of-match st1:call r1-only
 0x0019A170	itfQuickSaveExeCheck	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.itfQuickSaveExeCheck score 5.6 flag I: calls1 callers-of-match st1:call r1+r2
@@ -23696,6 +23662,10 @@
 0x001C35E8	sndWaitForEarringPlayback	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x205438 sim 0.794 margin 0.04 pair
 0x001C36F8	nbCreateBasicEffect	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x28fad8 sim 0.632 margin 0.63 single
 0x001C3758	prm_DH_PLUS	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x10cfe0 sim 1.000 margin 0.00 single
+0x001C3780	evtMoonTakaraCntReset	func	tier=C	derived-derived-role	na	same function as raidou1 0x001AD930 (r1_r2 pair at 0x001C3780, masked-hash-in-gap); replaces sndCallGetRandIntA
+0x001C37B0	evtMoonZeniCntReset	func	tier=C	derived-derived-role	na	same function as raidou1 0x001AD960 (r1_r2 pair at 0x001C37B0, masked-hash-in-gap); replaces sndCallGetRandIntA2
+0x001C37E0	evtMoonTakumiCntReset	func	tier=C	derived-derived-role	na	same function as raidou1 0x001AD990 (r1_r2 pair at 0x001C37E0, masked-hash-in-gap); replaces sndCallGetRandIntA3
+0x001C3810	evtMoonTeisatuCntReset	func	tier=C	derived-derived-role	na	same function as raidou1 0x001AD9C0 (r1_r2 pair at 0x001C3810, masked-hash-in-gap); replaces sndRefDDS3GBWK
 0x001C3A90	evtMoonFadeOut	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtMoon.evtMoonFadeOut score 2.5 flag I: next gap4/3 st1:gap r1-only
 0x001C3AC0	evtMoonFadeCheck	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtMoon.evtMoonFadeCheck score 4.7 flag I: next gap5/4 st1:gap r1+r2
 0x001C3AE0	CalcBlendColor	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtMoon.CalcBlendColor score 4.1 flag -: next gap6/5 st1:gap r1+r2
@@ -23834,12 +23804,21 @@
 0x0022D518	effPCPWhirlwind2PolySetRotateMatrix	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1881e8 sim 1.000 margin 0.00 pair
 0x0022F748	effBuildRadialFanStreams	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x176e20 sim 1.000 margin 0.71 pair
 0x0022F970	effReleaseOptionalResource	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2ab260 sim 1.000 margin 0.00 pair
+0x00232D70	effGetFlags	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021BA78 (r1_r2 pair at 0x00232D70, masked-hash-in-gap); replaces effSRAnimation
 0x00232DD0	effStopEffectStop	func	tier=C	hd-c	0.69 (n=45)	Raidou HD effStat.effStopEffectStop score 6.5 flag I: calls2 calls-of-match votes3 st2:call r2-only
 0x00232E08	effFadeInBlur	func	tier=C	hd-d	0.53 (n=98)	Raidou HD effStat.effFadeInBlur score 3.0 flag -: prev gap3/4 st2:gap r2-only
+0x00232F08	Process_effStat	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021BC00 (r1_r2 pair at 0x00232F08, unique-reloc-hash); replaces effCallFadeInBlur
+0x002330A8	effUpdateBlur	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021BDA0 (r1_r2 pair at 0x002330A8, unique-reloc-hash); replaces effFunc11
 0x00233150	effStopStat	func	tier=C	hd-c	0.69 (n=45)	Raidou HD effQuake.effStopStat score 6.9 flag I: calls1 next callers-of-match votes2 st2:call r2-only
 0x002331D8	effRestoreStat	func	tier=C	hd-d	0.53 (n=98)	Raidou HD effQuake.effRestoreStat score 3.2 flag I: calls1 callers-of-match st2:call r2-only
 0x002332B8	effInit	func	tier=C	hd-c	0.69 (n=45)	Raidou HD effQuake.effInit score 6.3 flag I: calls1 prev calls-of-match votes2 st2:call r2-only
-0x00233460	fclDrawSprite	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x2146a8 sim 0.600 margin 0.13 pair
+0x002332F0	effUpdate	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021BFE8 (r1_r2 pair at 0x002332F0, unique-reloc-hash); replaces effFunc12
+0x002333D0	effRegist	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021C0C8 (r1_r2 pair at 0x002333D0, unique-masked-hash); replaces effLeaf345
+0x00233440	effStart	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021C138 (r1_r2 pair at 0x00233440, unique-reloc-hash); replaces fclLeaf7
+0x00233460	effStartDamp	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021C158 (r1_r2 pair at 0x00233460, unique-reloc-hash); replaces fclDrawSprite
+0x00233488	effStartSignal	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021C180 (r1_r2 pair at 0x00233488, unique-reloc-hash); replaces fclLeaf8
+0x00233520	effStop	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021C218 (r1_r2 pair at 0x00233520, unique-reloc-hash); replaces fclCallStopQuake
+0x00233568	effRemove	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021C260 (r1_r2 pair at 0x00233568, unique-reloc-hash); replaces fclFunc2
 0x00233FC8	effGet	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD effOption.effGet score 5.9 flag I: calls1 calls-of-match-uniq st1:call r1+r2
 0x0023C030	effCalc	func	tier=C	hd-both	0.71 (n=206)	Raidou HD effBehavior.effCalc score 4.0 flag I: prev edge st1:edge r1+r2
 0x0023D418	effReleaseReferenceHolder	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x29c378 sim 0.723 margin 0.03 pair
@@ -24512,7 +24491,6 @@
 0x004DE71D	gLastSelMsgPos	data	tier=C	hd	0.37 (n=D_r1_0046B5C5)	hd/medium: conf=medium, agree=2, using=2
 0x004DE74C	playerModel	data	tier=C	hd	0.37 (n=D_r1_0046B5E8)	hd/medium: conf=medium, agree=7, using=9
 0x004DE780	Process_WarpIdx	data	tier=C	hd	0.37 (n=D_r1_0046B690)	hd/medium: conf=medium, agree=2, using=2
-0x004DE784	effQueuedResourceNameRecord2	data	tier=C	dds-ref	0.59 (n=D_r1_0046B614)	dds-ref/loose: nfun=2, other=3, sim=1.0, games=2, size=True, sec=True, fn=fldPlayerAFree; effQueuedResourceNameRecord is another symbol
 0x004DE788	effQueuedResourceNameRecord3	data	tier=C	dds-ref	0.59 (n=D_r1_0046B618)	dds-ref/close: nfun=2, other=0, sim=0.9091, games=2, size=True, sec=True, fn=fldCallMemFreeDelayedDirect; effQueuedResourceNameRecord is another symbol
 0x004DE8DC	map_summondv_rot	data	tier=C	hd	0.37 (n=D_r1_0046B770)	hd/medium: conf=medium, agree=3, using=4
 0x004DE8E0	gMapNakamaRunAtumaru	data	tier=C	hd	0.37 (n=D_r1_0046B774)	hd/medium: conf=medium, agree=2, using=2
@@ -24559,6 +24537,12 @@
 0x004E16E5	Eve_PartialMultiFilterShow	data	tier=C	derived-derived-role	na	cleared by Eve_PartialMultiFilterOFF; replaces EffectDrawData4
 0x004E16E6	Eve_RippleBlurShow	data	tier=C	derived-derived-role	na	cleared by Eve_RippleBlurOFF; replaces EffectDrawData5
 0x004E1784	evtViewerDirty2	data	tier=C	smt3-ref	0.88 (n=D_r1_0046D03C)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effCallMemcpy2; evtViewerDirty is another symbol
+0x004E17CC	EFF_BLURVAL	data	tier=C	derived-derived-role	na	as raidou1; replaces dds3Data46
+0x004E1800	flags_stat	data	tier=C	derived-derived-role	na	same function as raidou1 0x0046D0C0 (r1_r2 pair at 0x004E1800, code-ref); replaces effData30
+0x004E1804	proc_stat	data	tier=C	derived-derived-role	na	same function as raidou1 0x0046D0C4 (r1_r2 pair at 0x004E1804, code-ref); replaces Init_effStatData
+0x004E1808	flags_blur	data	tier=C	derived-derived-role	na	same function as raidou1 0x0046D0C8 (r1_r2 pair at 0x004E1808, code-ref); replaces effData31
+0x004E180C	vel_blur	data	tier=C	derived-derived-role	na	same function as raidou1 0x0046D0CC (r1_r2 pair at 0x004E180C, code-ref); replaces effFunc11Data
+0x004E1810	flags_quake	data	tier=C	derived-derived-role	na	same function as raidou1 0x0046D0D0 (r1_r2 pair at 0x004E1810, code-ref); replaces effData32
 0x004E1814	effModelUpdateControlFlags	data	tier=C	dds-ref	0.59 (n=D_r1_0046D0D4)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effMarkFloorModelForUpdate
 0x004E1818	OT	data	tier=C	hd	0.37 (n=D_r1_0046D0D8)	hd/medium: conf=medium, agree=2, using=2
 0x004E1840	effFloorModelListHead	data	tier=C	dds-ref	0.59 (n=D_r1_0046D100)	dds-ref/exact: nfun=14, other=0, sim=1.0, games=2, size=True, sec=True, fn=effFloorModelListPush
@@ -24643,11 +24627,15 @@
 0x004E48F4	effColorEditFadeOutFrame	data	tier=C	dds-ref	0.59 (n=D_r1_0046F8DC)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effEditColorTrack
 0x004E49D0	cmpPanelEffList3	data	tier=C	smt3-ref	0.80 (n=D_004E49D0)	smt3-ref/close: nfun=1, other=0, sim=0.9, games=1, size=True, sec=False, fn=FreeSpriteHnd; cmpPanelEffList is another symbol
 0x004E4AD4	sdfDiscRequestSemaphore	data	tier=C	dds-ref	0.59 (n=D_r1_0046FA94)	dds-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfDevSignalPendingSemaphore
+0x004EA290	fldResolverFL1Data	data	tier=C	derived-derived-role	na	same function as raidou1 0x00474EF0 (r1_r2 pair at 0x004EA290, code-ref); replaces fldFileResolverFL1Work
+0x004EA2A0	fldD3pHandle	data	tier=C	derived-derived-role	na	same function as raidou1 0x00474F00 (r1_r2 pair at 0x004EA2A0, code-ref); replaces fldWork4
+0x004EA2B0	fldD3pData	data	tier=C	derived-derived-role	na	same function as raidou1 0x00474F10 (r1_r2 pair at 0x004EA2B0, code-ref); replaces fldWork5
 0x0050FBA0	evtStageTestState2	data	tier=C	dds-ref	0.59 (n=D_r1_00476710)	dds-ref/loose: nfun=2, other=0, sim=0.9677, games=2, size=False, sec=True, fn=fldCallMemFreeDelayedDirect4; evtStageTestState is another symbol
 0x00544700	mdl_linkflag	data	tier=C	hd	0.37 (n=D_r1_004B4B90)	hd/medium: conf=medium, agree=3, using=4
 0x005463FC	pinst	data	tier=C	dds-ref	0.59 (n=D_r1_004B67EC)	dds-ref/exact: nfun=62, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfMesMngMessage
 0x005468F0	mdlViewerState	data	tier=C	dds-ref	0.59 (n=D_r1_004B6CE0)	dds-ref/exact: nfun=64, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlLoadViewerResourceAndResetCursors
 0x00546A78	CustomSceneLightArray	data	tier=C	hd	0.37 (n=D_r1_004B6E68)	hd/medium: conf=medium, agree=3, using=4
+0x00561600	quake_list	data	tier=C	derived-derived-role	na	same function as raidou1 0x004D19C0 (r1_r2 pair at 0x00561600, code-ref); replaces effLeaf345Work
 0x00565170	effBattleOffset	data	tier=C	dds-ref	0.59 (n=D_r1_004D5530)	dds-ref/exact: nfun=8, other=0, sim=1.0, games=2, size=True, sec=True, fn=effBtlDebugSetStatusflgSub
 0x00565180	effEditedQueueHeader	data	tier=C	dds-ref	0.59 (n=D_r1_004D5540)	dds-ref/loose: nfun=6, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPollNamedFileJob
 0x00565200	effSelectedJobHeader	data	tier=C	dds-ref	0.59 (n=D_r1_004D55C0)	dds-ref/exact: nfun=26, other=0, sim=1.0, games=2, size=True, sec=True, fn=effApplyBattleCameraToObject
@@ -24706,8 +24694,8 @@
 0x0012C498	fldCamCalcSlopeOffset	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x12c580 sim 0.925 margin 0.72 pair
 0x0012C9C8	mapGetCircleCircleH	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGetCircleCircleH score 6.4 flag -: prev~ next gap1/2 st1:gap r1+r2
 0x0012D768	effBTLFieldColorDraw	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16c3f0 sim 0.846 margin 0.17 pair
-0x0012D7E8	fldFreeInputPanel	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x144470 sim 0.733 margin 0.19 pair
 0x0012DF38	fclCombineDraw	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1fb828 sim 0.864 margin 0.13 single
+0x0012E048	mapSetSceneParam	func	tier=B	hd-role	na	HD fld.c mapSetSceneParam(SceneParam_t *, loadField, loadFloor, pointID): same field stores, bg_tex_load_last reset and fldGb cut/focus zeroing; callers mapCallMap and the mapRetuenFrom* family match; replaces mapCallMemset
 0x0012E190	fldElvReset	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x119080 sim 0.708 margin 0.19 pair
 0x0012E440	fldPlayerALoad	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.fldPlayerALoad score 6.0 flag R: calls1 callers-of-match-uniq st1:call r1+r2
 0x0012E7E0	nbResultFreeTextures	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x24a258 sim 0.719 margin 0.11 pair
@@ -24716,7 +24704,6 @@
 0x0013A188	fldPoint3To2_B	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x128f50 sim 0.879 margin 0.52 pair
 0x0013BEC8	fldDrawPos	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x12b1c0 sim 0.950 margin 0.11 single
 0x0013E5E0	mapEnemy_SetFAtk_PlayerDir	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD mapEnemy.mapEnemy_SetFAtk_PlayerDir score 5.7 flag -: calls2 callee-index votes3 st2:cidx r2-only
-0x0013E6C8	mapSummonDvFoceSet_NotRot	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD fld.mapSummonDvFoceSet_NotRot score 3.3 flag -: prev next~ gap1/1 st1:gap r1-only
 0x0013F630	rstDrawEvoBgFade	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x223e20 sim 0.708 margin 0.34 pair
 0x00140678	fldPlayer_MoveGet	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.fldPlayer_MoveGet score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
 0x001406B8	PlayerCalc_Nml_fld	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.PlayerCalc_Nml score 6.4 flag -: calls4 callers-of-match votes3 st2:call r1-disagree:0x138698
@@ -25272,6 +25259,10 @@
 0x004DE6D8	sdatLvUpPlayerRankUpSize	data	tier=B	hd-role	na	HD; replaces datData19
 0x004DE718	gSelMsgNo	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B5C0)	smt3-ref/close: nfun=2, other=0, sim=0.9107000000000001, games=2, size=True, sec=True, fn=fclUpdateMessageEx
 0x004DE71C	gSelMsgPos	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B5C4)	smt3-ref/close: nfun=2, other=0, sim=0.9107000000000001, games=2, size=True, sec=True, fn=fclUpdateMessageEx
+0x004DE784	fldPlayerAnimData	data	tier=B	smt3-role	na	SMT3 fldPlayerALoad/fldPlayerAFree: the sdfDevLoadFileEx handle checked, loaded and freed is fldPlayerAnimData; same three bodies in Raidou; replaces effQueuedResourceNameRecord2
+0x004DE78C	gfldPlayerPtr	data	tier=B	smt3-role	na	SMT3 fldPlayerALoad passes &gfldPlayerPtr as sdfDevLoadFileEx outData; Raidou passes it there; replaces fldJDataLoadData
+0x004DE794	gfldPlayerSizeBk	data	tier=B	smt3-role	na	SMT3 fldPlayerALoad passes &gfldPlayerSizeBk as sdfDevLoadFileEx outSize; Raidou passes it there; replaces fldData10
+0x004DE798	gMapCash_pacHandle	data	tier=B	hd-role	na	HD fldPlayerALoadEndCheck checks pacCheckEnd(gMapCash_pacHandle); retail passes it there; replaces fldPlayerALoadEndCheckData
 0x004DE8A0	fldDrwZBuf	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B738)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=fldDrwZAlloc
 0x004DE8A8	fldDbgFmtDec	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B740)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=fldDbgPrint3D
 0x004DEB08	fldRunMapData	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B9DC)	smt3-ref/loose: nfun=2, other=2, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
