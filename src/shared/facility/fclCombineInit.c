@@ -1,7 +1,19 @@
 #include "common.h"
 #include "fclCombineInit.h"
+#include "EventBit.h"
+#include "newdata.h"
+#include "fld.h"
+#include "fldProcess.h"
+#include "dds3ObjectBase.h"
+#include "dds3SceneBasic.h"
+#include "dds3WorldBasic.h"
+#include "sbtlWork.h"
 
-#ifdef VERSION_RAIDOU2
+#ifdef VERSION_RAIDOU1
+INCLUDE_RODATA(const s32, "facility/fclCombineInit", mapNakamaPosRotTable);
+
+INCLUDE_RODATA(const s32, "facility/fclCombineInit", mapNakamaSummonTaskTable);
+#else
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", fclModelDevilLbTable);
 #endif
 
@@ -86,9 +98,88 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_FLUSH);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_CheckEffStart);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSkilIs_SetBit);
+#ifdef VERSION_RAIDOU1
+void mapNakamaSkilIs_SetBit(s32 id)
+{
+    s32 i;
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaStockOnCheck);
+    for (i = 0; i < 32; i++) {
+        evtBitOff(i + 2272);
+    }
+    if (id <= 0) {
+        return;
+    }
+    if (id >= 81) {
+        return;
+    }
+    switch (mapData44[id]) {
+    case 8:
+        evtBitOn(2280);
+        break;
+    case 9:
+        evtBitOn(2281);
+        break;
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+        break;
+    case 16:
+        evtBitOn(2288);
+        break;
+    case 17:
+        evtBitOn(2289);
+        break;
+    case 18:
+        evtBitOn(2290);
+        break;
+    case 19:
+        evtBitOn(2291);
+        break;
+    case 20:
+        evtBitOn(2292);
+        break;
+    }
+    switch (sbtlGetDevilData_sbtlSub(DDS3_GBWK->mapSummonID)->field0E) {
+    case 0:
+        break;
+    case 1:
+        evtBitOn(2272);
+        break;
+    case 2:
+        evtBitOn(2273);
+        break;
+    case 3:
+        evtBitOn(2274);
+        break;
+    case 4:
+        evtBitOn(2275);
+        break;
+    case 5:
+        evtBitOn(2276);
+        break;
+    case 6:
+        evtBitOn(2277);
+        break;
+    case 7:
+        evtBitOn(2278);
+        break;
+    }
+}
+#else
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSkilIs_SetBit);
+#endif
+
+void mapNakamaStockOnCheck(void)
+{
+    s32 i;
+
+    for (i = 0; i < 32; i++) {
+        evtBitOff(0x8C0 + i);
+    }
+}
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSkil_SetBit);
@@ -106,11 +197,52 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallNakamaStockOnCheck);
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mskGetNo);
 #else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mskGet);
-
-INCLUDE_ASM(const s32, "facility/fclCombineInit", fclFunc);
 #endif
 
+#ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 16 of 61 words match.  */
+#ifdef NON_MATCHING
+void mapNakamaStockOnCheck_fld(void)
+{
+    s32 found = FALSE;
+    s32 i;
+
+    if (DDS3_GBWK->mapSummonID <= 0) {
+        return;
+    }
+    for (i = 0; i < DDS3_GBWK->playerData.partyNum; i++) {
+        if (DDS3_GBWK->mapSummonID == DDS3_GBWK->playerData.stock[i].devilId) {
+            if (DDS3_GBWK->playerData.stock[i].now.hp > 0) {
+                found = TRUE;
+                break;
+            }
+        }
+    }
+    if (!found) {
+        mapNakamaSkilIs_SetBit(0);
+        mapNakamaStockOnCheck();
+        DDS3_GBWK->mapSummonID = 0;
+        evtBitOff(0xBB1);
+        mapRiberaMa2ClearMsg();
+        mapEsutoMa2ClearMsg();
+        if (summonDvBasic != NULL) {
+            mapBadEffFree(1);
+            dds3ObjectBaseOnFlag(summonDvBasic, 1);
+            dds3DeleteSceneBasicData(summonDvBasic);
+            summonDvBasic = NULL;
+            summonDvModel = NULL;
+            dds3SetActiveUnitSceneBasic(dds3GetControlScene(), playerBasic);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaStockOnCheck_fld);
+#endif
+#else
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclFunc);
+
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaStockOnCheck_fld);
+#endif
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvReturnLoad_LB);
 

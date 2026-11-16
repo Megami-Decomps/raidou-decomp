@@ -7,6 +7,9 @@
 struct jmsSeqHandle_t;
 struct jmsSeqUnit_t;
 
+/* Negative while the trigger MskL2Task waits for is pressed (HD CHECK_TRIG(8201, 1)). */
+extern s8 jmsChkCommonInputData[];
+
 u32 jmsChkCommonInput(u32 ControlBit);
 s32 jmsChkSeqChange(struct jmsSeqUnit_t *pSeqUnit);
 s32 jmsSeqChange(jmsSeqHandle_t *pSeqHandle, s32 *pSeqUnit, s32 Mode, dds3ProcessID_t *ID);

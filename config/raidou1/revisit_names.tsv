@@ -3772,7 +3772,6 @@
 0x002A1E48	sbtlCallBtlGetDevilDataSBtlSub4	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetDevilData_sbtlSub
 0x002A20E0	sbtlCallBtlCheckMsgMemType	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckMsgMemType
 0x002A2598	sbtlCallMemAllocDirect10	func	tier=D	derived-callee	na	unit sbtl; calls sdfMemAllocDirect
-0x002A2788	sbtlCallSin3	func	tier=D	derived-callee	na	unit sbtl; calls sdfSin
 0x002A2CA0	sbtlCallMessageNumSearch3	func	tier=D	derived-callee	na	unit sbtl; calls MessageNumSearch
 0x002A2DF0	sbtlLeaf99	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002A3230	sbtlBtlDrawTextSub2	func	tier=D	derived-caller	na	unit sbtl; called by sbtlDrawText
@@ -15744,9 +15743,6 @@
 0x0046DD00	sbtlCallBitCheckData	data	tier=D	derived-sole	na	used by sbtlCallBitCheck
 0x0046DD04	sbtlData102	data	tier=D	derived-shared	na	used by 2 functions: sbtlRndEncCalc, sbtlRndEncTopPriorityMap
 0x0046DD08	sbtlData103	data	tier=D	derived-shared	na	used by 2 functions: sbtlRndEncCalc, sbtlRndEncTopPriorityMap
-0x0046DD10	nbGetEncountMaxData	data	tier=D	derived-sole	na	used by nbGetEncountMax
-0x0046DD14	nbGetEncountMaxData2	data	tier=D	derived-dominant	na	used by nbGetEncountMax (2 of 4 refs, 3 functions)
-0x0046DD1C	datData7	data	tier=D	derived-shared	na	used by 4 functions: datCreateDevilUnitEx, datCallCheckStrongSwordAttack, sbtlGetAisyotbl
 0x0046DD24	sbtlData104	data	tier=D	derived-shared	na	used by 13 functions: sbtlDrawText, sbtlExt_MesReqEx, sbtlCallMemAllocDirect10
 0x0046DD2C	sbtlData105	data	tier=D	derived-shared	na	used by 5 functions: sbtlExt_CreateBuffer, sbtlExt_ShutDown, sbtlExt_FreeBuffer
 0x0046DD30	sbtlExt_CreateBufferData	data	tier=D	derived-dominant	na	used by sbtlExt_CreateBuffer (3 of 5 refs, 3 functions)
@@ -16228,6 +16224,7 @@
 0x0046EBE8	fldData43	data	tier=D	derived-shared	na	used by 2 functions: fldCommand_SET_ALLPANEL, fldFunc27
 0x0046EBEC	nmeData	data	tier=D	derived-shared	na	used by 2 functions: nmeCallMemGetPtr2, nmeScrCmdGETDREAMCOMPARESub
 0x0046EBF0	nmeData2	data	tier=D	derived-shared	na	used by 2 functions: nmeStart, nmeCallMemGetPtr
+0x0046EBF8	titleStartSubData	data	tier=D	derived-caller	na	u8 [4][2] width/height table read by titleStartSub and titleStartSub2
 0x0046EC00	titleFunc6Data	data	tier=D	derived-sole	na	used by titleFunc6
 0x0046EC04	titleData	data	tier=D	derived-shared	na	used by 2 functions: titleFunc7, titleLeaf
 0x0046EC08	sbtlData127	data	tier=D	derived-shared	na	used by 5 functions: sbtlCallGrAllocPacketBuff4, titleCallMatFreeDelayed, titleCallMatNew
@@ -18088,7 +18085,6 @@
 0x004D6300	sbtlHitCProc_IdouWork	data	tier=D	derived-sole	na	used by sbtlHitCProc_Idou
 0x004D6540	sbtlWork2	data	tier=D	derived-shared	na	used by 3 functions: sbtlLoadAttackHitData_pData, sbtlInitLoadAttackHitData_pData, sbtlForceDelete_AttackHitData
 0x004D6A34	sbtlBtlLoadAttackHitDataDecodeSubWork	data	tier=D	derived-sole	na	used by sbtlBtlLoadAttackHitDataDecodeSub
-0x004D6A88	sbtlWork3	data	tier=D	derived-shared	na	used by 7 functions: sbtlClearGeneratorWork, sbtlCallBtlClearGeneratorWork, sbtlCheckGeneratorGroupID
 0x004D6B58	sbtlExt_CalcProcessWork	data	tier=D	derived-dominant	na	used by sbtlExt_CalcProcess (4 of 12 refs, 5 functions)
 0x004D6B70	sbtlExt_CreateBufferWork	data	tier=D	derived-dominant	na	used by sbtlExt_CreateBuffer (4 of 12 refs, 5 functions)
 0x004D7327	__ieee754_rem_pio2TableEntry2	data	tier=D	derived-table	na	pointed to by __ieee754_rem_pio2Table
@@ -18301,7 +18297,6 @@
 0x0012A1B0	cmpModelFreeResource	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x23fed0 sim 0.667 margin 0.17 single
 0x0012BD18	sbtlReLoadFldScene	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlScene.sBtlReLoadFldScene score 4.5 flag I: calls1 calls-of-match-uniq st1:call r1+r2
 0x0012C950	mapIdouGo_Idx	func	tier=C	hd-c	0.69 (n=45)	Raidou HD fld.mapIdouGo_Idx score 6.8 flag -: calls2 callers-of-match votes2 st1:call r1-only
-0x0012F7A0	IsFldKeyFree	func	tier=C	hd-c	0.69 (n=45)	Raidou HD AtlFieldUtil.IsFldKeyFree score 6.7 flag -: calls3 callers-of-match votes4 st2:call r2-only
 0x0012FCF8	mapReturnFromShop	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD fld.mapReturnFromShop score 4.3 flag -: calls2 calls-of-match votes2 st1:call r2-disagree:0x135c50
 0x001324D8	fldAddressResolver	func	tier=C	derived-derived-role	na	swap pair of the row above; replaces fldAddressResolverSwapTmp
 0x00132500	fldAddressResolverReset	func	tier=C	derived-derived-role	na	swap pair of the row above; replaces fldAddressResolver
@@ -18737,7 +18732,6 @@
 0x00298C50	datBossRashChk	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x246038 sim 0.618 margin 0.21 single
 0x00298CE8	sbtlChkBossEventStart_EnemySummonWait	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlMain.sBtlChkBossEventStart_EnemySummonWait score 2.0 flag I: calls1 calls-of-match st1:call r1-only
 0x00298FA0	sbtlGetRndEncJoken	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlEncount.sBtlGetRndEncJoken score 2.8 flag I: calls1 prev gap11/5 st1:gap r2-disagree:0x2cc808
-0x00299080	nbGetEncountMax	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x28cb68 sim 0.606 margin 0.61 single
 0x00299170	sbtlRndEncCalc	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlEncount.sBtlRndEncCalc score 3.6 flag I: calls1 callers-of-match votes2 st1:call r2-disagree:0x2cd0a8
 0x00299378	sbtlGetLevelAverage	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlEncount.sBtlGetLevelAverage score 2.8 flag I: calls1 next gap11/5 st1:gap r2-disagree:0x2cd340
 0x002994A0	sbtlGetDevilInfo	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlEncount.sBtlGetDevilInfo score 4.5 flag I: calls1 prev callers-of-match votes2 st1:call r2-disagree:0x2cd478
@@ -19729,6 +19723,7 @@
 0x003B3410	dds3BasicFuncTablePtr	data	tier=B	smt3-ref	0.88 (n=D_r1_003B3410)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=dds3AllocBasic
 0x003BF130	fldGlobalBase	data	tier=B	smt3-ref	0.88 (n=D_r1_003BF130)	smt3-ref/loose: nfun=10, other=6, sim=1.0, games=2, size=False, sec=True, fn=fldMakeBlockBasicFL2
 0x003BF5D8	fldRandomBuf	data	tier=B	smt3-role	na	SMT3 fldFirstInit seeds sdfRandomize(fldRandomBuf, 0x1E240); same call and seed in Raidou fldFirstInit (HD grnd_cb); replaces fldFirstInitData
+0x003BF5E8	gMapBtlReturnParam	data	tier=B	hd-role	na	HD fldProcTrigSequence copies the return scene from gMapBtlReturnParam when fldGb->btl_return_map; same site, fldSceneParam_t layout; replaces SequenceControl
 0x003E84F8	gFontBaseWidth	data	tier=B	smt3-ref	0.88 (n=D_r1_003E84F8)	smt3-ref/loose: nfun=2, other=0, sim=0.9419, games=2, size=False, sec=True, fn=frSetUserImage
 0x003E8838	DrawTable_itfPanel	data	tier=B	smt3-role	na	SMT3 itfPanel.c DrawTable (panel handler table indexed by kind); DrawTable is taken by the function at 0x002E0288; replaces itfPnlDrawSubData
 0x003E8AF0	itfMesDebug	data	tier=B	smt3-ref	0.88 (n=D_r1_003E8AF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=itfMesMngDebugProc
@@ -19866,7 +19861,10 @@
 0x0046D178	effPadVibeRemain	data	tier=B	smt3-role	na	SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effResetSlotsData2
 0x0046D180	effPadVibePower	data	tier=B	smt3-ref	0.80 (n=D_r1_0046D180)	smt3-ref/close: nfun=2, other=0, sim=0.7596, games=2, size=True, sec=True, fn=effPadVibeFadeUpdate
 0x0046D188	effPadVibeFadeIn	data	tier=B	smt3-role	na	SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effData37
-0x0046DD0C	gFldSe3DNum	data	tier=B	smt3-ref	0.80 (n=D_r1_0046DD0C)	smt3-ref/close: nfun=1, other=0, sim=0.7857, games=1, size=True, sec=True, fn=sbtlInitSBtlSub
+0x0046DD0C	sb_gen_d_flag	data	tier=B	hd-role	na	HD sBtlClearGeneratorWork zeroes sb_gen_d_flag after the loop; only code_00298540 uses it; replaces gFldSe3DNum
+0x0046DD10	datRndEncBase	data	tier=B	hd-role	na	HD sBtlGetRndEncMax reads datRndEncBase at this site; replaces nbGetEncountMaxData
+0x0046DD14	encmax	data	tier=B	hd-role	na	HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2
+0x0046DD1C	aisyo_tbldata	data	tier=B	hd-role	na	HD sBtlGetAisyotbl indexes aisyo_tbldata; replaces datData7
 0x0046EB28	gGlobal	data	tier=B	smt3-ref	0.88 (n=None)	smt3-ref/loose: nfun=3, other=1, sim=1.0, games=1, size=True, sec=True, fn=rstCallPlaySE
 0x0046EB30	mselProcName	data	tier=B	smt3-ref	0.88 (n=None)	smt3-ref/loose: nfun=1, other=0, sim=1.0, games=1, size=False, sec=False, fn=mselInit
 0x0046EED4	effBTLFieldColorProcess	data	tier=B	smt3-ref	0.80 (n=None)	smt3-ref/close: nfun=1, other=0, sim=0.7857, games=1, size=True, sec=True, fn=cmpCallProcessEnd; R1/R2 pair by this name (smt3-ref / smt3-ref)
@@ -19920,6 +19918,7 @@
 0x004B7888	Data_evtCutIn	data	tier=B	hd-role	na	HD evtCutIn.c static Data (evtCutInData_t), R1 holds the struct itself; replaces scrEventSkipEndWork
 0x004C5C80	slTopMenuSel	data	tier=B	smt3-ref	0.88 (n=D_r1_004C5C80)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=slChooseData
 0x004D19C0	quake_list	data	tier=B	hd-role	na	HD effQuake quake_list[32] (Raidou: inline array of 16-byte requests); replaces effLeaf345Work
+0x004D6A88	sb_gen_work	data	tier=B	hd-role	na	HD sBtlClearGeneratorWork clears sb_gen_work entries, same site; replaces sbtlWork3
 0x004FD150	corePktFaceDivParm	data	tier=B	smt3-ref	0.88 (n=D_r1_004FD150)	smt3-ref/loose: nfun=12, other=0, sim=1.0, games=2, size=False, sec=True, fn=corePktXfmLightClip
 0x004FD880	sdfCdImageSearchFileDirect_ent	data	tier=B	smt3-ref	0.80 (n=D_r1_004FD880)	smt3-ref/close: nfun=2, other=0, sim=0.9117500000000001, games=2, size=True, sec=True, fn=sdfCdImageSearchFileDirect
 0x00501980	sdfSndMap	data	tier=B	smt3-ref	0.88 (n=D_r1_00501980)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=p2sdLoadCheckMidi

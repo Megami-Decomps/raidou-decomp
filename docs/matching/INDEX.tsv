@@ -12,6 +12,7 @@ fldProcSequenceSub3	code_00139330	raidou1 0x48	9 of 16 words differ	docs/matchin
 fldCallFptodp	code_00139330	raidou1 0xC8	43 of 46 words differ	docs/matching/code_00139330.md	11		
 mapBigClipChkF	code_00139330	raidou1 0x138	34 of 78 words differ	docs/matching/code_00139330.md	19		
 fldBgTexClear	code_00139330	raidou1 0x8C	19 of 35 words differ	docs/matching/code_00139330.md	27		
+mapGetScreenDir	code_0013AAC8	raidou1 0x390	156 of 224 words differ	docs/matching/code_0013AAC8.md	3		
 mapBgFScrollOn	code_0013CDE0	raidou1 0x80	22 of 32 words differ	docs/matching/code_0013CDE0.md	3		
 sndSePlay_sndAt3	code_0013CDE0	raidou1 0x80	8 of 32 words differ	docs/matching/code_0013CDE0.md	11		
 fldBgZoomTest	code_0013CDE0	raidou1 0x2B4		docs/matching/code_0013CDE0.md	19		three FAKEMATCH_ASM_LIVE(mode) after the mapZoomSetGoal calls that must stay jal. Without them the function is 14 words off; the same result with C dead stores matches but is not allowed.
@@ -62,8 +63,13 @@ Proc_sbtlSTP	code_0028EB80	raidou1 0x26C	1 of 155 words differ	docs/matching/cod
 sbtlCallBtlGetSkilltbl10	code_0028EB80	raidou1 0x110	65 of 66 words differ	docs/matching/code_0028EB80.md	21		
 sbtlCallBtlSearchUnitID24	code_0028EB80	raidou1 0x228	104 of 132 words differ	docs/matching/code_0028EB80.md	29		
 sbtlCallMemset18	code_0028EB80	raidou1 0x894	514 of 514 words differ	docs/matching/code_0028EB80.md	37		
+sbtlCallBtlGetNumUnitGroupID	code_00298540	raidou1 0x26C	1 of 155 words differ	docs/matching/code_00298540.md	3		
+sbtlRndEncCalc	code_00298540	raidou1 0x204	78 of 130 words differ	docs/matching/code_00298540.md	11		
 sbtlEntryItemList	code_002999C0	raidou1 0x128	59 of 71 words differ	docs/matching/code_002999C0.md	3		
 sbtlEntryItemList_Type	code_002999C0	raidou1 0x11C	54 of 68 words differ	docs/matching/code_002999C0.md	11		
+Proc_sbtlDvltk	code_002A20E0	raidou1 0x22C	16 of 139 words differ	docs/matching/code_002A20E0.md	3		
+Draw_sbtlDvltk	code_002A20E0	raidou1 0x114	29 of 69 words differ	docs/matching/code_002A20E0.md	11		
+sbtlReleaseDvltk_List	code_002A20E0	raidou1 0xE0	27 of 56 words differ	docs/matching/code_002A20E0.md	19		
 Init_sbtlDraw	code_002A38D8	raidou1 0x74	25 of 30 words differ	docs/matching/code_002A38D8.md	3		
 sbtlReleaseSM_List	code_002A38D8	raidou1 0xE0	27 of 56 words differ	docs/matching/code_002A38D8.md	11		
 sbtlReleaseEXP_List	code_002A38D8	raidou1 0xE0	27 of 56 words differ	docs/matching/code_002A38D8.md	19		
@@ -201,12 +207,15 @@ evtUnitManagerPrimaryFunc	event/evtUnitManager	raidou1 0x6E8	18 of 442 words dif
 MakeLightPacket	event/evtUnitManager	raidou1 0x1F4, raidou2 0x1F4	89 of 115 words differ	docs/matching/event/evtUnitManager.md	17		
 evtLeaf28	evtTmxPreLoad	raidou1 0x4C	17 of 20 words differ	docs/matching/evtTmxPreLoad.md	3		
 EndCallback_evtTmxPreLoad	evtTmxPreLoad	raidou1 0x180	53 of 94 words differ	docs/matching/evtTmxPreLoad.md	11		
+mapNakamaStockOnCheck_fld	facility/fclCombineInit	raidou1 0xF4	45 of 60 words differ	docs/matching/facility/fclCombineInit.md	3		
 fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/fclDrawBack.md	3		
 fldGbInit_Field	fclDrawBack	raidou1 0x94	7 of 37 words differ	docs/matching/fclDrawBack.md	11		
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	12		
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.	
+fldProcTrigSequence	field/fldProcess	raidou1 0x12C, raidou2 0x12C	10 of 75 words differ	docs/matching/field/fldProcess.md	22		
+MskL2Task	field/fldProcess	raidou1 0x1E0	8 of 120 words differ	docs/matching/field/fldProcess.md	31		
 MessageRequestNS	interface/frFont	raidou1 0x40, raidou2 0x40	7 of 15 words differ	docs/matching/interface/frFont.md	3		
 frCallGetFontWidth2	interface/frFont	raidou1 0x260	80 of 151 words differ	docs/matching/interface/frFont.md	27		
 frSetFont	interface/frFont	raidou1 0x148, raidou2 0x148	4 of 82 words differ	docs/matching/interface/frFont.md	35		
@@ -236,6 +245,7 @@ slDrawInfo	mc/slMain	raidou1 0x39C	7 of 231 words differ	docs/matching/mc/slMain
 fmProcTrigSequence_slMain	mc/slMain	raidou1 0x300	68 of 190 words differ	docs/matching/mc/slMain.md	19		
 slQueryYesNoDraw	mc/slMain	raidou1 0x960	11 of 600 words differ	docs/matching/mc/slMain.md	27		
 itfMenuGetMenuNum	newbattle/nbTarSelProcess	raidou1 0x20, raidou2 0x20	0 of 8 words differ	docs/matching/newbattle/nbTarSelProcess.md	3		
+datCallCalcGetBadStatus2	newdata/datCalc	raidou1 0x7C	16 of 29 words differ	docs/matching/newdata/datCalc.md	3		
 sbtlCheckHitArea_sbtlDMG	sbtlDMG	raidou1 0x270	71 of 154 words differ	docs/matching/sbtlDMG.md	3		
 sbtlCreateHitC_New_sbtlDMG	sbtlDMG	raidou1 0x884	294 of 545 words differ	docs/matching/sbtlDMG.md	11		
 sbtlGetSide	sbtlDMG	raidou1 0x114	53 of 70 words differ	docs/matching/sbtlDMG.md	21		
@@ -246,6 +256,8 @@ sbtlReleaseHitC_List	sbtlDMG	raidou1 0x158	69 of 84 words differ	docs/matching/s
 sbtlSetHitPos	sbtlDMG	raidou1 0x4B4	293 of 302 words differ	docs/matching/sbtlDMG.md	61		
 sbtlSetHitPos_XYZ	sbtlDMG	raidou1 0x194	3 of 101 words differ	docs/matching/sbtlDMG.md	71		
 sbtlFunc	sbtlEff_00289E50	raidou1 0x144	58 of 79 words differ	docs/matching/sbtlEff_00289E50.md	3		
+CalcBadStatus	sbtl_0029BFB8	raidou1 0x3B0	204 of 218 words differ	docs/matching/sbtl_0029BFB8.md	3		
+sbtlRefSbtl62	sbtl_0029BFB8	raidou1 0xF8	20 of 61 words differ	docs/matching/sbtl_0029BFB8.md	11		
 sdfDefaultMain	sdf/sdfDefaultMain	raidou1 0x188, raidou2 0x188		docs/matching/sdf/sdfDefaultMain.md	3		inherited, alternatives not recorded.
 sdfGrStdDrawEnvPredraw	sdf/sdfDraw	raidou1 0x1B8, raidou2 0x1B8	25 of 110 words differ	docs/matching/sdf/sdfDraw.md	3		
 sdfFileCmdAnalyzeFileName	sdf/sdfFileIO	raidou1 0x168, raidou2 0x168	4 of 90 words differ	docs/matching/sdf/sdfFileIO.md	3		

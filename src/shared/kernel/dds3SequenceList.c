@@ -172,7 +172,7 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitEpSave);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckEpSave);
 
-void CallField(DDS3_ADMINI_CALL flg, struct SceneParam_t *param)
+void CallField(DDS3_ADMINI_CALL flg, struct fldSceneParam_t *param)
 {
     if (param == NULL && flg == DDS3_ADMINI_CALL_NEW) {
         InitOoyTest();

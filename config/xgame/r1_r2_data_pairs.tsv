@@ -219,7 +219,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x003BF4A0	0x004408B0	ppos01Point	.data	0x30	yes	code-ref
 0x003BF4D0	0x00440920	fldData3	.data	0xD0	no	code-ref
 0x003BF5A0	0x00440A00	gfldSceneParam	.data	0x38	yes	code-ref
-0x003BF5E8	0x00440A38	SequenceControl	.data	0x38	yes	code-ref
+0x003BF5E8	0x00440A38	gMapBtlReturnParam	.data	0x38	yes	code-ref
 0x003BF6A0	0x00440B00	fldTestLineVertex	.data	0x20	yes	code-ref
 0x003BF6C0	0x00440B20	fldTestLineColor	.data	0x10	yes	code-ref
 0x003BF6D0	0x00440B30	mapCutSetCamData	.data	0x10	yes	code-ref
@@ -9230,11 +9230,11 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046DD00	0x004E2600	sbtlCallBitCheckData	.sdata	0x4	yes	run-order-size
 0x0046DD04	0x004E2604	sbtlData102	.sdata	0x4	yes	code-ref
 0x0046DD08	0x004E2608	sbtlData103	.sdata	0x4	yes	code-ref
-0x0046DD0C	0x004E2610	gFldSe3DNum	.sdata	0x4	yes	code-ref
-0x0046DD10	0x004E2614	nbGetEncountMaxData	.sdata	0x4	yes	run-order-size
-0x0046DD14	0x004E2618	nbGetEncountMaxData2	.sdata	0x4	yes	code-ref
+0x0046DD0C	0x004E2610	sb_gen_d_flag	.sdata	0x4	yes	code-ref
+0x0046DD10	0x004E2614	datRndEncBase	.sdata	0x4	yes	run-order-size
+0x0046DD14	0x004E2618	encmax	.sdata	0x4	yes	code-ref
 0x0046DD18	0x004E261C	tbldata	.sdata	0x4	yes	code-ref
-0x0046DD1C	0x004E263C	datData7	.sdata	0x4	yes	code-ref
+0x0046DD1C	0x004E263C	aisyo_tbldata	.sdata	0x4	yes	code-ref
 0x0046DD20	0x004E2640	GlobalPID	.sdata	0x4	no	code-ref
 0x0046DD24	0x004E2B50	sbtlData104	.sdata	0x4	yes	code-ref
 0x0046DD28	0x004E2B54	GlobalCurrentArray	.sdata	0x4	yes	code-ref
@@ -9669,7 +9669,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046EBE4	0x004E3B64	fldCommand_SET_ALLPANELData	.sdata	0x4	yes	code-ref
 0x0046EBE8	0x004E3B68	fldData43	.sdata	0x4	yes	code-ref
 0x0046EBEC	0x004E3B6C	nmeData	.sdata	0x4	yes	code-ref
-0x0046EBF0	0x004E3B70	nmeData2	.sdata	0x10	yes	code-ref
+0x0046EBF0	0x004E3B70	nmeData2	.sdata	0x8	yes	code-ref
+0x0046EBF8	0x004E3B78	titleStartSubData	.sdata	0x8	yes	code-ref
 0x0046EC00	0x004E3B80	titleFunc6Data	.sdata	0x4	yes	code-ref
 0x0046EC04	0x004E3B84	titleData	.sdata	0x4	yes	code-ref
 0x0046EC08	0x004E3B88	sbtlData127	.sdata	0x8	yes	code-ref
@@ -11721,7 +11722,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x004D56F0	0x00565360	pbWork3	.bss	0x10	no	code-ref
 0x004D6540	0x005663B0	sbtlWork2	.bss	0x4F4	no	code-ref
 0x004D6A34	0x005669E4	sbtlBtlLoadAttackHitDataDecodeSubWork	.bss	0x54	no	code-ref
-0x004D6A88	0x00566BA8	sbtlWork3	.bss	0xD0	no	code-ref
+0x004D6A88	0x00566BA8	sb_gen_work	.bss	0xD0	no	code-ref
 0x004D6B58	0x00566C88	sbtlExt_CalcProcessWork	.bss	0x18	no	code-ref
 0x004D6B70	0x00566CA0	sbtlExt_CreateBufferWork	.bss	0x7B7	no	code-ref
 0x004D85D8	0x00569468	sbtlWork4	.bss	0x18	no	code-ref

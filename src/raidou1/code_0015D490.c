@@ -703,7 +703,7 @@ void mapIfDrawES(void) {
     eglLinkTest(1, 0, 128, 3, 0, 0, 1, 1);
     area = fldGlobalBase.nameD;
     cnt = sbtlGetRndEncCnt();
-    max = nbGetEncountMax(area);
+    max = sbtlGetRndEncMax(area);
     if (max < cnt) {
         cnt = max;
     }

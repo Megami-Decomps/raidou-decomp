@@ -1183,7 +1183,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0012C950	0x00132388	mapIdouGo_Idx	no	no	asm/raidou1/code_0012B6A0.s	asm/raidou2/code_00130870.s	run-order-near
 0x0012CA90	0x00132518	mapIsFldKeyFreeSub3	yes	yes	asm/raidou1/code_0012B6A0.s	asm/raidou2/code_00130870.s	masked-hash-in-gap
 0x0012CA98	0x00132520	ProcSequence	no	no	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	run-order-near
-0x0012F7A0	0x00135710	IsFldKeyFree	no	no	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	run-order-near
+0x0012F7A0	0x00135710	fldProcDraw	no	no	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	run-order-near
 0x0012F8D8	0x00135858	fldAutoMapSeqSetFlag	no	yes	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	unique-reloc-hash
 0x0012F8F0	0x00135870	fldAutoMapSeqClearFlag	no	yes	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	unique-reloc-hash
 0x0012F908	0x00135888	fldAutoMapSeqTestFlag	no	yes	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	masked-hash-in-gap

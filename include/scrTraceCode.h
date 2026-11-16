@@ -4,6 +4,8 @@
 #include "common.h"
 #include "scr.h"
 
+extern scrProcessWork_s *nowpwork;
+
 f32 scrGetFloatPara(s32 n);
 s32 scrGetIntPara(s32 n);
 s32 scrGetLabelCodeAddress(s32 labelindex);

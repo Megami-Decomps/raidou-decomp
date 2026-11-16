@@ -23,7 +23,9 @@ typedef struct SBTL_PANEL {
     struct sprHandle_t *resources;
     u8 pad0C[4];
     struct sprHandle_t *hPanelSpr3;
-    u8 pad14[0xC];
+    struct sprHandle_t *hPanelSpr4;
+    struct sprHandle_t *hPanelSpr5;
+    u8 pad1C[4];
     u32 flg;
 } SBTL_PANEL;
 
@@ -81,7 +83,7 @@ typedef struct SBTL_WORK {
     u8 *evtloadpData;
     s32 evtload_evtno;
     s16 eventno;
-    u8 pad212[2];
+    s16 eventcounter;
     s16 eventgstat;
     u8 pad216[2];
     s32 eventListID;
@@ -268,7 +270,7 @@ typedef struct SBTL_DEVIL_DATA {
     u8 pad08[2];
     s16 field0A;
     s16 aisyoId;
-    u8 field0E;
+    s8 field0E; /* race, copied to sdatUnitWork_t.raceId */
     u8 field0F;
     u8 pad10[4];
     s16 field14;
@@ -283,7 +285,7 @@ typedef struct SBTL_DEVIL_DATA {
     u8 pad44[0x60 - 0x44];
     f32 field60;
     f32 field64;
-    u8 pad68[2];
+    s16 field68;                /* read by sbtlBtlLoadHuumaMesDataSub */
     s16 huumaMesNo;
     u8 pad6C[4];
 } SBTL_DEVIL_DATA;
@@ -313,10 +315,22 @@ typedef struct SBTL_PACK_SLOT {
 
 SBTL_PLAYER_DATA *sbtlGetPlayerData(void);
 s32 sbtlCallBtlGetPlayerData3(void);
+void sbtlCallBtlGetPlayerData6(s32 num);
 s32 sbtlCallBtlGetMotionVisualData(struct SBTLUNIT_WORK *wk, s32 motionID, s16 bframe, s16 aframe, s8 flg);
 f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type);
 s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 flg);
 s32 sbtlCallBtlGetSkilltbl8(struct SBTLUNIT_WORK *wk, u32 flg);
+
+/* One generator entry of a stage (HD SB_ENCOUNT1, PS2 layout). */
+typedef struct SB_ENCOUNT1 {
+    s32 type;       /* 0x00: 2-5 start a generator */
+    s16 pos;
+    s16 devil;
+    s16 groupID;
+    s16 disp_max;
+    s16 zan_num;    /* 0x0C: copied to SB_GENERATOR_WORK.zan_cnt */
+    s16 groupID2;
+} SB_ENCOUNT1;
 
 /* One battle stage's row (0x100 bytes) in the table sbtlData100 points at, indexed by SBTL_WORK.stageNo. */
 typedef struct SBTL_STAGE_DATA {
@@ -325,7 +339,8 @@ typedef struct SBTL_STAGE_DATA {
     s8 encPoint;    /* 0x03: mapEncPointGet point */
     u16 flags;      /* 0x04: 0x20 stops units at battle start */
     s16 bgmId;      /* 0x06 */
-    u8 pad08[0xF8];
+    u8 pad08[0x28];
+    SB_ENCOUNT1 enc1[13]; /* 0x30 */
 } SBTL_STAGE_DATA;
 
 extern SBTL_STAGE_DATA *sbtlData100;
@@ -364,9 +379,22 @@ typedef struct SBTL_STP {
 /* Devil talk window (HD SBTLDVLTK_WORK, with the work's own handle first in R1). Partial layout. */
 typedef struct SBTLDVLTK_WORK {
     sdfMemHandle_t *handle;
-    u8 pad04[0x20 - 0x4];
-    s32 status; /* SBTLDVLTK_ST */
-    u8 pad24[0xE0 - 0x24];
+    s32 listID;
+    s32 devilid;
+    s32 sklid;
+    s32 seikaku;
+    s32 counter;
+    s32 cmpcounter;
+    SBTLDVLTK_MODE mode;
+    SBTLDVLTK_ST status;
+    s32 resetcounter;
+    s32 cmpreset;
+    s32 samecnt;
+    s32 sincount;
+    s32 ofs_x;
+    s32 ofs_y;
+    s32 alpha;
+    u8 pad40[0xE0 - 0x40];
     struct SBTLDVLTK_WORK *prev;
     struct SBTLDVLTK_WORK *next;
 } SBTLDVLTK_WORK;
@@ -601,7 +629,7 @@ s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *lwk, u8 flg);
 s32 sbtlCallPadVibeFadeUpdate(struct SBTLEFF_LISTWORK *lwk);
 s32 sbtlCallSetOt(void);
 s32 sbtlCallSin2(void);
-s32 sbtlCallSin3(struct SBTLDVLTK_LISTWORK *lwk);
+s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk);
 s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_WORK *sbtlRefSbtl38(void);
 f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */
@@ -632,6 +660,8 @@ s32 sbtlRefSbtl45(void);
 void sbtlInitTutorial(void);
 s32 sbtlRefSbtl47(void);
 s32 sbtlRefSbtl62(struct SBTLUNIT_WORK *wk);
+void sbtlBtlSetDamageSub(struct SBTLUNIT_WORK *wk);
+void sbtlBtlGetDamageGBSub(sdatUnitWork_t *unit, sdatParaWork_t *para);
 s32 sbtlReleaseDelList(struct SBTLEFF_DELLISTWORK *lwk, u8 flg);
 s32 sbtlReleaseDvltk_List(struct SBTLDVLTK_LISTWORK *lwk, u8 flg);
 s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg);

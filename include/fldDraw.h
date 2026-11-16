@@ -24,6 +24,7 @@ typedef struct fldSpriteVertex_t {
 } fldSpriteVertex_t;
 
 void fldDrawFrameSprite(void);
+void fldPoint3To2(f32 *x2, f32 *y2, f32 x3, f32 y3, f32 z3);
 s32 fldPoint3ToZ(f32 x3, f32 y3, f32 z3);
 void rsetOtOfs(s32 otofs);
 void rsetTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst);

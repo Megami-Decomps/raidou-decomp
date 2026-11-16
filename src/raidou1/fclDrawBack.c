@@ -128,7 +128,7 @@ void fldGbInit_System(s32 mode) {
     fldGlobalBase.wordF8 = 0;
     fldGlobalBase.z = 0.0f;
     fldGlobalBase.prevX = 0.0f;
-    fldGlobalBase.prevY = 0.0f;
+    fldGlobalBase.btlReturnMap = 0;
     fldGlobalBase.bgZoomSet = 0;
     fldGlobalBase.hitX = 0.0f;
     fldGlobalBase.hitY = 0.0f;

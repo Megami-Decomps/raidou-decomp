@@ -1396,7 +1396,7 @@
 0x00132388	mapIdouGo_Idx	hd	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD fld.mapIdouGo_Idx score 6.8 flag -: calls2 callers-of-match votes2 st1:call r1-only
 0x00132518	mapIsFldKeyFreeSub3	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0012B6A0, neighbour mapIdouGo_Idx; called by IsFldKeyFree
 0x00132520	ProcSequence	hd	hd: Raidou HD fld.ProcSequence, score 18.15 band A
-0x00135710	IsFldKeyFree	hd	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD AtlFieldUtil.IsFldKeyFree score 6.7 flag -: calls3 callers-of-match votes4 st2:call r2-only
+0x00135710	fldProcDraw	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R2 fldProcTrigSequence starts it with fldProcDrawName, same site as R1; replaces IsFldKeyFree
 0x00135858	fldAutoMapSeqSetFlag	inferred	SMT3HD name via SLUS_209.11 0x00125990, reloc-identical; map-silent
 0x00135870	fldAutoMapSeqClearFlag	inferred	SMT3HD name via SLUS_209.11 0x001259A8, shared-hash-in-run; map-silent
 0x00135888	fldAutoMapSeqTestFlag	inferred	SMT3HD name via SLUS_209.11 0x001259C0, shared-hash-in-run; map-silent
@@ -14026,7 +14026,7 @@
 0x00440920	fldData3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldMAPMenu, fldBtlDebugDevilNameListDrawSub
 0x004409E8	fldMAPMenuData6	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldMAPMenu
 0x00440A00	gfldSceneParam	inferred	method=hd; p=0.37 (n=D_r1_003BF5A0); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
-0x00440A38	SequenceControl	hd	hd: Raidou HD fld.SequenceControl, 4 of 5 functions agree, high confidence
+0x00440A38	gMapBtlReturnParam	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fldProcTrigSequence copies the return scene from gMapBtlReturnParam when fldGb->btl_return_map; same site, fldSceneParam_t layout; replaces SequenceControl
 0x00440A70	mapKiretaLabelData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapKiretaLabel
 0x00440A80	ProcSequenceData9	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by ProcSequence (14 of 40 refs, 12 functions)
 0x00440B00	fldTestLineVertex	inferred	method=smt3-ref; p=0.98 (n=D_r1_003BF6A0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=ooyTestLine3D
@@ -28267,9 +28267,9 @@
 0x004E2604	sbtlData102	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlRndEncCalc, sbtlRndEncTopPriorityMap
 0x004E2608	sbtlData103	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlRndEncCalc, sbtlRndEncTopPriorityMap
 0x004E260C	sbtlGetRndEncTypeData5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetRndEncType
-0x004E2610	gFldSe3DNum	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046DD0C); tier=B; source=smt3; evidence=smt3-ref/close: nfun=1, other=0, sim=0.7857, games=1, size=True, sec=True, fn=sbtlInitSBtlSub
-0x004E2614	nbGetEncountMaxData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by nbGetEncountMax
-0x004E2618	nbGetEncountMaxData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by nbGetEncountMax (2 of 4 refs, 3 functions)
+0x004E2610	sb_gen_d_flag	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlClearGeneratorWork zeroes sb_gen_d_flag after the loop; only code_00298540 uses it; replaces gFldSe3DNum
+0x004E2614	datRndEncBase	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetRndEncMax reads datRndEncBase at this site; replaces nbGetEncountMaxData
+0x004E2618	encmax	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2
 0x004E261C	tbldata	hd	hd: Raidou HD sBtlItem.tbldata, 5 of 6 functions agree, high confidence
 0x004E2620	sbtlGetIdlingData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlGetIdling (6 of 12 refs, 6 functions)
 0x004E2624	sbtlGetIdlingData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlGetIdling (2 of 4 refs, 3 functions)
@@ -28278,7 +28278,7 @@
 0x004E2630	sbtlData170	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlInitSBtlSub3, sbtlLeaf110
 0x004E2634	sbtlData171	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlInitSBtlSub3, sbtlLeaf110
 0x004E2638	sbtlData172	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlInitSBtlSub3, sbtlGetIdling
-0x004E263C	datData7	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: datCreateDevilUnitEx, datCallCheckStrongSwordAttack, sbtlGetAisyotbl
+0x004E263C	aisyo_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetAisyotbl indexes aisyo_tbldata; replaces datData7
 0x004E2640	GlobalPID	hd	hd: Raidou HD sBtlDvltk.GlobalPID, 5 of 5 functions agree, high confidence
 0x004E2648	sdatData	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit sdata_004E259C, section .sdata, size 0x8
 0x004E2650	sdatData2	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit sdata_004E259C, section .sdata, size 0x8
@@ -29003,6 +29003,7 @@
 0x004E3B68	fldData43	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldCommand_SET_ALLPANEL, fldFunc27
 0x004E3B6C	nmeData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: nmeCallMemGetPtr2, nmeScrCmdGETDREAMCOMPARESub
 0x004E3B70	nmeData2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: nmeStart, nmeCallMemGetPtr
+0x004E3B78	titleStartSubData	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=u8 [4][2] width/height table read by titleStartSub and titleStartSub2
 0x004E3B80	titleFunc6Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by titleFunc6
 0x004E3B84	titleData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: titleFunc7, titleLeaf
 0x004E3B88	sbtlData127	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: sbtlCallGrAllocPacketBuff4, titleCallMatFreeDelayed, titleCallMatNew
@@ -31514,7 +31515,7 @@
 0x00566170	sbtlHitCProc_IdouWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlHitCProc_Idou
 0x005663B0	sbtlWork2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlLoadAttackHitData_pData, sbtlInitLoadAttackHitData_pData, sbtlForceDelete_AttackHitData
 0x005669E4	sbtlBtlLoadAttackHitDataDecodeSubWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlBtlLoadAttackHitDataDecodeSub
-0x00566BA8	sbtlWork3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: sbtlClearGeneratorWork, sbtlCallBtlClearGeneratorWork, sbtlCheckGeneratorGroupID
+0x00566BA8	sb_gen_work	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlClearGeneratorWork clears sb_gen_work entries, same site; replaces sbtlWork3
 0x00566C78	sbtlLeaf110Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf110
 0x00566C88	sbtlExt_CalcProcessWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlExt_CalcProcess (4 of 12 refs, 5 functions)
 0x00566CA0	sbtlExt_CreateBufferWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlExt_CreateBuffer (4 of 12 refs, 5 functions)

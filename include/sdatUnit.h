@@ -33,6 +33,8 @@ typedef struct SBTL_AISYO_TBL {
     s32 word[16];
 } SBTL_AISYO_TBL;
 
+extern SBTL_AISYO_TBL *aisyo_tbldata;
+
 /* A unit's work: the player and each stock devil, and embedded in SBTLUNIT_WORK. */
 typedef struct sdatUnitWork_t {
     /* 0x00 */ u32 flag;
@@ -40,8 +42,10 @@ typedef struct sdatUnitWork_t {
     /* 0x05 */ u8 pad05;
     /* 0x06 */ s16 devilId;
     /* 0x08 */ s8 level;
-    /* 0x09 */ u8 seikaku;
-    /* 0x0A */ u8 pad0A[0xA];
+    /* 0x09 */ s8 seikaku;
+    /* 0x0A */ u8 pad0A[0x6];
+    /* 0x10 */ s16 vice; /* HD vice, spent by sbtlDecVice */
+    /* 0x12 */ u8 pad12[0x2];
     /* 0x14 */ s32 exp;
     /* 0x18 */ sdatParaWork_t now;
     /* 0x30 */ sdatParaWork_t backup;
@@ -50,7 +54,9 @@ typedef struct sdatUnitWork_t {
     /* 0x78 */ sdatParaWork_t huuma;
     /* 0x90 */ s32 haveskill[10];
     /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
-    /* 0xBC */ u8 padBC[0x14];
+    /* 0xBC */ s16 badst_cnt;  /* turns left on the current bad status */
+    /* 0xBE */ s16 badst_cnt2; /* frame counter for the status's periodic effect */
+    /* 0xC0 */ u8 padC0[0x10];
     /* 0xD0 */ SBTL_AISYO_TBL aisyo;
 } sdatUnitWork_t;
 

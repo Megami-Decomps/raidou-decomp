@@ -33,6 +33,10 @@
 #include "sndAt3.h"
 #include "mapData.h"
 #include "dds3KernelCore.h"
+#include "dds3KernelDraw.h"
+#include "sBtlDvltk.h"
+#include "code_0015D490.h"
+#include "jmsMisc.h"
 
 
 
@@ -44,6 +48,7 @@ typedef struct {
 } fldSequenceController_t;
 
 extern const char fldProcDrawName[];
+extern const char fldStrFldProcSequence[];
 extern void fldAutoMapSeqSetFlag(u32 flag);
 extern effBlurScatterWork_t *hDistortionBlur;
 extern void fldEncountClearFlag(u32 flag);
@@ -286,7 +291,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapNakamaSkilIs_SetBit(DDS3_GBWK->mapSummonID);
         fldGlobalBase.nameD = fldGetFldBgNameList(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         datDebugPrintf("fld_process_init:4 SEVOL:%d\n", sndProcSequenceSub4());
-        fldGlobalBase.prevY = 0;
+        fldGlobalBase.btlReturnMap = 0;
         fldGlobalBase.float20C = fldGlobalBase.focusX;
         fldGlobalBase.float210 = fldGlobalBase.focusY;
         fldGlobalBase.float214 = fldGlobalBase.focusZ;
@@ -1392,7 +1397,45 @@ INCLUDE_ASM(const s32, "field/fldProcess", ProcSequence);
 INCLUDE_ASM(const s32, "field/fldProcess", ProcSequence);
 #endif
 
-INCLUDE_ASM(const s32, "field/fldProcess", IsFldKeyFree);
+#ifdef VERSION_RAIDOU1
+s32 fldProcDraw(struct dds3ProcessID_t *id)
+{
+    if (dds3AdminiGetNextSequence() != -1) {
+        return 0;
+    }
+    if (fldAutoMapSeqFlags.stage < 3) {
+        return 0;
+    }
+    switch (fldAutoMapSeqFlags.stage) {
+    case 11:
+    case 14:
+    case 15:
+        mapIsFldKeyFreeSub3();
+        break;
+    }
+    mapEffEplAllDrawTask();
+    mapCallMemset2();
+    mapIsFldKeyFreeSub4();
+    if (dds3NullDrawProc()) {
+        return 0;
+    }
+    if (fldGlobalBase.ifDrawOn && !dds3BistaCheck()) {
+        if (!sbtlExt_ChkMes()) {
+            mapCallEnableMode(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.encountState);
+            mapIfDrawES();
+        }
+        if (fldEncountTestFlag(0x40) && !fldGlobalBase.noInpPlCnt && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2)) {
+            mapIfDrawMsk();
+        }
+    }
+    mapIsFldKeyFreeSub();
+    fldCallSetOt2();
+    mapSeNakamaDelayTask();
+    return 0;
+}
+#else
+INCLUDE_ASM(const s32, "field/fldProcess", fldProcDraw);
+#endif
 
 void fldAutoMapSeqSetFlag(u32 flag)
 {
@@ -1424,7 +1467,41 @@ s32 fldEncountTestFlag(u32 flag)
     return (fldEncountFlags & flag) != 0;
 }
 
+/* NON_MATCHING: 65 of 75 words match.  */
+#ifdef NON_MATCHING
+void fldProcTrigSequence(fldSceneParam_t *srcParam, s32 mode)
+{
+    fldSceneParam_t *scene = &gfldSceneParam;
+    fldSequenceController_t *controller = &fldAutoMapSeqFlags;
+
+    scene->loadPoint = -1;
+    fldGlobalBase.mapCallMode = 0;
+    controller->stage = 0;
+    controller->flags = 0;
+    scene->mode = mode;
+    if (fldGlobalBase.btlReturnMap != 0) {
+        srcParam = &gMapBtlReturnParam;
+        scene->loadField = srcParam->loadField;
+        scene->flag = srcParam->flag;
+        scene->loadFloor = srcParam->loadFloor;
+        scene->loadPoint = srcParam->loadPoint;
+        strcpy(scene->FoceScript, srcParam->FoceScript);
+        scene->loadMode = srcParam->loadMode;
+    } else if (srcParam != NULL && mode == 0) {
+        scene->flag = srcParam->flag;
+        scene->loadField = srcParam->loadField;
+        scene->loadFloor = srcParam->loadFloor;
+        scene->loadPoint = srcParam->loadPoint;
+        strcpy(scene->FoceScript, srcParam->FoceScript);
+        scene->loadMode = srcParam->loadMode;
+    }
+    dds3StartProcess(fldStrFldProcSequence, 1012, 0, 0, ProcSequence, NULL, NULL);
+    dds3StartProcess(fldProcDrawName, 11016, 0, 0, fldProcDraw, NULL, NULL);
+    fldProcShutDownData = 1;
+}
+#else
 INCLUDE_ASM(const s32, "field/fldProcess", fldProcTrigSequence);
+#endif
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
 
@@ -1560,7 +1637,58 @@ INCLUDE_RODATA(const s32, "field/fldProcess", mapCallMapTable2);
 #endif
 
 #ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 112 of 120 words match.  */
+#ifdef NON_MATCHING
+s32 MskL2Task(void)
+{
+    fldSequenceController_t *seq = &fldAutoMapSeqFlags;
+    s32 idx;
+
+    if (!fldEncountTestFlag(0x40)) {
+        return 0;
+    }
+    if (fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 2) {
+        return 0;
+    }
+    if (jmsChkCommonInputData[0] >= 0) {
+        return 0;
+    }
+    if (fldGlobalBase.noInpPlCnt) {
+        return 0;
+    }
+    if (evtBitCheck(2274) || evtBitCheck(2275) || evtBitCheck(2291) || evtBitCheck(2292)) {
+        idx = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
+        if (idx != -1 && sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[idx]) == 11) {
+            fldReleaseUnitPad();
+            fldPlayerMotReset();
+            dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrBadMafuHajikiLabel);
+            fldPlayerPosRot();
+            return 0;
+        }
+    }
+    if (evtBitCheck(2274)) {
+        seq->stage = 43;
+        fldReleaseUnitPad();
+        mapCallNakamaWakeUp();
+    } else if (evtBitCheck(2275)) {
+        fldReleaseUnitPad();
+        fldGlobalBase.word12C = -1;
+        seq->stage = 42;
+        mapCallNakamaWakeUp3();
+    } else if (evtBitCheck(2291)) {
+        seq->stage = 44;
+        fldReleaseUnitPad();
+        mapNakamaZeniStart();
+    } else if (evtBitCheck(2292)) {
+        seq->stage = 45;
+        fldReleaseUnitPad();
+        mapNakamaHiroStart();
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "field/fldProcess", MskL2Task);
+#endif
 #else
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask_fld);
 INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData11);

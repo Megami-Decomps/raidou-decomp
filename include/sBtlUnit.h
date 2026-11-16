@@ -228,7 +228,7 @@ struct SBTLUNIT_WORK {
     s16 field370;
     u8 pad372[0x37C - 0x372];
     u32 field37C; /* attribute bits; sbtlCheckAisyo_Old takes the lowest */
-    u8 pad380[0x4];
+    u32 field380; /* attribute bits ORed into the affinities field37C selects */
     s16 field384;
     u8 pad386[0x3A0 - 0x386];
     s32 major;

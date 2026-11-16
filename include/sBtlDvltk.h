@@ -7,6 +7,14 @@
 struct SBTLDVLTK_LISTWORK;
 struct SBTLDVLTK_WORK;
 struct SBTLUNIT_WORK;
+struct dds3ProcessID_t;
+struct sprHandle_t;
+
+extern struct dds3ProcessID_t *sbtlData104;
+extern struct sprHandle_t *sbtlData105;
+
+struct sprHandle_t *sbtlGetSpriteHandle(void);
+s32 sbtlDrawText(struct SBTLDVLTK_WORK *dwk);
 
 char *GetDrawText(u32 rgba, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode, struct SBTLDVLTK_WORK *_dwk);
 s32 sbtlCallBtlCheckMsgMemType(struct SBTLUNIT_WORK *wk);

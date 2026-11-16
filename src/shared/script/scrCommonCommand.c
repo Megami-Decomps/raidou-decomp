@@ -9,6 +9,7 @@
 #include "EventBit.h"
 #include "dds3KernelCore.h"
 #include "dds3KernelDraw.h"
+#include "fldProcess.h"
 
 static inline f32 scrFabsf(f32 x)
 {
@@ -215,9 +216,45 @@ INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommandPrintString);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommandPrintInteger);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FADE_IN);
+s32 scrCommand_FADE_IN(void)
+{
+    if (scrGetCommandTimer() == 0) {
+        switch (scrGetIntPara(0)) {
+        case 0:
+            dds3FadeModeSet(0);
+            dds3FadeIn(0, 0, 0, scrGetIntPara(1));
+            break;
+        case 1:
+            dds3FadeModeSet(0);
+            dds3FadeIn(0xFF, 0xFF, 0xFF, scrGetIntPara(1));
+            break;
+        default:
+            return 1;
+        }
+        return 0;
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FADE_OUT);
+s32 scrCommand_FADE_OUT(void)
+{
+    if (scrGetCommandTimer() == 0) {
+        switch (scrGetIntPara(0)) {
+        case 0:
+            dds3FadeModeSet(0);
+            dds3FadeOut(0, 0, 0, scrGetIntPara(1));
+            break;
+        case 1:
+            dds3FadeModeSet(0);
+            dds3FadeOut(0xFF, 0xFF, 0xFF, scrGetIntPara(1));
+            break;
+        default:
+            return 1;
+        }
+        return 0;
+    }
+    return 1;
+}
 
 s32 scrCommandFadeBackgroundOut(void)
 {
@@ -229,7 +266,16 @@ s32 scrCommandFadeBackgroundOut(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", bfWaitCbScreenFadeB);
+s32 bfWaitCbScreenFadeB(void)
+{
+    if (scrGetCommandTimer() == 0) {
+        dds3ChangeBistaMode(BISTA_MODE_MOVE);
+        dds3BistaOutEx(scrGetIntPara(0), scrGetIntPara(1));
+        mapWaitCbScreenFadeBSub(1);
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", bfWaitCbScreenFadeA);
 
@@ -903,7 +949,17 @@ s32 scrCommand_MFILTER_OFF(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommandResetDrawEffects);
+/* body: matched in dds @ 18d1fa88f: src/dds1/script/scrCommonCommand.c:960, match, same function 1.00 (words 20/20, calls 1.00, shape 1.00) */
+s32 scrCommandResetDrawEffects(void)
+{
+    dds3SetBlur(0, 0, 0);
+    dds3Blur2Off(0);
+    dds3MultiBlurOff(0);
+    dds3DistBlurOff(0);
+    dds3RipBlurOff(0);
+    effDisableFramebufferQuad();
+    return 1;
+}
 
 s32 scrCommand_FILTER_ALLOFF(void)
 {

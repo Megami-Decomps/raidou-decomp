@@ -217,11 +217,12 @@ typedef struct fldAreaWork_t
     u8 unkF4[4];
     s32 wordF8;                 /* 0x0F8 */
     s32 wordFC;                 /* 0x0FC */
+#ifdef VERSION_RAIDOU1
     f32 x;                      /* 0x100 */
     f32 y;                      /* 0x104 */
     f32 z;                      /* 0x108 */
     f32 prevX;                  /* 0x10C */
-    f32 prevY;                  /* 0x110 */
+    s32 btlReturnMap;           /* 0x110: nonzero after a battle, the field reloads from gMapBtlReturnParam (HD btl_return_map) */
     s32 bgZoomSet;              /* 0x114: set to 1 after fldBgZoomTest(3); never a float */
     f32 hitX;                   /* 0x118 */
     f32 hitY;
@@ -231,7 +232,6 @@ typedef struct fldAreaWork_t
     union { f32 float12C; s32 word12C; }; /* 0x12C: Raidou stores -1 */
     s32 mskIndex;               /* 0x130: MSK index from mapNpcTableGetMSK */
     s32 hitValid;               /* 0x134 */
-#ifdef VERSION_RAIDOU1
     s32 word138;                /* 0x138 */
     f32 float13C;               /* 0x13C */
     f32 float140;               /* 0x140 */
@@ -339,13 +339,27 @@ typedef struct fldAreaWork_t
     s32 word32C;                /* 0x32C */
     u8 unk330[4];
     s32 word334;                /* 0x334 */
-    u8 unk338[4];
+    s32 bgDrawOn;               /* 0x338: mapBgDrawOnOff (HD fldDbg->BgDrawOn) */
     s32 word33C;                /* 0x33C */
     u8 unk340[4];
     s32 word344;                /* 0x344 */
     u8 unk348[0x14];
     s32 word35C;                /* 0x35C */
 #else
+    s32 word100;                /* 0x100 */
+    s32 btlReturnMap;           /* 0x104: Raidou 1 has it at 0x110 */
+    s32 bgZoomSet;              /* 0x108 */
+    s32 word10C;                /* 0x10C */
+    s32 word110;                /* 0x110 */
+    s32 word114;                /* 0x114 */
+    f32 camAngle;               /* 0x118: nbMAPSETTAKARA reads it, Raidou 1 at 0x124 */
+    s32 word11C;                /* 0x11C */
+    s32 word120;                /* 0x120 */
+    s32 word124;                /* 0x124 */
+    s32 word128;                /* 0x128 */
+    s32 word12C;                /* 0x12C */
+    s32 word130;                /* 0x130 */
+    s32 word134;                /* 0x134 */
     s32 word138;                /* 0x138 */
     s32 word13C;                /* 0x13C */
     s32 word140;                /* 0x140 */
@@ -561,6 +575,8 @@ typedef struct fldSceneParam_t {
 } fldSceneParam_t;
 
 extern fldSceneParam_t gfldSceneParam;
+/* The scene to return to after a battle (HD gMapBtlReturnParam). */
+extern fldSceneParam_t gMapBtlReturnParam;
 
 typedef struct slFileWork_t {
     s32 w[5];

@@ -5,15 +5,18 @@
 
 void fldEncountClearFlag(u32 flag);
 
-struct SceneParam_t;
 struct fldSceneParam_t;
+struct dds3ProcessID_t;
 struct dds3PoseSet_t;
 struct mdlObj_t;
 
-void fldProcTrigSequence(struct SceneParam_t *srcParam, s32 mode);
+void fldProcTrigSequence(struct fldSceneParam_t *srcParam, s32 mode);
+s32 ProcSequence(struct dds3ProcessID_t *id);
+s32 fldProcDraw(struct dds3ProcessID_t *id);
 void mapCallMap(s32 map, s32 flor, s32 point, char *label);
 
 /* Globals ProcSequence uses outside fldGlobalBase. */
+extern s32 fldProcShutDownData;
 extern s32 ProcSequenceData2;
 extern s32 ProcSequenceData3;
 extern s32 ProcSequenceData4;
@@ -87,7 +90,7 @@ void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 arg);
 void mapProcSequenceSub(s32 map, s32 floor);
 s32 mapProcSequenceSub5(f32 x, f32 z);
 void mapProcSequenceSub9(s32 arg);
-void mapNakamaSkilIs_SetBit(u32 id);
+void mapNakamaSkilIs_SetBit(s32 id);
 s32 fldSaveLabel(void);
 void cmpProcessStartEx_cmpMain(s32 mode);
 s32 slRetuenFromLoadSub(void);
@@ -170,6 +173,11 @@ void fldCallTexFreeDelayed(void);
 void mapEffEplAllCalcTask(void);
 void mapIdouGo_Idx(s32 idx);
 void mapIfMenuInit(void);
+void mapIfDrawMsk(void);
+void mapIsFldKeyFreeSub(void);
+void mapIsFldKeyFreeSub3(void);
+void mapIsFldKeyFreeSub4(void);
+void fldCallSetOt2(void);
 void mapNakamaReturnStart(void);
 void mapNakamaStockOnCheck_fld(void);
 void mapProcSequenceSub10(void);
@@ -180,7 +188,12 @@ void mapProcSequenceSub7(void);
 void mapProcSequenceSub8(void);
 void mapTakaraOpen(void);
 void mdlChkMotionEnd(void);
-void MskL2Task(void);
+extern const char fldStrBadMafuHajikiLabel[];
+s32 MskL2Task(void);
+void mapCallNakamaWakeUp(void);
+void mapCallNakamaWakeUp3(void);
+void mapNakamaZeniStart(void);
+void mapNakamaHiroStart(void);
 void ProcessStart_cmpMap(void);
 void fldDrwZAlloc(void);
 

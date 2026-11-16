@@ -33,7 +33,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00111FF8	001122E8	kernel/dds3SequenceList_00111FF8	c	smt3:names:3+smt3:map:1 of 4 part	kernel/dds3SequenceList
 001123F8	00112998	script/scrScriptProcess	c	smt3:names:12+smt3:map:4+dds:2 of 19	script/scrScriptProcess
 001129F0	00113F08	script/scrTraceCode	c	smt3:names:47 of 50	script/scrTraceCode
-00113F20	00113F78	code_00113F20	asm	none	
+00113F20	00113F78	code_00113F20	c	none	
 00113F88	001157D0	script/scrCommonCommand	c	smt3:names:60+smt3:map:6+dds:3 of 72	script/scrCommonCommand
 00115820	00115870	code_00115820	c	none	
 00115880	00115998	script/scrParameterCommand	c	smt3:map:5 of 5	script/scrParameterCommand
@@ -87,7 +87,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00128378	0012A2A0	code_r1_00128378	c	dds:4 of 64	
 0012A2E0	0012AE68	code_0012A2E0	asm	none	
 0012AF78	0012AF78	field/fldMain	c	smt3:map:1 of 1	field/fldMain
-0012B070	0012B080	code_0012B070	asm	none	
+0012B070	0012B080	code_0012B070	c	none	
 0012B668	0012B668	field/fldTest	c	smt3:names:1 of 1	field/fldTest
 0012B6A0	0012CA90	code_0012B6A0	asm	none	
 0012CA98	00131718	field/fldProcess	c	smt3:names:1 literal-cores:1 of 24	field/fldProcess
@@ -100,7 +100,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00135520	00139308	field/fldFileResolver	c	dds:6 of 53	field/fldFileResolver
 00139330	0013A9B0	code_00139330	c	none	
 0013A9E0	0013A9E0	code_r1_0013A9E0	c	none	
-0013AAC8	0013B0F0	code_0013AAC8	asm	none	
+0013AAC8	0013B0F0	code_0013AAC8	c	none	
 0013B0F8	0013B0F8	code_r1_0013B0F8	c	none	
 0013CDE0	00140258	code_0013CDE0	c	none	
 001403E0	00140798	code_r1_001403E0	c	none	
@@ -327,15 +327,15 @@ start	last_func	unit	kind	evidence	smt3_unit
 00295298	00295298	code_r1_00295298	c	none	
 00295390	00297C30	code_00295390	asm	none	
 00297EF0	00297EF0	code_r1_00297EF0	c	none	
-00298540	00299950	code_00298540	asm	none	
+00298540	00299950	code_00298540	c	none	
 00299970	00299970	code_r1_00299970	c	none	
 002999C0	00299E40	code_002999C0	c	none	
 00299E80	00299E80	newbattle/nbActionProcess	c	smt3:map:1 of 1	newbattle/nbActionProcess
 00299EC8	0029BE98	sbtl	asm	none	
 0029BF50	0029BF50	code_r1_0029BF50	c	none	
-0029BFB8	002A1D50	sbtl_0029BFB8	asm	none	
+0029BFB8	002A1D50	sbtl_0029BFB8	c	none	
 002A1E48	002A1E48	code_r1_002A1E48	c	none	
-002A20E0	002A3800	code_002A20E0	asm	none	
+002A20E0	002A3800	code_002A20E0	c	none	
 002A3820	002A3820	code_r1_002A3820	c	none	
 002A38D8	002C7C90	code_002A38D8	c	none	
 002C7E58	002C7E58	newbattle/nbDebugProcess	c	smt3:map:1 of 1	newbattle/nbDebugProcess
@@ -369,7 +369,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 002FA480	002FA480	code_r1_002FA480	c	none	
 002FA4F0	003003E8	code_002FA4F0	c	none	
 00300488	00300488	code_r1_00300488	c	dds:1 of 1	
-003004B0	003004E0	code_003004B0	asm	none	
+003004B0	003004E0	code_003004B0	c	none	
 00300530	00300530	code_r1_00300530	c	dds:1 of 1	
 00300578	00322F18	code_00300578	c	none	
 00323138	00323138	code_r1_00323138	c	none	
@@ -403,7 +403,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00358180	00358700	sdf/sdfGsMemory	c	smt3:names:12 of 12	sdf/sdfGsMemory
 003587A0	003587A8	code_003587A0	asm	none	
 003587B0	00358D50	sdf/sdfImageSet	c	smt3:names:7 of 8	sdf/sdfImageSet
-00358D90	00358D90	code_00358D90	asm	none	
+00358D90	00358D90	code_00358D90	c	none	
 00358D98	0035A450	sdf/sdfTex	c	smt3:names:24+smt3:map:9+dds:2 of 44	sdf/sdfTex
 0035A470	0035A9E0	sdf/sdfGsMemIO	c	smt3:names:6 of 6	sdf/sdfGsMemIO
 0035AA98	0035ADA0	sdf/sdfDelayedResrc	c	smt3:names:7 of 7	sdf/sdfDelayedResrc
@@ -411,7 +411,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0035AEC8	0035C350	sdf/sdfDraw	c	smt3:names:30+smt3:map:4 of 40	sdf/sdfDraw
 0035C3C8	0035E5D8	sdf/sdfPrim	c	smt3:names:48 of 49	sdf/sdfPrim
 0035E6C8	00360ED0	sdf/sdfModel	c	smt3:names:46+smt3:map:5 of 57	sdf/sdfModel
-00360EE8	00360F38	code_00360EE8	asm	none	
+00360EE8	00360F38	code_00360EE8	c	none	
 00360F40	003620F0	sdf/sdfMat	c	smt3:names:31+smt3:map:2 of 46	sdf/sdfMat
 00362160	003642E0	sdf/sdfMotion	c	smt3:names:77 of 88	sdf/sdfMotion
 00364310	00364D88	sdf/sdfVu0	c	smt3:names:39 of 39	sdf/sdfVu0

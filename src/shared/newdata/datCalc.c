@@ -3,6 +3,7 @@
 #include "datCalc.h"
 #include "ps2asm.h"
 #include "EventBit.h"
+#include "fldProcess.h"
 
 typedef struct datTakaraSagasiItem_t {
     u16 item;
@@ -353,7 +354,26 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datPartyDamageMapSub);
 #endif
 
 #ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 15 of 31 words match.  */
+#ifdef NON_MATCHING
+s32 datCallCalcGetBadStatus2(s32 bst)
+{
+    s32 id;
+
+    if (sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.unit) != bst) {
+        id = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
+        if (id == -1) {
+            return 0;
+        }
+        if (sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[id]) != bst) {
+            return 0;
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "newdata/datCalc", datCallCalcGetBadStatus2);
+#endif
 #else
 INCLUDE_ASM(const s32, "newdata/datCalc", datPartyDamageMapSub2);
 

@@ -138,6 +138,7 @@ void fclLeaf18(fldNmeDraw_t *draw, s32 code);
 s32 fclLeaf23(s32 page);
 s32 fclFunc7(fldNmeDraw_t *draw, s32 code);
 u16 fclSetSpriteNormal(s32 page, s32 index);
+extern u8 titleStartSubData[4][2];
 s32 titleStartSub(s32 page);
 s32 titleStartSub2(s32 page);
 s32 titleFunc(s32 page, s32 x, s32 y);

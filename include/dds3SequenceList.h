@@ -7,8 +7,8 @@
 struct SequenceParameter;
 struct SBTL_START_DATA;
 
-struct SceneParam_t;
-void CallField(DDS3_ADMINI_CALL flg, struct SceneParam_t *param);
+struct fldSceneParam_t;
+void CallField(DDS3_ADMINI_CALL flg, struct fldSceneParam_t *param);
 void CallEvent(DDS3_ADMINI_CALL flg, s32 *data);
 void CallJimusyo(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
 void CallModeSelect(DDS3_ADMINI_CALL flg, struct SequenceParameter *);

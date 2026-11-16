@@ -589,7 +589,17 @@ sdfItemArray_t *sdfMatListMake(sdfItemArray_t *aTexList, u32 *aData)
     return list;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfCallMatUpdatePacket);
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfMat.c:583, match, same function 1.00 (words 24/24, calls 1.00, shape 1.00) */
+void sdfCallMatUpdatePacket(sdfItemArray_t *aMatList, s32 aId)
+{
+    s32 i;
+    s32 count = aMatList->count;
+    sdfMat_t **items = (sdfMat_t **)aMatList->items;
+
+    for (i = 0; i < count; i++) {
+        sdfMatUpdatePacket(items[i], aId);
+    }
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfMat", sdfModelLinkOtSdfModelSub);
 

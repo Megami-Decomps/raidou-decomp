@@ -16,6 +16,8 @@ void sbtlCheckBadStatus_Weak(struct SBTLUNIT_WORK *wk, SKLID sklid, struct SBTLS
 void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckCost(struct SBTLUNIT_WORK *wk, s32 flg);
 BST sbtlGetBadStatus(struct sdatUnitWork_t *unit);
+/* HP (isMp 0) or MP gain to add to unit, cut so it stops at the maximum. */
+s32 LimitRange(struct sdatUnitWork_t *unit, s32 value, s32 isMp);
 s32 sbtlCallSetClutColor(struct SBTLUNIT_WORK *wk, BST bst);
 s32 sbtlGetDamage_CHUUSEI(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl);
 s32 sbtlGetDamage_P_LUCK(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl, s32 itemid);

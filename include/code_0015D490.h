@@ -52,7 +52,7 @@ extern mapSeDelay_t datWork7[16];
 
 s32 fldIsMapTitleActive(void);
 s32 sbtlGetRndEncCnt(void);
-s32 nbGetEncountMax(s32 area);
+s32 sbtlGetRndEncMax(s32 area);
 s32 p2sdSoundSmgLoadChkSub(s32 map);
 void p2sdVolume2(s32 se, s32 vol);
 void p2sdPlaySE_Vol_Loop(s32 se);
@@ -60,6 +60,9 @@ void mapSoundKankyoTaskSub(void);
 void mapCallPlaySEVolLoop(void);
 void mapCallPlaySEVolLoop2(void);
 void mapSeNakamaDelayTask(void);
+void mapCallMemset2(void);
+void mapIfDrawES(void);
+void mapCallEnableMode(s32 map, s32 floor, s32 cut);
 
 extern const char DecisionFeedInStrMapAll[];
 extern const char DecisionFeedInStrMapMeiSpr[];

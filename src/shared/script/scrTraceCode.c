@@ -25,7 +25,6 @@ enum code_operation
     CODE_OPERATION_MAX = 12
 };
 
-extern scrProcessWork_s *nowpwork;
 extern const scrCommandTable_t scrCommandTable[];
 extern s32 (*codefunc[])(scrProcessWork_s *pw);
 extern s32 PopInt(scrProcessWork_s *pwork);

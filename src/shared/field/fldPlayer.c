@@ -67,7 +67,26 @@ extern char D_0039FD30[], D_0039FD40[];
 extern char D_0039FD30[], D_0039FD40[];
 
 #endif
-INCLUDE_ASM(const s32, "field/fldPlayer", R360_LR);
+/* body: matched in smt3 @ 9401f79e: src/smt3/field/fldPlayer.c:94, match, same function 1.00 (words 51/51, calls 1.00, shape 1.00) */
+f32 R360_LR(f32 a, f32 b) {
+    f32 diff;
+
+    if (a < 0.0f || b < 0.0f) {
+        a += 360.0f;
+        b += 360.0f;
+    }
+    a = (s32)a % 360;
+    b = (s32)b % 360;
+    diff = a - b;
+    if (diff > 180.0f || diff < -180.0f) {
+        if (a < b) {
+            a += 360.0f;
+        } else {
+            b += 360.0f;
+        }
+    }
+    return b - a;
+}
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "field/fldPlayer", fldSnapAngleToCompassPoint);

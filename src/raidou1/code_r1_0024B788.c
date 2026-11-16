@@ -338,7 +338,7 @@ s32 sbtlSbattle5(dds3ProcessID_t *id)
     sbtlMapFadeProc_H();
     Proc_sbtlEXP(wk_sbtl->modelBindings);
     sbtlCallMemFreeDirect6(wk_sbtl->modelBindings, 0);
-    sbtlCallSin3(wk_sbtl->dvltkList);
+    Proc_sbtlDvltk(wk_sbtl->dvltkList);
     sbtlReleaseDvltk_List(wk_sbtl->dvltkList, 0);
     sbtlRefSbtl60(wk_sbtl->expList);
     sbtlReleaseEXP_List(wk_sbtl->expList, 0);
