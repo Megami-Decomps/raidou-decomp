@@ -1,6 +1,6 @@
 ---
 name: raidou-batch-runner
-description: "Runs the script-driven phases of a raidou-decomp batch: the body-splice pre-pass before drafting (splice known smt3/dds bodies, record what matches) and packaging after it (land_batch, renames, docs entries, gate, commit, push, worktree reset). Not for drafting from pseudocode (raidou-matcher)."
+description: "Runs the script-driven phases of a raidou-decomp batch: the body-splice pre-pass before drafting (splice known smt3/dds bodies, record what matches) and packaging after it (land_batch, renames, docs entries, gate, commit, push, IDB sync, worktree reset). Not for drafting from pseudocode (raidou-matcher)."
 model: sonnet
 effort: medium
 autoCompactWindow: 300000
@@ -70,9 +70,14 @@ the previous batch's handoff.md). The steps, in order, with the tool for each:
    characters and no body, `git pull --rebase`, push main, print the CI run id
    (`gh run list -L 1 --json databaseId`) and go on. Do not poll or wait for CI; the
    orchestrator checks it.
-7. Reset T: `git fetch origin && git checkout -f --detach origin/main`, remove leftover
+7. Sync the shared IDBs to the pushed tree, in the background with check-ins under 4
+   minutes (about 3 minutes): `~/.local/state/raidou-decomp-work/ida-pseudo/land_sync.sh`
+   refreshes the tables, runs `shared.py sync` with `--defs` on both games, reloads the
+   r5900 plugin and saves. Exit 0 required; on a failure stop and report, never restart
+   the shared IDA instances.
+8. Reset T: `git fetch origin && git checkout -f --detach origin/main`, remove leftover
    untracked files by exact name (never a glob, never stash), configure.
-8. results.tsv gets a `commit` column with the hash.
+9. results.tsv gets a `commit` column with the hash.
 
 ## Rules
 

@@ -46,7 +46,13 @@ Per function, in this order:
    it. `adapt` needs the Raidou signature and arguments; `rework` is a reference only. If a
    usable one exists, start from it and port the differences. Otherwise start from
    the IDA Hex-Rays pseudocode in D/pc/NAME.c (R1 IDB instance 13337, R2 13338; the
-   skill says how to call IDA for a function the dump missed). The retail asm
+   skill says how to call IDA for a function the dump missed, `./dc.sh NAME`). Macro
+   calls such as `SDF_VU0_LOADVECTOR(p)` in the pseudocode are folded from VU0 helper
+   runs by shape; confirm the macro in ps2asm.h against the asm. A remaining
+   `__vop_xyzw(a, b, c)` is one COP2 instruction with vf numbers in instruction order
+   (ACC/Q dropped); `__lqc2(vf, addr)`, `__qmtc2_ni(x, vf)`, `__cfc2_ni(vi)` likewise.
+   `__int64` locals and `*(_QWORD *)` reads are 32-bit values moved through 64-bit
+   registers unless the asm uses ld/sd on real 64-bit data. The retail asm
    (D/pc/NAME.s, `./da.sh NAME`) is ground truth. The HD body
    (~/projects/raidouhd-reconstructed-sources, `./hd.sh`) is a structural hint only; it
    misleads on calls, constants and layouts.
