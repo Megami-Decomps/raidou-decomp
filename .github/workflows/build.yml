@@ -63,6 +63,7 @@ jobs:
           python3 tools/test_perm_unit.py
           python3 tools/test_land_batch.py
           python3 tools/test_version_guard.py
+          python3 tools/ida/test_stylefix.py
           if git ls-files | grep -E '^orig/.+|\.(iso|elf|bin)$' | grep -v '^orig/\.gitkeep$'; then
             echo "retail data is tracked" >&2
             exit 1
