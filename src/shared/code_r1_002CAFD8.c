@@ -629,18 +629,18 @@ typedef char GridFlushTable_size_must_be_0x0C[(sizeof(GridFlushTable) == 0x0C) ?
 
 typedef char GridColorTargetTable_size_must_be_0x14[(sizeof(GridColorTargetTable) == 0x14) ? 1 : -1];
 
-extern void *effGetSlotWorkOrOverride(EffectSlotSet *, s32);
-extern EffectSlotSet *effUpdateTimedStates(EffectSlotSet *, u32, void *);
+extern void *effGetSlotWorkOrOverride(sprHandle_t *, s32);
+extern sprHandle_t *effUpdateTimedStates(sprHandle_t *, u32, void *);
 
 /* Four words filled together; their corner/channel interpretation is unknown. */
 typedef struct UiQuadWords {
     u32 unk00[4];
 } UiQuadWords; // 0x10
 
-extern void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, EffectSlotSet *set, s32 slot, BdWork *entry, s32 layer);
-void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z, s32 drawFlags, EffectSlotSet *resource, s32 resourceIndex, s32 surfaceIndex);
-void itfUpdateGridSlotDescription(EffectSlotSet *resource, s32 resourceIndex);
-void itfSetGridEntryQuantizedAndRefresh(EffectSlotSet *resource, s32 resourceIndex, s32 x, s32 y, s32 width, s32 height);
+extern void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, sprHandle_t *set, s32 slot, BdWork *entry, s32 layer);
+void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z, s32 drawFlags, sprHandle_t *resource, s32 resourceIndex, s32 surfaceIndex);
+void itfUpdateGridSlotDescription(sprHandle_t *resource, s32 resourceIndex);
+void itfSetGridEntryQuantizedAndRefresh(sprHandle_t *resource, s32 resourceIndex, s32 x, s32 y, s32 width, s32 height);
 EffSlotPhaseStep itfGridApplySqrtBoundsAndColorScale(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
 EffSlotPhaseStep itfGridApplyQuadraticZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
 EffSlotPhaseStep itfGridApplyTimedBoundsAndAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
@@ -654,14 +654,14 @@ void uiDrawActiveSurfaceRegion(s32 surfaceIndex);
 void uiDrawTexturedSurfaceAtFarDepth(s32 surface);
 
 /* Resolve the indexed render entry before applying position, depth, and draw flags. */
-void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z, s32 drawFlags, EffectSlotSet *resource, s32 resourceIndex, s32 surfaceIndex) {
+void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z, s32 drawFlags, sprHandle_t *resource, s32 resourceIndex, s32 surfaceIndex) {
     void *renderEntry = effGetSlotWorkOrOverride(resource, resourceIndex);
     effDrawSpriteWithWorkCornerColors(offsetX, offsetY, z, drawFlags, resource, resourceIndex, (BdWork *)renderEntry,
                   surfaceIndex);
 }
 
 /* Update the indexed slot's description countdown and carry its active state forward. */
-void itfUpdateGridSlotDescription(EffectSlotSet *resource, s32 resourceIndex) {
+void itfUpdateGridSlotDescription(sprHandle_t *resource, s32 resourceIndex) {
     BdWork *base = &resource->workEntries[resourceIndex];
     const u32 timedByteOffset = (resourceIndex + base->slotOffset) * sizeof(BdWork);
     BdWork *timed = (BdWork *)(timedByteOffset + (u32)resource->workEntries);
@@ -672,7 +672,7 @@ void itfUpdateGridSlotDescription(EffectSlotSet *resource, s32 resourceIndex) {
     if (timed->remainingDescriptionUpdates == 0) {
         timed->remainingDescriptionUpdates =
             resource->descriptions[resourceIndex + base->slotOffset].descriptionUpdateDelay;
-        if ((u32)(resourceIndex + timed->slotOffset + 1) < resource->count) {
+        if ((u32)(resourceIndex + timed->slotOffset + 1) < resource->SpriteNums) {
             const s32 nextFlags = resource->descriptions[resourceIndex + base->slotOffset + 1].flags &
                                   EFF_SLOT_DESCRIPTION_SEQUENCE_CONTINUATION;
             const u32 shouldAdvance = nextFlags > 0;
@@ -697,7 +697,7 @@ void itfUpdateGridSlotDescription(EffectSlotSet *resource, s32 resourceIndex) {
 }
 
 /* Resolve an entry by key, falling back to the object's stored value. */
-s32 itfGridLookupValueOrDefault(EffectSlotSet *resource, s32 resourceIndex) {
+s32 itfGridLookupValueOrDefault(sprHandle_t *resource, s32 resourceIndex) {
     BdWork *entry = (BdWork *)effGetSlotWorkOrOverride(resource, resourceIndex);
     s32 result;
 
@@ -711,7 +711,7 @@ s32 itfGridLookupValueOrDefault(EffectSlotSet *resource, s32 resourceIndex) {
     return result;
 }
 
-void itfSetGridEntryQuantizedAndRefresh(EffectSlotSet *resource, s32 resourceIndex, s32 x, s32 y, s32 width, s32 height) {
+void itfSetGridEntryQuantizedAndRefresh(sprHandle_t *resource, s32 resourceIndex, s32 x, s32 y, s32 width, s32 height) {
     EffectSlotDescription *entry = &resource->descriptions[resourceIndex];
     void *record = effGetSlotWorkOrOverride(resource, resourceIndex);
 
@@ -1072,7 +1072,13 @@ INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf38);
 
 INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf39);
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawTriGSub);
+void cmpExpandColor(u64 *dst, u32 color)
+{
+    u64 wide = color;
+
+    dst[0] = ((color >> 24) & 0xFF) | ((u64)((color >> 16) & 0xFF) << 32);
+    dst[1] = ((wide & 0xFF00) >> 8) | ((u64)(color & 0xFF) << 32);
+}
 
 INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawSetup3DView);
 
@@ -1124,7 +1130,10 @@ void cmpDrawSprite(s32 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", fclDrawPanelSprite);
+void fclDrawPanelSprite(s32 id, s32 ot)
+{
+    cmpDrawSprite(id, 0, ot);
+}
 
 void cmpDrawSprite2(s32 id, s32 flag, s32 ot)
 {
@@ -1149,7 +1158,10 @@ void cmpDrawSprite2(s32 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", fclDrawPanelSprite2);
+void fclDrawPanelSprite2(s32 id, s32 ot)
+{
+    cmpDrawSprite2(id, 0, ot);
+}
 
 void cmpDrawSpriteIndexed(s32 id, s32 ot)
 {
@@ -1238,11 +1250,54 @@ void cmpDrawBoxSolid(s32 a, s32 b, s32 c, s32 d, s32 e, s32 color, s32 g, s32 h)
     cmpDrawBoxG(a, b, c, d, e, colors, g, h);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawBoxF);
+void cmpDrawBoxF(s32 a, s32 b, s32 c, s32 d, s32 e, s32 color, s32 h)
+{
+    cmpDrawBoxSolid(a, b, c, d, e, color, 0, h);
+}
 
+/* NON_MATCHING: 92 of 100 words match. Retail fills the first cmpExpandColor delay slot with the colors[1] load and sets a1 before a0. */
+#ifdef NON_MATCHING
+void cmpDrawBoxG(s32 a, s32 b, s32 c, s32 d, s32 e, s32 *colors, s32 g, s32 h)
+{
+    void *packet;
+    u64 *prim;
+    sdfDrawTag_t *tag;
+    sdfGrOt_t *otp;
+    u32 left = a + 0x7000;
+    u32 top = b + 0x7900;
+    s32 color;
+
+    packet = EE_ADDR_PTR(sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(8, 1)));
+    sdf2DMakePrimPacketHeader(packet, (g << 9) | 0x14C, 8, 0x51515151, 1);
+    prim = sdf2DGetPrimPtr(packet);
+    otp = &sdfGrOtTable[h];
+    cmpExpandColor(prim, colors[0]);
+    prim[3] = (u32)c;
+    prim[2] = left | ((u64)top << 32);
+    cmpExpandColor(prim + 4, colors[1]);
+    color = colors[2];
+    prim[7] = (u32)c;
+    prim[6] = (u32)(left + d) | ((u64)top << 32);
+    cmpExpandColor(prim + 8, color);
+    color = colors[3];
+    prim[11] = (u32)c;
+    prim[10] = left | ((u64)(top + e) << 32);
+    cmpExpandColor(prim + 12, color);
+    prim[15] = (u32)c;
+    prim[14] = (u32)(left + d) | ((u64)(top + e) << 32);
+    tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(sizeof(sdfDrawTag_t)));
+    sdfDrawTagInit(tag);
+    sdfDrawTagLink(tag, EE_ADDR(packet));
+    otp->regFunc(otp, tag);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawBoxG);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawBoxGDefault);
+void cmpDrawBoxGDefault(s32 a, s32 b, s32 c, s32 d, s32 e, s32 *colors, s32 h)
+{
+    cmpDrawBoxG(a, b, c, d, e, colors, 0, h);
+}
 
 INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpCallDrawPanelEffCell);
 

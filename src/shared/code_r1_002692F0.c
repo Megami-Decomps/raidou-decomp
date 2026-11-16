@@ -398,9 +398,9 @@ typedef struct BtlState {
     u8 pad491[3];
     f32 modelFrameScale; /* 0x494 */
     u8 pad498[0xC];
-    struct EffectSlotSet *resA; /* 0x4A4: btlLoadResourceBlock stores resA at retail 0x001AC740. */
-    struct EffectSlotSet *numberGlyphSlots; /* 0x4A8: resource slots used for battle-number glyphs. */
-    struct EffectSlotSet *resC; /* 0x4AC: btlReleaseResourceBlock clears this at retail 0x001AC7B4. */
+    struct sprHandle_t *resA; /* 0x4A4: btlLoadResourceBlock stores resA at retail 0x001AC740. */
+    struct sprHandle_t *numberGlyphSlots; /* 0x4A8: resource slots used for battle-number glyphs. */
+    struct sprHandle_t *resC; /* 0x4AC: btlReleaseResourceBlock clears this at retail 0x001AC7B4. */
     u8 pad4B0[4];
     struct RefObj *buttonTextureHandle; /* 0x4B4: retained button-icon texture reference. */
     struct SoundResourceNode *resources[0x31]; /* 0x4B8: SYSEFF resource slots */

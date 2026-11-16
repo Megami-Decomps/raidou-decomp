@@ -15,15 +15,17 @@ menu scenarios); an entry says which paths they covered.
 | Entries | Unit | Games | Page |
 |---|---|---|---|
 | 44 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
+| 12 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 10 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 9 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
-| 8 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
+| 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 5 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 5 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
 | 4 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 4 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 3 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
+| 2 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
 | 2 | code_002999C0 | raidou1 | [code_002999C0.md](code_002999C0.md) |
 | 2 | code_r1_00142038 | raidou1, raidou2 | [code_r1_00142038.md](code_r1_00142038.md) |
 | 2 | code_r1_0014F378 | raidou1 | [code_r1_0014F378.md](code_r1_0014F378.md) |
@@ -33,6 +35,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | sdf/sdfFileIO | raidou1, raidou2 | [sdf/sdfFileIO.md](sdf/sdfFileIO.md) |
 | 2 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
 | 1 | basic/dds3ObjectBase | raidou1, raidou2 | [basic/dds3ObjectBase.md](basic/dds3ObjectBase.md) |
+| 1 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 1 | code_r1_0013B0F8 | raidou1 | [code_r1_0013B0F8.md](code_r1_0013B0F8.md) |
 | 1 | code_r1_001403E0 | raidou1, raidou2 | [code_r1_001403E0.md](code_r1_001403E0.md) |
 | 1 | code_r1_00143B78 | raidou1 | [code_r1_00143B78.md](code_r1_00143B78.md) |
@@ -66,6 +69,8 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_00297EF0 | raidou1 | [code_r1_00297EF0.md](code_r1_00297EF0.md) |
 | 1 | code_r1_002A1E48 | raidou1 | [code_r1_002A1E48.md](code_r1_002A1E48.md) |
 | 1 | code_r1_002C8188 | raidou1, raidou2 | [code_r1_002C8188.md](code_r1_002C8188.md) |
+| 1 | code_r1_002CA3F0 | raidou1, raidou2 | [code_r1_002CA3F0.md](code_r1_002CA3F0.md) |
+| 1 | code_r1_002CAFD8 | raidou1, raidou2 | [code_r1_002CAFD8.md](code_r1_002CAFD8.md) |
 | 1 | code_r1_002F59D0 | raidou1, raidou2 | [code_r1_002F59D0.md](code_r1_002F59D0.md) |
 | 1 | code_r1_00323138 | raidou1, raidou2 | [code_r1_00323138.md](code_r1_00323138.md) |
 | 1 | effect/polyManager | raidou1, raidou2 | [effect/polyManager.md](effect/polyManager.md) |

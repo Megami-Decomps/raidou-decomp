@@ -60,7 +60,7 @@ enum EffTimedStateFlag {
     EFF_TIMED_STATE_PING_PONG = 0x8,
 };
 
-void effResetSlotWork(struct EffectSlotSet *owner, u32 slotIndex);
+void effResetSlotWork(struct sprHandle_t *owner, u32 slotIndex);
 
 /* Serialized source bytes are borrowed; async mapped-resource outputs hold typed pointers. */
 struct EffMappedResource *effCreateMappedResource(const u8 *source);
@@ -91,7 +91,7 @@ typedef struct EffectRecord {
 } EffectRecord;
 
 typedef struct EffectOwnerRecord {
-    struct EffectSlotSet *owner;
+    struct sprHandle_t *owner;
     EffectRecord *entries[16];
 } EffectOwnerRecord;
 
@@ -176,7 +176,7 @@ void effCompleteRetainedResourceJob(fileRequest_t *job, u32 *outInstance);
 void effCompleteMappedResourceJob(fileRequest_t *job,
                                   EffMappedResource **outMappedResource);
 
-EffectOwnerRecord *effCreateOwnerRecordList(EffectSlotSet *owner);
+EffectOwnerRecord *effCreateOwnerRecordList(sprHandle_t *owner);
 void effInsertSlotRecord(void *owner, EffectOwnerRecord *list, EffectSlotOwner *work, s32 slotIndex);
 s32 effRemoveSlotRecord(EffectOwnerRecord *list, EffectSlotOwner *work, s32 slotIndex);
 
@@ -198,12 +198,12 @@ typedef struct EffMappedHeader {
 struct sdfMemHandle_t *effLoadMappedStatusRecords(const u8 *source, EffMappedHeader *headerOut);
 
 /* Build the live batch header from the serialized count and owned record array. */
-void *effGetSlotWorkOrOverride(EffectSlotSet *work, s32 slotIndex);
+void *effGetSlotWorkOrOverride(sprHandle_t *work, s32 slotIndex);
 void effInitializeSlotPhase(EffTimedState *effect);
-extern EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entryData);
+extern sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData);
 
 /* Rebuild a slot's live work from its source description, then prime the timed states. */
-u8 *effResolveResourceSlots(EffectSlotSet *set, u8 *resourceBytes, s32 clearAllSlots, s32 selectedSlot);
+u8 *effResolveResourceSlots(sprHandle_t *set, u8 *resourceBytes, s32 clearAllSlots, s32 selectedSlot);
 EffPayload *effCreatePayload(u32 recordCount);
 u32 effDestroyPayload(EffPayload *payload);
 
@@ -212,10 +212,10 @@ u32 effDestroyPayload(EffPayload *payload);
 #define EFF_SLOT_TEXTURE_REFERENCES_BORROWED 1
 
 u32 effSlotTransitionClearTarget(EffTimedState *record, u32 unused);
-u32 effClampSlotPhaseAtEnd(EffectSlotSet *owner, s32 index, EffTimedState *effect);
-u32 effClampSlotPhaseAtStart(EffectSlotSet *owner, s32 index, EffTimedState *effect);
+u32 effClampSlotPhaseAtEnd(sprHandle_t *owner, s32 index, EffTimedState *effect);
+u32 effClampSlotPhaseAtStart(sprHandle_t *owner, s32 index, EffTimedState *effect);
 extern u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
-EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entryData);
+sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData);
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags);
 
 u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
@@ -223,36 +223,18 @@ void effSelectPresetByKind(u32 mode, u32 value);
 
 typedef struct SdfDrawPacket SdfDrawPacket;
 
-typedef struct EffSpriteUV {
-    s32 u0;
-    s32 v0;
-    s32 u1;
-    s32 v1;
-} EffSpriteUV;
-
-typedef union EffSpriteColor {
-    u32 rgba;
-    struct {
-        u32 alpha : 8;
-        u32 blue : 8;
-        u32 green : 8;
-        u32 red : 8;
-    } channels;
-} EffSpriteColor;
 
 extern void effSelectPresetByKind(u32, u32);
 void itfRotateScreenOffset(s32 *outX, s32 *outY, s32 x, s32 y, s32 centerX, s32 centerY, f32 angle);
 extern void uiDrawGradientColorRect(u32, u32, u32, u32, u32, const u32 *, u32);
 
-void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
-                                    u32 height, u32 vertexColors, u32 presetMode, u32 presetValue);
 
 /* Load and instantiate a resource; only a zero keepAllocation releases the source allocation. */
-EffectSlotSet *effLoadIndexedResource(const char *base, const char *name, u32 keepAllocation) {
+sprHandle_t *effLoadIndexedResource(const char *base, const char *name, u32 keepAllocation) {
     char path[EFF_RESOURCE_PATH_BYTES];
     u32 sourceAddress;
     struct sdfMemHandle_t *allocation;
-    EffectSlotSet *instance;
+    sprHandle_t *instance;
 
     sprintf(path, D_003BD198, base, name);
     allocation = sdfDevLoadFileEx(path, &sourceAddress, 0);
@@ -266,7 +248,7 @@ EffectSlotSet *effLoadIndexedResource(const char *base, const char *name, u32 ke
 /* Publish the instance, release its source allocation, then clean up the completed file job. */
 void effCompleteTransientResourceJob(fileRequest_t *job, u32 *outInstance) {
     struct sdfMemHandle_t *allocation;
-    EffectSlotSet *instance;
+    sprHandle_t *instance;
 
     allocation = fileGetMemHandle(job);
     instance = effCreateResourceSlotSetFromAllocation(allocation, EFF_RESOURCE_TRANSIENT);
@@ -278,7 +260,7 @@ void effCompleteTransientResourceJob(fileRequest_t *job, u32 *outInstance) {
 /* Publish the instance without releasing its source allocation, then clean up the file job. */
 void effCompleteRetainedResourceJob(fileRequest_t *job, u32 *outInstance) {
     struct sdfMemHandle_t *allocation;
-    EffectSlotSet *instance;
+    sprHandle_t *instance;
 
     allocation = fileGetMemHandle(job);
     instance = effCreateResourceSlotSetFromAllocation(allocation, EFF_RESOURCE_KEEP_ALLOCATION);
@@ -339,7 +321,7 @@ void effRequestMappedResource(const char *base, const char *name,
 }
 
 /* Create an owner list with sixteen initially empty record buckets. */
-EffectOwnerRecord *effCreateOwnerRecordList(EffectSlotSet *owner) {
+EffectOwnerRecord *effCreateOwnerRecordList(sprHandle_t *owner) {
     EffectOwnerRecord *list = sdfChipAllocDirect(sizeof(EffectOwnerRecord));
     memset(list, 0, EFF_OWNER_LIST_BYTES);
     list->owner = owner;
@@ -554,13 +536,13 @@ EffMappedResourceDestroyResult effDestroyPackedBatch(EffMappedResource *batch) {
     return EFF_MAPPED_RESOURCE_DESTROYED;
 }
 
-u32 effReleaseSlotWorkAllocation(EffectSlotSet *owner) {
+u32 effReleaseSlotWorkAllocation(sprHandle_t *owner) {
     sdfMemFreeDirect(owner->workAllocation);
     return 1;
 }
 
 /* Return the normal slot work unless the slot carries an alternate payload. */
-void *effGetSlotWorkOrOverride(EffectSlotSet *work, s32 slotIndex) {
+void *effGetSlotWorkOrOverride(sprHandle_t *work, s32 slotIndex) {
     void *alternatePayload;
     s32 entryAddress;
 
@@ -584,20 +566,20 @@ void effInitializeSlotPhase(EffTimedState *effect) {
 INCLUDE_ASM(const s32, "code_r1_002C8188", effInitializeSlotWorkFromDescription);
 
 /* Initialize the normal slot entry at the unchanged 0xA0-byte stride. */
-void effInitializeSlotWork(EffectSlotSet *owner, s32 slotIndex) {
+void effInitializeSlotWork(sprHandle_t *owner, s32 slotIndex) {
     effInitializeSlotWorkFromDescription(owner, slotIndex, &owner->workEntries[slotIndex]);
 }
 
 /* Reset every normal work slot in source order. */
-void effInitializeAllSlotWork(EffectSlotSet *work) {
+void effInitializeAllSlotWork(sprHandle_t *work) {
     u32 slotIndex;
-    for (slotIndex = 0; slotIndex < work->count; slotIndex++) {
+    for (slotIndex = 0; slotIndex < work->SpriteNums; slotIndex++) {
         effResetSlotWork(work, slotIndex);
     }
 }
 
 /* Store the owner and slot index before invoking the work initializer. */
-void effAttachSlotWorkOwner(EffectSlotSet *owner, s32 slotIndex, void *payload) {
+void effAttachSlotWorkOwner(sprHandle_t *owner, s32 slotIndex, void *payload) {
     /* Alternate records share these owner/index fields without a full work allocation. */
     BdWork *entry = (BdWork *)payload;
     entry->owner = owner;
@@ -606,7 +588,7 @@ void effAttachSlotWorkOwner(EffectSlotSet *owner, s32 slotIndex, void *payload) 
 }
 
 /* Clear the complete normal slot, then restore owner/index and initialize it. */
-void effResetSlotWork(EffectSlotSet *work, u32 slotIndex) {
+void effResetSlotWork(sprHandle_t *work, u32 slotIndex) {
     BdWork *entry;
 
     entry = &work->workEntries[slotIndex];
@@ -618,13 +600,13 @@ void effResetSlotWork(EffectSlotSet *work, u32 slotIndex) {
  * Return the address following the processed resource-table entries.
  */
 #ifdef VERSION_RAIDOU1
-u8 *effResolveResourceSlots(EffectSlotSet *set, u8 *resourceBytes, s32 clearAllSlots, s32 selectedSlot) {
+u8 *effResolveResourceSlots(sprHandle_t *set, u8 *resourceBytes, s32 clearAllSlots, s32 selectedSlot) {
     u32 slotIndex = 0;
     u8 *entryBytes = resourceBytes;
 
     entryBytes += ((EffectResourceTable *)entryBytes)->entryOffset;
 
-    if (set->textureCount != 0) {
+    if (set->TexNums != 0) {
         do {
             TMX_HEADER_t *resourceData = (TMX_HEADER_t *)(resourceBytes + ((EffectResourceEntry *)entryBytes)->resourceOffset);
 
@@ -641,7 +623,7 @@ u8 *effResolveResourceSlots(EffectSlotSet *set, u8 *resourceBytes, s32 clearAllS
                 set->textureReferences[slotIndex] = 0;
             }
             slotIndex++;
-        } while (slotIndex < set->textureCount);
+        } while (slotIndex < set->TexNums);
     }
     return entryBytes;
 }
@@ -649,7 +631,7 @@ u8 *effResolveResourceSlots(EffectSlotSet *set, u8 *resourceBytes, s32 clearAllS
 INCLUDE_ASM(const s32, "code_r1_002C8188", effResolveResourceSlots);
 #endif
 
-void effResolveAndReleaseResource(EffectSlotSet *owner) {
+void effResolveAndReleaseResource(sprHandle_t *owner) {
     if (owner->sourceAllocation != 0) {
         u8 *data = (u8 *)sdfMemLock(owner->sourceAllocation);
         effResolveResourceSlots(owner, data, 0, -1);
@@ -657,7 +639,7 @@ void effResolveAndReleaseResource(EffectSlotSet *owner) {
     }
 }
 
-void effResolveAndReleaseSelectedResource(EffectSlotSet *owner, s32 slot) {
+void effResolveAndReleaseSelectedResource(sprHandle_t *owner, s32 slot) {
     if (owner->sourceAllocation != 0) {
         u8 *data = (u8 *)sdfMemLock(owner->sourceAllocation);
         effResolveResourceSlots(owner, data, 0, slot);
@@ -665,10 +647,10 @@ void effResolveAndReleaseSelectedResource(EffectSlotSet *owner, s32 slot) {
     }
 }
 
-void effReleaseTextureHandlesAndResetSlots(EffectSlotSet *set) {
+void effReleaseTextureHandlesAndResetSlots(sprHandle_t *set) {
     u32 i;
 
-    for (i = 0; i < set->textureCount; i++) {
+    for (i = 0; i < set->TexNums; i++) {
         if (set->textureReferences[i] != 0) {
             sdfTexReleaseReference(set->textureReferences[i]);
             set->textureReferences[i] = 0;
@@ -677,7 +659,7 @@ void effReleaseTextureHandlesAndResetSlots(EffectSlotSet *set) {
     effInitializeAllSlotWork(set);
 }
 
-u8 effHasFirstTextureHandle(const EffectSlotSet *set) {
+u8 effHasFirstTextureHandle(const sprHandle_t *set) {
     return set->textureReferences[0] != NULL;
 }
 
@@ -703,33 +685,33 @@ u32 effDestroyPayload(EffPayload *payload) {
     return 1;
 }
 
-EffectSlotSet *effCreateResourceSlotSetFromAllocation(struct sdfMemHandle_t *resourceAllocation, u32 keepAllocation) {
-    EffectSlotSet *set;
+sprHandle_t *effCreateResourceSlotSetFromAllocation(struct sdfMemHandle_t *resourceAllocation, u32 keepAllocation) {
+    sprHandle_t *set;
     u8 *resource;
     u32 *entries;
     u32 index;
     u32 sourceOffset;
 
-    set = sdfChipAllocDirect(sizeof(EffectSlotSet));
+    set = sdfChipAllocDirect(sizeof(sprHandle_t));
     memset(set, 0, 0x30);
     set->sharesTextureReferences = EFF_SLOT_TEXTURE_REFERENCES_OWNED;
     set->sourceAllocation = keepAllocation != 0 ? resourceAllocation : 0;
     resource = (u8 *)sdfMemLock(resourceAllocation);
-    set->textureCount = ((EffectResourceTable *)resource)->textureCount;
+    set->TexNums = ((EffectResourceTable *)resource)->textureCount;
     set->textureAllocation =
-        sdfMemAllocDirect(set->textureCount * 4);
+        sdfMemAllocDirect(set->TexNums * 4);
     set->textureReferences = (sdfTexHandle_t **)sdfMemLock(set->textureAllocation);
-    memset(set->textureReferences, 0, set->textureCount * 4);
+    memset(set->textureReferences, 0, set->TexNums * 4);
     entries = (u32 *)effResolveResourceSlots(set, resource,
         keepAllocation, -1);
 
-    set->count = ((EffectResourceTable *)resource)->slotCount;
+    set->SpriteNums = ((EffectResourceTable *)resource)->slotCount;
     set->descriptionAllocation =
-        sdfMemAllocDirect(set->count * 0x80);
+        sdfMemAllocDirect(set->SpriteNums * 0x80);
     set->descriptions = (EffectSlotDescription *)sdfMemLock(set->descriptionAllocation);
-    set->workAllocation = sdfMemAllocDirect(set->count * 0xA0);
+    set->workAllocation = sdfMemAllocDirect(set->SpriteNums * 0xA0);
     set->workEntries = (BdWork *)sdfMemLock(set->workAllocation);
-    for (index = 0; index < set->count; index++) {
+    for (index = 0; index < set->SpriteNums; index++) {
         sourceOffset = entries[1];
         memcpy(&set->descriptions[index],
             resource + sourceOffset, 0x80);
@@ -739,34 +721,34 @@ EffectSlotSet *effCreateResourceSlotSetFromAllocation(struct sdfMemHandle_t *res
     return set;
 }
 
-EffectSlotSet *effCreateResourceSlotSet(EffectSlotSet *borrowedSource, u32 slot, u32 count) {
-    EffectSlotSet *effect = (EffectSlotSet *)sdfChipAllocDirect(sizeof(EffectSlotSet));
+sprHandle_t *effCreateResourceSlotSet(sprHandle_t *borrowedSource, u32 slot, u32 count) {
+    sprHandle_t *effect = (sprHandle_t *)sdfChipAllocDirect(sizeof(sprHandle_t));
     u32 index = 0;
     effect->sharesTextureReferences = EFF_SLOT_TEXTURE_REFERENCES_BORROWED;
     {
-        u32 mode = borrowedSource->textureCount;
+        u32 mode = borrowedSource->TexNums;
         sdfTexHandle_t **textureReferences = borrowedSource->textureReferences;
-        effect->textureCount = mode;
+        effect->TexNums = mode;
         effect->textureReferences = textureReferences;
     }
     effect->sourceAllocation = 0;
     effect->textureAllocation = 0;
-    effect->count = count;
+    effect->SpriteNums = count;
     effect->descriptionAllocation = sdfMemAllocDirect(count * 0x80);
     effect->descriptions = (EffectSlotDescription *)sdfMemLock(effect->descriptionAllocation);
-    effect->workAllocation = sdfMemAllocDirect(effect->count * 0xA0);
+    effect->workAllocation = sdfMemAllocDirect(effect->SpriteNums * 0xA0);
     effect->workEntries = (BdWork *)sdfMemLock(effect->workAllocation);
-    if (effect->count != 0) {
+    if (effect->SpriteNums != 0) {
         do {
             memcpy(&effect->descriptions[index], &borrowedSource->descriptions[slot], 0x80);
             effResetSlotWork(effect, index);
             index++;
-        } while (index < effect->count);
+        } while (index < effect->SpriteNums);
     }
     return effect;
 }
 
-u32 effDestroyResourceSlotSet(EffectSlotSet *set) {
+u32 effDestroyResourceSlotSet(sprHandle_t *set) {
     if (set->sourceAllocation != 0) {
         sdfMemFreeDirect(set->sourceAllocation);
     }
@@ -801,7 +783,7 @@ u32 effSlotTransitionClearTarget(EffTimedState *record, u32 unused) {
     return 1;
 }
 
-u32 effClampSlotPhaseAtEnd(EffectSlotSet *owner, s32 index, EffTimedState *effect) {
+u32 effClampSlotPhaseAtEnd(sprHandle_t *owner, s32 index, EffTimedState *effect) {
     if (effect->value > EFF_SLOT_PHASE_ONE) {
         s32 flags = effect->flags;
         effect->value = EFF_SLOT_PHASE_ONE;
@@ -817,7 +799,7 @@ u32 effClampSlotPhaseAtEnd(EffectSlotSet *owner, s32 index, EffTimedState *effec
     return 1;
 }
 
-u32 effClampSlotPhaseAtStart(EffectSlotSet *owner, s32 index, EffTimedState *effect) {
+u32 effClampSlotPhaseAtStart(sprHandle_t *owner, s32 index, EffTimedState *effect) {
     if (effect->value < EFF_SLOT_PHASE_ZERO) {
         s32 flags = effect->flags;
         effect->value = EFF_SLOT_PHASE_ZERO;
@@ -833,7 +815,7 @@ u32 effClampSlotPhaseAtStart(EffectSlotSet *owner, s32 index, EffTimedState *eff
     return 1;
 }
 
-EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entryData) {
+sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData) {
     /* Alternate payloads may be only 0x6C bytes; direct access here is limited to timed states.
      * Bucket callbacks retain their existing kind-specific pointer contract.
      */
@@ -883,7 +865,7 @@ EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entry
     return effect;
 }
 
-u32 effSetSlotOverrideWork(EffectSlotSet *owner, s32 index, void *payload) {
+u32 effSetSlotOverrideWork(sprHandle_t *owner, s32 index, void *payload) {
     if (owner->workEntries[index].alternate.payload == NULL) {
         effAttachSlotWorkOwner(owner, index, payload);
     }
@@ -891,7 +873,7 @@ u32 effSetSlotOverrideWork(EffectSlotSet *owner, s32 index, void *payload) {
     return 1;
 }
 
-u32 effSetMaterialSlots(EffectSlotSet *owner, s32 index, u32 materialFlags, void *payload) {
+u32 effSetMaterialSlots(sprHandle_t *owner, s32 index, u32 materialFlags, void *payload) {
     u32 i;
     EffTimedState *states;
     if (owner->workEntries[index].alternate.payload == NULL) {
@@ -909,13 +891,13 @@ u32 effSetMaterialSlots(EffectSlotSet *owner, s32 index, u32 materialFlags, void
 INCLUDE_ASM(const s32, "code_r1_002C8188", sysLeaf46);
 
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags) {
-    BdWork *effect = &((EffectSlotSet *)work)->workEntries[index];
+    BdWork *effect = &((sprHandle_t *)work)->workEntries[index];
     effSetSlotResourceAndFlags(&effect->states[0], (EffMappedRecord *)(u32)value, flags);
-    effUpdateTimedStates((EffectSlotSet *)work, index, effect);
+    effUpdateTimedStates((sprHandle_t *)work, index, effect);
     return 1;
 }
 
-u32 effConfigureIndexedSlotResource(EffectSlotSet *work, s32 index,
+u32 effConfigureIndexedSlotResource(sprHandle_t *work, s32 index,
                                     EffMappedResource *data, s32 item, u32 flags) {
     BdWork *effect = &work->workEntries[index];
     effSetSlotResourceAndFlags(&effect->states[0], &data->records[item], flags);
@@ -923,7 +905,7 @@ u32 effConfigureIndexedSlotResource(EffectSlotSet *work, s32 index,
     return 1;
 }
 
-u32 effConfigureIndexedSlotMaterial(EffectSlotSet *work, s32 index,
+u32 effConfigureIndexedSlotMaterial(sprHandle_t *work, s32 index,
                   EffMappedResource *data, s32 item,
                   u32 materialFlags, u32 materialValue, u32 stateFlags) {
     BdWork *effect = &work->workEntries[index];
@@ -934,7 +916,7 @@ u32 effConfigureIndexedSlotMaterial(EffectSlotSet *work, s32 index,
     return 1;
 }
 
-u32 effConfigureWithDefaultSetting(EffectSlotSet *effect, u32 slot,
+u32 effConfigureWithDefaultSetting(sprHandle_t *effect, u32 slot,
                                    EffMappedResource *resources, u32 item,
                                    u32 materialFlags, u32 stateFlags) {
     effConfigureIndexedSlotMaterial(effect, slot, resources, item,
@@ -948,10 +930,10 @@ u32 effResetRecordRun(u8 *work, u32 first, u32 unused) {
 
     do {
         effSlotTransitionClearTarget((EffTimedState *)((first + i) * EFF_SLOT_WORK_BYTES +
-                                    (s32)((EffectSlotSet *)work)->workEntries + 0x28), unused);
+                                    (s32)((sprHandle_t *)work)->workEntries + 0x28), unused);
         i++;
         index = first + i;
-    } while (index < ((EffectSlotSet *)work)->count && (((EffectSlotSet *)work)->descriptions[index].flags & EFF_SLOT_DESCRIPTION_SEQUENCE_CONTINUATION));
+    } while (index < ((sprHandle_t *)work)->SpriteNums && (((sprHandle_t *)work)->descriptions[index].flags & EFF_SLOT_DESCRIPTION_SEQUENCE_CONTINUATION));
     return 1;
 }
 
@@ -999,7 +981,7 @@ void itfRotateScreenOffset(s32 *outX, s32 *outY, s32 x, s32 y, s32 centerX, s32 
 #ifdef NON_MATCHING
 /* 44 of 288 words differ: store scheduling in the final primitive writes. Behavior is the same. */
 void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSpriteUV *uv,
-                         const EffSpriteColor *colors, u32 flip, f32 angle, u32 alphaMode,
+                         const u32 *colors, u32 flip, f32 angle, u32 alphaMode,
                          s32 filter, sdfTexHandle_t *tex, s32 ot)
 {
     sdfGrOt_t *otp;
@@ -1053,10 +1035,10 @@ void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSp
         itfRotateScreenOffset(&pt[4], &pt[5], -hw, hh, cx, cy, angle);
         itfRotateScreenOffset(&pt[6], &pt[7], hw, hh, cx, cy, angle);
     }
-    uvs[0] = uv->u0 << 4;
-    uvs[1] = uv->v0 << 4;
-    uvs[2] = uv->u1 << 4;
-    uvs[3] = uv->v1 << 4;
+    uvs[0] = uv->rect.u0 << 4;
+    uvs[1] = uv->rect.v0 << 4;
+    uvs[2] = uv->rect.u1 << 4;
+    uvs[3] = uv->rect.v1 << 4;
     if ((flip & 1) != 0) {
         t = pt[0];
         pt[0] = pt[2];
@@ -1083,19 +1065,14 @@ void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSp
         prim[18] = 0x8000000080LL;
         prim[19] = 0x8000000080LL;
     } else {
-        u32 w0 = colors[0].rgba;
-        u32 w1 = colors[1].rgba;
-        u32 w2 = colors[2].rgba;
-        u32 w3 = colors[3].rgba;
-
-        prim[0] = colors[0].channels.red | ((u64)colors[0].channels.green << 32);
-        prim[1] = ((w0 >> 8) & 0xFF) | ((u64)(w0 & 0xFF) << 32);
-        prim[6] = colors[1].channels.red | ((u64)colors[1].channels.green << 32);
-        prim[7] = ((w1 >> 8) & 0xFF) | ((u64)(w1 & 0xFF) << 32);
-        prim[12] = colors[2].channels.red | ((u64)colors[2].channels.green << 32);
-        prim[13] = ((w2 >> 8) & 0xFF) | ((u64)(w2 & 0xFF) << 32);
-        prim[18] = colors[3].channels.red | ((u64)colors[3].channels.green << 32);
-        prim[19] = ((w3 >> 8) & 0xFF) | ((u64)(w3 & 0xFF) << 32);
+        prim[0] = (colors[0] >> 24) | ((u64)((colors[0] >> 16) & 0xFF) << 32);
+        prim[1] = ((colors[0] >> 8) & 0xFF) | ((u64)(colors[0] & 0xFF) << 32);
+        prim[6] = (colors[1] >> 24) | ((u64)((colors[1] >> 16) & 0xFF) << 32);
+        prim[7] = ((colors[1] >> 8) & 0xFF) | ((u64)(colors[1] & 0xFF) << 32);
+        prim[12] = (colors[2] >> 24) | ((u64)((colors[2] >> 16) & 0xFF) << 32);
+        prim[13] = ((colors[2] >> 8) & 0xFF) | ((u64)(colors[2] & 0xFF) << 32);
+        prim[18] = (colors[3] >> 24) | ((u64)((colors[3] >> 16) & 0xFF) << 32);
+        prim[19] = ((colors[3] >> 8) & 0xFF) | ((u64)(colors[3] & 0xFF) << 32);
     }
     vHi0 = (u64)uvs[1] << 32;
     zq = z >> 4;
@@ -1133,9 +1110,9 @@ INCLUDE_ASM(const s32, "code_r1_002C8188", sdfDrawTexturedQuad);
 #endif
 
 void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
-                                    u32 height, u32 vertexColors, u32 presetMode, u32 presetValue) {
+                                    u32 height, const u32 *vertexColors, u32 presetMode, u32 presetValue) {
     effSelectPresetByKind(presetMode, presetValue);
-    uiDrawGradientColorRect(x, y, z, width, height, (const u32 *)vertexColors, presetValue);
+    uiDrawGradientColorRect(x, y, z, width, height, vertexColors, presetValue);
     sdfSubmitGsAlphaOneRegisterPacket(0x44, presetValue);
 }
 INCLUDE_SDATA(const s32, "code_r1_002C8188", effData43);

@@ -5,10 +5,12 @@
 #include "code_r1_001CC1D0.h"
 
 void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z,
-                                 s32 drawFlags, struct EffectSlotSet *object,
+                                 s32 drawFlags, struct sprHandle_t *object,
                                  s32 index, s32 surfaceIndex);
 
-s32 itfGridLookupValueOrDefault(struct EffectSlotSet *resource, s32 resourceIndex);
+s32 itfGridLookupValueOrDefault(struct sprHandle_t *resource, s32 resourceIndex);
+void fclDrawPanelSprite(s32 id, s32 ot);
+void fclDrawPanelSprite2(s32 id, s32 ot);
 
 /* Known continuation bit; other EffectSlotDescription.flags meanings remain unspecified. */
 enum EffectSlotDescriptionFlag {

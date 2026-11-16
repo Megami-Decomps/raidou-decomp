@@ -1,5 +1,7 @@
 function	unit	size	distance	page	line
 dds3ObjectBaseMakeUnit	basic/dds3ObjectBase	raidou1 0x104, raidou2 0x104	0 of 65 words differ	docs/matching/basic/dds3ObjectBase.md	3
+cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3
+cmbRefDDS3GBWK	code_00181858	raidou1 0xD0	7 of 52 words differ	docs/matching/code_00181858.md	11
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25
@@ -17,6 +19,19 @@ sbtlCallBtlSearchUnitID24	code_0028EB80	raidou1 0x228	104 of 132 words differ	do
 sbtlCallMemset18	code_0028EB80	raidou1 0x894	514 of 514 words differ	docs/matching/code_0028EB80.md	37
 sbtlEntryItemList	code_002999C0	raidou1 0x128	59 of 71 words differ	docs/matching/code_002999C0.md	3
 sbtlEntryItemList_Type	code_002999C0	raidou1 0x11C	54 of 68 words differ	docs/matching/code_002999C0.md	11
+Init_sbtlDraw	code_002A38D8	raidou1 0x74	25 of 30 words differ	docs/matching/code_002A38D8.md	3
+sbtlReleaseSM_List	code_002A38D8	raidou1 0xE0	27 of 56 words differ	docs/matching/code_002A38D8.md	11
+sbtlReleaseEXP_List	code_002A38D8	raidou1 0xE0	27 of 56 words differ	docs/matching/code_002A38D8.md	19
+sbtlCallDeleteMessage	code_002A38D8	raidou1 0x124	60 of 68 words differ	docs/matching/code_002A38D8.md	27
+sbtlCallSetVarSBtlSM	code_002A38D8	raidou1 0xF4	5 of 61 words differ	docs/matching/code_002A38D8.md	35
+SetVar_sbtlSM	code_002A38D8	raidou1 0x1B4	12 of 110 words differ	docs/matching/code_002A38D8.md	43
+CheckBadStatus_sbtlSkill	code_002A38D8	raidou1 0xCC	26 of 47 words differ	docs/matching/code_002A38D8.md	51
+sbtlCallCheckDying2	code_002A38D8	raidou1 0x20C	15 of 131 words differ	docs/matching/code_002A38D8.md	59
+sbtlCallCheckDying	code_002A38D8	raidou1 0x1F8	48 of 126 words differ	docs/matching/code_002A38D8.md	67
+sbtlCallBtlSearchUnitID37	code_002A38D8	raidou1 0x398	5 of 230 words differ	docs/matching/code_002A38D8.md	75
+sbtlCallGetProcessData56	code_002A38D8	raidou1 0x3A4	101 of 231 words differ	docs/matching/code_002A38D8.md	83
+sbtlCallEventBattleStopChack2	code_002A38D8	raidou1 0x298	70 of 166 words differ	docs/matching/code_002A38D8.md	91
+pipeCampCAMPPACKLB	code_00300578	raidou1 0x158	3 of 86 words differ	docs/matching/code_00300578.md	3
 mapSKYBGEDIT	code_r1_0013B0F8	raidou1 0x1CE8	1608 of 1652 words differ	docs/matching/code_r1_0013B0F8.md	3
 mapCutGetCam	code_r1_001403E0	raidou1 0x3B4, raidou2 0x3B4	126 of 225 words differ	docs/matching/code_r1_001403E0.md	3
 mapHitWorkCalc	code_r1_00142038	raidou1 0x160, raidou2 0x160	8 of 88 words differ	docs/matching/code_r1_00142038.md	3
@@ -112,6 +127,8 @@ sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matchi
 sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3
 sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	44 of 288 words differ	docs/matching/code_r1_002C8188.md	3
+effDrawTextureSlot	code_r1_002CA3F0	raidou1 0x2CC, raidou2 0x2D4	2 of 179 words differ	docs/matching/code_r1_002CA3F0.md	3
+cmpDrawBoxG	code_r1_002CAFD8	raidou1 0x190, raidou2 0x190	8 of 100 words differ	docs/matching/code_r1_002CAFD8.md	3
 evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	docs/matching/code_r1_002F59D0.md	3
 cmpDrawBackPattern	code_r1_00323138	raidou1 0x144, raidou2 0x144	9 of 81 words differ	docs/matching/code_r1_00323138.md	3
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3
@@ -129,8 +146,7 @@ frCallEventVoiceSub	interface/frFont	raidou1 0x74	1 of 29 words differ	docs/matc
 frCallGetStrWidth3	interface/frFont	raidou1 0xCC	1 of 51 words differ	docs/matching/interface/frFont.md	59
 frCallSetFontString	interface/frFont	raidou1 0x68, raidou2 0x68	13 of 26 words differ	docs/matching/interface/frFont.md	71
 frFontGetGlyphPositionAtIndex	interface/frFont	raidou1 0x8C	1 of 35 words differ	docs/matching/interface/frFont.md	95
-frLinkUserImage	interface/frFont	raidou1 0x50, raidou2 0x50	15 of 20 words differ	docs/matching/interface/frFont.md	107
-frSetMessageDefStepY	interface/frFont	raidou1 0xC, raidou2 0xC	1 of 3 words differ	docs/matching/interface/frFont.md	122
+frSetMessageDefStepY	interface/frFont	raidou1 0xC, raidou2 0xC	1 of 3 words differ	docs/matching/interface/frFont.md	107
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3
 dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11

@@ -11,6 +11,7 @@
 #include "sbtlDMG.h"
 #include "sBtlCalc.h"
 #include "sBtlSM.h"
+#include "sBtlEXP.h"
 #include "sBtlItem.h"
 #include "sdatUnit.h"
 #include "sdfMemory.h"
@@ -291,7 +292,7 @@ void sbtlCallMemset3(s32 battleMode, s32 stageNo)
     wk_sbtl->dvltkList = sbtlCallChipAllocZeroDirect();
     wk_sbtl->expList = InitTarSelProcessData();
     wk_sbtl->stp = evtAllocateContext();
-    wk_sbtl->field2CC = 0;
+    wk_sbtl->list2CC = NULL;
     wk_sbtl->field404 = 0;
     wk_sbtl->field408 = 0;
     wk_sbtl->field40C = 0;

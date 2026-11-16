@@ -4750,7 +4750,6 @@
 0x0032A6A0	sdfCopyCornerWordsWithEdgeByte	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BEDC8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0032A778	cmpFunc3	func	tier=D	derived-unit	na	unit code_002CA3F0, nearest named function cmpDrawSetup3DView; no named callee, caller or string
 0x0032AA88	cmpFunc4	func	tier=D	derived-unit	na	unit code_002CA3F0, nearest named function cmpDrawSetup3DView; no named callee, caller or string
-0x0032AC28	cmpCallDrawPanelSprite2	func	tier=D	derived-callee	na	unit code_002CA3F0, nearest named function cmpDrawSetup3DView; calls fclDrawPanelSprite
 0x0032AF00	cmpCallDrawPanelSprite	func	tier=D	derived-callee	na	unit code_0032A6A0, nearest named function cmpDrawSetup3DView; calls fclDrawPanelSprite
 0x0032B1F0	effDrawSpriteWithWorkCornerColors	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BF400, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0032B228	effDrawSpriteWithCornerColors	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BF438, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -4778,7 +4777,6 @@
 0x0032C900	cmpLeaf37	func	tier=D	derived-unit	na	unit code_002CAFD8, neighbour cmpDrawSetup3DView; no named callee, caller or string
 0x0032C998	cmpLeaf38	func	tier=D	derived-unit	na	unit code_002CAFD8, neighbour cmpDrawSetup3DView; no named callee, caller or string
 0x0032CB00	cmpLeaf39	func	tier=D	derived-unit	na	unit code_002CAFD8, neighbour cmpDrawSetup3DView; no named callee, caller or string
-0x0032CBD8	cmpDrawTriGSub	func	tier=D	derived-caller	na	unit code_002CAFD8, neighbour cmpDrawSetup3DView; called by cmpDrawTriG
 0x0032CE40	cmpLeaf40	func	tier=D	derived-unit	na	unit code_002CAFD8, neighbour cmpDrawSpriteFlag; no named callee, caller or string
 0x0032CF38	fclDrawPanelSprite	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0032D030	fclDrawPanelSprite2	func	tier=D	idb-smt3	na	IDB name in 2 game(s)

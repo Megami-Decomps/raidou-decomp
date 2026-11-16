@@ -8051,7 +8051,7 @@
 0x002CA3F0	sdfCopyCornerWordsWithEdgeByte	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BEDC8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002CA4C8	cmpFunc3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002CA3F0, nearest named function cmpDrawSetup3DView; no named callee, caller or string
 0x002CA7D8	cmpFunc4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002CA3F0, nearest named function cmpDrawSetup3DView; no named callee, caller or string
-0x002CA978	cmpCallDrawPanelSprite2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_002CA3F0, nearest named function cmpDrawSetup3DView; calls fclDrawPanelSprite
+0x002CA978	effDrawTextureSlot	inferred	smt3-decomp name effDrawTextureSlot, method=smt3-body; p=na; tier=A; evidence=SMT3 effDrawTextureSlot at the same address (smt3_symbols.txt), same body; replaces cmpCallDrawPanelSprite2
 0x002CAC48	effDrawSpriteWithWorkCornerColors	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BF400, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002CAC80	effDrawSpriteWithCornerColors	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BF438, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002CAD28	effDrawSpriteWithCornerFade	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BF4E0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -8078,7 +8078,7 @@
 0x002CC358	cmpLeaf37	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002CAFD8, neighbour cmpDrawSetup3DView; no named callee, caller or string
 0x002CC3F0	cmpLeaf38	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002CAFD8, neighbour cmpDrawSetup3DView; no named callee, caller or string
 0x002CC558	cmpLeaf39	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002CAFD8, neighbour cmpDrawSetup3DView; no named callee, caller or string
-0x002CC630	cmpDrawTriGSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_002CAFD8, neighbour cmpDrawSetup3DView; called by cmpDrawTriG
+0x002CC630	cmpExpandColor	inferred	smt3-decomp name cmpExpandColor, method=smt3-body; p=na; tier=A; evidence=SMT3 cmpExpandColor at the same address (smt3_symbols.txt), same body; replaces cmpDrawTriGSub
 0x002CC668	cmpDrawSetup3DView	inferred	smt3-decomp name via SLUS_209.11 0x002399D8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.5
 0x002CC7B8	cmpDrawSpriteFlag	inferred	SMT3HD name via SLUS_209.11 0x00239B28, reloc-identical; map-agrees
 0x002CC898	cmpLeaf40	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002CAFD8, neighbour cmpDrawSpriteFlag; no named callee, caller or string

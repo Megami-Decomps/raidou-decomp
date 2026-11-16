@@ -43,7 +43,7 @@ typedef struct MenuSprites {
 /* The allocated icon bundle owns its draw fade and fade direction. */
 typedef struct MenuIconBundle {
     u32 unk0[3];
-    struct EffectSlotSet *sprite[3];
+    struct sprHandle_t *sprite[3];
     s32 fade;
     s32 fadeOut;
 } MenuIconBundle;
@@ -60,7 +60,7 @@ typedef struct MenuPageBar {
     u8 settingIndex;
     s8 positionY;
     u8 pad1A[2];
-    struct EffectSlotSet *textures[7]; /* 0x1C */
+    struct sprHandle_t *textures[7]; /* 0x1C */
     struct EffMappedResource *effects[2]; /* 0x38 */
     s32 activeEffect;
     s32 fade;
@@ -92,7 +92,7 @@ typedef struct MenuQueuedCommand {
     s32 lowPhaseDecayStep;
     s32 initialValue;
     s32 argument;
-    struct EffectSlotSet *resources; /* 0x1C: the real draw resource instance. */
+    struct sprHandle_t *resources; /* 0x1C: the real draw resource instance. */
     s32 particleCount;
     MenuCommandPosition positions[128]; /* 0x24 */
     MenuCommandMotion motion[128];      /* 0x824 */
@@ -104,13 +104,13 @@ typedef struct MenuPageSlot {
     s32 kind;
     u32 flags;
     u8 pad08[8];
-    struct EffectSlotSet *icon[3]; /* 0x10 */
+    struct sprHandle_t *icon[3]; /* 0x10 */
     MenuPageBar hp;               /* 0x1C */
     MenuPageBar mp;               /* 0x6C */
-    struct EffectSlotSet *frame[8]; /* 0xBC */
+    struct sprHandle_t *frame[8]; /* 0xBC */
     struct MenuSprites *windowSprites; /* 0xDC */
     MenuIconBundle *iconBundle;
-    struct EffectSlotSet *panelResourceHandles[3]; /* 0xE4 */
+    struct sprHandle_t *panelResourceHandles[3]; /* 0xE4 */
     MenuQueuedCommand commands[2]; /* 0xF0 and 0x1114 */
 } MenuPageSlot;
 
@@ -126,15 +126,15 @@ typedef struct MenuPageWindow {
     u32 flags;
     s32 transitionValue;
     PartyPanel *records;
-    struct EffectSlotSet *resources; /* 0x0C: resolved base-resource handle */
+    struct sprHandle_t *resources; /* 0x0C: resolved base-resource handle */
     s32 slot;
-    struct EffectSlotSet *secondaryResource;
+    struct sprHandle_t *secondaryResource;
     s32 secondarySlot;
-    struct EffectSlotSet *alternateResource;
+    struct sprHandle_t *alternateResource;
     s32 alternateSlot;
     /* One main resource bank, copied and consumed in two eight-entry halves. */
-    struct EffectSlotSet *mainResources[16];
-    struct EffectSlotSet *handlesC[5];
+    struct sprHandle_t *mainResources[16];
+    struct sprHandle_t *handlesC[5];
     MenuPageSlot slots[5];
     struct MenuList *lists[2];
     s32 selected;
@@ -154,7 +154,7 @@ typedef s32 MenuPanelGroupSelection;
 /* Native group allocations own five panel items and retain their selection. */
 typedef struct MenuPanelGroup {
     u8 pad00[0x0C];
-    struct EffectSlotSet *texture; /* 0x0C */
+    struct sprHandle_t *texture; /* 0x0C */
     struct MenuPanelItem *entries[5]; /* 0x10 */
     MenuPanelGroupSelection selection; /* 0x24; -1 means no selected row. */
     s32 initialValue; /* 0x28 */

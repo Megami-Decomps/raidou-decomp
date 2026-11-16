@@ -10098,8 +10098,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046F784	0x004E4794	itfTestOverlayPhaseStep	.sbss	0x4	no	code-ref
 0x0046F788	0x004E4798	dds3EffectBuiltinNameIndex2	.sbss	0x4	no	code-ref
 0x0046F78C	0x004E479C	gRegistMax	.sbss	0x8	no	code-ref
-0x0046F794	0x004E47A4	cmbRefDDS3GBWKWork	.sbss	0x8	no	code-ref
-0x0046F79C	0x004E47AC	cmbRefDDS3GBWKWork2	.sbss	0x4	no	code-ref
+0x0046F790	0x004E47A0	cmbRefDDS3GBWKWork	.sbss	0x8	no	code-ref
+0x0046F798	0x004E47A8	cmbRefDDS3GBWKWork2	.sbss	0x8	no	code-ref
 0x0046F7A0	0x004E47B0	frWork	.sbss	0x4	no	code-ref
 0x0046F7A4	0x004E47B4	frFontRowBuf	.sbss	0x4	no	code-ref
 0x0046F7A8	0x004E47B8	DeadMoonTmx	.sbss	0x4	no	code-ref

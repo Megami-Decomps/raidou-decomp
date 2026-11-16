@@ -9,23 +9,23 @@
 void sdfSubmitGsAlphaOneRegisterPacket(u32 data, u32 kind);
 
 /* Nonzero keepAllocation transfers the source descriptor to the returned owner. */
-struct EffectSlotSet *effCreateResourceSlotSetFromAllocation(
+struct sprHandle_t *effCreateResourceSlotSetFromAllocation(
     struct sdfMemHandle_t *resourceAllocation, u32 keepAllocation);
 
-void effInitializeSlotWorkFromDescription(struct EffectSlotSet *owner, s32 slotIndex,
+void effInitializeSlotWorkFromDescription(struct sprHandle_t *owner, s32 slotIndex,
                                           void *payload);
 
 /* The view owns its descriptions/work and borrows source's texture references; source must outlive it. */
-struct EffectSlotSet *effCreateResourceSlotSet(struct EffectSlotSet *borrowedSource,
+struct sprHandle_t *effCreateResourceSlotSet(struct sprHandle_t *borrowedSource,
                                                u32 slot, u32 count);
 
-void effInitializeSlotWork(struct EffectSlotSet *owner, s32 slotIndex);
+void effInitializeSlotWork(struct sprHandle_t *owner, s32 slotIndex);
 
-u32 effDestroyResourceSlotSet(struct EffectSlotSet *owner);
+u32 effDestroyResourceSlotSet(struct sprHandle_t *owner);
 
 struct EffMappedResource;
 
-u32 effConfigureIndexedSlotMaterial(struct EffectSlotSet *work, s32 index,
+u32 effConfigureIndexedSlotMaterial(struct sprHandle_t *work, s32 index,
                                     struct EffMappedResource *data, s32 item,
                                     u32 materialFlags, u32 materialValue, u32 stateFlags);
 

@@ -10,13 +10,20 @@
 #include "sbtlDMG.h"
 #include "sBtlEff.h"
 
-struct EffectSlotSet;
+struct sprHandle_t;
+
+/* Battle reward work, cleared by sbtlInitDropWork. The R1 layout differs from HD's and is not read yet. */
+typedef struct SBTLDROP_WORK {
+    u8 pad00[0xC4];
+} SBTLDROP_WORK;
 
 /* Pointed to by SBTL_WORK.panel at 0x628. */
 typedef struct SBTL_PANEL {
     u8 pad00[8];
-    struct EffectSlotSet *resources;
-    u8 pad0C[0x14];
+    struct sprHandle_t *resources;
+    u8 pad0C[4];
+    struct sprHandle_t *hPanelSpr3;
+    u8 pad14[0xC];
     u32 flg;
 } SBTL_PANEL;
 
@@ -80,7 +87,7 @@ typedef struct SBTL_WORK {
     u8 pad236[0x238 - 0x236];
     s32 equipBulletBk;
     u8 pad23C[0x2CC - 0x23C];
-    s32 field2CC;
+    struct SBTLUNIT_LISTWORK *list2CC;
     u8 pad2D0[4];
     struct SBTLUNIT_LISTWORK *list2D4;
     u8 pad2D8[4];
@@ -163,7 +170,7 @@ typedef struct SBTL_WORK {
     f32 field510;
     f32 field514;
     f32 field518;
-    u8 pad51C[0x5E0 - 0x51C];
+    SBTLDROP_WORK drop;
     s16 mf_mode;
     s16 mf_counter;
     s16 mf_cmpcounter;
@@ -289,6 +296,7 @@ typedef struct SBTL_PACK_SLOT {
 
 SBTL_PLAYER_DATA *sbtlGetPlayerData(void);
 s32 sbtlCallBtlGetPlayerData3(void);
+s32 sbtlCallBtlGetMotionVisualData(struct SBTLUNIT_WORK *wk, s32 motionID, s16 bframe, s16 aframe, s8 flg);
 f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type);
 s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 flg);
 s32 sbtlCallBtlGetSkilltbl8(struct SBTLUNIT_WORK *wk, u32 flg);
@@ -464,6 +472,7 @@ s32 sbtlBtlLoadHuumaMesDataSub(s32 huumaMesNo);
 void sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckScriptData(s32 devilId);
 s32 sbtlCheckTutorialBattle(void);
+s64 sbtlCallBtlCheckTutorialBattle3(void);
 void sbtlGetDevilData(struct SBTLUNIT_WORK *wk, s32 a, s32 b);
 SBTL_DEVIL_DATA *sbtlGetDevilData_sbtlSub(s32 id);
 s32 sbtlGetExeSkill(SKLID sklid);
@@ -497,8 +506,7 @@ SBTL_UNIT_SUB *sbtlSetUnitSub(s32 a, s32 id, s32 b);
 void sbtlStopVibe(void);
 s32 Draw_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk);
 s32 Draw_sbtlScene(void);
-s32 Init_sbtlDraw(void);
-struct SBTLEXP_LISTWORK *InitTarSelProcessData(void);
+void Init_sbtlDraw(void);
 s32 Proc_sbtl(void);
 s32 Proc_sbtlEXP(struct SBTL_MODELBIND_LIST *lwk);
 s32 sbtlProcSBtlSTPSub(struct SBTLUNIT_WORK *wk);
@@ -522,6 +530,7 @@ void sbtlCallBtlCheckEnshutuSummonUnit(void);
 s32 sbtlCallBtlCheckGeneratorGroupID(void);
 void sbtlCallBtlCheckTutorialBattle2(void);
 s32 sbtlCallBtlEndAction(struct SBTLUNIT_WORK *wk, u32 action, s32 flg);
+s32 sbtlSetMotionHit(struct SBTLUNIT_WORK *wk, s32 motionno, SKLID skillid);
 s32 sbtlCallBtlGetItemtbl(void);
 s32 sbtlCallBtlGetNumUnitGroupID(void);
 s32 sbtlCallBtlMapInit(void);
@@ -534,24 +543,21 @@ s32 sbtlCallBtlSearchUnitID33(void);
 s32 sbtlCallBtlSearchUnitID34(sdatUnitWork_t *unit, s32 devilId, s8 flg);
 s32 sbtlCallBtlSearchUnitID7(s32 x, s32 y);
 struct SBTLDVLTK_LISTWORK *sbtlCallChipAllocZeroDirect(void);
-s32 sbtlCallDeleteMessage(struct SBTLSM_LISTWORK *lwk);
 s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *lwk, u8 flg);
 s32 sbtlCallPadVibeFadeUpdate(struct SBTLEFF_LISTWORK *lwk);
 s32 sbtlCallSetOt(void);
-s32 sbtlCallSetVarSBtlSM(struct SBTLSM_LISTWORK *lwk);
 s32 sbtlCallSin2(void);
 s32 sbtlCallSin3(struct SBTLDVLTK_LISTWORK *lwk);
 s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
 f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */
 s32 sbtlCheckLoadFlg(void);
+void sbtlCallSetColor(void);
 s32 sbtlCheckPad(void);
 s32 sbtlCheckUnit_Exec(void);
 s32 sbtlChkBossEventStart_EnemySummonWait(void);
 s32 sbtlClearGeneratorWork(void);
 struct SBTLEFF_LISTWORK *sbtlCreateEffList(void);
 struct SBTLITEM_LISTWORK *sbtlCreateItemList(void);
-s32 sbtlCreateSM(struct SBTLSM_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, s32 no, s32 flg);
-struct SBTLSM_LISTWORK *sbtlCreateSMList(void);
 s32 sbtlEntryItemList(struct SBTLITEM_LISTWORK *lwk);
 void sbtlFunc2(void);
 s32 sbtlLoadEffectData_Decode(struct SBTLUNIT_WORK *wk);
@@ -570,14 +576,13 @@ void sbtlRefSbtl4(void);
 s32 sbtlRefSbtl45(void);
 void sbtlInitTutorial(void);
 s32 sbtlRefSbtl47(void);
-s32 sbtlRefSbtl60(struct SBTLEXP_LISTWORK *lwk);
 s32 sbtlRefSbtl62(struct SBTLUNIT_WORK *wk);
 s32 sbtlReleaseDelList(struct SBTLEFF_DELLISTWORK *lwk, u8 flg);
 s32 sbtlReleaseDvltk_List(struct SBTLDVLTK_LISTWORK *lwk, u8 flg);
-s32 sbtlReleaseEXP_List(struct SBTLEXP_LISTWORK *lwk, u8 flg);
 s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg);
 s32 sbtlSbattle2(s32 flg);
-s32 sbtlSbtlmenuMain(void);
+void sbtlSbtlmenuMain(void);
+s32 sbtlRefSbtl13(void);
 s32 sbtlSearchPacData(s32 major, s32 minor, s32 devilid);
 s32 sbtlSearchPacData2(s32 major, s32 minor, s32 devilid);
 s32 sbtlSetBit(u32 *bits, s32 no);

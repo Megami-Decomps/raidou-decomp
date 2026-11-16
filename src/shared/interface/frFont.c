@@ -30,7 +30,6 @@ typedef struct frFontGsPacket_t frFontGsPacket_t;
 
 typedef struct frTextIndex_t frTextIndex_t;
 
-typedef struct frTextBank_t frTextBank_t;
 
 typedef struct frMsgInfo_t frMsgInfo_t;
 
@@ -215,10 +214,8 @@ extern frFontHandle_t *frCombineFontRequestEx(frFontHandle_t *, frFontHandle_t *
 s32 frGetGsFontNum(void);
 s32 frGetTextHandleNum(void);
 u32 frGetFontHandleNum(void);
-frFontHandle_t *frSetUserImage(GsFont_t *pFont, frFontHandle_t *pFRQ);
 frFontHandle_t *frLinkUserImage(GsFont_t *pFont, frFontHandle_t *pFRQ);
 frFontHandle_t *frCombineFontRequest(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2);
-GsFont_t *frTranslateUserData(s32 Width, s32 Height, void *pData, s8 DataFreeMode);
 FontMem_t *fmRentFontMem(void);
 
 #define FR_FONT_ATLAS_POSITION_SHIFT 4
@@ -227,7 +224,6 @@ FontMem_t *fmRentFontMem(void);
 
 #define FR_FONT_ATLAS_DEST_SHIFT 6
 
-u8 *frDecodeFontImage(u8 Style, s32 FontNo);
 
 #define FR_FONT_RESOURCE_CLONE_BYTES 0x120
 
@@ -243,7 +239,7 @@ void frSetDrawSpeed(frFontHandle_t *pFRQ, s32 Speed);
 #define FR_FONT_CONTEXT_BYTE_CAP (-0x80)
 
 void frSetFontSpace(frFontHandle_t *pFRQ, s32 Space);
-u32 frGetStrWidth(frFontHandle_t *pFRQ);
+u32 frGetStrWidth(const frFontHandle_t *pFRQ);
 void frSetDrawPosition(frFontHandle_t *pFRQ, u32 X, u32 Y);
 void frSetPriority(frFontHandle_t *pFRQ, u32 Pri);
 
@@ -279,7 +275,6 @@ extern u32 gMessageStepY;
 #define FR_FONT_DEFAULT_CURSOR_SPACING 0x14
 
 void frSetMessageStepY(u32 StepY);
-u8 *MessageNumSearch(s32 Index, frTextBank_t *pData, s32 Size);
 void frMessageReturnCode(frMsgInfo_t *pMsgInfo);
 
 #define FR_FONT_CONTEXT_CURSOR_SCALE 8
@@ -559,7 +554,6 @@ u32 itfReadEncodedCode(FrFontCtx *stream);
 #endif
 u32 itfGetTextLipsUnitId(void);
 u32 itfGetTextLipsMotionId(void);
-extern void frFontMoveChainTo(s32 x, s32 y, _FRQ *text);
 
 struct EffSpriteUV;
 
@@ -907,19 +901,14 @@ INCLUDE_ASM(const s32, "interface/frFont", frSetFontSub2);
 
 INCLUDE_ASM(const s32, "interface/frFont", frSetUserImage);
 
-#ifdef NON_MATCHING
-/* 15 of 20 words differ (first at +0x4) */
 frFontHandle_t *frLinkUserImage(GsFont_t *pFont, frFontHandle_t *pFRQ) {
-    frFontHandle_t *referenceChain = frSetUserImage(pFont, 0);
+    frFontHandle_t *referenceChain = frSetUserImage(pFont, 0, NULL);
 
     if (referenceChain == NULL) {
         return pFRQ;
     }
     return frCombineFontRequest(pFRQ, referenceChain);
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frLinkUserImage);
-#endif
 
 GsFont_t *frTranslateUserData(s32 Width, s32 Height, void *pData, s8 DataFreeMode) {
     s32 imagePosition[2];
@@ -1195,7 +1184,7 @@ s32 frStrLen(s8 *pStr) {
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "interface/frFont", frGetStrWidth);
 #else
-u32 frGetStrWidth(frFontHandle_t *pFRQ) {
+u32 frGetStrWidth(const frFontHandle_t *pFRQ) {
     frTextHandle_t *childGlyph = pFRQ->firstChild;
     s32 totalAdvance = 0;
 

@@ -37,7 +37,7 @@
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
-struct EffectSlotSet;
+struct sprHandle_t;
 
 enum { FILE_CONFIG_SET, FILE_CONFIG_FRAME, FILE_CONFIG_X, FILE_CONFIG_Y };
 

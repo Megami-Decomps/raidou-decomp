@@ -10,19 +10,25 @@ struct SBTLUNIT_WORK;
 
 s32 sbtlCallBtlCreateSideList4(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 r_kaja);
 s32 sbtlCallBtlGetSkilltbl22(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg);
+s32 CheckBadStatus_sbtlSkill(struct SBTLUNIT_WORK *wk, SKLID sklid);
+s32 sbtlCallBtlGetSklVisualTbl2(struct SBTLUNIT_WORK *wk, SKLID sklid);
 s32 sbtlCheckMHTData(struct SBTLUNIT_WORK *wk, SKLID sklid);
 struct SBTLSKILLP_TBL *sbtlGetSkilltbl(SKLID skillid);
 struct SBTLSKLVISUAL_TBL *sbtlGetSklVisualTbl(SKLID sklid);
 s32 sbtlSetSkillData(struct SBTLUNIT_WORK *wk, SKLID sklid);
+s32 sbtlSetHatData(struct SBTLUNIT_WORK *wk, SKLID sklid);
 s32 sbtlSetSkill_MotionData(struct SBTLUNIT_WORK *wk, SKLID sklid);
 
 /* Skill visual table entry (16 bytes in R1). Partial layout. */
 typedef struct SBTLSKLVISUAL_TBL {
-    u8 pad00[0xA];
+    s32 motionno;
+    s32 motionno2;
+    s16 hatEffect;
     s16 SABno;
-    u8 pad0C[0x4];
+    u32 flg;
 } SBTLSKLVISUAL_TBL;
 
+/* Skill parameter table entry (0x34 bytes in R1). */
 struct SBTLSKILLP_TBL {
     u16 s_type;
     s16 para;
@@ -44,15 +50,10 @@ struct SBTLSKILLP_TBL {
     u16 equipID;
     s16 hitbk_cnt;
     f32 hitbk_rate;
-    u32 flg2;
-    s32 weapontype;
-    s32 fuyoeff;
-    s32 shild_dmg;
-    s32 light_attack_mag;
-    s32 sortId;
-    SORT_SKL sortType;
-    s32 coolTime;
-    s32 wincePow;
 };
+SIZE_CHECK(sbtlSkillTblSizeCheck, struct SBTLSKILLP_TBL, 0x34);
+
+extern struct SBTLSKILLP_TBL *sbtlCallBtlDrawRedGgData;
+extern SBTLSKLVISUAL_TBL *sbtlGetSklVisualTblData;
 
 #endif

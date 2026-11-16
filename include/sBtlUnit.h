@@ -215,9 +215,18 @@ struct SBTLUNIT_WORK {
     s32 param[9];
     u8 pad2E4[0x8];
     struct SBTL_AISYO_TBL aisyoBase;
-    u8 pad32C[0x370 - 0x32C];
+    u8 pad32C[0x358 - 0x32C];
+    u32 field358;
+    u8 pad35C[0x4];
+    s16 field360;
+    s16 field362;
+    u8 pad364[0x370 - 0x364];
     s16 field370;
-    u8 pad372[0x3A0 - 0x372];
+    u8 pad372[0x37C - 0x372];
+    u32 field37C; /* attribute bits; sbtlCheckAisyo_Old takes the lowest */
+    u8 pad380[0x4];
+    s16 field384;
+    u8 pad386[0x3A0 - 0x386];
     s32 major;
     s32 minor;
     s32 motionno;

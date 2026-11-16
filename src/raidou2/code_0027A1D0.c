@@ -99,9 +99,9 @@ typedef struct BattleController {
     u8 pad_42C[0x20];
     BtlSceneFadingRecord fadingRecords[8]; /* 0x44C */
     u8 pad_48C[0x18];
-    EffectSlotSet *resA; /* 0x4A4 */
-    EffectSlotSet *resB;
-    EffectSlotSet *resC;
+    sprHandle_t *resA; /* 0x4A4 */
+    sprHandle_t *resB;
+    sprHandle_t *resC;
     u8 pad_4B0[0x100];
     s32 (*sceneCallback)();
     u8 pad_5B4[0xD4];

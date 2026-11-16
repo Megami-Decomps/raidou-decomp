@@ -25,7 +25,7 @@ s32 Draw_sbtlSTP(SBTL_STP *stp)
     BtlProjectedScreenPoint point;
     u32 palette[4];
     SBTL_STP_NODE *node;
-    EffectSlotSet *set;
+    sprHandle_t *set;
     s32 slot;
     s32 i;
 

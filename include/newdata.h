@@ -128,6 +128,17 @@ typedef struct
     datUnitWork_t unit;
 } cmbUnit_t;
 
+/* One name character: a two-byte font code, read as a halfword or as its bytes. */
+typedef union {
+    u16 code;
+    u8 bytes[2];
+} dds3NameChar_t;
+
+/* A 24x24 4-bit name glyph. */
+typedef struct {
+    u8 pixel[0x120];
+} dds3NameImage_t;
+
 /* Shared persistent work ("GBWK"), laid out per version from its consumers.
  * unkXXXX fields are accessed at that offset with that width; the rest is unknown. */
 typedef struct
@@ -157,7 +168,7 @@ typedef struct
     /* 0x1C88 */ u8 unk1C88;
     /* 0x1C89 */ u8 unk1C89;
     /* 0x1C8A */ u8 unk1C8A[0x6];
-    /* 0x1C90 */ u32 unk1C90;
+    /* 0x1C90 */ u32 configFlag;
     /* 0x1C94 */ u32 unk1C94;
     /* 0x1C98 */ u32 unk1C98;
     /* 0x1C9C */ u32 unk1C9C;
@@ -172,15 +183,15 @@ typedef struct
     /* 0x2C7C */ u8 unk2C7C[0xA34];
     /* 0x36B0 */ u32 unk36B0;
     /* 0x36B4 */ u32 unk36B4;
-    /* 0x36B8 */ u8 unk36B8[0x1208];
-    /* 0x48C0 */ u16 unk48C0;
-    /* 0x48C2 */ u8 unk48C2[0x1E];
-    /* 0x48E0 */ u16 unk48E0;
+    /* 0x36B8 */ u8 unk36B8[0x8];
+    /* 0x36C0 */ dds3NameImage_t nameImage[2][8];
+    /* 0x48C0 */ dds3NameChar_t nameCode[2][8];
+    /* 0x48E0 */ u8 nameLength[2];
     /* 0x48E2 */ u8 unk48E2[0xE];
     /* 0x48F0 */ u32 unk48F0;
-    /* 0x48F4 */ u8 unk48F4[0x264C];
-    /* 0x6F40 */ u16 unk6F40;
-    /* 0x6F42 */ u8 unk6F42[0x1E];
+    /* 0x48F4 */ u8 unk48F4[0x144C];
+    /* 0x5D40 */ dds3NameImage_t nbNameImage[16];
+    /* 0x6F40 */ dds3NameChar_t nbNameCode[16];
     /* 0x6F60 */ u8 unk6F60;
     /* 0x6F61 */ u8 unk6F61[0xF];
     /* 0x6F70 */ union { u32 word; s16 half; } pointTable[26];
@@ -221,7 +232,7 @@ typedef struct
     /* 0x1F8C */ u8 unk1F8C;
     /* 0x1F8D */ u8 unk1F8D;
     /* 0x1F8E */ u8 unk1F8E[0x2];
-    /* 0x1F90 */ u32 unk1F90;
+    /* 0x1F90 */ u32 configFlag;
     /* 0x1F94 */ u32 unk1F94;
     /* 0x1F98 */ u32 unk1F98;
     /* 0x1F9C */ u32 unk1F9C;

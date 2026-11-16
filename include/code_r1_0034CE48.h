@@ -13,7 +13,7 @@ struct MenuListNode *mnuScrollListToPreviousPage(struct MenuList *list);
 /* Native sprite-state allocation: three resource-set owners and a state word. */
 typedef struct MenuSpriteState {
     u8 pad00[0x10];
-    struct EffectSlotSet *resourceSets[3];
+    struct sprHandle_t *resourceSets[3];
     s32 initialValue; /* 0x1C: initialized to 0x100 */
 } MenuSpriteState;
 

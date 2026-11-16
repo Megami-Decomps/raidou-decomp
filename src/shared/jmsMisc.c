@@ -38,7 +38,7 @@ typedef struct MenuPanelHandles {
     u32 panelKind;
     u8 pad04[4];
     s32 count;
-    struct EffectSlotSet *handles[6];
+    struct sprHandle_t *handles[6];
     u32 left;
     u32 top;
     u32 right;

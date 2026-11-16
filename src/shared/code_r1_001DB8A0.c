@@ -19,6 +19,7 @@
 #include "code_r1_0021CE60.h"
 #include "slMain.h"
 #include "code_r1_001CC1D0.h"
+#include "cfg.h"
 
 /* Apply volume and pan to a sequence track through the command queue. */
 
@@ -60,7 +61,7 @@ typedef struct MenuResourceWork MenuResourceWork;
 
 struct MenuListNode;
 
-struct EffectSlotSet;
+struct sprHandle_t;
 
 enum {
     FILE_CONFIG_SET,
@@ -343,17 +344,31 @@ INCLUDE_ASM(const s32, "code_r1_001DB8A0", cfgLeaf2);
 
 INCLUDE_ASM(const s32, "code_r1_001DB8A0", cfgRetuenFromLoadSub);
 
-INCLUDE_ASM(const s32, "code_r1_001DB8A0", cfgCopyFlagGblToBak);
+void cfgCopyFlagGblToBak(void) {
+    cfgWork = DDS3_GBWK->configFlag;
+    cfgData = 0;
+}
 
-INCLUDE_ASM(const s32, "code_r1_001DB8A0", cfgCopyFlagBakToGbl);
+void cfgCopyFlagBakToGbl(void) {
+    DDS3_GBWK->configFlag = cfgWork;
+    cfgData = 0;
+}
 
 INCLUDE_ASM(const s32, "code_r1_001DB8A0", cfgTitleConfigCalcProcessSub);
 
-INCLUDE_ASM(const s32, "code_r1_001DB8A0", dds3ToggleConfigFlagSub);
+s32 dds3ToggleConfigFlagSub(s32 type, u32 *flag) {
+    switch (type) {
+    case 0:
+        return (*flag ^ 1) & 1;
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "code_r1_001DB8A0", dds3ToggleConfigFlag);
 
-INCLUDE_ASM(const s32, "code_r1_001DB8A0", dds3RefDDS3GBWK);
+s32 dds3RefDDS3GBWK(s32 type) {
+    return dds3ToggleConfigFlagSub(type, &DDS3_GBWK->configFlag);
+}
 
 INCLUDE_RODATA(const s32, "code_r1_001DB8A0", cfgCallSetOtTable);
 

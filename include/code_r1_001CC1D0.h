@@ -13,6 +13,17 @@ typedef struct EffectSlotGeometry {
     f32 angleDegrees;
 } EffectSlotGeometry;
 
+/* Texture coordinates of a sprite quad; the draw code copies and edits them by index. */
+typedef union EffSpriteUV {
+    struct {
+        s32 u0;
+        s32 v0;
+        s32 u1;
+        s32 v1;
+    } rect;
+    s32 coord[4];
+} EffSpriteUV;
+
 /* Native 0x80-byte source descriptor; its bounds feed both grid and slot drawing. */
 typedef struct EffectSlotDescription {
     u8 pad00[0x14];
@@ -23,10 +34,12 @@ typedef struct EffectSlotDescription {
     u8 pad30[4];
     u32 rect[4];
     s32 bounds[4];       /* 0x44: x offset, y offset, width, height in grid units. */
-    s32 colors[4];
+    EffSpriteUV uv;      /* 0x54 */
     u32 cornerColors[4]; /* 0x64: reordered into the live/saved corner colors. */
-    s32 widthOverride;   /* 0x74: zero selects the source bounds' width. */
-    s32 heightOverride;  /* 0x78: zero selects the source bounds' height. */
+    s16 widthOverride;   /* 0x74: zero selects the uv width. */
+    s16 heightOverride;  /* 0x76: zero selects the uv height. */
+    u8 repeatCount[2];   /* 0x78: tiles across and down, counting the first. */
+    u8 repeatStep[2];    /* 0x7A: tile step across (x16) and down (x8). */
     u16 initialDelay;    /* 0x7C: loaded into each timed state's delay before its +1. */
     u16 descriptionUpdateDelay; /* 0x7E: update-call delay loaded into the live work entry. */
 } EffectSlotDescription;
@@ -139,8 +152,8 @@ typedef struct BdWork {
     s32 slotIndex;       /* 0x64 */
     union {
         struct {
-            u32 rect[4]; /* 0x68 */
-            u8 pad78[4];
+            u8 edgeAlpha[4]; /* 0x68: per-edge alpha, 0x80 keeps the corner colors */
+            u8 pad6C[0x10];
         } texture;
         struct {
             u8 pad68[4];
@@ -160,31 +173,43 @@ typedef struct BdWork {
 } BdWork;
 
 /* Native 0x30-byte resource-slot owner: source descriptors and live work arrays. */
-typedef struct EffectSlotSet {
+typedef struct sprHandle_t {
     struct sdfMemHandle_t *sourceAllocation;
     u32 sharesTextureReferences;
-    u32 count;
+    u32 SpriteNums;
     struct sdfMemHandle_t *descriptionAllocation;
     EffectSlotDescription *descriptions;
     struct sdfMemHandle_t *workAllocation;
     BdWork *workEntries;
-    u32 textureCount;
+    u32 TexNums;
     struct sdfMemHandle_t *textureAllocation;
     sdfTexHandle_t **textureReferences;
     s32 defaultValue;
     u8 pad2C[4];
-} EffectSlotSet;
+} sprHandle_t;
 
 typedef char BdWorkSizeCheck[sizeof(BdWork) == 0xA0 ? 1 : -1];
 
-typedef char EffectSlotSetSizeCheck[sizeof(EffectSlotSet) == 0x30 ? 1 : -1];
+typedef char sprHandleSizeCheck[sizeof(sprHandle_t) == 0x30 ? 1 : -1];
+
+void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSpriteUV *uv, const u32 *colors,
+                         u32 flip, f32 angle, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot);
+void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width, u32 height, const u32 *vertexColors,
+                                u32 presetMode, u32 presetValue);
+void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValues, u32 edge);
+void cmpFunc3(s32 x, s32 y, u32 z, s32 width, s32 height, u32 *edges, u8 *edgeValues, EffSpriteUV *uv,
+              u32 *colors, u32 flip, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot);
+void cmpFunc4(s32 x, s32 y, u32 z, s32 width, s32 height, u8 *counts, u8 *steps, EffSpriteUV *uv, u32 *colors,
+              u32 flip, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot);
+void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t *set, s32 slot, BdWork *draw, s32 ot);
+sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData);
 
 /* The native window constructor allocates 0x98 bytes; panel layout is 0x38. */
 struct MenuIconState {
     u32 kind;
     u32 unk4;
     s32 count;
-    struct EffectSlotSet *sprite[6];
+    struct sprHandle_t *sprite[6];
     u32 left;
     u32 top;
     u32 right;
@@ -198,7 +223,7 @@ typedef char MenuIconState_size_must_be_0x38[(sizeof(struct MenuIconState) == 0x
 typedef struct MapPacket {
     u32 type;
     u32 value;
-    struct EffectSlotSet *sheets[1]; /* The resource destructor iterates this one-sheet bank. */
+    struct sprHandle_t *sheets[1]; /* The resource destructor iterates this one-sheet bank. */
     u32 items[11];
     s32 count;
 } MapPacket;
@@ -206,7 +231,7 @@ typedef struct MapPacket {
 typedef char MapPacket_size_must_be_0x3C[(sizeof(MapPacket) == 0x3C) ? 1 : -1];
 
 typedef struct DspScrollingStrip {
-    struct EffectSlotSet *resource;
+    struct sprHandle_t *resource;
     s32 frameIndex;
     s32 horizontalOffset;
     s32 verticalOffset;
@@ -217,7 +242,7 @@ typedef struct DspScrollingStripState {
     s32 unk0;
     s32 layout;
     s32 unk8;
-    struct EffectSlotSet *resource;
+    struct sprHandle_t *resource;
     s32 layer;
     s32 overlayX;
     s32 overlayY;
@@ -232,7 +257,7 @@ typedef struct MenuIconSprites {
     struct sdfMemHandle_t *allocation; /* 0x00: retained descriptor for this bundle. */
     u32 value;
     u32 unk8;
-    struct EffectSlotSet *sprite[3];
+    struct sprHandle_t *sprite[3];
 } MenuIconSprites;
 
 typedef char MenuIconSprites_size_must_be_0x18[(sizeof(MenuIconSprites) == 0x18) ? 1 : -1];
@@ -242,7 +267,7 @@ struct MenuListNode {
     s32 index;
     const u8 *text; /* 0x04: borrowed encoded display text; removing a node frees only the node. */
     struct {
-        struct EffectSlotSet *sprite;
+        struct sprHandle_t *sprite;
         u32 effect;
     } sprites[8];       /* 0x08: four normal and four selected-row sprites */
     u32 flags48;        /* 0x48 */
@@ -318,7 +343,7 @@ void jmsSeqJumpAndFree(s32 *entrySlot, jmsSeqUnit_t *entry);
 
 /* An indexed render slot owned by an effect resource set. */
 typedef struct MenuGridSlot {
-    struct EffectSlotSet *set;
+    struct sprHandle_t *set;
     s32 index;
 } MenuGridSlot;
 
@@ -427,11 +452,11 @@ typedef struct MenuWindowContainer {
     s32 height;            /* 0x14 */
     struct MenuList *list; /* 0x18 */
     s32 suppressBaseSprite; /* 0x1C */
-    struct EffectSlotSet *spriteResource; /* 0x20 */
+    struct sprHandle_t *spriteResource; /* 0x20 */
     s32 rowSpriteSlot;     /* 0x24 */
     s32 baseSpriteSlot;    /* 0x28 */
     struct {
-        struct EffectSlotSet *sprite;
+        struct sprHandle_t *sprite;
         u32 parameter;
     } decorations[3];      /* 0x2C: optional window decoration sprites */
     u32 decorationX[3];    /* 0x44 */
@@ -457,7 +482,7 @@ typedef struct MenuTerminalContext {
     s32 popupState;
     jmsSeqUnit_t *popupTable;
     EvtResourcePair messageResources;
-    struct EffectSlotSet *effectSlots[4];
+    struct sprHandle_t *effectSlots[4];
     s32 state;
     MenuWindowContainer *ownedWindows[1];
     MenuWindowContainer *window;

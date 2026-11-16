@@ -32,10 +32,8 @@ frFontHandle_t *frwGetStaffFontFRQ(u32 x, u32 y, s32 depth, s32 alt, s32 measure
 void frwLoadStaffFont(void);
 void frwFreeStaffFont(void);
 
-typedef struct frTextBank_t frTextBank_t;
 
 extern frTextBank_t itfMesEmbedded_3E8CA8, itfMesEmbedded_3F39E0, itfMesEmbedded_3F7350;
-extern u8 *MessageNumSearch(s32 index, frTextBank_t *bank, s32 size);
 extern s32 frHelpLastIndex, D_0054F458, frHelpPosX, frHelpPosY;
 u32 frGetFontHeader(addr_t resourceBase);
 frFontNodeHeader_t *frAllocFontTable(s32 payloadBytes, s32 count);
@@ -111,9 +109,9 @@ typedef struct FrFontTextBank {
 _FRQ *itfDrawColor(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1,
     s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *unusedSub);
 
-s32 frFontCountGlyphChainNodes(const struct _FRQ *glyph);
+s32 frFontCountGlyphChainNodes(const _FRQ *glyph);
 
-s32 frFontMeasureGlyphStripWidth(s32 line, const struct _FRQ *glyph);
+s32 frFontMeasureGlyphStripWidth(s32 line, const _FRQ *glyph);
 
 #define ITF_BYTE_MASK 0xFF
 
@@ -166,7 +164,6 @@ s32 frFontMeasureGlyphStripWidth(s32 line, const struct _FRQ *glyph);
 /* Decode a two-byte glyph through the lookup table; 0xFFFF is missing. */
 u32 itfDecodeGlyph(u32 glyphCode);
 void itfConvertText(u8 *output, const char *input);
-extern void frFontMoveChainTo(s32 x, s32 y, _FRQ *text);
 _FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, FrFontTextBank *bank, s32 flags);
 
 struct EffSpriteUV;

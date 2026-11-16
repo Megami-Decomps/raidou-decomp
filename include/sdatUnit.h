@@ -36,7 +36,7 @@ typedef struct SBTL_AISYO_TBL {
 /* A unit's work: the player and each stock devil, and embedded in SBTLUNIT_WORK. */
 typedef struct sdatUnitWork_t {
     /* 0x00 */ u32 flag;
-    /* 0x04 */ u8 raceId;
+    /* 0x04 */ s8 raceId;
     /* 0x05 */ u8 pad05;
     /* 0x06 */ s16 devilId;
     /* 0x08 */ s8 level;

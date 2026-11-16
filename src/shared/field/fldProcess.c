@@ -8,6 +8,7 @@
 #include "effect.h"
 #include "sdfFrame.h"
 #include "fldProcess.h"
+#include "dds3PadManager.h"
 #include "fld.h"
 #include "fldFileResolver.h"
 #include "dds3obj.h"
@@ -550,11 +551,11 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if ((fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && mapBadMafuHajiki()) {
             goto bad_mafu;
         }
-        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3Data < 0 && !fldGlobalBase.word98) {
+        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.word98) {
             goto menu_key;
         }
     e_encounter_key:
-        if (fldEncountTestFlag(0x40) && fldGlobalBase.word240 != 2 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && mdlData < 0 && !fldGlobalBase.word98) {
+        if (fldEncountTestFlag(0x40) && fldGlobalBase.word240 != 2 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x22] < 0 && !fldGlobalBase.word98) {
             p2sdPlaySE(17, 127, 63);
             fldAutoMapSeqFlags.stage = 19;
             fldReleaseUnitPad();
@@ -599,7 +600,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             ProcMskSub_B();
             return 0;
         }
-        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3Data < 0 && !fldGlobalBase.word98) {
+        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.word98) {
         menu_key:
             fldAutoMapSeqFlags.stage = 21;
             fldReleaseUnitPad();
@@ -611,7 +612,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             return 0;
         }
     f_encounter_key:
-        if (fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && fldGlobalBase.word240 != 2 && mdlData < 0 && !fldGlobalBase.word98) {
+        if (fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && fldGlobalBase.word240 != 2 && dds3PadButtonState[0x22] < 0 && !fldGlobalBase.word98) {
             p2sdPlaySE(17, 127, 63);
             fldAutoMapSeqFlags.stage = 19;
             fldReleaseUnitPad();
@@ -727,7 +728,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
                 break;
             }
             mapCallSetOt8();
-            if (sbtlData >= 0) {
+            if (dds3PadButtonState[0x21] >= 0) {
                 break;
             }
             fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;

@@ -27,7 +27,7 @@ u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
 void mnuClearEntryFlags(struct MenuIconState *group);
 
 MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
-                    struct EffectSlotSet *resourceHandle, s32 *indices, u32 unused);
+                    struct sprHandle_t *resourceHandle, s32 *indices, u32 unused);
 
 /* Draw a window container owned by the menu window subsystem. */
 void mnuDrawWindowContainer(s32 x, s32 y, s32 depth, MenuWindowContainer *menu, s32 drawArg);
@@ -167,11 +167,11 @@ typedef struct MenuList MenuList;
 
 typedef struct MenuIconState MenuIconState;
 
-extern void itfSetGridEntryQuantizedAndRefresh(EffectSlotSet *, s32, s32, s32, s32, s32);
+extern void itfSetGridEntryQuantizedAndRefresh(sprHandle_t *, s32, s32, s32, s32, s32);
 extern void mnuClearListFlagsOneAndTwo(u32 *flags);
 extern void mnuDrawIconPanel(s32, s32, s32, s32, MenuIconState *, s32, s32);
 extern void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *);
-extern void effDrawTextureSlotWithBlendedCornerColors(s32, s32, s32, u32, s32, EffectSlotSet *, s32, s32);
+extern void effDrawTextureSlotWithBlendedCornerColors(s32, s32, s32, u32, s32, sprHandle_t *, s32, s32);
 
 /* Menu runtime fields shared by the party, panel and resource handlers. */
 typedef struct MenuContext {
@@ -274,7 +274,7 @@ MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade);
 MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade);
 void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *node, s32 drawArg);
 u32 mnuBlendListNodeColorByFlags(u32 previousColor, MenuListNode *entry);
-void mnuDispatchEntryWords(EffectSlotSet *menu, s32 entryIndex, MenuListNode *entry);
+void mnuDispatchEntryWords(sprHandle_t *menu, s32 entryIndex, MenuListNode *entry);
 
 /* Draw visible rows, preserving each row's glyph chain and callback state. */
 void mnuDrawWindowListEntries(s32 x, s32 y, s32 depth, s32 xOffset, s32 yOffset,
@@ -291,7 +291,7 @@ MenuListNode *mnuReverseListSelection(MenuWindowContainer *menu, s32 step);
 void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu);
 
 void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
-                        EffectSlotSet *resource, s32 *idx, s32 unused);
+                        sprHandle_t *resource, s32 *idx, s32 unused);
 
 void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, u32 option);
 void mnuDrawWindowIconRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, s32 count, s32 option);
@@ -362,14 +362,14 @@ void mnuDrawFadingWindows(s32 depth, s32 *list, s32 drawArg);
 void mnuUpdateFade(s32 *list);
 
 typedef struct MenuSpritePlacement {
-    EffectSlotSet *source;
+    sprHandle_t *source;
     u32 index;
     s32 x;
     s32 y;
 } MenuSpritePlacement;
 
 typedef struct MenuGatedSpritePlacement {
-    EffectSlotSet *source;
+    sprHandle_t *source;
     u32 index;
     s32 x;
     s32 y;
@@ -416,7 +416,7 @@ void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *n
     do {
         s32 selected = node == list->cursor;
         s32 index = selected * MNU_ENTRY_SPRITE_COUNT + spriteIndex;
-        struct EffectSlotSet *sprite = node->sprites[index].sprite;
+        struct sprHandle_t *sprite = node->sprites[index].sprite;
         if (sprite != 0) {
             itfDrawGridWithResolvedSlot(x, y, depth, 0, sprite, node->sprites[index].effect, drawArg);
         }
@@ -436,7 +436,7 @@ u32 mnuBlendListNodeColorByFlags(u32 previousColor, MenuListNode *entry) {
 }
 
 /* Apply the same entry-state blend to all four packed colors in one slot. */
-void mnuDispatchEntryWords(EffectSlotSet *menu, s32 entryIndex, MenuListNode *entry) {
+void mnuDispatchEntryWords(sprHandle_t *menu, s32 entryIndex, MenuListNode *entry) {
     s32 colorIndex;
 
     for (colorIndex = 0; colorIndex < MNU_ENTRY_COLOR_COUNT; colorIndex++) {
@@ -472,8 +472,8 @@ INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf22);
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf23);
 
-void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct EffectSlotSet *layout2C, u32 layout30, struct EffectSlotSet *layout34,
-                                    u32 layout48, u32 layout38, struct EffectSlotSet *layout3C, u32 layout40,
+void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct sprHandle_t *layout2C, u32 layout30, struct sprHandle_t *layout34,
+                                    u32 layout48, u32 layout38, struct sprHandle_t *layout3C, u32 layout40,
                                     u32 layout4C) {
     menu->decorations[0].sprite = layout2C;
     menu->decorationX[2] = layout4C;
@@ -486,7 +486,7 @@ void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct EffectSlotSet
     menu->decorationX[0] = 0;
 }
 
-void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu, struct EffectSlotSet *first, u32 second) {
+void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu, struct sprHandle_t *first, u32 second) {
     mnuSetWindowContainerLayout(menu, first, second, 0, 0, 0, 0, 0, 0);
 }
 
@@ -495,7 +495,7 @@ INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf24);
 INCLUDE_ASM(const s32, "code_r1_0034D128", mnuSetWindowPanelBounds);
 
 void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
-                               u32 third, EffectSlotSet *spriteResource) {
+                               u32 third, sprHandle_t *spriteResource) {
     MenuListDefaults defaults = D_0042AF00;
     menu->resource =
         mnuCreateWindowSpriteResources(first, second, third, spriteResource,
@@ -552,7 +552,7 @@ void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu) {
 }
 
 void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
-                        EffectSlotSet *resource, s32 *idx, s32 unused) {
+                        sprHandle_t *resource, s32 *idx, s32 unused) {
     obj->value = value;
     obj->sprite[0] = effCreateResourceSlotSet(resource, idx[0], 1);
     obj->sprite[1] = effCreateResourceSlotSet(resource, idx[1], 1);
@@ -564,7 +564,7 @@ void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
 
 /* Create an owned three-sprite bundle using the caller's slot-index array. */
 MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
-                    EffectSlotSet *resourceHandle, s32 *indices, u32 unused) {
+                    sprHandle_t *resourceHandle, s32 *indices, u32 unused) {
     struct sdfMemHandle_t *allocation = sdfMemAllocDirect(0x18);
     MenuIconSprites *bundle = (void *)sdfMemLock(allocation);
     memset(bundle, 0, 0x18);
@@ -594,7 +594,7 @@ void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
     s32 count;
     s32 visible;
     s32 rowOffset;
-    EffectSlotSet *firstSprite;
+    sprHandle_t *firstSprite;
     EffectSlotDescription *firstDescription;
     BdWork *firstWork;
     BdWork *lastWork;
@@ -661,7 +661,7 @@ MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
         panel->count = 3;
         first = mode == 1 ? 3 : 0;
         for (index = 0; index < panel->count; index++) {
-            panel->sprite[index] = effCreateResourceSlotSet((EffectSlotSet *)resource, keys[first + index], 1);
+            panel->sprite[index] = effCreateResourceSlotSet((sprHandle_t *)resource, keys[first + index], 1);
         }
         break;
     case 2:
@@ -669,24 +669,24 @@ MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
         panel->count = 2;
         first = mode == 3 ? 3 : 0;
         for (index = 0; index < panel->count; index++) {
-            panel->sprite[index] = effCreateResourceSlotSet((EffectSlotSet *)resource, keys[first + index], 1);
+            panel->sprite[index] = effCreateResourceSlotSet((sprHandle_t *)resource, keys[first + index], 1);
         }
         break;
     case 4:
         panel->count = 6;
-        panel->sprite[0] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x16, 1);
-        panel->sprite[1] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x15, 1);
-        panel->sprite[2] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0D, 1);
-        panel->sprite[3] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0D, 1);
-        panel->sprite[4] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0E, 1);
-        panel->sprite[5] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0E, 1);
+        panel->sprite[0] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x16, 1);
+        panel->sprite[1] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x15, 1);
+        panel->sprite[2] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0D, 1);
+        panel->sprite[3] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0D, 1);
+        panel->sprite[4] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0E, 1);
+        panel->sprite[5] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0E, 1);
         effConfigureIndexedSlotMaterial(panel->sprite[2], 0, (struct EffMappedResource *)material, 1, 0, 0, 0x0C);
         effConfigureIndexedSlotMaterial(panel->sprite[4], 0, (struct EffMappedResource *)material, 1, 0, 0, 0x0C);
         break;
     case 5:
         panel->count = 2;
-        panel->sprite[0] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0D, 1);
-        panel->sprite[1] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0E, 1);
+        panel->sprite[0] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0D, 1);
+        panel->sprite[1] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0E, 1);
         break;
     }
     return panel;
@@ -697,7 +697,7 @@ void mnuClearEntryFlags(MenuIconState *group) {
     s32 spriteIndex;
     if (group->sprite[0] != NULL && group->kind < MNU_PANEL_KIND_LIMIT) {
         for (spriteIndex = 0; spriteIndex < group->count; spriteIndex++) {
-            EffectSlotSet *obj = group->sprite[spriteIndex];
+            sprHandle_t *obj = group->sprite[spriteIndex];
             u32 *flags = &obj->workEntries->states[0].flags;
             *flags &= ~1;
             effInitializeSlotWork(obj, 0);

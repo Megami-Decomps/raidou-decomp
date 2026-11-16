@@ -104,21 +104,6 @@ First differing words:
 |---|---|---|
 | +0x30 | `addiu v1,v0,84` | `addiu v1,v0,100` |
 
-## frLinkUserImage (interface/frFont, raidou1 0x50, raidou2 0x50)
-
-Raidou 1 and Raidou 2: 15 of 20 words differ, first at +0x4.
-
-Nothing is recorded about this draft.
-
-Raidou 1, first differing words:
-
-| Offset | Draft | Retail |
-|---|---|---|
-| +0x4 | `sd s0,0(sp)` | `move a2,zero` |
-| +0x8 | `move s0,a1` | `sd s0,0(sp)` |
-| +0xC | `sd ra,8(sp)` | `move s0,a1` |
-| +0x10 | `jal 0x0` | `sd ra,8(sp)` |
-
 ## frSetMessageDefStepY (interface/frFont, raidou1 0xC, raidou2 0xC)
 
 Raidou 1 and Raidou 2: 1 of 3 words differ, first at +0x0.

@@ -22,7 +22,7 @@ typedef struct MenuProfilePanel {
     u8 pad00[0x10];
     s32 capValue;
     s32 option;
-    struct EffectSlotSet *sets[2]; /* 0x18: panel and particle resources. */
+    struct sprHandle_t *sets[2]; /* 0x18: panel and particle resources. */
     u32 unk20;
     s32 trailIndex;
     s32 particleIndex;
@@ -172,14 +172,14 @@ typedef struct MenuContext {
     u8 pad00[8];
     jmsSeqHandle_t transitionWork; /* +0x08: native saved-entry transition state */
     s32 popupState[3];     /* 0x54: passed to the popup state handlers */
-    struct EffectSlotSet *displayHandle;     /* 0x60 */
-    struct EffectSlotSet *resourceHandle; /* 0x64: second base resource owner. */
+    struct sprHandle_t *displayHandle;     /* 0x60 */
+    struct sprHandle_t *resourceHandle; /* 0x64: second base resource owner. */
     void *displayResource; /* 0x68 */
-    struct EffectSlotSet *alternateResources[10]; /* +0x6C: indexed by party unit ID */
+    struct sprHandle_t *alternateResources[10]; /* +0x6C: indexed by party unit ID */
     u8 pad94[0x1C];
     s32 selectionResources[6];
     s32 labelHandle;       /* 0xC8 */
-    struct EffectSlotSet *panelModels[10]; /* +0xCC: indexed by party unit ID */
+    struct sprHandle_t *panelModels[10]; /* +0xCC: indexed by party unit ID */
     const void *partySelectionLayout; /* 0xF4: layout copied into the party window panel. */
     const void *skillCategoryLayout; /* 0xF8 */
     const void *equippedSkillLayout; /* 0xFC */
@@ -267,7 +267,7 @@ typedef struct MenuPanelWindow {
 } MenuPanelWindow;
 
 typedef struct MnuCampPanelDrawRecord {
-    EffectSlotSet *resource;
+    sprHandle_t *resource;
     s32 sprite;
     s32 xOffset;
     s32 yOffset;

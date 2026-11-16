@@ -151,7 +151,7 @@ typedef char ScaleEntry_size_must_be_0x08[(sizeof(ScaleEntry) == 0x08) ? 1 : -1]
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
-struct EffectSlotSet;
+struct sprHandle_t;
 
 enum { FILE_CONFIG_SET, FILE_CONFIG_FRAME, FILE_CONFIG_X, FILE_CONFIG_Y };
 

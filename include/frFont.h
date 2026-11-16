@@ -20,124 +20,24 @@ void frSetFontSpace(frFontHandle_t *pFRQ, s32 Space);
 void frSetPriority(frFontHandle_t *pFRQ, u32 Pri);
 void frSetVariableRequest(s32 VarNo, s32 pStr);
 
-/* Font items use their own 0x2C-byte pool, separate from parent chains. */
-typedef struct _TEXT {
-    union {
-        u16 glyphCode;
-        struct {
-            u8 encodedContextByte;
-            s8 spacing;
-        } byteRoles;
-    } glyphCodeOrContext;
-    /* Child draw count: setup clears it; nonzero-fade draws increment it, and
-     * the fade helper also uses it to select the jitter phase. */
-    u16 drawCount;
-    s32 x;
-    s32 y;
-    s32 advance;
-    /* The same render-state word is also accessed by its low fade byte. */
-    union {
-        struct {
-            u16 cellAdvance;
-            u16 cellHeight;
-        } parentDimensions;
-        u32 renderWord;
-        struct {
-            u8 value;
-            u8 opaque[3];
-        } fadeByte;
-    } parentDimensionsOrRenderWord;
-    /* Rendering, glyph setup, and message shade paths use distinct byte views. */
-    union {
-        u32 renderValue;
-        struct {
-            u8 firstOption;
-            u8 fontIndex;
-            u8 secondOption;
-            u8 sharedFlags;
-        } setupBytes;
-        struct {
-            u8 green;
-            u8 red;
-            u8 blue;
-            u8 opaque;
-        } shadeColor;
-    } renderValueOrSetupOrShade;
-    struct {
-        u8 cellWidth;
-        u8 cellHeight;
-        u8 opaque[2];
-    } cellDimensions;
-    GsFont_t *cachedItem;
-    GsFont_t *sourceItem;
-    struct _TEXT *previous;
-    struct _TEXT *next;
-} _TEXT;
+typedef struct frTextHandle_t _TEXT;
 
 typedef char FrFontChildGlyph_size_must_be_0x2C[
     sizeof(_TEXT) == 0x2C ? 1 : -1];
 
-/* Parent chain heads: frInitFontTable's glyph pool, 0x58 bytes in Raidou 1 and
- * 0x5C in Raidou 2. */
-typedef struct _FRQ {
-    union {
-        u16 glyphCode;
-        struct {
-            u8 encodedContextByte;
-            u8 baseContextByte; /* copied back to +0 when the chain's context is reset */
-        } byteRoles;
-    } glyphCodeOrContext;
-    s8 spacing; /* frSetFontSpace writes it; frGetStrWidth adds it per child */
-    u8 pad03;
-    s32 x;
-    s32 y;
-    s32 advance;
-    /* Parent glyphs store dimensions; render words also carry a fade byte. */
-    union {
-        struct {
-            u16 cellAdvance;
-            u16 cellHeight;
-        } parentDimensions;
-        u32 renderWord;
-        struct {
-            u8 value;
-            u8 opaque[3];
-        } fadeByte;
-    } parentDimensionsOrRenderWord;
-    /* Rendering, glyph setup, and message shade paths use distinct byte views. */
-    union {
-        u32 renderValue;
-        struct {
-            u8 firstOption;
-            u8 fontIndex;
-            u8 secondOption;
-            u8 sharedFlags;
-        } setupBytes;
-        struct {
-            u8 green;
-            u8 red;
-            u8 blue;
-            u8 opaque;
-        } shadeColor;
-    } renderValueOrSetupOrShade;
-    u32 childCount;
-    _TEXT *firstChild;
-    _TEXT *lastChild;
-    struct _FRQ *previous;
-    struct _FRQ *next;
-    struct _FRQ *chainHead;
-    u32 timedControlCode; /* F214/F215 terminal timing control. */
-    u32 pendingLipsStopCode; /* F117 until evtLipsStopFunction runs. */
-    u32 skipLipsStopWait; /* Set when a timing control follows F117. */
-    s32 remainingWaitFrames; /* F215 uses 0xFFFF for title-sound completion. */
-    s32 contextModeEnabled;
-    u8 pad44[8];
-#ifdef VERSION_RAIDOU2
-    u8 pad4C[4];
-#endif
-    s32 contextResetWord; /* cleared on every chain node with the context byte */
-    u8 pad_end[8];
-} _FRQ;
+typedef struct frFontHandle_t _FRQ;
+typedef struct frTextBank_t frTextBank_t;
+
+u8 *MessageNumSearch(s32 Index, frTextBank_t *pData, s32 Size);
+frFontHandle_t *frCallMessageRequestEx2(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32 Tp, s32 Spd, u8 *pMsg,
+    frFontHandle_t *pFRQ, s32 Line);
+s32 frCallGetStrWidth3(s32 requestedLine, const _FRQ *glyph);
+void frFontMoveChainTo(s32 targetX, s32 targetY, _FRQ *glyphChain);
+frFontHandle_t *frSetUserImage(GsFont_t *pFont, u8 Style, frFontHandle_t *pFRQ);
+GsFont_t *frTranslateUserData(s32 Width, s32 Height, void *pData, s8 DataFreeMode);
+u8 *frDecodeFontImage(u8 Style, s32 FontNo);
+s32 frSetFontSub(u8 Style, s32 FontNo);
+s32 frSetFontSub2(frTextHandle_t *pText, s32 FontNo);
 
 #ifdef VERSION_RAIDOU1
 typedef char FrFontGlyph_size_must_be_0x58[sizeof(_FRQ) == 0x58 ? 1 : -1];

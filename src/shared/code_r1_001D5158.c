@@ -36,7 +36,7 @@ typedef struct MenuResourceWork MenuResourceWork;
 
 struct MenuListNode;
 
-struct EffectSlotSet;
+struct sprHandle_t;
 
 enum {
     FILE_CONFIG_SET,
