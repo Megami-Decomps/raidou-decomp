@@ -132,6 +132,8 @@ s32 evtFldProcSequence(void);
 void evtLipsExecFunction(s32 unit_uniqid, s32 motion_no);
 void titleCallNameEntry(void);
 
+void evtLipsStopFunction_evtCommand(s32 motionNo);
+
 /* "fldProcSequence", the field process name. */
 extern const char evtStrFldProcSequence[];
 

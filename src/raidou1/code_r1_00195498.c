@@ -36,7 +36,7 @@ s32 MoneyDrawProcess(dds3ProcessID_t *id)
     font = frwGetSmallFontFRQ2((offX + 316) << 4, 2256, 0, ((u32)(alpha << 7) >> 7) | 0xA09DC300, MoneyDrawProcessData[0], 0);
     frSetFontColorNo(font, 3);
     frSetFontSpace(font, -1);
-    frDrawFontEx2(font, 1, 106);
+    frDrawFontOt(font, 1, 106);
     frDestroyFontRequestAfter(font);
     scale = (f32)alpha * 0.0078125f;
     sprintf(buf, "%7d", wk->money);

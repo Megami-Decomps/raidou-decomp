@@ -141,7 +141,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001677D8	001677D8	field/fldSnow	c	smt3:names:1 of 1	field/fldSnow
 001677F0	001698D0	code_001677F0	asm	none	
 0016A298	0016A298	code_r1_0016A298	c	none	
-0016A558	0016A610	code_0016A558	asm	none	
+0016A558	0016A610	code_0016A558	c	none	
 0016A638	0016A668	code_r1_0016A638	c	none	
 0016A738	0016A738	code_r1_0016A738	c	none	
 0016A7D8	0016AC18	code_0016A7D8	asm	none	
@@ -155,7 +155,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0016D3B0	00173CD8	facility/fclCombineInit	c	smt3:map:1 of 43	facility/fclCombineInit
 00173D20	00174668	code_00173D20	c	none	
 00174698	00174758	field/fldEnc	c	smt3:map:2 of 2	field/fldEnc
-00174790	00174F70	code_00174790	asm	none	
+00174790	00174F70	code_00174790	c	none	
 00175038	001750B0	code_r1_00175038	c	none	
 001750E8	00175128	code_001750E8	asm	none	
 00175180	00175180	code_r1_00175180	c	none	
@@ -187,7 +187,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00190648	00190648	newbattle/nbTarSelProcess	c	smt3:map:1 of 1	newbattle/nbTarSelProcess
 00190668	00195248	code_00190668	c	none	
 00195498	00195498	code_r1_00195498	c	none	
-00195698	00199368	code_00195698	asm	none	
+00195698	00199368	code_00195698	c	none	
 001993A8	0019BBC0	model/mdlManager	c	smt3:names:68+dds:1+smt3:map:1 of 80	model/mdlManager
 0019C060	0019C068	code_0019C060	c	none	
 0019C070	0019D358	model/mdlEffect	c	smt3:names:30 of 34	model/mdlEffect

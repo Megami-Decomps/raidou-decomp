@@ -25,6 +25,7 @@ void cmbCallChipAllocDirect(s32 idx, s32 count, dds3NameImage_t *image);
 void cmbFunc(s32 idx, s32 count, dds3NameImage_t *image);
 void cmbRefDDS3GBWK2(s8 idx);
 void cmbCallRetFontMem(s32 idx);
+void nbCallRetFontMem(void);
 void cmbCallSetUserImage(s32 idx, u32 count, dds3NameChar_t *name, frFontCtx_t *ctx);
 void cmbRefDDS3GBWK3(s32 idx, frFontCtx_t *ctx);
 void nbCallDecodeFontImage(dds3NameImage_t *image, s32 style, u16 code);

@@ -9,9 +9,12 @@ typedef struct { char name[24][24]; } fldNpcPathGroup2_t;
 
 typedef struct mapNpcPathData_t {
     u32 nKey;
-    f32 **pItem;
-    sdfVector4_t *pItemR;
-    u32 pKey[32];
+    /* Translation paths (type 0) hold points, rotation paths (type 2) quaternions. */
+    union {
+        sdfVector3_t *pItem;
+        sdfVector4_t *pItemR;
+    } item;
+    u32 *pKey;
 } mapNpcPathData_t;
 
 typedef struct mapNpcPathTable_t {

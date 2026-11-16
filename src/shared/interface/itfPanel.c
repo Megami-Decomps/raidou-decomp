@@ -65,10 +65,6 @@ typedef struct itfPanelTextureData_t {
     sdfTexHandle_t *texture;
 } itfPanelTextureData_t;
 
-void itfPnlRelease(itfpanel_t *handle);
-void itfPnlSetPosition(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
-void itfPnlSetPositionOffset(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
-void itfPnlSetColor(itfpanel_t *handle, s32 r, s32 g, s32 b, s32 a);
 
 #define ITF_PANEL_PACKET_LIST_BYTES 0x20
 
@@ -151,7 +147,6 @@ static inline void SetVec4(u32 *vec, u32 red, u32 green, u32 blue, u32 alpha) {
 }
 
 extern s32 itfPanelPayloadSize[];
-itfpanel_t *itfPnlRegist2(s32 type, saddr_t texhandle);
 void CreateColorNormal(itfPanelNormalData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);
 void CreateColorMesWin(itfPanelMesWinData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);
 void CreateColorSelWin(itfPanelSelWinData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);

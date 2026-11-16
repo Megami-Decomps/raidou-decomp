@@ -162,6 +162,7 @@ void mapCallNakamaWakeUp4(void);
 void mapCallNakamaWakeUp5(void);
 void mapCallNakamaWakeUp6(void);
 void mapCallSetMotionSpeed(void);
+void mapCallSetOt(s32 mode);
 void mapCallSetOt7(void);
 void mapCallSetOt8(void);
 void mapFunc(void);

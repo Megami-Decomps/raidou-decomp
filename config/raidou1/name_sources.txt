@@ -2163,8 +2163,8 @@
 0x0017EA18	frTranslateUserData	inferred	SMT3HD name via SLUS_209.11 0x001C7408, unique-masked-hash; map-agrees
 0x0017EAF8	frDecodeFontImage	inferred	smt3-pair: frFont.c caller passes it to frTranslateUserData as the decoded glyph image
 0x0017EB70	frTranslateFont2GS	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x1c7568 sim 0.967 margin 0.97 pair
-0x0017EC60	frCallMemset	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit interface/frFont; calls memset
-0x0017ECF0	frCallMemset2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit interface/frFont; calls memset
+0x0017EC60	frInitTextHandle	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name: frLinkUserImage/frSetFontString call site with (glyph, 0, 0, Style, 0xA09DC300, 0); memset then the same field stores; replaces frCallMemset
+0x0017ECF0	frInitFontHandle	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name: chain head init (chainHead = self, context byte 0x80) at frAllocFontNode(glyphPool) sites; replaces frCallMemset2
 0x0017ED30	frSetFont	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x1c76e0 sim 0.659 margin 0.35 pair
 0x0017EE78	frCallSetFontString	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit interface/frFont; calls frSetFontString
 0x0017EEE0	frSetFontString	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 1 game(s)
@@ -2184,10 +2184,10 @@
 0x0017F428	frDisableMode	inferred	SMT3HD name via SLUS_209.11 0x001C7C10, reloc-identical; map-agrees
 0x0017F440	frLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit interface/frFont; no named callee, caller or string
 0x0017F448	frEraseEffect	inferred	SMT3HD name via SLUS_209.11 0x001C7C30, byte-identical; map-agrees
-0x0017F4D0	frCallCheckEnableMovieCancel	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit interface/frFont; calls scrCheckEnableMovieCancel
+0x0017F4D0	frDrawEffect	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=SMT3/DDS1 frDrawEffect is the same body (prev-glyph fade gate, x jitter from drawCount); HD itf.h declares frDrawEffect(FontReq_t*, Text_t*, u8 AlphaDelay, u8 DrawSpeed); called per child from frDrawFontEx2 (SMT3 frDrawFontOt); replaces frCallCheckEnableMovieCancel
 0x0017F818	frDrawFont	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x0017F830	frDrawMesFlowSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit interface/frFont; called by DrawMesFlow
-0x0017F850	frDrawFontEx2	hd	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD itf.frDrawFontEx2 score 5.8 flag -: calls3 calls-of-match votes4 st1:call r1-only
+0x0017F830	frDrawFontEx	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name: frDrawFontEx(pFRQ, Mode) returns frDrawFontOt(pFRQ, Mode, gFontDrawOT); frDrawFont calls it with 0 as in SMT3; replaces frDrawMesFlowSub2
+0x0017F850	frDrawFontOt	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=find_similar 0.796 to DDS1 frDrawFontOt and 0.54 to SMT3 frDrawFontOt; frDrawMesFlowSub2 (SMT3 frDrawFontEx) calls it with gFontDrawOT as SMT3 frDrawFontEx calls frDrawFontOt; replaces frDrawFontEx2
 0x0017FBA0	frFlipPacketBuf	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x1c80b8 sim 0.950 margin 0.16 pair
 0x0017FBF0	frCombineFontRequest	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0017FC08	frDestroyFontRequestAfterSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit interface/frFont; called by frDestroyFontRequestAfter
@@ -2215,7 +2215,7 @@
 0x00180648	itfReadEncodedTextLead	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00196478, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00180670	itfReadEncodedCode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001964A0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001806C8	execTag_0	inferred	method=idb-dds; p=na; tier=D; source=dds; evidence=IDB name in 1 game(s)
-0x00180E20	frCallEnableMode	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit interface/frFont; calls frEnableMode
+0x00180E20	frAnalyzeMessage	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 name: same body (tag/newline/glyph loop), MessageRequestEx2 already calls frAnalyzeMessage via smt3_symbols; replaces frCallEnableMode
 0x00181010	MessageRequest	inferred	SMT3HD name via SLUS_209.11 0x001C9108, reloc-identical; map-agrees
 0x00181048	MessageRequestEx	inferred	SMT3HD name via SLUS_209.11 0x001C9140, reloc-identical; map-agrees
 0x00181090	MessageRequestEx2	inferred	SMT3HD name via SLUS_209.11 0x001C9188, reloc-identical; map-agrees
@@ -2423,7 +2423,7 @@
 0x001882C0	itfMesMngSetVarImmediate2	inferred	SMT3HD name via SLUS_209.11 0x001CE808, reloc-identical; map-agrees
 0x001882F0	itfMesMngSetResourcePtr	inferred	SMT3HD name via SLUS_209.11 0x001CE838, reloc-identical; map-agrees
 0x00188378	itfMesMngGetDataPtrImmediate	inferred	SMT3HD name via SLUS_209.11 0x001CE8C0, shared-hash-in-run; map-silent
-0x001883C0	ResetWindowPara	hd	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD itf.ResetWindowPara score 6.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
+0x001883C0	itfMesMngChangeWindowTypeSub	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 itfMesMngChangeWindowType type/alpha compare and ResetWindowPara call, split out; the SMT3 name stays with its caller 0x188420 (smt3 alias, fclInitMessage calls it); replaces ResetWindowPara
 0x00188420	itfMesMngChangeWindowType_itf	hd	hd: Raidou HD itf.itfMesMngChangeWindowType, score 9.2 band B
 0x00188488	itfMesMngSetSelectDefKey	inferred	SMT3HD name via SLUS_209.11 0x001CE990, unique-masked-hash; map-agrees
 0x00188550	itfMesMngGetWidth	inferred	SMT3HD name via SLUS_209.11 0x001CEA58, shared-hash-in-run; map-silent
@@ -2442,7 +2442,7 @@
 0x00188C70	itfGetMessageType	hd-inferred	hd: Raidou HD itf.itfGetMessageType, score 7.95 band B, hd-ab: calls2 callers-of-match votes2 st1:call r1+r2; replaces itfMesGetWindowEntryItems: dds-decomp DDS1 name via SLUS_209.74 0x0019D208, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00188CA8	itfGetMessageNo	hd-inferred	hd: Raidou HD itf.itfGetMessageNo, score 6.1 band C, hd-consensus: calls1 prev gap1/25 st1:gap r1+r2; 10/10 fold runs agree, fold scores 7.5,6.1,6.1,6.1,7.1,6.1,6.1,6.1,6.1,6.1; replaces itfMesGetEntryCount: dds-decomp DDS1 name via SLUS_209.74 0x0019D240, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00188CD0	GetMessagePagePtr	inferred	SMT3HD name via SLUS_209.11 0x001CF1A8, byte-identical; map-agrees
-0x00188D00	CallEventVoice	hd	hd: Raidou HD itf.CallEventVoice, score 7.6 band B
+0x00188D00	ReadytoMessage	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 itfMesManager.c ReadytoMessage and HD ReadytoMessage are this function (same body plus Raidou additions); replaces CallEventVoice
 0x00188EC8	SetVar	inferred	SMT3HD name via SLUS_209.11 0x001CF320, unique-masked-hash; map-agrees
 0x00188FE8	CommitVarTable	inferred	SMT3HD name via SLUS_209.11 0x001CF440, reloc-identical; map-agrees
 0x00189038	GetSpeakerName	inferred	SMT3HD name via SLUS_209.11 0x001CF490, reloc-identical; map-agrees
@@ -2468,12 +2468,12 @@
 0x00189888	InitializeSelect	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x1cfcc8 sim 0.933 margin 0.55 pair
 0x001898C8	InitializeWindow	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x1cfd00 sim 0.952 margin 0.23 pair
 0x001898F8	InitializeVariable	inferred	SMT3HD name via SLUS_209.11 0x001CFD28, byte-identical; map-agrees
-0x00189928	itfMesMngInitializeSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit interface/itfMesManager; called by itfMesMngInitialize
+0x00189928	InitializeCurCtr	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name: same role (isdisp guard on isdraw, phase/ctr reset), called for both instance cursors from itfMesMngInitialize; replaces itfMesMngInitializeSub
 0x00189978	ForceSetCurCtr	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00189980	ReleaseAllWindow_itf	hd	hd: Raidou HD itf.ReleaseAllWindow, score 9.3 band B
 0x00189A08	ReleaseAllVariable	inferred	SMT3HD name via SLUS_209.11 0x001CFDF8, reloc-identical; map-agrees
 0x00189A58	ConvertZenkakuNumber	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x1cfe48 sim 0.895 margin 0.62 pair
-0x00189AE0	itfLeaf12	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit interface/itfMesManager; no named callee, caller or string
+0x00189AE0	ResetWindowPara	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is SMT3 ResetWindowPara(window_tag*, type, alpha) default arm; InitializeWindow tail-calls it as SMT3 does; replaces itfLeaf12
 0x00189B28	CalcMesFlow_itf	hd	hd: Raidou HD itf.CalcMesFlow, score 7.95 band B
 0x00189B68	CalcWindow	hd	hd: Raidou HD itf.CalcWindow, score 8.5 band B
 0x00189D58	itfCalcMessageSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit interface/itfMesManager; called by CalcMessage
@@ -22045,7 +22045,7 @@
 0x0046C1BC	execData2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: execTag_0, itfGetTextLipsMotionId
 0x0046C1C0	gModeFlag	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046C1C0); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0046C1C4	gFontDrawOT	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046C1C4); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
-0x0046C1C8	frSetFontStringData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by frSetFontString
+0x0046C1C8	frSetFontString_style	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name: frSetFontString's current style byte (sb style when >= 0, indexes gFT.entries); replaces frSetFontStringData
 0x0046C1D0	frFontAppendIndexedTextToGlyphChainData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by frFontAppendIndexedTextToGlyphChain (4 of 6 refs, 2 functions)
 0x0046C1D4	nbData5	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: nbFunc27, nbCallRetFontMem, nbRefDDS3GBWK14
 0x0046C1D8	nbData6	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: nbRefDDS3GBWK14, nbRefDDS3GBWK15
@@ -22101,7 +22101,7 @@
 0x0046C338	mphCommandBUSTUPLOADSubDataEntry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mphCommandBUSTUPLOADSubData
 0x0046C340	mphCommandBUSTUPLOADSubDataEntry6	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mphCommandBUSTUPLOADSubData
 0x0046C348	mphOrderData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mphOrder
-0x0046C34C	mphData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 25 functions: mphCallGrAllocPacketBuff, mphDestroy, mphStartLoad
+0x0046C34C	mphWork	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itf.h: extern mphWork_t *mphWork; mphSetAlpha/Ot/Z and mphCallMemAllocDirect use the global as that struct (alpha 0x80, ot 0x84, z 0x88); replaces mphData
 0x0046C350	mphLEFTData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mphLEFT
 0x0046C358	mphLEFTData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mphLEFT
 0x0046C360	mphLEFTData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mphLEFT

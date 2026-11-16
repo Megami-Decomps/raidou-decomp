@@ -93,6 +93,22 @@ struct frTextHandle_t {
     struct frTextHandle_t *next;
 };
 
+/* Message control codes the draw pass acts on (HD names). */
+#define CCN_LIPS_STOP 0xF117
+#define CCN_QUAKE_OFF 0xF11A
+#define CCN_MW 0xF214
+#define CCN_VMW 0xF215
+#define CCN_CHIME 0xF218
+#define CCN_LIPS_STOP2 0xF21B
+#define CCN_QUAKE_ON 0xF419
+#define CCN_VMW_VOICE 0xFFFF /* CCN_VMW wait value: wait for the voice instead of frames */
+
+#ifdef VERSION_RAIDOU2
+#define FR_TAG_FLAG_COUNT 7
+#else
+#define FR_TAG_FLAG_COUNT 6
+#endif
+
 /* Parent chain heads: frInitFontTable's glyph pool, 0x58 bytes in Raidou 1 and
  * 0x5C in Raidou 2. */
 struct frFontHandle_t {
@@ -142,16 +158,12 @@ struct frFontHandle_t {
     struct frFontHandle_t *previous;
     struct frFontHandle_t *next;
     struct frFontHandle_t *chainHead;
-    u32 timedControlCode;
-    u32 pendingLipsStopCode;
-    u32 skipLipsStopWait;
-    s32 remainingWaitFrames;
-    u8 pad40[12];
-#ifdef VERSION_RAIDOU2
-    u8 pad4C[4];
-#endif
+    /* Pending control codes by slot: [0] CCN_MW/CCN_VMW, [1] CCN_CHIME,
+     * [2] CCN_LIPS_STOP, [3] CCN_QUAKE_ON, [4] CCN_QUAKE_OFF, [5] CCN_LIPS_STOP2. */
+    u32 tag_flag[FR_TAG_FLAG_COUNT];
+    s32 wait;
     s32 switchState; /* SwitchOK sets it; frLeaf clears it on every chain node */
-    u8 pad_end[8];
+    s32 work[2]; /* work[0]: control code argument, work[1]: argument pending */
 };
 
 /* No return value; frFont.c's retail call site was compiled against an int return. */

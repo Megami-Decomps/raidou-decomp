@@ -21,6 +21,5 @@ void cmpProcessEnd(void);
 void cmpProcessStart(void);
 void cmpProcessStartEx(CMP_MODE a_runmode);
 void cmpSetMarkID(s32 a_markID);
-dds3ProcessFunc_t saveCallMenuProcessCheck2(dds3ProcessID_t *PID);
 
 #endif

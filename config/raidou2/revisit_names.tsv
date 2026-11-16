@@ -1059,8 +1059,6 @@
 0x00193130	frCallGetFontWidth	func	tier=D	derived-callee	na	unit interface/frFont; calls frGetFontWidth
 0x001931E0	frCallGetFontWidth2	func	tier=D	derived-callee	na	unit interface/frFont; calls frGetFontWidth
 0x001933E0	frSetFontSub2	func	tier=D	derived-caller	na	unit interface/frFont; called by frSetFont
-0x001937D8	frCallMemset	func	tier=D	derived-callee	na	unit interface/frFont; calls memset
-0x00193868	frCallMemset2	func	tier=D	derived-callee	na	unit interface/frFont; calls memset
 0x001939F0	frCallSetFontString	func	tier=D	derived-callee	na	unit interface/frFont; calls frSetFontString
 0x00193A58	frSetFontStringSub	func	tier=D	derived-caller	na	unit interface/frFont; called by frSetFontString
 0x00193D90	frLeaf	func	tier=D	derived-unit	na	unit interface/frFont; no named callee, caller or string
@@ -1069,9 +1067,7 @@
 0x00193F68	frCallGetStrWidth2	func	tier=D	derived-callee	na	unit interface/frFont; calls frGetStrWidth
 0x001940D8	frDrawMesFlowSub	func	tier=D	derived-caller	na	unit interface/frFont; called by DrawMesFlow
 0x00194158	frBtlEnemyDataSub	func	tier=D	derived-caller	na	unit interface/frFont; called by sbtlEnemyData
-0x001941E8	frCallCheckEnableMovieCancel	func	tier=D	derived-callee	na	unit interface/frFont; calls scrCheckEnableMovieCancel
 0x00194580	frDrawFont	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x00194598	frDrawMesFlowSub2	func	tier=D	derived-caller	na	unit interface/frFont; called by DrawMesFlow
 0x00194A50	frCombineFontRequest	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00194A68	frDestroyFontRequestAfterSub	func	tier=D	derived-caller	na	unit interface/frFont; called by frDestroyFontRequestAfter
 0x00194CB8	frCallGetFontWidth3	func	tier=D	derived-callee	na	unit interface/frFont; calls frGetFontWidth
@@ -1087,7 +1083,6 @@
 0x00195448	itfReadEncodedTextLead	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00196478, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00195470	itfReadEncodedCode	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001964A0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001954C8	execTag_0	func	tier=D	idb-dds	na	IDB name in 1 game(s)
-0x00195DC8	frCallEnableMode	func	tier=D	derived-callee	na	unit interface/frFont; calls frEnableMode
 0x00196118	frCallMessageRequestEx2	func	tier=D	derived-callee	na	unit interface/frFont; calls MessageRequestEx2
 0x00196168	frCallMessageRequestEx22	func	tier=D	derived-callee	na	unit interface/frFont; calls MessageRequestEx2
 0x001961E8	itfGetTextLipsUnitId	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00196BD8, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -1172,9 +1167,7 @@
 0x0019DBC8	itfLeaf11	func	tier=D	derived-unit	na	unit interface/itfMesManager; no named callee, caller or string
 0x0019DD00	itfGetMessageType	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfGetMessageType, score 7.95 band B, hd-ab: calls2 callers-of-match votes2 st1:call r1+r2; replaces itfMesGetWindowEntryItems: dds-decomp DDS1 name via SLUS_209.74 0x0019D208, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0019DD38	itfGetMessageNo	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfGetMessageNo, score 6.1 band C, hd-consensus: calls1 prev gap1/25 st1:gap r1+r2; 10/10 fold runs agree, fold scores 7.5,6.1,6.1,6.1,7.1,6.1,6.1,6.1,6.1,6.1; replaces itfMesGetEntryCount: dds-decomp DDS1 name via SLUS_209.74 0x0019D240, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0019E9C0	itfMesMngInitializeSub	func	tier=D	derived-caller	na	unit interface/itfMesManager; called by itfMesMngInitialize
 0x0019EA10	ForceSetCurCtr	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x0019EB78	itfLeaf12	func	tier=D	derived-unit	na	unit interface/itfMesManager; no named callee, caller or string
 0x0019EDF0	itfCalcMessageSub	func	tier=D	derived-caller	na	unit interface/itfMesManager; called by CalcMessage
 0x0019F410	itfCallChangeFontPosition	func	tier=D	derived-callee	na	unit interface/itfMesManager; calls ChangeFontPosition
 0x0019F7A0	itfCalcMesFlowItfSub	func	tier=D	derived-caller	na	unit interface/itfMesManager; called by CalcMesFlow_itf
@@ -18888,7 +18881,6 @@
 0x004DF470	execData	data	tier=D	derived-shared	na	used by 2 functions: execTag_0, itfGetTextLipsUnitId
 0x004DF474	execData2	data	tier=D	derived-shared	na	used by 2 functions: execTag_0, itfGetTextLipsMotionId
 0x004DF480	ButtonLineHelpAddTextSetData	data	tier=D	derived-dominant	na	used by ButtonLineHelpAddTextSet (3 of 4 refs, 2 functions)
-0x004DF484	frSetFontStringData2	data	tier=D	derived-sole	na	used by frSetFontString
 0x004DF488	frFontAppendIndexedTextToGlyphChainData	data	tier=D	derived-dominant	na	used by frFontAppendIndexedTextToGlyphChain (4 of 6 refs, 2 functions)
 0x004DF48C	nbData5	data	tier=D	derived-shared	na	used by 3 functions: nbFunc27, nbCallRetFontMem, nbRefDDS3GBWK14
 0x004DF490	nbData6	data	tier=D	derived-shared	na	used by 2 functions: nbRefDDS3GBWK14, nbRefDDS3GBWK15
@@ -23529,17 +23521,27 @@
 0x0018E570	evtBCheckPanelMode	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x24c8a0 sim 0.661 margin 0.00 pair
 0x0018E688	prm_MAKA_PLUS	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x10cfe0 sim 1.000 margin 0.00 single
 0x001907B8	DEBUG_PRINT	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x29d0e8 sim 1.000 margin 0.00 pair
+0x001937D8	frInitTextHandle	func	tier=C	derived-derived-role	na	same function in R2 (0x1937D8); replaces frCallMemset
+0x00193868	frInitFontHandle	func	tier=C	derived-derived-role	na	same function in R2 (0x193868); replaces frCallMemset2
 0x001938A8	frSetFont	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1c76e0 sim 0.659 margin 0.35 pair
 0x00193B60	frSetFontString	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x1c7890 sim 0.622 margin 0.31 single
 0x00193D38	frSetDrawSpeed	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1c7a60 sim 0.696 margin 0.43 pair
 0x00193D70	SwitchOK	func	tier=C	hd-both	0.71 (n=206)	Raidou HD itf.SwitchOK score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
 0x00193E88	frSetFontSize	func	tier=C	derived-derived-role	na	same function as raidou1 0x0017F1C8 (r1_r2 pair at 0x00193E88, unique-reloc-hash); replaces frCallGetStrWidth
+0x001941E8	frDrawEffect	func	tier=C	derived-derived-role	na	same function in R2; replaces frCallCheckEnableMovieCancel
+0x00194598	frDrawFontEx	func	tier=C	derived-derived-role	na	same function in R2 (0x194598); replaces frDrawMesFlowSub2
+0x001945B8	frDrawFontOt	func	tier=C	derived-derived-role	na	R2 copy of frDrawFontOt: next to frDrawFontEx, which calls it with (pFRQ, Mode, gFontDrawOT) in both games; HD-inferred name was flagged I; replaces ButtonLineHelpAddTextSet
+0x00195DC8	frAnalyzeMessage	func	tier=C	derived-derived-role	na	same in R2 (0x195DC8); replaces frCallEnableMode
 0x00198680	ButtonLineHelpTextSet	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD ButtonGuide.ButtonLineHelpTextSet score 3.1 flag I: calls1 calls-of-match st2:call r2-only
 0x00198C58	mjnDeleteScene	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD mjn.mjnDeleteScene score 3.5 flag I: calls1 callers-of-match st1:call r1-only
 0x0019A170	itfQuickSaveExeCheck	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.itfQuickSaveExeCheck score 5.6 flag I: calls1 callers-of-match st1:call r1+r2
 0x0019BA50	itfMesMngChkWaitTag	func	tier=C	derived-derived-role	na	R2 0x19BA50 is R1 itfMesMngChkWaitTag 0x186A00 (DrawMessage calls it at the same site in both games); the R2 NON_MATCHING DrawMessage stays UNDEF until renamed; replaces itfDrawMessageSub
 0x0019C660	itfMesMngClearCursor	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.itfMesMngClearCursor score 5.9 flag I: calls1 calls-of-match-uniq st1:call r1+r2
 0x0019D0B0	itfMesMngGetMesPage	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.itfMesMngGetMesPage score 5.0 flag R: prev gap2/2 st1:gap r1+r2
+0x0019D440	itfMesMngChangeWindowTypeSub	func	tier=C	derived-derived-role	na	same function in R2; replaces ResetWindowPara
+0x0019DD90	ReadytoMessage	func	tier=C	derived-derived-role	na	same function in R2; replaces CallEventVoice
+0x0019E9C0	InitializeCurCtr	func	tier=C	derived-derived-role	na	same in R2; replaces itfMesMngInitializeSub
+0x0019EB78	ResetWindowPara	func	tier=C	derived-derived-role	na	same function in R2; replaces itfLeaf12
 0x0019FCE0	FadeOutWindow	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.FadeOutWindow score 4.8 flag -: calls1 calls-of-match-uniq st1:call r1+r2
 0x001A1FD0	itfMoverInit	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfMoverInit score 3.6 flag I: calls1 calls-of-match st2:call r2-only
 0x001A2000	itfMoverSetData	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfMoverSetData score 4.4 flag I: calls1 calls-of-match st2:call r2-only
@@ -24481,6 +24483,7 @@
 0x004DEFE0	fscroll_s_x	data	tier=C	hd	0.37 (n=D_r1_0046BDAC)	hd/medium: conf=medium, agree=2, using=3
 0x004DF1AC	mdl_fadeflag	data	tier=C	hd	0.37 (n=D_r1_0046BF1C)	hd/medium: conf=medium, agree=2, using=2
 0x004DF1C8	mapCtnColor	data	tier=C	hd	0.37 (n=D_r1_0046BF38)	hd/medium: conf=medium, agree=2, using=3
+0x004DF484	frSetFontString_style	data	tier=C	derived-derived-role	na	same variable in R2 (0x4DF484, frFont sdata after ButtonLineHelpAddTextSetData); replaces frSetFontStringData2
 0x004DF4A4	sdfFileSeekWork2	data	tier=C	smt3-ref	0.80 (n=D_r1_0046C1EC)	smt3-ref/close: nfun=2, other=0, sim=0.8, games=2, size=True, sec=False, fn=mjnDeleteScene; sdfFileSeekWork is another symbol
 0x004DF4A8	itfFontTestScriptTask	data	tier=C	dds-ref	0.59 (n=D_r1_0046C1F0)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=mjnCallGetProcessStat
 0x004DF588	DevilMessage_g_mainPID	data	tier=C	hd	0.37 (n=D_r1_0046C2D0)	hd/medium: conf=medium, agree=3, using=4
@@ -24713,7 +24716,6 @@
 0x0018F700	EndPipe	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x29d088 sim 0.815 margin 0.13 single
 0x00192E60	frFlushGsFontTable	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1c6e50 sim 0.828 margin 0.63 pair
 0x00193400	frSetUserImage	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1c7288 sim 0.942 margin 0.61 pair
-0x001945B8	ButtonLineHelpAddTextSet	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD ButtonGuide.ButtonLineHelpAddTextSet score 5.2 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x00194BC8	frPreCalcStrWidth	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1c82b8 sim 0.934 margin 0.62 pair
 0x001960D8	MessageRequestNS	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1c91e0 sim 0.903 margin 0.27 pair
 0x00196D88	cmbInitActionData	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x204198 sim 0.718 margin 0.12 pair
@@ -24721,7 +24723,6 @@
 0x0019A3D8	itfPnlDraw	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cc2b8 sim 0.810 margin 0.81 pair
 0x0019C038	itfMesMngOpenWindow	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cd5b0 sim 0.882 margin 0.16 pair
 0x0019D0D0	itfMesMngGetMesCurrentPage	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD itf.itfMesMngGetMesCurrentPage score 6.0 flag R: prev next~ gap1/1 st1:gap r1+r2
-0x0019D440	ResetWindowPara	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD itf.ResetWindowPara score 6.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
 0x0019E920	InitializeSelect	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cfcc8 sim 0.933 margin 0.55 pair
 0x0019EAF0	ConvertZenkakuNumber	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cfe48 sim 0.895 margin 0.62 pair
 0x001A2628	itfDrawMiscSpriteAlpha	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD itf.itfDrawMiscSpriteAlpha score 5.1 flag I: calls3 calls-of-match votes3 st2:call r1-disagree:0x18d450

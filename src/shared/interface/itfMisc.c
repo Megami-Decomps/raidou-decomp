@@ -31,20 +31,6 @@ typedef struct frFontRequest_t
     u8 unk28[0x1C];
 } frFontRequest_t;
 
-typedef struct itfLink_t
-{
-    struct itfLink_t *previous;
-    struct itfLink_t *next;
-    s32 index;
-    void *state;
-    sdfMemHandle_t *resourceHandle;
-} itfLink_t;
-
-typedef struct
-{
-    itfLink_t *puse_top, *puse_tail, *pdisuse_top, *pdisuse_tail;
-} itfmisclinkstack_t;
-
 typedef struct { u8 unk00[0x20]; u64 value, registerCode; } itfGsState_t;
 
 extern u64 itfAlphaValueTable[];
@@ -100,8 +86,6 @@ extern s32 sdf2DLinkTexPacket(sdfDrawTag_t *, sdfTexHandle_t *, s32);
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
 
-void itfMiscLinkInitialize(itfmisclinkstack_t *pool, itfLink_t *nodes, s32 count, s32 stride);
-itfLink_t *itfMiscLinkTake(itfmisclinkstack_t *pstack);
 void itfMiscLinkGive(itfLink_t *pelem, itfmisclinkstack_t *pstack);
 
 

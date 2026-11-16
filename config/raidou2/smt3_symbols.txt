@@ -70,7 +70,6 @@ frLinkFontString = 0x001939F0;
 frCombineFontRequestEx = 0x00194A68;
 frFontCountGlyphChainNodes = 0x00194E10;
 frFontMeasureGlyphStripWidth = 0x00194E88;
-frAnalyzeMessage = 0x00195DC8;
 itfDrawColor = 0x001960D8;
 itfDecodeGlyph = 0x00197CD0;
 itfDrawBackgroundSprite = 0x00198B68;

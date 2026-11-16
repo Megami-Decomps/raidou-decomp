@@ -634,7 +634,7 @@ s32 sbtlCallMessageNumSearch4(s32 a_x, s32 a_y, s32 a_z, u32 a_color, SBTLSM a_m
     itfCallSetOt2(x + half, a_y - 6, 0, 255, hSpr, 15, 103);
     frFontMoveChainTo(x * 16, a_y * 8, frq);
     frSetFontColor(frq, 0xA09DC380);
-    frDrawMesFlowSub2(frq, 1);
+    frDrawFontEx(frq, 1);
     frDestroyFontRequestAfter(frq);
     return 1;
 }
@@ -2641,7 +2641,7 @@ s32 sbtlCallGetSmallFontFRQ4(s32 x, s32 y, u8 bRight, u32 color, u8 alpha, s32 o
     if (bRight) {
         frSetDrawPosition(frq, (x - width) << 4, y << 3);
     }
-    frDrawFontEx2(frq, 1, ot);
+    frDrawFontOt(frq, 1, ot);
     frDestroyFontRequestAfter(frq);
     return width;
 }

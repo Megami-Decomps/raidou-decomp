@@ -789,7 +789,7 @@ void mapCallEnableMode(s32 map, s32 floor, s32 cut) {
         frSetFontColor(font, 0xF0DC6480);
         fldDrwZBuf2->descriptions[2].rect[3] = width + 39;
         itfDrawGridWithResolvedSlot((right - width - 23) * 16, 3184, 0, 32, fldDrwZBuf2, 2, 103);
-        frDrawFontEx2(font, 0, 103);
+        frDrawFontOt(font, 0, 103);
         frDestroyFontRequestAfter(font);
     } else {
         for (i = 0; i < 160; i++) {
@@ -807,7 +807,7 @@ void mapCallEnableMode(s32 map, s32 floor, s32 cut) {
                 frSetFontColor(font, color);
                 fldDrwZBuf2->descriptions[2].rect[3] = width + 39;
                 itfDrawGridWithResolvedSlot((right - width - 23) * 16, 3184, 0, 32, fldDrwZBuf2, 2, 103);
-                frDrawFontEx2(font, 0, 103);
+                frDrawFontOt(font, 0, 103);
                 frDestroyFontRequestAfter(font);
             }
         }

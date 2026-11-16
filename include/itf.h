@@ -7,7 +7,37 @@
 
 struct MenuCB_tag;
 struct Menu_t;
-struct elvMenu_t;
+/* Map menu work, 20 bytes from sdfMemAllocDirect; hMem is its own allocation.
+ * The rest is HD's tagMAP_MENU_WORK up to selectID. */
+typedef struct tagMAP_MENU_WORK {
+    struct sdfMemHandle_t *hMem; /* 0x00 */
+    struct sprHandle_t *hSpr;    /* 0x04 */
+    dds3ProcessID_t *menuPID;    /* 0x08 */
+    u8 step;                     /* 0x0C */
+    u8 flag;                     /* 0x0D */
+    s16 count;                   /* 0x0E */
+    s32 selectID;                /* 0x10: -1 at start */
+} tagMAP_MENU_WORK;
+/* Bust-up morph work (HD mphWork_t); the 0x80.. fields line up with HD's alpha
+ * through fileStat. mphSetAlpha/Ot/Z write them. */
+#define MPH_DEFAULT_OT 103
+
+typedef struct mphWork_t {
+    u32 unk00;
+    struct sdfMemHandle_t *hMem; /* 0x04 */
+    u8 unk08[0x78];
+    u8 alpha; /* 0x80 */
+    u8 pad81[3];
+    s32 ot; /* 0x84 */
+    s32 z;  /* 0x88 */
+    u8 unk8C[0x20];
+    s32 fileStat; /* 0xAC */
+    u8 unkB0[0xB8];
+} mphWork_t;
+#ifdef VERSION_RAIDOU1
+SIZE_CHECK(mphWorkSizeCheck, mphWork_t, 0x168);
+#endif
+extern mphWork_t *mphWork;
 typedef struct itfMoverCB_t {
     f32 posx;
     f32 posy;
@@ -125,7 +155,8 @@ SIZE_CHECK(MenuSizeCheck, Menu_t, 0xB9C);
 struct tagITFDVLMSG_CB;
 struct tagITFDVLMSG_WORK;
 struct tagITF_MONEY_WORK {
-    u8 pad00[8];
+    struct sdfMemHandle_t *hMem;
+    dds3ProcessID_t *drawPID;
     dds3ProcessID_t *countPID;
     u8 step;
     u8 type;
@@ -261,11 +292,12 @@ f32 itfMoverGetRatio(struct itfMover_t *mv);
 s32 itfMoverSetParam(struct itfMover_t *mv, s32 a_posx, s32 a_posy, s32 a_tgtx, s32 a_tgty, s32 a_frame);
 ITF_MOVER_UPDATE itfMoverUpdate(struct itfMover_t *mv);
 s32 itfSetMesDispPriority(void);
+extern s32 itfSetMesDispPriorityData[];
 dds3ProcessID_t *mapMenuCreateMenuPID(void);
 s32 mapMenuDrawMagWindow(s32 a_initID);
 s32 mapMenuGetSelectUNIQ(void);
 void mapMenuProcessStart(void);
-void mapMenuRelease(struct elvMenu_t *wk);
+void mapMenuRelease(tagMAP_MENU_WORK *wk);
 void mapMenuShutdown(dds3ProcessID_t *PID);
 dds3ProcessFunc_t rstCallGetProcessData35(dds3ProcessID_t *PID);
 void mphCallMemAllocDirect(void);

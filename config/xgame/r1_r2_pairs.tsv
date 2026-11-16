@@ -1942,8 +1942,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0017EA18	0x00193590	frTranslateUserData	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017EAF8	0x00193670	frDecodeFontImage	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017EB70	0x001936E8	frTranslateFont2GS	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
-0x0017EC60	0x001937D8	frCallMemset	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
-0x0017ECF0	0x00193868	frCallMemset2	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-masked-hash
+0x0017EC60	0x001937D8	frInitTextHandle	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
+0x0017ECF0	0x00193868	frInitFontHandle	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-masked-hash
 0x0017ED30	0x001938A8	frSetFont	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017EE78	0x001939F0	frCallSetFontString	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017F078	0x00193D38	frSetDrawSpeed	yes	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
@@ -1961,9 +1961,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0017F418	0x00194128	frEnableMode	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017F428	0x00194138	frDisableMode	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017F448	0x00194160	frEraseEffect	yes	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
-0x0017F4D0	0x001941E8	frCallCheckEnableMovieCancel	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	run-order-near
+0x0017F4D0	0x001941E8	frDrawEffect	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	run-order-near
 0x0017F818	0x00194580	frDrawFont	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	masked-hash-in-gap
-0x0017F830	0x00194598	frDrawMesFlowSub2	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
+0x0017F830	0x00194598	frDrawFontEx	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017FBA0	0x00194A00	frFlipPacketBuf	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017FBF0	0x00194A50	frCombineFontRequest	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	masked-hash-in-gap
 0x0017FC08	0x00194A68	frDestroyFontRequestAfterSub	yes	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
@@ -1990,7 +1990,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00180648	0x00195448	itfReadEncodedTextLead	yes	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x00180670	0x00195470	itfReadEncodedCode	yes	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x001806C8	0x001954C8	execTag_0	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	run-order-near
-0x00180E20	0x00195DC8	frCallEnableMode	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	run-order-near
+0x00180E20	0x00195DC8	frAnalyzeMessage	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	run-order-near
 0x00181010	0x00196000	MessageRequest	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x00181048	0x00196038	MessageRequestEx	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x00181090	0x00196080	MessageRequestEx2	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
@@ -2196,7 +2196,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001882C0	0x0019D340	itfMesMngSetVarImmediate2	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x001882F0	0x0019D370	itfMesMngSetResourcePtr	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00188378	0x0019D3F8	itfMesMngGetDataPtrImmediate	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
-0x001883C0	0x0019D440	ResetWindowPara	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
+0x001883C0	0x0019D440	itfMesMngChangeWindowTypeSub	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00188420	0x0019D4A0	itfMesMngChangeWindowType_itf	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00188488	0x0019D508	itfMesMngSetSelectDefKey	no	no	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	run-order-near
 0x00188550	0x0019D5E0	itfMesMngGetWidth	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
@@ -2215,7 +2215,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00188C70	0x0019DD00	itfGetMessageType	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00188CA8	0x0019DD38	itfGetMessageNo	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00188CD0	0x0019DD60	GetMessagePagePtr	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
-0x00188D00	0x0019DD90	CallEventVoice	no	no	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	size
+0x00188D00	0x0019DD90	ReadytoMessage	no	no	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	size
 0x00188EC8	0x0019DF58	SetVar	no	no	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-masked-hash
 0x00188FE8	0x0019E078	CommitVarTable	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00189038	0x0019E0C8	GetSpeakerName	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
@@ -2241,12 +2241,12 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00189888	0x0019E920	InitializeSelect	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x001898C8	0x0019E960	InitializeWindow	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x001898F8	0x0019E990	InitializeVariable	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
-0x00189928	0x0019E9C0	itfMesMngInitializeSub	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
+0x00189928	0x0019E9C0	InitializeCurCtr	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00189978	0x0019EA10	ForceSetCurCtr	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	masked-hash-in-gap
 0x00189980	0x0019EA18	ReleaseAllWindow_itf	no	no	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-masked-hash
 0x00189A08	0x0019EAA0	ReleaseAllVariable	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00189A58	0x0019EAF0	ConvertZenkakuNumber	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
-0x00189AE0	0x0019EB78	itfLeaf12	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
+0x00189AE0	0x0019EB78	ResetWindowPara	yes	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00189B28	0x0019EBC0	CalcMesFlow_itf	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00189B68	0x0019EC00	CalcWindow	no	no	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-masked-hash
 0x00189D58	0x0019EDF0	itfCalcMessageSub	no	no	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	masked-hash-in-gap

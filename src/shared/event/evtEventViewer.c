@@ -1056,8 +1056,6 @@ void SetActiveCamera(evtViewerInfo_t *pInfo) {
 }
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 122 of 122 words match. Fragile, see docs/matching/event/evtEventViewer.md. */
-#ifdef NON_MATCHING
 void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
     s32 mesNo;
     s32 mesType;
@@ -1081,12 +1079,12 @@ void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowfra
     switch (mode) {
     case 0:
     case 1:
-        ResetWindowPara(pInfo->workdata->MesHandle, 0, 0);
+        itfMesMngChangeWindowTypeSub(pInfo->workdata->MesHandle, 0, 0);
         itfMesMngMarkBitStat(pInfo->workdata->MesHandle, 0x200000);
         itfMesMngClearBitStat(pInfo->workdata->MesHandle, 0xD00000);
         break;
     case 2:
-        ResetWindowPara(pInfo->workdata->MesHandle, 3, 0);
+        itfMesMngChangeWindowTypeSub(pInfo->workdata->MesHandle, 3, 0);
         itfMesMngMarkBitStat(pInfo->workdata->MesHandle, 0x200000);
         itfMesMngMarkBitStat(pInfo->workdata->MesHandle, 0xD00000);
         break;
@@ -1114,9 +1112,6 @@ void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowfra
         itfMesMngRequestSelect_itf(pInfo->workdata->MesHandle, mesNo);
     }
 }
-#else
-INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
-#endif
 #else
 INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
 #endif

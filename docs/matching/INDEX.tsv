@@ -35,6 +35,8 @@ mapSeWallHit	code_0015D490	raidou1 0x58	8 of 22 words differ	docs/matching/code_
 mapIfDrawES	code_0015D490	raidou1 0x33C	55 of 207 words differ	docs/matching/code_0015D490.md	27		
 mapCallEnableMode	code_0015D490	raidou1 0x29C	78 of 165 words differ	docs/matching/code_0015D490.md	35		
 encCallPrimAllocDrawTag2	code_00173D20	raidou1 0x1F0	41 of 124 words differ	docs/matching/code_00173D20.md	3		
+mapFunc11	code_00174790	raidou1 0x68	16 of 24 words differ	docs/matching/code_00174790.md	3		
+mapNpcPathMake_Rot	code_00174790	raidou1 0x118	20 of 70 words differ	docs/matching/code_00174790.md	11		
 cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3		
 cmbRefDDS3GBWK	code_00181858	raidou1 0xD0	7 of 52 words differ	docs/matching/code_00181858.md	11		
 _MenuSetMenu	code_0018CE10	raidou1 0x5C	18 of 24 words differ	docs/matching/code_0018CE10.md	3		
@@ -189,7 +191,6 @@ RunFrameUnit	event/evtEventViewer	raidou1 0x39C, raidou2 0x39C	6 of 231 words di
 ValidateRenderTex	event/evtEventViewer	raidou1 0x1F8, raidou2 0x1F8	61 of 126 words differ	docs/matching/event/evtEventViewer.md	67		
 DrawMessage	event/evtEventViewer	raidou1 0x1C0, raidou2 0x1C0	48 of 110 words differ	docs/matching/event/evtEventViewer.md	74		
 oldEventSceneUnload	event/evtEventViewer	raidou1 0xAC, raidou2 0xAC	42 of 44 words differ	docs/matching/event/evtEventViewer.md	81		
-ReqMessage	event/evtEventViewer	raidou1 0x1E8	4 of 122 words differ	docs/matching/event/evtEventViewer.md	90	matches only with the declaration set that evtEventViewer.c and its headers carried before the R16 batch; any added declaration moves a register in the second half.	
 Process2_evtMoon	event/evtMoon	raidou1 0xB8C	624 of 723 words differ	docs/matching/event/evtMoon.md	3		
 evtHokanSceneLight	event/evtPolygonMovie	raidou1 0x194, raidou2 0x194	38 of 101 words differ	docs/matching/event/evtPolygonMovie.md	3		
 evtCheckSeqEnd	event/evtPolygonMovie	raidou1 0x64, raidou2 0x64	3 of 25 words differ	docs/matching/event/evtPolygonMovie.md	9		
@@ -203,6 +204,20 @@ fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 wo
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	12		
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.	
 MessageRequestNS	interface/frFont	raidou1 0x40, raidou2 0x40	7 of 15 words differ	docs/matching/interface/frFont.md	3		
+frCallGetFontWidth2	interface/frFont	raidou1 0x260	80 of 151 words differ	docs/matching/interface/frFont.md	27		
+frSetFont	interface/frFont	raidou1 0x148, raidou2 0x148	4 of 82 words differ	docs/matching/interface/frFont.md	35		
+frSetFontString	interface/frFont	raidou1 0x198	7 of 102 words differ	docs/matching/interface/frFont.md	44		
+frDrawEffect	interface/frFont	raidou1 0x348	64 of 208 words differ	docs/matching/interface/frFont.md	52		
+frDrawFontOt	interface/frFont	raidou1 0x34C	21 of 211 words differ	docs/matching/interface/frFont.md	60		
+frFontAppendIndexedTextToGlyphChain	interface/frFont	raidou1 0x170, raidou2 0x170	1 of 92 words differ	docs/matching/interface/frFont.md	68		
+frAnalyzeMessage	interface/frFont	raidou1 0x1F0	1 of 124 words differ	docs/matching/interface/frFont.md	77		
+itfMesMngRequestSelect_itf	interface/itfMesManager	raidou1 0x118, raidou2 0x118	2 of 70 words differ	docs/matching/interface/itfMesManager.md	3		
+CalcWindow	interface/itfMesManager	raidou1 0x1F0, raidou2 0x1F0	77 of 81 words differ	docs/matching/interface/itfMesManager.md	12		
+CalcMessage	interface/itfMesManager	raidou1 0x28C, raidou2 0x31C	118 of 159 words differ	docs/matching/interface/itfMesManager.md	21		
+CalcSelect	interface/itfMesManager	raidou1 0x2EC, raidou2 0x2EC	2 of 187 words differ	docs/matching/interface/itfMesManager.md	30		
+itfCalcMesFlowItfSub	interface/itfMesManager	raidou1 0x320, raidou2 0x320	155 of 200 words differ	docs/matching/interface/itfMesManager.md	39		
+itfFunc2	interface/itfMesManager	raidou1 0x1EC, raidou2 0x1EC	67 of 123 words differ	docs/matching/interface/itfMesManager.md	48		
+itfCallGrAllocPacketBuff	interface/itfMesManager	raidou1 0x448, raidou2 0x448	209 of 274 words differ	docs/matching/interface/itfMesManager.md	57		
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3		
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3		
 dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11		

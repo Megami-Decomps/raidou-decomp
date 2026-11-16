@@ -67,6 +67,10 @@ struct select_tag {
     s16 glyphColorIntensity;
     s16 numdef;
     defkey_tag defkey[15];
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 unk60[4];
+    u16 selState[2]; /* itfMesMngRequestSelect sets 0 and 4, the release clears both */
+#endif
 };
 
 /* The speaker frame and message panel occupy +0x9C/+0xA0 (Raidou 1 +0xA8/+0xAC,
@@ -96,6 +100,18 @@ struct curctr_tag {
     s16 phase;
     s16 ctr0;
     s16 ctr1;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    /* Field names from the HD build; the four floats are PS2 only. */
+    s16 frame;
+    s16 lf_wait;
+    u16 lf_after_wait;
+    s16 cut_wait;
+    u32 ctr_key;
+    f32 unk14;
+    f32 unk18;
+    f32 unk1C;
+    f32 unk20;
+#else
     union {
         u32 ctr_key;
         struct {
@@ -103,6 +119,7 @@ struct curctr_tag {
             u16 ctr_keyHigh;
         };
     }; /* 0x08: entry advances count ctr_key before triangle skip. */
+#endif
 };
 
 struct instanceMes_tag {
@@ -118,20 +135,12 @@ struct instanceMes_tag {
     u8 unk48[4];
 #endif
     select_tag select;
-    u8 unk98[4];
-#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    s16 selState[2]; /* itfMesMngRequestSelect sets 0 and 4, the release clears both */
-#endif
     window_tag window;
     variable_tag variable;
-    curctr_tag curctr;
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    u16 lfWaitLow;
-    u16 lfWaitHigh;
-    u32 cutWait;
-    u8 unk1E8[0x10];
-    u8 windowDrawFlags; /* bit 1: DrawMesFlow queues the window packets. */
-    u8 unk1F9[0x23];
+    curctr_tag curctr[2]; /* [1].isdraw bit 1: DrawMesFlow queues the window packets. */
+#else
+    curctr_tag curctr;
 #endif
     addr_t func_kuti;
 };
@@ -185,13 +194,13 @@ enum {
     ITF_MES_PANEL_MODE_NO_SPRITE_TRANSITION = 3
 };
 
-struct FontReq_t;
 
 void CalcMesFlow_itf(instanceMes_tag *pinst);
 void CalcMessage(instanceMes_tag *pinst);
 void CalcSelect(instanceMes_tag *pinst);
 void CalcWindow(instanceMes_tag *pinst);
-void CallEventVoice(instanceMes_tag *pinst);
+void ReadytoMessage(instanceMes_tag *pinst);
+void itfCallChangeFontPosition(instanceMes_tag *pinst, s32 y);
 void ConvertZenkakuNumber(char **buf, s32 num);
 void DebugDrawWindowLine(itfpanel_t *meswin);
 void DebugMoveWinAlpha(window_tag *pwin);
@@ -199,14 +208,16 @@ void DebugMoveWinVert(window_tag *pwin, s32 flag);
 s32 DrawMesFlow(instanceMes_tag *pinst);
 void DrawWindow(instanceMes_tag *pinst);
 void FadeOutWindow(void);
+void itfLeaf13(s32 power, s32 timer);
+frFontHandle_t *GetFontHandleUnit(u32 *list, s32 count, u32 mask, s32 x, s32 y, s32 depth);
 void GetLastMessagePara(frFontHandle_t *pfont, message_tag *pmessage);
 void InputPasswdDraw(void);
 void OpenCheckSpeakerWindow(instanceMes_tag *pinst);
 void OpenMessageWindow(instanceMes_tag *pinst);
-void RaiseMessageSpeedMax(struct FontReq_t *pfont);
-void RaiseMessageSpeedMaxAll(struct FontReq_t *pfont);
+void RaiseMessageSpeedMax(frFontHandle_t *pfont);
+void RaiseMessageSpeedMaxAll(frFontHandle_t *pfont);
 void ReleaseAllWindow_itf(instanceMes_tag *pinst);
-void ResetWindowPara(s32 id, s32 type, s32 alpha);
+void itfMesMngChangeWindowTypeSub(s32 id, s32 type, s32 alpha);
 s32 SelectItem(instanceMes_tag *pinst);
 void SelectItemMove(select_tag *psel, s32 direct);
 s32 itfInputPasswd(void);
