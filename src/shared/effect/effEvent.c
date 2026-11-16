@@ -523,7 +523,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", effBlur2OnSub);
 
 INCLUDE_ASM(const s32, "effect/effEvent", effBlur2SwapSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub3);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_PartialMultiBlurON);
 
 void Eve_PartialMultiBlurOFF(void) {
     Eve_PartialMultiBlurShow = 0;
@@ -543,13 +543,13 @@ void Eve_PartialMultiBlurSetDefTex(void) {
     hEve_PartialMultiBlur->texture = dds3BillboardGetGeneralTex(EFF_EVENT_BLUR_RESOURCE_INDEX);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub5);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_DistortionBlurON);
 
 void Eve_DistortionBlurOFF(void) {
     Eve_DistortionBlurShow = 0;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effDistBlurOnSub);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_DistortionBlurSetParam);
 
 effBlurScatterWork_t *effDistBlurSwapSub(void) {
     return hEve_DistortionBlur;
@@ -561,13 +561,13 @@ void Eve_DistortionBlurSetDefTex(void) {
     hEve_DistortionBlur->texture = dds3BillboardGetGeneralTex(EFF_EVENT_BLUR_RESOURCE_INDEX);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub7);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_RippleBlurON);
 
 void Eve_RippleBlurOFF(void) {
     Eve_RippleBlurShow = 0;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effRipBlurOnSub);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_RippleBlurSetParam);
 
 effBlurScaleWork_t *Eve_RippleBlurGetParams(void) {
     return hEve_RippleBlur;
@@ -600,17 +600,17 @@ effScreenDrawParams_t *effGetCh73Params(void) {
     return &effData4;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub9);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_FilterON);
 
 void Eve_FilterOFF(void) {
     Eve_FilterShow = 0;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", dblurSetParam2);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_FilterSetParam);
 
 INCLUDE_ASM(const s32, "effect/effEvent", effFilter2SwapSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub11);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_PartialMultiFilterON);
 
 void Eve_PartialMultiFilterOFF(void) {
     Eve_PartialMultiFilterShow = 0;

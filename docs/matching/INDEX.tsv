@@ -73,7 +73,7 @@ sbtlMapFadeProc	code_r1_0024B788	raidou1 0x11C	32 of 68 words differ	docs/matchi
 sbtlMapFadeProc_H	code_r1_0024B788	raidou1 0xFC	30 of 60 words differ	docs/matching/code_r1_0024B788.md	21
 sbtlNakamaSetUp	code_r1_0024B788	raidou1 0x48C	249 of 291 words differ	docs/matching/code_r1_0024B788.md	27
 sbtlSceneLoad	code_r1_0024DE98	raidou1 0xD4	25 of 53 words differ	docs/matching/code_r1_0024DE98.md	3
-sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	37 of 233 words differ	docs/matching/code_r1_0024EE78.md	3
+sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	23 of 233 words differ	docs/matching/code_r1_0024EE78.md	3
 CheckMapHit	code_r1_0024F220	raidou1 0x88	9 of 34 words differ	docs/matching/code_r1_0024F220.md	3
 nakamamodeCallGetActiveScene	code_r1_0024F220	raidou1 0x584	6 of 353 words differ	docs/matching/code_r1_0024F220.md	11
 sbtlCallBtlCheckDamageTarget3	code_r1_0024F220	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_0024F220.md	19
@@ -125,8 +125,17 @@ evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	d
 cmpDrawBackPattern	code_r1_00323138	raidou1 0x144, raidou2 0x144	9 of 81 words differ	docs/matching/code_r1_00323138.md	3
 datCheckSkillEnable	dat	raidou1 0x144	63 of 76 words differ	docs/matching/dat.md	3
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3
-Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	47 of 190 words differ	docs/matching/event/evtEventViewer.md	3
+Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9
+RunFrame1	event/evtEventViewer	raidou1 0x74C, raidou2 0x74C	1 of 467 words differ	docs/matching/event/evtEventViewer.md	17
+ValidateAt3Bgm	event/evtEventViewer	raidou1 0x19C, raidou2 0x19C	86 of 104 words differ	docs/matching/event/evtEventViewer.md	26
+Validate1stAt3Bgm	event/evtEventViewer	raidou1 0x148, raidou2 0x148	34 of 82 words differ	docs/matching/event/evtEventViewer.md	35
+OutFrame1	event/evtEventViewer	raidou1 0x120, raidou2 0x120	45 of 72 words differ	docs/matching/event/evtEventViewer.md	44
+RunFrame2	event/evtEventViewer	raidou1 0xC44, raidou2 0xC44	770 of 786 words differ	docs/matching/event/evtEventViewer.md	51
+RunFrameUnit	event/evtEventViewer	raidou1 0x39C, raidou2 0x39C	6 of 231 words differ	docs/matching/event/evtEventViewer.md	60
+ValidateRenderTex	event/evtEventViewer	raidou1 0x1F8, raidou2 0x1F8	61 of 126 words differ	docs/matching/event/evtEventViewer.md	67
+DrawMessage	event/evtEventViewer	raidou1 0x1C0, raidou2 0x1C0	48 of 110 words differ	docs/matching/event/evtEventViewer.md	74
+oldEventSceneUnload	event/evtEventViewer	raidou1 0xAC, raidou2 0xAC	42 of 44 words differ	docs/matching/event/evtEventViewer.md	81
 Process2_evtMoon	event/evtMoon	raidou1 0xB8C	624 of 723 words differ	docs/matching/event/evtMoon.md	3
 evtHokanSceneLight	event/evtPolygonMovie	raidou1 0x194, raidou2 0x194	38 of 101 words differ	docs/matching/event/evtPolygonMovie.md	3
 UnitAnime	event/evtUnitManager	raidou1 0x1340, raidou2 0x1340	70 of 1232 words differ	docs/matching/event/evtUnitManager.md	3

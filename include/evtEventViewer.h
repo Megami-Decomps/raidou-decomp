@@ -22,11 +22,6 @@ typedef enum EvtViewerIndexedConditionResult {
     EVT_VIEWER_INDEXED_CONDITION_MATCHED = 1
 } EvtViewerIndexedConditionResult;
 
-/* A zero selector matches unconditionally; otherwise the integer at
- * script.ints[199 + selector] must equal the encoded 12-bit value. */
-EvtViewerIndexedConditionResult evtViewerTestIndexedCondition(
-    EvtViewerIndexedCondition condition);
-
 /* Callback result: 0 retains the callback, -1 finishes the task, and
  * other words select a replacement callback. */
 typedef s32 dds3TaskUpdateResult_t;
@@ -39,29 +34,42 @@ typedef s32 dds3TaskUpdateResult_t;
 struct dds3ModelHandle_t;
 struct evtViewerObject_t;
 
+void LinkViewerObject(struct evtViewerObject_t *obj, evtViewerInfo_t *pInfo);
+void UnlinkViewerObject(struct evtViewerObject_t *obj, evtViewerInfo_t *pInfo);
+struct evtViewerObject_t *evtAddViewerObject(s32 type, evtViewerInfo_t *pInfo);
 s32 AddEffectTable2(s32 nowframe, struct evtViewerObject_t *obj, evtFrameInfo_t *, evtViewerInfo_t *pInfo);
-sdfMotionCtrlr_t *CreateMotion(struct dds3ModelHandle_t *aHandle, s32 aGroup);
-s32 DelBED(u32 UID);
+sdfMotionCtrlr_t *CreateMotion(mdlObj_t *aHandle, s32 aGroup);
+void DelBED(evtFrameInfo_t *frame);
+void DelEffectTable_evtEventViewer(s32 index, evtViewerInfo_t *pInfo);
+void scrCallPictureSetEndProcess(s32 no);
+void evtCallDelFrameInfo(struct evtViewerObject_t *obj, evtViewerInfo_t *pInfo);
 void DelFrameInfo(struct evtViewerObject_t *parent, evtFrameInfo_t *);
 void DrawEffect(evtViewerInfo_t *pInfo);
 s32 DrawMessage(evtViewerInfo_t *pInfo);
 void DrawTmxTexture(evtViewerInfo_t *pInfo);
-s32 DrawTmxTextureFrom2Frame(evtViewerInfo_t *pInfo, struct evtViewerObject_t *obj, evtFrameInfo_t *nearframe, evtFrameInfo_t *frame);
-void End_evtViewer(evtViewerInfo_t *pInfo);
+void DrawTmxTextureFrom2Frame(evtViewerInfo_t *pInfo, struct evtViewerObject_t *obj, evtFrameInfo_t *nearframe, evtFrameInfo_t *frame);
+s32 End_evtViewer(evtViewerInfo_t *pInfo);
 void EventSkipStart(evtViewerInfo_t *pInfo);
 void FreeInfo(evtViewerInfo_t *pInfo);
-struct dds3ModelHandle_t *GetModelHandleFromUID(s32 UID, dds3Basic_t *unit);
+void evtEventViewerApplyEffectChannels(s32 nowframe, evtViewerInfo_t *pInfo);
+s32 evtCallGetModelHandleFromUID(evtViewerInfo_t *pInfo, sdfTexHandle_t *pTex);
+mdlObj_t *GetModelHandleFromUID(s32 UID, dds3Basic_t **unit);
 void LinkEffectBasic(dds3Basic_t *eff, s32 nameindex, s32 posindex, s32 baseframe, evtViewerInfo_t *pInfo);
 void LinkFrameInfo(struct evtViewerObject_t *parent, evtFrameInfo_t *);
 void MessageManager(evtViewerInfo_t *pInfo);
 void OutFrame1(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo);
 dds3ProcessFunc_t Process2_evtViewer(dds3ProcessID_t *id);
 dds3ProcessFunc_t Process3(dds3ProcessID_t *id);
+dds3ProcessID_t *evtInitFrameVar(void);
+void *AddBED(void *data, s32 cutno, s32 nameindex, s32 posindex, s32 baseframe, evtViewerInfo_t *pInfo);
+void CalcLightCycle(pmdSceneLightTable_t *sl, evtFrameInfo_t *frame, s32 nowframe, evtViewerInfo_t *pInfo);
 void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo);
 void RunFrame1(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo);
 void RunFrame2(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, evtFrameInfo_t *nearframe, s32 nowframe, s32 *l, evtViewerInfo_t *pInfo, s32 offset);
 void RunFrame3(s32 nowframe, evtViewerInfo_t *pInfo);
 void RunFrameUnit(struct evtViewerObject_t *obj, s32 nowframe);
+void evtRunFrameSub(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo);
+void CalcNextMesSet(evtViewerInfo_t *pInfo);
 dds3Basic_t *SearchBasicFromNameIndex(s32 nameindex, evtViewerInfo_t *pInfo);
 s32 SearchNameTable(char *name, evtViewerInfo_t *pInfo);
 void SetActiveCamera(evtViewerInfo_t *pInfo);
@@ -78,18 +86,30 @@ s32 evtAddNameTable(char *name, evtViewerInfo_t *pInfo);
 s32 evtCheckProcess(void);
 void evtDelProcess(u32 UID);
 void evtEnd(dds3ProcessID_t *id);
+struct evtPolygonMovieWork_t;
+s32 evtEndEvtViewerSub(struct evtPolygonMovieWork_t *wdata);
+sdfTexHandle_t *evtCallMemAllocDirect(void);
+void evtCallChipFreeDirect(void);
 dds3ProcessID_t *evtGetPIDfromUID(u32 UID);
 void evtIgnoreAtracPlay(dds3ProcessID_t *id);
 void evtIgnoreFade(dds3ProcessID_t *id);
 void evtMessageDelete(evtViewerInfo_t *pInfo, s32 Mode);
+s32 rcvIsHealPhase(struct evtPolygonMovieWork_t *wdata);
 void evtNoSkipMes(dds3ProcessID_t *id);
 dds3ProcessFunc_t evtProcess2_RealPlay(dds3ProcessID_t *id);
 void evtRunFrame(s32 nowframe, evtViewerInfo_t *pInfo);
 void evtUnRegistUnit(evtViewerInfo_t *pInfo);
 void evtUnitMotionChange(s32 nowframe, dds3Basic_t *b, struct evtViewerObject_t *obj, evtViewerInfo_t *pInfo, s32 mode);
+void UnitMotionChangeForWait(s32 nowframe, dds3Basic_t *b, struct evtViewerObject_t *obj, evtViewerInfo_t *pInfo);
 void evtValidateUnitMotionFrameForWait(s32 nowframe, evtViewerInfo_t *pInfo);
 void evtViewerStopFrame(s32 sw, u32 nowframe, evtViewerInfo_t *pInfo);
-char *sndVoiceStatus(char *lbl);
+/* A zero selector matches unconditionally; otherwise the integer at
+ * script.ints[199 + selector] must equal the encoded 12-bit value. */
+EvtViewerIndexedConditionResult sndVoiceStatus(EvtViewerIndexedCondition condition);
+
+extern dds3ProcessID_t *pmv_pid;
+extern s32 last_skip_stat;
+extern struct evtViewerObject_t *evt_camera;
 
 dds3TaskUpdateResult_t evtCallGetProcessData11(dds3ProcessID_t *task);
 void evtEventViewerDestroyActiveAlternate(dds3ProcessID_t *task);

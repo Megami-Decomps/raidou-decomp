@@ -43,7 +43,7 @@ typedef struct
 extern void dds3EffectObjectBasicGetObjectIndex(dds3Basic_t *basic);
 extern void dds3EffectObjectBasicUnlinkObject(dds3Basic_t *basic);
 
-typedef struct
+typedef struct fldResourceEffect_t
 {
     u32 flag;
     u32 type;
@@ -54,25 +54,6 @@ typedef struct
     u32 param0;
     u32 param1;
 } fldResourceEffect_t;
-
-typedef struct
-{
-    dds3ObjectBaseControlWorkData_t *pObjectBaseControlWorkData;
-    u32 stat;
-    s32 type;
-    void *handle;
-    u32 linkpos[4]; /* sdfVector4_t in the IDB, written as words here */
-    dds3Basic_t *linkbasic;
-    u16 linkindex;
-    u16 linkbasictype;
-    void *para;
-    effEveBEDCut_t *cuth;
-    s32 reserve1;
-    s32 reserve2;
-    s32 reserve3;
-    fldResourceEffect_t *pFldEx;
-    sdfVector4_t FldExBasePos;
-} dds3EffectObjectBasicWorkData_t;
 
 
 struct dds3BillResource_tag;

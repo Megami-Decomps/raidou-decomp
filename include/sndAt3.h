@@ -5,8 +5,10 @@
 
 void mnuLoadTitleStreamFrameData(char **fname, void *);
 void sndBgmContinue(void);
+void sndBgmFadeIn(void);
 void sndBgmFadeOut(void);
 void sndBgmFadeOut2(void);
+void sndBgmFree(void);
 void sndBgmLoadId(s32 id);
 void sndBgmLoadIdXFSub(void);
 void sndBgmLoadId_XF(s32 id);
@@ -20,7 +22,9 @@ s32 sndCallLoad(void *);
 void sndCallMemset(void);
 s32 sndCallWaitSema3(void);
 void sndProcSequenceSub(void);
+void sndCallWaitSema(void);
 void sndSeFadeOut(void);
+s32 sndSePlay(void);
 void sndSeFree(void);
 
 void sndBgmPlay(void);

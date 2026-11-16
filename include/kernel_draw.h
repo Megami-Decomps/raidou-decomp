@@ -15,6 +15,7 @@ typedef struct
 extern dds3LightState_t dds3LightParam;
 
 void dds3SetAmbient(sdfVector4_t *ambient);
+extern sdf3DFogParam_t FogParam;
 void dds3SetFog(sdf3DFogParam_t *fog);
 void dds3SetLight(sdf3DLight_t *light, s32 no);
 

@@ -12,6 +12,9 @@ typedef struct {
 } p2sdLoadEntry_t;
 
 u32 p2sdGetPcmState(void);
+s32 p2sdBgmVolDown(void);
+s32 p2sdBgmVolUp(void);
+s32 p2sdStopAllBgm(void);
 s32 p2sdLoadCheckMidi(s32 MidiNo);
 s32 p2sdLoadPcmFile(const char *name, u8 channel);
 void p2sdLoadSMGFile(s32 MidiNo);
@@ -30,6 +33,7 @@ s32 p2sdSyncSound(void);
 void sdfSndInit(char *aVoiceInfo, s32 aVoiceCount, char *aSequenceInfo, s32 aSequenceCount);
 void sdfDumpHexLine(const void *aData, s32 size);
 s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
+s32 sdfSndSetChannelCount(u32 aCh);
 s32 sdfBtlReLoadMapSBtlSceneSub(void);
 p2sdLoadEntry_t *sdfLeaf35(void);
 void sdfCallSndSendCmd(s32 arg);

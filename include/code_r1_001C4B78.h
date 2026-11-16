@@ -87,6 +87,21 @@ typedef struct evtViewerObject_t {
 
 typedef char evtViewerObject_size[(sizeof(evtViewerObject_t) == 0x84) ? 1 : -1];
 
+typedef struct evtRenderInfo_t {
+    void *pImage;
+    sdfMemHandle_t *hImageMem;
+    s32 stage;
+    s32 draw;
+    s32 alpha;
+} evtRenderInfo_t;
+
+/* Message-select branch: var_idx is the script integer that receives the selection. */
+typedef struct evtBranchInfo_t {
+    s8 branchfilter_count;
+    s8 branchfilter_flag;
+    s16 var_idx;
+} evtBranchInfo_t;
+
 /* One allocation retained by the EventViewer task. Camp-named timeline
  * helpers receive this same pointer; their old types omitted the voice tail. */
 struct evtViewerInfo_t {
@@ -168,10 +183,7 @@ struct evtViewerInfo_t {
     s16 windowResultVariableIndex; /* VM integer destination for the completed message-window result. */
     s32 tableColumn;
     s32 cameraColorActive;
-    sdfTexHandle_t *ch71;
-    sdfTexHandle_t *ch72;
-    sdfTexHandle_t *ch76;
-    sdfTexHandle_t *ch75;
+    u8 pad23D0[0x10];
     s32 selectedEntry;
     s32 commandFirst;
     EvtCommandArgument commandSecond;
@@ -199,30 +211,46 @@ struct evtViewerInfo_t {
     u32 auxResource;
     u8 pad243C[4];
     s32 fadeCount;
-    u8 pad2444[0x50];
-    s32 fontRequestMode;
-    u8 pad2498[0x24];
+    evtBranchInfo_t branch;
+    u8 pad2448[8];
+    sdfTexHandle_t *ch71; /* last texture given to each effect: types 14, 15, 23, 17 */
+    sdfTexHandle_t *ch72;
+    sdfTexHandle_t *ch76;
+    sdfTexHandle_t *ch75;
+    u8 pad2460[0x10];
+    s32 dontskip_messagetime;
+    u8 pad2474[4];
+    s32 drawhblur;
+    u8 pad247C[0x18];
+    s32 nowMovieStat; /* 1 while a movie plays */
+    s32 MovieStartFrame;
+    s32 MovieEndFrame;
+    u8 pad24A0[8];
+    evtRenderInfo_t renderTexInfo;
     union { s32 headerMetadata; u32 optionFlags; };
     s32 titleStreamWaitFrames;
     s32 registeredCount;
     s32 registeredIds[20];
-    s32 voicePending;
-    s32 voiceMessage;
-    s32 backgroundFadeStartAlpha; /* Initial background alpha, interpolated to 128 over 25 updates. */
-    u8 pad24A4[4];
+    s32 At3BgmFlag;
+    s32 At3BgmReqID;
+    s32 At3Bgm1stFrame;
+    s32 At3Bgm1stLoad;
     s32 voiceState;
     s32 voiceMessageNo;
-    s32 commandStart;
+    s32 fadeAlpha; /* Initial background alpha, interpolated to 128 over 25 updates. */
     s32 optionFrameBase;
-    s32 curveComponent;
+    s32 voiceFrame; /* nowframe when a voice conflict deferred the message */
     u8 pad253C[0x10];
     s32 playIndex;
-    u8 pad2550[0x10];
-    s32 fontRequestReset;
+    s32 last_meswin_mode;
+    s32 last_mestype;
+    u32 tmxTexID; /* UID of the TMX texture applied to model 100, 0 none */
+    sdfTexHandle_t *blankTex; /* 32x16 texture from evtCallMemAllocDirect */
+    s32 real_movie_last_frame;
 };
 
 struct pmdProcessWork_t;
 
-s32 evtSetGameData1(struct pmdProcessWork_t *wdata, evtViewerInfo_t *pInfo);
+s32 evtSetGameData1(struct evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo);
 
 #endif

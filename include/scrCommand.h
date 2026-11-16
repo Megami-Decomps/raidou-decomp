@@ -4,5 +4,6 @@
 #include "common.h"
 
 void scrSetMovieCancel(s32 Mode);
+s32 scrRefDDS3GBWK3(void);
 
 #endif

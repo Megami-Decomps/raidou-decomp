@@ -28,6 +28,7 @@ void sdfModelEvalTm(sdfModelRootNode_t *aRoot);
 void *sdfModelGetExtraChunk(sdfModelRootNode_t *aRoot, u32 aChunkId);
 s32 sdfModelGetNodeIndexByName(sdfModelRootNode_t *aRoot, const char *aName);
 u32 sdfModelGetMarkPosCount(sdfModelRootNode_t *aRoot);
+u32 sdfModelGetUniqueID(sdfModelRootNode_t *aRoot);
 s32 sdfModelGetMarkPos_sdfModel(sdfModelRootNode_t *aRoot, s32 aId);
 void sdfModelInitSystem(void);
 void sdfModelMakeMarkPosMatrix(sdfModelRootNode_t *aRoot, sdfModelMarkPos_t *aMark);

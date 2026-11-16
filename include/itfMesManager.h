@@ -151,6 +151,7 @@ s32 itfMesMngCloseWindow(void);
 s32 itfMesMngIgnoreConfig(void);
 s32 itfMesMngInitialize(void *data);
 void itfMesMngMarkBitStat(s32 id, u32 flag);
+void itfMesMngClearBitStat(s32 id, u32 flag);
 s32 itfMesMngMaskSelect(void);
 s32 itfMesMngMessage(void);
 u32 itfMesMngOpenSelectWindow(void);
@@ -163,6 +164,12 @@ s32 itfMesMngSetMesPosDefault(void);
 void itfMesMngSetMesPosition(s32 id, s32 x, s32 y);
 s32 itfMesMngSetMesPositionScript(void);
 void itfMesMngSetSelPhase(s32 msgid, s16 phase);
+s16 itfMesMngGetSelPhase(s32 msgid);
+s8 itfMesMngGetPhase(s32 msgid);
+s32 itfMesMngChkWaitTag(s32 msgid);
+s16 itfMesMngGetSelect(s32 id);
+void itfMesMngRequestSelectRelease(s32 id);
+void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker);
 void itfMesMngSetVarImmediate(s32 id, u32 index, const char *pstr);
 s32 itfMesMngSetVarScr(void);
 s32 itfMesMngValidateNext(void);
@@ -199,7 +206,7 @@ void OpenMessageWindow(instanceMes_tag *pinst);
 void RaiseMessageSpeedMax(struct FontReq_t *pfont);
 void RaiseMessageSpeedMaxAll(struct FontReq_t *pfont);
 void ReleaseAllWindow_itf(instanceMes_tag *pinst);
-void ResetWindowPara(window_tag *pwin, s32 type, s32 alpha);
+void ResetWindowPara(s32 id, s32 type, s32 alpha);
 s32 SelectItem(instanceMes_tag *pinst);
 void SelectItemMove(select_tag *psel, s32 direct);
 s32 itfInputPasswd(void);
@@ -213,5 +220,7 @@ void itfMesMngRequestSelect_itf(s32 id, s32 select);
 void itfMesMngSetVar_itf(s32 id, s32 index, s32 num, s32 type);
 
 s32 itfMesMngRequestMessage_itf(s32 window, s32 entryIndex, s32 itemIndex);
+s32 itfMesSelectTableItemText(s32 window, s32 entryIndex, s32 itemIndex);
+u32 itfGetMessageType(s32 window, s32 entryIndex);
 
 #endif

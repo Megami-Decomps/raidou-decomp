@@ -521,4 +521,6 @@ typedef struct mnuTerminalContext_t {
 
 typedef char mnuTerminalContext_size_must_be_0x38C[(sizeof(mnuTerminalContext_t) == 0x38C) ? 1 : -1];
 
+s32 mnuSolveCubicBezierYForX(s32 target, const s32 *x, const s32 *y);
+
 #endif

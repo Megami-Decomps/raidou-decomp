@@ -2738,7 +2738,7 @@ mnuSolveCubicBezierYForX	c
 mnuSortItems	c
 sndBgmLoadFile	c
 scrGetAfterSkipBgmFlag	c
-mnuUnpackNibbleFields	c
+evtGetMessageDataAndTypeFromFrame	c
 mnuUpdateFade	c
 mnuUpdateListScrollFlags	c
 mnuUpdateMovieDrawShutdownCountdown	asm	1 words differ, first at +0x68

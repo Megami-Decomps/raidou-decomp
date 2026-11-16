@@ -11,4 +11,7 @@ void sdfCoreDrawSetFog(u8 *fog);
 void *sdfCorePacketGen(sdfModelNode_t *node, void *packetData, u32 attrMask,
                        u32 color, f32 soften, f32 bias, s32 frame, s32 reverse);
 
+extern f32 sdfFaceDivSoften;
+extern f32 sdfFaceDivBias;
+
 #endif

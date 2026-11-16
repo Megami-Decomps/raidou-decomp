@@ -502,11 +502,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf8);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfEndMessageExSub);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngChkWaitTag);
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfDrawMessageSub);
-#endif
 
 #ifdef VERSION_RAIDOU1
 s8 itfMesMngGetPhase(s32 msgid)

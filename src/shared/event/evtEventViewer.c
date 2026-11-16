@@ -15,14 +15,45 @@
 #include "dds3KernelCore.h"
 #include "dds3WorldBasic.h"
 #include "dds3ObjectBase.h"
+#include "dds3CameraObjectBasic.h"
+#include "effEvent.h"
+#include "effBlur_Filter.h"
+#include "dds3EffectObjectBasic.h"
+#include "dds3PadManager.h"
+#include "mdlManager.h"
+#include "mviManager.h"
+#include "sndAt3.h"
+#include "scrCommand.h"
+#include "sdfSound.h"
+#include "sdfMotion.h"
+#include "sdfMat.h"
+#include "sdfTex.h"
+#include "sdfModel.h"
+#include "sdfMath.h"
+#include "dds3PathBasic.h"
+#include "dds3MoverBasic.h"
+#include "mdlEffect.h"
+#include "evtUnitManager.h"
+#include "evtEventViewerMenu.h"
+#include "evt.h"
+#include "evtSound.h"
+#include "fldProcess.h"
+#include "evtSky.h"
+#include "sdfCoreDraw.h"
+#include "code_r1_001CC1D0.h"
+#include "effManager.h"
+#include "sdfChip.h"
+#include "sdfDelayedResrc.h"
+#include "sdfMemory.h"
 
 void evtSetGameData2and3(evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s32 mode);
 extern s16 winoff_x;
+extern sdfColor32_t evtCallGetFrameIDData;
 extern s8 dds3PadButtonState[];
 extern const char evtStrE303[];
 void evtProcess3Sub(evtViewerInfo_t *viewer);
 void evtProcess3Sub2(evtViewerInfo_t *viewer);
-void dds3FontReqListAdd(evtViewerInfo_t *viewer);
+void MovieStop(evtViewerInfo_t *viewer);
 void evtCallEveRippleBlurSetDefTex(evtViewerInfo_t *viewer);
 void evtCallGetFrameID(evtViewerInfo_t *viewer);
 void PushMenu(s32 a0, s32 a1, s32 a2, evtViewerInfo_t *viewer);
@@ -205,13 +236,278 @@ void evtEventViewerDestroyActive(dds3ProcessID_t *task);
 extern void mnuCampInitFontResource(evtViewerInfo_t *viewer);
 void evtEventViewerDestroyTask(void);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", LinkFrameInfo);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:128 */
+void LinkFrameInfo(evtViewerObject_t *parent, evtFrameInfo_t *f) {
+    evtFrameInfo_t *cursor = parent->children;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", UnlinkFrameInfo);
+    if (cursor == 0) {
+        parent->children = f;
+        parent->lastChild = f;
+        f->next = 0;
+        f->prev = 0;
+    } else {
+        while (cursor != 0) {
+            if (f->frame < cursor->frame) {
+                if (cursor->prev == 0) {
+                    parent->children = f;
+                    cursor->prev = f;
+                    f->next = cursor;
+                    f->prev = 0;
+                } else {
+                    cursor->prev->next = f;
+                    f->prev = cursor->prev;
+                    f->next = cursor;
+                    cursor->prev = f;
+                }
+                break;
+            }
+            cursor = cursor->next;
+        }
+        if (cursor == 0) {
+            evtFrameInfo_t *tailNode = parent->lastChild;
+            tailNode->next = f;
+            f->prev = parent->lastChild;
+            f->next = 0;
+            parent->lastChild = f;
+        }
+    }
+    parent->childCount++;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:166 */
+void UnlinkFrameInfo(evtViewerObject_t *parent, evtFrameInfo_t *f) {
+    evtFrameInfo_t *nextNode = f->next;
+    evtFrameInfo_t *previousNode = f->prev;
+    if (previousNode == 0) {
+        parent->children = nextNode;
+    } else {
+        previousNode->next = nextNode;
+    }
+    {
+        evtFrameInfo_t *previousNeighbor = f->prev;
+        evtFrameInfo_t *nextNeighbor = f->next;
+        if (nextNeighbor == 0) {
+            parent->lastChild = previousNeighbor;
+        } else {
+            nextNeighbor->prev = previousNeighbor;
+        }
+    }
+    {
+        s32 nodeCount = parent->childCount;
+        f->prev = 0;
+        f->next = 0;
+        parent->childCount = nodeCount - 1;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", SortFrameInfo);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtAddFrameInfo_evtViewer);
+evtFrameInfo_t *evtAddFrameInfo_evtViewer(evtViewerObject_t *obj, s32 frame, evtViewerInfo_t *pInfo) {
+    pmdTmxData_t display;
+    evtBlendKey_t layout;
+    f32 first, second;
+    pmdSceneLightTable_t *vectors = NULL;
+    evtFrameInfo_t *key;
+
+    switch (obj->type) {
+    case 10:
+        vectors = sdfChipAllocDirect(sizeof(pmdSceneLightTable_t));
+        evtGetValueNewSLightFrame(pInfo, obj, frame, vectors, &first, &second);
+        break;
+    case 24:
+        evtGetValueNewTMXFrame(pInfo, pInfo->framelist_target, pInfo->nowframe, &display);
+        break;
+    case 25:
+        break;
+    case 36:
+        evtGetValueNewTMXFrame(pInfo, pInfo->framelist_target, pInfo->nowframe, &display);
+        break;
+    }
+    key = sdfChipAllocDirect(sizeof(evtFrameInfo_t));
+    memset(key, 0, sizeof(evtFrameInfo_t));
+    key->frame = frame;
+    key->nameIndex = -1;
+    LinkFrameInfo(obj, key);
+
+    switch (obj->type) {
+    case 2:
+        key->p08.f = 0.5235987306f;
+        key->nameIndex = evtAddNameTable(pInfo->nametable[obj->entryHeader], pInfo);
+        break;
+    case 1:
+        key->nameIndex = evtAddNameTable(pInfo->nametable[obj->entryHeader], pInfo);
+        key->p08.sb[0] = 0;
+        key->p0C.sb[2] = 1;
+        key->p0C.sb[3] = 20;
+        break;
+    case 18:
+        key->nameIndex = evtAddNameTable(pInfo->nametable[obj->entryHeader], pInfo);
+        key->p08.h[0] = 0;
+        key->p08.h[1] = -1;
+        key->p08.sb[0] = 0;
+        break;
+    case 20:
+    case 21:
+        key->nameIndex = evtAddNameTable(pInfo->nametable[obj->entryHeader], pInfo);
+        key->p08.sb[0] = -1;
+        key->p08.sb[1] = 0;
+        key->p08.h[1] = 0;
+        key->p0C.sb[0] = -1;
+        key->p0C.sb[1] = -1;
+        key->p0C.sb[2] = -1;
+        key->p0C.sb[3] = -1;
+        key->p10.h[0] = 0;
+        break;
+    case 3:
+    case 26:
+        key->nameIndex = evtAddNameTable(pInfo->nametable[obj->entryHeader], pInfo);
+        key->p08.sb[0] = -1;
+        key->p08.h[1] = 0;
+        key->p0C.sb[0] = 0;
+        key->p0C.sb[1] = -1;
+        key->p0C.h[1] = -1;
+        key->p10.h[0] = 0;
+        break;
+    case 9:
+        key->nameIndex = evtAddNameTable(pInfo->nametable[obj->entryHeader], pInfo);
+        key->p08.h[0] = -1;
+        key->p08.h[1] = 1;
+        break;
+    case 12:
+        key->p08.h[0] = 1;
+        key->p08.h[1] = 128;
+        key->p0C.i = 0;
+        break;
+    case 22:
+        key->p08.h[0] = 1;
+        break;
+    case 10:
+        key->p08.f = first;
+        key->payload = vectors;
+        key->p0C.f = second;
+        key->p10.h[0] = (u16)obj->setterId;
+        key->p14.h[0] = 0;
+        key->p14.h[1] = 0;
+        key->p18.h[0] = 0;
+        key->p18.h[1] = 0;
+        key->p1C.b[0] = 0;
+        key->p1C.b[1] = 0;
+        key->p1C.b[2] = 0;
+        key->nameIndex = 0;
+        break;
+    case 11: {
+        pmdSceneFogTable_t *fog = sdfChipAllocDirect(sizeof(pmdSceneFogTable_t));
+        fog->fog.vec[0] = FogParam.fogMin;
+        fog->fog.color = FogParam.color;
+        key->payload = fog;
+        fog->fog.vec[1] = FogParam.fogMax;
+        fog->fog.vec[2] = FogParam.fogNear;
+        fog->fog.vec[3] = FogParam.fogFar;
+        key->p08.h[0] = 1;
+        break;
+    }
+    case 13: {
+        void *payload = sdfChipAllocDirect(sizeof(dds3Effect_Blur_t));
+        key->payload = payload;
+        memcpy(payload, &BlurEditorGetParams()->source, sizeof(dds3Effect_Blur_t));
+        key->p08.h[0] = 1;
+        break;
+    }
+    case 14: {
+        void *payload = sdfChipAllocDirect(sizeof(dds3Effect_PartialMultiBlurParam_t));
+        key->payload = payload;
+        memcpy(payload, &effMultiBlurSwapSub()->body, sizeof(dds3Effect_PartialMultiBlurParam_t));
+        key->p08.h[0] = 1;
+        key->p10.h[0] = 0;
+        break;
+    }
+    case 15: {
+        void *payload = sdfChipAllocDirect(sizeof(dds3Effect_DistortionBlurParam_t));
+        key->payload = payload;
+        memcpy(payload, &effDistBlurSwapSub()->params, sizeof(dds3Effect_DistortionBlurParam_t));
+        key->p08.h[0] = 1;
+        break;
+    }
+    case 23: {
+        void *payload = sdfChipAllocDirect(sizeof(dds3Effect_RippleBlurParam_t));
+        key->payload = payload;
+        memcpy(payload, &Eve_RippleBlurGetParams()->params, sizeof(dds3Effect_RippleBlurParam_t));
+        key->p08.h[0] = 1;
+        break;
+    }
+    case 27: {
+        void *payload = sdfChipAllocDirect(sizeof(dds3Effect_Blur_t));
+        key->payload = payload;
+        memcpy(payload, &effGetCh73Params()->source, sizeof(dds3Effect_Blur_t));
+        key->p08.h[0] = 1;
+        break;
+    }
+    case 16: {
+        void *payload = sdfChipAllocDirect(sizeof(dds3Effect_Filter_t));
+        key->payload = payload;
+        memcpy(payload, effFilter2SwapSub(), sizeof(dds3Effect_Filter_t));
+        key->p08.h[0] = 1;
+        break;
+    }
+    case 17: {
+        void *payload = sdfChipAllocDirect(sizeof(dds3Effect_PartialMultiFilterParam_t));
+        key->payload = payload;
+        memcpy(payload, &effMFilterSwapSub()->param, sizeof(dds3Effect_PartialMultiFilterParam_t));
+        key->p08.h[0] = 1;
+        break;
+    }
+    case 24:
+    case 36:
+        key->nameIndex = evtAddNameTable(pInfo->nametable[obj->entryHeader], pInfo);
+        key->p08.sb[0] = display.enabled;
+        key->p08.sb[1] = display.variant;
+        key->p0C.h[0] = display.x;
+        key->p0C.h[1] = display.y;
+        key->p10.sb[0] = display.color[0];
+        key->p10.sb[1] = display.color[1];
+        key->p10.sb[2] = display.color[2];
+        key->p10.sb[3] = display.color[3];
+        key->p14.f = display.scaleX;
+        key->p18.f = display.scaleY;
+        key->p1C.b[0] = display.preserveAlpha;
+        break;
+    case 25: {
+        evtCameraColorPayload_t *payload = sdfChipAllocDirect(sizeof(evtCameraColorPayload_t));
+        s32 i;
+
+        key->payload = payload;
+        payload->parameters.x = layout.x;
+        payload->parameters.w[0] = layout.w[0];
+        payload->parameters.w[1] = layout.w[1];
+        payload->parameters.w[2] = layout.w[2];
+        payload->parameters.w[3] = layout.w[3];
+        payload->parameters.flagWord = layout.flagWord;
+        for (i = 0; i < 3; i++) {
+            payload->parameters.y[i] = layout.y[i];
+            payload->parameters.z[i] = layout.z[i];
+        }
+        break;
+    }
+    case 33:
+        key->p08.h[0] = pInfo->nowframe;
+        break;
+    case 0:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 19:
+    case 28:
+    case 29:
+    case 30:
+    case 31:
+    case 32:
+    default:
+        break;
+    }
+    return key;
+}
 
 evtFrameInfo_t *AddFrameInfo2(evtViewerObject_s *group, s32 frame, evtViewerInfo_t *viewer)
 {
@@ -220,7 +516,18 @@ evtFrameInfo_t *AddFrameInfo2(evtViewerObject_s *group, s32 frame, evtViewerInfo
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetPIDfromUID);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", DelFrameInfo);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:390 */
+void DelFrameInfo(evtViewerObject_t *parent, evtFrameInfo_t *f)
+{
+    UnlinkFrameInfo(parent, f);
+    if (f->payload != NULL) {
+        if (parent->type != 0x12) {
+            sdfChipFreeDirect(f->payload);
+        }
+        f->payload = NULL;
+    }
+    sdfChipFreeDirect(f);
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtDelProcess);
 
@@ -233,11 +540,73 @@ void evtEventViewerProcessPending(evtViewerInfo_t *viewer) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", LinkViewerObject);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:436 */
+void LinkViewerObject(evtViewerObject_t *obj, evtViewerInfo_t *pInfo) {
+    evtViewerObject_t *cursor = pInfo->firstobjinfo;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", UnlinkViewerObject);
+    if (cursor == 0) {
+        pInfo->firstobjinfo = obj;
+        pInfo->lastTrack = obj;
+        obj->next = 0;
+        obj->prev = 0;
+    } else {
+        while (cursor != 0) {
+            if (obj->type < cursor->type) {
+                if (cursor->prev == 0) {
+                    pInfo->firstobjinfo = obj;
+                    cursor->prev = obj;
+                    obj->next = cursor;
+                    obj->prev = 0;
+                } else {
+                    cursor->prev->next = obj;
+                    obj->prev = cursor->prev;
+                    obj->next = cursor;
+                    cursor->prev = obj;
+                }
+                break;
+            }
+            cursor = cursor->next;
+        }
+        if (cursor == 0) {
+            pInfo->lastTrack->next = obj;
+            obj->prev = pInfo->lastTrack;
+            obj->next = 0;
+            pInfo->lastTrack = obj;
+        }
+    }
+    pInfo->objcnt++;
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtAddViewerObject);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:472 */
+void UnlinkViewerObject(evtViewerObject_t *obj, evtViewerInfo_t *pInfo) {
+    if (obj->prev == 0) {
+        pInfo->firstobjinfo = obj->next;
+    } else {
+        obj->prev->next = obj->next;
+    }
+    if (obj->next == 0) {
+        pInfo->lastTrack = obj->prev;
+    } else {
+        obj->next->prev = obj->prev;
+    }
+    obj->prev = 0;
+    obj->next = 0;
+    pInfo->objcnt--;
+}
+
+evtViewerObject_t *evtAddViewerObject(s32 type, evtViewerInfo_t *pInfo) {
+    evtViewerObject_t *track = sdfChipAllocDirect(sizeof(evtViewerObject_t));
+
+    if (track == NULL) {
+        return NULL;
+    }
+    memset(track, 0, sizeof(evtViewerObject_t));
+    track->type = type;
+    track->entryHeader = -1;
+    track->argument0C = -1;
+    LinkViewerObject(track, pInfo);
+    return track;
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetViewerObjectTypeCount);
 
@@ -275,7 +644,24 @@ s32 evtEventViewerSumNodeCounts(EvtViewerTrackFileFormat format, evtViewerInfo_t
     return total;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallDelFrameInfo);
+void evtCallDelFrameInfo(evtViewerObject_t *obj, evtViewerInfo_t *pInfo) {
+    if (obj->children != NULL) {
+        do {
+            if (obj->type == 33) {
+                scrCallPictureSetEndProcess((s16)obj->children->param.sh[1]);
+            }
+            DelFrameInfo(obj, obj->children);
+        } while (obj->children != NULL);
+    }
+    if (obj->type == 24) {
+        sdfTexReleaseReference(obj->texture);
+        obj->texture = NULL;
+        while (sdfDelayedResrcCheck()) {
+        }
+    }
+    UnlinkViewerObject(obj, pInfo);
+    sdfChipFreeDirect(obj);
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetFirstFrame);
 
@@ -283,19 +669,182 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetLastFrame);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallMemset7);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", FreeInfo);
+void FreeInfo(evtViewerInfo_t *pInfo) {
+    evtViewerObject_t *obj;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtUnRegistUnit);
+    Eve_PartialMultiBlurSetDefTex();
+    Eve_DistortionBlurSetDefTex();
+    Eve_RippleBlurSetDefTex();
+    Eve_PartialMultiFilterSetDefTex();
+    if (pInfo->firstobjinfo != NULL) {
+        do {
+            evtCallDelFrameInfo(pInfo->firstobjinfo, pInfo);
+        } while (pInfo->firstobjinfo != NULL);
+    }
+    if (pInfo->workdata != NULL) {
+        evtFreeWorkData1(pInfo->workdata);
+        evtFreeWorkData2and3(pInfo->workdata);
+        pInfo->workdata = NULL;
+    }
+    dds3PadIsTypeCD();
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", SearchNameTable);
+void evtUnRegistUnit(evtViewerInfo_t *pInfo) {
+    s32 i;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtAddNameTable);
+    if (pInfo->workdata != NULL) {
+        for (i = 0; i < pInfo->workdata->unitCount; i++) {
+            mdlUnRegist(pInfo->workdata->unitTable[i].MajorNum, pInfo->workdata->unitTable[i].MinorNum);
+        }
+    }
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:595 */
+s32 SearchNameTable(char *name, evtViewerInfo_t *pInfo) {
+    s32 index = 0;
+
+    if (pInfo->nametablecnt > 0) {
+        do {
+            if (strcmp(name, pInfo->nametable[index]) == 0) {
+                return index;
+            }
+            index++;
+        } while (index < pInfo->nametablecnt);
+    }
+    return -1;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:610 */
+s32 evtAddNameTable(char *name, evtViewerInfo_t *pInfo) {
+    s32 existingIndex = SearchNameTable(name, pInfo);
+    s32 newIndex;
+
+    if (existingIndex >= 0) {
+        return existingIndex;
+    }
+    newIndex = pInfo->nametablecnt;
+    strcpy(pInfo->nametable[newIndex], name);
+    pInfo->nametablecnt++;
+    return newIndex;
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", SearchBasicFromNameIndex);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", LinkEffectBasic);
+void LinkEffectBasic(dds3Basic_t *eff, s32 nameindex, s32 posindex, s32 baseframe, evtViewerInfo_t *pInfo) {
+    dds3Basic_t *owner;
+    s32 currentFrame;
+    void *mover;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", AddEffectTable2);
+    if (eff == NULL) {
+        return;
+    }
+    currentFrame = pInfo->nowframe;
+    if (nameindex < 0) {
+        return;
+    }
+    owner = dds3SceneBasicSearchName(dds3GetActiveScene(), pInfo->nametable[nameindex]);
+    if (owner == NULL) {
+        return;
+    }
+    switch (owner->type >> 24) {
+    case 5:
+        if (posindex >= 0) {
+            dds3EffectObjectBasicLinkObjectIndex(eff, owner, posindex);
+            break;
+        }
+        /* fallthrough */
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 16:
+        dds3EffectObjectBasicLinkObject(eff, owner);
+        break;
+    case 15:
+        evtPathLinkAndMake(owner, eff);
+        mover = dds3GetBaseControlWorkData(eff)->pBasic[1];
+        if ((pInfo->flags & 1) != 0) {
+            evtStopMover(mover, 0, baseframe, currentFrame);
+        } else {
+            evtStopMover(mover, 1, baseframe, currentFrame);
+        }
+        break;
+    }
+}
+
+s32 AddEffectTable2(s32 nowframe, evtViewerObject_t *object, evtFrameInfo_t *frame, evtViewerInfo_t *pInfo) {
+    sdfVector4_t position;
+    sdfVector4_t scale;
+    dds3Basic_t *effect;
+    s32 index;
+    s32 type;
+
+    effect = NULL;
+    memset(&position, 0, sizeof(position));
+    memset(&scale, 0, sizeof(scale));
+    scale.w = 1.0f;
+
+    for (index = 0; index < 0x7F; index++) {
+        if (pInfo->effectBasic[index] == NULL) {
+            break;
+        }
+    }
+    if (index == 0x7F) {
+        return -1;
+    }
+
+    type = object->type;
+    switch (type) {
+    case 3:
+    case 26:
+        if (object->type == 3) {
+            effect = dds3EffectObjectBasicAddD3P2(object->resourceData, &position, &scale);
+        } else {
+            effect = dds3EffectObjectBasicAddEPL(object->resourceData, &position, &scale);
+        }
+        if (frame->param.sb[4] != 0) {
+            dds3EffectObjectPresetMG12(effect);
+        }
+        if (object->metadata.option == 0) {
+            LinkEffectBasic(effect, (s16)frame->param.sh[3], frame->param.sb[5], frame->frame, pInfo);
+        } else {
+            LinkEffectBasic(effect, (s16)frame->param.sh[3], frame->param.sb[5], 0, pInfo);
+        }
+        break;
+    case 20:
+    case 21: {
+        dds3Basic_t *part0;
+        dds3Basic_t *part1;
+        dds3Basic_t *part2;
+        dds3Basic_t *part3;
+
+        switch (type) {
+        case 20:
+            effect = dds3AddMG12EffectObjectBasic2(1, object->resourceData);
+            break;
+        case 21:
+            effect = dds3AddMG12EffectObjectBasic2(2, object->resourceData);
+            break;
+        }
+        part0 = SearchBasicFromNameIndex(frame->param.sb[4], pInfo);
+        part1 = SearchBasicFromNameIndex(frame->param.sb[5], pInfo);
+        part2 = SearchBasicFromNameIndex(frame->param.sb[6], pInfo);
+        part3 = SearchBasicFromNameIndex(frame->param.sb[7], pInfo);
+        dds3EffectObjectSetMG12Pos(effect, part0, part1, part2, part3);
+        if (frame->param.sb[1] != 0) {
+            dds3EffectObjectPresetMG12(effect);
+        }
+        break;
+    }
+    }
+
+    pInfo->effectBasic[index] = effect;
+    if (effect != NULL) {
+        dds3EffectObjectBasicStatOn(effect, 1);
+    }
+    return index;
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", DelEffectTable_evtEventViewer);
 
@@ -303,43 +852,1595 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", AddBED);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", DelBED);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", GetModelHandleFromUID);
+mdlObj_t *GetModelHandleFromUID(s32 UID, dds3Basic_t **unit) {
+    dds3SceneBasic_t *sceneWork;
+    dds3Basic_t *basic;
+    mdlObj_t *model;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", CreateMotion);
+    sceneWork = dds3GetActiveScene()->workdata;
+    for (basic = sceneWork->basictable[BASIC_TYPE_UNITOBJECT].firstbasic; basic != NULL; basic = basic->next) {
+        model = ((dds3UnitObjectBasicWorkData_t *)basic->workdata)->pObjectBaseControlWorkData->pModel;
+        if (sdfModelGetUniqueID(model->inner) == UID) {
+            if (unit != NULL) {
+                *unit = basic;
+            }
+            return model;
+        }
+    }
+    return NULL;
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetModelHandleFromUID);
+sdfMotionCtrlr_t *CreateMotion(mdlObj_t *aHandle, s32 aGroup) {
+    sdfMotionPlayBook_t *motionTable;
+    s16 motionSlotIndex;
+    sdfMotionCtrlr_t *object;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", DrawTmxTextureFrom2Frame);
+    motionTable = aHandle->sub->playbooks[aGroup].ptr;
+    motionSlotIndex = aHandle->sub->playbooks[aGroup].playGroup;
+    object = sdfMotionCtrlrNew(aHandle->inner, motionTable);
+    object->userId = aGroup;
+    aHandle->slots[motionSlotIndex] = object;
+    object->userId2 = motionSlotIndex;
+    if (motionSlotIndex == 0) {
+        aHandle->first = object;
+    }
+    return object;
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", DrawTmxTexture);
+s32 evtCallGetModelHandleFromUID(evtViewerInfo_t *pInfo, sdfTexHandle_t *pTex) {
+    dds3Basic_t *unit;
+    mdlObj_t *model;
+    sdfModelRootNode_t *root;
+    dds3ModelResrc_t *resrc;
+    sdfItemArray_t *texList;
+    s32 i;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", DrawEffect);
+    model = GetModelHandleFromUID(100, &unit);
+    if (model == NULL) {
+        return 0;
+    }
+    dds3UnitObjectBasicSetOt(unit, 9);
+    root = model->inner;
+    resrc = model->sub;
+    while (root->motion != NULL) {
+        sdfMotionCtrlrFree(root->motion);
+    }
+    if (root->texList == NULL) {
+        return 0;
+    }
+    if (root->texList->count >= 2) {
+        return 0;
+    }
+    sdfTexListFree(root->texList, 1);
+    texList = sdfTexListNew(1);
+    sdfTexListAdd(texList, sdfTexDup(pTex));
+    sdfModelRootFree(root, 1, 1);
+    model->inner = sdfModelMake(texList, resrc->modelDefPtr);
+    for (i = 0; i != MDL_SLOT_COUNT; i++) {
+        if (resrc->playbooks[i].ptr != NULL && (resrc->playbooks[i].flags & 1)) {
+            CreateMotion(model, i);
+            if (i > 0 && resrc->playbooks[i].firstMotion >= 0) {
+                mdlLoopMotion(model, i, resrc->playbooks[i].firstMotion);
+            }
+        }
+    }
+    ValidateUnitMotionFrame(pInfo->nowframe, pInfo, 1);
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", SetActiveCamera);
+void DrawTmxTextureFrom2Frame(evtViewerInfo_t *pInfo, struct evtViewerObject_t *obj, evtFrameInfo_t *nearframe, evtFrameInfo_t *frame) {
+    pmdTmxData_t display;
+    f32 ratio = 0.0f;
+    sdfIVector2_t maskofs = {0};
+    f32 length;
+    f32 pos;
+    u32 UID;
+    sdfTexHandle_t *tex;
 
+    if (nearframe == NULL) {
+        return;
+    }
+    if (frame != NULL) {
+        length = frame->frame - nearframe->frame;
+        pos = pInfo->nowframe - (nearframe->frame + obj->metadata.value);
+        if (length != 0.0f) {
+            ratio = pos / length;
+        }
+    }
+    evtHokanTmx(ratio, nearframe, frame, &display);
+    switch (obj->type) {
+    case 24:
+        evtDrawTexture(obj->texture, &display, 0, &maskofs);
+        return;
+    case 36:
+        break;
+    default:
+        return;
+    }
+    UID = (pInfo->workdata->eventNo << 16) | nearframe->p08.sh[1];
+    tex = evtGetTex(UID);
+    if (tex != NULL) {
+        if (nearframe->p1C.sb[0] < 3) {
+            evtDrawTexture(tex, &display, 0, &maskofs);
+            tex = evtGetMaskTex(UID);
+            evtGetMaskOfs(UID, &maskofs);
+            if (tex != NULL) {
+                evtDrawTexture(tex, &display, 1, &maskofs);
+            }
+        } else if (UID != pInfo->tmxTexID && evtCallGetModelHandleFromUID(pInfo, tex)) {
+            pInfo->tmxTexID = UID;
+        }
+    }
+    if (evtGetTex(pInfo->tmxTexID) == NULL && pInfo->tmxTexID != 0) {
+        evtCallGetModelHandleFromUID(pInfo, pInfo->blankTex);
+        pInfo->tmxTexID = 0;
+    }
+}
+
+void DrawTmxTexture(evtViewerInfo_t *pInfo) {
+    evtViewerObject_t *obj = pInfo->firstobjinfo;
+    s32 now = pInfo->nowframe;
+    evtFrameInfo_t *frame;
+    evtFrameInfo_t *nearframe;
+
+    while (obj != NULL) {
+        if (obj->type == 24 || obj->type == 36) {
+            if (obj->parameterKeySource == 1) {
+                DrawTmxTextureFrom2Frame(pInfo, obj, evtEventViewerGetPendingNode(pInfo), NULL);
+            } else {
+                for (frame = obj->children; frame != NULL; frame = frame->next) {
+                    if (now < frame->frame + obj->metadata.value) {
+                        break;
+                    }
+                }
+                if (frame != NULL) {
+                    nearframe = frame->prev;
+                } else {
+                    nearframe = obj->lastChild;
+                }
+                DrawTmxTextureFrom2Frame(pInfo, obj, nearframe, frame);
+            }
+        }
+        obj = obj->next;
+    }
+}
+
+void DrawEffect(evtViewerInfo_t *pInfo) {
+    if (pInfo->drawblur2 != 0) {
+        effDrawBlurRectangle(&BlurEditorGetParams()->source);
+    }
+    if (pInfo->drawmblur != 0) {
+        Eve_PartialMultiBlurON();
+    } else {
+        Eve_PartialMultiBlurOFF();
+    }
+    if (pInfo->drawmfilter != 0) {
+        Eve_PartialMultiFilterON();
+    } else {
+        Eve_PartialMultiFilterOFF();
+    }
+    if (pInfo->drawdblur != 0) {
+        Eve_DistortionBlurON();
+    } else {
+        Eve_DistortionBlurOFF();
+    }
+    if (pInfo->drawrblur != 0) {
+        Eve_RippleBlurON();
+    } else {
+        Eve_RippleBlurOFF();
+    }
+    if (pInfo->drawhblur != 0) {
+        effEnableFramebufferQuad();
+    } else {
+        effDisableFramebufferQuad();
+    }
+    if (pInfo->filter != 0) {
+        Eve_FilterON();
+    } else {
+        Eve_FilterOFF();
+    }
+    DrawTmxTexture(pInfo);
+}
+
+void SetActiveCamera(evtViewerInfo_t *pInfo) {
+    dds3Basic_t *camera;
+
+    if (pInfo->activecamera != NULL) {
+        camera = pInfo->activecamera;
+    } else {
+        camera = pInfo->gamecamera;
+    }
+    if (camera != NULL) {
+        dds3SetActiveCameraSceneBasic(dds3GetActiveScene(), camera);
+        dds3SetScreenFovy(dds3CameraObjectBasicGetFovy(camera));
+    }
+}
+
+#ifdef VERSION_RAIDOU1
+void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
+    s32 mesNo;
+    s32 mesType;
+    s32 mode;
+    s32 conflict;
+
+    mesNo = 0;
+    mesType = 0;
+    if (pInfo->workdata->MesHandle == -1) {
+        return;
+    }
+    if (evtViewerHasUpdateFlag(pInfo)) {
+        return;
+    }
+    evtGetMessageDataAndTypeFromFrame(frame, &mesNo, &mesType);
+    pInfo->last_mestype = mesType;
+    if (frame->frame != nowframe) {
+        return;
+    }
+    mode = frame->p0C.sb[0];
+    switch (mode) {
+    case 0:
+    case 1:
+        ResetWindowPara(pInfo->workdata->MesHandle, 0, 0);
+        itfMesMngMarkBitStat(pInfo->workdata->MesHandle, 0x200000);
+        itfMesMngClearBitStat(pInfo->workdata->MesHandle, 0xD00000);
+        break;
+    case 2:
+        ResetWindowPara(pInfo->workdata->MesHandle, 3, 0);
+        itfMesMngMarkBitStat(pInfo->workdata->MesHandle, 0x200000);
+        itfMesMngMarkBitStat(pInfo->workdata->MesHandle, 0xD00000);
+        break;
+    }
+    pInfo->flags |= 0x100;
+    pInfo->last_meswin_mode = frame->p0C.sb[0];
+    if (!itfGetMessageType(pInfo->workdata->MesHandle, mesNo)) {
+        if (!sndVoiceStatus(frame->p08.sh[1])) {
+            return;
+        }
+        if (scrCheckEnableMovieCancel()) {
+            conflict = itfMesSelectTableItemText(pInfo->workdata->MesHandle, mesNo, 0);
+            if (conflict == 1) {
+                datDebugPrintf("[warning!!!!voice conflict] mesno= %d\n", mesNo);
+                scrGetAfterSkipBgmFlag();
+                pInfo->voiceState = conflict;
+                pInfo->voiceMessageNo = mesNo;
+                pInfo->voiceFrame = pInfo->nowframe;
+                return;
+            }
+        }
+        itfMesMngRequestMessage_itf(pInfo->workdata->MesHandle, mesNo, 0);
+    } else {
+        pInfo->branch.var_idx = mesType + 199;
+        itfMesMngRequestSelect_itf(pInfo->workdata->MesHandle, mesNo);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
+#endif
 
+/* NON_MATCHING: 466 of 467 words match.  */
+#ifdef NON_MATCHING
+void RunFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
+    switch (obj->type) {
+    case 0:
+    case 1:
+    case 2:
+    case 6:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 22:
+    case 23:
+    case 24:
+    case 25:
+    case 27:
+    case 30:
+    case 31:
+    case 36:
+        break;
+    case 3:
+    case 20:
+    case 21:
+    case 26: {
+        dds3Basic_t *effect;
+
+        if (nowframe >= frame->frame) {
+            if (frame->p08.sb[0] < 0) {
+                frame->p08.sb[0] = AddEffectTable2(nowframe, obj, frame, pInfo);
+            }
+        }
+        if (frame->p08.sb[0] < 0) {
+            break;
+        }
+        effect = pInfo->effectBasic[frame->p08.sb[0]];
+        if (effect == NULL) {
+            break;
+        }
+        if (obj->type == 21) {
+            dds3Basic_t *part0;
+            dds3Basic_t *part1;
+            dds3Basic_t *part2;
+            dds3Basic_t *part3;
+
+            part0 = SearchBasicFromNameIndex(frame->p0C.sb[0], pInfo);
+            part1 = SearchBasicFromNameIndex(frame->p0C.sb[1], pInfo);
+            part2 = SearchBasicFromNameIndex(frame->p0C.sb[2], pInfo);
+            part3 = SearchBasicFromNameIndex(frame->p0C.sb[3], pInfo);
+            dds3EffectObjectSetMG12Pos(effect, part0, part1, part2, part3);
+            return;
+        }
+        break;
+    }
+    case 18:
+        if (nowframe == frame->frame) {
+            DelBED(frame);
+            if (obj->metadata.option == 0) {
+                frame->payload = AddBED(obj->soundMixerResource, frame->p0C.sb[0], frame->p08.sh[1], -1, frame->frame, pInfo);
+            } else {
+                frame->payload = AddBED(obj->soundMixerResource, frame->p0C.sb[0], frame->p08.sh[1], -1, 0, pInfo);
+            }
+        }
+        break;
+    case 5:
+        if (evtViewerHasUpdateFlag(pInfo) == 1) {
+            break;
+        }
+        if (sndVoiceStatus(frame->p08.sh[1]) == 0) {
+            break;
+        }
+        if (frame->p0C.sb[0] == 0) {
+            evtPlaySe(evtFileMajor, frame->p08.sh[0]);
+            evtEventRegistBGM(pInfo, frame->p08.sh[0]);
+            return;
+        } else {
+            mnuQueueTitleSoundStreamEntry(frame->p08.sh[0]);
+            return;
+        }
+        break;
+    case 19:
+        if (evtViewerHasUpdateFlag(pInfo) == 1) {
+            break;
+        }
+        if (sndVoiceStatus(frame->p0C.sh[0]) == 0) {
+            break;
+        }
+        if (frame->p0C.sb[2] == 0) {
+            switch (frame->p08.sh[0]) {
+            case 0:
+                evtPlayEventBgm(evtFileMajor, frame->p08.sh[1]);
+                evtEventRegistBGM(pInfo, frame->p08.sh[1]);
+                return;
+                break;
+            case 1:
+                evtFadeInEventBgm(evtFileMajor, frame->p08.sh[1]);
+                evtEventRegistBGM(pInfo, frame->p08.sh[1]);
+                return;
+                break;
+            case 2:
+                evtStopEventBgm(evtFileMajor, frame->p08.sh[1]);
+                return;
+                break;
+            case 3:
+                evtTransEventBgm(evtFileMajor, frame->p08.sh[1]);
+                return;
+                break;
+            case 4:
+                p2sdBgmVolDown();
+                return;
+                break;
+            case 5:
+                p2sdBgmVolUp();
+                return;
+                break;
+            case 6:
+                p2sdStopAllBgm();
+                return;
+                break;
+            }
+        } else {
+            switch (frame->p08.sh[0]) {
+            case 0:
+                pInfo->At3BgmFlag |= 1;
+                pInfo->At3BgmReqID = frame->p08.sh[1];
+                break;
+            case 1:
+                pInfo->At3BgmFlag |= 2;
+                pInfo->At3BgmReqID = frame->p08.sh[1];
+                break;
+            case 2:
+                pInfo->At3BgmFlag = 0;
+                sndBgmFadeOut();
+                return;
+                break;
+            case 6:
+                sndBgmStop();
+                sndBgmFree();
+                pInfo->At3BgmFlag = 0;
+                break;
+            case 3:
+            case 4:
+            case 5:
+                break;
+            }
+        }
+        break;
+    case 7:
+        if (frame->index == 0 && frame->p08.sh[0] == 0) {
+            pInfo->flags &= ~2;
+            dds3StopQuake();
+            return;
+        }
+        if (nowframe == frame->frame) {
+            pInfo->flags |= 2;
+            dds3SetQuake(frame->index, frame->p08.sh[0]);
+            return;
+        }
+        break;
+    case 4:
+        ReqMessage(obj, frame, nowframe, length, pInfo);
+        return;
+        break;
+    case 28:
+        if (nowframe == frame->frame + obj->metadata.value) {
+            dds3PadAct(frame->p08.sh[0], frame->p08.b[2], frame->index);
+            return;
+        }
+        break;
+    case 29:
+        if (evtViewerHasUpdateFlag(pInfo) == 1) {
+            break;
+        }
+        if (nowframe != frame->frame) {
+            break;
+        }
+        if (pInfo->nowMovieStat == 0) {
+            moviePlay(frame->p08.sh[0]);
+            pInfo->nowMovieStat = 1;
+            pInfo->MovieStartFrame = frame->frame;
+            if (frame->index == 0) {
+                pInfo->MovieEndFrame = -1;
+            } else {
+                pInfo->MovieEndFrame = frame->frame + frame->index;
+            }
+        } else {
+            movieStop();
+            moviePlay(frame->p08.sh[0]);
+            pInfo->nowMovieStat = 1;
+            pInfo->MovieStartFrame = frame->frame;
+            if (frame->index == 0) {
+                pInfo->MovieEndFrame = -1;
+            } else {
+                pInfo->MovieEndFrame = frame->frame + frame->index;
+            }
+        }
+        pInfo->real_movie_last_frame = 0;
+        break;
+    case 32:
+        if (nowframe == frame->frame) {
+            if (frame->p08.sh[0] == 0) {
+                dds3ChangeBistaMode(BISTA_MODE_MOVE);
+                dds3BistaIn(frame->index);
+                return;
+            } else {
+                dds3ChangeBistaMode(BISTA_MODE_MOVE);
+                dds3BistaOut(frame->index);
+                return;
+            }
+        }
+        break;
+    case 33:
+        if (scrRunFrame1Sub(frame->p08.sh[1]) == 0 && frame->p08.sh[1] > 0) {
+            evtCutInCreate(&pInfo->nowframe, pmv_pid, frame->p0C.sh[0] * 16, frame->p0C.sh[1] * 8, 0,
+                           frame->frame, frame->p08.sh[0],
+                           ((frame->p10.sb[0] + 1) << 16) | (frame->p10.sb[1] + 1), frame->p08.sh[1]);
+        }
+        break;
+    case 34:
+        if (!(pInfo->flags & 1)) {
+            evtScreenBreakCreate(pmv_pid, 0, frame->p08.sb[0]);
+            return;
+        }
+        break;
+    case 35:
+        if (!(pInfo->flags & 1)) {
+            evtStartCrossFade(pmv_pid, 0, frame->index);
+        }
+        break;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", RunFrame1);
+#endif
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtRunFrameSub);
+void evtRunFrameSub(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
+    s32 fade;
+    s32 left;
+    dds3EffectObjectBasicWorkData_t *work;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", ValidatePLTMX);
+    switch (obj->type) {
+    case 3:
+    case 20:
+    case 21:
+    case 26:
+        if (frame->param.sb[0] < 0 || frame->param.sb[8] == 0) {
+            return;
+        }
+        fade = frame->index;
+        left = pInfo->nowframe - frame->frame;
+        if (fade < left) {
+            break;
+        }
+        work = pInfo->effectBasic[frame->param.sb[0]]->workdata;
+        effSetEffectColorSubSub(work->handle, ((s32)(128.0f / fade * left) << 24) | 0x808080);
+        break;
+    }
+}
 
+void ValidatePLTMX(evtViewerInfo_t *pInfo) {
+    s32 prev = -1;
+    evtViewerObject_t *obj = pInfo->firstobjinfo;
+    s32 now = pInfo->nowframe;
+    evtFrameInfo_t *key;
+    s32 count;
+    s16 slot;
+
+    if (obj == NULL) {
+        return;
+    }
+    while (obj->type != 36) {
+        obj = obj->next;
+        if (obj == NULL) {
+            return;
+        }
+    }
+    for (key = obj->lastChild; key != NULL; key = key->prev) {
+        if (now >= key->frame) {
+            break;
+        }
+    }
+    if (key == NULL) {
+        key = obj->children;
+    }
+    count = 0;
+    while (TRUE) {
+        if (key == NULL) {
+            break;
+        }
+        slot = key->p08.sh[1];
+        if (slot != prev) {
+            count++;
+            evtRequest((pInfo->workdata->eventNo << 16) | slot, key->frame);
+            prev = slot;
+            if (count >= 2) {
+                break;
+            }
+        }
+        key = key->next;
+    }
+}
+
+/* NON_MATCHING: 17 of 103 words match.  */
+#ifdef NON_MATCHING
+s32 ValidateAt3Bgm(evtViewerInfo_t *pInfo) {
+    s32 flags = pInfo->flags;
+
+    if (flags & 0x800) {
+        return FALSE;
+    }
+    if (!(flags & 1)) {
+        if (sndSePlay() == 2) {
+            sndCallWaitSema();
+        }
+        if (pInfo->At3BgmFlag == 0) {
+            return FALSE;
+        }
+        if (!(pInfo->At3BgmFlag & 4)) {
+            switch (sndBgmStatus_XF()) {
+            case 0:
+                sndBgmLoadId_XF(pInfo->At3BgmReqID);
+                pInfo->At3BgmFlag |= 4;
+                break;
+            case 1:
+                return TRUE;
+            case 2:
+            case 3:
+                if (pInfo->At3BgmFlag & 1) {
+                    sndBgmStop();
+                    sndBgmFree();
+                    break;
+                }
+                if (!(pInfo->At3BgmFlag & 2)) {
+                    return FALSE;
+                }
+                sndBgmLoadId_XF(pInfo->At3BgmReqID);
+                pInfo->At3BgmFlag |= 4;
+                return TRUE;
+            default:
+                return FALSE;
+            }
+            return TRUE;
+        }
+        if (pInfo->At3Bgm1stLoad && pInfo->nowframe < pInfo->At3Bgm1stFrame) {
+            return FALSE;
+        }
+        if (sndBgmStatus_XF() != 2) {
+            return TRUE;
+        }
+        if (pInfo->At3BgmFlag & 1) {
+            sndBgmPlay();
+        }
+        if (pInfo->At3BgmFlag & 2) {
+            sndBgmFadeIn();
+        }
+    } else {
+        sndBgmStop();
+        sndBgmFree();
+    }
+    pInfo->At3BgmFlag = 0;
+    pInfo->At3Bgm1stLoad = FALSE;
+    return FALSE;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateAt3Bgm);
+#endif
 
+/* NON_MATCHING: 48 of 82 words match.  */
+#ifdef NON_MATCHING
+s32 Validate1stAt3Bgm(evtViewerInfo_t *pInfo) {
+    s32 found = FALSE;
+    evtViewerObject_t *obj;
+    evtFrameInfo_t *frame;
+    s16 id;
+
+    if (pInfo->flags & 0x800) {
+        return FALSE;
+    }
+    if (pInfo->At3BgmFlag == 0) {
+        obj = pInfo->firstobjinfo;
+        if (obj == NULL) {
+            return FALSE;
+        }
+        while (obj->type != 19) {
+            obj = obj->next;
+            if (obj == NULL) {
+                return FALSE;
+            }
+        }
+        frame = obj->children;
+    next:
+        if (frame != NULL) {
+            switch (frame->p08.sh[0]) {
+            case 0:
+                pInfo->At3BgmFlag |= 1;
+                sndBgmStop();
+                sndBgmFree();
+                found = TRUE;
+                break;
+            case 1:
+                found = TRUE;
+                pInfo->At3BgmFlag |= 2;
+                break;
+            }
+            if (!found) {
+                frame = frame->next;
+                goto next;
+            }
+        }
+        if (!found) {
+            return FALSE;
+        }
+        id = frame->p08.sh[1];
+        pInfo->At3Bgm1stLoad = TRUE;
+        pInfo->At3Bgm1stFrame = frame->frame;
+        pInfo->At3BgmReqID = id;
+        sndBgmLoadId_XF(id);
+        return TRUE;
+    }
+    if (sndBgmStatus_XF() >= 2) {
+        pInfo->At3BgmFlag |= 4;
+        return FALSE;
+    }
+    return TRUE;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", Validate1stAt3Bgm);
+#endif
 
+/* NON_MATCHING: 27 of 72 words match.  */
+#ifdef NON_MATCHING
+void OutFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
+    s32 fade;
+    s32 end;
+    dds3EffectObjectBasicWorkData_t *work;
+
+    switch (obj->type) {
+    case 3:
+    case 20:
+    case 21:
+    case 26:
+        if (frame->param.sb[0] < 0) {
+            break;
+        }
+        fade = 0;
+        if (frame->param.sb[8] == 0) {
+            fade = frame->index;
+        }
+        if (pInfo->nowframe < frame->frame || pInfo->nowframe >= (end = frame->frame + length + fade)) {
+            DelEffectTable_evtEventViewer(frame->param.sb[0], pInfo);
+            frame->param.sb[0] = -1;
+        } else {
+            work = pInfo->effectBasic[frame->param.sb[0]]->workdata;
+            effSetEffectColorSubSub(work->handle, ((s32)(128.0f / fade * (end - pInfo->nowframe)) << 24) | 0x808080);
+        }
+        break;
+    case 18:
+        DelBED(frame);
+        break;
+    case 33:
+        break;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", OutFrame1);
+#endif
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", CalcLightCycle);
+void CalcLightCycle(pmdSceneLightTable_t *sl, evtFrameInfo_t *frame, s32 nowframe, evtViewerInfo_t *pInfo) {
+    u16 cycle[3];
+    f32 rate[3];
+    u16 *pCycle;
+    f32 *color;
+    s32 elapsed;
+    s32 i;
+    s32 j;
+    f32 angle;
 
+    if (frame == NULL) {
+        return;
+    }
+    elapsed = nowframe - frame->frame;
+    cycle[0] = frame->p14.h[1];
+    cycle[1] = frame->p18.h[0];
+    cycle[2] = frame->p18.h[1];
+    rate[0] = frame->p1C.b[0] / 100.0f;
+    rate[1] = frame->p1C.b[1] / 100.0f;
+    rate[2] = frame->p1C.b[2] / 100.0f;
+    for (i = 0, pCycle = cycle; i < 3; i++, pCycle++) {
+        if (*pCycle != 0 && rate[i] != 0.0f) {
+            angle = (f32)(elapsed % *pCycle) * 360.0f / (f32)*pCycle * 0.017453293f;
+            for (j = 0; j < 3; j++) {
+                color = &sl->color[i][j];
+                *color = *color + *color * sdfSin(angle) * rate[i];
+                if (*color < 0.0f) {
+                    *color = 0.0f;
+                }
+                if (*color > 2.0f) {
+                    *color = 2.0f;
+                }
+            }
+        }
+    }
+}
+
+/* NON_MATCHING: 15 of 785 words match.  */
+#ifdef NON_MATCHING
+extern pmdSceneLightTable_t evtViewerLightParam;
+extern evtBlendVecColor_t evtViewerFogParam;
+extern dds3Effect_Blur_t evtViewerBlurParam;
+extern dds3Effect_PartialMultiBlurParam_t evtViewerMultiBlurParam;
+extern dds3Effect_Filter_t evtViewerFilterParam;
+extern dds3Effect_PartialMultiFilterParam_t evtViewerMultiFilterParam;
+extern dds3Effect_DistortionBlurParam_t evtViewerDistBlurParam;
+extern dds3Effect_RippleBlurParam_t evtViewerRippleBlurParam;
+extern dds3Effect_Blur_t rf2_hbl;
+
+void RunFrame2(evtViewerObject_t *obj, evtFrameInfo_t *frame, evtFrameInfo_t *nearframe, s32 nowframe, s32 *l, evtViewerInfo_t *pInfo, s32 offset) {
+    s32 alpha = 0;
+    s32 enable = 1;
+    s32 color = 0;
+    s32 start, end;
+    f32 ratio;
+
+    start = nearframe != NULL ? nearframe->frame : pInfo->firstframe;
+    end = frame != NULL ? frame->frame : pInfo->lastframe.word;
+    if (end != start) {
+        ratio = (f32)(nowframe - start) / (f32)(end - start);
+    } else {
+        ratio = 0.0f;
+    }
+    switch (obj->type) {
+    case 1:
+        break;
+    case 2:
+        if (nearframe != NULL) {
+            s32 distance = nowframe - (nearframe->frame + offset);
+
+            if (distance < *l) {
+                *l = distance;
+                evt_camera = obj;
+            }
+        }
+        break;
+    case 22:
+        if (nearframe != NULL && nearframe->p08.sh[0] != 0) {
+            evtSetBokasi(1);
+        } else {
+            evtSetBokasi(0);
+        }
+        break;
+    case 12:
+        if (nearframe != NULL) {
+            if (pInfo->fldfilter != nearframe->p0C.i) {
+                dds3FilterSet(nearframe->p0C.i, nearframe->p08.sh[0], nearframe->index);
+                evtSetSkyAlpha(nearframe->index, nearframe->p08.sh[1]);
+                pInfo->fldfilter = nearframe->p0C.i;
+            } else if (evtCheckSkyAlphaAnime() == 0) {
+                if (dds3FilterGetAlpha() != nearframe->p08.sh[1]) {
+                    evtSetSkyAlpha(nearframe->index, nearframe->p08.sh[1]);
+                }
+            }
+        } else if (pInfo->fldfilter != 0) {
+            dds3FilterSet(0, 1, 0);
+            pInfo->fldfilter = 0;
+        }
+        break;
+    case 6:
+        if (pInfo->flags & 0x200) {
+            break;
+        }
+        if (evtViewerHasUpdateFlag(pInfo) == 1) {
+            break;
+        }
+        if (nearframe != NULL) {
+            f32 fade;
+            s32 x[4];
+            s32 y[4];
+
+            fade = 1.0f;
+            if (nearframe->index != 0 && nowframe < nearframe->frame + nearframe->index) {
+                fade = (f32)(nowframe - nearframe->frame) / (f32)nearframe->index;
+            }
+            switch (nearframe->p08.sh[0]) {
+            case 0:
+                color = 255;
+                dds3FadeModeSet(0);
+                alpha = 0;
+                if (fade != 1.0f) {
+                    alpha = (s32)((1.0f - fade) * 128.0f);
+                }
+                break;
+            case 1:
+                color = 255;
+                dds3FadeModeSet(0);
+                alpha = 128;
+                if (fade != 1.0f) {
+                    alpha = (s32)(fade * 128.0f);
+                }
+                break;
+            case 2:
+                color = 0;
+                dds3FadeModeSet(0);
+                alpha = 0;
+                if (fade != 1.0f) {
+                    alpha = (s32)((1.0f - fade) * 128.0f);
+                }
+                break;
+            case 3:
+                color = 0;
+                dds3FadeModeSet(0);
+                alpha = 128;
+                if (!(fade >= 0.95f)) {
+                    if (fade != 1.0f) {
+                        alpha = (s32)(fade * 128.0f);
+                    }
+                }
+                break;
+            case 4:
+                color = 255;
+                dds3FadeModeSet(0);
+                alpha = 0;
+                if (fade != 1.0f) {
+                    x[0] = 0;
+                    y[0] = 0;
+                    x[1] = nearframe->p0C.sb[0];
+                    y[1] = nearframe->p0C.sb[1];
+                    x[2] = nearframe->p0C.sb[2];
+                    y[2] = nearframe->p0C.sb[3];
+                    x[3] = 128;
+                    y[3] = 128;
+                    alpha = 128 - mnuSolveCubicBezierYForX((s32)(fade * 128.0f), x, y);
+                }
+                break;
+            case 5:
+                color = 255;
+                dds3FadeModeSet(0);
+                alpha = 128;
+                if (fade != 1.0f) {
+                    x[0] = 0;
+                    y[0] = 0;
+                    x[1] = nearframe->p0C.sb[0];
+                    y[1] = nearframe->p0C.sb[1];
+                    x[2] = nearframe->p0C.sb[2];
+                    y[2] = nearframe->p0C.sb[3];
+                    x[3] = 128;
+                    y[3] = 128;
+                    alpha = mnuSolveCubicBezierYForX((s32)(fade * 128.0f), x, y);
+                }
+                break;
+            case 6:
+                color = 0;
+                dds3FadeModeSet(0);
+                alpha = 0;
+                if (fade != 1.0f) {
+                    x[0] = 0;
+                    y[0] = 0;
+                    x[1] = nearframe->p0C.sb[0];
+                    y[1] = nearframe->p0C.sb[1];
+                    x[2] = nearframe->p0C.sb[2];
+                    y[2] = nearframe->p0C.sb[3];
+                    x[3] = 128;
+                    y[3] = 128;
+                    alpha = 128 - mnuSolveCubicBezierYForX((s32)(fade * 128.0f), x, y);
+                }
+                break;
+            case 7:
+                color = 0;
+                dds3FadeModeSet(0);
+                alpha = 128;
+                if (!(fade >= 0.95f)) {
+                    if (fade != 1.0f) {
+                        x[0] = 0;
+                        y[0] = 0;
+                        x[1] = nearframe->p14.sb[0];
+                        y[1] = nearframe->p14.sb[1];
+                        x[2] = nearframe->p14.sb[2];
+                        y[2] = nearframe->p14.sb[3];
+                        x[3] = 128;
+                        y[3] = 128;
+                        alpha = mnuSolveCubicBezierYForX((s32)(fade * 128.0f), x, y);
+                    }
+                }
+                break;
+            case 8:
+                color = 255;
+                dds3FadeModeSet(1);
+                alpha = 0;
+                if (fade != 1.0f) {
+                    alpha = (s32)((1.0f - fade) * 128.0f);
+                }
+                break;
+            case 9:
+                color = 255;
+                dds3FadeModeSet(1);
+                alpha = 128;
+                if (fade != 1.0f) {
+                    alpha = (s32)(fade * 128.0f);
+                }
+                break;
+            }
+            pInfo->fadeAlpha = alpha;
+            dds3FadeSet(color, color, color, alpha);
+            break;
+        }
+        pInfo->fadeAlpha = 0;
+        dds3FadeClear();
+        break;
+    case 10: {
+        pmdSceneLightTable_t *from, *to;
+        f32 firstFrom, secondFrom, firstTo, secondTo;
+        evtUnit_t *unit;
+        s32 kind;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            firstFrom = nearframe->p08.f;
+            secondFrom = nearframe->p0C.f;
+            enable = nearframe->nameIndex;
+        } else {
+            from = NULL;
+            firstFrom = 7.0f;
+            secondFrom = 0.0f;
+        }
+        if (frame != NULL) {
+            to = frame->payload;
+            firstTo = frame->p08.f;
+            secondTo = frame->p0C.f;
+        } else {
+            to = NULL;
+            firstTo = 7.0f;
+            secondTo = 0.0f;
+        }
+        if (from != NULL || to != NULL) {
+        evtHokanSceneLight(enable, ratio, from, to, &evtViewerLightParam);
+        kind = obj->metadata.option;
+        if (kind == 0) {
+            break;
+        }
+        if (kind == 1) {
+            s32 i;
+
+            CalcLightCycle(&evtViewerLightParam, nearframe, nowframe, pInfo);
+            for (i = 0; i < 3; i++) {
+                dds3SetLightColor(0, i, evtViewerLightParam.color[i]);
+                dds3SetLightDir(0, i, evtViewerLightParam.direction[i]);
+            }
+            dds3SetAmbientColor(0, evtViewerLightParam.ambient);
+            sdfFaceDivSoften = evtHokanFloat(enable, ratio, firstFrom, firstTo);
+            sdfFaceDivBias = evtHokanFloat(enable, ratio, secondFrom, secondTo);
+            break;
+        }
+        unit = NULL;
+        if (kind == 3) {
+            dds3Basic_t *node = dds3SceneBasicSearchNameAndType(dds3GetActiveScene(), 5,
+                                                                pInfo->nametable[obj->metadata.extra2]);
+
+            if (node != NULL) {
+                unit = evtGetUnitHandle2(node);
+            } else {
+                while (1) {
+                }
+            }
+            if (nearframe == NULL) {
+                break;
+            }
+            if (nearframe->index != 0 && nearframe->frame + nearframe->index < nowframe) {
+                break;
+            }
+            if (nearframe->frame == nowframe && nearframe->p14.sh[0] == 1 && !(pInfo->flags & 1)) {
+                dds3DrawFlag |= 0x02000000;
+                break;
+            }
+        } else if (kind == 2) {
+            if (nearframe != NULL && nearframe->frame == nowframe && nearframe->p14.sh[0] == 1 && !(pInfo->flags & 1)) {
+                dds3DrawFlag |= 0x02000000;
+                break;
+            }
+        }
+        CalcLightCycle(&evtViewerLightParam, nearframe, nowframe, pInfo);
+        evtSetCustomSceneLightData(obj->setterId, obj->metadata.option, unit,
+                                   evtViewerLightParam.color, evtViewerLightParam.direction, evtViewerLightParam.ambient);
+        evtSetCustomSceneLightData_SoftenAndBias(obj->setterId, evtHokanFloat(enable, ratio, firstFrom, firstTo),
+                                                 evtHokanFloat(enable, ratio, secondFrom, secondTo));
+        }
+        break;
+    }
+    case 11: {
+        evtBlendVecColor_t *from, *to;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            enable = nearframe->p08.sh[0];
+        } else {
+            from = NULL;
+        }
+        to = frame != NULL ? frame->payload : NULL;
+        if (from != NULL || to != NULL) {
+            evtHokanSceneFog(enable, ratio, from, to, &evtViewerFogParam);
+            dds3SetFogPara(0, evtViewerFogParam.vec[1], evtViewerFogParam.vec[0], evtViewerFogParam.vec[2], evtViewerFogParam.vec[3]);
+            FogParam.color = evtViewerFogParam.color;
+        }
+        break;
+    }
+    case 13: {
+        dds3Effect_Blur_t *from, *to;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            enable = nearframe->p08.sh[0];
+        } else {
+            from = NULL;
+        }
+        to = frame != NULL ? frame->payload : NULL;
+        if (from != NULL || to != NULL) {
+            evtHokanBlur2(enable, ratio, from, to, &evtViewerBlurParam);
+            BlurSetParam2(&evtViewerBlurParam);
+            if ((evtViewerBlurParam.abgr >> 24) == 0) {
+                pInfo->drawblur2 = 0;
+            } else {
+                pInfo->drawblur2 = 1;
+            }
+        }
+        break;
+    }
+    case 14: {
+        dds3Effect_PartialMultiBlurParam_t *from, *to;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            enable = nearframe->p08.sh[0];
+        } else {
+            from = NULL;
+        }
+        to = frame != NULL ? frame->payload : NULL;
+        if (from != NULL || to != NULL) {
+            evtHokanMultBlur(enable, ratio, from, to, &evtViewerMultiBlurParam);
+            Eve_PartialMultiBlurSetParam(&evtViewerMultiBlurParam);
+            if ((evtViewerMultiBlurParam.Blur.abgr >> 24) == 0) {
+                pInfo->drawmblur = 0;
+            } else {
+                pInfo->drawmblur = 1;
+            }
+        }
+        break;
+    }
+    case 15: {
+        dds3Effect_DistortionBlurParam_t *from, *to;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            enable = nearframe->p08.sh[0];
+        } else {
+            from = NULL;
+        }
+        to = frame != NULL ? frame->payload : NULL;
+        if (from != NULL || to != NULL) {
+            evtHokanDistBlur(enable, ratio, from, to, &evtViewerDistBlurParam);
+            Eve_DistortionBlurSetParam(&evtViewerDistBlurParam);
+            if ((evtViewerDistBlurParam.abgr >> 24) == 0) {
+                pInfo->drawdblur = 0;
+            } else {
+                pInfo->drawdblur = 1;
+            }
+        }
+        break;
+    }
+    case 23: {
+        dds3Effect_RippleBlurParam_t *from, *to;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            enable = nearframe->p08.sh[0];
+        } else {
+            from = NULL;
+        }
+        to = frame != NULL ? frame->payload : NULL;
+        if (from != NULL || to != NULL) {
+            evtHokanRipBlur(enable, ratio, from, to, &evtViewerRippleBlurParam);
+            Eve_RippleBlurSetParam(&evtViewerRippleBlurParam);
+            if ((evtViewerRippleBlurParam.abgr >> 24) == 0) {
+                pInfo->drawrblur = 0;
+            } else {
+                pInfo->drawrblur = 1;
+            }
+        }
+        break;
+    }
+    case 27: {
+        dds3Effect_Blur_t *from, *to;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            enable = nearframe->p08.sh[0];
+        } else {
+            from = NULL;
+        }
+        to = frame != NULL ? frame->payload : NULL;
+        if (from != NULL || to != NULL) {
+            evtHokanHeikouBlur(enable, ratio, from, to, &rf2_hbl);
+            effCopyFramebufferQuadParameters(&rf2_hbl);
+            if ((rf2_hbl.abgr >> 24) == 0) {
+                pInfo->drawhblur = 0;
+            } else {
+                pInfo->drawhblur = 1;
+            }
+        }
+        break;
+    }
+    case 16: {
+        dds3Effect_Filter_t *from, *to;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            enable = nearframe->p08.sh[0];
+        } else {
+            from = NULL;
+        }
+        to = frame != NULL ? frame->payload : NULL;
+        if (from != NULL || to != NULL) {
+            evtHokanFilter(enable, ratio, from, to, &evtViewerFilterParam);
+            Eve_FilterSetParam(&evtViewerFilterParam);
+            if (evtViewerFilterParam.rgba[3] == 0) {
+                pInfo->filter = 0;
+            } else {
+                pInfo->filter = 1;
+            }
+        }
+        break;
+    }
+    case 17: {
+        dds3Effect_PartialMultiFilterParam_t *from, *to;
+
+        if (nearframe != NULL) {
+            from = nearframe->payload;
+            enable = nearframe->p08.sh[0];
+        } else {
+            from = NULL;
+        }
+        to = frame != NULL ? frame->payload : NULL;
+        if (from != NULL || to != NULL) {
+            evtHokanMultFilter(enable, ratio, from, to, &evtViewerMultiFilterParam);
+            Eve_PartialMultiFilterSetParam(&evtViewerMultiFilterParam);
+            if (evtViewerMultiFilterParam.Filter.color[3] == 0) {
+                pInfo->drawmfilter = 0;
+            } else {
+                pInfo->drawmfilter = 1;
+            }
+        }
+        break;
+    }
+    case 8:
+        if (nearframe != NULL) {
+            s16 scale, opacity;
+            evtFrameInfo_t *next;
+
+            if (nearframe->p0C.sh[0] == 0 || (next = nearframe->next) == NULL) {
+                opacity = nearframe->p08.sh[0];
+                scale = nearframe->p08.sh[1];
+            } else {
+                s32 elapsed = nowframe - nearframe->frame;
+                s32 interval = next->frame - nearframe->frame;
+                s32 remaining = interval - elapsed;
+
+                opacity = (nearframe->p08.sh[0] * remaining + next->p08.sh[0] * elapsed) / interval;
+                scale = (nearframe->p08.sh[1] * remaining + next->p08.sh[1] * elapsed) / interval;
+            }
+            if (opacity != 0 || scale != 0) {
+                pInfo->flags |= 4;
+                dds3ScreenBlurFlag = 1;
+                dds3ScreenBlurAlpha = opacity;
+                dds3ScreenBlurScale = scale;
+                break;
+            }
+        }
+        pInfo->flags &= ~4;
+        dds3ScreenBlurFlag = 0;
+        break;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", RunFrame2);
+#endif
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", RunFrame3);
+void RunFrame3(s32 nowframe, evtViewerInfo_t *pInfo) {
+    dds3Basic_t *scene;
+    dds3SceneBasic_t *sceneWork;
+    dds3Basic_t *outerBasic;
+    evtViewerObject_t *track;
+    evtFrameInfo_t *frameInfo;
+    evtFrameInfo_t *bestFrame;
+    dds3Basic_t *lightBasic;
+    evtUnit_t *unit;
+    s32 bestFrameNumber;
 
+    if (dds3GetActiveScene() == NULL) {
+        return;
+    }
+    scene = dds3GetActiveScene();
+    sceneWork = scene->workdata;
+    for (outerBasic = sceneWork->basictable[BASIC_TYPE_UNITOBJECT].firstbasic;
+         outerBasic != NULL; outerBasic = outerBasic->next) {
+        if (outerBasic->name == NULL) {
+            continue;
+        }
+        bestFrame = NULL;
+        lightBasic = NULL;
+        bestFrameNumber = -1;
+        for (track = pInfo->firstobjinfo; track != NULL;
+             track = track->next) {
+            if (track->type != 9) {
+                continue;
+            }
+            for (frameInfo = track->children; frameInfo != NULL;
+                 frameInfo = frameInfo->next) {
+                dds3Basic_t *namedBasic;
+
+                if (nowframe < frameInfo->frame + track->metadata.value ||
+                    (s16)frameInfo->param.sh[0] < 0) {
+                    continue;
+                }
+                scene = dds3GetActiveScene();
+                namedBasic = dds3SceneBasicSearchNameAndType(
+                    scene, BASIC_TYPE_UNITOBJECT,
+                    pInfo->nametable[
+                        (s16)frameInfo->param.sh[0]]);
+                if (outerBasic != namedBasic ||
+                    frameInfo->frame + track->metadata.value <= bestFrameNumber) {
+                    continue;
+                }
+                bestFrameNumber = frameInfo->frame + track->metadata.value;
+                bestFrame = frameInfo;
+                lightBasic = track->info;
+            }
+        }
+
+        unit = evtGetUnitHandle2(outerBasic);
+        if (bestFrame != NULL) {
+            if ((s16)bestFrame->param.sh[1] != 0) {
+                if (unit->currentTransitionValue != EE_ADDR_S(lightBasic) ||
+                    (unit->flags & EVT_UNIT_FLAG_TARGET_TRANSITION) == 0) {
+                    evtLinkLightObjectBasic(unit, lightBasic, bestFrame->index);
+                }
+            } else {
+                if ((unit->flags & EVT_UNIT_FLAG_TARGET_TRANSITION) == 0) {
+                    continue;
+                }
+                if ((unit->flags & EVT_UNIT_FLAG_TARGET_BLEND_OUT) != 0) {
+                    continue;
+                }
+                evtUnlinkLightObjectBasic(unit, bestFrame->index);
+            }
+        } else if (unit->currentTransitionValue != 0) {
+            evtUnlinkLightObjectBasic(unit, 0);
+        }
+    }
+}
+
+/* NON_MATCHING: 225 of 231 words match.  */
+#ifdef NON_MATCHING
+void RunFrameUnit(evtViewerObject_t *track, s32 nowframe) {
+    evtFrameInfo_t *key;
+    evtFrameInfo_t *cur;
+    evtFrameInfo_t *next;
+    evtUnit_t *handle = NULL;
+    s32 mode = 0;
+    s32 otherMode = 2;
+    s32 i;
+    u32 downflag = 0;
+    s32 extMode = 8;
+    u32 addflag = 0;
+    s32 type;
+    f32 ratio;
+
+    key = track->children;
+    if (key != NULL) {
+        do {
+            if (nowframe < key->frame) {
+                break;
+            }
+            switch (key->p08.sb[0]) {
+            case 0:
+            case 1:
+                if (sndVoiceStatus(key->p10.sh[0]) == 1) {
+                    mode = key->p08.sb[0];
+                }
+                break;
+            case 2:
+            case 3:
+            case 4:
+                if (sndVoiceStatus(key->p10.sh[0]) == 1) {
+                    otherMode = key->p08.sb[0];
+                    handle = evtGetUnitHandle2(track->info);
+                }
+                break;
+            case 8:
+            case 9:
+                extMode = key->p08.sb[0];
+                break;
+            }
+            key = key->next;
+        } while (key != NULL);
+    }
+    for (i = 0; i < 1; i++) {
+        cur = NULL;
+        for (key = track->children; key != NULL; key = key->next) {
+            if ((key->p08.sb[0] == 3 || key->p08.sb[0] == 4) && sndVoiceStatus(key->p10.sh[0]) == 1) {
+                if (nowframe >= key->frame) {
+                    cur = key;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (cur == NULL) {
+            break;
+        }
+        next = NULL;
+        type = cur->p08.sb[0];
+        for (key = track->children; key != NULL; key = key->next) {
+            if (key->p08.sb[0] == type && sndVoiceStatus(key->p10.sh[0]) == 1 && nowframe < key->frame) {
+                next = key;
+                break;
+            }
+        }
+        if (next == NULL) {
+            handle->ShadowAlpha = cur->p0C.b[1];
+            handle->ShadowY = cur->p14.f;
+        } else {
+            if (cur->frame != next->frame) {
+                ratio = (f32)(nowframe - cur->frame) / (f32)(next->frame - cur->frame);
+            } else {
+                ratio = 0.0f;
+            }
+            if (next->p0C.sb[0] == 0 || next->p0C.sb[0] == 2) {
+                ratio = 0.0f;
+            }
+            handle->ShadowAlpha = evtHokanInt(0, ratio, cur->p0C.b[1], next->p0C.b[1]);
+            if (next->p0C.sb[0] == 0 || next->p0C.sb[0] == 1) {
+                ratio = 0.0f;
+            }
+            handle->ShadowY = evtHokanFloat(0, ratio, cur->p14.f, next->p14.f);
+        }
+        if (cur->p0C.sb[0] == 1 || cur->p0C.sb[0] == 3) {
+            addflag |= 0x4000;
+        } else {
+            downflag |= 0x4000;
+        }
+        switch (cur->p0C.sb[0]) {
+        case 2:
+        case 3:
+            addflag |= 0x8000;
+            break;
+        default:
+            downflag |= 0x8000;
+            break;
+        }
+    }
+    evtRunUnitMode(track->info, mode, 0, 0);
+    evtRunUnitMode(track->info, otherMode, addflag, downflag);
+    if (sdfModelGetUniqueID(evtGetUnitHandle2(track->info)->owner->inner) != 100) {
+        evtRunUnitMode(track->info, extMode, 0, 0);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", RunFrameUnit);
+#endif
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtRunFrame);
+void evtRunFrame(s32 nowframe, evtViewerInfo_t *pInfo) {
+    evtViewerObject_t *track;
+    evtFrameInfo_t *frame;
+    evtFrameInfo_t *next;
+    evtFrameInfo_t *previous;
+    s32 length;
+    s32 endFrame;
+    s32 offset;
+    s32 nearestFrame;
+    s32 slot = 0;
+
+    pInfo->drawblur2 = 0;
+    pInfo->drawmblur = 0;
+    pInfo->filter = 0;
+    pInfo->flags &= ~2;
+    pInfo->flags &= ~4;
+    pInfo->drawmfilter = 0;
+    pInfo->drawdblur = 0;
+    pInfo->drawrblur = 0;
+    pInfo->drawhblur = 0;
+    evtInitCustomSceneLight();
+    ValidatePathFrame(nowframe, pInfo);
+    ValidateUnitMotionFrame(nowframe, pInfo, 0);
+    evtViewerApplyGlyphLodChannel(nowframe, pInfo);
+    ValidateUnitPosChange(nowframe, pInfo);
+    CalcNextMesSet(pInfo);
+    evtEventViewerApplyEffectChannels(nowframe, pInfo);
+    ValidateMovie(pInfo);
+    ValidateRenderTex(pInfo);
+    ValidatePLTMX(pInfo);
+    for (track = pInfo->firstobjinfo; track != NULL; track = track->next) {
+        if (track->type == 1) {
+            RunFrameUnit(track, nowframe);
+            continue;
+        }
+        for (frame = track->children; frame != NULL; frame = frame->next) {
+            switch (track->type) {
+            case 3:
+            case 20:
+            case 21:
+            case 26:
+                endFrame = frame->p08.sh[1];
+                if (endFrame == 0) {
+                    length = pInfo->totalframe - frame->frame;
+                } else {
+                    length = endFrame - frame->frame;
+                    if (length < 0) {
+                        length = 0;
+                    }
+                }
+                break;
+            case 18:
+                endFrame = frame->p08.sh[0];
+                if (endFrame == 0) {
+                    length = pInfo->totalframe - frame->frame;
+                } else {
+                    length = endFrame - frame->frame;
+                    if (length < 0) {
+                        length = 0;
+                    }
+                }
+                break;
+            case 9:
+                for (next = frame->next; next != NULL; next = next->next) {
+                    if (next->p08.sh[0] == frame->p08.sh[0]) {
+                        break;
+                    }
+                }
+                if (next != NULL) {
+                    length = next->frame - frame->frame;
+                } else {
+                    length = pInfo->totalframe - frame->frame;
+                }
+                break;
+            case 33:
+                length = frame->p08.sh[0] - frame->frame;
+                if (length < 0) {
+                    length = 0;
+                }
+                break;
+            case 34:
+            case 35:
+                length = 0;
+                break;
+            default:
+                length = frame->index;
+                break;
+            }
+            if ((length == 0 && nowframe == frame->frame) ||
+                (length > 0 && nowframe >= frame->frame && nowframe < frame->frame + length)) {
+                RunFrame1(track, frame, nowframe, length, pInfo);
+                evtRunFrameSub(track, frame, nowframe, length, pInfo);
+            } else {
+                OutFrame1(track, frame, nowframe, length, pInfo);
+            }
+        }
+    }
+    nearestFrame = 20000;
+    evt_camera = NULL;
+    for (track = pInfo->firstobjinfo; track != NULL; track = track->next) {
+        offset = track->metadata.value;
+        for (frame = track->children; frame != NULL; frame = frame->next) {
+            if (track->type == 2) {
+                if (sndVoiceStatus(frame->p0C.sh[0]) == 0) {
+                    continue;
+                }
+            } else if (track->type == 16 || track->type == 17 || track->type == 12) {
+                if (sndVoiceStatus(frame->p14.sh[0]) == 0) {
+                    continue;
+                }
+            }
+            if (nowframe < frame->frame + offset) {
+                break;
+            }
+        }
+        previous = frame != NULL ? frame->prev : track->lastChild;
+        if (track->type == 2 || track->type == 16 || track->type == 17 || track->type == 12) {
+            switch (track->type) {
+            case 2:
+                slot = 1;
+                break;
+            case 12:
+                slot = 3;
+                break;
+            case 16:
+            case 17:
+                slot = 3;
+                break;
+            }
+            for (; previous != NULL; previous = previous->prev) {
+                if (sndVoiceStatus((s16)previous->param.sh[slot * 2]) == 1) {
+                    break;
+                }
+            }
+        }
+        RunFrame2(track, frame, previous, nowframe, &nearestFrame, pInfo, offset);
+    }
+    if (evt_camera != NULL) {
+        pInfo->gamecamera = evt_camera->info;
+        SetActiveCamera(pInfo);
+    }
+    RunFrame3(nowframe, pInfo);
+    if (pInfo->flags & 1) {
+        if (!(pInfo->flags & 2)) {
+            dds3StopQuake();
+        }
+        if (!(pInfo->flags & 4)) {
+            dds3ScreenBlurFlag = 0;
+        }
+    }
+}
 
 /* Returns the nearest kind-2 key at/before the current frame, or NULL.
  * Equal-distance ties retain the first key visited. */
@@ -422,9 +2523,93 @@ void ValidatePathFrame(s32 endTime, evtViewerInfo_t *viewer) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtUnitMotionChange);
+void evtUnitMotionChange(s32 nowframe, dds3Basic_t *b, evtViewerObject_t *obj, evtViewerInfo_t *pInfo, s32 mode) {
+    mdlObj_t *model = ((effObjectData_t *)b->workdata)->modelHolder->pModel;
+    evtFrameInfo_t *key;
+    s32 i;
+    s32 loop;
+    s32 blend;
+    s32 frame;
+    s32 group;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateUnitMotionFrame);
+    if (model->first == NULL) {
+        return;
+    }
+    for (i = 0; i < 4; i++) {
+        if (mdlGetMotionCtrlr(model, i) == NULL) {
+            continue;
+        }
+        mdlGetMotionCtrlr(model, i)->speed = 0.5f;
+        key = GetUnitMotionChangeFrame(obj, nowframe, i);
+        if (key == NULL) {
+            continue;
+        }
+        loop = key->p0C.sb[2] == 0;
+        blend = key->p18.sh[0];
+        if (!loop && nowframe - key->frame + blend > mdlGetMotionLengthEx(model, i) * 2 - 1) {
+            mode = 1;
+        }
+        frame = 0;
+        if (blend > 0) {
+            mode = 1;
+            if (key->p0C.sb[3] > 0) {
+                frame = -blend / 2;
+            }
+        }
+        if (mode == 0 && obj->motionKeyCache[i] == key) {
+            continue;
+        }
+        sdfMotionChangeBlend(mdlGetMotionCtrlr(model, i), key->p0C.sb[1], loop, frame, key->p0C.sb[3]);
+        group = mdlGetMotionCtrlr(model, i)->userId2;
+        mdlStopEffect(model, group);
+        mdlGenEffect(model, key->p0C.sb[1], group);
+        if (mode == 1) {
+            if (loop == 1) {
+                if (mdlGetMotionLengthEx(model, i) != 0) {
+                    frame = (nowframe - key->frame + blend) % (mdlGetMotionLengthEx(model, i) * 2);
+                } else {
+                    frame = 0;
+                }
+            } else if (nowframe - key->frame + blend > mdlGetMotionLengthEx(model, i) * 2 - 1) {
+                frame = mdlGetMotionLengthEx(model, i) * 2 - 1;
+            } else {
+                frame = nowframe - key->frame + blend;
+            }
+            sdfMotionSeek(mdlGetMotionCtrlr(model, i), frame * 0.5f);
+        }
+        if (pInfo->flags & 1) {
+            sdfMotionPause(mdlGetMotionCtrlr(model, i));
+            obj->motionKeyCache[i] = NULL;
+        } else {
+            sdfMotionPauseOff(mdlGetMotionCtrlr(model, i));
+            obj->motionKeyCache[i] = key;
+        }
+    }
+}
+
+void ValidateUnitMotionFrame(s32 nowframe, evtViewerInfo_t *pInfo, s32 mode) {
+    dds3SceneBasic_t *sceneWork;
+    dds3Basic_t *b;
+    evtViewerObject_t *obj;
+    evtViewerObject_t *found;
+
+    if (dds3GetActiveScene() == NULL) {
+        return;
+    }
+    sceneWork = dds3GetActiveScene()->workdata;
+    for (b = sceneWork->basictable[BASIC_TYPE_UNITOBJECT].firstbasic; b != NULL; b = b->next) {
+        found = NULL;
+        for (obj = pInfo->firstobjinfo; obj != NULL; obj = obj->next) {
+            if (obj->info == b) {
+                found = obj;
+                break;
+            }
+        }
+        if (found != NULL) {
+            evtUnitMotionChange(nowframe, b, obj, pInfo, mode);
+        }
+    }
+}
 
 /* Applies the latest kind-6 key at/before position to a kind-1 track's LOD
  * byte, provided the requested signed-byte level is supported by its chunk. */
@@ -488,9 +2673,9 @@ void ValidateUnitPosChange(s32 position, evtViewerInfo_t *viewer) {
             if (best == NULL) {
                 if (node->attachmentState == EVT_OBJECT_ATTACHMENT_ATTACHED) {
                     dds3SetPosPoseSet(node->info,
-                                           (u128 *)node->savedPosition);
+                                           (const sdfVector4_t *)node->savedPosition);
                     dds3SetRotPoseSet(node->info,
-                                            (u128 *)node->savedRotation);
+                                            (const sdfVector4_t *)node->savedRotation);
                     dds3GetPosPoseSet(node->info);
                     SDF_VU0_STOREVECTOR(&node->info->poseset->pos2);
                     node->attachmentState = EVT_OBJECT_ATTACHMENT_DETACHED;
@@ -500,9 +2685,9 @@ void ValidateUnitPosChange(s32 position, evtViewerInfo_t *viewer) {
 
                 if (channel == -1) {
                     dds3SetPosPoseSet(node->info,
-                                           (u128 *)node->savedPosition);
+                                           (const sdfVector4_t *)node->savedPosition);
                     dds3SetRotPoseSet(node->info,
-                                            (u128 *)node->savedRotation);
+                                            (const sdfVector4_t *)node->savedRotation);
                     dds3GetPosPoseSet(node->info);
                     SDF_VU0_STOREVECTOR(&node->info->poseset->pos2);
                     node->attachmentState = EVT_OBJECT_ATTACHMENT_DETACHED;
@@ -520,28 +2705,265 @@ void ValidateUnitPosChange(s32 position, evtViewerInfo_t *viewer) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtMessageDelete);
+void evtMessageDelete(evtViewerInfo_t *pInfo, s32 mode) {
+    if (pInfo->workdata != NULL && pInfo->workdata->MesHandle != -1) {
+        if (mode) {
+            switch (pInfo->last_meswin_mode) {
+            case 1:
+                break;
+            case 0:
+            case 2:
+                itfMesMngMsgWndCls(pInfo->workdata->MesHandle);
+                break;
+            }
+        } else {
+            itfMesMngRequestMessageRelease(pInfo->workdata->MesHandle, 1);
+            itfMesMngMsgWndCls(pInfo->workdata->MesHandle);
+            itfMesMngClearCursor(pInfo->workdata->MesHandle);
+        }
+        pInfo->flags &= ~0x100;
+        itfMesMngSetSelPhase(pInfo->workdata->MesHandle, 0);
+        itfMesMngRequestSelectRelease(pInfo->workdata->MesHandle);
+        pInfo->branch.branchfilter_flag = 0;
+        pInfo->branch.branchfilter_count = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", rcvIsHealPhase);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", CalcNextMesSet);
+void CalcNextMesSet(evtViewerInfo_t *pInfo) {
+    if (evtViewerHasUpdateFlag(pInfo)) {
+        pInfo->fadeCount++;
+    }
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", EventSkipStart);
+void EventSkipStart(evtViewerInfo_t *pInfo) {
+    s32 nowframe;
+
+    if (evtViewerHasUpdateFlag(pInfo) != 1) {
+        if (evtFindInputBranchMessage(pInfo) == 1 || !scrRefDDS3GBWK3()) {
+            if (pInfo->dontskip_messagetime == 0) {
+                pInfo->dontskip_messagetime = 1;
+            }
+        } else {
+            nowframe = pInfo->nowframe;
+            if (nowframe < pInfo->lastframe.word - 30 && pInfo->firstframe + 20 < nowframe) {
+                pInfo->flags |= 0x10;
+                last_skip_stat = 1;
+                if (evtEventSkipStartSub(pInfo) == 2) {
+                    pInfo->fadeCount = 23;
+                } else {
+                    pInfo->fadeCount = 0;
+                }
+                evtEventFadeOutAllBgm(pInfo);
+                if (scrCheckEnableMovieCancel() == 1) {
+                    scrGetAfterSkipBgmFlag();
+                } else if (pInfo->nowMovieStat == 1) {
+                    sdfSndSetChannelCount(10);
+                }
+                if (!rcvIsHealPhase(pInfo->workdata) && sndBgmStatus_XF() == 3) {
+                    sndBgmFadeOut();
+                }
+                evtMessageDelete(pInfo, 0);
+            }
+        }
+    }
+}
 
 u8 evtViewerHasUpdateFlag(evtViewerInfo_t *viewer) {
     s32 flags = viewer->flags;
     return (flags & 0x10) > 0;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetFrameID);
+void evtCallGetFrameID(evtViewerInfo_t *pInfo) {
+    s32 alpha = 0;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallVoiceStatus);
+    dds3GetFrameID();
+    if (pInfo->fadeCount != 25) {
+        alpha = 128.0f - (pInfo->fadeAlpha + (128.0f - pInfo->fadeAlpha) / 25.0f * pInfo->fadeCount);
+    }
+    if (alpha < 0) {
+        alpha = 0;
+    }
+    if (alpha < 128 && evtViewerHasUpdateFlag(pInfo)) {
+        switch (evtEventSkipStartSub(pInfo)) {
+        case 0:
+            evtCallGetFrameIDData.r = evtCallGetFrameIDData.g = evtCallGetFrameIDData.b = 0;
+            break;
+        case 1:
+            evtCallGetFrameIDData.r = evtCallGetFrameIDData.g = evtCallGetFrameIDData.b = 0xFF;
+            break;
+        case 2:
+            return;
+        }
+        dds3FadeSet(evtCallGetFrameIDData.r, evtCallGetFrameIDData.g, evtCallGetFrameIDData.b, 128 - alpha);
+    }
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", dds3FontReqListAdd);
+void evtEventViewerApplyEffectChannels(s32 nowframe, evtViewerInfo_t *pInfo) {
+    struct evtViewerObject_t *obj;
+    evtFrameInfo_t *key;
+    sdfTexHandle_t *tex;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateMovie);
+    for (obj = pInfo->firstobjinfo; obj != NULL; obj = obj->next) {
+        if ((u32)(obj->type - 14) < 2 || obj->type == 23 || obj->type == 17) {
+            key = obj->children;
+            tex = NULL;
+            while (key != NULL) {
+                if (obj->type != 17 || sndVoiceStatus(key->p14.sh[0])) {
+                    if (nowframe < key->frame + obj->metadata.value) {
+                        break;
+                    }
+                    if (key->p10.sh[0] != 0) {
+                        tex = NULL;
+                        if (key->p10.sh[0] != 1) {
+                            tex = mnuCampFindEntryByName(pInfo, pInfo->nametable[key->p10.sh[0] - 2])->texture;
+                        }
+                    }
+                }
+                key = key->next;
+            }
+            switch (obj->type) {
+            case 14:
+                if (pInfo->ch71 != tex) {
+                    pInfo->ch71 = tex;
+                    if (tex == NULL) {
+                        Eve_PartialMultiBlurSetDefTex();
+                    } else {
+                        Eve_PartialMultiBlurSetTex(tex);
+                    }
+                }
+                break;
+            case 15:
+                if (pInfo->ch72 != tex) {
+                    pInfo->ch72 = tex;
+                    if (tex == NULL) {
+                        Eve_DistortionBlurSetDefTex();
+                    } else {
+                        Eve_DistortionBlurSetTex(tex);
+                    }
+                }
+                break;
+            case 23:
+                if (pInfo->ch76 != tex) {
+                    pInfo->ch76 = tex;
+                    if (tex == NULL) {
+                        Eve_RippleBlurSetDefTex();
+                    } else {
+                        Eve_RippleBlurSetTex(tex);
+                    }
+                }
+                break;
+            case 17:
+                if (pInfo->ch75 != tex) {
+                    pInfo->ch75 = tex;
+                    if (tex == NULL) {
+                        Eve_PartialMultiFilterSetDefTex();
+                    } else {
+                        Eve_PartialMultiFilterSetTex(tex);
+                    }
+                }
+                break;
+            }
+        }
+    }
+}
 
+void MovieStop(evtViewerInfo_t *pInfo) {
+    movieStop();
+    pInfo->nowMovieStat = 0;
+    pInfo->MovieStartFrame = 0;
+    pInfo->MovieEndFrame = 0;
+}
+
+void ValidateMovie(evtViewerInfo_t *pInfo) {
+    if (pInfo->nowMovieStat == 1) {
+        if (pInfo->nowframe < pInfo->MovieStartFrame) {
+            MovieStop(pInfo);
+            pInfo->real_movie_last_frame = -1;
+        } else if (pInfo->MovieEndFrame < 0) {
+            if (mviValidateMovieSub() == 1) {
+                pInfo->real_movie_last_frame = -1;
+            }
+        } else if (pInfo->nowframe >= pInfo->MovieEndFrame) {
+            movieStop();
+            pInfo->nowMovieStat = 0;
+            pInfo->MovieStartFrame = 0;
+            pInfo->MovieEndFrame = 0;
+            pInfo->real_movie_last_frame = -1;
+        }
+    }
+}
+
+/* NON_MATCHING: 65 of 126 words match.  */
+#ifdef NON_MATCHING
+void ValidateRenderTex(evtViewerInfo_t *pInfo) {
+    struct evtViewerObject_t *obj;
+    evtFrameInfo_t *key;
+    evtFrameInfo_t *found;
+    s32 nowframe;
+    s32 offset;
+    s32 alpha;
+    f32 ratio;
+
+    obj = pInfo->firstobjinfo;
+    nowframe = pInfo->nowframe;
+    if (obj == NULL) {
+        return;
+    }
+    while (obj->type != 31) {
+        obj = obj->next;
+        if (obj == NULL) {
+            return;
+        }
+    }
+    offset = obj->metadata.value;
+    for (key = obj->children; key != NULL; key = key->next) {
+        if (nowframe < key->frame + offset) {
+            break;
+        }
+    }
+    if (key != NULL) {
+        found = key->prev;
+    } else {
+        found = obj->lastChild;
+    }
+    if (found != NULL && found->frame == nowframe && found->p08.sh[0] == 0) {
+        evtRenderTexStart(pInfo);
+        }
+    found = NULL;
+    for (key = obj->children; key != NULL && nowframe >= key->frame + offset; key = key->next) {
+        if (key->p08.sh[0] == 1) {
+            found = key;
+        }
+    }
+    if (found == NULL) {
+        pInfo->renderTexInfo.draw = 0;
+        return;
+    }
+    if (found->p08.sh[1] > 0) {
+        pInfo->renderTexInfo.draw = 1;
+    }
+    for (key = obj->children; key != NULL; key = key->next) {
+        if (nowframe < key->frame + offset && key->p08.sh[0] == 1) {
+            break;
+        }
+    }
+    if (key == NULL) {
+        alpha = found->p08.sh[1];
+    } else {
+        if (key->frame != found->frame) {
+            ratio = (f32)(nowframe - found->frame) / (f32)(key->frame - found->frame);
+        } else {
+            ratio = 0.0f;
+        }
+        alpha = evtHokanInt(1, ratio, found->p08.sh[1], key->p08.sh[1]);
+    }
+    pInfo->renderTexInfo.alpha = alpha;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateRenderTex);
+#endif
 
 void evtProcess3Sub(evtViewerInfo_t *viewer) {
 }
@@ -563,7 +2985,7 @@ evtFrameInfo_t *GetUnitMotionChangeFrame(evtViewerObject_t *group, s32 frame,
         do {
             if (frame >= key->frame && bestFrame < key->frame && key->p08.sb[0] == 5 &&
                 key->p0C.sb[0] == channel &&
-                evtViewerTestIndexedCondition(key->p10.sh[0]) ==
+                sndVoiceStatus(key->p10.sh[0]) ==
                     EVT_VIEWER_INDEXED_CONDITION_MATCHED) {
                 bestFrame = key->frame;
                 best = key;
@@ -574,7 +2996,103 @@ evtFrameInfo_t *GetUnitMotionChangeFrame(evtViewerObject_t *group, s32 frame,
     return best;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerStopFrame);
+void evtViewerStopFrame(s32 sw, u32 nowframe, evtViewerInfo_t *pInfo)
+{
+    dds3Basic_t *scene;
+    dds3SceneBasic_t *sceneWork;
+    dds3Basic_t *basic;
+    dds3Basic_t *mover;
+    dds3MatterObjectBasicWorkData_t *matterWork;
+    dds3MoverBasicWorkData_t *moverWork;
+    sdfMotionCtrlr_t *motion;
+    evtViewerObject_t *obj;
+    evtViewerObject_t *found;
+    evtFrameInfo_t *frame;
+    s32 slot;
+    s32 stop;
+
+    if (dds3GetActiveScene() == NULL) {
+        return;
+    }
+    scene = dds3GetActiveScene();
+    sceneWork = scene->workdata;
+    for (basic = sceneWork->basictable[BASIC_TYPE_UNITOBJECT].firstbasic;
+         basic != NULL; basic = basic->next) {
+        found = NULL;
+        for (obj = pInfo->firstobjinfo; obj != NULL; obj = obj->next) {
+            if (obj->info == basic) {
+                found = obj;
+                break;
+            }
+        }
+        if (found != NULL) {
+            evtUnitMotionChange(nowframe, basic, obj, pInfo, 1);
+        }
+    }
+    for (basic = sceneWork->basictable[BASIC_TYPE_MATTEROBJECT].firstbasic;
+         basic != NULL; basic = basic->next) {
+        matterWork = basic->workdata;
+        motion = matterWork->pObjectBaseControlWorkData->pMot;
+        if (motion != NULL) {
+            if (sw == 0) {
+                sdfMotionSeek(motion, (f32)nowframe);
+                sdfMotionPause(motion);
+            } else {
+                sdfMotionPauseOff(motion);
+            }
+        }
+    }
+    for (basic = sceneWork->basictable[BASIC_TYPE_MOVER].firstbasic;
+         basic != NULL; basic = basic->next) {
+        moverWork = basic->workdata;
+        if (moverWork->pPathControl != NULL) {
+            if (sw == 0) {
+                dds3PathBasicPauseOn(moverWork->pPathControl);
+            } else {
+                dds3PathBasicPauseOff(moverWork->pPathControl);
+            }
+        }
+    }
+    for (obj = pInfo->firstobjinfo; obj != NULL; obj = obj->next) {
+        switch (obj->type) {
+        case 3: case 18: case 20: case 21: case 26:
+            break;
+        default:
+            continue;
+        }
+        stop = 0;
+        for (frame = obj->children; frame != NULL; frame = frame->next) {
+            switch (obj->type) {
+            case 3: case 26:
+                stop = obj->metadata.option;
+                /* fall through */
+            case 20: case 21:
+                slot = frame->param.sb[0];
+                if (slot < 0) {
+                    continue;
+                }
+                basic = pInfo->effectBasic[slot];
+                break;
+            case 18:
+                basic = frame->payload;
+                stop = obj->metadata.option;
+                break;
+            default:
+                continue;
+            }
+            if (basic != NULL) {
+                mover = dds3GetBaseControlWorkData(basic)->pBasic[1];
+                if (mover != NULL) {
+                    if (stop == 0) {
+                        evtStopMover(mover, sw, frame->frame, nowframe);
+                    } else {
+                        evtStopMover(mover, sw, 0, nowframe);
+                    }
+                }
+            }
+        }
+    }
+}
 
 /* Dispatch one of two viewer modes based on its lowest flag bit. */
 void evtViewerDispatchFlagMode(evtViewerInfo_t *viewer) {
@@ -606,11 +3124,99 @@ u16 evtViewerPopHistory(evtViewerInfo_t *viewer) {
     return historyId;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", MessageManager);
+void MessageManager(evtViewerInfo_t *pInfo) {
+    if (pInfo->workdata != NULL) {
+        if (pInfo->workdata->MesHandle == -1) {
+            return;
+        }
+        if (itfMesMngGetSelPhase(pInfo->workdata->MesHandle) < 0) {
+            itfMesMngSetSelPhase(pInfo->workdata->MesHandle, 0);
+            DDS3_GBWK->integers[pInfo->branch.var_idx] = itfMesMngGetSelect(pInfo->workdata->MesHandle);
+            itfMesMngRequestSelectRelease(pInfo->workdata->MesHandle);
+        }
+    }
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", sndVoiceStatus);
+EvtViewerIndexedConditionResult sndVoiceStatus(EvtViewerIndexedCondition condition) {
+    u32 index;
+    u32 value;
 
+    index = ((u32)condition << 16) >> 28;
+    value = (u32)condition & 0xFFF;
+    if (index == 0) {
+        return EVT_VIEWER_INDEXED_CONDITION_MATCHED;
+    }
+    return (DDS3_GBWK->integers[199 + index] ^ value) == 0;
+}
+
+/* NON_MATCHING: 64 of 112 words match.  */
+#ifdef NON_MATCHING
+s32 DrawMessage(evtViewerInfo_t *pInfo) {
+    u32 flags;
+    s32 ret;
+    s32 last;
+    s32 frame;
+    s32 next;
+
+    flags = pInfo->flags;
+    ret = 0;
+    if (!(flags & 1)) {
+        if (pInfo->nowframe >= pInfo->lastframe.word) {
+            if (!(flags & 8)) {
+                pInfo->flags = flags ^ 1;
+                evtViewerDispatchFlagMode(pInfo);
+            }
+        } else {
+            if (pInfo->nowMovieStat == 1) {
+                if (mviDrawMessageSub() == 2) {
+                    last = pInfo->real_movie_last_frame;
+                    if (last >= 0) {
+                        frame = movieDecodeWork.frameIndex;
+                        if (frame < movieDecodeWork.frameCount) {
+                            if (last / 2 == frame) {
+                                if (last & 1) {
+                                    return 0;
+                                }
+                                next = frame * 2 + 1;
+                            } else {
+                                next = frame * 2;
+                            }
+                        } else {
+                            next = -1;
+                        }
+                        pInfo->real_movie_last_frame = next;
+                    }
+                    ret = 1;
+                    if (pInfo->workdata != NULL && pInfo->workdata->MesHandle != -1
+                        && itfMesMngGetPhase(pInfo->workdata->MesHandle) == -1) {
+                        evtMessageDelete(pInfo, 1);
+                    }
+                }
+            } else if (pInfo->workdata != NULL && pInfo->workdata->MesHandle != -1) {
+                if (flags & 0x100) {
+                    if (!itfMesMngChkWaitTag(pInfo->workdata->MesHandle)) {
+                        ret = itfMesMngGetSelPhase(pInfo->workdata->MesHandle) <= 0;
+                    }
+                } else {
+                    ret = 1;
+                }
+                if (pInfo->last_mestype == 0) {
+                    if (itfMesMngGetPhase(pInfo->workdata->MesHandle) == -1) {
+                        evtMessageDelete(pInfo, 1);
+                    }
+                } else if (itfMesMngGetSelPhase(pInfo->workdata->MesHandle) == 0) {
+                    evtMessageDelete(pInfo, 1);
+                }
+            } else {
+                ret = 1;
+            }
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", DrawMessage);
+#endif
 
 u32 evtViewerReturnZero(void) {
     return 0;
@@ -788,11 +3394,102 @@ dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task) {
     return (s32)evtViewerUpdateFrame;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallEveRippleBlurSetDefTex);
+void evtCallEveRippleBlurSetDefTex(evtViewerInfo_t *pInfo) {
+    evtViewerObject_t *obj;
+    evtViewerObject_t *nextobj;
+    evtFrameInfo_t *frame;
+    evtFrameInfo_t *nextframe;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", UnitMotionChangeForWait);
+    Eve_PartialMultiBlurSetDefTex();
+    Eve_DistortionBlurSetDefTex();
+    Eve_RippleBlurSetDefTex();
+    Eve_PartialMultiFilterSetDefTex();
+    for (obj = pInfo->firstobjinfo; obj != NULL; obj = nextobj) {
+        nextobj = obj->next;
+        switch (obj->type) {
+        case 0:
+            break;
+        case 1:
+        case 2:
+        case 3:
+        case 18:
+        case 20:
+        case 21:
+        case 24:
+        case 26:
+            for (frame = obj->children; frame != NULL; frame = nextframe) {
+                nextframe = frame->next;
+                switch (obj->type) {
+                case 3:
+                case 20:
+                case 21:
+                case 26:
+                    if (frame->param.sb[0] >= 0) {
+                        DelEffectTable_evtEventViewer(frame->param.sb[0], pInfo);
+                    }
+                    break;
+                case 18:
+                    DelBED(frame);
+                    break;
+                }
+                DelFrameInfo(obj, frame);
+            }
+            break;
+        default:
+            evtCallDelFrameInfo(obj, pInfo);
+            break;
+        }
+    }
+    dds3PadIsTypeCD();
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtValidateUnitMotionFrameForWait);
+void UnitMotionChangeForWait(s32 nowframe, dds3Basic_t *b, evtViewerObject_t *obj, evtViewerInfo_t *pInfo) {
+    mdlObj_t *model = ((effObjectData_t *)b->workdata)->modelHolder->pModel;
+    evtFrameInfo_t *key;
+    s32 i;
+    s32 type;
+
+    if (model->first != NULL) {
+        for (i = 0; i < 4; i++) {
+            if (mdlGetMotionCtrlr(model, i) == NULL) {
+                continue;
+            }
+            mdlGetMotionCtrlr(model, i)->speed = 0.5f;
+            key = GetUnitMotionChangeFrame(obj, nowframe, i);
+            if (key == NULL) {
+                continue;
+            }
+            if (mdlGetMotionCtrlr(model, i)->stat == SDF_MOTION_STAT_NOCUT && key->p1C.sb[0] != 0) {
+                type = key->p1C.sb[2] == 0;
+                sdfMotionChangeBlend(mdlGetMotionCtrlr(model, i), key->p1C.sb[1], type, 0.0f, key->p1C.sb[3]);
+            }
+        }
+    }
+}
+
+void evtValidateUnitMotionFrameForWait(s32 nowframe, evtViewerInfo_t *pInfo) {
+    dds3SceneBasic_t *sceneWork;
+    dds3Basic_t *b;
+    evtViewerObject_t *obj;
+    evtViewerObject_t *found;
+
+    if (dds3GetActiveScene() == NULL) {
+        return;
+    }
+    sceneWork = dds3GetActiveScene()->workdata;
+    for (b = sceneWork->basictable[BASIC_TYPE_UNITOBJECT].firstbasic; b != NULL; b = b->next) {
+        found = NULL;
+        for (obj = pInfo->firstobjinfo; obj != NULL; obj = obj->next) {
+            if (obj->info == b) {
+                found = obj;
+                break;
+            }
+        }
+        if (found != NULL) {
+            UnitMotionChangeForWait(nowframe, b, obj, pInfo);
+        }
+    }
+}
 
 #ifdef NON_MATCHING
 /* 47 of 190 words differ: same length; two branch delay slots (after the flags & 8 test in
@@ -829,7 +3526,7 @@ dds3ProcessFunc_t Process3(dds3ProcessID_t *task) {
     }
     if (viewer->voiceState == 1) {
         if (!evtViewerHasUpdateFlag(viewer) && !scrCheckEnableMovieCancel()) {
-            itfMesMngRequestMessage_itf(viewer->workdata->unk018, viewer->voiceMessageNo, 0);
+            itfMesMngRequestMessage_itf(viewer->workdata->MesHandle, viewer->voiceMessageNo, 0);
             viewer->voiceState = 0;
             datDebugPrintf("[conflict voice play      ] mesno= %d\n", viewer->voiceMessageNo);
         }
@@ -859,9 +3556,9 @@ dds3ProcessFunc_t Process3(dds3ProcessID_t *task) {
             viewer->flags |= 0x80;
         }
         if (flagsNow & 0x40) {
-            if (viewer->fontRequestMode == 1) {
-                dds3FontReqListAdd(viewer);
-                viewer->fontRequestReset = -1;
+            if (viewer->nowMovieStat == 1) {
+                MovieStop(viewer);
+                viewer->real_movie_last_frame = -1;
             }
             playIndex = viewer->playIndex;
             viewer->workdata->seqIndex = playIndex;
@@ -882,11 +3579,53 @@ dds3ProcessFunc_t Process3(dds3ProcessID_t *task) {
 INCLUDE_ASM(const s32, "event/evtEventViewer", Process3);
 #endif
 
+#ifdef VERSION_RAIDOU1
+dds3ProcessFunc_t Process2_evtViewer(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (!evtProcessStart(NULL, DDS3_KERNELPROC_PRIORITY)) {
+        evtRunFrame(pInfo->nowframe, pInfo);
+        evtViewerDispatchFlagMode(pInfo);
+        pInfo->blankTex = evtCallMemAllocDirect();
+    }
+    if (evtChkLoad(1) || Validate1stAt3Bgm(pInfo)) {
+        dds3DrawFlag |= 0x2000000;
+        return NULL;
+    }
+    if (pInfo->lastframe.word >= 10) {
+        dds3KernelDebugSign = 0;
+    }
+    evtRunFrame(pInfo->nowframe, pInfo);
+    dds3LinkProcess(id, evtInitFrameVar());
+    dds3DrawFlag |= 0x2000000;
+    pmv_pid = id;
+    last_skip_stat = 0;
+    return (dds3ProcessFunc_t)Process3;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", Process2_evtViewer);
+#endif
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData10);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtProcess2_RealPlay);
+dds3ProcessFunc_t evtProcess2_RealPlay(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+    u32 flags;
+
+    evtCheckLoad(pInfo->workdata);
+    flags = pInfo->workdata->loadFlags;
+    if (!(flags & 8)) {
+        dds3DrawFlag |= 0x2000000;
+        return NULL;
+    }
+    if (flags & 1) {
+        return NULL;
+    }
+    evtSetGameData1(pInfo->workdata, pInfo);
+    evtSetGameData2and3(pInfo->workdata, pInfo, 0);
+    dds3DrawFlag |= 0x2000000;
+    return (dds3ProcessFunc_t)Process2_evtViewer;
+}
 
 #ifdef NON_MATCHING
 /* 7 words off, register allocation: the work pointer lands in a different register. */
@@ -910,9 +3649,71 @@ dds3TaskUpdateResult_t evtCallGetProcessData11(dds3ProcessID_t *task) {
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData11);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtEndEvtViewerSub);
+s32 evtEndEvtViewerSub(struct evtPolygonMovieWork_t *wdata) {
+    return 0;
+}
 
+#ifdef VERSION_RAIDOU1
+s32 End_evtViewer(evtViewerInfo_t *pInfo) {
+    f32 zero;
+
+    if (!evtEndEvtViewerSub(pInfo->workdata)) {
+        evtEventFadeOutAllBgm(pInfo);
+    }
+    evtInitCustomSceneLight();
+    evtMessageDelete(pInfo, 0);
+    mnuCampLinkFontGlyph(pInfo);
+    dds3StopQuake();
+    zero = 0.0f;
+    gMapScrollReset[3] = zero;
+    gMapScrollReset[2] = zero;
+    gMapScrollReset[1] = zero;
+    gMapScrollReset[0] = zero;
+    if (pInfo->nowMovieStat == 1) {
+        if (pInfo->MovieEndFrame == -2 && evtViewerHasUpdateFlag(pInfo) != 1) {
+            pInfo->nowMovieStat = 0;
+        } else {
+            movieStop();
+            pInfo->nowMovieStat = 0;
+        }
+    }
+    while (sdfDelayedResrcCheck()) {
+    }
+    evtFreeStage();
+    while (sdfDelayedResrcCheck()) {
+    }
+    if (pInfo->renderTexInfo.hImageMem != NULL) {
+        sdfMemFreeDelayedDirect(pInfo->renderTexInfo.hImageMem);
+        pInfo->renderTexInfo.hImageMem = NULL;
+        pInfo->renderTexInfo.pImage = NULL;
+    }
+    while (sdfDelayedResrcCheck()) {
+    }
+    dds3FreeRenderTexture();
+    while (sdfDelayedResrcCheck()) {
+    }
+    evtUnRegistUnit(pInfo);
+    FreeInfo(pInfo);
+    sdfMemFreeDirect(pInfo->block);
+    while (sdfDelayedResrcCheck()) {
+    }
+    dds3ChangeBistaMode(0);
+    dds3DrawFlag |= 0x2000000;
+    dds3SetScreenFovy(0.6283185f);
+    dds3ScreenParam.ox = 2048.0f;
+    dds3ScreenParam.oy = 2048.0f;
+    evtProcessEnd();
+    if (pInfo->blankTex != NULL) {
+        sdfTexReleaseReference(pInfo->blankTex);
+    }
+    evtCallChipFreeDirect();
+    dds3KernelDebugSign = 1;
+    pmv_pid = NULL;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", End_evtViewer);
+#endif
 
 void evtEventViewerDestroyActive(dds3ProcessID_t *task) {
     evtViewerInfo_t *viewer;
@@ -938,27 +3739,108 @@ void evtEventViewerDestroyTask(void) {
     dds3KillProcessName(evtViewerTaskName, 1);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtEnd);
+void evtEnd(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtChgSeq);
+    if (pInfo != NULL) {
+        pInfo->flags |= 0x20;
+    }
+}
+
+void evtChgSeq(dds3ProcessID_t *id, s32 seqno) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (seqno != 0 && pInfo != NULL) {
+        pInfo->flags |= 0x40;
+        pInfo->playIndex = seqno - 1;
+        pInfo->flags &= ~0x80;
+        pInfo->flags &= ~0x200;
+        pInfo->fldfilter = -1;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtIgnoreFade);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtNoSkipMes);
+void evtNoSkipMes(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (pInfo != NULL) {
+        pInfo->flags |= 0x400;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData12);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCheckProcess);
+s32 evtCheckProcess(void) {
+    return pmv_pid != NULL;
+}
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCheckLastSkipStat);
+s32 evtCheckLastSkipStat(void) {
+    return last_skip_stat;
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtSkipStart);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetFrame);
+s32 evtSetFrame(dds3ProcessID_t *id, s32 Frame) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtIgnoreAtracPlay);
+    if (pInfo == NULL) {
+        return -1;
+    }
+    if (Frame >= 0) {
+        pInfo->nowframe = Frame;
+        pInfo->fldfilter = -1;
+    }
+    return pInfo->nowframe;
+}
 
+void evtIgnoreAtracPlay(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (pInfo != NULL) {
+        pInfo->flags |= 0x800;
+    }
+}
+
+/* NON_MATCHING: 2 of 44 words match.  */
+#ifdef NON_MATCHING
+void oldEventSceneUnload(evtPolygonMovieWork_t *wdata) {
+    s32 offset;
+    u8 *data;
+    pmdHeader_t *cut;
+
+    offset = 0;
+    data = wdata->pm2Data;
+    wdata->pm2CutCount = 0;
+    do {
+        if (data == NULL) {
+            break;
+        }
+        if (wdata->pm2Size == 0) {
+            break;
+        }
+        cut = (pmdHeader_t *)(data + offset);
+        offset += cut->FileSize;
+        wdata->pm2Cuts[wdata->pm2CutCount++] = cut;
+    } while (offset < wdata->pm2Size);
+    offset = 0;
+    data = wdata->pm3Data;
+    wdata->pm3CutCount = 0;
+    do {
+        if (data == NULL) {
+            break;
+        }
+        if (wdata->pm3Size == 0) {
+            break;
+        }
+        cut = (pmdHeader_t *)(data + offset);
+        offset += cut->FileSize;
+        wdata->pm3Cuts[wdata->pm3CutCount++] = cut;
+    } while (offset < wdata->pm3Size);
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", oldEventSceneUnload);
+#endif
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", evtViewerTaskName);
 
@@ -970,11 +3852,11 @@ INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData14);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewer", Process3Data);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewer", RunFrame1Data);
+INCLUDE_SDATA(const s32, "event/evtEventViewer", pmv_pid);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData15);
+INCLUDE_SDATA(const s32, "event/evtEventViewer", last_skip_stat);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtRunFrameData);
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evt_camera);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewer", evtCallGetFrameIDData);
 

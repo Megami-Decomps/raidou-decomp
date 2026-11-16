@@ -11,6 +11,7 @@ u32 mdlGetColor(mdlObj_t *aHandle);
 s32 mdlGetMajorNum(mdlObj_t *aHandle);
 s32 mdlGetMinorNum(mdlObj_t *aHandle);
 sdfMotionCtrlr_t *mdlGetMotionCtrlr(mdlObj_t *aHandle, s32 aGroup);
+u16 mdlGetMotionLengthEx(mdlObj_t *aHandle, s32 aGroup);
 s32 mdlGetMotionNum(mdlObj_t *aHandle, s32 aGroup);
 s32 mdlGetNumOfCut(mdlObj_t *aHandle, s32 aGroup);
 void mdlGetPosition(mdlObj_t *aHandle);
@@ -39,5 +40,6 @@ void mdlRegistMotion(s32 aMajor, s32 aMinor, u32 aFlags, s32 aFirstMotion, s32 a
 
 void mdlCallMemGetInfo(void);
 dds3ModelResrc_t *mdlSearchResrc(s32 aMajor, s32 aMinor);
+void mdlUnRegist(s32 aMajor, s32 aMinor);
 
 #endif

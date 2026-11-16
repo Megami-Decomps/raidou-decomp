@@ -19,14 +19,6 @@ typedef struct
 } dds3MatterPathPosition_t;
 
 
-typedef struct dds3MoverBasicWorkData_t
-{
-    dds3Basic_t *pObjectBasic;
-    dds3PathBasicControl_t *pPathControl;
-    dds3BasicControlProc_t pFunc;
-    dds3Basic_t *pPathBasic;
-} dds3MoverBasicWorkData_t;
-
 extern s32 dds3MoverCount;
 extern char dds3MoverNameTable[10][16];
 extern u32 dds3AllocObjectId(void);

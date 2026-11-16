@@ -20,7 +20,7 @@ typedef struct evtPolygonMovieWork_t {
     };
     u32 unk010;                   /* 0x010 */
     void *chipBlock;              /* 0x014: 0x1FC bytes from sdfChipAllocDirect */
-    s32 unk018;                   /* 0x018 */
+    s32 MesHandle;                /* 0x018: message handle, -1 none */
     struct dds3ProcessID_t *task; /* 0x01C: viewer task */
     s32 pm2CutCount;              /* 0x020 */
     s32 pm3CutCount;              /* 0x024 */
@@ -33,8 +33,8 @@ typedef struct evtPolygonMovieWork_t {
     void *pm1Type2Data;           /* 0x040 */
     s32 pm1Type2Value;            /* 0x044 */
     u32 unk048[3];                /* 0x048 */
-    void *pm1Type3Data;           /* 0x054 */
-    s32 pm1Type3Value;            /* 0x058 */
+    pmdUnitTable_t *unitTable;    /* 0x054: PM1 type 3 */
+    s32 unitCount;                /* 0x058 */
     u32 unk05C[8];                /* 0x05C */
     struct fileRequest *pm2Request; /* 0x07C */
     void *header2;                /* 0x080: PM2 cut */
@@ -115,6 +115,11 @@ typedef struct evtPolygonMovieWork_t {
 } evtPolygonMovieWork_t;
 #endif
 
+s32 evtHokanInt(s32 hokan, f32 ratio, s32 i1, s32 i2);
+f32 evtHokanFloat(s32 hokan, f32 ratio, f32 f1, f32 f2);
+void evtHokanSceneLight(s32 hokan, f32 ratio, pmdSceneLightTable_t *key1, pmdSceneLightTable_t *key2, pmdSceneLightTable_t *d);
+void evtHokanSceneFog(s32 hokan, f32 ratio, evtBlendVecColor_t *key1, evtBlendVecColor_t *key2, evtBlendVecColor_t *d);
+void evtHokanHeikouBlur(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out);
 void evtHokanBlur2(s32 hokan, f32 ratio, dds3Effect_Blur_t *key1, dds3Effect_Blur_t *key2, dds3Effect_Blur_t *d);
 void evtHokanDistBlur(s32 hokan, f32 ratio, dds3Effect_DistortionBlurParam_t *key1, dds3Effect_DistortionBlurParam_t *key2, dds3Effect_DistortionBlurParam_t *d);
 void evtHokanFilter(s32 hokan, f32 ratio, dds3Effect_Filter_t *key1, dds3Effect_Filter_t *key2, dds3Effect_Filter_t *d);
@@ -131,10 +136,10 @@ struct pmdSeqData_t;
 
 struct pmdProcessWork_t *GetWorkData1(struct pmdProcessWork_t *wdata, void *pm1data);
 struct pmdProcessWork_t *InitPolygonMovieWorkData(void);
-void evtCheckLoad(struct pmdProcessWork_t *wdata);
+void evtCheckLoad(evtPolygonMovieWork_t *wdata);
 s32 evtCheckSeqEnd(dds3ProcessID_t *id);
-void evtFreeWorkData1(struct pmdProcessWork_t *wdata);
-void evtFreeWorkData2and3(struct pmdProcessWork_t *wdata);
+void evtFreeWorkData1(evtPolygonMovieWork_t *wdata);
+void evtFreeWorkData2and3(evtPolygonMovieWork_t *wdata);
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
 evtPolygonMovieWork_t *evtGetWorkData2and3(evtPolygonMovieWork_t *wdata, void *pm2dataParam, void *pm3dataParam);
 #else

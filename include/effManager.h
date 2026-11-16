@@ -40,5 +40,6 @@ void dds3EffectSetLoop_dds3Effect(effHandle_t *hEffect, u8 loop);
 extern s8 effProcSequenceSubData;
 void effEctManagerInitSub(void);
 s32 effProcSequenceSub(void);
+void effSetEffectColorSubSub(void *handle, u32 color);
 
 #endif

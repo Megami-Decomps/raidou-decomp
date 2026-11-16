@@ -974,7 +974,7 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", MakeLightPacket);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkLightObjectBasic);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnlinkLightObjectBasic_evt);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnlinkLightObjectBasic);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkExternalLightPacket);
 

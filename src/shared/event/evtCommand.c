@@ -121,7 +121,6 @@ extern const char evtMsgEffmg1LoadHint[];
 extern const char evtMsgEffmg2LoadHint[];
 extern const char evtMsgModelMotionDeprecated[];
 extern const char evtMsgModelMoveMotDeprecated[];
-extern void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame);
 extern s32 scrGetCommandTimer(void);
 
 /* Rows of 0x310 bytes; only the three size fields the bed scale reads are

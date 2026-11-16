@@ -26,6 +26,7 @@ char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename);
 typedef s32 MnuTitleSoundBusyState;
 
 MnuTitleSoundBusyState scrCheckEnableMovieCancel(void);
+void scrGetAfterSkipBgmFlag(void);
 
 void evtFunc8(s32 transferSize);
 s32 mnuCopySoundStreamOnStatusChange(void *samples, u32 wordCount);

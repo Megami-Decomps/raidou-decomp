@@ -23,5 +23,6 @@ struct BUSTUP_POS_TBL_t;
 s32 evtGetDefaultPosBustUp(MODELTYPE major, struct BUSTUP_POS_TBL_t *tbl, s32 type, sdfVector4_t *pos, sdfVector4_t *rot, sdfVector4_t *defpos);
 s32 evtGetDrawBustupNums(void);
 s32 evtLoadUnitBustUp(MODELTYPE major, s32 minor, s32 type);
+s32 evtPathLinkAndMake(dds3Basic_t *path, dds3Basic_t *obj);
 
 #endif

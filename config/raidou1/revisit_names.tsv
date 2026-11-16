@@ -1275,7 +1275,6 @@
 0x001B3FE0	evtMessageDelete	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtViewer.evtMessageDelete, score 10.3 band A
 0x001B4268	evtViewerHasUpdateFlag	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0022F408, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x001B4278	evtCallGetFrameID	func	tier=D	derived-callee	na	unit event/evtEventViewer; calls dds3GetFrameID
-0x001B43B0	evtCallVoiceStatus	func	tier=D	derived-callee	na	unit event/evtEventViewer; calls sndVoiceStatus
 0x001B48A8	evtProcess3Sub	func	tier=D	derived-caller	na	unit event/evtEventViewer; called by Process3
 0x001B48B0	evtCallDrawFont	func	tier=D	derived-callee	na	unit event/evtEventViewer; calls frDrawFont
 0x001B4918	evtProcess3Sub2	func	tier=D	derived-caller	na	unit event/evtEventViewer; called by Process3
@@ -1450,7 +1449,6 @@
 0x001CB0E8	evtHokanTmx	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtHokanTmx, score 7.8 band B, hd-ab: calls1 calls-of-match votes2 st1:call r1+r2; replaces mnuBlendCampDisplayFields: fuzzy name from SLUS_211.52 0x0025E460, score 0.95, tools/xgame/fuzzy_apply.py
 0x001CB3B0	mnuFindCampKeyTrackNeighbors	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002432D0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CB470	evtFindInputBranchMessage	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtFindInputBranchMessage, score 10.25 band A, hd-ab: calls1 prev next gap=exact st1:gap r1+r2; replaces mnuShouldBlockViewerEndCountdown: dds-decomp DDS2 name via SLUS_211.52 0x0025E7B0, masked-words-identical (order map pair); dds-decomp: descriptive
-0x001CB478	mnuUnpackNibbleFields	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00243440, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x001CB498	mnuCampFindMatchingEntryIndex	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.74 0x00243460, score 1.00, tools/xgame/fuzzy_apply.py
 0x001CB518	mnuCampFindEntryByName	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002434E0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CB590	campResolvePendingValue	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.74 0x00243558, score 1.00, tools/xgame/fuzzy_apply.py
@@ -1473,7 +1471,6 @@
 0x001CBF80	evtLeaf19	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
 0x001CBFD8	evtLeaf20	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
 0x001CC058	evtLeaf21	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
-0x001CC0F8	evtLeaf22	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
 0x001CC160	evtEventFadeOutAllBgm	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtEventFadeOutAllBgm, score 8.4 band B
 0x001CC1D0	mnuEvaluateCubicBezierPoint	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x0025F640, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CC298	mnuSolveCubicBezierYForX	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x0025F708, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -1753,23 +1750,16 @@
 0x001E5EC8	effBlurUpdateSub2	func	tier=D	derived-caller	na	unit code_001E5A58, neighbour effPCPBezierEval; called by dds3BlurUpdate
 0x001E5ED0	effBlur2OnSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3Blur2On
 0x001E5F30	effBlur2SwapSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3Blur2Swap
-0x001E5F40	effBlurUpdateSub3	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3BlurUpdate
 0x001E5FB8	effMultiBlurSwapSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3MultiBlurSwap
 0x001E5FC0	Eve_PartialMultiBlurSetTex	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001E5FF8	effBlurUpdateSub5	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3BlurUpdate
-0x001E6010	effDistBlurOnSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3DistBlurOn
 0x001E6070	effDistBlurSwapSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3DistBlurSwap
 0x001E6078	Eve_DistortionBlurSetTex	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001E60B0	effBlurUpdateSub7	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3BlurUpdate
-0x001E60C8	effRipBlurOnSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3RipBlurOn
 0x001E6130	Eve_RippleBlurSetTex	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001E6168	effEnableFramebufferQuad	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0018F650, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001E6178	effDisableFramebufferQuad	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0018F660, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x001E6180	effCopyFramebufferQuadParameters	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0018F668, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001E61E0	effGetCh73Params	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0018F6C8, masked-words-identical (order map pair); dds-decomp: descriptive
-0x001E61F0	effBlurUpdateSub9	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3BlurUpdate
 0x001E6248	effFilter2SwapSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3Filter2Swap
-0x001E6258	effBlurUpdateSub11	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3BlurUpdate
 0x001E62C0	effMFilterSwapSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3MFilterSwap
 0x001E62C8	Eve_PartialMultiFilterSetTex	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001E6410	effCallMemcpy	func	tier=D	derived-callee	na	unit effect/effEvent; calls memcpy
@@ -15188,9 +15178,6 @@
 0x0046C690	evtSceneDispRowsEntry11	data	tier=D	derived-table	na	pointed to by evtSceneDispRows
 0x0046C6AC	evtData14	data	tier=D	derived-shared	na	used by 4 functions: evtFileName2Menu, evtPfsEventPmvtool, evtCallEventFadeOutAllBgm
 0x0046C6AE	Process3Data	data	tier=D	derived-sole	na	used by Process3
-0x0046C6B4	RunFrame1Data	data	tier=D	derived-dominant	na	used by RunFrame1 (3 of 6 refs, 4 functions)
-0x0046C6B8	evtData15	data	tier=D	derived-shared	na	used by 3 functions: EventSkipStart, Process2_evtViewer, evtCheckLastSkipStat
-0x0046C6BC	evtRunFrameData	data	tier=D	derived-dominant	na	used by evtRunFrame (2 of 3 refs, 2 functions)
 0x0046C6C0	evtCallGetFrameIDData	data	tier=D	derived-sole	na	used by evtCallGetFrameID
 0x0046C6C4	evtData16	data	tier=D	derived-shared	na	used by 2 functions: evtFRAMESETOK, evtCallGetPIDfromUID
 0x0046C6C8	evtFRAMESETOKDataEntry	data	tier=D	derived-table	na	pointed to by evtFRAMESETOKData
@@ -16981,16 +16968,6 @@
 0x004B6DB0	mapCallFromRotationBWork	data	tier=D	derived-dominant	na	used by mapCallFromRotationB (6 of 14 refs, 5 functions)
 0x004B6DC0	mapCallFromRotationBWork2	data	tier=D	derived-dominant	na	used by mapCallFromRotationB (8 of 16 refs, 5 functions)
 0x004B6DD0	mapCallFromRotationBWork3	data	tier=D	derived-dominant	na	used by mapCallFromRotationB (4 of 8 refs, 3 functions)
-0x004B71F0	RunFrame2Work	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B7250	RunFrame2Work2	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B7260	RunFrame2Work3	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B7280	RunFrame2Work4	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B72B0	RunFrame2Work5	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B72E0	RunFrame2Work6	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B7300	RunFrame2Work7	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B7330	RunFrame2Work8	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B7360	RunFrame2Work9	data	tier=D	derived-sole	na	used by RunFrame2
-0x004B7390	RunFrame2Work10	data	tier=D	derived-sole	na	used by RunFrame2
 0x004B7520	evtWork2	data	tier=D	derived-shared	na	used by 7 functions: evtSTAGE, evtCallChipAllocDirect, evtCallMenuDisp
 0x004B7530	evtSTAGEWork	data	tier=D	derived-sole	na	used by evtSTAGE
 0x004B7818	evtWork3	data	tier=D	derived-shared	na	used by 3 functions: evtLeaf19, evtLeaf20, evtLeaf21
@@ -18639,7 +18616,6 @@
 0x00199368	mphShutDown	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.mphShutDown score 6.2 flag -: calls1 str1 callers-of-match st1:call r1-only
 0x001A0A70	mapTrainCheckStartPos	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapTrainCheckStartPos score 2.5 flag -: calls1 callers-of-match st2:call r2-only
 0x001A57B8	GetBaseLightRGB2	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.GetBaseLightRGB2 score 4.4 flag -: next gap2/1 st1:gap r1+r2
-0x001A5D20	evtUnlinkLightObjectBasic_evt	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evt.evtUnlinkLightObjectBasic score 5.6 flag R: calls1 calls-of-match st1:call r1+r2
 0x001A7EF0	evtGetCustomSLight_SoftenAndBias	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evt.evtGetCustomSLight_SoftenAndBias score 5.5 flag I: calls1 calls-of-match st1:call r1+r2
 0x001A8490	evtCommand_MODEL_SHADOW_OFF	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e4e30 sim 1.000 margin 0.00 pair
 0x001A8500	evtCommand_MODEL_SHADOW_ON2	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e4e30 sim 1.000 margin 0.00 pair
@@ -18656,7 +18632,6 @@
 0x001AEB80	fldFreeAddressProcess	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x144760 sim 1.000 margin 0.00 pair
 0x001AFC40	evtDelProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtCutIn.evtDelProcess score 5.0 flag I: calls1 callers-of-match st1:call r1+r2
 0x001B0310	SearchNameTable	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtViewer.SearchNameTable score 5.9 flag -: prev next~ gap1/1 st1:gap r1+r2
-0x001B45D8	dds3FontReqListAdd	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x117780 sim 0.643 margin 0.64 pair
 0x001B67F8	EnterFrameChange	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1ef288 sim 0.657 margin 0.29 pair
 0x001B7158	evtViewCmdSetObjectTarget	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x232108 sim 1.000 margin 0.70 pair
 0x001B7488	EnterData	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1ef880 sim 0.696 margin 0.31 pair
@@ -18708,7 +18683,6 @@
 0x001E4650	dds3UpdateCrossfade	func	tier=C	dds-fuzzy-95-m-pair	0.60 (n=5)	dds body 0x1602f8 sim 0.978 margin 0.60 pair
 0x001E4C58	effBTLCutListRelease	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x16ac28 sim 1.000 margin 0.09 pair
 0x001E4FF8	effBattleHasActiveKind	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x161600 sim 1.000 margin 0.50 pair
-0x001E6208	dblurSetParam2	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1adb38 sim 1.000 margin 0.00 pair
 0x001E64C8	BlurEditorGetParams	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD Eve.BlurEditorGetParams score 5.7 flag -: prev~ next gap1/2 st1:gap r1+r2
 0x001E6600	rblurSetParam	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1add60 sim 1.000 margin 0.00 pair
 0x001E6730	dblurSetParam	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1add60 sim 1.000 margin 0.00 pair
@@ -19604,6 +19578,7 @@
 0x00196408	savePointMenuCreateMenuPID	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD itf.savePointMenuCreateMenuPID score 6.2 flag -: calls4 callers-of-match votes4 st1:call r2-disagree:0x1aea60
 0x00196700	savePointMenuChkEnableDecide	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD itf.savePointMenuChkEnableDecide score 6.0 flag -: calls2 prev calls-of-match votes2 st1:call r2-disagree:0x1aeba8
 0x00196DE0	SetCommand	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD mjn.SetCommand score 5.1 flag -: calls2 callers-of-match votes2 st1:call r1-only
+0x001A5D20	evtUnlinkLightObjectBasic	func	tier=B	hd-role	na	HD symbols.txt evt$$UnlinkLightObjectBasic; evtCommand.c and dds3LightObjectBasic.c already call it by this name (UNDEF until renamed); replaces evtUnlinkLightObjectBasic_evt
 0x001A9098	evtCommand_MODEL_MOVE	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1e5510 sim 0.879 margin 0.17 pair
 0x001AB500	campDhWaitMessageEnd	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2356c0 sim 0.846 margin 0.85 pair
 0x001AC060	evtCommand_OBJ_PATH_MOVE	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1e7bf0 sim 0.862 margin 0.35 single
@@ -19635,6 +19610,7 @@
 0x001BE240	evtOjbectListMenu	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1f66e0 sim 0.806 margin 0.81 pair
 0x001BFCF0	evtBasicListMenu	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1f7598 sim 0.862 margin 0.86 pair
 0x001BFE50	evtEventPosItem	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1f76f0 sim 0.804 margin 0.42 pair
+0x001CC0F8	evtEventRegistBGM	func	tier=B	hd-role	na	HD evt.c evtEventRegistBGM: same list append at the same call sites; replaces evtLeaf22
 0x001CDEB8	evtCrossFadeGetStat	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD evt.evtCrossFadeGetStat score 6.5 flag I: calls1 prev gap4/8 st1:gap r1+r2
 0x001CECE8	CheckActionProcessEnd	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x247d60 sim 0.781 margin 0.27 pair
 0x001D21B8	nbEffectShutdown	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16c500 sim 0.762 margin 0.76 pair
@@ -19650,6 +19626,11 @@
 0x001D8710	slFormatCancel	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x155368 sim 0.733 margin 0.43 pair
 0x001DA940	slQueryYesNoProc	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x157160 sim 0.850 margin 0.59 pair
 0x001DDB68	dds3BillAnimFreeP2A	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x15ccc8 sim 0.892 margin 0.89 pair
+0x001E5F40	Eve_PartialMultiBlurON	func	tier=B	smt3-role	na	SMT3 name; the ON half of the ON/OFF pair at +0x10 (Eve_PartialMultiBlurOFF); DrawEffect calls it under drawmblur; replaces effBlurUpdateSub3
+0x001E5FF8	Eve_DistortionBlurON	func	tier=B	smt3-role	na	SMT3 name; pairs with Eve_DistortionBlurOFF at +0x10; DrawEffect calls it under drawdblur; replaces effBlurUpdateSub5
+0x001E60B0	Eve_RippleBlurON	func	tier=B	smt3-role	na	SMT3 name; pairs with Eve_RippleBlurOFF at +0x10; DrawEffect calls it under drawrblur; replaces effBlurUpdateSub7
+0x001E61F0	Eve_FilterON	func	tier=B	smt3-role	na	SMT3 name; pairs with Eve_FilterOFF at +0x10; DrawEffect calls it under filter; replaces effBlurUpdateSub9
+0x001E6258	Eve_PartialMultiFilterON	func	tier=B	smt3-role	na	SMT3 name; pairs with Eve_PartialMultiFilterOFF at +0x10; DrawEffect calls it under drawmfilter; replaces effBlurUpdateSub11
 0x001EA090	effBTLPartCalcScale	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16e638 sim 0.700 margin 0.18 pair
 0x001EA230	effBTLPartGetWorldPositionPtr	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16edc8 sim 0.860 margin 0.40 pair
 0x001F8278	dds3EffectBlurDrawFrameMaskReset	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a1e90 sim 0.841 margin 0.15 pair
@@ -19909,6 +19890,9 @@
 0x0046C62C	evtSceneDispWork	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C62C)	smt3-ref/close: nfun=2, other=0, sim=0.9511499999999999, games=2, size=True, sec=True, fn=evtSceneDispProcess
 0x0046C630	evtSceneDispTimer	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C630)	smt3-ref/close: nfun=2, other=0, sim=0.9511499999999999, games=2, size=True, sec=True, fn=evtSceneDispProcess
 0x0046C634	evtSceneDispState	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C634)	smt3-ref/close: nfun=2, other=0, sim=0.9511499999999999, games=2, size=True, sec=True, fn=evtSceneDispProcess
+0x0046C6B4	pmv_pid	data	tier=B	hd-role	na	HD evtCheckProcess returns pmv_pid != 0; replaces RunFrame1Data
+0x0046C6B8	last_skip_stat	data	tier=B	hd-role	na	HD evtCheckLastSkipStat returns last_skip_stat; replaces evtData15
+0x0046C6BC	evt_camera	data	tier=B	smt3-role	na	SMT3 evtRunFrame stores the camera track in evt_camera, same use; replaces evtRunFrameData
 0x0046C80C	fldbokasi	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C80C)	smt3-ref/close: nfun=2, other=0, sim=0.8333, games=2, size=True, sec=True, fn=Process1
 0x0046CCB8	evtMotionSeWork	data	tier=B	smt3-ref	0.88 (n=D_r1_0046CCB8)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=evtInitMotionSeProcess
 0x0046CD08	evtPicturePriList	data	tier=B	smt3-ref	0.88 (n=D_r1_0046CD08)	smt3-ref/loose: nfun=4, other=2, sim=1.0, games=2, size=True, sec=True, fn=mnuDestroyTitleEffectTask
@@ -19959,6 +19943,15 @@
 0x004B4B60	encBlurParam	data	tier=B	smt3-ref	0.80 (n=D_r1_004B4B60)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x004B5EE0	pbDebugPanel2Pos	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EE0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel2
 0x004B5EF0	pbDebugPanel3X	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel3
+0x004B71F0	evtViewerLightParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 10 interpolates the scene light into it, same use; replaces RunFrame2Work
+0x004B7260	evtViewerFogParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 11 fog target, same use; replaces RunFrame2Work3
+0x004B7280	evtViewerBlurParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 13 blur target, same use; replaces RunFrame2Work4
+0x004B72B0	evtViewerMultiBlurParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 14 multi-blur target, same use; replaces RunFrame2Work5
+0x004B72E0	evtViewerFilterParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 16 filter target, same use; replaces RunFrame2Work6
+0x004B7300	evtViewerMultiFilterParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 17 multi-filter target, same use; replaces RunFrame2Work7
+0x004B7330	evtViewerDistBlurParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 15 distortion-blur target, same use; replaces RunFrame2Work8
+0x004B7360	evtViewerRippleBlurParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 23 ripple-blur target, same use; replaces RunFrame2Work9
+0x004B7390	rf2_hbl	data	tier=B	hd-role	na	HD RunFrame2 case 27 (evtHokanHeikouBlur target); replaces RunFrame2Work10
 0x004C5C80	slTopMenuSel	data	tier=B	smt3-ref	0.88 (n=D_r1_004C5C80)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=slChooseData
 0x004FD150	corePktFaceDivParm	data	tier=B	smt3-ref	0.88 (n=D_r1_004FD150)	smt3-ref/loose: nfun=12, other=0, sim=1.0, games=2, size=False, sec=True, fn=corePktXfmLightClip
 0x004FD880	sdfCdImageSearchFileDirect_ent	data	tier=B	smt3-ref	0.80 (n=D_r1_004FD880)	smt3-ref/close: nfun=2, other=0, sim=0.9117500000000001, games=2, size=True, sec=True, fn=sdfCdImageSearchFileDirect

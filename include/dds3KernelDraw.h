@@ -7,6 +7,9 @@ void dds3Blur2Off(s32 frame);
 void dds3Blur2On(s32 frame);
 void dds3Blur2Swap(s32 frame);
 void dds3DistBlurOff(s32 frame);
+void dds3FadeSet(s32 r, s32 g, s32 b, s32 a);
+void dds3FadeClear(void);
+void dds3FadeModeSet(s32 mode);
 void dds3DistBlurOn(s32 frame);
 void dds3DistBlurSwap(s32 frame);
 void dds3Filter2Off(s32 frame);
@@ -48,6 +51,7 @@ void dds3SetRipBlurRGBA(u32 rgba);
 void dds3SetScreenFovy(f32 fovy);
 void dds3SetSoftenBias(s32 frame, f32 soften, f32 bias);
 void dds3StopQuake(void);
+void dds3FreeRenderTexture(void);
 
 #include "enums.h"
 
@@ -88,6 +92,10 @@ s32 sbtlResetJump(void);
 
 extern u32 dds3BackColor;
 extern u32 dds3DrawFlag;
+extern u8 dds3ScreenBlurFlag;
+extern s16 dds3ScreenBlurAlpha;
+extern s16 dds3ScreenBlurScale;
+extern f32 gMapScrollReset[4];
 
 extern s16 dds3DrawBistaData2;
 extern s16 dds3Data33;

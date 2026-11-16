@@ -34,7 +34,7 @@
 0x00188420 itfMesMngChangeWindowType_itf void itfMesMngChangeWindowType_itf(s32 a1)
 0x00189B68 CalcWindow void CalcWindow(s32 a1)
 0x001AB6A0 evtCallMemset2 void evtCallMemset2(ScrVmInteger a1)
-0x001B45D8 dds3FontReqListAdd void dds3FontReqListAdd(void *a1)
+0x001B45D8 MovieStop void MovieStop(void *a1)
 0x001BACE8 InitProcessData evtPictureProcessData_t * InitProcessData(void)
 0x001D0E80 sndCallWaitVblankLabel void sndCallWaitVblankLabel(void)
 0x001D17F0 sndBgmStop void sndBgmStop(void)

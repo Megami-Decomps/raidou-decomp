@@ -52,7 +52,7 @@
 0x001C3820 prmRefDDS3GBWK5 void prmRefDDS3GBWK5(void)
 0x001C3848 prmCallGetRandIntA void prmCallGetRandIntA(void)
 0x001C3878 prmCallGetRandIntA2 void prmCallGetRandIntA2(void)
-0x001CA6A0 dds3FontReqListAdd void dds3FontReqListAdd(void *a1)
+0x001CA6A0 MovieStop void MovieStop(void *a1)
 0x001D0DB0 InitProcessData evtPictureProcessData_t * InitProcessData(void)
 0x001E66E0 sndCallSeStop void sndCallSeStop(void)
 0x001E7158 sndCallWaitVblankLabel void sndCallWaitVblankLabel(void)

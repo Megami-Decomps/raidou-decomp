@@ -57,26 +57,7 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-typedef struct pmdTmxData_t {
-    s32 x;          /* 0x00 */
-    s32 y;          /* 0x04 */
-    u8 color[4];    /* 0x08 */
-    f32 scaleY;     /* 0x0C */
-    f32 scaleX;     /* 0x10 */
-    s32 enabled;    /* 0x14 */
-    s32 variant;    /* 0x18 */
-    s32 preserveAlpha; /* 0x1C: RGB-only alpha-fail drawing */
-} pmdTmxData_t;
 
-typedef char CampDisplayDefaults_size_is_20[
-    (sizeof(pmdTmxData_t) == 0x20) ? 1 : -1];
-
-/* Zero-based selections stored in the camp viewer's primary and secondary
- * option fields. The current menus expose two primary rows and three
- * secondary rows; setters preserve the packed two-bit representation. */
-typedef u32 MnuCampPrimaryOptionIndex;
-
-typedef u32 MnuCampSecondaryOptionIndex;
 
 void evtEventViewerReleaseQueuedNode(evtViewerInfo_t *viewer, evtViewerObject_t *entry, evtFrameInfo_t *node);
 
@@ -151,10 +132,9 @@ void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold);
 void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, evtFrameInfo_t **selected, evtFrameInfo_t **future);
 void SetDefaultTmxData(pmdTmxData_t *display);
 void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, evtFrameInfo_t **lowerKey, evtFrameInfo_t **upperKey);
-void evtHokanTmx(evtFrameInfo_t *from, evtFrameInfo_t *to, pmdTmxData_t *display, f32 ratio);
+void evtHokanTmx(f32 ratio, evtFrameInfo_t *from, evtFrameInfo_t *to, pmdTmxData_t *display);
 void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, evtViewerObject_t *track, s32 frame, pmdTmxData_t *display);
-u32 evtFindInputBranchMessage(void);
-void mnuUnpackNibbleFields(evtFrameInfo_t *key, s32 *lowBitsOut, s32 *highBitsOut);
+void evtGetMessageDataAndTypeFromFrame(evtFrameInfo_t *key, s32 *lowBitsOut, s32 *highBitsOut);
 void mnuCampCheckClockDivisor(void);
 
 typedef struct campEntryEnableSet_t {
@@ -317,7 +297,7 @@ void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, evtViewerObject_t *track, s
     } else {
         ratio = 0.0f;
     }
-    evtHokanTmx(lowerKey, upperKey, display, ratio);
+    evtHokanTmx(ratio, lowerKey, upperKey, display);
 }
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtHokanTmx);
@@ -345,7 +325,7 @@ void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, evtFrameI
     }
     if (track->type == 2) {
         while (*lowerKey != 0 &&
-               evtViewerTestIndexedCondition((*lowerKey)->p0C.sh[0]) !=
+               sndVoiceStatus((*lowerKey)->p0C.sh[0]) !=
                    EVT_VIEWER_INDEXED_CONDITION_MATCHED) {
             *lowerKey = (*lowerKey)->prev;
         }
@@ -353,12 +333,12 @@ void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, evtFrameI
 }
 
 /* Retail never blocks the event viewer's end countdown through this hook. */
-u32 evtFindInputBranchMessage(void) {
+u32 evtFindInputBranchMessage(evtViewerInfo_t *pInfo) {
     return 0;
 }
 
 /* Split the key's packed halfword into its low 12 bits and upper four bits. */
-void mnuUnpackNibbleFields(evtFrameInfo_t *key, s32 *lowBitsOut, s32 *highBitsOut) {
+void evtGetMessageDataAndTypeFromFrame(evtFrameInfo_t *key, s32 *lowBitsOut, s32 *highBitsOut) {
     *lowBitsOut = key->p08.h[0] & CAMP_KEY_LOW_BITS_MASK;
     *highBitsOut = key->p08.h[0] >> CAMP_KEY_HIGH_BITS_SHIFT;
 }
@@ -435,7 +415,7 @@ INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf20);
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf21);
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf22);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtEventRegistBGM);
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtEventFadeOutAllBgm);
 

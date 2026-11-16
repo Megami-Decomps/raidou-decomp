@@ -19,7 +19,6 @@ typedef struct
 
 extern dds3SceneLightParam_t dds3LightParam;
 extern sdfVector4_t dds3LightObjectAmbient;
-extern void evtUnlinkLightObjectBasic(void *h, s32 frame);
 
 struct sdf3DLightParallelPacket_t;
 

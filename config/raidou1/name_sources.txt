@@ -3024,7 +3024,7 @@
 0x001A5A30	GetBaseLightDir2	hd	hd: Raidou HD evt.GetBaseLightDir2, score 9.3 band B
 0x001A5AB8	MakeLightPacket	hd	hd: Raidou HD evt.MakeLightPacket, score 8.8 band B
 0x001A5CB0	evtLinkLightObjectBasic	inferred	smt3-decomp name evtLinkLightObjectBasic, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.98 full=0.98 margin=0.52 callees=0 size=1.038; R2 top op=0.98 full=0.98 margin=0.52 callees=0 size=1.038; replaces evtLinkLightObjectBasic_evt: hd: Raidou HD evt.evtLinkLightObjectBasic, score 8.0 band B
-0x001A5D20	evtUnlinkLightObjectBasic_evt	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD evt.evtUnlinkLightObjectBasic score 5.6 flag R: calls1 calls-of-match st1:call r1+r2
+0x001A5D20	evtUnlinkLightObjectBasic	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD symbols.txt evt$$UnlinkLightObjectBasic; evtCommand.c and dds3LightObjectBasic.c already call it by this name (UNDEF until renamed); replaces evtUnlinkLightObjectBasic_evt
 0x001A5D88	evtLinkExternalLightPacket	hd	hd: Raidou HD evt.evtLinkExternalLightPacket, score 10.0 band A
 0x001A5DA0	evtUnlinkExternalLightPacket	inferred	SMT3HD name via SLUS_209.11 0x001E35C8, unique-masked-hash; map-agrees
 0x001A5DD0	evtSetUnitLightAndAmbient	inferred	SMT3HD name via SLUS_209.11 0x001E35F8, unique-masked-hash; map-agrees
@@ -3334,8 +3334,8 @@
 0x001B4120	EventSkipStart	hd	hd: Raidou HD evtViewer.EventSkipStart, score 9.3 band B
 0x001B4268	evtViewerHasUpdateFlag	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0022F408, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x001B4278	evtCallGetFrameID	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtEventViewer; calls dds3GetFrameID
-0x001B43B0	evtCallVoiceStatus	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtEventViewer; calls sndVoiceStatus
-0x001B45D8	dds3FontReqListAdd	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x117780 sim 0.643 margin 0.64 pair
+0x001B43B0	evtEventViewerApplyEffectChannels	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=same body as dds-decomp evtEventViewerApplyEffectChannels (DDS-only name); current name is a fuzzy hit, the function applies effect textures per track; replaces evtCallVoiceStatus
+0x001B45D8	MovieStop	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD evtViewer.MovieStop: movieStop then zero nowMovieStat/MovieStartFrame/MovieEndFrame, same body; current name is an SMT3 fuzzy hit p=0.40; replaces dds3FontReqListAdd
 0x001B4608	ValidateMovie	hd	hd: Raidou HD evtViewer.ValidateMovie, score 8.2 band B
 0x001B46B0	ValidateRenderTex	hd	hd: Raidou HD evtViewer.ValidateRenderTex, score 7.55 band B
 0x001B48A8	evtProcess3Sub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit event/evtEventViewer; called by Process3
@@ -3618,7 +3618,7 @@
 0x001CB0E8	evtHokanTmx	hd-inferred	hd: Raidou HD evt.evtHokanTmx, score 7.8 band B, hd-ab: calls1 calls-of-match votes2 st1:call r1+r2; replaces mnuBlendCampDisplayFields: fuzzy name from SLUS_211.52 0x0025E460, score 0.95, tools/xgame/fuzzy_apply.py
 0x001CB3B0	mnuFindCampKeyTrackNeighbors	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002432D0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CB470	evtFindInputBranchMessage	hd-inferred	hd: Raidou HD evt.evtFindInputBranchMessage, score 10.25 band A, hd-ab: calls1 prev next gap=exact st1:gap r1+r2; replaces mnuShouldBlockViewerEndCountdown: dds-decomp DDS2 name via SLUS_211.52 0x0025E7B0, masked-words-identical (order map pair); dds-decomp: descriptive
-0x001CB478	mnuUnpackNibbleFields	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00243440, masked-words-identical (strict map pair); dds-decomp: no provenance row
+0x001CB478	evtGetMessageDataAndTypeFromFrame	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD evtViewer.ReqMessage calls evtGetMessageDataAndTypeFromFrame(frame, &pMesNo, &pMesType) at the same site; body splits the key word into low 12 bits and bits 12+; replaces mnuUnpackNibbleFields
 0x001CB498	mnuCampFindMatchingEntryIndex	inferred	fuzzy name from SLUS_209.74 0x00243460, score 1.00, tools/xgame/fuzzy_apply.py
 0x001CB518	mnuCampFindEntryByName	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002434E0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CB590	campResolvePendingValue	inferred	fuzzy name from SLUS_209.74 0x00243558, score 1.00, tools/xgame/fuzzy_apply.py
@@ -3642,7 +3642,7 @@
 0x001CBF80	evtLeaf19	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
 0x001CBFD8	evtLeaf20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
 0x001CC058	evtLeaf21	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
-0x001CC0F8	evtLeaf22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
+0x001CC0F8	evtEventRegistBGM	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evt.c evtEventRegistBGM: same list append at the same call sites; replaces evtLeaf22
 0x001CC160	evtEventFadeOutAllBgm	hd-inferred	hd: Raidou HD evt.evtEventFadeOutAllBgm, score 8.4 band B
 0x001CC1D0	mnuEvaluateCubicBezierPoint	inferred	dds-decomp DDS2 name via SLUS_211.52 0x0025F640, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CC298	mnuSolveCubicBezierYForX	inferred	dds-decomp DDS2 name via SLUS_211.52 0x0025F708, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -4261,21 +4261,21 @@
 0x001E5EC8	effBlurUpdateSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001E5A58, neighbour effPCPBezierEval; called by dds3BlurUpdate
 0x001E5ED0	effBlur2OnSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3Blur2On
 0x001E5F30	effBlur2SwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3Blur2Swap
-0x001E5F40	effBlurUpdateSub3	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001E5F40	Eve_PartialMultiBlurON	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name; the ON half of the ON/OFF pair at +0x10 (Eve_PartialMultiBlurOFF); DrawEffect calls it under drawmblur; replaces effBlurUpdateSub3
 0x001E5F50	Eve_PartialMultiBlurOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub4
 0x001E5F58	Eve_PartialMultiBlurSetParam	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches; replaces effMultiBlurOnSub
 0x001E5FB8	effMultiBlurSwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3MultiBlurSwap
 0x001E5FC0	Eve_PartialMultiBlurSetTex	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001E5FD0	Eve_PartialMultiBlurSetDefTex	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches; replaces effCallBillboardGetGeneralTex
-0x001E5FF8	effBlurUpdateSub5	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001E5FF8	Eve_DistortionBlurON	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name; pairs with Eve_DistortionBlurOFF at +0x10; DrawEffect calls it under drawdblur; replaces effBlurUpdateSub5
 0x001E6008	Eve_DistortionBlurOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub6
-0x001E6010	effDistBlurOnSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3DistBlurOn
+0x001E6010	Eve_DistortionBlurSetParam	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 name; body copies the param into hEve_DistortionBlur; replaces effDistBlurOnSub
 0x001E6070	effDistBlurSwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3DistBlurSwap
 0x001E6078	Eve_DistortionBlurSetTex	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001E6088	Eve_DistortionBlurSetDefTex	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches; replaces effCallBillboardGetGeneralTex2
-0x001E60B0	effBlurUpdateSub7	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001E60B0	Eve_RippleBlurON	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name; pairs with Eve_RippleBlurOFF at +0x10; DrawEffect calls it under drawrblur; replaces effBlurUpdateSub7
 0x001E60C0	Eve_RippleBlurOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub8
-0x001E60C8	effRipBlurOnSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3RipBlurOn
+0x001E60C8	Eve_RippleBlurSetParam	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 name; body copies the param into hEve_RippleBlur; replaces effRipBlurOnSub
 0x001E6128	Eve_RippleBlurGetParams	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches; drop smt3_symbols alias; replaces effRipBlurSwapSub
 0x001E6130	Eve_RippleBlurSetTex	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001E6140	Eve_RippleBlurSetDefTex	inferred	SMT3HD name via SLUS_209.11 0x001AD4B8, reloc-identical; map-agrees
@@ -4283,11 +4283,11 @@
 0x001E6178	effDisableFramebufferQuad	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0018F660, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x001E6180	effCopyFramebufferQuadParameters	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0018F668, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001E61E0	effGetCh73Params	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0018F6C8, masked-words-identical (order map pair); dds-decomp: descriptive
-0x001E61F0	effBlurUpdateSub9	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001E61F0	Eve_FilterON	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name; pairs with Eve_FilterOFF at +0x10; DrawEffect calls it under filter; replaces effBlurUpdateSub9
 0x001E6200	Eve_FilterOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub10
-0x001E6208	dblurSetParam2	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1adb38 sim 1.000 margin 0.00 pair
+0x001E6208	Eve_FilterSetParam	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 name; body copies 24 bytes into Eve_Filter; replaces dblurSetParam2
 0x001E6248	effFilter2SwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3Filter2Swap
-0x001E6258	effBlurUpdateSub11	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001E6258	Eve_PartialMultiFilterON	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name; pairs with Eve_PartialMultiFilterOFF at +0x10; DrawEffect calls it under drawmfilter; replaces effBlurUpdateSub11
 0x001E6268	Eve_PartialMultiFilterOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub12
 0x001E6270	Eve_PartialMultiFilterSetParam	inferred	SMT3HD name via SLUS_209.11 0x001AD560, reloc-identical; map-agrees
 0x001E62C0	effMFilterSwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3MFilterSwap
@@ -22228,9 +22228,9 @@
 0x0046C6AA	evt_file_minor	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C6AA); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtFileName2Head
 0x0046C6AC	evtData14	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: evtFileName2Menu, evtPfsEventPmvtool, evtCallEventFadeOutAllBgm
 0x0046C6AE	Process3Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by Process3
-0x0046C6B4	RunFrame1Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by RunFrame1 (3 of 6 refs, 4 functions)
-0x0046C6B8	evtData15	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: EventSkipStart, Process2_evtViewer, evtCheckLastSkipStat
-0x0046C6BC	evtRunFrameData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by evtRunFrame (2 of 3 refs, 2 functions)
+0x0046C6B4	pmv_pid	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCheckProcess returns pmv_pid != 0; replaces RunFrame1Data
+0x0046C6B8	last_skip_stat	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCheckLastSkipStat returns last_skip_stat; replaces evtData15
+0x0046C6BC	evt_camera	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 evtRunFrame stores the camera track in evt_camera, same use; replaces evtRunFrameData
 0x0046C6C0	evtCallGetFrameIDData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCallGetFrameID
 0x0046C6C4	evtData16	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: evtFRAMESETOK, evtCallGetPIDfromUID
 0x0046C6C8	evtFRAMESETOKDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtFRAMESETOKData
@@ -24590,16 +24590,15 @@
 0x004B6DF0	softenBiasWork	inferred	method=smt3-ref; p=0.98 (n=D_r1_004B6DF0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=soften_bias_Process
 0x004B6E28	evtStageScriptPath	inferred	method=smt3-ref; p=0.98 (n=D_r1_004B6E28); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=1, other=0, sim=1.0, games=1, size=True, sec=True, fn=evtStartEvent
 0x004B6E68	CustomSceneLightArray	inferred	method=hd; p=0.37 (n=D_r1_004B6E68); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=3, using=4
-0x004B71F0	RunFrame2Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B7250	RunFrame2Work2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B7260	RunFrame2Work3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B7280	RunFrame2Work4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B72B0	RunFrame2Work5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B72E0	RunFrame2Work6	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B7300	RunFrame2Work7	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B7330	RunFrame2Work8	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B7360	RunFrame2Work9	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
-0x004B7390	RunFrame2Work10	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
+0x004B71F0	evtViewerLightParam	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 symbol_addrs; RunFrame2 case 10 interpolates the scene light into it, same use; replaces RunFrame2Work
+0x004B7260	evtViewerFogParam	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 symbol_addrs; RunFrame2 case 11 fog target, same use; replaces RunFrame2Work3
+0x004B7280	evtViewerBlurParam	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 symbol_addrs; RunFrame2 case 13 blur target, same use; replaces RunFrame2Work4
+0x004B72B0	evtViewerMultiBlurParam	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 symbol_addrs; RunFrame2 case 14 multi-blur target, same use; replaces RunFrame2Work5
+0x004B72E0	evtViewerFilterParam	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 symbol_addrs; RunFrame2 case 16 filter target, same use; replaces RunFrame2Work6
+0x004B7300	evtViewerMultiFilterParam	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 symbol_addrs; RunFrame2 case 17 multi-filter target, same use; replaces RunFrame2Work7
+0x004B7330	evtViewerDistBlurParam	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 symbol_addrs; RunFrame2 case 15 distortion-blur target, same use; replaces RunFrame2Work8
+0x004B7360	evtViewerRippleBlurParam	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 symbol_addrs; RunFrame2 case 23 ripple-blur target, same use; replaces RunFrame2Work9
+0x004B7390	rf2_hbl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD RunFrame2 case 27 (evtHokanHeikouBlur target); replaces RunFrame2Work10
 0x004B7520	evtWork2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: evtSTAGE, evtCallChipAllocDirect, evtCallMenuDisp
 0x004B7530	evtSTAGEWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtSTAGE
 0x004B77D8	evtEventPackScriptPath	inferred	method=smt3-alias; p=0.90 (n=D_r1_004B77D8); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1

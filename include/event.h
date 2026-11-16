@@ -31,7 +31,7 @@ typedef struct evtFrameInfo_t {
         };
     };
     u8 pad28[4];
-    union { void *work; void *payload; }; /* Type 0x12 owns a dds3Basic_t; other kinds hold buffers or borrowed data. */
+    void *payload; /* Type 0x12 owns a dds3Basic_t; other kinds hold buffers or borrowed data. */
     struct evtFrameInfo_t *next;
     struct evtFrameInfo_t *prev;
 } evtFrameInfo_t;
@@ -269,7 +269,9 @@ typedef struct evtUnit_t {
     s8 firstSlot;
     s8 secondSlot;
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    u8 padRaidou172[6];
+    u8 padRaidou172;
+    u8 ShadowAlpha;
+    f32 ShadowY;
     u32 unk178;
     u32 unk17C;
 #endif

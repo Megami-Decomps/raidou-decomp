@@ -4,6 +4,14 @@
 #include "common.h"
 #include "basic.h"
 
+typedef struct dds3MoverBasicWorkData_t
+{
+    dds3Basic_t *pObjectBasic;
+    dds3PathBasicControl_t *pPathControl;
+    dds3BasicControlProc_t pFunc;
+    dds3Basic_t *pPathBasic;
+} dds3MoverBasicWorkData_t;
+
 dds3Basic_t *dds3AddMoverBasic(dds3Basic_t *pObjectBasic);
 void dds3MoverBasicFreePath(dds3Basic_t *pMoverBasic);
 void dds3MoverBasicMakePath(dds3Basic_t *pMoverBasic);

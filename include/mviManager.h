@@ -16,6 +16,9 @@ typedef struct
 extern movieDecodeWork_t movieDecodeWork asm("movieCb");
 
 void movieStop(void);
+void moviePlay(s32 aNum);
+s32 mviValidateMovieSub(void);
+s32 mviDrawMessageSub(void);
 void movieViewerFree(void);
 
 #endif

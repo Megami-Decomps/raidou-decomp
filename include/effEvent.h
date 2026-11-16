@@ -26,12 +26,36 @@ void effEveBEDCutSetScale(effEveBEDCut_t *hEveBEDCut, f32 scale);
 void effEveBEDCutDraw(effEveBEDCut_t *hEveBEDCut);
 
 void Eve_PartialMultiFilterSetDefTex(void);
+void Eve_PartialMultiFilterSetTex(sdfTexHandle_t *hTex);
+void Eve_RippleBlurSetTex(sdfTexHandle_t *hTex);
+void Eve_PartialMultiBlurSetTex(sdfTexHandle_t *hTex);
+void Eve_DistortionBlurSetTex(sdfTexHandle_t *hTex);
 void Eve_PartialMultiFilterSetParam(dds3Effect_PartialMultiFilterParam_t *pParam);
 void Eve_RippleBlurSetDefTex(void);
+void Eve_PartialMultiBlurSetDefTex(void);
+void Eve_DistortionBlurSetDefTex(void);
+void Eve_PartialMultiBlurON(void);
+void Eve_PartialMultiBlurOFF(void);
+void Eve_PartialMultiFilterON(void);
+void Eve_PartialMultiFilterOFF(void);
+void Eve_DistortionBlurON(void);
+void Eve_DistortionBlurOFF(void);
+void Eve_RippleBlurON(void);
+void Eve_RippleBlurOFF(void);
+void Eve_FilterON(void);
+void Eve_FilterOFF(void);
+void effEnableFramebufferQuad(void);
+void effDisableFramebufferQuad(void);
+effScreenDrawParams_t *BlurEditorGetParams(void);
+effBlurTemplate_t *effMultiBlurSwapSub(void);
+effBlurScatterWork_t *effDistBlurSwapSub(void);
+effBlurScaleWork_t *Eve_RippleBlurGetParams(void);
+effScreenDrawParams_t *effGetCh73Params(void);
+dds3Effect_Filter_t *effFilter2SwapSub(void);
+dds3Effect_PartialMultiFilter_t *effMFilterSwapSub(void);
 
 #include "effManager.h"
 
-struct DepthOfFieldSetting;
 
 /* Show flags, one byte each in sdata. */
 extern s8 Eve_BlurShow;
@@ -46,7 +70,11 @@ extern dds3Effect_Filter_t Eve_Filter;
 
 void BlurSetParam2(dds3Effect_Blur_t *pParam);
 void EffectDraw(void);
-void dblurSetParam2(struct DepthOfFieldSetting *_hokanData);
+void Eve_FilterSetParam(dds3Effect_Filter_t *pParam);
+void Eve_PartialMultiBlurSetParam(dds3Effect_PartialMultiBlurParam_t *pParam);
+void Eve_DistortionBlurSetParam(dds3Effect_DistortionBlurParam_t *pParam);
+void Eve_RippleBlurSetParam(void *pParam);
+void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source);
 void effBTLSys_Nego_Stone_Delete2(effHandle_t *hEffect);
 
 #endif
