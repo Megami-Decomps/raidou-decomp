@@ -126,4 +126,14 @@ void btlDebugDrawRadiusGuide(f32 *center, f32 radius, u32 color, s32 flags);
 void btlDebugDrawSegment(f32 *from, f32 *to, u32 color);
 void btlDebugMenuRecordNoOp(void *context);
 
+/* Callbacks of the pb debug menus (asm unit code_0017BAE8); the menu slots fix the parameters. */
+u32 pbLeaf3(void);
+u32 pbLeaf4(u32 value);
+void pbLeaf5(u32 job);
+void pbLeaf6(u32 job);
+void pbLeaf7(u32 job);
+void pbLeaf8(u32 job);
+void pbLeaf9(u32 job);
+void pbLeaf10(u32 job);
+
 #endif
