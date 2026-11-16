@@ -73,9 +73,9 @@ enum {
 
 typedef struct sdfGsTexturePacket_t {
     SdfGsPacketHeader header;
-    SdfGsRegisterWrite sampling;
-    SdfGsRegisterWrite texture;
-    SdfGsRegisterWrite clamp;
+    sdfGrTagStdReg_t sampling;
+    sdfGrTagStdReg_t texture;
+    sdfGrTagStdReg_t clamp;
 } sdfGsTexturePacket_t;
 
 typedef char sdfGsTexturePacket_size_must_be_0x50[
@@ -146,12 +146,12 @@ void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, effGeneratedTextureDescript
     texturePacket->header.vifCommands = 0x5000000410000000ULL;
     texturePacket->header.gifTag = 0x1000000000008003ULL;
     texturePacket->header.gifRegisters = SDF_GIF_REGISTER_AD;
-    texturePacket->sampling.value = sdfTexGetTex1Reg(source->texture);
-    texturePacket->sampling.registerId = SDF_GS_TEX1_1;
-    texturePacket->texture.value = sdfTexGetTex0Reg(source->texture);
-    texturePacket->texture.registerId = SDF_GS_TEX0_1;
-    texturePacket->clamp.value = sdfTexGetClampReg(source->texture);
-    texturePacket->clamp.registerId = SDF_GS_CLAMP_1;
+    texturePacket->sampling.data = sdfTexGetTex1Reg(source->texture);
+    texturePacket->sampling.reg = SDF_GS_TEX1_1;
+    texturePacket->texture.data = sdfTexGetTex0Reg(source->texture);
+    texturePacket->texture.reg = SDF_GS_TEX0_1;
+    texturePacket->clamp.data = sdfTexGetClampReg(source->texture);
+    texturePacket->clamp.reg = SDF_GS_CLAMP_1;
     sdfDrawTagLink(list, (u32)texturePacket);
 
     EE_MMI_UNIT_MATRIX(matrix);

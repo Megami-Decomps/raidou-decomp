@@ -298,9 +298,9 @@ typedef struct fldSceneRequest_t {
 } fldSceneRequest_t;
 
 typedef struct sdfGsTextureAlphaFlushPacket_t {
-    SdfGsPacketHeader header;
-    SdfGsRegisterWrite textureAlpha;
-    SdfGsRegisterWrite textureFlush;
+    sdfGrPacketHeader_t header;
+    sdfGrTagStdReg_t textureAlpha;
+    sdfGrTagStdReg_t textureFlush;
 } sdfGsTextureAlphaFlushPacket_t;
 
 typedef char sdfGsTextureAlphaFlushPacket_size_must_be_0x40[

@@ -213,18 +213,6 @@ typedef struct billSnapshot_t {
 typedef char billSnapshot_size_must_be_0x24[
     (sizeof(billSnapshot_t) == 0x24) ? 1 : -1];
 
-/* Fifteen billboard quads precede the child manager in its 0x450 allocation. */
-typedef struct BillPacketWork {
-    f32 positions[15][4]; /* 0x000 */
-    u32 colors[15];       /* 0x0F0 */
-    billTextureQuad_t uv[15]; /* 0x12C */
-    f32 offsets[15][8];   /* 0x21C: four X/Y corner offsets per quad */
-    s32 count;           /* 0x3FC */
-} BillPacketWork;
-
-typedef char BillPacketWork_size_must_be_0x400[
-    (sizeof(BillPacketWork) == 0x400) ? 1 : -1];
-
 /* Child manager at retained allocation +0x400; shared by resource and draw owners. */
 typedef struct billChildPayload_t {
     sdfTexHandle_t *texture; /* 0x00: acquired texture reference. */
@@ -240,7 +228,7 @@ typedef struct billChildPayload_t {
     u16 packetListIndex; /* 0x40 */
     u8 pad42[2];
     struct sdfMemHandle_t *allocation; /* 0x44: allocation descriptor released with this child. */
-    BillPacketWork *work; /* 0x48: retained packet-buffer address */
+    sdfBillBoardBatch_t *work; /* 0x48: retained packet-buffer address */
     struct billChildPayload_t *next; /* 0x4C */
 } billChildPayload_t;
 

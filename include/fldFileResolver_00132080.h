@@ -5,8 +5,8 @@
 #include "common.h"
 #include "field.h"
 
-/* Appending the packet patches the DMA tag's link; the VIF and GIF words
- * retain the renderer's original commands and register-list encoding. */
+/* sdfGrPacketHeader_t's layout as plain words: its dmatag union reorders ee-gcc's stores
+ * in effDrawGeneratedTextureQuad, which retail emits in this type's order. */
 typedef struct SdfGsPacketHeader {
     u64 dmaTag;
     u64 vifCommands;
@@ -14,16 +14,8 @@ typedef struct SdfGsPacketHeader {
     u64 gifRegisters;
 } QWORD_ALIGNED SdfGsPacketHeader;
 
-typedef struct SdfGsRegisterWrite {
-    u64 value;
-    u64 registerId;
-} SdfGsRegisterWrite;
-
 typedef char SdfGsPacketHeader_size_must_be_0x20[
     (sizeof(SdfGsPacketHeader) == 0x20) ? 1 : -1];
-
-typedef char SdfGsRegisterWrite_size_must_be_0x10[
-    (sizeof(SdfGsRegisterWrite) == 0x10) ? 1 : -1];
 
 typedef u32 FldSpawnBatchKind;
 

@@ -16,85 +16,6 @@ typedef u32 EvtPolygonMovieWorkFlags;
 /* Signed index into the fixed message-window pool; -1 means no window. */
 typedef s32 ItfMesWindowIndex;
 
-/* PMD2 records and the complete 0x11C-byte owner cleared by both games'
- * InitPolygonMovieWorkData. Movie parsing, asynchronous resource loading,
- * viewer dialogs and message-window lifetime all use this single object. */
-typedef struct evtPolyMovieResourceSlot_t {
-    struct fileRequest *request;
-    sdfMemHandle_t *handle;
-    pmdHeader_t *address;
-} evtPolyMovieResourceSlot_t;
-
-typedef struct PolyMovieWork {
-    EvtPolygonMovieWorkFlags flags; /* 0x00 */
-    evtPolyMovieResourceSlot_t mainResource; /* 0x04 */
-    pmdHeader_t *data;   /* 0x10 */
-    const pmdEntry_t *entries; /* 0x14: borrowed directory records. */
-    u8 *mainEntry1Data;   /* 0x18 */
-    u32 mainEntry1Value; /* 0x1C: value from the main type-1 entry. */
-    u8 *mainEntry2Data;   /* 0x20 */
-    u32 mainEntry2Value; /* 0x24: value from the main type-2 entry. */
-    u8 *mainEntry10Data;  /* 0x28 */
-    u8 *mainEntry11Data;  /* 0x2C */
-    u8 *mainEntry12Data;  /* 0x30 */
-    u8 *mainEntry3Data;   /* 0x34 */
-    u32 mainEntry3Count; /* 0x38: rows in the main type-3 package table */
-    u8 *mainEntry9Data;   /* 0x3C */
-    u8 *mainEntry7Data;   /* 0x40 */
-    u32 mainEntry7Count; /* 0x44: PMD type-7 resource row count */
-    u8 *mainEntry8Data;   /* 0x48 */
-    u8 *mainEntry6Data;   /* 0x4C */
-    u8 *mainEntry22Data;  /* 0x50 */
-    u32 mainEntry22Count; /* 0x54: PMD type-22 texture row count */
-    u8 *mainEntry23Data;  /* 0x58 */
-    evtPolyMovieResourceSlot_t secondaryResource; /* 0x5C */
-    evtPolyMovieResourceSlot_t tertiaryResource; /* 0x68 */
-    pmdHeader_t *sub;    /* 0x74 */
-    const pmdEntry_t *subEntries; /* 0x78: borrowed directory records. */
-    u8 *subEntry1Data;    /* 0x7C */
-    u32 subEntry1Value; /* 0x80: value from the secondary type-1 entry. */
-    u8 *subEntry0Data;    /* 0x84 */
-    const struct EvtCompactRow *subEntry4Kind4Data; /* 0x88 */
-    const struct EvtExtendedRow *subEntry4OtherData; /* 0x8C */
-    pmdHeader_t *sub2;   /* 0x90 */
-    const pmdEntry_t *sub2Entries; /* 0x94: borrowed directory records. */
-    const struct EvtExtendedRow *secondEntry4Data; /* 0x98 */
-    u32 extendedEntry4Count; /* 0x9C: rows in the extended type-4 table */
-    u32 subEntry4Count; /* 0xA0 */
-    u8 *subEntry5Data;    /* 0xA4 */
-    u32 subEntry5Value; /* 0xA8: value from the secondary type-5 entry. */
-    u8 *subEntry13Data;   /* 0xAC */
-    u32 subEntry13Value; /* 0xB0: value from the secondary type-13 entry. */
-    u8 *subEntry14Data;   /* 0xB4 */
-    u32 subEntry14Value; /* 0xB8: value from the secondary type-14 entry. */
-    u8 *subEntry15Data;   /* 0xBC */
-    u32 subEntry15Value; /* 0xC0: value from the secondary type-15 entry. */
-    u8 *subEntry16Data;   /* 0xC4 */
-    u32 subEntry16Value; /* 0xC8: value from the secondary type-16 entry. */
-    u8 *subEntry17Data;   /* 0xCC */
-    u32 subEntry17Value; /* 0xD0: value from the secondary type-17 entry. */
-    u8 *subEntry18Data;   /* 0xD4 */
-    u32 subEntry18Value; /* 0xD8: value from the secondary type-18 entry. */
-    u8 *subEntry19Data;   /* 0xDC */
-    u32 subEntry19Value; /* 0xE0: value from the secondary type-19 entry. */
-    u8 *subEntry20Data;   /* 0xE4 */
-    u32 subEntry20Value; /* 0xE8: value from the secondary type-20 entry. */
-    u8 *subEntry24Data;   /* 0xEC */
-    u32 subEntry24Value; /* 0xF0: value from the secondary type-24 entry. */
-    u8 *subEntry21Data;   /* 0xF4 */
-    u32 subEntry21Count; /* 0xF8: rows in the sub type-21 group metadata table */
-    u8 *subEntry25Data;   /* 0xFC */
-    u32 subEntry25Count;       /* 0x100 */
-    ItfMesWindowIndex messageManagerHandle; /* 0x104: owned index for the main type-6 message window. */
-    struct dds3ProcessID_t *task; /* 0x108: scheduler task created for this viewer */
-    s32 eventId;       /* 0x10C */
-    s32 sceneId;       /* 0x110 */
-    u32 unk_114;       /* 0x114 */
-    s32 *buffer;       /* 0x118 */
-} PolyMovieWork;
-
-typedef char PolyMovieWork_size_must_be_0x11C[(sizeof(PolyMovieWork) == 0x11C) ? 1 : -1];
-
 /* A timeline key's scalar formats are selected by its track kind. */
 typedef union EvtViewParam {
     f32 f; s32 i; u32 u; u16 h[2]; s16 sh[2]; u8 b[4]; s8 sb[4];
@@ -202,11 +123,7 @@ typedef char evtViewerObject_size[(sizeof(evtViewerObject_t) == 0x84) ? 1 : -1];
 struct evtViewerInfo_t {
     sdfMemHandle_t *block;
     u32 flags;
-#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
     struct evtPolygonMovieWork_t *workdata;
-#else
-    PolyMovieWork *workdata;
-#endif
     s32 totalframe;
     s32 firstframe;
     EvtFrameRange lastframe;
