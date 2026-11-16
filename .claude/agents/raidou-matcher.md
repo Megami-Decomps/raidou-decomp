@@ -93,7 +93,10 @@ Per function, in this order:
   casts that hide a wrong type, no local prototypes. Allowed, as in smt3-decomp: the
   `FAKEMATCH_ASM_*` macros from include/common.h (`_REG` register binding, `_LIVE*` keeping a
   value live, `_READ*` reading it, e.g. after a call to stop a tail call, `_NAME` retail symbol).
-  Never spell `asm` in a unit; add a macro to common.h if a form is missing. A raw offset means a struct
+  Never spell `asm` in a unit; add a macro to common.h if a form is missing. The macros are a
+  last resort: first try the real types, prototypes, return values, statement order, temporaries
+  and the lever index. Use one only when those fail, and record what was tried in the function's
+  docs/matching entry (`Fakematch:` line). A land report counts the new uses. A raw offset means a struct
   is wrong: fix the type for Raidou in T/include (per-game definition if the games differ)
   and write the field access.
 - Names follow the game convention with no exceptions: SMT3 name, else HD name, else
