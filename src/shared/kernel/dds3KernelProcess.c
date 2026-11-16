@@ -123,10 +123,10 @@ s32 dds3DrawFirstProcess(dds3ProcessID_t *id)
         }
     }
     sdf3DMakeLightParallelPacket(&dds3DrawEnv[frame].subLight, dds3Data5, &dds3Data6);
-    savedParamFlag = GlobalParamFlag;
-    GlobalParamFlag = 0;
+    savedParamFlag = sdf3DScreenAdjust;
+    sdf3DScreenAdjust = 0;
     sdf3MakeScreenParam(&DrawEnv);
-    GlobalParamFlag = savedParamFlag;
+    sdf3DScreenAdjust = savedParamFlag;
     LookAtMatrix(&fldAutoMapRect, &fldAutoMapEye, &fldAutoMapUp);
     SDF_VU0_STOREMATRIX(&aProjMatrix);
     sdf3DMakeViewportPacket(&dds3DrawEnv[frame].subViewport, &DrawEnv, &aProjMatrix);

@@ -19,7 +19,9 @@ typedef struct fldMapAreaHead_t
     s32 eveHitOfs;
     s32 kaidanOfs;
     s32 extraOfs;
-    u8 unk20[8];
+    s32 resv20;
+    s16 w;
+    s16 h;
     s16 originX;
     s16 originZ;
     s16 hit64Count;
@@ -151,8 +153,16 @@ typedef struct fldMapLightHead_t
     s32 ofs0;
     s32 lightOfs;
     s32 count;
-    s32 pad;
+    s16 w;
+    s16 h;
 } fldMapLightHead_t;
+
+/* Light grid cell: index into the area's light table, 0xFF for none. */
+typedef struct fldMapLightCell_t
+{
+    u8 light;
+    u8 resv;
+} fldMapLightCell_t;
 
 /* Placed light: cell position, radius, colors; ofs 0x30 total. */
 typedef struct fldMapLightRec_t
@@ -530,8 +540,16 @@ extern fldMapFileHead_t *mapFileLoadData7;
 extern void *pFldMap;
 extern fldMapAreaHead_t *pMapAreaNow;
 extern fldMapAreaHead_t *pMapAreaDat;
-extern void *pMapColmNow;
-extern void *pMapColmDat;
+/* One collision grid cell (HD MapColm_t). */
+typedef struct MapColm_t {
+    u8 hit;
+    u8 cut;
+    u8 attr;
+    s8 hight;
+} MapColm_t;
+
+extern MapColm_t *pMapColmNow;
+extern MapColm_t *pMapColmDat;
 extern fldMapHit64Rec_t *mapMapSetAreaRefreshData;
 extern void *fldData25;
 extern fldMapPointRec_t *mapMapSetAreaRefreshData2;
@@ -544,11 +562,27 @@ extern fldMapKaidanRec_t *mapMapSetAreaRefreshData4;
 extern void *fldData28;
 extern fldMapEveHitHead_t *pMapEveHitNow;
 extern void *fldData29;
-extern s32 *mapCallSetOt2Data2[64];
+/* Per-area sprite block at fldMapAreaHead_t.extraOfs; the first two words are file offsets. */
+typedef struct mapOt2Block_t {
+    s32 ofs00;   /* to the mapData35 cell grid */
+    s32 ofs04;   /* to the mapData36 block */
+    u8 unk08[8];
+    s16 w;
+    s16 h;
+    u8 unk14[4];
+    s16 spriteNum;
+} mapOt2Block_t;
+
+typedef struct mapOt2Cell_t {
+    u8 id;
+    u8 unk01;
+} mapOt2Cell_t;
+
+extern mapOt2Block_t *mapCallSetOt2Data2[64];
 extern fldMapBitRec_t mapCallSetOt2Data[128];
 extern fldMapLightRec_t *mapFileLoadData5[64];
 extern void *mapFileLoadData6[64];
-extern void *mapData35[64];
+extern mapOt2Cell_t *mapData35[64];
 extern void *mapData36[64];
 extern u8 mapFileLoadData2[];
 extern u8 mapFileLoadData3[];
@@ -582,7 +616,7 @@ extern u8 nbCallGetIntParaData[4096];
 extern u8 mapData3[1024];
 extern u8 p2sdData[1536];
 extern u8 mapData4[5120];
-extern u8 mapData5[3072];
+extern s8 mapData5[48][64];
 extern u8 fldData2[48];
 extern u8 mapMapObjectRefreshData[512];
 extern u8 nbCallGetIntParaData4[192];
@@ -591,7 +625,20 @@ extern u8 mapData8[1024];
 extern u8 mapData9[1024];
 extern u8 mapData10[1024];
 extern u8 mapData11[1024];
-extern u8 mapMskEveHitTbl[320];
+/* Event hit mask row, 20 bytes (HD MskEveHitTbl_t plus padding). */
+typedef struct MskEveHitTbl_t {
+    s16 _map;
+    s16 _floor;
+    s16 _EveHitId;
+    s16 _EffPosId;
+    s16 _EffPosY;
+    s16 _PlayerPosId;
+    s16 _NekoPosId;
+    s16 _NakamaPosId;
+    s16 _OverCutId;
+    s16 pad12;
+} MskEveHitTbl_t;
+extern MskEveHitTbl_t mapMskEveHitTbl[16];
 #endif
 extern s32 mapBtlReLoadMapSBtlSceneSub2Data;
 void mapBtlReLoadMapSBtlSceneSub2(void);
@@ -614,7 +661,7 @@ extern fldMapSub2File_t *mapFileLoadData9;
 extern fldMapSub2File_t *mapFileLoadData10;
 extern fldMapLightHead_t *mapData106;
 extern void *mapData107;
-extern void *mapData108;
+extern fldMapLightCell_t *mapData108;
 extern void *mapData109;
 
 extern sdfMemHandle_t *mapData110;
@@ -627,14 +674,17 @@ extern void *mapMapSetAreaData21;
 extern MpbEncHead_t *mapData112;
 extern s32 fldFreeMapDataData2;
 extern MpbPoint_t *pMpbPointNow;
+/* ALLTBL.LB resources 0 and 3, layouts unknown. */
+extern u8 mapEXFloorData[];
+extern u8 mapWork5[];
 extern s32 fldFreeMapDataData3;
 extern MpbWall_t *mapData113;
 extern s32 fldFreeMapDataData4;
-extern void *mapMapSetAreaData22;
+extern u8 *mapMapSetAreaData22;
 extern void *mapMapSetAreaData23;
 
 extern fldMapAreaHead_t *mapMapSetAreaData[64];
-extern void *mapMapSetAreaData2[64];
+extern MapColm_t *mapMapSetAreaData2[64];
 extern void *mapMapSetAreaData3[64];
 extern void *mapMapSetAreaData4[64];
 extern void *mapMapSetAreaData5[64];
@@ -690,7 +740,7 @@ void mapFileLoadSub3(s16 uniq, s32 a1);
 s32 mapFileLoadSub4(s32 floor, s32 kind);
 void mapFileLoadSub5(s32 a0, f32 a1, f32 a2, f32 a3, f32 a4, f32 a5, f32 a6, f32 a7, f32 a8, f32 a9, f32 a10, f32 a11, f32 a12);
 void mapFileLoadSub6(f32 *outx, f32 *outz, f32 x, f32 z);
-s32 mapFileLoadSub7(void);
+s32 mefMistTexOnDataCheck(void);
 void mapFileLoadSub8(s32 a0);
 void mapFileLoadSub9(s32 a0, f32 a1);
 void mapFileLoadSub10(s32 a0);
@@ -715,6 +765,104 @@ extern struct sdfMemHandle_t *fldTitleMiniWork4;
 extern struct effHandle_t *fldTitleMiniTex3;
 void fldWallObjTaskSub(s32 floor, s32 ix, s32 iy, f32 *x, f32 *z);
 
+extern const char mapStrMapCutSetFromPos[];
 void mapCutSet_From_Pos(f32 x, f32 y, f32 z);
+
+/* Mist particle system (HD mefMistSystem_t), 0x11040 bytes from sdfMemAllocDirect. */
+typedef struct mefMistParticle_t {
+    f32 pos[2];
+    u8 unk08[8];
+    f32 velocity[2];
+    u8 unk18[0x58 - 0x18];
+    u32 lifeCnt;
+    u32 deathCnt;
+    u32 fExist;
+    u8 unk64[0x70 - 0x64];
+} mefMistParticle_t;
+
+typedef struct mefMistSystem_t {
+    mefMistParticle_t particle[512];
+    u8 unkE000[0x11000 - 0xE000]; /* HD rgbaArray, posArray */
+    sdfMemHandle_t *hMem;
+    u32 num;
+    struct sdfTexHandle_t *texHandle;
+    u32 cnt;
+    s32 mode;
+    s32 ot;
+    s32 scroll;
+    s32 alpha;
+    s32 saturation;
+    s32 brightness;
+    u32 frequency;
+    u32 fRun;
+    u32 fDebugMenu;
+    u32 debugMenuIndex;
+    u8 fDebugTimeGraph;
+    s32 alphaMax;
+} mefMistSystem_t;
+
+extern mefMistSystem_t *pMapMoya;
+void mefMistUpdate(void);
+void mefMistEmitParticle(void);
+void mefMistUpdateParticle(void);
+void fldCallGetRandFloatA(mefMistParticle_t *particle);
+
+extern u32 mapSKYBGEDITData5;
+extern s32 mapBgSetScrollData20;
+extern sdfMemHandle_t *hWorkArea2;
+extern s32 sdfDiscRequestSemaphore2;
+void setCngCameraDir(void);
+void mapEffEplEnd(s32 idx);
+void mapEffEplAllEnd(void);
+
+/* Effect slot of the EPL table, 33 entries (HD MAP_EPL_EFF_WORK_t). */
+typedef struct MAP_EPL_EFF_WORK_t {
+    sdfVector4_t pos;
+    sdfMemHandle_t *hMem;
+    void *pMem;
+    struct effHandle_t *eHdl;
+    s32 view;
+    f32 yukay;
+    s32 startwait;
+    s32 time;
+    s32 resv;
+} MAP_EPL_EFF_WORK_t;
+
+extern MAP_EPL_EFF_WORK_t mapEffEplStartWork[33];
+void mapEffEplAllDrawTask(void);
+void mapCutSetSub(s32 cut);
+
+void mapEveHitMsk_Find(s32 evehitid);
+
+void fldJmsQuestMapLoad_fld(s32 area, s32 sub);
+void mapCallFilterSet(s32 no);
+
+/* Bg scroll state (HD tzoom_player_n_*, fscroll_*). */
+extern s32 tzoom_event;
+extern s32 tzoom_event_time;
+extern s32 tzoom_event_cnt;
+extern f32 mapZoomSetGoalData;
+extern f32 mapZoomSetGoalData2;
+extern f32 mapZoomSetGoalData3;
+extern f32 mapData59;
+extern f32 mapZoomSetGoalData4;
+extern f32 mapZoomSetGoalData5;
+extern f32 mapZoomSetGoalData6;
+extern f32 mapZoomSetGoalData7;
+extern f32 mapZoomSetGoalData8;
+extern s32 fscroll_mode;
+extern s32 mapData61;
+extern s32 mapBgSetScrollData3;
+extern f32 mapData62;
+extern f32 mapData63;
+extern f32 mapData64;
+extern f32 mapData65;
+extern f32 mapData66;
+extern f32 mapData67;
+extern f32 mapData68;
+extern f32 mapData69;
+extern f32 mapData70;
+void mapBgFScrollOn(f32 x, f32 y, f32 z, s32 hokan);
+void sndSePlay_sndAt3(s32 hokan);
 
 #endif

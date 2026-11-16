@@ -1691,17 +1691,17 @@
 0x0015B178	mapFunc9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour mapScreenChkIn; no named callee, caller or string
 0x0015B228	mefMistFastCreate	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD fld.mefMistFastCreate score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
 0x0015B380	mapLoadMistTexture	inferred	string: sdfDevLoadFileEx of /map/all/mist01.tmx or mist02.tmx and sdfTexSet; only caller mapFileLoad
-0x0015B410	mapFileLoadSub7	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour mapLoadMistTexture; called by mapFileLoad
+0x0015B410	mefMistTexOnDataCheck	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD body: returns pMapMoya ? texHandle != 0 : 0, same as 0x15B410; replaces mapFileLoadSub7
 0x0015B438	mapLeaf22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour mapLoadMistTexture; no named callee, caller or string
 0x0015B450	pipeFileLoadSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour pipeFreeLink; called by mapFileLoad
 0x0015B488	pipeFileLoadSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour pipeFreeLink; called by mapFileLoad
-0x0015B4A0	pipeFreeLink	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x2a6aa0 sim 0.659 margin 0.10 pair
+0x0015B4A0	mefMistUpdate	inferred	method=derived-role; p=na; tier=B; source=derived; evidence=HD: if fRun { EmitParticle; UpdateParticle; cnt++ }, same shape; replaces pipeFreeLink
 0x0015B500	pipeRefZoom	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour pipeFreeLink; references Zoom
 0x0015B700	mefMistDraw	hd	hd: Raidou HD fld.mefMistDraw, score 5.9 band C, hd-consensus: calls2 callers-of-match votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 8.2,10.6,5.9,4.9,5.4,4.9,5.4,10.6,8.6,4.9
 0x0015B7F0	mefMistTexDestroy	hd	hd: Raidou HD fld.mefMistTexDestroy, score 7.0 band B
-0x0015B838	mefFreeLinkSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour mefMistTexDestroy; called by pipeFreeLink
-0x0015B8E8	fldFreeLinkSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour fldClearDoorEvents; called by pipeFreeLink
-0x0015B970	fldClearDoorEvents	inferred	method=smt3-fuzzy-60-m-single; p=0.33 (n=9); tier=C; source=smt3; evidence=smt3 body 0x142fb0 sim 0.627 margin 0.11 single
+0x0015B838	mefMistEmitParticle	inferred	method=derived-role; p=na; tier=B; source=derived; evidence=HD: num == 512 / cnt % frequency guard, first free particle; replaces mefFreeLinkSub
+0x0015B8E8	mefMistUpdateParticle	inferred	method=derived-role; p=na; tier=B; source=derived; evidence=HD: pos += velocity, lifeCnt >= deathCnt clears fExist and num--; replaces fldFreeLinkSub
+0x0015B970	mapEffEplInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapEffEplInit: pos {0,0,0,1}, eHdl 0, view/yukay 0, time -1 over the EPL table; replaces fldClearDoorEvents
 0x0015B9C8	fldMapAllBUFU	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour fldClearDoorEvents; string '/map/all/BUFU_M.EPL'
 0x0015BA58	mapEffEplLoad_LB_GENBA	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD fld.mapEffEplLoad_LB_GENBA score 9.5 flag -: calls3 callers-of-match votes4 st1:call r1+r2
 0x0015BA90	mapEffEplLoad_LB_GENBA_EndCheck_fld	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD fld.mapEffEplLoad_LB_GENBA_EndCheck score 10.0 flag -: calls3 calls-of-match votes2 st1:call r1+r2
@@ -21535,9 +21535,9 @@
 0x0046B7D8	mapZoomSetGoalData6	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapZoomSetGoal (3 of 5 refs, 3 functions)
 0x0046B7DC	mapZoomSetGoalData7	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapZoomSetGoal (3 of 5 refs, 3 functions)
 0x0046B7E0	mapZoomSetGoalData8	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapZoomSetGoal (3 of 5 refs, 3 functions)
-0x0046B7E4	fldData20	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: fldBgZoomTest, fldBgZoomTest2, mapBgSetScroll
-0x0046B7E8	mapBgSetScrollData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBgSetScroll (3 of 5 refs, 3 functions)
-0x0046B7EC	mapData60	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
+0x0046B7E4	tzoom_event_time	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fld.c: 0x46B7E4 is the divisor (cnt/time) in mapBgSetScroll and set to 30 with cnt in fldBgZoomTest; replaces fldData20
+0x0046B7E8	tzoom_event_cnt	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fld.c fldBgZoomTest/mapBgSetScroll: 0x46B7E8 is decremented and zeroed in mapBgSetScroll like tzoom_event_cnt; replaces mapBgSetScrollData2
+0x0046B7EC	fscroll_mode	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapBgFScrollOn (low confidence for the other mapData59..70 fscroll_*/tzoom_player_n_* slots); replaces mapData60
 0x0046B7F0	mapData61	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
 0x0046B7F4	mapBgSetScrollData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBgSetScroll (6 of 11 refs, 4 functions)
 0x0046B7F8	mapData62	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
@@ -21715,7 +21715,7 @@
 0x0046BB1C	mapCallSetOt8Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetOt8
 0x0046BB20	mapSIZEData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapSIZE
 0x0046BB28	mapSIZEData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapSIZE
-0x0046BB2C	mefData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 13 functions: mefMistFastCreate, mapLoadMistTexture, mapFileLoadSub7
+0x0046BB2C	pMapMoya	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD global of type mefMistSystem_t *; replaces mefData
 0x0046BB30	pacHandle_EplLoad	hd	hd: Raidou HD fld.pacHandle_EplLoad, 8 of 8 functions agree, high confidence
 0x0046BB34	hWorkArea2	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046BB34); tier=C; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.9565, games=2, size=True, sec=True, fn=workRelease; hWorkArea is another symbol
 0x0046BB38	sdfDiscRequestSemaphore2	inferred	method=dds-ref; p=0.59 (n=D_r1_0046BB38); tier=C; source=dds; evidence=dds-ref/close: nfun=2, other=0, sim=0.8500000000000001, games=2, size=True, sec=False, fn=mapGenbaPosEffCreate; sdfDiscRequestSemaphore is another symbol
@@ -23865,7 +23865,7 @@
 0x0046F2E0	sdfCoreDrawBuffHandle	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046F2E0); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0046F2E8	sdfFaceDivSoften	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F2E8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=12, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3SceneLightUpdateFirst
 0x0046F2EC	sdfFaceDivBias	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F2EC); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=12, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3SceneLightUpdateFirst
-0x0046F2F0	GlobalParamFlag	hd	hd: Raidou HD sdf3D.GlobalParamFlag, 5 of 6 functions agree, high confidence
+0x0046F2F0	sdf3DScreenAdjust	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name at 0x46F2F0 (smt3_symbols.txt); sdf3D.c already uses it; replaces GlobalParamFlag
 0x0046F2F4	sdf3DScreenAdjustScaleX	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name, read with ScaleY/OffsetY by dds3RefCameraTM and reset to 1.0 by mapBgSetScrollReset and InitPolygonMovieWorkData; replaces mapBgSetScrollData21
 0x0046F2F8	sdf3DScreenAdjustScaleY	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name, same evidence as ScaleX; replaces mapBgSetScrollData22
 0x0046F2FC	sdf3DScreenAdjustOffsetX	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=sits between ScaleY and OffsetY, reset to 0 with OffsetY; IDB name GlobalParamTransX is a fuzzy label (low confidence); replaces GlobalParamTransX

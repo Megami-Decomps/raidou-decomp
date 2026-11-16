@@ -228,4 +228,7 @@ typedef struct QWORD_ALIGNED
 /* sdfCorePacketGen's own threshold for a blend shape being worth applying. */
 #define SDF_CORE_MORPH_EPSILON 0.000001f
 
+void sdf3MakeScreenParam(sdf3DScreenParam_t *param);
+void sdf3DSetCamera(sdf3DScreenParam_t *param, void *camera);
+
 #endif /* DRAW3D_H */

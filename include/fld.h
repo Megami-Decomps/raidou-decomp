@@ -6,6 +6,20 @@
 #include "effManager.h"
 #include "sdf_types.h"
 
+/* Camera cut, one per cut index; 64 per field (ALLTBL.LB resource 2). */
+typedef struct fldCutEntry_t {
+    s32 id;
+    f32 targetX;
+    f32 targetZ;
+    f32 cameraY;
+    f32 cameraX;
+    f32 cameraZ;
+    f32 targetY;
+    f32 fovy;
+} fldCutEntry_t;
+
+extern fldCutEntry_t fldWork6[];
+
 struct camCustom_t;
 struct mapNpcPathControl_t;
 struct mapNpcPathData_t;
@@ -28,6 +42,7 @@ s32 fldFunc(struct dds3ProcessID_t *id);
 void fldBgTaskInit(void);
 extern const char BgProcSequenceStrFldProcSequence[];
 extern const char fldStrBgProcSequence[];
+extern const char fldStrMapAllAlltblLb[];
 extern const char fldStrBgProcDraw[];
 void fldBgTexClear(void);
 void fldBgZoomTest2(s32 mode, s32 point, s32 y);
@@ -159,7 +174,7 @@ void mapObjRot(s16 uniq, f32 r);
 void mapObjRotQ(s16 uniq, const sdfVector4_t *rot);
 void mapObjScale(s16 uniq, f32, f32 sz, f32 sh);
 void mapObjTask(void);
-void mapObjVisible(u16 uniq, s32 visible);
+void mapObjVisible(s16 uniq, s32 visible);
 s32 mapAM_MaskChk_ID(s32 scene, s32 id, s32 flag);
 void mapRetuenFromLoad(void);
 s32 mapExitFieldSub(void);
@@ -183,12 +198,21 @@ void mapUnitSetLight(dds3Basic_t *unit, s32 lightid, s32 intr);
 s32 mapWarpChk_Idx(s32 i);
 s32 mapWarpGet_Pos(f32 x, f32 y, f32 z, s32 *attr, f32 *objx, f32 *objy, f32 *objz);
 void mapZoomClear(void);
+void mapZoomSetGoal(f32 x, f32 y, f32 z, f32 zoom, s32 time);
 void mapCutSet_From_Idx(void);
+void mapCutBgLoad_NB(void);
+extern dds3Basic_t *mapData97;
+/* Position the battle cut is chosen from. */
+extern f32 mapCutSet_From_IdxData;
+extern f32 mapCutSet_From_IdxData2;
+extern f32 mapCutSet_From_IdxData3;
 void fldSetPlayerTargetData(s32 *ix, s32 *iz, f32 x, f32 z);
+void fldGetNowCutID(s32 floor, s32 *ix, s32 *iz, f32 x, f32 z);
 f32 R360_LR(f32 a, f32 b);
 void mapAutomapFldClr(s32 field);
 void map_fldPoint3To2(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2);
 void map_fldPoint3To2O(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2);
+void map_fldPoint3To2O2(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2);
 void map_fldPoint3To2O3(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2);
 void mefMistDraw(f32 offX, f32 offY, s32 z);
 void mefMistTexDestroy(void);
@@ -209,12 +233,14 @@ extern s32 gSubFloorID;
 void fldGbInit_System(s32 mode);
 void fldAllTblLoad(void);
 void fldAllTblPacLoad(void);
+/* ALLTBL.LB resources 1 and 2: a table of unknown layout and the cut table. */
+extern u8 fldAllTblPacLoadData[];
 void fldCallFptodp(void);
 /* cos by sin: fldCallFptodpWork[(s32)(sin(a) * 100)] = cos(a) for a in [0, pi/2). */
 extern f32 fldCallFptodpWork[102];
 void fldCallMemset4(void);
-void fldClearDoorEvents(void);
+void mapEffEplInit(void);
 void fldDrawInit(void);
-void mefMistFastCreate(void);
+struct mefMistSystem_t *mefMistFastCreate(void);
 
 #endif

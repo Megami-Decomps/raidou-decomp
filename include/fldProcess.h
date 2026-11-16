@@ -124,7 +124,7 @@ void mapIfDrawActionMaster(s32 a, s32 b, s32 c, s32 d, s32 e);
 s32 fldPlayerALoad_OnDataCheck(void);
 s32 fldHirukoYukaMovetask(void);
 s32 fldHirukoYukaGo_Idx2_B_fld(s32 arg);
-s32 fldGetFldBgNameList(void);
+s32 fldGetFldBgNameList(f32 x, f32 z);
 s32 effProcSequenceSub(void);
 s32 datCallGetStockDevilID(u32 id);
 void mapCalcFXY(s32 arg);
@@ -139,6 +139,19 @@ void fldDestroyTitleTask(void);
 void fldGbInit_Field(void);
 s32 cfgChkFlagChange(void);
 void fldHirukoYukaClear(void);
+/* Moving-floor (hiruko yuka) state (HD MAP_H_YUKA_MOVE_WORK_t, R1 layout). */
+typedef struct MAP_H_YUKA_MOVE_WORK_t {
+    s32 uniq;
+    s32 word04;
+    s32 word08;
+    f32 vec0C[3];
+    f32 vec18[3];
+    f32 vec24[3];
+    f32 vec30[3];
+    s32 word3C;
+    s32 word40;
+} MAP_H_YUKA_MOVE_WORK_t;
+extern MAP_H_YUKA_MOVE_WORK_t fldHirukoYukaMovetaskWork;
 void fldPlayerMotion_Single(void);
 void fldProcSequenceSub3(void);
 void fldProcSequenceSub6(s32 mode);

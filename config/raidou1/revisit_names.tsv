@@ -592,13 +592,10 @@
 0x00158258	fldCallObjVisible	func	tier=D	derived-callee	na	unit code_00156778, neighbour fldHirukoYukaOn; calls mapObjVisible
 0x0015A350	mapSIZE	func	tier=D	derived-string	na	unit code_00156778, neighbour mapSpotPointDrawEndChk; string 'SIZE:%0.1f'
 0x0015B178	mapFunc9	func	tier=D	derived-unit	na	unit code_00156778, neighbour mapScreenChkIn; no named callee, caller or string
-0x0015B410	mapFileLoadSub7	func	tier=D	derived-caller	na	unit code_00156778, neighbour mapLoadMistTexture; called by mapFileLoad
 0x0015B438	mapLeaf22	func	tier=D	derived-unit	na	unit code_00156778, neighbour mapLoadMistTexture; no named callee, caller or string
 0x0015B450	pipeFileLoadSub	func	tier=D	derived-caller	na	unit code_00156778, neighbour pipeFreeLink; called by mapFileLoad
 0x0015B488	pipeFileLoadSub2	func	tier=D	derived-caller	na	unit code_00156778, neighbour pipeFreeLink; called by mapFileLoad
 0x0015B500	pipeRefZoom	func	tier=D	derived-data	na	unit code_00156778, neighbour pipeFreeLink; references Zoom
-0x0015B838	mefFreeLinkSub	func	tier=D	derived-caller	na	unit code_00156778, neighbour mefMistTexDestroy; called by pipeFreeLink
-0x0015B8E8	fldFreeLinkSub	func	tier=D	derived-caller	na	unit code_00156778, neighbour fldClearDoorEvents; called by pipeFreeLink
 0x0015B9C8	fldMapAllBUFU	func	tier=D	derived-string	na	unit code_00156778, neighbour fldClearDoorEvents; string '/map/all/BUFU_M.EPL'
 0x0015C750	mapCallCheckEnd	func	tier=D	derived-callee	na	unit code_00156778, neighbour mapEffEplLoad_LB_TAKUMI; calls pacCheckEnd
 0x0015CD00	mapCallEffectDelete	func	tier=D	derived-callee	na	unit code_00156778, neighbour mapGenbaPosEffCreate; calls dds3EffectDelete
@@ -14536,9 +14533,6 @@
 0x0046B7D8	mapZoomSetGoalData6	data	tier=D	derived-dominant	na	used by mapZoomSetGoal (3 of 5 refs, 3 functions)
 0x0046B7DC	mapZoomSetGoalData7	data	tier=D	derived-dominant	na	used by mapZoomSetGoal (3 of 5 refs, 3 functions)
 0x0046B7E0	mapZoomSetGoalData8	data	tier=D	derived-dominant	na	used by mapZoomSetGoal (3 of 5 refs, 3 functions)
-0x0046B7E4	fldData20	data	tier=D	derived-shared	na	used by 3 functions: fldBgZoomTest, fldBgZoomTest2, mapBgSetScroll
-0x0046B7E8	mapBgSetScrollData2	data	tier=D	derived-dominant	na	used by mapBgSetScroll (3 of 5 refs, 3 functions)
-0x0046B7EC	mapData60	data	tier=D	derived-shared	na	used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
 0x0046B7F0	mapData61	data	tier=D	derived-shared	na	used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
 0x0046B7F4	mapBgSetScrollData3	data	tier=D	derived-dominant	na	used by mapBgSetScroll (6 of 11 refs, 4 functions)
 0x0046B7F8	mapData62	data	tier=D	derived-shared	na	used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
@@ -14694,7 +14688,6 @@
 0x0046BB1C	mapCallSetOt8Data	data	tier=D	derived-sole	na	used by mapCallSetOt8
 0x0046BB20	mapSIZEData	data	tier=D	derived-sole	na	used by mapSIZE
 0x0046BB28	mapSIZEData2	data	tier=D	derived-sole	na	used by mapSIZE
-0x0046BB2C	mefData	data	tier=D	derived-shared	na	used by 13 functions: mefMistFastCreate, mapLoadMistTexture, mapFileLoadSub7
 0x0046BB40	mapIsFldKeyFreeSub4Data	data	tier=D	derived-dominant	na	used by mapIsFldKeyFreeSub4 (2 of 4 refs, 3 functions)
 0x0046BB44	mapIsFldKeyFreeSub4Data2	data	tier=D	derived-dominant	na	used by mapIsFldKeyFreeSub4 (2 of 4 refs, 3 functions)
 0x0046BB48	mapData116	data	tier=D	derived-shared	na	used by 3 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
@@ -18372,8 +18365,6 @@
 0x001596E8	HirukoYukaPlayerOnChkSub	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.HirukoYukaPlayerOnChkSub score 5.3 flag -: calls1 prev callers-of-match-uniq votes2 st1:call r2-disagree:0x152e58
 0x0015A630	mapEveHitMsk_Find	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapEveHitMsk_Find score 2.0 flag -: calls1 calls-of-match st1:call r2-disagree:0x151e40
 0x0015B228	mefMistFastCreate	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.mefMistFastCreate score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
-0x0015B4A0	pipeFreeLink	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x2a6aa0 sim 0.659 margin 0.10 pair
-0x0015B970	fldClearDoorEvents	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x142fb0 sim 0.627 margin 0.11 single
 0x0015D0B8	mapGenbaPosEffAllEnd	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapGenbaPosEffAllEnd score 4.7 flag -: next gap1/2 st1:gap r1+r2
 0x001657B0	fldReleaseTitleTextures	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x2b9188 sim 0.850 margin 0.00 pair
 0x00165E38	mapBgTexLoad	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapBgTexLoad score 4.3 flag -: next~ gap1/140 st1:gap r1+r2
@@ -19431,6 +19422,10 @@
 0x00153710	fldGetNowCutID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.fldGetNowCutID score 6.5 flag I: calls1 calls-of-match st1:call r1+r2
 0x00153858	PositioningGuardSystem	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.PositioningGuardSystem score 6.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
 0x00153BB0	mapGetHit	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGetHit score 6.0 flag -: calls1 calls-of-match st1:call r1+r2
+0x0015B4A0	mefMistUpdate	func	tier=B	derived-role	na	HD: if fRun { EmitParticle; UpdateParticle; cnt++ }, same shape; replaces pipeFreeLink
+0x0015B838	mefMistEmitParticle	func	tier=B	derived-role	na	HD: num == 512 / cnt % frequency guard, first free particle; replaces mefFreeLinkSub
+0x0015B8E8	mefMistUpdateParticle	func	tier=B	derived-role	na	HD: pos += velocity, lifeCnt >= deathCnt clears fExist and num--; replaces fldFreeLinkSub
+0x0015B970	mapEffEplInit	func	tier=B	hd-role	na	HD mapEffEplInit: pos {0,0,0,1}, eHdl 0, view/yukay 0, time -1 over the EPL table; replaces fldClearDoorEvents
 0x0015CA20	mapEffEplAllEnd	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapEffEplAllEnd score 6.0 flag -: calls1 callers-of-match st1:call r1+r2
 0x0015CB58	mapEffEplAllDrawTask	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD fld.mapEffEplAllDrawTask score 6.5 flag -: calls2 calls-of-match votes2 st1:call r1-only
 0x0015CFF8	mapGenbaPosEffStart	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGenbaPosEffStart score 6.3 flag -: calls1 calls-of-match-uniq st1:call r1+r2
@@ -19815,11 +19810,15 @@
 0x0046B780	gMapAiboWakeUpMode	data	tier=B	hd-role	na	HD mapAiboWakeUp gMapAiboWakeUpMode = mode; replaces mapAiboTaskData3
 0x0046B794	gMapAiboMotionBugCnt	data	tier=B	hd-role	na	HD mapAiboFoceSet gMapAiboMotionBugCnt = 0; replaces mapAiboTaskData4
 0x0046B79C	map_player_move_mode	data	tier=B	hd-role	na	HD fldPlayerCalc: map_player_move_mode gates fldPlayer_MoveCalc, the 0x46B79C test in R1; replaces fldData18
+0x0046B7E4	tzoom_event_time	data	tier=B	hd-role	na	HD fld.c: 0x46B7E4 is the divisor (cnt/time) in mapBgSetScroll and set to 30 with cnt in fldBgZoomTest; replaces fldData20
+0x0046B7E8	tzoom_event_cnt	data	tier=B	hd-role	na	HD fld.c fldBgZoomTest/mapBgSetScroll: 0x46B7E8 is decremented and zeroed in mapBgSetScroll like tzoom_event_cnt; replaces mapBgSetScrollData2
+0x0046B7EC	fscroll_mode	data	tier=B	hd-role	na	HD mapBgFScrollOn (low confidence for the other mapData59..70 fscroll_*/tzoom_player_n_* slots); replaces mapData60
 0x0046B9B4	bg_tex_load_rec	data	tier=B	hd-role	na	HD fld.c order bg_tex_load_last, bg_lay_load_last, bg_tex_load_rec, bg_lay_load_rec; BgProcSequence compares 0x46B9B4 with bg_tex_load_last and copies it there; replaces BgProcSequenceData
 0x0046B9DC	fldRunMapData	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B9DC)	smt3-ref/loose: nfun=2, other=2, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x0046B9E0	fldRunMapCellData	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E0)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x0046B9E4	pFroMapHead	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E4)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x0046B9E8	fldRunMapScale	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E8)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
+0x0046BB2C	pMapMoya	data	tier=B	hd-role	na	HD global of type mefMistSystem_t *; replaces mefData
 0x0046BEE0	hPartialMultiBlur	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
 0x0046BEE4	gencMode	data	tier=B	smt3-ref	0.88 (n=D_r1_0046BEE4)	smt3-ref/loose: nfun=2, other=2, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x0046BEE8	gencStageInnAlp	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE8)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
@@ -19885,6 +19884,7 @@
 0x0046F26C	sdfMemFullCallback	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F26C)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfMemInit
 0x0046F2C4	sdfReqDrawDelaySleepCount	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F2C4)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfGrReqDraw
 0x0046F2D4	corePktSoftenBias	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F2D4)	smt3-ref/loose: nfun=12, other=0, sim=1.0, games=2, size=False, sec=True, fn=soften_bias_Process
+0x0046F2F0	sdf3DScreenAdjust	data	tier=B	smt3-role	na	SMT3 name at 0x46F2F0 (smt3_symbols.txt); sdf3D.c already uses it; replaces GlobalParamFlag
 0x0046F32C	sdfPadManagerMode	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F32C)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfSystemThreadProc
 0x0046F358	sdfPrintIopFlag	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F358)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfPuts
 0x0046F368	cmpPanelEffList	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F368)	smt3-ref/loose: nfun=2, other=0, sim=0.95, games=2, size=False, sec=True, fn=sdfDevSignalPendingSemaphore

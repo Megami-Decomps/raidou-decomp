@@ -7847,9 +7847,9 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046B7D8	0x004DE964	mapZoomSetGoalData6	.sdata	0x4	yes	code-ref
 0x0046B7DC	0x004DE968	mapZoomSetGoalData7	.sdata	0x4	yes	code-ref
 0x0046B7E0	0x004DE96C	mapZoomSetGoalData8	.sdata	0x4	yes	code-ref
-0x0046B7E4	0x004DE970	fldData20	.sdata	0x4	yes	code-ref
-0x0046B7E8	0x004DE974	mapBgSetScrollData2	.sdata	0x4	yes	code-ref
-0x0046B7EC	0x004DE978	mapData60	.sdata	0x4	yes	code-ref
+0x0046B7E4	0x004DE970	tzoom_event_time	.sdata	0x4	yes	code-ref
+0x0046B7E8	0x004DE974	tzoom_event_cnt	.sdata	0x4	yes	code-ref
+0x0046B7EC	0x004DE978	fscroll_mode	.sdata	0x4	yes	code-ref
 0x0046B7F0	0x004DE97C	mapData61	.sdata	0x4	yes	code-ref
 0x0046B7F4	0x004DE980	mapBgSetScrollData3	.sdata	0x4	yes	code-ref
 0x0046B7F8	0x004DE984	mapData62	.sdata	0x4	yes	code-ref
@@ -8027,7 +8027,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046BB1C	0x004DEC58	mapCallSetOt8Data	.sdata	0x4	yes	code-ref
 0x0046BB20	0x004DEC5C	mapSIZEData	.sdata	0x8	no	code-ref
 0x0046BB28	0x004DEC60	mapSIZEData2	.sdata	0x4	yes	code-ref
-0x0046BB2C	0x004DEC6C	mefData	.sdata	0x4	yes	code-ref
+0x0046BB2C	0x004DEC6C	pMapMoya	.sdata	0x4	yes	code-ref
 0x0046BB30	0x004DEC70	pacHandle_EplLoad	.sdata	0x4	yes	code-ref
 0x0046BB34	0x004DEC74	hWorkArea2	.sdata	0x4	yes	code-ref
 0x0046BB38	0x004DEC78	sdfDiscRequestSemaphore2	.sdata	0x4	yes	code-ref
@@ -9868,7 +9868,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046F2E0	0x004E42F8	sdfCoreDrawBuffHandle	.sdata	0x8	yes	code-ref
 0x0046F2E8	0x004E4300	sdfFaceDivSoften	.sdata	0x4	yes	code-ref
 0x0046F2EC	0x004E4304	sdfFaceDivBias	.sdata	0x4	yes	code-ref
-0x0046F2F0	0x004E4308	GlobalParamFlag	.sdata	0x4	yes	code-ref
+0x0046F2F0	0x004E4308	sdf3DScreenAdjust	.sdata	0x4	yes	code-ref
 0x0046F2F4	0x004E430C	sdf3DScreenAdjustScaleX	.sdata	0x4	yes	code-ref
 0x0046F2F8	0x004E4310	sdf3DScreenAdjustScaleY	.sdata	0x4	yes	code-ref
 0x0046F2FC	0x004E4314	sdf3DScreenAdjustOffsetX	.sdata	0x4	yes	code-ref

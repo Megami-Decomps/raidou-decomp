@@ -2,6 +2,7 @@
 #define EFFMANAGER_H
 
 #include "common.h"
+#include "enums.h"
 
 /* An effect handle: the type's entry in EffMajorTable plus the instance that
  * entry's create returned. version is stamped from the data revision. */
@@ -27,6 +28,7 @@ effHandle_t *dds3EffectCopy(effHandle_t *node);
 effHandle_t *dds3EffectCreate(u16 major, u16 minor, saddr_t pData);
 void dds3EffectDataRevision(effResourceHeader_t *header);
 void dds3EffectDelete(effHandle_t *pData);
+DDS3EFFECT_STATE dds3EffectGetState(effHandle_t *hEffect);
 void dds3EffectReset(effHandle_t *effect);
 effHandle_t *dds3EffectLoad(effResourceHeader_t *pD3P);
 void dds3EffectSetPosition(effHandle_t *pData, const void *pPos);

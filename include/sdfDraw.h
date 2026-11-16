@@ -23,7 +23,7 @@ void sdfGrReqDraw(sdfDrawTag_t *aTag, sdfPreDrawChain_t *aPreDraw);
 sdfDrawTag_t *sdfGrOtClose(sdfGrOt_t *aOt);
 void sdfGrFlushOtChain(u32 *source);
 extern volatile u8 sdfDrawPublishFlag;
-extern s8 GlobalParamFlag;
+extern s8 sdf3DScreenAdjust;
 extern u16 sdfReqDrawDelaySleepCount;
 extern u16 sdfDrawFrameCounter;
 void sdfGrOtInit(sdfGrOt_t *aOt, s32 aNumOt);

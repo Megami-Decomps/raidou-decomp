@@ -18,6 +18,7 @@ menu scenarios); an entry says which paths they covered.
 | 12 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 12 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
 | 10 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
+| 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
 | 9 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
 | 5 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 5 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
@@ -32,6 +33,8 @@ menu scenarios); an entry says which paths they covered.
 | 3 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 2 | basic/dds3Basic | raidou1, raidou2 | [basic/dds3Basic.md](basic/dds3Basic.md) |
 | 2 | basic/dds3SceneBasic | raidou1, raidou2 | [basic/dds3SceneBasic.md](basic/dds3SceneBasic.md) |
+| 2 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
+| 2 | code_00157CD0 | raidou1 | [code_00157CD0.md](code_00157CD0.md) |
 | 2 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
 | 2 | code_0018CE10 | raidou1 | [code_0018CE10.md](code_0018CE10.md) |
 | 2 | code_002999C0 | raidou1 | [code_002999C0.md](code_002999C0.md) |

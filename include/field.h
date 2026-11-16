@@ -165,7 +165,7 @@ typedef struct fldAreaWork_t
     s32 word24;                 /* 0x024 */
     s32 word28;                 /* 0x028 */
     s32 word2C;                 /* 0x02C */
-    s32 word30;                 /* 0x030: bg loaded flag, zeroed by mapBgFree2 */
+    struct sdfTexHandle_t *word30; /* 0x030: bg texture, released by mapBgFree2 */
     s32 cutIdx;                 /* 0x034: index into the fldWork6 cut table */
     s32 cutIdxPrev;             /* 0x038: cutIdx before the last change */
     s32 cutState;               /* 0x03C: 1 requests a cut reload, 2 once done */

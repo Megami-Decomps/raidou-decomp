@@ -26,4 +26,10 @@ void sdf3DMakeDirectRefPacket(DmaPacketHeader *aPacket, addr_t aData, s32 aLeng)
 void sdf3DSetDefaultLight(struct sdf3DLightParallelPacket_t *aLight);
 void sdf3DSetDefaultFog(struct sdf3DFogPacket_t *aFog);
 
+extern s8 sdf3DScreenAdjust;
+extern f32 sdf3DScreenAdjustScaleX;
+extern f32 sdf3DScreenAdjustScaleY;
+extern f32 sdf3DScreenAdjustOffsetX;
+extern f32 sdf3DScreenAdjustOffsetY;
+
 #endif

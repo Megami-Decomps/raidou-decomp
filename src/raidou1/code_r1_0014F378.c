@@ -56,7 +56,7 @@ s32 mapFileLoad(s32 mapid)
     fldMapSub3File_t *sub3;
     fldMapSub4File_t *sub4;
     fldMapLightRec_t *light;
-    s32 *extra;
+    mapOt2Block_t *extra;
     sdfTexHandle_t *tex;
     dds3Basic_t *basic;
 
@@ -226,7 +226,7 @@ s32 mapFileLoad(s32 mapid)
     {
         area = &map->area[i];
         mapMapSetAreaData[i] = area;
-        mapMapSetAreaData2[i] = (u8 *)map + area->colmOfs;
+        mapMapSetAreaData2[i] = (MapColm_t *)((u8 *)map + area->colmOfs);
         mapMapSetAreaData3[i] = (u8 *)map + area->hit64Ofs;
         mapMapSetAreaData4[i] = (u8 *)map + area->pointOfs;
         mapMapSetAreaData5[i] = (u8 *)map + area->hit20Ofs;
@@ -235,13 +235,13 @@ s32 mapFileLoad(s32 mapid)
         mapMapSetAreaData8[i] = (u8 *)map + area->eveHitOfs;
         if (area->extraOfs != 0)
         {
-            mapCallSetOt2Data2[i] = (s32 *)((u8 *)map + area->extraOfs);
+            mapCallSetOt2Data2[i] = (mapOt2Block_t *)((u8 *)map + area->extraOfs);
         }
         extra = mapCallSetOt2Data2[i];
         if (extra != NULL)
         {
-            mapData36[i] = (u8 *)map + extra[1];
-            mapData35[i] = (u8 *)map + extra[0];
+            mapData36[i] = (u8 *)map + extra->ofs04;
+            mapData35[i] = (mapOt2Cell_t *)((u8 *)map + extra->ofs00);
         }
     }
     if (mapFileLoadData2[mapid] == 1)
@@ -343,7 +343,7 @@ s32 mapFileLoad(s32 mapid)
          evtWorkScriptContextReturnValue == 24 || evtWorkScriptContextReturnValue == 25 ||
          evtWorkScriptContextReturnValue == 27 || evtWorkScriptContextReturnValue == 31))
     {
-        if (mapFileLoadSub7())
+        if (mefMistTexOnDataCheck())
         {
             mefMistTexDestroy();
         }
@@ -773,7 +773,7 @@ s32 fldFreeMapData(void)
         mapMapSetAreaData22 = NULL;
         mapMapSetAreaData23 = NULL;
     }
-    if (mapFileLoadSub7() != 0)
+    if (mefMistTexOnDataCheck() != 0)
     {
         mefMistTexDestroy();
     }

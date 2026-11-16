@@ -102,7 +102,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0013A9E0	0013A9E0	code_r1_0013A9E0	c	none	
 0013AAC8	0013B0F0	code_0013AAC8	asm	none	
 0013B0F8	0013B0F8	code_r1_0013B0F8	c	none	
-0013CDE0	00140258	code_0013CDE0	asm	none	
+0013CDE0	00140258	code_0013CDE0	c	none	
 001403E0	00140798	code_r1_001403E0	c	none	
 00140910	00140910	field/fldSky	c	smt3:map:1 of 1	field/fldSky
 00140960	00141D50	code_00140960	asm	none	
@@ -125,13 +125,13 @@ start	last_func	unit	kind	evidence	smt3_unit
 0014F378	00151730	code_r1_0014F378	c	none	
 00151980	00151980	code_r1_00151980	c	none	
 00151DC0	00151DC0	code_r1_00151DC0	c	none	
-00153438	001566D0	code_00153438	asm	none	
+00153438	001566D0	code_00153438	c	none	
 00156730	00156730	field/fldTitle	c	smt3:map:1 of 1	field/fldTitle
 00156778	00156AD0	code_00156778	asm	none	
 00156B68	00156B68	code_r1_00156B68	c	none	
-00156EA8	001570C0	code_00156EA8	asm	none	
+00156EA8	001570C0	code_00156EA8	c	none	
 001578A8	001578A8	code_r1_001578A8	c	none	
-00157CD0	0015CCD8	code_00157CD0	asm	none	
+00157CD0	0015CCD8	code_00157CD0	c	none	
 0015CD00	0015CF48	code_r1_0015CD00	c	none	
 0015CFF8	0015D3D0	code_0015CFF8	asm	none	
 0015D470	0015D470	code_r1_0015D470	c	dds:1 of 1	

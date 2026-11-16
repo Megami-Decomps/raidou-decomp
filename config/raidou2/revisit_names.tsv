@@ -722,14 +722,11 @@
 0x001676F8	nbFunc2	func	tier=D	derived-unit	na	unit code_001626B0, neighbour nbFreeDeadMoonTex; no named callee, caller or string
 0x00167728	mefLeaf	func	tier=D	derived-unit	na	unit code_001626B0, neighbour mefMistFastCreate; no named callee, caller or string
 0x00167748	mefLeaf2	func	tier=D	derived-unit	na	unit code_001626B0, neighbour mefMistFastCreate; no named callee, caller or string
-0x00167948	mapFileLoadSub7	func	tier=D	derived-caller	na	unit code_00156778, neighbour mapLoadMistTexture; called by mapFileLoad
 0x00167970	mapFileLoadSub	func	tier=D	derived-caller	na	unit code_001626B0, neighbour mapLoadMistTexture; called by mapFileLoad
 0x001679C0	mapLeaf22	func	tier=D	derived-unit	na	unit code_00156778, neighbour mapLoadMistTexture; no named callee, caller or string
 0x001679D8	pipeFileLoadSub	func	tier=D	derived-caller	na	unit code_00156778, neighbour pipeFreeLink; called by mapFileLoad
 0x00167A10	pipeFileLoadSub2	func	tier=D	derived-caller	na	unit code_00156778, neighbour pipeFreeLink; called by mapFileLoad
 0x00167A88	pipeRefZoom	func	tier=D	derived-data	na	unit code_00156778, neighbour pipeFreeLink; references Zoom
-0x00167DC0	mefFreeLinkSub	func	tier=D	derived-caller	na	unit code_00156778, neighbour mefMistTexDestroy; called by pipeFreeLink
-0x00167E70	fldFreeLinkSub	func	tier=D	derived-caller	na	unit code_00156778, neighbour fldClearDoorEvents; called by pipeFreeLink
 0x00167EF8	mefFunc	func	tier=D	derived-unit	na	unit code_001626B0, neighbour mefMistTexDestroy; no named callee, caller or string
 0x00167F40	mapCameraInitSub	func	tier=D	derived-caller	na	unit code_001626B0, neighbour mapEffEplLoad_LB_GENBA; called by nbCameraInit
 0x00167F78	mapLeaf3	func	tier=D	derived-unit	na	unit code_001626B0, neighbour mapEffEplLoad_LB_GENBA; no named callee, caller or string
@@ -18382,9 +18379,6 @@
 0x004DE964	mapZoomSetGoalData6	data	tier=D	derived-dominant	na	used by mapZoomSetGoal (3 of 5 refs, 3 functions)
 0x004DE968	mapZoomSetGoalData7	data	tier=D	derived-dominant	na	used by mapZoomSetGoal (3 of 5 refs, 3 functions)
 0x004DE96C	mapZoomSetGoalData8	data	tier=D	derived-dominant	na	used by mapZoomSetGoal (3 of 5 refs, 3 functions)
-0x004DE970	fldData20	data	tier=D	derived-shared	na	used by 3 functions: fldBgZoomTest, fldBgZoomTest2, mapBgSetScroll
-0x004DE974	mapBgSetScrollData2	data	tier=D	derived-dominant	na	used by mapBgSetScroll (3 of 5 refs, 3 functions)
-0x004DE978	mapData60	data	tier=D	derived-shared	na	used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
 0x004DE97C	mapData61	data	tier=D	derived-shared	na	used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
 0x004DE980	mapBgSetScrollData3	data	tier=D	derived-dominant	na	used by mapBgSetScroll (6 of 11 refs, 4 functions)
 0x004DE984	mapData62	data	tier=D	derived-shared	na	used by 4 functions: mapBgFScrollOn, sndSePlay_sndAt3, mapBgSetScroll
@@ -18544,7 +18538,6 @@
 0x004DEC60	mapSIZEData2	data	tier=D	derived-sole	na	used by mapSIZE
 0x004DEC64	fldData47	data	tier=D	derived-shared	na	used by 2 functions: fldLeaf, fldCallMemset2
 0x004DEC68	nbModelFieldApoData	data	tier=D	derived-sole	na	used by nbModelFieldApo
-0x004DEC6C	mefData	data	tier=D	derived-shared	na	used by 13 functions: mefMistFastCreate, mapLoadMistTexture, mapFileLoadSub7
 0x004DEC80	mapIsFldKeyFreeSub4Data	data	tier=D	derived-dominant	na	used by mapIsFldKeyFreeSub4 (2 of 4 refs, 3 functions)
 0x004DEC84	mapIsFldKeyFreeSub4Data2	data	tier=D	derived-dominant	na	used by mapIsFldKeyFreeSub4 (2 of 4 refs, 3 functions)
 0x004DEC88	mapData116	data	tier=D	derived-shared	na	used by 3 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
@@ -23494,7 +23487,6 @@
 0x00166FB0	GetOverrideMapObj	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD AtlFieldAccessor.GetOverrideMapObj score 3.6 flag -: calls1 calls-of-match st2:call r2-only
 0x00167618	nbFreeDeadMoonTex	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x1e9570 sim 1.000 margin 0.08 single
 0x00167760	mefMistFastCreate	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.mefMistFastCreate score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
-0x00167A28	pipeFreeLink	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x2a6aa0 sim 0.659 margin 0.10 pair
 0x001691C8	fldGetSelectedUnitStat	func	tier=C	dds-fuzzy-60-tie-single	0.30 (n=4)	dds body 0x1a84b8 sim 0.667 margin 0.05 single
 0x001696D0	mapGenbaPosEffAllEnd	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapGenbaPosEffAllEnd score 4.7 flag -: next gap1/2 st1:gap r1+r2
 0x00173B28	fldReleaseTitleTextures	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x2b9188 sim 0.850 margin 0.00 pair
@@ -24698,6 +24690,9 @@
 0x0015F528	PositioningGuardSystem	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.PositioningGuardSystem score 6.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
 0x0015F940	mapGetHit	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGetHit score 6.0 flag -: calls1 calls-of-match st1:call r1+r2
 0x00160E18	mapCatChkMain_fld	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.mapCatChkMain score 5.8 flag -: calls8 calls-of-match votes8 st2:call r1-disagree:0x154f70
+0x00167A28	mefMistUpdate	func	tier=B	derived-role	na	HD: if fRun { EmitParticle; UpdateParticle; cnt++ }, same shape; replaces pipeFreeLink
+0x00167DC0	mefMistEmitParticle	func	tier=B	derived-role	na	HD: num == 512 / cnt % frequency guard, first free particle; replaces mefFreeLinkSub
+0x00167E70	mefMistUpdateParticle	func	tier=B	derived-role	na	HD: pos += velocity, lifeCnt >= deathCnt clears fExist and num--; replaces fldFreeLinkSub
 0x00168F38	nbFreeEventPack	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x290bc8 sim 0.860 margin 0.10 single
 0x00168F98	mapEffEplAllEnd	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapEffEplAllEnd score 6.0 flag -: calls1 callers-of-match st1:call r1+r2
 0x00169610	mapGenbaPosEffStart	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGenbaPosEffStart score 6.3 flag -: calls1 calls-of-match-uniq st1:call r1+r2
@@ -25259,10 +25254,14 @@
 0x004DE798	gMapCash_pacHandle	data	tier=B	hd-role	na	HD fldPlayerALoadEndCheck checks pacCheckEnd(gMapCash_pacHandle); retail passes it there; replaces fldPlayerALoadEndCheckData
 0x004DE8A0	fldDrwZBuf	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B738)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=fldDrwZAlloc
 0x004DE8A8	fldDbgFmtDec	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B740)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=fldDbgPrint3D
+0x004DE970	tzoom_event_time	data	tier=B	hd-role	na	HD fld.c: 0x46B7E4 is the divisor (cnt/time) in mapBgSetScroll and set to 30 with cnt in fldBgZoomTest; replaces fldData20
+0x004DE974	tzoom_event_cnt	data	tier=B	hd-role	na	HD fld.c fldBgZoomTest/mapBgSetScroll: 0x46B7E8 is decremented and zeroed in mapBgSetScroll like tzoom_event_cnt; replaces mapBgSetScrollData2
+0x004DE978	fscroll_mode	data	tier=B	hd-role	na	HD mapBgFScrollOn (low confidence for the other mapData59..70 fscroll_*/tzoom_player_n_* slots); replaces mapData60
 0x004DEB08	fldRunMapData	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B9DC)	smt3-ref/loose: nfun=2, other=2, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x004DEB0C	fldRunMapCellData	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E0)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x004DEB10	pFroMapHead	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E4)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x004DEB14	fldRunMapScale	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E8)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
+0x004DEC6C	pMapMoya	data	tier=B	hd-role	na	HD global of type mefMistSystem_t *; replaces mefData
 0x004DF170	hPartialMultiBlur	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
 0x004DF174	gencMode	data	tier=B	smt3-ref	0.88 (n=D_r1_0046BEE4)	smt3-ref/loose: nfun=2, other=2, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x004DF178	gencStageInnAlp	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE8)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
@@ -25313,6 +25312,7 @@
 0x004E4284	sdfMemFullCallback	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F26C)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfMemInit
 0x004E42DC	sdfReqDrawDelaySleepCount	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F2C4)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfGrReqDraw
 0x004E42EC	corePktSoftenBias	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F2D4)	smt3-ref/loose: nfun=12, other=0, sim=1.0, games=2, size=False, sec=True, fn=soften_bias_Process
+0x004E4308	sdf3DScreenAdjust	data	tier=B	smt3-role	na	SMT3 name at 0x46F2F0 (smt3_symbols.txt); sdf3D.c already uses it; replaces GlobalParamFlag
 0x004E4344	sdfPadManagerMode	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F32C)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfSystemThreadProc
 0x004E4370	sdfPrintIopFlag	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F358)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfPuts
 0x004E4380	cmpPanelEffList	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F368)	smt3-ref/loose: nfun=2, other=0, sim=0.95, games=2, size=False, sec=True, fn=sdfDevSignalPendingSemaphore

@@ -934,7 +934,6 @@ btlPreviousAiCandidateBucket = 0x0046DB00;
 D_003BD198 = 0x0046E718;
 sdfGrPacketBuffLimit = 0x0046F2B4;
 sdfCoreDrawBuffHandle = 0x0046F2E0;
-sdf3DScreenAdjust = 0x0046F2F0;
 sdf3DLightDefault = 0x0046F304;
 sdf3DFogDefault = 0x0046F308;
 sdf3DSlot2Tex = 0x0046F30C;

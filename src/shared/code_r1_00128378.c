@@ -548,7 +548,7 @@ void fldFirstInit(void) {
     fldGlobalBase.texture220 = sdfTexSet(tmx);
     sdfMemFreeDelayedDirect(file);
     fldData9 = dds3CallMatNew2(fldGlobalBase.texture220);
-    fldClearDoorEvents();
+    mapEffEplInit();
     mefMistFastCreate();
 }
 #else

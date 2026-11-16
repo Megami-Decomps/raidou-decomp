@@ -511,6 +511,7 @@ extern sdfVector4_t pbWork3;
 s32 DataLoadProc(dds3ProcessID_t *id);
 s32 DrawProc(dds3ProcessID_t *id);
 s32 RestartBattle(void);
+s32 sbtlSbattle4(void);
 s32 sbtlCallBtlGetScrollID(void);
 void pbSetGameCamera0(void);
 void sbtlCallBtlDeleteOnData(void);

@@ -284,7 +284,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         }
         mdlChkMotionEnd();
         mapNakamaSkilIs_SetBit(DDS3_GBWK->mapSummonID);
-        fldGlobalBase.nameD = fldGetFldBgNameList();
+        fldGlobalBase.nameD = fldGetFldBgNameList(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         datDebugPrintf("fld_process_init:4 SEVOL:%d\n", sndProcSequenceSub4());
         fldGlobalBase.prevY = 0;
         fldGlobalBase.float20C = fldGlobalBase.focusX;

@@ -498,10 +498,10 @@ void dds3InitDrawEnv(void)
 
     sdfGrSetScreen(1);
     sdf3MakeScreenParam(&dds3ScreenParam);
-    savedParamFlag = GlobalParamFlag;
-    GlobalParamFlag = 0;
+    savedParamFlag = sdf3DScreenAdjust;
+    sdf3DScreenAdjust = 0;
     sdf3MakeScreenParam(&DrawEnv);
-    GlobalParamFlag = savedParamFlag;
+    sdf3DScreenAdjust = savedParamFlag;
     dds3InitDrawEnvSub(0);
     dds3InitDrawEnvSub(1);
     dds3InitZClearDrawTag();

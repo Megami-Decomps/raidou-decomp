@@ -6,19 +6,6 @@
 #include "dds3CameraObjectBasic.h"
 #include "dds3KernelDraw.h"
 
-typedef struct fldCutEntry_t {
-    s32 id;
-    f32 targetX;
-    f32 targetZ;
-    f32 cameraY;
-    f32 cameraX;
-    f32 cameraZ;
-    f32 targetY;
-    f32 fovy;
-} fldCutEntry_t;
-
-extern fldCutEntry_t fldWork6[];
-
 extern s32 mapData18[];
 extern s8 dds3PadButtonState[];
 extern f32 mapCutGetCamData;

@@ -5,6 +5,7 @@
 #include "sdf_resource.h"
 
 sdfTexHandle_t *sdfTexAlloc(s32 aWidth, s32 aHeight, s32 aPixelFormat, s32 aNumOfMipmap, s32 aCLUTFormat, s32 aNumOfCLUT);
+sdfTexHandle_t *sdfTexAllocFromHead(s32 aWidth, s32 aHeight, s32 aPixelFormat, s32 aNumOfMipmap, s32 aCLUTFormat, s32 aNumOfCLUT);
 sdfTexHandle_t *sdfTexDup(sdfTexHandle_t *aHandle);
 void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
 u64 sdfTexGetClampReg(sdfTexHandle_t *aHandle);
