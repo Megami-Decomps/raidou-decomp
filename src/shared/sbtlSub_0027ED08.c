@@ -34,7 +34,7 @@ enum {
     BTL_DIRECTORY_PATH_BYTES = 0x70,
     BTL_BUILTIN_NAME_COUNT = 8,
     BTL_DIRECTORY_FLAG_CLEAR = 0x1000,
-    BTL_RESOURCE_ENTRY_BYTES = sizeof(BtlResourceEntry),
+    BTL_RESOURCE_ENTRY_BYTES = sizeof(SBTLRESOURCE_ENTRY),
     /* High-bit selectors are game-specific callback-table positions. */
     BTL_PACKED_ENEMY_COUNT_LIMIT = 0x1400000,
     BTL_PACKED_ENEMY_QUEUED_QUERY = 0x0F800000,
@@ -45,32 +45,32 @@ enum {
 
 struct BtlRuntimeTask;
 
-typedef struct BtlActor {
+typedef struct SBTL_ACTOR {
     u8 pad00[0x18];
-    BtlUnit *unit;
-} BtlActor;
+    SBTL_UNIT *unit;
+} SBTL_ACTOR;
 
-typedef struct BtlList {
+typedef struct SBTL_LIST {
     u8 pad00[0x20];
     s32 count;
-} BtlList;
+} SBTL_LIST;
 
-typedef struct BtlCmdCtx {
+typedef struct SBTLCMD_CTX {
     u8 pad00[0xC];
     u32 flags; /* 0x0C: command-context flags */
     u8 pad10[8];
-    BtlUnit *unit;
+    SBTL_UNIT *unit;
     u8 pad1C[4];
     s32 commandMode;
     s32 commandValue;
     u8 pad28[4];
-    BtlUnit *actionProbeFirst;
-    BtlUnit *actionProbeSecond;
+    SBTL_UNIT *actionProbeFirst;
+    SBTL_UNIT *actionProbeSecond;
     u8 pad34[4];
     u32 parameter38; /* 0x38 */
     u8 pad3C[0x50];
     u32 parameter8C; /* 0x8C */
-} BtlCmdCtx;
+} SBTLCMD_CTX;
 
 extern f32 sbtlGetVerticalLength(const f32 *, const f32 *, const f32 *);
 
@@ -81,7 +81,7 @@ typedef union BtlVec4 {
 
 struct BtlRuntimeTask;
 
-typedef struct BtlControlObject {
+typedef struct SBTLCONTROL_OBJECT {
     u8 enabled; /* 0x00 */
     u8 pad01[0x0F];
     u8 state; /* 0x10 */
@@ -90,7 +90,7 @@ typedef struct BtlControlObject {
     u8 pad22[0x26];
     s32 status; /* 0x48 */
     void (*update)(void); /* 0x4C */
-} BtlControlObject;
+} SBTLCONTROL_OBJECT;
 
 extern f32 aViewEye[];
 extern f32 sdfViewMatrix[];
@@ -105,10 +105,10 @@ f32 sbtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *ver
 
 struct effRefObj_t;
 
-typedef struct BtnUv {
+typedef struct SBTLBTN_UV {
     s32 u;
     s32 v;
-} BtnUv;
+} SBTLBTN_UV;
 
 /* Script command handlers set the command state at +0x20 and its
  * argument at +0x24; their numeric opcodes are still unidentified. */
@@ -178,15 +178,15 @@ u32 btlScriptPickElementBlockTarget(void);
 u32 btlScriptPickTargetExcludingActor(void);
 
 /* Script command selection: low/high flag words gate the stored choices. */
-typedef struct BtlCommandContext {
+typedef struct SBTLCOMMAND_CONTEXT {
     u8 pad00[0x18];
-    BtlUnit *actor; /* 0x18: the command actor's unit. */
+    SBTL_UNIT *actor; /* 0x18: the command actor's unit. */
     u8 pad1C[0x74];
     u32 selectionFlagsA; /* 0x90 */
     u32 selectionFlagsB; /* 0x94 */
     s32 choicesA[26]; /* 0x98..0xFC */
     s32 choicesB[17]; /* 0x100..0x140 */
-} BtlCommandContext;
+} SBTLCOMMAND_CONTEXT;
 
 u32 btlNbScriptCheckActorFlag(void);
 
@@ -330,7 +330,7 @@ u32 btlCmdClearSpecialEnemyFlags(void);
 #define EDITOR_DELETE_CODE (EDITOR_KEY_CELLS + 3)
 
 /* vu0 routine: forward-cone projection from vf10 to integer screen XY */
-BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScreenPoint *outPoint) {
+BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(SBTLPROJECTEDSCREEN_POINT *outPoint) {
     f32 distance;
     f32 facing;
     f32 *projection;

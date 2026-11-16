@@ -90,7 +90,7 @@ enum {
     BTL_DIRECTORY_PATH_BYTES = 0x70,
     BTL_BUILTIN_NAME_COUNT = 8,
     BTL_DIRECTORY_FLAG_CLEAR = 0x1000,
-    BTL_RESOURCE_ENTRY_BYTES = sizeof(BtlResourceEntry),
+    BTL_RESOURCE_ENTRY_BYTES = sizeof(SBTLRESOURCE_ENTRY),
     /* High-bit selectors are game-specific callback-table positions. */
     BTL_PACKED_ENEMY_COUNT_LIMIT = 0x1400000,
     BTL_PACKED_ENEMY_QUEUED_QUERY = 0x0F800000,
@@ -106,32 +106,32 @@ extern u8 D_003BB820[];
 
 struct BtlRuntimeTask;
 
-typedef struct BtlActor {
+typedef struct SBTL_ACTOR {
     u8 pad00[0x18];
-    BtlUnit *unit;
-} BtlActor;
+    SBTL_UNIT *unit;
+} SBTL_ACTOR;
 
-typedef struct BtlList {
+typedef struct SBTL_LIST {
     u8 pad00[0x20];
     s32 count;
-} BtlList;
+} SBTL_LIST;
 
-typedef struct BtlCmdCtx {
+typedef struct SBTLCMD_CTX {
     u8 pad00[0xC];
     u32 flags; /* 0x0C: command-context flags */
     u8 pad10[8];
-    BtlUnit *unit;
+    SBTL_UNIT *unit;
     u8 pad1C[4];
     s32 commandMode;
     s32 commandValue;
     u8 pad28[4];
-    BtlUnit *actionProbeFirst;
-    BtlUnit *actionProbeSecond;
+    SBTL_UNIT *actionProbeFirst;
+    SBTL_UNIT *actionProbeSecond;
     u8 pad34[4];
     u32 parameter38; /* 0x38 */
     u8 pad3C[0x50];
     u32 parameter8C; /* 0x8C */
-} BtlCmdCtx;
+} SBTLCMD_CTX;
 
 typedef union BtlVec4 {
     f32 f[4];
@@ -140,7 +140,7 @@ typedef union BtlVec4 {
 
 struct BtlRuntimeTask;
 
-typedef struct BtlControlObject {
+typedef struct SBTLCONTROL_OBJECT {
     u8 enabled; /* 0x00 */
     u8 pad01[0x0F];
     u8 state; /* 0x10 */
@@ -149,17 +149,17 @@ typedef struct BtlControlObject {
     u8 pad22[0x26];
     s32 status; /* 0x48 */
     void (*update)(void); /* 0x4C */
-} BtlControlObject;
+} SBTLCONTROL_OBJECT;
 
 /* Select the smallest X for reference flag 0x200, otherwise the largest.
  * An empty indexed list returns NULL but still loads the native scratch vector. */
 
 struct effRefObj_t;
 
-typedef struct BtnUv {
+typedef struct SBTLBTN_UV {
     s32 u;
     s32 v;
-} BtnUv;
+} SBTLBTN_UV;
 
 /* Script command handlers set the command state at +0x20 and its
  * argument at +0x24; their numeric opcodes are still unidentified. */
@@ -229,15 +229,15 @@ u32 btlScriptPickElementBlockTarget(void);
 u32 btlScriptPickTargetExcludingActor(void);
 
 /* Script command selection: low/high flag words gate the stored choices. */
-typedef struct BtlCommandContext {
+typedef struct SBTLCOMMAND_CONTEXT {
     u8 pad00[0x18];
-    BtlUnit *actor; /* 0x18: the command actor's unit. */
+    SBTL_UNIT *actor; /* 0x18: the command actor's unit. */
     u8 pad1C[0x74];
     u32 selectionFlagsA; /* 0x90 */
     u32 selectionFlagsB; /* 0x94 */
     s32 choicesA[26]; /* 0x98..0xFC */
     s32 choicesB[17]; /* 0x100..0x140 */
-} BtlCommandContext;
+} SBTLCOMMAND_CONTEXT;
 
 u32 btlNbScriptCheckActorFlag(void);
 
@@ -370,8 +370,8 @@ void btlClosePfsDebugDirectory(s32 directoryHandle);
    clears the directory-type bit, and returns zero when the eight-name table is exhausted. */
 s32 btlReadBattleResourceDirectoryEntry(s32 directoryHandle, SceDirent *reader);
 extern u32 dds3BillboardGeneralNumber(void);
-void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *descriptor, const char *resourceName);
-void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, TMX_HEADER_t *textureResource);
+void btlLoadAndReplaceResourceHandle(SBTLRESOURCE_DESCRIPTOR *descriptor, const char *resourceName);
+void btlReplaceResourceHandle(SBTLRESOURCE_DESCRIPTOR *descriptor, TMX_HEADER_t *textureResource);
 
 #define EDITOR_KEY_COLS 13
 
@@ -473,11 +473,11 @@ void btlClosePfsDebugDirectory(s32 directoryHandle) {
 INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlReadBattleResourceDirectoryEntry);
 
 /* Build a scan-order list of built-in names and enabled resource-file categories. */
-BtlResourceEntryList *btlScanDirectory(const char *path, s32 flags) {
+SBTLRESOURCEENTRY_LIST *btlScanDirectory(const char *path, s32 flags) {
     SceDirent reader;
-    BtlResourceEntryList *list;
-    BtlResourceEntry *entry;
-    BtlResourceEntry *tail;
+    SBTLRESOURCEENTRY_LIST *list;
+    SBTLRESOURCE_ENTRY *entry;
+    SBTLRESOURCE_ENTRY *tail;
     s32 directoryHandle;
     s32 generalCount;
     s32 index;
@@ -485,7 +485,7 @@ BtlResourceEntryList *btlScanDirectory(const char *path, s32 flags) {
     s32 category;
 
     directoryHandle = btlOpenPfsDebugDirectory(path);
-    list = sdfChipAllocDirect(sizeof(BtlResourceEntryList));
+    list = sdfChipAllocDirect(sizeof(SBTLRESOURCEENTRY_LIST));
     if (path != NULL) {
         list->pathPrefix = sdfChipAllocDirect(strlen(path) + 1);
         strcpy(list->pathPrefix, path);
@@ -585,13 +585,13 @@ BtlResourceEntryList *btlScanDirectory(const char *path, s32 flags) {
 }
 
 /* Release all scanned entries, the owned path prefix, and the list header. */
-void btlDestroyEntryList(BtlResourceEntryList *list) {
-    BtlResourceEntry *entry;
+void btlDestroyEntryList(SBTLRESOURCEENTRY_LIST *list) {
+    SBTLRESOURCE_ENTRY *entry;
 
     if (list->head != NULL) {
         entry = list->head;
         do {
-            BtlResourceEntry *next = entry->next;
+            SBTLRESOURCE_ENTRY *next = entry->next;
             sdfChipFreeDirect(entry);
             entry = next;
         } while (entry != NULL);
@@ -601,9 +601,9 @@ void btlDestroyEntryList(BtlResourceEntryList *list) {
 }
 
 /* Append a named browser entry without changing the current scan order. */
-void btlAppendEntry(BtlResourceEntryList *list, const char *name, s32 category, s32 value, s32 id) {
-    BtlResourceEntry *entry = sdfChipAllocDirect(BTL_RESOURCE_ENTRY_BYTES);
-    BtlResourceEntry *tail;
+void btlAppendEntry(SBTLRESOURCEENTRY_LIST *list, const char *name, s32 category, s32 value, s32 id) {
+    SBTLRESOURCE_ENTRY *entry = sdfChipAllocDirect(BTL_RESOURCE_ENTRY_BYTES);
+    SBTLRESOURCE_ENTRY *tail;
     entry->category = category;
     entry->value = value;
     entry->id = id;
@@ -629,7 +629,7 @@ INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlCreateResourceDescriptor);
 INCLUDE_ASM(const s32, "code_r1_0017BBD8", Draw_effLensFlare);
 
 /* Release an owned texture handle and the descriptor, but not its entry list. */
-void btlDestroyResourceDescriptor(BtlResourceDescriptor *descriptor) {
+void btlDestroyResourceDescriptor(SBTLRESOURCE_DESCRIPTOR *descriptor) {
     sdfTexHandle_t *texture = descriptor->texture;
     if (texture != NULL && descriptor->textureCategory == BTL_RESOURCE_ENTRY_CATEGORY_TMX) {
         sdfTexFreeDelayed(texture);
@@ -637,23 +637,23 @@ void btlDestroyResourceDescriptor(BtlResourceDescriptor *descriptor) {
     sdfChipFreeDirect(descriptor);
 }
 
-void btlSetResourceBrowserPosition(BtlResourceDescriptor *descriptor, s32 x, s32 y) {
+void btlSetResourceBrowserPosition(SBTLRESOURCE_DESCRIPTOR *descriptor, s32 x, s32 y) {
     descriptor->originX = x;
     descriptor->originY = y;
 }
 
 /* Read the browser descriptor's zero-based selected entry index. */
 u32 btlGetResourceBrowserSelectedIndex(
-    const BtlResourceDescriptor *descriptor) {
+    const SBTLRESOURCE_DESCRIPTOR *descriptor) {
     return descriptor->selectedIndex;
 }
 
-u32 btlGetResourceBrowserSelectionStatus(const BtlResourceDescriptor *descriptor) {
+u32 btlGetResourceBrowserSelectionStatus(const SBTLRESOURCE_DESCRIPTOR *descriptor) {
     return descriptor->selectionStatus;
 }
 
 /* Format prefix + selected name; return its resource category, not its id. */
-s32 btlFormatSelectedResourceName(BtlResourceDescriptor *descriptor, char *output) {
+s32 btlFormatSelectedResourceName(SBTLRESOURCE_DESCRIPTOR *descriptor, char *output) {
     char *pathPrefix = descriptor->entryList->pathPrefix;
     if (pathPrefix != NULL) {
         sprintf(output, D_003BB818, pathPrefix, descriptor->selectedEntry->name);
@@ -664,7 +664,7 @@ s32 btlFormatSelectedResourceName(BtlResourceDescriptor *descriptor, char *outpu
 }
 
 /* Strip from the first '.' onward; return the selected entry's category. */
-s32 btlTrimResourceName(BtlResourceDescriptor *descriptor, char *output) {
+s32 btlTrimResourceName(SBTLRESOURCE_DESCRIPTOR *descriptor, char *output) {
     u32 nameLength;
     u32 characterIndex;
     sprintf(output, D_003BB820, descriptor->selectedEntry->name);
@@ -678,14 +678,14 @@ s32 btlTrimResourceName(BtlResourceDescriptor *descriptor, char *output) {
 }
 
 /* Return the selected entry's category-specific metadata word unchanged. */
-u32 btlGetResourcePathVariant(const BtlResourceDescriptor *resource) {
-    const BtlResourceEntry *entry = resource->selectedEntry;
+u32 btlGetResourcePathVariant(const SBTLRESOURCE_DESCRIPTOR *resource) {
+    const SBTLRESOURCE_ENTRY *entry = resource->selectedEntry;
     return entry->value;
 }
 
 /* Replace an owned old texture, acquire the named resource's texture,
  * then release the temporary allocation returned by the resource reader. */
-void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *descriptor, const char *resourceName) {
+void btlLoadAndReplaceResourceHandle(SBTLRESOURCE_DESCRIPTOR *descriptor, const char *resourceName) {
     u32 loadedResource;
     sdfTexHandle_t *texture = descriptor->texture;
     struct sdfMemHandle_t *allocation;
@@ -699,7 +699,7 @@ void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *descriptor, const ch
 }
 
 /* Acquire a texture from the supplied resource, releasing an owned old handle. */
-void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, TMX_HEADER_t *textureResource) {
+void btlReplaceResourceHandle(SBTLRESOURCE_DESCRIPTOR *descriptor, TMX_HEADER_t *textureResource) {
     sdfTexHandle_t *texture = descriptor->texture;
     if (texture != NULL && descriptor->textureCategory == BTL_RESOURCE_ENTRY_CATEGORY_TMX) {
         sdfTexFreeDelayed(texture);
@@ -709,7 +709,7 @@ void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, TMX_HEADER_t *t
 }
 
 /* Queue the descriptor's preview texture as a quad at its screen position. */
-void btlDrawResourcePreview(BtlResourceDescriptor *descriptor) {
+void btlDrawResourcePreview(SBTLRESOURCE_DESCRIPTOR *descriptor) {
     sdfDrawTag_t *list;
     void *sprite;
     dds3EffectSpriteVertex_t *vertex;
@@ -746,10 +746,10 @@ void btlDrawResourcePreview(BtlResourceDescriptor *descriptor) {
 }
 
 /* Allocate the native name record and initialize its header and extension. */
-struct BtlResourceNameRecord *btlCreateResourceNameRecord(const char *extension) {
-    struct BtlResourceNameRecord *record;
+struct SBTLRESOURCENAME_RECORD *btlCreateResourceNameRecord(const char *extension) {
+    struct SBTLRESOURCENAME_RECORD *record;
 
-    record = (struct BtlResourceNameRecord *)sdfChipAllocDirect(BTL_RESOURCE_NAME_RECORD_BYTES);
+    record = (struct SBTLRESOURCENAME_RECORD *)sdfChipAllocDirect(BTL_RESOURCE_NAME_RECORD_BYTES);
     record->maximumNameLength = 9;
     record->x = 8;
     record->y = 8;
@@ -762,36 +762,36 @@ struct BtlResourceNameRecord *btlCreateResourceNameRecord(const char *extension)
 }
 
 /* Release the chip allocation used for an editable resource-name record. */
-void btlDestroyResourceNameRecord(struct BtlResourceNameRecord *record) {
+void btlDestroyResourceNameRecord(struct SBTLRESOURCENAME_RECORD *record) {
     sdfChipFreeDirect(record);
 }
 
 INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditor);
 
-void btlSetResourceNamePosition(struct BtlResourceNameRecord *record, s32 x, s32 y) {
+void btlSetResourceNamePosition(struct SBTLRESOURCENAME_RECORD *record, s32 x, s32 y) {
     record->x = x;
     record->y = y;
 }
 
-u32 btlGetResourceNameSelectionStatus(const struct BtlResourceNameRecord *record) {
+u32 btlGetResourceNameSelectionStatus(const struct SBTLRESOURCENAME_RECORD *record) {
     return record->selectionStatus;
 }
 
 /* Copy the resource name at +0x21 and store its length. */
-void btlResourceRecordSetName(struct BtlResourceNameRecord *record, const char *name) {
+void btlResourceRecordSetName(struct SBTLRESOURCENAME_RECORD *record, const char *name) {
     strcpy(record->resourceName, name);
     record->nameLength = strlen(name);
 }
 
-void btlFormatResourceNameWithExtension(const struct BtlResourceNameRecord *record, char *output) {
+void btlFormatResourceNameWithExtension(const struct SBTLRESOURCENAME_RECORD *record, char *output) {
     sprintf(output, D_003BB818, record->resourceName, record->extension);
 }
 
-void btlFormatResourceNameWithoutExtension(const struct BtlResourceNameRecord *record, char *output) {
+void btlFormatResourceNameWithoutExtension(const struct SBTLRESOURCENAME_RECORD *record, char *output) {
     sprintf(output, D_003BB820, record->resourceName);
 }
 
-void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 maximumNameLength) {
+void btlSetResourceNameLengthLimit(struct SBTLRESOURCENAME_RECORD *record, u32 maximumNameLength) {
     record->maximumNameLength = maximumNameLength;
 }
 

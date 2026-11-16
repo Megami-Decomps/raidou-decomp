@@ -5,35 +5,35 @@
 
 /* One 0x20C-byte encounter adjustment record. Sound selection shares the
  * header with condition/variant data; four complete weighted groups follow. */
-typedef struct BattleAdjustmentEntry {
+typedef struct SBTLADJUSTMENT_ENTRY {
     u16 battleMode;
     u16 weight;
     s8 value;
     u8 serialEncounterChanceAdjustment; /* 0x05: input percentage before world-flag scaling and clamp. */
-} BattleAdjustmentEntry;
+} SBTLADJUSTMENT_ENTRY;
 
-typedef struct BattleAdjustmentGroup {
+typedef struct SBTLADJUSTMENT_GROUP {
     s32 interval;
-    BattleAdjustmentEntry entries[20];
-} BattleAdjustmentGroup;
+    SBTLADJUSTMENT_ENTRY entries[20];
+} SBTLADJUSTMENT_GROUP;
 
-typedef struct BattleAdjustmentRecord {
-    u16 encounterParamA; /* 0x00: copied to BtlState.encounterParamA by 001A11F0. */
+typedef struct SBTLADJUSTMENT_RECORD {
+    u16 encounterParamA; /* 0x00: copied to SBTL_STATE.encounterParamA by 001A11F0. */
     u16 encounterParamB; /* 0x02 */
     u16 streamSelection; /* 0x04: default stream selector used by 001F3278. */
     u8 pad06[2];
     u32 conditions[3]; /* Packed kind and solar-phase-mask/model-flag condition. */
     u8 variantCodes[8];
-    BattleAdjustmentGroup groups[4];
-} BattleAdjustmentRecord;
+    SBTLADJUSTMENT_GROUP groups[4];
+} SBTLADJUSTMENT_RECORD;
 
-typedef char BattleAdjustmentEntrySizeCheck[sizeof(BattleAdjustmentEntry) == 6 ? 1 : -1];
+typedef char SBTLADJUSTMENT_ENTRYSizeCheck[sizeof(SBTLADJUSTMENT_ENTRY) == 6 ? 1 : -1];
 
-typedef char BattleAdjustmentGroupSizeCheck[sizeof(BattleAdjustmentGroup) == 0x7C ? 1 : -1];
+typedef char SBTLADJUSTMENT_GROUPSizeCheck[sizeof(SBTLADJUSTMENT_GROUP) == 0x7C ? 1 : -1];
 
-typedef char BattleAdjustmentRecordSizeCheck[sizeof(BattleAdjustmentRecord) == 0x20C ? 1 : -1];
+typedef char SBTLADJUSTMENT_RECORDSizeCheck[sizeof(SBTLADJUSTMENT_RECORD) == 0x20C ? 1 : -1];
 
-extern BattleAdjustmentRecord *datBattleAdjustmentRecords;
+extern SBTLADJUSTMENT_RECORD *datBattleAdjustmentRecords;
 
 #include "enums.h"
 

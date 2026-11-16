@@ -17,27 +17,27 @@ enum BtlResourceEntryCategory {
 
 /* Scanned resource rows and their owning list. The providers allocate each
  * entry at 0x44 bytes, populate all six fields, and traverse both links. */
-typedef struct BtlResourceEntry {
+typedef struct SBTLRESOURCE_ENTRY {
     s32 category;                    /* 0x00: preview/selection category */
     s32 value;                       /* 0x04: category-specific index/data */
     s32 id;                          /* 0x08: category-specific resource id */
     char name[0x30];                 /* 0x0C: copied resource/display name */
-    struct BtlResourceEntry *prev;   /* 0x3C */
-    struct BtlResourceEntry *next;   /* 0x40 */
-} BtlResourceEntry;
+    struct SBTLRESOURCE_ENTRY *prev;   /* 0x3C */
+    struct SBTLRESOURCE_ENTRY *next;   /* 0x40 */
+} SBTLRESOURCE_ENTRY;
 
-typedef struct BtlResourceEntryList {
+typedef struct SBTLRESOURCEENTRY_LIST {
     s32 count;                       /* 0x00: number of linked entries */
     char *pathPrefix;                /* 0x04: owned directory prefix */
-    BtlResourceEntry *head;          /* 0x08 */
-} BtlResourceEntryList;
+    SBTLRESOURCE_ENTRY *head;          /* 0x08 */
+} SBTLRESOURCEENTRY_LIST;
 
-typedef char BtlResourceEntrySizeCheck[(sizeof(BtlResourceEntry) == 0x44) ? 1 : -1];
+typedef char SBTLRESOURCE_ENTRYSizeCheck[(sizeof(SBTLRESOURCE_ENTRY) == 0x44) ? 1 : -1];
 
-typedef char BtlResourceEntryListSizeCheck[(sizeof(BtlResourceEntryList) == 0x0C) ? 1 : -1];
+typedef char SBTLRESOURCEENTRY_LISTSizeCheck[(sizeof(SBTLRESOURCEENTRY_LIST) == 0x0C) ? 1 : -1];
 
 /* Browser viewport/selection and texture ownership; the entry list is borrowed. */
-typedef struct BtlResourceDescriptor {
+typedef struct SBTLRESOURCE_DESCRIPTOR {
     s32 originX;            /* 0x00: horizontal browser origin */
     s32 originY;            /* 0x04: vertical browser origin */
     u32 selectionStatus;    /* 0x08: pending, accepted, or canceled */
@@ -50,23 +50,23 @@ typedef struct BtlResourceDescriptor {
     u32 drawSurfaceIndex;   /* 0x24 */
     u32 borderColor;        /* 0x28: line-strip color */
     u32 fillColor;          /* 0x2C: sprite-fill color */
-    struct BtlResourceEntry *firstVisibleEntry; /* 0x30 */
-    struct BtlResourceEntry *selectedEntry; /* 0x34 */
-    struct BtlResourceEntry *cachedEntry; /* 0x38: last entry whose preview was updated */
+    struct SBTLRESOURCE_ENTRY *firstVisibleEntry; /* 0x30 */
+    struct SBTLRESOURCE_ENTRY *selectedEntry; /* 0x34 */
+    struct SBTLRESOURCE_ENTRY *cachedEntry; /* 0x38: last entry whose preview was updated */
     struct sdfTexHandle_t *texture;        /* 0x3C: owned or borrowed preview texture */
     s32 textureCategory;    /* 0x40: TMX is owned; GENERAL is borrowed. */
-    struct BtlResourceEntryList *entryList; /* 0x44 */
-} BtlResourceDescriptor;
+    struct SBTLRESOURCEENTRY_LIST *entryList; /* 0x44 */
+} SBTLRESOURCE_DESCRIPTOR;
 
-typedef char BtlResourceDescriptor_size_must_be_0x48[
-    (sizeof(BtlResourceDescriptor) == 0x48) ? 1 : -1];
+typedef char SBTLRESOURCE_DESCRIPTOR_size_must_be_0x48[
+    (sizeof(SBTLRESOURCE_DESCRIPTOR) == 0x48) ? 1 : -1];
 
-struct BtlResourceDescriptor *
-btlCreateResourceDescriptor(struct BtlResourceEntryList *list);
+struct SBTLRESOURCE_DESCRIPTOR *
+btlCreateResourceDescriptor(struct SBTLRESOURCEENTRY_LIST *list);
 
-s32 Draw_effLensFlare(struct BtlResourceDescriptor *descriptor);
+s32 Draw_effLensFlare(struct SBTLRESOURCE_DESCRIPTOR *descriptor);
 
-typedef struct BtlResourceNameRecord {
+typedef struct SBTLRESOURCENAME_RECORD {
     s32 x; /* UI origin for the name and overwrite prompts. */
     s32 y;
     u32 selectionStatus; /* Pending, accepted, or canceled. */
@@ -76,49 +76,49 @@ typedef struct BtlResourceNameRecord {
     s32 overwritePromptActive;
     char extension[5];
     char resourceName[0x17];
-} BtlResourceNameRecord;
+} SBTLRESOURCENAME_RECORD;
 
-typedef char BtlResourceNameRecordSizeCheck[
-    (sizeof(BtlResourceNameRecord) == 0x38) ? 1 : -1];
+typedef char SBTLRESOURCENAME_RECORDSizeCheck[
+    (sizeof(SBTLRESOURCENAME_RECORD) == 0x38) ? 1 : -1];
 
-void btlUpdateResourceNameEditor(struct BtlResourceNameRecord *record);
+void btlUpdateResourceNameEditor(struct SBTLRESOURCENAME_RECORD *record);
 
-struct BtlResourceEntryList *btlScanDirectory(const char *path, s32 flags);
+struct SBTLRESOURCEENTRY_LIST *btlScanDirectory(const char *path, s32 flags);
 
-void btlDestroyEntryList(struct BtlResourceEntryList *list);
+void btlDestroyEntryList(struct SBTLRESOURCEENTRY_LIST *list);
 
-void btlAppendEntry(struct BtlResourceEntryList *list, const char *name,
+void btlAppendEntry(struct SBTLRESOURCEENTRY_LIST *list, const char *name,
                     s32 category, s32 value, s32 id);
 
-void btlDestroyResourceDescriptor(struct BtlResourceDescriptor *descriptor);
+void btlDestroyResourceDescriptor(struct SBTLRESOURCE_DESCRIPTOR *descriptor);
 
-s32 btlFormatSelectedResourceName(struct BtlResourceDescriptor *descriptor,
+s32 btlFormatSelectedResourceName(struct SBTLRESOURCE_DESCRIPTOR *descriptor,
                                   char *output);
 
-s32 btlTrimResourceName(struct BtlResourceDescriptor *descriptor,
+s32 btlTrimResourceName(struct SBTLRESOURCE_DESCRIPTOR *descriptor,
                         char *output);
 
-u32 btlGetResourcePathVariant(const struct BtlResourceDescriptor *descriptor);
+u32 btlGetResourcePathVariant(const struct SBTLRESOURCE_DESCRIPTOR *descriptor);
 
-void btlSetResourceBrowserPosition(struct BtlResourceDescriptor *descriptor, s32 x, s32 y);
+void btlSetResourceBrowserPosition(struct SBTLRESOURCE_DESCRIPTOR *descriptor, s32 x, s32 y);
 
-u32 btlGetResourceBrowserSelectionStatus(const struct BtlResourceDescriptor *descriptor);
+u32 btlGetResourceBrowserSelectionStatus(const struct SBTLRESOURCE_DESCRIPTOR *descriptor);
 
-struct BtlResourceNameRecord *btlCreateResourceNameRecord(const char *extension);
+struct SBTLRESOURCENAME_RECORD *btlCreateResourceNameRecord(const char *extension);
 
-void btlSetResourceNamePosition(struct BtlResourceNameRecord *record, s32 x, s32 y);
+void btlSetResourceNamePosition(struct SBTLRESOURCENAME_RECORD *record, s32 x, s32 y);
 
-void btlResourceRecordSetName(struct BtlResourceNameRecord *record, const char *name);
+void btlResourceRecordSetName(struct SBTLRESOURCENAME_RECORD *record, const char *name);
 
-void btlFormatResourceNameWithExtension(const struct BtlResourceNameRecord *record, char *output);
+void btlFormatResourceNameWithExtension(const struct SBTLRESOURCENAME_RECORD *record, char *output);
 
-void btlFormatResourceNameWithoutExtension(const struct BtlResourceNameRecord *record, char *output);
+void btlFormatResourceNameWithoutExtension(const struct SBTLRESOURCENAME_RECORD *record, char *output);
 
-u32 btlGetResourceNameSelectionStatus(const struct BtlResourceNameRecord *record);
+u32 btlGetResourceNameSelectionStatus(const struct SBTLRESOURCENAME_RECORD *record);
 
-void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 maximumNameLength);
+void btlSetResourceNameLengthLimit(struct SBTLRESOURCENAME_RECORD *record, u32 maximumNameLength);
 
-void btlDestroyResourceNameRecord(struct BtlResourceNameRecord *record);
+void btlDestroyResourceNameRecord(struct SBTLRESOURCENAME_RECORD *record);
 
 void btlDebugDrawOrientedExtentGuide(f32 *center, f32 extent, f32 height, u32 color, f32 (*rotation)[4]);
 void btlDebugDrawPoint(f32 *position);

@@ -176,26 +176,26 @@ typedef int EvtUnitMotionState;
 #endif
 
 /* Camera pose payload (0x28); command members occupy SDK-aligned storage. */
-typedef struct BtlCamState {
+typedef struct SBTLCAM_STATE {
     f32 position[4];  /* 0x00 */
     f32 direction[4]; /* 0x10 */
     f32 distance;     /* 0x20 */
     f32 fov;          /* 0x24 */
-} BtlCamState;
+} SBTLCAM_STATE;
 
 /* Exponential interpolation also supplies the actor-panel expansion scale. */
-typedef struct BtlExponentialRange {
+typedef struct SBTLEXPONENTIAL_RANGE {
     f32 start; /* 0x00: span */
     f32 end;   /* 0x04: current progress */
-} BtlExponentialRange;
+} SBTLEXPONENTIAL_RANGE;
 
-typedef struct BtlScalarRange {
+typedef struct SBTLSCALAR_RANGE {
     f32 start;       /* 0x00: initial span */
     f32 end;         /* 0x04: remaining span */
     f32 inverseSpan; /* 0x08: quadratic acceleration */
     f32 velocity;    /* 0x0C */
     f32 value;       /* 0x10: accumulated progress */
-} BtlScalarRange;
+} SBTLSCALAR_RANGE;
 
 /* Returns the raw battle-runtime base address; callers choose the needed view. */
 void *btlGetRuntime(void);
@@ -203,53 +203,53 @@ void *btlGetRuntime(void);
 /* The override rejects on zero; nonzero permits the ordinary checks to run. */
 typedef s32 BtlBattleRecordEligibilityOverrideResult;
 
-typedef struct BtlItemDrop {
+typedef struct SBTLITEM_DROP {
     u16 id;
     u8 count;
     u8 pad03;
-} BtlItemDrop;
+} SBTLITEM_DROP;
 
 /* Embedded debug-list cursor state; the row limit is independent of count. */
-typedef struct BtlDebugMenuCursor {
+typedef struct SBTLDEBUGMENU_CURSOR {
     u32 count;
     u32 cursor;
     u32 top;
     u32 rows;
-} BtlDebugMenuCursor;
+} SBTLDEBUGMENU_CURSOR;
 
-typedef char BtlDebugMenuCursorExtent[(sizeof(BtlDebugMenuCursor) == 0x10) ? 1 : -1];
+typedef char BtlDebugMenuCursorExtent[(sizeof(SBTLDEBUGMENU_CURSOR) == 0x10) ? 1 : -1];
 
 /* Generic first word shared by actor-effect and boss-selection allocations. */
-typedef struct BtlEffectHeader {
+typedef struct SBTLEFFECT_HEADER {
     union {
         u32 owner;
-        struct BtlUnit *actor;
+        struct SBTL_UNIT *actor;
         u8 statIndex;
         u16 formCount; /* HARI1 reads and advances only this halfword. */
     };
-} BtlEffectHeader;
+} SBTLEFFECT_HEADER;
 
-typedef char BtlEffectHeaderSizeCheck[(sizeof(BtlEffectHeader) == 4) ? 1 : -1];
+typedef char SBTLEFFECT_HEADERSizeCheck[(sizeof(SBTLEFFECT_HEADER) == 4) ? 1 : -1];
 
-typedef struct BtlLinkedCommand {
-    BtlCamState camera;       /* 0x00 */
+typedef struct SBTLLINKED_COMMAND {
+    SBTLCAM_STATE camera;       /* 0x00 */
     u8 pad28[8];
-    BtlCamState frontCamera;  /* 0x30 */
+    SBTLCAM_STATE frontCamera;  /* 0x30 */
     u8 pad58[0x68];
-    BtlCamState backCamera;   /* 0xC0 */
+    SBTLCAM_STATE backCamera;   /* 0xC0 */
     u8 padE8[8];
     u32 flags;               /* 0xF0: includes facing-direction bit 0x200 */
-    BtlTask *task;            /* 0xF4: fallback actor is task->unit */
-    BtlUnit *linkedA;         /* 0xF8 */
-    BtlUnit *linkedB;         /* 0xFC */
-    BtlUnit *selectedUnit;    /* 0x100: actor selected for camera setup. */
+    SBTL_TASK *task;            /* 0xF4: fallback actor is task->unit */
+    SBTL_UNIT *linkedA;         /* 0xF8 */
+    SBTL_UNIT *linkedB;         /* 0xFC */
+    SBTL_UNIT *selectedUnit;    /* 0x100: actor selected for camera setup. */
     u32 status;              /* 0x104: command status used by callback dispatch. */
     s32 actionKind;          /* 0x108: previous camera action kind. */
     u16 stepKind;             /* 0x10C: camera setup and cursor step selector. */
     u8 pad10E[2];
     s32 state;               /* 0x110: aim waits for 0x1E, then resets this */
     s32 actionCode;          /* 0x114 */
-    BtlIndexList *targetList; /* 0x118: indexed target list */
+    SBTLINDEX_LIST *targetList; /* 0x118: indexed target list */
     s32 motionProgress;      /* 0x11C: one-shot aim latch */
     u8 pad120[8];
     union {
@@ -258,34 +258,34 @@ typedef struct BtlLinkedCommand {
     };                      /* 0x128: initialized as bits, interpolated as float */
     s32 durationFrames;       /* 0x12C */
     f32 motionParameter;     /* 0x130: aim setup stores 10 */
-    BtlExponentialRange exponentialRange; /* 0x134 */
-    BtlScalarRange quadraticRange;        /* 0x13C */
-} BtlLinkedCommand;
+    SBTLEXPONENTIAL_RANGE exponentialRange; /* 0x134 */
+    SBTLSCALAR_RANGE quadraticRange;        /* 0x13C */
+} SBTLLINKED_COMMAND;
 
 typedef BtlBattleRecordEligibilityOverrideResult (*BtlBattleRecordEligibilityOverrideCallback)(
-    struct BtlUnit *actor, struct BtlUnit *target, s32 speciesIndex);
+    struct SBTL_UNIT *actor, struct SBTL_UNIT *target, s32 speciesIndex);
 
 /* Battle model-debug editor: phase, list cursors, selected unit and name tables.
  * Indexed accesses address these
  * string-address tables relative to this nested record. */
-typedef struct BtlDebugMenuWork {
+typedef struct SBTLDEBUGMENU_WORK {
     s32 phase; /* Model-debug editor initialization, selection, submenus and exit wait. */
-    BtlDebugMenuCursor actionMenu; /* 0x04: seven debug actions. */
-    BtlDebugMenuCursor modelMenu; /* 0x14: enemy/party model selection. */
+    SBTLDEBUGMENU_CURSOR actionMenu; /* 0x04: seven debug actions. */
+    SBTLDEBUGMENU_CURSOR modelMenu; /* 0x14: enemy/party model selection. */
     u8 pad24[0x10];
-    BtlDebugMenuCursor motionMenu; /* 0x34 */
-    BtlDebugMenuCursor gunMenu; /* 0x44 */
+    SBTLDEBUGMENU_CURSOR motionMenu; /* 0x34 */
+    SBTLDEBUGMENU_CURSOR gunMenu; /* 0x44 */
     u8 pad54[0x10];
-    BtlUnit *selectedUnit; /* 0x64 */
+    SBTL_UNIT *selectedUnit; /* 0x64 */
     s32 partyModelNames[0x20]; /* 0x68 */
     s32 enemyModelNames[0x180]; /* 0xE8 */
     s32 gunNames[0x20]; /* 0x6E8 */
-} BtlDebugMenuWork;
+} SBTLDEBUGMENU_WORK;
 
 /* Observed fields of the singleton battle work returned by btlGetRuntime.
  * This is one object, not separate script/event/actor-update contexts. Holes
  * remain opaque. */
-typedef struct BtlState {
+typedef struct SBTL_STATE {
     f32 position[4]; /* 0x00: battle origin added to the camera offset at 001DC11C. */
     f32 baselineLightDirection[4];
     f32 baselineLightColor[4];
@@ -294,7 +294,7 @@ typedef struct BtlState {
     f32 lightColor[4]; /* 0x50: scene light color used by battle light transitions. */
     f32 ambientColor[4]; /* 0x60: default ambient color used by battle light transitions. */
     /* The same command payload is passed to the action-camera helpers. */
-    BtlLinkedCommand cameraCommand; /* 0x70..0x1BF */
+    SBTLLINKED_COMMAND cameraCommand; /* 0x70..0x1BF */
     s16 eventPackId; /* 0x1C0: signed event-pack key, or -1 when absent */
     u8 pad1C2[2];
     u32 scriptFlags; /* 0x1C4 */
@@ -305,7 +305,7 @@ typedef struct BtlState {
     struct SoundMixer *eventResult; /* 0x1D4 */
     struct SoundMixer *eventRequest; /* 0x1D8 */
     void *eventData; /* 0x1DC */
-    BtlUnit *eventUnit; /* 0x1E0 */
+    SBTL_UNIT *eventUnit; /* 0x1E0 */
     s32 sequenceHandle; /* 0x1E4 */
     s32 scriptHandle; /* 0x1E8 */
     struct sdfMemHandle_t *eventAssets; /* 0x1EC */
@@ -323,8 +323,8 @@ typedef struct BtlState {
     u16 endFlags; /* 0x21A: jingle, script-release and stream-reset latches. */
     s32 scriptState; /* 0x21C */
     s32 scriptArg; /* 0x220 */
-    BtlTask *tasks; /* 0x224 */
-    BtlUnit *units; /* 0x228 */
+    SBTL_TASK *tasks; /* 0x224 */
+    SBTL_UNIT *units; /* 0x228 */
     u8 pad22C[0x10];
     struct SoundSlotOwner *soundSlotOwners; /* 0x23C: shared category/id motion-SE banks. */
     struct BattleModelEntry *modelEntries; /* 0x240 */
@@ -371,19 +371,19 @@ typedef struct BtlState {
     struct dds3ProcessID_t *sceneObject; /* 0x2A8: command-panel task. */
     struct dds3ProcessID_t *spriteObject; /* 0x2AC: target-selection task. */
     struct dds3ProcessID_t *cleanupTask; /* 0x2B0: scene-panel cleanup task. */
-    BtlItemDrop itemDrops[3]; /* 0x2B4: battle defeat item aggregation in code_001A1960 */
+    SBTLITEM_DROP itemDrops[3]; /* 0x2B4: battle defeat item aggregation in code_001A1960 */
     s32 moneyEarned;
     s32 moneyTotal; /* 0x2C4: accumulated battle money. */
     s32 experienceEarned; /* 0x2C8: defeat experience accumulator */
     s32 epEarned; /* 0x2CC: distinct defeat EP accumulator */
     s32 totalAp; /* 0x2D0: defeat EP accumulated for the result screen. */
-    BtlSceneSlot slots[8]; /* 0x2D4: fldClearSceneSlotsAndGroups resets all eight. */
-    BtlTask *groupPrimary[20]; /* 0x2EC: scene-group lists in code_001C48A8 */
-    BtlTask *groupSecondary[45]; /* 0x33C */
-    BtlTask *groupTertiary[15]; /* 0x3F0 */
+    SBTLSCENE_SLOT slots[8]; /* 0x2D4: fldClearSceneSlotsAndGroups resets all eight. */
+    SBTL_TASK *groupPrimary[20]; /* 0x2EC: scene-group lists in code_001C48A8 */
+    SBTL_TASK *groupSecondary[45]; /* 0x33C */
+    SBTL_TASK *groupTertiary[15]; /* 0x3F0 */
     u8 pad42C[0x20];
-    BtlSceneFadingRecord fading[8]; /* 0x44C: fldInitSceneFadeRecords initializes these. */
-    BtlTask *currentTask; /* 0x48C: retained current command actor. */
+    SBTLSCENEFADING_RECORD fading[8]; /* 0x44C: fldInitSceneFadeRecords initializes these. */
+    SBTL_TASK *currentTask; /* 0x48C: retained current command actor. */
     s8 timingRate; /* 0x490: initialized to 30; scales battle motion and countdowns. */
     u8 pad491[3];
     f32 modelFrameScale; /* 0x494 */
@@ -401,96 +401,96 @@ typedef struct BtlState {
     u8 pad590[4];
     void (*bossCleanup)(void); /* 0x594 */
     u8 pad598[4];
-    s32 (*hitResultOverride)(BtlUnit *, BtlUnit *, s32); /* 0x59C: source, target and command. */
-    s32 (*chooseMotion)(BtlUnit *, s32, s32); /* 0x5A0 */
-    s32 (*statusMotionOverride)(BtlUnit *); /* 0x5A4: negative keeps the current motion. */
-    s32 (*preserveMotionRange)(BtlUnit *, s32); /* 0x5A8: keep the stored motion start/end. */
-    void (*actorParameterDeltaCallback)(BtlUnit *, s32 *); /* 0x5AC */
+    s32 (*hitResultOverride)(SBTL_UNIT *, SBTL_UNIT *, s32); /* 0x59C: source, target and command. */
+    s32 (*chooseMotion)(SBTL_UNIT *, s32, s32); /* 0x5A0 */
+    s32 (*statusMotionOverride)(SBTL_UNIT *); /* 0x5A4: negative keeps the current motion. */
+    s32 (*preserveMotionRange)(SBTL_UNIT *, s32); /* 0x5A8: keep the stored motion start/end. */
+    void (*actorParameterDeltaCallback)(SBTL_UNIT *, s32 *); /* 0x5AC */
     u8 pad5B0[4];
     s32 (*battleOutcomeOverride)(void); /* 0x5B4: -1 falls through to the unit scan; other results become terminalOutcome (func_001A8188). */
     void (*postPlacementCallback)(void); /* 0x5B8: runs after actor positions and rotations. */
-    s32 (*effectParameterCallback)(BtlUnit *, s32); /* 0x5BC: actor record-index override */
+    s32 (*effectParameterCallback)(SBTL_UNIT *, s32); /* 0x5BC: actor record-index override */
     u8 pad5C0[4];
-    BtlUnit *(*findReusableUnit)(u32, u32); /* 0x5C4 */
+    SBTL_UNIT *(*findReusableUnit)(u32, u32); /* 0x5C4 */
     u64 (*callback5C8)(u64); /* 0x5C8 */
-    s32 (*callback5CC)(BtlUnit *); /* 0x5CC */
+    s32 (*callback5CC)(SBTL_UNIT *); /* 0x5CC */
     void (*cleanup)(void); /* 0x5D0 */
     u64 (*callback5D4)(u64); /* 0x5D4 */
-    void (*prepareModelUnit)(BtlUnit *); /* 0x5D8 */
+    void (*prepareModelUnit)(SBTL_UNIT *); /* 0x5D8 */
     void (*beforeMotionUpdate)(void); /* 0x5DC */
-    void (*finishModelUnit)(BtlUnit *); /* 0x5E0 */
+    void (*finishModelUnit)(SBTL_UNIT *); /* 0x5E0 */
     u8 pad5E4[8];
     s32 (*serialOverride)(void); /* 0x5EC: -1 cancels a scripted follow-up encounter. */
     void (*updateCallback)(void); /* 0x5F0 */
     u8 pad5F4[0x14];
-    u8 (*cameraArrangementHook)(BtlLinkedCommand *, BtlCamState *, s32); /* 0x608: boolean mode-specific pose override. */
-    s32 (*defeatCameraHook)(BtlLinkedCommand *, BtlCamState *, s32); /* 0x60C: linked-defeat camera override. */
-    s32 (*cameraStateChangePredicate)(BtlLinkedCommand *); /* 0x610 */
+    u8 (*cameraArrangementHook)(SBTLLINKED_COMMAND *, SBTLCAM_STATE *, s32); /* 0x608: boolean mode-specific pose override. */
+    s32 (*defeatCameraHook)(SBTLLINKED_COMMAND *, SBTLCAM_STATE *, s32); /* 0x60C: linked-defeat camera override. */
+    s32 (*cameraStateChangePredicate)(SBTLLINKED_COMMAND *); /* 0x610 */
     u8 pad614[8];
-    s32 (*actionCameraSetupHook)(BtlLinkedCommand *); /* 0x61C: nonzero handles action-camera setup. */
+    s32 (*actionCameraSetupHook)(SBTLLINKED_COMMAND *); /* 0x61C: nonzero handles action-camera setup. */
     u8 pad620[4];
     u32 (*commandSoundDelay)(s32); /* 0x624: action-specific sound delay. */
-    u8 (*cameraPoseBlendHook)(BtlLinkedCommand *, s8, s8); /* 0x628: boolean override with side-presence flags. */
-    s32 (*actionCameraStepHook)(BtlLinkedCommand *); /* 0x62C: nonzero handles the camera step. */
-    s32 (*handleActorCategoryCamera)(struct BtlLinkedCommand *, s32, s32); /* 0x630: linked-list flags 0x200 / 0x400. */
+    u8 (*cameraPoseBlendHook)(SBTLLINKED_COMMAND *, s8, s8); /* 0x628: boolean override with side-presence flags. */
+    s32 (*actionCameraStepHook)(SBTLLINKED_COMMAND *); /* 0x62C: nonzero handles the camera step. */
+    s32 (*handleActorCategoryCamera)(struct SBTLLINKED_COMMAND *, s32, s32); /* 0x630: linked-list flags 0x200 / 0x400. */
     u8 pad634[4];
     u8 (*summonFadePredicate)(s32); /* 0x638: SUMMON fade option for the command. */
-    s32 (*actionHitOverride)(BtlUnit *, BtlUnit *, s32, u32); /* 0x63C */
-    s32 (*reflectedHitOverride)(BtlUnit *, BtlUnit *, s32); /* 0x640 */
+    s32 (*actionHitOverride)(SBTL_UNIT *, SBTL_UNIT *, s32, u32); /* 0x63C */
+    s32 (*reflectedHitOverride)(SBTL_UNIT *, SBTL_UNIT *, s32); /* 0x640 */
     u8 pad644[4];
-    void (*preActionHook)(BtlTask *, s32, u64, u64, u64); /* 0x648 */
-    void (*postTargetHook)(BtlTask *, s32, BtlUnit *, u64, u64, s32); /* 0x64C */
+    void (*preActionHook)(SBTL_TASK *, s32, u64, u64, u64); /* 0x648 */
+    void (*postTargetHook)(SBTL_TASK *, s32, SBTL_UNIT *, u64, u64, s32); /* 0x64C */
     u8 pad650[4];
-    s32 (*allowDefeatCandidate)(BtlUnit *); /* 0x654 */
-    s32 (*allowDefeatCandidateClear)(BtlUnit *); /* 0x658: zero vetoes clearing the ordinary defeat flags. */
+    s32 (*allowDefeatCandidate)(SBTL_UNIT *); /* 0x654 */
+    s32 (*allowDefeatCandidateClear)(SBTL_UNIT *); /* 0x658: zero vetoes clearing the ordinary defeat flags. */
     u8 pad65C[8];
-    s32 (*cameraModeInitializePredicate)(BtlLinkedCommand *); /* 0x664: permits the mode initializer in 001DB048. */
-    s32 (*cameraUpdatePredicate)(BtlLinkedCommand *); /* 0x668: gates the active camera handler. */
-    s32 (*allowPositionEffect)(BtlUnit *); /* 0x66C */
+    s32 (*cameraModeInitializePredicate)(SBTLLINKED_COMMAND *); /* 0x664: permits the mode initializer in 001DB048. */
+    s32 (*cameraUpdatePredicate)(SBTLLINKED_COMMAND *); /* 0x668: gates the active camera handler. */
+    s32 (*allowPositionEffect)(SBTL_UNIT *); /* 0x66C */
     s32 (*unitValueOverrideHook)(datActorWork_t *, s32); /* 0x670: custom affinity result, or -1 for the normal resolver. */
     s32 (*summonEffectId)(s32); /* 0x674: -1 retains the default summon effect. */
     s32 (*summonEffectDelay)(u32); /* 0x678: delay for the selected summon species. */
     s32 (*actionPointsOverride)(u32, u32, s32); /* 0x67C */
     /* 0x680: zero vetoes the record; nonzero continues ordinary checks. */
     BtlBattleRecordEligibilityOverrideCallback battleRecordEligibilityOverride;
-    void (*actionResourceNameHook)(BtlTask *, s32, char *); /* 0x684: formats the action event resource name. */
+    void (*actionResourceNameHook)(SBTL_TASK *, s32, char *); /* 0x684: formats the action event resource name. */
     u8 pad688[4];
-    s32 (*commandAvailabilityOverride)(BtlUnit *, s32); /* 0x68C: gates command availability */
-    s32 (*commandRangeOverride)(BtlUnit *, s32); /* 0x690: takes the actor and command */
-    BtlEffectHeader *effect; /* 0x694: mode-owned allocation begins with its generic header. */
+    s32 (*commandAvailabilityOverride)(SBTL_UNIT *, s32); /* 0x68C: gates command availability */
+    s32 (*commandRangeOverride)(SBTL_UNIT *, s32); /* 0x690: takes the actor and command */
+    SBTLEFFECT_HEADER *effect; /* 0x694: mode-owned allocation begins with its generic header. */
     u8 pad698[0xC];
-    BtlDebugMenuWork debug; /* 0x6A4 */
+    SBTLDEBUGMENU_WORK debug; /* 0x6A4 */
     s8 debugModelListKind; /* 0: enemy models; 1: party models. */
     u8 unk_E0D;
     s16 debugMotionCountdown; /* Frames until preview motion; -1 when idle. */
-} BtlState;
+} SBTL_STATE;
 
-typedef char BtlSceneLightDds1Extent[(sizeof(BtlState) == 0xE10) ? 1 : -1];
+typedef char BtlSceneLightDds1Extent[(sizeof(SBTL_STATE) == 0xE10) ? 1 : -1];
 
 /* SYSEFF metadata and runtime registrations share these indices. */
 enum { BTL_SELECTED_UNIT_EFFECT_SOUND_SLOT = 0x26 };
 
-extern void btlResetCameraMotion(BtlLinkedCommand *);
+extern void btlResetCameraMotion(SBTLLINKED_COMMAND *);
 
-typedef struct BtlRotationTaskArgs BtlRotationTaskArgs;
+typedef struct SBTLROTATIONTASK_ARGS SBTLROTATIONTASK_ARGS;
 
 struct evtUnitHandle_t;
 
-typedef struct BtlRotationTaskArgs {
+typedef struct SBTLROTATIONTASK_ARGS {
     s128 from;
     s128 to;
     f32 rate;
     f32 t;
     s32 count;
-    BtlUnit *unit;
-} BtlRotationTaskArgs;
+    SBTL_UNIT *unit;
+} SBTLROTATIONTASK_ARGS;
 
-typedef char BtlRotationTaskArgsSizeCheck[
-    sizeof(BtlRotationTaskArgs) == 0x30 ? 1 : -1];
+typedef char SBTLROTATIONTASK_ARGSSizeCheck[
+    sizeof(SBTLROTATIONTASK_ARGS) == 0x30 ? 1 : -1];
 
 /* Consume one item when its table flag 4 is set, then signal task completion. */
 typedef struct {
-    BtlUnit *actor;
+    SBTL_UNIT *actor;
     s32 itemId;
 } BtlCommandItemWork;
 
@@ -505,38 +505,38 @@ typedef struct EventUnitData {
 
 /* Complete model loading, cross-fade the retained actor, and release it. */
 
-typedef struct BtlUnitLightDirectionTaskArgs {
+typedef struct SBTLUNITLIGHTDIRECTIONTASK_ARGS {
     f32 direction[4];
     s32 directionMode;
-    BtlUnit *unit;
-} BtlUnitLightDirectionTaskArgs;
+    SBTL_UNIT *unit;
+} SBTLUNITLIGHTDIRECTIONTASK_ARGS;
 
-typedef char BtlUnitLightDirectionTaskArgs_size_check[
-    sizeof(BtlUnitLightDirectionTaskArgs) == 0x18 ? 1 : -1];
+typedef char SBTLUNITLIGHTDIRECTIONTASK_ARGS_size_check[
+    sizeof(SBTLUNITLIGHTDIRECTIONTASK_ARGS) == 0x18 ? 1 : -1];
 
-typedef struct BtlDamageShakeArgs {
-    BtlUnit *unit;
+typedef struct SBTLDAMAGESHAKE_ARGS {
+    SBTL_UNIT *unit;
     f32 amplitude;
     s32 tick;
-} BtlDamageShakeArgs;
+} SBTLDAMAGESHAKE_ARGS;
 
-typedef struct GunLoadArgs {
-    BtlUnit *unit;
+typedef struct SBTLGUNLOAD_ARGS {
+    SBTL_UNIT *unit;
     struct fileRequest *request;
-} GunLoadArgs;
+} SBTLGUNLOAD_ARGS;
 
-typedef struct BtlActorTransparencyArgs {
-    BtlUnit *unit;
-} BtlActorTransparencyArgs;
+typedef struct SBTLACTORTRANSPARENCY_ARGS {
+    SBTL_UNIT *unit;
+} SBTLACTORTRANSPARENCY_ARGS;
 
 u32 btlRunCameraMotionResetTask(void);
 extern f32 btlCameraLocalUpVector[4], btlCameraOutputRotation[4];
 extern f32 btlWorldCameraStartOffset[4], btlWorldCameraStartRotation[4];
 extern f32 btlCreatedCameraTarget[4], btlCreatedCameraRotation[4];
-void btlResetCameraMotion(BtlLinkedCommand *action);
+void btlResetCameraMotion(SBTLLINKED_COMMAND *action);
 
 u32 btlRunCameraMotionResetTask(void) {
-    BtlState *work = (BtlState *)btlGetRuntime();
+    SBTL_STATE *work = (SBTL_STATE *)btlGetRuntime();
 
     btlResetCameraMotion(&work->cameraCommand);
     return 1;

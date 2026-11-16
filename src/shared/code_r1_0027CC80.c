@@ -38,7 +38,7 @@
 
 extern u32 GetRand(u32);
 extern u32 btlPreviousAiCandidateBucket;
-extern void (*btlAiActionHandlers[])(BtlTask *, u32, s32);
+extern void (*btlAiActionHandlers[])(SBTL_TASK *, u32, s32);
 extern s32 GetPercentage(void);
 
 /* Sum of two 0..0xFFF rolls, folded into 0..0xFFF; /41 turns it into one of 100 buckets. */
@@ -51,10 +51,10 @@ static inline u32 btlRollTwice(void) {
 s32 GetPercentage(void);
 
 /* Out parameters of the action-id lookup. */
-typedef struct BtlActionLookup {
+typedef struct SBTLACTION_LOOKUP {
     u16 slot;
     s32 result;
-} BtlActionLookup;
+} SBTLACTION_LOOKUP;
 
 /* Rolls a bucket; if it lands within 3 of the previous one, rolls again. */
 s32 GetPercentage(void) {

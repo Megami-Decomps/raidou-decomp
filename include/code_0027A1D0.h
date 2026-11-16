@@ -4,7 +4,7 @@
 #include "common.h"
 
 /* Retained command operands. The task constructors copy the complete operand after the actor pointer. */
-typedef struct BtlOperandEntry {
+typedef struct SBTLOPERAND_ENTRY {
     s32 hpDelta;
     s32 mpDelta;
     u32 addedStatus;
@@ -17,10 +17,10 @@ typedef struct BtlOperandEntry {
     s32 mpRecovery;
     u16 deferredStatus;
     u16 flags;
-} BtlOperandEntry;
+} SBTLOPERAND_ENTRY;
 
 /* The command work owns thirteen groups. */
-typedef struct BtlOperandGroup {
+typedef struct SBTLOPERAND_GROUP {
     u8 count;
     u8 pad01[3];
     s32 interval;
@@ -40,8 +40,8 @@ typedef struct BtlOperandGroup {
     u8 reflectionKind;
     u8 pad16[2];
     s32 reactionCode;
-    BtlOperandEntry entries[64];
-} BtlOperandGroup;
+    SBTLOPERAND_ENTRY entries[64];
+} SBTLOPERAND_GROUP;
 
 /* The five base-stat slots used by party/enemy records and matching stat
  * vectors. These are not affinity-table selectors or script IDs. */
@@ -99,17 +99,17 @@ typedef char DatPartyRecordSizeCheck[sizeof(datActorWork_t) == 0x1A4 ? 1 : -1];
 /* The actor owns both status words as one complete, naturally aligned record.
  * Scalar accesses retain their ordinary word alias behavior. Packed observations
  * copy the whole record's representation, without casting a scalar member. */
-typedef struct BtlUnitStatus {
+typedef struct SBTLUNIT_STATUS {
     s32 flags;
     u32 stateFlags;
-} BtlUnitStatus;
+} SBTLUNIT_STATUS;
 
 /* Six-byte status-entry record; each game's battle unit contains seven. */
-typedef struct BtlUnitEntrySlot {
+typedef struct SBTLUNITENTRY_SLOT {
     s16 code;
     s16 initialValue;
     s16 countdown;
-} BtlUnitEntrySlot;
+} SBTLUNITENTRY_SLOT;
 
 /* Loaded as a pair with LD; SH flags and SW reference counts also access its halves. */
 typedef union BtlEffectLinkState {
@@ -122,48 +122,48 @@ typedef union BtlEffectLinkState {
 } BtlEffectLinkState;
 
 /* Both titles keep the primary owner's existing eight-byte alignment. */
-typedef char BtlUnitStatusSizeCheck[(sizeof(BtlUnitStatus) == 8) ? 1 : -1];
+typedef char SBTLUNIT_STATUSSizeCheck[(sizeof(SBTLUNIT_STATUS) == 8) ? 1 : -1];
 
 #ifdef VERSION_RAIDOU2
 /* Three-byte scene scheduling slot; IDs move with their group/countdown. */
-typedef struct BtlSceneSlot {
+typedef struct SBTLSCENE_SLOT {
     u8 group;
     u8 remaining;
     u8 id;
-} BtlSceneSlot;
+} SBTLSCENE_SLOT;
 #endif
 
 #ifdef VERSION_RAIDOU2
-typedef struct BtlSceneFadingRecord {
-    BtlSceneSlot slot;
+typedef struct SBTLSCENEFADING_RECORD {
+    SBTLSCENE_SLOT slot;
     u8 alpha;
     s32 target;
-} BtlSceneFadingRecord;
+} SBTLSCENEFADING_RECORD;
 #endif
 
 #ifdef VERSION_RAIDOU2
-typedef char BtlSceneSlotSizeCheck[(sizeof(BtlSceneSlot) == 3) ? 1 : -1];
+typedef char SBTLSCENE_SLOTSizeCheck[(sizeof(SBTLSCENE_SLOT) == 3) ? 1 : -1];
 #endif
 
 #ifdef VERSION_RAIDOU2
-typedef char BtlSceneFadingRecordSizeCheck[(sizeof(BtlSceneFadingRecord) == 8) ? 1 : -1];
+typedef char SBTLSCENEFADING_RECORDSizeCheck[(sizeof(SBTLSCENEFADING_RECORD) == 8) ? 1 : -1];
 #endif
 
-typedef struct BtlUnit BtlUnit;
+typedef struct SBTL_UNIT SBTL_UNIT;
 
-typedef struct BtlIndexList {
+typedef struct SBTLINDEX_LIST {
     s32 capacity;       /* 0x00: allocated entry count */
     s32 count;          /* 0x04: live entry count */
-    struct BtlUnit **entries; /* 0x08: points just past this header */
-} BtlIndexList;
+    struct SBTL_UNIT **entries; /* 0x08: points just past this header */
+} SBTLINDEX_LIST;
 
-typedef struct BattleIndexWork {
+typedef struct SBTLINDEX_WORK {
     s32 phase;
     s32 skillId;
     s32 reference;
-    BtlUnit *companionA;
-    BtlUnit *companionB;
-    BtlUnit *linkedUnit;
+    SBTL_UNIT *companionA;
+    SBTL_UNIT *companionB;
+    SBTL_UNIT *linkedUnit;
     s32 summonId; /* +0x18: also reused as a scene-command party-record index. */
     s32 stageValue;
     s32 precedence; /* Command precedence value: 8 for the default, otherwise helper result minus 8 (logged as btl:precede). */
@@ -178,7 +178,7 @@ typedef struct BattleIndexWork {
     s32 parameter;
     s32 wait;
     s32 unk3C;
-    BtlIndexList *indices;
+    SBTLINDEX_LIST *indices;
     u8 pad44[4];
     u64 ownerId;
     s32 huntEpReward; /* +0x50: accumulated hunt EP awarded after target resolution. */
@@ -187,12 +187,12 @@ typedef struct BattleIndexWork {
     u16 flags;
     u8 refreshEligibleActors;
     u8 pad5F;
-    BtlOperandGroup *groups;
+    SBTLOPERAND_GROUP *groups;
     struct sdfMemHandle_t *allocationHandle;
-} BattleIndexWork;
+} SBTLINDEX_WORK;
 
 /* btlCreateActionSeq owns one command actor. */
-typedef struct BtlTask {
+typedef struct SBTL_TASK {
     s32 state;
     u16 actionNumber;
     u8 pad06[2];
@@ -203,26 +203,26 @@ typedef struct BtlTask {
     };
     s32 stateTime;
     s32 completedTurns; /* +0x14: incremented when an actor turn is committed */
-    BtlUnit *unit;
+    SBTL_UNIT *unit;
     u8 unk_1C[4];
-    BattleIndexWork indexWork; /* +0x20..+0x87 */
+    SBTLINDEX_WORK indexWork; /* +0x20..+0x87 */
     u16 aiCounter; /* +0x88: reset, incremented, then clamped by AI queries */
     u8 pad8A[0xBC];
     s8 lowHpActionHold; /* +0x146: positive suppresses the low-HP action */
     u8 pad147;
     u32 actions[8]; /* +0x148: queued action words; consumers also read low halfword IDs */
-    struct BtlTask *prev; /* +0x168 */
-    struct BtlTask *next; /* +0x16C */
-} BtlTask;
+    struct SBTL_TASK *prev; /* +0x168 */
+    struct SBTL_TASK *next; /* +0x16C */
+} SBTL_TASK;
 
-typedef char BtlTask_size_must_be_0x170[(sizeof(BtlTask) == 0x170) ? 1 : -1];
+typedef char SBTL_TASK_size_must_be_0x170[(sizeof(SBTL_TASK) == 0x170) ? 1 : -1];
 
 /* Battle unit. Retail accessors distinguish world rotation at
  * +0x40 from the orientation quaternion at +0x70; body/muzzle offsets are
  * +0x90/+0xA0 respectively. Effect origin/scene extension are +0x31C/+0x320.
  * The actor chain ends at +0x344. Command state/action words are a different
  * object and must not be interpreted through this unit layout. */
-typedef struct BtlUnit {
+typedef struct SBTL_UNIT {
     f32 lightDirection[4]; /* 0x00: source direction restored by battle light transitions. */
     f32 colorStart[4]; /* 0x10: first source color used by the effect blend callback. */
     f32 colorEnd[4]; /* 0x20: second source color used by the effect blend callback. */
@@ -282,14 +282,14 @@ typedef struct BtlUnit {
     s32 effectParameter; /* 0x100: retained motion-selection mode. */
     f32 effectScale; /* 0x104: retained motion-selection rate. */
     u64 identity; /* 0x108: copied to effect tasks and compared to command IDs */
-    BtlUnitStatus status; /* 0x110: complete low/high status record. */
+    SBTLUNIT_STATUS status; /* 0x110: complete low/high status record. */
     u32 gunResourceFlags; /* 0x118 */
     u8 lookupId; /* 0x11C: party slots 0-2 or enemy slots 0-8; 0xFF when unset. */
     u8 pad11D[3];
     datActorWork_t partyRecord; /* 0x120: complete copied actor record (0x1A4). */
     u8 partyIndex; /* 0x2C4: saved party-entry index, read with lbu. */
     u8 pad2C5;
-    BtlUnitEntrySlot entrySlots[7]; /* 0x2C6 */
+    SBTLUNITENTRY_SLOT entrySlots[7]; /* 0x2C6 */
     s32 selectedEntryIndex; /* 0x2F0: command-record index; -1 denotes no selected entry. */
     s32 pendingSkillNameIndex; /* 0x2F4: skill-name override index; -1 uses the action skill. */
     struct SoundResourceNode *resourceNode; /* 0x2F8: owned system-effect resource. */
@@ -305,15 +305,15 @@ typedef struct BtlUnit {
     struct dds3Basic_t *effectObject; /* 0x31C: actor's world node and transform. */
     struct evtUnitHandle_t *ext; /* 0x320: the event manager's complete 0x170-byte work. */
     struct sdfModelRootNode_t *transparencyModel; /* 0x324: alternate SDF model retained during transparency. */
-    struct BtlUnit *mirror; /* 0x328: unit drawn from this unit's transparency packet buffer */
+    struct SBTL_UNIT *mirror; /* 0x328: unit drawn from this unit's transparency packet buffer */
     s32 transparencyBuffer; /* 0x32C: mirror pass's 512x224 transfer image. */
     struct sdfMemHandle_t *transparencyBufferAllocation; /* 0x330: allocation handle released with the image. */
     u8 pad334[8];
     struct sdfMemHandle_t *handle; /* 0x33C: allocation that owns this unit. */
-    struct BtlUnit *previousActor; /* 0x340 */
-    struct BtlUnit *next; /* 0x344: actor-list link, not a task-chain link */
-} BtlUnit;
+    struct SBTL_UNIT *previousActor; /* 0x340 */
+    struct SBTL_UNIT *next; /* 0x344: actor-list link, not a task-chain link */
+} SBTL_UNIT;
 
-typedef char BtlUnitSizeCheck[(sizeof(BtlUnit) == 0x348) ? 1 : -1];
+typedef char SBTL_UNITSizeCheck[(sizeof(SBTL_UNIT) == 0x348) ? 1 : -1];
 
 #endif

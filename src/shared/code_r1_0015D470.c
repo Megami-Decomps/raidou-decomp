@@ -11,7 +11,7 @@ typedef s8 BtlCameraCursorPosePhase;
 
 /* Shared battle-camera script cursor and path state (0x130 bytes).
  * Both title providers use the same field offsets. */
-typedef struct BtlCameraCursorView {
+typedef struct SBTLCAMERACURSOR_VIEW {
     u16 useTimedScript;     /* 0x00 */
     s16 frame;              /* 0x02 */
     s16 mode;
@@ -64,37 +64,37 @@ typedef struct BtlCameraCursorView {
     s32 parameterIndex124;
     s32 parameterIndex128;
     s32 parameterIndex12C;
-} BtlCameraCursorView;
+} SBTLCAMERACURSOR_VIEW;
 
-typedef char BtlCameraCursorViewSizeCheck[(sizeof(BtlCameraCursorView) == 0x130) ? 1 : -1];
+typedef char SBTLCAMERACURSOR_VIEWSizeCheck[(sizeof(SBTLCAMERACURSOR_VIEW) == 0x130) ? 1 : -1];
 
 typedef char BtlCameraCursorViewPosePhaseSizeCheck[
-    (sizeof(((BtlCameraCursorView *)0)->posePhase) == 1) ? 1 : -1];
+    (sizeof(((SBTLCAMERACURSOR_VIEW *)0)->posePhase) == 1) ? 1 : -1];
 
 /* Eight-byte rows from /battle/EFFECT.TBL. */
-typedef struct BtlEffectActionRecord {
+typedef struct SBTLEFFECTACTION_RECORD {
     u8 unknown00[2];
     u16 kind; /* 0x02 */
     s8 participantSelectors[3]; /* 0x04: -1 omits the corresponding participant. */
     u8 unknown07;
-} BtlEffectActionRecord;
+} SBTLEFFECTACTION_RECORD;
 
-typedef char BtlEffectActionRecordSizeCheck[
-    sizeof(BtlEffectActionRecord) == 8 ? 1 : -1];
+typedef char SBTLEFFECTACTION_RECORDSizeCheck[
+    sizeof(SBTLEFFECTACTION_RECORD) == 8 ? 1 : -1];
 
 extern void effObjSetOpacityPassEnabled(u32 enabled);
-extern BtlCameraCursorView btlCameraCursor;
+extern SBTLCAMERACURSOR_VIEW btlCameraCursor;
 
 /* SYSEFF metadata and runtime registrations share these indices. */
 enum { BTL_COMMAND_UNIT_EFFECT_SOUND_SLOT = 0x2C };
 
 struct evtUnitHandle_t;
 
-typedef struct BattleVoiceEntry {
+typedef struct SBTLVOICE_ENTRY {
     u8 format;
     u8 pad01[3];
     char fileName[0xC];
-} BattleVoiceEntry;
+} SBTLVOICE_ENTRY;
 
 #define CURSOR (&btlCameraCursor)
 
@@ -118,32 +118,32 @@ typedef struct CameraFramePose {
 #define BTL_APPROACH_PITCH_END 0.6108652f
 
 /* The pair preset row with an integer frame count in place of the motion parameter. */
-typedef struct BattlePairCameraFramePreset {
+typedef struct SBTLPAIRCAMERAFRAME_PRESET {
     f32 fromQuaternion[4];
     f32 toQuaternion[4];
     f32 fromDistanceScale;
     f32 toDistanceScale;
     f32 fromHeightScale;
     s32 frames;
-} BattlePairCameraFramePreset;
+} SBTLPAIRCAMERAFRAME_PRESET;
 
 /* Four retail flag/boolean sites: 1E5CE4/1E5CF0/1E5D3C/1E5D48. */
 static inline s32 btlHasFlag(u32 flags, u32 mask) {
     return (flags & mask) != 0;
 }
 
-typedef struct BtlCursorChoices {
+typedef struct SBTLCURSOR_CHOICES {
     u16 values[3][3][8];
-} BtlCursorChoices;
+} SBTLCURSOR_CHOICES;
 
-typedef char CameraCursorExtent[(sizeof(BtlCameraCursorView) == 0x130) ? 1 : -1];
+typedef char CameraCursorExtent[(sizeof(SBTLCAMERACURSOR_VIEW) == 0x130) ? 1 : -1];
 
-typedef struct TintTransitionState {
+typedef struct SBTLTINTTRANSITION_STATE {
     u32 sourceAlpha;
     u32 targetAlpha;
     u16 framesRemaining;
     u16 totalFrames;
-} TintTransitionState;
+} SBTLTINTTRANSITION_STATE;
 
 void btlQueueTintTransitionToZero(u16 frames);
 
@@ -152,7 +152,7 @@ struct dds3Effect_Filter_t;
 void mapBadEffDrawTask(void);
 
 typedef struct SoundTaskArgs {
-    BtlUnit *actor;
+    SBTL_UNIT *actor;
     s32 option;
     u32 slot;
     s32 waitFrames;
@@ -163,21 +163,21 @@ enum {
     BATTLE_FORMATION_ACTION_COUNT = 0x55
 };
 
-typedef struct BattleFormationActionTable {
-    BtlEffectActionRecord rows[BATTLE_FORMATION_ACTION_COUNT];
-} BattleFormationActionTable;
+typedef struct SBTLFORMATIONACTION_TABLE {
+    SBTLEFFECTACTION_RECORD rows[BATTLE_FORMATION_ACTION_COUNT];
+} SBTLFORMATIONACTION_TABLE;
 
-typedef char BattleFormationActionTableSizeCheck[(sizeof(BattleFormationActionTable) == 0x2A8) ? 1 : -1];
+typedef char SBTLFORMATIONACTION_TABLESizeCheck[(sizeof(SBTLFORMATIONACTION_TABLE) == 0x2A8) ? 1 : -1];
 
-typedef struct BattleFormationActionArgs {
-    BtlTask *link;
-    BtlUnit *first;
-    BtlUnit *second;
+typedef struct SBTLFORMATIONACTION_ARGS {
+    SBTL_TASK *link;
+    SBTL_UNIT *first;
+    SBTL_UNIT *second;
     u32 actionId;
     u32 unk10;
-} BattleFormationActionArgs;
+} SBTLFORMATIONACTION_ARGS;
 
-typedef char BattleFormationActionArgs_size[(sizeof(BattleFormationActionArgs) == 0x14) ? 1 : -1];
+typedef char SBTLFORMATIONACTION_ARGS_size[(sizeof(SBTLFORMATIONACTION_ARGS) == 0x14) ? 1 : -1];
 
 void mapBadEffDrawTask(void) {
     btlQueueTintTransitionToZero(0);

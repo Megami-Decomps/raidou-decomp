@@ -10,21 +10,21 @@ extern s32 (*btlPackedEffectHandlers[])(s32, u32);
 
 /* Actor-status providers select one complete 0x270-byte model record. */
 
-typedef struct BtlObjLink {
+typedef struct SBTLOBJ_LINK {
     void *owner; /* 0x00: effect owner */
     union {
         s32 arg;
         u16 shortArg; /* Message/wait variants store only the low halfword. */
     };
     s32 elapsedTicks; /* 0x08: elapsed callback updates */
-} BtlObjLink;
+} SBTLOBJ_LINK;
 
-typedef struct BtlJyokyoState {
+typedef struct SBTLJYOKYO_STATE {
     u8 pad00[0x498];
     s32 dialogId;          /* 0x498 */
     s32 alternateDialogId; /* 0x49C */
     s32 thirdDialogId;     /* 0x4A0 */
-} BtlJyokyoState;
+} SBTLJYOKYO_STATE;
 
 u32 GetRand(u32 limit);
 extern u32 GetRand(u32 limit);

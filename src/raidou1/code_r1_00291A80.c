@@ -22,7 +22,7 @@
 s32 Draw_sbtlSTP(SBTL_STP *stp)
 {
     s32 slotTable[5] = { 0, 20, 19, 17, 18 };
-    BtlProjectedScreenPoint point;
+    SBTLPROJECTEDSCREEN_POINT point;
     u32 palette[4];
     SBTL_STP_NODE *node;
     sprHandle_t *set;

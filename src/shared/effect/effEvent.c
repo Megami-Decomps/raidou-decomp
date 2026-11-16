@@ -484,7 +484,7 @@ typedef struct SoundMixer {
 
 /* The constructor allocates and clears 0x128 bytes. */
 struct effBTLCutHandle_t {
-    struct BtlUnit *owner; /* 0x00: borrowed voice owner used for actor scaling. */
+    struct SBTL_UNIT *owner; /* 0x00: borrowed voice owner used for actor scaling. */
     SoundMixer *state; /* 0x04 */
     u32 color; /* 0x08 */
     u16 flags; /* 0x0C */
@@ -516,7 +516,7 @@ extern s8 EffectDrawData2;
 void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source);
 
 
-struct BtlUnit;
+struct SBTL_UNIT;
 
 struct DmaPacketHeader;
 

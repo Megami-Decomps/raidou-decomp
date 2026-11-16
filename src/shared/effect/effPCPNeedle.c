@@ -86,7 +86,7 @@ typedef struct effPCPNeedleSpiralPart_tag {
 
 typedef struct effAxis_t { f32 x, y, z; } effAxis_t;
 
-struct BtlUnit;
+struct SBTL_UNIT;
 
 typedef struct effPCPNeedleSpiral_tag {
     effPCPNeedleSpiralParam_t param;

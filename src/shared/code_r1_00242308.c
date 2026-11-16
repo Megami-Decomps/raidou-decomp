@@ -129,7 +129,7 @@ enum {
 /* Reports immediate permission; an active prompt or cancellation is not
  * granted. */
 BtlResourceWritePermissionResult btlPollResourceNameOverwrite(
-    struct BtlResourceNameRecord *record, const char *directoryPath);
+    struct SBTLRESOURCENAME_RECORD *record, const char *directoryPath);
 
 static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {
     surface->regFunc(surface, list);
@@ -149,8 +149,8 @@ extern u32 D_003BD158;
 extern u32 D_003BD15C;
 extern u32 D_003BD160;
 extern u32 effColorEditSelectedAlphaKey;
-extern struct BtlResourceEntryList *effResourceBankEntries;
-extern struct BtlResourceDescriptor *effResourceBankDescriptor;
+extern struct SBTLRESOURCEENTRY_LIST *effResourceBankEntries;
+extern struct SBTLRESOURCE_DESCRIPTOR *effResourceBankDescriptor;
 extern s32 effEditorCurrentMenu;
 extern void *effQueuedFileObject;
 extern u8 effPartsListExitRequested;
@@ -256,7 +256,7 @@ extern u8 D_0038FAD0[];
 extern u8 D_0038F8E8[];
 extern u8 D_0038FA20[];
 extern effDebugMenu_t effData17;
-extern struct BtlResourceNameRecord *effQueuedResourceNameRecord;
+extern struct SBTLRESOURCENAME_RECORD *effQueuedResourceNameRecord;
 extern void effReleaseQueuedResourceName(void);
 extern const char D_003BD088[];
 extern const char D_003BD090[];
@@ -766,7 +766,7 @@ extern u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *, s8);
 u32 effProcessQueuedFileRecordAndPersistChanges(void);
 void effBattleResourceDescriptorRelease(void);
 void effPollResourceBankSlot(char *path, u32 flags, effResourceBankSlot_t *selection);
-extern struct BtlResourceNameRecord *effFileQueueNameRecord;
+extern struct SBTLRESOURCENAME_RECORD *effFileQueueNameRecord;
 extern const char D_003BCF30[];
 void effInitializeResourceQueue(void);
 u32 effPollResourceQueue(void);

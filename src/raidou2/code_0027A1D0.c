@@ -16,16 +16,16 @@
 
 #ifdef VERSION_RAIDOU2
 /* Battle reward slot: item identity and owned drop count are observed by clients. */
-typedef struct BattleItemDrop {
+typedef struct SBTLITEM_DROP {
     u16 id; /* 0x00 */
     u8 count; /* 0x02 */
     u8 unknown_03;
-} BattleItemDrop;
+} SBTLITEM_DROP;
 #endif
 
 #ifdef VERSION_RAIDOU2
-typedef char BattleItemDrop_size_must_be_4[
-    (sizeof(BattleItemDrop) == 4) ? 1 : -1];
+typedef char SBTLITEM_DROP_size_must_be_4[
+    (sizeof(SBTLITEM_DROP) == 4) ? 1 : -1];
 #endif
 
 #ifdef VERSION_RAIDOU2
@@ -63,12 +63,12 @@ s32 btlSumOrAverageActorAttribute(
     DatBaseStatIndex baseStatIndex, s8 actorFilterMode);
 #endif
 
-typedef struct BattleController {
+typedef struct SBTL_CONTROLLER {
     u8 pad_000[0x1F4];
     u32 flags;
     u8 pad_1F8[0x2C];
-    BtlTask *taskHead; /* 0x224 */
-    BtlUnit *actors;
+    SBTL_TASK *taskHead; /* 0x224 */
+    SBTL_UNIT *actors;
     u8 pad_22C[0x20];
     u16 variant;
     u8 pad_24E[2];
@@ -86,18 +86,18 @@ typedef struct BattleController {
     s32 sceneObjectTask;
     s32 spriteObject;
     s32 cleanupTask;
-    BattleItemDrop itemDrops[3];
+    SBTLITEM_DROP itemDrops[3];
     s32 moneyEarned; /* 0x2C0 */
     u8 pad2C4[4];
     s32 experienceEarned; /* 0x2C8 */
     s32 epEarned; /* 0x2CC */
     u8 pad2D0[4];
-    BtlSceneSlot slots[8];
-    BtlTask *groupPrimary[20];
-    BtlTask *groupSecondary[45];
-    BtlTask *groupTertiary[15];
+    SBTLSCENE_SLOT slots[8];
+    SBTL_TASK *groupPrimary[20];
+    SBTL_TASK *groupSecondary[45];
+    SBTL_TASK *groupTertiary[15];
     u8 pad_42C[0x20];
-    BtlSceneFadingRecord fadingRecords[8]; /* 0x44C */
+    SBTLSCENEFADING_RECORD fadingRecords[8]; /* 0x44C */
     u8 pad_48C[0x18];
     sprHandle_t *resA; /* 0x4A4 */
     sprHandle_t *resB;
@@ -105,8 +105,8 @@ typedef struct BattleController {
     u8 pad_4B0[0x100];
     s32 (*sceneCallback)();
     u8 pad_5B4[0xD4];
-    u32 (*enemyLimitOverride)(BtlUnit *, DatBattleSceneRecord *, u32); /* 0x688 */
-} BattleController;
+    u32 (*enemyLimitOverride)(SBTL_UNIT *, DatBattleSceneRecord *, u32); /* 0x688 */
+} SBTL_CONTROLLER;
 
 s32 btlAverageActorAttribute(
     BtlPartyRecordFlagsMask partyRecordFlagsMask, DatBaseStatIndex baseStatIndex) {

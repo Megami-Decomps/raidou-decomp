@@ -60,14 +60,14 @@ void effLeaf39(void) {
 }
 
 void effBattleMiscQueryOriginalTargetPosition(u32 unused, effVectorRequest_t *request) {
-    BtlUnit *ctx = (BtlUnit *)effBTLSkillGetInvokeFormation();
+    SBTL_UNIT *ctx = (SBTL_UNIT *)effBTLSkillGetInvokeFormation();
 
     (void)unused;
     effBattleMiscQueryMaskedTargetPosition(ctx->status.flags & 0xE00, request);
 }
 
 void effBattleMiscQueryVariantTargetPosition(u32 unused, effVectorRequest_t *request) {
-    BtlUnit *ctx = (BtlUnit *)effBTLFieldColorGetVariantSelector();
+    SBTL_UNIT *ctx = (SBTL_UNIT *)effBTLFieldColorGetVariantSelector();
 
     (void)unused;
     effBattleMiscQueryMaskedTargetPosition(ctx->status.flags & 0xE00, request);
