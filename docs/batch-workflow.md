@@ -64,14 +64,15 @@ entries to the store's `landed/`, so they are not offered again;
 
 ## Pseudocode
 
-The drafting worker reads Hex-Rays pseudocode from the shared IDBs. Three
-tools in `tools/ida/` make it closer to the decomp's C:
+The drafting worker reads Hex-Rays pseudocode from the shared IDBs. The tools
+in `tools/ida/` make it closer to the decomp's C:
 
 | Tool | Use |
 |---|---|
 | `ee32.py` | Hex-Rays pass loaded in IDA (`_install()`): compares and branches on the low 32 bits of a register, so ee-gcc's sign-extended ints stop decompiling as `__int64`. Wrong for real 64-bit compares. |
 | `stylefix.py` | text filter (`stylefix.py -`): `s32`/`u8`/`f32` types, `NULL`, no `__fastcall` or `LL` suffixes, `struct TAG` where the decomp writes it |
 | `propose_protos.py TSV OUT.json` | prototype candidates for undrafted functions: HD signatures and matched shape neighbours, never the function's own definition |
+| `shared.py`, `land_sync.sh`, `sync/` | sync the shared IDBs to a tree (names, types, prototypes, globals) and apply prototype proposals; data and `changes.log` live in `~/.local/state/raidou-decomp-work/ida-pseudo` |
 
 ## Landing a batch
 

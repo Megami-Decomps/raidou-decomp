@@ -82,8 +82,8 @@ the previous batch's handoff.md). The steps, in order, with the tool for each:
    (`gh run list -L 1 --json databaseId`) and go on. Do not poll or wait for CI; the
    orchestrator checks it.
 7. Sync the shared IDBs to the pushed tree, in the background with check-ins under 4
-   minutes (about 3 minutes): `~/.local/state/raidou-decomp-work/ida-pseudo/land_sync.sh`
-   refreshes the tables, runs `shared.py sync` with `--defs` on both games, reloads the
+   minutes (about 3 minutes): `T/tools/ida/land_sync.sh` refreshes the tables from T's
+   sources and build maps, runs `shared.py sync` with `--defs` on both games, reloads the
    r5900 plugin and saves. Exit 0 required; on a failure stop and report, never restart
    the shared IDA instances.
 8. Reset T: `git fetch origin && git checkout -f --detach origin/main`, remove leftover
