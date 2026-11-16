@@ -5,7 +5,8 @@
     tools/perm_unit.py import --all-under 10 --batch D    # every nonmatch in D/results.tsv under 10 words
     python3 ../decomp-permuter/permuter.py build/permuter/shared_dds3Billboard_P2ADraw -j8 --best-only --stop-on-zero
 
-`import` writes build/permuter/<shared|raidou1|raidou2>_<func>/. Without a draft file it
+`import` writes <batch>/permuter/<shared|raidou1|raidou2>_<func>/ with --batch, else
+build/permuter/ (which configure --clean removes). Opt-in: regular batches do not run it. Without a draft file it
 takes the unit's own NON_MATCHING draft of the function. Each candidate replaces the
 function's INCLUDE_ASM (or its NON_MATCHING block) in the unit and is compiled with
 tools/cc.sh under the unit's name and flags, reduced to an object holding only that
@@ -252,6 +253,10 @@ def permuter_dir() -> Path:
     return (near if near.exists() else Path.home() / "projects/decomp-permuter").resolve()
 
 
+def out_root(batch: str | None) -> Path:
+    return Path(batch).resolve() / "permuter" if batch else ROOT / "build/permuter"
+
+
 def cmd_import(a: argparse.Namespace) -> None:
     unit = Path(a.unit).resolve().relative_to(ROOT).as_posix()
     versions = unit_versions(unit)
@@ -261,7 +266,7 @@ def cmd_import(a: argparse.Namespace) -> None:
         versions = (a.version,)
     fn = a.func
     tag = unit.split("/")[1] if len(versions) > 1 else versions[0]
-    out = Path(a.out or ROOT / "build/permuter" / f"{tag}_{fn}").resolve()
+    out = Path(a.out or out_root(a.batch) / f"{tag}_{fn}").resolve()
     out.mkdir(parents=True, exist_ok=True)
     template, full, include_asm = splice((ROOT / unit).read_text(), Path(a.draft).read_text() if a.draft else None, fn)
     body = full[slice(*find_def(full, fn))]
@@ -333,7 +338,8 @@ def cmd_import_all(a: argparse.Namespace) -> None:
         if not (ROOT / unit).exists() or not draft.exists():
             failed.append(f"{fn}: no {unit if not (ROOT / unit).exists() else draft}")
             continue
-        one = argparse.Namespace(unit=str(ROOT / unit), func=fn, draft=str(draft), version=a.version, out=None)
+        one = argparse.Namespace(unit=str(ROOT / unit), func=fn, draft=str(draft), version=a.version, out=None,
+                                 batch=a.batch)
         try:
             try:
                 cmd_import(one)
@@ -341,7 +347,7 @@ def cmd_import_all(a: argparse.Namespace) -> None:
                 raise SystemExit(f"perm_unit: {e}; import needs pycparser and toml") from e
             tag = unit.split("/")[1] if len(unit_versions(unit)) > 1 and not a.version else (a.version or
                                                                                           unit_versions(unit)[0])
-            dirs.append(ROOT / "build/permuter" / f"{tag}_{fn}")
+            dirs.append(out_root(a.batch) / f"{tag}_{fn}")
         except (SystemExit, subprocess.CalledProcessError, ValueError) as e:
             failed.append(f"{fn}: {e}")
     for d in dirs:
@@ -430,7 +436,7 @@ def main() -> None:
     p.add_argument("draft", nargs="?", help="file holding the draft; default the unit's NON_MATCHING draft")
     p.add_argument("--all-under", type=int, metavar="N",
                    help="import every results.tsv nonmatch under N words of --batch, its draft D/NAME.c")
-    p.add_argument("--batch", help="batch directory for --all-under")
+    p.add_argument("--batch", help="batch directory: --all-under reads it, outputs go under its permuter/")
     p.add_argument("--version", choices=VERSIONS, help="only this game of a shared unit")
     p.add_argument("-o", "--out")
     p = sub.add_parser("cc", help="compile hook used by the directory's compile.sh")
