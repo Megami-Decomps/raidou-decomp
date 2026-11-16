@@ -59,6 +59,18 @@ class SpliceTests(unittest.TestCase):
         self.assertEqual(unit_text.unwrap(final), "void f(void) {}\n")
         self.assertIsNone(unit_text.unwrap("void f(void) {}\n"))
 
+    def test_a_wrapped_draft_is_not_wrapped_again(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            d = pathlib.Path(tmp)
+            row = batch_files.Row("f", "src/shared/u", words=28, result="nonmatch 2 words")
+            b = batch_files.Batch(d, "R", {"f": row})
+            (d / "f.c").write_text(f"#ifdef NON_MATCHING\nvoid f(void) {{}}\n#else\n{ASM}\n#endif\n")
+            self.assertEqual(b.final("f"), unit_text.nonmatching_final("void f(void) {}\n", "u", "f", 28, 2, ""))
+            (d / "f.c").write_text(f"/* NON_MATCHING: 1 of 9 words match. Why. */\n#ifdef NON_MATCHING\nvoid f(void) {{}}\n"
+                                   f"#else\n{ASM}\n#endif\n")
+            self.assertEqual(b.final("f").count("#ifdef NON_MATCHING"), 1)
+            self.assertTrue(b.final("f").startswith("/* NON_MATCHING: 26 of 28 words match. Why. */\n"))
+
     def test_substitute_does_not_compound_chains(self) -> None:
         names = renames.name_map([("raidou1", "UserInit", "MainProc", ""), ("raidou1", "UserInit_dat", "UserInit", "")])
         self.assertEqual(unit_text.substitute("UserInit(); UserInit_dat();", names), "MainProc(); UserInit();")

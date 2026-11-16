@@ -79,7 +79,13 @@ def unwrap(final: str) -> str | None:
 
 
 def nonmatching_final(body: str, unit: str, name: str, words: int, differ: int, comment: str) -> str:
-    """The NON_MATCHING form of a draft that does not match."""
+    """The NON_MATCHING form of a draft that does not match; a draft that is already one is rewrapped, keeping its
+    comment when none is given."""
+    if m := DRAFT.match(body):
+        body = m.group(2)
+        if not comment and m.group(1):
+            old = m.group(1).strip()[len("/* NON_MATCHING:"):-len("*/")]
+            comment = re.sub(r"^\s*\d+ of \d+ words match\.", "", old).strip()
     differ = min(differ, words)
     return (f"/* NON_MATCHING: {words - differ} of {words} words match. {comment} */\n"
             f"#ifdef NON_MATCHING\n{body.rstrip(chr(10))}\n#else\n{asm_call(unit, name)}\n#endif\n")
