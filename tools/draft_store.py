@@ -278,8 +278,7 @@ def plan(a, entries: dict[int, Entry]) -> None:
         old = a.append.read_text() if a.append.exists() else "\t".join(head) + "\n"
         a.append.write_text(old + "".join(l + "\n" for l in lines))
     else:
-        print("\t".join(head))
-        print("\n".join(lines))
+        print("\n".join(["\t".join(head)] + lines))
     units = len({r["batch"] for r in rows})
     print(f"{len(rows)} rows in {units} batches, {len(skipped)} entries left out", file=sys.stderr)
 
