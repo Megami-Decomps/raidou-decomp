@@ -272,7 +272,7 @@ u32 frGetStrWidth2(frFontHandle_t *pFRQ);
 void frSetMessageDefStepY(void);
 extern u32 gMessageStepY;
 
-#define FR_FONT_DEFAULT_CURSOR_SPACING 0x14
+#define FR_FONT_DEFAULT_CURSOR_SPACING 0x19
 
 void frSetMessageStepY(u32 StepY);
 void frMessageReturnCode(frMsgInfo_t *pMsgInfo);
@@ -619,12 +619,7 @@ void frFontCreateContext();
 #define FR_FONT_POSITION_SHIFT 4
 #endif
 
-#ifdef VERSION_RAIDOU1
-#define FR_FONT_POSITION_BAND_HEIGHT 0x54
-#else
 #define FR_FONT_POSITION_BAND_HEIGHT 0x64
-
-#endif
 
 /* Append the shared-text child context, apply its cached encoded byte and clear
  * the pending-create flag. Preserve the old-style implicit-argument interface. */
@@ -1224,22 +1219,14 @@ u16 frGetFontHeight(s32 slotIndex) {
     return gFT.entries[slotIndex & FR_FONT_BYTE_MASK].resourceHeader->cellHeight;
 }
 
-#ifdef NON_MATCHING
-/* 1 of 3 words differ (first at +0x0) */
 void frSetMessageDefStepY(void) {
     gMessageStepY = FR_FONT_DEFAULT_CURSOR_SPACING;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frSetMessageDefStepY);
-#endif
 
 void frSetMessageStepY(u32 StepY) {
     gMessageStepY = StepY;
 }
 
-#ifdef VERSION_RAIDOU1
-#ifdef NON_MATCHING
-/* 1 of 29 words differ (first at +0x24) */
 s32 frCallEventVoiceSub(const _FRQ *glyph) {
     s32 count = 0;
     const _FRQ *currentNode;
@@ -1269,44 +1256,7 @@ s32 frCallEventVoiceSub(const _FRQ *glyph) {
     }
     return count;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frCallEventVoiceSub);
-#endif
-#else
-s32 frCallEventVoiceSub(const _FRQ *glyph) {
-    s32 count = 0;
-    const _FRQ *currentNode;
-    const _FRQ *scanNode;
-    s32 bandLimit;
-    s32 currentY;
 
-    if (glyph == NULL) {
-        return 0;
-    }
-    currentNode = glyph->chainHead;
-    if (currentNode != NULL) {
-        do {
-            scanNode = currentNode;
-            currentY = currentNode->y;
-            if (currentNode != NULL) {
-                bandLimit = currentY + FR_FONT_POSITION_BAND_HEIGHT;
-                if (currentY < bandLimit) {
-                    do {
-                        scanNode = scanNode->next;
-                    } while (scanNode != NULL && scanNode->y < bandLimit);
-                }
-            }
-            currentNode = currentNode->next;
-            count++;
-        } while (currentNode != NULL);
-    }
-    return count;
-}
-#endif
-
-#ifdef VERSION_RAIDOU1
-#ifdef NON_MATCHING
-/* 1 of 51 words differ (first at +0x54) */
 s32 frCallGetStrWidth3(s32 requestedLine, const _FRQ *glyph) {
     const _FRQ *node;
     s32 bottom;
@@ -1341,49 +1291,8 @@ s32 frCallGetStrWidth3(s32 requestedLine, const _FRQ *glyph) {
     }
     return (s32)(width << FR_FONT_POSITION_SHIFT);
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frCallGetStrWidth3);
-#endif
-#else
-s32 frCallGetStrWidth3(s32 requestedLine, const _FRQ *glyph) {
-    const _FRQ *node;
-    s32 bottom;
-    s32 currentY;
-    u32 width = 0;
-    s32 line = 0;
-
-    if (glyph == NULL) {
-        return 0;
-    }
-    glyph = glyph->chainHead;
-    if (glyph != NULL) {
-        do {
-            width = 0;
-            node = glyph;
-            currentY = glyph->y;
-            /* Same null-tolerant band walk as the position query below. */
-            if (glyph != NULL) {
-                bottom = currentY + FR_FONT_POSITION_BAND_HEIGHT;
-                if (currentY < bottom) {
-                    do {
-                        width += frGetStrWidth(node);
-                        node = node->next;
-                    } while (node != NULL && node->y < bottom);
-                }
-            }
-            if (line++ == requestedLine) {
-                break;
-            }
-            glyph = glyph->next;
-        } while (glyph != NULL);
-    }
-    return (s32)(width << FR_FONT_POSITION_SHIFT);
-}
-#endif
 
 #ifdef VERSION_RAIDOU1
-#ifdef NON_MATCHING
-/* 1 of 35 words differ (first at +0x30) */
 void frFontGetGlyphPositionAtIndex(frFontPosition_t *position, s32 requestedIndex, const _FRQ *glyph) {
     s32 positionIndex = 0;
     const _FRQ *currentNode;
@@ -1415,9 +1324,6 @@ void frFontGetGlyphPositionAtIndex(frFontPosition_t *position, s32 requestedInde
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frFontGetGlyphPositionAtIndex);
-#endif
 #else
 /* Write each visited position and stop at requestedIndex. Missing indices leave
  * the last visited position; empty input leaves output unchanged. */

@@ -18,11 +18,9 @@ menu scenarios); an entry says which paths they covered.
 | 12 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 10 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 9 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
-| 6 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 5 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 5 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
-| 4 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 4 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 3 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 2 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
@@ -30,8 +28,9 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_r1_00142038 | raidou1, raidou2 | [code_r1_00142038.md](code_r1_00142038.md) |
 | 2 | code_r1_0014F378 | raidou1 | [code_r1_0014F378.md](code_r1_0014F378.md) |
 | 2 | code_r1_0016B498 | raidou1 | [code_r1_0016B498.md](code_r1_0016B498.md) |
-| 2 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 2 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
+| 2 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
+| 2 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 2 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
 | 1 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 1 | code_r1_0013B0F8 | raidou1 | [code_r1_0013B0F8.md](code_r1_0013B0F8.md) |
@@ -53,6 +52,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_00175180 | raidou1, raidou2 | [code_r1_00175180.md](code_r1_00175180.md) |
 | 1 | code_r1_00175858 | raidou1, raidou2 | [code_r1_00175858.md](code_r1_00175858.md) |
 | 1 | code_r1_001CEEF8 | raidou1, raidou2 | [code_r1_001CEEF8.md](code_r1_001CEEF8.md) |
+| 1 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 1 | code_r1_00242308 | raidou1, raidou2 | [code_r1_00242308.md](code_r1_00242308.md) |
 | 1 | code_r1_0024AC78 | raidou1 | [code_r1_0024AC78.md](code_r1_0024AC78.md) |
 | 1 | code_r1_0024B510 | raidou1 | [code_r1_0024B510.md](code_r1_0024B510.md) |

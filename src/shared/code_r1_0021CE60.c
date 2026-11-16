@@ -2509,8 +2509,6 @@ void effUpdateGridRecordSlotHistory(bhvrHandle_t *record, effPosture_t *slot) {
     }
 }
 
-/* NON_MATCHING: 542 of 546 words match. Arg register order of the fileSampleKeyTracks call; body from DDS C. */
-#ifdef NON_MATCHING
 extern f32 effWaveEmitterNegativeYAxis[4];
 #define FILE_SLOT_FRAME_DISABLED (-2)
 
@@ -2684,7 +2682,7 @@ void effUpdateWaveEmitterSlots(bhvrHandle_t *record) {
                                 motion->phase += motion->phaseStep;
                                 motion->amplitude += motion->amplitudeStep;
                             }
-                            fileSampleKeyTracks(slot, keys, FILE_SLOT_FRAME(slot), previousPosition);
+                            effCallColorAnimation(slot, keys, FILE_SLOT_FRAME(slot), previousPosition);
                             slot->scale *= motion->scaleMultiplier;
                             slot->angle *= motion->angleMultiplier;
                             slot->angle += motion->angle;
@@ -2723,9 +2721,6 @@ void effUpdateWaveEmitterSlots(bhvrHandle_t *record) {
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateWaveEmitterSlots);
-#endif
 
 /* Scale selected wave-emitter parameters from source to destination. */
 void effScaleWaveEmitterParameters(effScaleOwner_t *owner, f32 scale) {

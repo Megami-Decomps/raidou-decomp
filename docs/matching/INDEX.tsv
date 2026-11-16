@@ -56,8 +56,7 @@ mapNakamaTask	code_r1_0016C450	raidou1 0x5E0	360 of 376 words differ	docs/matchi
 mapNpcPathMakeControl	code_r1_00175180	raidou1 0x1C4, raidou2 0x1C4	91 of 96 words differ	docs/matching/code_r1_00175180.md	3
 mapNpcPathTask	code_r1_00175858	raidou1 0xB0, raidou2 0xB0	40 of 42 words differ	docs/matching/code_r1_00175858.md	3
 Start_evtTmxPreLoad	code_r1_001CEEF8	raidou1 0x2D8, raidou2 0x2D8	156 of 172 words differ	docs/matching/code_r1_001CEEF8.md	3
-effUpdateWaveEmitterSlots	code_r1_0021CE60	raidou1 0x888, raidou2 0x888	1 of 546 words differ	docs/matching/code_r1_0021CE60.md	3
-fileAllocateGridRecordSlots	code_r1_0021CE60	raidou1 0x158, raidou2 0x158	83 of 84 words differ	docs/matching/code_r1_0021CE60.md	9
+fileAllocateGridRecordSlots	code_r1_0021CE60	raidou1 0x158, raidou2 0x158	83 of 84 words differ	docs/matching/code_r1_0021CE60.md	3
 PartsCreate	code_r1_00226EC8	raidou1 0x59C, raidou2 0x59C	177 of 223 words differ	docs/matching/code_r1_00226EC8.md	3
 billAdvanceTrailInstances	code_r1_00226EC8	raidou1 0x7A8, raidou2 0x7A8	18 of 490 words differ	docs/matching/code_r1_00226EC8.md	11
 effCreateSurfaceGridNode	code_r1_00226EC8	raidou1 0x150, raidou2 0x150	33 of 84 words differ	docs/matching/code_r1_00226EC8.md	19
@@ -128,16 +127,10 @@ Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	47 of 190 words diffe
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9
 evtHokanSceneLight	event/evtPolygonMovie	raidou1 0x194, raidou2 0x194	38 of 101 words differ	docs/matching/event/evtPolygonMovie.md	3
 UnitAnime	event/evtUnitManager	raidou1 0x1340, raidou2 0x1340	70 of 1232 words differ	docs/matching/event/evtUnitManager.md	3
-evtSetUnitMove2	event/evtUnitManager	raidou1 0xC0, raidou2 0xC0	1 of 48 words differ	docs/matching/event/evtUnitManager.md	11
-evtSetUnitRot2	event/evtUnitManager	raidou1 0x6C, raidou2 0x6C	1 of 27 words differ	docs/matching/event/evtUnitManager.md	17
-evtUnitManagerPrimaryFunc	event/evtUnitManager	raidou1 0x6E8	18 of 442 words differ	docs/matching/event/evtUnitManager.md	23
+evtUnitManagerPrimaryFunc	event/evtUnitManager	raidou1 0x6E8	18 of 442 words differ	docs/matching/event/evtUnitManager.md	11
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3
 MessageRequestNS	interface/frFont	raidou1 0x40, raidou2 0x40	7 of 15 words differ	docs/matching/interface/frFont.md	3
-frCallEventVoiceSub	interface/frFont	raidou1 0x74	1 of 29 words differ	docs/matching/interface/frFont.md	27
-frCallGetStrWidth3	interface/frFont	raidou1 0xCC	1 of 51 words differ	docs/matching/interface/frFont.md	39
-frCallSetFontString	interface/frFont	raidou1 0x68, raidou2 0x68	13 of 26 words differ	docs/matching/interface/frFont.md	51
-frFontGetGlyphPositionAtIndex	interface/frFont	raidou1 0x8C	1 of 35 words differ	docs/matching/interface/frFont.md	75
-frSetMessageDefStepY	interface/frFont	raidou1 0xC, raidou2 0xC	1 of 3 words differ	docs/matching/interface/frFont.md	87
+frCallSetFontString	interface/frFont	raidou1 0x68, raidou2 0x68	13 of 26 words differ	docs/matching/interface/frFont.md	27
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3
 dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11

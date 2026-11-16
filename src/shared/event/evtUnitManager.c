@@ -1160,22 +1160,17 @@ void evtSetUnitRot1(evtUnit_t *h, s128 *rot, s32 para1) {
     }
 }
 
-#ifdef NON_MATCHING
-/* retail codegen differs in the null-check and call order */
 void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1) {
     dds3Basic_t *worldUnit;
     evtWorldSourceTransformPrefix_t *source;
 
-    worldUnit = dds3SearchSceneBasic(dds3GetControlScene(), posID, 0x11);
+    worldUnit = dds3SearchSceneBasic(dds3GetControlScene(), posID, 0x10);
     if (worldUnit != NULL) {
         source = worldUnit->workdata;
         evtSetUnitRot1(h, (s128 *)&source->rotation, para1);
         h->linkedUnit = worldUnit;
     }
 }
-#else
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitRot2);
-#endif
 
 void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast) {
     work->motionSubmode = motionSubmode;
@@ -1189,13 +1184,11 @@ void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 unuse
     work->motionTicks = 0;
 }
 
-#ifdef NON_MATCHING
-/* retail codegen differs in the null-check and call order */
 void evtSetUnitMove2(evtUnit_t *work, s32 motionSubmode, s32 worldObjectKey, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast) {
     dds3Basic_t *worldUnit;
     evtWorldSourceTransformPrefix_t *source;
 
-    worldUnit = dds3SearchSceneBasic(dds3GetControlScene(), worldObjectKey, 0x11);
+    worldUnit = dds3SearchSceneBasic(dds3GetControlScene(), worldObjectKey, 0x10);
     if (worldUnit != NULL) {
         source = worldUnit->workdata;
         evtSetUnitMove1(work, motionSubmode, (s128 *)&source->position, unused, frames, directionOffset, callback, unusedLast);
@@ -1203,9 +1196,6 @@ void evtSetUnitMove2(evtUnit_t *work, s32 motionSubmode, s32 worldObjectKey, s32
         work->linkedUnit = worldUnit;
     }
 }
-#else
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove2);
-#endif
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove3);
 
