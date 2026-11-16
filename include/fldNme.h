@@ -39,8 +39,8 @@ typedef struct fldNmeSlotList_t {
 typedef struct fldNmeWork_t {
     s32 unk0;
     dds3ProcessID_t *drawProcess;
-    s32 unk8;
-    s32 unkC;
+    u32 unk8;
+    u32 unkC;
     s32 unk10;
     s32 unk14;
     fldNmeSlotList_t list[2];   /* 0x18 */

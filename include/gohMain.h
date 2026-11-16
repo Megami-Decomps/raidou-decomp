@@ -3,8 +3,17 @@
 
 #include "common.h"
 #include "kernel.h"
+#include "code_r1_001CC1D0.h"
 
-struct gohData_t;
+/* Work of the goh menu processes. HD holds a pointer to the sequence handle; R1 embeds it. Partial layout. */
+typedef struct gohData_t {
+    struct sdfMemHandle_t *hMem;
+    u32 flag;
+    jmsSeqHandle_t panel;
+    s32 seqUnit;
+    u8 pad58[0xCC - 0x58];
+    s32 unkCC;
+} gohData_t;
 
 s32 MahjanInit(dds3ProcessID_t *PID);
 dds3ProcessFunc_t MahjanUpdateProcess(dds3ProcessID_t *PID);

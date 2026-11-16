@@ -72,7 +72,14 @@ typedef struct SBTL_WORK {
     s16 battleMode;
     u8 pad1E6[0x1F0 - 0x1E6];
     s32 nego_gstat;
-    u8 pad1F4[0x210 - 0x1F4];
+    s32 nego_chrid;
+    s32 nego_alpha;
+    s16 evtloadst;
+    u8 pad1FE[2];
+    sdfMemHandle_t *evtloadHandle;
+    fileRequest_t *evtloadFile; /* /battle/event/sb_btlevent.bf */
+    u8 *evtloadpData;
+    s32 evtload_evtno;
     s16 eventno;
     u8 pad212[2];
     s16 eventgstat;
@@ -103,7 +110,11 @@ typedef struct SBTL_WORK {
     s32 stackID[2]; /* stock slots of the summoned demons (HD stack_id) */
     u8 pad3A0[0x3A4 - 0x3A0];
     s32 unitPadID;
-    u8 pad3A8[0x3E8 - 0x3A8];
+    u8 pad3A8[0x3D4 - 0x3A8];
+    s32 vibe_startf[2];
+    s32 vibe_frame[2];
+    u8 vibe_power[2];
+    u8 vibe_type[2];
     struct SBTLUNIT_LISTWORK *list3E8;
     u8 pad3EC[8];
     struct SBTLDMG_LISTWORK *animList;
@@ -122,7 +133,8 @@ typedef struct SBTL_WORK {
     u8 pad428[4];
     s32 hitTargetID;
     s16 mode;
-    u8 pad432[0x436 - 0x432];
+    s16 modebk;
+    s16 mode2;
     s16 field436;
     s16 gstat[2];
     s16 walk_counter;
@@ -244,6 +256,8 @@ typedef struct SBTL_WORK {
     u8 pad87B[0x87C - 0x87B];
 } SBTL_WORK;
 
+typedef char SBTL_WORKSizeCheck[sizeof(SBTL_WORK) == 0x87C ? 1 : -1];
+
 extern SBTL_WORK *wk_sbtl;
 
 /* Devil table entry returned by sbtlGetDevilData_sbtlSub. */
@@ -318,7 +332,7 @@ extern SBTL_STAGE_DATA *sbtlData100;
 /* Status marker over a unit (HD SBTLSTP_WORK), linked through next. R1 layout differs from HD. */
 typedef struct SBTL_STP_NODE {
     sdfVector4_t pos;
-    u32 status;
+    sdfMemHandle_t *handle;
     s32 mode; /* SBTLSTP_MODE */
     u8 pad18[4];
     s16 id; /* SBTLSTP_ID */
@@ -330,7 +344,7 @@ typedef struct SBTL_STP_NODE {
     f32 y;
     f32 spd;
     s32 ListID;
-    u8 pad3C[4];
+    struct SBTL_STP_NODE *prev;
     struct SBTL_STP_NODE *next;
 } SBTL_STP_NODE;
 
@@ -346,6 +360,39 @@ typedef struct SBTL_STP {
     SBTL_STP_NODE *head;
 } SBTL_STP;
 
+/* Devil talk window (HD SBTLDVLTK_WORK, with the work's own handle first in R1). Partial layout. */
+typedef struct SBTLDVLTK_WORK {
+    sdfMemHandle_t *handle;
+    u8 pad04[0x20 - 0x4];
+    s32 status; /* SBTLDVLTK_ST */
+    u8 pad24[0xE0 - 0x24];
+    struct SBTLDVLTK_WORK *prev;
+    struct SBTLDVLTK_WORK *next;
+} SBTLDVLTK_WORK;
+
+typedef struct SBTLDVLTK_LISTWORK {
+    s32 num;
+    s32 samecnt;
+    s32 resetcounter;
+    SBTLDVLTK_WORK *dwk;
+} SBTLDVLTK_LISTWORK;
+
+/* Model binding made for an effect, linked in SBTL_WORK.modelBindings. Partial layout. */
+typedef struct SBTL_MODELBIND {
+    sdfMemHandle_t *handle;
+    u8 pad04[4];
+    s32 status;
+    u8 pad0C[0x18 - 0xC];
+    struct SBTL_MODELBIND *prev;
+    struct SBTL_MODELBIND *next;
+} SBTL_MODELBIND;
+
+typedef struct SBTL_MODELBIND_LIST {
+    u8 pad00[4];
+    s32 num;
+    SBTL_MODELBIND *top;
+} SBTL_MODELBIND_LIST;
+
 typedef struct SBTL_MOTION_VISUAL {
     u8 kind;
     u8 pad01[3];
@@ -354,7 +401,9 @@ typedef struct SBTL_MOTION_VISUAL {
     f32 field0C;
     f32 field10;
     f32 scale;
-    u8 pad18[0x30 - 0x18];
+    u8 pad18[0x24 - 0x18];
+    f32 field24;
+    u8 pad28[0x30 - 0x28];
     s16 field30;
     s16 field32;
 } SBTL_MOTION_VISUAL;

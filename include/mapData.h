@@ -105,13 +105,46 @@ typedef struct fldMapSubHead_t
     u8 unk14[12];
 } fldMapSubHead_t;
 
-typedef struct fldMapSub4Head_t
-{
-    s32 ofs0;
-    s32 ofs1;
-    s32 ofs2;
-    u8 unk0C[20];
-} fldMapSub4Head_t;
+/* Battle map data (.mpb): file offsets are from the start of the file. */
+typedef struct MpbAreaHead_t {
+    s32 addr_btlhit;
+    s32 addr_enchead;
+    s32 addr_rndenc;
+    s32 addr_resv;
+    s16 num_btlhit;
+    s16 num_enchead;
+    s16 rnd_encw;
+    s16 rnd_ench;
+    s16 resv[4];
+} MpbAreaHead_t;
+
+typedef struct MpbEncHead_t {
+    s32 addr_encpos;
+    s32 addr_btlwall;
+    s32 addr_resv[2];
+    s16 encount_id;
+    s16 num_encpos;
+    s16 num_btlwall;
+    s16 resv[5];
+} MpbEncHead_t;
+
+typedef struct MpbPoint_t {
+    u16 id;
+    u16 x;
+    u16 y;
+    u8 ofs;
+    u8 dir;
+} MpbPoint_t;
+
+typedef struct MpbWall_t {
+    u16 id;
+    u16 x;
+    u16 y;
+    u16 w;
+    u16 h;
+    u16 attr;
+    s32 resv;
+} MpbWall_t;
 
 typedef struct fldMapLightHead_t
 {
@@ -155,7 +188,7 @@ typedef struct fldMapSub4File_t
 {
     s32 count;
     u8 unk04[12];
-    fldMapSub4Head_t entry[64];
+    MpbAreaHead_t entry[64];
 } fldMapSub4File_t;
 
 /* Event hit grid head: one type per bit of a 32 or 64 bit mask per cell. */
@@ -587,15 +620,15 @@ extern void *mapData109;
 extern sdfMemHandle_t *mapData110;
 extern fldMapSub4File_t *mapFileLoadData11;
 extern fldMapSub4File_t *mapData111;
-extern void *mapMapSetAreaData18;
+extern MpbAreaHead_t *mapMapSetAreaData18;
 extern void *mapMapSetAreaData19;
 extern void *mapMapSetAreaData20;
 extern void *mapMapSetAreaData21;
-extern s32 mapData112;
+extern MpbEncHead_t *mapData112;
 extern s32 fldFreeMapDataData2;
-extern s32 pMpbPointNow;
+extern MpbPoint_t *pMpbPointNow;
 extern s32 fldFreeMapDataData3;
-extern s32 mapData113;
+extern MpbWall_t *mapData113;
 extern s32 fldFreeMapDataData4;
 extern void *mapMapSetAreaData22;
 extern void *mapMapSetAreaData23;
@@ -613,7 +646,7 @@ extern void *mapMapSetAreaData10[64];
 extern void *mapMapSetAreaData11[64];
 extern void *mapMapSetAreaData12[64];
 extern void *mapMapSetAreaData13[64];
-extern void *mapMapSetAreaData14[64];
+extern MpbAreaHead_t *mapMapSetAreaData14[64];
 extern void *mapMapSetAreaData15[64];
 extern void *mapMapSetAreaData16[64];
 extern f32 mapData103;

@@ -2,11 +2,73 @@
 #define CTN_H
 
 #include "common.h"
+#include "sdf_types.h"
 
-struct ctnCitizen_t;
 struct ctnExit_t;
 struct ctnGrid_t;
 struct ctnInput_t;
+
+typedef struct ctnTargetInfo_t {
+    f32 moveDir[2];
+    f32 moveNormal[2];
+    s32 blockIndex;
+    s32 leftWallIndex;
+    s32 rightWallIndex;
+    s32 resv;
+} ctnTargetInfo_t;
+
+typedef struct ctnCitizen_t {
+    sdfVector4_t rotateQuat;
+    s32 fExist;
+    f32 x;
+    f32 y;
+    f32 vx;
+    f32 vy;
+    f32 targetVx;
+    f32 targetVy;
+    f32 vleng;
+    f32 dirX;
+    f32 dirY;
+    f32 normalX;
+    f32 normalY;
+    f32 offCenter;
+    f32 leftWallDist;
+    f32 rightWallDist;
+    s32 index;
+    s32 sliceIndex;
+    s32 attr;
+    u8 exitIndex;
+    s8 pathPref;
+    u8 classType;
+    s8 followType;
+    u8 friendNum;
+    u8 blockIndex;
+    u8 belongIndex;
+    u8 evadeType; /* CTN_EVADE */
+    ctnTargetInfo_t *pTargetInfo;
+    struct ctnCitizen_t *pAhead;
+    struct ctnCitizen_t *pBehind;
+    struct ctnCitizen_t *pHeadOn;
+    struct ctnCitizen_t *pFriends[4];
+    s32 playerEvadeArray[7];
+    s32 resv0;
+    s32 objectEvadeArray[7]; /* 0xA0 */
+    s32 objectDir;
+    s32 aheadEvadeArray[7];
+    s32 spdType;
+    s32 dir;
+    f32 angle;
+    f32 oldX;
+    f32 oldY;
+    s32 newModelID;
+    s32 NgCount;
+} ctnCitizen_t;
+
+typedef struct ctnObject_t {
+    f32 center[2];
+    f32 radius;
+    s32 resv;
+} ctnObject_t;
 
 struct ctnCitizen_t *AddCitizen(void);
 s32 CheckExit(struct ctnCitizen_t *pCitizen);

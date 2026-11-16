@@ -10,6 +10,7 @@ struct mdlObj_t;
 s32 evtCheckUnitWait(evtUnit_t *h);
 evtUnit_t *evtCreateUnitHandle(dds3Basic_t *basic, struct mdlObj_t *model);
 s32 evtDeleteUnitHandle(evtUnit_t *h);
+void evtSetUnitExMotion(evtUnit_t *h, s32 group, s32 motion, s32 before, s32 smooth, s32 mode);
 evtUnit_t *evtGetUnitHandle(s32 serial);
 evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit);
 void evtLinkLightObjectBasic(void *h, dds3Basic_t *light, s32 frame);

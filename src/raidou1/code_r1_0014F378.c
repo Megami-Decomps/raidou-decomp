@@ -272,9 +272,9 @@ s32 mapFileLoad(s32 mapid)
         for (i = 0; i < sub4->count && i < 64; i++)
         {
             mapMapSetAreaData14[i] = &sub4->entry[i];
-            mapMapSetAreaData15[i] = (u8 *)sub4 + sub4->entry[i].ofs0;
-            mapFileLoadData6[i] = (u8 *)sub4 + sub4->entry[i].ofs1;
-            mapMapSetAreaData16[i] = (u8 *)sub4 + sub4->entry[i].ofs2;
+            mapMapSetAreaData15[i] = (u8 *)sub4 + sub4->entry[i].addr_btlhit;
+            mapFileLoadData6[i] = (u8 *)sub4 + sub4->entry[i].addr_enchead;
+            mapMapSetAreaData16[i] = (u8 *)sub4 + sub4->entry[i].addr_rndenc;
         }
     }
     mapMapSetArea(evtWorkScriptContextReturnValue2);

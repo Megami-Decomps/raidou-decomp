@@ -28,6 +28,15 @@ struct SBDEBUG_FLGWORK {
 };
 typedef struct SBDEBUG_FLGWORK SBDEBUG_FLGWORK;
 
+/* Debug menu cursor. */
+struct SBDEBUG_CSRWORK {
+    s32 point;
+    s32 offset;
+    s32 maxp;
+    s32 dummy;
+};
+typedef struct SBDEBUG_CSRWORK SBDEBUG_CSRWORK;
+
 typedef s32 (*sbtlDebugModeFunc_t)(void);
 typedef s32 (*sbtlDebugHitEditorDrawFunc_t)(struct SBDEBUG_CSRWORK *wk, struct SBTLSKILLHIT_TBL *hwk, struct SBTLSKILLHIT_POSWORK *para, struct SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path);
 
@@ -61,7 +70,7 @@ s32 sbtlDebug_Draw(void);
 s32 sbtlDebug_DrawC(struct SBTLDMG_HITWORK *wk, u32 rgba, s32 start, s32 end, s32 flg, s32 mode);
 s32 sbtlDebug_DrawClrcle_Line(f32 x, f32 y, f32 z, f32 r, u32 rgba);
 void sbtlDebug_DrawHitCircle(const sdfVector4_t *center, const sdfVector4_t *rot, f32 rad, f32 area_r1, f32 area_r2);
-void sbtlDebug_DrawNormalList_Col(char *wk, s32 num, s32 nowpoint, s32 point, s32 x, s32 y);
+void sbtlDebug_DrawNormalList_Col(char **wk, s32 num, s32 nowpoint, s32 point, s32 x, s32 y);
 void sbtlDebug_DrawONOFFList_Motion(struct MOTIONDATA_WORK *m_data, s32 x, s32 y, s32 num);
 void sbtlDebug_DrawTCursor(const sdfVector4_t *pos, u32 rgba);
 void sbtlDebug_EffHitDraw(struct SBDEBUG_CSRWORK *wk, struct SBTLSKILLHIT_TBL *hwk, struct SBDEBUG_PATHDATA *path, const sdfVector4_t *center);

@@ -38,7 +38,9 @@ typedef struct SBTLUNIT_MODEL {
     f32 field128;
     f32 field12C;
     f32 field130;
-    u8 pad134[0x224 - 0x134];
+    u8 pad134[0x184 - 0x134];
+    s32 ai_target[3]; /* unit IDs found by sbtlCallBtlCreateSideList2 (HD ai_target) */
+    u8 pad190[0x224 - 0x190];
     s32 field224;
 } SBTLUNIT_MODEL;
 
@@ -215,7 +217,9 @@ struct SBTLUNIT_WORK {
     s32 param[9];
     u8 pad2E4[0x8];
     struct SBTL_AISYO_TBL aisyoBase;
-    u8 pad32C[0x358 - 0x32C];
+    u8 pad32C[0x330 - 0x32C];
+    sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
+    u8 pad348[0x358 - 0x348];
     u32 field358;
     u8 pad35C[0x4];
     s16 field360;
@@ -275,15 +279,28 @@ struct SBTLUNIT_WORK {
     f32 deg;
     s16 degcnt;
     u8 pad436[0x2];
+    /* 0x438 to 0x484 is HD's SBTLACTION_WORK without cmpframecnt3 and effectTime, held inline. */
     u32 status;
-    u8 pad43C[0x14];
+    s32 framecnt;
+    s32 framecntB;
+    s32 framecntC;
+    s32 cmpframecnt;
+    s32 cmpframecnt2;
     SKLID skillid;
     u32 next_st;
-    u8 pad458[0x460 - 0x458];
+    SKLID order_skillid;
+    s32 order_targetID;
     s32 stockID; /* stock slot of a summoned demon, -1 otherwise */
-    u8 pad464[0x474 - 0x464];
+    SKLID order_sklidbk;
+    s8 order_setflg;
+    s8 action_flg;
+    u8 pad46A[2];
+    s32 action_count;
+    s32 counter;
     s32 field474;
-    u8 pad478[0xC];
+    s32 tok_st;
+    s32 tok_datap;
+    u32 effect_flg; /* SBTLACTION_EFFECT */
     struct SBTLUNIT_MODEL *model;
     struct SBTLAI_WORK *aiwk;
     s16 actCounter;
@@ -297,7 +314,11 @@ struct SBTLUNIT_WORK {
     s16 field4A2;
     s32 damage_serialID;
     s32 damage_workID;
-    u8 pad4AC[0x14];
+    s16 damage_actionf;
+    s16 damage_actionf_cnt;
+    s16 damage_hitcnt;
+    s16 nguard_dmgcnt;
+    u8 pad4B4[0x4C0 - 0x4B4];
     s32 bst_effserialID2;
     u8 pad4C4[0xC];
     struct sdfMemHandle_t *msgHandle;

@@ -73,7 +73,7 @@ extern s32 fldData33;
 extern f32 fldData34;
 extern f32 fldData35;
 extern s32 fldData36;
-extern void *effQueuedResourceNameRecord4;
+extern sdfTexHandle_t *effQueuedResourceNameRecord4;
 
 extern s32 fldLeaf24(void);
 extern void eglLinkSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 vh, u32 c0, u32 c1, u32 c2, u32 c3, void *th);

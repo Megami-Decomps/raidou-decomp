@@ -85,6 +85,14 @@ s32 jmsSeqChange(jmsSeqHandle_t *work, s32 *entrySlot, s32 mode, dds3ProcessID_t
 
 void jmsSeqJump(s32 *entrySlot, jmsSeqUnit_t *entry);
 
+/* Leading fields of a menu process work driven by jmsSeqChange; the rest is per menu. */
+typedef struct jmsSeqWork_t {
+    struct sdfMemHandle_t *hMem;
+    u32 flag;
+    jmsSeqHandle_t panel;
+    s32 seqUnit;
+} jmsSeqWork_t;
+
 typedef struct campEffectRows_t {
     u32 values[2][4];
 } campEffectRows_t;

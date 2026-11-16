@@ -28,6 +28,7 @@
 #include "sdfBillBoard.h"
 #include "sdf3D.h"
 #include "dds3KernelDraw.h"
+#include "kernel_draw.h"
 #include "mapData.h"
 #include "sdfMat.h"
 #include "fldDraw.h"
@@ -58,9 +59,7 @@ extern addr_t fldDrawEnv;
 s32 sdf2DLinkTexPacket(sdfDrawTag_t *aTag, sdfTexHandle_t *aTexHndl, s32 aCtx);
 sdfGrPacketHeader_t *sdf2DAllocSprite(s32 aNumOfSpr);
 
-
 sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-extern u8 sdfViewMatrix[];
 extern sdf3DScreenParam_t dds3ScreenParam;
 extern u32 sdf2DMakeStdPacket(u32, s32);
 
@@ -75,11 +74,8 @@ extern void sdfBillBoardMakeTMPacket(u8 *, const f32 *);
 extern sdfVector4_t fldTestLineVertex[];
 extern u32 fldTestLineColor[];
 
-
-
 extern u8 fldDbgFmtDec[];
 extern void *fldDrwZBuf;
-extern sdfGrOt_t sdfGrOtTable[85];
 extern s32 rsetFrameMaskOtOffset;
 
 /* dds3DrawBank_t stride; only the held frame texture block at 0x1300 is used here. */
@@ -243,7 +239,7 @@ void fldPoint3To2(f32 *x3, f32 *y3, f32 z3, f32 x2, f32 y2) {
     sdfVector4_t vec = { z3, x2, y2, 1.0f };
     sdfVector4_t result;
 
-    SDF_VU0_LOADMATRIX(sdfViewMatrix);
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
     MultMatrixRev(&dds3ScreenParam.TM);
     SDF_VU0_COPYMATRIX_A_TO_B();
     SDF_VU0_LOADVECTOR_MEMOPS(*(const u128 *)&vec);
@@ -262,7 +258,7 @@ s32 fldPoint3ToZ(f32 x3, f32 y3, f32 z3) {
     sdfVector4_t vec = { x3, y3, z3, 1.0f };
     sdfVector4_t result;
 
-    SDF_VU0_LOADMATRIX(sdfViewMatrix);
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
     MultMatrixRev(&dds3ScreenParam.TM);
     SDF_VU0_COPYMATRIX_A_TO_B();
     SDF_VU0_LOADVECTOR_MEMOPS(*(const u128 *)&vec);
