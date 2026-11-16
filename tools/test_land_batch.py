@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Tests for tools/batch (land_batch.py's helpers) and tools/header_includers.py."""
+import json
+import os
 import pathlib
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -9,6 +12,7 @@ TOOLS = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(TOOLS))
 sys.path.insert(0, str(TOOLS / "batch"))
 import batch_files  # noqa: E402
+import draft_store  # noqa: E402
 import header_includers  # noqa: E402
 import land_batch  # noqa: E402
 import matching_docs  # noqa: E402
@@ -211,6 +215,76 @@ class IncluderTests(unittest.TestCase):
         worse, _ = header_includers.compare({"k": {"f": "OK"}}, {"k": s})
         self.assertEqual(worse, ["k: unit: RODATA the full unit's .rodata differs from retail at 0x10",
                                  "k: f OK -> CONTEXT 2/21"])
+
+
+class DeclarationTests(unittest.TestCase):
+    """land_batch refuses a unit whose .c gained a store declaration, a local prototype or a late #include."""
+
+    def setUp(self) -> None:
+        for k in ("AUTHOR", "COMMITTER"):
+            os.environ.setdefault(f"GIT_{k}_NAME", "t")
+            os.environ.setdefault(f"GIT_{k}_EMAIL", "t@t")
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self.tmp.name)
+        tree = self.root / "tree"
+        (tree / "src/shared").mkdir(parents=True)
+        self.unit = tree / "src/shared/u.c"
+        self.unit.write_text('#include "common.h"\n\nvoid old(void);\n\nINCLUDE_ASM(const s32, "u", f);\n')
+        subprocess.run(["git", "init", "-q", str(tree)], check=True)
+        subprocess.run(["git", "-C", str(tree), "add", "-A"], check=True)
+        subprocess.run(["git", "-C", str(tree), "commit", "-qm", "base"], check=True)
+        store = self.root / "store"
+        e = draft_store.Entry("f", 0x100, "raidou1", 2, "h", "fresh", "match", ["#include \"x.h\"", "extern s32 gX;"],
+                              "C0001", "src/shared/u", "2026-11-16", "s32 f(void) {\n    return gX;\n}\n")
+        c, meta = draft_store.get_paths(store, "raidou1", 0x100)
+        c.parent.mkdir(parents=True)
+        c.write_text(e.body)
+        meta.write_text(json.dumps(e.meta()))
+        run = land_batch.Run.__new__(land_batch.Run)
+        run.tree, run.store, run.base = tree, store, "HEAD"
+        run.maps = {g: {} for g in ("raidou1", "raidou2")}
+        run.batch = batch_files.Batch(self.root, "S-u", {"f": batch_files.Row("f", "src/shared/u", addr="00000100")})
+        run.notes, run.lines, run.gate_passed = [], [], None
+        run.say = run.lines.append
+        self.run_ = run
+
+    def tearDown(self) -> None:
+        self.tmp.cleanup()
+
+    def splice(self, final: str) -> list[str]:
+        self.unit.write_text(unit_text.splice(self.unit.read_text(), "f", final))
+        return self.run_.declaration_problems()
+
+    def test_a_clean_draft_passes_and_old_prototypes_stay(self) -> None:
+        self.assertEqual(self.splice("s32 f(void) {\n    return gX;\n}\n"), [])
+
+    def test_store_declaration_prototype_and_include_are_refused(self) -> None:
+        got = self.splice('#include "x.h"\nextern s32 gX;\ns32 g(void);\nvoid f(void);\nextern s32 other;\n'
+                          "s32 f(void) {\n    return gX + g() + other;\n}\n")
+        self.assertEqual(len(got), 3, got)
+        self.assertIn("#include below", got[0])
+        self.assertIn("draft store declaration left in the .c: extern s32 gX;", got[1])
+        self.assertIn("local prototype: s32 g(void);", got[2])
+
+    def test_includes_tsv_goes_after_the_last_include(self) -> None:
+        (self.root / "includes.tsv").write_text("src/shared/u.c\tx.h\nsrc/shared/u.c\tcommon.h\n")
+        self.run_.add_includes()
+        self.assertTrue(self.unit.read_text().startswith('#include "common.h"\n#include "x.h"\n\nvoid old'))
+        self.assertEqual(self.splice("s32 f(void) {\n    return gX;\n}\n"), [])
+
+    def test_retire_needs_a_passing_gate(self) -> None:
+        self.unit.write_text(unit_text.splice(self.unit.read_text(), "f", "s32 f(void) {\n}\n"))
+        (self.root / "final").mkdir()
+        (self.root / "final/f.c").write_text("s32 f(void) {\n}\n")
+        self.run_.draft_names = {}
+        self.run_.retire()
+        self.assertIn("retire: skipped", self.run_.lines[-1])
+        self.run_.gate_passed = True
+        self.run_.retire()
+        self.assertEqual(self.run_.lines[-1], "retire: 1 draft store entries landed: f")
+        self.assertEqual(draft_store.load(self.run_.store, "raidou1"), {})
+        landed = json.loads((self.run_.store / "raidou1/landed/00000100.json").read_text())
+        self.assertEqual(landed["landed"]["batch"], "S-u")
 
 
 if __name__ == "__main__":

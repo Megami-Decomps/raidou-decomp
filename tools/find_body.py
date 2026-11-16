@@ -22,7 +22,8 @@ EPILOG = ("Trees are read at a git revision (default origin/main); identity uses
           "matched functions of the same asm shape in any corpus (via similar, ratio 0.9 or better, precomputed "
           "for unmatched functions). "
           "A hit is matched, nonmatching (a NON_MATCHING draft in its tree) or disabled (#if 0). "
-          "body_source is CLASS:TREE:STATUS:VIA:CONFIDENCE, CLASS one of match, near (usable), adapt, rework, "
+          "body_source is CLASS:TREE:STATUS:VIA:CONFIDENCE (a draft store hit has TREE store and "
+          "its cluster as VIA: near:store:matched:C0014:1.00), CLASS one of match, near (usable), adapt, rework, "
           "other (reference only), found (not compiled), or none; then flags: size Nx (outside 0.5-2x, left out "
           "of the counts) and proto differs (parameter count or void return against include/; shown but counted, "
           "since on R08 it flagged 7 of the 11 bodies that worked: SMT3 reads a global Raidou passes in).")
@@ -54,6 +55,8 @@ class Hit:
     status: str
     body: str
     version: str = ""
+    decls: tuple = ()
+    cluster: str = ""
 
     def key(self):
         # A sibling sorts after every hit that names the function itself. A draft-store entry, whatever its
@@ -63,7 +66,13 @@ class Hit:
                 STATUS_RANK[self.status], self.path)
 
     def label(self):
-        return f"{self.tree}:{self.status}:{self.via}"
+        # A draft store hit names its cluster where other hits name how they were found.
+        via = (self.cluster or "store") if self.via == "store" else self.via
+        return f"{self.tree}:{self.status}:{via}"
+
+    def text(self):
+        """The body with the declarations a store draft assumes, for a trial compile; a splice takes the body alone."""
+        return "".join(d.rstrip("\n") + "\n" for d in self.decls) + self.body
 
 
 def git(repo, *args):
@@ -236,7 +245,8 @@ class StoreTree:
             self.rejected[name] = why
             return []
         path = draft_store.get_paths(self.store, self.version, e.addr)[0]
-        return [Hit(self.name, e.date, str(path), 1, e.name, "store", e.guard(), e.text(), self.version)]
+        return [Hit(self.name, e.date, str(path), 1, e.name, "store", e.guard(), e.body, self.version,
+                    tuple(e.decls), e.cluster)]
 
 
 def read_symbols(path):
@@ -399,7 +409,7 @@ class Checker:
             return "other", hit, ident, None
         if not self.compile or not unit:
             return "found", hit, ident, None
-        tried = body_check.try_compile(ROOT, sys.executable, unit, name, renamed(hit.body, hit.found, name),
+        tried = body_check.try_compile(ROOT, sys.executable, unit, name, renamed(hit.text(), hit.found, name),
                                        self.version)
         cls = {"ok": "match", "fail": "adapt" if tried.light() else "rework", "no-unit": "found",
                "no-asm-line": "found"}.get(tried.result, "near")
@@ -414,6 +424,17 @@ CLASSES = ("match", "near", "adapt", "rework", "other", "found", "none")
 GROUPS = {"match": "usable", "near": "usable", "adapt": "adapt", "rework": "reference", "other": "reference",
           "found": "untried", "none": "none"}
 VERSIONS_SERIAL = {"raidou1": "SLUS_214.31", "raidou2": "SLUS_218.45"}
+
+
+def write_hit(folder, name, hit, head):
+    """folder/NAME.c with the body; a store draft's declarations go to NAME.decls for tools/batch/place_decls.py,
+    never into the .c."""
+    (folder / f"{name}.c").write_text(head + renamed(hit.body, hit.found, name))
+    decls = folder / f"{name}.decls"
+    if hit.decls:
+        decls.write_text("".join(d.rstrip("\n") + "\n" for d in hit.decls))
+    elif decls.exists():
+        decls.unlink()
 
 
 def source_label(cls, hit, ident, flags=()):
@@ -488,9 +509,8 @@ def main():
         if a.write and best:
             a.write.mkdir(parents=True, exist_ok=True)
             note = (f", same function {ident.text()}" if ident else "") + "".join(f", {f}" for f in flags)
-            (a.write / f"{name}.c").write_text(
-                f"/* body: {best.status} in {best.tree} @ {best.rev}: {best.path}:{best.line}, {cls}{note} */\n"
-                + renamed(best.body, best.found, name))
+            write_hit(a.write, name, best,
+                      f"/* body: {best.status} in {best.tree} @ {best.rev}: {best.path}:{best.line}, {cls}{note} */\n")
         if a.summary:
             where = f"{best.tree}@{best.rev}:{best.path}:{best.line}" if best else ""
             extra = "\t".join(x for x in (ident.text() if ident else "", tried.text() if tried else "",
@@ -511,7 +531,7 @@ def main():
         for i, h in enumerate(hits):
             print(f"-- {h.status} in {h.tree} @ {h.rev}: {h.path}:{h.line}, as {h.found} ({h.via})")
             if h is best or a.all:
-                print(renamed(h.body, h.found, name))
+                print(renamed(h.text(), h.found, name))
     if a.set_column:
         set_column(a.batches, sources)
     print("# " + (f"{a.batch}: " if a.batch else "") + ", ".join(f"{c} {counts[c]}" for c in CLASSES if c in counts)

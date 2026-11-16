@@ -130,8 +130,19 @@ class StoreTests(unittest.TestCase):
     def test_found_by_address_with_its_declarations(self) -> None:
         with tempfile.TemporaryDirectory() as d:
             hits = self.tree(d).find("f", 0x100, 4)
-            self.assertEqual([h.label() for h in hits], ["store:nonmatching:store"])
-            self.assertTrue(hits[0].body.startswith("s32 g(void);\ns32 f(void) {"))
+            self.assertEqual([h.label() for h in hits], ["store:nonmatching:C0001"])
+            self.assertTrue(hits[0].body.startswith("s32 f(void) {"))
+            self.assertTrue(hits[0].text().startswith("s32 g(void);\ns32 f(void) {"))
+
+    def test_pick_up_is_marked_and_writes_declarations_apart(self) -> None:
+        with tempfile.TemporaryDirectory() as d:
+            hit = self.tree(d).find("f", 0x100, 4)[0]
+            self.assertEqual(find_body.source_label("near", hit, None), "near:store:nonmatching:C0001:")
+            out = pathlib.Path(d) / "out"
+            out.mkdir()
+            find_body.write_hit(out, "f", hit, "/* body */\n")
+            self.assertEqual((out / "f.c").read_text(), "/* body */\ns32 f(void) {\n    return 1;\n}\n")
+            self.assertEqual((out / "f.decls").read_text(), "s32 g(void);\n")
 
     def test_found_after_a_rename(self) -> None:
         with tempfile.TemporaryDirectory() as d:

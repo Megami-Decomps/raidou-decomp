@@ -18,13 +18,16 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import batch_files  # noqa: E402
+import decls  # noqa: E402
+import draft_store  # noqa: E402
 import header_includers  # noqa: E402
 import matching_docs  # noqa: E402
 import renames  # noqa: E402
 import segments  # noqa: E402
 import unit_text  # noqa: E402
 
-STEPS = ("patch", "renames", "splice", "configure", "promote", "docs", "regress", "gate")
+STEPS = ("patch", "renames", "splice", "configure", "promote", "docs", "regress", "gate", "retire")
+DRY_STEPS = ("patch", "renames", "splice")
 GATE = (["tools/check_config.py"], ["tools/check_nonmatching.py"], ["tools/test_raidou_c.py"],
         ["tools/test_docs_index.py"], ["tools/docs_index.py", "--check"], ["tools/revisit_names.py", "--check"])
 NONMATCHING_NAME = re.compile(r"^nonmatching (\w+), 0x", re.M)
@@ -47,6 +50,8 @@ class Run:
         self.promoted: set[str] = set()
         self.lines: list[str] = []
         self.base = ""
+        self.store = Path(args.store) if args.store else None
+        self.gate_passed: bool | None = None
 
     def say(self, line: str) -> None:
         print(line, flush=True)
@@ -79,7 +84,7 @@ class Run:
 
     # steps
 
-    def prepare(self, base: str | None, resume: bool) -> None:
+    def prepare(self, base: str | None, resume: bool, configure: bool = True) -> None:
         """Check out the base in a clean tree; a resumed run (patch skipped) keeps the tree as it is.
         The base revision is kept in base.txt: every before measurement is of that revision."""
         saved = self.work / "base.txt"
@@ -98,7 +103,7 @@ class Run:
         self.base = self.git("rev-parse", "HEAD").strip()
         saved.write_text(self.base + "\n")
         self.say(f"tree {self.tree} at {self.base[:9]}")
-        if not self.configure("configure.base.log"):
+        if configure and not self.configure("configure.base.log"):
             raise SystemExit("land_batch: configure failed at the base, see configure.base.log")
 
     def cache_path(self) -> Path | None:
@@ -233,7 +238,71 @@ class Run:
                                      sources, re.M):
                     self.say(f"review: {game} label {m.group(1)} is used only by {fn} (drop_symbols.tsv if C owns it)")
 
+    def store_entries(self) -> list[draft_store.Entry]:
+        """Draft store entries of the batch's rows, by address, else by name."""
+        if not self.store:
+            return []
+        entries = draft_store.load(self.store, "raidou1")
+        by_name = {e.name: e for e in entries.values()}
+        out = []
+        for row in self.batch.rows.values():
+            e = entries.get(int(row.addr, 16)) if re.fullmatch(r"[0-9A-Fa-f]{8}", row.addr) else None
+            e = e or by_name.get(row.name) or by_name.get(self.current(row.name))
+            if e:
+                out.append(e)
+        return out
+
+    def add_includes(self) -> None:
+        """D/includes.tsv (source, header): includes the units need for declarations moved into headers."""
+        for source, header in (r[:2] for r in self.batch.tsv("includes.tsv") if len(r) >= 2):
+            path = self.tree / source
+            if not path.exists():
+                self.note(f"includes.tsv: no {source}")
+                continue
+            text = path.read_text()
+            if header in [d.name for d in decls.parse(text) if d.kind == "include"]:
+                continue
+            lines = text.split("\n")
+            last = max((i for i, l in enumerate(lines) if decls.INCLUDE.match(l)), default=-1)
+            lines.insert(last + 1, f'#include "{header}"')
+            path.write_text("\n".join(lines))
+            self.say(f"splice: {source}: #include \"{header}\"")
+
+    def declaration_problems(self) -> list[str]:
+        """Declarations the batch adds to its units' .c files: a draft store entry's declarations, a function
+        prototype whose function the unit does not define, an #include below the unit's first declaration."""
+        store: set[str] = set()
+        for e in self.store_entries():
+            store |= {d.norm() for d in decls.parse_lines(e.decls) if d.kind != "include"}
+        out = []
+        for source in sorted({r.source for r in self.batch.rows.values()}):
+            path = self.tree / source
+            if not path.exists():
+                continue
+            old = self.git("show", f"{self.base}:{source}", check=False) if self.base else ""
+            before: dict[str, int] = {}
+            for d in decls.parse(unit_text.substitute(old, self.maps["raidou1"])):
+                before[d.norm()] = before.get(d.norm(), 0) + 1
+            after = decls.parse(path.read_text())
+            defined = {d.name for d in after if d.kind == "def"}
+            head = True
+            for d in after:
+                head = head and d.text.startswith("#")
+                key = d.norm()
+                if before.get(key):
+                    before[key] -= 1
+                    continue
+                where = f"{source}:{d.line}"
+                if d.kind == "include" and not head:
+                    out.append(f"{where}: #include below the unit's first declaration: {d.text}")
+                elif d.kind != "include" and key in store:
+                    out.append(f"{where}: draft store declaration left in the .c: {' '.join(d.text.split())}")
+                elif d.kind == "proto" and d.name not in defined:
+                    out.append(f"{where}: local prototype: {' '.join(d.text.split())}")
+        return out
+
     def splice(self) -> None:
+        self.add_includes()
         finals = self.finals()
         by_source: dict[str, list[batch_files.Row]] = {}
         for row in self.batch.rows.values():
@@ -252,6 +321,14 @@ class Run:
         missing = sorted(set(self.batch.rows) - set(finals))
         if missing:
             self.say(f"splice: {len(missing)} rows without a draft: {' '.join(missing)}")
+        problems = self.declaration_problems()
+        for line in problems:
+            self.say(f"refused: {line}")
+        if problems:
+            (self.work / "report.txt").write_text("\n".join(self.lines) + "\n")
+            raise SystemExit(f"land_batch: refused, {len(problems)} declarations in .c files belong in headers "
+                             "(tools/batch/place_decls.py)")
+        self.say("splice: no local declarations added")
 
     def splice_row(self, source: str, text: str, row: batch_files.Row, final: str) -> str:
         """Splice at the INCLUDE_ASM of the renamed function, else of its batch name."""
@@ -445,9 +522,29 @@ class Run:
             r = self.py(*args, log=f"gate.{Path(args[0]).stem}.log")
             self.say(f"gate: {' '.join(args)} rc {r}")
             failed |= r != 0
+        problems = self.declaration_problems()
+        for line in problems:
+            self.say(f"gate: refused: {line}")
+        failed |= bool(problems)
         warnings = len(re.findall(r"warning:", log))
         scope = "the build log" if self.clean_gate else "the objects rebuilt (the total needs --clean-gate)"
         self.say(f"gate: {warnings} compiler warnings in {scope}; {'FAILED' if failed else 'passed'}")
+        self.gate_passed = not failed
+
+    def retire(self) -> None:
+        """Mark the draft store entries of the spliced functions landed, once the gate passed with nothing to decide."""
+        if not self.store:
+            return
+        if not self.gate_passed or self.notes:
+            self.say("retire: skipped, the gate did not pass in this run" if not self.gate_passed
+                     else f"retire: skipped, {len(self.notes)} cases for a hand decision")
+            return
+        finals = self.finals()
+        landed = {e.addr for e in self.store_entries()
+                  if any(r.name in finals and (r.name == e.name or self.current(r.name) == e.name
+                                               or r.addr.upper() == f"{e.addr:08X}") for r in self.batch.rows.values())}
+        done = draft_store.retire(self.store, "raidou1", sorted(landed), self.batch.id)
+        self.say(f"retire: {len(done)} draft store entries landed" + (f": {' '.join(e.name for e in done)}" if done else ""))
 
 
 def main() -> int:
@@ -469,12 +566,24 @@ def main() -> int:
                     help=f"base measurements shared across batches and reruns (default {CACHE}; '' for none)")
     ap.add_argument("--clean-gate", action="store_true",
                     help="gate with configure.py --clean, as the last gate before a push does")
+    ap.add_argument("--store", default=str(draft_store.STORE),
+                    help="draft store whose entries the batch lands (tools/draft_store.py; '' for none)")
+    ap.add_argument("--dry-run", action="store_true",
+                    help=f"run only {', '.join(DRY_STEPS)} and the declaration check, without configure; leaves T edited")
     ap.add_argument("-j", "--jobs", type=int, default=header_includers.JOBS)
     args = ap.parse_args()
     skip = set(filter(None, args.skip.split(",")))
     if skip - set(STEPS):
         ap.error(f"unknown steps: {', '.join(sorted(skip - set(STEPS)))}")
     run = Run(args)
+    if args.dry_run:
+        run.prepare(args.base, "patch" in skip, configure=False)
+        for step in DRY_STEPS:
+            if step not in skip:
+                getattr(run, step)()
+        run.say("dry run: stopped after splice; T is edited")
+        (run.work / "report.txt").write_text("\n".join(run.lines) + "\n")
+        return 1 if run.notes else 0
     run.prepare(args.base, "patch" in skip)
     if "regress" not in skip and not args.reuse_before and run.tree_at_base():
         run.measure_before()

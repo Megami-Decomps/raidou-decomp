@@ -2,7 +2,7 @@
 """Drafts of Raidou functions kept outside any batch, one file per function, for find_body.py to pick up.
 
 Usage: draft_store.py save NAME DRAFT.c --exemplar CORPUS:NAME [--decls FILE] [--cluster C0014]
-       draft_store.py list [--cluster C0014] | check
+       draft_store.py list [--cluster C0014] | check | retire NAME... --batch ID | plan [--write DIR] [--append TSV]
 """
 from __future__ import annotations
 
@@ -11,6 +11,8 @@ import datetime
 import hashlib
 import json
 import re
+import shutil
+import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -21,6 +23,7 @@ from units import VERSIONS, unit_sources  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 STORE = Path.home() / ".local/state/raidou-decomp-work/clusters/store"
+BATCHES = Path.home() / ".local/state/raidou-decomp-work/port/rest/batches.tsv"
 STATUS = re.compile(r"^(match|nocompile|words \d+)$")
 # find_body ranks a draft by how its status compares with a tree definition's guard.
 GAP_HEAD = '#include "common.h"\n\n'
@@ -30,7 +33,12 @@ EPILOG = ("The store is STORE/<version>/<ADDR>.c (the definition alone) and <ADD
           "status (match, words N, nocompile), decls (declarations the draft assumes, spliced in before it) and "
           "date. `save` reads the address and size from build/<version>/<serial>.elf and measures the status with "
           "check_unit.py in the function's unit, or alone after common.h when the unit has no .c yet (a gap unit). "
-          "`check` lists entries whose bytes, size or name no longer agree with the build.")
+          "`check` lists entries whose bytes, size or name no longer agree with the build, and entries whose "
+          "function is already C in this tree. `retire` (land_batch runs it after a passing gate) moves landed "
+          "entries to <version>/landed/ with the batch, so find_body no longer offers them. `plan` groups the "
+          "entries that are in no batch of batches.tsv by unit into batch rows S-<unit> in batches.tsv's columns; "
+          "--write DIR writes each batch directory (NAME.c, NAME.decls, results.tsv) for land_batch. The store is "
+          "a git repository: save and retire commit, so a store edit can be read back from its history.")
 
 
 @dataclass
@@ -70,6 +78,15 @@ def load_image(version: str, root: Path = ROOT) -> body_check.Image:
     if not path.exists():
         raise SystemExit(f"{path}: not built; run configure.py and ninja")
     return body_check.Image(path)
+
+
+def commit(store: Path, message: str) -> None:
+    """Commit every change under the store, making it a git repository on first use."""
+    if not (store / ".git").exists():
+        subprocess.run(["git", "init", "-q", str(store)], check=True)
+    subprocess.run(["git", "-C", str(store), "add", "-A"], check=True)
+    if subprocess.run(["git", "-C", str(store), "diff", "--cached", "--quiet"]).returncode:
+        subprocess.run(["git", "-C", str(store), "commit", "-q", "-m", message], check=True)
 
 
 def get_paths(store: Path, version: str, addr: int) -> tuple[Path, Path]:
@@ -166,7 +183,105 @@ def save(a) -> None:
     c.parent.mkdir(parents=True, exist_ok=True)
     c.write_text(e.body)
     meta.write_text(json.dumps(e.meta(), indent=1) + "\n")
+    commit(a.store, f"save {a.name} {addr:08X} {e.status}")
     print(f"{a.name} {addr:08X} {e.words}w {e.status} ({'measured' if measured else 'stated'}) -> {c}")
+
+
+def retire(store: Path, version: str, keys: list, batch: str) -> list[Entry]:
+    """Move the entries named (by function name or address) to <version>/landed/, recording the batch."""
+    entries = load(store, version)
+    by_name = {e.name: e for e in entries.values()}
+    out = []
+    for k in keys:
+        e = entries.get(k) if isinstance(k, int) else by_name.get(k)
+        if e is None or e in out:
+            continue
+        c, meta = get_paths(store, version, e.addr)
+        landed = store / version / "landed"
+        landed.mkdir(exist_ok=True)
+        m = json.loads(meta.read_text())
+        m["landed"] = {"batch": batch, "date": datetime.date.today().isoformat()}
+        (landed / meta.name).write_text(json.dumps(m, indent=1) + "\n")
+        meta.unlink()
+        if c.exists():
+            shutil.move(c, landed / c.name)
+        out.append(e)
+    if out:
+        commit(store, f"retire {len(out)} landed in {batch}: {' '.join(e.name for e in out)}"[:200])
+    return out
+
+
+def get_c_functions(version: str) -> dict[int, str]:
+    """Address -> name of every function this tree has as C (its INCLUDE_ASM is gone)."""
+    import similar_index
+    return {f["addr"]: f["name"] for f in similar_index.inventory(version) if f["state"] == "c"}
+
+
+def read_batches(path: Path) -> tuple[list[str], list[dict]]:
+    lines = path.read_text().splitlines() if path.exists() else []
+    head = lines[0].split("\t") if lines else BATCH_COLUMNS
+    return head, [dict(zip(head, l.split("\t"))) for l in lines[1:] if l]
+
+
+BATCH_COLUMNS = ["batch", "name", "addr", "words", "unit", "shared", "vector_rows", "scenarios", "body_source",
+                 "similar_to"]
+RESULT = {"match": "match", "words": "nonmatch"}
+
+
+def plan_rows(entries: dict[int, Entry], planned: set[int], c_funcs: dict[int, str], prefix: str
+              ) -> tuple[list[dict], list[str]]:
+    """Batch rows for the entries in no batch, one batch per unit, and why each other entry was left out."""
+    rows, skipped = [], []
+    for e in sorted(entries.values(), key=lambda e: (e.unit, e.addr)):
+        why = ("already in batches.tsv" if e.addr in planned else "already C" if e.addr in c_funcs
+               else "does not compile" if e.status == "nocompile" else "no unit" if not e.unit else None)
+        if why:
+            skipped.append(f"{e.name}\t{why}")
+            continue
+        stem = Path(e.unit).name
+        shared = "R1/R2" if e.unit.startswith("src/shared/") else "R1"
+        rows.append({"batch": f"{prefix}-{stem}", "name": e.name, "addr": f"{e.addr:08X}", "words": str(e.words),
+                     "unit": e.unit, "shared": shared, "vector_rows": "", "scenarios": "",
+                     "body_source": f"found:store:{e.guard()}:{e.cluster or 'store'}:", "similar_to": ""})
+    return rows, skipped
+
+
+def write_batch_dirs(root: Path, rows: list[dict], entries: dict[int, Entry]) -> None:
+    """Each batch's directory: NAME.c (the definition), NAME.decls and results.tsv from the store status."""
+    by_batch: dict[str, list[dict]] = {}
+    for r in rows:
+        by_batch.setdefault(r["batch"], []).append(r)
+    for batch, rs in by_batch.items():
+        d = root / batch
+        d.mkdir(parents=True, exist_ok=True)
+        results = ["name\twords\tresult\tminutes"]
+        for r in rs:
+            e = entries[int(r["addr"], 16)]
+            (d / f"{e.name}.c").write_text(e.body)
+            if e.decls:
+                (d / f"{e.name}.decls").write_text("".join(x.rstrip("\n") + "\n" for x in e.decls))
+            kind, _, n = e.status.partition(" ")
+            results.append(f"{e.name}\t{e.words}\t{RESULT[kind]}{' ' + n if n else ''}\t0")
+        (d / "results.tsv").write_text("\n".join(results) + "\n")
+
+
+def plan(a, entries: dict[int, Entry]) -> None:
+    head, existing = read_batches(a.batches)
+    planned = {int(r["addr"], 16) for r in existing if r.get("addr")}
+    rows, skipped = plan_rows(entries, planned, get_c_functions(a.version), a.prefix)
+    lines = ["\t".join(r.get(c, "") for c in head) for r in rows]
+    for line in skipped:
+        print(f"skip\t{line}", file=sys.stderr)
+    if a.write:
+        write_batch_dirs(a.write, rows, entries)
+    if a.append:
+        old = a.append.read_text() if a.append.exists() else "\t".join(head) + "\n"
+        a.append.write_text(old + "".join(l + "\n" for l in lines))
+    else:
+        print("\t".join(head))
+        print("\n".join(lines))
+    units = len({r["batch"] for r in rows})
+    print(f"{len(rows)} rows in {units} batches, {len(skipped)} entries left out", file=sys.stderr)
 
 
 def main() -> None:
@@ -186,22 +301,41 @@ def main() -> None:
     lp = sub.add_parser("list")
     lp.add_argument("--cluster")
     sub.add_parser("check")
+    rp = sub.add_parser("retire", help="mark entries landed (land_batch does this after a passing gate)")
+    rp.add_argument("keys", nargs="+", help="function names or hex addresses")
+    rp.add_argument("--batch", required=True)
+    pp = sub.add_parser("plan", help="batch rows for the entries in no batch of batches.tsv")
+    pp.add_argument("--batches", type=Path, default=BATCHES)
+    pp.add_argument("--prefix", default="S", help="batch id prefix (default S, as in S-fclCombineInit)")
+    pp.add_argument("--write", type=Path, metavar="DIR", help="write each batch directory under DIR")
+    pp.add_argument("--append", type=Path, metavar="TSV", help="append the rows to TSV instead of printing them")
     a = ap.parse_args()
     if a.cmd == "save":
         save(a)
         return
+    if a.cmd == "retire":
+        keys = [int(k, 16) if re.fullmatch(r"(0x)?[0-9A-Fa-f]{8}", k) else k for k in a.keys]
+        done = retire(a.store, a.version, keys, a.batch)
+        print(f"retired {len(done)}: {' '.join(e.name for e in done)}")
+        sys.exit(0 if len(done) == len(keys) else 1)
     entries = load(a.store, a.version)
+    if a.cmd == "plan":
+        plan(a, entries)
+        return
     if a.cmd == "list":
         for e in entries.values():
             if not a.cluster or e.cluster == a.cluster:
                 print(f"{e.addr:08X}\t{e.name}\t{e.words}\t{e.status}\t{e.cluster}\t{e.exemplar}\t{e.date}")
         return
     img, bad = load_image(a.version), 0
+    c_funcs = get_c_functions(a.version)
     for e in entries.values():
         why = find_problem(e, img)
         names = img.names.get(e.addr, set())
         if why is None and e.name not in names:
             why = f"renamed to {', '.join(sorted(names))}"
+        if why is None and e.addr in c_funcs:
+            why = f"already C in the tree as {c_funcs[e.addr]} (retire it)"
         if why:
             bad += 1
             print(f"{e.addr:08X}\t{e.name}\t{why}")

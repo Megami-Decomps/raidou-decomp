@@ -16,6 +16,7 @@ class Row:
     path: str  # batches.tsv unit column: src/<folder>/<unit> or asm/<game>/<unit>
     words: int = 0
     result: str = ""
+    addr: str = ""
 
     @property
     def gap(self) -> bool:
@@ -79,7 +80,8 @@ def load(dir: Path, batches: Path | None = None, batch_id: str | None = None,
     dir = dir.resolve()
     batch_id = batch_id or dir.name
     batches = batches or dir.parent.parent / "batches.tsv"
-    rows = {r[1]: Row(r[1], r[4]) for r in csv.reader(batches.open(), delimiter="\t") if r and r[0] == batch_id}
+    rows = {r[1]: Row(r[1], r[4], addr=r[2]) for r in csv.reader(batches.read_text().splitlines(), delimiter="\t")
+            if r and r[0] == batch_id}
     if not rows:
         raise SystemExit(f"land_batch: no rows for {batch_id} in {batches}")
     b = Batch(dir, batch_id, rows)
