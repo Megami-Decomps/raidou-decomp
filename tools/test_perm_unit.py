@@ -41,6 +41,27 @@ void dds3SoftReset(void) {
 """
 
 
+class ScanTests(unittest.TestCase):
+    BASE = "s32 f(s32 *p) {\n    s32 a;\n\n    a = p[1];\n    return a + p[0];\n}\n"
+
+    def cand(self, decl, use):
+        return f"s32 f(s32 *p) {{\n    s32 a;\n    {decl}\n\n    a = p[1];\n    {use}\n    return a + p[0];\n}}\n"
+
+    def test_a_constant_only_local_is_rejected(self) -> None:
+        got = perm_unit.fake_locals(self.BASE, self.cand("s32 temp;", "temp = 0;"), "f")
+        self.assertEqual(got, ["temp (constant only: 0)"])
+
+    def test_a_copy_only_local_is_rejected(self) -> None:
+        got = perm_unit.fake_locals(self.BASE, self.cand("s32 *q = p;", "(void)q;"), "f")
+        self.assertEqual(got, ["q (copy only: p)"])
+
+    def test_a_local_holding_an_expression_is_kept(self) -> None:
+        self.assertEqual(perm_unit.fake_locals(self.BASE, self.cand("s32 b;", "b = p[2] + 1; a += b;"), "f"), [])
+
+    def test_a_reordered_existing_local_is_kept(self) -> None:
+        self.assertEqual(perm_unit.fake_locals(self.BASE, self.BASE.replace("a = p[1]", "a = 0"), "f"), [])
+
+
 class BatchTests(unittest.TestCase):
     def test_nonmatches_under_a_distance(self) -> None:
         import tempfile

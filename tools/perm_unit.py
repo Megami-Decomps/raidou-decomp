@@ -4,6 +4,7 @@
     tools/perm_unit.py import src/shared/effect/billManager.c dds3Billboard_P2ADraw [draft.c]
     tools/perm_unit.py import --all-under 10 --batch D    # every nonmatch in D/results.tsv under 10 words
     python3 ../decomp-permuter/permuter.py build/permuter/shared_dds3Billboard_P2ADraw -j8 --best-only --stop-on-zero
+    tools/perm_unit.py scan build/permuter/shared_dds3Billboard_P2ADraw   # keep or reject each output-*
 
 `import` writes <batch>/permuter/<shared|raidou1|raidou2>_<func>/ with --batch, else
 build/permuter/ (which configure --clean removes). Opt-in: regular batches do not run it. Without a draft file it
@@ -427,6 +428,57 @@ def dump(o: Path) -> list[str]:
     return out
 
 
+DECL = re.compile(r"^[ \t]+(?:register\s+|const\s+|volatile\s+|unsigned\s+|signed\s+)*(?:struct\s+)?[A-Za-z_]\w*"
+                  r"[\s*]+([A-Za-z_]\w*)\s*(?:\[[^\]]*\]\s*)?(?:=\s*([^;]+))?;", re.M)
+NOT_TYPES = {"return", "goto", "break", "continue", "case", "else", "do"}
+CAST = r"(?:\(\s*[A-Za-z_][\w\s*]*\)\s*)*"
+CONSTANT = re.compile(rf"^{CAST}[-~]?\s*(?:0x[0-9A-Fa-f]+|\d+(?:\.\d*)?)[uUlLfF]*$")
+COPY = re.compile(rf"^{CAST}[A-Za-z_]\w*$")
+
+
+def local_names(body: str) -> dict[str, list[str]]:
+    """Locals declared in a function body, each with its initialiser if it has one."""
+    out: dict[str, list[str]] = {}
+    for m in DECL.finditer(body):
+        first = m.group(0).split()[0]
+        if first not in NOT_TYPES:
+            out.setdefault(m.group(1), []).extend([m.group(2).strip()] if m.group(2) else [])
+    return out
+
+
+def fake_locals(base: str, cand: str, fn: str) -> list[str]:
+    """Locals cand adds to fn that are only ever set to a constant or copied from one variable.
+
+    Such a local changes register allocation without being code anyone would write.
+    """
+    old = local_names(base[slice(*find_def(base, fn))])
+    body = cand[slice(*find_def(cand, fn))]
+    out = []
+    for name, init in local_names(body).items():
+        if name in old:
+            continue
+        rhs = init + [r.strip() for r in re.findall(rf"\b{re.escape(name)}\s*=(?!=)\s*([^;]+);", body)]
+        if rhs and all(CONSTANT.match(r) for r in rhs):
+            out.append(f"{name} (constant only: {rhs[0]})")
+        elif rhs and all(COPY.match(r) or CONSTANT.match(r) for r in rhs):
+            out.append(f"{name} (copy only: {rhs[0]})")
+    return out
+
+
+def cmd_scan(a: argparse.Namespace) -> None:
+    """List each output-* of the permuter directories, rejecting those that add a fake local."""
+    for d in map(Path, a.dirs):
+        fn = re.search(r'func_name = "(\w+)"', (d / "settings.toml").read_text()).group(1)
+        base = (d / "base.c").read_text()
+        outs = sorted(d.glob("output-*/source.c"), key=lambda p: [int(x) for x in re.findall(r"\d+", p.parent.name)])
+        kept = 0
+        for src in outs:
+            bad = fake_locals(base, src.read_text(), fn)
+            kept += not bad
+            print(f"{'reject' if bad else 'keep  '} {src.parent}" + (f": {', '.join(bad)}" if bad else ""))
+        print(f"# {d.name}: {kept} of {len(outs)} outputs kept", file=sys.stderr)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -439,6 +491,8 @@ def main() -> None:
     p.add_argument("--batch", help="batch directory: --all-under reads it, outputs go under its permuter/")
     p.add_argument("--version", choices=VERSIONS, help="only this game of a shared unit")
     p.add_argument("-o", "--out")
+    p = sub.add_parser("scan", help="reject permuter outputs that add a constant-only or copy-only local")
+    p.add_argument("dirs", nargs="+", help="permuter directories (holding base.c and output-*/)")
     p = sub.add_parser("cc", help="compile hook used by the directory's compile.sh")
     p.add_argument("dir")
     p.add_argument("input")
@@ -454,6 +508,8 @@ def main() -> None:
         if not (a.unit and a.func):
             ap.error("import needs a unit and a function, or --all-under N --batch D")
         cmd_import(a)
+    elif a.cmd == "scan":
+        cmd_scan(a)
     elif a.cmd == "cc":
         cmd_cc(a)
     else:
