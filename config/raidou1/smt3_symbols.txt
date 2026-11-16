@@ -2,7 +2,6 @@
 _exit = 0x001001C8;
 KillProcess = 0x00100E38;
 DebugProcess = 0x00101280;
-dds3AdminiStartSequence = 0x00102BB8;
 dds3AdminiNeoProcess = 0x00102DB0;
 dds3GetVibrationLevel = 0x001040E0;
 dds3PadVibrationSet = 0x00104140;
@@ -20,7 +19,6 @@ scrPrintProcedureStart = 0x00112090;
 scrPrintProcedureEnd = 0x001125F0;
 dds3AllocBasic = 0x00116C80;
 dds3SetPosPoseSet = 0x00116F48;
-dds3AllocObjectId = 0x001172E8;
 dds3AddSceneBasicData = 0x001180F8;
 dds3DeleteSceneBasicData = 0x001181A0;
 dds3SceneBasicSearchName = 0x001188B0;

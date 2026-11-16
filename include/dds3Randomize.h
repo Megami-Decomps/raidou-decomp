@@ -10,5 +10,6 @@ extern sdfRandCB_t dds3RandCB[];
 u32 dds3GetRandA(void *state);
 f32 dds3GetRandFloatA(void *state);
 u32 dds3GetRandIntA(void *state, u32 limit);
+void dds3InitRandCB(void);
 
 #endif

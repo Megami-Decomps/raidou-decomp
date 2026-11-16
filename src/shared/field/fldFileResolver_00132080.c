@@ -560,7 +560,6 @@ void fldLeaf16(void) {
 
 /* NON_MATCHING: 26 of 28 words match.  */
 #ifdef NON_MATCHING
-#ifdef NON_MATCHING
 u32 fldLoadFile(void) {
     s32 field;
 
@@ -579,12 +578,8 @@ u32 fldLoadFile(void) {
 #else
 INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile);
 #endif
-#else
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile);
-#endif
 
 /* NON_MATCHING: 50 of 58 words match.  */
-#ifdef NON_MATCHING
 #ifdef NON_MATCHING
 u32 fldLoadFile_FromMemory(u32 field, u32 area, saddr_t pF1, saddr_t pF2,
                            const struct sdfTextureOffsetListHeader_t *pTB, s32 pBF) {
@@ -620,9 +615,6 @@ u32 fldLoadFile_FromMemory(u32 field, u32 area, saddr_t pF1, saddr_t pF2,
     MakeObjectBasic2();
     return fldData17;
 }
-#else
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile_FromMemory);
-#endif
 #else
 INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldLoadFile_FromMemory);
 #endif

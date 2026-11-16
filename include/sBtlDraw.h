@@ -5,6 +5,8 @@
 #include "kernel.h"
 #include "itf.h"
 
+struct itfSprList_t;
+
 struct SBTLUNIT_WORK;
 struct effCtexHandle_t;
 struct sdatUnitWork_t;
@@ -42,8 +44,8 @@ void sbtlCallMoonFadeIn(void);
 s32 sbtlCallMessageNumSearch4(s32 a_x, s32 a_y, s32 a_z, u32 a_color, SBTLSM a_mode);
 void sbtlCallMoverInit(void);
 char *sbtlLeaf112(u8 n);
-void sbtlLeaf93(s32 a_x, s32 a_y, u32 a_alphaRate, s16 *a_list);
-void sbtlRefSbtl55(s32 a_x, s32 a_y, u32 a_alphaRate, DDS3_OT a_ot, s16 *a_list);
+void sbtlLeaf93(s32 a_x, s32 a_y, u32 a_alphaRate, struct itfSprList_t *a_list);
+void sbtlRefSbtl55(s32 a_x, s32 a_y, u32 a_alphaRate, DDS3_OT a_ot, struct itfSprList_t *a_list);
 void sbtlSprite(s32 a_x, s32 a_y, u8 a_alpha, s32 a_sprNo);
 void sbtlSpriteEx(s32 a_x, s32 a_y, u8 a_alpha, s32 a_sprNo, DDS3_OT a_ot);
 void sbtlNumFont(s32 a_x, s32 a_y, u32 a_color, u8 a_alphaRate, DDS3_OT a_ot, char *a_str);
@@ -56,7 +58,7 @@ extern s8 sbtlData121;
 extern s32 sbtlRefSbtl57Data;
 extern s32 sbtlRefSbtl61Data;
 extern s32 sbtlRefSbtl59Data;
-extern s16 sbtlCallBtlSearchUnitID37Data[];
+extern struct itfSprList_t sbtlCallBtlSearchUnitID37Data[];
 extern s32 sbtlCallBtlSearchUnitID37Data2;
 extern s32 sbtlCallBtlSpriteData;
 extern s32 sbtlCallBtlSpriteData2;
@@ -68,7 +70,7 @@ extern s32 sbtlCallCheckDying3Data2;
 extern s32 sbtlCallCheckDying2Data3;
 extern s32 sbtlCallCheckDying3Data3;
 extern s32 sbtlCallCheckDying3Data4;
-extern s16 sbtlCallEventBattleStopChack2Data[];
+extern struct itfSprList_t sbtlCallEventBattleStopChack2Data[];
 extern s32 sbtlCallEventBattleStopChack2Data2;
 extern s32 Init_sbtlDrawData;
 extern s32 sbtlData122;

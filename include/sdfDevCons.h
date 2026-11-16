@@ -42,5 +42,6 @@ void *sdfDevPrintfEx(sdfDevPrintCB_t *aCB, const char *aStr, ...);
 void *sdfDevPrintf(u32 x, u32 y, u32 z, s32 attr, const char *format, ...);
 
 void sdfDevConsDrawAll(void);
+void sdfDevConsInit(void);
 
 #endif

@@ -71,7 +71,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00102B38	0x00102B78	dds3AdminiGetNextSequence	no	yes	asm/raidou1/kernel/dds3AdminiProcess.s	asm/raidou2/kernel/dds3AdminiProcess.s	unique-reloc-hash
 0x00102B58	0x00102B98	dds3AdminiGetPrevSequence	no	yes	asm/raidou1/kernel/dds3AdminiProcess.s	asm/raidou2/kernel/dds3AdminiProcess.s	unique-reloc-hash
 0x00102B88	0x00102BC8	dds3AdminiGetPrevHistoryFlag	no	yes	asm/raidou1/kernel/dds3AdminiProcess.s	asm/raidou2/kernel/dds3AdminiProcess.s	unique-reloc-hash
-0x00102BB8	0x00102BF8	StartSequence	no	yes	asm/raidou1/kernel/dds3AdminiProcess.s	asm/raidou2/kernel/dds3AdminiProcess.s	unique-reloc-hash
+0x00102BB8	0x00102BF8	dds3AdminiStartSequence	no	yes	asm/raidou1/kernel/dds3AdminiProcess.s	asm/raidou2/kernel/dds3AdminiProcess.s	unique-reloc-hash
 0x00102D30	0x00102D70	dds3AdminiEndCheck	no	yes	asm/raidou1/kernel/dds3AdminiProcess.s	asm/raidou2/kernel/dds3AdminiProcess.s	unique-reloc-hash
 0x00102DB0	0x00102DF0	dds3AdminiNeoProcess	no	yes	asm/raidou1/kernel/dds3AdminiProcess.s	asm/raidou2/kernel/dds3AdminiProcess.s	unique-reloc-hash
 0x00102F30	0x00102F70	dds3AdminiNeoShutdown	no	yes	asm/raidou1/kernel/dds3AdminiProcess.s	asm/raidou2/kernel/dds3AdminiProcess.s	unique-reloc-hash
@@ -618,7 +618,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00117210	0x00119A40	dds3ComparePosPoseSet2	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
 0x00117268	0x00119A98	dds3CallBasicMainProc	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
 0x001172A8	0x00119AD8	dds3CallBasicDrawProc	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
-0x001172E8	0x00119B18	dds3SerializeID	no	yes	asm/raidou1/code_001172E8.s	asm/raidou2/code_00119B18.s	unique-reloc-hash
+0x001172E8	0x00119B18	dds3AllocObjectId	no	yes	asm/raidou1/code_001172E8.s	asm/raidou2/code_00119B18.s	unique-reloc-hash
 0x00117318	0x00119B48	dds3SetUnitObjectId	yes	yes	asm/raidou1/code_001172E8.s	asm/raidou2/code_00119B18.s	unique-reloc-hash
 0x00117328	0x00119B58	dds3Leaf26	yes	yes	asm/raidou1/code_001172E8.s	asm/raidou2/code_00119B18.s	unique-reloc-hash
 0x00117340	0x00119B70	worldconstructor	no	yes	src/shared/basic/dds3WorldBasic.c	src/shared/basic/dds3WorldBasic.c	unique-reloc-hash
@@ -2300,15 +2300,15 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0018DCB0	0x001A3010	itfLeaf15	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018DDD0	0x001A3130	itfCallSetOt3	no	no	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-masked-hash
 0x0018DEE8	0x001A3248	itfCallDrawBoxLine	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
-0x0018E110	0x001A3470	itfCallLinkTri	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018E110	0x001A3470	itfDrawFanBezierPt3	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E410	0x001A3770	itfCalcSpriteWidthSub	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-masked-hash
 0x0018E450	0x001A37B0	itfGetFigure	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E4A0	0x001A3800	itfGetFigureNum	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E500	0x001A3860	itfLeaf16	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E530	0x001A3890	itfCalcSpriteWidth	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	masked-hash-in-gap
-0x0018E5D0	0x001A3930	itfLeaf17	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
-0x0018E650	0x001A39B0	itfLeaf18	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
-0x0018E6E0	0x001A3A40	itfFunc3	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018E5D0	0x001A3930	itfGetRatePosBezierPt3	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018E650	0x001A39B0	itfGetVectorPosBezierPt3	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018E6E0	0x001A3A40	itfGetDivBezierPt3	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E7E8	0x001A3B48	itfCallMemFreeDelayedDirect	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	masked-hash-in-gap
 0x0018E820	0x001A3B80	itfLoadIconSprite	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E860	0x001A3BC0	itfFunc4	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	masked-hash-in-gap
@@ -2531,7 +2531,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0019A4D0	0x001B0048	mdlFree	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019A578	0x001B00F0	mdlLink	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019A6A8	0x001B0220	LinkMotion	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
-0x0019A748	0x001B02C0	mdlBlendEntryPitchYawAndUpdate	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
+0x0019A748	0x001B02C0	mdlLink_Kubi	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019AA00	0x001B0578	mdlHideAllNode	yes	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019AA48	0x001B05C0	mdlMotion	no	no	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	run-order-near
 0x0019AB40	0x001B06E8	mdlLoopMotion	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
@@ -4051,7 +4051,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001EA418	0x00201710	effLeaf42	yes	yes	asm/raidou1/effect/effBattleMisc.s	asm/raidou2/effect/effBattleMisc.s	masked-hash-in-gap
 0x001EA420	0x00201718	effBTLPartGetRotateMatrixPtr	no	yes	asm/raidou1/effect/effBattleMisc.s	asm/raidou2/effect/effBattleMisc.s	unique-reloc-hash
 0x001EA518	0x00201810	dds3Leaf36	no	yes	asm/raidou1/code_001EA518.s	asm/raidou2/code_00201810.s	run-order-size
-0x001EA530	0x00201828	dds3EffectManagerInitSub	no	yes	asm/raidou1/code_001EA518.s	asm/raidou2/code_00201810.s	masked-hash-in-gap
+0x001EA530	0x00201828	dds3ParticleManagerInit	no	yes	asm/raidou1/code_001EA518.s	asm/raidou2/code_00201810.s	masked-hash-in-gap
 0x001EA550	0x00201848	dds3ParticleManagerExit	yes	yes	asm/raidou1/code_001EA518.s	asm/raidou2/code_00201810.s	masked-hash-in-gap
 0x001EA558	0x00201850	dds3Particle_PhysicsCreate	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001EA5D8	0x002018D0	parLeaf	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap

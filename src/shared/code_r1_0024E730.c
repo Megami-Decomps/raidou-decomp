@@ -25,7 +25,7 @@ s32 SetTestCamera(void)
     memset(&eye, 0, sizeof(eye));
     eye.w = 1.0f;
     target = (sdfVector4_t){ 0.0f, 0.0f, 10.0f, 1.0f };
-    camera = dds3AddCameraObjectBasicTypeLookAt(dds3SerializeID(), &eye, &target, &up);
+    camera = dds3AddCameraObjectBasicTypeLookAt(dds3AllocObjectId(), &eye, &target, &up);
     dds3SetUnitObjectId(camera, "sbtl_Cam");
     dds3GetRadiusPoseSet(camera, 10.0f);
     dds3ObjectBaseCreateMover(camera);

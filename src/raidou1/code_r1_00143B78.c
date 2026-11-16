@@ -107,7 +107,7 @@ s32 mapObjFloorAdd_Cash(s32 floor, s16 uniq, MODELTYPE major, s32 minor, s32 mot
         o->basic = NULL;
         return i;
     }
-    basic = dds3AddUnitObjectBasic(dds3SerializeID(), &pos, &rot);
+    basic = dds3AddUnitObjectBasic(dds3AllocObjectId(), &pos, &rot);
     o->basic = basic;
     dds3SetUnitObjectId(basic, "MAP_OBJ");
     if ((u32)(major - 1) < 3 && mdlSearchResrc(major, minor) == NULL)

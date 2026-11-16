@@ -35,7 +35,48 @@ s32 dds3ComparePosPoseSet2(dds3PoseSet_t *left, dds3PoseSet_t *right);
 s32 dds3CallBasicMainProc(dds3Basic_t *pBasic);
 s32 dds3CallBasicDrawProc(dds3Basic_t *basic);
 
+/* NON_MATCHING: 48 of 54 words match.  */
+#ifdef NON_MATCHING
+dds3Basic_t *dds3AllocBasic(u32 type)
+{
+    dds3Basic_t *basic;
+    dds3BasicFunction_t *funcs;
+
+    if (type >= BASIC_TYPE_MAX) {
+        return NULL;
+    }
+    basic = sdfChipAllocDirect(sizeof(dds3Basic_t));
+    if (basic == NULL) {
+        return NULL;
+    }
+    basic->type = type << 24;
+    funcs = dds3BasicFuncTablePtr[type];
+    basic->color = 0x80808080;
+    basic->flag = 0;
+    basic->serialID = 0;
+    basic->name = NULL;
+    basic->basicfunction = funcs;
+    basic->staticdata = NULL;
+    basic->workdata = NULL;
+    basic->poseset = NULL;
+    basic->next = NULL;
+    basic->prev = NULL;
+    basic->worknext = NULL;
+    basic->workprev = NULL;
+    basic->workpointer = NULL;
+    if (funcs != NULL) {
+        if (funcs->constructor != NULL) {
+            if (((s32 (*)(dds3Basic_t *))funcs->constructor)(basic) != 1) {
+                dds3DeleteBasic(basic);
+                return NULL;
+            }
+        }
+    }
+    return basic;
+}
+#else
 INCLUDE_ASM(const s32, "basic/dds3Basic", dds3AllocBasic);
+#endif
 
 void dds3DeleteBasic(dds3Basic_t *basic)
 {
@@ -132,7 +173,20 @@ void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r)
 
 INCLUDE_ASM(const s32, "basic/dds3Basic", dds3Leaf25);
 
+/* NON_MATCHING: 6 of 11 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3Basic.c:165, near, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void dds3SetPosPoseSet_dds3Basic(dds3Basic_t *pBasic, const sdfVector4_t *pos)
+{
+    dds3PoseSet_t *pose = pBasic->poseset;
+    sdfVector4_t *dst = &pose->pos;
+
+    pose->flag = (pose->flag | POSESET_FLAG_UPDATEPOSE) & ~POSESET_FLAG_UPDATETM;
+    SDF_VU0_COPYVECTOR(dst, pos);
+}
+#else
 INCLUDE_ASM(const s32, "basic/dds3Basic", dds3SetPosPoseSet_dds3Basic);
+#endif
 
 void dds3SetRotPoseSet(dds3Basic_t *pBasic, const sdfVector4_t *rot)
 {

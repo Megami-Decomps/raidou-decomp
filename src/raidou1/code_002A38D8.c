@@ -2322,12 +2322,12 @@ void sbtlSprite(s32 a_x, s32 a_y, u8 a_alpha, s32 a_sprNo)
     sbtlSpriteEx(a_x, a_y, a_alpha, a_sprNo, 103);
 }
 
-void sbtlRefSbtl55(s32 a_x, s32 a_y, u32 a_alphaRate, DDS3_OT a_ot, s16 *a_list)
+void sbtlRefSbtl55(s32 a_x, s32 a_y, u32 a_alphaRate, DDS3_OT a_ot, itfSprList_t *a_list)
 {
     itfDrawMiscSpriteList(a_x, a_y, 0, a_alphaRate, wk_sbtl->panel->hPanelSpr3, 103, a_list);
 }
 
-void sbtlLeaf93(s32 a_x, s32 a_y, u32 a_alphaRate, s16 *a_list)
+void sbtlLeaf93(s32 a_x, s32 a_y, u32 a_alphaRate, itfSprList_t *a_list)
 {
     sbtlRefSbtl55(a_x, a_y, a_alphaRate, 103, a_list);
 }

@@ -37,7 +37,7 @@ void mapObjPointAdd2(s16 uniq, s16 floor, f32 x, f32 y, f32 z, f32 r)
             p->resource.scl.x = 1.0f;
             p->resource.scl.y = 1.0f;
             p->resource.scl.z = 1.0f;
-            p->serialID = dds3SerializeID();
+            p->serialID = dds3AllocObjectId();
             p->basic = dds3AddPointBasic(p->serialID, &p->resource, "mappos");
             return;
         }

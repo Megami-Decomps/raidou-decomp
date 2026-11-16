@@ -89,7 +89,14 @@ extern s8 slNewGameBit2212;
 extern s8 slNewGameBit2213;
 extern s8 slNewGameBit2323;
 
-INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", dds3CallGrAllocPacketBuff9);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3GlobalWork.c:642, match, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+sdfDrawTag_t *dds3CallGrAllocPacketBuff9(void)
+{
+    sdfDrawTag_t *tag = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+
+    sdfDrawTagInit(tag);
+    return tag;
+}
 
 u64 *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 aFrameCol) {
     u64 *packet;

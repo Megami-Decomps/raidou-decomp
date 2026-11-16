@@ -2533,7 +2533,7 @@ mdlAddPlainViewerEntryForSelectedNode	c
 mdlAddViewEntryFlagged	c
 mdlAppendViewerRectToDrawList	c
 mdlApplyViewerResourceMenuAction	asm	.rodata base 0x0044D920, 0x0044D930
-mdlBlendEntryPitchYawAndUpdate	c
+mdlLink_Kubi	c
 mdlBuildViewerRectanglePacket	c
 mdlCheckLoading	c
 mdlChkMotionEndEx	c

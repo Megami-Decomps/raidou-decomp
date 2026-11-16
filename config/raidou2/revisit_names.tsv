@@ -488,7 +488,6 @@
 0x0012EB38	fldLoadMapResourceSub	func	tier=D	derived-caller	na	unit code_0012C998, neighbour fldAiboCashLoad_EndCheck; called by rstLoadMapResource
 0x0012EB58	fldLoadMapResourceSub2	func	tier=D	derived-caller	na	unit code_0012C998, neighbour fldAiboCashLoad_EndCheck; called by rstLoadMapResource
 0x0012EB78	fldCallCtnFree	func	tier=D	derived-callee	na	unit code_0012C998, neighbour fldRegistUnitPad; calls mapCtnFree
-0x0012EBE0	fldCleanupFieldScene	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00123D98, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0012F7B8	fldCallObjectBaseOnFlag	func	tier=D	derived-callee	na	unit code_0012ECC0, neighbour fldPlayerToNakama; calls dds3ObjectBaseOnFlag
 0x0012F958	fldCallObjectBaseOnFlag2	func	tier=D	derived-callee	na	unit code_0012ECC0, neighbour fldNakamaToSummon; calls dds3ObjectBaseOnFlag
 0x0012FA48	fldCallGetRotPoseSet	func	tier=D	derived-callee	na	unit code_0012ECC0, neighbour fldNakamaToSummon; calls dds3GetRotPoseSet
@@ -1201,12 +1200,8 @@
 0x001A3010	itfLeaf15	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfDrawMiscHelp; no named callee, caller or string
 0x001A3130	itfCallSetOt3	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfDrawMiscHelp; calls eglSetOt
 0x001A3248	itfCallDrawBoxLine	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfDrawMiscHelp; calls cmpDrawBoxLine
-0x001A3470	itfCallLinkTri	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfGetFigure; calls eglLinkTri
 0x001A3770	itfCalcSpriteWidthSub	func	tier=D	derived-caller	na	unit code_0018CE10, neighbour itfGetFigure; called by itfCalcSpriteWidth
 0x001A3860	itfLeaf16	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfGetFigureNum; no named callee, caller or string
-0x001A3930	itfLeaf17	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfCalcSpriteWidth; no named callee, caller or string
-0x001A39B0	itfLeaf18	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfCalcSpriteWidth; no named callee, caller or string
-0x001A3A40	itfFunc3	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfLoadIconSprite; no named callee, caller or string
 0x001A3B48	itfCallMemFreeDelayedDirect	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfLoadIconSprite; calls sdfMemFreeDelayedDirect
 0x001A3BC0	itfFunc4	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfLoadIconSprite; no named callee, caller or string
 0x001A3BF8	itfCallLoadIconSprite	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfIconDrawSprite; calls itfLoadIconSprite
@@ -1360,7 +1355,6 @@
 0x001AEF88	mphCallExistProcess	func	tier=D	derived-callee	na	unit code_001A5768, neighbour mphShutDown; calls dds3ExistProcess
 0x001AEFF0	mphCallGetProcessStat	func	tier=D	derived-callee	na	unit code_001A5768, neighbour mphShutDown; calls dds3GetProcessStat
 0x001AF958	mdlCallWaitSema	func	tier=D	derived-callee	na	unit model/mdlManager; calls WaitSema
-0x001B02C0	mdlBlendEntryPitchYawAndUpdate	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002179A8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001B2E60	mdlBuildViewerRectanglePacket	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0021A608, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001B2E80	mdlAppendViewerRectToDrawList	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0021A628, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001B2EB8	mdlUpdateViewerCursor	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0021A660, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -2047,7 +2041,6 @@
 0x00201700	effLeaf41	func	tier=D	derived-unit	na	unit effect/effBattleMisc; no named callee, caller or string
 0x00201710	effLeaf42	func	tier=D	derived-unit	na	unit effect/effBattleMisc; no named callee, caller or string
 0x00201810	dds3Leaf36	func	tier=D	derived-unit	na	unit code_001EA518, neighbour dds3ParticleManagerExit; no named callee, caller or string
-0x00201828	dds3EffectManagerInitSub	func	tier=D	derived-caller	na	unit code_001EA518, neighbour dds3ParticleManagerExit; called by dds3EffectManagerInit
 0x00201848	dds3ParticleManagerExit	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x002018D0	parLeaf	func	tier=D	derived-unit	na	unit effect/parManager; no named callee, caller or string
 0x00201C38	dds3Particle_SpiralCreate	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -18221,18 +18214,7 @@
 0x004DE38A	dds3DrawBistaData2	data	tier=D	derived-dominant	na	used by dds3DrawBista (3 of 13 refs, 11 functions)
 0x004DE38C	dds3Data33	data	tier=D	derived-shared	na	used by 10 functions: evtCallGrAllocPacketBuff, effDrawBlurRectangle, effCallGrAllocPacketBuff
 0x004DE390	dds3DrawBistaData3	data	tier=D	derived-dominant	na	used by dds3DrawBista (3 of 4 refs, 2 functions)
-0x004DE39C	fldSkyDefaultLoadData	data	tier=D	derived-dominant	na	used by fldSkyDefaultLoad (3 of 4 refs, 2 functions)
 0x004DE3A0	dds3Data34	data	tier=D	derived-shared	na	used by 5 functions: dds3FilterClear, dds3FilterSet, dds3ProcSequenceSub
-0x004DE3A4	dds3Data35	data	tier=D	derived-shared	na	used by 4 functions: dds3FilterClear, dds3FilterSetAlpha, dds3FilterGetAlpha
-0x004DE3A8	dds3Data36	data	tier=D	derived-shared	na	used by 5 functions: dds3FilterClear, dds3FilterSetAlphaOfs, dds3FilterGetAlphaOfs
-0x004DE3AC	dds3Data37	data	tier=D	derived-shared	na	used by 4 functions: dds3FilterClear, dds3FilterSet, dds3FilterDraw
-0x004DE3B0	dds3Data38	data	tier=D	derived-shared	na	used by 4 functions: dds3FilterClear, fldSetFilterAnime, dds3FilterCalc
-0x004DE3B4	dds3FilterCalcData	data	tier=D	derived-dominant	na	used by dds3FilterCalc (16 of 18 refs, 3 functions)
-0x004DE3BC	dds3FilterSetData	data	tier=D	derived-dominant	na	used by dds3FilterSet (2 of 5 refs, 4 functions)
-0x004DE3C0	dds3Data39	data	tier=D	derived-shared	na	used by 3 functions: dds3FilterSet, dds3FilterDraw, dds3FilterClear
-0x004DE3C4	dds3FilterDrawData	data	tier=D	derived-dominant	na	used by dds3FilterDraw (4 of 7 refs, 3 functions)
-0x004DE3C8	dds3FilterSetData2	data	tier=D	derived-dominant	na	used by dds3FilterSet (2 of 4 refs, 3 functions)
-0x004DE3CC	dds3FilterEditData	data	tier=D	derived-dominant	na	used by dds3FilterEdit (6 of 7 refs, 2 functions)
 0x004DE3D0	dds3RunQuakeData	data	tier=D	derived-sole	na	used by dds3RunQuake
 0x004DE3D8	dds3Data50	data	tier=D	derived-shared	na	used by 2 functions: dds3DrawAddMagSub, dds3CallSetOt
 0x004DE3E0	dds3FilterEditData2	data	tier=D	derived-sole	na	used by dds3FilterEdit
@@ -18928,7 +18910,6 @@
 0x004DF558	itfCallGetRandFloatAData	data	tier=D	derived-sole	na	used by itfCallGetRandFloatA
 0x004DF578	itfData5	data	tier=D	derived-shared	na	used by 4 functions: itfCallLoadIconSprite, itfCallMemFreeDelayedDirect, itfLoadIconSprite
 0x004DF57C	itfData6	data	tier=D	derived-shared	na	used by 5 functions: itfCallLoadIconSprite, itfFunc4, itfIconDrawSprite
-0x004DF580	cmpItfmenuScrollbarTextureData	data	tier=D	derived-dominant	na	used by cmpItfmenuScrollbarTexture (4 of 10 refs, 6 functions)
 0x004DF584	cmpItfmenuScrollbarTextureData2	data	tier=D	derived-sole	na	used by cmpItfmenuScrollbarTexture
 0x004DF598	MoneyDrawProcessDataEntry	data	tier=D	derived-table	na	pointed to by MoneyDrawProcessData
 0x004DF5A0	MoneyDrawProcessData2	data	tier=D	derived-sole	na	used by MoneyDrawProcess
@@ -21503,8 +21484,6 @@
 0x004E47E8	MenuSetMoverDisappear02Work2	data	tier=D	derived-sole	na	used by MenuSetMoverDisappear02
 0x004E47EC	MenuSetMoverDisappearWork	data	tier=D	derived-sole	na	used by MenuSetMoverDisappear
 0x004E47F0	MenuSetMoverDisappearWork2	data	tier=D	derived-sole	na	used by MenuSetMoverDisappear
-0x004E47F4	MenuDrawProcessWork	data	tier=D	derived-sole	na	used by MenuDrawProcess
-0x004E47F8	MenuDrawProcessWork2	data	tier=D	derived-sole	na	used by MenuDrawProcess
 0x004E4810	mdlUpdateViewerWorkspaceSetupWork	data	tier=D	derived-sole	na	used by mdlUpdateViewerWorkspaceSetup
 0x004E4814	evtGetDefaultPosBustUpWork	data	tier=D	derived-dominant	na	used by evtGetDefaultPosBustUp (5 of 7 refs, 3 functions)
 0x004E4818	evtLoadBustupDataWork	data	tier=D	derived-sole	na	used by evtLoadBustupData
@@ -24466,7 +24445,6 @@
 0x004DDE44	goLmapManager	data	tier=C	hd	0.37 (n=D_r1_0046AE1C)	hd/medium: conf=medium, agree=2, using=2
 0x004DE034	dds3ScreenParam2	data	tier=C	smt3-ref	0.88 (n=D_r1_0046AFB0)	smt3-ref/loose: nfun=2, other=0, sim=0.90325, games=2, size=False, sec=False, fn=cmpSetStatusModelParam; dds3ScreenParam is another symbol
 0x004DE214	PauseSign	data	tier=C	hd	0.37 (n=D_r1_0046B114)	hd/medium: conf=medium, agree=2, using=2
-0x004DE3B8	filterMesh	data	tier=C	hd	0.37 (n=D_r1_0046B2B4)	hd/medium: conf=medium, agree=2, using=2
 0x004DE3E2	evtSelectionStateActive	data	tier=C	dds-ref	0.59 (n=D_r1_0046B2DA)	dds-ref/loose: nfun=6, other=0, sim=1.0, games=2, size=False, sec=True, fn=evtSelStateCreate
 0x004DE410	evtConsoleFontResourceChain	data	tier=C	dds-ref	0.59 (n=D_r1_0046B308)	dds-ref/loose: nfun=4, other=2, sim=1.0, games=2, size=True, sec=True, fn=evtEnsureFontResourceChain
 0x004DE430	evtGeneralHeapPercentFormat	data	tier=C	dds-ref	0.59 (n=D_r1_0046B328)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtDrawGeneralHeapUsageGraph
@@ -24699,6 +24677,7 @@
 0x0012E190	fldElvReset	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x119080 sim 0.708 margin 0.19 pair
 0x0012E440	fldPlayerALoad	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.fldPlayerALoad score 6.0 flag R: calls1 callers-of-match-uniq st1:call r1+r2
 0x0012E7E0	nbResultFreeTextures	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x24a258 sim 0.719 margin 0.11 pair
+0x0012EBE0	fldAllShutDown	func	tier=B	hd-role	na	HD dds3SequenceList.c ExitField calls fldAllShutDown first; R2 ExitField calls 0x12EBE0 there, as R1 ExitField calls its fldAllShutDown; replaces fldCleanupFieldScene
 0x0012F810	fldBgmStop	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x145410 sim 0.857 margin 0.13 single
 0x00130928	fldTitle_Shutdown	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x14fd48 sim 0.889 margin 0.13 pair
 0x0013A188	fldPoint3To2_B	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x128f50 sim 0.879 margin 0.52 pair
@@ -24751,6 +24730,8 @@
 0x0019E920	InitializeSelect	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cfcc8 sim 0.933 margin 0.55 pair
 0x0019EAF0	ConvertZenkakuNumber	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cfe48 sim 0.895 margin 0.62 pair
 0x001A2628	itfDrawMiscSpriteAlpha	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD itf.itfDrawMiscSpriteAlpha score 5.1 flag I: calls3 calls-of-match votes3 st2:call r1-disagree:0x18d450
+0x001A3470	itfDrawFanBezierPt3	func	tier=B	hd-role	na	HD itf.c itfDrawFanBezierPt3(x0..vy, rgba0..2, ot): same itfGetDivBezierPt3(x1,y1,x2,y2,vx,vy,0.1) count, per-step itfGetRatePosBezierPt3 and eglLinkTri fan with lerped rgba; ot unused in both; replaces itfCallLinkTri
+0x001A3A40	itfGetDivBezierPt3	func	tier=B	hd-role	na	HD itf.c itfGetDivBezierPt3: halves rate from 1.0 until the itfGetRatePosBezierPt3 point is within divLength of (x0, y0), returns the count; same 7-float signature; replaces itfFunc3
 0x001A4280	MenuSetMoverDisappear01	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD itf.MenuSetMoverDisappear01 score 6.7 flag -: prev gap=exact st1:gap r1+r2
 0x001A42E0	MenuSetMoverDisappear02	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD itf.MenuSetMoverDisappear02 score 6.5 flag -: next gap=exact st1:gap r1+r2
 0x001A5150	MenuMakeLink	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD itf.MenuMakeLink score 6.3 flag -: calls2 calls-of-match votes2 st2:call r2-only
@@ -24763,6 +24744,7 @@
 0x001ABA60	mapMenuDrawFunc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD itf.mapMenuDrawFunc score 6.9 flag -: calls3 callers-of-match votes2 st2:call r2-only
 0x001AE770	savePointMenuProcessStart	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD itf.savePointMenuProcessStart score 5.7 flag -: calls1 str1 ustr st2:str r2-only
 0x001AECC8	savePointMenuProcess	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD itf.savePointMenuProcess score 5.2 flag -: calls4 callers-of-match-uniq votes4 st2:call r1-disagree:0x1968c8
+0x001B02C0	mdlLink_Kubi	func	tier=B	hd-role	na	HD mdl.c mdlLink_Kubi(aHandle, aModelOt, node, rx, ry); dds3ObjectBaseModelLinkOt calls it with kubinodeidx and two workdata floats, as HD does; replaces mdlBlendEntryPitchYawAndUpdate
 0x001B1540	mdlReleaseHddFileList	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1de398 sim 0.936 margin 0.39 single
 0x001B15D8	mdlMakeHddFileListDummy	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1de440 sim 0.747 margin 0.40 single
 0x001B16F0	mdlMakeHddFileList	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1de5b8 sim 0.783 margin 0.54 single
@@ -25248,6 +25230,18 @@
 0x004DE340	dds3RenderTexHandle	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B244)	smt3-ref/loose: nfun=4, other=2, sim=1.0, games=2, size=True, sec=True, fn=dds3InitRenderDrawEnv
 0x004DE344	dds3RenderTexture	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B248)	smt3-ref/loose: nfun=2, other=2, sim=1.0, games=2, size=True, sec=True, fn=dds3AllocRenderTexture
 0x004DE360	dds3ScreenBlurOfsX	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B260)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=dds3DrawProcess
+0x004DE39C	gFilterBuff	data	tier=B	hd-role	na	HD dds3KernelDraw.c FIL_t *gFilterBuff sits just before gFilterAlpha; fldSkyDefaultLoad allocates and fills it from FILTER.FLD; replaces fldSkyDefaultLoadData
+0x004DE3A4	gFilterAlpha	data	tier=B	hd-role	na	HD dds3KernelDraw.c globals in address order; dds3FilterSetAlpha/GetAlpha read and write it; replaces dds3Data35
+0x004DE3A8	gFilterFilterAlpOfs	data	tier=B	hd-role	na	HD name next after gFilterAlpha; dds3FilterSetAlphaOfs writes it; replaces dds3Data36
+0x004DE3AC	gFilterMode	data	tier=B	hd-role	na	HD name; dds3FilterSet stores mode there; replaces dds3Data37
+0x004DE3B0	gFilterAnime	data	tier=B	hd-role	na	HD name; fldSetFilterAnime stores anime there; replaces dds3Data38
+0x004DE3B4	gFilterAnimeCntF	data	tier=B	hd-role	na	HD name (f32); fldSetFilterAnime zeroes it after gFilterAnime; replaces dds3FilterCalcData
+0x004DE3B8	gFilterAnimeOfsA	data	tier=B	hd-role	na	HD name; third store of fldSetFilterAnime (HD filterMesh is a mesh pointer elsewhere); replaces filterMesh
+0x004DE3BC	gFilterNowIdx	data	tier=B	hd-role	na	HD name; dds3FilterSet stores idx there; replaces dds3FilterSetData
+0x004DE3C0	gFilterBlendIdx	data	tier=B	hd-role	na	HD name; dds3FilterSet stores idx or the previous index; replaces dds3Data39
+0x004DE3C4	gFilterBlend	data	tier=B	hd-role	na	HD name (f32); dds3FilterSet stores 0.0 or 1.0; replaces dds3FilterDrawData
+0x004DE3C8	gFilterBlendSpd	data	tier=B	hd-role	na	HD name (f32); dds3FilterSet stores (f32)hokan or 1.0; replaces dds3FilterSetData2
+0x004DE3CC	gFilterCursor	data	tier=B	hd-role	na	HD name, last of the block; zeroed by dds3FilterClear; replaces dds3FilterEditData
 0x004DE5E0	dds3GlobalWorkProcName	data	tier=B	smt3-role	na	SMT3; replaces sdfRuntimeTaskName
 0x004DE6BC	sdatLvUpDevilGiftTbl	data	tier=B	hd-role	na	HD; replaces rstCallGetRandAData
 0x004DE6C0	sdatLvUpDevilGiftSize	data	tier=B	hd-role	na	HD; replaces datData4
@@ -25277,6 +25271,7 @@
 0x004DF45C	gMessageRequestResult	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C1A4)	smt3-ref/close: nfun=2, other=0, sim=0.86905, games=2, size=True, sec=True, fn=frCallEnableMode
 0x004DF460	gMessageSpaceX	data	tier=B	smt3-ref	0.88 (n=D_r1_0046C1A8)	smt3-ref/loose: nfun=6, other=0, sim=0.9032, games=2, size=False, sec=True, fn=frFontAppendIndexedTextToGlyphChain
 0x004DF4A0	frWrapEmptyString	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C1E8)	smt3-ref/close: nfun=6, other=0, sim=0.9905, games=2, size=True, sec=True, fn=frwGetSmallNumFontFRQ
+0x004DF580	g_ot	data	tier=B	hd-role	na	HD itf.c static DDS3_OT g_ot; MenuDrawProcess stores wk->ot there before eglSetOt, as HD does; replaces cmpItfmenuScrollbarTextureData
 0x004DF850	moon_spr	data	tier=B	hd-role	na	HD evtMoon.c moon_spr, loaded by Process1; replaces Process2_evtMoonData
 0x004DF854	gMoonBaseARate	data	tier=B	hd-role	na	HD evtMoon.c static order before gMoonFade; Process2 alpha rate; replaces Process2_evtMoonData2
 0x004DF858	gMoonFade	data	tier=B	hd-role	na	HD evtMoon.c: evtMoonFadeIn stores 1 here and Frame at the next-but-one word; HD static order gMoonFade, gMoonFadeFrame, gMoonFadeFrameMax, gMoonCnt; replaces gMoonFadeFrameMax
@@ -25329,6 +25324,8 @@
 0x004E44C8	sdfDumpLineBuf	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F4B0)	smt3-ref/loose: nfun=6, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfDumpHexLine
 0x004E4600	dds3FrameID	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F600)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=_start
 0x004E479C	gRegistMax	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F78C)	smt3-ref/loose: nfun=2, other=0, sim=0.9888, games=2, size=False, sec=True, fn=frInitFontTable
+0x004E47F4	itfMenuDrawProcess_fx	data	tier=B	hd-role	na	HD MenuDrawProcess function-static fx; filled by itfMoverGetPosition for the title position; replaces MenuDrawProcessWork
+0x004E47F8	itfMenuDrawProcess_fy	data	tier=B	hd-role	na	HD MenuDrawProcess function-static fy; replaces MenuDrawProcessWork2
 0x004E47FC	g_pdebug	data	tier=B	smt3-ref	0.80 (n=D_r1_0046F7EC)	smt3-ref/close: nfun=1, other=0, sim=0.9, games=1, size=True, sec=False, fn=mphStart
 0x004E485C	slKanjiDrawH_handle	data	tier=B	smt3-ref	0.80 (n=D_r1_0046F844)	smt3-ref/close: nfun=2, other=0, sim=0.9022, games=2, size=True, sec=True, fn=slKanjiDraw3
 0x004E487C	slQueryYesFunc	data	tier=B	smt3-ref	0.80 (n=D_r1_0046F860)	smt3-ref/close: nfun=2, other=0, sim=0.8636, games=2, size=True, sec=True, fn=slCallMcRegetInfo

@@ -9,6 +9,9 @@
 #include "dds3Basic.h"
 #include "dds3CameraObjectBasic.h"
 #include "dds3ObjectBase.h"
+#include "dds3KernelDraw.h"
+#include "sdfChip.h"
+#include "dds3WorldBasic.h"
 
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp;
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye;
@@ -65,11 +68,55 @@ typedef struct {
 
 void dds3LoadObjectMatrixPointerIntoVu(dds3Basic_t *camera);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", Constructor);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/basic/dds3CameraObjectBasic.c:34, match, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
+s32 Constructor(dds3Basic_t *basic)
+{
+    dds3CameraObjectBasicWorkData_t *work;
+    dds3ObjectBaseControlWorkData_t *control;
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", Destructor);
+    dds3InitPoseSet(basic);
+    work = sdfChipAllocDirect(sizeof(dds3CameraObjectBasicWorkData_t));
+    basic->workdata = work;
+    control = dds3ObjectBaseInitControlWorkData(basic);
+    work->pObjectBaseControlWorkData = control;
+    dds3ObjectBaseOnFlag(basic, 0x62);
+    work->flag = 0;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", Mainprocuder);
+void Destructor(dds3Basic_t *pBasic)
+{
+    dds3CameraObjectBasicWorkData_t *work;
+
+    dds3FreePoseSet(pBasic);
+    work = pBasic->workdata;
+    dds3ObjectBaseFreeControlWorkData(work->pObjectBaseControlWorkData);
+    sdfChipFreeDirect(work);
+}
+
+s32 Mainprocuder(dds3Basic_t *basic)
+{
+    dds3PoseSet_t *pose;
+    dds3CameraObjectBasicWorkData_t *work;
+
+    pose = basic->poseset;
+    work = basic->workdata;
+    if (dds3CheckPoseSetFlag(pose, POSESET_FLAG_UPDATEPOSE) == 1) {
+        dds3OffPoseSetFlag(pose, POSESET_FLAG_UPDATEPOSE);
+        MakeCamera(basic);
+        dds3SetRadiusPoseSet(pose);
+    }
+    if (dds3GetActiveCameraSceneBasic(dds3GetControlScene()) == basic) {
+        SDF_VU0_COPYVECTOR(&aViewEye, &pose->pos);
+        SDF_VU0_COPYVECTOR(&aViewTarget, &work->targetPos);
+        SDF_VU0_COPYVECTOR(&aViewDown, &work->upVector);
+        if (work->flag & 1) {
+            dds3SetScreenFovy(work->fovy);
+            work->flag &= ~1;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3Leaf27);
 

@@ -23,5 +23,6 @@ void moviePlay(s32 aNum);
 s32 mviValidateMovieSub(void);
 s32 mviDrawMessageSub(void);
 void movieViewerFree(void);
+void *dds3StartMovieManager(void);
 
 #endif

@@ -16,18 +16,18 @@ s32 MoneyDrawProcess(dds3ProcessID_t *id)
     char buf[16];
 
     wk = dds3GetProcessData(id);
-    if (!(wk->flg & 0x80)) {
+    if (!(wk->flags & 0x80)) {
         return 0;
     }
-    scale = (f32)wk->frame * 1.5707963f / 10.0f;
-    if (wk->mode == 1) {
+    scale = (f32)wk->count * 1.5707963f / 10.0f;
+    if (wk->step == 1) {
         offX = 32 - (s32)(sdfSin(scale) * 32.0f);
-        alpha = (wk->frame << 7) / 10;
+        alpha = (wk->count << 7) / 10;
     } else {
         offX = 0;
-        if (wk->mode == 4) {
+        if (wk->step == 4) {
             offX = (s32)(sdfSin(scale) * 32.0f);
-            alpha = ((10 - wk->frame) << 7) / 10;
+            alpha = ((10 - wk->count) << 7) / 10;
         } else {
             alpha = 128;
         }

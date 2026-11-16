@@ -111,7 +111,6 @@ typedef u8 sdfTextureClampMode_t;
 #include "dds3SceneBasic.h"
 #include "evtMoon.h"
 
-extern s32 dds3AllocObjectId(void);
 extern void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r);
 extern u32 dds3DrawFlag;
 extern void fldSetNextField(s32 command, s32 para);

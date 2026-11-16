@@ -50,12 +50,29 @@ typedef struct
     sdf3DLightParallelPacket_t subLight;
 } dds3DrawBank_t;
 
+extern sdfPreDrawChain_t dds3PreDrawChain;
 extern dds3DrawBank_t dds3DrawEnv[2];
 extern sdf3DScreenParam_t dds3ScreenParam;
+extern sdf3DScreenParam_t DrawEnv;
+extern sdf3DLight_t *dds3Data5[4];
+extern sdfVector4_t dds3Data6;
+extern sdfVector4_t dds3LightObjectAmbient;
+extern sdfMatrix4_t aProjMatrix;
 extern sdfMatrix4_t sdfViewMatrix;
 extern sdfMatrix4_t sdfProjectionMatrix;
 
 /* Native frame renderer ordering table: map size 0xE40, stride 0x20. */
+#ifdef VERSION_RAIDOU2
+extern sdfGrOt_t sdfGrOtTable[115];
+#else
 extern sdfGrOt_t sdfGrOtTable[114];
+#endif
+extern sdfGrOt_t dds3Data10;
+void sdfGrSetStdDrawEnv(dds3StdDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet);
+void sdfGrSetClearPacket(sdfGrClearPacket_t *aClear, s32 aW, s32 aH, s32 aPixelFormat, s32 aZBuffFormat);
+void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera);
+void sdf3MakeScreenParam(sdf3DScreenParam_t *camera);
+void sdfModelSetDrawEnv(sdfModelDrawEnv_t *aEnv);
+void sdfModelDrawEnvLinkOt(sdfGrOt_t **aOt, sdfModelDrawEnv_t *aEnv);
 
 #endif

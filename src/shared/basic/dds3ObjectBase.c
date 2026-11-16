@@ -17,6 +17,11 @@
 #include "sdfQuat.h"
 #include "evtUnitManager.h"
 #include "dds3Basic.h"
+#include "dds3AreaBasic.h"
+#include "dds3WorldBasic.h"
+#include "sdfChip.h"
+#include "sdfMotion.h"
+#include "dds3SceneBasic.h"
 
 extern dds3ObjectBaseControlWorkData_t *dds3EventObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 
@@ -51,9 +56,52 @@ void dds3ObjectBaseMakePath(dds3Basic_t *pObjectBasic, dds3Basic_t *pPathBasic);
 void dds3ObjectBaseFreePath(dds3Basic_t *pObjectBasic);
 dds3PathBasicControl_t *dds3ObjectBaseGetPathControl(dds3Basic_t *pObjectBasic);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseInitControlWorkData);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3ObjectBase.c:110, near, same function 0.97 (words 37/35, calls 1.00, shape 0.97) */
+dds3ObjectBaseControlWorkData_t *dds3ObjectBaseInitControlWorkData(dds3Basic_t *pObjectBasic)
+{
+    dds3ObjectBaseControlWorkData_t *control;
+    s32 index;
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeControlWorkData);
+    control = sdfChipAllocDirect(sizeof(dds3ObjectBaseControlWorkData_t));
+    memset(control, 0, sizeof(dds3ObjectBaseControlWorkData_t));
+    control->modelType = 3;
+    control->hEventBasicArray = dds3GetBasicArrayHandle(0);
+    control->pBasic[0] = pObjectBasic;
+    for (index = 0; index < ARRAY_COUNT(control->modelParts); index++) {
+        control->modelParts[index] = -1;
+    }
+    control->kubinodeidx = -1;
+    return control;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3ObjectBase.c:126, near, same function 1.00 (words 49/49, calls 1.00, shape 1.00) */
+void dds3ObjectBaseFreeControlWorkData(dds3ObjectBaseControlWorkData_t *pControl)
+{
+    dds3Basic_t *owner;
+    dds3Basic_t *area;
+    s32 index;
+
+    owner = pControl->pBasic[0];
+    area = dds3ObjectBaseGetControlBasic(owner, 4);
+    if (area != NULL) {
+        dds3AreaBasicGetItemArray(area, owner);
+    }
+    for (index = 0; index < ARRAY_COUNT(pControl->pBasic); index++) {
+        if (index < 3) {
+            if (index > 0) {
+                if (pControl->pBasic[index] != NULL) {
+                    dds3DeleteSceneBasicData(pControl->pBasic[index]);
+                }
+            }
+        }
+    }
+    dds3ObjectBaseFreeModelHandle(owner);
+    if (pControl->pModelRangeRootNode != NULL) {
+        sdfModelRootFree(pControl->pModelRangeRootNode, 1, 1);
+    }
+    dds3FreeBasicArrayHandle(pControl->hEventBasicArray);
+    sdfChipFreeDirect(pControl);
+}
 
 void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 mask)
 {
@@ -125,7 +173,31 @@ void *dds3ObjectBaseGetModelHandle(dds3Basic_t *pObjectBasic)
     return dds3GetBaseControlWorkData(pObjectBasic)->pModel;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeModelHandle);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3ObjectBase.c:226, match, same function 1.00 (words 38/38, calls 1.00, shape 1.00) */
+void dds3ObjectBaseFreeModelHandle(dds3Basic_t *pObjectBasic)
+{
+    dds3ObjectBaseControlWorkData_t *control;
+    dds3UnitObjectBasicWorkData_t *work;
+
+    control = dds3GetBaseControlWorkData(pObjectBasic);
+    if (control->pModel != NULL) {
+        if (control->modelType != 1) {
+            if (control->modelType == 0) {
+                mdlFree(control->pModel);
+                work = pObjectBasic->workdata;
+                if (work->hUnit != NULL) {
+                    evtDeleteUnitHandle(work->hUnit);
+                    work->hUnit = NULL;
+                }
+            }
+        } else {
+            sdfModelRootFree(control->pModel, 1, 1);
+            sdfMotionCtrlrFree(control->pMot);
+        }
+        control->pModel = NULL;
+        control->modelType = 3;
+    }
+}
 
 /* NON_MATCHING: 59 of 65 words match. The address register for the two lqc2 loads is v1, retail uses v0. */
 void dds3ObjectBaseMakeUnit(dds3Basic_t *pObjectBasic, MODELTYPE major, s32 minor)
@@ -164,7 +236,18 @@ INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeMatter);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMatterAnimeSpeed);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseRegistArea);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3ObjectBase.c:915, near, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
+s32 dds3ObjectBaseRegistArea(dds3Basic_t *pObjectBasic)
+{
+    dds3Basic_t *area;
+
+    area = dds3ObjectBaseGetControlBasic(pObjectBasic, 4);
+    if (area == NULL) {
+        return 0;
+    }
+    dds3AreaBasicRegistItem(area, pObjectBasic);
+    return 1;
+}
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseModelLinkOtSvs);
@@ -174,7 +257,28 @@ INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3CallSetOt2);
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", itfCampStartProcess);
 
 #endif
+/* NON_MATCHING: 44 of 56 words match.  */
+#ifdef NON_MATCHING
+f32 dds3CallMemset(dds3Basic_t *pObjectBasic, sdfModelRootNode_t *model_root)
+{
+    sdfVector4_t mark = { 0.0f, 0.0f, 0.0f, 1.0f };
+    f32 dx, dy, dz;
+
+    if (sdfModelGetMarkPos_sdfModel(model_root, 0) != 0) {
+        SDF_VU0_STOREVECTOR(&mark);
+        dx = aViewEye.x - mark.x;
+        dy = aViewEye.y - mark.y;
+        dz = aViewEye.z - mark.z;
+    } else {
+        dx = aViewEye.x - pObjectBasic->poseset->pos.x;
+        dy = aViewEye.y - (pObjectBasic->poseset->pos.y - 150.0f);
+        dz = aViewEye.z - pObjectBasic->poseset->pos.z;
+    }
+    return sdfSqrt(dx * dx + dy * dy + dz * dz);
+}
+#else
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3CallMemset);
+#endif
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseModelLinkOt);
 

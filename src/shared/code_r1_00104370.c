@@ -15,6 +15,9 @@
 #include "draw.h"
 #include "dds3PadManager.h"
 #include "code_r1_00104370.h"
+#include "kernel_draw.h"
+#include "dds3KernelDraw.h"
+#include "sdf3D.h"
 
 /*
  * Allocate a task and place it in scheduler queues. Returns NULL on allocation
@@ -531,7 +534,35 @@ s32 dds3EnsureDefaultResource(void) {
     return 0;
 }
 
+/* NON_MATCHING: 104 of 113 words match.  */
+#ifdef NON_MATCHING
+void dds3InitDrawEnvSub(s32 i)
+{
+    sdfDrawTagInit(&dds3DrawEnv[i].initTag);
+    sdf3DLinkInitPacket(&dds3DrawEnv[i].initTag, &dds3DrawEnv[i].initPacket);
+    sdfDrawTagInit(&dds3DrawEnv[i].drawTag);
+    sdfPreDrawTagInit(&dds3DrawEnv[i].preDrawTag);
+    sdfGrSetStdDrawEnv(&dds3DrawEnv[i].stdEnv, &sdfGrFrameSet);
+    dds3DrawEnv[i].stdEnv.env.clear.clearColor = dds3BackColor;
+    if (dds3DrawFlag & 0x10000000) {
+        sdfGrSetClearPacket(&dds3DrawEnv[i].stdEnv.env.clear, 0, 0, sdfGrFrameSet.pixelFormat,
+                            sdfGrFrameSet.zbuffFormat);
+        dds3DrawFlag &= ~0x10000000;
+    }
+    sdfGrLinkStdDrawEnv(&dds3DrawEnv[i].drawTag, &dds3DrawEnv[i].preDrawTag, &dds3DrawEnv[i].stdEnv);
+    sdf3DMakeViewportPacket(&dds3DrawEnv[i].viewport, &dds3ScreenParam, &sdfViewMatrix);
+    sdfDrawTagLink(&dds3DrawEnv[i].drawTag, &dds3DrawEnv[i].viewport);
+    sdf3DMakeLightParallelPacket(&dds3DrawEnv[i].light, dds3LightParam.parallel, &dds3LightObjectAmbient);
+    sdfDrawTagLink(&dds3DrawEnv[i].drawTag, &dds3DrawEnv[i].light);
+    sdfDrawTagInit(&dds3DrawEnv[i].subTag);
+    sdf3DMakeViewportPacket(&dds3DrawEnv[i].subViewport, &DrawEnv, &aProjMatrix);
+    sdfDrawTagLink(&dds3DrawEnv[i].subTag, &dds3DrawEnv[i].subViewport);
+    sdf3DMakeLightParallelPacket(&dds3DrawEnv[i].subLight, dds3Data5, &dds3Data6);
+    sdfDrawTagLink(&dds3DrawEnv[i].subTag, &dds3DrawEnv[i].subLight);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00104370", dds3InitDrawEnvSub);
+#endif
 INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DebugGraphUpdateData);
 
 INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DebugGraphUpdateData2);

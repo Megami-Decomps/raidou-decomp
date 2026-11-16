@@ -21,5 +21,6 @@ u32 dds3SetBasicArray(dds3BasicArrayHandle_t *hndl, dds3Basic_t *data);
 u32 dds3SetFirstBasicArray(dds3BasicArrayHandle_t *hndl);
 u32 dds3SetNextBasicArray(dds3BasicArrayHandle_t *hndl);
 s32 dds3SetSearchNextBasicArray(dds3BasicArrayHandle_t *hArray, const dds3Basic_t *pBasic);
+dds3Basic_t *dds3AddWorld(s32 bufcnt);
 
 #endif

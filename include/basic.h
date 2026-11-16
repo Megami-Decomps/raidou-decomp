@@ -295,6 +295,8 @@ enum basic_type
 };
 typedef enum basic_type BASIC_TYPE;
 
+extern dds3BasicFunction_t *dds3BasicFuncTablePtr[BASIC_TYPE_MAX];
+
 /* dds3PoseSet_t.flag. UPDATETM is set once workTM is composed. */
 enum poseset_flag
 {

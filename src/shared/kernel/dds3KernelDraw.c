@@ -16,6 +16,11 @@
 #include "evtPolygonMovie.h"
 #include "sdf2D.h"
 #include "dds3Randomize.h"
+#include "dds3KernelMain.h"
+#include "sdfPrim.h"
+#include "code_r1_00104370.h"
+#include "sdfDevCons.h"
+#include "sdfGraph.h"
 
 sdf3DLight_t mdlData3 = {{1.0f, 1.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.5f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}};
 sdf3DLight_t mdlData4 = {{0.0f, 0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}};
@@ -487,7 +492,22 @@ typedef struct evtGsCommand_t {
 
 void evtSubmitFixedAlphaBlend(s32 fixedAlpha);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitDrawEnv);
+void dds3InitDrawEnv(void)
+{
+    s8 savedParamFlag;
+
+    sdfGrSetScreen(1);
+    sdf3MakeScreenParam(&dds3ScreenParam);
+    savedParamFlag = GlobalParamFlag;
+    GlobalParamFlag = 0;
+    sdf3MakeScreenParam(&DrawEnv);
+    GlobalParamFlag = savedParamFlag;
+    dds3InitDrawEnvSub(0);
+    dds3InitDrawEnvSub(1);
+    dds3InitZClearDrawTag();
+    dds3DrawProcessFlag = 0;
+    eglInit();
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitRenderDrawEnv);
 
@@ -525,7 +545,16 @@ s32 dds3AllocRenderTexture(u16 sx, u16 sy, f32 aspect)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FreeRenderTexture);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3KernelDraw.c:463, near, same function 0.67 (words 13/13, calls 0.00, shape 1.00) */
+void dds3FreeRenderTexture(void)
+{
+    if (dds3RenderTexture != NULL) {
+        sdfTexReleaseReference(dds3RenderTexture);
+    }
+    dds3RenderTexture = NULL;
+    dds3RenderTexHandle = 0;
+    dds3RenderTex = 0;
+}
 
 s32 dds3RenderTextureON(void)
 {
@@ -704,7 +733,7 @@ sdfDrawTag_t *dds3LinkZClearDrawTag(s32 sw)
 {
     sdfDrawTag_t *tag = dds3FontReqAllocDrawTag();
 
-    sdfDrawTagLink(tag, &dds3ZClearDrawTag[sw][dds3GetFrameID()]);
+    sdfDrawTagLink(tag, (addr_t)&dds3ZClearDrawTag[sw][dds3GetFrameID()]);
     return tag;
 }
 
@@ -733,7 +762,10 @@ void dds3FadeColorGet(dds3FadeColor_t **outColor) {
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeSet_2);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeModeSet);
+void dds3FadeModeSet(s32 mode)
+{
+    dds3Data29 = mode;
+}
 
 #ifdef VERSION_RAIDOU1
 void dds3FadeIn(s32 r, s32 g, s32 b, s32 frame)
@@ -845,7 +877,24 @@ void dds3FadeUpdate(void)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DrawDistRipOverError);
+void dds3DrawDistRipOverError(void)
+{
+    sdfDrawTag_t *tag;
+
+    if (dds3DebugSign != 0) {
+        if (distblurovercnt != 0 || ripblurovercnt != 0) {
+            tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+            sdfDrawTagInit(tag);
+            if ((s32)distblurovercnt > 0) {
+                sdfDrawTagLink(tag, (addr_t)sdfDevPrintf(0x73C0, 0x7AE0, 0xFEFFFF, 0xE, "DISTBLUR_NUMERR:%d", distblurovercnt));
+            }
+            if ((s32)ripblurovercnt > 0) {
+                sdfDrawTagLink(tag, (addr_t)sdfDevPrintf(0x73C0, 0x7B40, 0xFEFFFF, 4, "RIPBLUR_NUMERR :%d", ripblurovercnt));
+            }
+            dds3Data10.regFunc(&dds3Data10, tag);
+        }
+    }
+}
 
 /* NON_MATCHING: 37 of 188 words match. Stack spills and register allocation differ; fade packet draw from SMT3 dds3DrawFade with bista offsets. */
 #ifdef NON_MATCHING
@@ -974,7 +1023,37 @@ void dds3BistaOut(u32 frame)
     dds3BistaOutEx(frame, 0x4F);
 }
 
+#ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 17 of 32 words match.  */
+#ifdef NON_MATCHING
+s32 dds3BistaCheck(void)
+{
+    s32 result = 1;
+
+    if ((dds3DrawFlag & 0x0C000000) == 0) {
+        switch (dds3DrawBistaData) {
+        case 0:
+        case 3:
+            if (0x80 - dds3Data30.a >= 0x80) {
+                result = 0;
+            }
+            break;
+        case 1:
+        case 2:
+            if (dds3ChangeBistaModeData == dds3DrawBistaData2) {
+                result = 0;
+            }
+            break;
+        }
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
+#endif
+#else
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
+#endif
 #ifdef VERSION_RAIDOU2
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3IsBistaZBufferClear);
@@ -2105,11 +2184,87 @@ void eglSetOt(u32 ot)
     egl_OT_Offset = ot;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkTest);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3KernelDraw.c:1834, match, same function 1.00 (words 69/69, calls 1.00, shape 1.00) */
+void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst)
+{
+    void *list = (void *)sdfGrAllocPacketBuff(0x20);
+    void *packet;
+    dds3GsCommand_t *command;
+    sdfDrawTagInit(list);
+    packet = (void *)sdfGrAllocPacketBuff(0x30);
+    command = (dds3GsCommand_t *)sdf2DMakeStdPacket((u32)packet, 0x30);
+    command->write.data = (ztst << 17) | 0x10000 | (datm << 15) | (date << 14) | (afail << 12) | (aref << 4) | (atst << 1) | ate;
+    command->write.reg = 0x47;
+    sdfDrawTagLink(list, (addr_t)packet);
+    {
+        sdfGrOt_t *surface = &sdfGrOtTable[egl_OT_Offset];
+        ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
+    }
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", nbPnl_rsetTest);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkAlpha);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3KernelDraw.c:1853, near, same function 0.92 (words 77/65, calls 1.00, shape 0.92) */
+void eglLinkAlpha(s32 mode)
+{
+    void *list = (void *)sdfGrAllocPacketBuff(0x20);
+    void *packet;
+    dds3GsCommand_t *command;
+
+    sdfDrawTagInit(list);
+    packet = (void *)sdfGrAllocPacketBuff(0x30);
+    command = (dds3GsCommand_t *)sdf2DMakeStdPacket((u32)packet, 0x30);
+    switch (mode) {
+    case 1:
+        command->write.data = 0x48;
+        break;
+    case 2:
+        command->write.data = 0x42;
+        break;
+    case 3:
+        command->write.data = 0x4A;
+        break;
+    case 4:
+        command->write.data = 0x80000000A8;
+        break;
+    case 5:
+        command->write.data = 0x84;
+        break;
+    case 6:
+        command->write.data = 0x06;
+        break;
+    case 7:
+        command->write.data = 0x89;
+        break;
+    case 8:
+        command->write.data = 0x42;
+        break;
+    case 9:
+        command->write.data = 0x54;
+        break;
+    case 10:
+        command->write.data = 0x2A;
+        break;
+    case 11:
+        command->write.data = 0x56;
+        break;
+    case 12:
+        command->write.data = 0x16;
+        break;
+    case 13:
+        command->write.data = 0x58;
+        break;
+    default:
+        command->write.data = 0x44;
+        break;
+    }
+    command->write.reg = 0x42;
+    sdfDrawTagLink(list, (addr_t)packet);
+    {
+        sdfGrOt_t *surface = &sdfGrOtTable[egl_OT_Offset];
+        surface->regFunc(surface, list);
+    }
+}
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
 void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {
@@ -2132,7 +2287,35 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CallGrAllocPacketBuff3);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CallGrAllocPacketBuff4);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkSprite);
+void eglLinkSprite(s32 x, s32 y, s32 w, s32 h,
+                   s32 u, s32 v, s32 uw, s32 vh,
+                   u32 rgba0, u32 rgba1, u32 rgba2, u32 rgba3, sdfTexHandle_t *th)
+{
+    sdfDrawTag_t *list;
+    sdfGrOt_t *surface;
+    s32 left, top, right, bottom;
+    s32 uLeft, vTop, uRight, vBottom;
+
+    list = dds3FontReqAllocDrawTag();
+    sdf2DLinkTexPacket(list, th, 0);
+    left = (x << 4) + 0x7000;
+    top = (y << 3);
+    right = (x << 4) + (w << 4) + 0x7000;
+    bottom = top + (h << 3) + 0x7900;
+    top += 0x7900;
+    uLeft = (u << 4);
+    vTop = (v << 4);
+    uRight = uLeft + (uw << 4);
+    vBottom = vTop + (vh << 4);
+    sdfPrimLinkGt4(list, 0x40,
+        left, top, uLeft, vTop, rgba0,
+        right, top, uRight, vTop, rgba1,
+        left, bottom, uLeft, vBottom, rgba3,
+        right, bottom, uRight, vBottom, rgba2,
+        -1, NULL);
+    surface = &sdfGrOtTable[egl_OT_Offset];
+    surface->regFunc(surface, list);
+}
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", egl_OT_Offset);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3BackColor);

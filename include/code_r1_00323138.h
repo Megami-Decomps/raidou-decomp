@@ -3,7 +3,8 @@
 
 #include "common.h"
 
-extern s16 cmpDrawBackPatternData[];
+struct itfSprList_t;
+extern struct itfSprList_t cmpDrawBackPatternData[];
 
 void cmpDrawBackPattern(void);
 

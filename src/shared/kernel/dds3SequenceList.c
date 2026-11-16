@@ -7,10 +7,14 @@
 #include "slMain.h"
 #include "fld.h"
 #include "dds3SequenceList.h"
+#include "TitleMain.h"
+#include "dds3KernelMain.h"
+#include "code_r1_00128378.h"
+#include "fldProcess.h"
+#include "sbtlWork.h"
+#include "ps2asm.h"
 
-extern dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
 extern s32 ProcessCheck_rstInit(void);
-extern void fldExitEventSub(void);
 
 extern void fmProcTrigSequence(s32 mode);
 extern s32 fmProcessChk(void);
@@ -98,7 +102,10 @@ s32 ExitTitle(void)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckTitle);
+s32 CheckTitle(void)
+{
+    return TitleProcessCheck() == 0;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallLoad);
 
@@ -165,11 +172,33 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitEpSave);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckEpSave);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallField);
+void CallField(DDS3_ADMINI_CALL flg, struct SceneParam_t *param)
+{
+    if (param == NULL && flg == DDS3_ADMINI_CALL_NEW) {
+        InitOoyTest();
+        return;
+    }
+    dds3BistaIn(0);
+    fldProcTrigSequence(param, flg);
+}
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitField);
+s32 ExitField(void)
+{
+    fldAllShutDown();
+    if (fldCallDelayedResrcCheck() != 0) {
+        if (mapExitFieldSub() != 0) {
+            mapRetuenFromLoad();
+        }
+        return 0;
+    }
+    return -1;
+}
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckField);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3SequenceList.c:269, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 CheckField(void)
+{
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallFieldMcLoad);
 
@@ -183,15 +212,52 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitNewBattle);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckNewBattle);
 
+#ifdef VERSION_RAIDOU1
+void CallEvent(DDS3_ADMINI_CALL flg, s32 *data)
+{
+    s32 eventNo;
+
+    dds3KernelDebugSign = 0;
+    eventNo = 0;
+    switch (flg) {
+    case DDS3_ADMINI_CALL_NEW:
+        eventNo = *data;
+        break;
+    case DDS3_ADMINI_CALL_RESTORE:
+        eventNo = evtPendingEventSelection;
+        break;
+    }
+    if (eventNo <= 0) {
+        return;
+    }
+    if (eventNo < 100) {
+        fldCallElvReset2(eventNo);
+        return;
+    }
+    evtInitSky();
+    evtStartEvent(eventNo);
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallEvent);
+#endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitEvent);
+s32 ExitEvent(void)
+{
+    dds3KernelDebugSign = 1;
+    evtExitSky();
+    fldExitEventSub();
+    return 0;
+}
 #else
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallExitSky);
 #endif
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckEvent);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3SequenceList.c:317, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 CheckEvent(void)
+{
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallCamp);
 
@@ -230,7 +296,33 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitJimusyo);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckJimusyo);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallNewBattleTest);
+void CallNewBattleTest(DDS3_ADMINI_CALL flg, SBTL_START_DATA *start)
+{
+    SBTL_START_DATA data;
+    sdfVector4_t pos = { 0.0f, 0.0f, 0.0f, 0.0f };
+    sdfVector4_t rot = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+    if (flg == 0) {
+        if (start == NULL) {
+            data.val28 = 0;
+            SDF_VU0_LOADVECTOR(&pos);
+            SDF_VU0_STOREVECTOR(&data.pos);
+            SDF_VU0_LOADVECTOR(&rot);
+            SDF_VU0_STOREVECTOR(&data.rot);
+#ifdef VERSION_RAIDOU2
+            data.mode = 1;
+#endif
+            data.val20 = 0;
+            data.val24 = 0;
+            sbtlSbattle(&data, 0);
+        } else {
+            sbtlSbattle(start, 1);
+        }
+    } else {
+        dds3AdminiExitSequence();
+        fldExitEventSub();
+    }
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitNewBattleTest);
 

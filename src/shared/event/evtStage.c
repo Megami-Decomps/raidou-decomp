@@ -191,7 +191,7 @@ s32 evtLoadArea(s32 fld, s32 area) {
     dds3SetActiveScene(worldObject);
     dds3SetMapNo(worldObject, (fld << 16) + area);
     dds3SetActiveScene(NULL);
-    dds3AddAreaBasic(dds3SerializeID(), evtAreaPathFormat);
+    dds3AddAreaBasic(dds3AllocObjectId(), evtAreaPathFormat);
     dds3SetActiveScene(dds3GetControlScene());
     dds3SceneBasicMakeScene(worldObject);
     evtSetTestCamera();

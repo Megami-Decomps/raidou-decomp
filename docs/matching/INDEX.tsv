@@ -1,5 +1,10 @@
 function	unit	size	distance	page	line	fragile
 evtLeaf31	TitleMain	raidou1 0x110	13 of 68 words differ	docs/matching/TitleMain.md	3	
+dds3AllocBasic	basic/dds3Basic	raidou1 0xD8, raidou2 0xD8	6 of 54 words differ	docs/matching/basic/dds3Basic.md	3	
+dds3SetPosPoseSet_dds3Basic	basic/dds3Basic	raidou1 0x2C, raidou2 0x2C	5 of 11 words differ	docs/matching/basic/dds3Basic.md	12	
+dds3CallMemset	basic/dds3ObjectBase	raidou1 0xE0, raidou2 0xE0	12 of 56 words differ	docs/matching/basic/dds3ObjectBase.md	3	
+dds3SceneBasicSearchSerialID_Used	basic/dds3SceneBasic	raidou1 0xC0, raidou2 0xC0	33 of 48 words differ	docs/matching/basic/dds3SceneBasic.md	3	
+dds3SceneBasicStartScript	basic/dds3SceneBasic	raidou1 0x84, raidou2 0x84	12 of 34 words differ	docs/matching/basic/dds3SceneBasic.md	12	
 eglLinkBoxZ	code_00109A70	raidou1 0x370	6 of 220 words differ	docs/matching/code_00109A70.md	3	
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3	
 fldProcSequenceSub3	code_00139330	raidou1 0x48	9 of 16 words differ	docs/matching/code_00139330.md	3	
@@ -12,6 +17,12 @@ mdlCallMemGetInfo	code_00143568	raidou1 0x12C	22 of 73 words differ	docs/matchin
 encCallPrimAllocDrawTag2	code_00173D20	raidou1 0x1F0	41 of 124 words differ	docs/matching/code_00173D20.md	3	
 cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3	
 cmbRefDDS3GBWK	code_00181858	raidou1 0xD0	7 of 52 words differ	docs/matching/code_00181858.md	11	
+_MenuSetMenu	code_0018CE10	raidou1 0x5C	18 of 24 words differ	docs/matching/code_0018CE10.md	3	
+MenuUpdateLinkMover	code_0018CE10	raidou1 0xFC	2 of 63 words differ	docs/matching/code_0018CE10.md	11	
+itfMenuSetSpriteData	code_00190668	raidou1 0xDC	1 of 55 words differ	docs/matching/code_00190668.md	3	
+itfMenuSetImageColorSub	code_00190668	raidou1 0x4C	1 of 19 words differ	docs/matching/code_00190668.md	11	
+MenuDrawProcess	code_00190668	raidou1 0x32C	181 of 203 words differ	docs/matching/code_00190668.md	19	
+itfMenuProcessCheck	code_00190668	raidou1 0x50	1 of 20 words differ	docs/matching/code_00190668.md	27	
 evtMoonTeisatuCntReset	code_001AD4E8	raidou1 0x10	4 of 4 words differ	docs/matching/code_001AD4E8.md	3	
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3	
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13	
@@ -45,6 +56,7 @@ sbtlCallEventBattleStopChack2	code_002A38D8	raidou1 0x298	70 of 166 words differ
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3	
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	11	
 pipeCampCAMPPACKLB	code_00300578	raidou1 0x158	3 of 86 words differ	docs/matching/code_00300578.md	3	
+dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3	
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3	
 mapCheckDying	code_r1_00128378	raidou1 0xFC	30 of 63 words differ	docs/matching/code_r1_00128378.md	11	
 mapSKYBGEDIT	code_r1_0013B0F8	raidou1 0x1CE8	1608 of 1652 words differ	docs/matching/code_r1_0013B0F8.md	3	
@@ -143,6 +155,8 @@ cmpDrawBoxG	code_r1_002CAFD8	raidou1 0x190, raidou2 0x190	8 of 100 words differ	
 evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	docs/matching/code_r1_002F59D0.md	3	
 cmpDrawBackPattern	code_r1_00323138	raidou1 0x144, raidou2 0x144	9 of 81 words differ	docs/matching/code_r1_00323138.md	3	
 datCheckSkillEnable	dat	raidou1 0x144	63 of 76 words differ	docs/matching/dat.md	3	
+dds3FilterClear	dds3KernelDraw_0010BEE0	raidou1 0x3C	3 of 15 words differ	docs/matching/dds3KernelDraw_0010BEE0.md	3	
+dds3FilterCalc	dds3KernelDraw_0010BEE0	raidou1 0x188	0 of 98 words differ	docs/matching/dds3KernelDraw_0010BEE0.md	11	
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3	
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3	
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9	
@@ -174,6 +188,9 @@ dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188
 dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11	
 dds3DrawBista	kernel/dds3KernelDraw	raidou1 0x2AC	151 of 157 words differ	docs/matching/kernel/dds3KernelDraw.md	17	
 dds3RunQuake	kernel/dds3KernelDraw	raidou1 0x1F4, raidou2 0x1F4	65 of 124 words differ	docs/matching/kernel/dds3KernelDraw.md	32	
+dds3BistaCheck	kernel/dds3KernelDraw	raidou1 0x80	15 of 32 words differ	docs/matching/kernel/dds3KernelDraw.md	40	
+dds3CallGrAllocPacketBuff8	kernel/dds3KernelDraw_0010A750	raidou1 0x208, raidou2 0x208	15 of 130 words differ	docs/matching/kernel/dds3KernelDraw_0010A750.md	3	
+dds3KernelMain	kernel/dds3KernelMain	raidou1 0x114, raidou2 0x114	0 of 69 words differ	docs/matching/kernel/dds3KernelMain.md	3	
 dds3DrawFirstProcess	kernel/dds3KernelProcess	raidou1 0x7C0	461 of 490 words differ	docs/matching/kernel/dds3KernelProcess.md	3	
 slDrawError	mc/slMain	raidou1 0x4A0	5 of 296 words differ	docs/matching/mc/slMain.md	3	
 slDrawInfo	mc/slMain	raidou1 0x39C	7 of 231 words differ	docs/matching/mc/slMain.md	11	

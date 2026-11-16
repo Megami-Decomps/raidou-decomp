@@ -6,6 +6,7 @@
 #include "sdf_PadManager.h"
 #include "dds3KernelCore.h"
 #include "dds3PadManager.h"
+#include "cfg.h"
 
 extern s8 dds3PadBitTable[32];
 extern u8 sdfPadAnalogSticks[8];
@@ -358,9 +359,44 @@ void Act2Sub(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadAct);
+void dds3PadAct(u32 motor, u8 level, u32 frame)
+{
+    if (dds3RefDDS3GBWK(0) == 0) {
+        return;
+    }
+    if (level > DDS3_PAD_ACT_LEVEL_MAX) {
+        level = DDS3_PAD_ACT_LEVEL_MAX;
+    }
+    if (motor == 0) {
+        if (level != 0) {
+            level = 1;
+        }
+    } else if (motor >= 2) {
+        motor = 1;
+    }
+    if (motor == 0) {
+        dds3PadVibrationMode[0] = level;
+        dds3PadVibrationState[0] = level;
+    } else {
+        dds3PadVibrationMode[motor] = level;
+        dds3GetVibrationLevel();
+    }
+    dds3PadVibrationTable[motor] = frame;
+    if (motor == 0) {
+        sdfPadSetAct0(0, level);
+    } else {
+        sdfPadSetAct1(0, dds3PadVibrationState[motor]);
+    }
+}
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadIsTypeCD);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/kernel/dds3PadManager.c:271, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+void dds3PadIsTypeCD(void) {
+    dds3PadVibrationState[0] = 0;
+    dds3PadVibrationTable[0] = 0;
+    dds3PadVibrationState[1] = 0;
+    dds3PadVibrationTable[1] = 0;
+    sdfPadSetAct(0, 0, 0);
+}
 
 void dds3UpdateVibrationSlots(void) {
     s32 largeMotor = 1;

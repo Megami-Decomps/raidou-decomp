@@ -41,5 +41,6 @@ void mdlRegistMotion(s32 aMajor, s32 aMinor, u32 aFlags, s32 aFirstMotion, s32 a
 void mdlCallMemGetInfo(void);
 dds3ModelResrc_t *mdlSearchResrc(s32 aMajor, s32 aMinor);
 void mdlUnRegist(s32 aMajor, s32 aMinor);
+void mdlInitManager(void);
 
 #endif

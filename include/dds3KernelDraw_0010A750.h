@@ -8,8 +8,10 @@ void eglLinkBox(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 x3, s32 y3, 
 void eglLinkBoxZ(s32 x, s32 y, s32 w, s32 h, s32 z, u32 rgba0, u32 rgba1, u32 rgba2, u32 rgba3);
 void evtSubmitDefaultDepthGradientRect(s32 x, s32 y, s32 width, s32 height, s32 topLeftColor, s32 topRightColor,
                                        s32 bottomRightColor, s32 bottomLeftColor);
+void eglLinkTri(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 rgba0, s32 rgba1, s32 rgba2);
 void eglLinkMaru2D(s32 cx, s32 cy, s32 fr, const sdfColor32_t *in_rgba, const sdfColor32_t *out_rgba);
 
 void dds3FileLoadSub(struct sdfMat_t *file);
+void dds3CallGrAllocPacketBuff5(s32 c0, s32 c1, s32 c2, s32 c3, f32 x, f32 y, f32 w, f32 h);
 
 #endif

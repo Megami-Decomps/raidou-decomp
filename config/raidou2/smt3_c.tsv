@@ -2268,7 +2268,7 @@ fileWriteToPfs	c
 fldAutoMapSeqClearFlag	c
 fldAutoMapSeqSetFlag	c
 fldAutoMapSeqTestFlag	c
-fldCleanupFieldScene	asm	evtFreeStage at 0x00167618, 0x001B9538
+fldAllShutDown	asm	evtFreeStage at 0x00167618, 0x001B9538
 fldClearCameraObjectTransitionFlags	c
 fldCommandSendNamedSound	c
 fldCommand_GetHojiID	c
@@ -2505,7 +2505,7 @@ mdlAddPlainViewerEntryForSelectedNode	c
 mdlAddViewEntryFlagged	c
 mdlAppendViewerRectToDrawList	c
 mdlApplyViewerResourceMenuAction	asm	.rodata base 0x004B4090, 0x004B40A0
-mdlBlendEntryPitchYawAndUpdate	c
+mdlLink_Kubi	c
 mdlBuildViewerRectanglePacket	c
 mdlCheckLoading	c
 mdlChkMotionEndEx	c

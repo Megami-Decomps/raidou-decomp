@@ -136,7 +136,55 @@ s32 dds3AdminiGetPrevHistoryFlag(void)
     return work->FlagHistory[(work->HistoryPointer + 7) & 7];
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", StartSequence);
+saddr_t dds3AdminiStartSequence(dds3ProcessID_t *id)
+{
+    dds3AdminiData_t *work;
+    s32 (*startfunc)(s32 restored, void *reqdata);
+    u32 flag;
+    u32 nextflag;
+    s32 restored;
+
+    work = dds3GetProcessData(id);
+    flag = work->Stat;
+    if (flag & 1) {
+        if (work->NextSequence >= 0) {
+            if (work->CallCount != 0) {
+                work->CallCount--;
+                return 0;
+            }
+            work->NowSequence = work->NextSequence;
+            work->NextSequence = -1;
+            nextflag = flag;
+            nextflag &= ~1;
+            nextflag &= ~2;
+            work->Stat = nextflag;
+            work->RunTimer = 0;
+            if (flag & 4) {
+                work->FlagHistory[work->HistoryPointer] |= 1;
+                work->Stat &= ~4;
+            }
+            if (work->Stat & 0x10000) {
+                restored = 1;
+                work->Stat &= ~0x10000;
+                work->HistoryPointer = (work->HistoryPointer + 7) & 7;
+            } else {
+                restored = 0;
+                if (work->Stat & 8) {
+                    work->Stat &= ~8;
+                } else {
+                    work->HistoryPointer = (work->HistoryPointer + 1) & 7;
+                }
+            }
+            work->SequenceHistory[work->HistoryPointer] = work->NowSequence;
+            work->FlagHistory[work->HistoryPointer] = 0;
+            startfunc = dds3AdminiList[work->NowSequence].start;
+            if (startfunc != NULL) {
+                startfunc(restored, work->CallData);
+            }
+        }
+    }
+    return EE_ADDR_S(dds3AdminiNeoProcess);
+}
 
 saddr_t dds3AdminiEndCheck(dds3ProcessID_t *id)
 {
@@ -159,7 +207,51 @@ saddr_t dds3AdminiEndCheck(dds3ProcessID_t *id)
     return EE_ADDR_S(dds3AdminiStartSequence);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiNeoProcess);
+saddr_t dds3AdminiNeoProcess(dds3ProcessID_t *id)
+{
+    dds3AdminiData_t *work;
+    s32 (*mainfunc)(void);
+    s32 index;
+
+    work = dds3GetProcessData(id);
+    if (!(work->Stat & 2)) {
+        if (work->NowSequence >= 0) {
+            mainfunc = dds3AdminiList[work->NowSequence].check;
+            if (mainfunc != NULL) {
+                if (mainfunc() != 0) {
+                    work->Stat |= 2;
+                }
+            }
+            work->RunTimer++;
+        }
+    }
+    if (work->Stat & 2) {
+        if (work->NowSequence >= 0) {
+            index = (work->HistoryPointer + 7) & 7;
+            if (work->SequenceHistory[index] >= 0 && (work->FlagHistory[index] & 1)) {
+                work->Stat |= 0x10001;
+                work->NextSequence = work->SequenceHistory[index];
+                work->CallCount = 2;
+                work->Stat &= ~4;
+                if (work->CallData != NULL) {
+                    sdfChipFreeDirect(work->CallData);
+                    work->CallData = NULL;
+                    work->CallDataSize = 0;
+                }
+            }
+            if (!(work->Stat & 1)) {
+                dds3AdminiCallSequence(0, NULL, 0, 0);
+            }
+            work->Stat &= ~2;
+        }
+    }
+    if (work->Stat & 1) {
+        if (work->NextSequence >= 0) {
+            return EE_ADDR_S(dds3AdminiEndCheck);
+        }
+    }
+    return 0;
+}
 
 void dds3AdminiNeoShutdown(dds3ProcessID_t *id)
 {

@@ -5,12 +5,15 @@
 #include "kernel.h"
 
 struct SequenceParameter;
+struct SBTL_START_DATA;
 
-void CallField(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
+struct SceneParam_t;
+void CallField(DDS3_ADMINI_CALL flg, struct SceneParam_t *param);
+void CallEvent(DDS3_ADMINI_CALL flg, s32 *data);
 void CallJimusyo(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
 void CallModeSelect(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
 s32 CallNewBattle(void);
-void CallNewBattleTest(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
+void CallNewBattleTest(DDS3_ADMINI_CALL flg, struct SBTL_START_DATA *start);
 s32 CheckCamp(void);
 s32 CheckEpSave(void);
 s32 CheckEvent(void);

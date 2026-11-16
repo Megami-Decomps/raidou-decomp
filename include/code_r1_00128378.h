@@ -24,6 +24,7 @@ void mapAM_MaskClear(void);
 void fldFirstInit(void);
 void mapRndEncParamSet(void);
 void mapSetPlayersVisible(s32 r_onoff, s32 n_onoff, s32 d_onoff);
+void fldAllShutDown(void);
 
 s32 PlayerGetMdlLoadID(char *path);
 void fldPlayerAFree(void);

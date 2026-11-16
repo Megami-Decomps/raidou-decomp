@@ -6,6 +6,7 @@
 #include "motion.h"
 
 void evtStartEvent(s32 no);
+extern s32 evtPendingEventSelection;
 
 /* A timeline key's scalar formats are selected by its track kind. */
 typedef union EvtViewParam {

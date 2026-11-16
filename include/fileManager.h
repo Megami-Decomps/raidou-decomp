@@ -42,5 +42,6 @@ s32 pacFileHandleFree_(void *pacHandle);
 fileRequest_t *pacLoad(const char *filename);
 fileRequest_t *pacLoadEx(const char *filename, u32 headOrTail, u32 callback, u32 pendCallback, u32 callbackParm);
 void pacSync(fileRequest_t *pacFileHandle);
+void fileSysInit(void);
 
 #endif

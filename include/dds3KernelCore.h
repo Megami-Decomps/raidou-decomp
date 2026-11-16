@@ -13,10 +13,12 @@ s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 s32 dds3KillProcessName(const char *name, s32 shutdowntimer);
 void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *target);
 dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
+dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
 dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n);
 void dds3SetProcessData(dds3ProcessID_t *id, void *data);
 dds3ProcessID_t *dds3StartProcess(const char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3, dds3ProcessFunc_t drawExit, dds3ProcessFunc_t deleteExit, void *p);
 
 void _KillProcess(dds3ProcessID_t *setp);
+s32 dds3ProcessMain(void);
 
 #endif

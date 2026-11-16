@@ -3,6 +3,9 @@
 
 #include "common.h"
 #include "sdf_types.h"
+#include "sdfRand.h"
+
+extern sdfRandCB_t ParRand;
 
 void dds3ParticleDelete(void *handle);
 void dds3ParticleSetPosition(void *handle, const sdfVector4_t *pPos);

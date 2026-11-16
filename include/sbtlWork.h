@@ -295,7 +295,8 @@ typedef char SBTL_DEVIL_DATASizeCheck[sizeof(SBTL_DEVIL_DATA) == 0x70 ? 1 : -1];
 typedef struct SBTL_START_DATA {
     sdfVector4_t pos;
     sdfVector4_t rot;
-    u8 pad20[8];
+    s32 val20;
+    s32 val24;
     s32 val28;
     s32 mode;
     s16 val30;
@@ -541,6 +542,7 @@ void sbtlRefSbtl18(struct SBTLUNIT_WORK *wk, s32 mode);
 void sbtlRefSbtl31(void);
 void sbtlResetRndEncCount(void);
 void sbtlRndEncTopPriorityMap(s32 *mapOut, s32 *floorOut);
+s32 sbtlSbattle(SBTL_START_DATA *start, s8 flag);
 s32 sbtlSbattle3(void);
 sdatUnitWork_t *sbtlGetStockUnitData(s32 id);
 s32 sbtlLeaf53(sdatUnitWork_t *unit);

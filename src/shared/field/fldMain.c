@@ -20,7 +20,7 @@ void fldSetUnitFollowCamera(void) {
     memset(&eye, 0, sizeof(eye));
     eye.w = 1.0f;
     target = fldSetUnitFollowCameraTable2;
-    cameraBasic = dds3AddCameraObjectBasicTypeLookAt(dds3SerializeID(), &eye, &target, &up);
+    cameraBasic = dds3AddCameraObjectBasicTypeLookAt(dds3AllocObjectId(), &eye, &target, &up);
     dds3SetUnitObjectId(cameraBasic, fldCameraUnitName);
     dds3CameraObjectBasicGetCameraTM(cameraBasic, &target);
     dds3GetRadiusPoseSet(cameraBasic, 2.0f);

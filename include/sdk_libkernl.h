@@ -120,5 +120,6 @@ void sceResetttyinit(void);
 void SyncDCache(void *start, void *end);
 
 void InitAlarm(void);
+void LoadExecPS2(const char *path, s32 count, char **arguments);
 
 #endif /* SDK_LIBKERNL_H */

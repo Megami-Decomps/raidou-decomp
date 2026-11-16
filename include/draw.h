@@ -41,6 +41,8 @@ struct sdfGrFrameSet_t
     sdfGsMemSlice_t *zbuffHandle;
 };
 
+extern sdfGrFrameSet_t sdfGrFrameSet;
+
 /* One queued frame. sdfGrDrawState is three of these; sdfGrReqDraw fills the
  * next slot and sdfGrDrawFrame sends tag->head down channel 1. */
 typedef struct

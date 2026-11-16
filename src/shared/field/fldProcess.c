@@ -32,6 +32,7 @@
 #include "sdfDelayedResrc.h"
 #include "sndAt3.h"
 #include "mapData.h"
+#include "dds3KernelCore.h"
 
 
 

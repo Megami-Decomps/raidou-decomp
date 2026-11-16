@@ -31,7 +31,14 @@ typedef struct fclNamedSlot_t {
 
 typedef char fclNamedSlot_size_must_be_44[(sizeof(fclNamedSlot_t) == 0x44) ? 1 : -1];
 
+/* Strongest motor level dds3PadAct passes on. */
+#ifdef VERSION_RAIDOU2
+#define DDS3_PAD_ACT_LEVEL_MAX 128
+#else
+#define DDS3_PAD_ACT_LEVEL_MAX 48
+#endif
 void dds3PadAct(u32 mode, u8 pow, u32 frame);
 void dds3RunProcessList(void);
+void dds3PadInitialize(void);
 
 #endif

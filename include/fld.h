@@ -162,6 +162,7 @@ void mapObjTask(void);
 void mapObjVisible(u16 uniq, s32 visible);
 s32 mapAM_MaskChk_ID(s32 scene, s32 id, s32 flag);
 void mapRetuenFromLoad(void);
+s32 mapExitFieldSub(void);
 void mapRetuenFromSave(void);
 s32 mapRndEncReturn_BgmLoadEndCheck(void);
 s32 mapScreenChkIn(f32 x, f32 y, f32 z);

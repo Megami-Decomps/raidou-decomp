@@ -291,7 +291,7 @@ extern mdlWorkPrefix_t mdlWorkPathPrefix[1];
 
 struct mdlEffectDescriptor_t;
 
-void mdlBlendEntryPitchYawAndUpdate(mdlObj_t *aHandle, void *aModelOt, s32 aNode, f32 aPitch, f32 aYaw);
+void mdlLink_Kubi(mdlObj_t *aHandle, void *aModelOt, s32 aNode, f32 aPitch, f32 aYaw);
 
 void mdlInitManager(void)
 {
@@ -993,7 +993,7 @@ INCLUDE_ASM(const s32, "model/mdlManager", LinkMotion);
 
 /* mdlLink, first turning node aNode's local rotation towards aPitch and aYaw
  * (degrees) by abs(aPitch) / 25, at most one. aNode -1 skips the turn. */
-void mdlBlendEntryPitchYawAndUpdate(mdlObj_t *aHandle, void *aModelOt, s32 aNode, f32 aPitch, f32 aYaw)
+void mdlLink_Kubi(mdlObj_t *aHandle, void *aModelOt, s32 aNode, f32 aPitch, f32 aYaw)
 {
     sdfModelRootNode_t *inner;
     sdfModelNode_t *node = NULL;

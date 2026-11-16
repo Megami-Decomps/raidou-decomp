@@ -18,7 +18,7 @@ void M_InitScene_mjn(void)
 
     dds3SetControlScene(scene);
     dds3SetActiveScene(scene);
-    dds3AddAreaBasic(dds3SerializeID(), "nme_area");
+    dds3AddAreaBasic(dds3AllocObjectId(), "nme_area");
 }
 
 INCLUDE_ASM(const s32, "code_r1_002F93D8", mselCallGetControlScene);
@@ -32,7 +32,7 @@ void mselNmeCamera(void)
 
     memset(&target, 0, sizeof(target));
     target.w = 1.0f;
-    camera = dds3AddCameraObjectBasicTypeLookAt(dds3SerializeID(), &position, &target, &up);
+    camera = dds3AddCameraObjectBasicTypeLookAt(dds3AllocObjectId(), &position, &target, &up);
     dds3SetUnitObjectId(camera, "nme_camera");
     dds3CameraObjectBasicSetFovy(camera, 0.43633229f);
     dds3SetActiveCameraSceneBasic(dds3GetControlScene(), camera);

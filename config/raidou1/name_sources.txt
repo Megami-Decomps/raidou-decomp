@@ -72,7 +72,7 @@
 0x00102B38	dds3AdminiGetNextSequence	inferred	SMT3HD name via SLUS_209.11 0x001029C0, reloc-identical; map-agrees
 0x00102B58	dds3AdminiGetPrevSequence	inferred	SMT3HD name via SLUS_209.11 0x001029E0, reloc-identical; map-agrees
 0x00102B88	dds3AdminiGetPrevHistoryFlag	inferred	SMT3HD name via SLUS_209.11 0x00102A10, reloc-identical; map-agrees
-0x00102BB8	StartSequence	hd	hd: Raidou HD dds3AdminiProcess.StartSequence, score 9.45 band B
+0x00102BB8	dds3AdminiStartSequence	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 name of the same function (smt3_symbols.txt alias, find_body alias match); unit already returns EE_ADDR_S(dds3AdminiStartSequence); replaces StartSequence
 0x00102D30	dds3AdminiEndCheck	inferred	SMT3HD name via SLUS_209.11 0x00102C60, reloc-identical; map-agrees
 0x00102DB0	dds3AdminiNeoProcess	inferred	smt3-decomp name dds3AdminiNeoProcess, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.95 full=0.86 margin=0.55 callees=4 size=0.931; R2 top op=0.95 full=0.86 margin=0.55 callees=4 size=0.931; replaces NeoProcess: hd: Raidou HD dds3AdminiProcess.NeoProcess, score 8.45 band B
 0x00102F30	dds3AdminiNeoShutdown	inferred	SMT3HD name via SLUS_209.11 0x00102E78, reloc-identical; map-agrees
@@ -653,7 +653,7 @@
 0x00117210	dds3ComparePosPoseSet2	inferred	SMT3HD name via SLUS_209.11 0x0010E170, byte-identical; map-agrees
 0x00117268	dds3CallBasicMainProc	inferred	SMT3HD name via SLUS_209.11 0x0010E1C8, byte-identical; map-agrees
 0x001172A8	dds3CallBasicDrawProc	inferred	SMT3HD name via SLUS_209.11 0x0010E208, byte-identical; map-agrees
-0x001172E8	dds3SerializeID	hd	hd: Raidou HD dds3Basic.dds3SerializeID, score 11.5 band A
+0x001172E8	dds3AllocObjectId	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=SMT3/DDS alias per find_body; same increment of dds3ObjectIdCounter, Raidou adds a 12-bit mask and a used-ID search; replaces dds3SerializeID
 0x00117318	dds3SetUnitObjectId	inferred	SMT3HD name via SLUS_209.11 0x0010E260, byte-identical; map-agrees
 0x00117328	dds3Leaf26	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001172E8, neighbour dds3SetUnitObjectId; no named callee, caller or string
 0x00117340	worldconstructor	inferred	SMT3HD name via SLUS_209.11 0x0010E288, reloc-identical; map-agrees
@@ -1255,7 +1255,7 @@
 0x0012A158	fldAiboCashLoad_EndCheck	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD fld.fldAiboCashLoad_EndCheck score 8.5 flag I: calls2 calls-of-match votes2 st1:call r1+r2
 0x0012A1A0	fldSetUnitSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00128378, neighbour fldAiboCashLoad_EndCheck; called by fldSetUnit
 0x0012A1B0	cmpModelFreeResource	inferred	method=smt3-fuzzy-60-m-single; p=0.33 (n=9); tier=C; source=smt3; evidence=smt3 body 0x23fed0 sim 0.667 margin 0.17 single
-0x0012A210	cmpCallModelFreeResource	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00128378, neighbour cmpModelFreeResource; calls cmpModelFreeResource
+0x0012A210	fldAllShutDown	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD dds3SequenceList.c ExitField calls fldAllShutDown first; R1 ExitField calls 0x12A210 there (frees models, stage and field process); replaces cmpCallModelFreeResource
 0x0012A238	fldRegistUnitPad	hd	hd: Raidou HD fld.fldRegistUnitPad, score 9.7 band B
 0x0012A2A0	fldReleaseUnitPad	hd	hd: Raidou HD fld.fldReleaseUnitPad, score 10.0 band A; replaces fldResetPlayerSceneObjectState: dds-decomp DDS1 name via SLUS_209.74 0x00123EA8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0012A2E0	fldSetUnit	hd	hd: Raidou HD fld.fldSetUnit, score 18.5 band A
@@ -2529,15 +2529,15 @@
 0x0018DCB0	itfLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfDrawMiscHelp; no named callee, caller or string
 0x0018DDD0	itfCallSetOt3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfDrawMiscHelp; calls eglSetOt
 0x0018DEE8	itfCallDrawBoxLine	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfDrawMiscHelp; calls cmpDrawBoxLine
-0x0018E110	itfCallLinkTri	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfGetFigure; calls eglLinkTri
+0x0018E110	itfDrawFanBezierPt3	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itf.c itfDrawFanBezierPt3(x0..vy, rgba0..2, ot): same itfGetDivBezierPt3(x1,y1,x2,y2,vx,vy,0.1) count, per-step itfGetRatePosBezierPt3 and eglLinkTri fan with lerped rgba; ot unused in both; replaces itfCallLinkTri
 0x0018E410	itfCalcSpriteWidthSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfGetFigure; called by itfCalcSpriteWidth
 0x0018E450	itfGetFigure	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfGetFigure score 8.1 flag I: calls2 calls-of-match votes3 st1:call r1+r2
 0x0018E4A0	itfGetFigureNum	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD itf.itfGetFigureNum score 6.8 flag I: calls1 next~ calls-of-match votes2 st1:call r1+r2
 0x0018E500	itfLeaf16	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfGetFigureNum; no named callee, caller or string
 0x0018E530	itfCalcSpriteWidth	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfCalcSpriteWidth score 9.1 flag I: calls2 calls-of-match votes2 st1:call r1+r2
-0x0018E5D0	itfLeaf17	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfCalcSpriteWidth; no named callee, caller or string
-0x0018E650	itfLeaf18	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfCalcSpriteWidth; no named callee, caller or string
-0x0018E6E0	itfFunc3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfLoadIconSprite; no named callee, caller or string
+0x0018E5D0	itfGetRatePosBezierPt3	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD itf.c body is the same quadratic Bezier (clamped rate, (1-r)^2, 2r(1-r), r^2) with the same 9-argument signature; callers itfCallDrawBoxLine, itfCallLinkTri; replaces itfLeaf17
+0x0018E650	itfGetVectorPosBezierPt3	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD name of the inverse: solves the control point from a point at rate; HD body is empty, signature next to itfGetRatePosBezierPt3; caller mapCallCutGetCam; replaces itfLeaf18
+0x0018E6E0	itfGetDivBezierPt3	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itf.c itfGetDivBezierPt3: halves rate from 1.0 until the itfGetRatePosBezierPt3 point is within divLength of (x0, y0), returns the count; same 7-float signature; replaces itfFunc3
 0x0018E7E8	itfCallMemFreeDelayedDirect	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfLoadIconSprite; calls sdfMemFreeDelayedDirect
 0x0018E820	itfLoadIconSprite	inferred	string: sdfDevLoadFileEx("/itf/icon.spr")
 0x0018E860	itfFunc4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfLoadIconSprite; no named callee, caller or string
@@ -2586,8 +2586,8 @@
 0x0018FB88	itfMenuGetWaitType2	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD itf.itfMenuGetWaitType2 score 4.0 flag I: calls1 prev gap5/8 st1:gap r1-only
 0x0018FBF8	MenuGetMenu	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD itf.MenuGetMenu score 2.6 flag -: prev gap3/6 st1:gap r1-only
 0x0018FC48	MenuGetSelectMenu	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD itf.MenuGetSelectMenu score 3.0 flag -: prev gap2/5 st1:gap r1-only
-0x0018FC70	itfMenuRemakeLinkSubSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfMenuGetWaitType2; called by MenuRemakeLinkSub
-0x0018FD20	itfMenuUpdatePrevLinkSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfMenuGetWaitType2; called by MenuUpdatePrevLink
+0x0018FC70	MenuUpdateSelectMenu	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD itf.c MenuUpdateSelectMenu has the same body: clear lflag 4 on select, find the cb at nowHierarchy/selNo, set lflag 4 unless gflag 1 is clear and nMenuSet >= 2; replaces itfMenuRemakeLinkSubSub
+0x0018FD20	MenuUpdateLinkMover	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itf.c MenuUpdateLinkMover: same drwMax/drwDefNum clamp on gflag 0x400, clears mv[16].cb, refills from pHead at nowHierarchy/topNo; replaces itfMenuUpdatePrevLinkSub
 0x0018FE20	itfCallMenuGetSelectMenu	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfMenuSetOt; calls MenuGetSelectMenu
 0x0018FED0	itfCallMenuGetSelectMenu2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfMenuSetOt; calls MenuGetSelectMenu
 0x00190028	MenuUpdatePrevLink	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD itf.MenuUpdatePrevLink score 5.0 flag -: next gap5/8 st1:gap r1+r2
@@ -2641,7 +2641,7 @@
 0x00191E98	itfCallMenuSetMoverDisappear	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00190668, neighbour itfMenuGetFlashCount; calls MenuSetMoverDisappear
 0x00191F38	MenuPlayDecideSE	hd	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD itf.MenuPlayDecideSE score 5.9 flag -: gap=exact st1:gap r1+r2
 0x00191F80	MenuPlayCancelSE	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.MenuPlayCancelSE score 7.9 flag -: next gap=exact st1:gap r1+r2
-0x00191FC8	cmpCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00190668, neighbour cmpSklTypeSet; calls dds3GetProcessData
+0x00191FC8	MenuProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itfMenuProcessStart starts "itfmenu_main" with Method_Project_itf_MenuProcess; R1 itfMenuProcessStart passes 0x191FC8 there; replaces cmpCallGetProcessData
 0x001926A8	MenuDrawFont	hd	method=hd-d-single-raidou1; p=0.71 (n=403); tier=C; source=hd; evidence=Raidou HD itf.MenuDrawFont score 5.0 flag -: calls1 prev gap11/5 votes2 st1:gap r1-only
 0x00192708	cmpItfmenuScrollbarTexture	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_00190668, neighbour cmpSklTypeSet; string '  itfmenu : scrollbar texture none!\n'
 0x00192C20	MenuDrawScrollBar	hd	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD itf.MenuDrawScrollBar score 4.1 flag -: prev~ gap=exact st1:gap r1-only
@@ -2831,7 +2831,7 @@
 0x0019A4D0	mdlFree	inferred	SMT3HD name via SLUS_209.11 0x001DD220, reloc-identical; map-agrees
 0x0019A578	mdlLink	inferred	SMT3HD name via SLUS_209.11 0x001DD2C8, reloc-identical; map-agrees
 0x0019A6A8	LinkMotion	hd	hd: Raidou HD mdl.LinkMotion, score 6.3 band C, hd-consensus: calls1 callers-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 7.3,6.3,6.3,9.3,7.3,9.3,6.3,9.3,6.3,9.3
-0x0019A748	mdlBlendEntryPitchYawAndUpdate	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002179A8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0019A748	mdlLink_Kubi	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mdl.c mdlLink_Kubi(aHandle, aModelOt, node, rx, ry); dds3ObjectBaseModelLinkOt calls it with kubinodeidx and two workdata floats, as HD does; replaces mdlBlendEntryPitchYawAndUpdate
 0x0019AA00	mdlHideAllNode	inferred	SMT3HD name via SLUS_209.11 0x001DD3F8, shared-hash-in-run; map-silent
 0x0019AA48	mdlMotion	inferred	SMT3HD name via SLUS_209.11 0x001DD440, reloc-identical; map-agrees
 0x0019AB40	mdlLoopMotion	inferred	SMT3HD name via SLUS_209.11 0x001DD538, reloc-identical; map-agrees
@@ -4391,7 +4391,7 @@
 0x001EA418	effLeaf42	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effBattleMisc; no named callee, caller or string
 0x001EA420	effBTLPartGetRotateMatrixPtr	inferred	SMT3HD name via SLUS_209.11 0x0016F268, reloc-identical; map-agrees
 0x001EA518	dds3Leaf36	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001EA518, neighbour dds3ParticleManagerExit; no named callee, caller or string
-0x001EA530	dds3EffectManagerInitSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001EA518, neighbour dds3ParticleManagerExit; called by dds3EffectManagerInit
+0x001EA530	dds3ParticleManagerInit	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 parManager.c dds3ParticleManagerInit has the same body (sdfRandomizeByTime(&ParRand)) and sits before dds3ParticleManagerExit, as here; replaces dds3EffectManagerInitSub
 0x001EA550	dds3ParticleManagerExit	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001EA558	dds3Particle_PhysicsCreate	inferred	SMT3HD name via SLUS_209.11 0x0015DEC0, reloc-identical; map-agrees
 0x001EA5D8	parLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/parManager; no named callee, caller or string
@@ -21300,19 +21300,19 @@
 0x0046B28C	dds3Data33	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 10 functions: evtCallGrAllocPacketBuff, effDrawBlurRectangle, effCallGrAllocPacketBuff
 0x0046B290	distblurovercnt	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B290); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3DrawDistRipOverError
 0x0046B294	ripblurovercnt	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B294); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3DrawDistRipOverError
-0x0046B298	fldSkyDefaultLoadData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldSkyDefaultLoad (3 of 4 refs, 2 functions)
+0x0046B298	gFilterBuff	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD dds3KernelDraw.c FIL_t *gFilterBuff sits just before gFilterAlpha; fldSkyDefaultLoad allocates and fills it from FILTER.FLD; replaces fldSkyDefaultLoadData
 0x0046B29C	dds3Data34	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: dds3FilterClear, dds3FilterSet, dds3ProcSequenceSub
-0x0046B2A0	dds3Data35	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: dds3FilterClear, dds3FilterSetAlpha, dds3FilterGetAlpha
-0x0046B2A4	dds3Data36	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: dds3FilterClear, dds3FilterSetAlphaOfs, dds3FilterGetAlphaOfs
-0x0046B2A8	dds3Data37	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: dds3FilterClear, dds3FilterSet, dds3FilterDraw
-0x0046B2AC	dds3Data38	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: dds3FilterClear, fldSetFilterAnime, dds3FilterCalc
-0x0046B2B0	dds3FilterCalcData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3FilterCalc (16 of 18 refs, 3 functions)
-0x0046B2B4	filterMesh	inferred	method=hd; p=0.37 (n=D_r1_0046B2B4); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
-0x0046B2B8	dds3FilterSetData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3FilterSet (2 of 5 refs, 4 functions)
-0x0046B2BC	dds3Data39	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: dds3FilterSet, dds3FilterDraw, dds3FilterClear
-0x0046B2C0	dds3FilterDrawData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3FilterDraw (4 of 7 refs, 3 functions)
-0x0046B2C4	dds3FilterSetData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3FilterSet (2 of 4 refs, 3 functions)
-0x0046B2C8	dds3FilterEditData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3FilterEdit (6 of 7 refs, 2 functions)
+0x0046B2A0	gFilterAlpha	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD dds3KernelDraw.c globals in address order; dds3FilterSetAlpha/GetAlpha read and write it; replaces dds3Data35
+0x0046B2A4	gFilterFilterAlpOfs	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name next after gFilterAlpha; dds3FilterSetAlphaOfs writes it; replaces dds3Data36
+0x0046B2A8	gFilterMode	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name; dds3FilterSet stores mode there; replaces dds3Data37
+0x0046B2AC	gFilterAnime	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name; fldSetFilterAnime stores anime there; replaces dds3Data38
+0x0046B2B0	gFilterAnimeCntF	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name (f32); fldSetFilterAnime zeroes it after gFilterAnime; replaces dds3FilterCalcData
+0x0046B2B4	gFilterAnimeOfsA	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name; third store of fldSetFilterAnime (HD filterMesh is a mesh pointer elsewhere); replaces filterMesh
+0x0046B2B8	gFilterNowIdx	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name; dds3FilterSet stores idx there; replaces dds3FilterSetData
+0x0046B2BC	gFilterBlendIdx	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name; dds3FilterSet stores idx or the previous index; replaces dds3Data39
+0x0046B2C0	gFilterBlend	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name (f32); dds3FilterSet stores 0.0 or 1.0; replaces dds3FilterDrawData
+0x0046B2C4	gFilterBlendSpd	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name (f32); dds3FilterSet stores (f32)hokan or 1.0; replaces dds3FilterSetData2
+0x0046B2C8	gFilterCursor	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD name, last of the block; zeroed by dds3FilterClear; replaces dds3FilterEditData
 0x0046B2D0	dds3RunQuakeData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3RunQuake
 0x0046B2D8	dds3FilterEditData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3FilterEdit
 0x0046B2DA	evtSelectionStateActive	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B2DA); tier=C; source=dds; evidence=dds-ref/loose: nfun=6, other=0, sim=1.0, games=2, size=False, sec=True, fn=evtSelStateCreate
@@ -22081,7 +22081,7 @@
 0x0046C2BC	testMsgTexture	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C2BC); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=TestMsgReloadTexture
 0x0046C2C0	itfData5	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: itfCallLoadIconSprite, itfCallMemFreeDelayedDirect, itfLoadIconSprite
 0x0046C2C4	itfData6	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: itfCallLoadIconSprite, itfFunc4, itfIconDrawSprite
-0x0046C2C8	cmpItfmenuScrollbarTextureData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by cmpItfmenuScrollbarTexture (4 of 10 refs, 6 functions)
+0x0046C2C8	g_ot	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itf.c static DDS3_OT g_ot; MenuDrawProcess stores wk->ot there before eglSetOt, as HD does; replaces cmpItfmenuScrollbarTextureData
 0x0046C2CC	cmpItfmenuScrollbarTextureData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by cmpItfmenuScrollbarTexture
 0x0046C2D0	DevilMessage_g_mainPID	inferred	method=hd; p=0.37 (n=D_r1_0046C2D0); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=3, using=4
 0x0046C2D8	g_mainPID2	inferred	method=hd; p=0.37 (n=D_r1_0046C2D8); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2; g_mainPID is another symbol
@@ -24115,8 +24115,8 @@
 0x0046F7D8	MenuSetMoverDisappear02Work2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by MenuSetMoverDisappear02
 0x0046F7DC	MenuSetMoverDisappearWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by MenuSetMoverDisappear
 0x0046F7E0	MenuSetMoverDisappearWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by MenuSetMoverDisappear
-0x0046F7E4	MenuDrawProcessWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by MenuDrawProcess
-0x0046F7E8	MenuDrawProcessWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by MenuDrawProcess
+0x0046F7E4	itfMenuDrawProcess_fx	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD MenuDrawProcess function-static fx; filled by itfMoverGetPosition for the title position; replaces MenuDrawProcessWork
+0x0046F7E8	itfMenuDrawProcess_fy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD MenuDrawProcess function-static fy; replaces MenuDrawProcessWork2
 0x0046F7EC	g_pdebug	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046F7EC); tier=B; source=smt3; evidence=smt3-ref/close: nfun=1, other=0, sim=0.9, games=1, size=True, sec=False, fn=mphStart
 0x0046F7F0	mdlManagerWork	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F7F0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=7, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlInitManager
 0x0046F7F4	mdlHddFileCount	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F7F4); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlMakeHddFileList

@@ -60,7 +60,6 @@ void dds3ProcSequenceSub(s32 mode);
 void dds3RefCameraTM(void);
 void dds3RefCameraTM2(void);
 void dds3SetActiveScene(struct dds3Basic_t *scene);
-s32 dds3SearchProcessPriority(s32 priority);
 void mapBgDrawOnOff(s32 on);
 void mapBgSetScroll(f32 x, f32 y, f32 z, s32 mode);
 void fldReleaseUnitPad(void);
@@ -183,5 +182,7 @@ void fldBgZoomTest(s32 mode);
 void fldPlayerMotReset(void);
 void mapSetSceneParam(struct fldSceneParam_t *param, s32 field, s32 floor, s32 point);
 void scrAllReleaseScript(void);
+s32 fldCallDelayedResrcCheck(void);
+void fldExitEventSub(void);
 
 #endif

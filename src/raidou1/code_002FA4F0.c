@@ -131,7 +131,7 @@ void fldNameNameSpr(fldNmeDraw_t *draw) {
 }
 
 void fldLeaf29(fldNmeDraw_t *draw, s32 x, s32 y, s32 z, u32 alpha, s16 *list) {
-    itfDrawMiscSpriteList(x, y, z, alpha, draw->hSpr, 103, list);
+    itfDrawMiscSpriteList(x, y, z, alpha, draw->hSpr, 103, (itfSprList_t *)list);
 }
 
 void SetSelect(fldNmeDraw_t *draw) {

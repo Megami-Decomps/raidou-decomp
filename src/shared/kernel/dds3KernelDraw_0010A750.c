@@ -261,7 +261,72 @@ void evtSubmitDefaultDepthGradientRect(s32 x, s32 y, s32 width, s32 height, s32 
     evtSubmitGradientRectAtDepth(x, y, width, height, EVT_QUAD_DEFAULT_DEPTH, topLeftColor, topRightColor, bottomRightColor, bottomLeftColor);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallGrAllocPacketBuff5);
+void dds3CallGrAllocPacketBuff5(s32 c0, s32 c1, s32 c2, s32 c3, f32 x, f32 y, f32 w, f32 h)
+{
+    s32 coords[4][2];
+    sdfDrawTag_t *command;
+    sdfGrPacketHeader_t *packet;
+    dds3GouraudRegister_t *registers;
+    s32 i;
+    sdfGrOt_t *descriptor;
+    u32 r0, g0, b0, a0;
+    u32 r1, g1, b1, a1;
+    u32 b3, r2, g2, b2, a2;
+    u32 r3, g3, a3;
+
+    r0 = c0 & 0xFF;
+    g0 = (c0 >> 8) & 0xFF;
+    b0 = (c0 >> 16) & 0xFF;
+    a0 = (u32)c0 >> 24;
+    r1 = c1 & 0xFF;
+    g1 = (c1 >> 8) & 0xFF;
+    b1 = (c1 >> 16) & 0xFF;
+    a1 = (u32)c1 >> 24;
+    r2 = c2 & 0xFF;
+    g2 = (c2 >> 8) & 0xFF;
+    b2 = (c2 >> 16) & 0xFF;
+    a2 = (u32)c2 >> 24;
+    r3 = c3 & 0xFF;
+    g3 = (c3 >> 8) & 0xFF;
+    b3 = (c3 >> 16) & 0xFF;
+    a3 = (u32)c3 >> 24;
+    coords[0][0] = x * 16.0f;
+    coords[0][1] = y * 8.0f;
+    coords[1][0] = (x + w) * 16.0f;
+    coords[1][1] = y * 8.0f;
+    coords[2][0] = (x + w) * 16.0f;
+    coords[2][1] = (y + h) * 8.0f;
+    coords[3][0] = x * 16.0f;
+    coords[3][1] = (y + h) * 8.0f;
+    command = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(command);
+    packet = (sdfGrPacketHeader_t *)sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 4));
+    sdf2DMakePrimPacketHeader(packet, 0x4D, 2, 0x41, 4);
+    registers = (dds3GouraudRegister_t *)sdf2DGetPrimPtr(packet);
+    for (i = 0; i < 4; i++) {
+        if (i == 0) {
+            registers->low = (u64)r0 | ((u64)g0 << 32);
+            registers->high = (u64)b0 | ((u64)a0 << 32);
+        } else if (i == 1) {
+            registers->low = (u64)r1 | ((u64)g1 << 32);
+            registers->high = (u64)b1 | ((u64)a1 << 32);
+        } else if (i == 2) {
+            registers->low = (u64)r3 | ((u64)g3 << 32);
+            registers->high = (u64)b3 | ((u64)a3 << 32);
+        } else {
+            registers->low = (u64)r2 | ((u64)g2 << 32);
+            registers->high = (u64)b2 | ((u64)a2 << 32);
+        }
+        registers++;
+        registers->high = 0xFFFFFF;
+        registers->low = (u64)(u32)(coords[i][0] + 0x7000) |
+            ((u64)(coords[i][1] + 0x7900) << 32);
+        registers++;
+    }
+    sdfDrawTagLink(command, EE_ADDR(packet));
+    descriptor = &sdfGrOtTable[egl_OT_Offset];
+    ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
+}
 
 void eglLinkTri(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 rgba0, s32 rgba1, s32 rgba2)
 {
@@ -323,7 +388,17 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallGrAllocPacketBu
 #endif
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", eglLinkMaru2D);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", fldDrwZLoad);
+void fldDrwZLoad(void)
+{
+    sdfDrawTag_t *list;
+    sdfGrOt_t *ot;
+
+    list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(list);
+    sdf3DPrimLinkResetTm(list, 0);
+    ot = &sdfGrOtTable[egl_OT_Offset];
+    ot->regFunc(ot, list);
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallGrAllocPacketBuff6);
 
@@ -431,11 +506,74 @@ void eglLinkTexPoly4(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallMatNew);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallMatNew2);
+sdfMat_t *dds3CallMatNew2(sdfTexHandle_t *tex)
+{
+    sdfMat_t *mat;
+
+    mat = sdfMatNew();
+    sdfMatSetTex(mat, tex);
+    return mat;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3FileLoadSub);
 
+/* NON_MATCHING: 115 of 130 words match.  */
+#ifdef NON_MATCHING
+void dds3CallGrAllocPacketBuff8(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 x3, f32 y3,
+                                f32 z3, u32 color0, u32 color1, u32 color2, u32 color3, sdfMat_t *mat, f32 u0,
+                                f32 v0, f32 u1, f32 v1)
+{
+    sdf3DPrimPolyParm_t desc;
+    sdfVector4_t verts[4];
+    u32 colors[4];
+    u64 strip[2];
+    sdfVector2_t uvs[4];
+    void *list;
+    sdfGrOt_t *surface;
+
+    list = (void *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    sdf3DPrimLinkMat(list, mat, 0);
+    memset(&desc, 0, sizeof(desc));
+    desc.color = 0x80808080;
+    desc.faceCount = 2;
+    desc.pointCount = 4;
+    desc.vertex = verts;
+    desc.vertexColor = colors;
+    desc.faceIndex = (u32 *)strip;
+    desc.uv = uvs;
+    verts[0].x = x0;
+    verts[0].y = y0;
+    verts[0].z = z0;
+    verts[1].x = x2;
+    verts[1].y = y2;
+    verts[1].z = z2;
+    verts[3].x = x1;
+    verts[3].y = y1;
+    verts[3].z = z1;
+    colors[0] = color0;
+    colors[1] = color2;
+    colors[2] = color3;
+    colors[3] = color1;
+    strip[0] = eglPolyStripWord[0];
+    verts[2].x = x3;
+    verts[2].y = y3;
+    verts[2].z = z3;
+    uvs[0].x = u0;
+    uvs[0].y = v0;
+    uvs[1].x = u0;
+    uvs[1].y = v1;
+    uvs[2].x = u1;
+    uvs[2].y = v1;
+    uvs[3].x = u1;
+    uvs[3].y = v0;
+    sdfDrawTagLink(list, EE_ADDR(sdf3DPrimMakePoly(&desc)));
+    surface = &sdfGrOtTable[egl_OT_Offset];
+    ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallGrAllocPacketBuff8);
+#endif
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallGrAllocPacketBuff2);

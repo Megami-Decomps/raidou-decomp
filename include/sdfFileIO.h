@@ -13,5 +13,6 @@ s32 sdfFileCmdSeek(void *aHandle, s32 aOffset, s32 aWhence);
 void sdfFileCmdStartThread(s32 deviceType);
 void sdfFileCmdThreadCheckPrio(void);
 void sdfFileCmdThreadSetHiPrio(void);
+void sdfFileCmdThreadSetLoPrio(void);
 
 #endif

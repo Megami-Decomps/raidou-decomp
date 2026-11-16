@@ -2566,7 +2566,7 @@ u32 UnitRegist(MODELTYPE major, s32 minor)
     pos.w = 1.0f;
     memset(&rot, 0, sizeof(rot));
     rot.w = 1.0f;
-    id = dds3SerializeID();
+    id = dds3AllocObjectId();
     basic = dds3AddUnitObjectBasic(id, &pos, &rot);
     dds3ObjectBaseOnFlag(basic, 32);
     dds3GetRadiusPoseSet(basic, 10.0f);

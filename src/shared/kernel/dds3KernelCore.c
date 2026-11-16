@@ -57,7 +57,6 @@ s32 dds3KillProcessName(const char *name, s32 shutdowntimer);
 void dds3EndProcess(dds3ProcessID_t *id);
 void dds3SetShutdownTimer(dds3ProcessID_t *id, s32 newtimer);
 u32 dds3GetProcessStat(dds3ProcessID_t *id);
-dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
 u32 dds3GetProcessStartTime(dds3ProcessID_t *id);
 u32 dds3GetProcessRunTime(dds3ProcessID_t *id);
 void dds3SetProcessData(dds3ProcessID_t *id, void *data);
@@ -364,7 +363,27 @@ void RunningProcess(void)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", _KillProcess);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3KernelCore.c:353, near, same function 0.90 (words 34/38, calls 0.86, shape 0.94) */
+void _KillProcess(dds3ProcessID_t *setp)
+{
+    dds3ProcessID_t *p;
+    dds3ProcessID_t *nextp;
+
+    p = setp->child;
+    while (p != NULL) {
+        nextp = p->sibling;
+        dds3KillProcess(p, 0);
+        p = nextp;
+    }
+
+    DeleteProcessList(setp);
+    if (setp->shutdownfunc != NULL) {
+        setp->shutdownfunc(setp);
+    }
+    setp->flag &= ~0xF;
+    dds3UnlinkProcess(setp);
+    sdfChipFreeDirect(setp);
+}
 
 void EndProcess(dds3ProcessID_t *setp)
 {

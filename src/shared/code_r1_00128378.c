@@ -830,7 +830,7 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fldLoadMapResourceSub);
 #endif
 
 #ifdef VERSION_RAIDOU1
-void cmpCallModelFreeResource(void) {
+void fldAllShutDown(void) {
     cmpModelFreeResource();
     evtFreeStage();
     fldProcShutDown();
@@ -840,7 +840,7 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fldLoadMapResourceSub2);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldCallCtnFree);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldCleanupFieldScene);
+INCLUDE_ASM(const s32, "code_r1_00128378", fldAllShutDown);
 #endif
 
 void fldRegistUnitPad(void) {

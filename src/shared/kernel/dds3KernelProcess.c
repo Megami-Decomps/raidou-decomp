@@ -15,11 +15,13 @@
 #include "dds3KernelMain.h"
 #include "sdfVu0.h"
 #include "sdf3D.h"
+#include "code_r1_00104370.h"
+#include "sdf2D.h"
+#include "sdfGraph.h"
+#include "sdf_packet_list.h"
 
 
 extern dds3Basic_t *dds3TheWorld;
-
-typedef struct sdfPreDrawChain_t sdfPreDrawChain_t;
 
 typedef struct sdfGrRefPacketHeader_t sdfGrRefPacketHeader_t;
 
@@ -44,10 +46,27 @@ extern sdfDrawTag_t *dds3ClosedDrawTag;
 s32 dds3BasicMainProcess(dds3ProcessID_t *id);
 s32 dds3BasicDrawProcess(dds3ProcessID_t *id);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", dds3FirstProcess);
+s32 dds3FirstProcess(dds3ProcessID_t *id)
+{
+    s32 count;
+    s32 frame;
+    sdfModelDrawEnv_t *env;
+
+    count = 14;
+    frame = dds3GetFrameID();
+    sdfGrInitNewFrame();
+    sdfGrOtInit(sdfGrOtTable, ARRAY_COUNT(sdfGrOtTable));
+    sdfPreDrawChainInit(&dds3PreDrawChain);
+    dds3InitDrawEnvSub(frame);
+    env = dds3DrawEnv[frame].modelEnv;
+    do {
+        sdfModelSetDrawEnv(env++);
+    } while (--count >= 0);
+    sdfGrOtTable[0].regFunc(&sdfGrOtTable[0], &dds3DrawEnv[frame].initTag);
+    return 0;
+}
 
 extern u32 dds3RenderTex, dds3RenderDrawEnv;
-extern s32 GlobalParamFlag;
 extern sdf3DLight_t *dds3Data5[4], *dds3RenderLightParallel[4];
 extern sdfVector4_t dds3Data3, dds3Data6, dds3RenderAmbientColor, dds3RenderTargetVector, dds3RenderEyeVector, effPCPBossTexRect;
 extern sdfVector4_t fldAutoMapRect, fldAutoMapEye, fldAutoMapUp, aViewTarget, aViewEye, aViewDown;
@@ -65,8 +84,6 @@ extern void sdf3DSetCamera(sdf3DScreenParam_t *, void *);
 extern void sdfModelOtInit(sdfModelOt_t *, sdfGrOt_t *, sdfGrOt_t *, sdfGrOt_t *, sdfGrOt_t *);
 extern sdfDrawTag_t *dds3LinkZClearDrawTag(s32);
 extern void fldDrwZLoad(void);
-extern void sdfPreDrawChainLink(sdfPreDrawChain_t *, sdfPreDrawTag_t *);
-extern sdfPreDrawChain_t dds3PreDrawChain;
 
 /* NON_MATCHING: 35 of 496 words match. Register allocation: mine saves s8, retail only s0-s7; layout and call order match. dds3DrawBank_t.modelEnv[15] and sdfGrOtTable[114] in headers.patch. */
 #ifdef VERSION_RAIDOU1
@@ -207,7 +224,106 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", dds3DrawFirstProcess);
 INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", dds3DrawFirstProcess);
 #endif
 
+#ifdef VERSION_RAIDOU1
+s32 dds3DrawProcess(dds3ProcessID_t *task) {
+    s32 bufferIndex = dds3GetFrameID();
+    sdfModelOt_t *groupHeads;
+    sdfModelDrawEnv_t *packetGroups;
+    sdfDrawTag_t *packetList;
+    u64 *texturePacket;
+    u64 *blendPacket;
+    dds3BlurSprite_t *vertex;
+    void *spritePacket;
+    sdfDrawTag_t *poolHead;
+    s32 edgeDistances[4];
+    s32 i;
+
+    dds3DrawDistRipOverError();
+    dds3BistaUpdate();
+    dds3DrawBista();
+    dds3FadeUpdate();
+    dds3CallGetFrameID();
+    dds3FilterCalc();
+    dds3FilterDraw();
+    dds3BlurUpdate();
+    groupHeads = ModelOt;
+    packetGroups = dds3DrawEnv[bufferIndex].modelEnv;
+    for (i = 14; i >= 0; i--) {
+        sdfModelDrawEnvLinkOt(groupHeads->ot, packetGroups);
+        groupHeads++;
+        packetGroups++;
+    }
+    if (dds3ScreenBlurFlag != 0 && dds3NullDrawProc() == 0) {
+        packetList = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+        sdfDrawTagInit(packetList);
+        sdfGrLinkDispFrameTex(packetList, EE_ADDR(&dds3DrawEnv[bufferIndex].stdEnv), EE_ADDR_AS(sdfGrRefPacketHeader_t *, sdfGrAllocPacketBuff(0x20)));
+        texturePacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+        texturePacket[0] = 3;
+        /* VIF FLUSHA, then DIRECT for the three following quadwords. */
+        texturePacket[1] = ((u64)0x50000003 << 16 | 0x1000) << 16;
+        texturePacket[2] = ((u64)0x10000000 << 32) | 0x8002;
+        texturePacket[3] = 0xE;
+        texturePacket[4] = ((u64)0x80 << 32) | 0x80;
+        texturePacket[5] = 0x3B;
+        texturePacket[6] = 0;
+        texturePacket[7] = 0x3F;
+        sdfDrawTagLink(packetList, EE_ADDR(texturePacket));
+        blendPacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+        blendPacket[0] = 3;
+        blendPacket[1] = ((u64)0x50000003 << 16 | 0x1000) << 16;
+        blendPacket[2] = ((u64)0x10000000 << 32) | 0x8002;
+        blendPacket[3] = 0xE;
+        blendPacket[4] = 0x31001;
+        blendPacket[5] = 0x47;
+        blendPacket[6] = 0x44;
+        blendPacket[7] = 0x42;
+        sdfDrawTagLink(packetList, EE_ADDR(blendPacket));
+        edgeDistances[0] = dds3ScreenBlurOfsX[0] + 0x100;
+        edgeDistances[1] = dds3ScreenBlurOfsX[1] + 0xE0;
+        edgeDistances[2] = 0x100 - dds3ScreenBlurOfsX[0];
+        edgeDistances[3] = 0xE0 - dds3ScreenBlurOfsX[1];
+        /* Signed Q12 scale; X and Y use distinct GS coordinate units below. */
+        for (i = 0; i != 4; i++) {
+            edgeDistances[i] = edgeDistances[i] * dds3ScreenBlurScale >> 12;
+        }
+        spritePacket = sdf2DAllocSprite(1);
+        vertex = (dds3BlurSprite_t *)sdf2DGetPrimPtr(spritePacket);
+        vertex->r = 0x80;
+        vertex->g = 0x80;
+        vertex->b = 0x80;
+        vertex->a = dds3ScreenBlurAlpha;
+        vertex->corner[0].u = 0;
+        vertex->corner[0].v = 0;
+        vertex->corner[0].x = 0x7000 - edgeDistances[0] * 16;
+        vertex->corner[0].y = 0x7900 - edgeDistances[1] * 8;
+        vertex->corner[0].z = 0;
+        vertex->corner[0].adc = 0;
+        vertex->corner[1].u = 0x2000;
+        vertex->corner[1].v = 0xE00;
+        vertex->corner[1].x = 0x9000 + edgeDistances[2] * 16;
+        vertex->corner[1].y = 0x8700 + edgeDistances[3] * 8;
+        vertex->corner[1].z = 0;
+        vertex->corner[1].adc = 0;
+        sdfDrawTagLink(packetList, EE_ADDR(spritePacket));
+        dds3Data10.regFunc(&dds3Data10, packetList);
+    }
+    poolHead = sdfGrOtClose(sdfGrOtTable);
+    dds3ClosedDrawTag = poolHead;
+    if (dds3DrawProcessFlag != 0) {
+        sdfGrFlushOtChain(EE_ADDR_AS(u32 *, poolHead->head));
+        dds3DrawProcessFlag = 0;
+    }
+    if (!(dds3DrawFlag & 0x2000000)) {
+        sdfGrReqDraw(poolHead, &dds3PreDrawChain);
+    } else {
+        dds3DrawFlag &= 0xFDFFFFFF;
+    }
+    sdfDrawPublishFlag = 0;
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", dds3DrawProcess);
+#endif
 
 s32 dds3BasicMainProcess(dds3ProcessID_t *id) {
     dds3CallBasicMainProc(dds3TheWorld);

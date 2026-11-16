@@ -25,8 +25,6 @@ extern f32 mapCutGetCamData;
 extern sdfVector4_t mapCutSetCamData2;
 extern sdfVector4_t mapCutSetCamData3;
 
-extern const sdfVector4_t aViewTarget;
-extern const sdfVector4_t aViewEye;
 extern dds3Basic_t *mapData97;
 extern s32 effProcSequenceSub(void);
 

@@ -23,6 +23,7 @@ typedef struct sdfChipPageInfo_tag sdfChipPageInfo_tag;
 typedef struct sdfChipCB_tag sdfChipCB_tag;
 typedef struct sdfTexPacket_t sdfTexPacket_t;
 typedef struct sdfPreDrawTag_t sdfPreDrawTag_t;
+typedef struct sdfPreDrawChain_t sdfPreDrawChain_t;
 typedef struct sdfMatUvwParm_t sdfMatUvwParm_t;
 typedef struct sdfMatPacket_t sdfMatPacket_t;
 typedef struct sdfPreDrawHook_t sdfPreDrawHook_t;

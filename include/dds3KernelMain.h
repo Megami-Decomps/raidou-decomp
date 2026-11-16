@@ -14,6 +14,9 @@ u32 dds3GetFrameID(void);
 u32 dds3GetKernelCount(void);
 
 extern s32 dds3KernelDebugSign;
+extern u32 dds3FrameID;
+extern u32 dds3DebugSign;
+extern const char dds3ResetExecPath[];
 
 #ifdef VERSION_RAIDOU2
 void dds3CallEventSub(u8 enable);

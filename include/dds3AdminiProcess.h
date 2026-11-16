@@ -8,6 +8,7 @@ void dds3AdminiExitSequence(void);
 
 #include "kernel.h"
 
-dds3ProcessFunc_t StartSequence(dds3ProcessID_t *id);
+saddr_t dds3AdminiStartSequence(dds3ProcessID_t *id);
+void dds3InitAdmini(void);
 
 #endif

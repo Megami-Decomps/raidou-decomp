@@ -67,7 +67,7 @@ extern void effObjectListCountersReset(void);
 extern sdfRandCB_t dds3EffectBase;
 extern void fclEffectManagerInitSub(void);
 extern void dds3PolygonManagerInit(void);
-extern void dds3EffectManagerInitSub(void);
+extern void dds3ParticleManagerInit(void);
 extern void Eve_EffectInit(void);
 extern void effBTLFieldColorResetFlags(void);
 dds3TaskUpdateResult_t ManagerRunF(dds3ProcessID_t *task);
@@ -79,7 +79,7 @@ void dds3EffectManagerInit(void)
     fclEffectManagerInitSub();
     dds3BillboardManagerInit();
     dds3PolygonManagerInit();
-    dds3EffectManagerInitSub();
+    dds3ParticleManagerInit();
     dds3StartProcess("effect_f", 0x2B02, 0, 0, ManagerRunF, NULL, NULL);
     dds3StartProcess(dds3EffectProcessName, 0x2B16, 0, 0, dds3EffectManagerRun, ManagerExit, NULL);
     effEctManagerInitSub();
