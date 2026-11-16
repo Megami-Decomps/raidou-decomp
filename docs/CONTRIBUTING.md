@@ -144,7 +144,11 @@ hit is a different function sharing the name. `--compile` splices the body into
 the Raidou unit and runs `check_unit.py`: `match` and `near` compile as found,
 `adapt` fails only on its signature, callee arity or one global (usually a
 global the SMT3 code reads that Raidou passes as an argument), `rework` lacks
-several declarations or struct members and is a reference only. For a draft a
+several declarations or struct members and is a reference only. `python3 tools/find_similar.py --for NAME [--body]` ranks this repository's own
+matched functions on both games by retail instruction shape: the other game's
+copy, numbered wrappers such as `sbtlCallBtlGetSkilltbl8`/`10`/`16`, and
+same-shape siblings in other units. Read its `sub` count, the instructions the
+template does not supply, not the ratio. For a draft a
 few words off, `python3 tools/perm_unit.py import <unit> NAME` sets up
 [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) on the unit's
 NON_MATCHING draft, scored on both games for a shared unit. A permuter result
