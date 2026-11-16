@@ -668,6 +668,8 @@ segments:
       - [0x32EBD0, data, data_0042DBD0]
       - [0x34AB28, .data, code_r1_001C4B78]
       - [0x34AB88, data, data_00449B88]
+      - [0x3A4F80, .data, sdk/libc/fflush]
+      - [0x3A4F84, data, data_004A3F84]
       - [0x3A5418, .data, sdk/libkernl/filestub]
       - [0x3A54AC, .data, sdk/libkernl/iopheap]
       - [0x3A54B0, .data, sdk/libkernl/eeloadfile]

@@ -257,3 +257,8 @@ s32 fflush(void *stream)
     }
     return 0;
 }
+
+/* newlib's impure_data, still in the asm .data chunk. */
+extern _reent _impure_ptrEntry;
+
+_reent *_impure_ptr __attribute__((section(".data"))) = &_impure_ptrEntry;

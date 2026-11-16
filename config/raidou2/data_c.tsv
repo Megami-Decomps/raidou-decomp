@@ -7,3 +7,4 @@ kernel/dds3AdminiProcess	0x0042D9D8	0x0042DBD0
 sdk/libkernl/filestub	0x004A4418	0x004A44AC
 sdk/libkernl/iopheap	0x004A44AC	0x004A44B0
 sdk/libkernl/eeloadfile	0x004A44B0	0x004A44B8
+sdk/libc/fflush	0x004A3F80	0x004A3F84
