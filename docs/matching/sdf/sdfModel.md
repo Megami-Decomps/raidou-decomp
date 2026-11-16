@@ -31,3 +31,9 @@ Raidou 2: 52 of 150 words differ, first at +0x170; emitted 604 bytes, native 600
 reusing one counter for successive loops and assigning the call result to the argument variable (tag = alloc(); buf = tag; tag = f(tag)) let gcc share a saved register between a dead parameter and the buffer, dropping s7
 
 Related: regalloc-shape.
+
+## sdfModelTempPacketLinkOt (sdf/sdfModel, raidou1 0x468, raidou2 0x468)
+
+Matches.
+
+Fakematch: inherited, alternatives not recorded.
