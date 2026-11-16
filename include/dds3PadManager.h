@@ -5,6 +5,9 @@
 
 void dds3PadIsTypeCD(void);
 
+extern s8 dds3PadButtonState[64];
+extern u8 dds3PadStickState[8];
+
 #include "kernel.h"
 
 /* Called after linked children receive immediate kill requests and the task

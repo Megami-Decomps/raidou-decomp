@@ -15,7 +15,6 @@ extern u8 dds3PadVibrationMode[2];
 extern s32 dds3PadVibrationTable[2];
 extern s32 dds3GetRandIntA(s32 aLimit, s32 name);
 extern void dds3GetVibrationLevel(void);
-extern u8 dds3PadButtonState[64];
 extern u8 dds3PadButtonPrev[64];
 extern u32 dds3PadButtonHoldCounters[64];
 extern u32 dds3PadStickHoldCounters[4];

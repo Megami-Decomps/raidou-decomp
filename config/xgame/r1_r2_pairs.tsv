@@ -6178,7 +6178,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0025B2A0	0x0027B938	sbtlResetNSTOP	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-masked-hash
 0x0025BCB0	0x0027C490	sbtlGetRandomTarget	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	size
 0x0025CA98	0x0027CF80	sbtlCallHirukoYukaGoIdx2B	no	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	masked-hash-in-gap
-0x0025CAC8	0x0027CFB0	UseItemProc	no	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	masked-hash-in-gap
+0x0025CAC8	0x0027CFB0	sbtlResetColor	no	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	masked-hash-in-gap
 0x0025E000	0x0027EAE0	NormalProc	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-masked-hash
 0x0025F0E0	0x0027F4E8	SetColor	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-masked-hash
 0x00261558	0x002807C8	sbtlCheckBit	yes	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-reloc-hash

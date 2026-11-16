@@ -7,6 +7,14 @@
 
 struct SBTLUNIT_WORK;
 
+/* AI table entry, 0x46C bytes; only scr_no is named. */
+typedef struct AITBLDATA_WORK {
+    s32 scr_no;
+    u8 pad004[0x468];
+} AITBLDATA_WORK;
+
+AITBLDATA_WORK *sbtlGetAITBL(s32 devilId);
+
 void PosOut(struct SBTLUNIT_WORK *wk);
 s32 Proc(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlDeleteHitHelper(struct SBTLUNIT_WORK *wk);

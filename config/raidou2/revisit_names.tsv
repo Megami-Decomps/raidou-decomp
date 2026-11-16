@@ -3536,7 +3536,7 @@
 0x00271158	sbtlUseItemProcSBtlPlayerSub	func	tier=D	derived-caller	na	unit code_00261DF0, neighbour sbtlDeleteUnit; called by UseItemProc_sbtlPlayer
 0x00271160	sbtlUseItemProcSBtlPlayerSub2	func	tier=D	derived-caller	na	unit code_00261DF0, neighbour sbtlDeleteUnit; called by UseItemProc_sbtlPlayer
 0x00271168	sbtlLeaf5	func	tier=D	derived-unit	na	unit code_00261DF0, neighbour sbtlDeleteUnit; no named callee, caller or string
-0x00271170	sbtlUseItemProcSub	func	tier=D	derived-caller	na	unit code_00261DF0, neighbour sbtlChangeModelColor; called by UseItemProc
+0x00271170	sbtlResetColorSub	func	tier=D	derived-caller	na	unit code_00261DF0, neighbour sbtlChangeModelColor; called by sbtlResetColor
 0x00271178	sbtlBtlFadeOutBadStatusEffectSub	func	tier=D	derived-caller	na	unit code_0024AAD8, neighbour sbtlChangeModelColor; called by sbtlFadeOut_BadStatusEffect
 0x00271190	sbtlLeaf59	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlChangeModelColor; no named callee, caller or string
 0x00271198	sbtlLeaf60	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlChangeModelColor; no named callee, caller or string
@@ -24969,6 +24969,7 @@
 0x0027B470	sbtlResetATKEffect	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlPlayer.sBtlResetATKEffect score 6.3 flag I: calls4 calls-of-match votes5 st2:call r1-disagree:0x259f38
 0x0027B5F8	sbtlSummonKey	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlPlayer.sBtlSummonKey score 5.0 flag I: calls3 calls-of-match votes2 st2:call r1-disagree:0x25b138
 0x0027C3E8	sbtlCheckMove_BadStatus	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlPlayer.sBtlCheckMove_BadStatus score 6.3 flag I: calls3 calls-of-match votes2 st2:call r1-disagree:0x25bc20
+0x0027CFB0	sbtlResetColor	func	tier=B	hd-body	na	HD sBtlPlayer.sBtlResetColor(u32 abgr): called with 0x80808080, returns 1; HD UseItemProc takes the unit (R2 UseItemProc_sbtlPlayer)
 0x0027CFE0	SetSummonMenu	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlPlayer.SetSummonMenu score 5.5 flag -: calls3 callers-of-match votes3 st2:call r1-disagree:0x25caf8
 0x0027F2B8	CheckAutoSkill_Escape	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlPlayer.CheckAutoSkill_Escape score 6.1 flag -: calls3 calls-of-match votes3 st2:call r1-disagree:0x25ee90
 0x0027F3F0	sbtlDrawEscapeGauge	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlPlayer.sBtlDrawEscapeGauge score 5.2 flag I: calls3 calls-of-match votes2 st2:call r1-disagree:0x25ef88

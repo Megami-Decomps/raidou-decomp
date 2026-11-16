@@ -28,6 +28,7 @@ struct SBTLSM_LISTWORK;
 struct SBTLUNIT_LISTWORK;
 struct SBTL_MODELBIND_LIST;
 struct SBTL_STP;
+struct scrProcessWork_s;
 
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
 typedef struct SBTL_WORK {
@@ -57,7 +58,15 @@ typedef struct SBTL_WORK {
     struct SBTLUNIT_LISTWORK *unitList;
     s32 loadListID;
     s16 battleMode;
-    u8 pad1E6[0x220 - 0x1E6];
+    u8 pad1E6[0x1F0 - 0x1E6];
+    s32 nego_gstat;
+    u8 pad1F4[0x210 - 0x1F4];
+    s16 eventno;
+    u8 pad212[2];
+    s16 eventgstat;
+    u8 pad216[2];
+    s32 eventListID;
+    u8 pad21C[4];
     s16 summonIndex[2];
     u8 pad224[0x238 - 0x224];
     s32 equipBulletBk;
@@ -71,7 +80,8 @@ typedef struct SBTL_WORK {
     u32 summonBit;
     s32 stockNum;
     s32 field344;
-    u8 pad348[0x364 - 0x348];
+    u8 pad348[0x358 - 0x348];
+    u8 field358[SDAT_STOCK_NUM];
     s32 stockUnitID[SDAT_STOCK_NUM];
     u8 pad394[0x3A4 - 0x394];
     s32 unitPadID;
@@ -84,7 +94,7 @@ typedef struct SBTL_WORK {
     struct SBTLEFF_LISTWORK *effList;
     s32 field404;
     s32 field408;
-    s32 field40C;
+    struct SBTLUNIT_LISTWORK *field40C;
     struct SBTLITEM_LISTWORK *itemList;
     struct SBTLITEM_LISTWORK *bulletList;
     struct SBTLSM_LISTWORK *sysmsgList;
@@ -96,13 +106,53 @@ typedef struct SBTL_WORK {
     s16 mode;
     u8 pad432[0x436 - 0x432];
     s16 field436;
-    u8 pad438[0x448 - 0x438];
+    s16 gstat[2];
+    s16 walk_counter;
+    s16 wait_counter;
+    s16 field440;
+    s16 field442;
+    s16 field444;
+    u8 pad446[0x448 - 0x446];
     s32 mag;
     u8 pad44C[0x458 - 0x44C];
     s32 hgunNum;
-    u8 pad45C[0x4D8 - 0x45C];
+    u8 pad45C[0x478 - 0x45C];
+    s16 field478;
+    u8 pad47A[0x480 - 0x47A];
+    f32 field480;
+    s32 field484;
+    s32 field488;
+    s32 field48C;
+    s32 field490;
+    s32 field494;
+    s32 field498;
+    u8 pad49C[0x4A0 - 0x49C];
+    u8 field4A0;
+    u8 pad4A1[3];
+    s32 field4A4;
+    s32 field4A8;
+    s32 field4AC;
+    u8 pad4B0[0x4B4 - 0x4B0];
+    u8 field4B4;
+    u8 pad4B5;
+    s16 field4B6;
+    s16 field4B8;
+    s16 field4BA;
+    s16 field4BC;
+    s16 field4BE;
+    u8 pad4C0[0x4CE - 0x4C0];
+    s16 field4CE;
+    u8 pad4D0[0x4D4 - 0x4D0];
+    s32 huumaTargetID;
     s32 huumaDevilID[12];
-    u8 pad508[0x5E0 - 0x508];
+    s16 field508;
+    s16 field50A;
+    s16 field50C;
+    u8 pad50E[0x2];
+    f32 field510;
+    f32 field514;
+    f32 field518;
+    u8 pad51C[0x5E0 - 0x51C];
     s16 mf_mode;
     s16 mf_counter;
     s16 mf_cmpcounter;
@@ -120,7 +170,13 @@ typedef struct SBTL_WORK {
     s16 mfh_r;
     s16 mfh_g;
     s16 mfh_b;
-    u8 pad60A[0x628 - 0x60A];
+    u8 pad60A[0x614 - 0x60A];
+    s32 field614;
+    u8 field618;
+    u8 pad619[0x620 - 0x619];
+    s32 field620;
+    u8 field624;
+    u8 pad625[3];
     SBTL_PANEL *panel;
     u8 pad62C[4];
     s32 *field630;
@@ -130,17 +186,37 @@ typedef struct SBTL_WORK {
     u8 pad640[4];
     s32 field644;
     struct SBTL_STP *stp;
-    u8 pad64C[0x674 - 0x64C];
+    s8 field64C;
+    u8 pad64D[0x650 - 0x64D];
+    struct scrProcessWork_s *hAIScript;
+    u8 pad654[0x4];
+    struct SBTLUNIT_WORK *scrUnit;
+    u8 pad65C[0x674 - 0x65C];
     s32 field674;
-    u8 pad678[0x680 - 0x678];
-    struct SBTLUNIT_WORK *scrUnitList[3];
-    u8 pad68C[0x6C4 - 0x68C];
+    s32 field678;
+    s32 field67C;
+    struct SBTLUNIT_WORK *scrUnitList[16];
+    s32 scrCmpCnt;
     s32 scrCnt[4];
-    u8 pad6D4[4];
+    s32 scrEncountNo;
     u32 scrFlag;
     u8 pad6DC[4];
     s32 enshutuCnt[8];
-    u8 pad700[0x780 - 0x700];
+    u8 pad700[0x720 - 0x700];
+    s32 scrData[8];
+    u8 pad740[0x74C - 0x740];
+    s32 field74C;
+    s32 field750;
+    s32 field754;
+    s32 field758;
+    s32 field75C;
+    s16 field760;
+    s16 field762;
+    s16 field764;
+    s16 field766;
+    s16 field768;
+    s16 field76A[9];
+    s32 field77C;
     p2sdLoadEntry_t midiLoad[30]; /* copy of the sound driver's MIDI table; 11 to 28 are skill MIDIs */
     s32 midiSkillCount;
     s32 midiCount8;
@@ -202,13 +278,16 @@ typedef struct SBTL_PACK_SLOT {
 
 SBTL_PLAYER_DATA *sbtlGetPlayerData(void);
 s32 sbtlCallBtlGetPlayerData3(void);
+f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type);
+s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 flg);
+s32 sbtlCallBtlGetSkilltbl8(struct SBTLUNIT_WORK *wk, u32 flg);
 
 /* One battle stage's row (0x100 bytes) in the table sbtlData100 points at, indexed by SBTL_WORK.stageNo. */
 typedef struct SBTL_STAGE_DATA {
     s8 mapNo[2];    /* 0x00: copied to SBTL_WORK.mapNo */
     s8 form;        /* 0x02: mapMapSetForm, 0 for none */
     s8 encPoint;    /* 0x03: mapEncPointGet point */
-    u8 pad04[2];
+    u16 flags;      /* 0x04: 0x20 stops units at battle start */
     s16 bgmId;      /* 0x06 */
     u8 pad08[0xF8];
 } SBTL_STAGE_DATA;
@@ -362,7 +441,7 @@ typedef struct SBTL_WORK2 {
 
 extern SBTL_WORK2 *sbtlData83;
 extern SBTL_PACDATA_WORK *sbtlData84;
-extern u8 VRF_DeltaTime;
+extern s8 VRF_DeltaTime;
 extern u8 pbData;
 extern sdfVector4_t aViewTarget;
 extern sdfVector4_t aViewEye;
@@ -374,6 +453,7 @@ extern sdfVector4_t pbWork3;
 s32 DataLoadProc(dds3ProcessID_t *id);
 s32 DrawProc(dds3ProcessID_t *id);
 s32 RestartBattle(void);
+s32 sbtlCallBtlGetScrollID(void);
 void pbSetGameCamera0(void);
 void sbtlCallBtlDeleteOnData(void);
 s32 sbtlCallBtlGetPlayerData(void);
@@ -396,6 +476,8 @@ void sbtlRefSbtl18(struct SBTLUNIT_WORK *wk, s32 mode);
 void sbtlRefSbtl31(void);
 void sbtlResetRndEncCount(void);
 void sbtlRndEncTopPriorityMap(s32 *mapOut, s32 *floorOut);
+s32 sbtlSbattle3(void);
+sdatUnitWork_t *sbtlGetStockUnitData(s32 id);
 s32 sbtlSbattle5(dds3ProcessID_t *id);
 s32 sbtlSbattle6(dds3ProcessID_t *id);
 void sbtlSbtlCameraproc(void);
@@ -417,9 +499,10 @@ struct SBTL_MODELBIND_LIST *effAllocateModelBindings(void);
 s32 effStopEffectStop(void);
 SBTL_STP *evtAllocateContext(void);
 s32 pbCallBtlCheckLoadFlg(void);
-s32 sbtlAllInit(void);
+void sbtlAllInit(void);
 s32 sbtlBattleSBPACK(void);
-s32 sbtlBattleStart(SBTL_STAGE_DATA *stage);
+void sbtlBattleStart(SBTL_STAGE_DATA *stage);
+void sbtlSupport_BattleStop(s32 motionFlag, s32 effectFlag, s32 SEFlag);
 s32 sbtlBtlEntryStockDataSub(sdatUnitWork_t *unit);
 s32 sbtlBtlNakamaSetUpSub(sdatUnitWork_t *unit);
 void sbtlCallBtlCheckEnshutuSummonUnit(void);
@@ -464,6 +547,7 @@ void sbtlMap_Init(void);
 s32 sbtlNakamaSetUp(void);
 void sbtlPacData_Init(void);
 s32 sbtlRefSbtl15(s32 x, s32 y);
+s32 sbtlCallBtlSprite(s32 a, s32 b);
 s32 sbtlRefSbtl23(void);
 s32 sbtlRefSbtl24(struct SBTLUNIT_WORK *wk, s8 flg);
 s32 sbtlRefSbtl27(void);

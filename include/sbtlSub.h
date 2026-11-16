@@ -29,6 +29,7 @@ s32 sbtlGetUnitHelperPos(struct SBTLUNIT_WORK *wk, SBTLUNIT_MARK mark);
 void sbtlQuatFromVector(sdfVector4_t *qt, f32 x, f32 y, f32 z, f32 rad);
 s32 sbtlSetPullPos(struct SBTLUNIT_WORK *wk1, f32 r1, struct SBTLUNIT_WORK *wk2, f32 r2, f32 ground);
 s32 sbtlSetPushPos(struct SBTLUNIT_WORK *wk1, f32 r1, struct SBTLUNIT_WORK *wk2, f32 r2, f32 ground);
+void SetVibe(s32 in, s32 life, s32 out, s32 power);
 void sbtlSetRotateDeg(struct SBTLUNIT_WORK *wk);
 
 #endif

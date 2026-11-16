@@ -5,7 +5,7 @@
 
 struct AW_WORK_t;
 
-void UseItemProc(struct AW_WORK_t *aWork);
+s32 sbtlResetColor(u32 color);
 s32 sbtlResetNSTOP(void);
 
 #endif

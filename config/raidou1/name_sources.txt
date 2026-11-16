@@ -6653,7 +6653,7 @@
 0x0025C2D0	sbtlCallBtlSetReturn	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetReturn; calls sbtlSetReturn
 0x0025C960	sbtlSetReturn	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlPlayer.sBtlSetReturn score 6.9 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x27cdd0
 0x0025CA98	sbtlCallHirukoYukaGoIdx2B	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetReturn; calls fldHirukoYukaGo_Idx2_B
-0x0025CAC8	UseItemProc	hd	hd: Raidou HD sBtlPlayer.UseItemProc, score 7.25 band B
+0x0025CAC8	sbtlResetColor	hd	method=hd-body; p=na; tier=B; source=hd; evidence=HD sBtlPlayer.sBtlResetColor(u32 abgr): called with 0x80808080, returns 1; HD UseItemProc takes the unit (R2 UseItemProc_sbtlPlayer)
 0x0025CAF8	sbtlCallBtlResetMenuPara	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetReturn; calls sbtlResetMenuPara
 0x0025CCB8	GetAnlogKey	hd	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlPlayer.GetAnlogKey score 6.0 flag -: calls3 calls-of-match votes2 st1:call r2-disagree:0x27d1a0
 0x0025CF30	sbtlCallLightSet	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlNormalProc_Huuma; calls LightSet

@@ -6845,7 +6845,7 @@
 0x00271158	sbtlUseItemProcSBtlPlayerSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlDeleteUnit; called by UseItemProc_sbtlPlayer
 0x00271160	sbtlUseItemProcSBtlPlayerSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlDeleteUnit; called by UseItemProc_sbtlPlayer
 0x00271168	sbtlLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlDeleteUnit; no named callee, caller or string
-0x00271170	sbtlUseItemProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlChangeModelColor; called by UseItemProc
+0x00271170	sbtlResetColorSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlChangeModelColor; called by sbtlResetColor
 0x00271178	sbtlBtlFadeOutBadStatusEffectSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlChangeModelColor; called by sbtlFadeOut_BadStatusEffect
 0x00271190	sbtlLeaf59	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlChangeModelColor; no named callee, caller or string
 0x00271198	sbtlLeaf60	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlChangeModelColor; no named callee, caller or string
@@ -7002,7 +7002,7 @@
 0x0027C548	sbtlSetSummonFunc	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.sBtlSetSummonFunc score 7.8 flag I: calls8 callers-of-match votes4 st2:call r1-disagree:0x25c2d0
 0x0027CDD0	sbtlCallBtlGetNakama2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlSetSummonFunc; calls sbtlGetNakama
 0x0027CF80	sbtlCallHirukoYukaGoIdx2B	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetReturn; calls fldHirukoYukaGo_Idx2_B
-0x0027CFB0	UseItemProc	hd	hd: Raidou HD sBtlPlayer.UseItemProc, score 7.25 band B
+0x0027CFB0	sbtlResetColor	hd	method=hd-body; p=na; tier=B; source=hd; evidence=HD sBtlPlayer.sBtlResetColor(u32 abgr): called with 0x80808080, returns 1; HD UseItemProc takes the unit (R2 UseItemProc_sbtlPlayer)
 0x0027CFE0	SetSummonMenu	hd	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlPlayer.SetSummonMenu score 5.5 flag -: calls3 callers-of-match votes3 st2:call r1-disagree:0x25caf8
 0x0027D1A0	slCallMemset	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour slExitToTitleSub; calls memset
 0x0027D420	UseItemProc_sbtlPlayer	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.UseItemProc score 9.5 flag -: calls9 callers-of-match votes2 st2:call r2-only

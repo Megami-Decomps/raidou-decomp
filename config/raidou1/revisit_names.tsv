@@ -19727,6 +19727,7 @@
 0x00259310	sbtlReleaseUnitList_ID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlUnit.sBtlReleaseUnitList_ID score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
 0x0025BBC8	CheckStop_BadStatus	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.CheckStop_BadStatus score 6.8 flag -: calls2 calls-of-match-uniq votes3 st1:call r1-only
 0x0025C960	sbtlSetReturn	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.sBtlSetReturn score 6.9 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x27cdd0
+0x0025CAC8	sbtlResetColor	func	tier=B	hd-body	na	HD sBtlPlayer.sBtlResetColor(u32 abgr): called with 0x80808080, returns 1; HD UseItemProc takes the unit (R2 UseItemProc_sbtlPlayer)
 0x0025CCB8	GetAnlogKey	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.GetAnlogKey score 6.0 flag -: calls3 calls-of-match votes2 st1:call r2-disagree:0x27d1a0
 0x0025D478	sbtlNormalProc_Huuma	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.sBtlNormalProc_Huuma score 6.0 flag I: calls5 callers-of-match-uniq votes4 st1:call r2-disagree:0x282248
 0x0025DD08	sbtlResetCharge	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.sBtlResetCharge score 6.0 flag I: calls3 calls-of-match votes3 st1:call r1-only

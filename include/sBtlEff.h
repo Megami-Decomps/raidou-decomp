@@ -46,7 +46,8 @@ s32 sbtlCreateDelWork(struct SBTLEFF_DELLISTWORK *lwk, SKLID skillid, SBTLUNIT_S
 s32 sbtlDelProc(struct SBTLEFF_DELLISTWORK *lwk);
 s32 sbtlDeleteDelList(struct SBTLUNIT_WORK *wk);
 s32 sbtlDeleteEffList(struct SBTLEFF_LISTWORK *lwk);
-s32 sbtlDeleteEffectData_SerialID2(struct SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk);
+s32 sbtlDeleteEffectData_SerialID2(struct SBTLEFF_LISTWORK *lwk, s32 serialID);
+s32 sbtlForceReset(struct SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk);
 s32 sbtlDeleteEffectData_SkillID(struct SBTLEFF_LISTWORK *lwk, SKLID skillid);
 s32 sbtlDeleteOnData(s32 flg);
 s32 sbtlFadeOut_BadStatusEffect(struct SBTLUNIT_WORK *wk, s32 alpha);
@@ -70,6 +71,7 @@ s32 sbtlReleaseEff(struct SBTLEFF_LISTWORK *lwk, s32 flg);
 s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg);
 s32 sbtlSearchDelWork_Side(struct SBTLEFF_DELLISTWORK *lwk, SBTLUNIT_SIDE side);
 s32 sbtlSearchEffectData(SKLID skillid);
+s32 sbtlCallBtlSearchEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param);
 s32 sbtlSearchEffect_ID(struct SBTLEFF_LISTWORK *lwk, EFFID effectid);
 s32 sbtlSearchEffect_SAB_Acter(struct SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SKLID BEDsklid, s32 BEDtype);
 s32 sbtlSearchEffect_WorkID(struct SBTLEFF_LISTWORK *lwk, s32 workid);

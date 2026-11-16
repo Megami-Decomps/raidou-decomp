@@ -39,7 +39,7 @@ typedef struct sdatUnitWork_t {
     /* 0x04 */ u8 raceId;
     /* 0x05 */ u8 pad05;
     /* 0x06 */ s16 devilId;
-    /* 0x08 */ u8 level;
+    /* 0x08 */ s8 level;
     /* 0x09 */ u8 seikaku;
     /* 0x0A */ u8 pad0A[0xA];
     /* 0x14 */ s32 exp;

@@ -4,7 +4,13 @@
 #include "common.h"
 #include "enums.h"
 
-struct EFFPDATA_WORK;
+/* Effect placement entry; only the fields read so far are named. */
+typedef struct EFFPDATA_WORK {
+    u8 pad00[0x14];
+    u8 iti;
+    u8 pad15[0x3];
+    s32 iti_no;
+} EFFPDATA_WORK;
 struct SBTLUNIT_WORK;
 
 s32 GetUnitHelperMatrix(struct SBTLUNIT_WORK *wk, SBTLUNIT_MARK mark);
