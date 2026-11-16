@@ -701,6 +701,8 @@ segments:
       - [0x2EA258, data, data_003E9258]
       - [0x2F09A8, .data, code_r1_001C4B78]
       - [0x2F0A08, data, data_003EFA08]
+      - [0x31E5B0, .data, code_r1_0014F378]
+      - [0x31F858, data, data_0041E858]
       - [0x33CBF0, .data, newbattle/nbAiScript]
       - [0x33CDB0, data, data_0043BDB0]
       - [0x343CE8, .data, sdk/libkernl/filestub]

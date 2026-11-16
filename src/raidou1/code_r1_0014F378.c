@@ -15,6 +15,8 @@
 #include "dds3UnitObjectBasic.h"
 #include "sdfMotion.h"
 #include "field.h"
+#include "sbattle.h"
+#include "sbtlDebugStr.h"
 
 /* NON_MATCHING: 48 of 2283 words match. Draft 1972 words vs retail 2283. Calls match in order; retail unrolls the 8 UI marker groups (2 mapFileLoadSub4, hukidashi loop) and duplicates the mapEXFloor switch tail; the draft uses a uiTable[8] loop. Table values checked against IDA. */
 #ifdef NON_MATCHING
@@ -779,6 +781,1153 @@ s32 fldFreeMapData(void)
 #else
 INCLUDE_ASM(const s32, "code_r1_0014F378", fldFreeMapData);
 #endif
+/* Battle debug menu tables (.data 0x41D5B0-0x41E858); the code that reads them is still asm. */
+dds3ProcessFunc_t sbdebug_procmenu[20] = {
+    MainProc,
+    ModelSelectProc,
+    sbtlCallBtlDebugSetStatusflg,
+    MotionChngProc,
+    sbtlUnitChngProc,
+    sbtlSousaProc,
+    sbtlVisualProc,
+    sbtlLeaf105,
+    sbtlCallGetUnit,
+    sbtlVisualProc,
+    sbtlOpti,
+    sbtlFunc21,
+    sbtlLeaf104,
+    sbtlLeaf122,
+    sbtlLeaf98,
+    sbtlCallBtlSearchUnitID31,
+    sbtlBSTProc,
+    sbtlParaProc,
+    sbtlLeaf106,
+    NULL
+};
+
+dds3ProcessFunc_t sbdebug_drawmenu[20] = {
+    sbtlFunc26,
+    ModelSelectDraw,
+    sbtlFunc15,
+    sbtlFRAME,
+    sbtlUnitChngDraw,
+    sbtlLeaf100,
+    sbtlVisualDraw,
+    sbtlLeaf102,
+    sbtlSkillChangeProc,
+    sbtlVisualDraw,
+    sbtlRefSbtl67,
+    sbtlLeaf119,
+    sbtlBattleEffhit,
+    sbtlBattleMdlhit,
+    sbtlCallBtlDebugDrawNormalListCol,
+    sbtlRefSbtl56,
+    sbtlBSTDraw,
+    sbtlParaDraw,
+    sbtlLeaf116,
+    NULL
+};
+
+sbtlDebugModeFunc_t sbtlDebug_NEFMODE_Func[18] = {
+    sbtlNEFMODE_Func_Open,
+    sbtlNEFMODE_Func_Save,
+    sbtlNEFMODE_Func_Load,
+    sbtlNEFMODE_Func_PageList,
+    sbtlLeaf108,
+    sbtlSizeofData,
+    NULL,
+    sbtlCopyData,
+    NULL,
+    sbtlNEFMODE_Func_Edit,
+    sbtlBattleHitpath,
+    sbtlPacPBFile,
+    sbtlBattleBed,
+    sbtlCallFileCheckEnd,
+    sbtlFunc28,
+    sbtlFunc17,
+    sbtlCallRestartBattle,
+    NULL
+};
+
+sbtlDebugModeFunc_t sbtlDebug_NMDLMODE_Func[18] = {
+    sbtlMDLMODE_Func_Open,
+    sbtlNEFMODE_Func_Save,
+    sbtlNEFMODE_Func_Load,
+    sbtlMDLMODE_Func_PageList,
+    sbtlLeaf108,
+    sbtlSizeofData,
+    NULL,
+    sbtlCopyData,
+    NULL,
+    sbtlMDLMODE_Func_Edit,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    sbtlCallRestartBattle,
+    NULL
+};
+
+sbtlDebugModeFunc_t sbtlDebug_NMDLMVMODE_Func[18] = {
+    sbtlDebug_MOVEMODE_Func_Open,
+    sbtlNEFMODE_Func_Save,
+    NULL,
+    sbtlMOVEMODE_Func_PageList,
+    NULL,
+    sbtlLeaf95,
+    NULL,
+    sbtlCopyData,
+    NULL,
+    sbtlMOVEMODE_Func_Edit,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    sbtlCallRestartBattle,
+    NULL
+};
+
+sbtlDebugHitEditorDrawFunc_t sbtlDebug_EffHitEditorDraw_Functbl[4] = {
+    sbtlEffHitEditorDraw_Functbl_Cylinder,
+    sbtlEffHitEditorDraw_Functbl_Sphere,
+    sbtlEffHitEditorDraw_Functbl_Ring,
+    NULL
+};
+
+sbtlDebugHitEditorDrawFunc_t sbtlDebug_MDLHitEditorDraw_Functbl[4] = {
+    sbtlMDLHitEditorDraw_Functbl_Sphere,
+    sbtlMDLHitEditorDraw_Functbl_Cylinder,
+    sbtlMDLHitEditorDraw_Functbl_Ring,
+    NULL
+};
+
+char* sbplayer_cmnd[6] = {
+    sbtlStrPlayer1,
+    sbtlStrPlayer2,
+    sbtlStrPlayer3,
+    sbtlStrPlayerAll,
+    sbtlStrMahoujin,
+    NULL
+};
+
+char* sblist_optimenu[26] = {
+    sbtlStrEffectEditor,
+    sbtlStrAllDead,
+    sbtlRefSbtl67DataEntry7,
+    sbtlStrEffhitEditor,
+    sbtlStrModelhitEditor,
+    sbtlStrModelmoveEditor,
+    sbtlStrCameraMove,
+    sbtlStrCameraLock,
+    sbtlStrInterface,
+    sbtlRefSbtl67DataEntry6,
+    sbtlRefSbtl67DataEntry5,
+    sbtlRefSbtl67DataEntry4,
+    sbtlRefSbtl67DataEntry3,
+    sbtlStrEnemyStop,
+    sbtlRefSbtl67DataEntry2,
+    sbtlStrNoResult,
+    sbtlStrCombination,
+    sbtlStrFaceIcon,
+    sbtlStrCmndPanel,
+    sbtlStrDamageS,
+    sbtlStrBststDraw,
+    sbtlStrSeDistance,
+    sbtlStrSeDouji,
+    sbtlStrSeDebug,
+    sbtlRefSbtl67DataEntry,
+    NULL
+};
+
+SBDEBUG_FLGWORK sbflg_optimenu[25] = {
+    { 1, SBDEBUG_MODE_EFFEDITOR, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 3, SBDEBUG_MODE_OPTION, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_MODELSEL, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_EFFHITE, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_MODELHITE, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_MODELMOVE, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 0, SBDEBUG_MODE_OPTION, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_ALL, 2 },
+    { 0, SBDEBUG_MODE_OPTION, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_ALL, 0x80 },
+    { 0, SBDEBUG_MODE_OPTION, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_ALL, 0x200 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 4 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x4000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x8000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x10000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x40000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x100000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x4000000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x1000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x2000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_YALL, 2 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x800000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x2000000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x10000000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x20000000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x40000000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_YALL, 1 }
+};
+
+char* sblist_setmenu_00[2] __attribute__((section(".data"))) = {
+    sbtlStrDebugMenuKari,
+    NULL
+};
+
+char* sblist_setmenu_01[12] = {
+    sbtlStrEncountNo,
+    sbtlStrBattleMode,
+    sbtlStrCameraMove,
+    sbtlStrCameraLock,
+    sbtlStrInterfaceOff,
+    sbtlRefSbtl67DataEntry6,
+    sbtlRefSbtl67DataEntry5,
+    sbtlRefSbtl67DataEntry4,
+    sbtlRefSbtl67DataEntry3,
+    sbtlStrEnemyStop,
+    sbtlRefSbtl67DataEntry2,
+    NULL
+};
+
+SBDEBUG_FLGWORK sbflg_setmenu[11] = {
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ECNT, 8 },
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_BMODE, 8 },
+    { 0, SBDEBUG_MODE_OPTION, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_ALL, 2 },
+    { 0, SBDEBUG_MODE_OPTION, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_ALL, 0x80 },
+    { 0, SBDEBUG_MODE_OPTION, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_ALL, 0x200 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 4 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x4000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x8000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x10000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x40000 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x100000 }
+};
+
+char* sblist_paramenu[12] = {
+    sbtlParaDrawDataEntry10,
+    sbtlParaDrawDataEntry9,
+    sbtlParaDrawDataEntry8,
+    sbtlParaDrawDataEntry7,
+    sbtlParaDrawDataEntry6,
+    sbtlParaDrawDataEntry5,
+    sbtlParaDrawDataEntry4,
+    sbtlParaDrawDataEntry3,
+    sbtlParaDrawDataEntry2,
+    sbtlParaDrawDataEntry,
+    sbtlRefSbtl67DataEntry4,
+    NULL
+};
+
+char* sblist_panel[22] = {
+    sbtlFunc26DataEntry5,
+    sbtlStrHitDrawMode,
+    sbtlStrUnitAreaHit,
+    sbtlStrUnitAreaPriv,
+    sbtlStrUnitAreaFrid,
+    sbtlStrUnitAreaEnmy,
+    sbtlRefSbtl67DataEntry7,
+    sbtlStrCameraMove,
+    sbtlStrCameraLock,
+    sbtlStrAiPanel,
+    sbtlRefSbtl67DataEntry6,
+    sbtlStrDanganNumChk,
+    sbtlFunc26DataEntry4,
+    sbtlFunc26DataEntry3,
+    sbtlStrMashingun,
+    sbtlFunc26DataEntry2,
+    sbtlStrEquipGunNo,
+    sbtlStrEquipSordno,
+    sbtlFunc26DataEntry,
+    sbtlStrPositionReset,
+    sbtlStrParaReset,
+    sbtlStrEncountNo2
+};
+
+SBDEBUG_FLGWORK sbflg_panel[22] = {
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_UNIT, 1 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x40 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_UNIT, 2 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_UNIT, 4 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_UNIT, 8 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_UNIT, 0x10 },
+    { 1, SBDEBUG_MODE_MODELSEL, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 2 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 0x80 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_UNIT, 0x20 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 4 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ALL, 8 },
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_SEIKAKU, 8 },
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_HGUN, 8 },
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_MGUN, 8 },
+    { 0, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_YALL, 4 },
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_EQPG, 8 },
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_EQPS, 8 },
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_MAG, 8 },
+    { 1, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 2, SBDEBUG_MODE_MAIN, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_ECNT, 8 }
+};
+
+SBDEBUG_FLGWORK sbflg_mdlselect[2] = {
+    { 1, SBDEBUG_MODE_MODELMENU, SBDEBUG_MODE_MAIN, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_MODELMENU, SBDEBUG_MODE_OPTION, SBDEBUG_FLGTYPE_NONE, 0 }
+};
+
+char* sblist_modelmenu[10] = {
+    sbtlStr18,
+    sbtlStr17,
+    sbtlStr16,
+    sbtlStr15,
+    sbtlStr14,
+    sbtlStr13,
+    sbtlStrAi,
+    sbtlStr12,
+    sbtlStr11,
+    NULL
+};
+
+char* sblist_mdlmenupanel[4] = {
+    sbtlStrMotionChange,
+    sbtlStrUnitChange,
+    sbtlLeaf114DataEntry2,
+    sbtlLeaf114DataEntry
+};
+
+SBDEBUG_FLGWORK sbflg_mdlmenupanel[9] = {
+    { 1, SBDEBUG_MODE_MOTIONCHNG, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_UNITCHNG, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_SOUSA, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_VISUAL, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_SKILLCHANGE, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_EFFCYLINDER, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_AI, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_BST_K, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 },
+    { 1, SBDEBUG_MODE_PARA, SBDEBUG_MODE_MODELSEL, SBDEBUG_FLGTYPE_NONE, 0 }
+};
+
+char* sbtlCallDestroyFontRequestAfter2Data[28] = {
+    sbtlStr00Loop,
+    sbtlStr01Loop,
+    sbtlStr02Loop,
+    sbtlStr03Reserve,
+    sbtlStr04,
+    sbtlStr05,
+    sbtlStr06,
+    sbtlCallDestroyFontRequestAfter2Data3Entry4,
+    sbtlStr08,
+    sbtlStr09,
+    sbtlStr102,
+    sbtlStr112,
+    sbtlCallDestroyFontRequestAfter2Data3Entry3,
+    sbtlCallDestroyFontRequestAfter2Data3Entry2,
+    sbtlCallDestroyFontRequestAfter2Data3Entry,
+    sbtlStr152,
+    sbtlStr16Reserve,
+    sbtlStr17Reserve,
+    sbtlStr18Reserve,
+    sbtlStr19Reserve,
+    sbtlStr20Reserve,
+    sbtlStr21Reserve,
+    sbtlStr22Reserve,
+    sbtlStr23Reserve,
+    sbtlStr24Reserve,
+    sbtlStr25Reserve,
+    sbtlStr26Reserve,
+    NULL
+};
+
+char* sbtlCallDestroyFontRequestAfter2Data2[28] = {
+    sbtlCallDestroyFontRequestAfter2Data4Entry,
+    sbtlStr01,
+    sbtlStr02,
+    sbtlStr03,
+    sbtlCallDestroyFontRequestAfter2Data2Entry15,
+    sbtlCallDestroyFontRequestAfter2Data2Entry14,
+    sbtlCallDestroyFontRequestAfter2Data2Entry13,
+    sbtlCallDestroyFontRequestAfter2Data2Entry12,
+    sbtlCallDestroyFontRequestAfter2Data2Entry11,
+    sbtlCallDestroyFontRequestAfter2Data2Entry10,
+    sbtlCallDestroyFontRequestAfter2Data2Entry9,
+    sbtlStr113,
+    sbtlStr122,
+    sbtlStr132,
+    sbtlStr142,
+    sbtlStr153,
+    sbtlStr162,
+    sbtlStr172,
+    sbtlStr182,
+    sbtlCallDestroyFontRequestAfter2Data2Entry8,
+    sbtlCallDestroyFontRequestAfter2Data2Entry7,
+    sbtlCallDestroyFontRequestAfter2Data2Entry6,
+    sbtlCallDestroyFontRequestAfter2Data2Entry5,
+    sbtlCallDestroyFontRequestAfter2Data2Entry4,
+    sbtlCallDestroyFontRequestAfter2Data2Entry3,
+    sbtlCallDestroyFontRequestAfter2Data2Entry2,
+    sbtlCallDestroyFontRequestAfter2Data2Entry,
+    NULL
+};
+
+char* sbtlCallDestroyFontRequestAfter2Data3[28] = {
+    sbtlStr00Loop,
+    sbtlStr01Loop,
+    sbtlStr02Loop,
+    sbtlStr03Reserve,
+    sbtlStr04,
+    sbtlStr05,
+    sbtlStr06,
+    sbtlCallDestroyFontRequestAfter2Data3Entry4,
+    sbtlStr08,
+    sbtlStr09,
+    sbtlStr102,
+    sbtlStr112,
+    sbtlCallDestroyFontRequestAfter2Data3Entry3,
+    sbtlCallDestroyFontRequestAfter2Data3Entry2,
+    sbtlCallDestroyFontRequestAfter2Data3Entry,
+    sbtlStr152,
+    sbtlStr16Reserve,
+    sbtlStr17Reserve,
+    sbtlStr18Reserve,
+    sbtlStr19Reserve,
+    sbtlStr20Reserve,
+    sbtlStr21Reserve,
+    sbtlStr22Reserve,
+    sbtlStr23Reserve,
+    sbtlStr24Reserve,
+    sbtlStr25Reserve,
+    sbtlStr26Reserve,
+    NULL
+};
+
+char* sbtlCallDestroyFontRequestAfter2Data4[40] = {
+    sbtlCallDestroyFontRequestAfter2Data4Entry,
+    sbtlStr012,
+    sbtlStr022,
+    sbtlStr032,
+    sbtlStr042,
+    sbtlStr052,
+    sbtlStr06Reserve,
+    sbtlStr07,
+    sbtlStr082,
+    sbtlStr092,
+    sbtlStr10Reserve,
+    sbtlStr114,
+    sbtlCallDestroyFontRequestAfter2Data4Entry5,
+    sbtlStr133,
+    sbtlStr14Reserve,
+    sbtlStr154,
+    sbtlCallDestroyFontRequestAfter2Data4Entry4,
+    sbtlCallDestroyFontRequestAfter2Data4Entry3,
+    sbtlStr183,
+    sbtlStr19,
+    sbtlStr20,
+    sbtlStr21,
+    sbtlStr22,
+    sbtlStr23,
+    sbtlStr24,
+    sbtlStr25,
+    sbtlCallDestroyFontRequestAfter2Data4Entry2,
+    sbtlStr27,
+    sbtlStr28,
+    sbtlStr29,
+    sbtlStr30,
+    sbtlStr31,
+    sbtlStr32,
+    sbtlStr33,
+    sbtlStr34,
+    sbtlStr35,
+    sbtlStr36,
+    sbtlStr37,
+    sbtlStr38,
+    sbtlStr39
+};
+
+char* sblist_visualmenu00[4] = {
+    sbtlVisualDrawDataEntry4,
+    sbtlVisualDrawDataEntry3,
+    sbtlVisualDrawDataEntry2,
+    sbtlVisualDrawDataEntry
+};
+
+char* sblist_visualmenu01[4] = {
+    sbtlVisualDrawData2Entry4,
+    sbtlVisualDrawData2Entry3,
+    sbtlVisualDrawData2Entry2,
+    sbtlVisualDrawData2Entry
+};
+
+char* sblist_visualmenu02[4] = {
+    sbtlStrCylinder,
+    sbtlVisualDrawData5Entry2,
+    sbtlVisualDrawData5Entry,
+    NULL
+};
+
+char* sblist_visualmenu01_e[4] = {
+    sbtlStrECenter,
+    sbtlVisualDrawData2Entry3,
+    sbtlVisualDrawData2Entry2,
+    sbtlVisualDrawData2Entry
+};
+
+char* sblist_visualmenu02_e[4] = {
+    sbtlStrECylinder,
+    sbtlVisualDrawData5Entry2,
+    sbtlVisualDrawData5Entry,
+    NULL
+};
+
+char* sblist_visualmenu03[4] = {
+    sbtlStrDefMSpd,
+    sbtlStrDefRSpd,
+    sbtlStrDefMvspd,
+    sbtlVisualDrawData6Entry
+};
+
+char* sblist_visualmenu04[12] = {
+    sbtlStrMotionPara,
+    sbtlVisualDrawData7Entry2,
+    sbtlEditDrawData3Entry,
+    sbtlStrActionFrm,
+    sbtlStrStopFrm,
+    sbtlStrEndMotion,
+    sbtlStrMotionSpd,
+    sbtlStrHitRadian,
+    sbtlStrHokanFrm,
+    sbtlStrCancelFrm,
+    sbtlVisualDrawData7Entry,
+    NULL
+};
+
+char* sblist_visualmenu05[2] __attribute__((section(".data"))) = {
+    sbtlVisualDrawData8Entry2,
+    sbtlVisualDrawData8Entry
+};
+
+char* sblist_visualmenu06[2] __attribute__((section(".data"))) = {
+    sbtlVisualDrawData9Entry,
+    NULL
+};
+
+char* sblist_visualmenu06_0[2] __attribute__((section(".data"))) = {
+    sbtlStrEffcySave,
+    NULL
+};
+
+u16 motion_flg[2] __attribute__((section(".data"))) = {
+    MOTION_FLG_SPEED_ON, MOTION_FLG_NCANCEL
+};
+
+char* sbtlData20[34] = {
+    sbtlData22Entry5,
+    sbtlData22Entry4,
+    sbtlData22Entry3,
+    sbtlData20Entry10,
+    sbtlData20Entry9,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData22Entry2,
+    sbtlData20Entry7,
+    sbtlData20Entry6,
+    sbtlData22Entry,
+    sbtlData20Entry5,
+    sbtlData20Entry4,
+    sbtlData20Entry3,
+    sbtlData20Entry2,
+    sbtlData20Entry,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    sbtlData20Entry8,
+    NULL
+};
+
+char* sbtlData21[28] = {
+    sbtlData22Entry5,
+    sbtlData22Entry2,
+    sbtlData22Entry3,
+    sbtlData22Entry9,
+    sbtlData22Entry4,
+    sbtlData22Entry,
+    sbtlData20Entry10,
+    sbtlData21Entry7,
+    sbtlData21Entry6,
+    sbtlData21Entry5,
+    sbtlData21Entry4,
+    sbtlData21Entry3,
+    sbtlData22Entry8,
+    sbtlData22Entry7,
+    sbtlData22Entry6,
+    sbtlData21Entry2,
+    sbtlData22Entry9,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    sbtlData21Entry,
+    NULL
+};
+
+char* sbtlData22[44] = {
+    sbtlData22Entry5,
+    sbtlData22Entry2,
+    sbtlData22Entry3,
+    sbtlData22Entry38,
+    sbtlData22Entry4,
+    sbtlData22Entry,
+    sbtlData22Entry9,
+    sbtlData22Entry37,
+    sbtlData22Entry36,
+    sbtlData22Entry35,
+    sbtlData22Entry9,
+    sbtlData22Entry34,
+    sbtlData22Entry8,
+    sbtlData22Entry33,
+    sbtlData22Entry9,
+    sbtlData22Entry32,
+    sbtlData22Entry7,
+    sbtlData22Entry6,
+    sbtlData22Entry31,
+    sbtlData22Entry30,
+    sbtlData22Entry29,
+    sbtlData22Entry28,
+    sbtlData22Entry27,
+    sbtlData22Entry26,
+    sbtlData22Entry25,
+    sbtlData22Entry24,
+    sbtlData22Entry23,
+    sbtlData22Entry22,
+    sbtlData22Entry21,
+    sbtlData22Entry20,
+    sbtlData22Entry19,
+    sbtlData22Entry18,
+    sbtlData22Entry17,
+    sbtlData22Entry16,
+    sbtlData22Entry15,
+    sbtlData22Entry14,
+    sbtlData22Entry13,
+    sbtlData22Entry12,
+    sbtlData22Entry11,
+    sbtlData22Entry10,
+    sbtlData22Entry9,
+    sbtlData22Entry9,
+    sbtlData22Entry9,
+    NULL
+};
+
+char* sbtlMotionDataSaveData[64] = {
+    sbtlStrTCYV,
+    sbtlStrXP,
+    sbtlStr40,
+    sbtlStrSV,
+    sbtlStrGFN,
+    sbtlStrAO,
+    sbtlStr26,
+    sbtlStrVA,
+    sbtlStrOJEffectMotionIVLZ,
+    sbtlStr000,
+    sbtlStr001W,
+    sbtlStr002X,
+    sbtlStr003U,
+    sbtlStr0042,
+    sbtlMotionDataSaveData2Entry14,
+    sbtlMotionDataSaveData2Entry13,
+    sbtlMotionDataSaveData2Entry12,
+    sbtlMotionDataSaveData2Entry11,
+    sbtlStr009,
+    sbtlStr004,
+    sbtlStr002,
+    sbtlStr00E,
+    sbtlStr00EA,
+    sbtlMotionDataSaveData2Entry10,
+    sbtlStr00,
+    sbtlStr010AE,
+    sbtlStr011C,
+    sbtlStr012C,
+    sbtlMotionDataSaveData2Entry9,
+    sbtlMotionDataSaveData2Entry8,
+    sbtlMotionDataSaveData2Entry7,
+    sbtlMotionDataSaveData2Entry6,
+    sbtlMotionDataSaveData2Entry5,
+    sbtlMotionDataSaveData2Entry4,
+    sbtlMotionDataSaveData2Entry3,
+    sbtlMotionDataSaveData2Entry2,
+    sbtlMotionDataSaveData2Entry,
+    sbtlStr00000Loop,
+    sbtlStr01001Loop,
+    sbtlStr02002XLoop,
+    sbtlStr03003Reserve,
+    sbtlStr04004W,
+    sbtlStr05005W,
+    sbtlStr06006AN,
+    sbtlStr07007,
+    sbtlStr08008X,
+    sbtlStr09009,
+    sbtlStr1000,
+    sbtlStr1100K,
+    sbtlStr1200S,
+    sbtlStr1300,
+    sbtlStr1400A,
+    sbtlStr1500,
+    sbtlStr16010Reserve,
+    sbtlStr17011Reserve,
+    sbtlStr18012Reserve,
+    sbtlStr19013Reserve,
+    sbtlStr20014Reserve,
+    sbtlStr21015Reserve,
+    sbtlStr22016Reserve,
+    sbtlStr23017Reserve,
+    sbtlStr24018Reserve,
+    sbtlStr25019Reserve,
+    sbtlStr2601Reserve
+};
+
+char* sbtlMotionMoveDataData[2] __attribute__((section(".data"))) = {
+    sbtlStrVJI,
+    NULL
+};
+
+char* sbtlMotionDataSaveData2[82] = {
+    sbtlStrTCYV,
+    sbtlStrXP,
+    sbtlStr40,
+    sbtlStrSV,
+    sbtlStrGFN,
+    sbtlStrAO,
+    sbtlStr26,
+    sbtlStrVA,
+    sbtlStrOJEffectMotionIVLZ,
+    sbtlStr000,
+    sbtlStr001W,
+    sbtlStr002X,
+    sbtlStr003U,
+    sbtlStr0042,
+    sbtlMotionDataSaveData2Entry14,
+    sbtlMotionDataSaveData2Entry13,
+    sbtlMotionDataSaveData2Entry12,
+    sbtlMotionDataSaveData2Entry11,
+    sbtlStr009,
+    sbtlStr004,
+    sbtlStr002,
+    sbtlStr00E,
+    sbtlStr00EA,
+    sbtlMotionDataSaveData2Entry10,
+    sbtlStr00,
+    sbtlStr010AE,
+    sbtlStr011C,
+    sbtlStr012C,
+    sbtlMotionDataSaveData2Entry9,
+    sbtlMotionDataSaveData2Entry8,
+    sbtlMotionDataSaveData2Entry7,
+    sbtlMotionDataSaveData2Entry6,
+    sbtlMotionDataSaveData2Entry5,
+    sbtlMotionDataSaveData2Entry4,
+    sbtlMotionDataSaveData2Entry3,
+    sbtlMotionDataSaveData2Entry2,
+    sbtlMotionDataSaveData2Entry,
+    sbtlStr000,
+    sbtlStr001,
+    sbtlStr002XX,
+    sbtlStr003XX,
+    sbtlStr004W,
+    sbtlStr005W,
+    sbtlStr006,
+    sbtlStr007,
+    sbtlStr008,
+    sbtlStr0092,
+    sbtlMotionDataSaveData2Entry19,
+    sbtlStr00BK,
+    sbtlStr00C,
+    sbtlStr00DI,
+    sbtlMotionDataSaveData2Entry18,
+    sbtlStr00FAC,
+    sbtlStr010,
+    sbtlStr011A,
+    sbtlStr0122,
+    sbtlStr013,
+    sbtlStr014RAPX,
+    sbtlStr015RBAY,
+    sbtlStr016,
+    sbtlStr017C,
+    sbtlStr018C,
+    sbtlStr019C,
+    sbtlStr01A,
+    sbtlStr01B1,
+    sbtlStr01C2,
+    sbtlStr01D3,
+    sbtlStr01EZ,
+    sbtlStr01F,
+    sbtlStr020,
+    sbtlStr021,
+    sbtlStr022RVU,
+    sbtlStr023K,
+    sbtlStr024K,
+    sbtlStr025K,
+    sbtlStr026K,
+    sbtlStr027K,
+    sbtlMotionDataSaveData2Entry17,
+    sbtlMotionDataSaveData2Entry16,
+    sbtlMotionDataSaveData2Entry15,
+    sbtlStrVJI,
+    NULL
+};
+
+char* sblist_efhitmenu_open_move[6] = {
+    sbtlStrSave,
+    sbtlStrPosReset,
+    sbtlStrModelchange,
+    sbtlData24Entry3,
+    sbtlData24Entry2,
+    sbtlData24Entry
+};
+
+char* sblist_efhitmenu_open_mdl[6] = {
+    sbtlStrSaveMht,
+    sbtlStrNew,
+    sbtlStrModelchange,
+    sbtlData24Entry3,
+    sbtlData24Entry2,
+    sbtlData24Entry
+};
+
+char* sblist_efhitmenu_open[6] = {
+    sbtlStrSaveEht,
+    sbtlStrLoadEht,
+    sbtlStrNew,
+    sbtlData24Entry2,
+    sbtlData24Entry,
+    NULL
+};
+
+char* sblist_efhitmenu_page_00[2] __attribute__((section(".data"))) = {
+    sbtlStrPageList,
+    NULL
+};
+
+char* sblist_efhitmenu_page_01[16] = {
+    sbtlStrPage01,
+    sbtlStrPage02,
+    sbtlStrPage03,
+    sbtlStrPage04,
+    sbtlStrPage05,
+    sbtlStrPage06,
+    sbtlStrPage07,
+    sbtlStrPage08,
+    sbtlStrPage09,
+    sbtlStrPage10,
+    sbtlStrPage11,
+    sbtlStrPage12,
+    sbtlStrPage13,
+    sbtlStrPage14,
+    sbtlStrPage15,
+    sbtlStrPage16
+};
+
+char* sblist_efhitmenu_page_02[2] __attribute__((section(".data"))) = {
+    sbtlStrNewPage,
+    NULL
+};
+
+char* sblist_efhitmenu_selmenu[4] = {
+    sbtlStrEdit,
+    sbtlStrCopy,
+    sbtlStrDelete,
+    NULL
+};
+
+char* sblist_efhitmenu_delok_00[2] __attribute__((section(".data"))) = {
+    sbtlStrDeleteOk,
+    NULL
+};
+
+char* sblist_efhitmenu_exitok_00[2] __attribute__((section(".data"))) = {
+    sbtlStrExitOk,
+    NULL
+};
+
+char* sblist_efhitmenu_delok_01[2] __attribute__((section(".data"))) = {
+    sbtlData29Entry2,
+    sbtlData29Entry
+};
+
+char* sblist_efhitmenu_hittype[4] = {
+    sbtlData30Entry2,
+    sbtlStrCylinder2,
+    sbtlData30Entry,
+    NULL
+};
+
+char* sblist_efhitmenu_edit_page[16] = {
+    sbtlData31Entry16,
+    sbtlData31Entry15,
+    sbtlData31Entry14,
+    sbtlData31Entry13,
+    sbtlData31Entry12,
+    sbtlData31Entry11,
+    sbtlData31Entry10,
+    sbtlData31Entry9,
+    sbtlData31Entry8,
+    sbtlData31Entry7,
+    sbtlData31Entry6,
+    sbtlData31Entry5,
+    sbtlData31Entry4,
+    sbtlData31Entry3,
+    sbtlData31Entry2,
+    sbtlData31Entry
+};
+
+char* sblist_efhitmenu_edit_para00[4] = {
+    sbtlVisualDrawData5Entry2,
+    sbtlEffHitEditorDraw_Functbl_CylinderDataEntry2,
+    sbtlEffHitEditorDraw_Functbl_CylinderDataEntry,
+    sbtlEditDraw_MOVEDataEntry
+};
+
+char* sblist_efhitmenu_edit_para00_0[4] = {
+    sbtlVisualDrawData5Entry2,
+    sbtlVisualDrawData5Entry,
+    sbtlEffHitEditorDraw_Functbl_CylinderDataEntry,
+    sbtlEditDraw_MOVEDataEntry
+};
+
+char* sblist_efhitmenu_edit_para00_1[6] = {
+    sbtlVisualDrawData5Entry2,
+    sbtlEffHitEditorDraw_Functbl_RingDataEntry,
+    sbtlVisualDrawData5Entry,
+    sbtlEffHitEditorDraw_Functbl_CylinderDataEntry,
+    sbtlEditDraw_MOVEDataEntry,
+    NULL
+};
+
+char* sblist_mdlhitmenu_edit_para00[4] = {
+    sbtlVisualDrawData5Entry2,
+    sbtlEffHitEditorDraw_Functbl_CylinderDataEntry2,
+    sbtlEffHitEditorDraw_Functbl_CylinderDataEntry,
+    sbtlEditDraw_MOVEDataEntry
+};
+
+char* sblist_mdlhitmenu_edit_para00_0[4] = {
+    sbtlVisualDrawData5Entry2,
+    sbtlVisualDrawData5Entry,
+    sbtlEffHitEditorDraw_Functbl_CylinderDataEntry,
+    sbtlEditDraw_MOVEDataEntry
+};
+
+char* sblist_mdlhitmenu_edit_para00_1[6] = {
+    sbtlVisualDrawData5Entry2,
+    sbtlEffHitEditorDraw_Functbl_RingDataEntry,
+    sbtlVisualDrawData5Entry,
+    sbtlEffHitEditorDraw_Functbl_CylinderDataEntry,
+    sbtlEditDraw_MOVEDataEntry,
+    NULL
+};
+
+char* sblist_mdlhitmenu_edit_para02[2] __attribute__((section(".data"))) = {
+    sbtlEditDrawData3Entry2,
+    sbtlData35Entry
+};
+
+char* sblist_mdlhitmenu_edit_para03[2] __attribute__((section(".data"))) = {
+    sbtlStrMtionno,
+    NULL
+};
+
+char* sblist_efhitmenu_edit_para01[2] __attribute__((section(".data"))) = {
+    sbtlStrPoseture,
+    NULL
+};
+
+char* sblist_efhitmenu_edit_para01_1[4] = {
+    sbtlData34Entry3,
+    sbtlData34Entry2,
+    sbtlData34Entry,
+    NULL
+};
+
+char* sblist_mdlmovemenu_edit_para00[4] = {
+    sbtlEditDraw_MOVEDataEntry,
+    sbtlEditDraw_MOVEDataEntry2,
+    sbtlStrPositionReset,
+    NULL
+};
+
+char* sblist_efhitmenu_edit_para02[6] = {
+    sbtlEditDrawData3Entry2,
+    sbtlData35Entry4,
+    sbtlEditDraw_MOVEDataEntry2,
+    sbtlData35Entry3,
+    sbtlStrGravity,
+    sbtlData35Entry2
+};
+
+char* sblist_efhitmenu_edit_para02_0[8] = {
+    sbtlEditDrawData3Entry2,
+    sbtlData35Entry,
+    sbtlData35Entry4,
+    sbtlEditDraw_MOVEDataEntry2,
+    sbtlData35Entry3,
+    sbtlStrGravity,
+    sbtlData35Entry2,
+    NULL
+};
+
+char* sblist_efhitmenu_edit_para03[2] __attribute__((section(".data"))) = {
+    sbtlStrBehaviorType,
+    NULL
+};
+
+char* sblist_efhitmenu_edit_para03_0[2] __attribute__((section(".data"))) = {
+    sbtlData36Entry,
+    sbtlStrPathPb
+};
+
+char* sblist_efhitmenu_edit_para03_1[2] __attribute__((section(".data"))) = {
+    sbtlStrBezier,
+    sbtlDebug_HitTypeMoveDrawDataEntry
+};
+
+char* sblist_efhitmenu_edit_para04[6] = {
+    sbtlStrAttachEpl,
+    sbtlDebug_EPLParaDrawDataEntry3,
+    sbtlEditDraw_MOVEDataEntry,
+    sbtlDebug_EPLParaDrawDataEntry2,
+    sbtlDebug_EPLParaDrawDataEntry,
+    NULL
+};
+
+char* sblist_efhitmenu_edit_para05_00[2] __attribute__((section(".data"))) = {
+    sbtlStrEplMenu,
+    NULL
+};
+
+char* sblist_efhitmenu_edit_para05_01[2] __attribute__((section(".data"))) = {
+    sbtlCallBtlDebugDrawNormalListCol4Data2Entry2,
+    sbtlCallBtlDebugDrawNormalListCol4Data2Entry
+};
+
+char* sblist_efhitmenu_edit_para06_00[22] = {
+    sbtlStrAll,
+    sbtlStrInvork,
+    sbtlStrTarget,
+    sbtlStrWorld,
+    sbtlStrIparty,
+    sbtlStrTparty,
+    sbtlStrCombia,
+    sbtlStrCombib,
+    sbtlStrIxT,
+    sbtlStrAllH,
+    sbtlStrInvorkH,
+    sbtlStrTargetH,
+    sbtlStrWorldH,
+    sbtlStrIpartyH,
+    sbtlStrTpartyH,
+    sbtlStrCombiaH,
+    sbtlStrCombibH,
+    sbtlStrIxTH,
+    sbtlData37Entry2,
+    sbtlData37Entry,
+    sbtlCallBtlDebugDrawNormalListCol8DataEntry,
+    sbtlStrHittype
+};
+
+char* sblist_effhitemenu01[2] __attribute__((section(".data"))) = {
+    sbtlEditDrawData3Entry,
+    NULL
+};
+
+char* sblist_effhitemenu02[18] = {
+    nbUnitBadStatusNamePara,
+    sbtlStrStTime,
+    sbtlEditDraw_MOVEDataEntry,
+    sbtlEditDrawData3Entry8,
+    sbtlEditDrawData3Entry7,
+    sbtlStrDirFlg,
+    sbtlEditDrawData3Entry2,
+    sbtlEditDrawData3Entry6,
+    sbtlEditDrawData3Entry5,
+    sbtlVisualDrawData5Entry2,
+    sbtlEditDrawData3Entry4,
+    sbtlStrKakudoRl,
+    sbtlStrHitbkLife,
+    sbtlStrHitbkPara,
+    sbtlEditDrawData3Entry3,
+    sbtlStrKasokudo,
+    sbtlStrHomingpara,
+    NULL
+};
+
+char* sblist_effhitemenu03[6] = {
+    sbtlStrStartPos,
+    sbtlStrPosition,
+    sbtlStrHelperno,
+    sbtlVisualDrawData5Entry,
+    sbtlData38Entry,
+    NULL
+};
+
+char* sblist_effhitemenu03_0[6] = {
+    sbtlStrTargetpos,
+    sbtlStrPosition,
+    sbtlStrHelperno,
+    sbtlVisualDrawData5Entry,
+    sbtlData38Entry,
+    NULL
+};
+
+char* sblist_effhitemenu03_a1[6] = {
+    sbtlStrInterpo1,
+    sbtlData40Entry3,
+    sbtlData40Entry2,
+    sbtlVisualDrawData5Entry,
+    sbtlData40Entry,
+    NULL
+};
+
+char* sblist_effhitemenu03_a2[6] = {
+    sbtlStrInterpo2,
+    sbtlData40Entry3,
+    sbtlData40Entry2,
+    sbtlVisualDrawData5Entry,
+    sbtlData40Entry,
+    NULL
+};
+
+char* sblist_effhitemenu04[6] = {
+    sblist_effhitemenu03_a1Entry,
+    sbtlStrPosition,
+    sbtlStrHelperno,
+    sbtlVisualDrawData5Entry,
+    sbtlData38Entry,
+    NULL
+};
+
+char* sblist_effhitemenu05[2] __attribute__((section(".data"))) = {
+    sblist_effhitemenu03_a1Entry3,
+    sblist_effhitemenu03_a1Entry2
+};
+
+s32 sbtlData42[14] = {
+    SBTLDMG_HITFLG_ACTER, SBTLDMG_HITFLG_HITCLR, SBTLDMG_HITFLG_OLDON, SBTLDMG_HITFLG_NHITOFF, SBTLDMG_HITFLG_NONSTOP, SBTLDMG_HITFLG_IDOUON, SBTLDMG_HITFLG_EFFCLR, SBTLDMG_HITFLG_HOMING, SBTLDMG_HITFLG_GROUND, SBTLDMG_HITFLG_I_STTIM, SBTLDMG_HITFLG_MUGEN, SBTLDMG_HITFLG_ACTERAT, SBTLDMG_HITFLG_LOOP, 0
+};
 INCLUDE_SDATA(const s32, "code_r1_0014F378", fldFreeMapDataData);
 
 INCLUDE_SDATA(const s32, "code_r1_0014F378", mapFileLoadData7);

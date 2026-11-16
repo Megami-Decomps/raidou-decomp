@@ -13881,82 +13881,87 @@
 0x0041D590	sbtlLenDirData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLenDir
 0x0041D598	sbtlLenDirData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLenDir
 0x0041D5A8	sbtlLenDirData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLenDir
-0x0041D5B0	sbtlDebug_ProcData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlDebug_Proc
-0x0041D600	sbtlDebug_DrawData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlDebug_Draw
-0x0041D650	sbtlLeaf104Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf104
-0x0041D698	sbtlLeaf122Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf122
-0x0041D6E0	sbtlLeaf98Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf98
-0x0041D728	sbtlEditDrawData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEditDraw
-0x0041D738	sbtlEditDrawData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEditDraw
-0x0041D760	sbtlRefSbtl67Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl67
-0x0041D7C8	sbtlOptiData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlOpti (5 of 7 refs, 2 functions)
-0x0041D9C0	sbtlRefSbtl56Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl56
-0x0041D9C8	sbtlRefSbtl56Data2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl56
-0x0041D9F8	sbtlCallBtlSearchUnitID31Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID31 (4 of 6 refs, 2 functions)
-0x0041DAD8	sbtlParaDrawData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlParaDraw
-0x0041DB08	sbtlFunc26Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlFunc26
-0x0041DB60	sbtlDebug_UnitPanelCursorData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlDebug_UnitPanelCursor (5 of 7 refs, 2 functions)
-0x0041DD18	ModelSelectProcData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by ModelSelectProc
-0x0041DD40	sbtlLeaf114Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf114
-0x0041DD78	sbtlCallBtlDebugSetStatusflgData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlDebugSetStatusflg
+0x0041D5B0	sbdebug_procmenu	hd	hd: Raidou HD sbattle.sbdebug_procmenu; same declaration order and list contents
+0x0041D600	sbdebug_drawmenu	hd	hd: Raidou HD sbattle.sbdebug_drawmenu; same declaration order and list contents
+0x0041D650	sbtlDebug_NEFMODE_Func	hd	hd: Raidou HD sbattle.sBtlDebug_NEFMODE_Func; same declaration order and list contents
+0x0041D698	sbtlDebug_NMDLMODE_Func	hd	hd: Raidou HD sbattle.sBtlDebug_NMDLMODE_Func; same declaration order and list contents
+0x0041D6E0	sbtlDebug_NMDLMVMODE_Func	hd	hd: Raidou HD sbattle.sBtlDebug_NMDLMVMODE_Func; same declaration order and list contents
+0x0041D728	sbtlDebug_EffHitEditorDraw_Functbl	hd	hd: Raidou HD sbattle.sBtlDebug_EffHitEditorDraw_Functbl; same declaration order and list contents
+0x0041D738	sbtlDebug_MDLHitEditorDraw_Functbl	hd	hd: Raidou HD sbattle.sBtlDebug_MDLHitEditorDraw_Functbl; same declaration order and list contents
+0x0041D748	sbplayer_cmnd	inferred	hd: Raidou HD sbattle.sbplayer_cmnd or sbtarget_cmnd; Raidou 1 has one PLAYER list before sblist_optimenu, unreferenced
+0x0041D760	sblist_optimenu	hd	hd: Raidou HD sbattle.sblist_optimenu; same declaration order and list contents
+0x0041D7C8	sbflg_optimenu	hd	hd: Raidou HD sbattle.sbflg_optimenu; same declaration order and list contents
+0x0041D9C0	sblist_setmenu_00	hd	hd: Raidou HD sbattle.sblist_setmenu_00; same declaration order and list contents
+0x0041D9C8	sblist_setmenu_01	hd	hd: Raidou HD sbattle.sblist_setmenu_01; same declaration order and list contents
+0x0041D9F8	sbflg_setmenu	hd	hd: Raidou HD sbattle.sbflg_setmenu; same declaration order and list contents
+0x0041DAD8	sblist_paramenu	hd	hd: Raidou HD sbattle.sblist_paramenu; same declaration order and list contents
+0x0041DB08	sblist_panel	hd	hd: Raidou HD sbattle.sblist_panel; same declaration order and list contents
+0x0041DB60	sbflg_panel	hd	hd: Raidou HD sbattle.sbflg_panel; same declaration order and list contents
+0x0041DD18	sbflg_mdlselect	hd	hd: Raidou HD sbattle.sbflg_mdlselect; same declaration order and list contents
+0x0041DD40	sblist_modelmenu	hd	hd: Raidou HD sbattle.sblist_modelmenu; same declaration order and list contents
+0x0041DD68	sblist_mdlmenupanel	hd	hd: Raidou HD sbattle.sblist_mdlmenupanel; same declaration order and list contents
+0x0041DD78	sbflg_mdlmenupanel	hd	hd: Raidou HD sbattle.sbflg_mdlmenupanel; same declaration order and list contents
 0x0041DE30	sbtlCallDestroyFontRequestAfter2Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter2
 0x0041DEA0	sbtlCallDestroyFontRequestAfter2Data2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter2
 0x0041DF10	sbtlCallDestroyFontRequestAfter2Data3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter2
 0x0041DF80	sbtlCallDestroyFontRequestAfter2Data4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter2
-0x0041E020	sbtlVisualDrawData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E030	sbtlVisualDrawData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E040	sbtlVisualDrawData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E050	sbtlVisualDrawData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E060	sbtlVisualDrawData5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E070	sbtlVisualDrawData6	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E080	sbtlVisualDrawData7	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E0B0	sbtlVisualDrawData8	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E0B8	sbtlVisualDrawData9	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E0C0	sbtlVisualDrawData10	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlVisualDraw
-0x0041E0C8	sbtlData19	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: sbtlVisualDraw, Calc_AW_GunTarget, sbtlMDLHitEditor_DrawMotion
+0x0041E020	sblist_visualmenu00	hd	hd: Raidou HD sbattle.sblist_visualmenu00; same declaration order and list contents
+0x0041E030	sblist_visualmenu01	hd	hd: Raidou HD sbattle.sblist_visualmenu01; same declaration order and list contents
+0x0041E040	sblist_visualmenu02	hd	hd: Raidou HD sbattle.sblist_visualmenu02; same declaration order and list contents
+0x0041E050	sblist_visualmenu01_e	hd	hd: Raidou HD sbattle.sblist_visualmenu01_e; same declaration order and list contents
+0x0041E060	sblist_visualmenu02_e	hd	hd: Raidou HD sbattle.sblist_visualmenu02_e; same declaration order and list contents
+0x0041E070	sblist_visualmenu03	hd	hd: Raidou HD sbattle.sblist_visualmenu03; same declaration order and list contents
+0x0041E080	sblist_visualmenu04	hd	hd: Raidou HD sbattle.sblist_visualmenu04; same declaration order and list contents
+0x0041E0B0	sblist_visualmenu05	hd	hd: Raidou HD sbattle.sblist_visualmenu05; same declaration order and list contents
+0x0041E0B8	sblist_visualmenu06	hd	hd: Raidou HD sbattle.sblist_visualmenu06; same declaration order and list contents
+0x0041E0C0	sblist_visualmenu06_0	hd	hd: Raidou HD sbattle.sblist_visualmenu06_0; same declaration order and list contents
+0x0041E0C8	motion_flg	hd	hd: Raidou HD sbattle.motion_flg; same declaration order and list contents
 0x0041E0D0	sbtlData20	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: sbtlVisualDraw, sbtlCallBtlDebugDrawNormalListCol5, sbtlCallBtlDebugDrawNormalListCol6
 0x0041E158	sbtlData21	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: sbtlVisualDraw, sbtlDebug_HitTypeMoveDraw, sbtlCallBtlDebugDrawNormalListCol5
 0x0041E1C8	sbtlData22	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: sbtlVisualDraw, sbtlCallBtlDebugDrawNormalListCol5, sbtlCallBtlDebugDrawNormalListCol6
 0x0041E278	sbtlMotionDataSaveData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlMotionDataSave
 0x0041E378	sbtlMotionMoveDataData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlMotionMoveData
 0x0041E380	sbtlMotionDataSaveData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlMotionDataSave
-0x0041E4C8	sbtlData23	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallBtlDebugDrawNormalListCol5, sbtlCallBtlDebugDrawNormalListCol7
-0x0041E4E0	sbtlData24	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallBtlDebugDrawNormalListCol6, sbtlCallBtlDebugDrawNormalListCol8
-0x0041E4F8	sbtlData25	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallBtlDebugDrawNormalListCol6, sbtlCallBtlDebugDrawNormalListCol8
-0x0041E510	sbtlData26	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallBtlDebugDrawNormalListCol7, sbtlCallBtlDebugDrawNormalListCol8
-0x0041E558	sbtlData27	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallBtlDebugDrawNormalListCol7, sbtlCallBtlDebugDrawNormalListCol8
-0x0041E560	sbtlFunc22Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlFunc22
-0x0041E570	sbtlData28	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: sbtlCallBtlDebugDrawNormalListCol, sbtlBattleMdlhit, sbtlBattleEffhit
-0x0041E578	sbtlCallBtlDebugDrawNormalListCol2Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlDebugDrawNormalListCol2
-0x0041E580	sbtlData29	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: sbtlCallBtlDebugDrawNormalListCol, sbtlBattleMdlhit, sbtlBattleEffhit
-0x0041E588	sbtlData30	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlDebug_HitTypeMoveDraw, sbtlFunc27
-0x0041E598	sbtlData31	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlEditDraw_MOVE, sbtlEditDraw
-0x0041E5D8	sbtlEffHitEditorDraw_Functbl_CylinderData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEffHitEditorDraw_Functbl_Cylinder
-0x0041E5E8	sbtlEffHitEditorDraw_Functbl_SphereData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEffHitEditorDraw_Functbl_Sphere
-0x0041E5F8	sbtlEffHitEditorDraw_Functbl_RingData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEffHitEditorDraw_Functbl_Ring
-0x0041E610	sbtlMDLHitEditorDraw_Functbl_SphereData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlMDLHitEditorDraw_Functbl_Sphere
-0x0041E620	sbtlMDLHitEditorDraw_Functbl_CylinderData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlMDLHitEditorDraw_Functbl_Cylinder
-0x0041E630	sbtlMDLHitEditorDraw_Functbl_RingData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlMDLHitEditorDraw_Functbl_Ring
-0x0041E648	sbtlData32	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlMDLHitEditorDraw_Functbl_Sphere, sbtlMDLHitEditorDraw_Functbl_Cylinder, sbtlMDLHitEditorDraw_Functbl_Ring
-0x0041E650	sbtlMDLHitEditor_DrawMotionData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlMDLHitEditor_DrawMotion
-0x0041E658	sbtlData33	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: sbtlEffHitEditorDraw_Functbl_Cylinder, sbtlEffHitEditorDraw_Functbl_Sphere, sbtlEffHitEditorDraw_Functbl_Ring
-0x0041E660	sbtlData34	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlBattleMdlhit, sbtlBattleEffhit
-0x0041E670	sbtlEditDraw_MOVEData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEditDraw_MOVE
-0x0041E680	sbtlEffHitEditorDraw_Functbl_CylinderData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEffHitEditorDraw_Functbl_Cylinder
-0x0041E698	sbtlData35	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlEffHitEditorDraw_Functbl_Sphere, sbtlEffHitEditorDraw_Functbl_Ring
-0x0041E6B8	sbtlDebug_MoveTypeDrawData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlDebug_MoveTypeDraw
-0x0041E6C0	sbtlData36	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlBattleEffhit, sbtlDebug_MoveTypeDraw
-0x0041E6C8	sbtlDebug_HitTypeMoveDrawData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlDebug_HitTypeMoveDraw
-0x0041E6D0	sbtlDebug_EPLParaDrawData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlDebug_EPLParaDraw
-0x0041E6E8	sbtlCallBtlDebugDrawNormalListCol4Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlDebugDrawNormalListCol4
-0x0041E6F0	sbtlCallBtlDebugDrawNormalListCol4Data2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlDebugDrawNormalListCol4
-0x0041E6F8	sbtlData37	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: sbtlEffHitEditorDraw_Functbl_Cylinder, sbtlEffHitEditorDraw_Functbl_Sphere, sbtlEffHitEditorDraw_Functbl_Ring
-0x0041E750	sbtlEditDrawData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEditDraw
-0x0041E7A0	sbtlData38	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlEffHitEditorDraw_Functbl_Cylinder, sbtlEffHitEditorDraw_Functbl_Sphere, sbtlEffHitEditorDraw_Functbl_Ring
-0x0041E7B8	sbtlData39	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: sbtlEffHitEditorDraw_Functbl_Cylinder, sbtlEffHitEditorDraw_Functbl_Sphere, sbtlEffHitEditorDraw_Functbl_Ring
-0x0041E7D0	sbtlData40	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlEffHitEditorDraw_Functbl_Cylinder, sbtlEffHitEditorDraw_Functbl_Sphere, sbtlEffHitEditorDraw_Functbl_Ring
-0x0041E7E8	sbtlData41	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlEffHitEditorDraw_Functbl_Cylinder, sbtlEffHitEditorDraw_Functbl_Sphere, sbtlEffHitEditorDraw_Functbl_Ring
-0x0041E800	sblist_effhitemenu03_a1	hd	hd: Raidou HD sbattle.sblist_effhitemenu03_a1, 3 of 3 functions agree, high confidence
+0x0041E4C8	sblist_efhitmenu_open_move	hd	hd: Raidou HD sbattle.sblist_efhitmenu_open_move; same declaration order and list contents
+0x0041E4E0	sblist_efhitmenu_open_mdl	hd	hd: Raidou HD sbattle.sblist_efhitmenu_open_mdl; same declaration order and list contents
+0x0041E4F8	sblist_efhitmenu_open	hd	hd: Raidou HD sbattle.sblist_efhitmenu_open; same declaration order and list contents
+0x0041E510	sblist_efhitmenu_page_00	hd	hd: Raidou HD sbattle.sblist_efhitmenu_page_00; same declaration order and list contents
+0x0041E518	sblist_efhitmenu_page_01	hd	hd: Raidou HD sbattle.sblist_efhitmenu_page_01; same declaration order and list contents
+0x0041E558	sblist_efhitmenu_page_02	hd	hd: Raidou HD sbattle.sblist_efhitmenu_page_02; same declaration order and list contents
+0x0041E560	sblist_efhitmenu_selmenu	hd	hd: Raidou HD sbattle.sblist_efhitmenu_selmenu; same declaration order and list contents
+0x0041E570	sblist_efhitmenu_delok_00	hd	hd: Raidou HD sbattle.sblist_efhitmenu_delok_00; same declaration order and list contents
+0x0041E578	sblist_efhitmenu_exitok_00	hd	hd: Raidou HD sbattle.sblist_efhitmenu_exitok_00; same declaration order and list contents
+0x0041E580	sblist_efhitmenu_delok_01	hd	hd: Raidou HD sbattle.sblist_efhitmenu_delok_01; same declaration order and list contents
+0x0041E588	sblist_efhitmenu_hittype	hd	hd: Raidou HD sbattle.sblist_efhitmenu_hittype; same declaration order and list contents
+0x0041E598	sblist_efhitmenu_edit_page	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_page; same declaration order and list contents
+0x0041E5D8	sblist_efhitmenu_edit_para00	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para00; same declaration order and list contents
+0x0041E5E8	sblist_efhitmenu_edit_para00_0	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para00_0; same declaration order and list contents
+0x0041E5F8	sblist_efhitmenu_edit_para00_1	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para00_1; same declaration order and list contents
+0x0041E610	sblist_mdlhitmenu_edit_para00	hd	hd: Raidou HD sbattle.sblist_mdlhitmenu_edit_para00; same declaration order and list contents
+0x0041E620	sblist_mdlhitmenu_edit_para00_0	hd	hd: Raidou HD sbattle.sblist_mdlhitmenu_edit_para00_0; same declaration order and list contents
+0x0041E630	sblist_mdlhitmenu_edit_para00_1	hd	hd: Raidou HD sbattle.sblist_mdlhitmenu_edit_para00_1; same declaration order and list contents
+0x0041E648	sblist_mdlhitmenu_edit_para02	hd	hd: Raidou HD sbattle.sblist_mdlhitmenu_edit_para02; same declaration order and list contents
+0x0041E650	sblist_mdlhitmenu_edit_para03	hd	hd: Raidou HD sbattle.sblist_mdlhitmenu_edit_para03; same declaration order and list contents
+0x0041E658	sblist_efhitmenu_edit_para01	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para01; same declaration order and list contents
+0x0041E660	sblist_efhitmenu_edit_para01_1	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para01_1; same declaration order and list contents
+0x0041E670	sblist_mdlmovemenu_edit_para00	hd	hd: Raidou HD sbattle.sblist_mdlmovemenu_edit_para00; same declaration order and list contents
+0x0041E680	sblist_efhitmenu_edit_para02	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para02; same declaration order and list contents
+0x0041E698	sblist_efhitmenu_edit_para02_0	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para02_0; same declaration order and list contents
+0x0041E6B8	sblist_efhitmenu_edit_para03	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para03; same declaration order and list contents
+0x0041E6C0	sblist_efhitmenu_edit_para03_0	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para03_0; same declaration order and list contents
+0x0041E6C8	sblist_efhitmenu_edit_para03_1	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para03_1; same declaration order and list contents
+0x0041E6D0	sblist_efhitmenu_edit_para04	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para04; same declaration order and list contents
+0x0041E6E8	sblist_efhitmenu_edit_para05_00	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para05_00; same declaration order and list contents
+0x0041E6F0	sblist_efhitmenu_edit_para05_01	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para05_01; same declaration order and list contents
+0x0041E6F8	sblist_efhitmenu_edit_para06_00	hd	hd: Raidou HD sbattle.sblist_efhitmenu_edit_para06_00; same declaration order and list contents
+0x0041E750	sblist_effhitemenu01	hd	hd: Raidou HD sbattle.sblist_effhitemenu01; same declaration order and list contents
+0x0041E758	sblist_effhitemenu02	hd	hd: Raidou HD sbattle.sblist_effhitemenu02; same declaration order and list contents
+0x0041E7A0	sblist_effhitemenu03	hd	hd: Raidou HD sbattle.sblist_effhitemenu03; same declaration order and list contents
+0x0041E7B8	sblist_effhitemenu03_0	hd	hd: Raidou HD sbattle.sblist_effhitemenu03_0; same declaration order and list contents
+0x0041E7D0	sblist_effhitemenu03_a1	hd	hd: Raidou HD sbattle.sblist_effhitemenu03_a1; same declaration order and list contents
+0x0041E7E8	sblist_effhitemenu03_a2	hd	hd: Raidou HD sbattle.sblist_effhitemenu03_a2; same declaration order and list contents
+0x0041E800	sblist_effhitemenu04	hd	hd: Raidou HD sbattle.sblist_effhitemenu04; same declaration order and list contents
+0x0041E818	sblist_effhitemenu05	hd	hd: Raidou HD sbattle.sblist_effhitemenu05; same declaration order and list contents
 0x0041E820	sbtlData42	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: sbtlBattleMdlhit, sbtlBattleEffhit, sbtlMDLMODE_Func_Edit
 0x0041E858	sdfSetLocalMapCounterMarkerStateData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sdfSetLocalMapCounterMarkerState
 0x0041E870	evtStageTestState	inferred	method=dds-ref; p=0.59 (n=D_r1_0041E870); tier=C; source=dds; evidence=dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=SceneDel_Calc

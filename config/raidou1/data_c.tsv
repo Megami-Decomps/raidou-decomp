@@ -9,3 +9,4 @@ code_r1_00195498	0x003E9250	0x003E9258
 sdk/libkernl/filestub	0x00442CE8	0x00442D7C
 sdk/libkernl/iopheap	0x00442D7C	0x00442D80
 sdk/libkernl/eeloadfile	0x00442D80	0x00442D88
+code_r1_0014F378	0x0041D5B0	0x0041E858
