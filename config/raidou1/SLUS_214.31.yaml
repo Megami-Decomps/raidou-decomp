@@ -697,6 +697,8 @@ segments:
       - [0x2AE624, data, data_003AD624]
       - [0x2B4138, .data, kernel/dds3AdminiProcess]
       - [0x2B4348, data, data_003B3348]
+      - [0x2E6B94, .data, code_r1_0016A298]
+      - [0x2E6B98, data, data_003E5B98]
       - [0x2EA250, .data, code_r1_00195498]
       - [0x2EA258, data, data_003E9258]
       - [0x2F09A8, .data, code_r1_001C4B78]
