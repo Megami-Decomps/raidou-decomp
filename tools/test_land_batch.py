@@ -95,6 +95,47 @@ class RenameTests(unittest.TestCase):
         self.assertEqual(renames.tier("callee of x"), ("C", "derived-role"))
 
 
+    def symbols(self, root: pathlib.Path, r1: str, r2: str) -> None:
+        for game, names in (("raidou1", r1), ("raidou2", r2)):
+            (root / "config" / game).mkdir(parents=True)
+            (root / "config" / game / "symbol_addrs.txt").write_text(
+                "".join(f"{n} = 0x{0x100 + 4 * i:X}; // type:func\n" for i, n in enumerate(names.split())))
+
+    def test_a_raidou1_row_of_a_shared_name_gets_its_raidou2_row(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            self.symbols(root, "a b only1", "a b c")
+            rows = [("raidou1", "a", "x", "HD"), ("raidou1", "only1", "y", "HD"), ("raidou1", "b", "z", "HD"),
+                    ("raidou2", "b", "w", "HD")]
+            out, added = renames.complete(root, rows)
+            self.assertEqual(added, [("raidou2", "a", "x", "HD")])
+            self.assertEqual(out, rows[:1] + added + rows[1:])
+
+    def test_a_raidou1_row_onto_a_raidou2_name_is_refused(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            self.symbols(root, "a", "a x")
+            with self.assertRaises(ValueError):
+                renames.complete(root, [("raidou1", "a", "x", "HD")])
+
+    def test_a_raidou1_only_function_is_refused(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            self.symbols(root, "a", "a")
+            with self.assertRaises(ValueError):
+                renames.complete(root, [("raidou1", "a", "x", "HD")], {"a"})
+            self.assertEqual(len(renames.complete(root, [("raidou1", "a", "x", ""), ("raidou2", "a", "a2", "")],
+                                                  {"a"})[0]), 2)
+
+    def test_a_chain_is_completed_in_order(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            self.symbols(root, "a b", "a b")
+            rows = [("raidou1", "a", "t", ""), ("raidou1", "b", "a", ""), ("raidou1", "t", "b", "")]
+            out, added = renames.complete(root, rows)
+            self.assertEqual([r[1:3] for r in added], [("a", "t"), ("b", "a"), ("t", "b")])
+            self.assertEqual(len(out), 6)
+
 class DocsTests(unittest.TestCase):
     PAGE = "# Draft notes: u\n\n## f (u, raidou1 0x8)\n\nA.\n\n## g (u, raidou1 0x8)\n\nB.\n"
 

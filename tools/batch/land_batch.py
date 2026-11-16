@@ -231,6 +231,18 @@ class Run:
         self.say(f"patch: {len(re.findall(r'^diff --git', patch.read_text(), re.M))} files")
 
     def renames(self) -> None:
+        one_game = {n for r in self.batch.rows.values() if self.is_r1only(r)
+                    for n in (r.name, self.current(r.name), self.current(r.name, "raidou2"))}
+        try:
+            rows, added = renames.complete(self.tree, self.batch.renames, one_game)
+        except ValueError as e:
+            raise SystemExit(f"land_batch: refused: {e}")
+        for game, old, new, _ in added:
+            self.say(f"renames: added {game} {old} -> {new}, a name both games share")
+        if added:
+            self.batch.renames = rows
+            self.maps = {g: renames.name_map(rows, g) for g in ("raidou1", "raidou2")}
+            self.draft_names = self.maps["raidou1"] if self.draft_names else {}
         renames.apply(self.tree, self.batch.renames)
         renames.drop(self.tree, self.batch.drop)
         self.say(f"renames: {len(self.batch.renames)} rows, {len(self.batch.drop)} labels dropped")

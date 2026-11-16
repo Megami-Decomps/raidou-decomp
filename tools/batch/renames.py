@@ -74,6 +74,39 @@ def rename_sources(tree: Path, old: str, new: str) -> int:
     return len(files)
 
 
+def symbols(tree: Path, game: str) -> set[str]:
+    path = tree / "config" / game / "symbol_addrs.txt"
+    return set(re.findall(r"^(\w+) = ", path.read_text(), re.M)) if path.exists() else set()
+
+
+def complete(tree: Path, rows: list[tuple[str, str, str, str]],
+             one_game: set[str] = frozenset()) -> tuple[list[tuple[str, str, str, str]], list]:
+    """Rows plus the other game's row for a name both games share, since the sources are renamed once for both.
+    Refuses (ValueError) a row whose new name the other game already has, or whose function is in `one_game`
+    (r1only.txt: the other game's symbol may be another function)."""
+    games = ("raidou1", "raidou2")
+    names = {g: symbols(tree, g) for g in games}
+    given = {(g, old) for g, old, _, _ in rows}
+    out, added = [], []
+    for row in rows:
+        game, old, new, reason = row
+        todo = [row]
+        for other in games:
+            if other != game and (other, old) not in given and old in names[other]:
+                if old in one_game or new in one_game:
+                    raise ValueError(f"{game} rename {old} -> {new}: {old} is shared with {other} but the function is "
+                                     f"in r1only.txt; add the {other} row or rename its sites by hand")
+                if new in names[other]:
+                    raise ValueError(f"{game} rename {old} -> {new}: {other} has both names; add its row or drop this one")
+                todo.append((other, old, new, reason))
+        for g, o, n, _ in todo:
+            names[g].discard(o)
+            names[g].add(n)
+        out += todo
+        added += todo[1:]
+    return out, added
+
+
 def apply(tree: Path, rows: list[tuple[str, str, str, str]]) -> None:
     """Rows (game, old, new, reason) in order: config per game, then source text once per old name."""
     for game, old, new, reason in rows:
