@@ -8,6 +8,8 @@ Raidou 1: the compile also differs from retail in its rodata at 0x00447640; roda
 
 Nothing is recorded about this draft.
 
+Fragile: the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.
+
 First differing words:
 
 | Offset | Draft | Retail |

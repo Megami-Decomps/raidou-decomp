@@ -98,7 +98,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001326C0	00132848	code_001326C0	asm	none	
 00132850	001354C0	field/fldDraw	c	smt3:names:24+smt3:map:7 of 43; nbSetEncountMode run included: its .sdata sits inside fldDraw's	field/fldDraw
 00135520	00139308	field/fldFileResolver	c	dds:6 of 53	field/fldFileResolver
-00139330	0013A9B0	code_00139330	asm	none	
+00139330	0013A9B0	code_00139330	c	none	
 0013A9E0	0013A9E0	code_r1_0013A9E0	c	none	
 0013AAC8	0013B0F0	code_0013AAC8	asm	none	
 0013B0F8	0013B0F8	code_r1_0013B0F8	c	none	

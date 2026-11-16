@@ -113,6 +113,7 @@ typedef struct
 } fldResourcePointUnaligned_t;
 
 extern fldResourcePoint_t fldPlayerPosRotWork;
+extern fldResourcePoint_t ppos01Point;
 
 /* Counted filename tables use a variable-length trailing array. The native
  * filename entry is 0x0C bytes and the file-resource row is 0x24 bytes. */
@@ -202,7 +203,7 @@ typedef struct fldAreaWork_t
     s32 defaultEncounterId;     /* 0x0BC: the floor's encounter pack, fldReadyScene's */
     f32 floatC0;                /* 0x0C0: read and written with lwc1/swc1 in both games */
     f32 floatC4;               /* 0x0C4 */
-    union { s32 wordC8; f32 playerMoveDistance; }; /* 0x0C8 */
+    union { s32 wordC8; f32 PlayerMotionFrame; }; /* 0x0C8: the player motion frame of the last PlayerMotionSe2 */
     s32 wordCC;                 /* 0x0CC */
     s32 wordD0;                 /* 0x0D0 */
     s32 wordD4;                 /* 0x0D4 */
@@ -486,6 +487,8 @@ typedef struct fldAreaWork_t
 } fldAreaWork_t;
 
 extern fldAreaWork_t fldGlobalBase;
+
+s32 mapCheckDying(s32 mode);
 
 typedef struct {
     s32 type;

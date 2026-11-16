@@ -14033,7 +14033,7 @@
 0x00440B20	fldTestLineColor	inferred	method=smt3-ref; p=0.98 (n=D_r1_003BF6C0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=ooyTestLine3D
 0x00440B30	mapCutSetCamData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCutSetCam (4 of 16 refs, 7 functions)
 0x00440B40	mapObjTaskData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapObjTask (12 of 30 refs, 8 functions)
-0x00440B50	map_summondv_buff_read_idx	inferred	method=hd; p=0.37 (n=D_r1_003BF6F0); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
+0x00440B50	map_summondv_pos	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot 0x440B50 in R2, same uses; replaces map_summondv_buff_read_idx
 0x00440B60	mapSummonDvTaskData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapSummonDvTask (4 of 6 refs, 2 functions)
 0x00440B70	mapData21	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapCalcFXY, mapUnitSetLight, mapGetLightParam
 0x00440BB0	mapUnitSetLightData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapUnitSetLight (4 of 8 refs, 3 functions)
@@ -25873,26 +25873,26 @@
 0x004DE8B0	nbData4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: nbProcSequenceSub, nbCallSetOt4
 0x004DE8B4	fldDbgFmtHex	inferred	method=smt3-offset; p=na; tier=D; source=smt3; evidence=smt3-offset: between rsetFrameMaskOtOffset and fldDrawEnv, same span 0x1C, same size
 0x004DE8B8	fldDrawEnv	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B74C); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldDrawPoly3
-0x004DE8BC	mapAiboAddData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAiboAdd (2 of 5 refs, 4 functions)
-0x004DE8C0	mapAiboAddData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAiboAdd (3 of 5 refs, 3 functions)
-0x004DE8C4	mapAiboTaskData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAiboTask (10 of 12 refs, 3 functions)
-0x004DE8C8	mapData55	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapAiboTask, mapAiboFoceSet3, fldGbInitSystemSub
+0x004DE8BC	map_aibo_buff_read_idx	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapAiboAddData
+0x004DE8C0	map_aibo_buff_write_idx	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapAiboAddData2
+0x004DE8C4	map_aibo_spd_max	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapAiboTaskData
+0x004DE8C8	map_aibo_rot	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapData55
 0x004DE8CC	mapAiboTaskData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAiboTask (3 of 7 refs, 5 functions)
-0x004DE8D0	mapSummonDvAddData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapSummonDvAdd (2 of 7 refs, 6 functions)
-0x004DE8D4	mapSummonDvAddData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapSummonDvAdd (3 of 6 refs, 4 functions)
+0x004DE8D0	map_summondv_buff_read_idx	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot 0x4DE8D0 in R2; replaces mapSummonDvAddData
+0x004DE8D4	map_summondv_buff_add_idx	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot 0x4DE8D4 in R2; replaces mapSummonDvAddData2
 0x004DE8D8	mapSummonDvTaskData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapSummonDvTask (11 of 14 refs, 4 functions)
 0x004DE8DC	map_summondv_rot	inferred	method=hd; p=0.37 (n=D_r1_0046B770); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=3, using=4
 0x004DE8E0	gMapNakamaRunAtumaru	inferred	method=hd; p=0.37 (n=D_r1_0046B774); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
 0x004DE8E4	mapAiboMinAlpDownData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAiboMinAlpDown (2 of 3 refs, 2 functions)
 0x004DE8E8	fldAiboTaskSubData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldAiboTaskSub (6 of 9 refs, 3 functions)
-0x004DE8EC	mapAiboTaskData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAiboTask (5 of 6 refs, 2 functions)
+0x004DE8EC	gMapAiboWakeUpMode	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapAiboTaskData3
 0x004DE8F0	mapAiboMinAlpDownData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapAiboMinAlpDown
 0x004DE8F4	mapData56	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapAiboAtumaru, fldNakamaBranchTaskSub, mapAiboTask
 0x004DE8F8	mapData57	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapAiboAtumaru, fldNakamaBranchTaskSub, mapAiboTask
 0x004DE8FC	mapData58	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapAiboAtumaru, fldNakamaBranchTaskSub, mapAiboTask
-0x004DE900	mapAiboTaskData4	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAiboTask (9 of 11 refs, 3 functions)
-0x004DE904	fldCallPlaySEVolData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallPlaySEVol
-0x004DE908	fldData18	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: fldPlayer_MoveStart, fldProcMskSubBSub2, fldPlayer_MoveGet
+0x004DE900	gMapAiboMotionBugCnt	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapAiboTaskData4
+0x004DE904	PlayerMotionSe2Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by PlayerMotionSe2
+0x004DE908	map_player_move_mode	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2 fldPlayerCalc; replaces fldData18
 0x004DE90C	fldData19	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: fldPlayer_MoveStart, fldPlayer_MoveCalc, fldProcMskSubBSub2
 0x004DE910	fldCallEncountTestFlagData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallEncountTestFlag
 0x004DE914	fldCallEncountTestFlagData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallEncountTestFlag
@@ -26009,10 +26009,10 @@
 0x004DEAD4	fldData21	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: fldMapMapBg, mapSKYBGEDIT, fldJmsQuestMapLoad_fld
 0x004DEAD8	mapSKYBGEDITData4	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapSKYBGEDIT (3 of 5 refs, 3 functions)
 0x004DEADC	fldCallSetOt3Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldCallSetOt3 (5 of 9 refs, 3 functions)
-0x004DEAE0	BgProcSequenceData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by BgProcSequence (5 of 10 refs, 6 functions)
-0x004DEAE4	BgProcSequenceData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by BgProcSequence (4 of 8 refs, 4 functions)
+0x004DEAE0	bg_tex_load_rec	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same layout in R2 (0x4DEAE0..0x4DEAEC); replaces BgProcSequenceData
+0x004DEAE4	bg_lay_load_rec	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same layout in R2; replaces BgProcSequenceData2
 0x004DEAE8	bg_tex_load_last	hd	hd: Raidou HD fld.bg_tex_load_last, 5 of 6 functions agree, high confidence
-0x004DEAEC	BgProcSequenceData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by BgProcSequence (2 of 5 refs, 4 functions)
+0x004DEAEC	bg_lay_load_last	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same layout in R2; replaces BgProcSequenceData3
 0x004DEAF0	fldData22	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: fldCallLinkAlpha, mapSKYBGEDIT, fldCallSetOt3
 0x004DEAF4	mapData97	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 9 functions: mapCutSet_From_Pos, mapCatChkMain, mapCutSet_From_Idx
 0x004DEAF8	fldTitleMiniTex2	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B9CC); tier=C; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldTitleMini_Shutdown; fldTitleMiniTex is another symbol
@@ -29878,9 +29878,9 @@
 0x004EA290	fldResolverFL1Data	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as raidou1 0x00474EF0 (r1_r2 pair at 0x004EA290, code-ref); replaces fldFileResolverFL1Work
 0x004EA2A0	fldD3pHandle	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as raidou1 0x00474F00 (r1_r2 pair at 0x004EA2A0, code-ref); replaces fldWork4
 0x004EA2B0	fldD3pData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as raidou1 0x00474F10 (r1_r2 pair at 0x004EA2B0, code-ref); replaces fldWork5
-0x004EA2C0	mapWork	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: fldGbInitSystemSub, mapAiboFoceSet, mapAiboAdd
-0x004EA8C0	mapAiboTaskWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAiboTask (16 of 24 refs, 5 functions)
-0x004EA8D0	mapWork2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: mapSummonDvFoceSet_NotRot, mapSummonDvFoceSet, mapSummonDvFoceSet_DeadReturn
+0x004EA2C0	map_aibo_buff	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapWork
+0x004EA8C0	map_aibo_pos	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapAiboTaskWork
+0x004EA8D0	map_summondv_buff	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same slot in R2, shared fldFileResolver code; replaces mapWork2
 0x004EB4D0	mapWork3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: mapSummonDvFoceSet_NotRot, mapSummonDvFoceSet, mapSummonDvFoceSet_DeadReturn
 0x004EB8D0	mapCallGetFloorY2Work	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallGetFloorY2 (26 of 48 refs, 8 functions)
 0x004EB8D4	mapEveHitTaskFldSub3Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapEveHitTaskFldSub3

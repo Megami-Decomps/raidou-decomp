@@ -2,6 +2,10 @@ function	unit	size	distance	page	line	fragile
 evtLeaf31	TitleMain	raidou1 0x110	13 of 68 words differ	docs/matching/TitleMain.md	3	
 eglLinkBoxZ	code_00109A70	raidou1 0x370	6 of 220 words differ	docs/matching/code_00109A70.md	3	
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3	
+fldProcSequenceSub3	code_00139330	raidou1 0x48	9 of 16 words differ	docs/matching/code_00139330.md	3	
+fldCallFptodp	code_00139330	raidou1 0xC8	43 of 46 words differ	docs/matching/code_00139330.md	11	
+mapBigClipChkF	code_00139330	raidou1 0x138	34 of 78 words differ	docs/matching/code_00139330.md	19	
+fldBgTexClear	code_00139330	raidou1 0x8C	19 of 35 words differ	docs/matching/code_00139330.md	27	
 mapLeaf12	code_00143568	raidou1 0x50	2 of 20 words differ	docs/matching/code_00143568.md	3	
 mdlCallMemGetSize	code_00143568	raidou1 0x140	25 of 78 words differ	docs/matching/code_00143568.md	11	
 mdlCallMemGetInfo	code_00143568	raidou1 0x12C	22 of 73 words differ	docs/matching/code_00143568.md	19	
@@ -86,7 +90,7 @@ sbtlMapFadeProc	code_r1_0024B788	raidou1 0x11C	32 of 68 words differ	docs/matchi
 sbtlMapFadeProc_H	code_r1_0024B788	raidou1 0xFC	30 of 60 words differ	docs/matching/code_r1_0024B788.md	21	
 sbtlNakamaSetUp	code_r1_0024B788	raidou1 0x48C	249 of 291 words differ	docs/matching/code_r1_0024B788.md	27	
 sbtlSceneLoad	code_r1_0024DE98	raidou1 0xD4	25 of 53 words differ	docs/matching/code_r1_0024DE98.md	3	
-sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	23 of 233 words differ	docs/matching/code_r1_0024EE78.md	3	the full-unit count moves with the declarations the unit includes (mapData.h, rstInit.h, sndAt3.h), 20 to 35 words with declaration edits alone.
+sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	23 of 233 words differ	docs/matching/code_r1_0024EE78.md	3	the full-unit count moves with the declarations the unit includes (mapData.h, rstInit.h, sndAt3.h), 20 to 37 words with declaration edits alone.
 CheckMapHit	code_r1_0024F220	raidou1 0x88	9 of 34 words differ	docs/matching/code_r1_0024F220.md	3	
 nakamamodeCallGetActiveScene	code_r1_0024F220	raidou1 0x584	6 of 353 words differ	docs/matching/code_r1_0024F220.md	11	
 sbtlCallBtlCheckDamageTarget3	code_r1_0024F220	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_0024F220.md	19	
@@ -160,9 +164,10 @@ evtUnitManagerPrimaryFunc	event/evtUnitManager	raidou1 0x6E8	18 of 442 words dif
 MakeLightPacket	event/evtUnitManager	raidou1 0x1F4, raidou2 0x1F4	89 of 115 words differ	docs/matching/event/evtUnitManager.md	17	
 fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/fclDrawBack.md	3	
 fldGbInit_Field	fclDrawBack	raidou1 0x94	7 of 37 words differ	docs/matching/fclDrawBack.md	11	
+mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3	
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3	
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	12	
-ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	
+ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.
 MessageRequestNS	interface/frFont	raidou1 0x40, raidou2 0x40	7 of 15 words differ	docs/matching/interface/frFont.md	3	
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3	
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3	

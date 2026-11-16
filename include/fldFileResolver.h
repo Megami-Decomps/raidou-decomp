@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+struct mdlObj_t;
+
 s32 PlayerCalc_Nml(void);
 void PlayerMotionSe(s32 hisMotion, s32 upMotion);
 s32 fldCatGetNakamaSub(void);
@@ -26,5 +28,34 @@ void rstDrawEvoBgFade(s32 Motion, f32 spd);
 s32 sndSeStatus(void);
 void mapAiboInit(void);
 void mapSummonDvInit(void);
+void NakamaMotion(s32 hisMotion, s32 upMotion, f32 speed);
+void PlayerMotionSe2(s32 se, f32 x, f32 z);
+void PlayerCalc_Nml_fld(void);
+extern s32 map_player_move_mode;
+void fldSetUnitSub3(s32 motion, f32 speed);
+void fldLeaf18(s32 hisMotion, s32 upMotion, f32 hokan);
+void fldLeaf19(s32 hisMotion, s32 upMotion, f32 hokan);
+f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz);
+s32 mapCallSetPlayerTargetData5(s32 se, struct mdlObj_t *model, f32 x, f32 z);
+void fldSetCameraObjectTransitionFlag(void);
+
+/* Aibo and summoned-devil trails: position rings read behind the player. */
+extern f32 map_aibo_buff[128][3];
+extern f32 map_aibo_pos[4];
+extern s32 map_aibo_buff_read_idx;
+extern s32 map_aibo_buff_write_idx;
+extern f32 map_aibo_spd_max;
+extern f32 map_aibo_rot;
+extern s32 gMapAiboWakeUpMode;
+extern s32 gMapAiboMotionBugCnt;
+extern f32 map_summondv_buff[256][3];
+extern s32 mapWork3[256];
+extern f32 map_summondv_pos[4];
+extern s32 map_summondv_buff_read_idx;
+extern s32 map_summondv_buff_add_idx;
+extern f32 mapSummonDvTaskData2;
+extern f32 map_summondv_rot;
+extern s32 gMapNakamaRunAtumaru;
+extern s32 PlayerMotionSe2Data;
 
 #endif

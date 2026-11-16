@@ -48,6 +48,21 @@ extern mapLbSection_t *fldCallSetOt3Data;
 extern mapLbSprite_t *fldData5[];
 extern s32 fldData22;
 extern f32 Zoom;
+extern f32 bg_scroll_last_x;
+extern f32 mapData71;
+extern f32 mapData72;
+extern f32 mapData73;
+extern f32 mapZoomSetGoalData9;
+extern f32 mapZoomSetGoalData10;
+extern s32 mapData74;
+extern s32 mapBgSetScrollData4;
+extern f32 mapData75;
+extern f32 mapData76;
+extern s32 mapZoomClearData;
+extern s32 mapData77;
+extern s32 mapData78;
+
+void mapSKYBGEDIT(void);
 extern void *fldTitleMiniTex2;
 
 #endif /* MAPLBWORK_H */

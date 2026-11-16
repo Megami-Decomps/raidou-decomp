@@ -481,11 +481,9 @@
 0x00137C90	fldLeaf19	func	tier=D	derived-unit	na	unit field/fldFileResolver; no named callee, caller or string
 0x00137D10	fldSetUnitSub3	func	tier=D	derived-caller	na	unit field/fldFileResolver; called by fldSetUnit
 0x00137D40	fldLeaf20	func	tier=D	derived-unit	na	unit field/fldFileResolver; no named callee, caller or string
-0x00137E90	fldCallPlaySEVol	func	tier=D	derived-callee	na	unit field/fldFileResolver; calls p2sdPlaySE_Vol
 0x00138038	fldCallNakamaMotion3DSE	func	tier=D	derived-callee	na	unit field/fldFileResolver; calls NakamaMotion3DSE
 0x001381D0	fldPlayer_MoveCalc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldPlayer_MoveCalc, score 12.5 band A
 0x00138638	fldProcMskSubBSub2	func	tier=D	derived-caller	na	unit field/fldFileResolver; called by ProcMskSub_B
-0x00138698	fldCallEncountTestFlag	func	tier=D	derived-callee	na	unit field/fldFileResolver; calls fldEncountTestFlag
 0x00139280	fldEnableCameraObjectFlag	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001311D8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001392A0	fldDisableCameraObjectFlag	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001311F8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001392C0	fldLeaf21	func	tier=D	derived-unit	na	unit field/fldFileResolver; no named callee, caller or string
@@ -14534,24 +14532,15 @@
 0x0046B734	fldDrawInitDone	data	tier=D	smt3-offset	na	smt3-offset: between rsetFrameMaskOtOffset and fldDrawEnv, same span 0x1C, same size
 0x0046B744	nbData4	data	tier=D	derived-shared	na	used by 2 functions: nbProcSequenceSub, nbCallSetOt4
 0x0046B748	fldDbgFmtHex	data	tier=D	smt3-offset	na	smt3-offset: between rsetFrameMaskOtOffset and fldDrawEnv, same span 0x1C, same size
-0x0046B750	mapAiboAddData	data	tier=D	derived-dominant	na	used by mapAiboAdd (2 of 5 refs, 4 functions)
-0x0046B754	mapAiboAddData2	data	tier=D	derived-dominant	na	used by mapAiboAdd (3 of 5 refs, 3 functions)
-0x0046B758	mapAiboTaskData	data	tier=D	derived-dominant	na	used by mapAiboTask (10 of 12 refs, 3 functions)
-0x0046B75C	mapData55	data	tier=D	derived-shared	na	used by 4 functions: mapAiboTask, mapAiboFoceSet3, fldGbInitSystemSub
 0x0046B760	mapAiboTaskData2	data	tier=D	derived-dominant	na	used by mapAiboTask (3 of 7 refs, 5 functions)
-0x0046B764	mapSummonDvAddData	data	tier=D	derived-dominant	na	used by mapSummonDvAdd (2 of 7 refs, 6 functions)
-0x0046B768	mapSummonDvAddData2	data	tier=D	derived-dominant	na	used by mapSummonDvAdd (3 of 6 refs, 4 functions)
 0x0046B76C	mapSummonDvTaskData2	data	tier=D	derived-dominant	na	used by mapSummonDvTask (11 of 14 refs, 4 functions)
 0x0046B778	mapAiboMinAlpDownData	data	tier=D	derived-dominant	na	used by mapAiboMinAlpDown (2 of 3 refs, 2 functions)
 0x0046B77C	fldAiboTaskSubData	data	tier=D	derived-dominant	na	used by fldAiboTaskSub (6 of 9 refs, 3 functions)
-0x0046B780	mapAiboTaskData3	data	tier=D	derived-dominant	na	used by mapAiboTask (5 of 6 refs, 2 functions)
 0x0046B784	mapAiboMinAlpDownData2	data	tier=D	derived-sole	na	used by mapAiboMinAlpDown
 0x0046B788	mapData56	data	tier=D	derived-shared	na	used by 3 functions: mapAiboAtumaru, fldNakamaBranchTaskSub, mapAiboTask
 0x0046B78C	mapData57	data	tier=D	derived-shared	na	used by 3 functions: mapAiboAtumaru, fldNakamaBranchTaskSub, mapAiboTask
 0x0046B790	mapData58	data	tier=D	derived-shared	na	used by 3 functions: mapAiboAtumaru, fldNakamaBranchTaskSub, mapAiboTask
-0x0046B794	mapAiboTaskData4	data	tier=D	derived-dominant	na	used by mapAiboTask (9 of 11 refs, 3 functions)
-0x0046B798	fldCallPlaySEVolData	data	tier=D	derived-sole	na	used by fldCallPlaySEVol
-0x0046B79C	fldData18	data	tier=D	derived-shared	na	used by 5 functions: fldPlayer_MoveStart, fldProcMskSubBSub2, fldPlayer_MoveGet
+0x0046B798	PlayerMotionSe2Data	data	tier=D	derived-sole	na	used by PlayerMotionSe2
 0x0046B7A0	fldData19	data	tier=D	derived-shared	na	used by 4 functions: fldPlayer_MoveStart, fldPlayer_MoveCalc, fldProcMskSubBSub2
 0x0046B7A4	fldCallEncountTestFlagData2	data	tier=D	derived-sole	na	used by fldCallEncountTestFlag
 0x0046B7A8	fldCallEncountTestFlagData3	data	tier=D	derived-sole	na	used by fldCallEncountTestFlag
@@ -14659,9 +14648,6 @@
 0x0046B9A8	fldData21	data	tier=D	derived-shared	na	used by 3 functions: fldMapMapBg, mapSKYBGEDIT, fldJmsQuestMapLoad_fld
 0x0046B9AC	mapSKYBGEDITData4	data	tier=D	derived-dominant	na	used by mapSKYBGEDIT (3 of 5 refs, 3 functions)
 0x0046B9B0	fldCallSetOt3Data	data	tier=D	derived-dominant	na	used by fldCallSetOt3 (5 of 9 refs, 3 functions)
-0x0046B9B4	BgProcSequenceData	data	tier=D	derived-dominant	na	used by BgProcSequence (5 of 10 refs, 6 functions)
-0x0046B9B8	BgProcSequenceData2	data	tier=D	derived-dominant	na	used by BgProcSequence (4 of 8 refs, 4 functions)
-0x0046B9C0	BgProcSequenceData3	data	tier=D	derived-dominant	na	used by BgProcSequence (2 of 5 refs, 4 functions)
 0x0046B9C4	fldData22	data	tier=D	derived-shared	na	used by 4 functions: fldCallLinkAlpha, mapSKYBGEDIT, fldCallSetOt3
 0x0046B9C8	mapData97	data	tier=D	derived-shared	na	used by 9 functions: mapCutSet_From_Pos, mapCatChkMain, mapCutSet_From_Idx
 0x0046B9D4	fldData23	data	tier=D	derived-shared	na	used by 3 functions: fldJmsQuestMapLoad_fld, fldLOADTMY, fldCallMemFreeDelayedDirect4
@@ -16712,10 +16698,7 @@
 0x00474E68	datCallBitCheckWork2	data	tier=D	derived-dominant	na	used by datCallBitCheck (4 of 6 refs, 2 functions)
 0x00474E80	datWork6	data	tier=D	derived-shared	na	used by 2 functions: datCallBitCheck, NewGame2Pop
 0x00474ED0	mapCallMapNextWork	data	tier=D	derived-sole	na	used by mapCallMapNext
-0x00474F20	mapWork	data	tier=D	derived-shared	na	used by 4 functions: fldGbInitSystemSub, mapAiboFoceSet, mapAiboAdd
 0x00474F46	bssWork11	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x5DA
-0x00475520	mapAiboTaskWork	data	tier=D	derived-dominant	na	used by mapAiboTask (16 of 24 refs, 5 functions)
-0x00475530	mapWork2	data	tier=D	derived-shared	na	used by 5 functions: mapSummonDvFoceSet_NotRot, mapSummonDvFoceSet, mapSummonDvFoceSet_DeadReturn
 0x00476130	mapWork3	data	tier=D	derived-shared	na	used by 5 functions: mapSummonDvFoceSet_NotRot, mapSummonDvFoceSet, mapSummonDvFoceSet_DeadReturn
 0x00476530	fldHirukoYukaMovetaskWork	data	tier=D	derived-dominant	na	used by fldHirukoYukaMovetask (6 of 12 refs, 4 functions)
 0x00476574	fldHirukoYukaGo_IdxWork	data	tier=D	derived-sole	na	used by fldHirukoYukaGo_Idx
@@ -18380,7 +18363,9 @@
 0x00132EF0	fldPoint3To2H	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x128e30 sim 1.000 margin 0.00 pair
 0x00135C70	fldGetPlayerCameraPos	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.fldGetPlayerCameraPos score 4.7 flag I: calls1 callers-of-match-uniq st1:call r1+r2
 0x00136E10	mapSummonDvAtumaru	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapSummonDvAtumaru score 6.3 flag -: calls2 calls-of-match-uniq votes2 st1:call r1-only
+0x00137E90	PlayerMotionSe2	func	tier=C	hd-same-slot-raidou2	na	Raidou HD fld.PlayerMotionSe2; R2 names the same slot 0x13F840 PlayerMotionSe2 and PlayerMotionSe tail-calls it in both games; replaces fldCallPlaySEVol
 0x00138010	PlayerMotionSe	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.PlayerMotionSe score 4.7 flag -: calls1 calls-of-match st1:call r1+r2
+0x00138698	PlayerCalc_Nml_fld	func	tier=C	derived-derived-role	na	R2 names the same slot (0x1406B8, after PlayerCalc_Nml) PlayerCalc_Nml_fld and R2 fldPlayerCalc calls it where R1 fldPlayerCalc calls 0x138698; R2 has its own fldCallEncountTestFlag at 0x165D98; replaces fldCallEncountTestFlag
 0x001394B8	fldNakamaMotReset2	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.fldNakamaMotReset2 score 5.5 flag I: calls1 calls-of-match-uniq st1:call r1+r2
 0x0013A590	mapCalcLen	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapCalcLen score 5.1 flag -: next gap6/113 st1:gap r1+r2
 0x0013A5C0	mapSeVolCalc	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapSeVolCalc score 5.4 flag -: next gap7/119 st1:gap r1+r2
@@ -19171,7 +19156,7 @@
 0x003BF254	evtWorkScriptContextReturnValue3	data	tier=C	dds-ref	0.59 (n=D_r1_003BF254)	dds-ref/loose: nfun=1, other=0, sim=0.9, games=1, size=False, sec=False, fn=fldGetMAP_CUT_OVERSET_Cam; evtWorkScriptContextReturnValue is another symbol
 0x003BF450	fldDbg	data	tier=C	hd	0.37 (n=D_r1_003BF450)	hd/medium: conf=medium, agree=6, using=9
 0x003BF5A0	gfldSceneParam	data	tier=C	hd	0.37 (n=D_r1_003BF5A0)	hd/medium: conf=medium, agree=2, using=2
-0x003BF6F0	map_summondv_buff_read_idx	data	tier=C	hd	0.37 (n=D_r1_003BF6F0)	hd/medium: conf=medium, agree=2, using=2
+0x003BF6F0	map_summondv_pos	data	tier=C	derived-derived-role	na	0x3BF6F0 is a float xyz: mapSummonDvTask passes 0x3BF6F0/F4/F8 to fldPointDistance, eases it toward the target and copies it to poseset->pos; HD names that vector map_summondv_pos. Rename first, it frees the name below; replaces map_summondv_buff_read_idx
 0x003E7620	DDS3_GBWK4	data	tier=C	smt3-ref	0.80 (n=D_r1_003E7620)	smt3-ref/close: nfun=2, other=0, sim=0.7692, games=2, size=True, sec=False, fn=scrClearProcessGlobals; DDS3_GBWK is another symbol
 0x003E7AC0	itfOverlayColorEditorRows	data	tier=C	dds-ref	0.59 (n=D_r1_003E7AC0)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=pbDebugPrintPanel3
 0x003E7AF0	itfTestOverlayColor	data	tier=C	dds-ref	0.59 (n=D_r1_003E7AF0)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=pbDebugPrintPanel3
@@ -19278,9 +19263,14 @@
 0x0046B5E8	playerModel	data	tier=C	hd	0.37 (n=D_r1_0046B5E8)	hd/medium: conf=medium, agree=7, using=9
 0x0046B618	effQueuedResourceNameRecord3	data	tier=C	dds-ref	0.59 (n=D_r1_0046B618)	dds-ref/close: nfun=2, other=0, sim=0.9091, games=2, size=True, sec=True, fn=fldCallMemFreeDelayedDirect; effQueuedResourceNameRecord is another symbol
 0x0046B690	Process_WarpIdx	data	tier=C	hd	0.37 (n=D_r1_0046B690)	hd/medium: conf=medium, agree=2, using=2
+0x0046B754	map_aibo_buff_write_idx	data	tier=C	derived-derived-role	na	see map_aibo_buff_read_idx; replaces mapAiboAddData2
+0x0046B764	map_summondv_buff_read_idx	data	tier=C	derived-derived-role	na	mapSummonDvGet reads mapWork2[0x46B764]; mapSummonDvAdd advances it with the add index; HD mapSummonDvGet returns map_summondv_buff_read_idx; replaces mapSummonDvAddData
+0x0046B768	map_summondv_buff_add_idx	data	tier=C	derived-derived-role	na	mapSummonDvAdd checks the distance to slot 0x46B768 - 1 (wrap 255) and stores at 0x46B768; HD mapSummonDvAdd tests map_summondv_buff_add_idx - 1 < 0; replaces mapSummonDvAddData2
 0x0046B770	map_summondv_rot	data	tier=C	hd	0.37 (n=D_r1_0046B770)	hd/medium: conf=medium, agree=3, using=4
 0x0046B774	gMapNakamaRunAtumaru	data	tier=C	hd	0.37 (n=D_r1_0046B774)	hd/medium: conf=medium, agree=2, using=2
 0x0046B81C	bg_scroll_last_x	data	tier=C	hd	0.37 (n=D_r1_0046B81C)	hd/medium: conf=medium, agree=2, using=2
+0x0046B9B8	bg_lay_load_rec	data	tier=C	derived-derived-role	na	BgProcSequence compares 0x46B9B8 with 0x46B9C0 and copies it there, then resets both rec words to -1 (HD *(u64 *)&bg_tex_load_rec = -1); replaces BgProcSequenceData2
+0x0046B9C0	bg_lay_load_last	data	tier=C	derived-derived-role	na	see bg_lay_load_rec; replaces BgProcSequenceData3
 0x0046B9CC	fldTitleMiniTex2	data	tier=C	smt3-ref	0.98 (n=D_r1_0046B9CC)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldTitleMini_Shutdown; fldTitleMiniTex is another symbol
 0x0046B9D0	fldTitleMiniWork2	data	tier=C	smt3-ref	0.98 (n=D_r1_0046B9D0)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldTitleMini_Shutdown; fldTitleMiniWork is another symbol
 0x0046BA04	map_work_hit_list_num	data	tier=C	hd	0.37 (n=D_r1_0046BA04)	hd/medium: conf=medium, agree=2, using=2
@@ -19826,6 +19816,13 @@
 0x0046B628	gMapCash_pacHandle	data	tier=B	hd-role	na	HD fldPlayerALoadEndCheck checks pacCheckEnd(gMapCash_pacHandle); retail fldPlayerALoadEndCheck passes 0x46B628; replaces fldPlayerALoadEndCheckData
 0x0046B738	fldDrwZBuf	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B738)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=fldDrwZAlloc
 0x0046B740	fldDbgFmtDec	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B740)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=fldDbgPrint3D
+0x0046B750	map_aibo_buff_read_idx	data	tier=B	hd-role	na	HD mapAiboFoceSet *(u64 *)&map_aibo_buff_read_idx = 0x10_00000000: read idx 0, write idx 16 (0x46B750/754); replaces mapAiboAddData
+0x0046B758	map_aibo_spd_max	data	tier=B	hd-role	na	HD mapAiboFoceSet map_aibo_spd_max = 10.0; replaces mapAiboTaskData
+0x0046B75C	map_aibo_rot	data	tier=B	hd-role	na	HD mapAiboFoceSet map_aibo_rot = DEG(EulerAngleAxisY()); replaces mapData55
+0x0046B780	gMapAiboWakeUpMode	data	tier=B	hd-role	na	HD mapAiboWakeUp gMapAiboWakeUpMode = mode; replaces mapAiboTaskData3
+0x0046B794	gMapAiboMotionBugCnt	data	tier=B	hd-role	na	HD mapAiboFoceSet gMapAiboMotionBugCnt = 0; replaces mapAiboTaskData4
+0x0046B79C	map_player_move_mode	data	tier=B	hd-role	na	HD fldPlayerCalc: map_player_move_mode gates fldPlayer_MoveCalc, the 0x46B79C test in R1; replaces fldData18
+0x0046B9B4	bg_tex_load_rec	data	tier=B	hd-role	na	HD fld.c order bg_tex_load_last, bg_lay_load_last, bg_tex_load_rec, bg_lay_load_rec; BgProcSequence compares 0x46B9B4 with bg_tex_load_last and copies it there; replaces BgProcSequenceData
 0x0046B9DC	fldRunMapData	data	tier=B	smt3-ref	0.88 (n=D_r1_0046B9DC)	smt3-ref/loose: nfun=2, other=2, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x0046B9E0	fldRunMapCellData	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E0)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x0046B9E4	pFroMapHead	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E4)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
@@ -19917,6 +19914,9 @@
 0x00471770	_gp	data	tier=B	smt3-ref	0.88 (n=None)	smt3-ref/loose: nfun=3, other=0, sim=1.0, games=1, size=False, sec=True, fn=_start
 0x00474EF0	fldResolverFL1Data	data	tier=B	smt3-role	na	SMT3 fldFileResolverFL1 stores filename0..3 into fldResolverFL1Data[4]; Raidou stores them to 0x474EF0; replaces fldFileResolverFL1Work
 0x00474F00	fldD3pHandle	data	tier=B	smt3-role	na	SMT3 fldFileResolverFL1 clears fldD3pHandle[4] and fldD3pData[4]; Raidou clears 0x474F00 and 0x474F10 the same way; replaces fldWork4
+0x00474F20	map_aibo_buff	data	tier=B	hd-role	na	HD mapAiboFoceSet loop over map_aibo_buff (128 xyz rows); replaces mapWork
+0x00475520	map_aibo_pos	data	tier=B	hd-role	na	HD mapAiboFoceSet map_aibo_pos = xyz; replaces mapAiboTaskWork
+0x00475530	map_summondv_buff	data	tier=B	hd-role	na	HD mapSummonDvGet map_summondv_buff[map_summondv_buff_read_idx]; replaces mapWork2
 0x004B4B60	encBlurParam	data	tier=B	smt3-ref	0.80 (n=D_r1_004B4B60)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x004B5EE0	pbDebugPanel2Pos	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EE0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel2
 0x004B5EF0	pbDebugPanel3X	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel3

@@ -22,6 +22,7 @@ menu scenarios); an entry says which paths they covered.
 | 5 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 5 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
+| 4 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 4 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 4 | mc/slMain | raidou1 | [mc/slMain.md](mc/slMain.md) |
 | 4 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
@@ -86,6 +87,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | dat | raidou1 | [dat.md](dat.md) |
 | 1 | effect/polyManager | raidou1, raidou2 | [effect/polyManager.md](effect/polyManager.md) |
 | 1 | event/evtMoon | raidou1 | [event/evtMoon.md](event/evtMoon.md) |
+| 1 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
 | 1 | field/fldProcess | raidou1 | [field/fldProcess.md](field/fldProcess.md) |
 | 1 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 1 | interface/itfPanel | raidou1, raidou2 | [interface/itfPanel.md](interface/itfPanel.md) |

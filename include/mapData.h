@@ -641,8 +641,15 @@ void mapSetAreaRefreshSub2(s32 floor, s32 uniq, s32 a2, s32 a3, s32 a4, s32 a5, 
 void mapCallBitCheck2(s32 floor, s32 uniq, s32 kind, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8);
 void mapCallPositioningGuardSystem2(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10, s32 a11, void *a12);
 void mapCallPositioningGuardSystem3(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10);
+/* Run-map refresh grid: w * h 64-bit cells, one bit per refresh type. */
+extern sdfMemHandle_t *fldRunMapData;
+extern u64 *fldRunMapCellData;
+extern s32 pFroMapHead;
+extern s32 fldRunMapScale;
+extern s32 fldData24;
 void mapCallMemAllocDirect(s32 w, s32 h);
 void fldCallMemFreeDirect(void);
+void mapCallMemFreeDirect(void);
 void mapNpcTblRefresh(void);
 s32 mapFileLoad(s32 mapid);
 void mapFileLoadSub2(void);

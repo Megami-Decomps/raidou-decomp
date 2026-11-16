@@ -25,6 +25,12 @@
 #include "fldFileResolver_00132080.h"
 #include "effPCPMisc_00224D10.h"
 #include "fldFileResolver.h"
+#include "fldProcess.h"
+#include "mdlManager.h"
+#include "fldDbg.h"
+#include "sdfQuat.h"
+#include "sdfMath.h"
+#include "dds3Randomize.h"
 
 /* The field-area loader interprets these serialized packet-header values. */
 typedef enum FldPackedResourceKind {
@@ -251,7 +257,6 @@ enum {
 };
 
 extern void scrDestroyWorkTask(void);
-extern scrHeader_t *cameraBasic;
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 
@@ -288,9 +293,34 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboMinAlpDown);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldRefModel);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboWakeUp);
+void mapAiboWakeUp(s32 mode) {
+    gMapAiboWakeUpMode = mode;
+    if (mode == 1 && aiboModel != NULL) {
+        mdlLoopMotion(aiboModel, 0, 2);
+    }
+}
 
+#ifdef VERSION_RAIDOU1
+void mapAiboInit(void) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        map_aibo_buff[i][0] = 0.0f;
+        map_aibo_buff[i][1] = 0.0f;
+        map_aibo_buff[i][2] = 0.0f;
+    }
+    map_aibo_buff_read_idx = 0;
+    map_aibo_buff_write_idx = 16;
+    map_aibo_pos[0] = 0.0f;
+    map_aibo_pos[1] = 0.0f;
+    map_aibo_pos[2] = 0.0f;
+    map_aibo_spd_max = 10.0f;
+    map_aibo_rot = 0.0f;
+    gMapAiboMotionBugCnt = 0;
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboInit);
+#endif
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldProcMskSubBSub);
 
@@ -298,11 +328,61 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAtumaru);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldNakamaBranchTaskSub);
 
+#ifdef VERSION_RAIDOU1
+void mapAiboFoceSet(f32 x, f32 y, f32 z) {
+    s32 i;
+
+    if (aiboBasic != NULL) {
+        for (i = 0; i < 128; i++) {
+            map_aibo_buff[i][0] = x;
+            map_aibo_buff[i][1] = y;
+            map_aibo_buff[i][2] = z;
+        }
+        map_aibo_buff_read_idx = 0;
+        map_aibo_buff_write_idx = 16;
+        map_aibo_pos[0] = x;
+        map_aibo_pos[1] = y;
+        map_aibo_pos[2] = z;
+        map_aibo_spd_max = 10.0f;
+        dds3GetRotPoseSet(aiboBasic);
+        map_aibo_rot = (EulerAngleAxisY() * 180.0f) / 3.14f;
+        gMapAiboMotionBugCnt = 0;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet);
+#endif
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAtumaru2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet3);
+void mapAiboFoceSet3(f32 x, f32 y, f32 z) {
+    sdfVector4_t rot;
+    dds3PoseSet_t *pose;
+
+    if (aiboBasic != NULL) {
+        if (fldGlobalBase.summonStop == 0) {
+            dds3GetRotPoseSet(playerBasic);
+            SDF_VU0_STOREVECTOR(&rot);
+            dds3SetRotPoseSet(aiboBasic, &rot);
+        }
+        map_aibo_rot = (EulerAngleAxisY() * 180.0f) / 3.14f;
+        x -= sdfSin((180.0f - map_aibo_rot) * 0.017453293f) * 30.0f;
+        z -= sdfCos((180.0f - map_aibo_rot) * 0.017453293f) * 30.0f;
+        aiboBasic->poseset->pos.x = x;
+        aiboBasic->poseset->pos.y = y;
+        aiboBasic->poseset->pos.z = z;
+        dds3OnPoseSetFlag(aiboBasic->poseset, 1);
+        dds3OnPoseSetFlag(aiboBasic->poseset, 8);
+        pose = aiboBasic->poseset;
+        SDF_VU0_COPYVECTOR(&pose->pos2, &pose->pos);
+        if (fldGlobalBase.summonStop == 0) {
+            dds3GetRotPoseSet(playerBasic);
+            SDF_VU0_STOREVECTOR(&rot);
+            dds3SetRotPoseSet(aiboBasic, &rot);
+        }
+    }
+    mapAiboFoceSet(x, y, z);
+}
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAdd);
 
@@ -310,25 +390,114 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboGet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboTask);
 
-#ifdef VERSION_RAIDOU2
+#ifdef VERSION_RAIDOU1
+void mapSummonDvInit(void) {
+    s32 i;
+
+    for (i = 0; i < 256; i++) {
+        map_summondv_buff[i][0] = 0.0f;
+        map_summondv_buff[i][1] = 0.0f;
+        map_summondv_buff[i][2] = 0.0f;
+        mapWork3[i] = 0;
+    }
+    map_summondv_buff_read_idx = 0;
+    map_summondv_buff_add_idx = 32;
+    map_summondv_pos[0] = 0.0f;
+    map_summondv_pos[1] = 0.0f;
+    map_summondv_pos[2] = 0.0f;
+    mapSummonDvTaskData2 = 10.0f;
+    map_summondv_rot = 0.0f;
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapEnemy_SetFAtk_PlayerDir);
 
-#endif
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvInit);
+#endif
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAtumaru);
 
+#ifdef VERSION_RAIDOU1
+void mapSummonDvFoceSet(f32 x, f32 y, f32 z) {
+    s32 i;
+
+    for (i = 0; i < 256; i++) {
+        map_summondv_buff[i][0] = x;
+        map_summondv_buff[i][1] = y;
+        map_summondv_buff[i][2] = z;
+        mapWork3[i] = fldGlobalBase.nameU;
+    }
+    map_summondv_buff_read_idx = 0;
+    map_summondv_buff_add_idx = 32;
+    map_summondv_pos[0] = x;
+    map_summondv_pos[1] = y;
+    map_summondv_pos[2] = z;
+    mapSummonDvTaskData2 = 6.0f;
+    if (DDS3_GBWK->mapSummonID > 0 && summonDvBasic != NULL) {
+        dds3GetRotPoseSet(summonDvBasic);
+        map_summondv_rot = (EulerAngleAxisY() * 180.0f) / 3.14f;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet);
+#endif
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapNakamaWachLock);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet_DeadReturn);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet2);
+void mapSummonDvFoceSet2(f32 x, f32 y, f32 z) {
+    sdfVector4_t rot;
+    dds3PoseSet_t *pose;
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAdd);
+    if (summonDvBasic != NULL) {
+        summonDvBasic->poseset->pos.x = x;
+        summonDvBasic->poseset->pos.y = y;
+        summonDvBasic->poseset->pos.z = z;
+        dds3OnPoseSetFlag(summonDvBasic->poseset, 1);
+        dds3OnPoseSetFlag(summonDvBasic->poseset, 8);
+        pose = summonDvBasic->poseset;
+        SDF_VU0_COPYVECTOR(&pose->pos2, &pose->pos);
+        if (fldGlobalBase.summonStop == 0) {
+            dds3GetRotPoseSet(playerBasic);
+            SDF_VU0_STOREVECTOR(&rot);
+            dds3SetRotPoseSet(summonDvBasic, &rot);
+        }
+    }
+    mapSummonDvFoceSet(x, y, z);
+}
 
+void mapSummonDvAdd(f32 x, f32 y, f32 z) {
+    s32 i = map_summondv_buff_add_idx;
+    s32 prev = i - 1;
+    f32 dist;
+
+    if (prev < 0) {
+        prev = 255;
+    }
+    dist = fldPointDistance(map_summondv_buff[prev][0], map_summondv_buff[prev][1], map_summondv_buff[prev][2], x, y, z);
+    if (gMapNakamaRunAtumaru == 0 && dist < 10.0f) {
+        return;
+    }
+    map_summondv_buff[i][0] = x;
+    map_summondv_buff[i][1] = y;
+    mapWork3[i] = fldGlobalBase.nameU;
+    map_summondv_buff[i][2] = z;
+    map_summondv_buff_read_idx = (map_summondv_buff_read_idx + 1) % 256;
+    map_summondv_buff_add_idx = (map_summondv_buff_add_idx + 1) % 256;
+}
+
+/* NON_MATCHING: 2 of 16 words match.  */
+#ifdef NON_MATCHING
+void mapSummonDvGet(f32 *x, f32 *y, f32 *z) {
+    f32 *pos = map_summondv_buff[map_summondv_buff_read_idx];
+
+    *x = pos[0];
+    *y = pos[1];
+    *z = pos[2];
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvGet);
+#endif
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldCatGetNakamaSub);
 
@@ -336,9 +505,19 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", sndSeStatus);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvTask);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf18);
+void fldLeaf18(s32 hisMotion, s32 upMotion, f32 hokan) {
+    if (hisMotion != upMotion) {
+        playerModel->first->speed = 0.5f;
+        mdlSmoothLoopMotion(playerModel, 0, upMotion, hokan, hokan);
+    }
+}
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf19);
+void fldLeaf19(s32 hisMotion, s32 upMotion, f32 hokan) {
+    if (hisMotion != upMotion) {
+        playerModel->first->speed = 0.5f;
+        mdlSmoothSingleMotion(playerModel, 0, upMotion, hokan, hokan);
+    }
+}
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalcNmlFldSub);
@@ -346,7 +525,10 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalcNmlFldSub);
 #endif
 INCLUDE_ASM(const s32, "field/fldFileResolver", rstDrawEvoBgFade);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldSetUnitSub3);
+void fldSetUnitSub3(s32 motion, f32 speed) {
+    playerModel->first->speed = speed;
+    mdlLoopMotion(playerModel, 0, motion);
+}
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf20);
 
@@ -357,7 +539,47 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallBtlGetMotionVisualDataSBt
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallPlaySEVol);
+void PlayerMotionSe2(s32 se, f32 x, f32 z) {
+    s32 id = 0;
+    f32 prev = fldGlobalBase.PlayerMotionFrame;
+    f32 frame = playerModel->first->frame;
+    f32 next;
+
+    fldGlobalBase.PlayerMotionFrame = frame;
+    switch (mapCallSetPlayerTargetData5(se, playerModel, x, z)) {
+    case 0:
+        break;
+    case 1:
+        id = 4;
+        break;
+    case 2:
+        id = 8;
+        break;
+    case 3:
+        id = 12;
+        break;
+    }
+    id += PlayerMotionSe2Data % 4;
+    if (se == 1) {
+        if (prev < 5.0f && frame >= 5.0f) {
+            goto play;
+        }
+        next = 15.0f;
+    } else if (se == 6) {
+        if (prev < 16.0f && frame >= 16.0f) {
+            goto play;
+        }
+        next = 36.0f;
+    } else {
+        return;
+    }
+    if (!(prev < next && frame >= next)) {
+        return;
+    }
+play:
+    p2sdPlaySE_Vol(id, 127);
+    PlayerMotionSe2Data += ((dds3GetRandA(NULL) >> 4) & 1) + 1;
+}
 #else
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalcNmlFldSub2);
 
@@ -370,7 +592,9 @@ INCLUDE_RODATA(const s32, "field/fldFileResolver", mapSummonDvTaskTable2);
 INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerMotionSe2);
 #endif
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerMotionSe);
+void PlayerMotionSe(s32 hisMotion, s32 upMotion) {
+    PlayerMotionSe2(upMotion, fldGlobalBase.focusX, fldGlobalBase.focusZ);
+}
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallNakamaMotion3DSE);
 
@@ -384,19 +608,34 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayer_MoveGet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallEncountTestFlag);
-#else
+#ifdef VERSION_RAIDOU2
 INCLUDE_RODATA(const s32, "field/fldFileResolver", fldPlayer_MoveCalcTable);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", PlayerCalc_Nml_fldTable);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagTable2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml_fld);
 #endif
+INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml_fld);
 
+#ifdef VERSION_RAIDOU1
+s32 fldPlayerCalc(void) {
+    if (fldDbg.menuOn != 0) {
+        return 0;
+    }
+    if (fldEncountTestFlag(64) == 0 && map_player_move_mode != 0) {
+        fldPlayer_MoveCalc();
+        return 0;
+    }
+    if (fldEncountTestFlag(64) != 0) {
+        PlayerCalc_Nml_fld();
+        return 0;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalc);
+#endif
 
 void fldEnableCameraObjectFlag(void) {
     dds3ObjectBaseOnFlag(fldPlayerObject, 1);
@@ -434,19 +673,19 @@ INCLUDE_RODATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagTable);
 INCLUDE_RODATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagTable2);
 
 #endif
-INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboAddData);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_aibo_buff_read_idx);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboAddData2);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_aibo_buff_write_idx);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboTaskData);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_aibo_spd_max);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", mapData55);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_aibo_rot);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboTaskData2);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", mapSummonDvAddData);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_summondv_buff_read_idx);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", mapSummonDvAddData2);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_summondv_buff_add_idx);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver", mapSummonDvTaskData2);
 
@@ -458,7 +697,7 @@ INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboMinAlpDownData);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver", fldAiboTaskSubData);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboTaskData3);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", gMapAiboWakeUpMode);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboMinAlpDownData2);
 
@@ -468,11 +707,11 @@ INCLUDE_SDATA(const s32, "field/fldFileResolver", mapData57);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver", mapData58);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboTaskData4);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", gMapAiboMotionBugCnt);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", fldCallPlaySEVolData);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", PlayerMotionSe2Data);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", fldData18);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_player_move_mode);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver", fldData19);
 
