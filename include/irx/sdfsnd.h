@@ -238,8 +238,7 @@ typedef struct {
     u32 progSize;
     u32 idPacked;
     u32 kindPacked;
-    u8 volTable[128];
-} sdfSmgHeader_t;
+} sdfSmgHeader_t; /* followed in the file by a 128-byte volume table */
 
 /* APCM, the streamed ADPCM header. */
 typedef struct {

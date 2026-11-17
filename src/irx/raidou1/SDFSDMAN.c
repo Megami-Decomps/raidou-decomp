@@ -1718,7 +1718,9 @@ INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScehs_1);
 s32 sdfSndLoadSmg(const char *path, s32 mode)
 {
     sdfSmgHeader_t hdr;
+    u8 buf[sizeof(sdfSmgHeader_t) + 128];
     u8 volTable[128];
+    u8 *cur;
     s32 kind;
     s32 unload;
     s32 count;
@@ -1746,12 +1748,15 @@ s32 sdfSndLoadSmg(const char *path, s32 mode)
     if (mode == 0 && sdfSndFileGetSize(fd) < 0) {
         goto done;
     }
-    read = sdfSndFileRead(fd, &hdr, 176, mode);
+    read = sdfSndFileRead(fd, buf, sizeof(buf), mode);
     if (read < 0xB0) {
         stdio_printf(aSdfsnddrvFileR, read);
         sdfSndPostError(2);
         goto done;
     }
+    cur = buf;
+    memcpy(&hdr, cur, sizeof(hdr));
+    cur += sizeof(hdr);
     len = hdr.seqSize;
     waveSize = hdr.waveSize;
     progSize = hdr.progSize;
@@ -1761,9 +1766,7 @@ s32 sdfSndLoadSmg(const char *path, s32 mode)
         stdio_printf(aSdfsnddrvMidi0, id);
         goto done;
     }
-    for (i = 0; i < 128; i++) {
-        volTable[i] = hdr.volTable[i];
-    }
+    memcpy(volTable, cur, sizeof(volTable));
     if (len == 0 || waveSize == 0) {
         if (mode) {
             stdio_printf(aSdfsnddrvDataS);
@@ -2456,13 +2459,15 @@ INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScesi);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvIfcou);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvUnkno);
 #ifdef NON_MATCHING
-/* 3 instructions longer than the retail code; not yet tuned. */
+/* 3 instructions longer than the retail code. */
 /* The driver's main loop: wait for a command packet from the EE, run it and
  * acknowledge it. Command 1 (quit) is the only way out. */
 s32 sdfSndDrvRpcInit(void *arg)
 {
     sdfSndCmd_t *pkt;
-    u32 opt;
+    s32 opt;
+    u8 cmd;
+    u16 low;
     s32 arg4;
     s32 bank;
     s32 vol;
@@ -2502,7 +2507,9 @@ s32 sdfSndDrvRpcInit(void *arg)
         pkt = &sdfSndCmdRing[(s16)sdfSndCmdHead];
         opt = pkt->opt;
         arg4 = (opt >> 16) & 0xF;
-        switch ((u8)(opt >> 20)) {
+        cmd = opt >> 20;
+        low = opt;
+        switch (cmd) {
         case 0:
             sdfSndInitSynth(*(sdfSndWorkArea_t **)pkt->data);
             break;
@@ -2632,7 +2639,7 @@ s32 sdfSndDrvRpcInit(void *arg)
             sdfSndUnlockAllBanks();
             break;
         default:
-            stdio_printf(aSdfsnddrvUnkno, (u8)(opt >> 20), (u16)pkt->opt);
+            stdio_printf(aSdfsnddrvUnkno, cmd, low);
             sdfSndPostError(14);
             break;
         }

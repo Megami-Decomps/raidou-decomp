@@ -58,6 +58,8 @@ s32 modload_StartModule(s32 mid, const char *path, s32 arglen, const char *args,
 s32 stdio_printf(const char *fmt, ...);
 s32 sysclib_vsprintf(char *buf, const char *fmt, va_list ap);
 void *sysclib_memcpy(void *dst, const void *src, s32 len);
+/* ee-gcc's builtin: a constant length is expanded inline, never a call. */
+void *memcpy(void *dst, const void *src, u32 len);
 void *sysclib_memset(void *dst, s32 c, s32 len);
 s32 sysclib_strlen(const char *s);
 s32 sysclib_strncmp(const char *a, const char *b, s32 n);

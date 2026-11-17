@@ -1687,8 +1687,248 @@ INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSmgUn);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSmgUn_0);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSRead);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScehs_1);
+#ifdef NON_MATCHING
+/* Load one .SMG bank: header, volume table, sequence data, wave data (in
+ * work area sized pieces straight into the SPU2) and program data. Devil and
+ * skill banks take the next unlocked area in turn. */
+s32 sdfSndLoadSmg(const char *path, s32 mode)
+{
+    sdfSmgHeader_t hdr;
+    u8 buf[sizeof(sdfSmgHeader_t) + 128];
+    u8 volTable[128];
+    u8 *cur;
+    s32 kind;
+    s32 unload;
+    s32 count;
+    s32 fd;
+    s32 ret;
+    s32 i;
+    u32 read;
+    u32 len;
+    u32 waveSize;
+    u32 progSize;
+    u16 id;
+    u16 kindPacked;
+    u8 *tbl;
+    s32 left;
+    u32 spuAddr;
+    s32 chunk;
+
+    ret = -1;
+    kind = 0;
+    unload = 0;
+    fd = sdfSndFileOpen(path, mode);
+    if (fd < 0) {
+        return -1;
+    }
+    if (mode == 0 && sdfSndFileGetSize(fd) < 0) {
+        goto done;
+    }
+    read = sdfSndFileRead(fd, buf, sizeof(buf), mode);
+    if (read < 0xB0) {
+        stdio_printf(aSdfsnddrvFileR, read);
+        sdfSndPostError(2);
+        goto done;
+    }
+    cur = buf;
+    memcpy(&hdr, cur, sizeof(hdr));
+    cur += sizeof(hdr);
+    len = hdr.seqSize;
+    waveSize = hdr.waveSize;
+    progSize = hdr.progSize;
+    id = hdr.idPacked >> 16;
+    kindPacked = hdr.kindPacked;
+    if (sdfSndFindSlotById(hdr.idPacked) >= 0) {
+        stdio_printf(aSdfsnddrvMidi0, id);
+        goto done;
+    }
+    memcpy(volTable, cur, sizeof(volTable));
+    if (len == 0 || waveSize == 0) {
+        if (mode) {
+            stdio_printf(aSdfsnddrvDataS);
+        } else {
+            stdio_printf(aSdfsnddrvSData, path);
+        }
+        sdfSndPostError(5);
+        goto done;
+    }
+
+    switch (hdr.kindPacked >> 24) {
+    case 0:
+        kind = 0;
+        break;
+    case 2:
+        kind = 1;
+        if (!sdfSndIsBankLoaded(1)) {
+            break;
+        }
+        kind = 2;
+        if (!sdfSndIsBankLoaded(2)) {
+            break;
+        }
+        kind = 0;
+        for (i = 0; i < 16; i++) {
+            if (sdfSndSlots[i].id >= 0 && sdfSndSlots[i].group < 0) {
+                if ((sdfSndSlots[i].group & 2) != 0) {
+                    kind |= 2;
+                } else {
+                    kind |= 1;
+                }
+            }
+        }
+        if (kind == 1) {
+            kind = 2;
+        } else if (kind == 2) {
+            kind = 1;
+        } else if (sdfSndBankAltSlot == 1) {
+            kind = 2;
+        } else {
+            kind = 1;
+        }
+        sdfSndBankAltSlot = kind;
+        break;
+    case 3:
+        kind = 3;
+        break;
+    case 5:
+        for (i = 0; i < 2; i++) {
+            if (sdfSndFindNakamaArea(sdfSndNakamaAreaNext, &kind, &unload)) {
+                if (++sdfSndNakamaAreaNext >= 2) {
+                    sdfSndNakamaAreaNext = 0;
+                }
+                break;
+            }
+            if (++sdfSndNakamaAreaNext >= 2) {
+                sdfSndNakamaAreaNext = 0;
+            }
+        }
+        if (i >= 2) {
+            stdio_printf(aSdfsnddrvSmgUn);
+            goto done;
+        }
+        break;
+    case 8:
+        for (i = 0; i < 2; i++) {
+            if (sdfSndFindDevilArea(sdfSndDevilAreaNext, &kind, &unload)) {
+                if (++sdfSndDevilAreaNext >= 2) {
+                    sdfSndDevilAreaNext = 0;
+                }
+                break;
+            }
+            if (++sdfSndDevilAreaNext >= 2) {
+                sdfSndDevilAreaNext = 0;
+            }
+        }
+        if (i >= 2) {
+            stdio_printf(aSdfsnddrvSmgUn_0);
+            goto done;
+        }
+        break;
+    case 9:
+        for (i = 0; i < 18; i++) {
+            if (sdfSndFindSkillArea(sdfSndSkillAreaNext, &kind, &unload)) {
+                if (++sdfSndSkillAreaNext >= 18) {
+                    sdfSndSkillAreaNext = 0;
+                }
+                break;
+            }
+            if (++sdfSndSkillAreaNext >= 18) {
+                sdfSndSkillAreaNext = 0;
+            }
+        }
+        if (i >= 18) {
+            stdio_printf(aSdfsnddrvSmgUn_0);
+            goto done;
+        }
+        break;
+    case 10:
+        kind = 26;
+        break;
+    default:
+        goto done;
+    }
+
+    if ((hdr.kindPacked >> 24) == 2) {
+        sdfSndSkillAreaNext = 0;
+        sdfSndUnloadBank(8);
+        sdfSndUnloadBank(9);
+        sdfSndUnloadBank(10);
+        sdfSndUnloadBank(11);
+        sdfSndUnloadBank(12);
+        sdfSndUnloadBank(13);
+        sdfSndUnloadBank(14);
+        sdfSndUnloadBank(15);
+        sdfSndUnloadBank(16);
+        sdfSndUnloadBank(17);
+        sdfSndUnloadBank(18);
+        sdfSndUnloadBank(19);
+        sdfSndUnloadBank(20);
+        sdfSndUnloadBank(21);
+        sdfSndUnloadBank(22);
+        sdfSndUnloadBank(23);
+        sdfSndUnloadBank(24);
+        sdfSndUnloadBank(25);
+    } else if ((hdr.kindPacked >> 24) == 9 && unload != 0) {
+        sdfSndUnloadBank(unload);
+    }
+    sdfSndUnloadBank(kind);
+    tbl = sdfSndGetVolTable(kind, &count);
+    if (tbl != NULL) {
+        for (i = 0; i < count; i++) {
+            tbl[i] = volTable[i];
+        }
+    }
+    sdfSndWorkArea->banks[kind].size = ((len + 15) & 0xFFF0) + ((progSize + 15) & 0xFFF0);
+    if (kind < 0) {
+        goto done;
+    }
+    sdfSndWorkArea->progData[kind].ptr =
+        (u8 *)sdfSndWorkArea->banks[kind].data + ((len + 15) & 0xFFFFFFF0);
+    if (sdfSndFileRead(fd, sdfSndWorkArea->banks[kind].data, len, mode) != len) {
+        goto readError;
+    }
+    sdfSndSetBankAddr(kind, waveSize);
+    left = waveSize;
+    spuAddr = sdfSndWorkArea->banks[kind].spuAddr;
+    do {
+        chunk = sdfSndWorkArea->xferBufSize;
+        if (left < chunk) {
+            chunk = left;
+        }
+        if (sdfSndFileRead(fd, sdfSndWorkArea->xferBuf, chunk, mode) != chunk) {
+            goto readError;
+        }
+        ret = modhsyn_sceHSyn_VoiceTrans(0, sdfSndWorkArea->xferBuf, spuAddr, chunk);
+        left -= chunk;
+        if (ret != 0) {
+            stdio_printf(aSdfsnddrvScehs_1);
+            goto done;
+        }
+        spuAddr += chunk;
+    } while (left != 0);
+
+    sdfSndWorkArea->progData[kind].size = progSize;
+    if (sdfSndFileRead(fd, sdfSndWorkArea->progData[kind].ptr, progSize, mode) != progSize) {
+readError:
+        stdio_printf(aSdfsnddrvSRead, path);
+        goto done;
+    }
+    sdfSndWorkArea->stat[kind].kind = kindPacked;
+    sdfSndWorkArea->stat[kind].id = id;
+    sdfSndWorkArea->stat[kind].lock = 0;
+    p2sdIrxSpuIopMap();
+done:
+    if (mode) {
+        sdfSndCallEeRpc(0, NULL, 0, 5, NULL);
+    } else {
+        sdfSndFileClose(fd);
+    }
+    return ret;
+}
+#else
 INCLUDE_RODATA("SDFSDMAN", jtbl_00006468);
 INCLUDE_ASM("SDFSDMAN", sdfSndLoadSmg);
+#endif
 
 /* Waits on its semaphore and loads whatever path the EE last set. */
 void sdfSndSmgLoadThread(void *arg)
@@ -2178,13 +2418,15 @@ INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScesi);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvIfcou);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvUnkno);
 #ifdef NON_MATCHING
-/* 3 instructions longer than the retail code; not yet tuned. */
+/* 3 instructions longer than the retail code. */
 /* The driver's main loop: wait for a command packet from the EE, run it and
  * acknowledge it. Command 1 (quit) is the only way out. */
 s32 sdfSndDrvRpcInit(void *arg)
 {
     sdfSndCmd_t *pkt;
-    u32 opt;
+    s32 opt;
+    u8 cmd;
+    u16 low;
     s32 arg4;
     s32 bank;
     s32 vol;
@@ -2224,7 +2466,9 @@ s32 sdfSndDrvRpcInit(void *arg)
         pkt = &sdfSndCmdRing[(s16)sdfSndCmdHead];
         opt = pkt->opt;
         arg4 = (opt >> 16) & 0xF;
-        switch ((u8)(opt >> 20)) {
+        cmd = opt >> 20;
+        low = opt;
+        switch (cmd) {
         case 0:
             sdfSndInitSynth(*(sdfSndWorkArea_t **)pkt->data);
             break;
@@ -2354,7 +2598,7 @@ s32 sdfSndDrvRpcInit(void *arg)
             sdfSndUnlockAllBanks();
             break;
         default:
-            stdio_printf(aSdfsnddrvUnkno, (u8)(opt >> 20), (u16)pkt->opt);
+            stdio_printf(aSdfsnddrvUnkno, cmd, low);
             sdfSndPostError(14);
             break;
         }
