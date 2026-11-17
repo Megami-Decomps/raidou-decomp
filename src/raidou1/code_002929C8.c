@@ -135,19 +135,13 @@ INCLUDE_ASM(const s32, "code_002929C8", sbtlBtlDrawTextSub);
 
 INCLUDE_ASM(const s32, "code_002929C8", sbtlLeaf81);
 
-/* NON_MATCHING: 10 of 44 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_0018CE10.c:43, near, same function 0.95 (words 44/47, calls 1.00, shape 0.92), proto differs */
-void sbtlDrawSprite_RGBA2(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo)
+void sbtlDrawSprite_RGBA2(s32 x, s32 y, u32 *rgba, struct sprHandle_t *handle, s32 sprno, DDS3_OT ot)
 {
-    eglSetOt(a_otNo);
-    eglLinkTest(1, 5, 1, 1, 0, 0, 1, 1);
+    eglSetOt(ot);
+    eglLinkTest(1, 5, 1, 1, 0, 0, 0, 1);
     eglLinkAlpha(0);
-    effDrawSpriteWithCornerFade(a_x * 16, a_y * 8, a_z, a_alphaRate, 96, a_hSpr, a_sprNo, a_otNo);
+    effDrawSpriteWithCornerColors(x * 16, y * 8, 0, rgba, 96, handle, sprno, ot);
 }
-#else
-INCLUDE_ASM(const s32, "code_002929C8", sbtlDrawSprite_RGBA2);
-#endif
 
 INCLUDE_ASM(const s32, "code_002929C8", sbtlRefSbtl50);
 

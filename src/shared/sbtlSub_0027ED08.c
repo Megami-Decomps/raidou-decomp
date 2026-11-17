@@ -9,6 +9,7 @@
 #include "sbtlWork.h"
 #include "sbtlSub_0027ED08.h"
 #include "sbtlSub.h"
+#include "sBtlSM.h"
 #include "sdfQuat.h"
 
 /* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
@@ -457,16 +458,10 @@ INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfter);
 
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", slKanjiDrawN);
 
-/* NON_MATCHING: 5 of 7 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_002A38D8.c:220, adapt, same function 0.94 (words 7/8, calls 1.00, shape 0.93) */
-struct SBTLSKILLP_TBL *sbtlGetSkillNameFont(SKLID skillid)
+char *sbtlGetSkillNameFont(SKLID skillid)
 {
-    return &sbtlData95[skillid];
+    return sbtlData95[skillid];
 }
-#else
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetSkillNameFont);
-#endif
 
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawSkillName);
 

@@ -1991,27 +1991,22 @@ s32 sbtlCheckArea(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos)
     return 0;
 }
 
-/* NON_MATCHING: 7 of 63 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_r1_00259A88.c:1973, near, same function 0.97 (words 63/61, calls 1.00, shape 0.94) */
 s32 sbtlCheckAreaCount(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos)
 {
     s32 i;
+    s32 count = 0;
     struct SBTLUNIT_WORK *unit;
 
     for (i = 0; i < wk_sbtl->unitList->number; i++) {
         unit = wk_sbtl->unitList->pUnitL[i].pUnit;
         if (unit != NULL && sbtlCheckDamageTarget(unit) && (unit->field414 & 7) && (unit->field414 & 7) != (wk->field414 & 7)) {
             if (sbtlCheckCrossCircle(pos, r, &unit->pos, unit->model->field11C)) {
-                return 1;
+                count++;
             }
         }
     }
-    return 0;
+    return count;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckAreaCount);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckArea_Atk);
 

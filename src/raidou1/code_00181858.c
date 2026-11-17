@@ -178,16 +178,13 @@ void nbRefDDS3GBWK14(void) {
     nbData6 = DDS3_GBWK->nbNameImage;
     nbData7 = DDS3_GBWK->nbNameCode;
     for (i = 0; i < 16; i++) {
-        nbWork3[i] = 0;
+        nbWork3[i] = NULL;
     }
     nbData5 = 0;
 }
 
-/* NON_MATCHING: 0 of 77 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_00181858.c:35, near, same function 0.97 (words 77/79, calls 1.00, shape 0.92) */
-void nbCallChipAllocDirect(s32 idx, s32 count, dds3NameImage_t *image) {
-    GsFont_t **cell = cmbData[idx];
+void nbCallChipAllocDirect(s32 count, dds3NameImage_t *image) {
+    GsFont_t **cell = nbWork3;
     dds3NameImage_t *copy;
     GsFont_t *font;
     s32 i;
@@ -197,12 +194,9 @@ void nbCallChipAllocDirect(s32 idx, s32 count, dds3NameImage_t *image) {
         *copy = image[i];
         font = frTranslateUserData(24, 24, copy, 1);
         cell[i] = font;
-        font->font_no = idx;
+        font->font_no = NB_FONT_NO;
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_00181858", nbCallChipAllocDirect);
-#endif
 
 INCLUDE_ASM(const s32, "code_00181858", nbFunc27);
 

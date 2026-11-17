@@ -12,7 +12,10 @@ extern u8 cmbData2[18];
 extern s32 cmbWork[18];
 extern dds3NameImage_t *cmbRefDDS3GBWKWork[2];
 extern dds3NameChar_t *cmbRefDDS3GBWKWork2[2];
-extern s32 nbWork3[16];
+/* font_no of the nb cells, after the 18 cmb ones. */
+#define NB_FONT_NO 18
+
+extern GsFont_t *nbWork3[16];
 extern s32 nbData5;
 extern dds3NameImage_t *nbData6;
 extern dds3NameChar_t *nbData7;

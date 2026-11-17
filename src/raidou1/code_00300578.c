@@ -1287,9 +1287,8 @@ void Shutdown_cmpStatus(dds3ProcessID_t *id) {
     g_mainPID = NULL;
 }
 
-/* NON_MATCHING: 28 of 46 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_00190668.c:617, near, same function 0.90 (words 46/49, calls 0.83, shape 0.93) */
+INCLUDE_RODATA(const s32, "code_00300578", cmpCallSprintfTable);
+
 dds3ProcessID_t *ProcessStart_cmpStatus(void)
 {
     struct sdfMemHandle_t *hMem = sdfMemAllocDirect(sizeof(cmpStatusWork_t));
@@ -1302,11 +1301,6 @@ dds3ProcessID_t *ProcessStart_cmpStatus(void)
     cmpCallInitCmpModel(wk);
     return g_mainPID;
 }
-#else
-INCLUDE_RODATA(const s32, "code_00300578", cmpCallSprintfTable);
-
-INCLUDE_ASM(const s32, "code_00300578", ProcessStart_cmpStatus);
-#endif
 
 void ProcessEnd_cmpStatus(void) {
     cmpStatusWork_t *wk;

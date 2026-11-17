@@ -2586,21 +2586,15 @@ void sbtlDraw3DSphere(const sdfVector4_t *center, u32 color, const sdfMatrix4_t 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDraw3DSphere);
 #endif
 
-/* NON_MATCHING: 13 of 26 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_r1_0024F220.c:1671, near, same function 0.94 (words 26/23, calls 1.00, shape 0.94) */
 s32 sbtlGetMotionNumSub(struct SBTLUNIT_WORK *wk)
 {
     s32 status = wk->status;
 
-    if ((u32)(status - 10) >= 2 && status != 14 && wk->model->mode != 9 && wk->mode >= 5 && status != 40) {
+    if (status != 10 && status != 11 && status != 14 && wk->model->mode != 9 && status != 30 && wk->mode >= 5 && status != 40) {
         return 1;
     }
     return 0;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlGetMotionNumSub);
-#endif
 
 INCLUDE_ASM(const s32, "code_002A38D8", sdfSetLocalMapCounterMarkerState);
 

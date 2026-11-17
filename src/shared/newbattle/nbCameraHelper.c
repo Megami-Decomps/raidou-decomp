@@ -237,9 +237,6 @@ void dds3EffectFileListDelete(nbCameraHelper_effFileListHandle_t *a) {
     sdfChipFreeDirect(a);
 }
 
-/* NON_MATCHING: 35 of 36 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in smt3 @ 9401f79e: src/smt3/newbattle/nbCameraHelper.c:231, near, same function 1.00 (words 36/36, calls 1.00, shape 1.00) */
 nbCameraHelper_effFLWinHandle_t *dds3EffectFileListWindowCreate(nbCameraHelper_effFileListHandle_t *a) {
     nbCameraHelper_effFLWinHandle_t *resource = sdfChipAllocDirect(sizeof(*resource));
 
@@ -252,7 +249,7 @@ nbCameraHelper_effFLWinHandle_t *dds3EffectFileListWindowCreate(nbCameraHelper_e
     resource->visibleIndex = 0;
     resource->previewActive = 0;
     resource->repeatDelay = 0;
-    resource->drawSurface = 0x47;
+    resource->drawSurface = NB_EFFECT_FILE_LIST_OT;
     resource->borderColor = 0x40806020;
     resource->fillColor = 0x30000000;
     resource->firstVisibleEntry = a->head;
@@ -262,9 +259,6 @@ nbCameraHelper_effFLWinHandle_t *dds3EffectFileListWindowCreate(nbCameraHelper_e
     resource->resourceList = a;
     return resource;
 }
-#else
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowCreate);
-#endif
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/newbattle/nbCameraHelper.c:254, rework, same function 1.00 (words 288/288, calls 1.00, shape 1.00) */
 s32 dds3EffectFileListWindowDraw(nbCameraHelper_effFLWinHandle_t *a) {
