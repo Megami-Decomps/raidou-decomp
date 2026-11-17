@@ -50,8 +50,6 @@ void fldCallMemGetPtr5(dds3ProcessID_t *id) {
     sdfMemFreeDelayedDirect(id->workdata);
 }
 
-/* NON_MATCHING: 53 of 56 words match.  */
-#ifdef NON_MATCHING
 s32 fldCallMemGetPtr6(dds3ProcessID_t *id, u32 *code) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
     s32 page;
@@ -62,12 +60,13 @@ s32 fldCallMemGetPtr6(dds3ProcessID_t *id, u32 *code) {
     if (work->unkC >= 3) {
         if (work->unkC == 3) {
             titleFunc4(titleFunc6(work->unk38), &page, &index);
-            index = work->unk34 + index;
+            index += work->unk34;
             count = fclLeaf23(page);
-            if (index < count) {
-                *code = fclLeaf24(page, index);
-                return 1;
+            if (index >= count) {
+                return 0;
             }
+            *code = fclLeaf24(page, index);
+            return 1;
         }
     } else {
         ret = titleFunc(work->unkC, work->unk34, work->unk38);
@@ -80,6 +79,3 @@ s32 fldCallMemGetPtr6(dds3ProcessID_t *id, u32 *code) {
     }
     return 0;
 }
-#else
-INCLUDE_ASM(const s32, "code_002F97C0", fldCallMemGetPtr6);
-#endif

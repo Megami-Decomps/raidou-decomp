@@ -43,9 +43,11 @@ Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-
 
 ## frSetFontString (interface/frFont, raidou1 0x198)
 
-Raidou 1: 7 of 102 words differ, first at +0x11C.
+Raidou 1: 3 of 102 words differ, first at +0x114.
 
 retail loads chain->advance into v1 and childCount into v0, mine swaps them; tried +=, explicit sum, count first (23), previous store last; R2 body differs (472 bytes, r1only); global named frSetFontString_style (renames.tsv), tests used R1/R2 names; vector checked (menu)
+
+N1 retry: frData2 + (glyph->advance + chain->advance) takes it from 7 to 3 (childCount now in v0); left: retail loads glyph->advance first into a1, sums chain + glyph in v1, then sum + frData2 into frData2's register. Tried an s32 advance local holding frData2 (=, +=, both sum orders: 3 to 6), frData2 + (chain + glyph) (6). frFontAppendIndexedTextToGlyphChain closes to 1 word once this is C.
 
 Related: register-allocation.
 
@@ -67,10 +69,12 @@ Related: prologue.
 
 ## frFontAppendIndexedTextToGlyphChain (interface/frFont, raidou1 0x170, raidou2 0x170)
 
-Raidou 1: 1 of 92 words differ, first at +0xE0.
+Raidou 1: 47 of 90 words differ alone, first at +0x48; 0 once frSetFontString is C (the -DNON_MATCHING build).
 Raidou 2: 47 of 90 words differ, first at +0x48; emitted 360 bytes, native 368 bytes.
 
 two frCallSetFontString sites: retail keeps them apart with beql/lbu Spd in the firstChild==NULL delay slot and stores v0, mine is 2 words short from block layout; tried local reuse, assignment chains on both paths; DDS body with Raidou text/var names; vector checked (menu)
+
+N1 retry: with frSetFontString compiled as C the body is exact after ctx->glyphChain = frCallSetFontString(...); context = ctx->glyphChain; in the firstChild arm (the assignment chain stored the copy). Alone it is 47 off because the block layout follows frSetFontString's visibility, so it waits on frSetFontString.
 
 Related: cross-jump.
 

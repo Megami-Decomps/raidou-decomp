@@ -9,10 +9,23 @@
 #include "sdk_libc.h"
 #include "datCalc.h"
 #include "dds3PadManager.h"
+#include "code_r1_002C8188.h"
 
 INCLUDE_ASM(const s32, "code_00190668", itfMenuChkSetMenu);
 
-INCLUDE_ASM(const s32, "code_00190668", itfCallDevLoadFileEx);
+struct sprHandle_t *itfCallDevLoadFileEx(u8 *a_strSprName) {
+    u32 sourceAddress;
+    struct sdfMemHandle_t *allocation;
+    struct sprHandle_t *hSpr;
+
+    if (a_strSprName == NULL) {
+        return NULL;
+    }
+    allocation = sdfDevLoadFileEx(a_strSprName, &sourceAddress, 0);
+    hSpr = effCreateResourceSlotSetFromAllocation(allocation, 0);
+    sdfMemFreeDelayedDirect(allocation);
+    return hSpr;
+}
 
 s32 itfMenuGetMenuNo(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, struct sprHandle_t *a_hSpr)
 {
@@ -47,8 +60,6 @@ s32 itfMenuLinkSprite(dds3ProcessID_t *PID, struct sprHandle_t *a_hSpr)
     return ret;
 }
 
-/* NON_MATCHING: 54 of 55 words match.  */
-#ifdef NON_MATCHING
 s32 itfMenuSetSpriteData(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, s32 a_baseX, s32 a_baseY, s32 a_ofsX,
                          s32 a_ofsY, s32 a_fontX, s32 a_fontY, u8 *a_strSprName, itfSprList_t *a_pList)
 {
@@ -72,23 +83,18 @@ s32 itfMenuSetSpriteData(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, s32 a_bas
     img->fy = a_fontY;
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00190668", itfMenuSetSpriteData);
-#endif
 
-/* NON_MATCHING: 18 of 19 words match.  */
-#ifdef NON_MATCHING
 s8 itfMenuSetImageColorSub(Menu_t *wk, ITFMENU_IMG_DAT a_type, u8 a_R, u8 a_G, u8 a_B, u8 a_A)
 {
+    MenuImgDat_t *img;
+
     if ((u32)a_type >= ITFMENU_IMG_DAT_MAX) {
         return 0;
     }
-    wk->imgDat[a_type].color = (a_A << 24) + (a_B << 16) + (a_G << 8) + a_R;
+    img = &wk->imgDat[a_type];
+    img->color = (a_A << 24) + (a_B << 16) + (a_G << 8) + a_R;
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00190668", itfMenuSetImageColorSub);
-#endif
 
 s32 itfMenuSetImageColor(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, u8 a_R, u8 a_G, u8 a_B, u8 a_A)
 {
@@ -637,21 +643,16 @@ void itfMenuProcessEnd(dds3ProcessID_t *PID)
     }
 }
 
-/* NON_MATCHING: 19 of 20 words match.  */
-#ifdef NON_MATCHING
 s32 itfMenuProcessCheck(dds3ProcessID_t *PID)
 {
     if (PID == NULL) {
         return 0;
     }
-    if (dds3GetProcessStat(PID) != 3 && dds3GetProcessStat(PID) != 0) {
-        return 1;
+    if (dds3GetProcessStat(PID) == 3 || dds3GetProcessStat(PID) == 0) {
+        return 0;
     }
-    return 0;
+    return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00190668", itfMenuProcessCheck);
-#endif
 
 INCLUDE_ASM(const s32, "code_00190668", itfCallGetProcessData2);
 

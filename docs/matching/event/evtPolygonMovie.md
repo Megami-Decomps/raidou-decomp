@@ -13,4 +13,6 @@ Raidou 2: 3 of 25 words differ, first at +0x4C.
 
 last guard: retail beq on pInfo->flags&0x80 with v0=0 reused, mine bne+li 1/li 0; positive workdata guard (if workdata!=NULL{...}return 1) fixed the beql and v0 reg (9->3); tried ||, goto end, ret var, inverted last guard; vector checked (opening), same on R2
 
+N1 retry: retail's last guard branches to the epilogue on v0 still 0 from the flags & 8 guard's slot; a ret local set to 0 before the flag tests (11), the guards nested under one ret (17) and one fused && guard (17) are worse; no callee visibility effect.
+
 Related: [smt3 levers: callee visibility and branch-likely](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/callee-visibility.md).

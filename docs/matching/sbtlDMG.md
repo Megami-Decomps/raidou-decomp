@@ -67,11 +67,3 @@ Retail copies the angle table (sbtlSetHitPosTable) after the three memsets, this
 Batch notes: 302 vs 301 words: retail copies the angle table (sbtlSetHitPosTable 0x458D50, 9 floats) after the three memsets, mine at the declaration (retail likely struct-assigns a named table), shifting registers from +0x4; logic walked against asm and both jump tables. Menu call records (32 rows, two callers): iti 1, takasa 1, muki 0, ewk NULL, all three outputs; iti 2/3/6/7, helper-mark (iti&0xF0), takasa 0/2/3/5 and muki 8 checked against asm only. HD sBtlGetGroundPos, rename candidate)
 
 Related: [dds idioms: switches and jump tables](https://github.com/Megami-Decomps/dds-decomp/blob/main/docs/idioms.md#switches-and-jump-tables).
-
-## sbtlSetHitPos_XYZ (sbtlDMG, raidou1 0x194)
-
-Raidou 1: 3 of 101 words differ, first at +0x7C.
-
-Retail keeps a second pseudo for &hitrot: one register copy and a swapped addiu.
-
-Batch notes: Retail keeps a second pseudo for &hitrot; diff is one reg copy and a swapped addiu, same instruction semantics. Menu call records (32, rows scenario): pos/rot stores consistent with C.

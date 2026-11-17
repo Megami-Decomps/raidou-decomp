@@ -1462,8 +1462,6 @@ s32 fldEncountTestFlag(u32 flag)
     return (fldEncountFlags & flag) != 0;
 }
 
-/* NON_MATCHING: 65 of 75 words match.  */
-#ifdef NON_MATCHING
 void fldProcTrigSequence(fldSceneParam_t *srcParam, s32 mode)
 {
     fldSceneParam_t *scene = &gfldSceneParam;
@@ -1475,13 +1473,12 @@ void fldProcTrigSequence(fldSceneParam_t *srcParam, s32 mode)
     controller->flags = 0;
     scene->mode = mode;
     if (fldGlobalBase.btlReturnMap != 0) {
-        srcParam = &gMapBtlReturnParam;
-        scene->loadField = srcParam->loadField;
-        scene->flag = srcParam->flag;
-        scene->loadFloor = srcParam->loadFloor;
-        scene->loadPoint = srcParam->loadPoint;
-        strcpy(scene->FoceScript, srcParam->FoceScript);
-        scene->loadMode = srcParam->loadMode;
+        scene->flag = gMapBtlReturnParam.flag;
+        scene->loadField = gMapBtlReturnParam.loadField;
+        scene->loadFloor = gMapBtlReturnParam.loadFloor;
+        scene->loadPoint = gMapBtlReturnParam.loadPoint;
+        strcpy(scene->FoceScript, gMapBtlReturnParam.FoceScript);
+        scene->loadMode = gMapBtlReturnParam.loadMode;
     } else if (srcParam != NULL && mode == 0) {
         scene->flag = srcParam->flag;
         scene->loadField = srcParam->loadField;
@@ -1494,9 +1491,6 @@ void fldProcTrigSequence(fldSceneParam_t *srcParam, s32 mode)
     dds3StartProcess(fldProcDrawName, 11016, 0, 0, fldProcDraw, NULL, NULL);
     fldProcShutDownData = 1;
 }
-#else
-INCLUDE_ASM(const s32, "field/fldProcess", fldProcTrigSequence);
-#endif
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
 
@@ -1632,8 +1626,6 @@ INCLUDE_RODATA(const s32, "field/fldProcess", mapCallMapTable2);
 #endif
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 112 of 120 words match.  */
-#ifdef NON_MATCHING
 s32 MskL2Task(void)
 {
     fldSequenceController_t *seq = &fldAutoMapSeqFlags;
@@ -1645,45 +1637,38 @@ s32 MskL2Task(void)
     if (fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 2) {
         return 0;
     }
-    if (jmsChkCommonInputData[0] >= 0) {
-        return 0;
-    }
-    if (fldGlobalBase.noInpPlCnt) {
-        return 0;
-    }
-    if (evtBitCheck(2274) || evtBitCheck(2275) || evtBitCheck(2291) || evtBitCheck(2292)) {
-        idx = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
-        if (idx != -1 && sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[idx]) == 11) {
-            fldReleaseUnitPad();
-            fldPlayerMotReset();
-            dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrBadMafuHajikiLabel);
-            fldPlayerPosRot();
-            return 0;
+    if (jmsChkCommonInputData[0] < 0 && !fldGlobalBase.noInpPlCnt) {
+        if (evtBitCheck(2274) || evtBitCheck(2275) || evtBitCheck(2291) || evtBitCheck(2292)) {
+            idx = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
+            if (idx != -1 && sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[idx]) == 11) {
+                fldReleaseUnitPad();
+                fldPlayerMotReset();
+                dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrBadMafuHajikiLabel);
+                fldPlayerPosRot();
+                return 0;
+            }
         }
-    }
-    if (evtBitCheck(2274)) {
-        seq->stage = 43;
-        fldReleaseUnitPad();
-        mapCallNakamaWakeUp();
-    } else if (evtBitCheck(2275)) {
-        fldReleaseUnitPad();
-        fldGlobalBase.word12C = -1;
-        seq->stage = 42;
-        mapCallNakamaWakeUp3();
-    } else if (evtBitCheck(2291)) {
-        seq->stage = 44;
-        fldReleaseUnitPad();
-        mapNakamaZeniStart();
-    } else if (evtBitCheck(2292)) {
-        seq->stage = 45;
-        fldReleaseUnitPad();
-        mapNakamaHiroStart();
+        if (evtBitCheck(2274)) {
+            seq->stage = 43;
+            fldReleaseUnitPad();
+            mapCallNakamaWakeUp();
+        } else if (evtBitCheck(2275)) {
+            fldReleaseUnitPad();
+            fldGlobalBase.word12C = -1;
+            seq->stage = 42;
+            mapCallNakamaWakeUp3();
+        } else if (evtBitCheck(2291)) {
+            seq->stage = 44;
+            fldReleaseUnitPad();
+            mapNakamaZeniStart();
+        } else if (evtBitCheck(2292)) {
+            seq->stage = 45;
+            fldReleaseUnitPad();
+            mapNakamaHiroStart();
+        }
     }
     return 0;
 }
-#else
-INCLUDE_ASM(const s32, "field/fldProcess", MskL2Task);
-#endif
 #else
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask_fld);
 INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData11);

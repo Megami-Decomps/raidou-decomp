@@ -124,7 +124,17 @@ s32 sbtlCallBtlClearGeneratorWork(s32 stageNo)
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlGeneratorD_On);
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlCheckGeneratorGroupID);
+s32 sbtlCheckGeneratorGroupID(s32 group)
+{
+    s32 i;
+
+    for (i = 0; i < 13; i++) {
+        if (sb_gen_work[i].use != 0 && sb_gen_work[i].penc->groupID == group && sb_gen_work[i].zan_cnt > 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlCallBtlCheckGeneratorGroupID);
 
@@ -132,8 +142,6 @@ INCLUDE_ASM(const s32, "code_00298540", datBossRashChk);
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlChkBossEventStart_EnemySummonWait);
 
-/* NON_MATCHING: 154 of 155 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlCallBtlGetNumUnitGroupID(void)
 {
     SB_ENCOUNT1 *enc;
@@ -201,9 +209,6 @@ s32 sbtlCallBtlGetNumUnitGroupID(void)
     }
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00298540", sbtlCallBtlGetNumUnitGroupID);
-#endif
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlGetRndEncJoken);
 

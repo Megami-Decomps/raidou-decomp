@@ -22,15 +22,6 @@ Two load pairs swap (+0xFC/+0x104 and +0x1C4/+0x1CC). Raidou 2 keeps its INCLUDE
 
 Fragile: renaming the fldProcess.h prototype mapCalcFXY to mapDebugLightSet, with no other change, turned a full-unit match into 4 differing words.
 
-## RunFrame1 (event/evtEventViewer, raidou1 0x74C, raidou2 0x74C)
-
-Raidou 1: 1 of 467 words differ, first at +0x134.
-Raidou 2: 1 of 467 words differ, first at +0x134.
-
-case 18's 'nowframe == frame->frame' guard is bnel where retail has bne (delay slot ld s0 from the epilogue; reorg sees s0 live on the fall-through), the code is otherwise identical on both games; tried return after AddBED, inverted early-break guard, swapped operands; lever row addressing-and-types 526 (not reachable from the branch shape); find_similar has only SMT3 RunFrame1 (0.37); vectors (opening) reach types 2/6/10/12, not 18, checked against the asm; tail calls need return, not break; a 4-label switch needs explicit empty case 3..5 to get retail's jump table
-
-Related: [smt3 levers: callee visibility and branch-likely](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/callee-visibility.md).
-
 ## ValidateAt3Bgm (event/evtEventViewer, raidou1 0x19C, raidou2 0x19C)
 
 Raidou 1: 86 of 104 words differ, first at +0x18; emitted 428 bytes, native 412 bytes.
@@ -64,13 +55,6 @@ Raidou 2: 770 of 786 words differ, first at +0x18; emitted 3152 bytes, native 31
 regalloc: retail gives the case-10 %hi(RunFrame2Work) pseudo s0 (shared with alpha) and colour s2, mine allocates the lo_sum address first so the hi gets an eighth saved register s7 and every s-register after the prologue shifts (OVER by 12 bytes); with s-registers masked only 83 lines differ, all from that allocation except case 6 reloading nearframe->index after the !=0 test and case 8 keeping elapsed in a saved register. Shapes tried: declaration order of alpha/enable/color (no change), from||to wrap of case 10 (no change), case-10 light pointer local (drops s7 but strength-reduces the loop, 544 words), kind==1 light pointer, FadeModeSet before the colour set, fade as ternary/else/nested if; bezier x/y interleaved store order fixed the lb load order. Vector checked (boot reaches types 6, 8, 10 and 12: fade calls, flag 4 clear plus ScreenBlurFlag=0, empty type 10, fldfilter set agree with the draft); other cases checked against the asm. lever crossblock
 
 Related: [smt3 levers: cross-block locals with swapped registers](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/cross-block-locals.md).
-
-## RunFrameUnit (event/evtEventViewer, raidou1 0x39C, raidou2 0x39C)
-
-Raidou 1: 6 of 231 words differ, first at +0x1CC.
-Raidou 2: 6 of 231 words differ, first at +0x1CC.
-
-v0/v1 swap of cur->frame/next->frame in the ratio block (both games); tried ==/!= both operand orders, (s32) casts, split divide, diff!=0 (OVER); key shapes: do-while first loop, cur->frame != next->frame, switch {2,3} for the 0x8000 range test (slti 4/slti 2 tree); permuter skipped (coordinator); vectors reach it (opening, 32 rows) but not the shadow-key path, register-only diff checked against the asm; adds evtUnit_t ShadowAlpha 0x173/ShadowY 0x174 (HD names), evtGetUnitHandle2/sdfModelGetUniqueID/evtHokanFloat prototypes; lever grep (subu, mtc1) has no row for it; find_similar's template evtViewApplyMovieModeKeys (0.876) has no shadow block
 
 ## ValidateRenderTex (event/evtEventViewer, raidou1 0x1F8, raidou2 0x1F8)
 

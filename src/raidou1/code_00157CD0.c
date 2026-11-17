@@ -142,24 +142,21 @@ INCLUDE_ASM(const s32, "code_00157CD0", mapSpotPointDrawStart);
 
 INCLUDE_ASM(const s32, "code_00157CD0", mapSpotPointDrawStart2);
 
-/* NON_MATCHING: 39 of 41 words match.  */
-#ifdef NON_MATCHING
 void mapSpotPointDrawEndChk(void) {
     s32 i;
     s32 idx;
+    fldGenbaTbl_t *genba;
 
     for (i = 0; i < 32; i++) {
         if (mapData31[i].use != 0) {
             idx = mapData31[i].uniq & 0xFF;
-            if (evtBitCheck(fldGenbaTbl[idx].evtBit) && !mapSpotPointFlagCheck(idx)) {
+            genba = &fldGenbaTbl[idx];
+            if (evtBitCheck(genba->evtBit) && !mapSpotPointFlagCheck(idx)) {
                 mapObjVisible(mapData31[i].uniq, 0);
             }
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_00157CD0", mapSpotPointDrawEndChk);
-#endif
 
 INCLUDE_ASM(const s32, "code_00157CD0", mapSIZE);
 
@@ -191,8 +188,6 @@ INCLUDE_ASM(const s32, "code_00157CD0", mapScreenChkIn);
 
 INCLUDE_ASM(const s32, "code_00157CD0", mapFunc9);
 
-/* NON_MATCHING: 82 of 86 words match.  */
-#ifdef NON_MATCHING
 mefMistSystem_t *mefMistFastCreate(void) {
     sdfMemHandle_t *hMem;
     mefMistSystem_t *mist;
@@ -207,10 +202,10 @@ mefMistSystem_t *mefMistFastCreate(void) {
     mist->brightness = 90;
     mist->fRun = 1;
     mist->alpha = 80;
-    mist->alphaMax = 16;
     mist->num = 0;
     mist->cnt = 0;
     mist->frequency = 16;
+    mist->alphaMax = 16;
     mist->fDebugMenu = 0;
     mist->fDebugTimeGraph = 0;
     mist->debugMenuIndex = 0;
@@ -224,9 +219,6 @@ mefMistSystem_t *mefMistFastCreate(void) {
     }
     return mist;
 }
-#else
-INCLUDE_ASM(const s32, "code_00157CD0", mefMistFastCreate);
-#endif
 
 INCLUDE_ASM(const s32, "code_00157CD0", mapLoadMistTexture);
 

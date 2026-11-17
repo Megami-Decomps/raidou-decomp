@@ -847,9 +847,27 @@ s32 AddEffectTable2(s32 nowframe, evtViewerObject_t *object, evtFrameInfo_t *fra
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", DelEffectTable_evtEventViewer);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", AddBED);
+void *AddBED(void *data, s32 cutno, s32 nameindex, s32 posindex, s32 baseframe, evtViewerInfo_t *pInfo) {
+    sdfVector4_t position;
+    sdfVector4_t scale;
+    void *basic;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", DelBED);
+    memset(&position, 0, sizeof(position));
+    memset(&scale, 0, sizeof(scale));
+    scale.w = 1.0f;
+    basic = dds3AddBEDEffectObjectBasic2(data, &position.x, &scale.x);
+    dds3EffectObjectBasicStatOn(basic, 1);
+    dds3StartBEDEffectObjectBasic(basic, cutno);
+    LinkEffectBasic(basic, nameindex, posindex, baseframe, pInfo);
+    return basic;
+}
+
+void DelBED(evtFrameInfo_t *frame) {
+    if (frame->payload != NULL) {
+        dds3DeleteSceneBasicData(frame->payload);
+    }
+    frame->payload = NULL;
+}
 
 mdlObj_t *GetModelHandleFromUID(s32 UID, dds3Basic_t **unit) {
     dds3SceneBasic_t *sceneWork;
@@ -1121,8 +1139,6 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
 INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
 #endif
 
-/* NON_MATCHING: 466 of 467 words match.  */
-#ifdef NON_MATCHING
 void RunFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
     switch (obj->type) {
     case 0:
@@ -1358,9 +1374,6 @@ void RunFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 
         break;
     }
 }
-#else
-INCLUDE_ASM(const s32, "event/evtEventViewer", RunFrame1);
-#endif
 
 void evtRunFrameSub(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
     s32 fade;
@@ -2184,8 +2197,6 @@ void RunFrame3(s32 nowframe, evtViewerInfo_t *pInfo) {
     }
 }
 
-/* NON_MATCHING: 225 of 231 words match.  */
-#ifdef NON_MATCHING
 void RunFrameUnit(evtViewerObject_t *track, s32 nowframe) {
     evtFrameInfo_t *key;
     evtFrameInfo_t *cur;
@@ -2199,6 +2210,7 @@ void RunFrameUnit(evtViewerObject_t *track, s32 nowframe) {
     u32 addflag = 0;
     s32 type;
     f32 ratio;
+    s32 start, end;
 
     key = track->children;
     if (key != NULL) {
@@ -2255,8 +2267,10 @@ void RunFrameUnit(evtViewerObject_t *track, s32 nowframe) {
             handle->ShadowAlpha = cur->p0C.b[1];
             handle->ShadowY = cur->p14.f;
         } else {
-            if (cur->frame != next->frame) {
-                ratio = (f32)(nowframe - cur->frame) / (f32)(next->frame - cur->frame);
+            start = cur->frame;
+            end = next->frame;
+            if (end != start) {
+                ratio = (f32)(nowframe - start) / (f32)(end - start);
             } else {
                 ratio = 0.0f;
             }
@@ -2290,9 +2304,6 @@ void RunFrameUnit(evtViewerObject_t *track, s32 nowframe) {
         evtRunUnitMode(track->info, extMode, 0, 0);
     }
 }
-#else
-INCLUDE_ASM(const s32, "event/evtEventViewer", RunFrameUnit);
-#endif
 
 void evtRunFrame(s32 nowframe, evtViewerInfo_t *pInfo) {
     evtViewerObject_t *track;

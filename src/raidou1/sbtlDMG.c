@@ -639,8 +639,6 @@ s32 sbtlResetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, s
     return 1;
 }
 
-/* NON_MATCHING: 98 of 101 words match. Retail keeps a second pseudo for &hitrot: one register copy and a swapped addiu. */
-#ifdef NON_MATCHING
 s32 sbtlSetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, struct SBTLEFF_WORK *ewk, struct SBTLSKILLHIT_POSWORK *pwk, sdfVector4_t *pos, sdfVector4_t *rot, u16 tbltype) {
     sdfVector4_t ofs;
     sdfVector4_t hitpos;
@@ -654,7 +652,7 @@ s32 sbtlSetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, str
     SDF_VU0_LOADVECTOR(pos);
     SDF_VU0_STOREVECTOR(&hitpos);
     SDF_VU0_LOADVECTOR(rot);
-    SDF_VU0_STOREVECTOR(&hitrot);
+    SDF_VU0_STOREVECTOR_NOMEM(&hitrot);
     prot = &hitrot;
     prott = &rott;
     sbtlSetHitPos(wk, twk, ewk, pwk, &hitpos, prot, prott, tbltype);
@@ -679,9 +677,6 @@ s32 sbtlSetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, str
     SDF_VU0_STOREVECTOR(rot);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetHitPos_XYZ);
-#endif
 
 /* NON_MATCHING: 8 of 301 words match. Retail copies the angle table (sbtlSetHitPosTable) after the three memsets, this copies it at the declaration; registers differ from there. */
 #ifdef NON_MATCHING

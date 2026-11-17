@@ -553,10 +553,16 @@ INCLUDE_ASM(const s32, "code_0028EB80", sbtlCreateSTP_Unit);
 
 INCLUDE_ASM(const s32, "code_0028EB80", CreateSTP);
 
-INCLUDE_ASM(const s32, "code_0028EB80", sbtlProcSBtlSTPSub);
+s32 sbtlProcSBtlSTPSub(struct SBTLUNIT_WORK *wk)
+{
+    s32 status = wk->status;
 
-/* NON_MATCHING: 154 of 155 words match. beql where retail has beq at +0x74 (delay slot fill on unit NULL). */
-#ifdef NON_MATCHING
+    if (status != 11 && status != 14 && wk->model->mode != 9 && wk->mode >= 5) {
+        return 1;
+    }
+    return 0;
+}
+
 s32 Proc_sbtlSTP(SBTL_STP *stp)
 {
     SBTLVISUAL_DATA data;
@@ -627,6 +633,3 @@ s32 Proc_sbtlSTP(SBTL_STP *stp)
     } while (node != NULL);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_0028EB80", Proc_sbtlSTP);
-#endif

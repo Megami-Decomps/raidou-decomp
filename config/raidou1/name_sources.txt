@@ -21213,8 +21213,8 @@
 0x0046B104	dds3RunCount	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B104); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0046B108	dds3SoftResetFlag	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046B108); tier=B; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.8299, games=2, size=True, sec=True, fn=dds3FirstInit
 0x0046B109	dds3SoftResetDisableFlag	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B109); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
-0x0046B10C	dds3KernelMainData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3KernelMain (3 of 8 refs, 6 functions)
-0x0046B110	dds3KernelMainData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3KernelMain (2 of 7 refs, 6 functions)
+0x0046B10C	dds3PauseSign	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R2 defines dds3PauseSign at the same sdata slot; R1 dds3KernelMain asm stores it exactly where the shared C writes dds3PauseSign; dds3KernelMain matches R1 once renamed (D/tmp/dds3KernelMain.promote.patch) (R1 0x0046B10C); replaces dds3KernelMainData
+0x0046B110	dds3PauseTime	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same as above, next word (R2 dds3PauseTime) (R1 0x0046B110); replaces dds3KernelMainData2
 0x0046B114	PauseSign	inferred	method=hd; p=0.37 (n=D_r1_0046B114); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
 0x0046B118	dds3Data25	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: dds3SlowOn, dds3SlowOff
 0x0046B11C	dds3SlowOnData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3SlowOn

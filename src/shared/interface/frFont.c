@@ -1268,7 +1268,7 @@ INCLUDE_ASM(const s32, "interface/frFont", frSetFontStringSub);
 
 #endif
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 95 of 102 words match.  */
+/* NON_MATCHING: 99 of 102 words match.  */
 #ifdef NON_MATCHING
 frFontHandle_t *frSetFontString(u8 *text, s8 style, s8 firstOption, s8 secondOption, frFontHandle_t *chain) {
     u32 i;
@@ -1305,7 +1305,7 @@ frFontHandle_t *frSetFontString(u8 *text, s8 style, s8 firstOption, s8 secondOpt
         } else {
             previous->next = glyph;
         }
-        chain->advance = chain->advance + glyph->advance + frData2;
+        chain->advance = frData2 + (glyph->advance + chain->advance);
         chain->childCount++;
         glyph->previous = previous;
         previous = glyph;
@@ -2085,7 +2085,7 @@ u8 *MessageNumSearch(s32 Index, frTextBank_t *pData, s32 Size) {
     return (u8 *)pData + offset;
 }
 
-/* NON_MATCHING: 45 of 92 words match.  */
+/* NON_MATCHING: 43 of 90 words match.  */
 #ifdef NON_MATCHING
 void frFontAppendIndexedTextToGlyphChain(u8 VarNo, frFontCtx_t *ctx) {
     u8 glyphText[3];
@@ -2114,7 +2114,8 @@ void frFontAppendIndexedTextToGlyphChain(u8 VarNo, frFontCtx_t *ctx) {
             context = ctx->glyphChain;
             if (context != NULL) {
                 if (context->firstChild != NULL) {
-                    ctx->glyphChain = context = frCallSetFontString(frFontAppendIndexedTextToGlyphChainData, 0, ctx->firstOption, ctx->secondOption, context);
+                    ctx->glyphChain = frCallSetFontString(frFontAppendIndexedTextToGlyphChainData, 0, ctx->firstOption, ctx->secondOption, context);
+                    context = ctx->glyphChain;
                 }
             } else {
                 ctx->glyphChain = frCallSetFontString(frFontAppendIndexedTextToGlyphChainData, 0, ctx->firstOption, ctx->secondOption, NULL);

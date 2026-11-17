@@ -513,43 +513,35 @@ s32 sbtlCallDeleteMessage(SBTLSM_LISTWORK *lwk)
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallDeleteMessage);
 #endif
 
-/* NON_MATCHING: 56 of 61 words match. Register choice for the panel load and two beq/beql delay slot fills differ. */
+/* NON_MATCHING: 57 of 61 words match. The num guard takes beql where retail has beq; 1 word (that beql) once SetVar_sbtlSM is C in the unit. */
 #ifdef NON_MATCHING
 s32 sbtlCallSetVarSBtlSM(SBTLSM_LISTWORK *lwk)
 {
     SBTLSM_WORK *dwk;
-    s32 ret;
 
-    if (wk_sbtl->panel == NULL) {
-        return 0;
-    }
-    ret = 0;
-    if (wk_sbtl->panel->hPanelSpr3 != NULL && lwk != NULL) {
+    if (wk_sbtl->panel != NULL && wk_sbtl->panel->hPanelSpr3 != NULL && lwk != NULL) {
         dwk = lwk->dwk;
-        if (dwk != NULL) {
-            ret = 0;
-            if (lwk->num != 0) {
-                if (!dds3BgSetScrollSub()) {
-                    if ((wk_sbtl->flg & 0x8000000) && dwk->mode != 71 && dwk->mode != 11 && dwk->sklid != 240 &&
-                        dwk->devilid < 80) {
-                        return ret;
-                    }
-                    if (wk_sbtl->flg2 & 0xA) {
-                        return 0;
-                    }
+        if (dwk != NULL && lwk->num != 0) {
+            if (!dds3BgSetScrollSub()) {
+                if ((wk_sbtl->flg & 0x8000000) && dwk->mode != 71 && dwk->mode != 11 && dwk->sklid != 240 &&
+                    dwk->devilid < 80) {
+                    return 0;
                 }
-                switch (dwk->gstat) {
-                case SBTLSM_ST_INIT:
-                case SBTLSM_ST_PROC:
-                    SetVar_sbtlSM(dwk);
-                    sbtlFunc20(256, 68, dwk);
-                    break;
+                if (wk_sbtl->flg2 & 0xA) {
+                    return 0;
                 }
-                return 1;
             }
+            switch (dwk->gstat) {
+            case SBTLSM_ST_INIT:
+            case SBTLSM_ST_PROC:
+                SetVar_sbtlSM(dwk);
+                sbtlFunc20(256, 68, dwk);
+                break;
+            }
+            return 1;
         }
     }
-    return ret;
+    return 0;
 }
 #else
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallSetVarSBtlSM);

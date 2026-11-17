@@ -398,12 +398,10 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSetNormalAction);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetUseTable_Target_sbtlActAI);
 
-/* NON_MATCHING: 66 of 69 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlCheckEnemyTarget(struct SBTLUNIT_WORK *wk, s32 id) {
     struct SBTLUNIT_WORK *target = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
     BST bst;
-    s32 ret;
+    s32 ret = -1;
 
     if (target != NULL && (target->field414 & 1) && (target->field414 & 0x80) && (target->flg2 & 0x100)) {
         return -1;
@@ -415,18 +413,17 @@ s32 sbtlCheckEnemyTarget(struct SBTLUNIT_WORK *wk, s32 id) {
         }
         return sbtlGetUseTable_Target_sbtlActAI(wk, 4, 0);
     }
-    ret = target != NULL ? id : -1;
     if (wk->flg & 0x100000) {
-        if (target != NULL) {
-            return id;
+        if (target == NULL) {
+            return wk_sbtl->targetUnitID;
         }
-        return wk_sbtl->targetUnitID;
+        return id;
+    }
+    if (target != NULL) {
+        ret = id;
     }
     return ret;
 }
-#else
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckEnemyTarget);
-#endif
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlRefSbtl21);
 

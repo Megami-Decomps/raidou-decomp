@@ -304,8 +304,6 @@ void dds3SoftResetOff(void)
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3CallEventSub);
 #endif
 
-/* NON_MATCHING: 67 of 69 words match.  */
-#ifdef NON_MATCHING
 void dds3KernelMain(void)
 {
     u32 base;
@@ -359,7 +357,28 @@ top:
 done:
     LoadExecPS2(dds3ResetExecPath, 0, 0);
 }
-#else
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameCount);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3RunCount);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SoftResetFlag);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SoftResetDisableFlag);
+
+u32 dds3PauseSign = 0;
+
+u32 dds3PauseTime = 0;
+
+u32 dds3SlowSign = 0;
+
+u32 dds3SlowTime = 4;
+
+u32 dds3SlowRunCount = 0;
+
+u32 dds3SlowEndCount = 0;
+
+#endif
 INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3DrawProcessName);
 
 INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3BasicMainProcessName);
@@ -370,8 +389,9 @@ INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3FontSysProcessName);
 
 INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3DebugDevDumpProcessName);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3KernelMain);
-#endif
+INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3ResetExecPath);
+
+#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameCount);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3RunCount);
@@ -380,42 +400,19 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SoftResetFlag);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SoftResetDisableFlag);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3KernelMainData);
-#else
-u32 dds3PauseSign = 0;
-#endif
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3PauseSign);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3KernelMainData2);
-#else
-u32 dds3PauseTime = 0;
-#endif
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3PauseTime);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", PauseSign);
-#else
-u32 dds3SlowSign = 0;
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3Data25);
-#else
-u32 dds3SlowTime = 4;
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowOnData);
-#else
-u32 dds3SlowRunCount = 0;
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowOnData2);
-#else
-u32 dds3SlowEndCount = 0;
-#endif
 
+#endif
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3DebugSign);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameRunTime);

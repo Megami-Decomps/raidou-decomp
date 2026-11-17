@@ -14299,8 +14299,6 @@
 0x0046B0F4	litFloat11	data	tier=D	derived-section	na	no code or data reference; unit lit4_pad, section .lit4, size 0x4
 0x0046B0F8	litFloat12	data	tier=D	derived-section	na	no code or data reference; unit lit4_pad, section .lit4, size 0x4
 0x0046B0FC	litFloat13	data	tier=D	derived-section	na	no code or data reference; unit lit4_pad, section .lit4, size 0x0
-0x0046B10C	dds3KernelMainData	data	tier=D	derived-dominant	na	used by dds3KernelMain (3 of 8 refs, 6 functions)
-0x0046B110	dds3KernelMainData2	data	tier=D	derived-dominant	na	used by dds3KernelMain (2 of 7 refs, 6 functions)
 0x0046B118	dds3Data25	data	tier=D	derived-shared	na	used by 2 functions: dds3SlowOn, dds3SlowOff
 0x0046B11C	dds3SlowOnData	data	tier=D	derived-sole	na	used by dds3SlowOn
 0x0046B120	dds3SlowOnData2	data	tier=D	derived-sole	na	used by dds3SlowOn
@@ -19134,6 +19132,8 @@
 0x004677A0	at3decFallingWindow	data	tier=C	dds-ref	0.59 (n=D_r1_004677A0)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=at3decInverseTransformBand
 0x0046AE1C	goLmapManager	data	tier=C	hd	0.37 (n=D_r1_0046AE1C)	hd/medium: conf=medium, agree=2, using=2
 0x0046AFB0	dds3ScreenParam2	data	tier=C	smt3-ref	0.88 (n=D_r1_0046AFB0)	smt3-ref/loose: nfun=2, other=0, sim=0.90325, games=2, size=False, sec=False, fn=cmpSetStatusModelParam; dds3ScreenParam is another symbol
+0x0046B10C	dds3PauseSign	data	tier=C	derived-derived-role	na	R2 defines dds3PauseSign at the same sdata slot; R1 dds3KernelMain asm stores it exactly where the shared C writes dds3PauseSign; dds3KernelMain matches R1 once renamed (D/tmp/dds3KernelMain.promote.patch) (R1 0x0046B10C); replaces dds3KernelMainData
+0x0046B110	dds3PauseTime	data	tier=C	derived-derived-role	na	same as above, next word (R2 dds3PauseTime) (R1 0x0046B110); replaces dds3KernelMainData2
 0x0046B114	PauseSign	data	tier=C	hd	0.37 (n=D_r1_0046B114)	hd/medium: conf=medium, agree=2, using=2
 0x0046B2DA	evtSelectionStateActive	data	tier=C	dds-ref	0.59 (n=D_r1_0046B2DA)	dds-ref/loose: nfun=6, other=0, sim=1.0, games=2, size=False, sec=True, fn=evtSelStateCreate
 0x0046B308	evtConsoleFontResourceChain	data	tier=C	dds-ref	0.59 (n=D_r1_0046B308)	dds-ref/loose: nfun=4, other=2, sim=1.0, games=2, size=True, sec=True, fn=evtEnsureFontResourceChain

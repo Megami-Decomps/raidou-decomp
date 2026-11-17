@@ -48,14 +48,6 @@ Raidou 1: 79 of 90 words differ, first at +0x4; emitted 360 bytes, native 368 by
 
 Related: constants.
 
-## sbtlCheckEnemyTarget (sbtlActAI, raidou1 0x114)
-
-Raidou 1: 3 of 69 words differ, first at +0xD8.
-
-two-instruction swap at the tail: retail lui 0x10 (flg mask) before li -1; tried ret=-1 then if, ternary, early flg test (worse, 18); vector checked (menu)
-
-Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
-
 ## sbtlEAIInit_None (sbtlActAI, raidou1 0xA0)
 
 Raidou 1: 11 of 40 words differ, first at +0x28.

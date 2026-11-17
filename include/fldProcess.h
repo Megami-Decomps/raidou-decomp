@@ -203,7 +203,7 @@ void mapProcSequenceSub7(void);
 void mapProcSequenceSub8(void);
 void mapTakaraOpen(void);
 void mdlChkMotionEnd(void);
-extern const char fldStrBadMafuHajikiLabel[];
+extern char fldStrBadMafuHajikiLabel[];
 s32 MskL2Task(void);
 void mapCallNakamaWakeUp(void);
 void mapCallNakamaWakeUp3(void);

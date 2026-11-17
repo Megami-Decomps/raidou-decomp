@@ -7549,8 +7549,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046B104	0x004DE204	dds3RunCount	.sdata	0x4	yes	code-ref
 0x0046B108	0x004DE208	dds3SoftResetFlag	.sdata	0x1	yes	code-ref
 0x0046B109	0x004DE209	dds3SoftResetDisableFlag	.sdata	0x3	yes	code-ref
-0x0046B10C	0x004DE20C	dds3KernelMainData	.sdata	0x4	yes	code-ref
-0x0046B110	0x004DE210	dds3KernelMainData2	.sdata	0x4	yes	code-ref
+0x0046B10C	0x004DE20C	dds3PauseSign	.sdata	0x4	yes	code-ref
+0x0046B110	0x004DE210	dds3PauseTime	.sdata	0x4	yes	code-ref
 0x0046B114	0x004DE214	PauseSign	.sdata	0x4	yes	code-ref
 0x0046B118	0x004DE218	dds3Data25	.sdata	0x4	yes	code-ref
 0x0046B11C	0x004DE21C	dds3SlowOnData	.sdata	0x4	yes	code-ref

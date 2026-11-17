@@ -7,6 +7,8 @@ Raidou 2: 2 of 28 words differ, first at +0x48.
 
 store order only: retail stores the floor (nameU, 0x68) before the field (amSBlock, 0x60); all six orders of the three fldGlobalBase stores and a (u16) mapNo local give the same swap; checked against the asm (vector row truncated), same on R2
 
+N1 retry: an area local (all six orders of the three stores), field >>= 16 split, u32 field with an (s32) cast and mapFileLoad(fldGlobalBase.amSBlock) all keep the swap; no callee visibility effect (stubs and definitions of every callee tested).
+
 Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
 
 ## fldLoadFile_FromMemory (field/fldFileResolver_00132080, raidou1 0xE8, raidou2 0xE8)
