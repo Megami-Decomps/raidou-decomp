@@ -133,13 +133,12 @@ jobs:
         if: steps.orig.outputs.available == 'true'
         run: ninja
 
-      # Needs the retail executable, so it runs here rather than with the tool tests.
-      - name: Check check_unit relocations
+      # Tool tests that need the built tree, so they run here rather than with the checks above.
+      - name: Check tools against the build
         if: steps.orig.outputs.available == 'true'
-        run: python3 tools/tests/test_check_unit.py
-
-      - name: Check the NON_MATCHING behaviour comparison
-        run: python3 tools/tests/test_nm_behaviour.py
+        run: |
+          python3 tools/tests/test_check_unit.py
+          python3 tools/tests/test_nm_behaviour.py
 
       - name: Source coverage
         if: steps.orig.outputs.available == 'true'
