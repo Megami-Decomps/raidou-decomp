@@ -2,6 +2,7 @@
 #define SBTLMENU_H
 
 #include "common.h"
+#include "itf.h"
 #include "kernel.h"
 
 struct SBTLUNIT_WORK;

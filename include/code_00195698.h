@@ -2,6 +2,7 @@
 #define CODE_00195698_H
 
 #include "common.h"
+#include "itf.h"
 #include "kernel.h"
 struct tagMAP_MENU_WORK;
 extern dds3ProcessID_t *cmpCallGetProcessStatData;

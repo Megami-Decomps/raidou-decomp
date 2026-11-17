@@ -2,6 +2,7 @@
 #define CODE_00323280_H
 
 #include "common.h"
+#include "itf.h"
 #include "kernel.h"
 
 struct tagCMP_WORK;
