@@ -149,9 +149,10 @@ def write(n, versions: list[str], prefix: str) -> tuple[list[str], list[str]]:
             script = b / "link.ld"
             # The C files name a .rodata piece through this alias, so gas sees
             # the symbol as undefined, as retail's assembler did, and never
-            # moves its %lo into a delay slot.
+            # moves its %lo into a delay slot. PROVIDE, because a NON_MATCHING
+            # draft emits its own jump table and leaves that piece out.
             pieces = [p for src in cfg["paths"]["srcs"] for p in INCLUDE_RODATA_LINE.findall((ROOT / src).read_text())]
-            aliases = "".join(f"{p} = rodata_{p};\n" for p in pieces)
+            aliases = "".join(f"PROVIDE({p} = rodata_{p});\n" for p in pieces)
             # A module without a moduleinfo block (sdfprint) carries 0xFFFFFFFF in .iopmod.
             info = cfg["module"].get("moduleinfo")
             ld = LINKER_SCRIPT % {"entry": cfg["module"]["entry"],
