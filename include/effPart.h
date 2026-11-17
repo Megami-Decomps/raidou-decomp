@@ -13,5 +13,6 @@ effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
 effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);
 void dds3EffectPartDelete(effPartHandle_t *hEffPart);
 void dds3EffectPartDraw(effPartHandle_t *hEffPart);
+void effBTLCutSetScaleSub(effPartHandle_t *hEffPart, f32 scale);
 
 #endif

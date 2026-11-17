@@ -4267,7 +4267,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001F6920	0x0020DC18	effLeaf53	no	yes	asm/raidou1/code_001F67B0.s	asm/raidou2/code_0020DAA8.s	unique-reloc-hash
 0x001F6940	0x0020DC38	Eff_ModelTrackPolyGetMarkPosition	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
 0x001F69A0	0x0020DC98	Eff_ModelTrackPolyVertexSet	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	masked-hash-in-gap
-0x001F69B8	0x0020DCB0	effLeaf54	yes	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	run-order-size
+0x001F69B8	0x0020DCB0	Eff_ModelTrackPolyColorSet	yes	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	run-order-size
 0x001F69C8	0x0020DCC0	effModelTrackPolyListDrawOnlSub	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	masked-hash-in-gap
 0x001F69E0	0x0020DCD8	effTrackPolyUpdate	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
 0x001F6AA8	0x0020DDA0	Eff_ModelTrackPolyListCreate	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
@@ -4279,7 +4279,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001F6C88	0x0020DF80	Eff_HermitianSpline	yes	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	masked-hash-in-gap
 0x001F6E00	0x0020E0F8	dds3HermitianTrackPolyCreate	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
 0x001F6EE8	0x0020E1E0	effPCPFlashPolyRingExpHDelete	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	masked-hash-in-gap
-0x001F6F18	0x0020E210	effLeaf55	yes	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
+0x001F6F18	0x0020E210	dds3HermitianTrackPolyReset	yes	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
 0x001F6F38	0x0020E230	dds3HermitianTrackPolySetBlend	yes	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	masked-hash-in-gap
 0x001F6F40	0x0020E238	dds3HermitianTrackPolySetVC	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
 0x001F7020	0x0020E318	dds3HermitianTrackPolyGetVertex	yes	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
@@ -4560,7 +4560,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001FFC30	0x00216F28	effLeaf128	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FFC38	0x00216F30	effLeaf129	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FFC40	0x00216F38	effPCPBreathCreate	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	unique-reloc-hash
-0x001FFD68	0x00217060	effPCP_BED_CreatePCF	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
+0x001FFD68	0x00217060	effPCPBreathCreatePCF	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FFDB0	0x002170A8	effPCPBreathCopy	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	unique-reloc-hash
 0x001FFE08	0x00217100	effPCPBreathDelete	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	unique-reloc-hash
 0x001FFE40	0x00217138	effLeaf130	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap

@@ -19,20 +19,6 @@
 
 typedef struct
 {
-    u32 blend;
-    u32 abgr;
-    s32 point;
-    s32 count;
-    s32 current;
-    s32 split;
-    u128 *pVertex;
-    u32 *pVC;
-    sdfMat_t *pMat;
-    sdfMemHandle_t *hMem;
-} dds3HermitianTrackPoly_tag;
-
-typedef struct
-{
     Eff_ModelTrackPolyParam_t params;
     u32 updateCount;
     dds3HermitianTrackPoly_tag *trackPoly;
@@ -68,7 +54,6 @@ typedef struct
     dds3HermitianTrackPoly_tag *hPoly;
 } Eff_ModelTrackPoly_tag;
 
-void dds3HermitianTrackPolySetVC(dds3HermitianTrackPoly_tag *hPoly, u32 *colors);
 extern sdfGrOt_t effPolyOt;
 
 /* dds3DrawBank_t stride; only the held frame texture block at 0x1300 is used here. */
@@ -86,14 +71,11 @@ void dds3HermitianTrackPolyDraw(dds3HermitianTrackPoly_tag *hPoly);
 void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly);
 extern s32 sdfModelGetMarkPos(void *aRoot, s32 aId);
 
-/* Called above its definition, where ee-gcc assumed int. */
-dds3HermitianTrackPoly_tag *dds3HermitianTrackPolyCreate(s32 face, s32 split);
 effModelTrackPoly_t *Eff_ModelTrackPolyCreate(Eff_ModelTrackPolyParam_t *pParam);
 void Eff_ModelTrackPolyDelete(effModelTrackPoly_t *work);
 void Eff_ModelTrackPolyReset(effModelTrackPoly_t *hMTPoly);
 void Eff_ModelTrackPolyDrawOnly(effModelTrackPoly_t *hMTPoly);
 void Eff_HermitianSpline(sdfVector4_t *p, f32 t);
-void dds3HermitianTrackPolySetVC(dds3HermitianTrackPoly_tag *hPoly, u32 *pABGR);
 void dds3HermitianTrackPolyGetVertex(dds3HermitianTrackPoly_tag *hPoly, void *pVertex0, void *pVertex1, s32 frame);
 void dds3HermitianTrackPolySetCurrent(dds3HermitianTrackPoly_tag *hPoly, s32 frame);
 void dds3HermitianTrackPolySetVertexSub(dds3HermitianTrackPoly_tag *hPoly, const u128 *pVertex);
@@ -106,30 +88,6 @@ void dds3HermitianTrackPolySetVertexSub(dds3HermitianTrackPoly_tag *hPoly, const
 #include "sdf_movie_types.h"
 #include "sdf_lighting.h"
 #include "effPCPMisc_00224D10.h"
-
-/* Thirteen copied words, followed by an update counter and owned history. */
-typedef struct {
-    struct mdlObj_t *model;
-    s32 idA;
-    s32 idB;
-    f32 startFrame;
-    f32 endFrame;
-    u32 sampleInterval;
-    s32 historyLength;
-    u32 unk1C;
-    u32 drawKind;
-    u32 gradientColors[4];
-} EffTrackPolyParams;
-
-typedef struct effTrackPolyWork_t {
-    EffTrackPolyParams params;
-    u32 updateCount;
-    struct dds3HermitianTrackPoly_tag *data;
-} effTrackPolyWork_t;
-
-typedef char EffTrackPolyParams_size_must_be_0x34[(sizeof(EffTrackPolyParams) == 0x34) ? 1 : -1];
-
-typedef char effTrackPolyWork_size_must_be_0x3C[(sizeof(effTrackPolyWork_t) == 0x3C) ? 1 : -1];
 
 void effTrackPolyReset(effTrackPolyWork_t *work);
 
@@ -145,11 +103,20 @@ void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly)
     dds3HermitianTrackPolySetVertex(hMTPoly->trackPoly, (const u128 *)pair);
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", Eff_ModelTrackPolyVertexSet);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effModelTrackPoly.c:217, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void Eff_ModelTrackPolyVertexSet(effModelTrackPoly_t *hMTPoly, const u128 *pVertex) {
+    dds3HermitianTrackPolySetVertex(hMTPoly->trackPoly, pVertex);
+}
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effLeaf54);
+/* body: smt3 src/smt3/effect/effModelTrackPoly.c:221 */
+void Eff_ModelTrackPolyColorSet(effModelTrackPoly_t *hMTPoly, u32 abgr) {
+    hMTPoly->trackPoly->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effModelTrackPolyListDrawOnlSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effModelTrackPoly.c:225, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void effModelTrackPolyListDrawOnlSub(effModelTrackPoly_t *hMTPoly) {
+    dds3HermitianTrackPolyDraw(hMTPoly->trackPoly);
+}
 
 /* Sample endpoints between startFrame and endFrame (inclusive), fade after
  * endFrame, and reset history before startFrame. */
@@ -202,13 +169,19 @@ void Eff_ModelTrackPolyListDelete(effMTPolyListHandle_t *list) {
     sdfMemFreeDirect(list->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effTrackPolySetIndexedColor);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effModelTrackPoly.c:350, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void effTrackPolySetIndexedColor(effMTPolyListHandle_t *hMTPolyList, s32 index, const u128 *pVertex) {
+    Eff_ModelTrackPolyVertexSet(hMTPolyList->hPolyList[index], pVertex);
+}
 
 void Eff_ModelTrackPolyListReset(effMTPolyListHandle_t *hMTPolyList, s32 index) {
     Eff_ModelTrackPolyReset(hMTPolyList->hPolyList[index]);
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effParticleTrack3SetSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effModelTrackPoly.c:358, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void effParticleTrack3SetSub(effMTPolyListHandle_t *hMTPolyList, s32 index, u32 abgr) {
+    Eff_ModelTrackPolyColorSet(hMTPolyList->hPolyList[index], abgr);
+}
 
 void Eff_ModelTrackPolyListDrawOnly(effMTPolyListHandle_t *hMTPolyList) {
     u32 count = hMTPolyList->number;
@@ -311,9 +284,12 @@ dds3HermitianTrackPoly_tag *dds3HermitianTrackPolyCreate(s32 face, s32 split) {
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effPCPFlashPolyRingExpHDelete);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effLeaf55);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolyReset);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolySetBlend);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effModelTrackPoly.c:472, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void dds3HermitianTrackPolySetBlend(dds3HermitianTrackPoly_tag *hPoly, u32 blend) {
+    hPoly->blend = blend;
+}
 
 void dds3HermitianTrackPolySetVC(dds3HermitianTrackPoly_tag *hPoly, u32 *pABGR) {
     f32 t = 0.0f;

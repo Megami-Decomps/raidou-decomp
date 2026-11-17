@@ -327,7 +327,7 @@ segments:
       - [0xFA908, c, code_001F9908]
       - [0xFA9A0, c, effect/effPart]
       - [0xFB300, c, effect/effPCPMisc]
-      - [0x1078E8, asm, code_002068E8]
+      - [0x1078E8, c, code_002068E8]
       - [0x107970, c, effect/effPCPThunder]
       - [0x10C288, c, effect/effPCPBezier]
       - [0x10CC88, c, effect/effPCPFlash]

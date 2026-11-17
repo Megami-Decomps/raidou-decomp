@@ -305,9 +305,28 @@ enum {
 
 s32 evtPushRequestedRosterPresence(void);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datAddMaka);
+/* body: matched in smt3 @ 9401f79e: src/smt3/newdata/datCalc.c:717, rework, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void datAddMaka(s32 addmaka)
+{
+    s32 balance = DDS3_GBWK->playerData.maka + addmaka;
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datCheckMoney);
+    if (balance < 0) {
+        balance = 0;
+    }
+    if (balance > 9999999) {
+        balance = 9999999;
+    }
+    DDS3_GBWK->playerData.maka = balance;
+}
+
+/* body: matched in smt3 @ 9401f79eb: src/smt3/newdata/datCalc.c:757, rework, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+s32 datCheckMoney(s32 money)
+{
+    if (DDS3_GBWK->playerData.maka < money) {
+        return 0;
+    }
+    return 1;
+}
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "newdata/datCalc", datAddItem);
@@ -337,7 +356,14 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datRefTbldata);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datAddMag);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datCheckMag);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/newdata/datCalc.c:757, rework, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+s32 datCheckMag(s32 mag)
+{
+    if (DDS3_GBWK->playerData.mag < mag) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datPartyRecovery);
 
@@ -428,9 +454,33 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf53);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf54);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf55);
+s32 datLeaf55(datActorWork_t *work, s32 amount) {
+    u32 hp = (u32)work->hp + amount;
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf56);
+    if ((s32)hp < 0) {
+        hp = 0;
+    }
+    if ((s32)work->maxhp < (s32)hp) {
+        hp = work->maxhp;
+    }
+    work->hp = hp;
+    return hp;
+}
+
+/* body: matched in smt3 @ 9401f79eb: src/smt3/newdata/datCalc.c:565, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+s32 datLeaf56(datUnitWork_t *work, s32 amount)
+{
+    u32 mp = (u32)work->mp + amount;
+
+    if ((s32)mp < 0) {
+        mp = 0;
+    }
+    if ((s32)work->maxmp < (s32)mp) {
+        mp = work->maxmp;
+    }
+    work->mp = mp;
+    return mp;
+}
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf57);
 
@@ -444,9 +494,53 @@ DatCalculatedStatValue datGetStatWithStatusOverride(
     return datGetClampedProfileAdjustedStat(unit, statIndex);
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datCheckSyojiSkill);
+s32 datCheckSyojiSkill(datActorWork_t *work, s32 skill)
+{
+    s32 i;
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf58);
+    if ((work->flags & SDF_UNIT_ENEMY) == 0) {
+        for (i = 0; i < 24; i++) {
+            if (work->effectData[i] == skill) {
+                return 1;
+            }
+        }
+    } else {
+        for (i = 0; i < 8; i++) {
+            if (datEnemyRecords[work->unitId].skills[i] == skill) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+/* body: matched in dds @ 18d1fa88f: src/dds1/newdata/datCalc.c:219, rework, same function 1.00 (words 54/54, calls 1.00, shape 1.00) */
+s32 datLeaf58(const datActorWork_t *unit, s32 packedValue) {
+    if ((packedValue & 0x70000) == 0) {
+        switch (unit->status & SDF_PACKED_CHANNEL_MASK) {
+        case 8:
+        case 0x100:
+            if ((u16)packedValue < 0xC8) {
+                packedValue = (packedValue & 0xFFFF0000) | 0xC8;
+            }
+            break;
+        case 4:
+            packedValue = (packedValue & 0xFFFF0000) | 1;
+            break;
+        case 2:
+            if ((u16)packedValue < 0x96) {
+                packedValue = (packedValue & 0xFFFF0000) | 0x96;
+            }
+            break;
+        case 1:
+            if ((u16)packedValue < 0x12C) {
+                packedValue = (packedValue & 0xFFFF0000) | 0x12C;
+            }
+            break;
+        }
+    }
+    return packedValue;
+}
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datGetAisyoValueSub);
 
@@ -460,11 +554,67 @@ u32 datGetAisyoFlag(datUnitWork_t *work, s32 attr)
     return datGetAisyo(work, attr) & 0xFFFF0000;
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datGetBadStatusAttr);
+s32 datGetBadStatusAttr(s32 bad) {
+    s32 element = -1;
+
+    switch (bad) {
+    case 1:
+        break;
+    case 2:
+        element = 4;
+        break;
+    case 4:
+        element = 3;
+        break;
+    case 8:
+        element = 14;
+        break;
+    case 0x10:
+        element = 12;
+        break;
+    case 0x20:
+        element = 13;
+        break;
+    case 0x40:
+        element = 7;
+        break;
+    case 0x80:
+        element = 11;
+        break;
+    case 0x100:
+        element = 14;
+        break;
+    case 0x200:
+        element = 10;
+        break;
+    case 0x400:
+        element = 9;
+        break;
+    case 0x800:
+        element = 9;
+        break;
+    case 0x1000:
+        element = 7;
+        break;
+    case 0x2000:
+        element = 7;
+        break;
+    case 0x4000:
+        element = 9;
+        break;
+    }
+    return element;
+}
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datRefDDS3GBWK23);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf59);
+/* body: matched in dds @ 18d1fa88f: src/dds1/newdata/datCalc.c:529, rework, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+u8 datLeaf59(datActorWork_t *entry) {
+    if ((entry->flags & 0x20) == 0) {
+        return 0;
+    }
+    return datEnemyRecords[entry->unitId].race;
+}
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf60);
 
@@ -522,7 +672,13 @@ void datLeaf78(void) {
 void datLeaf79(void) {
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datCallGetRandIntA);
+/* body: matched in dds @ 18d1fa88f: src/dds1/newdata/datCalc.c:1274, rework, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+void datCallGetRandIntA(datActorWork_t *entry) {
+    s32 randomOffset;
+
+    randomOffset = dds3GetRandIntA(0, 4);
+    entry->randomizedValue = 0x12 - randomOffset;
+}
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf80);
 #ifdef VERSION_RAIDOU2

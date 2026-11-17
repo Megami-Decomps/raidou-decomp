@@ -5,5 +5,6 @@
 
 struct effPCPThunderSpherePoly_t;
 void effPCPThunderSpherePolyLowSetScale(struct effPCPThunderSpherePoly_t *work, f32 scale);
+void effPCPFlashPolyCircleDelete(struct effPCPThunderSpherePoly_t *hData);
 
 #endif

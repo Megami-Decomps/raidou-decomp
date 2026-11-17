@@ -230,6 +230,8 @@ typedef struct dds3Effect_Filter_t {
 } dds3Effect_Filter_t;
 
 void dds3CallCos(const dds3Effect_Blur_t *source, effBlurPrimTriStrip_t *prim, u8 fixedPointCoordinates);
+void effEctBlurDrawAlphaMultiSub(const dds3Effect_Blur_t *source, effBlurPrimTriStrip_t *prim, u8 fixedPointCoordinates);
+void effCallGrAllocPacketBuff(sdfDrawTag_t *list, s32 blend, sdfTexHandle_t *texture);
 extern f32 EFF_BLURVAL;
 
 /* sdfGrOtTable entry 80, the ordering table the blur rectangles are filed into. */

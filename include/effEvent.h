@@ -76,6 +76,6 @@ void Eve_PartialMultiBlurSetParam(dds3Effect_PartialMultiBlurParam_t *pParam);
 void Eve_DistortionBlurSetParam(dds3Effect_DistortionBlurParam_t *pParam);
 void Eve_RippleBlurSetParam(void *pParam);
 void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source);
-void effBTLSys_Nego_Stone_Delete2(effHandle_t *hEffect);
+void effBTLSys_Nego_Stone_Delete2(effEveBEDCut_t *hEveBEDCut);
 
 #endif

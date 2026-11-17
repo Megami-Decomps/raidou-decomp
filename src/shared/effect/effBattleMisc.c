@@ -7,13 +7,15 @@
 #include "datCalc.h"
 #include "ps2asm.h"
 #include "sdfVu0.h"
+#include "dds3WorldBasic.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
+#include "dds3CameraObjectBasic.h"
 
 extern void (*GetPositionPtrTable[])(void *owner, effBTLAimParams_t *request);
 extern nbFormation_t *effBTLSkillGetInvokeFormation(void);
-extern f32 aViewTarget[4];
-extern f32 aViewEye[4];
-extern f32 aViewDown[4];
 extern f32 effBTL_Ptr_D[];
+extern f32 effBTLAimVerticalScale[];
 void effBTLPartGetPositionPtr(nbFormation_t *pFormation, effBTLAimParams_t *pPosPtr, sdfVector4_t *pPos);
 void effBTLPartGetRotateMatrixPtr(effBTLAimParams_t *pPosPtr, sdfMatrix4_t *pMatrix);
 
@@ -73,7 +75,68 @@ void effBattleMiscQueryVariantTargetPosition(u32 unused, effVectorRequest_t *req
     effBattleMiscQueryMaskedTargetPosition(ctx->status.flags & 0xE00, request);
 }
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", effBTLPartGetWorldPositionPtr);
+void effBTLPartGetWorldPositionPtr(SBTL_UNIT *unit, effBTLAimParams_t *request) {
+    sdfVector4_t result;
+    sdfVector4_t direction;
+    f32 radius;
+    f32 vertical;
+    u32 aimMode;
+    u32 directionMode;
+
+    radius = 750.0f;
+    aimMode = request->aimMode;
+    directionMode = request->directionMode;
+    if (request->rangeOverride != 0) {
+        radius = (f32)request->rangeOverride;
+    }
+
+    if (directionMode == 9 || aimMode == 4) {
+        dds3Basic_t *camera;
+
+        camera = dds3GetActiveCameraSceneBasic(dds3GetActiveScene());
+        direction.z = 750.0f;
+        direction.y = 750.0f;
+        direction.x = 750.0f;
+        dds3CameraObjectBasicGetTargetPos(camera);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        dds3GetPosPoseSet(camera);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_LOADVECTOR_B(&direction);
+        SDF_VU0_MULVECTOR();
+    } else {
+        if (aimMode == 5) {
+            if (directionMode == 8 || directionMode == 10) {
+                vertical = -1.0f;
+                if (request->rangeOverride != 0) {
+                    vertical = -radius;
+                }
+            } else {
+                vertical = -1.0f;
+            }
+        } else {
+            vertical = effBTLAimVerticalScale[aimMode] * 250.0f;
+        }
+
+        if (directionMode == 8 || directionMode == 10) {
+            result.y = vertical;
+            result.x = 0.0f;
+            result.z = 0.0f;
+        } else {
+            direction.x = 0.0f;
+            direction.y = 0.0f;
+            direction.z = (unit->status.flags & 0x200) ? 1.0f : -1.0f;
+            SetRotateMatrixY(effBTL_Ptr_D[directionMode]);
+            SDF_VU0_LOADVECTOR(&direction);
+            SDF_VU0_APPLYMATRIX_XYZ();
+            SDF_VU0_STOREVECTOR(&direction);
+            result.x = radius * direction.x;
+            result.z = radius * direction.z;
+            result.y = radius * direction.y + vertical;
+        }
+        SDF_VU0_LOADVECTOR_MEMOPS(result);
+    }
+}
 
 void effLeaf40(void) {
 }
@@ -89,7 +152,7 @@ void effBTLPartGetRotateMatrixPtr(effBTLAimParams_t *pPosPtr, sdfMatrix4_t *pMat
     f32 tilt = 0;
 
     if (pPosPtr->aimMode == 4 || pPosPtr->directionMode == 9) {
-        LookAtMatrix(aViewTarget, aViewEye, aViewDown);
+        LookAtMatrix(&aViewTarget, &aViewEye, &aViewDown);
         ReverseMatrix();
         SDF_VU0_RESET_ROW3();
     } else {

@@ -19,6 +19,7 @@ void mdlGetPosition(mdlObj_t *aHandle);
 void mdlGetScale(mdlObj_t *aHandle);
 s32 mdlHasMotionEx(mdlObj_t *aHandle, s32 aGroup);
 void mdlLink(mdlObj_t *aHandle, void *aModelOt);
+extern sdfModelOt_t sdfModelOtTable[];
 mdlObj_t *mdlLoad(u32 aMajor, u32 aMinor);
 void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
 void mdlPackDecode(s32 major, s32 minor, s32 regFlags, const u8 *buff, s32 leng);

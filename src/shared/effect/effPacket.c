@@ -15,6 +15,9 @@
 extern s8 dds3CrossfadeRunFlag;
 extern u32 dds3CrossfadeFrame;
 extern u32 dds3CrossfadeFrameMax;
+extern sdfVector4_t dds3RenderTargetVector;
+extern sdfVector4_t dds3RenderEyeVector;
+extern u32 dds3RenderDrawEnv;
 extern u32 effPktDefaultFaceIndex[];
 
 #include "sdk_libc.h"
@@ -303,7 +306,34 @@ void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm) {
     return packet;
 }
 
-INCLUDE_ASM(const s32, "effect/effPacket", dds3CrossfadeStart);
+void dds3CrossfadeStart(s32 frame)
+{
+    s32 i;
+
+    if (dds3CrossfadeRunFlag != 0) {
+        dds3CrossfadeEnd();
+    }
+    if (frame == 0) {
+        return;
+    }
+    dds3RenderTargetVector.x = 0.0f;
+    dds3RenderTargetVector.y = 0.0f;
+    dds3RenderTargetVector.z = 0.0f;
+    dds3RenderEyeVector.x = 0.0f;
+    dds3RenderEyeVector.y = 0.0f;
+    dds3RenderEyeVector.z = 0.0f;
+    dds3RenderDrawEnv = 0x80808080;
+    dds3AllocRenderTexture(0x100, 0xE0, 0.0f);
+    dds3RenderTextureON();
+    for (i = 0; i != 2; i++) {
+        dds3DrawEnv[i].renderEnv.clear.xyzA.data = 0x80008000;
+        dds3DrawEnv[i].renderEnv.clear.xyzB.data = 0x80008000;
+    }
+    dds3CrossfadeFrameMax = frame;
+    dds3CrossfadeRunFlag = 1;
+    dds3CrossfadeFrame = 0;
+    printf("dds3CrossfadeStart\n");
+}
 
 void dds3UpdateCrossfade(void) {
     sdfDrawTag_t *list;

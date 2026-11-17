@@ -204,7 +204,9 @@ mdlObj_t *dds3EffectPartModelCreate(dds3EffectPartModelData_t *pData)
     return hModel;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelDraw);
+void dds3EffectPartModelDraw(void *hData) {
+    mdlLink(hData, sdfModelOtTable);
+}
 
 void dds3EffectPartModelDelete(void *arg) {
     mdlFree(arg);
@@ -336,9 +338,17 @@ void dds3EffectPCPSetArea(void *hData, f32 area)
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", effEctPCPCreateSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPart.c:401, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+u32 effEctPCPCreateSub(dds3EffectPCPData_t *hPCPData)
+{
+    return hPCPData->kateg;
+}
 
-INCLUDE_ASM(const s32, "effect/effPart", effEctPCPCreateSub2);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPart.c:406, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+u32 effEctPCPCreateSub2(dds3EffectPCPData_t *hPCPData)
+{
+    return hPCPData->param;
+}
 
 void *dds3EffectPCPDataGetData(dds3EffectPCPData_t *hPCPData, u32 number)
 {
@@ -657,7 +667,7 @@ void effPCPMegidoraon01Delete(void *);
 void *effPCPMegidoraon01Copy(void *);
 void effLeaf127(void *, void *);
 void effLeaf129(void *, u32);
-void *effPCP_BED_CreatePCF(void *);
+void *effPCPBreathCreatePCF(void *);
 void effLeaf130(void *);
 void effPCPBreathDelete(void *);
 void *effPCPBreathCopy(void *);
@@ -1142,7 +1152,7 @@ dds3EffectFunc_t EffectPCPFuncTable[98] = {
     { effPCPMultiBlurExp2CreatePCF, effPCPMultiBlurExp2Draw, effPCPMultiBlurExp2Delete, effPCPMultiBlurExp2Copy, effLeaf115, NULL, NULL, effLeaf116, NULL, NULL },
     { effPCPMegidora01Create, effPCPMegidora01Draw, effPCPMegidora01Delete, effPCPMegidora01Copy, effLeaf124, NULL, NULL, effLeaf126, NULL, NULL },
     { effPCPMegidoraon01Create, effPCPMegidoraon01Draw, effPCPMegidoraon01Delete, effPCPMegidoraon01Copy, effLeaf127, NULL, NULL, effLeaf129, NULL, NULL },
-    { effPCP_BED_CreatePCF, effLeaf130, effPCPBreathDelete, effPCPBreathCopy, effLeaf131, NULL, effPCPBreathSetRotateMatrix, effLeaf132, NULL, NULL },
+    { effPCPBreathCreatePCF, effLeaf130, effPCPBreathDelete, effPCPBreathCopy, effLeaf131, NULL, effPCPBreathSetRotateMatrix, effLeaf132, NULL, NULL },
     { effPCPHamaCardSpiralCreatePCF, effPCPHamaCardSpiralDraw, effPCPHamaCardSpiralDelete, effPCPHamaCardSpiralCopy, effLeaf244, effPCPHamaCardSpiralSetScale, NULL, effPCPHamaCardSpiralSetColor, NULL, NULL },
     { effPCPHamaCardSphereCreatePCF, effPCPHamaCardSphereDraw, effPCPHamaCardSphereDelete, effPCPHamaCardSphereCopy, effLeaf246, effLeaf248, NULL, effPCPHamaCardSphereSetColor, NULL, NULL },
     { effPCPAgiraoFireCreatePCF, effPCPAgiraoFireDraw, effPCPAgiraoFireDelete, effPCPAgiraoFireCopy, effLeaf133, NULL, NULL, effLeaf134, NULL, NULL },

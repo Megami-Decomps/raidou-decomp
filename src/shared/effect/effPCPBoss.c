@@ -464,7 +464,6 @@ extern effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
 extern void effPCPCrackDraw(effPCPCrack_t *hData);
 extern void mdlSetPosition(mdlObj_t *aHandle);
 extern void mdlLink(mdlObj_t *aHandle, void *aModelOt);
-extern sdfModelOt_t sdfModelOtTable[];
 extern f32 aViewEye[4], aViewTarget[4];
 extern s32 sdfModelGetMarkPos(void *aRoot, s32 aId);
 extern s32 effPadVibeFrames[2], effPadVibeRemain[2];

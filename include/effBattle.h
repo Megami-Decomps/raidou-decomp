@@ -95,8 +95,13 @@ extern void effBTLDelete(effBTL_t *hBTLEffect);
 extern effBTLCut_t *effBTLCutCreate(effBTL_t *hBTLEffect, u16 CutNum, void *pFormation, s32 stat);
 extern void effBTLCutDelete(effBTLCut_t *hBTLCutEffect);
 extern void effBTLCutSetScale(effBTLCut_t *hBTLCutEffect, f32 scale);
+extern void effBTLCutListRelease(effBTLCut_t *hBTLCutEffect);
 
 extern u32 effFieldColorFlags;
+extern u32 effLeaf20Data[][5];
+extern f32 effBTLFieldColorGetBaseColor2Data[][5];
+extern f32 effBTLStageColorTable[][4];
+extern f32 effBTLDefaultColor[4];
 void effBTLFieldColorResetFlags(void);
 
 #endif

@@ -388,19 +388,55 @@ void effPCPFlashPolyCircleDelete(effPCPThunderSpherePoly_t *hData) {
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPShockWave01DrawSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:515, match, same function 1.00 (words 4/4, calls 1.00, shape 1.00) */
+void effPCPShockWave01DrawSub(void *hData, void *pPos) {
+    SDF_VU0_COPYVECTOR(hData, pPos);
+}
 
 void effPCPShockWave01DrawSub2(effPCPThunderSpherePoly_t *hData, u32 value) {
     hData->abgr = value;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereExpDrawSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:523, match, same function 1.00 (words 7/7, calls 1.00, shape 1.00) */
+void effPCPThunderSphereExpDrawSub(effPCPThunderSpherePoly_t *hData, f32 scale) {
+    hData->head.width = hData->width_base * scale;
+    hData->head.height = hData->height_base * scale;
+}
 
 void *effPCPShockWave01DrawSub3(void *pParam) {
     return pParam;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereLowInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:802, match, same function 1.00 (words 142/142, calls 1.00, shape 1.00) */
+void effPCPThunderSphereLowInit(effPCPThunderSpherePoly_t *work, s32 index) {
+    effPCPThunderSpherePolyPart_t *cell = work->pPart + index;
+    f32 scratchVector[EFF_THUNDER_VECTOR_COMPONENTS];
+
+    cell->wait = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.startDelayRange;
+    cell->refresh = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.activeFrameRange + EFF_THUNDER_MIN_ACTIVE_FRAMES;
+    scratchVector[0] = (dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN;
+    scratchVector[1] = 0;
+    scratchVector[2] = (dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN;
+    SDF_VU0_LOADVECTOR(scratchVector);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(scratchVector);
+    scratchVector[1] = work->head.height * EFF_THUNDER_HALF_SCALE * ((dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN);
+    cell->dir[0] = scratchVector[0];
+    cell->dir[1] = scratchVector[1];
+    cell->dir[2] = scratchVector[2];
+    scratchVector[0] = (dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN * EFF_THUNDER_AXIS_JITTER;
+    scratchVector[1] = 1.0f;
+    scratchVector[2] = (dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN * EFF_THUNDER_AXIS_JITTER;
+    SDF_VU0_LOADVECTOR(scratchVector);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(scratchVector);
+    cell->axis[0] = scratchVector[0];
+    cell->axis[1] = scratchVector[1];
+    cell->axis[2] = scratchVector[2];
+    cell->rotate = work->head.rotationScale * ((dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN * EFF_THUNDER_ROTATION_JITTER + 1.0f);
+    cell->radius = work->head.width * EFF_THUNDER_HALF_SCALE * ((dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN * EFF_THUNDER_RADIUS_JITTER + 1.0f);
+    cell->abgr = EFF_THUNDER_NEUTRAL_COLOR;
+}
 
 void effPCPThunderSphereRotate(effPCPThunderSpherePoly_t *work, s32 index) {
     f32 position[4] __attribute__((aligned(16)));
@@ -603,7 +639,36 @@ u32 effPCPThunderSpherePolyLowGetParam(u32 pThunderPoly) {
     return pThunderPoly;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:532, match, same function 1.00 (words 142/142, calls 1.00, shape 1.00) */
+void effPCPThunderSphereInit(effPCPThunderSpherePoly_t *work, s32 index) {
+    effPCPThunderSpherePolyPart_t *cell = work->pPart + index;
+    f32 scratchVector[EFF_THUNDER_VECTOR_COMPONENTS];
+
+    cell->wait = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.startDelayRange;
+    cell->refresh = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.activeFrameRange + EFF_THUNDER_MIN_ACTIVE_FRAMES;
+    scratchVector[0] = (dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN;
+    scratchVector[1] = 0;
+    scratchVector[2] = (dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN;
+    SDF_VU0_LOADVECTOR(scratchVector);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(scratchVector);
+    scratchVector[1] = work->head.height * EFF_THUNDER_HALF_SCALE * ((dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN);
+    cell->dir[0] = scratchVector[0];
+    cell->dir[1] = scratchVector[1];
+    cell->dir[2] = scratchVector[2];
+    scratchVector[0] = (dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN * EFF_THUNDER_AXIS_JITTER;
+    scratchVector[1] = 1.0f;
+    scratchVector[2] = (dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN * EFF_THUNDER_AXIS_JITTER;
+    SDF_VU0_LOADVECTOR(scratchVector);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(scratchVector);
+    cell->axis[0] = scratchVector[0];
+    cell->axis[1] = scratchVector[1];
+    cell->axis[2] = scratchVector[2];
+    cell->rotate = work->head.rotationScale * ((dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN * EFF_THUNDER_ROTATION_JITTER + 1.0f);
+    cell->radius = work->head.width * EFF_THUNDER_HALF_SCALE * ((dds3GetRandFloatA(dds3EffectBase) - EFF_THUNDER_RANDOM_MIDPOINT) * EFF_THUNDER_RANDOM_SPAN * EFF_THUNDER_RADIUS_JITTER + 1.0f);
+    cell->abgr = EFF_THUNDER_NEUTRAL_COLOR;
+}
 
 void effPCPThunderSphereLowRotate(effPCPThunderSpherePoly_t *work, s32 index) {
     f32 position[4] __attribute__((aligned(16)));
@@ -770,7 +835,21 @@ void effLeaf200(effPCP_ThunderColumnPolyLow_t *hData, u32 value) {
     hData->abgr = value;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effThunderSparkInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1033, match, same function 1.00 (words 61/61, calls 1.00, shape 1.00) */
+void effThunderSparkInit(effPCP_ThunderColumnPolyLow_t *work, s32 index) {
+    effPCP_ThunderColumnPolyLowPart_t *spark = work->pPart + index;
+    f32 randomness;
+
+    spark->up = 0;
+    randomness = work->param.verticalSpeedRandomness;
+    spark->up_s = work->param.verticalSpeed * (dds3GetRandFloatA(dds3EffectBase) * randomness + (1.0f - randomness));
+    spark->height = work->param.heightOffsetRange * dds3GetRandFloatA(dds3EffectBase);
+    spark->rotate = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 2.0f);
+    randomness = work->param.angularSpeedRandomness;
+    spark->rotate_s = work->param.angularSpeed * (dds3GetRandFloatA(dds3EffectBase) * randomness + (1.0f - randomness));
+    randomness = work->param.radiusRandomness;
+    spark->radius = work->param.orbitRadius * (dds3GetRandFloatA(dds3EffectBase) * randomness + (1.0f - randomness));
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", effThunderBuildSparkStripCell);
 
@@ -868,19 +947,50 @@ void effPCP_ThunderPolyDelete(effPCP_ThunderPoly_t *hData) {
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyLowSetPosition);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1610, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effPCP_ThunderPolyLowSetPosition(u8 *hData, void *pPos) {
+        SDF_VU0_LOADVECTOR(hData + EFF_THUNDER_ENDPOINT_VECTOR_BYTES);
+        SDF_VU0_LOADVECTOR_B(pPos);
+        SDF_VU0_STOREVECTOR_B(hData + EFF_THUNDER_ENDPOINT_VECTOR_BYTES);
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_LOADVECTOR(hData);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(hData);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPRadiateThunderDrawSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1320, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void effPCPRadiateThunderDrawSub(effPCP_ThunderPoly_t *hData, u32 abgr) {
+    hData->color = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPZiodin01DrawSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1324, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+effPCP_ThunderPolyParam_t *effPCPZiodin01DrawSub(effPCP_ThunderPoly_t *pThunderPoly) {
+    return &pThunderPoly->head;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effThunderApplyFragmentColorBands);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1328, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void effThunderApplyFragmentColorBands(effPCP_ThunderPoly_t *pThunderPoly) {
+    dds3TrackPolyVC5Set_Acute(pThunderPoly->hPoly, pThunderPoly->head.color_center, pThunderPoly->head.color_border, pThunderPoly->head.color_edge);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderPolyListCreateSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1332, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void effPCPThunderPolyListCreateSub(effPCP_ThunderPoly_t *pThunderPoly) {
+    dds3TrackPolyVC5Set_AcuteR(pThunderPoly->hPoly, pThunderPoly->head.color_center, pThunderPoly->head.color_border, pThunderPoly->head.color_edge);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderPolyListCreateSub2);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1336, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void effPCPThunderPolyListCreateSub2(effPCP_ThunderPoly_t *pThunderPoly) {
+    dds3TrackPolyVC5Set_Normal(pThunderPoly->hPoly, pThunderPoly->head.color_center, pThunderPoly->head.color_border, pThunderPoly->head.color_edge);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effCallGetRandA);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1340, match, same function 1.00 (words 39/39, calls 1.00, shape 1.00) */
+void effCallGetRandA(effPCP_ThunderPoly_t *work, s32 index) {
+    effPCP_ThunderPolyPart_t *fragment = &work->pPart[index];
+
+    fragment->wait = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.startDelayRange;
+    fragment->refresh = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.activeFrameRange + EFF_THUNDER_MIN_ACTIVE_FRAMES;
+    fragment->abgr = EFF_THUNDER_NEUTRAL_COLOR;
+}
 
 void effPCP_ThunderPolyPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number) {
     f32 width[4] __attribute__((aligned(16)));
@@ -1144,11 +1254,29 @@ void effPCP_ThunderPolyLowDelete(effPCP_ThunderPoly_t *hData) {
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolySetPosition);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1310, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effPCP_ThunderPolySetPosition(u8 *hData, void *pPos) {
+        SDF_VU0_LOADVECTOR(hData + EFF_THUNDER_ENDPOINT_VECTOR_BYTES);
+        SDF_VU0_LOADVECTOR_B(pPos);
+        SDF_VU0_STOREVECTOR_B(hData + EFF_THUNDER_ENDPOINT_VECTOR_BYTES);
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_LOADVECTOR(hData);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(hData);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf201);
+void effLeaf201(effPCP_ThunderPoly_t *hData, u32 color) {
+    hData->color = color;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effCallGetRandA2);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPThunder.c:1624, match, same function 1.00 (words 39/39, calls 1.00, shape 1.00) */
+void effCallGetRandA2(effPCP_ThunderPoly_t *work, s32 index) {
+    effPCP_ThunderPolyPart_t *fragment = &work->pPart[index];
+
+    fragment->wait = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.startDelayRange;
+    fragment->refresh = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.activeFrameRange + EFF_THUNDER_MIN_ACTIVE_FRAMES;
+    fragment->abgr = EFF_THUNDER_NEUTRAL_COLOR;
+}
 
 void effPCP_ThunderPolyLowPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number) {
     f32 width[4] __attribute__((aligned(16)));
@@ -1411,7 +1539,9 @@ void effPCP_ThunderRadiatePolyDelete(effPCP_ThunderRadiatePoly_t *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf202);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf203);
+void effLeaf203(effPCP_ThunderRadiatePoly_t *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 void effPCP_ThunderRadiatePolyDrawOff(effPCP_ThunderRadiatePoly_t *work, s32 index) {
     effPCP_ThunderRadiatePolyPart_t *cell = work->pPart + index;
@@ -1636,7 +1766,9 @@ void *effLeaf204(void *pTPolyList) {
     return pTPolyList;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf205);
+void effLeaf205(effPCP_ThunderPolyList_t *hData, u32 color) {
+    hData->color = color;
+}
 
 void effPCP_ThunderPolyListPartRefresh(effPCP_ThunderPoly_t *work, s32 index, const u128 *seed) {
     f32 width[4] __attribute__((aligned(16)));

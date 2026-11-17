@@ -519,11 +519,20 @@ struct SBTL_UNIT;
 
 struct DmaPacketHeader;
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlur2OnSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:328, match, same function 1.00 (words 24/24, calls 1.00, shape 1.00) */
+void effBlur2OnSub(void *pParam) {
+    memcpy(&Eve_Blur, pParam, EFF_EVENT_BLUR_SOURCE_BYTES);
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlur2SwapSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:333, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+effScreenDrawParams_t *effBlur2SwapSub(void) {
+    return &Eve_Blur;
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_PartialMultiBlurON);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:337, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void Eve_PartialMultiBlurON(void) {
+    Eve_PartialMultiBlurShow = 1;
+}
 
 void Eve_PartialMultiBlurOFF(void) {
     Eve_PartialMultiBlurShow = 0;
@@ -533,7 +542,10 @@ void Eve_PartialMultiBlurSetParam(dds3Effect_PartialMultiBlurParam_t *pParam) {
     hEve_PartialMultiBlur->body = *pParam;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effMultiBlurSwapSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:351, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+effBlurTemplate_t *effMultiBlurSwapSub(void) {
+    return hEve_PartialMultiBlur;
+}
 
 void Eve_PartialMultiBlurSetTex(sdfTexHandle_t *hTex) {
     hEve_PartialMultiBlur->texture = hTex;
@@ -543,25 +555,37 @@ void Eve_PartialMultiBlurSetDefTex(void) {
     hEve_PartialMultiBlur->texture = dds3BillboardGetGeneralTex(EFF_EVENT_BLUR_RESOURCE_INDEX);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_DistortionBlurON);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:364, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void Eve_DistortionBlurON(void) {
+    Eve_DistortionBlurShow = 1;
+}
 
 void Eve_DistortionBlurOFF(void) {
     Eve_DistortionBlurShow = 0;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_DistortionBlurSetParam);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:373, match, same function 1.00 (words 24/24, calls 1.00, shape 1.00) */
+void Eve_DistortionBlurSetParam(dds3Effect_DistortionBlurParam_t *pParam) {
+    hEve_DistortionBlur->params = *pParam;
+}
 
 effBlurScatterWork_t *effDistBlurSwapSub(void) {
     return hEve_DistortionBlur;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_DistortionBlurSetTex);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:382, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void Eve_DistortionBlurSetTex(sdfTexHandle_t *hTex) {
+    hEve_DistortionBlur->texture = hTex;
+}
 
 void Eve_DistortionBlurSetDefTex(void) {
     hEve_DistortionBlur->texture = dds3BillboardGetGeneralTex(EFF_EVENT_BLUR_RESOURCE_INDEX);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_RippleBlurON);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:391, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void Eve_RippleBlurON(void) {
+    Eve_RippleBlurShow = 1;
+}
 
 void Eve_RippleBlurOFF(void) {
     Eve_RippleBlurShow = 0;
@@ -600,17 +624,29 @@ effScreenDrawParams_t *effGetCh73Params(void) {
     return &effData4;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_FilterON);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:418, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void Eve_FilterON(void) {
+    Eve_FilterShow = 1;
+}
 
 void Eve_FilterOFF(void) {
     Eve_FilterShow = 0;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_FilterSetParam);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:427, match, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
+void Eve_FilterSetParam(dds3Effect_Filter_t *pParam) {
+    Eve_Filter = *pParam;
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", effFilter2SwapSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:432, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+dds3Effect_Filter_t *effFilter2SwapSub(void) {
+    return &Eve_Filter;
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_PartialMultiFilterON);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:436, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void Eve_PartialMultiFilterON(void) {
+    Eve_PartialMultiFilterShow = 1;
+}
 
 void Eve_PartialMultiFilterOFF(void) {
     Eve_PartialMultiFilterShow = 0;
@@ -621,7 +657,10 @@ void Eve_PartialMultiFilterSetParam(dds3Effect_PartialMultiFilterParam_t *pParam
     hEve_PartialMultiFilter->param = *pParam;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effMFilterSwapSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:450, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+dds3Effect_PartialMultiFilter_t *effMFilterSwapSub(void) {
+    return hEve_PartialMultiFilter;
+}
 
 void Eve_PartialMultiFilterSetTex(sdfTexHandle_t *hTex) {
     hEve_PartialMultiFilter->hAlphaTex = hTex;
@@ -681,7 +720,9 @@ dds3Effect_PartialMultiBlurParam_t *mblurGetParam(void) {
     return &rblurParam;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", rblurSetParam);
+void rblurSetParam(dds3Effect_PartialMultiBlurParam_t *parameters) {
+    rblurParam = *parameters;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", dblurProcess);
 
@@ -689,7 +730,10 @@ dds3Effect_DistortionBlurParam_t *dblurGetParam(void) {
     return &rblurParam2;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", dblurSetParam);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:612, adapt, same function 1.00 (words 26/26, calls 1.00, shape 1.00) */
+void dblurSetParam(dds3Effect_DistortionBlurParam_t *parameters) {
+    rblurParam2 = *parameters;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy2);
 
@@ -697,7 +741,10 @@ dds3Effect_Filter_t *dblurGetParam2(void) {
     return &dblurData;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effLeaf29);
+/* body: matched in raidou @ 61f09dc: src/shared/effect/effEvent.c:594, near, same function 1.00 (words 24/24, calls 1.00, shape 1.00) */
+void effLeaf29(const dds3Effect_Blur_t *source) {
+    memcpy(&dblurData, source, EFF_EVENT_BLUR_SOURCE_BYTES);
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", mfilterRun);
 
@@ -725,7 +772,10 @@ dds3Effect_RippleBlurParam_t *rblurGetParam(void) {
     return &rblurParam3;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effLeaf30);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/effect/effEvent.c:732, rework, same function 1.00 (words 26/26, calls 1.00, shape 1.00) */
+void effLeaf30(dds3Effect_RippleBlurParam_t *parameters) {
+    rblurParam3 = *parameters;
+}
 
 effBTL_t *effAddBEDEffectSub(void *pData) {
     return effBTLCreate(pData);
@@ -747,7 +797,10 @@ effEveBEDCut_t *effEveBEDCutCreate(effBTL_t *hEveBED, u16 CutNum, const void *pP
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBTLSys_Nego_Stone_Delete2);
+void effBTLSys_Nego_Stone_Delete2(effEveBEDCut_t *hEveBEDCut) {
+    effBTLCutDelete(hEveBEDCut->effect);
+    sdfChipFreeDirect(hEveBEDCut);
+}
 
 /* Copy the packed 0x30-byte record while retaining its native packed layout. */
 void effEveBEDCutSetParams(effEveBEDCut_t *hEveBEDCut, const void *pParams) {
@@ -759,9 +812,14 @@ void effEveBEDCutGetParams(const effEveBEDRecord_t *hEveBEDCut, effEveBEDRecord_
     *pParams = *hEveBEDCut;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effCommandEFFBEDSTARTEVOSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:773, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void effCommandEFFBEDSTARTEVOSub(effEveBEDCut_t *hEveBEDCut, f32 scale) {
+    effBTLCutSetScale(hEveBEDCut->effect, scale);
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", effLeaf31);
+void effLeaf31(effEveBEDCut_t *hEveBEDCut, evtUnit_t *actor) {
+    hEveBEDCut->actor = actor;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effCallMult);
 
@@ -787,7 +845,19 @@ effSimpleBED_t *effSimpleBEDCreate(effBTL_t *pData, f32 scale) {
     return work;
 }
 
+/* NON_MATCHING: 15 of 16 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effEvent.c:869, near, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
+void effSimpleBEDDelete(effSimpleBED_t *hSimpleBED) {
+    effEveBEDCutDelete(hSimpleBED->hCut);
+    if (hSimpleBED->original != 0) {
+        effEveBEDDelete(hSimpleBED->hBED);
+    }
+    sdfChipFreeDirect(hSimpleBED);
+}
+#else
 INCLUDE_ASM(const s32, "effect/effEvent", effSimpleBEDDelete);
+#endif
 
 /* Clone the init block/effect using the same handle; clear the shared-teardown flag. */
 effSimpleBED_t *effSimpleBEDCopy(effSimpleBED_t *hSimpleBEDSrc) {
@@ -1381,7 +1451,29 @@ void effAPPoint4Draw(effAPPoint4_tag *hData) {
     } while (recordIndex < recordCount);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effLeaf34);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/effect/effEvent.c:1773, match, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
+void effLeaf34(effChan_t *channel, f32 *source) {
+    f32 *sourceRow;
+    u32 rowIndex;
+    f32 *scalarCursor;
+    f32 *destinationRow;
+
+    sourceRow = source;
+    rowIndex = 0;
+    source += EFF_CURVE_SCALAR_SOURCE_OFFSET;
+    scalarCursor = channel->rows->secondary;
+    destinationRow = channel->rows->primary;
+    do {
+        rowIndex++;
+        destinationRow[0] = sourceRow[0];
+        destinationRow[1] = sourceRow[1];
+        destinationRow[2] = sourceRow[2];
+        sourceRow += EFF_CURVE_ROW_FLOATS;
+        destinationRow += EFF_CURVE_ROW_FLOATS;
+        *scalarCursor = *source++;
+        scalarCursor++;
+    } while (rowIndex < EFF_CURVE_SOURCE_ROW_COUNT);
+}
 
 /* Jitter each slot and choose its initial unsigned-modulo step.
  * Stored record time is one ahead of the Bezier cursor parameter's sampled step. */

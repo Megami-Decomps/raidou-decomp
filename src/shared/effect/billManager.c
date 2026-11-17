@@ -233,7 +233,15 @@ enum {
 
 void billCopyCurrentRecordToSnapshot(billHandle_t *obj, billSnapshot_t *snapshot);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardManagerExit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/billManager.c:300, near, same function 1.00 (words 21/21, calls 1.00, shape 1.00) */
+void dds3BillboardManagerExit(void) {
+    u32 i;
+
+    dds3BillboardTag = NULL;
+    for (i = 0; i < 21; i++) {
+        dds3BillboardDelete(hGeneralBillboard[i]);
+    }
+}
 
 dds3BillResource_tag *BillboardLoadTex(void *pTex) {
     sdfMemHandle_t *allocation;
@@ -426,7 +434,42 @@ void dds3BillboardLinkOt(void) {
 
 INCLUDE_ASM(const s32, "effect/billManager", dds3MultiBillboardTagLink);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3MultiBillboardPktLink);
+void dds3MultiBillboardPktLink(billRenderPair_t *hResource) {
+    u32 colors[8][2];
+    u16 uv[7][16];
+    sdfBillBoardBatch_t *batch[2];
+    s32 count;
+    s32 i;
+    u32 *packet;
+
+    batch[0] = hResource->children[0]->batch;
+    batch[1] = hResource->children[1]->batch;
+    count = batch[1]->count;
+    for (i = 0; i < count; i++) {
+        colors[i][0] = batch[0]->color[i];
+        colors[i][1] = batch[1]->color[i];
+        uv[i][0] = batch[0]->uv[i][0].u;
+        uv[i][1] = batch[0]->uv[i][0].v;
+        uv[i][4] = batch[0]->uv[i][1].u;
+        uv[i][5] = batch[0]->uv[i][1].v;
+        uv[i][8] = batch[0]->uv[i][2].u;
+        uv[i][9] = batch[0]->uv[i][2].v;
+        uv[i][12] = batch[0]->uv[i][3].u;
+        uv[i][13] = batch[0]->uv[i][3].v;
+        uv[i][2] = batch[1]->uv[i][0].u;
+        uv[i][3] = batch[1]->uv[i][0].v;
+        uv[i][6] = batch[1]->uv[i][1].u;
+        uv[i][7] = batch[1]->uv[i][1].v;
+        uv[i][10] = batch[1]->uv[i][2].u;
+        uv[i][11] = batch[1]->uv[i][2].v;
+        uv[i][14] = batch[1]->uv[i][3].u;
+        uv[i][15] = batch[1]->uv[i][3].v;
+    }
+    packet = sdfMultiBillBoardMakeN((u128 *)batch[1], colors, uv, batch[1]->offset, count, NULL);
+    sdfDrawTagLink(hResource->packetList, EE_ADDR(packet));
+    batch[0]->count = 0;
+    batch[1]->count = 0;
+}
 
 void dds3MultiBillboardLinkOt(void) {
     billRenderPair_t *pair = dds3MultiBillboardPairList;
@@ -937,7 +980,12 @@ void dds3PCPSparkleSphereDrawSub(billHandle_t *hBillboard, u32 abgr) {
     hBillboard->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Leaf31);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/effect/billManager.c:1207, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+void dds3Leaf31(billHandle_t *effect, const billUvQuad_t *textureQuad) {
+    if (effect->type == 0) {
+        memcpy(&effect->u.child->uv, textureQuad, sizeof(*textureQuad));
+    }
+}
 
 void dds3BillboardSetMode(billHandle_t *hBillboard, s32 mode) {
     mode = (s16)mode;
@@ -1036,9 +1084,21 @@ void dds3BillboardSetAnimNumber(billHandle_t *hBillboard, u32 number) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Leaf32);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/effect/billManager.c:1312, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+s32 dds3Leaf32(billHandle_t *hBillboard) {
+    if (hBillboard->type == 1) {
+        return hBillboard->animationEntryIndex;
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGetAnimNumber);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/billManager.c:1319, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+s32 dds3BillboardGetAnimNumber(billHandle_t *hBillboard) {
+    if (hBillboard->type == 1) {
+        return ((P2A_HEAD_t *)hBillboard->u.animationData->pHeader)->AnimNum;
+    }
+    return 0;
+}
 
 void dds3BillboardSetAnimKey(billHandle_t *hBillboard, u32 frame) {
     if (hBillboard->type == 1) {
@@ -1097,7 +1157,13 @@ u16 dds3BillboardGetAnimState(const billHandle_t *hBillboard) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Leaf33);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/effect/billManager.c:1312, near, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+s32 dds3Leaf33(billHandle_t *hBillboard) {
+    if (hBillboard->type == 1) {
+        return hBillboard->modeFlags;
+    }
+    return 0;
+}
 
 void dds3BillboardSetAnimColorAdvMode(billHandle_t *hBillboard) {
     if (hBillboard->type == 1) {
@@ -1207,13 +1273,22 @@ void dds3P2APolygonSetScale(s32 hData, float scale) {
     dds3BillboardSetScale((EE_ADDR_AS(dds3P2APolygon_tag *, hData))->hBillboard, scale, scale);
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Leaf34);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/effect/billManager.c:1499, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+/* vu0 routine: copy the 4x4 rotation matrix into the polygon. */
+void dds3Leaf34(dds3P2APolygon_tag *hData, void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hData->rot);
+}
 
 void dds3P2APolygonSetRGBA(dds3P2APolygon_tag *hData, u32 abgr) {
     dds3PCPSparkleSphereDrawSub(hData->hBillboard, abgr);
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Leaf35);
+/* vu0 routine: copy the 4x4 direction matrix into the polygon. */
+void dds3Leaf35(dds3P2APolygon_tag *hData, const void *pDir) {
+    SDF_VU0_LOADMATRIX(pDir);
+    SDF_VU0_STOREMATRIX(hData->dir);
+}
 
 void dds3P2APolygonGetResource(dds3P2APolygon_tag *hP2APoly, dds3P2APolygonResource_t *pP2APolyRes) {
     billHandle_t *billboard = hP2APoly->hBillboard;

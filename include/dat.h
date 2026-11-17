@@ -66,6 +66,7 @@ void datCallMemset(void);
 void datCallBitCheck(void);
 void NewGame2Pop(void);
 void dds3GlobalWorkUserInit2(s32 mode);
+void datGlobalWorkDestroySub(void);
 
 s32 datGetStockDevilID(s32 index);
 s32 datCheckSameDevil(u32 id);

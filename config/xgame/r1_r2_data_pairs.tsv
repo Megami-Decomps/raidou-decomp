@@ -786,11 +786,11 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x00401A40	0x0045D800	effPCPZiodin01Vec	.data	0x50	yes	code-ref
 0x00401A90	0x0045D850	effPCPZiodin04Param	.data	0x60	yes	code-ref
 0x00401AF0	0x0045D8B0	effPCPShockWave02Param	.data	0x60	yes	code-ref
-0x00401B50	0x0045D910	effPCPZiodin04Param2	.data	0x58	yes	code-ref
+0x00401B50	0x0045D910	effPCPZiodin02Param	.data	0x58	yes	code-ref
 0x00401BA8	0x0045D968	effPCPMZiodin01ThunderParam	.data	0xA8	yes	code-ref
 0x00401C50	0x0045DA10	effPCPMZiodin02ThunderParam	.data	0xA8	yes	code-ref
 0x00401CF8	0x0045DAB8	effPCP_ShockWave01_ThunderSpherePoly_Param	.data	0x58	yes	code-ref
-0x00401D50	0x0045DB10	effPCPShockWave02Param2	.data	0x58	yes	code-ref
+0x00401D50	0x0045DB10	effPCPZiodin03Param	.data	0x58	yes	code-ref
 0x00401DA8	0x0045DB68	effPCP_Houden01_ThunderSpherePoly_Param	.data	0x50	yes	code-ref
 0x00401DF8	0x0045DBB8	effPCP_Megidora01_ThunderSpherePoly_Param	.data	0x50	yes	code-ref
 0x00401E48	0x0045DC08	effPCP_Megidoraon01_ThunderSpherePoly_Param	.data	0x58	yes	code-ref

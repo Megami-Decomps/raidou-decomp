@@ -181,7 +181,7 @@ sbtlRefSbtl5	code_r1_0024F220	raidou1 0x98	4 of 38 words differ	docs/matching/co
 sbtlRefSbtl8	code_r1_0024F220	raidou1 0x118	51 of 68 words differ	docs/matching/code_r1_0024F220.md	109		
 sbtlSetLight_Map	code_r1_0024F220	raidou1 0x234	39 of 142 words differ	docs/matching/code_r1_0024F220.md	117		
 sbtlSetMotion_sbtlUnit	code_r1_0024F220	raidou1 0x1EC	1 of 123 words differ	docs/matching/code_r1_0024F220.md	123		
-sbtlCheckMapHit_Data	code_r1_0024F220	raidou1 0x54	0 of 21 words differ	docs/matching/code_r1_0024F220.md	130	matches only with the current declaration order in itfMesManager.h and the other headers of code_r1_0024F220.c. The B4-field-big header declaration edits turn the full-unit match into CONTEXT 4/21.	
+sbtlCheckMapHit_Data	code_r1_0024F220	raidou1 0x54	0 of 21 words differ	docs/matching/code_r1_0024F220.md	130	matches only with the current declaration order in itfMesManager.h and the other headers of code_r1_0024F220.c. The B4-field-big header declaration edits turn the full-unit match into CONTEXT 4/21; the K02-effect-data edits do the same.	
 nakamamodeCallGetActiveScene	code_r1_00259A88	raidou1 0x584	5 of 353 words differ	docs/matching/code_r1_00259A88.md	3		
 sbtlCallBtlCheckDamageTarget3	code_r1_00259A88	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_00259A88.md	13		
 sbtlCallBtlGetBadStatus3	code_r1_00259A88	raidou1 0x90	20 of 36 words differ	docs/matching/code_r1_00259A88.md	21		
@@ -208,7 +208,7 @@ sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words 
 sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matching/code_r1_00295298.md	3		
 sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3	the -DNON_MATCHING code moves with the declarations the unit includes; adding three prototypes to fld.h (mapGetHit, mapGetAttr_DevilWall, mapHamidasiCheckSub) turned 380 of 404 differing words into a full-unit CONTEXT result; the R22 SBTL_* field and prototype edits in sbtlWork.h shift it again, with no matched function affected.	
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3		
-sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	3	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h. The K03-effect header declaration edits moved Raidou 2 from CONTEXT 37/288 to CONTEXT 46/288 (Raidou 1 41/288).	
+sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	3	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h. The K03-effect header declaration edits moved Raidou 2 from CONTEXT 37/288 to CONTEXT 46/288 (Raidou 1 41/288). The K02-effect-data header edits moved Raidou 1 to CONTEXT 43/288.	
 effDrawTextureSlot	code_r1_002CA3F0	raidou1 0x2CC, raidou2 0x2D4	2 of 179 words differ	docs/matching/code_r1_002CA3F0.md	3		
 cmpDrawBoxG	code_r1_002CAFD8	raidou1 0x190, raidou2 0x190	8 of 100 words differ	docs/matching/code_r1_002CAFD8.md	3		
 evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	docs/matching/code_r1_002F59D0.md	3		
@@ -216,6 +216,10 @@ cmpDrawBackPattern	code_r1_00323138	raidou1 0x144, raidou2 0x144	9 of 81 words d
 datCheckSkillEnable	dat	raidou1 0x144	57 of 78 words differ	docs/matching/dat.md	3		
 dds3FilterClear	dds3KernelDraw_0010BEE0	raidou1 0x3C	3 of 15 words differ	docs/matching/dds3KernelDraw_0010BEE0.md	3		
 dds3FilterDraw	dds3KernelDraw_0010BEE0	raidou1 0xA80	3 of 672 words differ	docs/matching/dds3KernelDraw_0010BEE0.md	11		
+effBTL	effect/effBattle	raidou1 0x1A4, raidou2 0x1A4	5 of 105 words differ	docs/matching/effect/effBattle.md	3		
+effSimpleBEDDelete	effect/effEvent	raidou1 0x40, raidou2 0x40	1 of 16 words differ	docs/matching/effect/effEvent.md	3		
+effPCPShockWave02Init	effect/effPCPMisc	raidou1 0x2C0, raidou2 0x2C0	7 of 176 words differ	docs/matching/effect/effPCPMisc.md	3		
+effPCPZiodin03Init	effect/effPCPMisc	raidou1 0x2C0, raidou2 0x2C0	7 of 176 words differ	docs/matching/effect/effPCPMisc.md	12		
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3		
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3		
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9		

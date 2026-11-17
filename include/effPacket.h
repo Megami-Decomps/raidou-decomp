@@ -12,6 +12,7 @@ sdfGrPacketHeader_t *effPkt2DAllocTriStrip(s32 num, s32 prim);
 
 /* sdfGrOtTable entries the crossfade files its capture and its fading copy into. */
 extern sdfGrOt_t dds3UpdateCrossfadeData;
+extern sdfGrOt_t dds3Data9;
 extern sdfGrOt_t dds3UpdateCrossfadeData2;
 void dds3CrossfadeEnd(void);
 

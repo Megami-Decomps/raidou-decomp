@@ -483,7 +483,10 @@ effMagatuhiOwner_t *effMagaCylinderAllocPart(const u32 *source) {
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effBTLSys_Nego_Stone_Delete);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeConvDrawSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMagatuhi.c:736, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void effMagaSmokeConvDrawSub(effMagatuhiOwner_t *resource) {
+    effSwordTrackDrawTex(resource->valueWork);
+}
 
 void effMagaCylinderSetPartPtrs(dds3MagatuhiBill_tag *work, s32 slotIndex) {
     f32 *angleRow;
@@ -1355,13 +1358,20 @@ void effMagaCylinderDraw(effMagaCylinder_tag *pData) {
     effMagaCylinderDrawTrack(pData->pMagatuhi);
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderSetPosition);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMagatuhi.c:1612, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+void effMagaCylinderSetPosition(effMagaCylinder_tag *pData, void *pPos) {
+    SDF_VU0_COPYVECTOR(pData->param.origin, pPos);
+}
 
 void effMagaCylinderSetRGBA(effMagaCylinder_tag *pData, u32 abgr) {
     pData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderSetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMagatuhi.c:1622, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+/* vu0 routine: copy the 4x4 rotation matrix. */
+void effMagaCylinderSetRotateMatrix(effMagaCylinder_tag *pData, void *pMatrix) {
+    VU0_COPY_MATRIX(pData->matrix, pMatrix);
+}
 
 /* Replay the first slot of each three-slot group from a random age. */
 void effMagaCylinderRandomize(effMagatuhiCallback_t *hEffect) {
@@ -1549,13 +1559,20 @@ void effMagaSpiralDraw(effMagaSpiral_tag *pData) {
     effMagaCylinderDrawTrack(pData->pMagatuhi);
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralSetPosition);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMagatuhi.c:1813, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+void effMagaSpiralSetPosition(effMagaSpiral_tag *pData, void *pPos) {
+    SDF_VU0_COPYVECTOR(pData->param.origin, pPos);
+}
 
 void effMagaSpiralSetRGBA(effMagaSpiral_tag *pData, u32 abgr) {
     pData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralSetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMagatuhi.c:1823, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+/* vu0 routine: copy the 4x4 rotation matrix. */
+void effMagaSpiralSetRotateMatrix(effMagaSpiral_tag *pData, void *pMatrix) {
+    VU0_COPY_MATRIX(pData->matrix, pMatrix);
+}
 
 /* Advance the orbiting-particle family: each group of three slots is replayed from a random delay, one orbit step at a time, into the value table. */
 void effMagaSpiralRandomize(effMagatuhiCallback_t *hEffect) {
@@ -1767,13 +1784,20 @@ void effMagaSmokeDraw(effMagaSmoke_tag *pData) {
     effMagaCylinderDrawTrack(pData->pMagatuhi);
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeSetPosition);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMagatuhi.c:2038, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+void effMagaSmokeSetPosition(effMagaSmoke_tag *pData, void *pPos) {
+    SDF_VU0_COPYVECTOR(pData->param.origin, pPos);
+}
 
 void effMagaSmokeSetRGBA(effMagaSmoke_tag *pData, u32 abgr) {
     pData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeSetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMagatuhi.c:2048, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+/* vu0 routine: copy the 4x4 rotation matrix. */
+void effMagaSmokeSetRotateMatrix(effMagaSmoke_tag *pData, void *pMatrix) {
+    VU0_COPY_MATRIX(pData->matrix, pMatrix);
+}
 
 /* Replay the first slot of each three-slot drift group from a random age. */
 void effMagaSmokeRandomize(effMagatuhiCallback_t *hEffect) {
@@ -1960,7 +1984,24 @@ void dds3MagatuhiParSetByType(dds3MagatuhiPar_tag *work, s32 slotValue) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effGetSubSlot);
+u8 effGetSubSlot(dds3MagatuhiPar_tag *work) {
+    u32 type = work->type;
+
+    switch (type) {
+    case 0:
+        return ((effSub_t *)work->pHandle)->type0SubSlot;
+    case 1:
+        return ((effSub_t *)work->pHandle)->type1SubSlot;
+    case 2:
+        return ((effSub_t *)work->pHandle)->type2To4SubSlot;
+    case 3:
+        return ((effSub_t *)work->pHandle)->type2To4SubSlot;
+    case 4:
+        return ((effSub_t *)work->pHandle)->type2To4SubSlot;
+    default:
+        return 0;
+    }
+}
 
 /* Types zero/one dispatch from the payload base; two through four skip its prefix.
    Other types still dispatch with a zero argument; no type bounds check is added. */

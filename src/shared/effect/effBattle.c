@@ -6,6 +6,11 @@
 #include "basic.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdk_libc.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "effPart.h"
+#include "code_001EA090.h"
 
 enum {
     EFF_BATTLE_COPY_TRIGGER_FRAME = 0,
@@ -15,7 +20,6 @@ enum {
 };
 
 
-#include "sdk_libc.h"
 
 extern s32 effBTLSkillID;
 
@@ -116,16 +120,52 @@ s32 effBTLSkillGetID(void);
 #include "newdata.h"
 
 extern u32 effFieldColorFinalSelector;
+extern s32 effData24;
+extern s32 effData25;
 u32 effBTLFieldColorGetOverrideSelector(void);
 u32 effBTLFieldColorGetFinalSelector(void);
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBattle.c:186, near, same function 0.93 (words 80/83, calls 0.86, shape 0.97) */
+effBTL_t *effBTLCreate(void *pData) {
+    sdfMemHandle_t *handle;
+    effBTL_t *work;
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLDelete);
+    handle = sdfMemAllocDirect(0xC44);
+    work = sdfMemLock(handle);
+    work->resource = handle;
+    *(effBTLImage_t *)work = *(effBTLImage_t *)pData;
+    effBTLPartCreate(work, pData);
+    work->CutCount = 0;
+    work->hCutListTop = NULL;
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLGetMotionChangeFrame);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBattle.c:205, near, same function 0.87 (words 21/24, calls 0.80, shape 0.93) */
+void effBTLDelete(effBTL_t *hBTLEffect) {
+    effBTLCut_t *cut;
+    effBTLCut_t *next;
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLGetCutEndFrame);
+    cut = hBTLEffect->hCutListTop;
+    while (cut != NULL) {
+        next = cut->next;
+        effBTLCutDelete(cut);
+        cut = next;
+    }
+    effBTLPartDelete(hBTLEffect);
+    sdfMemFreeDirect(hBTLEffect->resource);
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBattle.c:220, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+s32 effBTLGetMotionChangeFrame(effBTL_t *hBTLEffect, u16 CutNum) {
+    s32 bank = CutNum >= 2;
+    return hBTLEffect->banks[bank].list.callbackFrame;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBattle.c:225, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+s32 effBTLGetCutEndFrame(effBTL_t *hBTLEffect, u16 CutNum) {
+    s32 bank = CutNum >= 2;
+    return hBTLEffect->banks[bank].list.frame;
+}
 
 s32 effBTLGetDrawEndFrame(effBTL_t *hBTLEffect, u16 CutNum) {
     s32 bank = CutNum >= 2;
@@ -135,11 +175,97 @@ s32 effBTLGetDrawEndFrame(effBTL_t *hBTLEffect, u16 CutNum) {
     return hBTLEffect->banks[bank].list.colorRampEndFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutListRelease);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBattle.c:238, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+void effBTLCutListRelease(effBTLCut_t *hBTLCutEffect) {
+    effBTLCut_t **link = &hBTLCutEffect->state->hCutListTop;
+    effBTLCut_t *cur;
 
+    while ((cur = *link) != NULL) {
+        if (cur == hBTLCutEffect) {
+            *link = cur->next;
+            return;
+        }
+        link = &cur->next;
+    }
+}
+
+/* NON_MATCHING: 100 of 105 words match.  */
+#ifdef NON_MATCHING
+effBTLCut_t *effBTL(effBTL_t *hBTLEffect, u16 CutNum, void *pFormation, s32 stat) {
+    effBTLCut_t *cut;
+    effBTL_SkillCutTable_t *list;
+    effBTL_SkillCutTable_t *cutList;
+    effBTL_SkillPartsList_t *entry;
+    effPartHandle_t **work;
+    u8 actorScaleEnabled;
+    s32 remaining;
+    u16 count;
+
+    cut = sdfChipAllocDirect(0x128);
+    memset(cut, 0, 0x128);
+    cut->color = 0x80808080;
+    list = (CutNum < 2) ? &hBTLEffect->banks[0].list : &hBTLEffect->banks[1].list;
+    cut->next = hBTLEffect->hCutListTop;
+    cut->flags = 14;
+    cut->triggerFrame = list->frame;
+    cut->state = hBTLEffect;
+    hBTLEffect->hCutListTop = cut;
+    cut->kind = CutNum;
+    cut->list = list;
+    if (CutNum == 2) {
+        cut->colorRampEndFrame = list->frame;
+    } else {
+        cut->colorRampEndFrame = list->colorRampEndFrame;
+    }
+    cutList = cut->list;
+    work = cut->parameterWorks;
+    cut->stat = stat;
+    cut->formation = pFormation;
+    entry = cutList->entries;
+    actorScaleEnabled = cutList->actorScaleEnabled;
+    count = cutList->count;
+    if (count != 0) {
+        remaining = count;
+        do {
+            if (entry->type != 0xFFFE) {
+                *work = dds3EffectPartCopy(entry->value.work);
+                if (actorScaleEnabled != 0 && pFormation != NULL) {
+                    if (entry->pos_ptr.scaleKind == 0 || entry->pos_ptr.scaleKind == 4) {
+                        effBTLCutSetScaleSub(*work, effLeaf35(cut->formation));
+                    }
+                }
+            } else {
+                *work = NULL;
+            }
+            remaining--;
+            work++;
+            entry++;
+        } while (remaining != 0);
+    }
+    cut->currentFrame = 0;
+    printf("effBTL:cut %d handle create(%p)[%d]\n", cut->kind, cut->state, cut->state->CutCount);
+    cut->state->CutCount++;
+    return cut;
+}
+#else
 INCLUDE_ASM(const s32, "effect/effBattle", effBTL);
+#endif
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutDelete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBattle.c:308, near, same function 1.00 (words 36/36, calls 1.00, shape 1.00) */
+void effBTLCutDelete(effBTLCut_t *hBTLCutEffect) {
+    s32 workIndex;
+
+    for (workIndex = 0; workIndex < EFF_BATTLE_PARAMETER_WORK_CAPACITY; workIndex++) {
+        if (hBTLCutEffect->parameterWorks[workIndex] != 0) {
+            dds3EffectPartDelete(hBTLCutEffect->parameterWorks[workIndex]);
+        }
+    }
+    effBTLCutListRelease(hBTLCutEffect);
+    hBTLCutEffect->state->CutCount--;
+    printf("effBTL:cut %d handle delete(%p)[%d]\n", hBTLCutEffect->kind, hBTLCutEffect->state,
+           hBTLCutEffect->state->CutCount);
+    sdfChipFreeDirect(hBTLCutEffect);
+}
 
 u16 effBTLCutGetCutNumber(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->kind;
@@ -179,13 +305,24 @@ u32 effBTLCutGetCutEndFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->triggerFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetDrawEndFrame);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBattle.c:365, match, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+void effBTLCutSetDrawEndFrame(effBTLCut_t *hBTLCutEffect, u32 frame) {
+    if (hBTLCutEffect->kind == EFF_BATTLE_MINIMUM_RAMP_END_FRAME) {
+        if (frame < hBTLCutEffect->colorRampEndFrame) {
+            hBTLCutEffect->colorRampEndFrame = frame;
+        }
+        return;
+    }
+    hBTLCutEffect->colorRampEndFrame = frame;
+}
 
 u32 effBTLCutGetDrawEndFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->colorRampEndFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", effLeaf15);
+void effLeaf15(effBTLCut_t *hBTLCutEffect, void *userData) {
+    hBTLCutEffect->userData = userData;
+}
 
 void *effBTLCutGetUserData(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->userData;
@@ -194,9 +331,35 @@ void *effBTLCutGetUserData(effBTLCut_t *hBTLCutEffect) {
 void effLeaf16(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetScale);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBattle.c:572, near, same function 1.00 (words 30/30, calls 1.00, shape 1.00) */
+void effBTLCutSetScale(effBTLCut_t *hBTLCutEffect, f32 scale) {
+    s32 i;
+    s32 count;
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBattleHasActiveKind);
+    if (scale != 1.0f) {
+        count = hBTLCutEffect->list->count;
+        for (i = 0; i < count; i++) {
+            effBTLCutSetScaleSub(hBTLCutEffect->parameterWorks[i], scale);
+        }
+    }
+}
+
+s32 effBattleHasActiveKind(effBTLCut_t *hBTLCutEffect) {
+    effBTL_SkillCutTable_t *list = hBTLCutEffect->list;
+    s32 count = list->count;
+    effBTL_SkillPartsList_t *entry = list->entries;
+    s32 i;
+
+    for (i = 0; i < count; i++, entry++) {
+        if (entry->reverberations == 3) {
+            return 1;
+        }
+        if (entry->reverberations == 2) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 /* Rebuild each cloned bank's parameter work, resolving shared-entry references
  * and preserving disabled descriptors. */
@@ -259,15 +422,18 @@ void effBTLPartDelete(effBTL_t *pSkill) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", effLeaf17);
+void effLeaf17(s32 state, s32 id, s32 overrideSelector, s32 finalSelector) {
+    effData24 = state;
+    effData25 = id;
+    effBTLSkillID = overrideSelector ? overrideSelector : state;
+    effFieldColorFinalSelector = finalSelector ? finalSelector : state;
+}
 
-extern s32 effData24;
 
 s32 effBTLSkillGetState(void) {
     return effData24;
 }
 
-extern s32 effData25;
 
 s32 effBTLSkillGetID(void) {
     return effData25;
@@ -283,12 +449,35 @@ u32 effBTLFieldColorGetFinalSelector(void) {
 
 INCLUDE_ASM(const s32, "effect/effBattle", effLeaf18);
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLFieldColorGetBaseColor2);
+void effBTLFieldColorGetBaseColor2(s32 colorId, s16 variant, s16 kind, f32 *output) {
+    f32 scaled[4];
+    s16 index = variant - 200;
 
-void effLeaf19(void *a0, s32 a1, s32 a2) {
-    effBTLFieldColorGetBaseColor2(a0, (s16)a1, (s16)a2);
+    if ((u16)index >= 40 || kind <= 0 || kind >= 11) {
+        printf("effBTLFieldColorGetBaseColor:DummyColorLoad\n");
+        SDF_VU0_LOADVECTOR(effBTLDefaultColor);
+    } else {
+        SDF_VU0_LOADVECTOR(effBTLStageColorTable[(index * 10) + kind - 1]);
+    }
+    scaled[1] = effBTLFieldColorGetBaseColor2Data[colorId][1];
+    scaled[2] = effBTLFieldColorGetBaseColor2Data[colorId][2];
+    scaled[3] = effBTLFieldColorGetBaseColor2Data[colorId][3];
+    SDF_VU0_LOADVECTOR_B(scaled);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(scaled);
+    output[0] = scaled[1];
+    output[1] = scaled[2];
+    output[2] = scaled[3];
 }
 
+void effLeaf19(s32 colorId, s32 variant, s32 kind, f32 *output) {
+    effBTLFieldColorGetBaseColor2(colorId, (s16)variant, (s16)kind, output);
+}
+
+#ifdef VERSION_RAIDOU1
+INCLUDE_RODATA(const s32, "effect/effBattle", effStrEffBtlEmpty);
+
+#endif
 INCLUDE_RODATA(const s32, "effect/effBattle", filterStrParameterInit);
 
 INCLUDE_RODATA(const s32, "effect/effBattle", mfilterDebugMenuStrCenterMove);

@@ -54,6 +54,45 @@ typedef enum DatBaseStatIndex {
     DAT_BASE_STAT_COUNT = 5
 } DatBaseStatIndex;
 
+/* The 0x4C-byte enemy table supplies initial party vitals/stats, skills and
+ * rewards. */
+typedef struct datEnemyRecord_t {
+    u32 flags;            /* 0x00 */
+    u8 race;              /* 0x04 */
+    u8 level;             /* 0x05 */
+    u16 hp;               /* 0x06 */
+    u16 maxHp;            /* 0x08 */
+    u16 mp;               /* 0x0A */
+    u16 maxMp;            /* 0x0C */
+    s16 affinityTableIndex; /* 0x0E: signed affinity-bank row */
+    u8 baseStats[DAT_BASE_STAT_COUNT]; /* 0x10 */
+    u8 summonCategory;  /* 0x15: ENEMY_TABLE category used as a secondary actor's action number. */
+    u8 usePanelIcons; /* 0x16: nonzero selects panel icon groups instead of numeric level/vitals. */
+    u8 pad17;
+    u16 skills[8];        /* 0x18 */
+    s32 money;            /* 0x28 */
+    u16 battleExperienceReward; /* 0x2C: base EXP awarded on enemy defeat. */
+    u16 experience;       /* 0x2E */
+    u16 huntExperience;   /* 0x30 */
+    u8 pad32[4];
+    u16 huntPenaltyFlags; /* 0x36: hunt's adverse-outcome mask. */
+    u16 huntPenaltyChance; /* 0x38: base percentage before status modifiers. */
+    u8 pad3A[4];
+    u8 additionalDropItemIds[2]; /* 0x3E: optional item IDs selected with actionChances. */
+    u8 actionChances[2];  /* 0x40: bucket thresholds for the additional drop item IDs. */
+    u16 overrideFlag;     /* 0x42: model flag gating the override action. */
+    u8 overrideAction;    /* 0x44: action selected before the ordinary slots. */
+    u8 overrideChance;    /* 0x45: bucket threshold for the override action. */
+    s8 indexedValueOverride; /* 0x46: signed value used for enemy selector index zero. */
+    u8 tickCount;         /* 0x47: enemy action tick count; zero is read as one. */
+    u8 attackSpacing;    /* Repeat-hit interval, scaled by the command's effect data. */
+    u8 pad49[3];
+} datEnemyRecord_t;
+
+typedef char datEnemyRecordSizeCheck[sizeof(datEnemyRecord_t) == 0x4C ? 1 : -1];
+
+extern datEnemyRecord_t *datEnemyRecords;
+
 /* Actor record (0x1A4), not the 0xEC datUnitWork_t of the stock. The active
  * roster and saved template bank share it. */
 typedef struct datActorWork_t {
@@ -78,20 +117,13 @@ typedef struct datActorWork_t {
     u8 pad54;
     s8 profileId;
     u8 pad56[2];
-    union {
-        struct {
-            u32 skillFlags[76]; /* Eight four-bit states per word. */
-            u8 pad188[4];
-        };
-        u32 skillSnapshotWords[77]; /* Stock merge includes the reserved trailing word. */
-    };
-    u16 savedCommandPhase; /* +0x18C: saved action phase restored with actionSlot. */
-    u16 savedCommandSelectionEntry; /* +0x18E: selected list entry restored with savedCommandPhase. */
-    u16 actionSlot; /* 0x190: saved command-table slot */
-    u8 pad192[2];
-    s32 randomizedValue;
-    s32 huntExp; /* 0x198: hunt EP accumulated this battle (shared by ability 0x24C) */
-    u8 pad19C[8];
+    u8 pad58[4];
+    s32 randomizedValue; /* 0x5C: initialized to 0x12 minus a four-way roll. */
+    u8 pad60[0xB8];
+    s32 haveSkill[2]; /* 0x118: Raidou 1 sbtlCreateUnit stores skill ids 149 and 288 */
+    u8 pad120[0x78];
+    s32 haveSkillBackup[2]; /* 0x198: second copy, stored with the first */
+    u8 pad1A0[4];
 } datActorWork_t;
 
 typedef char DatPartyRecordSizeCheck[sizeof(datActorWork_t) == 0x1A4 ? 1 : -1];

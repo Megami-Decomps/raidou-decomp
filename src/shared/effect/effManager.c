@@ -3,6 +3,7 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "sdfChip.h"
+#include "sdfMemory.h"
 #include "sdfDraw.h"
 #include "billManager.h"
 #include "sdfPacketBuff.h"
@@ -148,12 +149,18 @@ s32 dds3EffectManagerRun(dds3ProcessID_t *ProcessID)
 void dds3EffectPCFSetLoop(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectPCFGetLoop);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effManager.c:148, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+u32 dds3EffectPCFGetLoop(void) {
+    return 1;
+}
 
 void dds3EffectPCFReset(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectPCFGetState);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effManager.c:155, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+u32 dds3EffectPCFGetState(void) {
+    return 1;
+}
 
 effHandle_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param)
 {
@@ -207,7 +214,12 @@ void dds3EffectSetRotateMatrix(effHandle_t *pData, sdfMatrix4_t *pMatrix)
     EffMajorTable[pData->type].setrotatematrix(pData->instance, pMatrix);
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", effSetEffectColorSubSub);
+void effSetEffectColorSubSub(void *handle, u32 abgr)
+{
+    effHandle_t *pData = handle;
+
+    EffMajorTable[pData->type].setrgba(pData->instance, abgr);
+}
 
 void dds3EffectSetLoop_dds3Effect(effHandle_t *hEffect, u8 loop)
 {
@@ -216,7 +228,15 @@ void dds3EffectSetLoop_dds3Effect(effHandle_t *hEffect, u8 loop)
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectGetLoop);
+s32 dds3EffectGetLoop(effHandle_t *hEffect)
+{
+    s32 (*getloop)(s32 instance) = EffMajorTable[hEffect->type].getloop;
+
+    if (getloop == NULL) {
+        return 1;
+    }
+    return getloop(hEffect->instance);
+}
 
 effHandle_t *dds3EffectLoad(effResourceHeader_t *pD3P)
 {
@@ -250,7 +270,17 @@ effHandle_t *dds3EffectLoadEPL(void *pEPL)
     return dds3EffectCreate(5, 0, EE_ADDR_S(pEPL));
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", sdfDevLoadTexList);
+effHandle_t *sdfDevLoadTexList(const char *aFilename) {
+    u32 dataAddress;
+    sdfMemHandle_t *allocation;
+    effHandle_t *effect;
+
+    printf(sdfDevLoadMsgFmt, aFilename);
+    allocation = sdfDevLoadFileEx(aFilename, &dataAddress, 0);
+    effect = dds3EffectLoad(EE_ADDR_AS(effResourceHeader_t *, dataAddress));
+    sdfMemFreeDirect(allocation);
+    return effect;
+}
 
 effHandle_t *dds3EffectCopy(effHandle_t *node)
 {
@@ -262,6 +292,8 @@ effHandle_t *dds3EffectCopy(effHandle_t *node)
     copy->instance = EffMajorTable[node->type].copy(instance);
     return copy;
 }
+
+INCLUDE_RODATA(const s32, "effect/effManager", sdfDevLoadMsgFmt);
 
 void dds3EffectDataRevision(effResourceHeader_t *header)
 {

@@ -1821,11 +1821,9 @@
 0x001F6818	effTrackPolyCreateWork	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00188150, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001F6920	effLeaf53	func	tier=D	derived-unit	na	unit code_001F67B0, neighbour effBTLSys_Nego_Kyusyu_Delete2; no named callee, caller or string
 0x001F69A0	Eff_ModelTrackPolyVertexSet	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001F69B8	effLeaf54	func	tier=D	derived-unit	na	unit effect/effModelTrackPoly; no named callee, caller or string
 0x001F69C8	effModelTrackPolyListDrawOnlSub	func	tier=D	derived-caller	na	unit effect/effModelTrackPoly; called by Eff_ModelTrackPolyListDrawOnly
 0x001F69E0	effTrackPolyUpdate	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00188318, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001F6C00	effParticleTrack3SetSub	func	tier=D	derived-caller	na	unit effect/effModelTrackPoly; called by dds3Particle_Track3Set
-0x001F6F18	effLeaf55	func	tier=D	derived-unit	na	unit effect/effModelTrackPoly; no named callee, caller or string
 0x001F6F38	dds3HermitianTrackPolySetBlend	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001F77A0	dds3CallCos	func	tier=D	derived-callee	na	unit code_001F77A0, nearest named function dds3HermitianTrackPolyDraw; calls sdfCos
 0x001F7B10	effEctBlurDrawAlphaMultiSub	func	tier=D	derived-caller	na	unit code_001F7B10, neighbour effDrawBlurRectangle; called by dds3EffectBlurDrawAlphaMulti
@@ -18469,6 +18467,7 @@
 0x001FEFE0	effPCPDistortionBlurExpCreate	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x18f1b8 sim 1.000 margin 0.00 pair
 0x001FF090	effPCPRippleBlurExpCopy	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x18f268 sim 1.000 margin 0.00 pair
 0x001FF400	effPCPDistortionBlurExpCopy	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x18f268 sim 1.000 margin 0.00 pair
+0x001FFD68	effPCPBreathCreatePCF	func	tier=C	derived-derived-role	na	wraps effPCPBreathCreate; replaces effPCP_BED_CreatePCF
 0x002015F8	effPCPAgiFireball2SetRotateMatrix	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x192130 sim 1.000 margin 0.00 pair
 0x00201658	effPCPAgiFireball2SetColor	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x192130 sim 1.000 margin 0.00 pair
 0x002019F8	effPCPBufudnIceCreate	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x192770 sim 1.000 margin 0.00 pair
@@ -19022,8 +19021,8 @@
 0x003FFA84	dds3MagatuhiSetRGBATable3	data	tier=C	smt3-ref	0.88 (n=D_r1_003FFA84)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effLeaf44; dds3MagatuhiSetRGBATable is another symbol
 0x0040094C	effParamWorkDuplicators	data	tier=C	dds-ref	0.59 (n=D_r1_0040094C)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3EffectPartCopy
 0x00400AB8	effParamWorkReleaseCallbacks	data	tier=C	dds-ref	0.59 (n=D_r1_00400AB8)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3EffectPCPDelete
-0x00401B50	effPCPZiodin04Param2	data	tier=C	smt3-ref	0.88 (n=D_r1_00401B50)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPZiodin02Init; effPCPZiodin04Param is another symbol
-0x00401D50	effPCPShockWave02Param2	data	tier=C	smt3-ref	0.88 (n=D_r1_00401D50)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPZiodin03Init; effPCPShockWave02Param is another symbol
+0x00401B50	effPCPZiodin02Param	data	tier=C	derived-derived-role	na	0x401B50 is the param block written by effPCPZiodin02Init (0x1FCC48); replaces effPCPZiodin04Param2
+0x00401D50	effPCPZiodin03Param	data	tier=C	derived-derived-role	na	0x401D50 is the param block written by effPCPZiodin03Init (0x1FD9F0); replaces effPCPShockWave02Param2
 0x004024C0	effPCPFlashPolyRingExp2Vertex2	data	tier=C	smt3-ref	0.98 (n=D_r1_004024C0)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effPCPFlashPolyRingPartSetVertex; effPCPFlashPolyRingExp2Vertex is another symbol
 0x00402500	effPCPFlashPolyCircleVertex2	data	tier=C	smt3-ref	0.98 (n=D_r1_00402500)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effPCPFlashPolySphere2ExpPartSetVertex; effPCPFlashPolyCircleVertex is another symbol
 0x00402530	effPCPFlashPolyRingExpVertex	data	tier=C	derived-derived-role	na	data 0x402530 is the scratch vector of effPCPFlashPolyRingExpPartSetVertex (smt3 name); replaces effPCPFlashPolyRingExpHVertex2

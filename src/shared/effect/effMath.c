@@ -114,7 +114,23 @@ u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate)
     return blended;
 }
 
-INCLUDE_ASM(const s32, "effect/effMath", effMagaCylinderDrawSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMath.c:131, match, same function 1.00 (words 32/32, calls 1.00, shape 1.00) */
+/* vu0 routine: multiply two RGBA colors per channel, 0x80 = 1.0. */
+u32 effMagaCylinderDrawSub(u32 color, u32 scale)
+{
+    effColorWork_t work[3];
+    u32 unit = EFF_RGBA_UNIT;
+    u32 out;
+
+    work[0].word = color;
+    MMI_RGBA_UNPACK(&work[0], unit);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    work[1].word = scale;
+    MMI_RGBA_UNPACK(&work[1], unit);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_dds3ColorFtoI(out, 128.0f);
+    return out;
+}
 
 /* vu0 routine: distance from `to` to the line through `from` along `dir` */
 f32 effLinePointLength(sdfVector4_t *pDir, sdfVector4_t *pLinePos, sdfVector4_t *pPos)
@@ -161,7 +177,10 @@ effArrHdr_t *dds3Bezier4PCreate(s32 number) {
     return (effArrHdr_t *)headerAddress;
 }
 
-INCLUDE_ASM(const s32, "effect/effMath", effAPPoint4DeleteSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effMath.c:192, rework, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void effAPPoint4DeleteSub(effArrHdr_t *hData) {
+    sdfMemFreeDirect(hData->allocation);
+}
 
 s32 dds3Bezier4PPartRun(effArrHdr_t *table, s32 slotIndex, f32 *out) {
     effCubicBezierSlot_t *slot = &((effCubicBezierSlot_t *)table->slots)[slotIndex];
@@ -207,7 +226,12 @@ s32 nbCameraLerpVec(effCubicBezierSlot_t *slot, f32 *out) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "effect/effMath", effLeaf23);
+void effLeaf23(effArrHdr_t *table, s32 slotIndex) {
+    effCubicBezierSlot_t *slot = &((effCubicBezierSlot_t *)table->slots)[slotIndex];
+
+    slot->step = 0.05f;
+    slot->t = 0;
+}
 
 effCubicBezierSlot_t *dds3Bezier4PGetPart(effArrHdr_t *pEffBezier4P, s32 index) {
     return &((effCubicBezierSlot_t *)pEffBezier4P->slots)[index];

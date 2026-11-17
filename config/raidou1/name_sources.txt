@@ -4607,7 +4607,7 @@
 0x001F6920	effLeaf53	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001F67B0, neighbour effBTLSys_Nego_Kyusyu_Delete2; no named callee, caller or string
 0x001F6940	Eff_ModelTrackPolyGetMarkPosition	inferred	SMT3HD name via SLUS_209.11 0x001A31B8, reloc-identical; map-agrees
 0x001F69A0	Eff_ModelTrackPolyVertexSet	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x001F69B8	effLeaf54	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effModelTrackPoly; no named callee, caller or string
+0x001F69B8	Eff_ModelTrackPolyColorSet	inferred	SMT3 name via SLUS_209.11 Eff_ModelTrackPolyColorSet: same body (trackPoly->abgr store) and the call from effParticleTrack3SetSub matches SMT3 effModelTrackPoly.c:359
 0x001F69C8	effModelTrackPolyListDrawOnlSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effModelTrackPoly; called by Eff_ModelTrackPolyListDrawOnly
 0x001F69E0	effTrackPolyUpdate	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00188318, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001F6AA8	Eff_ModelTrackPolyListCreate	inferred	SMT3HD name via SLUS_209.11 0x001A3510, reloc-identical; map-agrees
@@ -4619,7 +4619,7 @@
 0x001F6C88	Eff_HermitianSpline	inferred	smt3-decomp C name via SLUS_209.11 0x001A36F0, unique-masked-hash-c; map-agrees
 0x001F6E00	dds3HermitianTrackPolyCreate	inferred	SMT3HD name via SLUS_209.11 0x001A3868, reloc-identical; map-agrees
 0x001F6EE8	effPCPFlashPolyRingExpHDelete	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x186390 sim 1.000 margin 0.00 pair
-0x001F6F18	effLeaf55	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effModelTrackPoly; no named callee, caller or string
+0x001F6F18	dds3HermitianTrackPolyReset	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=dds3 name for the same body; called with the dds3HermitianTrackPoly_tag from effLeaf53; replaces effLeaf55
 0x001F6F38	dds3HermitianTrackPolySetBlend	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001F6F40	dds3HermitianTrackPolySetVC	inferred	SMT3HD name via SLUS_209.11 0x001A39A8, reloc-identical; map-agrees
 0x001F7020	dds3HermitianTrackPolyGetVertex	inferred	SMT3HD name via SLUS_209.11 0x001A3A88, byte-identical; map-agrees
@@ -4900,7 +4900,7 @@
 0x001FFC30	effLeaf128	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
 0x001FFC38	effLeaf129	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
 0x001FFC40	effPCPBreathCreate	inferred	SMT3HD name via SLUS_209.11 0x0018FAA8, reloc-identical; map-agrees
-0x001FFD68	effPCP_BED_CreatePCF	inferred	method=smt3-fuzzy-100-m-pair; p=1.00 (n=1842); tier=A; source=smt3; evidence=smt3 body 0x1a0d90 sim 1.000 margin 1.00 pair
+0x001FFD68	effPCPBreathCreatePCF	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=wraps effPCPBreathCreate; replaces effPCP_BED_CreatePCF
 0x001FFDB0	effPCPBreathCopy	inferred	SMT3HD name via SLUS_209.11 0x0018FC18, reloc-identical; map-agrees
 0x001FFE08	effPCPBreathDelete	inferred	SMT3HD name via SLUS_209.11 0x0018FC70, reloc-identical; map-agrees
 0x001FFE40	effLeaf130	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
@@ -12990,11 +12990,11 @@
 0x00401A40	effPCPZiodin01Vec	inferred	method=smt3-alias; p=0.90 (n=D_r1_00401A40); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x00401A90	effPCPZiodin04Param	inferred	method=smt3-ref; p=0.88 (n=D_r1_00401A90); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPZiodin04Init
 0x00401AF0	effPCPShockWave02Param	inferred	method=smt3-ref; p=0.88 (n=D_r1_00401AF0); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPShockWave02Init
-0x00401B50	effPCPZiodin04Param2	inferred	method=smt3-ref; p=0.88 (n=D_r1_00401B50); tier=C; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPZiodin02Init; effPCPZiodin04Param is another symbol
+0x00401B50	effPCPZiodin02Param	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=0x401B50 is the param block written by effPCPZiodin02Init (0x1FCC48); replaces effPCPZiodin04Param2
 0x00401BA8	effPCPMZiodin01ThunderParam	inferred	method=smt3-ref; p=0.98 (n=D_r1_00401BA8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effPCPMZiodin01Init
 0x00401C50	effPCPMZiodin02ThunderParam	inferred	method=smt3-ref; p=0.98 (n=D_r1_00401C50); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effPCPMZiodin02Init
 0x00401CF8	effPCP_ShockWave01_ThunderSpherePoly_Param	inferred	method=smt3-content; p=0.97 (n=D_r1_00401CF8); tier=A; source=smt3; evidence=smt3-content/all: single
-0x00401D50	effPCPShockWave02Param2	inferred	method=smt3-ref; p=0.88 (n=D_r1_00401D50); tier=C; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPZiodin03Init; effPCPShockWave02Param is another symbol
+0x00401D50	effPCPZiodin03Param	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=0x401D50 is the param block written by effPCPZiodin03Init (0x1FD9F0); replaces effPCPShockWave02Param2
 0x00401DA8	effPCP_Houden01_ThunderSpherePoly_Param	inferred	method=smt3-content; p=0.97 (n=D_r1_00401DA8); tier=A; source=smt3; evidence=smt3-content/all: single
 0x00401DF8	effPCP_Megidora01_ThunderSpherePoly_Param	inferred	method=smt3-content; p=0.97 (n=D_r1_00401DF8); tier=A; source=smt3; evidence=smt3-content/all: single
 0x00401E48	effPCP_Megidoraon01_ThunderSpherePoly_Param	inferred	method=smt3-content; p=0.97 (n=D_r1_00401E48); tier=A; source=smt3; evidence=smt3-content/all: single

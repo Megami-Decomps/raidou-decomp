@@ -270,7 +270,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001F9908	001F9998	code_001F9908	c	none	
 001F99A0	001FA2B0	effect/effPart	c	smt3:names:16+smt3:map:15 of 38	effect/effPart
 001FA300	002065F8	effect/effPCPMisc	c	smt3:names:125+smt3:map:81 of 369	effect/effPCPMisc
-002068E8	00206968	code_002068E8	asm	none	
+002068E8	00206968	code_002068E8	c	none	
 00206970	0020B108	effect/effPCPThunder	c	smt3:names:23+smt3:map:19 of 62	effect/effPCPThunder
 0020B288	0020BAA0	effect/effPCPBezier	c	smt3:names:5+smt3:map:2 of 10	effect/effPCPBezier
 0020BC88	00212470	effect/effPCPFlash	c	smt3:names:56+smt3:map:38 of 145	effect/effPCPFlash

@@ -14,6 +14,7 @@
 #include "common.h"
 
 void *sdfDevLoadFileEx(const char *name, u32 *outData, u32 *outSize);
+extern char sdfDevLoadMsgFmt[];
 
 struct sdfMatPacket_t;
 struct sdfTexPacket_t;

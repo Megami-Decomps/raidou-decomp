@@ -22,6 +22,8 @@
 #include "billManager.h"
 #include "effBlur_Filter.h"
 #include "effPacket.h"
+#include "effPCPHelperBED.h"
+#include "effThunder.h"
 
 struct P2A_ANIMATION_tag;
 
@@ -81,7 +83,6 @@ struct effPCPRadiateBEDPart_tag;
 
 struct effPCPRadiateBED_tag;
 
-struct effPCPHelperBEDParam_t;
 
 struct effPCPAnalyzeBED_tag;
 
@@ -103,9 +104,7 @@ struct effPCPRadiateThunder_tag;
 
 struct effPCPThunderSphereExp_tag;
 
-struct effPCPHelperBEDPart_tag;
 
-struct effPCPHelperBED_tag;
 
 struct effPCPRadiateTBParam_t;
 
@@ -257,7 +256,6 @@ typedef struct effBTL_t effBTL_t;
 
 typedef struct effPCPRadiateBED_tag effPCPRadiateBED_tag;
 
-typedef struct effPCPHelperBEDParam_t effPCPHelperBEDParam_t;
 
 typedef struct effPCPThunderSpherePolyParam_t effPCPThunderSpherePolyParam_t;
 
@@ -295,9 +293,7 @@ typedef struct effPCPRadiateThunder_tag effPCPRadiateThunder_tag;
 
 typedef struct effPCPThunderSphereExp_tag effPCPThunderSphereExp_tag;
 
-typedef struct effPCPHelperBEDPart_tag effPCPHelperBEDPart_tag;
 
-typedef struct effPCPHelperBED_tag effPCPHelperBED_tag;
 
 typedef struct effPCPRadiateTBPart_tag effPCPRadiateTBPart_tag;
 
@@ -440,7 +436,6 @@ struct dds3BillAnim_tag {
     P2A_TEXANIM_tag *pTexAnim;
 };
 
-extern struct sdfGrOt_t *sdfModelOtTable[4];
 extern u8 effPCPZiodin01Vec[];
 extern s32 BlinkMultiBlurCount;
 
@@ -925,14 +920,6 @@ struct effPCPRadiateBED_tag {
     struct sdfMemHandle_t *handle;
 };
 
-/* Serialized model placement and fade parameters copied into the owner. */
-struct effPCPHelperBEDParam_t {
-    f32 pos[4];
-    s32 fade_in;
-    s32 fade_out;
-    f32 speed;
-};
-
 /* Alpha-system parameters supply three packed words to the particle system. */
 /* The sphere-poly parameters, 0x4C bytes the constructors copy whole. The tail
  * is the thunder family's six fields: a width and a colour for the centre, the
@@ -1095,32 +1082,6 @@ struct effPCPThunderSphereExp_tag {
     s32 frame;
     f32 scale;
     effPCPThunderSpherePoly_t *pThunderSpherePoly;
-};
-
-/* One event per model-map position. Init seeds the entry, then the updater
- * latches its initial position and advances the event through its frame span. */
-struct effPCPHelperBEDPart_tag {
-    f32 pos[4];
-    u8 move;
-    u8 pad11[3];
-    s32 frame;
-    s32 life;
-    struct effEveBEDCut_t *hBEDCut;
-};
-
-/* The factory allocates this owner as one 0x40-byte size-class block; the
- * per-position entries are a separate count * 0x20 allocation. */
-struct effPCPHelperBED_tag {
-    effPCPHelperBEDParam_t param;
-    effPCPHelperBEDPart_tag *pPart;
-    struct sdfMemHandle_t *hPartMem;
-    struct effBTL_t *hBED;
-    struct effPartHandle_t *hHelper;
-    f32 scale;
-    s32 frame;
-    s32 frameLimit;
-    u32 count;
-    u32 color;
 };
 
 /* The paired PCP event owners allocate count * 0x20 bytes after the 0xA4
@@ -1690,6 +1651,18 @@ void effEveBEDDelete(struct effBTL_t *hEveBED);
 extern u8 effPCP_ShockWave01_ThunderSpherePoly_Param[];
 extern effPCP_ThunderPolyParam_t effPCPMZiodin01ThunderParam[];
 extern u8 effPCP_Houden01_ThunderSpherePoly_Param[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam00_0[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam00_1[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam01_0[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam01_1[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam02_0[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam02_1[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam03_0[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam03_1[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam04_0[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam04_1[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam05_0[];
+extern effPCP_ThunderPolyParam_t effPCPEyeThunderParam05_1[];
 
 /* Advance caller-owned state, returning its next 32-bit value. NULL selects
  * the shared effect RNG state. */
@@ -1733,6 +1706,10 @@ void dds3EffectPartialMultiBlurDelete(effBlurTemplate_t *hPartialMultiBlur);
 extern u8 effPCP_Megidoraon01_ThunderSpherePoly_Param[];
 void dds3EffectSetRGBA(effHandle_t *pData, u32 abgr);
 extern effPCP_ThunderPolyParam_t effPCPZiodin01ThunderParam[];
+extern effPCP_ThunderPolyParam_t effPCPZiodin04Param[];
+extern effPCP_ThunderPolyParam_t effPCPShockWave02Param[];
+extern effPCP_ThunderPolyParam_t effPCPZiodin02Param[];
+extern effPCP_ThunderPolyParam_t effPCPZiodin03Param[];
 extern u8 effPCP_Megidora01_ThunderSpherePoly_Param[];
 extern effPCP_ThunderPolyParam_t effPCPMZiodin02ThunderParam[];
 effPCP_ThunderPoly_t *effPCP_ThunderPolyCreate(effPCP_ThunderPolyParam_t *parameters);
@@ -2733,7 +2710,16 @@ void *effPCPZiodin01Create(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin01Delete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3310, match, same function 1.00 (words 22/22, calls 1.00, shape 1.00) */
+void effPCPZiodin01Delete(effPCPZiodin01_tag *hData) {
+    effPCP_ThunderPoly_t **handle = hData->handles;
+    s32 remaining;
+
+    for (remaining = 11; remaining >= 0; remaining--) {
+        effPCP_ThunderPolyDelete(*handle++);
+    }
+    sdfChipFreeDirect(hData);
+}
 
 void *effPCPZiodin01Copy(void) {
     void *work;
@@ -2743,7 +2729,10 @@ void *effPCPZiodin01Copy(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin01Draw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3328, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
+void effPCPZiodin01Draw(effPCPZiodin01_tag *hData) {
+    ShiftThunderHandles(hData, 12);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf79);
 
@@ -2751,7 +2740,59 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf80);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf81);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin04Init);
+void effPCPZiodin04Init(effPCPZiodin01_tag *pPCPZiodin04) {
+    effPCP_ThunderPoly_t **out = pPCPZiodin04->handles;
+    s32 i = 0;
+    f32 angle = 0.0f;
+    f32 sinv = 0.0f;
+    f32 cosv = 0.0f;
+    sdfVector4_t axis;
+    f32 spread;
+    f32 radius;
+    f32 height;
+    f32 speed;
+    s16 life;
+
+    do {
+        if ((i & 1) == 0) {
+            sinv = sdfCos(angle);
+            cosv = sdfSin(angle);
+            angle += 60.0f * EFF_DEG2RAD;
+        }
+        spread = dds3GetRandFloatA(dds3EffectBase) * 0.5f + 0.5f;
+        effPCPZiodin04Param->width_border = spread * 1.25f;
+        effPCPZiodin04Param->width_edge = spread * 12.5f;
+        radius = (dds3GetRandFloatA(dds3EffectBase) * 0.25f + 0.75f) * 100.0f;
+        axis.x = cosv;
+        axis.y = 0;
+        axis.z = -sinv;
+        effPCPZiodin04Param->end[1] = 0;
+        effPCPZiodin04Param->end[0] = sinv * radius;
+        effPCPZiodin04Param->end[2] = cosv * radius;
+        SetRotateMatrixAxis(-(dds3GetRandFloatA(dds3EffectBase) * (50.0f * EFF_DEG2RAD) + 5.0f * EFF_DEG2RAD), (const struct sdfVector3_t *)&axis);
+        height = (dds3GetRandFloatA(dds3EffectBase) * 0.65f + (1.0f - 0.65f)) * 500.0f;
+        effPCPZiodin04Param->start[0] = 0;
+        effPCPZiodin04Param->start[2] = 0;
+        effPCPZiodin04Param->start[1] = -height;
+        SDF_VU0_LOADVECTOR(effPCPZiodin04Param->start);
+        SDF_VU0_APPLYMATRIX_XYZ();
+        SDF_VU0_STOREVECTOR(effPCPZiodin04Param->start);
+        effPCPZiodin04Param->start[0] += effPCPZiodin04Param->end[0];
+        effPCPZiodin04Param->start[2] += effPCPZiodin04Param->end[2];
+        if (height < 300.0f) {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 2.5f + 5.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 5 + 5;
+        } else {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 5.0f + 10.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 6 + 15;
+        }
+        effPCPZiodin04Param->split = life;
+        effPCPZiodin04Param->waveAmplitude = speed;
+        *out = effPCP_ThunderPolyCreate((effPCP_ThunderPolyParam_t *)effPCPZiodin04Param);
+        out++;
+        i++;
+    } while (i < 12);
+}
 
 void *effPCPZiodin02Create(void) {
     void *work;
@@ -2761,7 +2802,16 @@ void *effPCPZiodin02Create(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin02Delete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3405, match, same function 1.00 (words 22/22, calls 1.00, shape 1.00) */
+void effPCPZiodin02Delete(effPCPZiodin01_tag *hData) {
+    effPCP_ThunderPoly_t **handle = hData->handles;
+    s32 remaining;
+
+    for (remaining = 11; remaining >= 0; remaining--) {
+        effPCP_ThunderPolyDelete(*handle++);
+    }
+    sdfChipFreeDirect(hData);
+}
 
 void *effPCPZiodin02Copy(void) {
     void *work;
@@ -2771,7 +2821,10 @@ void *effPCPZiodin02Copy(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin02Draw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3423, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
+void effPCPZiodin02Draw(effPCPZiodin01_tag *hData) {
+    ShiftThunderHandles(hData, 12);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf82);
 
@@ -2779,7 +2832,62 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf83);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf84);
 
+/* NON_MATCHING: 169 of 176 words match.  */
+#ifdef NON_MATCHING
+void effPCPShockWave02Init(effPCPZiodin01_tag *pPCPShockWave02) {
+    effPCP_ThunderPoly_t **out = pPCPShockWave02->handles;
+    s32 i = 0;
+    f32 angle = 0.0f;
+    f32 sinv = 0.0f;
+    f32 cosv = 0.0f;
+    sdfVector4_t axis;
+    f32 spread;
+    f32 height;
+    f32 speed;
+    s16 life;
+
+    do {
+        if ((i & 1) == 0) {
+            sinv = sdfCos(angle);
+            cosv = sdfSin(angle);
+            angle += 24.0f * EFF_DEG2RAD;
+        }
+        spread = dds3GetRandFloatA(dds3EffectBase) * 0.5f + 0.5f;
+        effPCPShockWave02Param->width_border = spread * 1.25f;
+        effPCPShockWave02Param->width_edge = spread * 12.5f;
+        effPCPShockWave02Param->end[1] = 0;
+        effPCPShockWave02Param->end[0] = sinv * ((dds3GetRandFloatA(dds3EffectBase) * 0.25f + 0.75f) * 500.0f);
+        effPCPShockWave02Param->end[2] = cosv * ((dds3GetRandFloatA(dds3EffectBase) * 0.25f + 0.75f) * 250.0f);
+        axis.x = cosv;
+        axis.y = 0;
+        axis.z = -sinv;
+        SetRotateMatrixAxis(-(dds3GetRandFloatA(dds3EffectBase) * (55.0f * EFF_DEG2RAD) + 5.0f * EFF_DEG2RAD), (const struct sdfVector3_t *)&axis);
+        height = (dds3GetRandFloatA(dds3EffectBase) * 0.65f + (1.0f - 0.65f)) * 500.0f;
+        effPCPShockWave02Param->start[0] = 0;
+        effPCPShockWave02Param->start[2] = 0;
+        effPCPShockWave02Param->start[1] = -height;
+        SDF_VU0_LOADVECTOR(effPCPShockWave02Param->start);
+        SDF_VU0_APPLYMATRIX_XYZ();
+        SDF_VU0_STOREVECTOR(effPCPShockWave02Param->start);
+        effPCPShockWave02Param->start[0] += effPCPShockWave02Param->end[0];
+        effPCPShockWave02Param->start[2] += effPCPShockWave02Param->end[2];
+        if (height < 300.0f) {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 2.5f + 5.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 5 + 5;
+        } else {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 5.0f + 10.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 6 + 15;
+        }
+        effPCPShockWave02Param->split = life;
+        effPCPShockWave02Param->waveAmplitude = speed;
+        *out = effPCP_ThunderPolyCreate((effPCP_ThunderPolyParam_t *)effPCPShockWave02Param);
+        out++;
+        i++;
+    } while (i < 30);
+}
+#else
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave02Init);
+#endif
 
 void *effPCPZiodin03Create(void) {
     void *work;
@@ -2789,7 +2897,16 @@ void *effPCPZiodin03Create(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin03Delete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3498, match, same function 1.00 (words 22/22, calls 1.00, shape 1.00) */
+void effPCPZiodin03Delete(effPCPZiodin01_tag *hData) {
+    effPCP_ThunderPoly_t **handle = hData->handles;
+    s32 remaining;
+
+    for (remaining = 29; remaining >= 0; remaining--) {
+        effPCP_ThunderPolyDelete(*handle++);
+    }
+    sdfChipFreeDirect(hData);
+}
 
 void *effPCPZiodin03Copy(void) {
     void *work;
@@ -2799,7 +2916,10 @@ void *effPCPZiodin03Copy(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin03Draw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3516, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
+void effPCPZiodin03Draw(effPCPZiodin01_tag *hData) {
+    ShiftThunderHandles(hData, 30);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf85);
 
@@ -2807,7 +2927,59 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf86);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf87);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin02Init);
+void effPCPZiodin02Init(effPCPZiodin01_tag *pPCPZiodin02) {
+    effPCP_ThunderPoly_t **out = pPCPZiodin02->handles;
+    s32 i = 0;
+    f32 angle = 0.0f;
+    f32 sinv = 0.0f;
+    f32 cosv = 0.0f;
+    sdfVector4_t axis;
+    f32 spread;
+    f32 radius;
+    f32 height;
+    f32 speed;
+    s16 life;
+
+    do {
+        if ((i & 1) == 0) {
+            sinv = sdfCos(angle);
+            cosv = sdfSin(angle);
+            angle += 60.0f * EFF_DEG2RAD;
+        }
+        spread = dds3GetRandFloatA(dds3EffectBase) * 0.5f + 0.5f;
+        effPCPZiodin02Param->width_border = spread * 1.25f;
+        effPCPZiodin02Param->width_edge = spread * 12.5f;
+        radius = (dds3GetRandFloatA(dds3EffectBase) * 0.25f + 0.75f) * 100.0f;
+        axis.x = cosv;
+        axis.y = 0;
+        axis.z = -sinv;
+        effPCPZiodin02Param->end[1] = 0;
+        effPCPZiodin02Param->end[0] = sinv * radius;
+        effPCPZiodin02Param->end[2] = cosv * radius;
+        SetRotateMatrixAxis(-(dds3GetRandFloatA(dds3EffectBase) * (55.0f * EFF_DEG2RAD) + 5.0f * EFF_DEG2RAD), (const struct sdfVector3_t *)&axis);
+        height = (dds3GetRandFloatA(dds3EffectBase) * 0.65f + (1.0f - 0.65f)) * 500.0f;
+        effPCPZiodin02Param->start[0] = 0;
+        effPCPZiodin02Param->start[2] = 0;
+        effPCPZiodin02Param->start[1] = -height;
+        SDF_VU0_LOADVECTOR(effPCPZiodin02Param->start);
+        SDF_VU0_APPLYMATRIX_XYZ();
+        SDF_VU0_STOREVECTOR(effPCPZiodin02Param->start);
+        effPCPZiodin02Param->start[0] += effPCPZiodin02Param->end[0];
+        effPCPZiodin02Param->start[2] += effPCPZiodin02Param->end[2];
+        if (height < 300.0f) {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 2.5f + 5.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 5 + 5;
+        } else {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 5.0f + 10.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 6 + 15;
+        }
+        effPCPZiodin02Param->split = life;
+        effPCPZiodin02Param->waveAmplitude = speed;
+        *out = effPCP_ThunderPolyCreate((effPCP_ThunderPolyParam_t *)effPCPZiodin02Param);
+        out++;
+        i++;
+    } while (i < 12);
+}
 
 void *effPCPZiodin04Create(void) {
     void *work;
@@ -2817,7 +2989,16 @@ void *effPCPZiodin04Create(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin04Delete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3593, match, same function 1.00 (words 22/22, calls 1.00, shape 1.00) */
+void effPCPZiodin04Delete(effPCPZiodin01_tag *hData) {
+    effPCP_ThunderPoly_t **handle = hData->handles;
+    s32 remaining;
+
+    for (remaining = 11; remaining >= 0; remaining--) {
+        effPCP_ThunderPolyDelete(*handle++);
+    }
+    sdfChipFreeDirect(hData);
+}
 
 void *effPCPZiodin04Copy(void) {
     void *work;
@@ -2827,7 +3008,10 @@ void *effPCPZiodin04Copy(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin04Draw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3611, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
+void effPCPZiodin04Draw(effPCPZiodin01_tag *hData) {
+    ShiftThunderHandles(hData, 12);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf88);
 
@@ -2867,7 +3051,16 @@ void *effPCPMZiodin01Create(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin01Delete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3659, match, same function 1.00 (words 22/22, calls 1.00, shape 1.00) */
+void effPCPMZiodin01Delete(effPCPZiodin01_tag *hData) {
+    effPCP_ThunderPoly_t **handle = hData->handles;
+    s32 remaining;
+
+    for (remaining = 11; remaining >= 0; remaining--) {
+        effPCP_ThunderPolyDelete(*handle++);
+    }
+    sdfChipFreeDirect(hData);
+}
 
 void *effPCPMZiodin01Copy(void) {
     void *work;
@@ -2877,7 +3070,10 @@ void *effPCPMZiodin01Copy(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin01Draw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3677, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
+void effPCPMZiodin01Draw(effPCPZiodin01_tag *hData) {
+    ShiftThunderHandles(hData, 12);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf91);
 
@@ -3010,7 +3206,62 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf98);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf99);
 
+/* NON_MATCHING: 169 of 176 words match.  */
+#ifdef NON_MATCHING
+void effPCPZiodin03Init(effPCPZiodin01_tag *pPCPZiodin03) {
+    effPCP_ThunderPoly_t **out = pPCPZiodin03->handles;
+    s32 i = 0;
+    f32 angle = 0.0f;
+    f32 sinv = 0.0f;
+    f32 cosv = 0.0f;
+    sdfVector4_t axis;
+    f32 spread;
+    f32 height;
+    f32 speed;
+    s16 life;
+
+    do {
+        if ((i & 1) == 0) {
+            sinv = sdfCos(angle);
+            cosv = sdfSin(angle);
+            angle += 24.0f * EFF_DEG2RAD;
+        }
+        spread = dds3GetRandFloatA(dds3EffectBase) * 0.5f + 0.5f;
+        effPCPZiodin03Param->width_border = spread * 1.25f;
+        effPCPZiodin03Param->width_edge = spread * 12.5f;
+        effPCPZiodin03Param->end[1] = 0;
+        effPCPZiodin03Param->end[0] = sinv * ((dds3GetRandFloatA(dds3EffectBase) * 0.25f + 0.75f) * 500.0f);
+        effPCPZiodin03Param->end[2] = cosv * ((dds3GetRandFloatA(dds3EffectBase) * 0.25f + 0.75f) * 250.0f);
+        axis.x = cosv;
+        axis.y = 0;
+        axis.z = -sinv;
+        SetRotateMatrixAxis(-(dds3GetRandFloatA(dds3EffectBase) * (55.0f * EFF_DEG2RAD) + 5.0f * EFF_DEG2RAD), (const struct sdfVector3_t *)&axis);
+        height = (dds3GetRandFloatA(dds3EffectBase) * 0.65f + (1.0f - 0.65f)) * 500.0f;
+        effPCPZiodin03Param->start[0] = 0;
+        effPCPZiodin03Param->start[2] = 0;
+        effPCPZiodin03Param->start[1] = -height;
+        SDF_VU0_LOADVECTOR(effPCPZiodin03Param->start);
+        SDF_VU0_APPLYMATRIX_XYZ();
+        SDF_VU0_STOREVECTOR(effPCPZiodin03Param->start);
+        effPCPZiodin03Param->start[0] += effPCPZiodin03Param->end[0];
+        effPCPZiodin03Param->start[2] += effPCPZiodin03Param->end[2];
+        if (height < 300.0f) {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 2.5f + 5.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 5 + 5;
+        } else {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 5.0f + 10.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 6 + 15;
+        }
+        effPCPZiodin03Param->split = life;
+        effPCPZiodin03Param->waveAmplitude = speed;
+        *out = effPCP_ThunderPolyCreate((effPCP_ThunderPolyParam_t *)effPCPZiodin03Param);
+        out++;
+        i++;
+    } while (i < 30);
+}
+#else
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin03Init);
+#endif
 
 void *effPCPShockWave02Create(void) {
     void *work;
@@ -3020,7 +3271,16 @@ void *effPCPShockWave02Create(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave02Delete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3889, match, same function 1.00 (words 22/22, calls 1.00, shape 1.00) */
+void effPCPShockWave02Delete(effPCPZiodin01_tag *hData) {
+    effPCP_ThunderPoly_t **handle = hData->handles;
+    s32 remaining;
+
+    for (remaining = 29; remaining >= 0; remaining--) {
+        effPCP_ThunderPolyDelete(*handle++);
+    }
+    sdfChipFreeDirect(hData);
+}
 
 void *effPCPShockWave02Copy(void) {
     void *work;
@@ -3030,13 +3290,18 @@ void *effPCPShockWave02Copy(void) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave02Draw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:3907, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
+void effPCPShockWave02Draw(effPCPZiodin01_tag *hData) {
+    ShiftThunderHandles(hData, 30);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf100);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf101);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf102);
+void effLeaf102(effPCPZiodin01_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 void effPCPHouden01Init(effPCPShockWave01_tag *pPCPHouden01) {
     effPCPThunderSpherePoly_t *handle;
@@ -3101,7 +3366,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf103);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf104);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf105);
+void effLeaf105(effPCPShockWave01_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 effPCPBlinkMultiBlur_tag *effPCPBlinkMultiBlurCreate(effPCPBlinkMultiBlurParam_t *params) {
     effPCPBlinkMultiBlur_tag *ref = sdfChipAllocDirect(sizeof(*ref));
@@ -3195,7 +3462,9 @@ void effPCPMultiBlurExpDraw(effPCPMultiBlurExp_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf109);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf110);
+void effLeaf110(effPCPMultiBlurExp_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf111);
 
@@ -3280,7 +3549,9 @@ void effPCPMultiFilterExpDraw(effPCPMultiBlurExp2_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf112);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf113);
+void effLeaf113(effPCPMultiBlurExp2_tag *hData, u32 color) {
+    hData->color = color;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf114);
 
@@ -3365,7 +3636,9 @@ void effPCPMultiBlurExp2Draw(effPCPMultiBlurExp2_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf115);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf116);
+void effLeaf116(effPCPMultiBlurExp2_tag *hData, u32 color) {
+    hData->color = color;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf117);
 
@@ -3419,7 +3692,9 @@ void effPCPFilterExpDraw(effPCPFilterExp_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf118);
+void effLeaf118(effPCPFilterExp_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 effPCPBlurExp_tag *effPCPBlurExpCreate(effPCPBlurExpParam_t *pParam) {
     effPCPBlurExp_tag *work = sdfChipAllocDirect(sizeof(effPCPBlurExp_tag));
@@ -3473,9 +3748,27 @@ void effPCPBlurExpDraw(effPCPBlurExp_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf119);
+void effLeaf119(effPCPBlurExp_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPDistortionBlurExpCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:4429, match, same function 1.00 (words 35/35, calls 1.00, shape 1.00) */
+effPCPDistortionBlurExp_tag *effPCPDistortionBlurExpCreate(effPCPDistortionBlurExpParam_t *pParam) {
+    effPCPDistortionBlurExp_tag *work;
+
+    work = sdfChipAllocDirect(sizeof(effPCPDistortionBlurExp_tag));
+    work->resource.scatter = dds3EffectDistortionBlurCreate(&pParam->DistBlur);
+    work->type = pParam->type;
+    work->life = pParam->life;
+    work->fade_in = pParam->fade_in;
+    work->fade_out = pParam->fade_out;
+    work->area_s = pParam->area_s;
+    work->area_e = pParam->area_e;
+    work->abgr = 0x80808080;
+    work->frame = 0;
+    work->abgr_base = pParam->DistBlur.abgr;
+    return work;
+}
 
 effPCPDistortionBlurExp_tag *effPCPDistortionBlurExpCreatePCF(void *data) {
     return effPCPDistortionBlurExpCreate(dds3EffectPCPDataGetData(data, 0));
@@ -3539,9 +3832,27 @@ void effPCPDistortionBlurExpDraw(effPCPDistortionBlurExp_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf120);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf121);
+void effLeaf121(effPCPDistortionBlurExp_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/effect/effPCPMisc.c:4525, match, same function 1.00 (words 35/35, calls 1.00, shape 1.00) */
+effPCPDistortionBlurExp_tag *effCallChipAllocDirect(effPCPRippleBlurExpParam_t *pParam) {
+    effPCPDistortionBlurExp_tag *work;
+
+    work = sdfChipAllocDirect(sizeof(effPCPDistortionBlurExp_tag));
+    work->resource.scale = dds3EffectRippleBlurCreate(&pParam->res);
+    work->type = pParam->type;
+    work->life = pParam->life;
+    work->fade_in = pParam->fade_in;
+    work->fade_out = pParam->fade_out;
+    work->area_s = pParam->area_s;
+    work->area_e = pParam->area_e;
+    work->abgr = 0x80808080;
+    work->frame = 0;
+    work->abgr_base = pParam->res.abgr;
+    return work;
+}
 
 effPCPDistortionBlurExp_tag *effPCPRippleBlurExpCreatePCF(void *data) {
     return effCallChipAllocDirect(dds3EffectPCPDataGetData(data, 0));
@@ -3611,7 +3922,9 @@ void effPCPRippleBlurExpDraw(effPCPDistortionBlurExp_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf122);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf123);
+void effLeaf123(effPCPDistortionBlurExp_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 void effPCPMegidora01Init(effPCPShockWave01_tag *pPCPMegidora01) {
     effPCPThunderSpherePoly_t *handle;
@@ -3681,7 +3994,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf124);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf125);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf126);
+void effLeaf126(effPCPShockWave01_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 void effPCPMegidoraon01Init(effPCPShockWave01_tag *pPCPMegidoraon01) {
     effPCPThunderSpherePoly_t *handle;
@@ -3746,7 +4061,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf127);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf128);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf129);
+void effLeaf129(effPCPShockWave01_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 effPCPBreath_tag *effPCPBreathCreate(void *params, effResourceHeader_t *handleParams) {
     effPCPBreathParam_t *src = params;
@@ -3768,7 +4085,14 @@ effPCPBreath_tag *effPCPBreathCreate(void *params, effResourceHeader_t *handlePa
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCP_BED_CreatePCF);
+effPCPBreath_tag *effPCPBreathCreatePCF(void *parameterTable) {
+    void *params;
+    effResourceHeader_t *handleParams;
+
+    params = dds3EffectPCPDataGetData(parameterTable, 0);
+    handleParams = dds3EffectPCPDataGetData(parameterTable, 1);
+    return effPCPBreathCreate(params, handleParams);
+}
 
 effPCPBreath_tag *effPCPBreathCopy(effPCPBreath_tag *work) {
     effPCPBreath_tag *child;
@@ -3792,7 +4116,9 @@ void effLeaf130(void) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf131);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf132);
+void effLeaf132(effPCPBreath_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 /* vu0 routine: turn the source matrix by half a turn around Y */
 void effPCPBreathSetRotateMatrix(effPCPBreath_tag *hData, const void *pMatrix) {
@@ -3912,7 +4238,9 @@ void effPCPAgiraoFireDraw(effPCPAgiraoFire_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf133);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf134);
+void effLeaf134(effPCPAgiraoFire_tag *hData, u32 color) {
+    hData->color = color;
+}
 
 effPCPAgiFireball_tag *effPCPAgiFireballCreate(
     const effPCPAgiFireballParam_t *pParam, const effPCPAgiFireballPartList_t *pPart)
@@ -4068,7 +4396,12 @@ void effPCPAgiFireballSetColor(effPCPAgiFireball_tag *hData, u32 abgr) {
     hData->color = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballSetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:5399, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+/* vu0 routine: copy the 4x4 rotation matrix into the effect. */
+void effPCPAgiFireballSetRotateMatrix(effPCPAgiFireball_tag *hData, const void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hData->matrix);
+}
 
 effPCPAgiFireball_tag *effPCPAgiFireballSpCreatePCF(void *parameterTable) {
     effPCPAgiFireball_tag *work;
@@ -4210,7 +4543,16 @@ void effPCPAgiFireball2Draw(effPCPAgiFireball2_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireball2SetRotateMatrix);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireball2SetColor);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:5552, match, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
+void effPCPAgiFireball2SetColor(effPCPAgiFireball2_tag *hData, u32 abgr) {
+    u32 i;
+    effPCPAgiFireball_tag **blockSets;
+
+    blockSets = hData->blockSets;
+    for (i = 0; i < 3; i++) {
+        effPCPAgiFireballSetColor(blockSets[i], abgr);
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallPCPAgiFireballSetRotateMatri);
 
@@ -4267,43 +4609,157 @@ void effPCPBufuIceDraw(effPCPBufuIce_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf135);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf136);
+void effLeaf136(effPCPBufuIce_tag *hData, u32 color) {
+    hData->color = color;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf137);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf138);
+/* vu0 routine: copy the 4x4 matrix into the ice effect. */
+void effLeaf138(effPCPBufuIce_tag *hData, const void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hData->matrix);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufudnIceCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:5716, match, same function 1.00 (words 48/48, calls 1.00, shape 1.00) */
+effPCPBufuIce_tag *effPCPBufudnIceCreate(void *src) {
+    effPCPBufuIce_tag *work = sdfChipAllocDirect(0x68);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufudnIceCopy);
+    work->frame = 0;
+    work->scale = 1.0f;
+    work->color = 0x80808080;
+    work->handle0 = dds3EffectPCPDataPartCreate(src, 0);
+    work->handle1 = dds3EffectPCPDataPartCreate(src, 1);
+    SDF_VU0_STOREIDENTITY(work->matrix);
+    work->angle = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 0.87266457f;
+    return work;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:5729, match, same function 1.00 (words 46/46, calls 1.00, shape 1.00) */
+effPCPBufuIce_tag *effPCPBufudnIceCopy(effPCPBufuIce_tag *src) {
+    effPCPBufuIce_tag *work = sdfChipAllocDirect(0x68);
+
+    work->frame = 0;
+    work->scale = 1.0f;
+    work->color = 0x80808080;
+    work->handle0 = dds3EffectPartCopy(src->handle0);
+    work->handle1 = dds3EffectPartCopy(src->handle1);
+    SDF_VU0_STOREIDENTITY(work->matrix);
+    work->angle = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 0.87266457f;
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallEffectPartDelete);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufudnIceDraw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:5748, match, same function 1.00 (words 64/64, calls 1.00, shape 1.00) */
+void effPCPBufudnIceDraw(effPCPBufuIce_tag *hData) {
+    effPartHandle_t *handle[2];
+    u128 mtx[4];
+
+    handle[0] = hData->handle0;
+    handle[1] = hData->handle1;
+    dds3EffectPartSetPosition(handle[0], hData);
+    dds3EffectPartSetPosition(handle[1], hData);
+    dds3EffectPartSetScale(handle[0], hData->scale);
+    dds3EffectPartSetScale(handle[1], hData->scale);
+    dds3EffectPartSetColor(handle[0], hData->color);
+    dds3EffectPartSetColor(handle[1], hData->color);
+    SetRotateMatrixY(hData->angle);
+    SDF_VU0_LOADMATRIX_B(hData->matrix);
+    MultMatrixNoArg();
+    SDF_VU0_STOREMATRIX_NOMEM(mtx);
+    dds3EffectPartSetRotateMatrix(handle[0], mtx);
+    dds3EffectPartSetRotateMatrix(handle[1], mtx);
+    dds3EffectPartDraw(handle[0]);
+    if (hData->frame >= SDF_FRAMES(0x1F)) {
+        dds3EffectPartDraw(handle[1]);
+    }
+    hData->frame++;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf139);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf140);
+void effLeaf140(effPCPBufuIce_tag *hData, u32 color) {
+    hData->color = color;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf141);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf142);
+/* vu0 routine: copy the 4x4 matrix into the ice effect. */
+void effLeaf142(effPCPBufuIce_tag *hData, const void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hData->matrix);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuraIceCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:5641, match, same function 1.00 (words 48/48, calls 1.00, shape 1.00) */
+effPCPBufuIce_tag *effPCPBufuraIceCreate(void *src) {
+    effPCPBufuIce_tag *work = sdfChipAllocDirect(0x68);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuraIceCopy);
+    work->frame = 0;
+    work->scale = 1.0f;
+    work->color = 0x80808080;
+    work->handle0 = dds3EffectPCPDataPartCreate(src, 0);
+    work->handle1 = dds3EffectPCPDataPartCreate(src, 1);
+    SDF_VU0_STOREIDENTITY(work->matrix);
+    work->angle = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 0.87266457f;
+    return work;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:5654, match, same function 1.00 (words 46/46, calls 1.00, shape 1.00) */
+effPCPBufuIce_tag *effPCPBufuraIceCopy(effPCPBufuIce_tag *src) {
+    effPCPBufuIce_tag *work = sdfChipAllocDirect(0x68);
+
+    work->frame = 0;
+    work->scale = 1.0f;
+    work->color = 0x80808080;
+    work->handle0 = dds3EffectPartCopy(src->handle0);
+    work->handle1 = dds3EffectPartCopy(src->handle1);
+    SDF_VU0_STOREIDENTITY(work->matrix);
+    work->angle = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 0.87266457f;
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallEffectPartDelete2);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuraIceDraw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:5673, match, same function 1.00 (words 64/64, calls 1.00, shape 1.00) */
+void effPCPBufuraIceDraw(effPCPBufuIce_tag *hData) {
+    effPartHandle_t *handle[2];
+    u128 mtx[4];
+
+    handle[0] = hData->handle0;
+    handle[1] = hData->handle1;
+    dds3EffectPartSetPosition(handle[0], hData);
+    dds3EffectPartSetPosition(handle[1], hData);
+    dds3EffectPartSetScale(handle[0], hData->scale);
+    dds3EffectPartSetScale(handle[1], hData->scale);
+    dds3EffectPartSetColor(handle[0], hData->color);
+    dds3EffectPartSetColor(handle[1], hData->color);
+    SetRotateMatrixY(hData->angle);
+    SDF_VU0_LOADMATRIX_B(hData->matrix);
+    MultMatrixNoArg();
+    SDF_VU0_STOREMATRIX_NOMEM(mtx);
+    dds3EffectPartSetRotateMatrix(handle[0], mtx);
+    dds3EffectPartSetRotateMatrix(handle[1], mtx);
+    dds3EffectPartDraw(handle[0]);
+    if (hData->frame >= SDF_FRAMES(0x1F)) {
+        dds3EffectPartDraw(handle[1]);
+    }
+    hData->frame++;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf143);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf144);
+void effLeaf144(effPCPBufuIce_tag *hData, u32 color) {
+    hData->color = color;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf145);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf146);
+/* vu0 routine: copy the 4x4 matrix into the ice effect. */
+void effLeaf146(effPCPBufuIce_tag *hData, const void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hData->matrix);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf147);
 
@@ -4314,53 +4770,173 @@ void effLeaf149(void) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf150);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect2);
+effPCPEyeThunder_tag *effCallChipAllocDirect2(u32 unused) {
+    effPCPEyeThunder_tag *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf151);
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 0;
+    work->length = 375.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam00_0);
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect3);
+effPCPEyeThunder_tag *effLeaf151(void) {
+    return effCallChipAllocDirect2(0);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf152);
+effPCPEyeThunder_tag *effCallChipAllocDirect3(u32 unused) {
+    effPCPEyeThunder_tag *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect4);
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 325.0f;
+    work->length = 225.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam00_1);
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf153);
+effPCPEyeThunder_tag *effLeaf152(void) {
+    return effCallChipAllocDirect3(0);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect5);
+effPCPEyeThunder_tag *effCallChipAllocDirect4(u32 unused) {
+    effPCPEyeThunder_tag *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf154);
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 0;
+    work->length = 375.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam01_0);
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect6);
+effPCPEyeThunder_tag *effLeaf153(void) {
+    return effCallChipAllocDirect4(0);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf155);
+effPCPEyeThunder_tag *effCallChipAllocDirect5(u32 unused) {
+    effPCPEyeThunder_tag *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect7);
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 325.0f;
+    work->length = 225.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam01_1);
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf156);
+effPCPEyeThunder_tag *effLeaf154(void) {
+    return effCallChipAllocDirect5(0);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect8);
+effPCPEyeThunder_tag *effCallChipAllocDirect6(u32 unused) {
+    effPCPEyeThunder_tag *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf157);
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 0;
+    work->length = 375.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam02_0);
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect9);
+effPCPEyeThunder_tag *effLeaf155(void) {
+    return effCallChipAllocDirect6(0);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf158);
+effPCPEyeThunder_tag *effCallChipAllocDirect7(u32 unused) {
+    effPCPEyeThunder_tag *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect10);
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 325.0f;
+    work->length = 225.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam02_1);
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf159);
+effPCPEyeThunder_tag *effLeaf156(void) {
+    return effCallChipAllocDirect7(0);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect11);
+effPCPEyeThunder_tag *effCallChipAllocDirect8(u32 unused) {
+    effPCPEyeThunder_tag *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf160);
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 0;
+    work->length = 375.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam03_0);
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect12);
+effPCPEyeThunder_tag *effLeaf157(void) {
+    return effCallChipAllocDirect8(0);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf161);
+effPCPEyeThunder_tag *effCallChipAllocDirect9(u32 unused) {
+    effPCPEyeThunder_tag *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effCallChipAllocDirect13);
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 325.0f;
+    work->length = 225.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam03_1);
+    return work;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf162);
+effPCPEyeThunder_tag *effLeaf158(void) {
+    return effCallChipAllocDirect9(0);
+}
+
+effPCPEyeThunder_tag *effCallChipAllocDirect10(u32 unused) {
+    effPCPEyeThunder_tag *work;
+
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 0;
+    work->length = 375.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam04_0);
+    return work;
+}
+
+effPCPEyeThunder_tag *effLeaf159(void) {
+    return effCallChipAllocDirect10(0);
+}
+
+effPCPEyeThunder_tag *effCallChipAllocDirect11(u32 unused) {
+    effPCPEyeThunder_tag *work;
+
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 325.0f;
+    work->length = 225.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam04_1);
+    return work;
+}
+
+effPCPEyeThunder_tag *effLeaf160(void) {
+    return effCallChipAllocDirect11(0);
+}
+
+effPCPEyeThunder_tag *effCallChipAllocDirect12(u32 unused) {
+    effPCPEyeThunder_tag *work;
+
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 0;
+    work->length = 375.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam05_0);
+    return work;
+}
+
+effPCPEyeThunder_tag *effLeaf161(void) {
+    return effCallChipAllocDirect12(0);
+}
+
+effPCPEyeThunder_tag *effCallChipAllocDirect13(u32 unused) {
+    effPCPEyeThunder_tag *work;
+
+    work = sdfChipAllocDirect(sizeof(effPCPEyeThunder_tag));
+    work->start = 325.0f;
+    work->length = 225.0f;
+    work->pThunderPoly = effPCP_ThunderPolyCreate(effPCPEyeThunderParam05_1);
+    return work;
+}
+
+effPCPEyeThunder_tag *effLeaf162(void) {
+    return effCallChipAllocDirect13(0);
+}
 
 void effPCPEyeThunderDelete(effPCPEyeThunder_tag *hData) {
     effPCP_ThunderPolyDelete(hData->pThunderPoly);
@@ -4372,7 +4948,9 @@ void effLeaf163(void) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf164);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf165);
+void effLeaf165(effPCPEyeThunder_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 effPCPThunderSphereExp_tag *effPCPThunderSphereExpCreate(effPCPThunderSphereExpParam_t *pParam) {
     effPCPThunderSphereExp_tag *work = sdfChipAllocDirect(sizeof(effPCPThunderSphereExp_tag));
@@ -4459,7 +5037,9 @@ void effPCPThunderSphereExpDraw(effPCPThunderSphereExp_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf166);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf167);
+void effLeaf167(effPCPThunderSphereExp_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf168);
 
@@ -4683,9 +5263,16 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf169);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf170);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf171);
+void effLeaf171(effPCPRingPolyExp_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExp2SetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:6541, near, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+/* vu0 routine: copy the 4x4 rotation matrix into the effect. */
+void effPCPRingPolyExp2SetRotateMatrix(effPCPRingPolyExp_tag *hData, const void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hData->hPoly->rot);
+}
 
 void effPCPRingPolyExpSetDirection(effPCPRingPolyExp_tag *hData, void *pMatrix) {
     SDF_VU0_LOADMATRIX(pMatrix);
@@ -4852,9 +5439,16 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf172);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf173);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf174);
+void effLeaf174(effPCPRingPolyExp2_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExpSetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:6362, near, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+/* vu0 routine: copy the 4x4 rotation matrix into the effect. */
+void effPCPRingPolyExpSetRotateMatrix(effPCPRingPolyExp2_tag *hData, const void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hData->hPoly->rot);
+}
 
 effPCPRadiateThunder_tag *effPCPRadiateThunderCreate(const effPCPRadiateThunderParam_t *pParam, void *pData) {
     effPCPRadiateThunderParam_t *header = (effPCPRadiateThunderParam_t *)pParam;
@@ -5146,7 +5740,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf175);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf176);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf177);
+void effLeaf177(effPCPRadiateThunder_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 effPCPMakka_tag *effPCPMakkaCreat(void *src) {
     effPCPMakka_tag *work = sdfChipAllocDirect(sizeof(effPCPMakka_tag));
@@ -5216,7 +5812,9 @@ void effLeaf178(void) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf179);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf180);
+void effLeaf180(effPCPMakka_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf181);
 
@@ -5262,7 +5860,12 @@ effPCPRadiateBED_tag *effPCPRadiateBEDCreate(effPCPRadiateBEDParam_t *pParam, vo
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateBEDCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:7028, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+effPCPRadiateBED_tag *effPCPRadiateBEDCreatePCF(void *data) {
+    effPCPRadiateBEDParam_t *params = dds3EffectPCPDataGetData(data, 0);
+
+    return effPCPRadiateBEDCreate(params, dds3EffectPCPDataGetData(data, 1));
+}
 
 effPCPRadiateBED_tag *effPCPRadiateBEDCopy(effPCPRadiateBED_tag *src) {
     u32 count = src->param.count;
@@ -5408,7 +6011,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf182);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf183);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf184);
+void effLeaf184(effPCPRadiateBED_tag *hData, u32 color) {
+    hData->color = color;
+}
 
 effPCPRadiateTB_tag *effPCPRadiateTBCreate(effPCPRadiateTBParam_t *pParam, void *pBEDData0, void *pBEDData1) {
     u32 count = pParam->count;
@@ -5453,7 +6058,13 @@ effPCPRadiateTB_tag *effPCPRadiateTBCreate(effPCPRadiateTBParam_t *pParam, void 
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateTBCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:7229, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
+effPCPRadiateTB_tag *effPCPRadiateTBCreatePCF(void *data) {
+    effPCPRadiateTBParam_t *params = dds3EffectPCPDataGetData(data, 0);
+    void *ownerAParams = dds3EffectPCPDataGetData(data, 1);
+
+    return effPCPRadiateTBCreate(params, ownerAParams, dds3EffectPCPDataGetData(data, 2));
+}
 
 effPCPRadiateTB_tag *effPCPRadiateTBCopy(effPCPRadiateTB_tag *src) {
     u32 count = src->param.count;
@@ -5648,7 +6259,9 @@ void effPCPRadiateTBDraw(effPCPRadiateTB_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf185);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf186);
+void effLeaf186(effPCPRadiateTB_tag *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 effPCPSpiralBED_tag *effPCPSpiralBEDCreate(effPCPSpiralBEDParam_t *pParam, void *pBEDData) {
     u32 count = pParam->count;
@@ -5692,7 +6305,12 @@ effPCPSpiralBED_tag *effPCPSpiralBEDCreate(effPCPSpiralBEDParam_t *pParam, void 
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSpiralBEDCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:7477, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+effPCPSpiralBED_tag *effPCPSpiralBEDCreatePCF(void *data) {
+    effPCPSpiralBEDParam_t *params = dds3EffectPCPDataGetData(data, 0);
+
+    return effPCPSpiralBEDCreate(params, dds3EffectPCPDataGetData(data, 1));
+}
 
 effPCPSpiralBED_tag *effPCPSpiralBEDCopy(effPCPSpiralBED_tag *src) {
     u32 count = src->param.count;
@@ -5845,7 +6463,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf187);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf188);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf189);
+void effLeaf189(effPCPSpiralBED_tag *hData, u32 color) {
+    hData->color = color;
+}
 
 void effPCPHelperInit(effPCPHelperBED_tag *pHelperBED) {
     effEveBEDParams_t place;
@@ -5906,7 +6526,13 @@ effPCPHelperBED_tag *effPCPHelperBEDCreate(effPCPHelperBEDParam_t *pParam, void 
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperBEDCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPMisc.c:7701, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
+effPCPHelperBED_tag *effPCPHelperBEDCreatePCF(void *data) {
+    effPCPHelperBEDParam_t *head = dds3EffectPCPDataGetData(data, 0);
+    void *resourceParams = dds3EffectPCPDataGetData(data, 1);
+
+    return effPCPHelperBEDCreate(head, resourceParams, dds3EffectPCPDataGetData(data, 2));
+}
 
 effPCPHelperBED_tag *effPCPHelperBEDCopy(effPCPHelperBED_tag *src) {
     effPCPHelperBED_tag *work;

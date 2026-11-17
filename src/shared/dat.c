@@ -26,43 +26,6 @@ extern u32 cmpLoadModelTablesData;
 extern u32 datData6;
 extern u32 datCallGetStockDevilIDData;
 
-/* The 0x4C-byte enemy table supplies initial party vitals/stats, skills and
- * rewards. */
-typedef struct datEnemyRecord_t {
-    u32 flags;            /* 0x00 */
-    u8 pad04;
-    u8 level;             /* 0x05 */
-    u16 hp;               /* 0x06 */
-    u16 maxHp;            /* 0x08 */
-    u16 mp;               /* 0x0A */
-    u16 maxMp;            /* 0x0C */
-    s16 affinityTableIndex; /* 0x0E: signed affinity-bank row */
-    u8 baseStats[DAT_BASE_STAT_COUNT]; /* 0x10 */
-    u8 summonCategory;  /* 0x15: ENEMY_TABLE category used as a secondary actor's action number. */
-    u8 usePanelIcons; /* 0x16: nonzero selects panel icon groups instead of numeric level/vitals. */
-    u8 pad17;
-    u16 skills[8];        /* 0x18 */
-    s32 money;            /* 0x28 */
-    u16 battleExperienceReward; /* 0x2C: base EXP awarded on enemy defeat. */
-    u16 experience;       /* 0x2E */
-    u16 huntExperience;   /* 0x30 */
-    u8 pad32[4];
-    u16 huntPenaltyFlags; /* 0x36: hunt's adverse-outcome mask. */
-    u16 huntPenaltyChance; /* 0x38: base percentage before status modifiers. */
-    u8 pad3A[4];
-    u8 additionalDropItemIds[2]; /* 0x3E: optional item IDs selected with actionChances. */
-    u8 actionChances[2];  /* 0x40: bucket thresholds for the additional drop item IDs. */
-    u16 overrideFlag;     /* 0x42: model flag gating the override action. */
-    u8 overrideAction;    /* 0x44: action selected before the ordinary slots. */
-    u8 overrideChance;    /* 0x45: bucket threshold for the override action. */
-    s8 indexedValueOverride; /* 0x46: signed value used for enemy selector index zero. */
-    u8 tickCount;         /* 0x47: enemy action tick count; zero is read as one. */
-    u8 attackSpacing;    /* Repeat-hit interval, scaled by the command's effect data. */
-    u8 pad49[3];
-} datEnemyRecord_t;
-
-typedef char datEnemyRecordSizeCheck[sizeof(datEnemyRecord_t) == 0x4C ? 1 : -1];
-
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
  * directory extent rather than an enum-completeness claim. */
@@ -85,8 +48,8 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-
 #ifdef VERSION_RAIDOU1
+
 /* Allocate from the chip heap through 0x400 bytes; larger requests use the
  * general heap and return its locked payload address. */
 
@@ -95,8 +58,8 @@ sdfFileCmdHandle_t *sdfFileOpen(const char *path);
 
 /* Release the sdfAllocAuto base in its source heap; interior pointers are
  * invalid. */
-
 #endif
+
 /* Each configured segment supplies a destination slot and an opaque word. */
 typedef struct sdfChannelEntry_t {
     void **slot;
@@ -119,7 +82,6 @@ typedef char sdfChannel_size_must_be_0xA4[(sizeof(sdfChannel_t) == 0xA4) ? 1 : -
 
 #define SDF_UNIT_ENEMY 0x20
 
-extern datEnemyRecord_t *datEnemyRecords;
 extern char dds3GlobalWorkProcName[];
 
 #define SDF_FLOAT_COUNTER_FROZEN_FLAG 0x00000008
@@ -162,7 +124,18 @@ void dds3GlobalWorkInit(void) {
     UserInit();
 }
 
-INCLUDE_ASM(const s32, "dat", datGlobalWorkDestroy);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/kernel/dds3GlobalWork.c:179, near, same function 0.92 (words 20/20, calls 0.75, shape 1.00) */
+void datGlobalWorkDestroy(void)
+{
+    sdfMemHandle_t *handle;
+
+    dds3KillProcessName(dds3GlobalWorkProcName, 0);
+    datGlobalWorkDestroySub();
+    handle = DDS3_GBWK->memHandle;
+    sdfMemUnlock(handle);
+    sdfMemFreeDirect(handle);
+    DDS3_GBWK = NULL;
+}
 
 s32 dds3GlobalWorkMainProc(dds3ProcessID_t *id) {
     DDS3_GBWK->unk1274++;

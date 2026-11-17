@@ -139,6 +139,7 @@ extern s32 gFilterCursor;
 
 struct sdfTexHandle_t *dds3GetRenderTexture(void);
 s32 dds3AllocRenderTexture(u16 sx, u16 sy, f32 aspect);
+s32 dds3RenderTextureON(void);
 extern struct sdfTexHandle_t *dds3RenderTexture;
 
 #endif
