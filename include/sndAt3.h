@@ -28,7 +28,7 @@ struct titleAudioStreamState_t;
 /* Retail passes the stream record, not a file name pointer. */
 s32 sndCallFileCheckEnd(struct titleAudioStreamState_t *stream);
 extern struct fileRequest *sndCallFileCheckEndWork;
-s32 sndCallLoad(void *);
+void sndCallLoad(char *audioPath);
 void sndCallMemset(void);
 s32 sndCallWaitSema3(void);
 void sndProcSequenceSub(void);

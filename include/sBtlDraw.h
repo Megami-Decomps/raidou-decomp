@@ -42,6 +42,9 @@ void sbtlCallBtlGetPlayerHitTarget(void);
 void sbtlCallBtlSpriteEx(struct SBTLUNIT_WORK *wk);
 void sbtlCallMoonFadeIn(void);
 s32 sbtlCallMessageNumSearch4(s32 a_x, s32 a_y, s32 a_z, u32 a_color, SBTLSM a_mode);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCallMessageNumSearch(s32 a_x, s32 a_y, s32 a_z, u32 a_color, SBTLSM a_mode);
+#endif
 void sbtlCallMoverInit(void);
 char *sbtlLeaf112(u8 n);
 void sbtlLeaf93(s32 a_x, s32 a_y, u32 a_alphaRate, struct itfSprList_t *a_list);

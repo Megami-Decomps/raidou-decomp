@@ -7,6 +7,8 @@
 #include "sBtlCalc.h"
 #include "sdk_libc.h"
 #include "sdfMemory.h"
+#include "sbattle.h"
+#include "fld.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
@@ -30,7 +32,13 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallGetActiveScene4);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallGetActiveScene3);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBgSetScrollReset);
+s32 sbtlCallBgSetScrollReset(void)
+{
+    sbtlLeaf118();
+    sbtlCallSetPara();
+    mapBgSetScrollReset();
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlSetBossMode);
 

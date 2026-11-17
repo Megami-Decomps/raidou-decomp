@@ -54,7 +54,7 @@ void Calc(struct opcHandle_t *hParticle);
 struct opcHandle_t *Create_effObjectParticle(u32 number);
 void CalcAndDraw(struct effPartsHandle_t *handle);
 void Delete_effObjectParticle(struct effPartsHandle_t *handle);
-void Delete_effPolygonTex(struct effPartsHandle_t *handle);
+void Delete_effPolygonTex(struct ptexHandle_t *ptex);
 void Draw_effMuzzleFlash(struct effBillboardWork_t *work);
 void Draw_effObjectParticle(struct opcHandle_t *hParticle);
 void Draw_effPolygonTex(struct effPartsHandle_t *handle);
@@ -96,5 +96,8 @@ typedef char effActiveResource_size_must_be_0x40[
 
 struct sdf3DLightParallelPacket_t;
 s32 effComputeLightDirectionVU(struct mdlObj_t *model, struct sdf3DLightParallelPacket_t *light);
+
+/* Surface nodes (poltHandle_t) are passed as s32, as in the unit's other node handlers. */
+void effCallToMatrix(s32 node);
 
 #endif

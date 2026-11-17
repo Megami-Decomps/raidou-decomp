@@ -4093,7 +4093,25 @@ s32 DrawMsgMng_Process(dds3ProcessID_t *id) {
     return 0;
 }
 #else
+/* NON_MATCHING: 16 of 28 words match.  */
+#ifdef NON_MATCHING
+s32 DrawMsgMng_Process(dds3ProcessID_t *id) {
+    itfMesLink_t *node;
+
+    if (dds3NullDrawProc() != 0) {
+        return 0;
+    }
+    node = itfMesMngManager.pool.activeHead;
+    while (node != 0) {
+        DrawMesFlow(node->state);
+        node = node->next;
+    }
+    itfMesMngManager.ctr++;
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfMesManager", DrawMsgMng_Process);
+#endif
 #endif
 
 void DrawMsgMng_Shutdown(dds3ProcessID_t *id) {

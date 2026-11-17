@@ -3,6 +3,8 @@
 #include "fldProcess.h"
 #include "evtUnitManager.h"
 #include "fld.h"
+#include "field.h"
+#include "mapData.h"
 
 INCLUDE_ASM(const s32, "code_0018C430", fldGetMAP_CUT_OVERSET_Cam);
 
@@ -49,7 +51,18 @@ s32 nbCallGetIntPara5(void)
 
 INCLUDE_ASM(const s32, "code_0018C430", nbErrNPCMODEL);
 
-INCLUDE_ASM(const s32, "code_0018C430", nbCallNpcTblRefreshWait);
+s32 nbCallNpcTblRefreshWait(void) {
+    mdlCallMemFreeDirect();
+    if (mapNpcTblRefresh_Wait() == -1) {
+        mapNpcTblRefresh();
+    }
+    if (mapNpcTblRefresh_Wait() == 1) {
+        return 0;
+    }
+    mapMapObjectRefresh();
+    mapObjOnOff();
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0018C430", nbCallGetIntPara6);
 

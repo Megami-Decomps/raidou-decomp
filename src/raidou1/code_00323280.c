@@ -845,7 +845,7 @@ INCLUDE_ASM(const s32, "code_00323280", campCallSetOt);
 
 void campRefShpDraw(s32 a_x, s32 a_y, s32 a_sprNo)
 {
-    itfCallSetOt(a_x, a_y, 256, wk_shpDraw->hSpr, a_sprNo, 0x67);
+    itfDrawMiscSprite(a_x, a_y, 256, wk_shpDraw->hSpr, a_sprNo, 0x67);
 }
 
 INCLUDE_ASM(const s32, "code_00323280", scrLeaf4);

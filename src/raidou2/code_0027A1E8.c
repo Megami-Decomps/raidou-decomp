@@ -319,7 +319,28 @@ s32 sbtlCheckScriptData(s32 devilId)
     return sbtlGetAITBL(devilId)->scr_no != 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", CheckAIScript);
+s8 CheckAIScript(struct SBTLUNIT_WORK *wk)
+{
+    AITBLDATA_WORK *aitbl = sbtlGetAITBL(wk->unit.devilId);
+
+    if (aitbl->scr_no == 0) {
+        return 0;
+    }
+    if (wk_sbtl->hAIScript == NULL) {
+        return 0;
+    }
+    if (wk->model->mode == 9 || wk->model->mode == 10) {
+        return 0;
+    }
+    if (wk_sbtl->hAIScript->MesHandle >= 0) {
+        itfMesMngSetVar_itf(wk_sbtl->hAIScript->MesHandle, 0, wk->unit.devilId, 0);
+    }
+    wk->aiwk->scr_actcheckflg = 0;
+    scrStartProcessProcedure(wk_sbtl->hAIScript, aitbl->scr_no);
+    wk_sbtl->scrUnit = wk;
+    scrRunScript(wk_sbtl->hAIScript);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlLeaf64);
 

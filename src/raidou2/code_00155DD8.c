@@ -38,7 +38,7 @@ INCLUDE_ASM(const s32, "code_00155DD8", mapNpcTbl_GetModelID);
 
 INCLUDE_ASM(const s32, "code_00155DD8", mapCallObjPointGet);
 
-INCLUDE_ASM(const s32, "code_00155DD8", mapCallBitCheck3);
+INCLUDE_ASM(const s32, "code_00155DD8", mapNpcTblRefresh);
 
 INCLUDE_ASM(const s32, "code_00155DD8", mapNpcTblRefresh_Wait);
 

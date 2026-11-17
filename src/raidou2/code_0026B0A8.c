@@ -113,7 +113,9 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayViceSE);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRefSbtl6);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayMotionSENowSub);
+f32 sbtlPlayMotionSENowSub(struct SBTLUNIT_WORK *wk, s32 motionID) {
+    return sbtlGetSETime(wk, motionID);
+}
 
 u32 sbtlGetBossSE(struct SBTLUNIT_WORK *wk, s32 motionID)
 {
@@ -185,9 +187,11 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf58);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", Proc_sbtlSound);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlGetDevilSESub);
+u32 sbtlGetDevilSESub(s32 devilID, s32 motionID) {
+    return GetDevilSE(devilID, motionID);
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlGetViceSE);
+INCLUDE_ASM(const s32, "code_0026B0A8", GetDevilSE);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLoadDevilSE);
 
@@ -227,7 +231,13 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf3);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallBtlSEVolAngleCalc);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", Init_sbtlUnit);
+s32 Init_sbtlUnit(s8 flg)
+{
+    wk_sbtl->unitList = sbtlCreateUnitList(48);
+    dds3LinkProcess(wk_sbtl->process, dds3StartProcess(Init_sbtlUnitStrSbtlunitProc, 1015, 1, 1, Proc_sbtlUnit, sbtlModelDataLoad, NULL));
+    sbtlSetPlayerData(flg);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetEndBadStatus);
 
@@ -238,6 +248,8 @@ INCLUDE_ASM(const s32, "code_0026B0A8", Exit_sbtlUnit);
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallBtlGetPlayerData2);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRefSbtl32);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", Init_sbtlUnitStrSbtlunitProc);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", Draw_sbtlUnit);
 
@@ -518,7 +530,7 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlUpdateMiusinai);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckDamageTargetTemp);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBtlCheckStartBattleSub);
+INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckDamageTarget);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf6);
 

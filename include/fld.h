@@ -39,6 +39,10 @@ s32 fldAiboMotReset(void);
 struct dds3ProcessID_t;
 s32 BgProcSequence(struct dds3ProcessID_t *id);
 s32 fldFunc(struct dds3ProcessID_t *id);
+#ifdef VERSION_RAIDOU2
+/* R2's counterpart of fldFunc, the bg draw process. */
+s32 fldProcSequence2(struct dds3ProcessID_t *id);
+#endif
 void fldBgTaskInit(void);
 extern const char BgProcSequenceStrFldProcSequence[];
 extern const char fldStrBgProcSequence[];
@@ -130,7 +134,12 @@ void mapEsutoMa2ClearMsg(void);
 void mapRiberaMaClearMsg(void);
 void mapRiberaMa2ClearMsg(void);
 s32 mapCallBitCheck4(void);
+#ifdef VERSION_RAIDOU2
+/* R2's counterpart of mapSoundKankyoSeSet; R1's mapCallBitCheck5 is another function. */
+void mapCallBitCheck5(s32 map, s32 floor, s32 cut);
+#else
 s32 mapCallBitCheck5(void);
+#endif
 s32 mapGetSkilTakumiMapCheck(void);
 void mapProcRandomEncountCheckFldSub(s32 type);
 s32 mapPlNlRnd(void);

@@ -2516,7 +2516,7 @@
 0x0018D268	itfMoverGetPosition	hd-inferred	hd: Raidou HD itf.itfMoverGetPosition, score 8.1 band B
 0x0018D2C8	DvlMsgDrawProcess	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD itf.DvlMsgDrawProcess score 2.1 flag -: next gap3/1 st1:gap r1-only
 0x0018D2E8	itfMoverGetRatio	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD itf.itfMoverGetRatio score 5.6 flag I: calls1 calls-of-match-uniq st1:call r1+r2
-0x0018D3A0	itfCallSetOt	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfMoverGetRatio; calls eglSetOt
+0x0018D3A0	itfDrawMiscSprite	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itf.itfDrawMiscSprite (same 6-arg signature); R2 calls itfDrawMiscSprite at the same site in itfDrawMiscSpriteListSelect; replaces itfCallSetOt
 0x0018D450	itfDrawMiscSpriteAlpha	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itf.itfDrawMiscSpriteAlpha (R2 name, same callee in SetSelect and sbtlSpriteEx); replaces itfCallSetOt2
 0x0018D510	itfDrawMiscSpriteListSelect	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfDrawMiscSpriteListSelect score 7.6 flag I: prev gap=exact st1:gap r1+r2
 0x0018D5A0	itfDrawMiscSpriteListEx	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfDrawMiscSpriteListEx score 7.9 flag I: next gap=exact st1:gap r1+r2
@@ -7423,7 +7423,7 @@
 0x00297170	sbtlGetMotionVisualData	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
 0x002971C8	sbtlCheckMotionTiming	hd-inferred	method=hd-gap-single-raidou1; p=0.95 (n=418); tier=A; source=hd; evidence=Raidou HD sBtlVisual.sBtlCheckMotionTiming score 6.3 flag I: prev next gap=exact st1:gap r2-disagree:0x2ca560
 0x00297258	sbtlCallBtlGetMotionVisualData4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetMotionVisualData
-0x00297320	sbtlCallBtlGetMotionVisualData5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetMotionVisualData
+0x00297320	sbtlGetSETime	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlVisual.sBtlGetSETime: same body (visual data by major/minor, se_rate, beforeframe); HD GetMotionSETime wraps it like sbtlPlayMotionSENowSub; replaces sbtlCallBtlGetMotionVisualData5
 0x00297410	sbtlGetCylinderData_ID	hd-inferred	hd: Raidou HD sBtlVisual.sBtlGetCylinderData_ID, score 10.0 band A
 0x00297548	sbtlGetCylinderData	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlVisual.sBtlGetCylinderData score 7.5 flag I: calls4 callers-of-match votes3 st1:call r2-disagree:0x2ca900
 0x00297670	sbtlCalcAnim_DmgNumPos	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlCalcAnim_DmgNumPos score 7.1 flag I: calls2 callers-of-match votes2 st1:call r1+r2
@@ -22087,7 +22087,7 @@
 0x0046C2E0	MoneyDrawProcessDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by MoneyDrawProcessData
 0x0046C2E8	MoneyDrawProcessData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by MoneyDrawProcess
 0x0046C2EC	effQueuedResourceNameRecord5	inferred	method=dds-ref; p=0.59 (n=D_r1_0046C2EC); tier=C; source=dds; evidence=dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfCallMemFreeDelayedDirect2; effQueuedResourceNameRecord is another symbol
-0x0046C2F0	effQueuedResourceNameRecord6	inferred	method=dds-ref; p=0.59 (n=D_r1_0046C2F0); tier=C; source=dds; evidence=dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=itfGeneralMenuFreeSpriteHnd; effQueuedResourceNameRecord is another symbol
+0x0046C2F0	generalMenu_g_hSpr	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD itf.itfGeneralMenuFreeSpriteHnd clears generalMenu_g_hSpr; same body (dds-ref name was tier C); replaces effQueuedResourceNameRecord6
 0x0046C2F8	mapMenuProcessCheckData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMenuProcessCheck (4 of 16 refs, 12 functions)
 0x0046C300	itfCallGetProcessData10Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by itfCallGetProcessData10
 0x0046C308	saveCallGetProcessData2Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by saveCallGetProcessData2

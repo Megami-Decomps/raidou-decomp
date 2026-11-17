@@ -4,6 +4,7 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "dds3KernelCore.h"
+#include "sbtlWork.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -405,7 +406,16 @@ INCLUDE_ASM(const s32, "code_00309FE0", cmpSbtlkaiwaMain);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallExistProcess);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlProcessCheck);
+s32 sbtlProcessCheck(void) {
+    if (inputpanel_id2 == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(inputpanel_id2) == 3 || dds3GetProcessStat(inputpanel_id2) == 0) {
+        inputpanel_id2 = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallMemFreeDirect3);
 
@@ -471,7 +481,16 @@ INCLUDE_ASM(const s32, "code_00309FE0", Shutdown);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlProcessStart);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessStat);
+s32 sbtlCallGetProcessStat(void) {
+    if (sbtlCallGetProcessStatData == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(sbtlCallGetProcessStatData) == 3 || dds3GetProcessStat(sbtlCallGetProcessStatData) == 0) {
+        sbtlCallGetProcessStatData = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", btlLoadBossEventTable);
 

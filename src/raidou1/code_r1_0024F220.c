@@ -565,7 +565,7 @@ void sbtlRefSbtl6(struct SBTLUNIT_WORK *wk, u32 seid, s32 vol, s32 motionID)
 
 f32 sbtlPlayMotionSENowSub(struct SBTLUNIT_WORK *wk, s32 motionID)
 {
-    return sbtlCallBtlGetMotionVisualData5(wk, motionID);
+    return sbtlGetSETime(wk, motionID);
 }
 
 u32 sbtlGetBossSE(struct SBTLUNIT_WORK *wk, s32 motionID)

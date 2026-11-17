@@ -4,6 +4,7 @@
 #include "fldProcess.h"
 #include "EventBit.h"
 #include "fld.h"
+#include "effBlur_Filter.h"
 
 INCLUDE_ASM(const s32, "code_00163C50", fldLeaf22);
 
@@ -21,7 +22,21 @@ INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointDrawStart);
 
 INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointDrawStart2);
 
-INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointDrawEndChk);
+void mapSpotPointDrawEndChk(void) {
+    s32 i;
+    s32 idx;
+    fldGenbaTbl_t *genba;
+
+    for (i = 0; i < 32; i++) {
+        if (mapData31[i].use != 0) {
+            idx = mapData31[i].uniq & 0xFF;
+            genba = &fldGenbaTbl[idx];
+            if (evtBitCheck(genba->evtBit) && !mapSpotPointFlagCheck(idx)) {
+                mapObjVisible(mapData31[i].uniq, 0);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", mapSIZE);
 
@@ -91,7 +106,11 @@ INCLUDE_ASM(const s32, "code_00163C50", nbFreeDeadMoonTex);
 
 INCLUDE_ASM(const s32, "code_00163C50", nbCallEffectDistortionBlurCreate);
 
-INCLUDE_ASM(const s32, "code_00163C50", nbObjTaskSub);
+void nbObjTaskSub(void) {
+    if (DeadMoonTmx3 != NULL) {
+        effBlurStepScatterSlotsAndDraw(DeadMoonTmx3);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", nbFunc2);
 
@@ -212,7 +231,14 @@ void mefMistUpdateParticle(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00163C50", mefFunc);
+void mefFunc(void)
+{
+    s32 i;
+
+    for (i = 0; i < 33; i++) {
+        mapCameraInitSub(&mapEffEplStartWork[i]);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", mapCameraInitSub);
 
@@ -280,11 +306,25 @@ void mapEffEplAllEnd(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00163C50", mapProcSequenceSub2);
+void mapProcSequenceSub2(void)
+{
+    s32 i;
+
+    for (i = 0; i < 33; i++) {
+        mapCallEffectGetState(&mapEffEplStartWork[i]);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", mapCallEffectGetState);
 
-INCLUDE_ASM(const s32, "code_00163C50", mapIsFldKeyFreeSub);
+void mapIsFldKeyFreeSub(void)
+{
+    s32 i;
+
+    for (i = 0; i < 33; i++) {
+        fldCallEffectDrawDds3Effect(&mapEffEplStartWork[i]);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", fldCallEffectDrawDds3Effect);
 

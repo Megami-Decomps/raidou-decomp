@@ -566,7 +566,6 @@
 0x00141660	fldRestoreCameraModelColor	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00131278, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00141678	fldSetCameraObjectTransitionFlag	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00131290, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00141698	fldClearCameraObjectTransitionFlags	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001312B0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001416C0	fldProcSequenceSub2	func	tier=D	derived-caller	na	unit code_001416C0, neighbour fldPlayerMotReset2; called by ProcSequence
 0x001418B8	fldNakamaMotReset3	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldNakamaMotReset3, score 8.0 band B
 0x00141900	fldAiboMotReset	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldAiboMotReset, score 10.0 band A
 0x00141960	fldPlayerForceRotStart	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldPlayerForceRotStart, score 10.3 band A
@@ -595,7 +594,6 @@
 0x00145600	fldBgZoomTest	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldBgZoomTest, score 10.1 band A
 0x001458B8	fldBgZoomTest2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldBgZoomTest2, score 8.8 band B
 0x001483D0	mapLeaf11	func	tier=D	derived-unit	na	unit code_00139330, neighbour mapBgSetScroll; no named callee, caller or string
-0x00148448	mapCallJmsQuestMapLoadFld	func	tier=D	derived-callee	na	unit code_001416C0, neighbour mapBgFree2; calls fldJmsQuestMapLoad_fld
 0x001489B0	mapCallSpecificSceneOnVisible	func	tier=D	derived-callee	na	unit code_001416C0, neighbour mapCutSetTblID; calls fldSpecificSceneOnVisible
 0x001491D0	mapCallZoomClear	func	tier=D	derived-callee	na	unit code_001416C0, neighbour mapCutSetCam; calls mapZoomClear
 0x00149258	fldCallMemset4	func	tier=D	derived-callee	na	unit field/fldSky; calls memset; replaces fld_1374F0: smt3-decomp C name via SLUS_209.11 0x001374F0, unique-masked-hash-c; map-agrees
@@ -643,7 +641,6 @@
 0x00156088	mapFileLoadSub5	func	tier=D	derived-caller	na	unit code_00140960, neighbour mapWHitAdd; called by mapFileLoad
 0x00156168	mapEveHitTaskFldSub3	func	tier=D	derived-caller	na	unit code_001492A8, neighbour mapNpcTblAdd; called by EveHitTask_fld
 0x001567F8	mapCallObjPointGet	func	tier=D	derived-callee	na	unit code_001492A8, neighbour mapNpcTbl_GetModelID; calls mapObjPointGet
-0x00156B70	mapCallBitCheck3	func	tier=D	derived-callee	na	unit code_001492A8, neighbour mapNpcTblRefresh_Wait; calls evtBitCheck
 0x00157628	mapBtlReLoadMapSBtlSceneSub	func	tier=D	derived-caller	na	unit code_00140960, neighbour mapNpcTblRefresh_Wait; called by sbtlReLoadMap_sbtlScene
 0x00157D00	mapCallPositioningGuardSystem	func	tier=D	derived-callee	na	unit code_001492A8, neighbour mapMapObjectRefresh; calls PositioningGuardSystem
 0x00157E90	mapKazeLabel	func	tier=D	derived-string	na	unit code_001492A8, neighbour mapMapObjectRefresh; string 'kaze_label'
@@ -1168,7 +1165,6 @@
 0x001A2170	itfMoverSetParam	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMoverSetParam, score 8.5 band B
 0x001A2208	itfMoverUpdate	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMoverUpdate, score 8.4 band B
 0x001A2428	itfMoverGetPosition	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMoverGetPosition, score 8.1 band B
-0x001A2560	itfCallSetOt	func	tier=D	derived-callee	na	unit code_001A1FD0, neighbour itfMoverGetRatio; calls eglSetOt
 0x001A26B8	itfCallLinkAlpha	func	tier=D	derived-callee	na	unit code_001A1FD0, neighbour itfDrawMiscSpriteAlpha; calls eglLinkAlpha
 0x001A2750	itfFunc	func	tier=D	derived-unit	na	unit code_001A1FD0, neighbour itfDrawMiscSpriteListSelect; no named callee, caller or string
 0x001A2A00	itfCallEnableMode	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfDrawMiscSpriteList; calls frEnableMode
@@ -3380,7 +3376,6 @@
 0x002733A8	sbtlCreateTargetList	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCreateTargetList, score 7.3 band B
 0x00273BB8	sbtlCreateTargetList_Group	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCreateTargetList_Group, score 6.45 band C, hd-consensus: calls2 next gap27/11 votes3 st2:gap r2-only; 10/10 fold runs agree, fold scores 9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,8.4,9.5
 0x00273CB0	sbtlCreateTargetList_PForward	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCreateTargetList_PForward, score 8.5 band B
-0x00273E58	sbtlBtlCheckStartBattleSub	func	tier=D	derived-caller	na	unit code_00261DF0, neighbour sbtlCheckDamageTargetTemp; called by sbtlCheckStartBattle
 0x00273EE0	sbtlLeaf6	func	tier=D	derived-unit	na	unit code_00261DF0, neighbour sbtlCheckDamageTargetTemp; no named callee, caller or string
 0x00274060	sbtlCheckTateSkillSelectTarget	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCheckTateSkillSelectTarget, score 8.4 band B
 0x002742D8	sbtlCheckExist	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCheckExist, score 8.1 band B, hd-ab: calls2 calls-of-match-uniq votes3 st1:call r1+r2
@@ -23393,6 +23388,7 @@
 0x001A1FD0	itfMoverInit	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfMoverInit score 3.6 flag I: calls1 calls-of-match st2:call r2-only
 0x001A2000	itfMoverSetData	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfMoverSetData score 4.4 flag I: calls1 calls-of-match st2:call r2-only
 0x001A2488	DvlMsgDrawProcess	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.DvlMsgDrawProcess score 2.1 flag -: next gap3/1 st1:gap r1-only
+0x001A2560	itfCallSetOt6	func	tier=C	derived-derived-role	na	derived-callee (eglSetOt); R2 splits this setup out of itfDrawMiscSprite, the R1 name goes to itfDrawMiscSprite; replaces itfCallSetOt
 0x001A25A8	itfDrawMiscSprite	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD itf.itfDrawMiscSprite score 4.7 flag I: calls2 next calls-of-match votes2 st2:call r1-disagree:0x2c38c0
 0x001A2EB8	itfDrawMiscHelp	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfDrawMiscHelp score 4.7 flag I: arity8>4 calls3 calls-of-match votes4 st2:call r2-only
 0x001A3D88	itfIconDrawBullet	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfIconDrawBullet score 4.0 flag I: calls1 prev calls-of-match votes2 st2:call r2-only
@@ -23760,7 +23756,6 @@
 0x002C88B8	campFreeStatusModel	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x23b0f8 sim 0.675 margin 0.68 pair
 0x002C8A70	sbtlFreeUIScene	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlScene.sBtlFreeUIScene score 2.3 flag I: calls1 calls-of-match st1:call r1-only
 0x002C8CE0	EventProc	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlEvent.EventProc score 3.7 flag -: calls1 prev calls-of-match votes2 st2:call r1-disagree:0x295cd8
-0x002CA708	sbtlGetRotate_Jump	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlPlayer.sBtlGetRotate_Jump score 4.3 flag I: calls1 callers-of-match-uniq st2:call r2-only
 0x002CBDF8	sbtlSetEncountData4	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlEncount.sBtlSetEncountData4 score 6.7 flag I: calls3 callers-of-match votes4 st2:call r2-only
 0x002CBEF0	sbtlSetGeneratorData	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlEncount.sBtlSetGeneratorData score 4.8 flag I: calls2 callers-of-match votes2 st2:call r1-disagree:0x298a90
 0x002CC050	sbtlGeneratorD_On	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlEncount.sBtlGeneratorD_On score 3.2 flag I: calls1 next gap1/2 st2:gap r2-only
@@ -24355,7 +24350,6 @@
 0x004DF588	DevilMessage_g_mainPID	data	tier=C	hd	0.37 (n=D_r1_0046C2D0)	hd/medium: conf=medium, agree=3, using=4
 0x004DF590	g_mainPID2	data	tier=C	hd	0.37 (n=D_r1_0046C2D8)	hd/medium: conf=medium, agree=2, using=2; g_mainPID is another symbol
 0x004DF5A4	effQueuedResourceNameRecord5	data	tier=C	dds-ref	0.59 (n=D_r1_0046C2EC)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfCallMemFreeDelayedDirect2; effQueuedResourceNameRecord is another symbol
-0x004DF5A8	effQueuedResourceNameRecord6	data	tier=C	dds-ref	0.59 (n=D_r1_0046C2F0)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=itfGeneralMenuFreeSpriteHnd; effQueuedResourceNameRecord is another symbol
 0x004DF5CC	fldMapHaloRequest2	data	tier=C	dds-ref	0.59 (n=D_004DF5CC)	dds-ref/loose: nfun=1, other=1, sim=0.95, games=1, size=True, sec=False, fn=lmapCallGetProcessData2; fldMapHaloRequest is another symbol
 0x004DF5D0	fldMapHaloRequest3	data	tier=C	dds-ref	0.59 (n=D_004DF5D0)	dds-ref/close: nfun=1, other=0, sim=0.95, games=1, size=True, sec=False, fn=mphCommand_BUSTUP_LOAD; fldMapHaloRequest is another symbol
 0x004DF5D4	fldMapHaloRequest4	data	tier=C	dds-ref	0.59 (n=D_004DF5D4)	dds-ref/loose: nfun=1, other=1, sim=0.95, games=1, size=True, sec=False, fn=saveCallGetProcessData7; fldMapHaloRequest is another symbol
@@ -24569,14 +24563,17 @@
 0x0013F630	rstDrawEvoBgFade	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x223e20 sim 0.708 margin 0.34 pair
 0x00140678	fldPlayer_MoveGet	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.fldPlayer_MoveGet score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
 0x001406B8	PlayerCalc_Nml_fld	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.PlayerCalc_Nml score 6.4 flag -: calls4 callers-of-match votes3 st2:call r1-disagree:0x138698
+0x001416C0	fldPlayerMotReset	func	tier=B	hd-role	na	HD fld.fldPlayerMotReset (R1 name, tier B); R2 fldCommand_PAD_ENABLE calls it at the same site as R1; replaces fldProcSequenceSub2
 0x00141D80	fldPlayerForceSetPosSpd	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.fldPlayerForceSetPosSpd score 6.8 flag I: calls1 callers-of-match-uniq st1:call r1+r2
 0x00145220	map_fldPoint3To2	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.map_fldPoint3To2 score 6.7 flag -: calls1 calls-of-match st1:call r1+r2
+0x00148448	mapAutomapFldClr	func	tier=B	hd-role	na	HD fld.mapAutomapFldClr (R1 name, tier C); R2 BgProcSequence calls it at the same site as R1; replaces mapCallJmsQuestMapLoadFld
 0x001484D0	fldSpecificSceneOnVisible	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.fldSpecificSceneOnVisible score 6.3 flag I: calls2 next~ calls-of-match votes2 st2:call r2-only
 0x0014C8E8	sbtlCheckEndEscape	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlMain.sBtlCheckEndEscape score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
 0x0014E658	mapObjGetFloorBasic	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapObjGetFloorBasic score 6.0 flag -: prev next~ gap1/1 st1:gap r1+r2
 0x001531F0	mapGridHitAdd3	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGridHitAdd3 score 6.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
 0x00153860	mapWarpChk_Idx	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapWarpChk_Idx score 6.5 flag -: calls1 prev gap1/48 st1:gap r1+r2
 0x001548D0	mapWallGetUniq	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapWallGetUniq score 6.3 flag -: calls1 calls-of-match st1:call r1+r2
+0x00156B70	mapNpcTblRefresh	func	tier=B	hd-role	na	HD fld.mapNpcTblRefresh (R1 name, tier B); R2 nbCallNpcTblRefreshWait calls it at the same site as R1; replaces mapCallBitCheck3
 0x0015F3E0	fldGetNowCutID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.fldGetNowCutID score 6.5 flag I: calls1 calls-of-match st1:call r1+r2
 0x0015F528	PositioningGuardSystem	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.PositioningGuardSystem score 6.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
 0x0015F940	mapGetHit	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGetHit score 6.0 flag -: calls1 calls-of-match st1:call r1+r2
@@ -24730,12 +24727,14 @@
 0x0026AB38	sbtlRestart_Scene	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlScene.sBtlRestart_Scene score 6.7 flag I: calls4 calls-of-match votes2 st2:call r1-disagree:0x24e1d0
 0x0026B9E0	LoadMap_FromMemory	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlScene.LoadMap_FromMemory score 6.0 flag -: calls6 callers-of-match votes2 st2:call r1-disagree:0x24ee78
 0x0026CC80	sbtlPlay3DSE_BaseVol	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlSound.sBtlPlay3DSE_BaseVol score 6.3 flag I: calls1 callers-of-match st1:call r1+r2
+0x0026E118	GetDevilSE	func	tier=B	hd-role	na	HD sBtlSound.GetDevilSE(devilID, motionID): sBtlGetDevilSESub tail-calls it with both args (motionID - 4 < 28 check); HD sBtlGetViceSE takes one arg; replaces sbtlGetViceSE
 0x0026E2A0	sbtlLoadDevilSE	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlSound.sBtlLoadDevilSE score 6.3 flag I: calls3 calls-of-match votes4 st2:call r1-disagree:0x2509e0
 0x0026E3D8	GetR1CombSklSmg	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlSound.GetR1CombSklSmg score 5.8 flag -: calls1 next calls-of-match votes2 st2:call r2-only
 0x00271F08	sbtlSetMotion_ID	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlUnit.sBtlSetMotion_ID score 6.3 flag I: calls3 callee-index votes3 st2:cidx r1-disagree:0x253e50
 0x002721A0	sbtlResetAtkSklEff	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlUnit.sBtlResetAtkSklEff score 6.6 flag I: calls2 prev~ calls-of-match votes3 st2:call r2-only
 0x00273488	sbtlCreateTargetList_DeadOn	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlUnit.sBtlCreateTargetList_DeadOn score 6.8 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x00273E40	sbtlCheckDamageTargetTemp	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlUnit.sBtlCheckDamageTargetTemp score 6.1 flag I: calls2 calls-of-match votes3 st2:call r2-only
+0x00273E58	sbtlCheckDamageTarget	func	tier=B	hd-role	na	HD sBtlUnit.sBtlCheckDamageTarget (R1 name, tier A, r2-disagree 0x273e58); R2 sbtlCreateEnemyList calls it at the same site as R1; replaces sbtlBtlCheckStartBattleSub
 0x00274AC8	sbtlDeleteHitHelper	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlUnit.sBtlDeleteHitHelper score 6.0 flag I: calls1 calls-of-match-uniq st1:call r1+r2
 0x00274DD8	sbtlCheckSummonUnit_Dead_or_ALive	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlUnit.sBtlCheckSummonUnit_Dead_or_ALive score 6.8 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x00274E38	sbtlCheckSummonUnit_Exist	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlUnit.sBtlCheckSummonUnit_Exist score 6.8 flag I: calls2 calls-of-match votes2 st2:call r2-only
@@ -24834,6 +24833,7 @@
 0x002CA3F0	sbtlGetMotionVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
 0x002CA468	sbtlGetVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetVisualData(major, id): per-major VISUALDATA_WORK table; replaces sbtlGetMotionVisualData
 0x002CA600	sbtlGetActionTime	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlVisual.sBtlGetActionTime score 6.3 flag I: calls3 calls-of-match votes2 st2:call r1-disagree:0x297258
+0x002CA708	sbtlGetSETime	func	tier=B	hd-role	na	HD sBtlVisual.sBtlGetSETime (f32 from wk and motionID); HD sBtlGetRotate_Jump takes a vector; same callee as R1 sbtlPlayMotionSENowSub; replaces sbtlGetRotate_Jump
 0x002CB048	sbtlSetEncountPacData	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEncount.sBtlSetEncountPacData score 5.1 flag I: calls3 callers-of-match votes4 st2:call r1-disagree:0x297c30
 0x002CB698	SetEncountData_Sub_sbtlEncount	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEncount.SetEncountData_Sub score 6.4 flag -: calls4 callers-of-match votes4 st2:call r1-disagree:0x297ef0
 0x002CCF70	campUpdateEffectStep	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x232158 sim 0.750 margin 0.32 single

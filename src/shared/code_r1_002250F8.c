@@ -452,7 +452,15 @@ emdlHandle_t *Create_effModel(fileJobPayload_t *job) {
     return handle;
 }
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", Delete_effModel);
+void Delete_effModel(emdlHandle_t *handle) {
+    if (handle->pLightPacket != NULL) {
+        sdfChipFreeDirect(handle->pLightPacket);
+    }
+    if (handle->handle != NULL) {
+        effDestroyModelContext(handle->handle);
+    }
+    sdfChipFreeDirect(handle);
+}
 
 INCLUDE_ASM(const s32, "code_r1_002250F8", Copy_effModel);
 

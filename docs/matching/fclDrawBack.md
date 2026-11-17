@@ -18,8 +18,8 @@ Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-
 
 Fragile: retyping fldAreaWork_t 0x120..0x128 (hitZ/camAngle/camAngle2 to the s32 nowTalkModelID/nowTakaraTblIdx/nowHealTblIdx, or the same as f32/s32 unions) moved it from 7 to 12 differing words with the same stores.
 
-## fclCallGetProcessData (fclDrawBack, raidou1 0x38)
+## fclCallGetProcessData (fclDrawBack, raidou1 0x38, raidou2 0x38)
 
 Matches.
 
-Fakematch: FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue. Tried: void (tail j), the s32 return of dds3ProcessFunc_t with no return statement (still j, 4 of 13 words differ); the call is the last statement of straight-line code, so statement order has nothing to move. Only a dead store after the call remains, which is banned.
+Fakematch: FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue. Tried: void (tail j), the s32 return of dds3ProcessFunc_t with no return statement (still j, 4 of 13 words differ); the call is the last statement of straight-line code, so statement order has nothing to move. Only a dead store after the call remains, which is banned. Raidou 2 has the same body.

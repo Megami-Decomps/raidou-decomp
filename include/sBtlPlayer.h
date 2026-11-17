@@ -78,7 +78,12 @@ extern const SBTLPLAYER_VIBE sbtlSetVibeTable[11];
 void sbtlSetVibe(SBTLPLAYER_VTYPE mode);
 void sbtlSetDevilID_EnemyRot(s32 _DevilID, f32 _Dir);
 s32 sbtlCallBtlCheckDamageTarget3(struct SBTLUNIT_WORK *wk);
+#ifdef VERSION_RAIDOU2
+/* R2's name for its sbtlGetUseTable_Target_sbtlActAI. */
+s32 sbtlCallBtlSearchUnitID6(struct SBTLUNIT_WORK *wk, s32 type, s32 index);
+#else
 f32 sbtlCallBtlSearchUnitID6(f32 rate);
+#endif
 struct SBTLUNIT_WORK *sbtlCallMemset6(s32 index, s32 flg);
 s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk);
 s32 sbtlRefSbtl12(void);

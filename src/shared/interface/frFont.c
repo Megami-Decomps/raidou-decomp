@@ -1417,7 +1417,15 @@ void frSetFontColor(frFontHandle_t *pFRQ, u32 Color) {
 }
 
 #ifdef VERSION_RAIDOU2
-INCLUDE_ASM(const s32, "interface/frFont", frDrawMesFlowSub);
+void frDrawMesFlowSub(frFontHandle_t *pfont, u32 alpha) {
+    frTextHandle_t *child;
+
+    for (; pfont != NULL; pfont = pfont->previous) {
+        for (child = pfont->firstChild; child != NULL; child = child->next) {
+            child->parentDimensionsOrRenderWord.renderWord = (child->parentDimensionsOrRenderWord.renderWord & ~0xFF) | alpha;
+        }
+    }
+}
 
 #endif
 /* Enable mask bits and return the previous shared flag byte. */

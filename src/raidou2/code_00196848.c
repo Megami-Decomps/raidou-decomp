@@ -28,7 +28,9 @@ void cmbFunc(s32 idx, s32 count, dds3NameImage_t *image) {
     *ref += count;
 }
 
-INCLUDE_ASM(const s32, "code_00196848", cmbRefDDS3GBWK2);
+void cmbRefDDS3GBWK2(s8 idx) {
+    cmbFunc(idx, DDS3_GBWK->nameLength[idx], cmbRefDDS3GBWKWork[idx]);
+}
 
 void cmbCallRetFontMem(s32 idx) {
     GsFont_t **cell = cmbData[idx];
@@ -44,7 +46,9 @@ void cmbCallRetFontMem(s32 idx) {
 
 INCLUDE_ASM(const s32, "code_00196848", cmbCallSetUserImage);
 
-INCLUDE_ASM(const s32, "code_00196848", cmbRefDDS3GBWK3);
+void cmbRefDDS3GBWK3(s32 idx, frFontCtx_t *ctx) {
+    cmbCallSetUserImage(idx, DDS3_GBWK->nameLength[idx], cmbRefDDS3GBWKWork2[idx], ctx);
+}
 
 INCLUDE_ASM(const s32, "code_00196848", cmbCallMemset);
 
@@ -67,7 +71,32 @@ void nbCallDecodeFontImage(dds3NameImage_t *image, s32 style, u16 code) {
     sdfChipFreeDirect(glyph);
 }
 
-INCLUDE_ASM(const s32, "code_00196848", nbRefDDS3GBWK12);
+void nbRefDDS3GBWK12(s32 idx, dds3NameChar_t *name, u32 length, s32 style) {
+    dds3NameChar_t *code;
+    dds3NameImage_t *image;
+
+    u32 i;
+
+    image = NULL;
+    code = NULL;
+
+    if (idx != 0) {
+        if (idx == 1) {
+            image = DDS3_GBWK->nameImage[1];
+            code = DDS3_GBWK->nameCode[1];
+        }
+    } else {
+        image = DDS3_GBWK->nameImage[0];
+        code = DDS3_GBWK->nameCode[0];
+    }
+    for (i = 0; i < length; i++) {
+        *code++ = *name;
+        nbCallDecodeFontImage(image, style, name->code);
+        image++;
+        name++;
+    }
+    DDS3_GBWK->nameLength[idx] = length;
+}
 
 INCLUDE_ASM(const s32, "code_00196848", nbLeaf56);
 

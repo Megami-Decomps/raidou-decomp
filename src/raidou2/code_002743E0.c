@@ -6,6 +6,8 @@
 #include "mdlManager.h"
 #include "dds3UnitObjectBasic.h"
 #include "sdk_libc.h"
+#include "sBtlUnit.h"
+#include "sbtlWork.h"
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlRefSbtl8);
 
@@ -45,7 +47,23 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlCallBitOn);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlHuumaParamUp);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlSetSummon);
+struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index)
+{
+    struct SBTLUNIT_WORK *wk;
+    s32 id;
+
+    wk = sbtlCallMemAllocDirect(major, minor, 2);
+    id = sbtlEntryUnitList(wk_sbtl->unitList, wk);
+    wk->GroupID = index;
+    wk->field1A0 = id;
+    wk->model->mode = 9;
+    wk->model->stat = 1;
+    wk->status = 0;
+    sbtlResetAIPattern(wk, 0);
+    wk->color = 0x808080;
+    wk_sbtl->field424++;
+    return wk;
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlResetSummon);
 
@@ -65,9 +83,56 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlCallBtlSearchUnitID20);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCallBtlCheckDamageTarget2);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlCreateEnemyList);
+/* NON_MATCHING: 45 of 46 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCreateEnemyList(void)
+{
+    s32 i;
+    struct SBTLUNIT_WORK *wk;
 
+    sbtlClearUnitList(wk_sbtl->list2D4);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL && (wk->field414 & 2) && sbtlCheckDamageTarget(wk) != 0) {
+            sbtlEntryUnitList(wk_sbtl->list2D4, wk);
+        }
+    }
+    return 1;
+}
+#else
+INCLUDE_ASM(const s32, "code_002743E0", sbtlCreateEnemyList);
+#endif
+
+/* NON_MATCHING: 70 of 72 words match.  */
+#ifdef NON_MATCHING
+struct SBTLUNIT_LISTWORK *sbtlCreateSideList(u8 side, s32 flg)
+{
+    struct SBTLUNIT_LISTWORK *lwk;
+    struct SBTLUNIT_WORK *wk;
+    s32 mask;
+    s32 i;
+
+    mask = 0;
+    lwk = sbtlCreateUnitList(48);
+    switch (flg) {
+    case 0:
+        mask = side & 7;
+        break;
+    case 1:
+        mask = (side & 2) ? 1 : 2;
+        break;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL && (mask & wk->field414 & 0x3F) && CheckLiveTarget(wk) != 0 && !(wk->vstatus & 0x10000)) {
+            sbtlEntryUnitList(lwk, wk);
+        }
+    }
+    return lwk;
+}
+#else
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCreateSideList);
+#endif
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCreateSideList_sbtlUnit);
 

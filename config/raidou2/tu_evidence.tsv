@@ -314,7 +314,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0032EC20	0032EC20	code_0032EC20	asm	none	
 0032EC40	0032F2E0	code_r1_002CE680	c	dds:10 of 10	
 0032F3C0	00338280	kernel/ModeSelect	c	smt3:map:1+smt3:names:1 literal-cores:1 of 103	kernel/ModeSelect
-003382B8	003543C8	code_003382B8	asm	none	
+003382B8	003543C8	code_003382B8	c	none	
 00354490	00354490	result/rstcalc	c	smt3:map:1 of 1	result/rstcalc
 003544B0	00359350	lmap	asm	none	
 003593E0	003593E0	code_r1_002F5430	c	dds:1 of 1	

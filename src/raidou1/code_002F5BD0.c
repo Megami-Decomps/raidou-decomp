@@ -20,7 +20,6 @@
 #include "code_r1_002C7ED0.h"
 #include "sdfSound.h"
 
-extern jmsSeqUnit_t rstData2;
 extern jmsSeqUnit_t TitleAtlusLogoCalcProcessData;
 extern jmsSeqUnit_t evtBStartSelectionChainAfterFadeData;
 extern jmsSeqUnit_t rstData;

@@ -135,9 +135,45 @@ s32 mapHamidasiMoveBoxHitSub(f32 *outx, f32 *outz, f32 newx, f32 newz, f32 r, f3
 
 INCLUDE_ASM(const s32, "code_001492A8", mapHamidasiCheckSub);
 
-INCLUDE_ASM(const s32, "code_001492A8", mapHamidasiCHitSub);
+s32 mapHamidasiCHitSub(f32 cx, f32 cz, f32 *updx, f32 *updz) {
+    f32 hitx;
+    f32 hitz;
+    s32 hit;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_001492A8", mapHamidasiNpcSub);
+    hit = 0;
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].use != 0 && (mapObjTaskData2[i].floor == -1 || mapObjTaskData2[i].floor == fldGlobalBase.nameU) && mapObjTaskData2[i].hitsize > 10.0f) {
+            hit |= mapGetCircleCircleH(cx, cz, 45.0f, mapObjTaskData2[i].x, mapObjTaskData2[i].z, mapObjTaskData2[i].hitsize, &hitx, &hitz);
+            cx = hitx;
+            cz = hitz;
+        }
+    }
+    *updx = cx;
+    *updz = cz;
+    return hit;
+}
+
+s32 mapHamidasiNpcSub(f32 cx, f32 cz, f32 *updx, f32 *updz) {
+    f32 hitx;
+    f32 hitz;
+    s32 hit;
+    s32 i;
+    MAP_CHIT_t *p;
+
+    p = mapData28;
+    hit = 0;
+    for (i = 0; i < 256; i++, p++) {
+        if (p->use != 0) {
+            hit |= mapGetCircleCircleH(cx, cz, 45.0f, p->x, p->z, p->r, &hitx, &hitz);
+            cx = hitx;
+            cz = hitz;
+        }
+    }
+    *updx = cx;
+    *updz = cz;
+    return hit;
+}
 
 INCLUDE_ASM(const s32, "code_001492A8", mapHamidasiWHitSub);
 

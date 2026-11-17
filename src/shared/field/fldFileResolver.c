@@ -367,7 +367,6 @@ void mapAiboWakeUp(s32 mode) {
     }
 }
 
-#ifdef VERSION_RAIDOU1
 void mapAiboInit(void) {
     s32 i;
 
@@ -377,17 +376,22 @@ void mapAiboInit(void) {
         map_aibo_buff[i][2] = 0.0f;
     }
     map_aibo_buff_read_idx = 0;
+#ifdef VERSION_RAIDOU1
     map_aibo_buff_write_idx = 16;
+#else
+    map_aibo_buff_write_idx = 6;
+#endif
     map_aibo_pos[0] = 0.0f;
     map_aibo_pos[1] = 0.0f;
     map_aibo_pos[2] = 0.0f;
+#ifdef VERSION_RAIDOU1
     map_aibo_spd_max = 10.0f;
+#else
+    map_aibo_spd_max = 15.0f;
+#endif
     map_aibo_rot = 0.0f;
     gMapAiboMotionBugCnt = 0;
 }
-#else
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboInit);
-#endif
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldProcMskSubBSub);
 
@@ -395,7 +399,6 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAtumaru);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldNakamaBranchTaskSub);
 
-#ifdef VERSION_RAIDOU1
 void mapAiboFoceSet(f32 x, f32 y, f32 z) {
     s32 i;
 
@@ -406,19 +409,24 @@ void mapAiboFoceSet(f32 x, f32 y, f32 z) {
             map_aibo_buff[i][2] = z;
         }
         map_aibo_buff_read_idx = 0;
+#ifdef VERSION_RAIDOU1
         map_aibo_buff_write_idx = 16;
+#else
+        map_aibo_buff_write_idx = 6;
+#endif
         map_aibo_pos[0] = x;
         map_aibo_pos[1] = y;
         map_aibo_pos[2] = z;
+#ifdef VERSION_RAIDOU1
         map_aibo_spd_max = 10.0f;
+#else
+        map_aibo_spd_max = 15.0f;
+#endif
         dds3GetRotPoseSet(aiboBasic);
         map_aibo_rot = (EulerAngleAxisY() * 180.0f) / 3.14f;
         gMapAiboMotionBugCnt = 0;
     }
 }
-#else
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet);
-#endif
 
 /* body: matched in raidou @ 1424963: src/shared/field/fldFileResolver.c:670, near, same function 0.93 (words 47/47, calls 0.80, shape 1.00) */
 void mapAiboAtumaru2(f32 x, f32 y, f32 z) {

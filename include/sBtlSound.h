@@ -36,7 +36,7 @@ s32 sbtlBtlPlay3DSEBaseVolSub(const sdfVector4_t *pos, f32 maxlen, f32 minlen, s
 void sbtlSEVolAngleCalc(u32 no, s32 vol);
 u32 sbtlPlayMotionSENowSub2(s32 devilID, s32 motionID);
 f32 sbtlPlayMotionSENowSub(struct SBTLUNIT_WORK *wk, s32 motionID);
-f32 sbtlCallBtlGetMotionVisualData5(struct SBTLUNIT_WORK *wk, s32 motionID);
+f32 sbtlGetSETime(struct SBTLUNIT_WORK *wk, s32 motionID);
 u32 sbtlPlayMotionSENowSub3(s32 devilID, s32 motionID);
 void PlayMotionSENow(struct SBTLUNIT_WORK *wk, s32 motionID, s32 startcnt);
 void sbtlCallEffectShutdown(struct SBTLUNIT_WORK *wk);
@@ -48,7 +48,12 @@ void sbtlPlaySkillSE(const sdfVector4_t *pos, SKLID skillid, s32 type);
 void sbtlLeaf58(u32 seid);
 void sbtlRefSbtl6(struct SBTLUNIT_WORK *wk, u32 seid, s32 vol, s32 motionID);
 u32 sbtlCallGetRandIntA4(struct SBTLUNIT_WORK *wk);
+#ifdef VERSION_RAIDOU2
+u32 sbtlGetDevilSESub(s32 devilID, s32 motionID);
+u32 GetDevilSE(s32 devilID, s32 motionID);
+#else
 u32 sbtlGetDevilSESub(s32 devilID);
+#endif
 s32 sbtlCallBtlSearchPacData3(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetDevilSESub(struct SBTLUNIT_WORK *wk);
 void DevilFootSEProc(struct SBTLUNIT_WORK *wk);

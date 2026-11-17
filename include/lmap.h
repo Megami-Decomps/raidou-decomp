@@ -15,8 +15,13 @@ struct tagLMP_MODEL_WK;
 
 /* Local map work; only the state flags byte is placed so far. */
 typedef struct lmapWork_t {
+#ifdef VERSION_RAIDOU2
+    u8 pad0000[0x49C0];
+    u8 flags; /* 0x49C0 */
+#else
     u8 pad0000[0x3150];
     u8 flags; /* 0x3150 */
+#endif
 } lmapWork_t;
 
 /* One 0x30-byte entry of the DH window table. */

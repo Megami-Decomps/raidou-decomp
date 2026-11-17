@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sdfMemory.h"
 #include "cmpFile.h"
+#include "dat.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -422,7 +423,11 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpProcessShpMainSub);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallMemFreeDelayedDirect);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpLoadModelTables);
+void cmpLoadModelTables(void)
+{
+    sdfDevLoadFileEx(cmpStrGohmadenGohDevilParamDat, &datCallCheckStrongSwordAttackData, &cmpLoadModelTablesData);
+    sdfDevLoadFileEx(cmpStrGohmadenGohSameDevilsDat, &datData6, &datCallGetStockDevilIDData);
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpGetFlagScreenShot);
 

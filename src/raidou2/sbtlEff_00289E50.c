@@ -36,9 +36,31 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData_Decode);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlInitLoadPlayerOnMemData);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEndCheck_PlayerOnMemData);
+s32 sbtlLoadEndCheck_PlayerOnMemData(void) {
+    if (sbtlData83->setflg == 0) {
+        return pacCheckEnd(sbtlData83->pacHandle) != 0;
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadPlayerOnMemData);
+s32 sbtlLoadPlayerOnMemData(void) {
+    sdfPacDecodeResrc_t *resrc;
+
+    for (resrc = sbtlData83->pacHandle->pac.resrcHead; resrc != NULL; resrc = resrc->next) {
+        if (sbtlData83->dataCnt == 15) {
+            while (!sbtlLoadAttackHitData_pData(0, resrc->data)) {
+            }
+        } else {
+            while (!sbtlBtlLoadPlayerOnMemDataSub(sbtlData83->dataCnt, resrc->data)) {
+            }
+        }
+        sdfMemFreeDirect(resrc->resrc);
+        sbtlData83->dataCnt++;
+    }
+    pacFileHandleFree_(sbtlData83->pacHandle);
+    sbtlData83->setflg = 1;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlLoadPlayerOnMemDataSub);
 
@@ -59,7 +81,49 @@ SBTLEFF_LISTWORK *sbtlCreateEffList(void)
     return lwk;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemAllocDirect3);
+SBTLEFF_WORK *sbtlCallMemAllocDirect3(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, s32 id, s32 no)
+{
+    sdfMemHandle_t *handle;
+    SBTLEFF_WORK *ewk;
+    SBTLEFF_WORK *last;
+    EFFPDATA_WORK *data;
+
+    handle = sdfMemAllocDirect(sizeof(SBTLEFF_WORK));
+    ewk = sdfMemLock(handle);
+    memset(ewk, 0, sizeof(SBTLEFF_WORK));
+    data = sbtlBtlSetEffectDataSub(id, no);
+    ewk->handle = handle;
+    ewk->effectid = data->eplno;
+    ewk->scale = 1.0f;
+    ewk->st = SBTLEFF_ST_INIT;
+    ewk->starttime = 0;
+    ewk->life = 0;
+    ewk->dwk.hData = NULL;
+    ewk->dwk.hFile = NULL;
+    ewk->dwk.pData = NULL;
+    ewk->dwk.hPartsList = NULL;
+    if (wk != NULL && (wk->flg & SBTLEFF_FLG_NONSTOP)) {
+        ewk->flg |= SBTLEFF_FLG_NONSTOP;
+    }
+    ewk->prev = NULL;
+    ewk->next = NULL;
+    last = lwk->wk;
+    if (last == NULL) {
+        lwk->wk = ewk;
+        lwk->num = 1;
+    } else {
+        while (last->next != NULL) {
+            last = last->next;
+        }
+        last->next = ewk;
+        ewk->prev = last;
+        lwk->num++;
+    }
+    lwk->serial++;
+    ewk->eListID = lwk->serial;
+    ewk->serialID2 = lwk->serialID2;
+    return ewk;
+}
 
 INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlBtlLoadPlayerOnMemDataSubTable2);
 
@@ -206,7 +270,21 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf30);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlGetCutFlg);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectWork_ID);
+SBTLEFF_WORK *sbtlGetEffectWork_ID(SBTLEFF_LISTWORK *lwk, s32 eListID)
+{
+    SBTLEFF_WORK *wk = lwk->wk;
+
+    if (lwk->num == 0 || wk == NULL) {
+        return NULL;
+    }
+    do {
+        if (wk->eListID == eListID) {
+            return wk;
+        }
+        wk = wk->next;
+    } while (wk != NULL);
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectStat_ID);
 
@@ -262,7 +340,11 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_ID);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_WorkID);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlInitEffectWork);
+s32 sbtlInitEffectWork(void)
+{
+    memset(sbtlData83->effpac, 0, sizeof(SBTLEFF_PACLIST));
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckLoadEnd_EffectWork);
 
@@ -281,7 +363,35 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchDelWork_Side);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateDelWork);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDelProc);
+s32 sbtlDelProc(SBTLEFF_DELLISTWORK *lwk)
+{
+    SBTLEFF_DELWORK *dwk;
+
+    if (lwk == NULL) {
+        return 0;
+    }
+    dwk = lwk->dwk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    while (dwk != NULL) {
+        switch (dwk->gstat) {
+        case SBTLEFF_DELST_PROC:
+            if (!sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_KOUKA)
+                && !sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_HUKA)
+                && !sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_HUKA2)) {
+                sbtlCallBtlSearchEffectData(dwk->sklid, 1);
+                dwk->gstat = SBTLEFF_DELST_EXIT;
+            }
+            break;
+        case SBTLEFF_DELST_EXIT:
+            dwk->gstat = SBTLEFF_DELST_END;
+            break;
+        }
+        dwk = dwk->next;
+    }
+    return 1;
+}
 
 s32 sbtlReleaseDelList(SBTLEFF_DELLISTWORK *lwk, u8 flg)
 {
@@ -526,7 +636,22 @@ void sbtlRefSbtl45(void) {
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl46);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemAllocDirect5);
+SBTL_PANEL *sbtlCallMemAllocDirect5(void) {
+    sdfMemHandle_t *handle = sdfMemAllocDirect(sizeof(SBTL_PANEL));
+    SBTL_PANEL *panel = sdfMemLock(handle);
+
+    memset(panel, 0, sizeof(SBTL_PANEL));
+    panel->handle = handle;
+    panel->resources = NULL;
+    panel->hPanelSpr2 = NULL;
+    panel->hPanelSpr3 = NULL;
+    panel->hPanelSpr4 = NULL;
+    panel->hPanelSpr5 = NULL;
+    panel->list = InitDebugProcessData(0);
+    panel->alpha = 0;
+    panel->mode = 0;
+    return panel;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemFreeDirect5);
 

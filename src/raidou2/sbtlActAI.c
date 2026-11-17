@@ -10,6 +10,7 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "ps2asm.h"
+#include "sBtlPlayer.h"
 
 INCLUDE_ASM(const s32, "sbtlActAI", datLeaf81);
 
@@ -488,7 +489,32 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetAIData);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSearchUnitID6);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckEnemyTarget);
+s32 sbtlCheckEnemyTarget(struct SBTLUNIT_WORK *wk, s32 id) {
+    struct SBTLUNIT_WORK *target = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
+    BST bst;
+    s32 ret = -1;
+
+    if (target != NULL && (target->field414 & 1) && (target->field414 & 0x80) && (target->flg2 & 0x100)) {
+        return -1;
+    }
+    bst = sbtlGetBadStatus(&wk->unit);
+    if (bst == BST_BOUDO || bst == BST_MAHUU) {
+        if (sbtlGetSkilltbl(wk->skillid)->area & 0x4000) {
+            return sbtlCallBtlSearchUnitID6(wk, 8, 0);
+        }
+        return sbtlCallBtlSearchUnitID6(wk, 4, 0);
+    }
+    if (wk->flg & 0x100000) {
+        if (target == NULL) {
+            return wk_sbtl->targetUnitID;
+        }
+        return id;
+    }
+    if (target != NULL) {
+        ret = id;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetSmnNo);
 

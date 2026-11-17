@@ -169,6 +169,13 @@ s32 sbtlCallBtlCheckMapHitData(f32 posx, f32 posz);
 s32 sbtlCallBtlCreateEnemyList(dds3ProcessID_t *id);
 s32 sbtlModelDataLoad(dds3ProcessID_t *id);
 s32 sbtlCallBtlCreateUnit(s8 flg);
+#ifdef VERSION_RAIDOU2
+extern const char Init_sbtlUnitStrSbtlunitProc[];
+s32 Proc_sbtlUnit(dds3ProcessID_t *id);
+s32 sbtlSetPlayerData(s8 flg);
+/* R2's name for its sbtlCreateUnit. */
+struct SBTLUNIT_WORK *sbtlCallMemAllocDirect(s32 major, s32 minor, s16 mode);
+#endif
 s32 EventBattleStopChack(void);
 s32 sbtlRefSbtl8(struct SBTLUNIT_WORK *wk);
 s32 sbtlFadeProc(struct SBTLUNIT_WORK *wk);
@@ -321,6 +328,7 @@ struct SBTLUNIT_WORK {
     s16 field498;
     u8 pad5C6[0x6E];
     SBTL_PACDATA_HITLIST hitwk;
+    u8 pad688[0x16C]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */

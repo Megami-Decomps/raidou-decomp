@@ -61,9 +61,13 @@ typedef struct titleData_t {
     s32 unkC8;
     s32 AdvSkipFlag;
 #ifdef VERSION_RAIDOU2
-    u8 unkD0[0x18];
+    struct sdfTexHandle_t *hTex; /* freed by rstCallTexFreeDelayed */
+    u8 unkD4[0x14];
 #endif
 } titleData_t;
+
+/* Sequence TitleGoMain jumps to. */
+extern jmsSeqUnit_t rstData2;
 
 #ifdef VERSION_RAIDOU2
 typedef char titleData_size_must_be_0xE8[(sizeof(titleData_t) == 0xE8) ? 1 : -1];

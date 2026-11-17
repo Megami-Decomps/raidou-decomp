@@ -335,7 +335,7 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlGetMotionVisualDataSBtlVi2);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetActionTime);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetRotate_Jump);
+INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetSETime);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetCylinderData_ID);
 

@@ -7,6 +7,9 @@
 #include "lmap.h"
 #include "dds3WorldBasic.h"
 #include "dds3SceneBasic.h"
+#include "dds3ObjectBase.h"
+#include "code_r1_00128378.h"
+#include "evtUnitManager.h"
 
 INCLUDE_ASM(const s32, "code_00188268", mapDrinkClearMsg);
 
@@ -145,7 +148,21 @@ s32 fldCallReleaseUnitPad(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00188268", fldCommand_PAD_ENABLE);
+s32 fldCommand_PAD_ENABLE(void) {
+    dds3Basic_t *object;
+
+    object = dds3GetActiveUnitSceneBasic(dds3GetActiveScene());
+    if (object == NULL) {
+        return 1;
+    }
+    dds3ObjectBaseSetPrimaryControl(object, NULL);
+    fldPlayerMotReset();
+    fldRegistUnitPad();
+    Start_lmap(1);
+    mapEffEplAllEnd();
+    evtSetUnitStat(evtGetUnitHandle2(playerBasic), 0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00188268", itfSetMesDispPriority);
 

@@ -324,7 +324,9 @@ INCLUDE_ASM(const s32, "code_00169A40", mapCallPartyDamageMap);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallPlaySE);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapUnloadRequestSub);
+struct mapUnloadRequestSubWork_t *mapUnloadRequestSub(void) {
+    return &mapUnloadRequestSubWork;
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapAll2);
 

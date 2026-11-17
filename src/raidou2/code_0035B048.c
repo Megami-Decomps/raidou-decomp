@@ -303,9 +303,24 @@ s32 evtBStartSelectionChainAfterFade(dds3ProcessID_t *PID) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", evtCallGetProcessData32);
+s32 evtCallGetProcessData32(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+    s32 ret;
 
-INCLUDE_ASM(const s32, "code_0035B048", TitleGoMain);
+    itfDrawGridWithResolvedSlot(816, 1160, 0, 0, data->sprite[0], 2, 104);
+    ret = jmsSeqChange(&data->panel, &data->seqUnit, 1, PID);
+    jmsSeqChange(&data->panel, &data->seqUnit, 2, PID);
+    return ret;
+}
+
+void TitleGoMain(titleData_t *pData) {
+    scrSetMovieCancel(0);
+    evtChgSeq(pData->PmvPID, 2);
+    evtNoSkipMes(pData->PmvPID);
+    evtIgnoreAtracPlay(pData->PmvPID);
+    pData->WaitTimer = 60;
+    jmsSeqJumpAndFree(&pData->seqUnit, &rstData2);
+}
 
 s32 TitleMovieInit(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);

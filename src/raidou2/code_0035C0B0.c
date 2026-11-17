@@ -82,7 +82,12 @@ sdfTexHandle_t *rstCallDevLoadFileEx(const char *filename)
 
 INCLUDE_ASM(const s32, "code_0035C0B0", TitleFirstCalcProcess);
 
-INCLUDE_ASM(const s32, "code_0035C0B0", rstCallTexFreeDelayed);
+void rstCallTexFreeDelayed(titleData_t *data) {
+    if (data->hTex != NULL) {
+        sdfTexFreeDelayed(data->hTex);
+        data->hTex = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0035C0B0", rstCallGetProcessData2);
 

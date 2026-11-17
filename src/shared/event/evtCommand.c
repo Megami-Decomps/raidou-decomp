@@ -558,7 +558,14 @@ u32 evtCallGetIntPara4(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_DSP);
+u32 evtCommand_MODEL_DSP(void)
+{
+    s32 r_onoff = scrGetIntPara(0);
+    s32 n_onoff = scrGetIntPara(1);
+
+    mapSetPlayersVisible(r_onoff, n_onoff, scrGetIntPara(2));
+    return 1;
+}
 
 #ifdef VERSION_RAIDOU1
 s32 evtCallGetIntPara(void) {

@@ -1,11 +1,22 @@
 #include "common.h"
 #include "fclDrawBack.h"
+#include "dds3KernelCore.h"
+#include "sdfMemory.h"
 
 void fclLeaf6(fclMsgWork_t *wk) {
     fclCallMemFreeDirect(wk);
 }
 
-INCLUDE_ASM(const s32, "fclDrawBack", fclCallGetProcessData);
+s32 fclCallGetProcessData(dds3ProcessID_t *PID) {
+    fclMsgWork_t *wk = dds3GetProcessData(PID);
+
+    fclLeaf6(wk);
+    sdfMemFreeDirect(wk->hMem);
+    FAKEMATCH_ASM_READ(wk);
+#ifdef FIX_BUGS
+    return 0;
+#endif
+}
 
 INCLUDE_ASM(const s32, "fclDrawBack", fclProcessStart);
 

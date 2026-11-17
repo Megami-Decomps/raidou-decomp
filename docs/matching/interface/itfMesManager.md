@@ -81,3 +81,11 @@ Raidou 2: 11 of 19 words differ, first at +0x18.
 gcc hoists the color[2] store (sb 0x1C) above the table store; source order follows the retail asm, the color[3]-first reorder was tried; 11 words, behaviour equal
 
 Related: store scheduling of the color stores.
+
+## DrawMsgMng_Process (interface/itfMesManager, raidou2 0x70)
+
+Raidou 2: 12 of 28 words differ, first at +0x18.
+
+retail beq where cc1 emits beql and no loop alignment: ee-gcc 2.96 picks beq after a call only when the callee (DrawMesFlow) is C earlier in the same unit, shown with a stub definition; R1 matches with the same body. R2 DrawMesFlow is still INCLUDE_ASM, so this matches once it is C; behaviour equal (nm_behaviour clean)
+
+Related: beq vs beql after a call to a callee not yet C in the unit.

@@ -51,12 +51,19 @@ typedef struct SBTLEFF_PACDATAWORK {
 } SBTLEFF_PACDATAWORK;
 
 #define SBTLEFF_PACDATA_MAX 16
+#ifdef VERSION_RAIDOU2
+#define SBTLEFF_PACLIST_MAX 150
+#else
 #define SBTLEFF_PACLIST_MAX 48
+#endif
 
-/* Effect pack list entry (92 bytes), SBTL_WORK2.effpac. */
+/* Effect pack list entry (0x5C bytes, 0x60 in Raidou 2), SBTL_WORK2.effpac. */
 typedef struct SBTLEFF_PACLIST {
     struct sdfMemHandle_t *handle;
     struct fileRequest *file;
+#ifdef VERSION_RAIDOU2
+    struct fileRequest *pacHandle; /* pacLoad */
+#endif
     void *pData;
     s32 num;
     s16 gstat;
@@ -66,6 +73,11 @@ typedef struct SBTLEFF_PACLIST {
     u32 SMGID;
     SBTLEFF_PACDATAWORK *pwk[SBTLEFF_PACDATA_MAX];
 } SBTLEFF_PACLIST;
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(SBTLEFF_PACLISTSizeCheck, SBTLEFF_PACLIST, 0x60);
+#else
+SIZE_CHECK(SBTLEFF_PACLISTSizeCheck, SBTLEFF_PACLIST, 0x5C);
+#endif
 
 typedef struct SBTLEFF_LISTWORK {
     s32 serial;
@@ -98,7 +110,7 @@ typedef struct SBTLEFF_DATAWORK {
     struct plistHandle_t *hPartsList;
 } SBTLEFF_DATAWORK;
 
-/* One live effect (0x12C bytes). Partial layout, HD names. */
+/* One live effect (0x12C bytes, 0x134 in R2). Partial layout, HD names. */
 typedef struct SBTLEFF_WORK {
     sdfVector4_t pos;
     sdfVector4_t ppos;
@@ -135,9 +147,21 @@ typedef struct SBTLEFF_WORK {
     u8 BEDacterside; /* SBTLUNIT_SIDE bits */
     u8 pad111[0x114 - 0x111];
     SBTLEFF_DATAWORK dwk;
+#ifdef VERSION_RAIDOU2
+    u8 pad124[0x128 - 0x124];
+#endif
     struct SBTLEFF_WORK *prev;
     struct SBTLEFF_WORK *next;
+#ifdef VERSION_RAIDOU2
+    u8 unk130;
+    u8 pad131[0x134 - 0x131];
+#endif
 } SBTLEFF_WORK;
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(SBTLEFF_WORKSizeCheck, SBTLEFF_WORK, 0x134);
+#else
+SIZE_CHECK(SBTLEFF_WORKSizeCheck, SBTLEFF_WORK, 0x12C);
+#endif
 
 typedef struct sbtlFileEntry_t {
     char *path;
@@ -196,7 +220,14 @@ s32 sbtlReleaseEff(struct SBTLEFF_LISTWORK *lwk, u8 flg);
 s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg);
 s32 sbtlSearchDelWork_Side(struct SBTLEFF_DELLISTWORK *lwk, SBTLUNIT_SIDE side);
 s32 sbtlSearchEffectData(SKLID skillid);
+#ifdef VERSION_RAIDOU2
+/* R2's name for its sbtlForceDelete_EffectWork_ID. */
+s32 sbtlCallBtlSearchEffectData(SKLID id, s8 flg);
+/* R2's name for its sbtlCallBtlSearchEffectData. */
+s32 sbtlCheckEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param);
+#else
 s32 sbtlCallBtlSearchEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param);
+#endif
 void sbtlSetEffectData(struct SBTLEFF_WORK *ewk, struct SBTLUNIT_WORK *wk, SKLID sklid, s32 workID, u8 type, s32 no, u16 acterside,
                        s32 serialID2, s32 sttime);
 s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s32 index, s32 id, u16 acterside, s32 serialID2,

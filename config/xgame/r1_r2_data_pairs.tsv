@@ -8337,7 +8337,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046C2E0	0x004DF598	MoneyDrawProcessDataEntry	.sdata	0x8	yes	run-order-size
 0x0046C2E8	0x004DF5A0	MoneyDrawProcessData2	.sdata	0x4	yes	run-order-size
 0x0046C2EC	0x004DF5A4	effQueuedResourceNameRecord5	.sdata	0x4	yes	code-ref
-0x0046C2F0	0x004DF5A8	effQueuedResourceNameRecord6	.sdata	0x8	yes	code-ref
+0x0046C2F0	0x004DF5A8	generalMenu_g_hSpr	.sdata	0x8	yes	code-ref
 0x0046C2F8	0x004DF5B0	mapMenuProcessCheckData	.sdata	0x8	yes	code-ref
 0x0046C300	0x004DF5B8	itfCallGetProcessData10Data	.sdata	0x8	no	run-order-size
 0x0046C308	0x004DF5C0	saveCallGetProcessData2Data	.sdata	0x4	no	run-order-size

@@ -224,7 +224,7 @@ f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type) {
     return frame / speed;
 }
 
-f32 sbtlCallBtlGetMotionVisualData5(struct SBTLUNIT_WORK *wk, s32 motionID) {
+f32 sbtlGetSETime(struct SBTLUNIT_WORK *wk, s32 motionID) {
     f32 frame = 0.0f;
     SBTL_MOTION_VISUAL *visual;
     SBTL_UNIT_SUB *sub;

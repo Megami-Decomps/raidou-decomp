@@ -7,6 +7,7 @@
 #include "sBtlSM.h"
 #include "sBtlCalc.h"
 #include "sBtlDraw.h"
+#include "sBtlUnit.h"
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckMsgMemType);
 
@@ -130,7 +131,15 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetSkill_EffectData);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSkilltbl18);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetHatData);
+s32 sbtlSetHatData(struct SBTLUNIT_WORK *wk, SKLID sklid)
+{
+    SBTLSKLVISUAL_TBL *tbl = sbtlGetSklVisualTbl(sklid);
+
+    if (tbl->hatEffect != 0) {
+        sbtlCheckEffectData(wk, tbl->hatEffect, 1, 0, wk->field414, -1, 0);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetSkillData);
 
@@ -226,7 +235,13 @@ s32 sbtlReleaseSM_List(SBTLSM_LISTWORK *lwk, u8 flg)
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeleteSMList);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc20);
+s32 sbtlFunc20(s32 a_x, s32 a_y, SBTLSM_WORK *dwk)
+{
+    u32 color = dwk->alpha | 0xA09DC300;
+
+    sbtlCallMessageNumSearch(a_x + dwk->ofs_x, a_y + dwk->ofs_y, 0, color, dwk->mode);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMessageNumSearch);
 

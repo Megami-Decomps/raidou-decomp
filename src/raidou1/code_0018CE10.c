@@ -39,7 +39,7 @@ INCLUDE_ASM(const s32, "code_0018CE10", DvlMsgDrawProcess);
 
 INCLUDE_ASM(const s32, "code_0018CE10", itfMoverGetRatio);
 
-void itfCallSetOt(s32 a_x, s32 a_y, s32 a_z, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo) {
+void itfDrawMiscSprite(s32 a_x, s32 a_y, s32 a_z, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo) {
     eglSetOt(a_otNo);
     eglLinkTest(1, 5, 1, 1, 0, 0, 1, 1);
     eglLinkAlpha(0);
@@ -72,7 +72,7 @@ void itfDrawMiscSpriteListSelect(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, str
     if (a_list[a_no].flag & 1) {
         itfDrawMiscSpriteAlpha(x, y, a_z, a_alphaRate, a_hSpr, a_list[a_no].sprNo, a_otNo);
     } else {
-        itfCallSetOt(x, y, a_z, a_hSpr, a_list[a_no].sprNo, a_otNo);
+        itfDrawMiscSprite(x, y, a_z, a_hSpr, a_list[a_no].sprNo, a_otNo);
     }
 }
 

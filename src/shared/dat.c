@@ -21,11 +21,6 @@
 #include "sBtlSkill.h"
 #include "sBtlCalc.h"
 
-extern u32 datCallCheckStrongSwordAttackData;
-extern u32 cmpLoadModelTablesData;
-extern u32 datData6;
-extern u32 datCallGetStockDevilIDData;
-
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
  * directory extent rather than an enum-completeness claim. */

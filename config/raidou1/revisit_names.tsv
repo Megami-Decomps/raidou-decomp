@@ -955,7 +955,6 @@
 0x0018CFB0	itfMoverSetParam	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMoverSetParam, score 8.5 band B
 0x0018D048	itfMoverUpdate	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMoverUpdate, score 8.4 band B
 0x0018D268	itfMoverGetPosition	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMoverGetPosition, score 8.1 band B
-0x0018D3A0	itfCallSetOt	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfMoverGetRatio; calls eglSetOt
 0x0018D6A8	itfCallEnableMode	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfDrawMiscSpriteList; calls frEnableMode
 0x0018DCB0	itfLeaf15	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfDrawMiscHelp; no named callee, caller or string
 0x0018DDD0	itfCallSetOt3	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfDrawMiscHelp; calls eglSetOt
@@ -3602,7 +3601,6 @@
 0x00296990	sbtlCallBtlGetMotionVisualData3	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetMotionVisualData
 0x00296AD8	sbtlCallSetOt2	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls eglSetOt
 0x00297258	sbtlCallBtlGetMotionVisualData4	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetMotionVisualData
-0x00297320	sbtlCallBtlGetMotionVisualData5	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetMotionVisualData
 0x00297410	sbtlGetCylinderData_ID	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlVisual.sBtlGetCylinderData_ID, score 10.0 band A
 0x002978F8	sbtlCallBtlCheckDamageTarget8	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlCheckDamageTarget
 0x00297AE0	sbtlGetPointData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEncount.sBtlGetPointData, score 11.8 band A
@@ -19110,7 +19108,6 @@
 0x0046C2D0	DevilMessage_g_mainPID	data	tier=C	hd	0.37 (n=D_r1_0046C2D0)	hd/medium: conf=medium, agree=3, using=4
 0x0046C2D8	g_mainPID2	data	tier=C	hd	0.37 (n=D_r1_0046C2D8)	hd/medium: conf=medium, agree=2, using=2; g_mainPID is another symbol
 0x0046C2EC	effQueuedResourceNameRecord5	data	tier=C	dds-ref	0.59 (n=D_r1_0046C2EC)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfCallMemFreeDelayedDirect2; effQueuedResourceNameRecord is another symbol
-0x0046C2F0	effQueuedResourceNameRecord6	data	tier=C	dds-ref	0.59 (n=D_r1_0046C2F0)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=itfGeneralMenuFreeSpriteHnd; effQueuedResourceNameRecord is another symbol
 0x0046C5D8	evtPendingEventSelection	data	tier=C	dds-ref	0.59 (n=D_004DF83C)	dds-ref/close: nfun=2, other=0, sim=0.8621, games=1, size=True, sec=True, fn=CallEvent
 0x0046CD18	sndPathPrefix2	data	tier=C	smt3-ref	0.98 (n=D_r1_0046CD18)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=mnuBuildVoiceResourcePath; sndPathPrefix is another symbol
 0x0046CF99	Eve_PartialMultiBlurShow	data	tier=C	derived-derived-role	na	cleared by Eve_PartialMultiBlurOFF, tested in EffectDraw; replaces effData28
@@ -19318,6 +19315,7 @@
 0x00189888	InitializeSelect	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cfcc8 sim 0.933 margin 0.55 pair
 0x00189928	InitializeCurCtr	func	tier=B	smt3-role	na	SMT3 name: same role (isdisp guard on isdraw, phase/ctr reset), called for both instance cursors from itfMesMngInitialize; replaces itfMesMngInitializeSub
 0x00189A58	ConvertZenkakuNumber	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cfe48 sim 0.895 margin 0.62 pair
+0x0018D3A0	itfDrawMiscSprite	func	tier=B	hd-role	na	HD itf.itfDrawMiscSprite (same 6-arg signature); R2 calls itfDrawMiscSprite at the same site in itfDrawMiscSpriteListSelect; replaces itfCallSetOt
 0x0018D450	itfDrawMiscSpriteAlpha	func	tier=B	hd-role	na	HD itf.itfDrawMiscSpriteAlpha (R2 name, same callee in SetSelect and sbtlSpriteEx); replaces itfCallSetOt2
 0x0018E110	itfDrawFanBezierPt3	func	tier=B	hd-role	na	HD itf.c itfDrawFanBezierPt3(x0..vy, rgba0..2, ot): same itfGetDivBezierPt3(x1,y1,x2,y2,vx,vy,0.1) count, per-step itfGetRatePosBezierPt3 and eglLinkTri fan with lerped rgba; ot unused in both; replaces itfCallLinkTri
 0x0018E6E0	itfGetDivBezierPt3	func	tier=B	hd-role	na	HD itf.c itfGetDivBezierPt3: halves rate from 1.0 until the itfGetRatePosBezierPt3 point is within divLength of (x0, y0), returns the count; same 7-float signature; replaces itfFunc3

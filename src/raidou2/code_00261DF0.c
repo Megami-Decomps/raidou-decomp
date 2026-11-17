@@ -66,7 +66,24 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlSetHitStop);
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlProcHitStop);
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlSearchPacData);
+s32 sbtlSearchPacData(s32 major, s32 minor, s32 devilid)
+{
+    s32 i;
+
+    for (i = 0; i < SBTL_PACDATA_NUM; i++) {
+        if (sbtlData84->pac[i].key.major == major && sbtlData84->pac[i].key.minor == minor
+            && sbtlData84->pac[i].key.devilid == devilid) {
+            return i;
+        }
+    }
+    for (i = 0; i < SBTL_PACDATA_NUM; i++) {
+        if (sbtlData84->pac[i].key.major == 0 && sbtlData84->pac[i].key.minor == 0
+            && sbtlData84->pac[i].key.devilid == 0) {
+            return i;
+        }
+    }
+    return -2;
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlSearchPacData2);
 
@@ -169,7 +186,9 @@ void slFirstInitSub(void)
     sbtlCallSync();
 }
 
-INCLUDE_ASM(const s32, "code_00261DF0", slCampEFFTES);
+void slCampEFFTES(void) {
+    fldTitleMiniWork6 = sdfDevLoadFileEx(slStrCampEffTesEpl, &effScalyTextureHandle3, 0);
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", slCallEffectLoadEPL);
 
@@ -193,6 +212,8 @@ INCLUDE_ASM(const s32, "code_00261DF0", SetMapLight);
 INCLUDE_ASM(const s32, "code_00261DF0", Init_sbtlScene);
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlSetRndEncBg);
+
+INCLUDE_RODATA(const s32, "code_00261DF0", slStrCampEffTesEpl);
 
 INCLUDE_RODATA(const s32, "code_00261DF0", slCallEffectLoadEPLTable);
 

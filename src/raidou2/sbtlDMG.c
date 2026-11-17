@@ -85,7 +85,10 @@ s32 sbtlLoadAttackHitData_pData(s32 index, void *pData) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlInitLoadAttackHitData_pData);
+s32 sbtlInitLoadAttackHitData_pData(void) {
+    memset(&sbtlWork2, 0, sizeof(sbtlWork2));
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlForceDelete_AttackHitData);
 

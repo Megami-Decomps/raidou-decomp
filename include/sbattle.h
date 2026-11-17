@@ -162,10 +162,15 @@ s32 sbtlLeaf105(dds3ProcessID_t *id);
 s32 sbtlLeaf106(dds3ProcessID_t *id);
 s32 sbtlLeaf108(void);
 s32 sbtlLeaf116(dds3ProcessID_t *id);
+s32 sbtlLeaf118(void);
 s32 sbtlLeaf119(dds3ProcessID_t *id);
 s32 sbtlLeaf122(dds3ProcessID_t *id);
 s32 sbtlLeaf95(void);
 s32 sbtlLeaf98(dds3ProcessID_t *id);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCallSetPara(void);
+s32 sbtlCallBgSetScrollReset(void);
+#endif
 void sbtlLoadDraw(void);
 s32 sbtlMDLHitEditorDraw_Functbl_Cylinder(struct SBDEBUG_CSRWORK *wk, struct SBTLSKILLHIT_TBL *hwk, struct SBTLSKILLHIT_POSWORK *para, struct SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path);
 s32 sbtlMDLHitEditorDraw_Functbl_Ring(struct SBDEBUG_CSRWORK *wk, struct SBTLSKILLHIT_TBL *hwk, struct SBTLSKILLHIT_POSWORK *para, struct SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path);

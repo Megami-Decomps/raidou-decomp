@@ -209,7 +209,7 @@ void mapBgFree2(void) {
     fldGlobalBase.word4C = 0;
 }
 
-void mapCallJmsQuestMapLoadFld(s32 field) {
+void mapAutomapFldClr(s32 field) {
     if (fldGlobalBase.word4C == 1) {
         fldGlobalBase.word4C = 2;
     }

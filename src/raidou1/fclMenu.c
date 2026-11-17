@@ -7,6 +7,7 @@
 #include "fclMenu.h"
 #include "fclDrawBack.h"
 #include "sdfMemory.h"
+#include "fclMsg.h"
 
 INCLUDE_ASM(const s32, "fclMenu", MoverUpdate);
 

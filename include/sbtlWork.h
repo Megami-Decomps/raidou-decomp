@@ -82,7 +82,11 @@ typedef struct SBTL_PANEL {
     SBTLPNL_WORK mds_light;
     u8 padD0[0x522 - 0xD0];
     s16 meirei_no; /* order given to the summoned demon (HD SBTLPNL_SETDATA meirei_no) */
+#ifdef VERSION_RAIDOU2
+    u8 pad524[0x544 - 0x524];
+#else
     u8 pad524[0x530 - 0x524];
+#endif
 } SBTL_PANEL;
 
 struct SBTLDMG_HITLISTWORK;
@@ -675,10 +679,12 @@ typedef struct SBTL_PACDATA_KEY {
     s32 devilid;
 } SBTL_PACDATA_KEY;
 
-/* Files loaded for one model, found by major, minor and devil id. */
+/* Files loaded for one model, found by major, minor and devil id (R2 has no motionSE file). */
 typedef struct SBTL_PACDATA {
     SBTL_PACDATA_FILE mht;
+#ifdef VERSION_RAIDOU1
     SBTL_PACDATA_FILE motionSE;
+#endif
     SBTL_PACDATA_FILE file20;
     SBTL_PACDATA_HITLIST hit;
     SBTL_PACDATA_KEY key;
@@ -686,14 +692,14 @@ typedef struct SBTL_PACDATA {
 
 #define SBTL_PACDATA_NUM 16
 
-/* Pointed to by sbtlData84, 0x908 bytes. */
+/* Pointed to by sbtlData84, 0x908 bytes (0x808 in Raidou 2). */
 typedef struct SBTL_PACDATA_WORK {
     SBTL_PACDATA pac[SBTL_PACDATA_NUM];
     u8 pad900[4];
     sdfMemHandle_t *handle;
 } SBTL_PACDATA_WORK;
 
-/* Pointed to by sbtlData83, 0x115C bytes. */
+/* Pointed to by sbtlData83, 0x115C bytes (0x385C in Raidou 2). */
 typedef struct SBTL_WORK2 {
     SBTLEFF_PACLIST effpac[SBTLEFF_PACLIST_MAX];
     void *effOnRsc_P;
@@ -705,8 +711,20 @@ typedef struct SBTL_WORK2 {
     s16 effpaccnt; /* packs loaded, clamped to 0..SBTLEFF_PACLIST_MAX - 1 */
     u8 pad115A[2];
 } SBTL_WORK2;
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(SBTL_WORK2SizeCheck, SBTL_WORK2, 0x385C);
+#else
+SIZE_CHECK(SBTL_WORK2SizeCheck, SBTL_WORK2, 0x115C);
+#endif
 
 extern SBTL_WORK2 *sbtlData83;
+#ifdef VERSION_RAIDOU2
+extern const char slStrCampEffTesEpl[]; /* "/camp/EFF_TES.EPL" */
+extern u32 effScalyTextureHandle3;
+extern void *fldTitleMiniWork6;
+extern dds3ProcessID_t *sbtlCallGetProcessStatData;
+extern dds3ProcessID_t *inputpanel_id2;
+#endif
 extern SBTL_PACDATA_WORK *sbtlData84;
 extern s8 VRF_DeltaTime;
 extern s8 pbData;

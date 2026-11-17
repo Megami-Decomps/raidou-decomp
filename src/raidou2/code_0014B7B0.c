@@ -7,6 +7,7 @@
 #include "enums.h"
 #include "dds3Randomize.h"
 #include "dds3ObjectBase.h"
+#include "sdk_libc.h"
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallSetOt6);
 
@@ -140,16 +141,34 @@ INCLUDE_ASM(const s32, "code_0014B7B0", mapLeaf12);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCASHDATA);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mdlCallMemGetSize);
-
-INCLUDE_ASM(const s32, "code_0014B7B0", mdlCallMemGetSize2);
-
 #define MDL_MEM_CACHE_COUNT 7
 
 extern sdfMemHandle_t *mdlData6[MDL_MEM_CACHE_COUNT];
 extern MODELTYPE mdlData7[MDL_MEM_CACHE_COUNT];
 extern s32 mdlData8[MDL_MEM_CACHE_COUNT];
 extern s32 mdlCallMemGetInfoData;
+
+INCLUDE_ASM(const s32, "code_0014B7B0", mdlCallMemGetSize);
+
+void mdlCallMemGetSize2(void) {
+    s32 i;
+    sdfMemHandle_t *previous;
+    s32 size;
+    void *source;
+    sdfMemInfo_t info;
+
+    for (i = mdlCallMemGetInfoData - 1; i >= 0; i--) {
+        previous = mdlData6[i];
+        if (previous != NULL) {
+            size = sdfMemGetSize(previous);
+            mdlData6[i] = sdfMemAllocDirect(size);
+            source = sdfMemGetPtr(previous);
+            memcpy(sdfMemGetPtr(mdlData6[i]), source, size);
+            sdfMemFreeDirect(previous);
+        }
+    }
+    sdfMemGetInfo(&info);
+}
 
 void mdlCallMemFreeDirect(void) {
     s32 i;
@@ -165,11 +184,28 @@ void mdlCallMemFreeDirect(void) {
     mdlCallMemGetInfoData = 0;
 }
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mdlGetModelName);
+sdfMemHandle_t *mdlGetModelName(MODELTYPE aMajor, s32 aMinor) {
+    s32 i;
+
+    for (i = 0; i < mdlCallMemGetInfoData; i++) {
+        if (mdlData7[i] == aMajor && mdlData8[i] == aMinor) {
+            return mdlData6[i];
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mdlCallMemGetInfo);
 
+/* NON_MATCHING: 4 of 7 words match.  */
+#ifdef NON_MATCHING
+void sbtlCheckEndEscape(void)
+{
+    mdlCallMemFreeDirect();
+}
+#else
 INCLUDE_ASM(const s32, "code_0014B7B0", sbtlCheckEndEscape);
+#endif
 
 INCLUDE_RODATA(const s32, "code_0014B7B0", mapObjFloorAdd_CashTable);
 
@@ -200,7 +236,21 @@ INCLUDE_ASM(const s32, "code_0014B7B0", mapObjDel);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjAllDel);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjVisible);
+void mapObjVisible(s16 uniq, s32 visible) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].visible = visible;
+            if (visible == 0) {
+                dds3ObjectBaseOnFlag(mapObjTaskData2[i].basic, 1);
+            } else {
+                dds3ObjectBaseOffFlag(mapObjTaskData2[i].basic, 1);
+            }
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapLeaf14);
 
@@ -214,7 +264,20 @@ INCLUDE_ASM(const s32, "code_0014B7B0", mapObjNpcKuse);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjNpcKuseStop);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjNpcKuseScriptStop);
+void mapObjNpcKuseScriptStop(s32 SerialID) {
+    MAP_OBJ_t *obj;
+    s32 i;
+
+    obj = mapObjTaskData2;
+    for (i = 0; i < 128; i++, obj++) {
+        if (obj->use != 0 && obj->basic != NULL && obj->basic->serialID == SerialID) {
+            if (obj->npc_kuse_time > 0) {
+                mapObjNpcKuse(obj->uniq, ((dds3GetRandA(NULL) >> 4) % 12) * 60 + 360);
+            }
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjHitSize);
 
@@ -316,7 +379,20 @@ INCLUDE_ASM(const s32, "code_0014B7B0", mapWallObjAdd);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallBitOn);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapFileLoadSub4);
+s32 mapFileLoadSub4(s32 floor, s16 kind) {
+    MAP_WALLOBJ_t *wall;
+    s32 count;
+    s32 i;
+
+    wall = mapWallObjTaskData;
+    count = 0;
+    for (i = 0; i < 64; i++, wall++) {
+        if (wall->use != 0 && wall->type == kind && wall->floor == floor) {
+            count++;
+        }
+    }
+    return count;
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapWallGetUniq);
 

@@ -13,7 +13,7 @@
 #include "dds3KernelCore.h"
 #include "mdlManager.h"
 
-INCLUDE_ASM(const s32, "code_001416C0", fldProcSequenceSub2);
+INCLUDE_ASM(const s32, "code_001416C0", fldPlayerMotReset);
 
 INCLUDE_ASM(const s32, "code_001416C0", fldPlayerMotReset2);
 
@@ -243,11 +243,34 @@ INCLUDE_ASM(const s32, "code_001416C0", mapCalcLen);
 
 INCLUDE_ASM(const s32, "code_001416C0", mapSeVolCalc);
 
-INCLUDE_ASM(const s32, "code_001416C0", BgProcSequence);
+s32 BgProcSequence(dds3ProcessID_t *id) {
+    if (dds3SearchProcessName(BgProcSequenceStrFldProcSequence) == NULL) {
+        mapCutSet_From_Idx();
+    }
+    if (bg_tex_load_rec != -1 && bg_tex_load_last != bg_tex_load_rec) {
+        mapZoomClear();
+        mapAutomapFldClr(bg_tex_load_rec);
+        bg_tex_load_last = bg_tex_load_rec;
+        if (fldGlobalBase.word28C != 0) {
+            mapCallBitCheck5(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.cutIdx);
+        }
+        mapBgSetScroll(bg_scroll_last_x, mapData71, mapData72, 0);
+    }
+    if (bg_lay_load_rec != -1 && bg_lay_load_last != bg_lay_load_rec) {
+        mapZoomClear();
+        bg_lay_load_last = bg_lay_load_rec;
+    }
+    bg_tex_load_rec = -1;
+    bg_lay_load_rec = -1;
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_001416C0", fldProcSequence2);
 
-INCLUDE_ASM(const s32, "code_001416C0", fldBgTaskInit);
+void fldBgTaskInit(void) {
+    dds3StartProcess(fldStrBgProcSequence, 1013, 0, 0, BgProcSequence, NULL, NULL);
+    dds3StartProcess(fldStrBgProcDraw, 11014, 0, 0, fldProcSequence2, NULL, NULL);
+}
 
 INCLUDE_ASM(const s32, "code_001416C0", fldBgTexClear);
 

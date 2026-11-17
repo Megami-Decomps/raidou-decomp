@@ -19,7 +19,7 @@ INCLUDE_ASM(const s32, "code_001A1FD0", DvlMsgDrawProcess);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverGetRatio);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfCallSetOt);
+INCLUDE_ASM(const s32, "code_001A1FD0", itfCallSetOt6);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfDrawMiscSprite);
 
@@ -29,7 +29,27 @@ INCLUDE_ASM(const s32, "code_001A1FD0", itfCallLinkAlpha);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfFunc);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfDrawMiscSpriteListSelect);
+void itfDrawMiscSpriteListSelect(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, DDS3_OT a_otNo, itfSprList_t *a_list, s32 a_no)
+{
+    s32 x;
+    s32 y;
+
+    if (a_no < 0) {
+        return;
+    }
+    if (a_list[a_no].flag & 2) {
+        x = a_list[a_no].ofsx;
+        y = a_list[a_no].ofsy;
+    } else {
+        x = a_x + a_list[a_no].ofsx;
+        y = a_y + a_list[a_no].ofsy;
+    }
+    if (a_list[a_no].flag & 1) {
+        itfDrawMiscSpriteAlpha(x, y, a_z, a_alphaRate, a_hSpr, a_list[a_no].sprNo, a_otNo);
+    } else {
+        itfDrawMiscSprite(x, y, a_z, a_hSpr, a_list[a_no].sprNo, a_otNo);
+    }
+}
 
 void itfDrawMiscSpriteListEx(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, DDS3_OT a_otNo, u32 a_flag, itfSprList_t *a_list)
 {
@@ -239,7 +259,21 @@ MenuCB_tag *MenuGetBlankMenu(Menu_t *wk)
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallGetProcessData);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", MenuCreateMenu);
+void MenuCreateMenu(Menu_t *wk)
+{
+    MenuCB_tag *cb = sdfChipAllocZeroDirect(sizeof(MenuCB_tag));
+
+    if (wk->pHead == NULL) {
+        cb->pPrev = NULL;
+        wk->pHead = cb;
+    } else {
+        cb->pPrev = wk->pTail;
+        wk->pTail->pNext = cb;
+    }
+    cb->pNext = NULL;
+    wk->pTail = cb;
+    wk->nMenuSet++;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuDeleteMenu);
 
@@ -253,14 +287,36 @@ INCLUDE_ASM(const s32, "code_001A1FD0", _MenuSetMenu);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetMenuTitle);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetMenu);
+s8 itfMenuSetMenu(dds3ProcessID_t *PID, s32 a_id, s32 a_parentId, char *a_str, itfMenuFunc_t a_func)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+    MenuCB_tag *cb;
+
+    if (a_id < 0) {
+        return 0;
+    }
+    cb = MenuGetBlankMenu(wk);
+    if (cb == NULL) {
+        MenuCreateMenu(wk);
+        cb = wk->pTail;
+    }
+    _MenuSetMenu(cb, a_id, a_parentId, a_str, a_func);
+    return 1;
+}
 
 s32 itfMenuSetRootMenu(dds3ProcessID_t *PID, s32 a_id, char *a_str, itfMenuFunc_t a_func)
 {
     return itfMenuSetMenu(PID, a_id, -1, a_str, a_func);
 }
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfListSetTypeApper);
+void itfListSetTypeApper(dds3ProcessID_t *PID, s32 a_mode, s32 a_type)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    if ((u32)a_mode < 2) {
+        wk->dispType[a_mode] = a_type;
+    }
+}
 
 void itfGeneralMenuCreatePIDSub(dds3ProcessID_t *PID, s32 a_type)
 {
@@ -311,7 +367,12 @@ INCLUDE_ASM(const s32, "code_001A1FD0", itfCallMenuGetSelectMenu2);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuUpdatePrevLink);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetOt);
+void itfMenuSetOt(dds3ProcessID_t *PID)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    wk->lflag |= 8;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuStart);
 

@@ -897,6 +897,11 @@ void mdlCallMemGetSize2(void);
 void mdlCallMemFreeDirect(void);
 #ifdef VERSION_RAIDOU2
 void sbtlCheckEndEscape(void);
+/* Layout unknown: mapProcShutDownSub and mapIsFldKeyFreeSub2 read a handle at 0xC4. */
+struct mapUnloadRequestSubWork_t;
+extern struct mapUnloadRequestSubWork_t mapUnloadRequestSubWork;
+struct mapUnloadRequestSubWork_t *mapUnloadRequestSub(void);
+extern struct effBlurScatterWork_t *DeadMoonTmx3; /* nbCallEffectDistortionBlurCreate */
 #endif
 struct sdfMat_t *dds3CallMatNew2(struct sdfTexHandle_t *tex);
 void pipeFileLoadSub(s32 a0);
@@ -982,6 +987,11 @@ typedef struct MAP_EPL_EFF_WORK_t {
 } MAP_EPL_EFF_WORK_t;
 
 extern MAP_EPL_EFF_WORK_t mapEffEplStartWork[33];
+#ifdef VERSION_RAIDOU2
+void mapCameraInitSub(MAP_EPL_EFF_WORK_t *work);
+void mapCallEffectGetState(MAP_EPL_EFF_WORK_t *work);
+void fldCallEffectDrawDds3Effect(MAP_EPL_EFF_WORK_t *work);
+#endif
 void mapEffEplAllDrawTask(void);
 void mapCutSetSub(s32 cut);
 

@@ -707,7 +707,10 @@ void sndBgmFree(void) {
     SignalSema(mnuTitleStreamSemaphore);
 }
 
-INCLUDE_ASM(const s32, "sndAt3", sndCallLoad);
+void sndCallLoad(char *audioPath) {
+    sndCallFileCheckEndWork = fileLoad(audioPath);
+    mnuTitleSoundBufferState.loadState = 1;
+}
 
 s32 sndCallFileCheckEnd(titleAudioStreamState_t *stream) {
     sdfMemHandle_t *handle;
@@ -925,7 +928,11 @@ void sndSeStop(void) {
     streamState->allocation = 0;
 }
 
-INCLUDE_ASM(const s32, "sndAt3", nbEffectShutdown);
+void nbEffectShutdown(void) {
+    WaitSema(mnuTitleStreamSemaphore);
+    sndDeadSePlay_VolAngle();
+    SignalSema(mnuTitleStreamSemaphore);
+}
 
 INCLUDE_ASM(const s32, "sndAt3", sndSeFree);
 

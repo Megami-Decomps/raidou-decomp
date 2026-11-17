@@ -270,10 +270,10 @@ typedef struct
     /* 0x5EB8 */ u8 unk5EB8[0x8];
     /* 0x5EC0 */ u32 unk5EC0;
     /* 0x5EC4 */ u32 unk5EC4;
-    /* 0x5EC8 */ u8 unk5EC8[0x1208];
-    /* 0x70D0 */ u16 unk70D0;
-    /* 0x70D2 */ u8 unk70D2[0x1E];
-    /* 0x70F0 */ u16 unk70F0;
+    /* 0x5EC8 */ u8 unk5EC8[0x8];
+    /* 0x5ED0 */ dds3NameImage_t nameImage[2][8];
+    /* 0x70D0 */ dds3NameChar_t nameCode[2][8];
+    /* 0x70F0 */ u8 nameLength[2];
     /* 0x70F2 */ u8 unk70F2[0xE];
     /* 0x7100 */ u32 unk7100;
     /* 0x7104 */ u32 unk7104;

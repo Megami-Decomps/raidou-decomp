@@ -409,7 +409,12 @@ INCLUDE_ASM(const s32, "code_001A5D20", itfCallMemFreeDelayedDirect2);
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfInitEventViewerSub);
 
-INCLUDE_ASM(const s32, "code_001A5D20", itfGeneralMenuFreeSpriteHnd);
+void itfGeneralMenuFreeSpriteHnd(void) {
+    if (generalMenu_g_hSpr != NULL) {
+        effDestroyResourceSlotSet(generalMenu_g_hSpr);
+        generalMenu_g_hSpr = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfGeneralMenuDecideFunc);
 

@@ -3081,7 +3081,12 @@ void effResetKindWorkFrame(effKindWork_t *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effKindWorkFrameUpdate);
+void effKindWorkFrameUpdate(effKindWork_t *work) {
+    effData5[work->kind].update(work);
+    if ((effGetFlags() & 1) == 0) {
+        work->frame++;
+    }
+}
 
 void effSetKindWorkPosition(effKindWork_t *work, const f32 position[4]) {
     SDF_VU0_COPYVECTOR(work->position, position);
@@ -6848,7 +6853,12 @@ void effAcquireSurfaceRecord(s32 node) {
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallToMatrix);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallSRAnimation9);
+void effCallSRAnimation9(s32 node) {
+    if ((effGetFlags() & 1) == 0) {
+        effAcquireSurfaceRecord(node);
+    }
+    effCallToMatrix(node);
+}
 
 void effMenuRecordVectorSet(s32 node, const u128 *value) {
     mnuRecordSetVector(((poltHandle_t *)node)->record, value);
@@ -7263,7 +7273,18 @@ ptexHandle_t *PartsCreate(fileJobPayload_t *payload)
 INCLUDE_ASM(const s32, "code_r1_00226EC8", PartsCreate);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", Delete_effPolygonTex);
+void Delete_effPolygonTex(ptexHandle_t *ptex) {
+    if (ptex->hBillboard != NULL) {
+        dds3BillboardDelete(ptex->hBillboard);
+    }
+    if (ptex->hCTexList != NULL) {
+        effCacheTexDelete(ptex->hCTexList);
+    }
+    if (ptex->assetHandle != NULL) {
+        sdfMatFreeDelayed(ptex->assetHandle);
+    }
+    sdfChipFreeDirect(ptex);
+}
 
 ptexHandle_t *Copy_effPolygonTex(ptexHandle_t *src) {
     ptexHandle_t *dst = PartsCreate(NULL);

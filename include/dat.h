@@ -70,6 +70,16 @@ extern u32 sdatLvUpPlayerParamUpSize;
 extern u32 sdatLvUpPlayerRankUp;
 extern u32 sdatLvUpPlayerRankUpSize;
 
+/* gohDevilParam.dat and gohSameDevils.dat buffers and sizes, filled by cmpLoadModelTables. */
+extern u32 datCallCheckStrongSwordAttackData;
+extern u32 cmpLoadModelTablesData;
+extern u32 datData6;
+extern u32 datCallGetStockDevilIDData;
+#ifdef VERSION_RAIDOU2
+extern const char cmpStrGohmadenGohDevilParamDat[];
+extern const char cmpStrGohmadenGohSameDevilsDat[];
+#endif
+
 void datLoadLvUpTables(void);
 #ifdef VERSION_RAIDOU2
 void datRefDDS3GBWK19(void);
