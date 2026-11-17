@@ -18400,6 +18400,7 @@
 0x00198F28	mphCommand_BUSTUP_ON	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.mphCommand_BUSTUP_ON score 3.0 flag -: next gap13/27 st1:gap r1-only
 0x00198F68	mphCommand_BUSTUP_OFF	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.mphCommand_BUSTUP_OFF score 3.5 flag -: calls1 gap19/33 votes2 st1:gap r1-only
 0x00199368	mphShutDown	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.mphShutDown score 6.2 flag -: calls1 str1 callers-of-match st1:call r1-only
+0x0019A6A8	mdlLink_NoDraw	func	tier=C	derived-derived-role	na	only caller dds3ObjectBaseModelLinkOt passes (model, pModelOt) where HD dds3ObjectBase.c calls mdlLink_NoDraw(pModel, pModelOt); HD LinkMotion is a static one-argument helper inlined into it; name free in both games (R1 0x0019A6A8, R2 0x001B0220); replaces LinkMotion
 0x001A0A70	mapTrainCheckStartPos	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapTrainCheckStartPos score 2.5 flag -: calls1 callers-of-match st2:call r2-only
 0x001A57B8	GetBaseLightRGB2	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.GetBaseLightRGB2 score 4.4 flag -: next gap2/1 st1:gap r1+r2
 0x001A7EF0	evtGetCustomSLight_SoftenAndBias	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evt.evtGetCustomSLight_SoftenAndBias score 5.5 flag I: calls1 calls-of-match st1:call r1+r2

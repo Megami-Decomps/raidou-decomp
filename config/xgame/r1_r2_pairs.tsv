@@ -2530,7 +2530,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0019A380	0x001AFEF8	mdlLoad	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019A4D0	0x001B0048	mdlFree	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019A578	0x001B00F0	mdlLink	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
-0x0019A6A8	0x001B0220	LinkMotion	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
+0x0019A6A8	0x001B0220	mdlLink_NoDraw	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019A748	0x001B02C0	mdlLink_Kubi	no	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019AA00	0x001B0578	mdlHideAllNode	yes	yes	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	unique-reloc-hash
 0x0019AA48	0x001B05C0	mdlMotion	no	no	asm/raidou1/model/mdlManager.s	asm/raidou2/model/mdlManager.s	run-order-near

@@ -2830,7 +2830,7 @@
 0x0019A380	mdlLoad	inferred	SMT3HD name via SLUS_209.11 0x001DD0D0, reloc-identical; map-agrees
 0x0019A4D0	mdlFree	inferred	SMT3HD name via SLUS_209.11 0x001DD220, reloc-identical; map-agrees
 0x0019A578	mdlLink	inferred	SMT3HD name via SLUS_209.11 0x001DD2C8, reloc-identical; map-agrees
-0x0019A6A8	LinkMotion	hd	hd: Raidou HD mdl.LinkMotion, score 6.3 band C, hd-consensus: calls1 callers-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 7.3,6.3,6.3,9.3,7.3,9.3,6.3,9.3,6.3,9.3
+0x0019A6A8	mdlLink_NoDraw	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=only caller dds3ObjectBaseModelLinkOt passes (model, pModelOt) where HD dds3ObjectBase.c calls mdlLink_NoDraw(pModel, pModelOt); HD LinkMotion is a static one-argument helper inlined into it; name free in both games (R1 0x0019A6A8, R2 0x001B0220); replaces LinkMotion
 0x0019A748	mdlLink_Kubi	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mdl.c mdlLink_Kubi(aHandle, aModelOt, node, rx, ry); dds3ObjectBaseModelLinkOt calls it with kubinodeidx and two workdata floats, as HD does; replaces mdlBlendEntryPitchYawAndUpdate
 0x0019AA00	mdlHideAllNode	inferred	SMT3HD name via SLUS_209.11 0x001DD3F8, shared-hash-in-run; map-silent
 0x0019AA48	mdlMotion	inferred	SMT3HD name via SLUS_209.11 0x001DD440, reloc-identical; map-agrees

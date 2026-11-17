@@ -37,6 +37,9 @@
 #include "sBtlDvltk.h"
 #include "code_0015D490.h"
 #include "jmsMisc.h"
+#include "code_00195698.h"
+#include "cmpItem.h"
+#include "fldDraw.h"
 
 
 
@@ -1492,9 +1495,56 @@ void fldProcTrigSequence(fldSceneParam_t *srcParam, s32 mode)
     fldProcShutDownData = 1;
 }
 
+#ifdef VERSION_RAIDOU1
+void fldProcShutDown(void)
+{
+    if (fldProcShutDownData == 0) {
+        return;
+    }
+    fldProcShutDownData = 0;
+    if (cmpCallGetProcessStat()) {
+        evtCallExistProcess();
+    }
+    if (elvCallGetProcessStat()) {
+        elvCallExistProcess2();
+    }
+    awdMenuProcessEnd();
+    if (!gMapRndEncLoad_Mode) {
+        mdlCallMemFreeDirect();
+    }
+    nbProcSequenceSub(43);
+    nbSetEncountMode(0);
+    fldDrwZFree();
+    dds3BistaClear();
+    dds3FilterClear();
+    mapProcShutDownSub2(0);
+    mapProcShutDownSub();
+    evtDisableMoonDraw();
+    fldAutoMapSeqSetFlag(1);
+    fldAutoMapSeqSetFlag(2);
+    dds3KillProcessName(fldStrFldProcSequence, 1);
+    dds3KillProcessName(fldProcDrawName, 1);
+    scrAllReleaseScript();
+    if (fldAutoMapSeqFlags.stage != 27 && fldGlobalBase.word1D8 && !fldGlobalBase.word1D4) {
+        sndBgmFadeOut();
+    }
+    fldGlobalBase.word248 = 0;
+    mapSeWallHit(0);
+    mapCallPlaySEVolLoop();
+    mapCallPlaySEVolLoop2();
+    mapEffEplAllEnd();
+    mapBadEffDrawTask();
+    mapZoomClear();
+    fldBgTexClear();
+    fldFreeMapData();
+}
+#else
 INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
+#endif
 
-INCLUDE_ASM(const s32, "field/fldProcess", fldCallDelayedResrcCheck);
+s32 fldCallDelayedResrcCheck(void) {
+    return sdfDelayedResrcCheck() == 0;
+}
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "field/fldProcess", ProcSequenceStrBunriHajikiLabel);

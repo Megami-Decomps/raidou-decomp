@@ -224,8 +224,8 @@ mapNakamaStockOnCheck_fld	facility/fclCombineInit	raidou1 0xF4	45 of 60 words di
 fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/fclDrawBack.md	3		
 fldGbInit_Field	fclDrawBack	raidou1 0x94	12 of 37 words differ	docs/matching/fclDrawBack.md	11	retyping fldAreaWork_t 0x120..0x128 (hitZ/camAngle/camAngle2 to the s32 nowTalkModelID/nowTakaraTblIdx/nowHealTblIdx, or the same as f32/s32 unions) moved it from 7 to 12 differing words with the same stores.	
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		
-mapAiboTask	field/fldFileResolver	raidou1 0x9A8	246 of 618 words differ	docs/matching/field/fldFileResolver.md	12		
-mapSummonDvTask	field/fldFileResolver	raidou1 0x944	8 of 593 words differ	docs/matching/field/fldFileResolver.md	20		
+mapAiboTask	field/fldFileResolver	raidou1 0x9A8	246 of 618 words differ	docs/matching/field/fldFileResolver.md	12	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618.	
+mapSummonDvTask	field/fldFileResolver	raidou1 0x944	8 of 593 words differ	docs/matching/field/fldFileResolver.md	22		
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	14		
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.	

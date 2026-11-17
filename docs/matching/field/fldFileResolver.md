@@ -15,6 +15,8 @@ Raidou 1: 246 of 618 words differ, first at +0x8C.
 
 Raidou 1: 246 of 618 words differ with the same size and flow; retail schedules the y update first in the position blocks, where the x, y, z source order (which matched in mapSummonDvTask) does not. Two else-if arms with identical bodies are cross-jumped into one unless the second assigns speed before mode. Raidou 2's body differs, so Raidou 2 keeps the asm. Vector checked (menu).
 
+Fragile: the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618.
+
 Related: scheduling of the position update.
 
 ## mapSummonDvTask (field/fldFileResolver, raidou1 0x944)

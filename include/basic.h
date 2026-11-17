@@ -160,7 +160,7 @@ typedef struct
     s32 kubinodeidx; /* set to -1 by dds3ObjectBaseInitControlWorkData */
 } dds3ObjectBaseControlWorkData_t;
 
-/* dds3UnitObjectBasicConstructor clears the entire 0x20-byte payload.
+/* SMT3 clears a 0x20-byte payload; Raidou kubi code also uses 0x20-0x34.
  * Accessors and light linking pin the status, event unit and render fields. */
 typedef struct
 {
@@ -172,6 +172,12 @@ typedef struct
     s32 ot;
     u32 rotationFlags; /* Bit 0 applies the additional model rotation. */
     u32 kubiTargetID; /* Serial of the point basic the head turns to; 0 returns it. */
+    s32 word20;
+    s32 word24;
+    f32 kubiPitch; /* mdlLink_Kubi pitch */
+    f32 word2C;
+    f32 word30;
+    f32 kubiYaw; /* mdlLink_Kubi yaw */
 } dds3UnitObjectBasicWorkData_t;
 
 /* Matter-object payload. */

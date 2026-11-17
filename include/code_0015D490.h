@@ -63,6 +63,7 @@ extern mapSoundSe_t mapFileLoadSub8Work[8];
 extern mapSoundSe_t mapSoundKankyoSeSetWork[64];
 extern mapSeDelay_t datWork7[16];
 
+void mapProcShutDownSub(void);
 s32 fldIsMapTitleActive(void);
 s32 sbtlGetRndEncCnt(void);
 s32 sbtlGetRndEncMax(s32 area);

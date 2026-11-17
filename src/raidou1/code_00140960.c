@@ -117,7 +117,98 @@ INCLUDE_ASM(const s32, "code_00140960", mapUnitSetLight);
 
 INCLUDE_ASM(const s32, "code_00140960", nbMoveFormation);
 
-INCLUDE_ASM(const s32, "code_00140960", mapGetLightParam);
+void mapGetLightParam(mapLightParam_t *param, f32 x, f32 y, f32 z)
+{
+    LightTbl_t *tbl;
+    s32 r;
+    s32 g;
+    s32 b;
+
+    if (dds3SearchProcessName(mapStrLightEditUnit) != NULL) {
+        param->col0[0] = mapData21.col[0];
+        param->col0[1] = mapData21.col[1];
+        param->col0[2] = mapData21.col[2];
+        r = mapData21.col[0] * 128.0f;
+        g = mapData21.col[1] * 128.0f;
+        b = mapData21.col[2] * 128.0f;
+        param->rgb0 = r | (b << 16) | (g << 8) | 0x80000000;
+        param->col1[0] = mapUnitSetLightData.col[0];
+        param->col1[1] = mapUnitSetLightData.col[1];
+        param->col1[2] = mapUnitSetLightData.col[2];
+        r = mapUnitSetLightData.col[0] * 128.0f;
+        g = mapUnitSetLightData.col[1] * 128.0f;
+        b = mapUnitSetLightData.col[2] * 128.0f;
+        param->rgb1 = r | (b << 16) | (g << 8) | 0x80000000;
+        param->col2[0] = mapUnitSetLightData2.col[0];
+        param->col2[1] = mapUnitSetLightData2.col[1];
+        param->col2[2] = mapUnitSetLightData2.col[2];
+        r = mapUnitSetLightData2.col[0] * 128.0f;
+        g = mapUnitSetLightData2.col[1] * 128.0f;
+        b = mapUnitSetLightData2.col[2] * 128.0f;
+        param->rgb2 = r | (b << 16) | (g << 8) | 0x80000000;
+        param->cola[0] = fldSkyPlayerIdx[0];
+        param->cola[1] = fldSkyPlayerIdx[1];
+        param->cola[2] = fldSkyPlayerIdx[2];
+        r = fldSkyPlayerIdx[0] * 128.0f;
+        g = fldSkyPlayerIdx[1] * 128.0f;
+        b = fldSkyPlayerIdx[2] * 128.0f;
+        param->rgba = r | (b << 16) | (g << 8) | 0x80000000;
+        param->dir0.x = mapData21.dir[0];
+        param->dir0.y = mapData21.dir[1];
+        param->dir0.z = mapData21.dir[2];
+        param->dir0.w = 0.0f;
+        param->dir1.x = mapUnitSetLightData.dir[0];
+        param->dir1.y = mapUnitSetLightData.dir[1];
+        param->dir1.z = mapUnitSetLightData.dir[2];
+        param->dir1.w = 0.0f;
+        param->dir2.x = mapUnitSetLightData2.dir[0];
+        param->dir2.y = mapUnitSetLightData2.dir[1];
+        param->dir2.z = mapUnitSetLightData2.dir[2];
+        param->dir2.w = 0.0f;
+    } else {
+        tbl = &LightDataTbl[fldGlobalBase.amSBlock][mapGetLight(x, z)];
+        param->col0[0] = tbl->col0[0];
+        param->col0[1] = tbl->col0[1];
+        param->col0[2] = tbl->col0[2];
+        r = tbl->col0[0] * 128.0f;
+        g = tbl->col0[1] * 128.0f;
+        b = tbl->col0[2] * 128.0f;
+        param->rgb0 = r | (b << 16) | (g << 8) | 0x80000000;
+        param->col1[0] = tbl->col1[0];
+        param->col1[1] = tbl->col1[1];
+        param->col1[2] = tbl->col1[2];
+        r = tbl->col1[0] * 128.0f;
+        g = tbl->col1[1] * 128.0f;
+        b = tbl->col1[2] * 128.0f;
+        param->rgb1 = r | (b << 16) | (g << 8) | 0x80000000;
+        param->col2[0] = tbl->col2[0];
+        param->col2[1] = tbl->col2[1];
+        param->col2[2] = tbl->col2[2];
+        r = tbl->col2[0] * 128.0f;
+        g = tbl->col2[1] * 128.0f;
+        b = tbl->col2[2] * 128.0f;
+        param->rgb2 = r | (b << 16) | (g << 8) | 0x80000000;
+        param->cola[0] = tbl->cola[0];
+        param->cola[1] = tbl->cola[1];
+        param->cola[2] = tbl->cola[2];
+        r = tbl->cola[0] * 128.0f;
+        g = tbl->cola[1] * 128.0f;
+        b = tbl->cola[2] * 128.0f;
+        param->rgba = r | (b << 16) | (g << 8) | 0x80000000;
+        param->dir0.x = tbl->dir0[0];
+        param->dir0.y = tbl->dir0[1];
+        param->dir0.z = tbl->dir0[2];
+        param->dir0.w = 0.0f;
+        param->dir1.x = tbl->dir1[0];
+        param->dir1.y = tbl->dir1[1];
+        param->dir1.z = tbl->dir1[2];
+        param->dir1.w = 0.0f;
+        param->dir2.x = tbl->dir2[0];
+        param->dir2.y = tbl->dir2[1];
+        param->dir2.z = tbl->dir2[2];
+        param->dir2.w = 0.0f;
+    }
+}
 
 void mapCutSetLight(void) {
     f32 col[4];
