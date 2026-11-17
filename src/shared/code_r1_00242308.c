@@ -669,7 +669,7 @@ u32 effFinalizeQueuedFile(void);
 extern fileJob_t *fileDuplicateAndAppendJob(plistHandle_t *, fileJobPayload_t *);
 extern fileJob_t *fileQueueFindById(plistHandle_t *, u32);
 u32 effCloneSelectedFileJob(void);
-u32 effSelectLinkedFileState(void);
+u32 effSelectLinkedFileState(s32 unused);
 u32 effFlagFileQueueActive(void);
 
 typedef struct effBlock90_t {
@@ -1702,13 +1702,13 @@ u32 effCloneSelectedFileJob(void) {
 
 u32 effFlagFileQueueActive(void) {
     effPartsListExitRequested = 1;
-    /* Retail passes an argument the function does not take. */
-    ((u32 (*)(s32))effSelectLinkedFileState)(0);
+    effSelectLinkedFileState(0);
     return 0;
 }
 
-/* Select the queued file object's linked state when present; return zero in either case. */
-u32 effSelectLinkedFileState(void) {
+/* Select the queued file object's linked state when present; return zero in either case.
+   Retail passes an argument it does not use. */
+u32 effSelectLinkedFileState(s32 unused) {
     if (((effDebugMenu_t *)effEditorCurrentMenu)->parent != NULL) {
         effQueuedFileObject = ((effDebugMenu_t *)effEditorCurrentMenu)->parent;
     }
@@ -10520,7 +10520,7 @@ effCameraCreateRow_t *effData9[24] = {
 };
 
 effDebugMenuItem_t effReinitializeFileQueueDataEntry[2] = {
-    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = (u32 (*)(void))effSelectLinkedFileState }, { .color = 0xFFFFFF } },
     { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effReinitializeFileQueue }, { .color = 0xFFFFFF } },
 };
 
@@ -10530,7 +10530,7 @@ effDebugMenu_t effUpdatePartsListEditorData = {
 };
 
 effDebugMenuItem_t effFinalizeQueuedFileDataEntry[2] = {
-    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = (u32 (*)(void))effSelectLinkedFileState }, { .color = 0xFFFFFF } },
     { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFinalizeQueuedFile }, { .color = 0xFFFFFF } },
 };
 
@@ -10540,7 +10540,7 @@ effDebugMenu_t effUpdatePartsListEditorData3Entry4 = {
 };
 
 effDebugMenuItem_t effResetFileQueueStateDataEntry[2] = {
-    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = (u32 (*)(void))effSelectLinkedFileState }, { .color = 0xFFFFFF } },
     { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effResetFileQueueState }, { .color = 0xFFFFFF } },
 };
 
@@ -10550,7 +10550,7 @@ effDebugMenu_t effUpdatePartsListEditorData4Entry7 = {
 };
 
 effDebugMenuItem_t effUpdatePartsListEditorData3Entry6[2] = {
-    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = (u32 (*)(void))effSelectLinkedFileState }, { .color = 0xFFFFFF } },
     { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effCloneSelectedFileJob }, { .color = 0xFFFFFF } },
 };
 
@@ -10560,7 +10560,7 @@ effDebugMenu_t effUpdatePartsListEditorData3Entry5 = {
 };
 
 effDebugMenuItem_t effUpdatePartsListEditorData2Entry[2] = {
-    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = (u32 (*)(void))effSelectLinkedFileState }, { .color = 0xFFFFFF } },
     { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFlagFileQueueActive }, { .color = 0xFFFFFF } },
 };
 

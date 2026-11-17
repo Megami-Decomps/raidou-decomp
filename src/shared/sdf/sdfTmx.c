@@ -107,7 +107,8 @@ extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path,
                                           s32 (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                                           s32 callbackContext);
 
-extern s32 sdfFileCmdFileSize(void *aHandle);
+/* Retail passes two arguments sdfFileCmdFileSize does not take. */
+extern s32 sdfFileCmdFileSize(void *aHandle, s32 unused1, s32 unused2);
 
 #include "sdk_libkernl.h"
 
@@ -373,8 +374,7 @@ void *sdfFileRpcHandler(s32 function, void *request, s32 requestSize) {
         sdfFileRpcBuf[0] = EE_ADDR_S(deviceState);
         break;
     case SDF_STREAM_COMMAND_CONTROL:
-        /* Retail passes two arguments the function does not take. */
-        ((s32 (*)(void *, s32, s32))sdfFileCmdFileSize)(state->deviceState, EE_ADDR_S(request), EE_ADDR_S(request));
+        sdfFileCmdFileSize(state->deviceState, EE_ADDR_S(request), EE_ADDR_S(request));
         WaitSema(state->semaphore);
         sdfFileRpcBuf[0] = state->readResult;
         break;
