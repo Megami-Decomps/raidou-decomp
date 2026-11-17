@@ -5,8 +5,8 @@
 
 Units with a `.sdata` subsegment (tools/split_rodata.py --section sdata) get
 their small data from the object: splat writes the unit's whole .sdata to
-asm/<v>/data/<unit>.sdata.s. This splits that file into one file per symbol
-(asm/<v>/nonmatchings/<unit>/<sym>.s) and puts an INCLUDE_SDATA line for each
+asm/<v>/data/<unit>.sdata.s. This writes a file per symbol the C does not emit
+itself (asm/<v>/nonmatchings/<unit>/<sym>.s) and puts an INCLUDE_SDATA line for each
 into the C file in address order, so that what the C itself emits lands in
 between exactly where ee-gcc put it:
 
@@ -77,8 +77,7 @@ def place(version):
             write_unit(version, c, text)
             continue
         out_dir = ROOT / "asm" / version / "nonmatchings" / unit
-        out_dir.mkdir(parents=True, exist_ok=True)
-        syms = []
+        syms, files = [], {}
         blocks = list(BLOCK.finditer(data.read_text()))
         if not blocks:
             write_unit(version, c, text)
@@ -96,7 +95,7 @@ def place(version):
             if m.group(1):
                 k = min(k, int(re.findall(r"\d+", m.group(1))[-1]))
             align = f".align {min(k, cap)}\n"
-            write_text_if_changed(out_dir / f"{sym}.s", f".section .sdata\n\n{align}nonmatching {sym}\n\ndlabel {sym}\n{m.group(4)}enddlabel {sym}\n")
+            files[sym] = f".section .sdata\n\n{align}nonmatching {sym}\n\ndlabel {sym}\n{m.group(4)}enddlabel {sym}\n"
             syms.append((addr, sym))
         mine = {s for _, s in syms}
         # What the C emits itself: defined variables, and literals its functions write.
@@ -171,6 +170,8 @@ def place(version):
             if sym not in compiled:
                 placed.append((pos, sym))
         for pos, sym in sorted(placed, key=lambda p: -p[0]):
+            out_dir.mkdir(parents=True, exist_ok=True)
+            write_text_if_changed(out_dir / f"{sym}.s", files[sym])
             text = text[:pos] + ("\n" if pos == len(text) else "") + \
                 f'INCLUDE_SDATA(const s32, "{unit}", {sym});\n\n' + text[pos:]
             added += 1
