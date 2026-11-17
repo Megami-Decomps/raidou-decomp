@@ -16,7 +16,7 @@ struct sprHandle_t;
 
 s32 frLeaf15(struct jmsData_t *pData);
 s32 jmsDebugProcessCheck(void);
-void jmsDestroy(dds3ProcessID_t *PID);
+s32 jmsDestroy(dds3ProcessID_t *PID);
 struct sprHandle_t *jmsGetSpriteHandle(void);
 s32 jmsProcessCheck(void);
 void jmsProcessEnd(void);

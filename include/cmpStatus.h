@@ -21,7 +21,7 @@ void cmpSeqRankUp(struct tagCMP_STATUS_WORK *wk);
 void cmpSetFlagCamp(void);
 void cmpSetFlagDraw(s32 a_bDraw);
 void cmpSetModelLight(struct tagCMP_STATUS_WORK *wk);
-void cmpStartRankUp(void);
+s32 cmpStartRankUp(void);
 void cmpUpdatemodel(struct tagCMP_STATUS_WORK *wk);
 void cmpViewerModel(struct tagCMP_STATUS_WORK *wk);
 
