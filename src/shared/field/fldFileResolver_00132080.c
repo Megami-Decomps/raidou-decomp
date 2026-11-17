@@ -285,7 +285,6 @@ enum {
     FIELD_CAMERA_SETTING_COUNT = 8
 };
 
-typedef struct sdfDrawPacket_t sdfDrawPacket_t;
 
 typedef struct DmaPacketHeader DmaPacketHeader;
 

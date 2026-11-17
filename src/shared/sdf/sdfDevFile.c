@@ -85,10 +85,10 @@ typedef struct sdfTextureOffsetListEntry_t {
     s32 textureHeaderOffset;
 } sdfTextureOffsetListEntry_t;
 
-typedef struct sdfTextureOffsetListHeader_t {
+struct sdfTextureOffsetListHeader_t {
     u8 unknown00[0x10];
     s32 textureCount;
-} sdfTextureOffsetListHeader_t;
+};
 
 enum sdf_stream_output {
     SDF_STREAM_OUTPUT_RGBA32 = 0,

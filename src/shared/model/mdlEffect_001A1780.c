@@ -29,12 +29,12 @@ typedef struct mdlEffectResrc_IPU_t mdlEffectResrc_IPU_t;
 typedef struct mdlEffectResrcItem_t mdlEffectResrcItem_t;
 
 
-typedef struct mdlEffectResrcItem_t {
+struct mdlEffectResrcItem_t {
     u32 type;       /* 0x00 */
     s32 count;      /* 0x04 */
     void *handle;   /* 0x08 */
     u8 opaque0C[4]; /* 0x0C */
-} mdlEffectResrcItem_t;
+};
 
 typedef struct pibChunkItem_P2A_D3P_t {
     u8 type[4];

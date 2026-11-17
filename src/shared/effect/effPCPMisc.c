@@ -1359,13 +1359,13 @@ struct sdfModelExtraChunk_t;
 
 /* One serialized model extra chunk: the id and size, then the payload words
  * the chunk kind defines. sdfModelDef_t.extraData points at the first. */
-typedef struct sdfModelExtraChunk_t {
+struct sdfModelExtraChunk_t {
     u32 chunkId; /* 0x00: zero terminates the chunk stream */
     u32 size;    /* 0x04: byte extent to the next chunk */
     u32 data0;
     u32 data1;
     s32 sPos;
-} sdfModelExtraChunk_t;
+};
 
 /* Native model constructor reference: AMB roots and the FLD model wrapper's
  * four-word subrecord. The list has a variable-length body of node

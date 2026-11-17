@@ -69,27 +69,26 @@ typedef struct dds3Particle_SparkOffset_t3 dds3Particle_SparkOffset_t3;
 
 typedef struct dds3Particle_SmokeOffset_t3 dds3Particle_SmokeOffset_t3;
 
-typedef struct dds3BillResource_tag dds3BillResource_tag;
 
 typedef struct billData_t billData_t;
 
 typedef struct billOut_t billOut_t;
 
-typedef struct dds3Particle_BlurBuffList_t {
+struct dds3Particle_BlurBuffList_t {
     u128 *pPos;
     u16 count;
     u8 pad06[2];
     u32 abgr;
     f32 scale;
-} dds3Particle_BlurBuffList_t;
+};
 
-typedef struct dds3Particle_BlurBuff_t {
+struct dds3Particle_BlurBuff_t {
     u16 number;
     u16 point;
     dds3Particle_BlurBuffList_t *blurList;
     billHandle_t **pBill_Handle;
     sdfMemHandle_t *hMem;
-} dds3Particle_BlurBuff_t;
+};
 
 typedef struct {
     struct dds3Particle_BlurBuff_t *table; /* +8: kind 1 history source */
@@ -125,22 +124,22 @@ typedef union {
     u8 opaque[0x10];
 } parKindPayload_t;
 
-typedef struct dds3Particle_Effect_t {
+struct dds3Particle_Effect_t {
     u16 type; /* +0: ParKindStateKind tag */
     u8 pad02[2];
     /* The halfword bitfield preserves native int-alias dependencies. */
     u32 templateEntryCount : 16; /* 0x04: subrecords per particle in template clones */
     u32 : 16;
     parKindPayload_t payload; /* +8: tag-specific pointer/scalar view */
-} dds3Particle_Effect_t;
+};
 
-typedef struct parDispatch_t {
+struct parDispatch_t {
     void *(*func)(void *);
     void (*update)(struct dds3Particle_Basic_t *);
     void (*destroy)(void *);
-} parDispatch_t;
+};
 
-typedef struct effectBufferRecord_t {
+struct effectBufferRecord_t {
     f32 position[4];
     f32 velocity[4]; /* 0x10 */
     s32 age;        /* 0x20: live frame age; negative values encode delays or initialization states. */
@@ -149,14 +148,14 @@ typedef struct effectBufferRecord_t {
     f32 spin;       /* 0x2C: current billboard rotation */
     f32 motionMagnitude;       /* 0x30 */
     u8 pad34[0x0C];
-} effectBufferRecord_t;
+};
 
-typedef struct dds3Particle_Physics_t {
+struct dds3Particle_Physics_t {
     sdfMemHandle_t *hMem;
     effectBufferRecord_t *pPhysics;
-} dds3Particle_Physics_t;
+};
 
-typedef struct dds3ParticleColorAnim_t {
+struct dds3ParticleColorAnim_t {
     s32 type;          /* 0x00: 1 = no ramp, 2 = color0-to-color1 only */
     u32 color0;        /* 0x04 */
     u32 color1;        /* 0x08 */
@@ -174,9 +173,9 @@ typedef struct dds3ParticleColorAnim_t {
     f32 b12;           /* 0x38 */
     u32 alpha_s_add;        /* 0x3C */
     u32 alpha_e_sub;       /* 0x40 */
-} dds3ParticleColorAnim_t;
+};
 
-typedef struct effEmitterHead_t {
+struct effEmitterHead_t {
     f32 origin[4];         /* 0x00 */
     f32 scale[3];
     u8 pad1C[4];
@@ -204,9 +203,9 @@ typedef struct effEmitterHead_t {
     u8 pad140[2];
     u16 active;            /* 0x142 */
     u8 pad144[0xC];
-} effEmitterHead_t;
+};
 
-typedef struct effTemplatePacketList_t {
+struct effTemplatePacketList_t {
     effEmitterHead_t head; /* Common runtime prefix, 0x150 bytes. */
     u8 randomSphere; /* 0x150 */
     u8 restart; /* 0x151 */
@@ -231,9 +230,9 @@ typedef struct effTemplatePacketList_t {
     sdfMemHandle_t *listAllocation; /* 0x174: allocation descriptor */
     void *auxiliaryData; /* 0x178: optional 16 bytes per packet */
     sdfMemHandle_t *auxiliaryAllocation; /* 0x17C: allocation descriptor */
-} effTemplatePacketList_t;
+};
 
-typedef struct dds3Particle_Basic_t {
+struct dds3Particle_Basic_t {
     f32 origin[4];                /* 0x00 */
     f32 billboardScale;           /* 0x10: radial packet's base scale */
     f32 billboardScaleY;          /* 0x14 */
@@ -262,31 +261,31 @@ typedef struct dds3Particle_Basic_t {
     u16 type;            /* 0x140: object dispatch, distinct from kind */
     u16 state;              /* 0x142 */
     u8 pad144[0xC];
-} dds3Particle_Basic_t;
+};
 
-typedef struct parObjClientView_t {
+struct parObjClientView_t {
     dds3Particle_Basic_t owner;
     u8 mode150; /* 0x150 */
     u8 mode151; /* 0x151 */
     u8 opaque152[0x26];
-} parObjClientView_t;
+};
 
-typedef struct parKindResource_t {
+struct parKindResource_t {
     s32 type;
     s32 offset;
     u8 opaque08[8];
-} parKindResource_t;
+};
 
-typedef struct dds3ParOffsetBuffParts_t {
+struct dds3ParOffsetBuffParts_t {
     s32 point;
     s32 count;
     f32 (*points)[3];
-} dds3ParOffsetBuffParts_t;
+};
 
-typedef struct dds3ParOffsetBuff_t {
+struct dds3ParOffsetBuff_t {
     dds3ParOffsetBuffParts_t *pParts;
     s32 length;
-} dds3ParOffsetBuff_t;
+};
 
 typedef struct {
     dds3Particle_Basic_t head;
@@ -316,7 +315,7 @@ typedef struct {
     f32 radiusStep;
 } parBurstPacket_t;
 
-typedef struct effParticleRecord_t {
+struct effParticleRecord_t {
     f32 x;
     f32 y;
     f32 z;
@@ -326,9 +325,9 @@ typedef struct effParticleRecord_t {
     f32 speed;
     f32 angle;
     u8 opaque30[0x10];
-} effParticleRecord_t;
+};
 
-typedef struct effParticleOverlay_t {
+struct effParticleOverlay_t {
     f32 x;
     f32 y;
     f32 z;
@@ -349,17 +348,17 @@ typedef struct effParticleOverlay_t {
     u32 colorMask;
     u8 padF4[4];
     dds3Particle_Physics_t *buffer;
-} effParticleOverlay_t;
+};
 
-typedef struct effTemplateScaleRecord_t {
+struct effTemplateScaleRecord_t {
     u8 opaque00[0x20];
     u32 initialTag;
     u8 opaque24[0x10];
     f32 scale;
     u8 opaque38[8];
-} effTemplateScaleRecord_t;
+};
 
-typedef struct dds3Particle_Radiate_t3 {
+struct dds3Particle_Radiate_t3 {
     effEmitterHead_t head; /* shared emitter prefix, 0x150 bytes */
     u8 mode;             /* 0x150 */
     u8 loop;             /* 0x151 */
@@ -367,7 +366,7 @@ typedef struct dds3Particle_Radiate_t3 {
     u32 period;          /* 0x15C */
     f32 rotationStepDegrees;            /* 0x160 */
     f32 stepLength;            /* 0x164 */
-} dds3Particle_Radiate_t3;
+};
 
 /* Each emitter uses a 64-byte packet, with its own four-word motion state. */
 typedef struct {
@@ -469,7 +468,7 @@ typedef struct {
     f32 offsetAcceleration;
 } parSparkOffsetPacket_t;
 
-typedef struct dds3Particle_Spiral_t3 {
+struct dds3Particle_Spiral_t3 {
     effEmitterHead_t head;
     u8 flag150;
     u8 loop;
@@ -482,9 +481,9 @@ typedef struct dds3Particle_Spiral_t3 {
     f32 verticalAccelerationPct;
     f32 radiusRange; /* 0x170 */
     f32 targetRadiusJitter;  /* 0x174 */
-} dds3Particle_Spiral_t3;
+};
 
-typedef struct dds3Particle_Smoke_t3 {
+struct dds3Particle_Smoke_t3 {
     effEmitterHead_t head;
     u8 loop;
     u8 pad151[3];
@@ -497,9 +496,9 @@ typedef struct dds3Particle_Smoke_t3 {
     f32 verticalAccelerationPct;
     f32 verticalSpeedJitter;     /* 0x170 */
     f32 waveAmplitudeJitter;     /* 0x174 */
-} dds3Particle_Smoke_t3;
+};
 
-typedef struct dds3Particle_Spark_t3 {
+struct dds3Particle_Spark_t3 {
     effEmitterHead_t head;
     u8 mode;         /* 0x150 */
     u8 loop;         /* 0x151 */
@@ -513,9 +512,9 @@ typedef struct dds3Particle_Spark_t3 {
     f32 speed;       /* 0x168 */
     f32 decayPct;    /* 0x16C */
     f32 jitter;      /* 0x170 */
-} dds3Particle_Spark_t3;
+};
 
-typedef struct dds3Particle_SphereSpiral_t3 {
+struct dds3Particle_SphereSpiral_t3 {
     effEmitterHead_t head;
     u8 mode;         /* 0x150 */
     u8 loop;         /* 0x151 */
@@ -526,9 +525,9 @@ typedef struct dds3Particle_SphereSpiral_t3 {
     f32 targetRadius;
     f32 jitterA;     /* 0x164 */
     f32 jitterB;     /* 0x168 */
-} dds3Particle_SphereSpiral_t3;
+};
 
-typedef struct dds3Particle_SphereSmoke_t3 {
+struct dds3Particle_SphereSmoke_t3 {
     effEmitterHead_t head;
     u8 loop;
     u8 pad151[3];
@@ -542,9 +541,9 @@ typedef struct dds3Particle_SphereSmoke_t3 {
     f32 up_s_r;
     f32 ampli_r;
     f32 radius_s_r;
-} dds3Particle_SphereSmoke_t3;
+};
 
-typedef struct dds3Particle_SphereRing_t3 {
+struct dds3Particle_SphereRing_t3 {
     effEmitterHead_t head;
     u8 pad150;
     u8 loop;         /* 0x151 */
@@ -553,9 +552,9 @@ typedef struct dds3Particle_SphereRing_t3 {
     f32 radius_r;      /* 0x15C */
     u32 simu_num;      /* 0x160 */
     f32 roll_s;    /* 0x164 */
-} dds3Particle_SphereRing_t3;
+};
 
-typedef struct dds3Particle_Spark2_t3 {
+struct dds3Particle_Spark2_t3 {
     effEmitterHead_t basic;
     u8 mode;         /* 0x150 */
     u8 loop;         /* 0x151 */
@@ -569,9 +568,9 @@ typedef struct dds3Particle_Spark2_t3 {
     f32 decayPct;    /* 0x16C */
     u8 pad170[4];
     f32 degrees;     /* 0x174 */
-} dds3Particle_Spark2_t3;
+};
 
-typedef struct dds3Particle_SparkOffset_t3 {
+struct dds3Particle_SparkOffset_t3 {
     effEmitterHead_t head;
     u8 mode;         /* 0x150 */
     u8 loop;         /* 0x151 */
@@ -585,9 +584,9 @@ typedef struct dds3Particle_SparkOffset_t3 {
     f32 speed;       /* 0x168: launch magnitude */
     f32 decayPct;    /* 0x16C */
     f32 jitter;      /* 0x170: launch magnitude jitter */
-} dds3Particle_SparkOffset_t3;
+};
 
-typedef struct dds3Particle_SmokeOffset_t3 {
+struct dds3Particle_SmokeOffset_t3 {
     effEmitterHead_t head;
     u8 loop;
     u8 flag151;
@@ -602,7 +601,7 @@ typedef struct dds3Particle_SmokeOffset_t3 {
     f32 verticalSpeedJitter;
     f32 waveAmplitudeJitter;
     f32 (*aux)[4];   /* 0x178: 16 bytes per packet */
-} dds3Particle_SmokeOffset_t3;
+};
 
 enum ParKindStateKind {
     PAR_KIND_STATE_HISTORY = 1,

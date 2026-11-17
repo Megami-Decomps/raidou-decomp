@@ -91,7 +91,6 @@ extern dds3Effect_PartialMultiFilterParam_t dblurParam2;
 extern dds3Effect_RippleBlurParam_t rblurParam3;
 extern sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number);
 
-typedef billHandle_t billHandle_t;
 
 /* Shared billboard-emitter parameters copied into each live set. Creation and
  * parameter copies clamp startDelaySpread, fadeIn, and fadeOut to at least

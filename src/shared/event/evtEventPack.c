@@ -18,7 +18,6 @@
 
 dds3ProcessID_t *evtSearchEventPack(u32 eventno);
 
-typedef u8 sdfTextureClampMode_t;
 
 void *dds3GetProcessData(dds3ProcessID_t *id);
 

@@ -222,7 +222,6 @@ typedef struct billChildPayload_t {
 typedef char billChildPayload_size_must_be_0x50[
     (sizeof(billChildPayload_t) == 0x50) ? 1 : -1];
 
-typedef struct DmaPacketHeader DmaPacketHeader;
 
 enum {
     BILL_ANIMATION_ENTRY_MODE_MTEX = 0x00000040,

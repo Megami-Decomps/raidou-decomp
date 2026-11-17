@@ -19,7 +19,7 @@ typedef struct frFontChild_t
     struct frFontChild_t *next;
 } frFontChild_t;
 
-typedef struct frFontRequest_t
+struct frFontRequest_t
 {
     u32 unk00;
     s32 x;
@@ -29,7 +29,7 @@ typedef struct frFontRequest_t
     void *lastChild;
     struct frFontRequest_t *prev;
     u8 unk28[0x1C];
-} frFontRequest_t;
+};
 
 typedef struct { u8 unk00[0x20]; u64 value, registerCode; } itfGsState_t;
 

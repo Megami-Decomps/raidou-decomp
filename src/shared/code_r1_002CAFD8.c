@@ -20,10 +20,7 @@
 #include "dds3CameraObjectBasic.h"
 #include "sdfVu0.h"
 #include "sdf3D.h"
-
-typedef struct frFontHandle_t frFontHandle_t;
-
-typedef struct frFontRequest_t frFontRequest_t;
+#include "font.h"
 
 typedef struct
 {
@@ -464,8 +461,6 @@ typedef struct
 } campDhEntryWork_t;
 
 extern campDhEntryWork_t *campDhEntryWork FAKEMATCH_ASM_NAME("campDhUpdateWork");
-
-#include "font.h"
 
 extern s16 cmpHeartsMasterPhase FAKEMATCH_ASM_NAME("rstHeartsMasterPhase");
 extern datUnitWork_t *volatile cmpStatusBirthLive FAKEMATCH_ASM_NAME("cmbBirthPanel");

@@ -62,7 +62,6 @@ typedef struct fldResourceEffect_t
 
 struct dds3BillResource_tag;
 
-typedef struct dds3BillResource_tag dds3BillResource_tag;
 
 struct dds3BillAnimResource_tag;
 
@@ -78,7 +77,6 @@ typedef struct EvtUnit EvtUnit;
 
 struct sdfItemArray_t;
 
-typedef struct sdfItemArray_t sdfItemArray_t;
 
 struct sdfModelExtraChunk_t;
 
@@ -90,7 +88,6 @@ typedef struct SdfDmaTagHeader SdfDmaTagHeader;
 
 struct sdfModelNode_t;
 
-typedef struct sdfModelNode_t sdfModelNode_t;
 
 struct effPartHandle_t;
 

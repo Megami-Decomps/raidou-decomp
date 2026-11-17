@@ -2022,7 +2022,6 @@ void effFreeIndexedEntries(effClassWork_t *work);
 extern f32 effWorldUpVector[4];
 void effUpdateRadialWavePointRows(effClassWork_t *work);
 
-typedef struct effMatrix4_t effMatrix4_t;
 
 void effDrawFivePointGroups(effPointSet_t *set, effMatrix4_t *matrix);
 void effDrawTintedFivePointGroupRows(effClassWork_t *work);

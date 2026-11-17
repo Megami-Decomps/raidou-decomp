@@ -115,7 +115,6 @@ extern const char evtMsgReadBeStart[];
 extern const char evtMsgPmvRunNoProc[];
 extern const char evtMsgTexBeNoProc[];
 
-typedef u8 sdfTextureClampMode_t;
 
 #include "basic.h"
 #include "dds3obj.h"

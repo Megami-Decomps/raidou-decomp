@@ -177,7 +177,6 @@ struct EffNodeDescriptor;
 
 extern u8 evtViewerHasUpdateFlag(evtViewerInfo_t *);
 
-typedef struct pmdTmxData_t pmdTmxData_t;
 
 void evtApplyViewerTimelineFrame(s32 time, evtViewerInfo_t *viewer);
 void evtViewerPushCommandHistory(s32 actionMode, s32 first, s32 second, evtViewerInfo_t *viewer);
@@ -194,7 +193,6 @@ typedef struct evtViewerObjectData_t {
 u16 evtViewerPopHistory(evtViewerInfo_t *viewer);
 extern char evtViewerTaskName[];
 
-typedef struct pmdTmxData_t pmdTmxData_t;
 
 extern void ValidatePathFrame(s32 endTime, evtViewerInfo_t *viewer);
 extern void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer);

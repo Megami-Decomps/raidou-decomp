@@ -41,7 +41,6 @@ extern f32 evtSceneLightDefaultColor[4];
 extern f32 evtSceneLightDefaultDir[4];
 extern f32 evtSceneLightDefaultAmbient[4];
 
-typedef struct fileRequest fileRequest_t;
 
 typedef struct pmdCameraTable_t {
     s32 NameIndex, Reserve1, Reserve2, Reserve3;
