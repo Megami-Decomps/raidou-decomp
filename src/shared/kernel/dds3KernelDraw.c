@@ -1053,26 +1053,21 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3IsBistaZBufferClear);
 #endif
 
-/* NON_MATCHING: 8 of 21 words match. Retail sign-extends the char argument into a second register; the header prototype takes BISTA_MODE. */
-#ifdef NON_MATCHING
 void dds3ChangeBistaMode(BISTA_MODE mode)
 {
     dds3DrawBistaData = mode;
-    if (mode < 3) {
-        if (mode > 0) {
-            dds3Data30.a = 0x80;
-        } else if (mode == 0) {
-            dds3ChangeBistaModeData = 0;
-            dds3Data32 = 0;
-        }
-    } else if (mode == 3) {
+    switch (dds3DrawBistaData) {
+    case BISTA_MODE_ALPHA:
+    case BISTA_MODE_FADE:
         dds3ChangeBistaModeData = 0;
         dds3Data32 = 0;
+        break;
+    case BISTA_MODE_MOVE:
+    case BISTA_MODE_TALKEVENT:
+        dds3Data30.a = 0x80;
+        break;
     }
 }
-#else
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3ChangeBistaMode);
-#endif
 
 void dds3BistaUpdate(void)
 {

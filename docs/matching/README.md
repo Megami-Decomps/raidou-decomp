@@ -39,7 +39,6 @@ menu scenarios); an entry says which paths they covered.
 | 4 | event/evtEventViewerMenu | raidou1, raidou2 | [event/evtEventViewerMenu.md](event/evtEventViewerMenu.md) |
 | 4 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 4 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
-| 4 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 3 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
 | 3 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
@@ -47,6 +46,7 @@ menu scenarios); an entry says which paths they covered.
 | 3 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
 | 3 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 3 | fclDrawBack | raidou1 | [fclDrawBack.md](fclDrawBack.md) |
+| 3 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 3 | sbtlSub | raidou1 | [sbtlSub.md](sbtlSub.md) |
 | 3 | sbtl_0029BFB8 | raidou1 | [sbtl_0029BFB8.md](sbtl_0029BFB8.md) |
 | 3 | sdf/sdfMovie | raidou1, raidou2 | [sdf/sdfMovie.md](sdf/sdfMovie.md) |
@@ -149,7 +149,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | jmsMisc | raidou1, raidou2 | [jmsMisc.md](jmsMisc.md) |
 | 1 | kernel/dds3KernelDraw_0010A750 | raidou1, raidou2 | [kernel/dds3KernelDraw_0010A750.md](kernel/dds3KernelDraw_0010A750.md) |
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
-| 1 | newbattle/nbTarSelProcess | raidou1, raidou2 | [newbattle/nbTarSelProcess.md](newbattle/nbTarSelProcess.md) |
 | 1 | sbtlEff_00289E50 | raidou1 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
 | 1 | sdf/sdfDefaultMain | raidou1, raidou2 | [sdf/sdfDefaultMain.md](sdf/sdfDefaultMain.md) |
 | 1 | sdf/sdfDraw | raidou1, raidou2 | [sdf/sdfDraw.md](sdf/sdfDraw.md) |

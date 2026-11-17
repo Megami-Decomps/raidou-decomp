@@ -311,14 +311,12 @@ itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316
 TestMsgMngD_Process	interface/itfTestMesManager_0018CC20	raidou1 0x9C, raidou2 0x9C	6 of 39 words differ	docs/matching/interface/itfTestMesManager_0018CC20.md	3		
 jmsChkCommonInput	jmsMisc	raidou1 0x2DC, raidou2 0x2DC	1 of 183 words differ	docs/matching/jmsMisc.md	3		
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3		
-dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11		
-dds3DrawBista	kernel/dds3KernelDraw	raidou1 0x2AC	151 of 157 words differ	docs/matching/kernel/dds3KernelDraw.md	17		
-dds3RunQuake	kernel/dds3KernelDraw	raidou1 0x1F4, raidou2 0x1F4	65 of 124 words differ	docs/matching/kernel/dds3KernelDraw.md	32		
+dds3DrawBista	kernel/dds3KernelDraw	raidou1 0x2AC	151 of 157 words differ	docs/matching/kernel/dds3KernelDraw.md	11		
+dds3RunQuake	kernel/dds3KernelDraw	raidou1 0x1F4, raidou2 0x1F4	65 of 124 words differ	docs/matching/kernel/dds3KernelDraw.md	26		
 dds3CallGrAllocPacketBuff8	kernel/dds3KernelDraw_0010A750	raidou1 0x208, raidou2 0x208	15 of 130 words differ	docs/matching/kernel/dds3KernelDraw_0010A750.md	3		
 dds3DrawFirstProcess	kernel/dds3KernelProcess	raidou1 0x7C0	461 of 490 words differ	docs/matching/kernel/dds3KernelProcess.md	3		
 fmProcTrigSequence_slMain	mc/slMain	raidou1 0x300	68 of 190 words differ	docs/matching/mc/slMain.md	3		
 slQueryYesNoDraw	mc/slMain	raidou1 0x960	0 of 600 words differ	docs/matching/mc/slMain.md	11		
-itfMenuGetMenuNum	newbattle/nbTarSelProcess	raidou1 0x20, raidou2 0x20	0 of 8 words differ	docs/matching/newbattle/nbTarSelProcess.md	3		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		

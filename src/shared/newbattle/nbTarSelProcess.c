@@ -1,14 +1,18 @@
 #include "common.h"
 
-extern u8 *dds3GetProcessData(void);
-
-#ifdef NON_MATCHING
-/* Same bytes as retail, but 0xB66 is a raw offset into process data whose
- * struct is not defined yet. The callee takes no argument here, unlike the
- * dds3GetProcessData(task) other units declare. */
-u8 itfMenuGetMenuNum(void) {
-    return dds3GetProcessData()[0xB66];
-}
+/* The menu process's data, known only as far as the menu count. */
+typedef struct itfMenuProcessData_t {
+#ifdef VERSION_RAIDOU1
+    u8 unk000[0xB66];
 #else
-INCLUDE_ASM(const s32, "newbattle/nbTarSelProcess", itfMenuGetMenuNum);
+    u8 unk000[0xBAA];
 #endif
+    u8 menuNum;
+} itfMenuProcessData_t;
+
+extern itfMenuProcessData_t *dds3GetProcessData(void);
+
+/* The callee takes no argument here, unlike the dds3GetProcessData(task) other units declare. */
+u8 itfMenuGetMenuNum(void) {
+    return dds3GetProcessData()->menuNum;
+}

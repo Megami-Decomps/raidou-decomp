@@ -8,12 +8,6 @@ Stack spills and register allocation differ; fade packet draw from SMT3 dds3Draw
 
 Related: [smt3 levers: scalar spill slots](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scalar-spills.md).
 
-## dds3ChangeBistaMode (kernel/dds3KernelDraw, raidou1 0x54, raidou2 0x54)
-
-Raidou 1 and Raidou 2: 13 of 15 words differ, first at +0x0; emitted 60 bytes, native 84 bytes.
-
-Retail sign-extends the char argument into a second register.
-
 ## dds3DrawBista (kernel/dds3KernelDraw, raidou1 0x2AC)
 
 Raidou 1: 151 of 157 words differ, first at +0x0; emitted 628 bytes, native 684 bytes.
