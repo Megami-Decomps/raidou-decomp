@@ -119,3 +119,11 @@ Raidou 1: 346 of 381 words differ, first at +0x3C; emitted 1524 bytes, native 16
 Flow follows retail with shared search/fail/found tails; wk_sbtl reload register in cases 1/2 and s-register rotation differ, so case 2's tail cross-jumps. Vector checked.
 
 Related: regalloc.
+
+## Proc (sbtlActAI, raidou1 0x2F00)
+
+Raidou 1: 2834 of 3008 words differ, first at +0x8; emitted 12044 bytes, native 12032 bytes.
+
+Size and control flow match retail when compiled alone (12032 bytes, 12044 inside the unit); case order follows the jump table, the shared tail is labelled at the end of case 51.
+
+Related: register allocation (retail holds &wk->rot in a 7th saved register) and a lw test of field414 & 0x82 that points at a u32 bitfield container at 0x414.

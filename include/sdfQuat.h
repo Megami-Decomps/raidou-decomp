@@ -9,6 +9,7 @@ void FromRotation(f32 aAngle);
 void Lerp(f32 aRatio);
 void Mult(void);
 void Normalize(void);
+void Slerp(f32 aRatio);
 void ToMatrix(void);
 
 #endif

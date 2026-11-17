@@ -302,7 +302,7 @@ typedef struct SBTL_WORK {
     s32 enshutuCnt[8];
     u8 pad700[0x720 - 0x700];
     s32 scrData[8];
-    u8 pad740[0x74C - 0x740];
+    s32 scrWarp[3];
     s32 field74C;
     s32 field750;
     s32 field754;

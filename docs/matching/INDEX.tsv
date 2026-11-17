@@ -217,7 +217,7 @@ fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/
 fldGbInit_Field	fclDrawBack	raidou1 0x94	12 of 37 words differ	docs/matching/fclDrawBack.md	11	retyping fldAreaWork_t 0x120..0x128 (hitZ/camAngle/camAngle2 to the s32 nowTalkModelID/nowTakaraTblIdx/nowHealTblIdx, or the same as f32/s32 unions) moved it from 7 to 12 differing words with the same stores.	
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		
 mapAiboTask	field/fldFileResolver	raidou1 0x9A8	246 of 618 words differ	docs/matching/field/fldFileResolver.md	14	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618.	
-mapSummonDvTask	field/fldFileResolver	raidou1 0x944	8 of 593 words differ	docs/matching/field/fldFileResolver.md	24		
+mapSummonDvTask	field/fldFileResolver	raidou1 0x944	8 of 593 words differ	docs/matching/field/fldFileResolver.md	24	the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit (reverting any one leaves 6, all three gives 8).	
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	14		
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.	
@@ -261,6 +261,7 @@ GetSenkaiPointSub	sbtlActAI	raidou1 0x244	57 of 145 words differ	docs/matching/s
 sbtlCallMemset14	sbtlActAI	raidou1 0x408	125 of 256 words differ	docs/matching/sbtlActAI.md	97		
 sbtlRefSbtl22	sbtlActAI	raidou1 0x38	11 of 14 words differ	docs/matching/sbtlActAI.md	105		
 sbtlGetUseTable_Target_sbtlActAI	sbtlActAI	raidou1 0x64C	346 of 381 words differ	docs/matching/sbtlActAI.md	115		
+Proc	sbtlActAI	raidou1 0x2F00	2834 of 3008 words differ	docs/matching/sbtlActAI.md	123		
 sbtlCheckHitArea_sbtlDMG	sbtlDMG	raidou1 0x270	71 of 154 words differ	docs/matching/sbtlDMG.md	3		
 sbtlCreateHitC_New_sbtlDMG	sbtlDMG	raidou1 0x884	294 of 545 words differ	docs/matching/sbtlDMG.md	11		
 sbtlGetSide	sbtlDMG	raidou1 0x114	53 of 70 words differ	docs/matching/sbtlDMG.md	21		

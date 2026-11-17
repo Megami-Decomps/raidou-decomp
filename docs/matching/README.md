@@ -18,7 +18,7 @@ menu scenarios); an entry says which paths they covered.
 |---|---|---|---|
 | 18 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
 | 15 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
-| 14 | sbtlActAI | raidou1 | [sbtlActAI.md](sbtlActAI.md) |
+| 15 | sbtlActAI | raidou1 | [sbtlActAI.md](sbtlActAI.md) |
 | 12 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 10 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 10 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |

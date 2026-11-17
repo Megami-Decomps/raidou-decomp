@@ -22,7 +22,11 @@ typedef struct SBTLUNIT_MODEL {
     u8 pad010[0x10];
     sdfVector4_t vec20;
     sdfVector4_t vec30;
-    u8 pad40[0x90 - 0x40];
+    sdfVector4_t hitbk_dir;
+    sdfVector4_t scrPos;
+    sdfVector4_t scrRot;
+    sdfVector4_t scrPos2;
+    sdfVector4_t scrRot2;
     sdfVector4_t scrPos3;
     u8 padA0[0xF0 - 0xA0];
     struct sdfMemHandle_t *handle;
@@ -46,7 +50,10 @@ typedef struct SBTLUNIT_MODEL {
     f32 field130;
     u8 pad134[0x140 - 0x134];
     s16 field140;
-    u8 pad142[0x170 - 0x142];
+    u8 pad142[0x164 - 0x142];
+    f32 hitbk_cnt;
+    f32 hitbk_cmpcnt;
+    f32 hitbk_rate;
     s8 nonempflg;
     u8 pad171[0x174 - 0x171];
     s8 dataflg;
@@ -262,7 +269,7 @@ struct SBTLUNIT_WORK {
     s32 motionno;
     s32 motionID;
     f32 m_rate;
-    u8 visualKind;
+    s8 visualKind;
     u8 pad3B5[0x1];
     s16 motion_setno;
     s16 fade_sttime;
@@ -294,7 +301,7 @@ struct SBTLUNIT_WORK {
     struct evtUnit_t *hEveUnit_d;
     struct mdlObj_t *hModel_d;
     u8 field414;
-    u8 field415;
+    s8 field415;
     u8 pad416[0x2];
     u32 flg;
     u32 vstatus;
@@ -331,7 +338,7 @@ struct SBTLUNIT_WORK {
     struct SBTLAI_WORK *aiwk;
     s16 actCounter;
     s16 actMax;
-    u8 pad490[0x2];
+    s16 field490;
     s16 field492; /* compared with a hit's actID when flg & 0x800 */
     u8 pad494[0x4];
     s16 field498;
@@ -347,7 +354,8 @@ struct SBTLUNIT_WORK {
     s16 nguard_dmgcnt;
     u8 pad4B4[0x4C0 - 0x4B4];
     s32 bst_effserialID2;
-    u8 pad4C4[0xC];
+    u8 pad4C4[0x8];
+    s32 field4CC;
     struct sdfMemHandle_t *msgHandle;
     struct fileRequest *msgFile;
     void *msgData;

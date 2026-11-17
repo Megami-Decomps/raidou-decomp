@@ -18,6 +18,13 @@
 #include "code_r1_0027CBE8.h"
 #include "mdlManager.h"
 #include "sBtlScript.h"
+#include "sBtlEncount.h"
+#include "sBtlVisual.h"
+#include "sdfQuat.h"
+#include "sdfMath.h"
+#include "dds3Basic.h"
+#include "fldProcess.h"
+#include "sBtlPlayer.h"
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlFunc11);
 
@@ -1115,7 +1122,230 @@ s32 SetUnitHitApproach(struct SBTLUNIT_WORK *wk) {
     return hit == 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlMVSupport);
+s32 sbtlMVSupport(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *wklock;
+    s32 lockID;
+    s32 count;
+    s32 i;
+    s32 r;
+    f32 bez;
+    f32 len;
+    f32 len2;
+    f32 ground;
+    f32 y;
+
+    count = 0;
+    lockID = sbtlSetNoMP(wk);
+    wklock = sbtlSearchUnit_ID(wk_sbtl->unitList, lockID);
+    if ((!(wk_sbtl->flg & 0x40) || (wk->flg & 0x10)) && SetUnitHitApproach(wk)) {
+        if (wk->model->flags & 0x10) {
+            sbtlGetRotate(wk, &wk->model->vec00);
+            UnitMV(wk, &wk->model->vec00);
+        }
+        if ((wk->model->flags & 1) && lockID != wk->field1A0 && wklock != NULL && sbtlCheckExist(wklock)) {
+            if (!sbtlCheckCrossCircle(&wk->pos, wk->model->field120, &wklock->pos, wklock->model->field11C)) {
+                sbtlGetRotate(wk, &wklock->pos);
+                UnitMV(wk, &wklock->pos);
+            }
+        }
+        if ((wk->model->flags & 0x200) && lockID != wk->field1A0 && wklock != NULL && sbtlCheckExist(wklock)) {
+            sbtlGetRotate(wk, &wklock->pos);
+            UnitMV(wk, &wklock->pos);
+        }
+        if ((wk->model->flags & 8) && lockID != wk->field1A0 && wklock != NULL && sbtlCheckExist(wklock)) {
+            wk->field424 = wklock->field424;
+            SDF_VU0_LOADVECTOR(&wklock->rot);
+            SDF_VU0_STOREVECTOR(&wk->rot);
+            wk->angleY = wklock->angleY;
+        }
+        if ((wk->model->flags & 2) && lockID != wk->field1A0 && wklock != NULL && sbtlCheckExist(wklock)) {
+            if (sbtlCheckCrossCircle(&wk->pos, wk->model->field124, &wklock->pos, wklock->model->field120)) {
+                wk->field424 = wklock->field424;
+                wk->angleY = wklock->angleY;
+                SDF_VU0_LOADVECTOR(&wklock->mv_spd);
+                SDF_VU0_STOREVECTOR(&wk->mv_spd);
+            }
+        }
+        if ((wk->vstatus & 0x800) && !(wk->flg & 0x800)) {
+            if (wk->flg & 0x10000000) {
+                bez = 0.0f;
+            } else {
+                switch (wk->visualKind) {
+                case 0:
+                    bez = sbtlGetBezier(wk->model->hitbk_rate, wk->model->hitbk_rate * 0.8f,
+                                        wk->model->hitbk_rate * 0.6f, 0.0f, wk->model->hitbk_cnt);
+                    break;
+                case 1:
+                    bez = sbtlGetBezier(wk->model->hitbk_rate, wk->model->hitbk_rate * 0.6f,
+                                        wk->model->hitbk_rate * 0.3f, 0.0f, wk->model->hitbk_cnt);
+                    break;
+                case 2:
+                    bez = sbtlGetBezier(wk->model->hitbk_rate, wk->model->hitbk_rate * 0.3f,
+                                        wk->model->hitbk_rate * 0.1f, 0.0f, wk->model->hitbk_cnt);
+                    break;
+                default:
+                    bez = sbtlGetBezier(wk->model->hitbk_rate, wk->model->hitbk_rate * 0.1f,
+                                        wk->model->hitbk_rate * 0.1f, 0.0f, wk->model->hitbk_cnt);
+                    break;
+                }
+            }
+            if (bez > 40.0f) {
+                bez = 40.0f;
+            }
+            if (bez < -40.0f) {
+                bez = -40.0f;
+            }
+            SDF_VU0_LOADVECTOR(&wk->model->hitbk_dir);
+            SDF_VU0_SCALEVECTOR_BITS(bez);
+            SDF_VU0_LOADVECTOR_B(&wk->pos);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR_F32(&wk->pos);
+            for (i = 0; i < wk_sbtl->unitList->number; i++) {
+                wklock = wk_sbtl->unitList->pUnitL[i].pUnit;
+                if (wklock == NULL || wklock->field1A0 == wk->field1A0) {
+                    continue;
+                }
+                if (sbtlBtlMVSupportSub2(wk, wklock) || !sbtlCheckExist2_sbtlUnit(wklock)) {
+                    continue;
+                }
+                if ((wk->flg & 1) || !sbtlBtlMVSupportSub(wk, wklock)) {
+                    continue;
+                }
+                if (!sbtlCheckHITCheck_Char(wk) || !sbtlCheckHITCheck_Char(wklock) || (wklock->flg & 1)) {
+                    continue;
+                }
+                if (!sbtlCheckCrossCircle_Rot(&wk->pos, &wk->rot, wk->model->field11C, &wklock->pos,
+                                              wklock->model->field11C, -1.0f)) {
+                    continue;
+                }
+                sbtlSetPullPos(wk, wk->model->field11C, wklock, wklock->model->field11C,
+                               sbtlFree(wklock->pos.x, wklock->pos.z));
+                SDF_VU0_STOREVECTOR(&wk->pos);
+                if (++count >= 2) {
+                    SDF_VU0_LOADVECTOR(&wk->nextpos);
+                    SDF_VU0_STOREVECTOR(&wk->pos);
+                    break;
+                }
+            }
+            wk->model->hitbk_cnt += wk->model->hitbk_cmpcnt;
+            if (wk->model->hitbk_cnt >= 1.0f) {
+                wk->vstatus &= ~0x800;
+            }
+        }
+    }
+    SDF_VU0_LOADVECTOR(&wk->mv_spd);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_GETLENGTH(len);
+    if (PosOut(wk)) {
+        wk->field4A0++;
+        wk->field4A0 = (wk->field4A0 <= 0) ? 0 : (wk->field4A0 > 20) ? 20 : wk->field4A0;
+    }
+    if (wk->model->flags & 4) {
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            wklock = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (wklock == NULL || wklock->field1A0 == wk->field1A0) {
+                continue;
+            }
+            if (sbtlBtlMVSupportSub2(wk, wklock) || !sbtlCheckExist2_sbtlUnit(wklock)) {
+                continue;
+            }
+            if ((wk->flg & 1) || !sbtlBtlMVSupportSub(wk, wklock)) {
+                continue;
+            }
+            if (!sbtlCheckHITCheck_Char(wk) || !sbtlCheckHITCheck_Char(wklock) || (wklock->flg & 1)) {
+                continue;
+            }
+            if ((wk->vstatus & 0x200) && !(wklock->vstatus & 0x200)) {
+                continue;
+            }
+            if (wk->flg & 0x80000) {
+                SDF_VU0_LOADVECTOR(&wk->posSaved);
+                SDF_VU0_STOREVECTOR(&wk->pos);
+            }
+            SDF_VU0_LOADVECTOR(&wklock->mv_spd);
+            SDF_VU0_NORMALIZE();
+            SDF_VU0_GETLENGTH(len2);
+            if (!sbtlCheckCrossCircle_Rot(&wk->pos, &wk->rot, wk->model->field11C, &wklock->pos,
+                                          wklock->model->field11C, -1.0f)) {
+                continue;
+            }
+            if (sbtlCheckActDamage(wk, wklock)) {
+                continue;
+            }
+            if (wk->model->flags & 0x20) {
+                r = sbtlSetPushPos(wk, wk->model->field11C, wklock, wklock->model->field11C,
+                                   sbtlFree(wklock->pos.x, wklock->pos.z));
+                SDF_VU0_STOREVECTOR(&wklock->pos);
+                if (!r) {
+                    sbtlPrivAreaCheck(wklock, 1);
+                }
+            } else if (len == 0.0f && (wk->model->flags & 0x40) && !wk->field415) {
+                r = sbtlSetPushPos(wk, wk->model->field11C, wklock, wklock->model->field11C,
+                                   sbtlFree(wklock->pos.x, wklock->pos.z));
+                SDF_VU0_STOREVECTOR(&wklock->pos);
+                if (!r) {
+                    sbtlPrivAreaCheck(wklock, 1);
+                }
+            } else if (!PosOut(wk)) {
+                if (len > 0.0f) {
+                    if (!(wklock->flg & 0x80)) {
+                        wklock->mv_spd.z = 0.0f;
+                        SDF_VU0_LOADVECTOR(&wklock->nextpos);
+                        SDF_VU0_STOREVECTOR(&wklock->pos);
+                    }
+                    sbtlSetPullPos(wk, wk->model->field11C, wklock, wklock->model->field11C,
+                                   sbtlFree(wklock->pos.x, wklock->pos.z));
+                    SDF_VU0_STOREVECTOR(&wk->pos);
+                } else {
+                    sbtlSetPullPos(wk, wk->model->field11C, wklock, wklock->model->field11C,
+                                   sbtlFree(wklock->pos.x, wklock->pos.z));
+                    SDF_VU0_STOREVECTOR(&wk->pos);
+                }
+            } else if (sbtlCheckCrossCircle_Rot(&wk->pos, &wk->rot, wk->model->field11C, &wklock->pos,
+                                                wklock->model->field11C, 0.35f) &&
+                       wk->field4A0 < 21) {
+                if (!(wk->flg & 0x80)) {
+                    wk->mv_spd.z = 0.0f;
+                    SDF_VU0_LOADVECTOR(&wk->nextpos);
+                    SDF_VU0_STOREVECTOR(&wk->pos);
+                }
+            } else {
+                sbtlSetPullPos(wk, wk->model->field11C, wklock, wklock->model->field11C,
+                               sbtlFree(wklock->pos.x, wklock->pos.z));
+                SDF_VU0_STOREVECTOR(&wk->pos);
+            }
+        }
+        if (!(wk->vstatus & 0x800000) && wk->status != 35) {
+            sbtlFree(wk->pos.x, wk->pos.z);
+            if (wk->pos.y < sbtlFree(wk->pos.x, wk->pos.z) && (wk->vstatus & 0x400)) {
+                wk->field474 = 0;
+                wk->vstatus = (wk->vstatus | 0x80) & ~0x400;
+            }
+        }
+    }
+    wk->field4CC = 0;
+    ground = sbtlFree(wk->pos.x, wk->pos.z);
+    if (!(wk_sbtl->flg & 0x40)) {
+        if ((wk->flg & 0x20) || (wk->vstatus & 0x80)) {
+            wk->field474++;
+            wk->field474 = (wk->field474 <= 0) ? 0 : (wk->field474 > 0x7FFF) ? 0x7FFF : wk->field474;
+            y = wk->pos.y + (f32)wk->field474 * 0.1633f * (f32)wk->field474 * 0.5f;
+            if (ground <= y) {
+                wk->field474 = 0;
+                y = ground;
+                wk->vstatus &= ~0x80;
+            }
+            wk->pos.y = y;
+        } else if (!(wk->flg & 0x200000) && !sbtlBtlMVSupportSub2(wk, wk) && !(wk->vstatus & 0x800000)) {
+            wk->pos.y = sbtlFree(wk->pos.x, wk->pos.z);
+        }
+    }
+    if (wk->flg & 0x80000) {
+        SDF_VU0_LOADVECTOR(&wk->posSaved);
+        SDF_VU0_STOREVECTOR(&wk->pos);
+    }
+    return 1;
+}
 
 s32 PosOut(struct SBTLUNIT_WORK *wk) {
     s32 ret = 0;
@@ -1637,9 +1867,1209 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_GuardH);
 
 INCLUDE_ASM(const s32, "sbtlActAI", Proc_sbtlAction);
 
+/* NON_MATCHING: 174 of 3008 words match.  */
+#ifdef NON_MATCHING
+s32 Proc(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t zero;
+    sdfVector4_t dir;
+    sdfVector4_t posid;
+    sdfVector4_t pos;
+    sdfVector4_t rot;
+    sdfVector4_t oldpos;
+    sdfVector4_t oldrot;
+    SBTLVISUAL_DATA data;
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_MODEL *model;
+    struct SBTLSKILLP_TBL *tbl;
+    f32 oldangleY;
+    f32 angle;
+    f32 len;
+    s32 frame;
+    s32 devil;
+    s32 i;
+    s32 ret;
+    BST bst;
+
+    memset(&zero, 0, sizeof(zero));
+    if (!(wk->field414 & 0x80) && !(wk->flg & 0x800000) && !(wk->vstatus & 0x4000)) {
+        SDF_VU0_LOADVECTOR(&zero);
+        SDF_VU0_STOREVECTOR(&wk->mv_spd);
+    }
+    if ((wk_sbtl->battleMode != 3) ? (wk->field414 & 0x80) : (wk->field414 & 1)) {
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&oldpos);
+    } else {
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&oldpos);
+        SDF_VU0_STOREVECTOR(&wk->nextpos);
+    }
+    if ((wk_sbtl->flg & 0x40) && !(wk->flg & 0x810)) {
+        wk->field424 = 0.0f;
+        sbtlMVSupport(wk);
+        sbtlCallMemset5(wk);
+        return 0;
+    }
+    if (wk->field4A2 > 0) {
+        wk->field4A2--;
+        if (wk->field4A2 <= 0) {
+            wk->field4A2 = 0;
+            wk->damage_hitcnt = 0;
+        }
+    }
+    wk->damage_actionf--;
+    if (wk->damage_actionf <= 0) {
+        wk->damage_actionf = 0;
+    }
+    if (wk->field4A2 > 0) {
+        sbtlCallSin(wk);
+    }
+    wk->framecnt++;
+    wk->framecnt = (wk->framecnt <= 0) ? 0 : (wk->framecnt > 0x7FFF) ? 0x7FFF : wk->framecnt;
+    wk->aiwk->syscnt_stop++;
+    wk->aiwk->syscnt_stop = (wk->aiwk->syscnt_stop <= 0)  ? 0
+                            : (wk->aiwk->syscnt_stop > 99999) ? 99999
+                                                              : wk->aiwk->syscnt_stop;
+    SDF_VU0_LOADVECTOR(&wk->rot);
+    SDF_VU0_STOREVECTOR(&oldrot);
+    oldangleY = wk->angleY;
+    if ((wk->field414 & 1) && !(wk->field414 & 0x80) && wk->aiwk->mode != 17) {
+        wk->flg &= ~0x100;
+    }
+    sbtlCheckMotionMove(wk);
+    if ((wk->field414 & 0x82) == 2) {
+        sbtlProcScript(wk);
+    }
+    if (wk != NULL && CheckLiveTarget(wk) && !(wk_sbtl->flg & 8) && !(wk->model->flags & 0x4000) &&
+        ((wk->flg & 0x1000) || !(wk->flg & 0x5000)) && !(wk_sbtl->flg & 0x1000000) && !(wk_sbtl->flg2 & 2) &&
+        wk->status != 42 && !sbtlRefSbtl22(wk)) {
+        CalcBadStatus(wk);
+        if (wk->unit.now.hp > 0) {
+            CalcBtlMagicStatus(wk);
+        }
+    }
+    switch (wk->status) {
+    case 19:
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+        sbtlCallBtlEndAction(wk, 0, 0);
+        return 1;
+    case 0:
+    case 1:
+    case 2:
+    case 42:
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        return 1;
+    case 35:
+        wk->m_rate = 0.0f;
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        return 1;
+    case 33:
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (wk->unit.badStatus & 0x80) {
+            return 1;
+        }
+        sbtlRestartMotion(wk);
+        sbtlCallBtlEndAction(wk, 2, 0);
+        wk->aiwk->stat = 1;
+        wk->flg &= ~0x20;
+        return 1;
+    case 3:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+        wk->status = 2;
+        sbtlBS_MUNAKA_Init_Imad_Restart(wk);
+        sbtlEndAction(wk);
+        return 1;
+    case 21:
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+        wk->status = 2;
+        sbtlBS_MUNAKA_Init_Imad_Restart(wk);
+        return 1;
+    case 37:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if ((wk->vstatus & 0x4000) && wk->skillid == SKLID_OFS_PROGRAM) {
+                sbtlCallBtlGetSklVisualTbl2(wk, SKLID_OFS_PROGRAM);
+            } else if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk) && wk->action_flg != 1) {
+            return 1;
+        }
+        sbtlCallBtlEndAction(wk, 2, 0);
+        return 1;
+    case 6:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        goto end_proc;
+    case 47:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+        sbtlBS_MUNAKA_Init_Imad_Restart(wk);
+        sbtlCallBtlEndAction(wk, 2, 0);
+        return 1;
+    case 38:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            if (sbtlSearchEffectData(SKLID_BS14_GIGATO_P) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_GIGATO_P);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        if (wk->action_flg == 1 && sbtlCheckMotionEnd(wk)) {
+            wk->action_flg = 2;
+            sbtlCallBtlGetMotionVisualData(wk, 21, 0, 0, 0);
+            wk->framecnt = 0;
+            wk->framecntB = 0;
+        }
+        if (wk->action_flg == 2 && wk->framecnt >= wk->framecntB) {
+            wk->action_flg = 3;
+            sbtlCallBtlGetMotionVisualData(wk, 22, 0, 0, 0);
+            wk->framecnt = 0;
+        }
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && wk->action_flg == 3) {
+            wk->action_flg = 4;
+            sbtlSetUseSkill(wk, SKLID_BS14_GIGATO);
+            if (sbtlSearchEffectData(SKLID_BS14_GIGATO) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_GIGATO);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (wk->action_flg != 4) {
+            return 1;
+        }
+        goto end_check;
+    case 31:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+        sbtlBS_MUNAKA_Init_Imad_Restart(wk);
+        sbtlSetUseSkill_sbtlActAI(wk, SKLID_NONE, 0);
+        sbtlEndAction(wk);
+        return 1;
+    case 39:
+        if (wk->unit.devilId == 269 || wk->unit.devilId == 304) {
+            return 1;
+        }
+        unit = wk_sbtl->scrUnitList[2];
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        if (wk->action_flg == 1 && sbtlCheckMotionEnd(wk)) {
+            wk->action_flg = 2;
+            sbtlCallBtlGetMotionVisualData(wk, 22, 0, 0, 0);
+            sbtlCallBtlGetMotionVisualData(unit, 22, 0, 0, 0);
+            wk->framecnt = 0;
+            wk_sbtl->scrCnt[1] = 0;
+            wk_sbtl->scrCnt[0] = 0;
+        }
+        if (wk->action_flg < 2) {
+            return 1;
+        }
+        SDF_VU0_LOADVECTOR(&sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID)->pos);
+        model = wk->model;
+        SDF_VU0_LOADVECTOR_B(&model->scrPos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_STOREVECTOR(&dir);
+        switch (wk->aiwk->scrStep2) {
+        case 0:
+            frame = wk_sbtl->scrCnt[0];
+            if (frame < 120) {
+                SDF_VU0_LOADVECTOR(&dir);
+                SDF_VU0_NORMALIZE();
+                SDF_VU0_SCALEVECTOR_BITS(-5.0f);
+                SDF_VU0_LOADVECTOR_B(&model->scrPos);
+                SDF_VU0_ADDVECTOR();
+                SDF_VU0_STOREVECTOR(&wk->model->scrPos);
+            } else if (frame == 120) {
+                SDF_VU0_LOADVECTOR(&dir);
+                SDF_VU0_NORMALIZE();
+                SDF_VU0_STOREVECTOR(&model->scrPos2);
+            } else if (frame < 150) {
+                SDF_VU0_LOADVECTOR(&model->scrPos2);
+                SDF_VU0_SCALEVECTOR_BITS((f32)(wk_sbtl->scrCnt[0] - 120) * 1.5f);
+                SDF_VU0_LOADVECTOR_B(&wk->model->scrPos);
+                SDF_VU0_ADDVECTOR();
+                SDF_VU0_STOREVECTOR(&wk->model->scrPos);
+            } else if (frame < 220) {
+                SDF_VU0_LOADVECTOR(&model->scrPos2);
+                SDF_VU0_SCALEVECTOR_BITS(45.0f);
+                SDF_VU0_LOADVECTOR_B(&wk->model->scrPos);
+                SDF_VU0_ADDVECTOR();
+                SDF_VU0_STOREVECTOR(&wk->model->scrPos);
+            } else {
+                wk->aiwk->scrStep2 = 1;
+                wk_sbtl->scrCnt[0] = 0;
+            }
+            break;
+        case 1:
+            SDF_VU0_LOADVECTOR(&dir);
+            SDF_VU0_SCALEVECTOR_BITS(0.0005f);
+            SDF_VU0_LOADVECTOR_B(&model->scrPos2);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(&wk->model->scrPos2);
+            model = wk->model;
+            model->scrPos2.y = 0.0f;
+            SDF_VU0_LOADVECTOR(&model->scrPos2);
+            SDF_VU0_GETLENGTH(len);
+            if (len > 16.0f) {
+                SDF_VU0_NORMALIZE();
+                SDF_VU0_SCALEVECTOR_BITS(16.0f);
+                SDF_VU0_STOREVECTOR(&model->scrPos2);
+            }
+            SDF_VU0_LOADVECTOR_B(&model->scrPos);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(&wk->model->scrPos);
+            break;
+        case 2:
+            SDF_VU0_LOADVECTOR(&dir);
+            SDF_VU0_SCALEVECTOR_BITS(0.003f);
+            SDF_VU0_LOADVECTOR_B(&model->scrPos2);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(&wk->model->scrPos2);
+            model = wk->model;
+            model->scrPos2.y = 0.0f;
+            SDF_VU0_LOADVECTOR(&model->scrPos2);
+            SDF_VU0_GETLENGTH(len);
+            if (len > 5.0f) {
+                SDF_VU0_NORMALIZE();
+                SDF_VU0_SCALEVECTOR_BITS(5.0f);
+                SDF_VU0_STOREVECTOR(&model->scrPos2);
+            }
+            SDF_VU0_LOADVECTOR_B(&model->scrPos);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(&wk->model->scrPos);
+            break;
+        case 3:
+            SDF_VU0_LOADVECTOR(&model->vec30);
+            SDF_VU0_LOADVECTOR_B(&wk->model->vec00);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_SCALEVECTOR_BITS((f32)(wk_sbtl->scrCnt[1] - wk_sbtl->scrCmpCnt) / 30.0f);
+            SDF_VU0_LOADVECTOR_B(&wk->model->vec00);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(&wk->model->scrPos);
+            if (wk_sbtl->scrCnt[1] >= wk_sbtl->scrCmpCnt + 30) {
+                wk->status = 0;
+                unit->status = 0;
+                sbtlProcSub(wk_sbtl->effList, 441, 1);
+                sbtlEndAction(wk);
+                wk->aiwk->scrStep = 7;
+            }
+            break;
+        }
+        SDF_VU0_LOADVECTOR(&wk->model->scrPos);
+        SDF_VU0_STOREVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&unit->pos);
+        wk->pos.x += 140.0f;
+        unit->pos.x -= 140.0f;
+        dds3SetPosPoseSet_dds3Basic(wk->pBasic, &wk->pos);
+        dds3SetPosPoseSet_dds3Basic(unit->pBasic, &unit->pos);
+        return 1;
+    case 43:
+        frame = 8;
+        if (wk->framecnt <= frame) {
+            SDF_VU0_LOADVECTOR(&wk->model->scrRot);
+            SDF_VU0_LOADVECTOR_B(&wk->model->scrRot2);
+            Slerp((f32)wk->framecnt / (f32)frame);
+            SDF_VU0_STOREVECTOR(&wk->rot);
+            sbtlSetRotateDeg(wk);
+        }
+        if (!wk->action_flg) {
+            wk->action_flg = 1;
+            wk->flg |= 0x4001;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        if (wk->framecnt >= 8 && wk->framecnt <= 24) {
+            SDF_VU0_LOADVECTOR(&wk->model->scrPos2);
+            SDF_VU0_LOADVECTOR_B(&wk->model->scrPos);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_SCALEVECTOR_BITS((f32)(wk->framecnt - frame) / (f32)(24 - frame));
+            SDF_VU0_LOADVECTOR_B(&wk->model->scrPos);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(&wk->pos);
+        }
+        if (wk->action_flg == 1 && wk->framecnt >= 24) {
+            wk->action_flg = 2;
+        }
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+        if (wk->framecnt < 24) {
+            return 1;
+        }
+        wk->flg &= ~0x4001;
+        goto end_action;
+    case 45:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk) && (wk->skillid != SKLID_BS15_BAROFF || wk->framecnt < 101)) {
+            return 1;
+        }
+        goto end_action;
+    case 12:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+                if ((wk->field414 & 0x80) && wk_sbtl->battleMode != 3) {
+                    switch (wk_sbtl->mode) {
+                    case 3:
+                        if (wk->skillid == SKLID_NOUSE_SORD3) {
+                            sbtlSetVibe(SBTLPLAYER_VTYPE_SWORD);
+                        }
+                        if (wk->skillid == SKLID_OFS_BUTURI) {
+                            sbtlSetVibe(SBTLPLAYER_VTYPE_TUKI);
+                        }
+                        break;
+                    case 4:
+                        sbtlSetVibe(SBTLPLAYER_VTYPE_GUN);
+                        break;
+                    case 5:
+                        sbtlSetVibe(SBTLPLAYER_VTYPE_KAITEN);
+                        break;
+                    }
+                }
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        return 1;
+    case 15:
+    case 16:
+    case 25:
+    case 26:
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCheckMotionEnd(wk)) {
+            return 1;
+        }
+        sbtlSetUseSkill_sbtlActAI(wk, SKLID_NONE, 0);
+        if (wk_sbtl->mode == 6) {
+            sbtlCallFalseHuuma(wk);
+            wk_sbtl->mode2 = 1;
+            wk->flg |= 1;
+            wk->vstatus &= ~0x80;
+            wk_sbtl->mode = 6;
+            sbtlSetMotion_sbtlUnit(wk, (sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->scrWarp[0])->flg & 0x200000) ? 25 : 24,
+                                   0, 0, 1);
+            return 1;
+        }
+        sbtlCallFalseHuuma(wk);
+        return 1;
+    case 7:
+        if (wk->vstatus & 4) {
+            mdlFreeBlur(wk->hModel);
+            wk->vstatus &= ~4;
+        }
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (sbtlCallBtlSearchEffectSABActer(wk)) {
+            if ((wk->unit.devilId == 263 || wk->unit.devilId == 302) && wk->aiwk->scrStep == 3) {
+                wk->color = 0;
+            }
+            ResetAction(wk, 0);
+            sbtlResetAAI(wk);
+            if (wk->field414 & 1) {
+                wk->aiwk->mode = 0;
+                wk->actCounter = wk->actMax;
+            }
+            wk->damage_hitcnt = 0;
+            sbtlCallBtlEndAction(wk, 2, 0);
+            wk->flg &= ~0x20;
+            if (wk->unit.badStatus & 1) {
+                wk->unit.badStatus &= ~1;
+            }
+        }
+        return 1;
+    case 23:
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCheckMotionEnd(wk)) {
+            return 1;
+        }
+        if (wk->framecnt < wk->framecntB) {
+            return 1;
+        }
+        sbtlCallBtlEndAction(wk, 7, 0);
+        wk->field424 = 0.0f;
+        return 1;
+    case 8:
+        if ((wk_sbtl->battleMode == 3) ? (wk->field414 & 1) : (wk->field414 & 0x80)) {
+            wk->field4A2 = 20;
+        }
+        wk->model->flags |= 0x20;
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (wk->vstatus & 0x800) {
+            return 1;
+        }
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+        ResetAction(wk, 0);
+        sbtlResetAAI(wk);
+        sbtlBS_MUNAKA_Init_Imad_Restart(wk);
+        sbtlCallBtlEndAction(wk, 2, 0);
+        if (wk->field414 & 1) {
+            wk->aiwk->mode = 0;
+            wk->actCounter = wk->actMax;
+        }
+        sbtlEndAction(wk);
+        wk->model->flags &= ~0x20;
+        wk->flg &= ~0x20;
+        if ((wk_sbtl->battleMode == 3) ? (wk->field414 & 1) : (wk->field414 & 0x80)) {
+            wk->field4A2 = 60;
+        }
+        return 1;
+    case 41:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (wk->unit.devilId == 290) {
+                sbtlSetEncountData(166, 2, 1);
+                sbtlSetEncountData(166, 3, 1);
+            } else if (wk->unit.devilId == 297) {
+                sbtlSetEncountData(298, 2, 1);
+                sbtlSetEncountData(298, 3, 1);
+            } else if (sbtlCheckMeshiyose(wk)) {
+                sbtlGeneratorD_On();
+            } else {
+                sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_SUMMONMIS, wk->skillid);
+            }
+        }
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlGetMotionVisualData2(wk, wk->motionID)) {
+            if (!sbtlCheckMotionEnd(wk)) {
+                return 1;
+            }
+        } else if (wk->action_flg != 1) {
+            return 1;
+        }
+        sbtlCallBtlEndAction(wk, 2, 0);
+        sbtlEndAction(wk);
+        if (wk->skillid == SKLID_C_RESUM) {
+            wk->flg &= ~0x4000;
+        }
+        return 1;
+    case 40:
+        frame = (s32)sbtlCallBtlGetMotionVisualData4(wk, 0);
+        if (wk->framecnt >= frame && !wk->action_flg) {
+            wk->action_flg = 1;
+            if (wk->skillid == SKLID_BS14_CHANGE) {
+                sbtlForceResetDecAlpha(wk_sbtl->effList, wk, 4);
+            }
+            if (wk->skillid == SKLID_BS14_DEAD) {
+                sbtlSetMapFade(30, 0x80191919, 0);
+            }
+            sbtlSetUseSkill(wk, wk->skillid);
+            wk_sbtl->enshutuCnt[3] = 0;
+            wk_sbtl->scrCnt[3] = 0;
+            wk->cmpframecnt2 = frame;
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        } else {
+            wk_sbtl->scrCnt[3] = 0;
+        }
+        if (wk->framecnt == wk->cmpframecnt2 + wk->framecntC) {
+            if (wk->effect_flg & 1) {
+                dds3FadeOut(0, 0, 0, wk->cmpframecnt);
+                if (!wk_sbtl->battleMode || wk_sbtl->battleMode == 2) {
+                    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+                    if (unit->status != 42 && wk->unit.devilId != 259) {
+                        sbtlSetMotion_sbtlUnit(unit, 12, 0, 0, 0);
+                        sbtlCallBtlEndAction(unit, 42, 0);
+                    }
+                }
+            } else if (wk->effect_flg & 2) {
+                dds3FadeOut(255, 255, 255, wk->cmpframecnt);
+                if (!wk_sbtl->battleMode || wk_sbtl->battleMode == 2) {
+                    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+                    if (unit->status != 42 && wk->unit.devilId != 259) {
+                        sbtlSetMotion_sbtlUnit(unit, 12, 0, 0, 0);
+                        sbtlCallBtlEndAction(unit, 42, 0);
+                    }
+                }
+            }
+            if (wk->skillid == SKLID_E_TETTAI) {
+                sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_TOUBOU_E, SKLID_E_TETTAI);
+                wk_sbtl->flg2 |= 1;
+            }
+        }
+        if ((wk->field414 & 1) && wk->skillid == SKLID_OFS_AUTO) {
+            sbtlMVSupport(wk);
+            CheckMapHit(wk, &oldpos);
+            sbtlCallMemset5(wk);
+        } else {
+            sbtlCallMemset12(wk);
+            sbtlProc(wk);
+            sbtlMVSupport(wk);
+            CheckMapHit(wk, &oldpos);
+            sbtlCallMemset5(wk);
+        }
+        if (wk->skillid == SKLID_BS7_DEADWAIT) {
+            if (!sbtlCheckMotionEnd(wk)) {
+                return 1;
+            }
+            if (wk->action_flg == 1) {
+                wk->action_flg = 2;
+                sbtlCallBtlGetMotionVisualData(wk, 21, 0, 0, 0);
+            }
+            return 1;
+        }
+        if (wk->skillid == SKLID_BS14_DEAD) {
+            if (!sbtlCheckMotionEnd(wk)) {
+                return 1;
+            }
+            if (wk->action_flg == 1) {
+                wk->action_flg = 2;
+                sbtlCallBtlGetMotionVisualData(wk, 17, 0, 0, 0);
+            }
+            return 1;
+        }
+        if (wk->framecnt < wk->cmpframecnt2 + wk->framecntC + wk->cmpframecnt) {
+            return 1;
+        }
+        tbl = sbtlGetSkilltbl(wk->skillid);
+        if ((tbl->type & 0x2FFF) == 0x2009) {
+            if (sbtlSearchEffect_SAB(wk_sbtl->effList, wk->skillid, 1)) {
+                return 1;
+            }
+            if (sbtlSearchEffect_SAB(wk_sbtl->effList, wk->skillid, 2)) {
+                return 1;
+            }
+            if (sbtlSearchEffect_SAB(wk_sbtl->effList, wk->skillid, 5)) {
+                return 1;
+            }
+        }
+        if (wk->skillid == SKLID_OFS_AUTO && (wk->field414 & 1) && !(wk->field414 & 0x80)) {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_DEAD_N, SKLID_NONE);
+        }
+        devil = 0;
+        switch (wk->unit.devilId) {
+        case 259:
+            devil = 260;
+            break;
+        case 285:
+            devil = 288;
+            break;
+        case 286:
+            devil = 285;
+            break;
+        case 289:
+            devil = 286;
+            break;
+        case 306:
+            devil = 307;
+            break;
+        case 307:
+            devil = 308;
+            break;
+        case 308:
+            devil = 309;
+            break;
+        }
+        if (devil == 260) {
+            unit = NULL;
+            for (i = 0; i < wk_sbtl->unitList->number; i++) {
+                if (wk_sbtl->unitList->pUnitL[i].pUnit != NULL &&
+                    wk_sbtl->unitList->pUnitL[i].pUnit->unit.devilId == 260) {
+                    unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+                    break;
+                }
+            }
+            pos.y = 600.0f;
+            pos.z = 2000.0f;
+            pos.x = 0.0f;
+            sbtlCallMemset17(wk_sbtl->effList, unit, EFFID_SUMMON_ED, 0, &pos.x, 0x80808080, 0);
+            wk_sbtl->scrFlag |= 0x20000;
+        } else if (devil != 0) {
+            SDF_VU0_LOADVECTOR(&wk->pos);
+            SDF_VU0_LOADVECTOR_B(&aViewEye);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_STOREVECTOR(&dir);
+            FromEuler(0.0f, sdfAtan2(dir.x, dir.z), 0.0f);
+            SDF_VU0_STOREVECTOR(&posid);
+            SetEncountData_Sub(&wk->pos.x, &posid.x);
+            sbtlSetEncountData4(devil, 100, 0)->unit.now.hp = wk->unit.now.hp;
+        }
+        sbtlEndAction(wk);
+        if (wk->effect_flg & 4) {
+            if (wk->field414 & 1) {
+                sbtlDeletePlayer(wk);
+                sbtlSetMotion_sbtlUnit(wk, 13, 0, 0, 0);
+                return 1;
+            }
+            if ((tbl->type & 0x2FFF) != 0x2009) {
+                wk->color = 0;
+                wk->mode = 9;
+                return 1;
+            }
+            sbtlCallBtlEndAction(wk, 10, 0);
+            return 1;
+        }
+        if (wk->effect_flg & 8) {
+            for (i = 0; i < wk_sbtl->unitList->number; i++) {
+                unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+                if (unit != NULL && (unit->field414 & 2)) {
+                    unit->mode = 9;
+                }
+            }
+        }
+        return 1;
+    case 44:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+        switch (wk->skillid) {
+        case SKLID_BS14_DEAD_R:
+        case SKLID_BS14_DEAD_R2:
+            ret = sbtlModelNodeFadeout(wk, "r arm root");
+            wk_sbtl->scrUnitList[1]->mode = 9;
+            break;
+        case SKLID_BS14_DEAD_L:
+        case SKLID_BS14_DEAD_L2:
+            ret = sbtlModelNodeFadeout(wk, "l arm root");
+            wk_sbtl->scrUnitList[2]->mode = 9;
+            break;
+        default:
+            ret = -1;
+            break;
+        }
+        if (ret == -1 || ret == 0) {
+            return 1;
+        }
+        goto end_action;
+    case 9:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 1) && !wk->action_flg) {
+            wk->m_rate = 0.0f;
+        }
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (wk->framecnt < wk->framecntB) {
+            return 1;
+        }
+        if (wk_sbtl->flg & 0x40) {
+            return 1;
+        }
+        if (wk->action_flg == 1) {
+            if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+                return 1;
+            }
+            ResetAction(wk, 0);
+            sbtlCallBtlEndAction(wk, 2, 0);
+            wk->damage_hitcnt = 0;
+            if (wk->field414 & 1) {
+                sbtlResetAAI(wk);
+                wk->aiwk->mode = 0;
+                wk->actCounter = wk->actMax;
+            }
+        } else if (wk->unit.now.hp <= 0 && !(wk->field414 & 0x80)) {
+            sbtlRestartMotion(wk);
+            if (!(wk->field414 & 0x80)) {
+                sbtlSetDeadDamage(wk, 0);
+            }
+            wk->action_flg = 1;
+        } else {
+            sbtlRestartMotion(wk);
+            wk->aiwk->stat = 1;
+            wk->flg &= ~0x20;
+            wk->flg2 &= ~0x10;
+            wk->field4A2 = 30;
+            wk->action_flg = 1;
+        }
+        return 1;
+    case 10:
+        if (wk->aiwk->scrflag & 0x20000) {
+            sbtlProc(wk);
+            if (wk->aiwk->scrflag & 0x40000) {
+                return 1;
+            }
+            sbtlStartDeadEvent(wk);
+            wk->action_flg = 1;
+            return 1;
+        }
+        if (wk->flg & 0x40) {
+            if (wk->action_flg != 1 && wk->framecnt >= 80) {
+                wk->action_flg = 1;
+                wk->m_rate = 0.0f;
+                sbtlSetFade(wk, SBTLUNIT_VST_FADEOUT, 20, 0, 8);
+            }
+        } else if (wk->action_flg != 1 && wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 1)) {
+            wk->action_flg = 1;
+            wk->m_rate = 0.0f;
+            if (wk->field414 & 2) {
+                sbtlSetFade(wk, SBTLUNIT_VST_FADEOUT, 20, 0, 8);
+            }
+        }
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (wk->action_flg != 1) {
+            return 1;
+        }
+        if (wk->field414 & 1) {
+            sbtlDeletePlayer(wk);
+            return 1;
+        }
+        if (!sbtlCheckMotionEnd(wk) && (wk->vstatus & 2)) {
+            return 1;
+        }
+        wk->mode = 9;
+        return 1;
+    case 34:
+        if (wk_sbtl->battleMode == 3) {
+            wk->effect_flg = 1;
+            wk->framecntC = 10;
+            wk->cmpframecnt = 90;
+            wk->cmpframecnt2 = 0;
+        } else {
+            wk->effect_flg = 1;
+            wk->cmpframecnt2 = 120;
+            wk->framecntC = 135;
+            wk->cmpframecnt = 90;
+        }
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 1)) {
+            wk->m_rate = 0.0f;
+            wk->action_flg = 1;
+        }
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        if (wk->framecnt != wk->cmpframecnt2 + wk->framecntC) {
+            return 1;
+        }
+        if (wk->effect_flg & 1) {
+            dds3FadeOut(0, 0, 0, wk->cmpframecnt);
+            return 1;
+        }
+        if (wk->effect_flg & 2) {
+            dds3FadeOut(255, 255, 255, wk->cmpframecnt);
+        }
+        return 1;
+    case 18:
+        wk->mode = 9;
+        return 1;
+    case 14:
+        sbtlResetSummon_E(wk);
+        return 1;
+    case 20:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->field492);
+        if (unit != NULL) {
+            sbtlGetHelperPos(wk, unit, wk->unit.devilId);
+        }
+        sbtlMVSupport(wk);
+        return 1;
+    case 22:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->field492);
+        if (unit != NULL) {
+            sbtlGetUnitHelperPos(unit, wk->field490);
+            SDF_VU0_STOREVECTOR(&wk->pos);
+        }
+        sbtlMVSupport(wk);
+        if (wk->framecnt < wk->framecntB) {
+            return 1;
+        }
+        wk->unit.now.hp = wk->unit.now.maxhp;
+        sbtlCallBtlEndAction(wk, 20, 0);
+        wk->unit.badStatus &= ~1;
+        return 1;
+    case 46:
+        sbtlGetCylinderData(wk, &data);
+        if (wk->framecnt >= 121) {
+            wk->pos.y += data.height / 150.0f;
+            dds3SetPosPoseSet_dds3Basic(wk->pBasic, &wk->pos);
+        }
+        if (wk->framecnt >= 270 && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlCallBtlSearchUnitID4(wk_sbtl->summonIndex[0], 1);
+            sbtlGetDamage(&wk_sbtl->summonBit, wk_sbtl->summonIndex[0]);
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUIN_N, SKLID_NONE);
+        }
+        return 1;
+    case 29:
+        if (wk->vstatus & 2) {
+            wk->status = 30;
+        }
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        return 1;
+    case 48:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            bst = sbtlGetBadStatus(&wk->unit);
+            if (bst != BST_BOYCOTT && bst != BST_KANSEN) {
+                sbtlResetBadStatus(wk, 1 << bst);
+                sbtlRestartMotion(wk);
+                wk->flg &= ~0x20;
+                wk->flg2 &= ~0x10;
+            }
+            sbtlSetBadStatus_No(wk, wk->skillid, BST_CHARM, 0, -1);
+            sbtlEndAction(wk);
+        }
+        goto end_proc;
+    case 49:
+        sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetMapFade(15, 0x80404040, 0);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+                sbtlSetUseSkill(wk, SKLID_BS14_CHOUSIN_HIT);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        if (wk->framecnt >= 225 && wk->action_flg == 1) {
+            wk->action_flg = 2;
+            if (sbtlSearchEffectData(SKLID_BS14_CHOUSIN_HIT) != -1) {
+                wk->aiwk->scrStep3 = 2;
+                sbtlGetPointData(sbtlGetPointLast(wk, SKLID_BS14_CHOUSIN_HIT), &pos, &rot);
+                SDF_VU0_LOADVECTOR(&wk->pos);
+                SDF_VU0_LOADVECTOR_B(&pos);
+                SDF_VU0_SUBVECTOR();
+                SDF_VU0_STOREVECTOR(&dir);
+                angle = sdfAtan2(dir.x, dir.z);
+                FromEuler(0.0f, angle, 0.0f);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = angle * 57.295776f;
+                sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
+                SDF_VU0_LOADVECTOR(&oldrot);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = oldangleY;
+            }
+        }
+        if (wk->framecnt >= 245 && wk->action_flg == 2) {
+            wk->action_flg = 3;
+            if (sbtlSearchEffectData(SKLID_BS14_CHOUSIN_HIT) != -1) {
+                wk->aiwk->scrStep3 = 1;
+                sbtlGetPointData(sbtlGetPointLast(wk, SKLID_BS14_CHOUSIN_HIT), &pos, &rot);
+                SDF_VU0_LOADVECTOR(&wk->pos);
+                SDF_VU0_LOADVECTOR_B(&pos);
+                SDF_VU0_SUBVECTOR();
+                SDF_VU0_STOREVECTOR(&dir);
+                angle = sdfAtan2(dir.x, dir.z);
+                FromEuler(0.0f, angle, 0.0f);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = angle * 57.295776f;
+                sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
+                SDF_VU0_LOADVECTOR(&oldrot);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = oldangleY;
+            }
+        }
+        if (wk->framecnt >= 265 && wk->action_flg == 3) {
+            wk->action_flg = 4;
+            if (sbtlSearchEffectData(SKLID_BS14_CHOUSIN_HIT) != -1) {
+                wk->aiwk->scrStep3 = 3;
+                sbtlGetPointData(sbtlGetPointLast(wk, SKLID_BS14_CHOUSIN_HIT), &pos, &rot);
+                SDF_VU0_LOADVECTOR(&wk->pos);
+                SDF_VU0_LOADVECTOR_B(&pos);
+                SDF_VU0_SUBVECTOR();
+                SDF_VU0_STOREVECTOR(&dir);
+                angle = sdfAtan2(dir.x, dir.z);
+                FromEuler(0.0f, angle, 0.0f);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = angle * 57.295776f;
+                sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
+                SDF_VU0_LOADVECTOR(&oldrot);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = oldangleY;
+            }
+        }
+        if (wk->framecnt >= 285 && wk->action_flg == 4) {
+            wk->action_flg = 5;
+            if (sbtlSearchEffectData(SKLID_BS14_CHOUSIN_HIT) != -1) {
+                wk->aiwk->scrStep3 = 0;
+                sbtlGetPointData(sbtlGetPointLast(wk, SKLID_BS14_CHOUSIN_HIT), &pos, &rot);
+                SDF_VU0_LOADVECTOR(&wk->pos);
+                SDF_VU0_LOADVECTOR_B(&pos);
+                SDF_VU0_SUBVECTOR();
+                SDF_VU0_STOREVECTOR(&dir);
+                angle = sdfAtan2(dir.x, dir.z);
+                FromEuler(0.0f, angle, 0.0f);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = angle * 57.295776f;
+                sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
+                SDF_VU0_LOADVECTOR(&oldrot);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = oldangleY;
+            }
+        }
+        if (wk->framecnt >= 305 && wk->action_flg == 5) {
+            wk->action_flg = 6;
+            if (sbtlSearchEffectData(SKLID_BS14_CHOUSIN_HIT) != -1) {
+                wk->aiwk->scrStep3 = 4;
+                sbtlGetPointData(sbtlGetPointLast(wk, SKLID_BS14_CHOUSIN_HIT), &pos, &rot);
+                SDF_VU0_LOADVECTOR(&wk->pos);
+                SDF_VU0_LOADVECTOR_B(&pos);
+                SDF_VU0_SUBVECTOR();
+                SDF_VU0_STOREVECTOR(&dir);
+                angle = sdfAtan2(dir.x, dir.z);
+                FromEuler(0.0f, angle, 0.0f);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = angle * 57.295776f;
+                sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
+                SDF_VU0_LOADVECTOR(&oldrot);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                wk->angleY = oldangleY;
+            }
+        }
+        if (wk->framecnt >= 340 && wk->action_flg == 6) {
+            wk->action_flg = 7;
+            sbtlSetMapFade(30, 0x80808080, 1);
+        }
+        goto end_proc;
+    case 50:
+        sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        frame = (s32)sbtlCallBtlGetMotionVisualData4(wk, 0);
+        if (wk->framecnt >= frame && !wk->action_flg) {
+            wk->action_flg = 1;
+            wk->aiwk->scrStep3 = 0;
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        if (wk->framecnt >= frame + 30 && wk->action_flg == 1) {
+            wk->action_flg = 2;
+            wk->aiwk->scrStep3 = 1;
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        goto end_proc;
+    case 51:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        frame = (s32)sbtlCallBtlGetMotionVisualData4(wk, 0);
+        if (!wk->action_flg) {
+            wk->action_flg = 1;
+            switch (wk->skillid) {
+            case SKLID_BS14_PLASMA_R:
+            case SKLID_BS14_PLASMA_L2:
+                sbtlGetPointData(10, &wk->model->scrPos, &rot);
+                wk->model->scrPos.z += 50.0f;
+                SDF_VU0_LOADVECTOR(&wk->model->scrPos);
+                SDF_VU0_STOREVECTOR(&wk->model->scrPos2);
+                wk->model->scrPos2.x = unit->pos.x + 700.0f;
+                sbtlGetPointData(17, &pos, &rot);
+                if (pos.x - 300.0f < wk->model->scrPos2.x) {
+                    wk->model->scrPos2.x = pos.x - 300.0f;
+                }
+                break;
+            case SKLID_BS14_PLASMA_L:
+            case SKLID_BS14_PLASMA_R2:
+                sbtlGetPointData(17, &wk->model->scrPos, &rot);
+                wk->model->scrPos.z += 50.0f;
+                SDF_VU0_LOADVECTOR(&wk->model->scrPos);
+                SDF_VU0_STOREVECTOR(&wk->model->scrPos2);
+                wk->model->scrPos2.x = unit->pos.x - 700.0f;
+                sbtlGetPointData(10, &pos, &rot);
+                if (wk->model->scrPos2.x < pos.x + 300.0f) {
+                    wk->model->scrPos2.x = pos.x + 300.0f;
+                }
+                break;
+            }
+        }
+        SDF_VU0_LOADVECTOR(&wk->model->scrPos2);
+        SDF_VU0_LOADVECTOR_B(&wk->model->scrPos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_SCALEVECTOR_BITS((f32)(wk->framecnt - frame - 120) / 150.0f);
+        SDF_VU0_LOADVECTOR_B(&wk->model->scrPos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&wk->model->scrPos3);
+        if (wk->framecnt >= frame && wk->action_flg == 1) {
+            wk->action_flg = 2;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+    end_proc:
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+    end_check:
+        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
+            return 1;
+        }
+    end_action:
+        sbtlBS_MUNAKA_Init_Imad_Restart(wk);
+        sbtlCallBtlEndAction(wk, 2, 0);
+        sbtlEndAction(wk);
+        return 1;
+    case 52:
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
+            wk->action_flg = 1;
+            sbtlSetUseSkill(wk, wk->skillid);
+            if (sbtlSearchEffectData(wk->skillid) != -1) {
+                sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
+            } else {
+                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+            }
+        }
+        sbtlCallMemset12(wk);
+        sbtlProc(wk);
+        sbtlMVSupport(wk);
+        CheckMapHit(wk, &oldpos);
+        sbtlCallMemset5(wk);
+        break;
+    }
+    return 1;
+}
+#else
 INCLUDE_RODATA(const s32, "sbtlActAI", sbtlGetMovePos_MapHit_2Table);
 
 INCLUDE_ASM(const s32, "sbtlActAI", Proc);
+#endif
 
 s32 sbtlCallBtlSearchEffectSABActer(struct SBTLUNIT_WORK *wk) {
     if (sbtlCallBtlGetMotionVisualData2(wk, wk->next_motionID)) {

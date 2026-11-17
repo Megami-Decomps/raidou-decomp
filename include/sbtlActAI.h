@@ -123,4 +123,22 @@ s32 sbtlSetGroupAction(struct SBTLUNIT_WORK *wk, s32 targetid, u32 mode, s8 flg)
 s32 sbtlSetSearchEnemyMode(struct SBTLUNIT_WORK *wk, s32 targetid);
 s32 sbtlSetSkillData_AI(struct SBTLUNIT_WORK *wk, SKLID skillid);
 
+struct SBTLEFF_LISTWORK;
+s32 CalcBadStatus(struct SBTLUNIT_WORK *wk);
+struct SBTLUNIT_WORK *SetEncountData_Sub(f32 *pos, f32 *rot);
+s32 sbtlCallBtlSearchUnitID4(s32 no, s32 flg);
+s32 sbtlCallMemset12(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallMemset5(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallSin(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheckMeshiyose(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheckMotionMove(struct SBTLUNIT_WORK *wk);
+s32 sbtlDeletePlayer(struct SBTLUNIT_WORK *wk);
+void sbtlGeneratorD_On(void);
+s32 sbtlGetDamage(u32 *flg, s32 no); /* clears bit no of *flg */
+s32 sbtlGetHelperPos(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, s32 devilid);
+s32 sbtlModelNodeFadeout(struct SBTLUNIT_WORK *wk, char *pName);
+s32 sbtlProcSub(struct SBTLEFF_LISTWORK *lwk, s32 effectid, u8 flg);
+struct SBTLUNIT_WORK *sbtlSetEncountData4(s32 devil, s32 point, u32 addst);
+s32 sbtlSetMapFade(s32 frame, u32 abgr, s16 mode);
+
 #endif
