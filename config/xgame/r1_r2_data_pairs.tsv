@@ -8109,7 +8109,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046BCC0	0x004DEE68	mapData38Entry13	.sdata	0x8	yes	unique-contents
 0x0046BCEC	0x004DEF08	mapData132	.sdata	0x4	yes	code-ref
 0x0046BCF0	0x004DEF0C	mapData133	.sdata	0x4	no	code-ref
-0x0046BD06	0x004DEF16	fldFunc18Data	.sdata	0x2	yes	code-ref
+0x0046BD00	0x004DEF10	limit_ofs	.sdata	0x8	yes	code-ref
 0x0046BD10	0x004DEF58	mapFunc2DataEntry2	.sdata	0x8	yes	unique-contents
 0x0046BD18	0x004DEF48	mapFunc2DataEntry3	.sdata	0x8	yes	unique-contents
 0x0046BD30	0x004DEF68	am_top_x	.sdata	0x4	yes	code-ref

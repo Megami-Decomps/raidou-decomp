@@ -21,6 +21,8 @@ extern s32 am_min_x;
 extern s32 am_min_z;
 extern s32 am_max_x;
 extern s32 am_max_z;
+/* {4, 9, 59, 49}; mapAutoMapCalcPosLimit centres the z view on [1]..[3]. */
+extern s16 limit_ofs[4];
 extern struct sdfTexHandle_t *effQueuedResourceNameRecord4;
 
 s32 fldFindSceneEntryData(s32 id);

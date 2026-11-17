@@ -56,7 +56,10 @@ typedef struct sdatUnitWork_t {
     /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
     /* 0xBC */ s16 badst_cnt;  /* turns left on the current bad status */
     /* 0xBE */ s16 badst_cnt2; /* frame counter for the status's periodic effect */
-    /* 0xC0 */ u8 padC0[0x10];
+    /* 0xC0 */ u8 padC0[0x4];
+    /* 0xC4 */ s16 autost_cnt;
+    /* 0xC6 */ s16 autost_cnt2; /* frames between auto skill heals */
+    /* 0xC8 */ u8 padC8[0x8];
     /* 0xD0 */ SBTL_AISYO_TBL aisyo;
 } sdatUnitWork_t;
 

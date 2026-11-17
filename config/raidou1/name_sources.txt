@@ -21811,7 +21811,7 @@
 0x0046BCF0	mapData133	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: mapCallSetOt9, mapCallSetOt10, mapCallSetOt11
 0x0046BCF4	mapData134	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapProcShutDownSub2, fldCallSetOt2
 0x0046BCF8	fldCallSetOt2Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldCallSetOt2 (7 of 8 refs, 2 functions)
-0x0046BD06	fldFunc18Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldFunc18
+0x0046BD00	limit_ofs	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fld.c sdata: static s16 *limit_ofs sits just before floor_link/floor_swap/icon_uvwhtbl/am_top_x; R1 0x46BD00 s16[4] {4,9,59,49} sits before the mapFunc2DataEntry tables and am_top_x (0x46BD30), and mapAutoMapCalcPosLimit reads [1] and [3] as the z limit offsets. R2 0x4DEF10 same bytes; replaces fldFunc18Data
 0x0046BD08	mapFunc2DataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mapFunc2Data
 0x0046BD10	mapFunc2DataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mapFunc2Data
 0x0046BD18	mapFunc2DataEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mapFunc2Data

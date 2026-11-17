@@ -106,7 +106,54 @@ s32 mapAutoMapUpdateLimit(s32 floor) {
     return num;
 }
 
-INCLUDE_ASM(const s32, "code_0016A7D8", mapAutoMapCalcPosLimit);
+void mapAutoMapCalcPosLimit(s32 dx, s32 dz) {
+    s32 max;
+    s32 min;
+
+    mapAutoMapUpdateLimit(am_floor);
+    if (am_max_x - am_min_x > 32) {
+        max = am_max_x - 32;
+        min = am_min_x - 32;
+        am_top_x += dx;
+        if (am_top_x >= max) {
+            am_top_x = max;
+            draw_flags &= ~0x20;
+        } else {
+            draw_flags |= 0x20;
+        }
+        if (am_top_x <= min) {
+            am_top_x = min;
+            draw_flags &= ~0x10;
+        } else {
+            draw_flags |= 0x10;
+        }
+    } else {
+        am_top_x = am_min_x - ((64 - (am_max_x - am_min_x)) >> 1);
+        draw_flags &= ~0x10;
+        draw_flags &= ~0x20;
+    }
+    if (am_max_z - am_min_z > 28) {
+        max = am_max_z - 28;
+        min = am_min_z - 28;
+        am_top_z += dz;
+        if (am_top_z >= max) {
+            am_top_z = max;
+            draw_flags &= ~0x8;
+        } else {
+            draw_flags |= 0x8;
+        }
+        if (am_top_z <= min) {
+            am_top_z = min;
+            draw_flags &= ~0x4;
+        } else {
+            draw_flags |= 0x4;
+        }
+    } else {
+        draw_flags &= ~0x4;
+        draw_flags &= ~0x8;
+        am_top_z = am_min_z - ((limit_ofs[3] - limit_ofs[1] - (am_max_z - am_min_z)) >> 1) - limit_ofs[1];
+    }
+}
 
 s32 fldDrawTopSub(void) {
     return draw_flags;

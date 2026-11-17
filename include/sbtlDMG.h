@@ -276,6 +276,8 @@ s32 sbtlSetMukouDamage(struct SBTLUNIT_WORK *wk, s32 flg);
 s32 sbtlCallMemset16(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 flg);
 void sbtlCallBtlSetMotionSBtlUnit4(struct SBTLUNIT_WORK *wk, s32 damage);
 s32 sbtlCallBtlSearchUnitID14(struct SBTLUNIT_WORK *wk, s32 damage, s16 a2, s32 a3);
+s32 sbtlSetDeadDamage(struct SBTLUNIT_WORK *wk, s32 flg);
+void sbtlCallBtlSetMotionSBtlUnit5(struct SBTLUNIT_WORK *wk);
 s32 CheckDamageTarget(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, SKLID skillid);
 s32 sbtlCheckGround_sbtlDMG(struct SBTLDMG_HITWORK *hwk, s32 *hitflg);
 s32 sbtlCallBtlForceDeleteSerialID(struct SBTLDMG_HITWORK *hwk, struct SBTLUNIT_WORK *wk, s32 *hitflg);

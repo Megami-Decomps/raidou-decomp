@@ -18600,7 +18600,6 @@
 0x004DEF00	itfIfDrawActionSubDataEntry13	data	tier=D	derived-table	na	pointed to by itfIfDrawActionSubData
 0x004DEF08	mapData132	data	tier=D	derived-shared	na	used by 5 functions: mapCallSetOt9, mapCallSetOt10, mapCallSetOt11
 0x004DEF0C	mapData133	data	tier=D	derived-shared	na	used by 5 functions: mapCallSetOt9, mapCallSetOt10, mapCallSetOt11
-0x004DEF16	fldFunc18Data	data	tier=D	derived-sole	na	used by fldFunc18
 0x004DEF18	mapAutoMapDraw3SubDataEntry	data	tier=D	derived-table	na	pointed to by mapAutoMapDraw3SubData
 0x004DEF20	mapAutoMapDraw3SubDataEntry2	data	tier=D	derived-table	na	pointed to by mapAutoMapDraw3SubData
 0x004DEF28	mapAutoMapDraw3SubDataEntry3	data	tier=D	derived-table	na	pointed to by mapAutoMapDraw3SubData
@@ -25231,6 +25230,7 @@
 0x004DEC9C	hMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapData119
 0x004DECA4	eMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapCallMemset2Data
 0x004DECA8	eMapBadEff_N_BADID	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapBadEffLoadData4
+0x004DEF10	limit_ofs	data	tier=B	hd-role	na	HD fld.c sdata: static s16 *limit_ofs sits just before floor_link/floor_swap/icon_uvwhtbl/am_top_x; R1 0x46BD00 s16[4] {4,9,59,49} sits before the mapFunc2DataEntry tables and am_top_x (0x46BD30), and mapAutoMapCalcPosLimit reads [1] and [3] as the z limit offsets. R2 0x4DEF10 same bytes; replaces fldFunc18Data
 0x004DEF68	am_top_x	data	tier=B	hd-role	na	HD mapAutoMapCalcPosLimit: am_top_x += add_x then clamped; replaces fldData32
 0x004DEF6C	am_top_z	data	tier=B	hd-role	na	HD mapAutoMapCalcPosLimit: am_top_z += add_z then clamped; replaces fldData33
 0x004DEF70	am_map	data	tier=B	hd-role	na	HD global passed as map to mapAM_MaskSetCurrent/mapAM_MaskChk_ID in mapAutoMapUpdateLimit; replaces mapCallSetOt2Data5

@@ -45,5 +45,5 @@ INCLUDE_SDATA(const s32, "code_r1_0016A638", mapData134);
 
 INCLUDE_SDATA(const s32, "code_r1_0016A638", fldCallSetOt2Data);
 
-INCLUDE_SDATA(const s32, "code_r1_0016A638", fldFunc18Data);
+INCLUDE_SDATA(const s32, "code_r1_0016A638", limit_ofs);
 

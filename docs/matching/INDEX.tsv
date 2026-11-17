@@ -19,7 +19,7 @@ sndSePlay_sndAt3	code_0013CDE0	raidou1 0x80	8 of 32 words differ	docs/matching/c
 fldBgZoomTest	code_0013CDE0	raidou1 0x2B4		docs/matching/code_0013CDE0.md	19		three FAKEMATCH_ASM_LIVE(mode) after the mapZoomSetGoal calls that must stay jal. Without them the function is 14 words off; the same result with C dead stores matches but is not allowed.
 mapCutBgLoad	code_0013CDE0	raidou1 0x88		docs/matching/code_0013CDE0.md	25		one FAKEMATCH_ASM_LIVE(cut) after mapBgFree2. Without it the function is 30 words off; the same result with a C dead store matches but is not allowed.
 mapUnitSetLight	code_00140960	raidou1 0x43C	154 of 271 words differ	docs/matching/code_00140960.md	3		
-mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11	adding the fld.h prototype mapObjCheck, with no other change, turns the full-unit result from 3 into a CONTEXT 5 of 50.	
+mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; adding the fld.h prototype mapObjCheck alone, or splitting sdatUnitWork_t's padC0 into autost_cnt/autost_cnt2 (sdatUnit.h) alone, turns DIFF 3/50 into CONTEXT 5/50.	
 mapHamidasiCheck	code_00142A10	raidou1 0x210	24 of 132 words differ	docs/matching/code_00142A10.md	3	matched until B1-big's declaration edits to fld.h (six prototypes) and mapData.h; removing any one of the new fld.h prototypes, or reverting mapData.h, makes it match again, so it shifts with the count of declarations the unit includes, not with its own C.	
 mapLeaf12	code_00143568	raidou1 0x50	2 of 20 words differ	docs/matching/code_00143568.md	3		
 mdlCallMemGetSize	code_00143568	raidou1 0x140	25 of 78 words differ	docs/matching/code_00143568.md	11		
@@ -161,7 +161,7 @@ sbtlMapFadeProc_H	code_r1_0024B788	raidou1 0xFC	30 of 60 words differ	docs/match
 sbtlNakamaSetUp	code_r1_0024B788	raidou1 0x48C	249 of 291 words differ	docs/matching/code_r1_0024B788.md	27		
 sbtlSceneLoad	code_r1_0024DE98	raidou1 0xD4	25 of 53 words differ	docs/matching/code_r1_0024DE98.md	3		
 sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	23 of 233 words differ	docs/matching/code_r1_0024EE78.md	3	the full-unit count moves with the declarations the unit includes (mapData.h, rstInit.h, sndAt3.h), 20 to 37 words with declaration edits alone.	
-CheckMapHit	code_r1_0024F220	raidou1 0x88	5 of 34 words differ	docs/matching/code_r1_0024F220.md	3	the full-unit count moves with the declarations in sbtlWork.h; the GetPercentage prototype alone took it from 5 to 9 of 34 words.	
+CheckMapHit	code_r1_0024F220	raidou1 0x88	5 of 34 words differ	docs/matching/code_r1_0024F220.md	3	the full-unit count moves with header declarations alone; the GetPercentage prototype in sbtlWork.h took it from 5 to 9 of 34 words, and the SBTLUNIT_WORK and sdatUnitWork_t field splits (sBtlUnit.h, sdatUnit.h) take it from 5 to 9 again.	
 nakamamodeCallGetActiveScene	code_r1_0024F220	raidou1 0x584	6 of 353 words differ	docs/matching/code_r1_0024F220.md	13		
 sbtlCallBtlCheckDamageTarget3	code_r1_0024F220	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_0024F220.md	21		
 sbtlCallBtlCheckEnshutuSummonUnit2	code_r1_0024F220	raidou1 0x218	0 of 134 words differ	docs/matching/code_r1_0024F220.md	29		
@@ -310,6 +310,7 @@ sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSu
 sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSub.md	19		
 CalcBadStatus	sbtl_0029BFB8	raidou1 0x3B0	204 of 218 words differ	docs/matching/sbtl_0029BFB8.md	3		
 sbtlRefSbtl62	sbtl_0029BFB8	raidou1 0xF8	20 of 61 words differ	docs/matching/sbtl_0029BFB8.md	11		
+CalcBtlMagicStatus	sbtl_0029BFB8	raidou1 0x6E4	5 of 441 words differ	docs/matching/sbtl_0029BFB8.md	19		
 sdfDefaultMain	sdf/sdfDefaultMain	raidou1 0x188, raidou2 0x188		docs/matching/sdf/sdfDefaultMain.md	3		inherited, alternatives not recorded.
 sdfGrStdDrawEnvPredraw	sdf/sdfDraw	raidou1 0x1B8, raidou2 0x1B8	25 of 110 words differ	docs/matching/sdf/sdfDraw.md	3		
 sdfFileCmdAnalyzeFileName	sdf/sdfFileIO	raidou1 0x168, raidou2 0x168	4 of 90 words differ	docs/matching/sdf/sdfFileIO.md	3		

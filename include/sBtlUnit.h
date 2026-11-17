@@ -231,16 +231,32 @@ struct SBTLUNIT_WORK {
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
     u8 pad348[0x358 - 0x348];
     u32 field358;
-    u8 pad35C[0x4];
+    s32 field35C;
     s16 field360;
     s16 field362;
-    u8 pad364[0x370 - 0x364];
+    s16 rejyenecounter;
+    s16 rejyenecmpcnt;
+    s16 rejyenehelper; /* unit ID the regen effect plays on when flg & 0x1000 */
+    u8 pad36A[0x2];
+    s32 rejyenepara;
     s16 field370;
-    u8 pad372[0x37C - 0x372];
+    s16 slipcounter;
+    s16 slipcmpcnt;
+    s16 slip_sklid;
+    s32 slippara;
     u32 field37C; /* attribute bits; sbtlCheckAisyo_Old takes the lowest */
     u32 field380; /* attribute bits ORed into the affinities field37C selects */
     s16 field384;
-    u8 pad386[0x3A0 - 0x386];
+    u8 pad386[0x2];
+    SKLID barriersklid;
+    s16 tdancnt;
+    s16 tdancounter;
+    s16 tdancmpcnt;
+    s16 tdanhitcnt;
+    u8 pad394[0x4];
+    s32 tdanpara;
+    s16 autoreccnt;
+    u8 pad39E[0x2];
     s32 major;
     s32 minor;
     s32 motionno;
@@ -319,7 +335,8 @@ struct SBTLUNIT_WORK {
     s16 field492; /* compared with a hit's actID when flg & 0x800 */
     u8 pad494[0x4];
     s16 field498;
-    u8 pad49A[0x6];
+    s16 hitsliphelper;
+    u8 pad49C[0x4];
     s16 field4A0;
     s16 field4A2;
     s32 damage_serialID;

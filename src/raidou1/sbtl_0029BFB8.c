@@ -13,6 +13,8 @@
 #include "sdk_libc.h"
 #include "sBtlSkill.h"
 #include "sBtlPlayer.h"
+#include "sBtlSM.h"
+#include "sbtlSub.h"
 
 s32 sbtlCallBtlGetSkilltbl22(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg)
 {
@@ -157,7 +159,165 @@ s32 sbtlRefSbtl68(struct SBTLUNIT_WORK *wk)
     return 0;
 }
 
+/* NON_MATCHING: 436 of 441 words match.  */
+#ifdef NON_MATCHING
+s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
+{
+    sdatUnitWork_t *unit;
+    struct SBTLUNIT_WORK *target;
+    struct SBTLUNIT_WORK *eff;
+    struct SBTLSKILLP_TBL *tbl;
+    SKLID sklid;
+    f32 heal;
+    s32 value;
+    s32 hp;
+
+    unit = &wk->unit;
+    if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2) == 2
+        || sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2) == 2) {
+        if (++wk->autoreccnt >= wk->unit.autost_cnt2) {
+            wk->autoreccnt = 0;
+            heal = wk->unit.now.maxhp * 0.03f;
+            if (heal <= 1.0f) {
+                heal = 1.0f;
+            }
+            sbtlCallLimitRange(wk, heal);
+            target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+            if (target != NULL && sbtlCheckDamageTarget(target) && !(wk->field414 & 2) && target->status != 34) {
+                if (sbtlCheckCrossCircle_Rot(&wk->pos, &wk->rot, wk->model->field11C + 300.0f, &target->pos, target->model->field11C, -1.0f)) {
+                    heal = target->unit.now.maxhp * 0.03f;
+                    if (heal <= 1.0f) {
+                        heal = 1.0f;
+                    }
+                    sbtlCallLimitRange(target, heal);
+                }
+            }
+        }
+    }
+
+    if (wk->field360 > 0 && --wk->field360 <= 0) {
+        wk->field360 = 0;
+        wk->field35C = 0;
+        if (wk->field358 & 0x1000000) {
+            sklid = SKLID_OTAKEBI;
+        } else if (wk->field358 & 0x2000000) {
+            sklid = SKLID_INTERIB;
+        } else {
+            sklid = SKLID_MASSURU;
+        }
+        if (wk->field414 & 1) {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_H2_UP_END_P, sklid);
+        } else {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_H2_UP_END_E, sklid);
+        }
+        wk->field358 = 0;
+    }
+
+    if (wk->field362 > 0) {
+        if (--wk->field362 <= 0) {
+            wk->field362 = 0;
+            wk->rejyenecounter = 0;
+            wk->rejyenecmpcnt = 0;
+            wk->rejyenepara = 0;
+        } else if (++wk->rejyenecounter >= wk->rejyenecmpcnt) {
+            wk->rejyenecounter = 0;
+            value = LimitRange(unit, wk->rejyenepara, 0);
+            hp = wk->unit.now.hp + value;
+            wk->unit.now.hp = hp;
+            wk->unit.now.hp = hp <= 0 ? 0 : (hp < wk->unit.now.maxhp ? hp : wk->unit.now.maxhp);
+            if (value > 0) {
+                sbtlCallBtlSearchUnitID14(wk, value, 0, 3);
+                if (!(wk->flg & 0x1000) || (eff = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->rejyenehelper)) == NULL) {
+                    eff = wk;
+                }
+                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_AUTOREC, 0, &eff->pos.x, 0x80808080, 0);
+            }
+        }
+    }
+
+    if (wk->field384 > 0 && --wk->field384 <= 0) {
+        wk->field384 = 0;
+        wk->field37C = 0;
+        wk->field380 = 0;
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_COMBI_EFFEND, wk->barriersklid);
+        sbtlCheckBattlePara(wk);
+    }
+
+    if (!sbtlRefSbtl68(wk) && wk->field370 > 0) {
+        if (wk->mv_spd.z == wk->max_mvspd.z) {
+            wk->mv_spd.z *= 0.5f;
+        }
+        if (wk->mv_spdbk.z == wk->max_mvspd.z) {
+            wk->mv_spdbk.z *= 0.5f;
+        }
+        if (--wk->field370 <= 0) {
+            wk->field370 = 0;
+            wk->slipcounter = 0;
+            wk->slipcmpcnt = 0;
+            wk->slippara = 0;
+            wk->slip_sklid = 0;
+            sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
+        } else if (++wk->slipcounter >= wk->slipcmpcnt) {
+            wk->slipcounter = 0;
+            hp = wk->unit.now.hp - sbtlCheckKuishibari(wk, wk->slippara);
+            wk->unit.now.hp = hp;
+            wk->unit.now.hp = hp <= 0 ? 0 : (hp < wk->unit.now.maxhp ? hp : wk->unit.now.maxhp);
+            tbl = sbtlGetSkilltbl(wk->slip_sklid);
+            if (!(wk->flg & 0x1000) || (eff = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->hitsliphelper)) == NULL) {
+                eff = wk;
+            }
+            if (tbl->attr & 4) {
+                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_SLIPKAEN, 0, &eff->pos.x, 0x80808080, 0);
+            }
+            if (tbl->attr & 8) {
+                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_SLIPICE, 0, &eff->pos.x, 0x80808080, 0);
+            }
+            if (tbl->attr & 0x10) {
+                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_SLIPTHUNDER, 0, &eff->pos.x, 0x80808080, 0);
+            }
+            if (tbl->attr & 0x20) {
+                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_SLIPZAN, 0, &eff->pos.x, 0x80808080, 0);
+            }
+            sbtlCallBtlSearchUnitID14(wk, wk->slippara, 0, 1);
+            if (wk->flg & 0x40000000) {
+                sbtlCallBtlSetMotionSBtlUnit5(wk);
+                return 0;
+            }
+            if (wk->unit.now.hp == 0) {
+                sbtlSetDeadDamage(wk, 0);
+                sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
+                return 0;
+            }
+        }
+    }
+
+    if (!sbtlRefSbtl68(wk) && wk->tdancnt > 0) {
+        if (--wk->tdancnt <= 0) {
+            wk->tdanhitcnt = 0;
+            wk->tdancnt = 0;
+            wk->tdancounter = 0;
+            wk->tdancmpcnt = 0;
+            wk->tdanpara = 0;
+        } else if (++wk->tdancounter >= wk->tdancmpcnt) {
+            wk->tdancounter = 0;
+            hp = wk->unit.now.hp - sbtlCheckKuishibari(wk, wk->tdanpara);
+            wk->unit.now.hp = hp;
+            wk->unit.now.hp = hp <= 0 ? 0 : (hp < wk->unit.now.maxhp ? hp : wk->unit.now.maxhp);
+            sbtlCallBtlSearchUnitID14(wk, wk->tdanpara, 0, 2);
+            if (wk->flg & 0x40000000) {
+                sbtlCallBtlSetMotionSBtlUnit5(wk);
+                return 0;
+            }
+            if (wk->unit.now.hp == 0) {
+                sbtlSetDeadDamage(wk, 0);
+            }
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", CalcBtlMagicStatus);
+#endif
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallEventBattleStopChack);
 

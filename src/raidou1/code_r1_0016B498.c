@@ -2,6 +2,7 @@
 #include "fld.h"
 #include "dds3KernelDraw.h"
 #include "EventBit.h"
+#include "code_0016AD90.h"
 
 typedef struct mapFuncEntry_t {
     u8 scene;
@@ -80,7 +81,6 @@ extern void eglLinkSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 
 extern void mapAM_MaskSetCurrent(s32 area);
 extern void mapFunc2(s32 num, s32 x, s32 y);
 extern void fldProcSequenceSub4(f32 x, f32 z, f32 *outX, f32 *outY);
-extern void mapCallCutGetCam(s32 x0, s32 y0, s32 x1, s32 y1);
 extern void mapCallSin11(s32 x, s32 y);
 extern void mapCallSin12(s32 x, s32 y);
 extern void mapAmDrawBasyoName(s32 area, s32 floor);
