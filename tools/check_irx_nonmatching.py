@@ -35,6 +35,7 @@ typedef int s32;
 typedef unsigned long long u64;
 typedef long long s64;
 #define INCLUDE_ASM(MODULE, NAME)
+#define INCLUDE_RODATA(MODULE, NAME)
 #define ALIGN_TEXT(n)
 #define IRX_IMPORT(LIB, NAME, ORDINAL)
 #define IRX_IMPORT_TABLE(LIB, MAJOR, MINOR)
@@ -64,7 +65,7 @@ def check_file(module: str, src: Path, shim: Path, cfg: dict) -> int:
         out = subprocess.run(
             ["gcc", "-std=gnu17", "-m32", "-fsyntax-only", "-DNON_MATCHING",
              *(["-DFIX_BUGS"] if fix_bugs else []),
-             f"-DVERSION_{cfg['version'].upper()}",
+             *([f"-DVERSION_{cfg['version'].upper()}"] if "version" in cfg else []),
              "-Werror=implicit-function-declaration",
              "-include", str(shim / "irx.h"),
              "-I", str(ROOT / "include" / "irx"), str(src)],
