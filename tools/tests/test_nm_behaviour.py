@@ -143,6 +143,21 @@ class ReduceTests(unittest.TestCase):
         self.assertEqual(nmb.diff_facts(self.retail(one * 2 + body), self.retail(one + body)), {})
         self.assertEqual(set(nmb.diff_facts(self.retail(one * 4 + body), self.retail(one + body))), {"branch"})
 
+    def test_select_is_the_same_as_a_branch(self) -> None:
+        select = self.retail("andi v0,a0,0x10\naddiu v1,zero,60\naddiu a1,zero,8\nmovz v1,a1,v0\nsw v1,0(a2)")
+        branch = self.retail("""
+            andi v0,a0,0x10
+            beq v0,zero,1010
+            addiu v1,zero,8
+            addiu v1,zero,60
+            sw v1,0(a2)""")
+        self.assertEqual(nmb.diff_facts(select, branch), {})
+
+    def test_retail_remask_of_a_char_is_the_same(self) -> None:
+        masked = self.retail("lbu v0,0(a0)\nandi v0,v0,0xff\nsw v0,0(a1)")
+        self.assertEqual(nmb.diff_facts(masked, self.retail("lbu v0,0(a0)\nsw v0,0(a1)")), {})
+        self.assertEqual(set(nmb.diff_facts(self.retail("lbu v0,0(a0)\nsw v0,0(a1)"), masked)), {"imm"})
+
     def test_draft_with_an_extra_branch_differs(self) -> None:
         one = "beq a0,zero,1010\nnop\n"
         body = "sw zero,0(a1)\njr ra\nnop"

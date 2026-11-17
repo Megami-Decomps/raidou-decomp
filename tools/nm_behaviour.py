@@ -612,6 +612,18 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
                     consume(a[1])
                     regs[a[0]] = Val(y.kind, y.v, y.off, True)
                     continue
+            if op in ("movz", "movn"):
+                # A select between two constants is a ternary a draft may write as a branch.
+                old, new = get(a[0]), get(a[1])
+                consume(a[2])
+                if old.kind == new.kind == "c" and not addr_of(old) and not addr_of(new):
+                    f.add("branch", "conditional")
+                    regs[a[0]] = Val("cs", frozenset({old.v + old.off, new.v + new.off}))
+                else:
+                    consume(a[0])
+                    consume(a[1])
+                    regs[a[0]] = UNK
+                continue
             if op == "mtc1":
                 src = get(a[0])
                 if src.kind == "c" and src.v + src.off:
@@ -842,6 +854,7 @@ def comparable(facts: Facts, cls: str) -> Counter:
 
 
 BRANCH_SLACK = 2
+TRUNCATE_MASKS = (0xFF, 0xFFFF)
 OFFSET = re.compile(r"\+(-?0x[0-9a-f]+|-?\d+)$")
 
 
@@ -868,6 +881,9 @@ def diff_facts(retail: Facts, draft: Facts) -> dict:
             rn, dn = sum(r.values()), sum(d.values())
             if dn <= rn <= dn + BRANCH_SLACK:
                 continue
+        if cls == "imm":
+            # Retail re-masks a char or short it already holds zero-extended.
+            r = Counter({k: n for k, n in r.items() if k not in TRUNCATE_MASKS or k in d})
         if cls == "shift":
             # A draft that walks a pointer drops retail's index scaling; only a draft-only scale counts.
             # The same left shift may scale an index on one path and feed arithmetic on another.
