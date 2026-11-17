@@ -733,7 +733,26 @@ INCLUDE_ASM("SDFSDMAN", sdfSndInitWorkAreas);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndSeqThread);
 
-INCLUDE_ASM("SDFSDMAN", sdfSndInitSpu2);
+/* Initialise LIBSD, then give each core its effect area, effect attributes
+ * and master volume, and cancel any pending BGM switch. */
+s32 sdfSndInitSpu2(void)
+{
+    s32 core;
+
+    libsd_sceSdInit(0);
+    core = 0;
+    do {
+        libsd_sceSdSetAddr(core | 0x1D00, core == 1 ? 0x1FFFF : 0x1FFFFF);
+        libsd_sceSdSetEffectAttr(core, &sdfSndEffectAttr[core]);
+        libsd_sceSdSetCoreAttr(core | 2, 1);
+        libsd_sceSdSetParam(core | 0x980, 0x3FFF);
+        libsd_sceSdSetParam(core | 0xA80, 0x3FFF);
+        core++;
+    } while (core < 2);
+    sdfSndBgmSwitchReq = 0;
+    sdfSndBgmSwitchSlot = -1;
+    sdfSndBgmSwitchMidi = -1;
+}
 
 INCLUDE_ASM("SDFSDMAN", sdfSndMidiSelect);
 
@@ -776,7 +795,59 @@ s32 sdfSndStopAll(s32 which)
     }
 }
 
-INCLUDE_ASM("SDFSDMAN", sdfSndInitSynth);
+/* Takes the work area the EE allocated, then brings up the sequence thread,
+ * its timer, the synthesiser and the MIDI front end. */
+s32 sdfSndInitSynth(sdfSndWorkArea_t *work)
+{
+    iop_thread_t thp;
+    s32 param[2];
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        sdfSndSlots[i].vol = 32512;
+        sdfSndSlots[i].volStep = 0;
+        sdfSndSlots[i].fadeIn = 0;
+        sdfSndSlots[i].id = -1;
+        sdfSndSlots[i].serial = 0;
+        sdfSndSlots[i].unk34[0] = 0;
+    }
+    sdfSndListenerAngle = 0;
+    sdfSndListenerZ = 0;
+    sdfSndListenerY = 0;
+    sdfSndListenerX = 0;
+    sdfSndListenerDirty = 0;
+    sdfSndWorkArea = work;
+    work->errCount = 0;
+    work->errCode = -1;
+    sdfSndInitSpu2();
+
+    thp.attr = 0x2000000;
+    thp.thread = sdfSndSeqThread;
+    thp.priority = 30;
+    thp.stacksize = 2048;
+    thp.option = 0;
+    sdfSndSeqThreadId = thbase_CreateThread(&thp);
+    thbase_StartThread(sdfSndSeqThreadId, NULL);
+    sdfSndTimer.thid = sdfSndSeqThreadId;
+    sdfSndTimerSetup(&sdfSndTimer);
+    sdfSndInitWorkAreas();
+    if (modhsyn_sceHSyn_Init(&sdfSndHsynWork, 4167) != 0) {
+        stdio_printf(aSdfsnddrvScehs);
+        sdfSndPostError(9);
+    } else {
+        param[0] = 3;
+        param[1] = 0;
+        modhsyn_e8(param);
+        modhsyn_e18(1);
+        sdfSndSeqVolume = 127;
+        if (modmidi_sceMidi_Init(&sdfSndMidiWork, 4167) != 0) {
+            stdio_printf(aSdfsnddrvScemi_2);
+            sdfSndPostError(10);
+        } else {
+            sdfSndTimerStart(&sdfSndTimer);
+        }
+    }
+}
 
 s32 sdfSndQuitSynth(void)
 {
