@@ -1708,7 +1708,40 @@ s32 sbtlCheckExist2_sbtlUnit(struct SBTLUNIT_WORK *wk)
     return 0;
 }
 
+/* NON_MATCHING: unchecked draft. sbtlLeaf10 is a stub returning NULL, so the type 1 branch reads address 4. */
+#ifdef NON_MATCHING
+s32 sbtlLeaf62(void);
+u32 *sbtlLeaf10(s32 a, s32 b);
+
+s32 sbtlCallBtlGetDevilDataSBtlSub(struct SBTLUNIT_WORK *wk, s32 type)
+{
+    SBTL_DEVIL_DATA *devil = sbtlGetDevilData_sbtlSub(wk->unit.devilId);
+    SBTL_MOTION_VISUAL *visual = sbtlGetVisualData(wk->major, wk->minor);
+    u32 *flags;
+
+    wk->flg &= ~0x4000;
+    if (type == 0) {
+        wk->flg |= devil->flag;
+        if (visual->field30 > 0) {
+            ((s32 (*)(struct SBTLUNIT_WORK *, s32))sbtlLeaf62)(wk, 0);
+        }
+    } else if (type == 1) {
+        flags = sbtlLeaf10(visual->field32, 1);
+#ifdef FIX_BUGS
+        if (flags == NULL) {
+            return 1;
+        }
+#endif
+        wk->flg |= flags[1];
+        if (visual->field30 > 0) {
+            ((s32 (*)(struct SBTLUNIT_WORK *, s32))sbtlLeaf62)(wk, 1);
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallBtlGetDevilDataSBtlSub);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlSearchHitHelper_ID);
 
