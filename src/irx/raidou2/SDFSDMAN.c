@@ -573,13 +573,61 @@ s32 sdfSndTimerHandler(sdfSndTimer_t *tm)
     return tm->interval;
 }
 
-INCLUDE_ASM("SDFSDMAN", sdfSndTimerSetup);
+s32 sdfSndTimerSetup(sdfSndTimer_t *tm)
+{
+    u32 sysclock[2];
+    u32 clk;
+    s32 id;
 
-INCLUDE_ASM("SDFSDMAN", sdfSndTimerRelease);
+    thbase_USec2SysClock(0x1047, sysclock);
+    clk = sysclock[0];
+    tm->interval = clk;
+    id = timrman_AllocHardTimer(1, 32, 1);
+    tm->timerId = id;
+    if (id <= 0) {
+        return 1;
+    }
+    if (timrman_SetTimerHandler(id, clk, (s32 (*)(void *))sdfSndTimerHandler, tm) != 0) {
+        return 1;
+    }
+    if (timrman_SetupHardTimer(id, 1, 0, 1) != 0) {
+        return 1;
+    }
+    return 0;
+}
 
-INCLUDE_ASM("SDFSDMAN", sdfSndTimerStart);
+s32 sdfSndTimerRelease(sdfSndTimer_t *tm)
+{
+    s32 id;
 
-INCLUDE_ASM("SDFSDMAN", sdfSndTimerStop);
+    id = tm->timerId;
+    if (id > 0) {
+        if (timrman_FreeHardTimer(id) != 0) {
+            return 1;
+        }
+        tm->timerId = 0;
+    }
+    return 0;
+}
+
+s32 sdfSndTimerStart(sdfSndTimer_t *tm)
+{
+    if (timrman_StartHardTimer(tm->timerId) != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+s32 sdfSndTimerStop(sdfSndTimer_t *tm)
+{
+    s32 ret;
+
+    ret = timrman_StopHardTimer(tm->timerId);
+    if (ret != 0 && ret != -156) {
+        return 1;
+    }
+    return 0;
+}
 
 #ifdef NON_MATCHING
 /* Point the synthesiser and MIDI tables at the 32 sequence and slot work
