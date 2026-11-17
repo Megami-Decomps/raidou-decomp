@@ -241,7 +241,15 @@ void fclFilterOFF(void)
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclFreeStage);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclInitPanelPos);
+void fclInitPanelPos(s32 X, s32 Y, s32 Z, s16 W, s16 H, s32 Work, fclPanel_t *pPanelPos)
+{
+    pPanelPos->X = X;
+    pPanelPos->Y = Y;
+    pPanelPos->Z = Z;
+    pPanelPos->W = W;
+    pPanelPos->H = H;
+    pPanelPos->Col = Work;
+}
 
 void fclScriptForcedEnd(dds3ProcessID_t *PID)
 {
@@ -268,9 +276,38 @@ s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID)
     return handle;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", cmpItemOrder);
+/* body: matched in smt3 @ 9401f79e: src/smt3/facility/fclMisc.c:244, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+s32 cmpItemOrder(u8 *a, u8 *b)
+{
+    u8 va = *a;
+    u8 vb = *b;
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclLeaf3);
+    if (va > vb) {
+        return 1;
+    }
+    if (va < vb) {
+        return -1;
+    }
+    return 0;
+}
+
+/* body: matched in smt3 @ 9401f79eb: src/smt3/facility/fclMisc.c:258, match, same function 0.97 (words 19/20, calls 1.00, shape 0.97) */
+s32 fclLeaf3(u8 *list, s32 count, u8 value)
+{
+    s32 kept = 0;
+    s32 i;
+
+    for (i = 0; i < count; i++) {
+        if (list[i] != value) {
+            u8 entry = list[i];
+
+            list[i] = 0;
+            list[kept] = entry;
+            kept++;
+        }
+    }
+    return kept;
+}
 
 void shuffleIndices(s8 *order, s32 count, s32 rounds)
 {
@@ -341,9 +378,19 @@ INCLUDE_ASM(const s32, "facility/fclMisc", fclStartSelMessage);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclSetSelMessagePos);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclGetCurrentSelMessagePos);
+/* body: matched in smt3 @ 9401f79e: src/smt3/facility/fclMisc.c:395, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s8 fclGetCurrentSelMessagePos(void)
+{
+    return gSelMsgPos;
+}
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclGetSelMessagePos);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0024CFB0.c:556, match, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+s32 fclGetSelMessagePos(void) {
+    if (gMsgID < 0) {
+        return -1;
+    }
+    return itfMesMngGetSelectNo(gMsgID);
+}
 
 /* Return the captured signed-byte panel value without querying the live window. */
 s8 evtGetCapturedWindowPanelValue(void) {
@@ -379,7 +426,39 @@ s32 fclChkMessage(void)
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclChkSelMessage);
 
+/* NON_MATCHING: 54 of 56 words match.  */
+#ifdef NON_MATCHING
+void fclUpdateMessageEx(s32 ClsMode) {
+    if (gMsgID < 0) {
+        return;
+    }
+    switch (gMsgFlag) {
+    case 0:
+        break;
+    case 1:
+        if (itfMesMngGetPhase(gMsgID) < 0) {
+            gMsgFlag = 2;
+        }
+        break;
+    case 2:
+        if (gSelMsgNo >= 0) {
+            itfMesMngSetSelectDefKey(gMsgID, 3, 1);
+            itfMesMngSetSelect(gMsgID, gSelMsgPos);
+            itfMesMngRequestSelect_itf(gMsgID, gSelMsgNo);
+            gSelMsgNo = -1;
+        }
+        if (gMsgInvFlag == 0 && fclChkSelMessage() == 0) {
+            gMsgFlag = 3;
+        }
+        break;
+    case 3:
+        fclEndMessageEx(ClsMode);
+        break;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "facility/fclMisc", fclUpdateMessageEx);
+#endif
 
 /* Request mode one from the existing message-window worker. */
 void fclUpdateMessage(void) {
@@ -392,7 +471,20 @@ void fclSetMessageVar(s32 slotIndex, const char *sourceText) {
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclChkMessageInvalid);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclSetMessageInvalid);
+void fclSetMessageInvalid(s32 Mode)
+{
+    if (Mode != 0) {
+        itfMesMngClearBitStat(gMsgID, 0x800000);
+        itfMesMngClearBitStat(gMsgID, 0x100000);
+        gMsgInvFlag = 0;
+        itfMesMngSetPhase(gMsgID, 1);
+        gMsgFlag = 1;
+    } else {
+        itfMesMngMarkBitStat(gMsgID, 0x800000);
+        itfMesMngMarkBitStat(gMsgID, 0x100000);
+        gMsgInvFlag = 1;
+    }
+}
 
 void fclSetMessagePos(s32 x, s32 y)
 {
@@ -410,11 +502,28 @@ INCLUDE_ASM(const s32, "facility/fclMisc", fclScriptStartSub);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclLeaf4);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclSetWorkValue);
+s32 fclSetWorkValue(s32 index, s32 value) {
+    s32 result = 0;
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclLeaf5);
+    if (index < 16) {
+        fclWorkValue[index] = value;
+        result = 1;
+    }
+    return result;
+}
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclCallGetIntPara);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0024CFB0.c:750, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+u32 fclLeaf5(s32 displayValueIndex) {
+    displayValueIndex = (displayValueIndex < EVT_DISPLAY_VALUE_COUNT) ? displayValueIndex : EVT_LAST_DISPLAY_VALUE;
+    return fclWorkValue[displayValueIndex];
+}
+
+/* body: matched in smt3 @ 9401f79eb: src/smt3/facility/fclMisc.c:583, adapt, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+s32 fclCallGetIntPara(void)
+{
+    fclFlags[scrGetIntPara(0)] = 1;
+    return 1;
+}
 
 s32 fclCallGetIntPara2(void)
 {

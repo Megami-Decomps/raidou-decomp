@@ -77,11 +77,11 @@ start	last_func	unit	kind	evidence	smt3_unit
 00123B18	00123B20	code_00123B18	c	none	
 00123B28	00124420	facility/fclMisc	c	smt3:map:11+smt3:names:8 of 38	facility/fclMisc
 00124468	00124468	facility/fclShare	c	smt3:names:1 of 1	facility/fclShare
-001244B8	00126678	fclMenu	asm	none	
+001244B8	00126678	fclMenu	c	none	
 001266A0	001266A0	pb/pbGame	c	smt3:names:1 of 1	pb/pbGame
 001266C0	00127470	fclDrawBack	c	none	
 001274A8	00127B88	field/fldPlayer	c	smt3:names:2+smt3:map:1 of 4	field/fldPlayer
-00127D50	00127D50	code_00127D50	asm	none	
+00127D50	00127D50	code_00127D50	c	none	
 00127E20	00127E78	field/fldCamera	c	smt3:names:1+smt3:map:1 of 2	field/fldCamera
 00128020	00128118	code_00128020	asm	none	
 00128378	0012A2A0	code_r1_00128378	c	dds:4 of 64	
@@ -115,7 +115,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00145808	00145808	code_r1_00145808	c	none	
 00148310	0014B0D8	code_00148310	c	none	
 0014B328	0014B328	code_r1_0014B328	c	none	
-0014B498	0014B498	code_0014B498	asm	none	
+0014B498	0014B498	code_0014B498	c	none	
 0014B4B8	0014B4B8	code_r1_0014B4B8	c	none	
 0014B590	0014B590	code_0014B590	asm	none	
 0014B610	0014B610	code_r1_0014B610	c	none	
@@ -159,7 +159,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00175038	001750B0	code_r1_00175038	c	none	
 001750E8	00175128	code_001750E8	asm	none	
 00175180	00175180	code_r1_00175180	c	none	
-00175348	00175820	code_00175348	asm	none	
+00175348	00175820	code_00175348	c	none	
 00175858	00175858	code_r1_00175858	c	none	
 00175908	00179748	code_00175908	c	none	
 00179788	00179788	field/fldCommand	c	smt3:names:1 of 1	field/fldCommand

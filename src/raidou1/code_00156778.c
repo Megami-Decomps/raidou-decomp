@@ -71,4 +71,16 @@ void fldCallGrAllocPacketBuff3(u8 *image) {
 
 INCLUDE_ASM(const s32, "code_00156778", fldCallGrAllocPacketBuff4);
 
-INCLUDE_ASM(const s32, "code_00156778", fldCallGrAllocPacketBuff5);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/00156AD0.c:1, match */
+void fldCallGrAllocPacketBuff5(u8 *image) {
+    sdfDrawTag_t *tag;
+    sdfGrOt_t *ot;
+
+    if (fldTitleMiniWork2 != NULL && image != NULL) {
+        tag = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+        sdfDrawTagInit(tag);
+        sdfLinkLoadImage(tag, fldTitleMiniWork2->pixelGsHandle, 0, 0, 128, 128, (saddr_t)(image + 0x80), 0);
+        ot = &sdfGrOtTable[egl_OT_Offset];
+        ot->regFunc(ot, tag);
+    }
+}

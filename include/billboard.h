@@ -261,6 +261,8 @@ extern f32 dds3BillboardUpAxis[4];
 extern f32 dds3BillboardTagParam[4];
 /* {1, 1, 1, 0}: drops w from the direction dds3BillboardGetDirectionRotate projects. */
 extern f32 dds3BillboardGetDirectionRotateData3[4];
+/* The vector at dds3ScreenParam.trans, addressed by its own symbol where retail does. */
+extern f32 dds3BillboardGetDirectionRotateData2[4];
 
 /* One general billboard: dds3BillboardManagerInit creates it from the named
  * texture in the pack and scales it. */

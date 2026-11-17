@@ -40,7 +40,11 @@ menu scenarios); an entry says which paths they covered.
 | 4 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 3 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
+| 3 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
+| 3 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
+| 3 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 3 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
+| 3 | fclDrawBack | raidou1 | [fclDrawBack.md](fclDrawBack.md) |
 | 3 | sbtlSub | raidou1 | [sbtlSub.md](sbtlSub.md) |
 | 3 | sbtl_0029BFB8 | raidou1 | [sbtl_0029BFB8.md](sbtl_0029BFB8.md) |
 | 3 | sdf/sdfMovie | raidou1, raidou2 | [sdf/sdfMovie.md](sdf/sdfMovie.md) |
@@ -48,11 +52,10 @@ menu scenarios); an entry says which paths they covered.
 | 2 | basic/dds3Basic | raidou1, raidou2 | [basic/dds3Basic.md](basic/dds3Basic.md) |
 | 2 | code_00140960 | raidou1 | [code_00140960.md](code_00140960.md) |
 | 2 | code_0016AD90 | raidou1 | [code_0016AD90.md](code_0016AD90.md) |
+| 2 | code_00174790 | raidou1 | [code_00174790.md](code_00174790.md) |
 | 2 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
 | 2 | code_0018CE10 | raidou1 | [code_0018CE10.md](code_0018CE10.md) |
-| 2 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
 | 2 | code_002999C0 | raidou1 | [code_002999C0.md](code_002999C0.md) |
-| 2 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
 | 2 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 2 | code_r1_00128378 | raidou1 | [code_r1_00128378.md](code_r1_00128378.md) |
 | 2 | code_r1_00142038 | raidou1, raidou2 | [code_r1_00142038.md](code_r1_00142038.md) |
@@ -62,7 +65,6 @@ menu scenarios); an entry says which paths they covered.
 | 2 | dds3KernelDraw_0010BEE0 | raidou1 | [dds3KernelDraw_0010BEE0.md](dds3KernelDraw_0010BEE0.md) |
 | 2 | effect/effPCPMisc | raidou1, raidou2 | [effect/effPCPMisc.md](effect/effPCPMisc.md) |
 | 2 | event/evtPolygonMovie | raidou1, raidou2 | [event/evtPolygonMovie.md](event/evtPolygonMovie.md) |
-| 2 | fclDrawBack | raidou1 | [fclDrawBack.md](fclDrawBack.md) |
 | 2 | field/fldFileResolver_00132080 | raidou1, raidou2 | [field/fldFileResolver_00132080.md](field/fldFileResolver_00132080.md) |
 | 2 | field/fldProcess | raidou1 | [field/fldProcess.md](field/fldProcess.md) |
 | 2 | mc/slMain | raidou1 | [mc/slMain.md](mc/slMain.md) |
@@ -82,7 +84,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_00156EA8 | raidou1 | [code_00156EA8.md](code_00156EA8.md) |
 | 1 | code_0016CA30 | raidou1 | [code_0016CA30.md](code_0016CA30.md) |
 | 1 | code_00173D20 | raidou1 | [code_00173D20.md](code_00173D20.md) |
-| 1 | code_00174790 | raidou1 | [code_00174790.md](code_00174790.md) |
 | 1 | code_00175908 | raidou1 | [code_00175908.md](code_00175908.md) |
 | 1 | code_00179808 | raidou1 | [code_00179808.md](code_00179808.md) |
 | 1 | code_001AD4E8 | raidou1 | [code_001AD4E8.md](code_001AD4E8.md) |
@@ -115,7 +116,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_001C4B78 | raidou1, raidou2 | [code_r1_001C4B78.md](code_r1_001C4B78.md) |
 | 1 | code_r1_001CEEF8 | raidou1, raidou2 | [code_r1_001CEEF8.md](code_r1_001CEEF8.md) |
 | 1 | code_r1_001CF808 | raidou1, raidou2 | [code_r1_001CF808.md](code_r1_001CF808.md) |
-| 1 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 1 | code_r1_0024B510 | raidou1 | [code_r1_0024B510.md](code_r1_0024B510.md) |
 | 1 | code_r1_0024DE98 | raidou1 | [code_r1_0024DE98.md](code_r1_0024DE98.md) |
 | 1 | code_r1_0024EE78 | raidou1 | [code_r1_0024EE78.md](code_r1_0024EE78.md) |
@@ -137,7 +137,9 @@ menu scenarios); an entry says which paths they covered.
 | 1 | event/evtMoon | raidou1 | [event/evtMoon.md](event/evtMoon.md) |
 | 1 | evtTmxPreLoad | raidou1 | [evtTmxPreLoad.md](evtTmxPreLoad.md) |
 | 1 | facility/fclCombineInit | raidou1 | [facility/fclCombineInit.md](facility/fclCombineInit.md) |
+| 1 | facility/fclMisc | raidou1, raidou2 | [facility/fclMisc.md](facility/fclMisc.md) |
 | 1 | interface/itfPanel | raidou1, raidou2 | [interface/itfPanel.md](interface/itfPanel.md) |
+| 1 | interface/itfTestMesManager_0018CC20 | raidou1, raidou2 | [interface/itfTestMesManager_0018CC20.md](interface/itfTestMesManager_0018CC20.md) |
 | 1 | kernel/dds3KernelDraw_0010A750 | raidou1, raidou2 | [kernel/dds3KernelDraw_0010A750.md](kernel/dds3KernelDraw_0010A750.md) |
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
 | 1 | newbattle/nbTarSelProcess | raidou1, raidou2 | [newbattle/nbTarSelProcess.md](newbattle/nbTarSelProcess.md) |

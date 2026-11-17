@@ -58,7 +58,24 @@ void mapBgSetScrollReset(void) {
     dds3SetScreenFovy(0.628f);
 }
 
-INCLUDE_ASM(const s32, "code_0013CDE0", map_fldPoint3To2);
+void map_fldPoint3To2(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2) {
+    sdfVector4_t vec = { x3, y3, z3, 1.0f };
+    sdfVector4_t result;
+
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
+    MultMatrixRev(&dds3ScreenParam.TM);
+    SDF_VU0_COPYMATRIX_A_TO_B();
+    SDF_VU0_LOADVECTOR_MEMOPS(*(const u128 *)&vec);
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.scale);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.trans);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&result);
+    *x2 = result.x;
+    *y2 = result.y;
+}
 
 INCLUDE_ASM(const s32, "code_0013CDE0", map_fldPoint3To2O);
 

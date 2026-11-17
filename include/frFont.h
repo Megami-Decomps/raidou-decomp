@@ -11,6 +11,7 @@ frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, 
 u16 frGetSmallFontFRQ2Sub(u16 code);
 frFontHandle_t *frCallSetFontString(u8 *pStr, s8 Style, s8 ColNo, s8 Tp, frFontHandle_t *pFRQ);
 frFontHandle_t *frDestroyFontRequestAfterSub(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2, s32 Mode);
+frFontHandle_t *frCombineFontRequest(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2);
 frFontHandle_t *frSetFontString(u8 *text, s8 style, s8 firstOption, s8 secondOption, frFontHandle_t *chain);
 u32 frGetStrWidth2(frFontHandle_t *pFRQ);
 s32 frDestroyFontRequestAfter(frFontHandle_t *pFRQ);
@@ -61,6 +62,9 @@ u32 itfGetTextLipsMotionId(void);
 s32 frCallEventVoiceSub(const _FRQ *glyph);
 void frFontCenterGlyphChainAt(s32 x, s32 y, _FRQ *glyphChain);
 frFontHandle_t *frSetUserImage(GsFont_t *pFont, u8 Style, frFontHandle_t *pFRQ);
+frFontHandle_t *frCallGetFontEx(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colors, const char *text,
+                                frFontHandle_t *previousGlyph);
+frFontHandle_t *frLinkKanjiSub(s32 x, s32 y, s32 depth, u32 colors, const char *text, frFontHandle_t *previousGlyph);
 void frInitTextHandle(frTextHandle_t *pText, u16 Code, u8 Style, u8 ColNo, u32 Color, u8 Tp);
 void frInitFontHandle(frFontHandle_t *pFRQ);
 frTextHandle_t *frSetFont(u16 glyphCode, u8 fontIndex, u8 firstOption, u8 secondOption);

@@ -18,4 +18,7 @@ void sdfLinkLoadImage(sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle, s32 aD
 
 void sdfLinkStoreFrameImage(sdfDrawTag_t *aDrawTag, struct sdfPreDrawTag_t *aPreDrawTag, s32 aSrcX, s32 aSrcY, s32 aWidth, s32 aHeight, s32 aBuffer, s32 aCallback, s32 aCallbackParam, s32 (*aAllocator)(s32));
 
+void sdfLinkStoreImage(sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle, s32 aSrcX, s32 aSrcY, s32 aWidth,
+                       s32 aHeight, saddr_t aBuffer, s32 aCallback, s32 aCallbackParam,
+                       s32 (*aAllocator)(s32));
 #endif

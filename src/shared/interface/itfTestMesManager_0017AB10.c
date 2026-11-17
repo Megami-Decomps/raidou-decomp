@@ -5,8 +5,14 @@
 #include "model.h"
 #include "draw3d.h"
 #include "ps2asm.h"
+#include "dds3GlobalWork.h"
+#include "dds3KernelDraw.h"
+#include "kernel_draw.h"
+#include "sdfDevCons.h"
+#include "sdfDraw.h"
 
 typedef struct { u8 unk00[8]; f32 degrees; u8 unk0C[4]; } pbFovWork_t;
+extern pbFovWork_t pbDebugFovWork;
 
 typedef struct { s32 x, y, z; u32 style; } pbPrintState_t;
 
@@ -60,7 +66,25 @@ extern char pbDebugBlurValueFormat[8];
 extern char pbDebugBlurOffsetFormat[8];
 extern s32 (*pbMapCallbacks[2])(s16 x, s16 y, s32 mode);
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager_0017AB10", pbDebugPrintPanel);
+s32 pbDebugPrintPanel(void) {
+    sdfDevPrintCB_t packet;
+    sdfDrawTag_t *list;
+    f32 radiansToDegrees = 57.2957795f;
+
+    list = dds3CallGrAllocPacketBuff9();
+    sdfDrawTagLink(list, EE_ADDR(dds3PrimFrameRect(0x8500, 0x79C0, 0xFEFFFF, 0xA80, 0x120, 0x60000000, 0x40806020)));
+    sdfDevSetPrintCB(&packet, 0x85C0, 0x7A20, 0xFF0000, 0);
+    sdfDrawTagLink(list, EE_ADDR(sdfDevPrintfEx(&packet, "FOVY: %6.2f", dds3ScreenParam.fovy * radiansToDegrees)));
+    dds3Data10.regFunc(&dds3Data10, list);
+    if ((s8)dds3PadButtonState[0x31] < 0) {
+        return -1;
+    }
+    pbDebugFovWork.degrees = dds3ScreenParam.fovy * radiansToDegrees;
+    if (pbCalcFovDegrees(&pbDebugFovWork.degrees, 1.0f, 89.0f, 0.1f, 1.0f) != 0) {
+        dds3ScreenParam.fovy = pbDebugFovWork.degrees * 0.0174532925f;
+    }
+    return 0;
+}
 
 s32 pbCalcFovDegrees(f32 *value, f32 minimum, f32 maximum, f32 coarseStep, f32 fineStep)
 {

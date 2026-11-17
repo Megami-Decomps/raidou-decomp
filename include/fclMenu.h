@@ -6,6 +6,8 @@
 struct itfMover_t;
 struct itfSprList_t;
 
+extern struct itfSprList_t DrawCursorData;
+
 u8 CalcAlpha(struct itfMover_t *mv);
 void DrawCursor(s32 a_x, s32 a_y, u8 a_alpha);
 void DrawCursorSelect(s32 a_x, s32 a_y, u8 a_alpha);

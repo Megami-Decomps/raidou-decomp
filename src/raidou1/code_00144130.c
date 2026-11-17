@@ -14,7 +14,9 @@ s32 mapAddHukidashi(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, s32
 
 INCLUDE_ASM(const s32, "code_00144130", mapLeaf13);
 
-INCLUDE_ASM(const s32, "code_00144130", mapObjectRefreshSub);
+s32 mapObjectRefreshSub(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, f32 x, f32 y, f32 z, f32 r, f32 s) {
+    return mapObjFloorAdd_Cash(-1, uniq, major, minor, motion, cut_bit, 0, x, y, z, r, s);
+}
 
 s32 mapObjCheck(s16 uniq) {
     s32 i;
@@ -53,7 +55,17 @@ INCLUDE_ASM(const s32, "code_00144130", nbStartEventPacks);
 
 INCLUDE_ASM(const s32, "code_00144130", mapObjColor);
 
-INCLUDE_ASM(const s32, "code_00144130", mapFileLoadSub3);
+/* body: matched in raidou @ 1424963: src/raidou1/code_00144130.c:98, near, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+void mapFileLoadSub3(s16 uniq, s32 spcial) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].spcial = spcial;
+            return;
+        }
+    }
+}
 
 void mapObjNpcKuse(s16 uniq, s32 wait) {
     s32 i;
@@ -110,7 +122,16 @@ INCLUDE_ASM(const s32, "code_00144130", mapObjMask);
 
 INCLUDE_ASM(const s32, "code_00144130", mapLeaf15);
 
-INCLUDE_ASM(const s32, "code_00144130", mapObjNoClip);
+void mapObjNoClip(s16 uniq) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].noclip = 1;
+            return;
+        }
+    }
+}
 
 /* NON_MATCHING: 16 of 370 words match. 9 of 370 words match; same blocks, branch-likely and register choices differ. */
 #ifdef NON_MATCHING

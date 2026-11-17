@@ -31,7 +31,20 @@ INCLUDE_ASM(const s32, "code_0014B660", mapWHitAdd);
 
 INCLUDE_ASM(const s32, "code_0014B660", mapFileLoadSub5);
 
-INCLUDE_ASM(const s32, "code_0014B660", mapNpcTblAdd);
+void mapNpcTblAdd(s16 uniq, f32 x, f32 y, f32 z) {
+    s32 i;
+
+    for (i = 0; i < 32; i++) {
+        if (mapData31[i].use == 0) {
+            mapData31[i].use = 1;
+            mapData31[i].uniq = uniq;
+            mapData31[i].x = x;
+            mapData31[i].y = y;
+            mapData31[i].z = z;
+            return;
+        }
+    }
+}
 
 /* NON_MATCHING: 59 of 248 words match.  */
 #ifdef NON_MATCHING

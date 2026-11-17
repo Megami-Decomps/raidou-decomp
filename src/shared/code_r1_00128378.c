@@ -254,7 +254,19 @@ INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK);
 INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK2);
 #endif
 
+#ifdef VERSION_RAIDOU1
+void mapRefDDS3GBWK3(s32 map, s32 floor, s32 id) {
+    if (map < 32 && fldGlobalBase.automapMaskCurrentIdx != -1) {
+        if (fldGlobalBase.automapMaskCurrentIdx < 80) {
+            DDS3_GBWK->automapmask[fldGlobalBase.automapMaskCurrentIdx][id / 8] &= ~(1 << (id - (id / 8) * 8));
+        } else {
+            DDS3_GBWK->automapmask2[fldGlobalBase.automapMaskCurrentIdx - 80][id / 8] &= ~(1 << (id - (id / 8) * 8));
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK3);
+#endif
 #ifdef VERSION_RAIDOU1
 /* NON_MATCHING: 36 of 43 words match.  */
 #ifdef NON_MATCHING
@@ -449,7 +461,11 @@ s32 mapGetNakamaSerialID2(void) {
     return summonDvBasic->serialID;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00128378", effBTLFieldColorDraw);
+void effBTLFieldColorDraw(void) {
+    if (aiboBasic != NULL) {
+        mapAiboFoceSet(aiboBasic->poseset->pos.x, aiboBasic->poseset->pos.y, aiboBasic->poseset->pos.z);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", effRefDvBasic2);
 
@@ -600,7 +616,14 @@ INCLUDE_ASM(const s32, "code_r1_00128378", mapSetSceneParam);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapSetSceneParam_BattleReturn);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldElvReset);
+void fldElvReset(fldSceneParam_t *param, s32 field) {
+    param->flag = 0;
+    param->loadField = field;
+    param->loadFloor = -1;
+    param->loadPoint = -1;
+    param->loadMode = 0;
+    fldRefTexLoadLast();
+}
 
 #ifdef VERSION_RAIDOU1
 void fldReadyScene(void) {

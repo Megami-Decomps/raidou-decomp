@@ -828,7 +828,7 @@ s32 mapAddHukidashi(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, s32
 s32 mapObjectRefreshSub(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, f32 x, f32 y, f32 z, f32 r, f32 s);
 void mapObjLightAdd(s16 uniq, f32 x, f32 y, f32 z, f32 in_r, f32 out_r, f32 dif_r, f32 dif_g, f32 dif_b, f32 amb_r, f32 amb_g, f32 amb_b);
 void mapObjEveHitSet2(s16 uniq, s32 act, s32 dir, f32 size, char *scr_name);
-void mapNpcTblAdd(s32 uniq, f32 x, f32 y, f32 z);
+void mapNpcTblAdd(s16 uniq, f32 x, f32 y, f32 z);
 s32 mapLoadGenbaEpl(void);
 f32 mapGetY(f32 x, f32 z);
 void mapCHitAdd(s16 uniq, f32 x, f32 z, f32 r);

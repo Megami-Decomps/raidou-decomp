@@ -26,6 +26,7 @@
 #include "newdata.h"
 #include "ps2asm.h"
 #include "sdfModel.h"
+#include "sdfTex.h"
 
 INCLUDE_ASM(const s32, "code_0015D490", mapLeaf);
 
@@ -1474,13 +1475,33 @@ void mapTitleSkip(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0015D490", mapProcSequenceSub9);
+void mapProcSequenceSub9(s32 arg)
+{
+    fldCallSetOt4Data5 = arg;
+}
 
 INCLUDE_ASM(const s32, "code_0015D490", fldCallSetOt4);
 
-INCLUDE_ASM(const s32, "code_0015D490", fldReleaseTitleTextures);
+void fldReleaseTitleTextures(dds3ProcessID_t *task) {
+    if (mapCallLinkSpriteData != NULL) {
+        sdfTexFreeDelayed(mapCallLinkSpriteData);
+        mapCallLinkSpriteData = NULL;
+    }
+    if (fldData30 != NULL) {
+        sdfTexFreeDelayed(fldData30);
+        fldData30 = NULL;
+    }
+    fldCallSetOt4Data = 0;
+    fldCallSetOt4Data3 = 0;
+    fldCallSetOt4Data2 = 99;
+    fldData31 = 0;
+    fldCallSetOt4Data4 = 0;
+}
 
-INCLUDE_ASM(const s32, "code_0015D490", mapTitleStart);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/00165810.c:1, match */
+void mapTitleStart(dds3ProcessID_t *task) {
+    fldReleaseTitleTextures(task);
+}
 
 INCLUDE_ASM(const s32, "code_0015D490", mapTitleStart_fld);
 
@@ -1830,7 +1851,27 @@ void mapSoundMoveSeTask(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0015D490", mapSoundMoveSeFade0);
+void mapSoundMoveSeFade0(void) {
+    s32 i;
+    s32 vol;
+
+    for (i = 0; i < 8; i++) {
+        if (mapFileLoadSub8Work[i].active != 0) {
+            if (mapFileLoadSub8Work[i].vol > 0) {
+                vol = mapFileLoadSub8Work[i].vol * mapSoundKankyoTaskSubData / 100;
+                if (mapFileLoadSub8Work[i].state != 0) {
+                    p2sdVolume2(mapFileLoadSub8Work[i].se, vol);
+                } else {
+                    p2sdPlaySE_Vol(mapFileLoadSub8Work[i].se, vol);
+                    mapFileLoadSub8Work[i].state = 1;
+                }
+            } else {
+                p2sdPlaySE_Vol_Loop(mapFileLoadSub8Work[i].se);
+                mapFileLoadSub8Work[i].state = 0;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0015D490", mapLeaf23);
 
@@ -1863,7 +1904,10 @@ void p2sdPlaySE_Vol(s32 se, s32 vol) {
 
 INCLUDE_ASM(const s32, "code_0015D490", p2sdVolume2);
 
-INCLUDE_ASM(const s32, "code_0015D490", p2sdPlaySE_Vol_Loop);
+void p2sdPlaySE_Vol_Loop(s32 se)
+{
+    p2sdStopSe(p2sdData2 + se);
+}
 
 void mapSoundSmgLoadChk(s32 map) {
     s32 addr = p2sdSoundSmgLoadChkSub(map);
@@ -1902,7 +1946,9 @@ INCLUDE_ASM(const s32, "code_0015D490", sndCallLoadCheckMidi);
 
 INCLUDE_ASM(const s32, "code_0015D490", sndSeLoadId);
 
-INCLUDE_ASM(const s32, "code_0015D490", sndNakamaJoinTaskSub);
+void sndNakamaJoinTaskSub(s32 se, s32 vol) {
+    p2sdPlaySE(mapData129 + se, vol, 63);
+}
 
 void datInitBossPress(void) {
     s32 i;

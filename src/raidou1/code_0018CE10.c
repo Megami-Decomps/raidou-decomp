@@ -11,6 +11,7 @@
 #include "ps2asm.h"
 #include "dds3KernelDraw_0010A750.h"
 #include "sdfChip.h"
+#include "code_r1_002CAFD8.h"
 
 s32 itfMoverInit(itfMover_t *mv)
 {
@@ -38,7 +39,12 @@ INCLUDE_ASM(const s32, "code_0018CE10", DvlMsgDrawProcess);
 
 INCLUDE_ASM(const s32, "code_0018CE10", itfMoverGetRatio);
 
-INCLUDE_ASM(const s32, "code_0018CE10", itfCallSetOt);
+void itfCallSetOt(s32 a_x, s32 a_y, s32 a_z, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo) {
+    eglSetOt(a_otNo);
+    eglLinkTest(1, 5, 1, 1, 0, 0, 1, 1);
+    eglLinkAlpha(0);
+    itfDrawGridWithResolvedSlot(a_x * 16, a_y * 8, a_z, 0x60, a_hSpr, a_sprNo, a_otNo);
+}
 
 void itfCallSetOt2(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo)
 {

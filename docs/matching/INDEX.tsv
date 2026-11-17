@@ -55,6 +55,7 @@ mapCallSin11	code_0016AD90	raidou1 0xF8	44 of 58 words differ	docs/matching/code
 mapNakamaWakeUp	code_0016CA30	raidou1 0x60	7 of 24 words differ	docs/matching/code_0016CA30.md	3		
 encCallPrimAllocDrawTag2	code_00173D20	raidou1 0x1F0	41 of 124 words differ	docs/matching/code_00173D20.md	3		
 mapNpcPathMake_Rot	code_00174790	raidou1 0x118	18 of 70 words differ	docs/matching/code_00174790.md	3		
+GetElement	code_00174790	raidou1 0x164	38 of 89 words differ	docs/matching/code_00174790.md	11		
 mapCtnGet	code_00175908	raidou1 0x112C	984 of 1095 words differ	docs/matching/code_00175908.md	3		
 nbCallGetIntPara9	code_00179808	raidou1 0xB0	3 of 44 words differ	docs/matching/code_00179808.md	3		
 cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3		
@@ -63,6 +64,7 @@ _MenuSetMenu	code_0018CE10	raidou1 0x5C	18 of 24 words differ	docs/matching/code
 MenuUpdateLinkMover	code_0018CE10	raidou1 0xFC	2 of 63 words differ	docs/matching/code_0018CE10.md	13		
 MenuDrawProcess	code_00190668	raidou1 0x32C	181 of 203 words differ	docs/matching/code_00190668.md	3		
 MenuProcess	code_00190668	raidou1 0x6DC	404 of 426 words differ	docs/matching/code_00190668.md	11		
+MenuShutdown	code_00190668	raidou1 0x50	4 of 19 words differ	docs/matching/code_00190668.md	19		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, same form as fclCallGetProcessData. Tried: the s32 return of dds3ProcessFunc_t with no return statement (still j, 4 of 19 words differ); the call is last, nothing to reorder. Header: cmpCallMenuDeleteMenu declared in itf.h.
 evtMoonTeisatuCntReset	code_001AD4E8	raidou1 0x10	4 of 4 words differ	docs/matching/code_001AD4E8.md	3		
 sbtlRefSbtl31	code_0024DF70	raidou1 0x94	34 of 35 words differ	docs/matching/code_0024DF70.md	3		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
@@ -95,6 +97,7 @@ sbtlCallExistProcess2	code_002A38D8	raidou1 0x68	8 of 26 words differ	docs/match
 sbtlDraw3DSphere	code_002A38D8	raidou1 0x294	26 of 165 words differ	docs/matching/code_002A38D8.md	79		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	13		
+fclCallSetFontColorNo3	code_002FA4F0	raidou1 0x118	4 of 70 words differ	docs/matching/code_002FA4F0.md	21		
 pipeCampCAMPPACKLB	code_00300578	raidou1 0x158	3 of 86 words differ	docs/matching/code_00300578.md	3		
 cmpGetFlagCallDebug	code_00300578	raidou1 0x28	1 of 10 words differ	docs/matching/code_00300578.md	11		
 cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
@@ -130,6 +133,8 @@ mnuAdjustTimelineDurations	code_r1_001CA8F8	raidou1 0x1DC, raidou2 0x1DC	9 of 11
 Start_evtTmxPreLoad	code_r1_001CEEF8	raidou1 0x2D8, raidou2 0x2D8	156 of 172 words differ	docs/matching/code_r1_001CEEF8.md	3		
 scrCallLoadCheckMidi	code_r1_001CF808	raidou1 0x74, raidou2 0x74	6 of 29 words differ	docs/matching/code_r1_001CF808.md	3		
 fileAllocateGridRecordSlots	code_r1_0021CE60	raidou1 0x158, raidou2 0x158	83 of 84 words differ	docs/matching/code_r1_0021CE60.md	3		
+fileDuplicateJob	code_r1_0021CE60	raidou1 0x88, raidou2 0x88	1 of 34 words differ	docs/matching/code_r1_0021CE60.md	11		
+fileQueueRemoveAndDestroyJob	code_r1_0021CE60	raidou1 0xFC, raidou2 0xFC	2 of 63 words differ	docs/matching/code_r1_0021CE60.md	20		
 PartsCreate	code_r1_00226EC8	raidou1 0x59C, raidou2 0x59C	177 of 223 words differ	docs/matching/code_r1_00226EC8.md	3		
 billAdvanceTrailInstances	code_r1_00226EC8	raidou1 0x7A8, raidou2 0x7A8	18 of 490 words differ	docs/matching/code_r1_00226EC8.md	11		
 effCreateSurfaceGridNode	code_r1_00226EC8	raidou1 0x150, raidou2 0x150	33 of 84 words differ	docs/matching/code_r1_00226EC8.md	19		
@@ -218,8 +223,10 @@ evtUnitManagerPrimaryFunc	event/evtUnitManager	raidou1 0x6E8	18 of 442 words dif
 MakeLightPacket	event/evtUnitManager	raidou1 0x1F4, raidou2 0x1F4	89 of 115 words differ	docs/matching/event/evtUnitManager.md	17		
 EndCallback_evtTmxPreLoad	evtTmxPreLoad	raidou1 0x180	53 of 94 words differ	docs/matching/evtTmxPreLoad.md	3		
 mapNakamaStockOnCheck_fld	facility/fclCombineInit	raidou1 0xF4	45 of 60 words differ	docs/matching/facility/fclCombineInit.md	3		
+fclUpdateMessageEx	facility/fclMisc	raidou1 0xDC, raidou2 0xDC	2 of 55 words differ	docs/matching/facility/fclMisc.md	3		
 fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/fclDrawBack.md	3		
 fldGbInit_Field	fclDrawBack	raidou1 0x94	12 of 37 words differ	docs/matching/fclDrawBack.md	11	retyping fldAreaWork_t 0x120..0x128 (hitZ/camAngle/camAngle2 to the s32 nowTalkModelID/nowTakaraTblIdx/nowHealTblIdx, or the same as f32/s32 unions) moved it from 7 to 12 differing words with the same stores.	
+fclCallGetProcessData	fclDrawBack	raidou1 0x38	4 of 13 words differ	docs/matching/fclDrawBack.md	21		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue. Tried: void (tail j), the s32 return of dds3ProcessFunc_t with no return statement (still j, 4 of 13 words differ); the call is the last statement of straight-line code, so statement order has nothing to move. Only a dead store after the call remains, which is banned.
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		
 mapAiboTask	field/fldFileResolver	raidou1 0x9A8	54 of 618 words differ	docs/matching/field/fldFileResolver.md	14	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618. The B4-field-big header declaration edits (11 headers, no change to the unit) moved it again, DIFF 323/618 to CONTEXT 12/618, and the K03-effect header declaration edits from CONTEXT 54/618 to CONTEXT 319/616.	
 mapSummonDvTask	field/fldFileResolver	raidou1 0x944	6 of 593 words differ	docs/matching/field/fldFileResolver.md	24	the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit.	
@@ -244,6 +251,7 @@ itfFunc2	interface/itfMesManager	raidou1 0x1EC, raidou2 0x1EC	67 of 123 words di
 itfCallGrAllocPacketBuff	interface/itfMesManager	raidou1 0x448, raidou2 0x448	209 of 274 words differ	docs/matching/interface/itfMesManager.md	59		
 itfCallGrAllocPacketBuff2	interface/itfMesManager	raidou1 0x4D8, raidou2 0x4D8	145 of 310 words differ	docs/matching/interface/itfMesManager.md	68		
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3		
+TestMsgMngD_Process	interface/itfTestMesManager_0018CC20	raidou1 0x9C, raidou2 0x9C	6 of 39 words differ	docs/matching/interface/itfTestMesManager_0018CC20.md	3		
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3		
 dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11		
 dds3DrawBista	kernel/dds3KernelDraw	raidou1 0x2AC	151 of 157 words differ	docs/matching/kernel/dds3KernelDraw.md	17		

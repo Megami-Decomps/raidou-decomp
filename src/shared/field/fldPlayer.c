@@ -91,7 +91,86 @@ f32 R360_LR(f32 a, f32 b) {
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "field/fldPlayer", fldPlayerCalc360_8);
+/* body: matched in raidou @ 1424963: src/shared/field/fldPlayer.c:185, match, same function 1.00 (words 158/158, calls 1.00, shape 1.00) */
+f32 fldPlayerCalc360_8(f32 aKakudo) {
+    f32 best;
+    s32 index;
+    f32 diff;
+    while (aKakudo >= 360.0f) {
+        aKakudo -= 360.0f;
+    }
+    while (aKakudo < 0.0f) {
+        aKakudo += 360.0f;
+    }
+    best = 900.0f;
+    index = -1;
+    diff = fabsf(R360_LR(0.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 0;
+    }
+    diff = fabsf(R360_LR(45.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 1;
+    }
+    diff = fabsf(R360_LR(90.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 2;
+    }
+    diff = fabsf(R360_LR(135.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 3;
+    }
+    diff = fabsf(R360_LR(180.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 4;
+    }
+    diff = fabsf(R360_LR(225.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 5;
+    }
+    diff = fabsf(R360_LR(270.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 6;
+    }
+    diff = fabsf(R360_LR(315.0f, aKakudo));
+    if (diff < best) {
+        index = 7;
+    }
+    switch (index) {
+    case 0:
+        aKakudo = 0.0f;
+        break;
+    case 1:
+        aKakudo = 45.0f;
+        break;
+    case 2:
+        aKakudo = 90.0f;
+        break;
+    case 3:
+        aKakudo = 135.0f;
+        break;
+    case 4:
+        aKakudo = 180.0f;
+        break;
+    case 5:
+        aKakudo = 225.0f;
+        break;
+    case 6:
+        aKakudo = 270.0f;
+        break;
+    case 7:
+        aKakudo = 315.0f;
+        break;
+    }
+    return aKakudo;
+}
 #else
 f32 fldSnapAngleToCompassPoint(f32 angle) {
     f32 compass[16] = {0.0f, 22.5f, 45.0f, 67.5f, 90.0f, 112.5f, 135.0f, 157.5f, 180.0f, 202.5f, 225.0f, 247.5f, 270.0f, 292.5f, 315.0f, 337.5f};

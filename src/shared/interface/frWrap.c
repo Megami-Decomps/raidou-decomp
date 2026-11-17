@@ -5,6 +5,7 @@
 #include "font.h"
 #include "sdfMemory.h"
 #include "frFont.h"
+#include "cmbFont.h"
 #include "itfMisc.h"
 
 typedef struct { u32 start, end; } frBitRange_t;
@@ -206,7 +207,15 @@ void frwFreeStaffFont(void) {
     frDelFontStyle(5);
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", frGetSmallFontFRQ2Sub);
+u16 frGetSmallFontFRQ2Sub(u16 code) {
+    s32 offset = code - 0x8080;
+    u32 index = ((offset & 0xFF00) >> 1) + (offset & 0x7F);
+
+    if (index < frLoadExchangeTableData) {
+        return EE_ADDR_AS(u16 *, frWork)[index];
+    }
+    return 0xFFFF;
+}
 
 /* Preserve single-byte text and substitute 0x8080 for unmapped glyph pairs. */
 void itfConvertText(u8 *output, const char *input) {
@@ -231,11 +240,60 @@ void itfConvertText(u8 *output, const char *input) {
     }
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", frwGetFontEx);
+frFontHandle_t *frwGetFontEx(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colors, const char *text,
+                             s8 glyphMode, s8 sharedFlag, frFontHandle_t *previousGlyph) {
+    char glyphData[3];
+    s32 length;
+    s32 position = 0;
+    s32 glyphLength;
+    frFontHandle_t *chain = previousGlyph;
+
+    length = strlen(text);
+    if (sharedFlag == 0) {
+        frEnableMode(1);
+    }
+    frDisableMode(2);
+
+    if (length > 0) {
+        do {
+            const char *character = text + position;
+            frFontHandle_t *glyph;
+
+            if (character[0] >= 0) {
+                glyphData[0] = character[0];
+                glyphLength = 1;
+                glyphData[1] = 0;
+            } else {
+                glyphData[0] = character[0];
+                glyphData[1] = character[1];
+                glyphLength = 2;
+                glyphData[2] = 0;
+            }
+            glyph = frCallSetFontString(glyphData, 0, 0, 0, NULL);
+            frSetFontSize(glyph, width, height);
+            frSetPriority(glyph, depth << 4);
+            frSetFontColor(glyph, colors);
+            chain = frCombineFontRequest(chain, glyph);
+            if (position == 0) {
+                glyph->x = x;
+            }
+            position += glyphLength;
+            glyph->y = y;
+        } while (position < length);
+    }
+
+    frEnableMode(2);
+    if (sharedFlag == 0) {
+        frDisableMode(1);
+    }
+    return chain;
+}
 
 INCLUDE_ASM(const s32, "interface/frWrap", frCallGetFontEx);
 
-INCLUDE_ASM(const s32, "interface/frWrap", frLinkKanjiSub);
+frFontHandle_t *frLinkKanjiSub(s32 x, s32 y, s32 depth, u32 colors, const char *text, frFontHandle_t *previousGlyph) {
+    return frCallGetFontEx(x, y, depth, 20, 20, colors, text, previousGlyph);
+}
 
 frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, frFontHandle_t *pFRQ)
 {
@@ -277,13 +335,46 @@ frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, 
     return frDestroyFontRequestAfterSub(pFRQ, request, 0);
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallNumFontFRQ);
+frFontHandle_t *frwGetSmallNumFontFRQ(s32 x, s32 y, s32 priority, u32 color,
+                                      u8 *text, frFontHandle_t *previous)
+{
+    frFontHandle_t *request = frCallSetFontString(frWrapEmptyString, 0, 0, 0, previous);
+    frDisableMode(2);
+    request = frSetFontString(text, 2, 0, 0, request);
+    frSetFontSpace(request, -1);
+    frEnableMode(2);
+    frSetDrawPosition(request, x, y);
+    frSetPriority(request, priority << 4);
+    frSetFontColor(request, color);
+    return request;
+}
 
-INCLUDE_ASM(const s32, "interface/frWrap", frwGetNumFontFRQ);
+frFontHandle_t *frwGetNumFontFRQ(s32 x, s32 y, s32 priority, u32 color,
+                                 u8 *text, frFontHandle_t *previous)
+{
+    frFontHandle_t *request = frCallSetFontString(frWrapEmptyString, 0, 0, 0, previous);
+    frDisableMode(2);
+    request = frSetFontString(text, 3, 0, 0, request);
+    frEnableMode(2);
+    frSetDrawPosition(request, x, y);
+    frSetPriority(request, priority << 4);
+    frSetFontColor(request, color);
+    return request;
+}
 
 INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallCaptionFontFRQ);
 
-INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallFont1FRQ);
+frFontHandle_t *frwGetSmallFont1FRQ(s32 x, s32 y, s32 priority, u32 color,
+                                      u8 *text, frFontHandle_t *previous)
+{
+    frFontHandle_t *request = frSetFontString(text, 0, 0, 0, NULL);
+    frSetFontSize(request, 12, 16);
+    frSetFontSpace(request, -3);
+    frSetDrawPosition(request, x, y);
+    frSetPriority(request, priority << 4);
+    frSetFontColor(request, color);
+    return frDestroyFontRequestAfterSub(previous, request, 0);
+}
 
 _FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, frFontTextBank_t *bank, s32 flags) {
     const u8 *text = MessageNumSearch(textId, bank, 0);

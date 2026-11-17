@@ -22,6 +22,8 @@
 #include "dds3Randomize.h"
 #include "sdk_libm.h"
 #include "sdfSound.h"
+#include "dds3KernelMisc.h"
+#include "sdfDevCons.h"
 
 extern itfMesShake_t itfData;
 extern u32 itfData3;
@@ -149,7 +151,7 @@ s32 itfMesMngSelect(void);
 extern void itfMesMngRequestSelect(s32 id, s32 select);
 void itfMesMngRequestSelectRelease(s32 id);
 s16 itfMesMngGetSelPhase(s32 msgid);
-s16 itfMesMngGetSelectNo(s32 msgid);
+s32 itfMesMngGetSelectNo(s32 msgid);
 s32 itfMesMngMaskSelect(void);
 void itfMesMngSetMaskSelect(s32 id, u32 maskpattern);
 s32 itfMesMngCloseWindow(void);
@@ -222,7 +224,6 @@ void itfMesMngChangeWindowType(s32 id, s32 type, s32 alpha);
 
 #define ITF_MES_CONTENT_STATUS_MASK 0x3300
 
-s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index);
 s32 itfMesMngGetWidth(s32 id, s32 message, s32 page);
 void CommitVarTable(s32 *pvar);
 s32 GetMessageWidth(frFontHandle_t *pfont);
@@ -321,7 +322,6 @@ s32 SelectItemDefKey(select_tag *psel);
 void ChangeFontColor(frFontHandle_t *pfont, s32 index, s32 lines, s32 color);
 extern u8 itfMesDebugLineVertIndex[5];
 extern u8 itfMesDebugLineColorIndex[5];
-void itfMesMngSetSelect(s32 id, s32 selno);
 void itfMesMngMarkBitStat(s32 id, u32 flag);
 void itfMesMngClearBitStat(s32 id, u32 flag);
 void itfMesMngSetVar(s32 id, s32 index, s32 num, s32 type);
@@ -367,6 +367,8 @@ extern char itfMesMarkerSelect[8];
 extern char itfMesDebugItemFormat[8];
 extern char itfMesMarkerNone[8];
 extern char itfMesDebugFadeFormat[8];
+extern char *itfMesSelectionMarkers[2];
+extern char *itfMesDebugMenuLabels[5];
 
 #include "include_asm.h"
 #include "basic.h"
@@ -568,7 +570,11 @@ s32 itfMesMngMessage(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf8);
+/* body: matched in smt3 @ 9401f79e: src/smt3/interface/itfMesManager.c:480, match, same function 0.97 (words 17/18, calls 1.00, shape 0.97) */
+void itfLeaf8(s32 msgid, s32 y1)
+{
+    itfPnlSetPositionOffset(pinst[msgid].mes->window.mes, 0, y1, 0, 0, 0);
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfEndMessageExSub);
 
@@ -903,7 +909,7 @@ void itfMesMngSetSelPhase(s32 msgid, s16 phase)
 }
 
 /* Return the same signed word forwarded as the script result when an option completes. */
-s16 itfMesMngGetSelectNo(s32 msgid) {
+s32 itfMesMngGetSelectNo(s32 msgid) {
     return pinst[msgid].mes->select.select;
 }
 
@@ -934,7 +940,7 @@ void itfMesMngSetSelPhase(s32 msgid, s16 phase) {
 }
 
 /* Return the same signed word forwarded as the script result when an option completes. */
-s16 itfMesMngGetSelectNo(s32 msgid) {
+s32 itfMesMngGetSelectNo(s32 msgid) {
     return pinst[msgid].mes->select.select;
 }
 
@@ -1595,9 +1601,13 @@ s16 itfMesMngGetSelect(s32 id) {
     return pinst[id].mes->select.select;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetMesPage);
+s32 itfMesMngGetMesPage(s32 id) {
+    return pinst[id].mes->message.maxpage;
+}
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetMesCurrentPage);
+s32 itfMesMngGetMesCurrentPage(s32 id) {
+    return pinst[id].mes->message.page;
+}
 
 u8 *itfMesMngGetVar(s32 id, s32 index) {
     return (u8 *)pinst[id].mes->variable.pptr[index];
@@ -1655,7 +1665,39 @@ void itfMesMngChangeWindowTypeSub(s32 id, s32 type, s32 alpha)
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngChangeWindowType_itf);
 
+#ifdef VERSION_RAIDOU1
+/* body: matched in smt3 @ 9401f79e: src/smt3/interface/itfMesManager.c:1274, near, same function 1.00 (words 50/50, calls 1.00, shape 1.00) */
+s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index) {
+    select_tag *optionBlock = &pinst[id].mes->select;
+    defkey_tag *option = NULL;
+    s32 optionIndex;
+
+    if ((u32)key >= 0x10) {
+        return 0;
+    }
+    if (key == 3 || key == 6 || key == 7) {
+        return 0;
+    }
+    for (optionIndex = 0; optionIndex < optionBlock->numdef; optionIndex++) {
+        if (optionBlock->defkey[optionIndex].key == key) {
+            option = &optionBlock->defkey[optionIndex];
+            break;
+        }
+    }
+    if (option == NULL) {
+        if (optionBlock->numdef >= 15) {
+            return 0;
+        }
+        option = &optionBlock->defkey[optionBlock->numdef];
+        optionBlock->numdef++;
+    }
+    option->key = key;
+    option->index = index;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelectDefKey);
+#endif
 
 /* Build and release a temporary glyph chain to measure the widest grouped row.
  * Empty tables and zero/missing encoded items return zero. */
@@ -1731,7 +1773,115 @@ INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelRightBottom
 
 INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelLeftTop);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngDebugProc);
+s32 itfMesMngDebugProc(void) {
+    window_tag *panel;
+    itfpanel_t *panelSprite;
+    s32 *bounds;
+    sdfDrawTag_t *packetList;
+    s32 menuItemIndex;
+    s32 menuItemY;
+    const char *menuItemFormat;
+    const char *selectionMarker;
+    const char *coordinateFormat;
+
+    if (itfMesDebug.pmesflow == NULL) {
+        itfMesLink_t *window = DebugChangeInstance(NULL);
+
+        itfMesDebug.pmesflow = window;
+        if (window == NULL) {
+            return 0;
+        }
+    }
+    {
+        debug_tag *debug = &itfMesDebug;
+
+        panel = &debug->pmesflow->state->window;
+        switch (debug->mode) {
+        case 0:
+            if (dds3PadButtonState.secondaryUp & 2) {
+                if (--debug->cursor < 0) {
+                    debug->cursor = 2;
+                }
+            } else if (dds3PadButtonState.secondaryDown & 2) {
+                if (++debug->cursor >= 5) {
+                    debug->cursor = 0;
+                }
+            }
+            if (dds3PadButtonState.secondaryCancel < 0) {
+                debug_tag *confirmDebug = &itfMesDebug;
+
+                switch (confirmDebug->cursor) {
+                case 0:
+                case 1:
+                case 2:
+                    confirmDebug->mode = 1;
+                    break;
+                case 3:
+                    confirmDebug->mode = 2;
+                    break;
+                case 4:
+                    confirmDebug->pmesflow = DebugChangeInstance(confirmDebug->pmesflow);
+                    break;
+                }
+            } else if (dds3PadButtonState.secondaryCross < 0) {
+                return -1;
+            }
+            break;
+        case 1:
+            DebugMoveWinVert(panel, debug->cursor);
+            if (dds3PadButtonState.secondaryCross < 0) {
+                debug->mode = 0;
+            }
+            break;
+        case 2:
+            DebugMoveWinAlpha(panel);
+            if (dds3PadButtonState.secondaryCross < 0) {
+                itfMesDebug.mode = 0;
+            }
+            break;
+        }
+    }
+
+    packetList = dds3CallGrAllocPacketBuff9();
+    dds3ConsPanelTagLink(packetList, 0x10, 0x10, 0x1E, 9);
+    menuItemFormat = itfMesDebugItemFormat;
+    menuItemY = 0x7A00;
+    for (menuItemIndex = 0; menuItemIndex < 5; menuItemIndex++, menuItemY += 0x60) {
+        if (itfMesDebug.cursor == menuItemIndex) {
+            selectionMarker = itfMesSelectionMarkers[itfMesDebug.mode != 0];
+        } else {
+            selectionMarker = itfMesMarkerNone;
+        }
+        sdfDrawTagLink(packetList,
+                        EE_ADDR(sdfDevPrintf(0x7180, menuItemY, 0xFFFFF0, 0,
+                                                     menuItemFormat, selectionMarker, itfMesDebugMenuLabels[menuItemIndex])));
+    }
+
+    coordinateFormat = "( %3d,%3d )";
+    panelSprite = panel->mes;
+    bounds = &panelSprite->left;
+    sdfDrawTagLink(packetList,
+                    EE_ADDR(sdfDevPrintf(0x7E00, 0x7A00, 0xFFFFF0, 0,
+                                                 coordinateFormat, bounds[0] >> 4,
+                                                 bounds[1] >> 3)));
+    sdfDrawTagLink(packetList,
+                    EE_ADDR(sdfDevPrintf(0x7E00, 0x7A60, 0xFFFFF0, 0,
+                                                 coordinateFormat, bounds[2] >> 4,
+                                                 bounds[3] >> 3)));
+    sdfDrawTagLink(packetList,
+                    EE_ADDR(sdfDevPrintf(0x7E00, 0x7B20, 0xFFFFF0, 0,
+                                                 itfMesDebugFadeFormat, panel->fadeLimit)));
+    bounds = itfMesDebug.pmesflow->state->window.mes_offset;
+    sdfDrawTagLink(packetList,
+                    EE_ADDR(sdfDevPrintf(0x7180, 0x7C40, 0xFFFFF0, 0,
+                                                 "OFFSET : %3d,%3d - %3d,%3d",
+                                                 bounds[0] >> 4,
+                                                 bounds[1] >> 3,
+                                                 bounds[2] >> 4,
+                                                 bounds[3] >> 3)));
+    sdfDebugGrOt.regFunc(&sdfDebugGrOt, packetList);
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf11);
 
@@ -2254,7 +2404,27 @@ void ReleaseAllVariable(variable_tag *pvariable)
     } while (remaining >= 0);
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", ConvertZenkakuNumber);
+u16 *ConvertZenkakuNumber(s32 buf, u16 *num) {
+    s32 digits[10];
+    s32 count = 0;
+    s32 radix = 10;
+    s32 *p = digits;
+    s32 i;
+
+    do {
+        *p = buf % radix;
+        buf = buf / radix;
+        count++;
+        p++;
+    } while (buf > 0 && count < 10);
+
+    for (i = count - 1; i >= 0; i--) {
+        *num = (u16)digits[i] * 0x100 + 0x9080;
+        num++;
+    }
+    *num = 0;
+    return num;
+}
 
 void ResetWindowPara(window_tag *pwin, s32 type, s32 alpha)
 {
@@ -2518,7 +2688,26 @@ void CalcSelect(instanceMes_tag *panel) {
 INCLUDE_ASM(const s32, "interface/itfMesManager", CalcSelect);
 #endif
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfCallChangeFontPosition);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/interface/itfMesManager.c:2256, match, same function 1.00 (words 54/54, calls 1.00, shape 1.00) */
+void itfCallChangeFontPosition(instanceMes_tag *pinst, s32 y)
+{
+    Speaker_tag *speaker = &pinst->speaker;
+    message_tag *message = &pinst->message;
+    window_tag *window = &pinst->window;
+
+    message->y += y;
+    ChangeFontPosition(message->pfont, 0, y);
+    if (window->mes != NULL) {
+        itfPnlSetPositionOffset(window->mes, 0, y, 0, 0, 0);
+    }
+    if (window->spk != NULL) {
+        itfPnlSetPositionOffset(window->spk, 0, y, 0, y, 0);
+    }
+    if (speaker->pfont != NULL) {
+        speaker->y += y;
+        ChangeFontPosition(speaker->pfont, 0, y);
+    }
+}
 
 s32 SelectItem(instanceMes_tag *pinst) {
     select_tag *sel = &pinst->select;
@@ -2964,7 +3153,10 @@ s32 itfCallGrAllocPacketBuff(instanceMes_tag *pinst) {
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff);
 #endif
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf14);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0018B5C0.c:1, match */
+s32 itfLeaf14(instanceMes_tag *pinst) {
+    return itfCallGrAllocPacketBuff(pinst);
+}
 
 /* NON_MATCHING: 165 of 310 words match.  */
 #ifdef NON_MATCHING
@@ -3105,11 +3297,94 @@ void DrawMsgMng_Shutdown(dds3ProcessID_t *id) {
     itfMesMngManager.windowTexture = NULL;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", DebugDrawWindowLine);
+void DebugDrawWindowLine(itfpanel_t *meswin) {
+    sdfIVector2_t vertices[4] = {
+        {meswin->left, meswin->top},
+        {meswin->right, meswin->top},
+        {meswin->right, meswin->bottom},
+        {meswin->left, meswin->bottom}
+    };
+    sdfDrawTag_t *list;
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinVert);
+    list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(list);
+    itfMiscDrawLineStripPrim(vertices, &DebugDrawWindowLineData, itfMesDebugLineVertIndex, itfMesDebugLineColorIndex, 5, 0xFFFFFF, list);
+    dds3Data10.regFunc(&dds3Data10, list);
+}
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinAlpha);
+/* body: matched in smt3 @ 9401f79e: src/smt3/interface/itfMesManager.c:2636, near, same function 1.00 (words 100/100, calls 1.00, shape 1.00) */
+void DebugMoveWinVert(window_tag *pwin, s32 flag) {
+    itfpanel_t *sprite = pwin->mes;
+    s32 *bounds;
+    s32 dx;
+    s32 dy;
+
+    if (sprite != NULL) {
+        bounds = pwin->mes_offset;
+        if (dds3PadButtonState.coarseDown & 2) {
+            dx = -16;
+        } else {
+            dx = ((u8)dds3PadButtonState.coarseUp << 3) & 0x10;
+        }
+        if (dds3PadButtonState.secondaryUp & 2) {
+            dy = -8;
+        } else {
+            dy = ((u8)dds3PadButtonState.secondaryDown << 2) & 8;
+        }
+        if (dds3PadButtonState.secondaryCancel != 0) {
+            dx *= 8;
+            dy *= 8;
+        }
+        if (dx != 0 || dy != 0) {
+            switch (flag) {
+            case 0:
+                itfPnlSetPositionOffset(sprite, dx, dy, 0, 0, 0);
+                bounds[0] += dx;
+                bounds[1] += dy;
+                break;
+            case 1:
+                itfPnlSetPositionOffset(sprite, 0, 0, dx, dy, 0);
+                bounds[2] += dx;
+                bounds[3] += dy;
+                break;
+            case 2:
+                itfPnlSetPositionOffset(sprite, dx, dy, dx, dy, 0);
+                bounds[0] += dx;
+                bounds[1] += dy;
+                bounds[2] += dx;
+                bounds[3] += dy;
+                break;
+            }
+        }
+    }
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/interface/itfMesManager.c:2683, near, same function 1.00 (words 36/36, calls 1.00, shape 1.00) */
+void DebugMoveWinAlpha(window_tag *pwin) {
+    s32 step;
+
+    if (dds3PadButtonState.coarseDown & 2) {
+        step = -1;
+    } else {
+        step = (dds3PadButtonState.coarseUp & 2) > 0;
+    }
+    if (dds3PadButtonState.secondaryUp & 2) {
+        step = -1;
+    } else if (dds3PadButtonState.secondaryDown & 2) {
+        step = 1;
+    }
+    if (dds3PadButtonState.secondaryCancel != 0) {
+        step *= 10;
+    }
+    if (step != 0) {
+        s32 index = (pwin->fadeLimit + step) & 0xFF;
+
+        pwin->fadeLimit = index;
+        if (pwin->mes != NULL) {
+            pwin->mes->alpha = index;
+        }
+    }
+}
 
 itfMesLink_t *DebugChangeInstance(itfMesLink_t *pflow) {
     s32 index = 0;
@@ -3159,7 +3434,44 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff3);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", InputPasswdDraw);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfInputPasswd);
+s32 itfInputPasswd(void) {
+    s32 window = scrGetMessageHandle();
+    instanceMes_tag *state;
+    s32 entry;
+
+    if (window < 0) {
+        return 1;
+    }
+    state = pinst[window].mes;
+    entry = scrGetIntPara(0);
+    if (state->message.phase == 0) {
+        InputPasswdDrawWork = 0;
+        InputPasswdDrawWork2 = 0;
+        itfCallGrAllocPacketBuff3Work = 0;
+        itfInputPasswdWork = 0;
+        itfCallGrAllocPacketBuff3Work2 = 0;
+        itfMesMngMarkBitStat(window, 0x800000);
+        itfMesMngMarkBitStat(window, 0x100000);
+        if (itfMesMngRequestMessage_itf(window, entry, 0) == 0) {
+            return 1;
+        }
+    } else {
+        InputPasswdDraw();
+        if (itfInputPasswdWork == 0 && dds3PadButtonState.primaryCancel < 0) {
+            itfInputPasswdWork = 1;
+            p2sdPlaySE(0, 0x7F, 0x3F);
+        }
+        if (itfInputPasswdWork != 0 && itfCallGrAllocPacketBuff3Work == 0) {
+            itfMesMngClearBitStat(window, 0x800000);
+            itfMesMngClearBitStat(window, 0x100000);
+            itfMesMngSetPhase(window, 0);
+            itfMesMngRequestMessageRelease(window, 0);
+            scrSetIntReturnValue(InputPasswdDrawWork);
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCalcMesFlowItfSubTable);
 
@@ -3188,6 +3500,8 @@ INCLUDE_SDATA(const s32, "interface/itfMesManager", itfData3);
 INCLUDE_SDATA(const s32, "interface/itfMesManager", itfData4);
 
 INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesDebugMenuLabelsEntry);
+
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesSelectionMarkers);
 
 INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesMarkerEdit);
 

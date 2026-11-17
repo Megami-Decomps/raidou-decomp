@@ -10,6 +10,7 @@ void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z,
 
 s32 itfGridLookupValueOrDefault(struct sprHandle_t *resource, s32 resourceIndex);
 void fclDrawPanelSprite(s32 id, s32 ot);
+void uiDrawUniformRgbRange(const u32 *xs, const u32 *ys, u32 z, u32 color, u32 ot);
 void fclDrawPanelSprite2(s32 id, s32 ot);
 
 /* Known continuation bit; other effSlotDescription_t.flags meanings remain unspecified. */

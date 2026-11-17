@@ -63,4 +63,7 @@ void fldCallTexListFree(void)
 INCLUDE_ASM(const s32, "code_001326C0", fldCallTexListFree);
 #endif
 
-INCLUDE_ASM(const s32, "code_001326C0", mapRegistBEFieldSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/field/fldFileResolver.c:1779, adapt, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void mapRegistBEFieldSub(u32 mode) {
+    fldData16 = mode;
+}

@@ -130,7 +130,6 @@ static inline void filePollPromptChoice(void) {
 
 extern u8 sdfViewMatrix[];
 extern u8 sdfProjectionMatrix[];
-extern u8 dds3BillboardGetDirectionRotateData2[];
 void mnuProjectViewPoint(void);
 
 #define FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(payload) ((payload).offset)

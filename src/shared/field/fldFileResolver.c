@@ -41,6 +41,12 @@
 #include "sBtlSound.h"
 #include "sdfSound.h"
 #include "fld.h"
+#include "dds3KernelMain.h"
+#include "fldDraw.h"
+#include "sdf2D.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdfPrim.h"
 
 /* The field-area loader interprets these serialized packet-header values. */
 typedef enum FldPackedResourceKind {
@@ -280,7 +286,58 @@ extern void scrDestroyWorkTask(void);
 
 void sdfFirePendingCallback(void);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldDrawExpandedSpriteStrip);
+void fldDrawExpandedSpriteStrip(s32 alpha, s32 offset) {
+    sdfDrawTag_t *list = sdfPrimAllocDrawTag(NULL);
+    void *reference = EE_ADDR_AS(void *, sdfGrAllocPacketBuff(0x20));
+    u64 *texturePacket;
+    u64 *blendPacket;
+    void *sprite;
+    fldSpriteVertex_t *vertex;
+    sdfGrOt_t *surface;
+
+    sdfGrLinkDispFrameTex(list, EE_ADDR(&dds3DrawEnv[dds3GetFrameID()].stdEnv), reference);
+    texturePacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+    texturePacket[0] = 3;
+    texturePacket[1] = 0x5000000310000000ULL;
+    texturePacket[2] = 0x1000000000008002ULL;
+    texturePacket[3] = 0xE;
+    texturePacket[4] = 0x8000000080ULL;
+    texturePacket[5] = 0x3B;
+    texturePacket[6] = 0;
+    texturePacket[7] = 0x3F;
+    sdfDrawTagLink(list, EE_ADDR(texturePacket));
+    blendPacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+    blendPacket[0] = 3;
+    blendPacket[1] = 0x5000000310000000ULL;
+    blendPacket[2] = 0x1000000000008002ULL;
+    blendPacket[3] = 0xE;
+    blendPacket[4] = 0x31001;
+    blendPacket[5] = 0x47;
+    blendPacket[6] = 0x48;
+    blendPacket[7] = 0x42;
+    sdfDrawTagLink(list, EE_ADDR(blendPacket));
+    sprite = sdf2DAllocSprite(1);
+    vertex = EE_ADDR_AS(fldSpriteVertex_t *, sdf2DGetPrimPtr(EE_ADDR_S(sprite)));
+    vertex->r = 0x80;
+    vertex->g = 0x80;
+    vertex->b = 0x80;
+    vertex->a = alpha;
+    vertex->corner[0].u = 0;
+    vertex->corner[0].v = 0;
+    vertex->corner[0].x = 0x6FF7 - offset;
+    vertex->corner[0].y = 0x78FB - offset / 4;
+    vertex->corner[0].mask = 0x3FFF;
+    vertex->corner[0].flag = 0;
+    vertex->corner[1].u = 0x2000;
+    vertex->corner[1].v = 0xE00;
+    vertex->corner[1].x = offset + offset / 4 + 0x9009;
+    vertex->corner[1].y = offset / 4 + 0x8705;
+    vertex->corner[1].mask = 0x3FFF;
+    vertex->corner[1].flag = 0;
+    sdfDrawTagLink(list, EE_ADDR(sprite));
+    surface = &sdfGrOtTable[rsetFrameMaskOtOffset];
+    surface->regFunc(surface, list);
+}
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldDrawFrushOt);
 
@@ -363,7 +420,27 @@ void mapAiboFoceSet(f32 x, f32 y, f32 z) {
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet);
 #endif
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAtumaru2);
+/* body: matched in raidou @ 1424963: src/shared/field/fldFileResolver.c:670, near, same function 0.93 (words 47/47, calls 0.80, shape 1.00) */
+void mapAiboAtumaru2(f32 x, f32 y, f32 z) {
+    sdfVector4_t rot;
+    dds3PoseSet_t *pose;
+
+    if (aiboBasic != NULL) {
+        aiboBasic->poseset->pos.x = x;
+        aiboBasic->poseset->pos.y = y;
+        aiboBasic->poseset->pos.z = z;
+        dds3OnPoseSetFlag(aiboBasic->poseset, 1);
+        dds3OnPoseSetFlag(aiboBasic->poseset, 8);
+        pose = aiboBasic->poseset;
+        SDF_VU0_COPYVECTOR(&pose->pos2, &pose->pos);
+        if (fldGlobalBase.nakamaMode == 0) {
+            dds3GetRotPoseSet(playerBasic);
+            SDF_VU0_STOREVECTOR(&rot);
+            dds3SetRotPoseSet(aiboBasic, &rot);
+        }
+    }
+    mapAiboFoceSet(x, y, z);
+}
 
 void mapAiboFoceSet3(f32 x, f32 y, f32 z) {
     sdfVector4_t rot;
@@ -977,7 +1054,10 @@ void fldLeaf19(s32 hisMotion, s32 upMotion, f32 hokan) {
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalcNmlFldSub);
 
 #endif
-INCLUDE_ASM(const s32, "field/fldFileResolver", rstDrawEvoBgFade);
+void rstDrawEvoBgFade(s32 Motion, f32 spd) {
+    fldPlayerModelContext->first->speed = spd;
+    mdlSingleMotion(fldPlayerModelContext, 0, Motion);
+}
 
 void fldSetUnitSub3(s32 motion, f32 speed) {
     playerModel->first->speed = speed;

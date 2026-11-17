@@ -16,18 +16,36 @@
 #include "fldFileResolver.h"
 #include "code_r1_00128378.h"
 #include "fclDrawBack.h"
+#include "dds3KernelCore.h"
+#include "sdfMemory.h"
 
-void fclLeaf6(fileJobPayload_t *job) {
-    fclCallMemFreeDirect(job);
+void fclLeaf6(fclMsgWork_t *wk) {
+    fclCallMemFreeDirect(wk);
 }
 
-INCLUDE_ASM(const s32, "fclDrawBack", fclCallGetProcessData);
+s32 fclCallGetProcessData(dds3ProcessID_t *PID) {
+    fclMsgWork_t *wk = dds3GetProcessData(PID);
+
+    fclLeaf6(wk);
+    sdfMemFreeDirect(wk->hMem);
+    FAKEMATCH_ASM_READ(wk);
+}
 
 INCLUDE_ASM(const s32, "fclDrawBack", fclProcessStart);
 
 INCLUDE_ASM(const s32, "fclDrawBack", fclProcessEnd);
 
-INCLUDE_ASM(const s32, "fclDrawBack", dds3DestroyCallbackNodeAfterLastNotification);
+/* body: matched in raidou @ 1424963: src/raidou1/code_00190668.c:646, match, same function 1.00 (words 20/20, calls 1.00, shape 1.00) */
+s32 dds3DestroyCallbackNodeAfterLastNotification(dds3ProcessID_t *PID)
+{
+    if (PID == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(PID) == 3 || dds3GetProcessStat(PID) == 0) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "fclDrawBack", fclCallSetOt);
 

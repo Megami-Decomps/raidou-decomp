@@ -8,6 +8,7 @@
 #include "dds3SceneBasic.h"
 #include "dds3WorldBasic.h"
 #include "sbtlWork.h"
+#include "code_0015D490.h"
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", mapNakamaPosRotTable);
@@ -90,7 +91,9 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotWait);
 
 #endif
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCombineInitWork);
+void fclCombineInitWork(void) {
+    sndNakamaJoinTaskSub(14, 127);
+}
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapLeaf25);
 

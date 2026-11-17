@@ -609,7 +609,24 @@ void fileWriteToPfs(fileJobPayload_t *job, const char *filePath) {
     sceSync(fileWriteToPfsData3, 0);
 }
 
+/* NON_MATCHING: 33 of 34 words match.  */
+#ifdef NON_MATCHING
+fileJobPayload_t *fileDuplicateJob(fileJobPayload_t *request) {
+    fileJobPayload_t *job = effGet(request->type);
+
+    if (request->primary.size != 0) {
+        fileJobSetPrimaryData(job, fileResolvePrimaryBuffer(request), request->primary.size, request->option);
+    }
+    if (request->secondary.size != 0) {
+        fileJobSetSecondaryData(job, fileResolveSecondaryBuffer(request), request->secondary.size,
+                                request->primary.selector);
+        return job;
+    }
+    return job;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0021CE60", fileDuplicateJob);
+#endif
 
 /* NULL when the command file does not open: retail's v0 is sdfFileOpen's
  * null result there. */
@@ -1119,7 +1136,33 @@ void fileQueueDetachSectorFollower(plistHandle_t *queue, fileJob_t *job) {
     job->sector = 0;
 }
 
+/* NON_MATCHING: 61 of 63 words match.  */
+#ifdef NON_MATCHING
+void fileQueueRemoveAndDestroyJob(plistHandle_t *queue, fileJob_t *job) {
+    fileJob_t *first;
+
+    fileQueueRemove(queue, job);
+    if (!(job->flags & FILE_JOB_FLAG_SHARED_PAYLOAD)) {
+        first = fileQueueFindFlaggedById(queue, job->id);
+        while (first != NULL) {
+            fileQueueRemoveAndDestroyJob(queue, first);
+            first = fileQueueFindFlaggedById(queue, job->id);
+        }
+        if (!(job->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER)) {
+            first = fileQueueFindBySector(queue, job->id);
+            if (first != NULL) {
+                fileQueueRechainSectorFollowers(queue, job, first);
+            }
+        }
+        if (!(job->flags & FILE_JOB_FLAG_SHARED_PAYLOAD)) {
+            fileJobDestroy((fileJobPayload_t *)job->id);
+        }
+    }
+    fileDestroyJob(job);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0021CE60", fileQueueRemoveAndDestroyJob);
+#endif
 
 /* Copies the fields before id; the id, links and name stay with the destination. */
 void fileJobCopyHeader(fileJob_t *destination, const fileJob_t *source) {

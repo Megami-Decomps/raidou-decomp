@@ -1,0 +1,27 @@
+#include "common.h"
+#include "newdata.h"
+#include "libsdf.h"
+#include "kernel.h"
+#include "basic.h"
+#include "dds3KernelCore.h"
+#include "mapData.h"
+#include "fld.h"
+#include "dds3ObjectBase.h"
+#include "sdk_libc.h"
+#include "fpu.h"
+#include "code_r1_00128378.h"
+#include "dds3Randomize.h"
+#include "fldProcess.h"
+#include "dds3obj.h"
+#include "dds3KernelDraw.h"
+#include "sdfQuat.h"
+#include "ps2asm.h"
+#include "field.h"
+#include "sdfMath.h"
+#include "model.h"
+#include "motion.h"
+#include "EventBit.h"
+
+void mapLeaf19(s16 uniq, f32 x, f32 y, f32 z, f32 r) {
+    mapObjPointAdd2(uniq, -1, x, y, z, r);
+}

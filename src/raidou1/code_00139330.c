@@ -53,7 +53,20 @@ void fldPlayerMotReset(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00139330", fldPlayerMotReset2);
+/* body: matched in raidou @ 1424963: src/raidou1/code_00139330.c:42, near, same function 0.95 (words 36/39, calls 1.00, shape 0.93) */
+void fldPlayerMotReset2(void) {
+    s16 motion = playerModel->current.h.motionIndex;
+
+    if (fldGlobalBase.nakamaMode == 0) {
+        if (mapCheckDying(0) != 0) {
+            fldLeaf18(motion, 2, 0.0f);
+        } else {
+            fldLeaf18(motion, 0, 0.0f);
+        }
+    } else {
+        NakamaMotion(motion, mapCheckDying(1) != 0 ? 2 : 0, 0.0f);
+    }
+}
 
 void fldPlayerMotReset3(void) {
     s16 motion = playerModel->current.h.motionIndex;
@@ -310,7 +323,13 @@ INCLUDE_ASM(const s32, "code_00139330", mapBigClipChkF);
 
 INCLUDE_ASM(const s32, "code_00139330", mapLeaf10);
 
-INCLUDE_ASM(const s32, "code_00139330", mapCalcLen);
+/* body: matched in raidou @ 1424963: src/shared/code_r1_00128378.c:96, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+f32 mapCalcLen(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz) {
+    f32 dx = ax - bx;
+    f32 dy = ay - by;
+    f32 dz = az - bz;
+    return fsqrtf(dx * dx + dy * dy + dz * dz);
+}
 
 INCLUDE_ASM(const s32, "code_00139330", mapSeVolCalc);
 

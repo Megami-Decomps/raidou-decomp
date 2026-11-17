@@ -12,7 +12,7 @@ typedef struct nmeInput0Work_tag {
     s32 unk0;
     dds3ProcessID_t *proc_draw;
     s32 mode;
-    s32 unkC;
+    u32 unkC;
     s32 unk10;
     u32 type;
     fldNmeSlotList_t list;
@@ -31,5 +31,8 @@ typedef struct nmeInput0Work_tag {
 typedef char nmeInput0Work_tagSizeCheck[sizeof(nmeInput0Work_tag) == 0x300 ? 1 : -1];
 
 dds3ProcessID_t *nmeStart(u32 type);
+void nmeCallMemGetPtr9(dds3ProcessID_t *id);
+void nmeCallMemGetPtr10(dds3ProcessID_t *id);
+void nmeCallMemGetPtr11(dds3ProcessID_t *id);
 
 #endif

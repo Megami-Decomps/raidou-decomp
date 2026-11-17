@@ -319,7 +319,9 @@ void fclCallSetSpriteNormal(fldNmeDraw_t *draw, u32 page, s32 index) {
 
 INCLUDE_ASM(const s32, "code_002FA4F0", fclNakamaCashLoadDecodeSub);
 
-INCLUDE_ASM(const s32, "code_002FA4F0", fclLeaf16);
+/* body: matched in raidou @ 1424963: src/raidou1/code_002FA4F0.c:496, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void fclLeaf16(fldNmeDraw_t *draw) {
+}
 
 void fclFunc5(fldNmeDraw_t *draw) {
     u32 i;
@@ -521,7 +523,16 @@ u16 fclSetSpriteNormalSub(s32 index) {
     return fclData[index];
 }
 
-INCLUDE_ASM(const s32, "code_002FA4F0", fclLeaf21);
+s32 fclLeaf21(s32 code) {
+    u32 i;
+
+    for (i = 0; i < 0xC86; i++) {
+        if (fclData[i] == code) {
+            return i;
+        }
+    }
+    return 0;
+}
 
 void fclLeaf22(frFontHandle_t *font, u32 index, f32 x, f32 y) {
     if (index < 241) {
@@ -598,7 +609,24 @@ void fclCallSetFontColorNo2(fldNmeSlotList_t *list, s32 color, f32 x, f32 y, f32
     }
 }
 
+/* NON_MATCHING: 66 of 70 words match.  */
+#ifdef NON_MATCHING
+void fclCallSetFontColorNo3(fldNmeSlotList_t *list, s32 color, f32 x, f32 y, f32 dx) {
+    u32 n = 0;
+    u32 i;
+
+    for (i = 0; i < list->count; i++) {
+        if (list->slot[i].id != 0xFFFF) {
+            fclLeaf22(list->slot[i].font, list->slot[i].id, x + n * dx, y);
+            n++;
+            frSetFontColorNo(list->slot[i].font, color);
+            frDrawFont(list->slot[i].font);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002FA4F0", fclCallSetFontColorNo3);
+#endif
 
 void fclFunc10(fldNmeSlotList_t *list) {
     u32 i;
@@ -657,7 +685,9 @@ INCLUDE_ASM(const s32, "code_002FA4F0", effCallMemGetPtr4);
 
 INCLUDE_ASM(const s32, "code_002FA4F0", effCallMemGetPtr5);
 
-INCLUDE_ASM(const s32, "code_002FA4F0", effLeaf402);
+s32 effLeaf402(dds3ProcessID_t *process) {
+    return effCallMemGetPtr5(process, effWork10, &effData44);
+}
 
 INCLUDE_ASM(const s32, "code_002FA4F0", effMesMngSetVarItfSub);
 
@@ -691,7 +721,9 @@ void effFirstInitSub(void) {
     effData45 = 3;
 }
 
-INCLUDE_ASM(const s32, "code_002FA4F0", effLeaf404);
+/* body: matched in raidou @ 1424963: src/shared/effect/effBattleMisc.c:78, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void effLeaf404(void) {
+}
 
 INCLUDE_ASM(const s32, "code_002FA4F0", effCallGetIntPara);
 
@@ -759,9 +791,59 @@ INCLUDE_ASM(const s32, "code_002FA4F0", nmeCallMemGetPtr);
 
 INCLUDE_ASM(const s32, "code_002FA4F0", nmeCallMemGetPtr2);
 
-INCLUDE_ASM(const s32, "code_002FA4F0", nmeCallMemGetPtr3);
+s32 nmeCallMemGetPtr3(dds3ProcessID_t *id) {
+    nmeInput0Work_tag *work = sdfMemGetPtr(id->workdata);
 
-INCLUDE_ASM(const s32, "code_002FA4F0", nmeCallMemGetPtr4);
+    switch (work->mode) {
+    case 1:
+        fclCallSetSelect(&work->draw, 1);
+        fclLeaf15(&work->draw);
+        nmeCallMemGetPtr9(id);
+        fclCallSetFontColorNo(&work->draw, work->unkC, work->unk24, work->unk10, work->unk28, work->unk2C);
+        fclFunc6(&work->draw, work->unk10, work->unk30);
+        nmeCallMemGetPtr10(id);
+        break;
+    case 2:
+        fclCallSetSelect(&work->draw, 1);
+        fclLeaf15(&work->draw);
+        nmeCallMemGetPtr9(id);
+        fclFunc6(&work->draw, work->unk10, work->unk30);
+        nmeCallMemGetPtr11(id);
+        break;
+    }
+    return 0;
+}
+
+/* body: matched in raidou @ 1424963: src/raidou1/code_002F97C0.c:385, near, same function 1.00 (words 56/56, calls 1.00, shape 1.00) */
+s32 nmeCallMemGetPtr4(dds3ProcessID_t *id, s32 *code) {
+    nmeInput0Work_tag *work = sdfMemGetPtr(id->workdata);
+    s32 page;
+    s32 index;
+    u32 count;
+    s32 ret;
+
+    if (work->unkC >= 3) {
+        if (work->unkC == 3) {
+            titleFunc4(titleFunc6(work->unk2C), &page, &index);
+            index += work->unk28;
+            count = fclLeaf23(page);
+            if (index >= count) {
+                return 0;
+            }
+            *code = fclLeaf24(page, index);
+            return 1;
+        }
+    } else {
+        ret = titleFunc(work->unkC, work->unk28, work->unk2C);
+        if (ret != 0) {
+            index = nmeLeaf2(work->unkC, work->unk28, work->unk2C);
+            *code = index;
+            return 1;
+        }
+        return ret;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_002FA4F0", nmeCallMemGetPtr5);
 

@@ -74,6 +74,7 @@ extern sdfGrOt_t sdfGrOtTable[114];
 #define DDS3_OT_DEBUG_WIRE 64
 #endif
 extern sdfGrOt_t dds3Data10;
+extern sdfGrOt_t sdfDebugGrOt;
 void sdfGrSetStdDrawEnv(dds3StdDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet);
 void sdfGrSetClearPacket(sdfGrClearPacket_t *aClear, s32 aW, s32 aH, s32 aPixelFormat, s32 aZBuffFormat);
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera);

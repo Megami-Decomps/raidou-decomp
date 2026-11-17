@@ -9,6 +9,10 @@
 #include "sdfMath.h"
 #include "sdf2D.h"
 #include "sdfPacketBuff.h"
+#include "dds3GlobalWork.h"
+#include "kernel_draw.h"
+#include "sdfDevCons.h"
+#include "dds3PadManager.h"
 
 typedef struct { u8 unk00[8]; f32 degrees; u8 unk0C[4]; } pbFovWork_t;
 
@@ -36,6 +40,10 @@ extern pbPanelEditor_t pbDebugPanel2Pos, pbDebugPanel3X;
 extern pbColor_t itfTestOverlayColor;
 extern s16 dds3ScreenBlurAlpha, dds3ScreenBlurScale;
 extern s32 D_00551EA8, pbDebugPanel3State;
+extern s32 itfTestOverlayPhaseStep;
+extern pbColorRow_t itfOverlayColorEditorRows[4];
+extern u8 pbDebugPrintPanel3Data;
+extern char pbDebugPrintPanel3Data2[];
 extern void *dds3FontReqAllocDrawTag(void);
 
 #include "sdk_libc.h"
@@ -65,7 +73,118 @@ extern char pbDebugPanel3RowFormat[8];
 extern char pbDebugChannelFormat[8];
 extern s32 (*pbMapCallbacks[2])(s16 x, s16 y, s32 mode);
 
+#ifdef VERSION_RAIDOU1
+s32 pbDebugPrintPanel3(void) {
+    sdfDevPrintCB_t packet;
+    sdfDrawTag_t *list;
+    s32 row;
+    s32 y = 0x7A20;
+    s16 previousSelection;
+    s32 previousRate;
+    s32 highlight;
+
+    list = dds3FontReqAllocDrawTag();
+    sdfDrawTagLink(list,
+        EE_ADDR(dds3PrimFrameRect(0x8950, 0x79A8, 0xFEFFFF, 0x5A0, 0x210, 0x60000000, 0x40806020)));
+    sdfDevSetPrintCB(&packet, 0x8980, 0x79C0, 0xFF0000, 0);
+    sdfDrawTagLink(list, EE_ADDR(sdfDevPrintfEx(&packet, pbDebugPanel3Title)));
+    if (pbDebugPanel3X.editing == 0) {
+        sdfDevSetPrintCB(&packet, 0x8980, pbDebugPanel3X.selection * 0x60 + 0x7A20, 0xFF0000, 0);
+        pbDebugPanel3X.blink++;
+        if (pbDebugPanel3X.blink < 32 || (pbDebugPanel3X.blink & 31) < 18) {
+            sdfDrawTagLink(list, EE_ADDR(sdfDevPrintfEx(&packet, pbDebugPanel3CursorMark)));
+        }
+    }
+    for (row = 0; row != 4; row++) {
+        sdfDevSetPrintCB(&packet, 0x8980, y, 0xFF0000, itfOverlayColorEditorRows[row].highlight);
+        sdfDrawTagLink(list,
+            EE_ADDR(sdfDevPrintfEx(&packet, pbDebugPanel3RowFormat, itfOverlayColorEditorRows[row].title)));
+        highlight = 0;
+        if (pbDebugPanel3X.editing != 0 && row == pbDebugPanel3X.selection) {
+            highlight = 6;
+        }
+        sdfDevSetPrintCB(&packet, 0x8C80, y, 0xFF0000, highlight);
+        if (row < 4) {
+            sdfDrawTagLink(list,
+                EE_ADDR(sdfDevPrintfEx(&packet, pbDebugChannelFormat, itfTestOverlayColor.channels[row])));
+        } else {
+            sdfDrawTagLink(list,
+                EE_ADDR(sdfDevPrintfEx(&packet, pbDebugPrintPanel3Data2, itfTestOverlayPhaseStep)));
+        }
+        y += 0x60;
+    }
+    sdfDebugGrOt.regFunc(&sdfDebugGrOt, list);
+    pbDebugPanel3State += itfTestOverlayPhaseStep;
+    pbDrawRotatedPrim(102);
+    if (dds3PadButtonState[0x32] < 0) {
+        pbDebugPrintPanel3Data ^= 1;
+    }
+    if (pbDebugPanel3X.editing == 0) {
+        previousSelection = pbDebugPanel3X.selection;
+        if (dds3PadButtonState[0x36] & 2) {
+            pbDebugPanel3X.selection--;
+            if (pbDebugPanel3X.selection < 0) {
+                pbDebugPanel3X.selection = 3;
+            }
+        }
+        if (dds3PadButtonState[0x37] & 2) {
+            pbDebugPanel3X.selection++;
+            if (pbDebugPanel3X.selection >= 4) {
+                pbDebugPanel3X.selection = 0;
+            }
+        }
+        if (previousSelection != pbDebugPanel3X.selection) {
+            pbDebugPanel3X.blink = 0;
+        }
+        if (dds3PadButtonState[0x33] < 0) {
+            pbDebugPanel3X.editing ^= 1;
+            pbDebugPanel3X.blink = 0;
+        }
+        if (dds3PadButtonState[0x31] & 2) {
+            return -1;
+        }
+    } else {
+        if (pbDebugPanel3X.selection < 4) {
+            if (dds3PadButtonState[0x34] & 2) {
+                itfTestOverlayColor.channels[pbDebugPanel3X.selection] -= 10;
+                if (itfTestOverlayColor.channels[pbDebugPanel3X.selection] < 0) {
+                    itfTestOverlayColor.channels[pbDebugPanel3X.selection] = 0;
+                }
+            }
+            if (dds3PadButtonState[0x35] & 2) {
+                itfTestOverlayColor.channels[pbDebugPanel3X.selection] += 10;
+                if (itfTestOverlayColor.channels[pbDebugPanel3X.selection] > 255) {
+                    itfTestOverlayColor.channels[pbDebugPanel3X.selection] = 255;
+                }
+            }
+        } else {
+            previousRate = itfTestOverlayPhaseStep;
+            if (dds3PadButtonState[0x34] & 2) {
+                itfTestOverlayPhaseStep -= 0x100;
+                if (itfTestOverlayPhaseStep < 0) {
+                    itfTestOverlayPhaseStep = 0;
+                }
+            }
+            if (dds3PadButtonState[0x35] & 2) {
+                itfTestOverlayPhaseStep += 0x100;
+                if (itfTestOverlayPhaseStep > 0x800) {
+                    itfTestOverlayPhaseStep = 0x800;
+                }
+            }
+            if (previousRate != itfTestOverlayPhaseStep) {
+                pbDebugPanel3State = 0;
+            }
+        }
+        if (dds3PadButtonState[0x31] < 0) {
+            pbDebugPanel3X.editing ^= 1;
+            pbDebugPanel3X.blink = 0;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfTestMesManager", pbDebugPrintPanel3);
+#endif
 
 u64 *pbAllocPrimPacket(u32 x, u32 y, u32 depth, u32 width, u32 height, u32 color0, u32 color1) {
     u64 *packet = (u64 *)sdfGrAllocPacketBuff(0x80);

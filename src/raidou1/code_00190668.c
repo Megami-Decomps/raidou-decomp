@@ -11,7 +11,15 @@
 #include "dds3PadManager.h"
 #include "code_r1_002C8188.h"
 
-INCLUDE_ASM(const s32, "code_00190668", itfMenuChkSetMenu);
+s32 itfMenuChkSetMenu(dds3ProcessID_t *PID) {
+    Menu_t *wk = dds3GetProcessData(PID);
+    s32 set = 0;
+
+    if (wk->lflag & 2) {
+        set = 1;
+    }
+    return set;
+}
 
 struct sprHandle_t *itfCallDevLoadFileEx(u8 *a_strSprName) {
     u32 sourceAddress;
@@ -105,7 +113,11 @@ INCLUDE_ASM(const s32, "code_00190668", GetSelectRootID);
 
 INCLUDE_ASM(const s32, "code_00190668", itfMenuImgGetRatio);
 
-INCLUDE_ASM(const s32, "code_00190668", evtPictureSetPri);
+void evtPictureSetPri(dds3ProcessID_t *PID, s32 a_pri) {
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    wk->pri = a_pri;
+}
 
 INCLUDE_ASM(const s32, "code_00190668", itfMoverSetMenu);
 
@@ -120,7 +132,17 @@ s32 itfCallGetProcessData7(dds3ProcessID_t *PID, u32 a_no, s32 a_val)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00190668", itfMenuSetStringWidth);
+/* body: matched in raidou @ 1424963: src/raidou1/code_00190668.c:112, near, same function 0.98 (words 19/19, calls 1.00, shape 0.95) */
+s32 itfMenuSetStringWidth(dds3ProcessID_t *PID, u32 a_no, s32 a_val)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    if (a_no >= ITFMENU_IMG_DAT_MAX) {
+        return 0;
+    }
+    wk->imgDat[a_no].strWidth = a_val;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00190668", itfMenuGetPanelParam);
 
@@ -612,7 +634,16 @@ INCLUDE_ASM(const s32, "code_00190668", cmpSklTypeSet);
 
 INCLUDE_ASM(const s32, "code_00190668", cmpCallMenuDeleteMenu);
 
-INCLUDE_ASM(const s32, "code_00190668", MenuShutdown);
+s32 MenuShutdown(dds3ProcessID_t *PID) {
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    cmpCallMenuDeleteMenu(wk);
+    if (dds3ExistProcess(wk->drawPID)) {
+        dds3KillProcess(wk->drawPID, 0);
+    }
+    sdfMemFreeDirect(wk->hMem);
+    FAKEMATCH_ASM_READ(wk);
+}
 
 dds3ProcessID_t *itfMenuProcessStart(void)
 {
@@ -666,17 +697,39 @@ INCLUDE_ASM(const s32, "code_00190668", CountShutdown);
 
 INCLUDE_ASM(const s32, "code_00190668", itfCountProcessStart);
 
-INCLUDE_ASM(const s32, "code_00190668", itfCountProcessStartMoney);
+dds3ProcessID_t *itfCountProcessStartMoney(s32 a_num)
+{
+    return itfCountProcessStart(a_num, 30, 2, 5);
+}
 
 INCLUDE_ASM(const s32, "code_00190668", itfCountProcessEnd);
 
-INCLUDE_ASM(const s32, "code_00190668", itfCountProcessCheck);
+/* body: matched in raidou @ 1424963: src/raidou1/code_00190668.c:646, match, same function 1.00 (words 20/20, calls 1.00, shape 1.00) */
+s32 itfCountProcessCheck(dds3ProcessID_t *PID)
+{
+    if (PID == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(PID) == 3 || dds3GetProcessStat(PID) == 0) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00190668", DvlMsgCreateCB);
 
 INCLUDE_ASM(const s32, "code_00190668", DvlMsgDeleteCB);
 
-INCLUDE_ASM(const s32, "code_00190668", DvlMsgGetCB);
+struct tagITFDVLMSG_CB *DvlMsgGetCB(struct tagITFDVLMSG_WORK *wk, s32 a_devilID) {
+    struct tagITFDVLMSG_CB *cb;
+
+    for (cb = wk->pHead; cb != NULL; cb = cb->pNext) {
+        if (cb->devilID == a_devilID) {
+            return cb;
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "code_00190668", DvlMsgFreeMsg);
 
@@ -694,7 +747,11 @@ INCLUDE_ASM(const s32, "code_00190668", DvlMsgLoadSprite);
 
 INCLUDE_ASM(const s32, "code_00190668", itfDvlMsgStart);
 
-INCLUDE_ASM(const s32, "code_00190668", itfDvlMsgEnd);
+void itfDvlMsgEnd(void) {
+    struct tagITFDVLMSG_WORK *wk = dds3GetProcessData(DevilMessage_g_mainPID);
+
+    wk->flag |= 2;
+}
 
 INCLUDE_ASM(const s32, "code_00190668", DvlMsgSetMover);
 
@@ -710,13 +767,28 @@ INCLUDE_ASM(const s32, "code_00190668", itfCallSetOt4);
 
 INCLUDE_ASM(const s32, "code_00190668", itfCallGetProcessData9);
 
-INCLUDE_ASM(const s32, "code_00190668", itfLeaf25);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/00194E28.c:1, match */
+void itfLeaf25(struct tagITFDVLMSG_WORK *wk) {
+    DvlMsgLoadSprite(wk);
+}
 
 INCLUDE_ASM(const s32, "code_00190668", DvlMsgShutdown);
 
 INCLUDE_RODATA(const s32, "code_00190668", itfCallSetOt4Table);
 
-INCLUDE_ASM(const s32, "code_00190668", itfDvlMsgProcessStart);
+void itfDvlMsgProcessStart(void) {
+    sdfMemHandle_t *hMem;
+    struct tagITFDVLMSG_WORK *wk;
+
+    hMem = sdfMemAllocDirect(sizeof(struct tagITFDVLMSG_WORK));
+    wk = sdfMemGetPtr(hMem);
+    memset(wk, 0, sizeof(struct tagITFDVLMSG_WORK));
+    wk->hMem = hMem;
+    DevilMessage_g_mainPID = dds3StartProcess("itfDvlMsgMainProc", 0x3FF, 0, 0, (dds3ProcessFunc_t)DvlMsgProcess,
+                                              (dds3ProcessFunc_t)DvlMsgShutdown, wk);
+    wk->drawPID = dds3StartProcess("itfDvlMsgDrawProc", 0x2B07, 0, 0, itfCallGetProcessData9, NULL, wk);
+    itfLeaf25(wk);
+}
 
 INCLUDE_ASM(const s32, "code_00190668", itfDvlMsgProcessEnd_itf);
 

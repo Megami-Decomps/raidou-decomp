@@ -30,6 +30,10 @@ typedef struct
 } evtPictureProcessData_t;
 
 extern char evtCallGetSmallFontFRQ2Data[];
+/* Sprite position, uv and colour words the picture draw hands itfMiscDrawSpritePrim. */
+extern s32 evtPictureSpritePos[4];
+extern s32 evtPictureSpriteUv[4];
+extern s32 evtPictureSpriteColor[4];
 
 void evtKillPictureProcess(dds3ProcessID_t *id);
 void evtPictureDrawOff(dds3ProcessID_t *id);

@@ -10,15 +10,11 @@
 #include "code_r1_0019D3A8.h"
 #include "sdfDevCons.h"
 #include "code_r1_002CD5A8.h"
+#include "code_r1_002CAFD8.h"
 
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-
-/* Index consumed by sdfDevSetPrintCB and resolved through sdfDevConsColorTable. */
-typedef s32 ItfGridTextColorTableIndex;
-
-typedef s32 SdfGridSeekResult;
 
 SdfGridSeekResult sdfGridSeekFirstNode(itfGridTextWidget_t *widget);
 
@@ -170,9 +166,64 @@ LmapNode *fldLmapRewindThroughWindow(LmapList *list) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CE680", fldLocalMapDrawScrollIndicators);
+void fldLocalMapDrawScrollIndicators(s32 offsetX, s32 offsetY, s32 z, u32 color, itfGridTextWidget_t *list,
+                                     s32 channel) {
+    u32 coordinates[2][3];
+    u32 flags = itfGetGridListLinkFlags(list);
+    s32 halfWidth = list->width / 2;
+    s32 baseX = list->x + offsetX;
+    coordinates[0][0] = baseX + (halfWidth << 4);
+    coordinates[0][1] = baseX + ((halfWidth - 6) << 4);
+    coordinates[0][2] = baseX + ((halfWidth + 6) << 4);
+    if (flags & 1) {
+        s32 baseY = list->y + offsetY;
+        coordinates[1][0] = baseY - 80;
+        coordinates[1][2] = coordinates[1][1] = baseY - 24;
+        uiDrawUniformRgbRange(coordinates[0], coordinates[1], z, color, channel);
+    }
+    if (flags & 2) {
+        s32 height = list->height;
+        s32 baseY = list->y + offsetY;
+        coordinates[1][0] = baseY + ((height + 10) << 3);
+        coordinates[1][2] = coordinates[1][1] = baseY + ((height + 4) << 3);
+        uiDrawUniformRgbRange(coordinates[0], coordinates[1], z, color, channel);
+    }
+}
 
-INCLUDE_ASM(const s32, "code_r1_002CE680", fldLmapDrawListTree);
+void fldLmapDrawListTree(s32 x, s32 y, s32 z, LmapList *list, s32 channel) {
+    u32 color;
+
+    fldLmapDrawListTreeData++;
+    color = (list->flags & 4) ? 0x80608060 : 0x80606060;
+    if (!(list->flags & 0x80)) {
+        fldLmapSubmitScaledSpritePacket(list->x + x, list->y + y, z, list->width, list->height, 0x60000000, color,
+                                        channel);
+        if (list->flags & 4) {
+            fldLocalMapDrawScrollIndicators(x, y, z, 0x60806080, list, channel);
+        }
+    }
+    fclCallDrawBoxF(x, y, z, list, channel);
+    if (list->onDraw != NULL) {
+        list->onDraw(list->x + x, list->y + y, z, list, channel);
+    }
+    if ((list->flags & 0x20) && fldLmapDrawListTreeData >= 2) {
+        list->flags &= ~1;
+        list->flags &= ~4;
+        fldLmapDrawListTreeWork->flags |= 4;
+        fldLmapDrawListTreeWork->flags &= ~1;
+        list->flags &= ~0x20;
+    } else {
+        fldLmapDrawListTreeWork = list;
+        if (list->flags & 0x41) {
+            if (list->selected->child != NULL) {
+                fldLmapDrawListTree(x + ((list->width + 8) << 4), y, z, list->selected->child, channel);
+            }
+        } else if ((list->flags & 4) && list->onSelect != NULL) {
+            list->onSelect(list);
+        }
+    }
+    fldLmapDrawListTreeData--;
+}
 
 /* Build one positioned SIF command and submit it on the requested draw surface. */
 void fldLmapSubmitPositionedCommandPacket(s32 x, s32 y, s32 z,

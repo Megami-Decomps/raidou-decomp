@@ -14,6 +14,29 @@ typedef struct itfGridNumericDescriptor_t {
 
 typedef char itfGridNumericDescriptorSizeCheck[sizeof(itfGridNumericDescriptor_t) == 0x14 ? 1 : -1];
 
+/* Numeric item formatting modes stored in itfGridNumericDescriptor_t.mode. */
+enum {
+    GRID_NUMERIC_FORMAT_DECIMAL = 0,
+    GRID_NUMERIC_FORMAT_HEXADECIMAL = 1,
+    GRID_NUMERIC_FORMAT_FLOAT = 2 /* One fractional digit. */
+};
+
+/* Display behavior in itfGridTextWidget_t.flags: DDS's bits from 0x2 up, shifted one place. */
+enum {
+    GRID_TEXT_HIGHLIGHT_SELECTION = 0x8,
+    GRID_TEXT_HIGHLIGHT_VALUES = 0x10,
+    GRID_TEXT_HIDE_ROWS = 0x80,
+    GRID_TEXT_PREFIX_ROW_INDEX = 0x200,
+    GRID_TEXT_HEX_ROW_INDEX = 0x400
+};
+
+typedef s32 SdfGridSeekResult;
+
+enum {
+    SDF_GRID_SEEK_RESULT_ITEMS_EXHAUSTED = 0,
+    SDF_GRID_SEEK_RESULT_SEEK_APPLIED = 1
+};
+
 typedef struct itfGridTextWidget_t itfGridTextWidget_t;
 
 typedef struct itfGridTextListItem_t itfGridTextListItem_t;
@@ -61,7 +84,23 @@ typedef char itfGridTextWidgetSizeCheck[sizeof(itfGridTextWidget_t) == 0x44 ? 1 
 
 typedef char itfGridTextListItemSizeCheck[sizeof(itfGridTextListItem_t) == 0x2C ? 1 : -1];
 
+void fclCallDrawBoxF(s32 offsetX, s32 offsetY, s32 z, itfGridTextWidget_t *widget, s32 surfaceIndex);
+u32 itfGetGridListLinkFlags(itfGridTextWidget_t *owner);
+void fldLocalMapDrawScrollIndicators(s32 offsetX, s32 offsetY, s32 z, u32 color, itfGridTextWidget_t *list,
+                                     s32 channel);
+/* fldLmapDrawListTree's recursion depth and the last list it drew. */
+extern s32 fldLmapDrawListTreeData;
+extern itfGridTextWidget_t *fldLmapDrawListTreeWork;
 u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
 s32 sdfGridSeekSelectedNodeByIndex(s32 index, itfGridTextWidget_t *widget);
+
+/* Index consumed by sdfDevSetPrintCB and resolved through sdfDevConsColorTable. */
+typedef s32 ItfGridTextColorTableIndex;
+
+ItfGridTextColorTableIndex itfGetGridTextColorTableIndex(const itfGridTextWidget_t *widget,
+                                                         const itfGridTextListItem_t *target);
+void itfFormatGridValueEntryText(itfGridTextWidget_t *widget, itfGridTextListItem_t *entry, char *out);
+void fldLmapSubmitPositionedCommandPacket(s32 x, s32 y, s32 z, ItfGridTextColorTableIndex colorTableIndex,
+                                          const char *command, s32 surfaceIndex);
 
 #endif

@@ -8,4 +8,7 @@ s32 dds3SelectMenu(s32 padSet, s32 secondaryCount, s32 primaryCount, s32 seconda
 void dds3ConsPanelTagLink(sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy);
 void dds3ConsPanelTagLinkZ(sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy, s32 z);
 
+void dds3ConsPanelTagLink(struct sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy);
+void dds3ConsPanelTagLinkZ(struct sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy, s32 z);
+
 #endif

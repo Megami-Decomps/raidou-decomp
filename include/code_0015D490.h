@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+struct dds3ProcessID_t;
+
 struct sprHandle_t;
 struct effHandle_t;
 struct sdfMemHandle_t;
@@ -26,6 +28,7 @@ typedef struct mapSeDelay_t {
 /* Countdown of the screen flash drawn by mapIsFldKeyFreeSub4. */
 extern s32 mapIsFldKeyFreeSub4Data;
 extern s32 mapIsFldKeyFreeSub4Data2;
+extern s32 fldCallSetOt4Data5;
 
 /* Bad-status effects drawn on the player (eMapBadEff_R) and the summoned devil (eMapBadEff_N). */
 extern struct sdfMemHandle_t *hMapBadEff_R;
@@ -54,6 +57,11 @@ extern s32 mapSeWallHitData;
 extern s32 takara_openanm_objid;
 extern s32 fldCallSetOt4Data;
 extern s32 fldCallSetOt4Data2;
+extern s32 fldCallSetOt4Data3;
+extern s32 fldCallSetOt4Data4;
+extern s32 fldData31;
+extern struct sdfTexHandle_t *mapCallLinkSpriteData;
+extern struct sdfTexHandle_t *fldData30;
 extern s32 p2sdSoundSmgLoadChkSubData[];
 extern s16 p2sdCallBitCheckData[];
 extern struct sprHandle_t *fldDrwZBuf2;
@@ -82,6 +90,7 @@ extern f32 fldCallSetOtData15;
 extern f32 fldCallSetOtData16;
 
 void mapProcShutDownSub(void);
+void sndNakamaJoinTaskSub(s32 se, s32 vol);
 s32 fldIsMapTitleActive(void);
 s32 sbtlGetRndEncCnt(void);
 s32 sbtlGetRndEncMax(s32 area);
@@ -125,5 +134,6 @@ s32 sndCallLoadCheckMidi(void);
 extern const char DecisionFeedInStrMapAll[];
 extern const char DecisionFeedInStrMapMeiSpr[];
 extern const char mapStrTakaraOpenanmObjid[];
+void fldReleaseTitleTextures(struct dds3ProcessID_t *task);
 
 #endif

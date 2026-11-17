@@ -154,11 +154,35 @@ typedef struct Menu_t {
     u16 lflag;
     s32 frame;
     s32 count;
-    u8 padB98[4];
+    s32 pri;                    /* 0xB98: set by evtPictureSetPri */
 } Menu_t;
 SIZE_CHECK(MenuSizeCheck, Menu_t, 0xB9C);
-struct tagITFDVLMSG_CB;
-struct tagITFDVLMSG_WORK;
+/* One loaded devil message, 0x1C bytes (sdfChipAllocZeroDirect in DvlMsgCreateCB). */
+struct tagITFDVLMSG_CB {
+    u8 unk00[0x10];
+    struct tagITFDVLMSG_CB *pPrev; /* 0x10 */
+    struct tagITFDVLMSG_CB *pNext; /* 0x14 */
+    s32 devilID;                   /* 0x18 */
+};
+SIZE_CHECK(tagITFDVLMSG_CBSizeCheck, struct tagITFDVLMSG_CB, 0x1C);
+
+/* Process data of itfDvlMsgMainProc, 0x1CC bytes. */
+struct tagITFDVLMSG_WORK {
+    struct sdfMemHandle_t *hMem;   /* 0x00 */
+    dds3ProcessID_t *drawPID;      /* 0x04 */
+    u8 unk08[0xC];
+    struct tagITFDVLMSG_CB *pHead; /* 0x14 */
+    struct tagITFDVLMSG_CB *pTail; /* 0x18 */
+    s32 datNum;                    /* 0x1C */
+    u8 unk20[0x1A4];
+    u16 flag;                      /* 0x1C4: itfDvlMsgEnd sets bit 1 */
+    u8 unk1C6[6];
+};
+SIZE_CHECK(tagITFDVLMSG_WORKSizeCheck, struct tagITFDVLMSG_WORK, 0x1CC);
+
+extern dds3ProcessID_t *DevilMessage_g_mainPID;
+s32 itfCallGetProcessData9(dds3ProcessID_t *PID);
+void itfLeaf25(struct tagITFDVLMSG_WORK *wk);
 struct tagITF_MONEY_WORK {
     struct sdfMemHandle_t *hMem;
     dds3ProcessID_t *drawPID;
@@ -189,6 +213,7 @@ s32 MenuClearMenuSub(struct Menu_t *wk, struct MenuCB_tag *cb);
 void MenuCreateMenu(struct Menu_t *wk);
 s32 MenuDelMenuSub(struct Menu_t *wk, s32 a_id);
 void MenuDeleteMenu(struct Menu_t *wk, struct MenuCB_tag *cb);
+void cmpCallMenuDeleteMenu(struct Menu_t *wk);
 MenuCB_tag *MenuGetBlankMenu(Menu_t *wk);
 struct MenuCB_tag *MenuGetMenu(struct Menu_t *wk, s32 a_hierarchy, s32 a_no);
 void MenuInit_itf(struct Menu_t *wk);

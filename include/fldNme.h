@@ -98,6 +98,10 @@ void fldLeaf33(fldNmeDraw_t *draw, s32 row, s32 column);
 /* Character code table of the name entry grid, 0xC86 entries. */
 extern u16 fclData[0xC86];
 extern s32 effData45;
+/* Sprite ids loaded from the name entry resource, and their count. */
+extern u16 effWork10[];
+extern u32 effData44;
+s32 effCallMemGetPtr5(dds3ProcessID_t *process, u16 *spriteIds, u32 *count);
 extern const char fldStrNameNameSpr[];
 
 /* Code count of each of the 44 grid pages, and the first code index of each
@@ -161,7 +165,7 @@ void fldFunc21(fldNmeDraw_t *draw, s32 x, s32 y);
 void fldFunc22(s32 page, s32 x, s32 y, s32 color);
 extern s16 fclCallSetFontColorNoData[];
 void effFirstInitSub(void);
-u16 fclLeaf21(u16 code);
+s32 fclLeaf21(s32 code);
 u16 fclSetSpriteNormalSub(s32 index);
 void fclCallSetFontString(fldNmeSlotList_t *list, u16 *text, u32 n);
 

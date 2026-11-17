@@ -32,6 +32,10 @@
 #include "mapData.h"
 #include "sdfMat.h"
 #include "fldDraw.h"
+#include "dds3KernelMain.h"
+#include "sdfDevCons.h"
+#include "sdfGsMemIO.h"
+#include "sdfMath.h"
 
 typedef struct TMX_HEADER_t TMX_HEADER_t;
 
@@ -272,11 +276,47 @@ s32 fldPoint3ToZ(f32 x3, f32 y3, f32 z3) {
     return result.z * 16.0f;
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3To2H);
+void fldPoint3To2H(f32 *x3, f32 *y3, f32 z3, f32 x2, f32 y2) {
+    sdfVector4_t vec = { z3, x2, y2, 1.0f };
+    sdfVector4_t result;
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldCallMultMatrixRev);
+    SDF_VU0_LOADMATRIX(&aProjMatrix);
+    MultMatrixRev(&DrawEnv.TM);
+    SDF_VU0_COPYMATRIX_A_TO_B();
+    SDF_VU0_LOADVECTOR_MEMOPS(*(const u128 *)&vec);
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_LOADVECTOR_B(&DrawEnv.scale);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_LOADVECTOR_B(&DrawEnv.trans);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&result);
+    *x3 = result.x;
+    *y3 = result.y;
+}
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3To2_B);
+void fldCallMultMatrixRev(void) {
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
+    MultMatrixRev(&dds3ScreenParam.TM);
+    SDF_VU0_COPYMATRIX_A_TO_B();
+    SDF_VU0_LOADVECTOR_B_BARRIER(&dds3ScreenParam.scale);
+    SDF_VU0_LOADVECTOR_C(dds3BillboardGetDirectionRotateData2);
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/field/fldDraw.c:384, near, same function 0.90 (words 26/32, calls 1.00, shape 0.90) */
+void fldPoint3To2_B(f32 *x3, f32 *y3, f32 z3, f32 x2, f32 y2) {
+    sdfVector4_t vec = { z3, x2, y2, 1.0f };
+    sdfVector4_t result;
+
+    SDF_VU0_LOADVECTOR_MEMOPS(vec);
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_ADDVECTOR_A_C();
+    SDF_VU0_STOREVECTOR(&result);
+    *x3 = result.x;
+    *y3 = result.y;
+}
 
 void rsetOtOfs(s32 otofs)
 {
@@ -599,7 +639,54 @@ void aDrawTriG(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, u32 r0, u32 g0, u
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", aDrawBoxG);
+/* body: matched in smt3 @ 9401f79e: src/smt3/field/fldDraw.c:723, near, same function 1.00 (words 160/160, calls 1.00, shape 1.00) */
+void aDrawBoxG(s32 x, s32 y, s32 w, s32 h, u32 r0, u32 g0, u32 b0, u32 a0, u32 r1, u32 g1, u32 b1, u32 a1, u32 r2, u32 g2, u32 b2, u32 a2, u32 r3, u32 g3, u32 b3, u32 a3) {
+    s32 coords[8];
+    sdfDrawTag_t *command;
+    sdfGrPacketHeader_t *packet;
+    u64 *dst;
+    s32 i;
+    s32 *pos;
+    sdfGrOt_t *descriptor;
+
+    coords[0] = x * 16;
+    coords[1] = y * 16;
+    coords[2] = (x + w) * 16;
+    coords[3] = y * 16;
+    coords[4] = x * 16;
+    coords[5] = (y + h) * 16;
+    coords[6] = (x + w) * 16;
+    coords[7] = (y + h) * 16;
+    command = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(command);
+    packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 4)));
+    sdf2DMakePrimPacketHeader(packet, 0x4C, 2, 0x41, 4);
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    for (i = 0, pos = coords; i < 4; i++) {
+        if (i == 0) {
+            dst[0] = (u64)r0 | ((u64)g0 << 32);
+            dst[1] = (u64)b0 | ((u64)a0 << 32);
+        } else if (i == 1) {
+            dst[0] = (u64)r1 | ((u64)g1 << 32);
+            dst[1] = (u64)b1 | ((u64)a1 << 32);
+        } else if (i == 2) {
+            dst[0] = (u64)r2 | ((u64)g2 << 32);
+            dst[1] = (u64)b2 | ((u64)a2 << 32);
+        } else {
+            dst[0] = (u64)r3 | ((u64)g3 << 32);
+            dst[1] = (u64)b3 | ((u64)a3 << 32);
+        }
+        dst += 2;
+        dst[1] = 0xFFFFFF;
+        dst[0] = (u64)(u32)(pos[0] + 0x7000) |
+            ((u64)(pos[1] + 0x7900) << 32);
+        dst += 2;
+        pos += 2;
+    }
+    sdfDrawTagLink(command, EE_ADDR(packet));
+    descriptor = &sdfGrOtTable[rsetFrameMaskOtOffset];
+    ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
+}
 
 void aDrawBoxGF(f32 x, f32 y, f32 w, f32 h, u32 r0, u32 g0, u32 b0, u32 a0, u32 r1, u32 g1, u32 b1, u32 a1, u32 r2, u32 g2, u32 b2, u32 a2, u32 r3, u32 g3, u32 b3, u32 a3) {
     s32 coords[8];
@@ -649,7 +736,49 @@ void aDrawBoxGF(f32 x, f32 y, f32 w, f32 h, u32 r0, u32 g0, u32 b0, u32 a0, u32 
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldCallGrAllocPacketBuff);
+/* body: matched in raidou @ 1424963: src/shared/field/fldDraw.c:477, near, same function 0.99 (words 100/100, calls 1.00, shape 0.97) */
+void fldCallGrAllocPacketBuff(s32 x, s32 y, s32 w, s32 h, u32 r, u32 g, u32 b, u32 a, u32 z) {
+    s32 coords[8];
+    sdfDrawTag_t *command;
+    sdfGrPacketHeader_t *packet;
+    u64 *dst;
+    u64 lo;
+    u64 hi;
+    u64 tag;
+    s32 *pos;
+    sdfGrOt_t *descriptor;
+    s32 i;
+
+    coords[0] = x * 16;
+    coords[1] = y * 16;
+    coords[2] = (x + w) * 16;
+    coords[3] = y * 16;
+    coords[4] = (x + w) * 16;
+    coords[5] = (y + h) * 16;
+    coords[6] = x * 16;
+    coords[7] = (y + h) * 16;
+    command = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(command);
+    packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 4)));
+    sdf2DMakePrimPacketHeader(packet, 0x4D, 2, 0x41, 4);
+    dst = sdf2DGetPrimPtr(packet);
+    tag = z;
+    lo = (u64)r | ((u64)g << 32);
+    hi = (u64)b | ((u64)a << 32);
+    pos = coords;
+    for (i = 0; i < 4; i++) {
+        dst[0] = lo;
+        dst[1] = hi;
+        dst += 2;
+        dst[1] = tag;
+        dst[0] = (u64)(u32)(pos[0] + 0x7000) | ((u64)(pos[1] + 0x7900) << 32);
+        pos += 2;
+        dst += 2;
+    }
+    sdfDrawTagLink(command, EE_ADDR(packet));
+    descriptor = &sdfGrOtTable[rsetFrameMaskOtOffset];
+    ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
+}
 
 void drawSprite3D(sdfTexHandle_t *th, Sprite3D_t *spr3d) {
     sdfDrawTag_t *command = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
@@ -674,9 +803,31 @@ void drawSprite3D(sdfTexHandle_t *th, Sprite3D_t *spr3d) {
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", rsetFrameMaskRgbOn);
+void rsetFrameMaskRgbOn(void) {
+    sdfDrawTag_t *tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfGrRefGifPacketHeader_t *buffer;
+    sdfGrOt_t *otp;
 
-INCLUDE_ASM(const s32, "field/fldDraw", rsetFrameMaskRgbOff);
+    sdfDrawTagInit(tag);
+    buffer = EE_ADDR_AS(sdfGrRefGifPacketHeader_t *, sdfGrAllocPacketBuff(0x40));
+    sdfGrSetFrameMaskRGB((const u8 *)&dds3DrawEnv[dds3GetFrameID()].stdEnv, buffer, 0);
+    sdfDrawTagLinkRefGif(tag, EE_ADDR(buffer));
+    otp = &sdfGrOtTable[rsetFrameMaskOtOffset];
+    otp->regFunc(otp, tag);
+}
+
+void rsetFrameMaskRgbOff(void) {
+    sdfDrawTag_t *tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfGrRefGifPacketHeader_t *buffer;
+    sdfGrOt_t *otp;
+
+    sdfDrawTagInit(tag);
+    buffer = EE_ADDR_AS(sdfGrRefGifPacketHeader_t *, sdfGrAllocPacketBuff(0x40));
+    sdfGrSetFrameMaskReset((const u8 *)&dds3DrawEnv[dds3GetFrameID()].stdEnv, buffer, 0);
+    sdfDrawTagLinkRefGif(tag, EE_ADDR(buffer));
+    otp = &sdfGrOtTable[rsetFrameMaskOtOffset];
+    otp->regFunc(otp, tag);
+}
 
 void ooyTestLine3D(u32 x0, u32 y0, f32 z0, f32 col0, f32 x1, f32 y1, f32 z1, f32 col1) {
     sdfDrawTag_t *list;
@@ -799,9 +950,73 @@ INCLUDE_ASM(const s32, "field/fldDraw", fldDrawBokasi);
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawFrameSpriteAlpha);
 
 #endif
-INCLUDE_ASM(const s32, "field/fldDraw", fldDrawPos);
+#ifdef VERSION_RAIDOU1
+void fldDrawPos(const f32 *pos) {
+    Sprite3D_t packet;
+    f32 half = 36.0f;
 
+    packet.uv[0].u = 0;
+    packet.uv[0].v = 0;
+    packet.uv[1].u = 0x200;
+    packet.uv[1].v = 0;
+    packet.uv[2].u = 0x200;
+    packet.uv[2].v = 0x200;
+    packet.uv[3].u = 0;
+    packet.uv[3].v = 0x200;
+    packet.vt[0].x = -half;
+    packet.vt[0].y = -half;
+    packet.vt[1].x = half;
+    packet.vt[1].y = -half;
+    packet.vt[2].x = half;
+    packet.vt[2].y = half;
+    packet.vt[3].x = -half;
+    packet.vt[3].y = half;
+    packet.col = 0x8080FF80;
+    packet.pos.x = pos[0];
+    packet.pos.y = pos[1];
+    packet.pos.z = pos[2];
+    packet.rot = 0.0f;
+    rsetOtOfs(0x44);
+    rsetTest(1, 0, 0x80, 3, 0, 0, 1, 2);
+    rsetAlpha(0);
+}
+#else
+INCLUDE_ASM(const s32, "field/fldDraw", fldDrawPos);
+#endif
+
+#ifdef VERSION_RAIDOU1
+void fldCallOtOfs(const f32 *pos, s32 rgba) {
+    Sprite3D_t packet;
+    f32 half = 36.0f;
+
+    packet.uv[0].u = 0;
+    packet.uv[0].v = 0;
+    packet.uv[1].u = 0x200;
+    packet.uv[1].v = 0;
+    packet.uv[2].u = 0x200;
+    packet.uv[2].v = 0x200;
+    packet.uv[3].u = 0;
+    packet.uv[3].v = 0x200;
+    packet.vt[0].x = -half;
+    packet.vt[0].y = -half;
+    packet.vt[1].x = half;
+    packet.vt[1].y = -half;
+    packet.vt[2].x = half;
+    packet.vt[2].y = half;
+    packet.vt[3].x = -half;
+    packet.vt[3].y = half;
+    packet.col = rgba;
+    packet.pos.x = pos[0];
+    packet.pos.y = pos[1];
+    packet.pos.z = pos[2];
+    packet.rot = 0.0f;
+    rsetOtOfs(0x44);
+    rsetTest(1, 0, 0x80, 3, 0, 0, 1, 2);
+    rsetAlpha(0);
+}
+#else
 INCLUDE_ASM(const s32, "field/fldDraw", fldCallOtOfs);
+#endif
 
 void fldLeaf17(void) {
 }
@@ -821,7 +1036,17 @@ void fldDrwZFree(void)
     }
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldDrwZSave);
+void fldDrwZSave(s32 otIndex) {
+    sdfDrawTag_t *packet;
+    sdfGrOt_t *ot;
+
+    if (fldDrwZBuf != NULL) {
+        packet = sdfPrimAllocDrawTag(NULL);
+        sdfLinkStoreImage(packet, sdfGrFrameSet.zbuffHandle, 0, 0, 0x200, 0xE0, EE_ADDR_S(fldDrwZBuf), 0, 0, NULL);
+        ot = &sdfGrOtTable[otIndex];
+        ot->regFunc(ot, packet);
+    }
+}
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldCallPrimAllocDrawTag);
 
@@ -847,7 +1072,36 @@ void initDrawTag(dbgConsCtl_tag *cons) {
     sdfDrawTagLink(cons->tag, packet);
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldDbgPrint3D);
+void fldDbgPrint3D(f32 x, f32 y, f32 z, s32 num) {
+    dbgConsCtl_tag quad;
+    sdfDevPrintCB_t packet;
+    f32 screenX;
+    f32 screenY;
+
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
+    InversMatrix();
+    fldPoint3To2(&screenX, &screenY, x, y, z);
+    if (screenX < -4000.0f || screenX > 4000.0f ||
+        screenY < -4000.0f || screenY > 4000.0f) {
+        return;
+    }
+
+    quad.cx = 0x73C0;
+    quad.cy = 0x8440;
+    quad.cz = 0x0FFFFF80;
+    quad.sy = 0;
+    quad.panelCol = 0x10000000;
+    quad.frameCol = 0x80806020;
+    quad.px = 0x73C0;
+    quad.py = 0x8440;
+    quad.sx = 0x1A40;
+    quad.pz = 0x0FFFFF7F;
+    initDrawTag(&quad);
+    sdfDevSetPrintCB(&packet, (s32)screenX * 16, (s32)screenY * 16, quad.cz, 1);
+    sdfDrawTagLink(quad.tag, EE_ADDR(sdfDevPrintfEx(&packet, fldDbgFmtDec, num)));
+    LF(&quad);
+    dds3Data10.regFunc(&dds3Data10, quad.tag);
+}
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "field/fldDraw", fldObjTaskSub);
@@ -855,7 +1109,55 @@ INCLUDE_ASM(const s32, "field/fldDraw", fldObjTaskSub);
 INCLUDE_ASM(const s32, "field/fldDraw", fldCallSetOt);
 
 #endif
+#ifdef VERSION_RAIDOU1
+/* body: matched in smt3 @ 9401f79e: src/smt3/field/fldDraw.c:1567, near, same function 1.00 (words 141/141, calls 1.00, shape 1.00) */
+void fldDrawMaruKage(u32 fade, f32 x, f32 y, f32 z, f32 radius) {
+    s32 color;
+    s32 angle;
+    s32 prev;
+    s32 i;
+    f32 a;
+    f32 b;
+    f32 sinA;
+    f32 cosA;
+    f32 sinB;
+    f32 cosB;
+
+    if (fade != 0) {
+        color = fade & 0xFF;
+        rsetOtOfs(0x44);
+        rsetAlpha(5);
+        if (color > 0x80) {
+            color = 0x80;
+        }
+        color = 0x80 - color;
+        if (color >= 0x80) {
+            color = 0x7F;
+        }
+        if (color < 0x10) {
+            color = 0x10;
+        }
+        color = (color << 24) | 0x10101;
+        for (i = 0; i < 360; i += 10) {
+            angle = (i + 360) % 360;
+            prev = (i + 350) % 360;
+            a = (f32)angle * 3.14f / 180.0f;
+            sinA = sdfSin(a) * radius;
+            cosA = sdfCos(a) * radius;
+            b = (f32)prev * 3.14f / 180.0f;
+            sinB = sdfSin(b) * radius;
+            cosB = sdfCos(b) * radius;
+            fldDrawPoly3(color, 0x80101010, 0x80101010,
+                                x + 0.0f, y - 2.0f, z + 0.0f,
+                                x + sinA, y - 2.0f, z + cosA,
+                                x + sinB, y - 2.0f, z + cosB);
+        }
+        rsetAlpha(0);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawMaruKage);
+#endif
 
 void nbProcSequenceSub(s32 arg) {
     nbData4 = arg;
