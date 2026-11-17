@@ -20,7 +20,7 @@ typedef struct scrProcessWork_s scrProcessWork_s;
 
 dds3ProcessID_t *scrStartScriptProcess(s32 priority, scrProcessWork_s *work);
 scrProcessWork_s *fldFlowParse(scrHeader_t *header, s32 procno);
-void scrStartScriptByName(s32 priority, char *name, s32 messageHandle);
+dds3ProcessID_t *scrStartScriptByName(s32 priority, char *name, s32 messageHandle);
 dds3ProcessID_t *scrStartScript2(s32 priority, void *data, s32 startproc);
 /* Script blob itfDebugMesMngInitialize starts. */
 extern u8 scrEmbedded_3267A8[];

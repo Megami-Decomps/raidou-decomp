@@ -241,8 +241,8 @@ void jmsDebugProcessEnd(void) {
     jmsProcessEnd();
 }
 
-void jmsDebugProcessCheck(void) {
-    jmsProcessCheck();
+s32 jmsDebugProcessCheck(void) {
+    return jmsProcessCheck();
 }
 
 INCLUDE_ASM(const s32, "code_00346258", jmsScrCmd_JMS_MOTION);

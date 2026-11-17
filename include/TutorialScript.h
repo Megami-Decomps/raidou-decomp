@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-void PosReset(s32 _boss, s32 _lookUp);
+s32 PosReset(s32 _boss, s32 _lookUp);
 
 #endif

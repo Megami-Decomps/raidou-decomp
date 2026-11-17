@@ -322,7 +322,7 @@ s32 itfMenuGetFlag(dds3ProcessID_t *PID, u32 a_bit);
 s32 itfMenuGetSelectID(dds3ProcessID_t *PID);
 u8 GetSelectRootID(dds3ProcessID_t *PID, u32 a_no);
 ITFMENU_WAIT_TYPE itfMenuGetWaitType(dds3ProcessID_t *PID);
-void itfMenuImgGetRatio(dds3ProcessID_t *PID, u32 a_abgr);
+f32 itfMenuImgGetRatio(dds3ProcessID_t *PID, u32 a_abgr);
 s32 itfMenuLinkSprite(dds3ProcessID_t *PID, struct sprHandle_t *a_hSpr);
 s32 itfMenuProcessCheck(dds3ProcessID_t *PID);
 void itfMenuProcessEnd(dds3ProcessID_t *PID);

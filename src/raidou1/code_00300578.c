@@ -1379,9 +1379,9 @@ INCLUDE_ASM(const s32, "code_00300578", cmpCallGetCharPID9);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallGetCharPID10);
 
-void CmpOnMenu(s32 a_menu)
+s32 CmpOnMenu(s32 a_menu)
 {
-    CmpOnMenuData[a_menu >> 16]();
+    return CmpOnMenuData[a_menu >> 16]();
 }
 
 INCLUDE_ASM(const s32, "code_00300578", cmpGetNoneItemText);

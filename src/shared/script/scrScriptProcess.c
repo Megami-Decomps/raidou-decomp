@@ -80,9 +80,9 @@ void dds3GlobalWorkClearFlags(void)
     }
 }
 
-void scrStartScriptByName(s32 priority, char *name, s32 messageHandle)
+dds3ProcessID_t *scrStartScriptByName(s32 priority, char *name, s32 messageHandle)
 {
-    scrStartScriptProcess(priority, scrLoadScriptFile(name, messageHandle));
+    return scrStartScriptProcess(priority, scrLoadScriptFile(name, messageHandle));
 }
 
 scrProcessWork_s *scrRegistScript3(char *name) {
@@ -131,6 +131,8 @@ void scrReleaseScript(scrProcessWork_s *pw) {
     scrUnlinkHandle(pw);
     sdfChipFreeDirect(pw);
 }
+
+s32 scrIsCurrentWorkTask(scrProcessWork_s *pw);
 
 /* Skips the running script's own process and does not print. */
 void scrAllReleaseScript(void)

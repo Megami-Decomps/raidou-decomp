@@ -15,7 +15,7 @@ typedef struct jmsData_t {
 struct sprHandle_t;
 
 s32 frLeaf15(struct jmsData_t *pData);
-void jmsDebugProcessCheck(void);
+s32 jmsDebugProcessCheck(void);
 void jmsDestroy(dds3ProcessID_t *PID);
 struct sprHandle_t *jmsGetSpriteHandle(void);
 s32 jmsProcessCheck(void);

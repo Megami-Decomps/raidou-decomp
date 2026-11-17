@@ -233,8 +233,8 @@ s32 nwdLeaf4(void) {
     return knyGetIntimateRank();
 }
 
-void nwdLeaf5(void) {
-    shpCallProcEnd();
+s32 nwdLeaf5(void) {
+    return shpCallProcEnd();
 }
 
 INCLUDE_ASM(const s32, "code_0032F2B8", nwdRefDDS3GBWK);

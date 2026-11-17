@@ -9,7 +9,7 @@ struct gohData_t;
 void Destroy_gohInit(dds3ProcessID_t *PID);
 void ModelFree(struct gohData_t *pData);
 s32 ModelLoad_gohInit(struct gohData_t *pData);
-void TalkSelDrawProcess(u32 Mode);
+dds3ProcessFunc_t TalkSelDrawProcess(dds3ProcessID_t *PID);
 void campGohmadenCalc(void);
 void campKillProcesses(void);
 s32 gohBgmLoad(struct gohData_t *pData);

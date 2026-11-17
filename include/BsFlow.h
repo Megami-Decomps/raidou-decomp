@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-void sbtlFreeUIScene(void);
+s32 sbtlFreeUIScene(void);
 
 #endif

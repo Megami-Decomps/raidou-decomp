@@ -4,7 +4,8 @@
 #include "common.h"
 
 struct AW_WORK_t;
+struct SBTLUNIT_WORK;
 
-void sbtlCheckCharmTarget(struct AW_WORK_t *aWork);
+struct SBTLUNIT_WORK *sbtlCheckCharmTarget(struct AW_WORK_t *aWork);
 
 #endif
