@@ -136,10 +136,15 @@ def pair_functions(rf, sf, rimg, simg):
 
 
 def join_split_functions(rf, img):
-    """Join an IDB function that does not end in `jr $ra` and a delay slot to the next."""
+    """Join an IDB function that does not end in `jr $ra` and a delay slot to the next.
+
+    One that ends in an unconditional jump stays apart: it is a thread body that
+    never returns."""
     out = []
     for a, n, s in rf:
-        if out and img.word(out[-1][0] + out[-1][2] - 8) != 0x03E00008 and out[-1][0] + out[-1][2] == a:
+        last = img.word(out[-1][0] + out[-1][2] - 8) if out else 0
+        loops = last >> 26 == 2 or last >> 16 == 0x1000
+        if out and not loops and last != 0x03E00008 and out[-1][0] + out[-1][2] == a:
             pa, pn, ps = out.pop()
             out.append((pa, pn, ps + s))
         else:

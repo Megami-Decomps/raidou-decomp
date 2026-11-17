@@ -357,6 +357,8 @@ INCLUDE_ASM("SDFSDMAN", sdfSndInitWorkAreas);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndSeqThread);
 
+INCLUDE_ASM("SDFSDMAN", sdfSndInitSpu2);
+
 INCLUDE_ASM("SDFSDMAN", sdfSndMidiSelect);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndStopAll);
@@ -509,6 +511,28 @@ INCLUDE_ASM("SDFSDMAN", func_00002B68);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndLoadSmg);
 
+/* Waits on its semaphore and loads whatever path the EE last set. */
+void sdfSndSmgLoadThread(void *arg)
+{
+    s32 ret;
+
+    sdfSndSmgSemaParam.initial = 0;
+    sdfSndSmgSemaParam.max = 1;
+    sdfSndSmgSemaParam.option = 0;
+    sdfSndSmgSema = thsemap_CreateSema(&sdfSndSmgSemaParam);
+    if (sdfSndSmgSema <= 0) {
+        stdio_printf(aSdfsnddrvCreat);
+        thbase_ExitThread();
+    }
+    while (1) {
+        ret = thsemap_WaitSema(sdfSndSmgSema);
+        if (ret != 0) {
+            stdio_printf(aSdfsnddrvWaits, ret);
+        }
+        sdfSndLoadSmg(sdfSndSmgPath, 0);
+    }
+}
+
 INCLUDE_ASM("SDFSDMAN", sdfSndSetBankAddr);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndStopByGroup);
@@ -599,6 +623,26 @@ INCLUDE_ASM("SDFSDMAN", sdfSndLoadVolTables);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndStoreVolTables);
 
-INCLUDE_ASM("SDFSDMAN", sdfSndStartKeepAliveThread);
+/* The IOP idles its clock without a running thread, which upsets the timing
+ * of everything else; this one never sleeps. */
+void sdfSndKeepAliveThread(void *arg)
+{
+    while (1) {
+        thbase_DelayThread(10000);
+    }
+}
+
+s32 sdfSndStartKeepAliveThread(void)
+{
+    iop_thread_t thp;
+    s32 tid;
+
+    thp.attr = 0x2000000;
+    thp.thread = sdfSndKeepAliveThread;
+    thp.priority = 1;
+    thp.stacksize = 2048;
+    tid = thbase_CreateThread(&thp);
+    return thbase_StartThread(tid, NULL);
+}
 
 INCLUDE_ASM("SDFSDMAN", sdfSndDrvRpcInit);
