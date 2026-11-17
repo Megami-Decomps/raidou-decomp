@@ -247,9 +247,48 @@ s32 sdfSndAtan2Deg(s32 x, s32 y)
 INCLUDE_ASM("SDFSDMAN", sdfSndAtan2Deg);
 #endif
 
-INCLUDE_ASM("SDFSDMAN", sdfSndPostError);
+s32 sdfSndPostError(s32 code)
+{
+    sdfSndWorkArea->errCode = code;
+    sdfSndWorkArea->errCount++;
+    return p2sdIrxSpuIopMap();
+}
 
+/* Copy the synthesiser voice map into the work area the EE reads: 24 voices
+ * per core, -1 where the voice is not in use. */
+#ifdef NON_MATCHING
+/* One instruction short: gcc fills the branch delay slot with the second
+ * arm instead of the address of the slot being written. */
+s32 sdfSndUpdateVoiceMap(void)
+{
+    s32 core;
+    s32 base;
+    s32 i;
+    u8 m;
+    u8 v;
+
+    core = 0;
+    base = 0;
+    do {
+        i = 0;
+        do {
+            m = sdfSndHsynVoiceMap[i + base];
+            if ((m & 0x80) != 0) {
+                v = m & 0x70;
+            } else {
+                v = -1;
+            }
+            sdfSndWorkArea->voiceMap[i + 32 * core] = v;
+            i++;
+        } while (i < 24);
+        core++;
+        base += 24;
+    } while (core < 2);
+    return p2sdIrxSpuIopMap();
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndUpdateVoiceMap);
+#endif
 
 /* mode 1 reads through the EE instead of the file library. */
 s32 sdfSndFileOpen(const char *path, s32 mode)
@@ -403,7 +442,82 @@ INCLUDE_ASM("SDFSDMAN", sdfSndTimerStart);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndTimerStop);
 
+#ifdef NON_MATCHING
+/* Point the synthesiser and MIDI tables at the 32 sequence and slot work
+ * areas, then take the per bank voice counts from the work area. */
+s32 sdfSndInitWorkAreas(void)
+{
+    s32 i;
+    u32 bank;
+    sceMSInBuf_t *hseq;
+    sceHSynSlot_t *hslot;
+    sceMidiSlot_t *mslot;
+    sceMSInBuf_t *voice;
+
+    sdfSndHsynWork.unk00 = 1;
+    sdfSndHsynWork.unk10 = 0;
+    sdfSndHsynWork.unk0C = 0;
+    sdfSndHsynWork.tbl = &sdfSndHsynTbl;
+    sdfSndHsynTbl.nEntry = SDF_SND_SEQS * 2;
+    sdfSndHsynTbl.entry = sdfSndHsynEntry;
+    hseq = sdfSndMsInBuf;
+    hslot = sdfSndHsynSlotWork;
+    i = 0;
+    do {
+        sdfSndHsynEntry[i].unk00 = 0;
+        sdfSndHsynEntry[i].buf = hseq;
+        sdfSndHsynEntry[i].unk08 = 0;
+        sdfSndHsynEntry[i].slot = hslot;
+        hseq->size = 1032;
+        hseq->len = 0;
+        hseq++;
+        hslot++;
+        i++;
+    } while (i < SDF_SND_SEQS);
+
+    bank = 0;
+    if (sdfSndWorkArea->bankCount != 0) {
+        i = 0;
+        do {
+            sdfSndHsynSlotWork[i].unk00 = sdfSndWorkArea->banks[bank].unk00;
+            sdfSndHsynSlotWork[i].unk01 = sdfSndWorkArea->banks[bank].unk01;
+            bank++;
+            i++;
+        } while (bank < sdfSndWorkArea->bankCount);
+    }
+
+    sdfSndMidiWork.unk00 = 2;
+    sdfSndMidiWork.unk10 = 0;
+    sdfSndMidiWork.unk0C = 0;
+    sdfSndMidiWork.tbl = &sdfSndMidiTbl;
+    sdfSndMidiTbl.nSeq = SDF_SND_SEQS * 2;
+    sdfSndMidiTbl.seq = sdfSndMidiSeq;
+    mslot = sdfSndMidiSlotWork;
+    i = 0;
+    do {
+        sdfSndMidiSeq[i].slot = mslot;
+        sdfSndMidiSeq[i].unk00 = 0;
+        sdfSndMidiSeq[i].data = NULL;
+        sdfSndMidiSeq[i].unk08 = 0;
+        mslot++;
+        i++;
+    } while (i < SDF_SND_SEQS);
+
+    sdfSndMidiTbl.nVoice = SDF_SND_SEQS;
+    sdfSndMidiTbl.voice = sdfSndMidiVoice;
+    voice = sdfSndMsInBuf;
+    i = 0;
+    do {
+        sdfSndMidiVoice[i].buf = voice;
+        sdfSndMidiVoice[i].unk00 = 0;
+        voice++;
+        i++;
+    } while (i < SDF_SND_SEQS);
+    return sdfSndSetBankAddr(-1, 0);
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndInitWorkAreas);
+#endif
 
 INCLUDE_ASM("SDFSDMAN", sdfSndSeqThread);
 
@@ -415,9 +529,40 @@ INCLUDE_ASM("SDFSDMAN", sdfSndStopAll);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndInitSynth);
 
-INCLUDE_ASM("SDFSDMAN", sdfSndQuitSynth);
+s32 sdfSndQuitSynth(void)
+{
+    s32 ret;
 
-INCLUDE_ASM("SDFSDMAN", sdfSndFindSlotById);
+    ret = (s32)sdfSndWorkArea;
+    if (sdfSndWorkArea != NULL) {
+        sdfSndTimerStop(&sdfSndTimer);
+        sdfSndTimerRelease(&sdfSndTimer);
+        sdfSndStopAll(0);
+        sysmem_FreeSysMemory(sdfSndWorkArea->xferBuf);
+        sysmem_FreeSysMemory(sdfSndWorkArea->banks[0].data);
+        sysmem_FreeSysMemory(sdfSndWorkArea->progData[0].ptr);
+        ret = sysmem_FreeSysMemory(sdfSndWorkArea);
+        sdfSndWorkArea = NULL;
+    }
+    return ret;
+}
+
+/* The bank slot a packed sound id belongs to, or -1. */
+s32 sdfSndFindSlotById(s32 idPacked)
+{
+    s32 i;
+
+    if (idPacked < 0) {
+        return -1;
+    }
+    idPacked >>= 16;
+    for (i = 0; i < SDF_SND_KINDS; i++) {
+        if (sdfSndWorkArea->stat[i].id == idPacked) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("SDFSDMAN", func_00001974);
 
@@ -668,7 +813,17 @@ s32 sdfSndSePlay3d(sdfSndSe3dReq_t *req)
 INCLUDE_ASM("SDFSDMAN", sdfSndSePlay3d);
 #endif
 
-INCLUDE_ASM("SDFSDMAN", sdfSndIsBankLoaded);
+s32 sdfSndIsBankLoaded(s32 kind)
+{
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        if (sdfSndWorkArea->stat[kind + i].id >= 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("SDFSDMAN", func_00002A20);
 
@@ -700,13 +855,107 @@ void sdfSndSmgLoadThread(void *arg)
     }
 }
 
+#ifdef NON_MATCHING
+/* One nop longer: gas does not fill the load delay before the store to
+ * sdfSndBankBase with the store's lui, which the retail code has. */
+/* kind < 0 lays the whole bank table out again from the size and offset
+ * tables; otherwise it just records one bank's wave size. */
+s32 sdfSndSetBankAddr(s32 kind, u32 waveSize)
+{
+    s32 i;
+    u8 *base;
+
+    if (kind < 0) {
+        for (i = 0; i < SDF_SND_KINDS; i++) {
+            sdfSndWorkArea->banks[i].spuAddr = sdfSndBankSizeTbl[i];
+            sdfSndWorkArea->banks[i].waveSize = sdfSndBankAddrTbl[i];
+        }
+        if (sdfSndBankBase == NULL) {
+            sdfSndBankBase = sdfSndWorkArea->banks[0].data;
+        }
+        base = sdfSndBankBase;
+        for (i = 0; i < SDF_SND_KINDS + 1; i++) {
+            sdfSndWorkArea->banks[i].data = &base[sdfSndBankOffTbl[i]];
+            sdfSndWorkArea->banks[i].size = sdfSndBankFlagTbl[i];
+        }
+        return -1;
+    }
+    sdfSndWorkArea->banks[kind].waveSize = waveSize;
+    return kind;
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndSetBankAddr);
+#endif
 
 INCLUDE_ASM("SDFSDMAN", sdfSndStopByGroup);
 
-INCLUDE_ASM("SDFSDMAN", sdfSndUnloadBank);
+s32 sdfSndUnloadBank(s32 kind)
+{
+    if (kind >= 0) {
+        sdfSndStopByGroup(kind);
+        sdfSndWorkArea->banks[kind].waveSize = 0;
+        sdfSndWorkArea->banks[kind].size = 0;
+        sdfSndWorkArea->stat[kind].id = -1;
+        sdfSndWorkArea->stat[kind].unk06 = 0;
+        if (kind == 1) {
+            sdfSndBank1Loaded = 0;
+        }
+    }
+}
 
+#ifdef NON_MATCHING
+/* 1 instruction short of the retail code. */
+/* Push the work area up to the EE by DMA and wait for it to land. */
+s32 p2sdIrxSpuIopMap(void)
+{
+    SifDmaTransfer_t sdd;
+    s32 state;
+    s32 tries;
+    u32 id;
+    u32 start;
+    u32 now;
+    s32 stat;
+    s32 ret;
+
+    sdd.src = sdfSndWorkArea;
+    sdd.dest = sdfSndWorkArea->eeAddr;
+    tries = 5;
+    sdd.attr = 0;
+    sdd.size = sdfSndWorkArea->size;
+    loadcore_FlushDcache();
+    while (1) {
+        intrman_CpuSuspendIntr(&state);
+        id = sifman_sceSifSetDma(&sdd, 1);
+        intrman_CpuResumeIntr(state);
+        if (id != 0) {
+            break;
+        }
+        thbase_DelayThread(1000);
+        if (--tries == 0) {
+            tries = 10000;
+            stdio_printf(aP2sdirxspuiopm);
+        }
+    }
+    start = thbase_e43();
+    while (1) {
+        intrman_CpuSuspendIntr(&state);
+        stat = sifman_sceSifDmaStat(id);
+        ret = intrman_CpuResumeIntr(state);
+        if (stat < 0) {
+            break;
+        }
+        thbase_DelayThread(1000);
+        now = thbase_e43();
+        if (now - start > 0x1F78A40) {
+            stdio_printf(aP2sdirxspuiopm_0, stat);
+            start = now;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("SDFSDMAN", p2sdIrxSpuIopMap);
+#endif
 
 s32 sdfSndFadeOutById(s32 *req)
 {

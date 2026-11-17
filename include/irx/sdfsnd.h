@@ -174,7 +174,7 @@ typedef struct {
 typedef struct {
     s32 id;
     u16 kind;
-    u16 pad;
+    u16 unk06;
 } sdfSndBankStat_t;
 
 typedef struct {
