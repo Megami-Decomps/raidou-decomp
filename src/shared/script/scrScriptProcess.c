@@ -92,7 +92,9 @@ dds3ProcessID_t *scrStartScript2(s32 priority, void *scrdata, s32 startproc)
     return scrStartScriptProcess(priority, fldFlowParse(scrdata, startproc));
 }
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrRegistScript2);
+scrProcessWork_s *scrRegistScript2(u8 *scrdata) {
+    return fldFlowParse((scrHeader_t *)scrdata, 0);
+}
 
 dds3ProcessID_t *scrRunScriptEx(s32 priority, scrHeader_t *header, scrTypeTable_t *typeTable,
                     scrProcTable_t *procTable, scrLabelTable_t *labelTable, scrCode_u *code,

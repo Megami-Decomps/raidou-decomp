@@ -685,7 +685,7 @@ void FreeInfo(evtViewerInfo_t *pInfo) {
         evtFreeWorkData2and3(pInfo->workdata);
         pInfo->workdata = NULL;
     }
-    dds3PadIsTypeCD();
+    dds3PadActAllStop();
 }
 
 void evtUnRegistUnit(evtViewerInfo_t *pInfo) {
@@ -3444,7 +3444,7 @@ void evtCallEveRippleBlurSetDefTex(evtViewerInfo_t *pInfo) {
             break;
         }
     }
-    dds3PadIsTypeCD();
+    dds3PadActAllStop();
 }
 
 void UnitMotionChangeForWait(s32 nowframe, dds3Basic_t *b, evtViewerObject_t *obj, evtViewerInfo_t *pInfo) {

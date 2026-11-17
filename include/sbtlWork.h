@@ -17,16 +17,66 @@ typedef struct SBTLDROP_WORK {
     u8 pad00[0xC4];
 } SBTLDROP_WORK;
 
-/* Pointed to by SBTL_WORK.panel at 0x628. */
+/* HD SBTLCAMERA_WORK, the head of SBTL_WORK; the PS2 layout starts at targetpos. */
+typedef struct SBTLCAMERA_WORK {
+    sdfVector4_t targetpos;
+    sdfVector4_t direction;
+    sdfVector4_t camerapos;
+    struct dds3Basic_t *cm;
+    f32 distance;
+    f32 fovy;
+    u8 pad3C[4];
+} SBTLCAMERA_WORK;
+
+/* HD SBTLVIBE_WORK: one pad's rumble envelope, SBTL_WORK.vibe at 0x3AC. */
+typedef struct SBTLVIBE_WORK {
+    s32 in;
+    s32 out;
+    s32 life;
+    s32 count;
+    s8 st;
+    u8 power;
+    u8 pad12[2];
+} SBTLVIBE_WORK;
+
+/* HD SBTLPNL_WORK; 0x2C on PS2, fields past y not read yet. */
+typedef struct SBTLPNL_WORK {
+    s16 mode;
+    s16 mode1;
+    s32 alpha;
+    s32 acounter;
+    s32 counter;
+    s32 x;
+    s32 y;
+    u8 pad18[0x14];
+} SBTLPNL_WORK;
+
+/* HD SBTLPANEL_WORK, 0x530 bytes from sbtlCallMemAllocDirect5; pointed to by SBTL_WORK.panel at 0x628. */
 typedef struct SBTL_PANEL {
-    u8 pad00[8];
+    struct sdfMemHandle_t *handle;
+    struct effList_t *list;
     struct sprHandle_t *resources;
-    u8 pad0C[4];
+    struct sprHandle_t *hPanelSpr2;
     struct sprHandle_t *hPanelSpr3;
     struct sprHandle_t *hPanelSpr4;
     struct sprHandle_t *hPanelSpr5;
-    u8 pad1C[4];
+    s16 mode;
+    u8 pad1E[2];
     u32 flg;
+    s32 alpha;
+    s32 acounter;
+    s32 ofsx;
+    s32 ofsy;
+    s32 gstat0;
+    s32 gstat1;
+    s32 astat0;
+    s32 astat1;
+    s32 acnt0;
+    s32 acnt1;
+    SBTLPNL_WORK mds_waku0;
+    SBTLPNL_WORK mds_waku1;
+    SBTLPNL_WORK mds_light;
+    u8 padD0[0x460];
 } SBTL_PANEL;
 
 struct SBTLDMG_HITLISTWORK;
@@ -45,7 +95,10 @@ struct scrProcessWork_s;
 
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
 typedef struct SBTL_WORK {
-    u8 pad000[0x80];
+    SBTLCAMERA_WORK camera;
+    u8 pad040[0x70 - 0x40];
+    s32 field070; /* cleared by sbtlSbtlCameraproc */
+    u8 pad074[0x80 - 0x74];
     sdf3DLight_t light[3]; /* copy of the parallel lights, made by sbtlRefSbtl31 */
     sdfVector4_t ambient;
     s32 mapNo[2];
@@ -61,7 +114,7 @@ typedef struct SBTL_WORK {
     s32 zoomlocktime;
     u8 pad180[0x198 - 0x180];
     fileRequest_t *panelPack;
-    s32 panelPackPos;
+    u32 panelPackPos;
     s32 panelPackLen;
     u8 pad1A4[4];
     sdfMemHandle_t *handle;
@@ -124,7 +177,8 @@ typedef struct SBTL_WORK {
     s32 stackID[2]; /* stock slots of the summoned demons (HD stack_id) */
     u8 pad3A0[0x3A4 - 0x3A0];
     s32 unitPadID;
-    u8 pad3A8[0x3D4 - 0x3A8];
+    u8 pad3A8[0x3AC - 0x3A8];
+    SBTLVIBE_WORK vibe[2];
     s32 vibe_startf[2];
     s32 vibe_frame[2];
     u8 vibe_power[2];
@@ -309,8 +363,8 @@ typedef char SBTL_DEVIL_DATASizeCheck[sizeof(SBTL_DEVIL_DATA) == 0x70 ? 1 : -1];
 typedef struct SBTL_START_DATA {
     sdfVector4_t pos;
     sdfVector4_t rot;
-    s32 val20;
-    s32 val24;
+    f32 val20; /* x offset added to the battle camera positions */
+    f32 val24; /* z offset */
     s32 val28;
     s32 mode;
     s16 val30;
@@ -421,9 +475,11 @@ typedef struct SBTLDVLTK_LISTWORK {
 /* Model binding made for an effect, linked in SBTL_WORK.modelBindings. Partial layout. */
 typedef struct SBTL_MODELBIND {
     sdfMemHandle_t *handle;
-    u8 pad04[4];
+    s32 unitID; /* read by sbtlCallBtlSearchUnitID26 */
     s32 status;
-    u8 pad0C[0x18 - 0xC];
+    u32 flg; /* 1: add para to SBTL_WORK.field644, 2: subtract it */
+    u8 pad10[4];
+    s32 para;
     struct SBTL_MODELBIND *prev;
     struct SBTL_MODELBIND *next;
 } SBTL_MODELBIND;
@@ -434,6 +490,23 @@ typedef struct SBTL_MODELBIND_LIST {
     SBTL_MODELBIND *top;
 } SBTL_MODELBIND_LIST;
 
+/* One motion's timing record (HD MOTIONDATA_WORK, 0x24), returned by sbtlGetMotionVisualData. */
+typedef struct SBTL_UNIT_SUB {
+    u16 flags;
+    u8 pad02[2];
+    f32 field04;
+    f32 m_stoprate;
+    f32 e_startrate;
+    f32 field10;
+    f32 field14;
+    s16 field18;
+    u8 pad1A[2];
+    f32 cancelrate;
+    f32 se_rate; /* s32 in HD */
+} SBTL_UNIT_SUB;
+
+SIZE_CHECK(SBTL_UNIT_SUBSizeCheck, SBTL_UNIT_SUB, 0x24);
+
 typedef struct SBTL_MOTION_VISUAL {
     u8 kind;
     u8 pad01[3];
@@ -442,22 +515,24 @@ typedef struct SBTL_MOTION_VISUAL {
     f32 field0C;
     f32 field10;
     f32 scale;
-    u8 pad18[0x24 - 0x18];
+    f32 field18;
+    f32 field1C;
+    f32 field20;
     f32 field24;
-    u8 pad28[0x30 - 0x28];
+    f32 field28;
+    u8 field2C;
+    u8 pad2D;
+    s16 field2E;
     s16 field30;
     s16 field32;
+    SBTL_UNIT_SUB mwk[43]; /* HD VISUALDATA_WORK.mwk, inline on the PS2 */
 } SBTL_MOTION_VISUAL;
 
-typedef struct SBTL_UNIT_SUB {
-    u16 flags;
-    u8 pad02[2];
-    f32 field04;
-    u8 pad08[8];
-    f32 field10;
-    f32 field14;
-    s16 field18;
-} SBTL_UNIT_SUB;
+SIZE_CHECK(SBTL_MOTION_VISUALSizeCheck, SBTL_MOTION_VISUAL, 0x640);
+
+/* Per-model visual tables for devils (major nonzero) and for the player (major zero). */
+extern SBTL_MOTION_VISUAL *sbtlData98;
+extern SBTL_MOTION_VISUAL *sbtlData99;
 
 struct SBTLUNIT_WORK;
 
@@ -558,7 +633,7 @@ void sbtlSetZoomLock(struct SBTLUNIT_WORK *unit, f32 zoom);
 s32 sbtlCheckZoom(void);
 s32 sbtlSetLoadPanelData(void);
 s32 sbtlCallCheckEnd(void);
-void sbtlCallBitCheck(s32 stageNo);
+s32 sbtlCallBitCheck(s32 stageNo);
 s32 DrawProc(dds3ProcessID_t *id);
 s32 RestartBattle(void);
 s32 sbtlSbattle4(void);
@@ -572,7 +647,8 @@ struct SBTLEFF_WORK *sbtlCallMemset17(struct SBTLEFF_LISTWORK *lwk, struct SBTLU
                                       const f32 *defpos, u32 rgba, s8 flg);
 void sbtlCallMemset3(s32 battleMode, s32 stageNo);
 s32 sbtlBtlLoadHuumaMesDataSub(s32 huumaMesNo);
-void sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallCameraObjectBasicGetFovy(SBTLCAMERA_WORK *wk, struct dds3Basic_t *cm);
 s32 sbtlCheckScriptData(s32 devilId);
 s32 sbtlCheckTutorialBattle(void);
 s64 sbtlCallBtlCheckTutorialBattle3(void);
@@ -582,7 +658,7 @@ s32 sbtlGetExeSkill(SKLID sklid);
 s32 sbtlSobedSAB(SKLID id, char *buf);
 SBTL_FIELD630_WORK *sbtlCallMemAllocDirect4(void);
 s32 sbtlRefSbtl42(SBTL_FIELD630_WORK *wk);
-SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id);
+SBTL_MOTION_VISUAL *sbtlGetVisualData(s32 a, s32 id);
 s32 sbtlGetScrollID(void);
 void sbtlInitDropWork(void);
 s32 sbtlLeaf(dds3ProcessID_t *id);
@@ -604,15 +680,18 @@ s32 sbtlCheckItemMember_Dead(s32 stockID);
 s32 sbtlSbattle5(dds3ProcessID_t *id);
 s32 sbtlSbattle6(dds3ProcessID_t *id);
 void sbtlSbtlCameraproc(void);
+s32 sbtlLeaf103(dds3ProcessID_t *id);
+s32 sbtlLeaf87(dds3ProcessID_t *id);
 s32 sbtlSetScrollID(s32 id);
 struct SBTLUNIT_WORK *sbtlSetSummon(s32 side, s32 devilId, s32 arg);
-SBTL_UNIT_SUB *sbtlSetUnitSub(s32 a, s32 id, s32 b);
+SBTL_UNIT_SUB *sbtlGetMotionVisualData(s32 a, s32 id, s32 b);
 void sbtlStopVibe(void);
 s32 Draw_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk);
 s32 Draw_sbtlScene(void);
 void Init_sbtlDraw(void);
 s32 Proc_sbtl(void);
 s32 Proc_sbtlEXP(struct SBTL_MODELBIND_LIST *lwk);
+s32 sbtlCallBtlSearchUnitID26(struct SBTL_MODELBIND *wk);
 s32 sbtlProcSBtlSTPSub(struct SBTLUNIT_WORK *wk);
 s32 Proc_sbtlSTP(SBTL_STP *stp);
 s32 Draw_sbtlSTP(SBTL_STP *stp);
@@ -678,7 +757,7 @@ s32 sbtlRefSbtl24(struct SBTLUNIT_WORK *wk, s8 flg);
 s32 sbtlRefSbtl27(void);
 s32 sbtlRefSbtl29(void);
 void sbtlRefSbtl4(void);
-s32 sbtlRefSbtl45(void);
+void sbtlRefSbtl45(void);
 void sbtlInitTutorial(void);
 s32 sbtlRefSbtl47(void);
 s32 sbtlRefSbtl62(struct SBTLUNIT_WORK *wk);
@@ -697,7 +776,7 @@ s32 sbtlSetDevilSkillID(s32 id, s32 flg);
 s32 sbtlSetMotion_sbtlUnit(struct SBTLUNIT_WORK *wk, s32 motion, s32 bframe, s32 aframe, s8 flg);
 s32 sbtlSetPacData_MHT(s32 major, s32 minor, s32 devilid, void *data, s32 size);
 s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 a, s8 b, s32 c, s8 d);
-s32 sbtlUpdateVibe(void);
+void sbtlUpdateVibe(void);
 
 s32 sbtlInitPlayerData(void);
 

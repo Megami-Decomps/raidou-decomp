@@ -626,7 +626,14 @@ typedef struct mapCutName_t {
 } mapCutName_t;
 
 extern mapCutName_t mapData[160];
-extern u8 mapData2[3456];
+/* HD FloorName_t: one MAPALL.TBL floor name row, matched by mapAmDrawBasyoName. */
+typedef struct FloorName_t {
+    s32 fieldID;
+    s32 floorID;
+    char name[28];
+} FloorName_t;
+
+extern FloorName_t mapData2[96];
 extern u8 nbCallGetIntParaData[4096];
 extern u8 mapData3[1024];
 extern s16 p2sdData[48][16];
@@ -669,7 +676,7 @@ typedef struct MskEveHitTbl_t {
 } MskEveHitTbl_t;
 extern MskEveHitTbl_t mapMskEveHitTbl[16];
 #endif
-extern s32 mapBtlReLoadMapSBtlSceneSub2Data;
+extern s32 mapBtlReLoadMapSBtlSceneSub2Data[];
 void mapBtlReLoadMapSBtlSceneSub2(void);
 extern s32 mapNpcTblRefresh_WaitData;
 extern s32 mapNpcTblRefresh_WaitData2;

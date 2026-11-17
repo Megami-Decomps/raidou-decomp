@@ -6,5 +6,6 @@ f32 __ieee754_sqrtf(f32 x);
 f32 __ieee754_acosf(f32 x);
 f32 __ieee754_asinf(f32 x);
 f32 __ieee754_atan2f(f32 y, f32 x);
+f32 acosf(f32 x);
 
 #endif

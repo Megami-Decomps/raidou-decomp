@@ -93,7 +93,7 @@
 0x00103BE8	dds3RunProcessList	inferred	smt3-decomp name dds3RunProcessList, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.70 callees=4 size=0.994; R2 top op=1.00 full=1.00 margin=0.70 callees=4 size=0.994; replaces dds3PadUpdate: hd: Raidou HD dds3PadManager.dds3PadUpdate, score 9.0 band B
 0x001040E0	Act2Sub	hd	hd: Raidou HD dds3PadManager.Act2Sub, score 8.7 band B; replaces kwlnPadStepLargeMotorLevel: dds-decomp DDS1 name via SLUS_209.74 0x00104008, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00104140	dds3PadAct	hd	hd: Raidou HD dds3PadManager.dds3PadAct, score 10.3 band A
-0x00104210	dds3PadIsTypeCD	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD dds3PadManager.dds3PadIsTypeCD score 5.0 flag I: next gap3/1 st1:gap r1+r2
+0x00104210	dds3PadActAllStop	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=sbtlStopVibe tail-calls it where HD sBtlStopVibe calls dds3PadActAllStop (outside this batch, evidence only); replaces dds3PadIsTypeCD
 0x00104248	dds3UpdateVibrationSlots	inferred	SMT3HD name via SLUS_209.11 0x001041A8, reloc-identical; map-agrees
 0x00104340	dds3TaskNoopCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00104260, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00104348	dds3InitRandCB	inferred	SMT3HD name via SLUS_209.11 0x00104670, reloc-identical; map-agrees
@@ -1202,7 +1202,7 @@
 0x00128618	mapGetTaniVector	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD fld.mapGetTaniVector score 5.4 flag -: prev gap1/8 st1:gap r1+r2
 0x00128650	fldToggleWorldNodeState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00122BE0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x00128728	mapAM_MaskClear	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fld.c mapAM_MaskClear: clears fldSave->automapmask[80][32] and fldSave2->automapmask2[16][32]; same two nested zero loops, called from fldGbInit_System as in HD; replaces mapRefDDS3GBWK
-0x001287B0	mapProcSequenceSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00128378, neighbour mapGetTaniVector; called by ProcSequence
+0x001287B0	mapAM_MaskSetCurrent	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapUpdateLimit calls mapAM_MaskSetCurrent(am_map, floor) where fldFunc17 calls mapProcSequenceSub(mapCallSetOt2Data5, floor); replaces mapProcSequenceSub
 0x001288F0	mapAM_MaskOpen_ID	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD fld.c mapAM_MaskOpen_ID(map, floor, id): map <= 31, automapMaskCurrentIdx != -1, sets bit id of automapmask[idx] or automapmask2[idx - 80]; same body without the miniMapIconSet call; replaces mapRefDDS3GBWK2
 0x00128990	mapRefDDS3GBWK3	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_00128378, neighbour mapRndEncParamSet; references DDS3_GBWK
 0x00128A38	mapAM_MaskChk_ID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fld.c callers pass (map, floor, id) and test the automap mask bit; same index logic as mapAM_MaskOpen_ID; replaces mapRefDDS3GBWK4
@@ -1845,8 +1845,8 @@
 0x0016A838	fldMapAllAmap	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour fldFindSceneEntryData; string '/map/all/amap.tmx'
 0x0016A8F8	fldCallTexFreeDelayed	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour fldFindSceneEntryData; calls sdfTexFreeDelayed
 0x0016A928	fldLeaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour fldFindSceneEntryData; no named callee, caller or string
-0x0016A938	fldFunc17	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour fldFindSceneEntryData; no named callee, caller or string
-0x0016AAA8	fldFunc18	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour fldFindSceneEntryData; no named callee, caller or string
+0x0016A938	mapAutoMapUpdateLimit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD fld.c mapAutoMapUpdateLimit(s32 floor) (0x1b04xxx): returns -1 without the block, mapAM_MaskSetCurrent(am_map, floor), mapAM_MaskChk_ID per grid cell, min/max x/z out; same body here; replaces fldFunc17
+0x0016AAA8	mapAutoMapCalcPosLimit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fld.c mapAutoMapCalcPosLimit(add_x, add_z) (0x1b040b0): calls mapAutoMapUpdateLimit(am_floor), clamps am_top_x/z by the limits, sets/clears draw_flags 0x20/0x10/8/4 the same way; replaces fldFunc18
 0x0016AC18	fldDrawTopSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour fldFindSceneEntryData; called by DrawTop
 0x0016AC20	fldCallBitCheck	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour fldFindSceneEntryData; calls evtBitCheck
 0x0016AD90	fldLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour fldFindSceneEntryData; no named callee, caller or string
@@ -5721,10 +5721,10 @@
 0x00225A40	ResourceCopy_effModel	hd	hd: Raidou HD effModel.ResourceCopy, score 11.3 band A
 0x00225B00	effCallMotionSeek2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_002250F8, neighbour effResourceCopy; calls sdfMotionSeek
 0x00225B78	effCallSRAnimation3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_002250F8, neighbour effResourceCopy; calls effSRAnimation
-0x00225C08	effLeaf351	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002250F8, neighbour effResourceCopy; no named callee, caller or string
-0x00225C28	effLeaf352	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002250F8, neighbour effResourceCopy; no named callee, caller or string
-0x00225C48	effLeaf353	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002250F8, neighbour effResourceCopy; no named callee, caller or string
-0x00225C60	effCallSetScale	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_002250F8, neighbour effResourceCopy; calls mdlSetScale
+0x00225C08	PositionSet_effModel	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD effModel.c PositionSet (0x1979030): lqc2 the vector then mdlSetPosition(handle model); module suffix as Create_effModel/Delete_effModel; replaces effLeaf351
+0x00225C28	RotateSet_effModel	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD effModel.c RotateSet: same shape with mdlSetRotate; replaces effLeaf352
+0x00225C48	ColorSet_effModel	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD effModel.c ColorSet: mdlSetColor on the part model (PS2 passes a packed u32); replaces effLeaf353
+0x00225C60	ScaleSet_effModel	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD effModel.c ScaleSet: scale * part scale into vf10, mdlSetScale; replaces effCallSetScale
 0x00225C98	Create_effHelper	hd	hd: Raidou HD effHelper.Create, score 8.5 band B; replaces effCreateResourceOwner: dds-decomp DDS1 name via SLUS_209.74 0x0029B368, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00225E58	Delete_effHelper	hd	hd: Raidou HD effHelper.Delete, score 8.8 band B; replaces effDestroyResourceOwner: dds-decomp DDS1 name via SLUS_209.74 0x0029B528, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x00225EE8	Copy_effHelper	hd	hd: Raidou HD effHelper.Copy, score 8.9 band B; replaces effDuplicateModelOwner: dds-decomp DDS1 name via SLUS_209.74 0x0029B5B8, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -7061,8 +7061,8 @@
 0x0027CBE8	GetRand	hd	hd: Raidou HD Smnr.GetRand, score 7.0 band B; replaces btlNextScaledRandom: dds-decomp DDS1 name via SLUS_209.74 0x001FEA78, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0027CC18	GetIntervalRand	hd	hd: Raidou HD Smnr.GetIntervalRand, score 7.3 band B; replaces btlRandomInclusiveRange: dds-decomp DDS1 name via SLUS_209.74 0x001FEAA8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0027CC80	GetPercentage	hd	hd: Raidou HD Smnr.GetPercentage, score 7.1 band B, hd-ab: calls4 calls-of-match votes2 st2:call r1-disagree:0x270358; replaces btlRollAiBucket: dds-decomp DDS1 name via SLUS_209.74 0x001FFCD8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0027CD48	sbtlRefSbtl40	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlSub; references wk_sbtl
-0x0027CD90	sbtlRefSbtl41	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlSub; references wk_sbtl
+0x0027CD48	sbtlSetVibeFadeIn	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSub.c sBtlSetVibeFadeIn (0x1fc9f00): vibe_startf/frame/power then vibe_type = 1, returns 1; replaces sbtlRefSbtl40
+0x0027CD90	sbtlSetVibeFadeOut	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSub.c sBtlSetVibeFadeOut (0x1fc9fd0): same with vibe_type = 0; replaces sbtlRefSbtl41
 0x0027CDD0	sbtlStopVibe	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlSub.sBtlStopVibe score 9.0 flag I: calls2 next calls-of-match st1:call r1+r2
 0x0027CE18	sbtlUpdateVibe	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlSub.sBtlUpdateVibe score 7.0 flag I: calls2 callers-of-match st1:call r1+r2
 0x0027CF70	SetVibe	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlSub.SetVibe score 9.3 flag -: calls1 prev calls-of-match-uniq votes2 st1:call r1+r2
@@ -7364,8 +7364,8 @@
 0x00293578	sbtlRefSbtl28	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x002935C0	fldConsumeSceneInputFlags	inferred	method=dds-fuzzy-60-m-single; p=0.56 (n=1); tier=C; source=dds; evidence=dds body 0x1c5840 sim 0.625 margin 0.11 single
 0x00293638	sbtlCallMemset19	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls memset
-0x002936C0	fldCommand_FLD_SET_TAKARA_OPEN	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x159dc8 sim 0.833 margin 0.83 pair
-0x002936F0	sbtlRefSbtl51	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
+0x002936C0	sbtlCallRefSbtl51	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=in battle unit code_002929C8; body is sbtlRefSbtl51(sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID)); smt3 fuzzy pair (tier B, calls 0.00) does not match: no script handle or takara call; replaces fldCommand_FLD_SET_TAKARA_OPEN
+0x002936F0	sbtlSummonMenuProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlPlayer.c sBtlSummonMenuProc (0x1f6c4a0): switch on menutype 1..7 over SummonMenuFunc0..6[sgstat[0]](wk, mode); its tables hold SummonMenuFunc_Open00/_50/_40 here; replaces sbtlRefSbtl51
 0x00293840	sbtlResetSummonPanel	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD sBtlPanel.sBtlResetSummonPanel score 6.5 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x00293858	SummonMenuFunc_Open00	hd	hd: Raidou HD sBtlPlayer.SummonMenuFunc_Open00, score 7.4 band B
 0x00293A68	SummonMenuFunc_00	hd	hd: Raidou HD sBtlPlayer.SummonMenuFunc_00, score 7.4 band B
@@ -7416,11 +7416,11 @@
 0x002968F0	EventProcTbl_0A	hd	hd: Raidou HD sBtlEvent.EventProcTbl_0A, score 11.7 band A
 0x00296990	sbtlCallBtlGetMotionVisualData3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetMotionVisualData
 0x00296AD8	sbtlCallSetOt2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls eglSetOt
-0x00296FE0	sbtlBtlGetMotionMoveSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by sbtlGetMotionMove
+0x00296FE0	sbtlGetMotionMoveData	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlVisual.c sBtlGetMotionMoveData (0x2131aa0): same per-major table select, called by sbtlGetMotionMove; replaces sbtlBtlGetMotionMoveSub
 0x00297018	sbtlGetMotionMove	hd-inferred	method=hd-gap-single-raidou1; p=0.95 (n=418); tier=A; source=hd; evidence=Raidou HD sBtlVisual.sBtlGetMotionMove score 6.3 flag I: prev next gap=exact st1:gap r2-disagree:0x2ca240
 0x002970F0	sbtlGetEffCylinderData	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlVisual.sBtlGetEffCylinderData score 9.0 flag I: calls1 next calls-of-match votes2 st1:call r1+r2
-0x00297128	sbtlGetMotionVisualData	hd-inferred	hd: Raidou HD sBtlVisual.sBtlGetMotionVisualData, score 7.1 band B
-0x00297170	sbtlSetUnitSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by fldSetUnit
+0x00297128	sbtlGetVisualData	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlVisual.c sBtlGetVisualData(major, id): per-major VISUALDATA_WORK table; replaces sbtlGetMotionVisualData
+0x00297170	sbtlGetMotionVisualData	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
 0x002971C8	sbtlCheckMotionTiming	hd-inferred	method=hd-gap-single-raidou1; p=0.95 (n=418); tier=A; source=hd; evidence=Raidou HD sBtlVisual.sBtlCheckMotionTiming score 6.3 flag I: prev next gap=exact st1:gap r2-disagree:0x2ca560
 0x00297258	sbtlCallBtlGetMotionVisualData4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetMotionVisualData
 0x00297320	sbtlCallBtlGetMotionVisualData5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetMotionVisualData
@@ -9121,8 +9121,8 @@
 0x00314C08	evtStartTerminalMenuMessage	inferred	method=dds-fuzzy-70-m-pair; p=0.64 (n=25); tier=C; source=dds; evidence=dds body 0x265f30 sim 0.800 margin 0.11 pair
 0x00314C48	cmpResetMotion	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD cmpFile.cmpResetMotion score 4.8 flag I: calls1 next calls-of-match st2:call r2-only
 0x00314C80	cmpFreeSpriteMem	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD cmpFile.cmpFreeSpriteMem score 5.1 flag I: calls1 calls-of-match-uniq st1:call r1+r2
-0x00314CD8	fldJmsQuestMapLoad	hd-inferred	hd: Raidou HD fld.fldJmsQuestMapLoad, score 8.75 band B
-0x00314D38	fldCreateLinkSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour fldJmsQuestMapLoad; called by pipeCreateLink
+0x00314CD8	cmpLoadSpriteMem	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=paired with cmpFreeSpriteMem and flag 2 (CMP_MAP_F_LOAD_SPR_MEM) in ProcessStart_cmpMap; replaces fldJmsQuestMapLoad
+0x00314D38	cmpFreeSpriteHnd	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD Release calls cmpFreeSpriteHnd(3) at this site (0x314D38); replaces fldCreateLinkSub
 0x00314DA0	pipeCreateLink	inferred	method=smt3-fuzzy-70-m-single; p=0.83 (n=60); tier=B; source=smt3; evidence=smt3 body 0x2a6900 sim 0.708 margin 0.16 single
 0x00314E10	pipeCampCAMPPACKLB	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour pipeCreateLink; string '/camp/CAMPPACK.LB'
 0x00314F68	cmpFreeSpriteToMem	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD cmpFile.cmpFreeSpriteToMem score 6.0 flag I: next gap=exact st2:gap r2-only
@@ -9341,14 +9341,14 @@
 0x00322AA8	cmpCallKillProcess	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpStart; calls dds3KillProcess
 0x00322AD8	cmpChkMessageDraw	hd-inferred	hd: Raidou HD cmpItem.cmpChkMessageDraw, score 10.0 band A
 0x00322B20	fldCommand_FLD_WARP_RUN_START	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x15a0e8 sim 0.812 margin 0.81 pair
-0x00322B60	fldCallGetProcessData3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour fldCommand_FLD_WARP_RUN_START; calls dds3GetProcessData
+0x00322B60	Process_cmpMap	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD cmpMap.c Process, started as camp_automap_main process func; replaces fldCallGetProcessData3
 0x00322D08	cmpCallSetOt2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpDrawBack; calls eglSetOt
 0x00322F18	cmpDrawBack	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD cmpMap.cmpDrawBack score 5.8 flag I: calls2 next calls-of-match st2:call r2-only
 0x00323138	cmpDrawBackPattern	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD cmpMap.cmpDrawBackPattern score 6.2 flag I: calls2 next calls-of-match st2:call r2-only
 0x00323280	DrawTop	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD cmpMap.DrawTop score 4.5 flag -: calls2 callee-index votes2 st2:cidx r2-only
 0x00323458	DrawProcess	hd	hd: Raidou HD cmpMap.DrawProcess, score 7.95 band B, hd-ab: calls2 prev callers-of-match-uniq votes3 st2:call r2-only
 0x003234B8	Release_cmpMap	hd	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD cmpMap.Release score 6.0 flag -: calls1 prev callers-of-match-uniq votes2 st2:call r2-only
-0x00323520	itfDvlMsgProcessEnd	hd-inferred	hd: Raidou HD itf.itfDvlMsgProcessEnd, score 7.4 band B
+0x00323520	Shutdown_cmpMap	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD cmpMap.c Shutdown; passed as shutdown func by ProcessStart_cmpMap, matches Release_cmpMap/ProcessStart_cmpMap naming; replaces itfDvlMsgProcessEnd
 0x00323578	ProcessStart_cmpMap	hd	hd: Raidou HD cmpMap.ProcessStart, score 9.5 band B
 0x00323670	ProcessEnd_cmpMap	hd	hd: Raidou HD cmpMap.ProcessEnd, score 12.0 band A
 0x003236D8	ProcessCheck_cmpMap	hd	hd: Raidou HD cmpMap.ProcessCheck, score 9.0 band B
@@ -11449,7 +11449,7 @@
 0x00381B80	fabsf	inferred	SMT3HD name via SLUS_209.11 0x002D11C0, byte-identical; map-agrees
 0x00381BA8	sinf	inferred	SMT3HD name via SLUS_209.11 0x002CF5D0, reloc-identical; map-agrees
 0x00381C90	tanf	inferred	SMT3HD name via SLUS_209.11 0x002CF6B8, reloc-identical; map-agrees
-0x00381D08	cfgGetConfigGAMEPAD	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD cfg.cfgGetConfigGAMEPAD score 4.5 flag I: calls1 calls-of-match st1:call r1+r2
+0x00381D08	acosf	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is return __ieee754_acosf(x) (newlib w_acosf wrapper at 0x381D08, next to asinf/atan2f wrappers); sbtlGetChorikiDeg calls it on a dot product; replaces cfgGetConfigGAMEPAD
 0x00381D20	cfgLeaf3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00381D08, neighbour cfgGetConfigGAMEPAD; no named callee, caller or string
 0x00381D38	cfgPoseRotBillboardSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00381D08, neighbour cfgGetConfigGAMEPAD; called by PoseRotBillboard
 0x00381D50	cfgFindAheadListSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00381D08, neighbour cfgGetConfigGAMEPAD; called by FindAheadList
@@ -21817,10 +21817,10 @@
 0x0046BD18	mapFunc2DataEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mapFunc2Data
 0x0046BD20	mapFunc2DataEntry4	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mapFunc2Data
 0x0046BD28	mapFunc2DataEntry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mapFunc2Data
-0x0046BD30	fldData32	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapCallSetOt2, fldFunc18, fldMapAllAmap
-0x0046BD34	fldData33	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapCallSetOt2, fldFunc18, fldMapAllAmap
-0x0046BD38	mapCallSetOt2Data5	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallSetOt2 (9 of 16 refs, 6 functions)
-0x0046BD3C	mapCallSetOt2Data6	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallSetOt2 (16 of 26 refs, 8 functions)
+0x0046BD30	am_top_x	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapCalcPosLimit: am_top_x += add_x then clamped; replaces fldData32
+0x0046BD34	am_top_z	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapCalcPosLimit: am_top_z += add_z then clamped; replaces fldData33
+0x0046BD38	am_map	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD global passed as map to mapAM_MaskSetCurrent/mapAM_MaskChk_ID in mapAutoMapUpdateLimit; replaces mapCallSetOt2Data5
+0x0046BD3C	am_floor	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD global passed to mapAutoMapUpdateLimit by mapAutoMapCalcPosLimit; replaces mapCallSetOt2Data6
 0x0046BD40	mapCallSetOt2Data7	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallSetOt2 (3 of 6 refs, 4 functions)
 0x0046BD44	mapCallSetOt2Data8	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallSetOt2 (2 of 5 refs, 4 functions)
 0x0046BD48	mapCallSetOt2Data9	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallSetOt2 (2 of 4 refs, 3 functions)
@@ -21829,11 +21829,11 @@
 0x0046BD54	effQueuedResourceNameRecord4	inferred	method=dds-ref; p=0.59 (n=D_r1_0046BD54); tier=C; source=dds; evidence=dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldCallTexFreeDelayed; effQueuedResourceNameRecord is another symbol
 0x0046BD58	fldData36	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: fldCallFindSceneEntryData, fldMapAllAmap, fldLeaf25
 0x0046BD5C	mapCallSetOt2Data10	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallSetOt2 (2 of 4 refs, 3 functions)
-0x0046BD60	fldData37	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapFunc, fldFunc18, fldCallFindSceneEntryData
-0x0046BD64	fldData38	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldFunc17, fldFunc18
-0x0046BD68	fldData39	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldFunc17, fldFunc18
-0x0046BD6C	fldData40	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldFunc17, fldFunc18
-0x0046BD70	fldData41	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldFunc17, fldFunc18
+0x0046BD60	draw_flags	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapCalcPosLimit: bits 0x20/0x10/8/4 set and cleared with the clamps; replaces fldData37
+0x0046BD64	am_min_x	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapUpdateLimit min x out (starts 512); replaces fldData38
+0x0046BD68	am_min_z	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapUpdateLimit min z out (starts 448); replaces fldData39
+0x0046BD6C	am_max_x	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapUpdateLimit max x out; replaces fldData40
+0x0046BD70	am_max_z	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapUpdateLimit max z out; replaces fldData41
 0x0046BD74	mapCallSin11Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSin11
 0x0046BD78	mapCallSin12Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSin12
 0x0046BD7C	mapCallCutGetCamData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallCutGetCam
@@ -23045,11 +23045,11 @@
 0x0046DCD0	mphStartLoadIDTableEntry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mphStartLoadIDTable
 0x0046DCD8	mphStartLoadIDTableEntry6	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mphStartLoadIDTable
 0x0046DCE0	sbtlData98	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: cmpSetModelScale, sbtlGetMotionVisualData, sbtlSetUnitSub
-0x0046DCE4	sbtlGetEffCylinderDataData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetEffCylinderData
-0x0046DCE8	sbtlBtlGetMotionMoveSubData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlBtlGetMotionMoveSub
+0x0046DCE4	sbtleff_cylindertbl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlVisual.c: table read for major nonzero by sBtlGetEffCylinderData; replaces sbtlGetEffCylinderDataData
+0x0046DCE8	sbtlmotionmv_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetMotionMoveData: major nonzero table; replaces sbtlBtlGetMotionMoveSubData
 0x0046DCEC	sbtlData99	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlGetMotionVisualData, sbtlSetUnitSub
-0x0046DCF0	sbtlGetEffCylinderDataData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetEffCylinderData
-0x0046DCF4	sbtlBtlGetMotionMoveSubData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlBtlGetMotionMoveSub
+0x0046DCF0	sbtleff_cylindertbl_p	inferred	method=derived-role; p=na; tier=B; source=derived; evidence=HD: player table (major zero); replaces sbtlGetEffCylinderDataData2
+0x0046DCF4	sbtlmotionmove_tbldata_player	inferred	method=derived-role; p=na; tier=B; source=derived; evidence=HD: major zero table; replaces sbtlBtlGetMotionMoveSubData2
 0x0046DCF8	sbtlData100	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 21 functions: sbtlCallBitCheck, rstCallBitCheck, sbtlCallMemset4
 0x0046DCFC	sbtlData101	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: pbCallBtlGetRndEncJoken, sbtlGetRndEncJoken, nbGetEncountMax
 0x0046DD00	sbtlCallBitCheckData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBitCheck

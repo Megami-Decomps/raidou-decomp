@@ -178,11 +178,11 @@ void mapAM_MaskClear(void) {
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", NewGameInit);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapProcSequenceSub);
+INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskSetCurrent);
 #endif
 
 #ifdef VERSION_RAIDOU1
-void mapProcSequenceSub(s32 map, s32 floor) {
+void mapAM_MaskSetCurrent(s32 map, s32 floor) {
     s32 i;
 
     if (map == 0) {

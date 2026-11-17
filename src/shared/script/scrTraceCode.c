@@ -63,7 +63,7 @@ extern s32 fldCommand_FLD_ANIME_ID2();
 extern s32 fldCommand_FLD_MAP_ON();
 extern s32 fldCommand_FLD_MAP_OFF();
 extern s32 fldCommand_SET_CAMTBL();
-extern s32 fldCommand_FLD_SET_TAKARA_OPEN();
+extern s32 sbtlCallRefSbtl51();
 extern s32 fldCommand_FLD_CHK_TAKARA_OPEN();
 extern s32 evtCommand_MODEL_SHADOW_ON();
 extern s32 evtCommandSetDrawFlagWhileWaiting();

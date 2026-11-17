@@ -72,7 +72,7 @@ s32 fldCommand_FLD_MAP_OFF(void);
 s32 fldCommand_FLD_CHK_BTL(void);
 s32 fldCommand_FLD_CHK_ANA(void);
 s32 fldCommand_FLD_CHK_SISETU(void);
-u32 fldCommand_FLD_SET_TAKARA_OPEN(void);
+u32 sbtlCallRefSbtl51(void);
 u32 fldCommand_FLD_CHK_TAKARA_OPEN(void);
 u32 fldCommand_FLD_WARP_HASIGO_GETTBL(void);
 u32 fldCommand_FLD_WARP_ELV_GETTBL(void);

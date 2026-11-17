@@ -390,7 +390,7 @@ void dds3PadAct(u32 motor, u8 level, u32 frame)
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/kernel/dds3PadManager.c:271, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
-void dds3PadIsTypeCD(void) {
+void dds3PadActAllStop(void) {
     dds3PadVibrationState[0] = 0;
     dds3PadVibrationTable[0] = 0;
     dds3PadVibrationState[1] = 0;

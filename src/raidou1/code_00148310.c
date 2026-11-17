@@ -125,6 +125,8 @@ INCLUDE_ASM(const s32, "code_00148310", mapLeaf17);
 
 INCLUDE_ASM(const s32, "code_00148310", mapLeaf18);
 
+/* NON_MATCHING: 87 of 95 words match.  */
+#ifdef NON_MATCHING
 void mapCallPositioningGuardSystem3(s32 id, s32 ix, s32 iy, s32 iw, s32 ih, s32 act, s32 dir, s32 fieldID, s32 areaID, s32 posID, s32 se) {
     f32 x;
     f32 z;
@@ -158,6 +160,9 @@ void mapCallPositioningGuardSystem3(s32 id, s32 ix, s32 iy, s32 iw, s32 ih, s32 
         }
     }
 }
+#else
+INCLUDE_ASM(const s32, "code_00148310", mapCallPositioningGuardSystem3);
+#endif
 
 s32 mapWarpGet_Pos(f32 x, f32 y, f32 z, s32 *attr, f32 *objx, f32 *objy, f32 *objz) {
     s32 ix;

@@ -9,13 +9,14 @@ struct sdfMemHandle_t;
 struct dds3ProcessID_t;
 
 /* Work of the camp fade process: fade out, wait, fade in, then wait for the map to finish. */
-typedef struct cmpFadeProcessData_t {
-    u8 pad00[8];
+typedef struct tagCMP_MAP_WORK {
+    struct sdfMemHandle_t *handle;
+    struct dds3ProcessID_t *drawPID;
     u16 flag;
     s8 step;
     u8 pad0B;
     s32 count;
-} cmpFadeProcessData_t;
+} tagCMP_MAP_WORK;
 
 /* Camp sprite packs: the loaded file, its slot set, and the motion each one links (-1 for none). */
 extern struct sdfMemHandle_t *cmpWork3[4];
@@ -34,11 +35,13 @@ void cmpLoadScript(void);
 u8 evtFunc18(s32 a_no);
 s32 evtFunc19(CMP_SPR a_no);
 s32 evtCreateLinkSub(CMP_SPR a_no);
-s32 fldCreateLinkSub(CMP_SPR a_no);
+s32 cmpFreeSpriteHnd(CMP_SPR a_no);
 s32 pipeCreateLink(CMP_SPR a_no);
 s32 pipeCampCAMPPACKLB(void);
-s32 fldCallGetProcessData3(struct dds3ProcessID_t *id);
+s32 Process_cmpMap(struct dds3ProcessID_t *id);
 void cmpCallSetOt2(s32 x, s32 y, s32 frame);
-void cmpDrawBack(void);
+void cmpDrawBack(tagCMP_MAP_WORK *wk);
+s32 cmpFreeSpriteMem(CMP_SPR a_no);
+s32 cmpLoadSpriteMem(CMP_SPR a_no);
 
 #endif

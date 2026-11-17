@@ -451,7 +451,6 @@
 0x0012C998	fldPointDistance	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00122BB0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0012CB48	mapCallAtan2	func	tier=D	derived-callee	na	unit code_00128378, neighbour mapGetEyeTgtRot; calls sdfAtan2
 0x0012CC70	fldToggleWorldNodeState	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00122BE0, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x0012CD70	mapProcSequenceSub	func	tier=D	derived-caller	na	unit code_0012C998, neighbour mapGetTaniVector; called by ProcSequence
 0x0012CF80	mapRefDDS3GBWK	func	tier=D	derived-data	na	unit code_0012C998, neighbour mapGetTaniVector; references DDS3_GBWK
 0x0012CFF0	mapRefDDS3GBWK2	func	tier=D	derived-data	na	unit code_0012C998, neighbour mapRndEncParamSet; references DDS3_GBWK
 0x0012D068	mapRefDDS3GBWK3	func	tier=D	derived-data	na	unit code_0012C998, neighbour mapRndEncParamSet; references DDS3_GBWK
@@ -835,8 +834,6 @@
 0x0017A310	fldMapAllAmap	func	tier=D	derived-string	na	unit code_001677F0, neighbour fldFindSceneEntryData; string '/map/all/amap.tmx'
 0x0017A3D0	fldCallTexFreeDelayed	func	tier=D	derived-callee	na	unit code_001677F0, neighbour fldFindSceneEntryData; calls sdfTexFreeDelayed
 0x0017A400	fldLeaf24	func	tier=D	derived-unit	na	unit code_001677F0, neighbour fldFindSceneEntryData; no named callee, caller or string
-0x0017A410	fldFunc17	func	tier=D	derived-unit	na	unit code_001677F0, neighbour fldFindSceneEntryData; no named callee, caller or string
-0x0017A580	fldFunc18	func	tier=D	derived-unit	na	unit code_001677F0, neighbour fldFindSceneEntryData; no named callee, caller or string
 0x0017A6F0	fldDrawTopSub	func	tier=D	derived-caller	na	unit code_001677F0, neighbour fldFindSceneEntryData; called by DrawTop
 0x0017A6F8	fldCallBitCheck3	func	tier=D	derived-callee	na	unit code_00176B00, neighbour fldFindSceneEntryData; calls evtBitCheck
 0x0017A978	fldLeaf25	func	tier=D	derived-unit	na	unit code_001677F0, neighbour fldFindSceneEntryData; no named callee, caller or string
@@ -2745,10 +2742,6 @@
 0x0023CB90	mdlMarkAndProcessObjectNodes	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029B320, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0023CE08	effCallMotionSeek2	func	tier=D	derived-callee	na	unit code_002250F8, neighbour effResourceCopy; calls sdfMotionSeek
 0x0023CE80	effCallSRAnimation3	func	tier=D	derived-callee	na	unit code_002250F8, neighbour effResourceCopy; calls effSRAnimation
-0x0023CF10	effLeaf351	func	tier=D	derived-unit	na	unit code_002250F8, neighbour effResourceCopy; no named callee, caller or string
-0x0023CF30	effLeaf352	func	tier=D	derived-unit	na	unit code_002250F8, neighbour effResourceCopy; no named callee, caller or string
-0x0023CF50	effLeaf353	func	tier=D	derived-unit	na	unit code_002250F8, neighbour effResourceCopy; no named callee, caller or string
-0x0023CF68	effCallSetScale	func	tier=D	derived-callee	na	unit code_002250F8, neighbour effResourceCopy; calls mdlSetScale
 0x0023D2B0	effResourceCopy	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD effHelper.effResourceCopy, score 11.8 band A; replaces effCopyResourceOwner: dds-decomp DDS1 name via SLUS_209.74 0x0029B678, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023D998	effLoadModelPrimaryVector	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029BCF8, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023D9B8	effSetModelRotationQuaternion	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029BD18, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -3787,8 +3780,6 @@
 0x002A6F78	sbtlCallBtlCheckBit	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCheckBit
 0x002A7088	sbtlBtlSetUseSkillSBtlActionSub3	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlSetUseSkill_sbtlAction
 0x002A8F20	sbtlLeaf28	func	tier=D	derived-unit	na	unit sbtlActAI; no named callee, caller or string
-0x002A9678	sbtlRefSbtl40	func	tier=D	derived-data	na	unit sbtlSub; references wk_sbtl
-0x002A96C0	sbtlRefSbtl41	func	tier=D	derived-data	na	unit sbtlSub; references wk_sbtl
 0x002A9A48	sbtlGetUnitHelperPos	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetUnitHelperPos, score 9.8 band B
 0x002A9B10	sbtlGetUnitHelperMatrix	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetUnitHelperMatrix, score 11.45 band A
 0x002A9BB8	sbtlGetQuatFromMatrix	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetQuatFromMatrix, score 8.8 band B
@@ -3990,7 +3981,6 @@
 0x002C6288	sbtlLeaf81	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x002C6370	sbtlRefSbtl50	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x002C6510	sbtlCallBtlSearchUnitID12	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
-0x002C6938	sbtlRefSbtl51	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x002C6E90	sbtlCancelMenuPara	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlPanel.sBtlCancelMenuPara, score 2.7 band D, hd-consensus: next gap11/20 st2:gap r2-only; 10/10 fold runs agree, fold scores 4.7,8.7,8.7,8.7,8.7,4.7,4.7,8.7,8.7,2.7
 0x002C6EA8	sbtlSetMenuPara	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlPanel.sBtlSetMenuPara, score 4.0 band D, hd-consensus: calls1 calls-of-match st2:call r2-only; 10/10 fold runs agree, fold scores 6.0,6.0,6.0,6.7,8.5,6.0,6.0,6.0,8.5,3.1
 0x002C7A88	sbtlResetColorFlag	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlPlayer.sBtlResetColorFlag, score 6.0 band C, hd-consensus: calls1 prev~ calls-of-match votes2 st2:call r2-only; 10/10 fold runs agree, fold scores 9.0,7.0,9.0,8.5,8.5,9.0,9.5,8.0,8.0,9.5
@@ -4013,8 +4003,6 @@
 0x002C9B28	sbtlRefSbtl18	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x002C9D10	sbtlCallSetOt2	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls eglSetOt
 0x002CA240	sbtlCallBtlGetMotionMoveData	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetMotionMoveData
-0x002CA3F0	sbtlSetUnitSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by fldSetUnit
-0x002CA468	sbtlGetMotionVisualData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlVisual.sBtlGetMotionVisualData, score 7.1 band B
 0x002CA560	sbtlCallBtlGetMotionVisualDataSBtlVi2	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetMotionVisualData_sbtlVisual
 0x002CA7C8	sbtlGetCylinderData_ID	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlVisual.sBtlGetCylinderData_ID, score 10.0 band A
 0x002CA900	sbtlCallMemset11	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls memset
@@ -5393,7 +5381,6 @@
 0x003710E8	evtFunc19	func	tier=D	derived-unit	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; no named callee, caller or string
 0x00371128	evtCallGetSpriteHnd	func	tier=D	derived-callee	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; calls cmpGetSpriteHnd
 0x003711A0	evtFunc20	func	tier=D	derived-unit	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; no named callee, caller or string
-0x00371298	fldJmsQuestMapLoad	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldJmsQuestMapLoad, score 8.75 band B
 0x003713A0	cmpSetupCmpItemSub	func	tier=D	derived-caller	na	unit code_003648C0, neighbour cmpFreeSpriteHnd; called by Setup_cmpItem
 0x003715B0	cmpLoadSpriteHnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD cmpFile.cmpLoadSpriteHnd, score 8.1 band B, hd-ab: calls1 calls-of-match st1:call r1+r2
 0x003715D8	cmpGetSpriteHnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD cmpFile.cmpGetSpriteHnd, score 9.6 band B
@@ -5572,9 +5559,7 @@
 0x00389460	cmpFunc	func	tier=D	derived-unit	na	unit code_003648C0, neighbour cmpReadFlgChk; no named callee, caller or string
 0x00389488	cmpCallSetIntReturnValue	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpReadFlgChk; calls scrSetIntReturnValue
 0x003894B0	cmpCallBitCheck	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpReadFlgChk; calls evtBitCheck
-0x0038A660	fldCallGetProcessData3	func	tier=D	derived-callee	na	unit code_00300578, neighbour fldCommand_FLD_WARP_RUN_START; calls dds3GetProcessData
 0x0038A808	cmpCallSetOt2	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpDrawBack; calls eglSetOt
-0x0038B020	itfDvlMsgProcessEnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfDvlMsgProcessEnd, score 7.4 band B
 0x0038B228	cmpRefMainPIDCmpMain	func	tier=D	derived-data	na	unit code_00300578, neighbour cmpGetCharPID; references g_mainPID_cmpMain
 0x0038B240	cmpFunc7	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpGetCharPID; no named callee, caller or string
 0x0038B260	cmpPartyDrawFuncSub	func	tier=D	derived-caller	na	unit code_003648C0, neighbour cmpGetCharPID; called by cmpPartyDrawFunc
@@ -18627,10 +18612,6 @@
 0x004DEF50	mapAutoMapDraw3SubDataEntry7	data	tier=D	derived-table	na	pointed to by mapAutoMapDraw3SubData
 0x004DEF58	mapFunc2DataEntry2	data	tier=D	derived-table	na	pointed to by mapFunc2Data
 0x004DEF60	mapAutoMapDraw3SubDataEntry8	data	tier=D	derived-table	na	pointed to by mapAutoMapDraw3SubData
-0x004DEF68	fldData32	data	tier=D	derived-shared	na	used by 4 functions: mapCallSetOt2, fldFunc18, fldMapAllAmap
-0x004DEF6C	fldData33	data	tier=D	derived-shared	na	used by 4 functions: mapCallSetOt2, fldFunc18, fldMapAllAmap
-0x004DEF70	mapCallSetOt2Data5	data	tier=D	derived-dominant	na	used by mapCallSetOt2 (9 of 16 refs, 6 functions)
-0x004DEF74	mapCallSetOt2Data6	data	tier=D	derived-dominant	na	used by mapCallSetOt2 (16 of 26 refs, 8 functions)
 0x004DEF78	mapCallSetOt2Data7	data	tier=D	derived-dominant	na	used by mapCallSetOt2 (3 of 6 refs, 4 functions)
 0x004DEF7C	mapCallSetOt2Data8	data	tier=D	derived-dominant	na	used by mapCallSetOt2 (2 of 5 refs, 4 functions)
 0x004DEF80	mapCallSetOt2Data9	data	tier=D	derived-dominant	na	used by mapCallSetOt2 (2 of 4 refs, 3 functions)
@@ -18638,11 +18619,6 @@
 0x004DEF88	fldData35	data	tier=D	derived-shared	na	used by 4 functions: fldCallFindSceneEntryData, fldMapAllAmap, fldLeaf25
 0x004DEF90	fldData36	data	tier=D	derived-shared	na	used by 4 functions: fldCallFindSceneEntryData, fldMapAllAmap, fldLeaf25
 0x004DEF94	mapCallSetOt2Data10	data	tier=D	derived-dominant	na	used by mapCallSetOt2 (2 of 4 refs, 3 functions)
-0x004DEF98	fldData37	data	tier=D	derived-shared	na	used by 4 functions: mapFunc, fldFunc18, fldCallFindSceneEntryData
-0x004DEF9C	fldData38	data	tier=D	derived-shared	na	used by 2 functions: fldFunc17, fldFunc18
-0x004DEFA0	fldData39	data	tier=D	derived-shared	na	used by 2 functions: fldFunc17, fldFunc18
-0x004DEFA4	fldData40	data	tier=D	derived-shared	na	used by 2 functions: fldFunc17, fldFunc18
-0x004DEFA8	fldData41	data	tier=D	derived-shared	na	used by 2 functions: fldFunc17, fldFunc18
 0x004DEFAC	mapCallSin11Data	data	tier=D	derived-sole	na	used by mapCallSin11
 0x004DEFB0	mapCallSin12Data	data	tier=D	derived-sole	na	used by mapCallSin12
 0x004DEFB4	mapCallCutGetCamData	data	tier=D	derived-sole	na	used by mapCallCutGetCam
@@ -20395,11 +20371,7 @@
 0x004E25D8	sbtlCallMemFreeDirect2Data	data	tier=D	derived-sole	na	used by sbtlCallMemFreeDirect2
 0x004E25DC	sbtlData167	data	tier=D	derived-shared	na	used by 4 functions: gohSetModelScale, cmpSetModelScale, sbtlSetUnitSub
 0x004E25E0	sbtlData168	data	tier=D	derived-shared	na	used by 3 functions: sbtlSetUnitSub, sbtlGetMotionVisualData, sbtlGetMotionVisualData_sbtlVisual
-0x004E25E4	sbtlGetEffCylinderDataData	data	tier=D	derived-sole	na	used by sbtlGetEffCylinderData
-0x004E25E8	sbtlBtlGetMotionMoveSubData	data	tier=D	derived-sole	na	used by sbtlBtlGetMotionMoveSub
 0x004E25EC	sbtlData99	data	tier=D	derived-shared	na	used by 2 functions: sbtlGetMotionVisualData, sbtlSetUnitSub
-0x004E25F0	sbtlGetEffCylinderDataData2	data	tier=D	derived-sole	na	used by sbtlGetEffCylinderData
-0x004E25F4	sbtlBtlGetMotionMoveSubData2	data	tier=D	derived-sole	na	used by sbtlBtlGetMotionMoveSub
 0x004E25F8	sbtlData100	data	tier=D	derived-shared	na	used by 21 functions: sbtlCallBitCheck, rstCallBitCheck, sbtlCallMemset4
 0x004E25FC	sbtlData101	data	tier=D	derived-shared	na	used by 5 functions: pbCallBtlGetRndEncJoken, sbtlGetRndEncJoken, nbGetEncountMax
 0x004E2600	sbtlCallBitCheckData	data	tier=D	derived-sole	na	used by sbtlCallBitCheck
@@ -23327,7 +23299,7 @@
 0x0059E620	sysPointerTypeInfoWork	data	tier=D	derived-sole	na	used by sysPointerTypeInfo
 0x0059E630	sysPtmdTypeInfoWork	data	tier=D	derived-sole	na	used by sysPtmdTypeInfo
 0x0059E640	sysBuiltinTypeInfoWork	data	tier=D	derived-sole	na	used by sysBuiltinTypeInfo
-0x00104240	dds3PadIsTypeCD	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD dds3PadManager.dds3PadIsTypeCD score 5.0 flag I: next gap3/1 st1:gap r1+r2
+0x00104240	dds3PadActAllStop	func	tier=C	derived-derived-role	na	sbtlStopVibe tail-calls it where HD sBtlStopVibe calls dds3PadActAllStop (outside this batch, evidence only); replaces dds3PadIsTypeCD
 0x00105F88	sbtlResetJump	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlPlayer.sBtlResetJump score 6.6 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x2d6478
 0x00106270	dds3FadeIn2	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x105048 sim 0.652 margin 0.17 single
 0x00106AB8	dds3IsBistaZBufferClear	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD dds3KernelDraw.dds3IsBistaZBufferClear score 2.7 flag I: next gap3/1 st2:gap r2-only
@@ -24047,6 +24019,7 @@
 0x003634D0	fldCommand_SET_ALLPANEL	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x158898 sim 0.632 margin 0.11 pair
 0x00363730	ScrCmd_GET_DREAM_COMPARE	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD nmeRoot.ScrCmd_GET_DREAM_COMPARE score 5.5 flag -: calls1 prev edge st1:edge r1+r2
 0x003711C8	evtStartTerminalMenuMessage	func	tier=C	dds-fuzzy-70-m-pair	0.64 (n=25)	dds body 0x265f30 sim 0.800 margin 0.11 pair
+0x00371298	cmpLoadSpriteMem	func	tier=C	derived-derived-role	na	paired with cmpFreeSpriteMem and flag 2 (CMP_MAP_F_LOAD_SPR_MEM) in ProcessStart_cmpMap; replaces fldJmsQuestMapLoad
 0x00371570	cmpFreeSpriteToGS	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpFile.cmpFreeSpriteToGS score 5.0 flag I: calls1 callers-of-match votes2 st2:call r2-only
 0x003718E8	cmpGetBstNo	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpMisc.cmpGetBstNo score 3.6 flag I: calls2 calls-of-match votes2 st2:call r1-disagree:0x3152b8
 0x00372640	datDlcNoneCheck	func	tier=C	hd-d	0.53 (n=98)	Raidou HD dat.datDlcNoneCheck score 3.7 flag I: calls1 calls-of-match st2:call r2-only
@@ -24285,7 +24258,6 @@
 0x003F6F5C	at3decRotateButterflyPair	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f9a34 sim 1.000 margin 0.31 pair
 0x003F6FC0	at3decCopyBlock	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f9a98 sim 1.000 margin 0.44 pair
 0x003F6FE8	at3decInitDefaults	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f9ac0 sim 1.000 margin 0.73 pair
-0x003F7948	cfgGetConfigGAMEPAD	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cfg.cfgGetConfigGAMEPAD score 4.5 flag I: calls1 calls-of-match st1:call r1+r2
 0x003F79A8	__ieee754_rem_pio2	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x353300 sim 1.000 margin 0.75 pair
 0x003F8388	__ieee754_asinf	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2fa630 sim 1.000 margin 0.45 pair
 0x003F8D88	__kernel_cos	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x354a00 sim 1.000 margin 0.35 pair
@@ -24633,6 +24605,7 @@
 0x0012A530	dds3EffectBlurDraw	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a1f18 sim 0.729 margin 0.11 pair
 0x0012C498	fldCamCalcSlopeOffset	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x12c580 sim 0.925 margin 0.72 pair
 0x0012C9C8	mapGetCircleCircleH	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGetCircleCircleH score 6.4 flag -: prev~ next gap1/2 st1:gap r1+r2
+0x0012CD70	mapAM_MaskSetCurrent	func	tier=B	hd-role	na	HD mapAutoMapUpdateLimit calls mapAM_MaskSetCurrent(am_map, floor) where fldFunc17 calls mapProcSequenceSub(mapCallSetOt2Data5, floor); replaces mapProcSequenceSub
 0x0012D768	effBTLFieldColorDraw	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16c3f0 sim 0.846 margin 0.17 pair
 0x0012DF38	fclCombineDraw	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1fb828 sim 0.864 margin 0.13 single
 0x0012E048	mapSetSceneParam	func	tier=B	hd-role	na	HD fld.c mapSetSceneParam(SceneParam_t *, loadField, loadFloor, pointID): same field stores, bg_tex_load_last reset and fldGb cut/focus zeroing; callers mapCallMap and the mapRetuenFrom* family match; replaces mapCallMemset
@@ -24670,6 +24643,7 @@
 0x00174548	fldSe_Init	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x144798 sim 0.793 margin 0.17 pair
 0x00175858	datInitBossPress	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x245c40 sim 0.786 margin 0.11 pair
 0x00178370	mapIfDrawAction	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.mapIfDrawAction score 5.3 flag -: calls3 callee-index st2:cidx r1-disagree:0x1690b0
+0x0017A580	mapAutoMapCalcPosLimit	func	tier=B	hd-role	na	HD fld.c mapAutoMapCalcPosLimit(add_x, add_z) (0x1b040b0): calls mapAutoMapUpdateLimit(am_floor), clamps am_top_x/z by the limits, sets/clears draw_flags 0x20/0x10/8/4 the same way; replaces fldFunc18
 0x001820F8	mapNakamaHikouTask	func	tier=B	twin	0.85 (n=425)	twin of raidou1 0x00171AE0 by fclCombineInit order and opcode similarity 0.87
 0x001823A8	mapNakamaSinnTask	func	tier=B	twin	0.85 (n=425)	twin of raidou1 0x00171D78 by fclCombineInit order and opcode similarity 0.85
 0x001843A8	mapNakamaSkilIs_SetBit	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.mapNakamaSkilIs_SetBit score 6.8 flag -: calls4 callee-index st2:cidx r1-disagree:0x173148
@@ -24781,6 +24755,10 @@
 0x00201528	effBTLPartGetWorldPositionPtr	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16edc8 sim 0.860 margin 0.40 pair
 0x0020F570	dds3EffectBlurDrawFrameMaskReset	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a1e90 sim 0.841 margin 0.15 pair
 0x00233900	nbClipEffectNum	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x258538 sim 0.943 margin 0.94 pair
+0x0023CF10	PositionSet_effModel	func	tier=B	hd-role	na	HD effModel.c PositionSet (0x1979030): lqc2 the vector then mdlSetPosition(handle model); module suffix as Create_effModel/Delete_effModel; replaces effLeaf351
+0x0023CF30	RotateSet_effModel	func	tier=B	hd-role	na	HD effModel.c RotateSet: same shape with mdlSetRotate; replaces effLeaf352
+0x0023CF50	ColorSet_effModel	func	tier=B	hd-role	na	HD effModel.c ColorSet: mdlSetColor on the part model (PS2 passes a packed u32); replaces effLeaf353
+0x0023CF68	ScaleSet_effModel	func	tier=B	hd-role	na	HD effModel.c ScaleSet: scale * part scale into vf10, mdlSetScale; replaces effCallSetScale
 0x002562E8	Create_effObjectParticle	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD effObjectParticle.Create score 6.3 flag -: gap=exact st1:gap r1+r2
 0x00259408	effPadVibeFadeUpdate	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a14c0 sim 0.760 margin 0.43 pair
 0x002627D8	sbtlCheckSummon	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMain.sBtlCheckSummon score 6.5 flag I: calls2 calls-of-match votes2 st2:call r2-only
@@ -24862,6 +24840,8 @@
 0x002A6AF0	sbtlSetHangekiFlag_sbtlAction	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlAction.sBtlSetHangekiFlag score 6.6 flag I: calls3 next~ calls-of-match votes2 st2:call r1-disagree:0x256270
 0x002A6EA0	sbtlDeleteEnemy	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlUnit.sBtlDeleteEnemy score 6.3 flag I: calls3 callers-of-match votes2 st2:call r1-disagree:0x27c888
 0x002A8F30	sbtlEisyoWaitTask	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlAction.sBtlEisyoWaitTask score 5.6 flag I: calls2 prev~ calls-of-match votes2 st2:call r2-only
+0x002A9678	sbtlSetVibeFadeIn	func	tier=B	hd-role	na	HD sBtlSub.c sBtlSetVibeFadeIn (0x1fc9f00): vibe_startf/frame/power then vibe_type = 1, returns 1; replaces sbtlRefSbtl40
+0x002A96C0	sbtlSetVibeFadeOut	func	tier=B	hd-role	na	HD sBtlSub.c sBtlSetVibeFadeOut (0x1fc9fd0): same with vibe_type = 0; replaces sbtlRefSbtl41
 0x002AB508	sbtlCheckWorldtoScreen	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlSub.sBtlCheckWorldtoScreen score 6.2 flag I: prev next gap=exact st2:gap r2-only
 0x002AC1F8	slKanjiDrawN	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x151de8 sim 0.775 margin 0.12 pair
 0x002AC9C8	sbtlGetPlayerLuck	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlSub.sBtlGetPlayerLuck score 5.4 flag I: calls1 next callers-of-match votes2 st2:call r2-only
@@ -24893,12 +24873,14 @@
 0x002C3FB8	sbtlOutHitEff	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEff.sBtlOutHitEff score 6.0 flag I: calls1 next~ calls-of-match-uniq votes2 st2:call r2-only
 0x002C4020	sbtlAddHitEff	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEff.sBtlAddHitEff score 6.8 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x002C4F60	Check_SupportAction	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlPlayer.Check_SupportAction score 5.0 flag -: calls3 callee-index st2:cidx r1-disagree:0x291d98
-0x002C6908	fldCommand_FLD_SET_TAKARA_OPEN	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x159dc8 sim 0.833 margin 0.83 pair
+0x002C6938	sbtlSummonMenuProc	func	tier=B	hd-role	na	HD sBtlPlayer.c sBtlSummonMenuProc (0x1f6c4a0): switch on menutype 1..7 over SummonMenuFunc0..6[sgstat[0]](wk, mode); its tables hold SummonMenuFunc_Open00/_50/_40 here; replaces sbtlRefSbtl51
 0x002C81A0	sbtlCheckTutorialEnd	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEvent.sBtlCheckTutorialEnd score 6.0 flag I: calls3 calls-of-match votes2 st2:call r1-disagree:0x294f38
 0x002C8770	sbtlCheckBattleWin	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEvent.sBtlCheckBattleWin score 6.3 flag I: calls9 calls-of-match votes8 st2:call r1-disagree:0x295390
 0x002C8AE0	sbtlGetEventMes	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlEvent.sBtlGetEventMes score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
 0x002C9B78	sbtlDrawShadow	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlShadow.sBtlDrawShadow score 6.3 flag I: calls3 calls-of-match votes2 st2:call r2-only
 0x002CA218	sbtlGetMotionMoveData	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlVisual.sBtlGetMotionMoveData score 5.0 flag I: calls1 next calls-of-match-uniq votes2 st2:call r1-disagree:0x296fe0
+0x002CA3F0	sbtlGetMotionVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
+0x002CA468	sbtlGetVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetVisualData(major, id): per-major VISUALDATA_WORK table; replaces sbtlGetMotionVisualData
 0x002CA600	sbtlGetActionTime	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlVisual.sBtlGetActionTime score 6.3 flag I: calls3 calls-of-match votes2 st2:call r1-disagree:0x297258
 0x002CB048	sbtlSetEncountPacData	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEncount.sBtlSetEncountPacData score 5.1 flag I: calls3 callers-of-match votes4 st2:call r1-disagree:0x297c30
 0x002CB698	SetEncountData_Sub_sbtlEncount	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEncount.SetEncountData_Sub score 6.4 flag -: calls4 callers-of-match votes4 st2:call r1-disagree:0x297ef0
@@ -25068,6 +25050,8 @@
 0x00389BA8	cmpMenuSetMenuImage2	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpKeyword.cmpMenuSetMenuImage2 score 6.8 flag I: calls2 prev gap2/3 votes2 st2:gap r2-only
 0x0038A088	cmpMenuCallProcEnd	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpKeyword.cmpMenuCallProcEnd score 7.0 flag I: calls1 next callers-of-match votes2 st2:call r2-only
 0x0038A558	cmpMenuProcessEnd	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpKeyword.cmpMenuProcessEnd score 5.0 flag I: calls2 prev edge st2:edge r2-only
+0x0038A660	Process_cmpMap	func	tier=B	hd-role	na	HD cmpMap.c Process, started as camp_automap_main process func; replaces fldCallGetProcessData3
+0x0038B020	Shutdown_cmpMap	func	tier=B	hd-role	na	HD cmpMap.c Shutdown; passed as shutdown func by ProcessStart_cmpMap, matches Release_cmpMap/ProcessStart_cmpMap naming; replaces itfDvlMsgProcessEnd
 0x0038B6C8	cmpChkEnableSelectMenuItem	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpMain.cmpChkEnableSelectMenuItem score 6.8 flag I: calls2 callers-of-match votes2 st2:call r2-only
 0x0038BAA8	cmpGetstrCmpMenuHD	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpMain.cmpGetstrCmpMenuHD score 5.5 flag I: calls3 calls-of-match votes2 st2:call r2-only
 0x0038BB10	cmpSetMenu	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpMain.cmpSetMenu score 6.8 flag I: calls4 callers-of-match st2:call r2-only
@@ -25248,6 +25232,15 @@
 0x004DEC9C	hMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapData119
 0x004DECA4	eMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapCallMemset2Data
 0x004DECA8	eMapBadEff_N_BADID	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapBadEffLoadData4
+0x004DEF68	am_top_x	data	tier=B	hd-role	na	HD mapAutoMapCalcPosLimit: am_top_x += add_x then clamped; replaces fldData32
+0x004DEF6C	am_top_z	data	tier=B	hd-role	na	HD mapAutoMapCalcPosLimit: am_top_z += add_z then clamped; replaces fldData33
+0x004DEF70	am_map	data	tier=B	hd-role	na	HD global passed as map to mapAM_MaskSetCurrent/mapAM_MaskChk_ID in mapAutoMapUpdateLimit; replaces mapCallSetOt2Data5
+0x004DEF74	am_floor	data	tier=B	hd-role	na	HD global passed to mapAutoMapUpdateLimit by mapAutoMapCalcPosLimit; replaces mapCallSetOt2Data6
+0x004DEF98	draw_flags	data	tier=B	hd-role	na	HD mapAutoMapCalcPosLimit: bits 0x20/0x10/8/4 set and cleared with the clamps; replaces fldData37
+0x004DEF9C	am_min_x	data	tier=B	hd-role	na	HD mapAutoMapUpdateLimit min x out (starts 512); replaces fldData38
+0x004DEFA0	am_min_z	data	tier=B	hd-role	na	HD mapAutoMapUpdateLimit min z out (starts 448); replaces fldData39
+0x004DEFA4	am_max_x	data	tier=B	hd-role	na	HD mapAutoMapUpdateLimit max x out; replaces fldData40
+0x004DEFA8	am_max_z	data	tier=B	hd-role	na	HD mapAutoMapUpdateLimit max z out; replaces fldData41
 0x004DF048	s_MapNakamaColorCnt	data	tier=B	hd-role	na	HD mapNakamaWakeUp compares and stores mode in it; replaces mapNakamaTaskData8
 0x004DF04C	s_MapNakamaColorNow	data	tier=B	hd-role	na	HD mapNakamaWakeUp sets it 0 or 128 and builds the summon model color from it; replaces mapData146
 0x004DF170	hPartialMultiBlur	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
@@ -25293,6 +25286,10 @@
 0x004E18B8	effPadVibeRemain	data	tier=B	smt3-role	na	SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effResetSlotsData2
 0x004E18C0	effPadVibePower	data	tier=B	smt3-ref	0.80 (n=D_r1_0046D180)	smt3-ref/close: nfun=2, other=0, sim=0.7596, games=2, size=True, sec=True, fn=effPadVibeFadeUpdate
 0x004E18C8	effPadVibeFadeIn	data	tier=B	smt3-role	na	SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effData37
+0x004E25E4	sbtleff_cylindertbl	data	tier=B	hd-role	na	HD sBtlVisual.c: table read for major nonzero by sBtlGetEffCylinderData; replaces sbtlGetEffCylinderDataData
+0x004E25E8	sbtlmotionmv_tbldata	data	tier=B	hd-role	na	HD sBtlGetMotionMoveData: major nonzero table; replaces sbtlBtlGetMotionMoveSubData
+0x004E25F0	sbtleff_cylindertbl_p	data	tier=B	derived-role	na	HD: player table (major zero); replaces sbtlGetEffCylinderDataData2
+0x004E25F4	sbtlmotionmove_tbldata_player	data	tier=B	derived-role	na	HD: major zero table; replaces sbtlBtlGetMotionMoveSubData2
 0x004E2610	sb_gen_d_flag	data	tier=B	hd-role	na	HD sBtlClearGeneratorWork zeroes sb_gen_d_flag after the loop; only code_00298540 uses it; replaces gFldSe3DNum
 0x004E2614	datRndEncBase	data	tier=B	hd-role	na	HD sBtlGetRndEncMax reads datRndEncBase at this site; replaces nbGetEncountMaxData
 0x004E2618	encmax	data	tier=B	hd-role	na	HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2

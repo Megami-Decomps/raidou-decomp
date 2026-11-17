@@ -10,7 +10,9 @@ struct SBTLUNIT_WORK;
 struct sdatUnitWork_t;
 struct SBTL_AISYO_TBL;
 
-void CalcAisyo(struct SBTLUNIT_WORK *wk);
+s32 CalcAisyo(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallBtlGetSkilltbl19(struct SBTLUNIT_WORK *wk, SKLID id);
+SKLID sbtlGetAutoSkill_ID(struct sdatUnitWork_t *unit, s32 id);
 s32 sbtlCheckBadStatus(struct SBTLUNIT_WORK *wk);
 void sbtlCheckBadStatus_Weak(struct SBTLUNIT_WORK *wk, SKLID sklid, struct SBTLSKILLP_TBL *ptbl, s32 acterID);
 void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk);

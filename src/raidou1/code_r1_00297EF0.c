@@ -60,8 +60,8 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
         }
     }
     devil = sbtlGetDevilData_sbtlSub(devilId);
-    visual = sbtlGetMotionVisualData(2, devil->motionId);
-    sub = sbtlSetUnitSub(2, devil->motionId, 0);
+    visual = sbtlGetVisualData(2, devil->motionId);
+    sub = sbtlGetMotionVisualData(2, devil->motionId, 0);
     unit = sbtlSetSummon(1, devilId, arg);
     unit->unit.devilId = devilId;
     unit->unit.level = devil->level;
@@ -82,7 +82,7 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
     unit->unit.backup.mp = devil->stat20;
     unit->unit.backup.maxmp = devil->stat24;
     for (i = 0; i < 9; i++) {
-        unit->param[i] = devil->param[i];
+        unit->haveskill[i + 2] = devil->param[i];
     }
     sbtlCheckAutoSkill_Enemy(unit);
     sbtlCheckBattlePara(unit);

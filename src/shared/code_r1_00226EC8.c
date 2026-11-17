@@ -11194,7 +11194,7 @@ void effResetSlots(void) {
     effPadVibeRemain[1] = 0;
     effPadVibePower[1] = 0;
     effPadVibeFadeIn[1] = 0;
-    dds3PadIsTypeCD();
+    dds3PadActAllStop();
 }
 
 void effPadVibeFadeUpdate(void) {

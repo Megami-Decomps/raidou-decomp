@@ -72,7 +72,7 @@
 0x0036F6D0 sdfSndInitCmdIF void sdfSndInitCmdIF(void)
 0x0037EF10 at3DecInit s32 at3DecInit(void *param)
 0x0037EFD8 at3DecDecode s32 at3DecDecode(void *param)
-0x00381D08 cfgGetConfigGAMEPAD float cfgGetConfigGAMEPAD(void)
+0x00381D08 acosf float acosf(void)
 0x00382320 __ieee754_acosf void __ieee754_acosf(float a1)
 0x003860D0 dptoulLeaf u8 * dptoulLeaf(u8 *a1, u32 *a2)
 0x003899C8 sprintfRaiseRSub s32 sprintfRaiseRSub(void)

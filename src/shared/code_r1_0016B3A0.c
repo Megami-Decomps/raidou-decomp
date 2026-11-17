@@ -13,8 +13,8 @@ typedef struct mapFuncEntry_t {
 
 extern mapFuncEntry_t mapFunc10Data[19];
 extern s8 mapWork13[16];
-extern s32 mapCallSetOt2Data5;
-extern s32 mapCallSetOt2Data6;
+extern s32 am_map;
+extern s32 am_floor;
 
 /* NON_MATCHING: 51 of 62 words match. Register choice for the mapWork13 base differs. */
 #ifdef NON_MATCHING
@@ -26,10 +26,10 @@ void mapFunc10(void) {
         mapWork13[i] = -1;
     }
     for (i = 0; i < 19; i++) {
-        if (mapFunc10Data[i].scene != mapCallSetOt2Data5) {
+        if (mapFunc10Data[i].scene != am_map) {
             continue;
         }
-        if (mapFunc10Data[i].id != mapCallSetOt2Data6) {
+        if (mapFunc10Data[i].id != am_floor) {
             continue;
         }
         if (mapAM_MaskChk_ID(mapFunc10Data[i].scene, mapFunc10Data[i].id, mapFunc10Data[i].flag)) {

@@ -121,7 +121,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0014B610	0014B610	code_r1_0014B610	c	none	
 0014B660	0014C898	code_0014B660	c	none	
 0014CF58	0014CF58	code_r1_0014CF58	c	none	
-0014DF70	0014F368	code_0014DF70	asm	none	
+0014DF70	0014F368	code_0014DF70	c	none	
 0014F378	00151730	code_r1_0014F378	c	none	
 00151980	00151980	code_r1_00151980	c	none	
 00151DC0	00151DC0	code_r1_00151DC0	c	none	
@@ -144,12 +144,12 @@ start	last_func	unit	kind	evidence	smt3_unit
 0016A558	0016A610	code_0016A558	c	none	
 0016A638	0016A668	code_r1_0016A638	c	none	
 0016A738	0016A738	code_r1_0016A738	c	none	
-0016A7D8	0016AC18	code_0016A7D8	asm	none	
+0016A7D8	0016AC18	code_0016A7D8	c	none	
 0016AC20	0016AC20	code_r1_0016AC20	c	none	
-0016AD90	0016B180	code_0016AD90	asm	none	
+0016AD90	0016B180	code_0016AD90	c	none	
 0016B3A0	0016B3A0	code_r1_0016B3A0	c	none	
 0016B498	0016B650	code_r1_0016B498	c	none	
-0016C2F8	0016C3B0	code_0016C2F8	asm	none	
+0016C2F8	0016C3B0	code_0016C2F8	c	none	
 0016C450	0016C450	code_r1_0016C450	c	none	
 0016CA30	0016D368	code_0016CA30	c	none	
 0016D3B0	00173CD8	facility/fclCombineInit	c	smt3:map:1 of 43	facility/fclCombineInit
@@ -310,7 +310,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0026FBC8	0027CA90	sbtlActAI	c	none	
 0027CBE8	0027CC18	code_r1_0027CBE8	c	dds:2 of 2	
 0027CC80	0027CC80	code_r1_0027CC80	c	dds:1 of 1	
-0027CD48	0027EC00	sbtlSub	asm	none	
+0027CD48	0027EC00	sbtlSub	c	none	
 0027ED08	0027FD18	sbtlSub_0027ED08	c	dds:5 of 36 part	
 0027FD88	00289B50	sbtlDMG	c	none	
 00289CA0	00289CA0	code_r1_00289CA0	c	none	
@@ -321,17 +321,17 @@ start	last_func	unit	kind	evidence	smt3_unit
 0028EAE8	0028EAE8	code_r1_0028EAE8	c	none	
 0028EB80	00291810	code_0028EB80	c	none	
 00291A80	00291A80	code_r1_00291A80	c	none	
-00291C78	002928B0	code_00291C78	asm	none	
+00291C78	002928B0	code_00291C78	c	none	
 00292930	00292930	code_r1_00292930	c	none	
-002929C8	00294F38	code_002929C8	asm	none	
+002929C8	00294F38	code_002929C8	c	none	
 00295298	00295298	code_r1_00295298	c	none	
-00295390	00297C30	code_00295390	asm	none	
+00295390	00297C30	code_00295390	c	none	
 00297EF0	00297EF0	code_r1_00297EF0	c	none	
 00298540	00299950	code_00298540	c	none	
 00299970	00299970	code_r1_00299970	c	none	
 002999C0	00299E40	code_002999C0	c	none	
 00299E80	00299E80	newbattle/nbActionProcess	c	smt3:map:1 of 1	newbattle/nbActionProcess
-00299EC8	0029BE98	sbtl	asm	none	
+00299EC8	0029BE98	sbtl	c	none	
 0029BF50	0029BF50	code_r1_0029BF50	c	none	
 0029BFB8	002A1D50	sbtl_0029BFB8	c	none	
 002A1E48	002A1E48	code_r1_002A1E48	c	none	
@@ -373,7 +373,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00300530	00300530	code_r1_00300530	c	dds:1 of 1	
 00300578	00322F18	code_00300578	c	none	
 00323138	00323138	code_r1_00323138	c	none	
-00323280	0032F150	code_00323280	asm	none	
+00323280	0032F150	code_00323280	c	none	
 0032F160	0032F278	basic/dds3ModelRangeBasic	c	smt3:map:1 of 4	basic/dds3ModelRangeBasic
 0032F2B8	00336E08	code_0032F2B8	c	none	
 00336E58	00336E58	code_r1_00336E58	c	dds:1 of 1	

@@ -605,9 +605,9 @@ INCLUDE_ASM(const s32, "code_00300578", cmpResetMotion);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpFreeSpriteMem);
 
-INCLUDE_ASM(const s32, "code_00300578", fldJmsQuestMapLoad);
+INCLUDE_ASM(const s32, "code_00300578", cmpLoadSpriteMem);
 
-s32 fldCreateLinkSub(CMP_SPR a_no) {
+s32 cmpFreeSpriteHnd(CMP_SPR a_no) {
     struct sprHandle_t **set = &evtWork6[a_no];
 
     if (a_no >= 4) {
@@ -626,7 +626,7 @@ s32 pipeCreateLink(CMP_SPR a_no) {
     if (a_no >= 4) {
         return 0;
     }
-    fldCreateLinkSub(a_no);
+    cmpFreeSpriteHnd(a_no);
     evtWork6[a_no] = effCreateResourceSlotSetFromAllocation(cmpWork3[a_no], 0);
     evtCreateLinkSub(a_no);
     return 1;
@@ -1179,8 +1179,8 @@ INCLUDE_ASM(const s32, "code_00300578", fldCommand_FLD_WARP_RUN_START);
 
 INCLUDE_RODATA(const s32, "code_00300578", cmpStrCampScriptCmpUseScrBf);
 
-s32 fldCallGetProcessData3(dds3ProcessID_t *id) {
-    cmpFadeProcessData_t *work = dds3GetProcessData(id);
+s32 Process_cmpMap(dds3ProcessID_t *id) {
+    tagCMP_MAP_WORK *work = dds3GetProcessData(id);
 
     switch (work->step) {
     case 0:
@@ -1264,7 +1264,7 @@ void cmpCallSetOt2(s32 x, s32 y, s32 frame) {
     }
 }
 
-void cmpDrawBack(void) {
+void cmpDrawBack(tagCMP_MAP_WORK *wk) {
     if (cmpGetSpriteHnd(CMP_SPR_MAP) == NULL) {
         return;
     }

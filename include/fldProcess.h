@@ -93,7 +93,7 @@ s32 sbtlProcSequenceSub(s32 arg);
 s32 pbProcSequenceSub(void);
 s32 scrSearchScriptName(char *name);
 void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 arg);
-void mapProcSequenceSub(s32 map, s32 floor);
+void mapAM_MaskSetCurrent(s32 map, s32 floor);
 s32 mapProcSequenceSub5(f32 x, f32 z);
 void mapProcSequenceSub9(s32 arg);
 void mapNakamaSkilIs_SetBit(s32 id);

@@ -101,7 +101,7 @@
 0x003E5460 sdfSndInitCmdIF void sdfSndInitCmdIF(void)
 0x003F4B50 at3DecInit s32 at3DecInit(void *param)
 0x003F4C18 at3DecDecode s32 at3DecDecode(void *param)
-0x003F7948 cfgGetConfigGAMEPAD float cfgGetConfigGAMEPAD(void)
+0x003F7948 acosf float acosf(void)
 0x003F7F60 __ieee754_acosf void __ieee754_acosf(float a1)
 0x00400948 abort void abort(void)
 0x00402838 sprintfRaiseRSub s32 sprintfRaiseRSub(void)

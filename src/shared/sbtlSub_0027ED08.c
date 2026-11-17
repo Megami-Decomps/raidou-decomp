@@ -6,7 +6,10 @@
 #include "sdfDevCons.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
+#include "sbtlWork.h"
 #include "sbtlSub_0027ED08.h"
+#include "sbtlSub.h"
+#include "sdfQuat.h"
 
 /* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
 
@@ -92,7 +95,6 @@ typedef struct SBTLCONTROL_OBJECT {
     void (*update)(void); /* 0x4C */
 } SBTLCONTROL_OBJECT;
 
-extern f32 aViewEye[];
 extern f32 dds3BillboardGetDirectionRotateData2[];
 
 /* Select the smallest X for reference flag 0x200, otherwise the largest.
@@ -335,7 +337,7 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(SBTLPROJECTEDSCR
     BtlVec4 position;
 
     SDF_VU0_COPYVECTOR_A_TO_C();
-    SDF_VU0_LOADVECTOR_B(aViewEye);
+    SDF_VU0_LOADVECTOR_B(&aViewEye);
     SDF_VU0_SUBVECTOR();
     SDF_VU0_GETLENGTH(distance);
     if (!(distance > 16.0)) {
@@ -447,12 +449,38 @@ INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawBSTName);
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetSkillMenu);
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetDevilData_sbtlSub);
+SBTL_DEVIL_DATA *sbtlGetDevilData_sbtlSub(s32 id) {
+    return &gohData7[id];
+}
 #else
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlIfDrawActionSub);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCheckVerticalArea);
+s32 sbtlCheckVerticalArea(const sdfVector4_t *pos0, const sdfVector4_t *rot, const sdfVector4_t *pos1, f32 area) {
+    sdfVector4_t vertexA;
+    sdfVector4_t vertexB;
+    sdfVector4_t dir;
+
+    memset(&dir, 0, sizeof(dir));
+    dir.z = -1.0f;
+    SDF_VU0_LOADVECTOR(pos0);
+    SDF_VU0_STOREVECTOR(&vertexA);
+    SDF_VU0_LOADVECTOR(rot);
+    ToMatrix();
+    SDF_VU0_LOADVECTOR(&dir);
+    SDF_VU0_APPLYMATRIX();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SCALEVECTOR(1.0f);
+    SDF_VU0_LOADVECTOR_B(pos0);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR_NOMEM(&vertexB);
+    vertexA.y = 0.0f;
+    vertexB.y = 0.0f;
+    if (sbtlGetVerticalLength(&vertexA.x, &vertexB.x, &pos1->x) <= area && sbtlCheckInner(&vertexA, &vertexB, pos1, 0.0f)) {
+        return 1;
+    }
+    return 0;
+}
 
 /* vu0 routine: vf10.xyz = normalize(e x (e x f)),
  * e = vertexB - vertexA, f = vertexC - vertexA.

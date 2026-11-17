@@ -152,7 +152,7 @@ s32 sbtlRestartMotion(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_WORK *sbtlCreateUnit(s32 major, s32 minor, s16 mode);
 SBTLUNIT_MODEL *sbtlCreate(void);
 f32 sbtlGetMotionMove(struct SBTLUNIT_WORK *wk, f32 frame);
-void sbtlCallBtlGetMotionVisualData3(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallBtlGetMotionVisualData3(struct SBTLUNIT_WORK *wk);
 void sbtlCallPreCalcStrWidth(struct SBTLUNIT_WORK *wk);
 void sbtlBtlSetMotionSBtlUnitSub(struct SBTLUNIT_WORK *wk);
 s32 sbtlSetLight_Map(struct SBTLUNIT_WORK *wk, s32 frame, s32 flg);
@@ -224,8 +224,7 @@ struct SBTLUNIT_WORK {
     u16 mode;
     u8 pad1A6[0x2];
     sdatUnitWork_t unit;
-    s32 haveskill[2];
-    s32 param[9];
+    s32 haveskill[11]; /* [2..10] come from the devil table's param (HD haveskill) */
     u8 pad2E4[0x8];
     struct SBTL_AISYO_TBL aisyoBase;
     u8 pad32C[0x330 - 0x32C];

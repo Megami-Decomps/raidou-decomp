@@ -98,9 +98,29 @@ void effReleaseSharedReference(effRefObj_t *obj);
 /* Retain returns the same object after incrementing its object and shared-texture counts. */
 effRefObj_t *effRetainSharedReference(effRefObj_t *obj);
 
+/* HD effModel_Params_t: the part's 8 parameter bytes, copied whole;
+ * flg nonzero leaves the model's motion unlooped. */
+typedef struct effModel_Params_t {
+    f32 scale;
+    u8 flg;
+    u8 pad05[3];
+} effModel_Params_t;
+
+/* Effect model part (HD emdlHandle_t, 0x14 chip block); the light packet is a 0xE0 chip block. */
+typedef struct emdlHandle_t {
+    effModel_Params_t param;
+    struct mdlObj_t *handle;
+    struct sdf3DLightParallelPacket_t *pLightPacket;
+    u32 index_motion;
+} emdlHandle_t;
+
+SIZE_CHECK(emdlHandleSizeCheck, emdlHandle_t, 0x14);
+
 struct effPartsHandle_t;
 struct opcHandle_t;
 
+struct fileJobPayload_t;
+emdlHandle_t *Create_effModel(struct fileJobPayload_t *job);
 struct opcHandle_t *Copy_effModel(struct effPartsHandle_t *handle);
 void Draw_effHelper(struct effPartsHandle_t *handle);
 void ResourceCopy_effModel(struct effPartsHandle_t *dstHandle, struct effPartsHandle_t *srcHandle);

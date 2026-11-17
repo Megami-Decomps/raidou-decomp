@@ -1222,7 +1222,7 @@ void sbtlGetRotate(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos) {
     f32 spd;
     f32 step;
 
-    mv = sbtlGetMotionVisualData(wk->major, wk->minor);
+    mv = sbtlGetVisualData(wk->major, wk->minor);
     FromEuler(0.0f, wk->angleY * 0.017453293f, 0.0f);
     SDF_VU0_STOREVECTOR(&wk->rot);
     deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, pos, 1.0f);
@@ -1362,8 +1362,8 @@ s32 sbtlRestartMotion(struct SBTLUNIT_WORK *wk)
     if (wk->vstatus & 0x10) {
         return 0;
     }
-    visual = sbtlGetMotionVisualData(wk->major, wk->minor);
-    sub = sbtlSetUnitSub(wk->major, wk->minor, wk->next_motionno);
+    visual = sbtlGetVisualData(wk->major, wk->minor);
+    sub = sbtlGetMotionVisualData(wk->major, wk->minor, wk->next_motionno);
     if (sub->flags & 1) {
         wk->m_rate = sub->field10;
     } else {
@@ -1432,10 +1432,10 @@ s32 sbtlSetMotion_sbtlUnit(struct SBTLUNIT_WORK *wk, s32 motion, s32 bframe, s32
     }
     wk->next_motionID = id;
     wk->next_motionno = sbtlBtlCheckMotionNoSub(wk, wk->field414, id);
-    next = sbtlSetUnitSub(wk->major, wk->minor, wk->next_motionno);
-    now = sbtlSetUnitSub(wk->major, wk->minor, wk->motionno);
+    next = sbtlGetMotionVisualData(wk->major, wk->minor, wk->next_motionno);
+    now = sbtlGetMotionVisualData(wk->major, wk->minor, wk->motionno);
     if (!flg) {
-        mv = sbtlGetMotionVisualData(wk->major, wk->minor);
+        mv = sbtlGetVisualData(wk->major, wk->minor);
         if (next->flags & 1) {
             wk->m_rate = next->field10;
         } else {
@@ -1912,8 +1912,8 @@ s32 sbtlCallBtlGetMotionVisualData2(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no
     if ((wk->flg & 0x40) && wk->changeflg != 0) {
         return 0;
     }
-    sbtlGetMotionVisualData(wk->major, wk->minor);
-    sub = sbtlSetUnitSub(wk->major, wk->minor, wk->next_motionno);
+    sbtlGetVisualData(wk->major, wk->minor);
+    sub = sbtlGetMotionVisualData(wk->major, wk->minor, wk->next_motionno);
     if (sub->field18 == 1) {
         return 0;
     }
@@ -2516,7 +2516,7 @@ s32 sbtlCallBtlCheckEnshutuSummonUnit2(struct SBTLUNIT_WORK *wk) {
     } else {
         rate = sbtlCheckEnshutuSummonUnit(wk) ? wk->m_rate : 0.0f;
     }
-    sub = sbtlSetUnitSub(wk->major, wk->minor, wk->motionno);
+    sub = sbtlGetMotionVisualData(wk->major, wk->minor, wk->motionno);
     switch (wk->field3DE) {
         case 0:
             sbtlCallPlayMotionSENow(wk);
@@ -2602,8 +2602,8 @@ s32 sbtlCallBtlCreateUnit(s8 flg) {
         sdatUnitWork_t *pu;
         wk = sbtlCreateUnit(0, minorTbl[wk_sbtl->battleMode], 0);
         wk->field1A0 = sbtlEntryUnitList(wk_sbtl->unitList, wk);
-        visual = sbtlGetMotionVisualData(wk->major, wk->minor);
-        sub = sbtlSetUnitSub(wk->major, wk->minor, 0);
+        visual = sbtlGetVisualData(wk->major, wk->minor);
+        sub = sbtlGetMotionVisualData(wk->major, wk->minor, 0);
         wk->field414 = 0x81;
         wk->mv_spd.z = 0.0f;
         wk->field424 = 0.0f;
@@ -3725,7 +3725,7 @@ s8 sbtlNormalProc_Huuma(struct SBTLUNIT_WORK *wk)
     struct SBTLUNIT_WORK *enemy;
 
     result = 0;
-    sbtlGetMotionVisualData(wk->major, wk->minor);
+    sbtlGetVisualData(wk->major, wk->minor);
     length = GetAnlogKey(wk, &key);
     input = ChkHuuma_PlayerInputOk(wk);
     if ((sbtlNormalProcNakamaSub(wk) || (wk->status == 15 && wk_sbtl->field484 == 4)) && length >= 48.0f) {

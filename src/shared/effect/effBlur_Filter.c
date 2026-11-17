@@ -86,7 +86,10 @@ effBlurTemplate_t *dds3EffectPartialMultiBlurCreate(const dds3Effect_PartialMult
     return dst;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", effStopSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effBlur_Filter.c:322, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+void effStopSub(effBlurTemplate_t *hPartialMultiBlur) {
+    sdfChipFreeDirect(hPartialMultiBlur);
+}
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", effCallNullDrawProc2);
 

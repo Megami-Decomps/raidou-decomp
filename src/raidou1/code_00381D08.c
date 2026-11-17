@@ -1,7 +1,7 @@
 #include "common.h"
 #include "code_00381D08.h"
 
-f32 cfgGetConfigGAMEPAD(f32 x) {
+f32 acosf(f32 x) {
     return __ieee754_acosf(x);
 }
 

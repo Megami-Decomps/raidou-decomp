@@ -63,7 +63,7 @@ INCLUDE_ASM(const s32, "code_0028EB80", sbtlLoadEffectData_Nakama);
 #ifdef NON_MATCHING
 s32 sbtlCallBtlGetSkilltbl10(struct SBTLUNIT_WORK *wk)
 {
-    s32 *skill = wk->param;
+    s32 *skill = &wk->haveskill[2];
     s32 i;
     s32 fail = 0;
     s32 no;

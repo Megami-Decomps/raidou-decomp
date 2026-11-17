@@ -45,6 +45,8 @@ extern s32 sbtlData103;
 struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode);
 struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub(s32 devilId, s32 point, s32 arg);
 struct SBTLUNIT_WORK *sbtlSetEncountData(s32 devil, s32 posid, s32 groupID);
+struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub2(s32 devilId, s32 point, s32 arg);
+s32 sbtlCallBtlClearGeneratorWork(s32 stageNo);
 s32 sbtlCheckGeneratorGroupID(s32 group);
 s32 sbtlGetRndEncJoken(s32 id);
 s32 sbtlGetRndEncMax(s32 id);

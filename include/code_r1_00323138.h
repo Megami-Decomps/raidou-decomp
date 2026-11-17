@@ -6,6 +6,7 @@
 struct itfSprList_t;
 extern struct itfSprList_t cmpDrawBackPatternData[];
 
-void cmpDrawBackPattern(void);
+struct tagCMP_MAP_WORK;
+void cmpDrawBackPattern(struct tagCMP_MAP_WORK *wk);
 
 #endif

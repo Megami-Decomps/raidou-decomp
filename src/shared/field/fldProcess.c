@@ -589,7 +589,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapTakaraTask();
         mapWallObjTask(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
         fldGlobalBase.word78 = mapCallSetPlayerTargetData6(fldGlobalBase.focusX, fldGlobalBase.focusZ);
-        mapProcSequenceSub(fldGlobalBase.amSBlock, fldGlobalBase.nameU);
+        mapAM_MaskSetCurrent(fldGlobalBase.amSBlock, fldGlobalBase.nameU);
         mapAM_MaskOpen_ID(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.word78);
         goto map_tail;
     case 0xF:
@@ -681,7 +681,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapTakaraTask();
         mapWallObjTask(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
         fldGlobalBase.word78 = mapCallSetPlayerTargetData6(fldGlobalBase.focusX, fldGlobalBase.focusZ);
-        mapProcSequenceSub(fldGlobalBase.amSBlock, fldGlobalBase.nameU);
+        mapAM_MaskSetCurrent(fldGlobalBase.amSBlock, fldGlobalBase.nameU);
         mapAM_MaskOpen_ID(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.word78);
     map_tail:
         if (fldGlobalBase.word344) {

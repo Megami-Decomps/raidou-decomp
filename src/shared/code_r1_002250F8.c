@@ -347,7 +347,26 @@ void mdlMarkAndProcessObjectNodes(void) {
     } while (node != NULL);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", Create_effModel);
+emdlHandle_t *Create_effModel(fileJobPayload_t *job) {
+    emdlHandle_t *handle = sdfChipAllocZeroDirect(sizeof(emdlHandle_t));
+    const u8 *data;
+
+    handle->pLightPacket = sdfChipAllocZeroDirect(0xE0);
+    if (job != NULL) {
+        handle->param = *(effModel_Params_t *)fileResolvePrimaryBuffer(job);
+        data = fileResolveSecondaryBuffer(job);
+        if (data != NULL) {
+            handle->handle = effHandleCreate(data, job->secondary.size);
+            SDF_VU0_SETSCALE1VECTOR();
+            VU0_SCALE_VF_MFC1(vf10, handle->param.scale);
+            mdlSetScale(handle->handle);
+            if (handle->handle->first != NULL && !handle->param.flg) {
+                mdlLoopMotion(handle->handle, 0, 0);
+            }
+        }
+    }
+    return handle;
+}
 
 INCLUDE_ASM(const s32, "code_r1_002250F8", Delete_effModel);
 
@@ -359,13 +378,29 @@ INCLUDE_ASM(const s32, "code_r1_002250F8", effCallMotionSeek2);
 
 INCLUDE_ASM(const s32, "code_r1_002250F8", effCallSRAnimation3);
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", effLeaf351);
+void PositionSet_effModel(emdlHandle_t *handle, sdfVector4_t *pos) {
+    SDF_VU0_LOADVECTOR(pos);
+    mdlSetPosition(handle->handle);
+}
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", effLeaf352);
+void RotateSet_effModel(emdlHandle_t *handle, sdfVector4_t *rot) {
+    SDF_VU0_LOADVECTOR(rot);
+    mdlSetRotate(handle->handle);
+}
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", effLeaf353);
+void ColorSet_effModel(emdlHandle_t *handle, u32 color) {
+    mdlSetColor(handle->handle, color);
+}
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", effCallSetScale);
+void ScaleSet_effModel(emdlHandle_t *handle, f32 scale) {
+    f32 v[4];
+    f32 t;
+
+    t = handle->param.scale * scale;
+    v[0] = v[1] = v[2] = t;
+    SDF_VU0_LOADVECTOR(v);
+    mdlSetScale(handle->handle);
+}
 
 /* Create an empty owner, or load its model and per-record queues from a file job. */
 effResourceOwner_t *Create_effHelper(fileJobPayload_t *source) {

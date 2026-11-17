@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-void dds3PadIsTypeCD(void);
+void dds3PadActAllStop(void);
 
 extern s8 dds3PadButtonState[64];
 extern u8 dds3PadStickState[8];

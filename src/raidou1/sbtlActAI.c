@@ -1224,7 +1224,7 @@ s32 sbtlCallBtlSearchEffectSABActer(struct SBTLUNIT_WORK *wk) {
     if (sbtlCallBtlGetMotionVisualData2(wk, wk->next_motionID)) {
         return 1;
     }
-    if (sbtlSetUnitSub(wk->major, wk->minor, wk->motionno)->field18 == 1 &&
+    if (sbtlGetMotionVisualData(wk->major, wk->minor, wk->motionno)->field18 == 1 &&
         (wk->skillid != SKLID_NONE || !(wk->field414 & 2))) {
         if (sbtlSearchEffect_SAB_Acter(wk_sbtl->effList, wk, wk->skillid, 1)) {
             return 0;

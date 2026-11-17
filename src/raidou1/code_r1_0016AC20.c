@@ -9,8 +9,8 @@ typedef struct fldBitCheckEntry_t {
 } fldBitCheckEntry_t;
 
 extern fldBitCheckEntry_t fldCallBitCheckData[44];
-extern s32 mapCallSetOt2Data5;
-extern s32 mapCallSetOt2Data6;
+extern s32 am_map;
+extern s32 am_floor;
 
 /* NON_MATCHING: 27 of 92 words match. Register allocation differs, retail keeps extra address copies. */
 #ifdef NON_MATCHING
@@ -25,14 +25,14 @@ s32 fldCallBitCheck(u32 n) {
     }
     for (i = 0; i < 44; i++) {
         base = &fldCallBitCheckData[i];
-        if (base->scene != mapCallSetOt2Data5 || base->id != mapCallSetOt2Data6) {
+        if (base->scene != am_map || base->id != am_floor) {
             continue;
         }
         if (i + n >= 44) {
             return -1;
         }
         target = &fldCallBitCheckData[i + n];
-        if (target->scene != mapCallSetOt2Data5) {
+        if (target->scene != am_map) {
             continue;
         }
         if (base->bit < 0) {

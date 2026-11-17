@@ -61,15 +61,15 @@ extern mapOt2Sprite_t *mapData36[];
 extern mapOt2Marker_t mapCallSetOt2Data[128];
 extern s16 mapCallSetOt2Data3[];
 extern mapOt2Uv_t mapCallSetOt2Data4[];
-extern s32 mapCallSetOt2Data5;
-extern s32 mapCallSetOt2Data6;
+extern s32 am_map;
+extern s32 am_floor;
 extern f32 mapCallSetOt2Data7;
 extern f32 mapCallSetOt2Data8;
 extern f32 mapCallSetOt2Data9;
 extern s32 mapCallSetOt2Data10;
 extern s32 mapCallSetOt2Data11;
-extern s32 fldData32;
-extern s32 fldData33;
+extern s32 am_top_x;
+extern s32 am_top_z;
 extern f32 fldData34;
 extern f32 fldData35;
 extern s32 fldData36;
@@ -77,7 +77,7 @@ extern sdfTexHandle_t *effQueuedResourceNameRecord4;
 
 extern s32 fldLeaf24(void);
 extern void eglLinkSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 vh, u32 c0, u32 c1, u32 c2, u32 c3, void *th);
-extern void mapProcSequenceSub(s32 area);
+extern void mapAM_MaskSetCurrent(s32 area);
 extern void mapFunc2(s32 num, s32 x, s32 y);
 extern void fldProcSequenceSub4(f32 x, f32 z, f32 *outX, f32 *outY);
 extern void mapCallCutGetCam(s32 x0, s32 y0, s32 x1, s32 y1);
@@ -175,7 +175,7 @@ void mapCallSetOt2(void) {
     f32 outY;
 
     cols = 0;
-    if (mapCallSetOt2Data2[mapCallSetOt2Data6] == NULL) {
+    if (mapCallSetOt2Data2[am_floor] == NULL) {
         return;
     }
     if (fldLeaf24() == 0) {
@@ -185,13 +185,13 @@ void mapCallSetOt2(void) {
     eglSetOt(0x66);
     eglLinkAlpha(0);
     eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 1);
-    sprites = mapData36[mapCallSetOt2Data6];
-    tiles = mapData35[mapCallSetOt2Data6];
-    block = mapCallSetOt2Data2[mapCallSetOt2Data6];
+    sprites = mapData36[am_floor];
+    tiles = mapData35[am_floor];
+    block = mapCallSetOt2Data2[am_floor];
     h = block->h;
     w = block->w;
-    mapProcSequenceSub(mapCallSetOt2Data5);
-    for (i = fldData32; i < w; i++) {
+    mapAM_MaskSetCurrent(am_map);
+    for (i = am_top_x; i < w; i++) {
         if (i >= 0) {
             if (cols >= 64) {
                 break;
@@ -199,7 +199,7 @@ void mapCallSetOt2(void) {
             py = 0;
             tileNum = 0;
             cols++;
-            for (j = fldData33; j < h; j++) {
+            for (j = am_top_z; j < h; j++) {
                 if (j < 0) {
                     py += 8;
                     continue;
@@ -212,7 +212,7 @@ void mapCallSetOt2(void) {
                 id = tiles[(i + w * j) * 2];
                 spr = tiles[(i + w * j) * 2 + 1] & 0x1F;
                 flip = tiles[(i + w * j) * 2 + 1] & 0xC0;
-                if (mapAM_MaskChk_ID(mapCallSetOt2Data5, mapCallSetOt2Data6, id) == 0) {
+                if (mapAM_MaskChk_ID(am_map, am_floor, id) == 0) {
                     color = 0x80808080;
                     if (mapCallSetOt2Data11 != 0) {
                         spr = 0;
@@ -238,7 +238,7 @@ void mapCallSetOt2(void) {
     }
     for (n = 0; n < 128; n++) {
         mk = &mapCallSetOt2Data[n];
-        if (mk->area != mapCallSetOt2Data5 || mk->floor != mapCallSetOt2Data6) {
+        if (mk->area != am_map || mk->floor != am_floor) {
             continue;
         }
         if (evtBitCheck(mk->evBit) != 0) {
@@ -262,7 +262,7 @@ void mapCallSetOt2(void) {
         }
         idx = mk->y * w + mk->x;
         tile = tiles[idx * 2];
-        if (mapAM_MaskChk_ID(mapCallSetOt2Data5, mapCallSetOt2Data6, tile) == 0) {
+        if (mapAM_MaskChk_ID(am_map, am_floor, tile) == 0) {
             tile2 = tile;
             if (mk->dir == 4) {
                 tile2 = tiles[idx * 2 - 2];
@@ -273,12 +273,12 @@ void mapCallSetOt2(void) {
             } else if (mk->dir == 12) {
                 tile2 = tiles[idx * 2 + 2];
             }
-            if (mapAM_MaskChk_ID(mapCallSetOt2Data5, mapCallSetOt2Data6, tile2) == 0) {
+            if (mapAM_MaskChk_ID(am_map, am_floor, tile2) == 0) {
                 continue;
             }
         }
-        x = (mk->x - fldData32) * 8;
-        y = (mk->y - fldData33) * 8;
+        x = (mk->x - am_top_x) * 8;
+        y = (mk->y - am_top_z) * 8;
         uv = &mapCallSetOt2Data4[uvType];
         if (mk->dir == 4) {
             if (mk->num == 0) {
@@ -310,18 +310,18 @@ void mapCallSetOt2(void) {
             }
         }
     }
-    for (k = 0; k < mapCallSetOt2Data2[mapCallSetOt2Data6]->spriteNum; k++) {
+    for (k = 0; k < mapCallSetOt2Data2[am_floor]->spriteNum; k++) {
         mapOt2Sprite_t *sp = &sprites[k];
 
         color = 0x80C0C0C0;
         spr = sp->uvIdx & 0x1F;
-        x = (sp->x - fldData32) * 8;
-        y = (sp->y - fldData33) * 8;
+        x = (sp->x - am_top_x) * 8;
+        y = (sp->y - am_top_z) * 8;
         uv = &mapCallSetOt2Data4[spr];
         flip = sp->uvIdx & 0xC0;
         sw = uv->w;
         sh = uv->h;
-        if (mapAM_MaskChk_ID(mapCallSetOt2Data5, mapCallSetOt2Data6, sp->tile) == 0) {
+        if (mapAM_MaskChk_ID(am_map, am_floor, sp->tile) == 0) {
             color = 0x80808080;
             if (mapCallSetOt2Data11 != 0) {
                 continue;
@@ -359,26 +359,26 @@ void mapCallSetOt2(void) {
         }
         eglLinkSprite(x, y, sw, sh, uv->u, uv->v, uv->w, uv->h, color, color, color, color, effQueuedResourceNameRecord4);
     }
-    if (mapCallSetOt2Data6 == fldData36) {
+    if (am_floor == fldData36) {
         fldProcSequenceSub4(mapObjTaskData.x, mapObjTaskData.z, &outX, &outY);
-        ax = ((s32)outX - fldData32) * 8;
-        ay = ((s32)outY - fldData33) * 8;
+        ax = ((s32)outX - am_top_x) * 8;
+        ay = ((s32)outY - am_top_z) * 8;
         fldProcSequenceSub4(mapCutSetCamData.x, mapCutSetCamData.z, &outX, &outY);
-        bx = ((s32)outX - fldData32) * 8;
-        by = ((s32)outY - fldData33) * 8;
+        bx = ((s32)outX - am_top_x) * 8;
+        by = ((s32)outY - am_top_z) * 8;
         mapCallCutGetCam(ax, ay, bx, by);
         if (mapCallSetOt2Data9 != 0.0f) {
-            mapCallSin12(((s32)fldData34 - fldData32) * 8, ((s32)fldData35 - fldData33) * 8);
-            if (mapCallSetOt2Data6 == mapCallSetOt2Data10) {
-                mapCallSin11(((s32)mapCallSetOt2Data7 - fldData32) * 8, ((s32)mapCallSetOt2Data8 - fldData33) * 8);
+            mapCallSin12(((s32)fldData34 - am_top_x) * 8, ((s32)fldData35 - am_top_z) * 8);
+            if (am_floor == mapCallSetOt2Data10) {
+                mapCallSin11(((s32)mapCallSetOt2Data7 - am_top_x) * 8, ((s32)mapCallSetOt2Data8 - am_top_z) * 8);
             }
         } else {
-            mapCallSin11(((s32)mapCallSetOt2Data7 - fldData32) * 8, ((s32)mapCallSetOt2Data8 - fldData33) * 8);
+            mapCallSin11(((s32)mapCallSetOt2Data7 - am_top_x) * 8, ((s32)mapCallSetOt2Data8 - am_top_z) * 8);
         }
-    } else if (mapCallSetOt2Data9 != 0.0f && mapCallSetOt2Data6 == mapCallSetOt2Data10) {
-        mapCallSin11(((s32)mapCallSetOt2Data7 - fldData32) * 8, ((s32)mapCallSetOt2Data8 - fldData33) * 8);
+    } else if (mapCallSetOt2Data9 != 0.0f && am_floor == mapCallSetOt2Data10) {
+        mapCallSin11(((s32)mapCallSetOt2Data7 - am_top_x) * 8, ((s32)mapCallSetOt2Data8 - am_top_z) * 8);
     }
-    mapAmDrawBasyoName(mapCallSetOt2Data5, mapCallSetOt2Data6);
+    mapAmDrawBasyoName(am_map, am_floor);
 }
 #else
 INCLUDE_ASM(const s32, "code_r1_0016B498", mapCallSetOt2);

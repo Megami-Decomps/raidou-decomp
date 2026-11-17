@@ -333,7 +333,6 @@ sdfPacResetOutputToAllocationEntry = 0x00376210;
 gcc2_compiled__6 = 0x0037A7E0;
 gcc2_compiled__8 = 0x0037CEA8;
 sceSdRemoteInit = 0x0037D148;
-acosf = 0x00381D08;
 asinf = 0x00381D20;
 atan2f = 0x00381D38;
 libc_2D1590 = 0x00385718;

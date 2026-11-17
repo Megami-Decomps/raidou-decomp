@@ -34,23 +34,27 @@ menu scenarios); an entry says which paths they covered.
 | 4 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 4 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 4 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
+| 4 | code_002929C8 | raidou1 | [code_002929C8.md](code_002929C8.md) |
 | 4 | mc/slMain | raidou1 | [mc/slMain.md](mc/slMain.md) |
 | 4 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
+| 3 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 3 | code_0014B660 | raidou1 | [code_0014B660.md](code_0014B660.md) |
 | 3 | code_002A20E0 | raidou1 | [code_002A20E0.md](code_002A20E0.md) |
 | 3 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 3 | field/fldProcess | raidou1, raidou2 | [field/fldProcess.md](field/fldProcess.md) |
+| 3 | sbtlSub | raidou1 | [sbtlSub.md](sbtlSub.md) |
 | 3 | sdf/sdfMovie | raidou1, raidou2 | [sdf/sdfMovie.md](sdf/sdfMovie.md) |
 | 3 | sdk/libcdvd/cdvd000 | raidou1, raidou2 | [sdk/libcdvd/cdvd000.md](sdk/libcdvd/cdvd000.md) |
 | 2 | basic/dds3Basic | raidou1, raidou2 | [basic/dds3Basic.md](basic/dds3Basic.md) |
 | 2 | basic/dds3SceneBasic | raidou1, raidou2 | [basic/dds3SceneBasic.md](basic/dds3SceneBasic.md) |
 | 2 | code_00140960 | raidou1 | [code_00140960.md](code_00140960.md) |
-| 2 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 2 | code_00157CD0 | raidou1 | [code_00157CD0.md](code_00157CD0.md) |
+| 2 | code_0016AD90 | raidou1 | [code_0016AD90.md](code_0016AD90.md) |
 | 2 | code_00174790 | raidou1 | [code_00174790.md](code_00174790.md) |
 | 2 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
 | 2 | code_0018CE10 | raidou1 | [code_0018CE10.md](code_0018CE10.md) |
+| 2 | code_00291C78 | raidou1 | [code_00291C78.md](code_00291C78.md) |
 | 2 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
 | 2 | code_002999C0 | raidou1 | [code_002999C0.md](code_002999C0.md) |
 | 2 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
@@ -78,6 +82,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_00179808 | raidou1 | [code_00179808.md](code_00179808.md) |
 | 1 | code_001AD4E8 | raidou1 | [code_001AD4E8.md](code_001AD4E8.md) |
 | 1 | code_0024DF70 | raidou1 | [code_0024DF70.md](code_0024DF70.md) |
+| 1 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
 | 1 | code_002F97C0 | raidou1 | [code_002F97C0.md](code_002F97C0.md) |
 | 1 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 1 | code_r1_00104370 | raidou1, raidou2 | [code_r1_00104370.md](code_r1_00104370.md) |
@@ -131,6 +136,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
 | 1 | newbattle/nbTarSelProcess | raidou1, raidou2 | [newbattle/nbTarSelProcess.md](newbattle/nbTarSelProcess.md) |
 | 1 | newdata/datCalc | raidou1 | [newdata/datCalc.md](newdata/datCalc.md) |
+| 1 | sbtl | raidou1 | [sbtl.md](sbtl.md) |
 | 1 | sbtlEff_00289E50 | raidou1 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
 | 1 | sdf/sdfDefaultMain | raidou1, raidou2 | [sdf/sdfDefaultMain.md](sdf/sdfDefaultMain.md) |
 | 1 | sdf/sdfDraw | raidou1, raidou2 | [sdf/sdfDraw.md](sdf/sdfDraw.md) |
