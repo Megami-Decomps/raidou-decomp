@@ -238,7 +238,7 @@ typedef union libcDoubleBits_t {
 extern const char dtoaInfinityText[], dtoaNanText[];
 extern const char dtoaInfinityText[16];
 
-void qsort(void *array, u32 count, u32 size, qsortCompare_t compare)
+void qsort(void *array, size_t count, size_t size, qsortCompare_t compare)
 {
     char *base = array;
     char *pa;

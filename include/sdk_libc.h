@@ -41,7 +41,7 @@ void *memmove(void *a, const void *b, size_t c);
 
 f32 acosf(f32 x);
 
-void qsort(void *array, u32 count, u32 size, s32 (*compare)(const void *, const void *));
+void qsort(void *array, size_t count, size_t size, s32 (*compare)(const void *, const void *));
 
 long strtol(const char *s, char **end, s32 base);
 
@@ -56,5 +56,8 @@ long __sseek(void *cookie, s32 offset, s32 whence);
 s32 raise(s32 sig);
 
 void abort(void);
+
+/* newlib's, which differs from glibc's __assert(expr, file, line). */
+void __assert(const char *file, s32 line, const char *expr);
 
 #endif
