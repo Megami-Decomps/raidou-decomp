@@ -162,6 +162,46 @@ class DocsTests(unittest.TestCase):
         e = matching_docs.entry("f", "u", [("raidou1 0x8", "Raidou 1: 1 of 2 words differ, first at +0x4.")], "T.", "control")
         self.assertTrue(e.startswith("## f (u, raidou1 0x8)\n\nRaidou 1: 1 of 2"))
         self.assertIn("control-flow.md", e)
+        self.assertTrue(matching_docs.entry("f", "u", [("raidou2 0x8", "x")], "Fakematch: y.", "", True)
+                        .startswith("## f (u, raidou2 0x8)\n\nMatches.\n\nFakematch: y."))
+
+    def test_drop_entries_drops_only_the_entry_of_these_games_on_the_unit_page(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "docs/matching").mkdir(parents=True)
+            r1, r2 = root / "docs/matching/u1.md", root / "docs/matching/u2.md"
+            r1.write_text(self.PAGE)
+            r2.write_text("# Draft notes: u2\n\n## f (u2, raidou1 0x8, raidou2 0x8)\n\nA.\n")
+            # another unit's page keeps its entry for the same name (the Raidou 1 copy of an R2 row)
+            self.assertEqual(matching_docs.drop_entries(root, "u3", "f", ["raidou2"]), ([], []))
+            self.assertEqual(matching_docs.drop_entries(root, "u1", "f", ["raidou2"]), ([], []))
+            self.assertEqual(r1.read_text(), self.PAGE)
+            self.assertEqual(matching_docs.drop_entries(root, "u1", "f", ["raidou1"]),
+                             (["docs/matching/u1.md: f"], []))
+            self.assertEqual(r1.read_text(), "# Draft notes: u\n\n## g (u, raidou1 0x8)\n\nB.\n")
+            removed, kept = matching_docs.drop_entries(root, "u2", "f", ["raidou2"])
+            self.assertEqual((removed, len(kept)), ([], 1))
+            self.assertTrue(r2.exists())
+
+
+class DraftGamesTests(unittest.TestCase):
+    def run_in(self, tmp: str, text: str, shared: str) -> list[str]:
+        run = land_batch.Run.__new__(land_batch.Run)
+        run.tree = pathlib.Path(tmp)
+        (run.tree / "src/shared").mkdir(parents=True, exist_ok=True)
+        (run.tree / "src/shared/u.c").write_text(text)
+        row = batch_files.Row("f", "src/shared/u", shared=shared)
+        run.maps = {g: renames.name_map([], g) for g in ("raidou1", "raidou2")}
+        run.batch = batch_files.Batch(pathlib.Path("."), "R", {"f": row})
+        return run.draft_games(row, "void f(void) {}\n")
+
+    def test_a_raidou2_row_is_measured_where_raidou2_builds_it(self) -> None:
+        # both games carry their own copy with the same first line (DrawMsgMng_Process)
+        text = "#ifdef VERSION_RAIDOU1\nvoid f(void) {}\n#else\nvoid f(void) {}\n#endif\n"
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(self.run_in(tmp, text, "R2"), ["raidou2"])
+            self.assertEqual(self.run_in(tmp, text, "R1"), ["raidou1"])
+            self.assertEqual(self.run_in(tmp, "void f(void) {}\n", "R2"), ["raidou1", "raidou2"])
 
 
 class RenamedRowTests(unittest.TestCase):

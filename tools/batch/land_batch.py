@@ -507,23 +507,34 @@ class Run:
         path = self.tree / row.source
         text = path.read_text() if path.exists() else ""
         body = (unit_text.unwrap(final) or final).strip("\n").split("\n")[0]
-        at = text.find(body) if body else -1
-        if at >= 0:
-            built = unit_text.games(text)[text.count("\n", 0, at)]
-            if built:
-                return [g for g in ("raidou1", "raidou2") if g in built]
+        # the same first line can open the other game's body too (a shared unit with a per-game copy)
+        lines = text.split("\n")
+        games = unit_text.games(text)
+        found = [games[i] for i, l in enumerate(lines) if body.strip() and l.strip() == body.strip() and games[i]]
+        found = sorted(found, key=lambda built: row.version not in built)
+        if found:
+            return [g for g in ("raidou1", "raidou2") if g in found[0]]
         return ["raidou1", "raidou2"]
 
     def docs(self) -> None:
         finals = self.finals()
         drafted = {n for n in finals if n not in self.promoted and unit_text.unwrap(finals[n]) is not None}
-        for line in matching_docs.drop_entries(self.tree, {self.current(n) for n in finals}):
-            self.say(f"docs: dropped {line}")
         pages: dict[str, list[str]] = {}
-        for name in sorted(drafted, key=list(self.batch.rows).index):
+        for name in finals:
             row = self.batch.rows[name]
+            games = self.draft_games(row, finals[name])
+            fn = self.current(name, row.version)
+            removed, kept = matching_docs.drop_entries(self.tree, row.unit, fn, games)
+            for line in removed:
+                self.say(f"docs: dropped {line}")
+            for line in kept:
+                self.note(f"docs: {line}; not rewritten, merge the new entry by hand")
+        for name in sorted(finals, key=list(self.batch.rows).index):
+            row = self.batch.rows[name]
+            matched = name not in drafted
             if name not in self.batch.docs:
-                self.note(f"docs: {name} is NON_MATCHING and has no docs.json entry")
+                if not matched:
+                    self.note(f"docs: {name} is NON_MATCHING and has no docs.json entry")
                 continue
             unit, text, lever = (self.batch.docs[name] + [""] * 3)[:3]
             games = self.draft_games(row, finals[name])
@@ -533,8 +544,8 @@ class Run:
             if unit and unit != row.unit and unit != Path(row.unit).name:
                 self.note(f"docs: {name}: docs.json unit {unit} is not {row.unit}; filed under {row.unit}")
             unit = row.unit
-            pages.setdefault(unit, []).append(matching_docs.entry(fn, unit, measured, text, lever))
-            self.say(f"docs: {fn}: {' '.join(l for _, l in measured)}")
+            pages.setdefault(unit, []).append(matching_docs.entry(fn, unit, measured, text, lever, matched))
+            self.say(f"docs: {fn}: {'matches' if matched else ' '.join(l for _, l in measured)}")
         for unit, entries in pages.items():
             matching_docs.append(self.tree, unit, entries)
         # Every entry is checked against the tree, so drafts promoted outside final/ lose theirs too.

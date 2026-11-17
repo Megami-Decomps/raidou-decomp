@@ -42,9 +42,10 @@ def measure(tree: Path, source: str, game: str, fn: str) -> tuple[str, str]:
     return f"{game} 0x{native:X}", line + "."
 
 
-def entry(fn: str, unit: str, measured: list[tuple[str, str]], text: str, lever: str) -> str:
+def entry(fn: str, unit: str, measured: list[tuple[str, str]], text: str, lever: str, matched: bool = False) -> str:
+    """A draft's entry, or with matched a matched function's ("Matches." and the text, as for a Fakematch)."""
     sizes = ", ".join(s for s, _ in measured)
-    lines = "\n".join(l for _, l in measured)
+    lines = "Matches." if matched else "\n".join(l for _, l in measured)
     related = f"\n\nRelated: {lever_link(lever)}." if lever else ""
     return f"## {fn} ({unit}, {sizes})\n\n{lines}\n\n{text}{related}\n"
 
@@ -67,28 +68,31 @@ def drop(text: str, fn: str) -> str:
     return text
 
 
-def drop_entries(tree: Path, names: set[str]) -> list[str]:
-    """Remove the entries of these functions from every page; returns "page: fn" for each one removed."""
-    removed = []
-    for path in sorted((tree / "docs/matching").rglob("*.md")):
-        if path.name == "README.md":
-            continue
-        text = path.read_text()
-        for fn in sorted(names):
-            new = drop(text, fn)
-            if new != text:
-                removed.append(f"{path.relative_to(tree)}: {fn}")
-                text = new
-        if text != path.read_text():
-            if any(l.startswith("## ") for l in text.split("\n")):
-                path.write_text(text)
-            else:
-                path.unlink()
-    return removed
+ENTRY_HEAD = re.compile(r"^## (.+?) \(([^,]+), ([^)]+)\)$", re.M)
+
+
+def drop_entries(tree: Path, unit: str, fn: str, games: list[str]) -> tuple[list[str], list[str]]:
+    """Remove fn's entry from the unit's page when the entry covers only these games.
+    Returns (removed, kept): kept names an entry that also covers another game."""
+    path = tree / "docs/matching" / f"{unit}.md"
+    text = path.read_text() if path.exists() else ""
+    head = next((m for m in ENTRY_HEAD.finditer(text) if m.group(1) == fn), None)
+    if head is None:
+        return [], []
+    listed = set(re.findall(r"\b(raidou\d)\b", head.group(3)))
+    if not listed & set(games):
+        return [], []
+    if listed - set(games):
+        return [], [f"{path.relative_to(tree)}: {fn} entry also covers {', '.join(sorted(listed - set(games)))}"]
+    new = drop(text, fn)
+    if any(l.startswith("## ") for l in new.split("\n")):
+        path.write_text(new)
+    else:
+        path.unlink()
+    return [f"{path.relative_to(tree)}: {fn}"], []
 
 
 NOT_A_DRAFT = re.compile(r"^docs/matching/(.+)\.md: (\w+) is not a (\w+) draft", re.M)
-ENTRY_HEAD = re.compile(r"^## (.+?) \(([^,]+), ([^)]+)\)$", re.M)
 
 
 def stale_entries(tree: Path) -> dict[tuple[str, str], set[str]]:
