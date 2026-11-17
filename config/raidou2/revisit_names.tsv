@@ -6624,8 +6624,6 @@
 0x003F70B0	libat3decLeaf	func	tier=D	derived-unit	na	unit libat3dec; no named callee, caller or string
 0x003F70B8	libat3decMONO	func	tier=D	derived-string	na	unit libat3dec; string 'MONO'
 0x003F7170	libat3decMONO2	func	tier=D	derived-string	na	unit libat3dec; string 'MONO'
-0x003F71F8	libat3decCallKernelCos	func	tier=D	derived-callee	na	unit libat3dec; calls __kernel_cos
-0x003F7320	libat3decCallKernelSin	func	tier=D	derived-callee	na	unit libat3dec; calls __kernel_sin
 0x003F7960	cfgLeaf3	func	tier=D	derived-unit	na	unit code_00381D08, neighbour cfgGetConfigGAMEPAD; no named callee, caller or string
 0x003F7978	cfgPoseRotBillboardSub	func	tier=D	derived-caller	na	unit code_00381D08, neighbour cfgGetConfigGAMEPAD; called by PoseRotBillboard
 0x003F7990	cfgFindAheadListSub	func	tier=D	derived-caller	na	unit code_00381D08, neighbour cfgGetConfigGAMEPAD; called by FindAheadList
@@ -6741,7 +6739,6 @@
 0x00400858	sdfLeaf22	func	tier=D	derived-unit	na	unit code_004003D8, neighbour sdfPackFloat; no named callee, caller or string
 0x00402838	sprintfRaiseRSub	func	tier=D	derived-caller	na	unit code_003899C8, nearest named function sprintf; called by _raise_r
 0x00402968	sprintfLeaf	func	tier=D	derived-unit	na	unit code_00389A68, neighbour sprintf; no named callee, caller or string
-0x00402970	sscanfCallStrlen	func	tier=D	derived-callee	na	unit sdk/libc/sscanf; calls strlen
 0x004037F8	gcc2_compiled__0	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.11 0x002D6500, score 1.00, tools/xgame/fuzzy_apply.py
 0x00403840	strtolCallFflush	func	tier=D	derived-callee	na	unit code_0038A988, nearest named function strtol; calls fflush
 0x004038F8	strtolCallSinit	func	tier=D	derived-callee	na	unit code_0038A988, nearest named function strtol; calls __sinit

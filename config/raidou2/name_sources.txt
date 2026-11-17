@@ -12999,8 +12999,8 @@
 0x003F70B0	libat3decLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit libat3dec; no named callee, caller or string
 0x003F70B8	libat3decMONO	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit libat3dec; string 'MONO'
 0x003F7170	libat3decMONO2	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit libat3dec; string 'MONO'
-0x003F71F8	libat3decCallKernelCos	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit libat3dec; calls __kernel_cos
-0x003F7320	libat3decCallKernelSin	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit libat3dec; calls __kernel_sin
+0x003F71F8	cos	inferred	newlib s_cos.c: |x|<=pi/4 -> __kernel_cos, else __ieee754_rem_pio2 and quadrant switch
+0x003F7320	sin	inferred	newlib s_sin.c: |x|<=pi/4 -> __kernel_sin, else __ieee754_rem_pio2 and quadrant switch
 0x003F7458	atanf	inferred	SMT3HD name via SLUS_209.11 0x002D0F30, reloc-identical; map-agrees
 0x003F76E8	cosf	inferred	SMT3HD name via SLUS_209.11 0x002CF4F8, reloc-identical; map-agrees
 0x003F77C0	fabsf	inferred	SMT3HD name via SLUS_209.11 0x002D11C0, byte-identical; map-agrees
@@ -13200,7 +13200,7 @@
 0x00402850	_sprintf_r	inferred	SMT3HD name via SLUS_209.11 0x002D5608, reloc-identical; map-agrees
 0x004028D8	sprintf	inferred	SMT3HD name via SLUS_209.11 0x002D5690, reloc-identical; map-agrees
 0x00402968	sprintfLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00389A68, neighbour sprintf; no named callee, caller or string
-0x00402970	sscanfCallStrlen	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sdk/libc/sscanf; calls strlen
+0x00402970	sscanf	inferred	newlib sscanf.c (sdk_objects.tsv: libc.a sscanf.o, bytes match)
 0x00402A18	strcasecmp	inferred	SMT3HD name via SLUS_209.11 0x002D5720, reloc-identical; map-agrees
 0x00402AF0	strcat	inferred	SMT3HD name via SLUS_209.11 0x002D57F8, reloc-identical; map-agrees
 0x00402C1C	strchr	inferred	SMT3HD name via SLUS_209.11 0x002D5924, byte-identical; map-agrees

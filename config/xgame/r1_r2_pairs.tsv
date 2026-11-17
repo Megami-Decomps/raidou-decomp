@@ -9964,8 +9964,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00381470	0x003F70B0	libat3decLeaf	yes	yes	asm/raidou1/libat3dec.s	asm/raidou2/libat3dec.s	run-order-size
 0x00381478	0x003F70B8	libat3decMONO	no	yes	asm/raidou1/libat3dec.s	asm/raidou2/libat3dec.s	unique-reloc-hash
 0x00381530	0x003F7170	libat3decMONO2	no	yes	asm/raidou1/libat3dec.s	asm/raidou2/libat3dec.s	unique-reloc-hash
-0x003815B8	0x003F71F8	libat3decCallKernelCos	no	yes	asm/raidou1/libat3dec.s	asm/raidou2/libat3dec.s	unique-reloc-hash
-0x003816E0	0x003F7320	libat3decCallKernelSin	no	yes	asm/raidou1/libat3dec.s	asm/raidou2/libat3dec.s	unique-reloc-hash
+0x003815B8	0x003F71F8	cos	no	yes	asm/raidou1/libat3dec.s	asm/raidou2/libat3dec.s	unique-reloc-hash
+0x003816E0	0x003F7320	sin	no	yes	asm/raidou1/libat3dec.s	asm/raidou2/libat3dec.s	unique-reloc-hash
 0x00381818	0x003F7458	atanf	no	yes	asm/raidou1/sdk/libm/sf_atan.s	asm/raidou2/sdk/libm/sf_atan.s	unique-reloc-hash
 0x00381AA8	0x003F76E8	cosf	no	yes	src/shared/sdk/libm/sf_cos.c	src/shared/sdk/libm/sf_cos.c	unique-reloc-hash
 0x00381B80	0x003F77C0	fabsf	yes	yes	src/shared/sdk/libm/sf_fabs.c	src/shared/sdk/libm/sf_fabs.c	unique-reloc-hash
@@ -10072,7 +10072,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x003899E0	0x00402850	_sprintf_r	no	yes	src/shared/sdk/libc/sprintf.c	src/shared/sdk/libc/sprintf.c	unique-reloc-hash
 0x00389A68	0x004028D8	sprintf	no	yes	asm/raidou1/code_00389A68.s	asm/raidou2/code_004028D8.s	unique-reloc-hash
 0x00389AF8	0x00402968	sprintfLeaf	yes	yes	asm/raidou1/code_00389A68.s	asm/raidou2/code_004028D8.s	masked-hash-in-gap
-0x00389B00	0x00402970	sscanfCallStrlen	no	yes	src/raidou1/sdk/libc/sscanf.c	src/raidou2/sdk/libc/sscanf.c	unique-reloc-hash
+0x00389B00	0x00402970	sscanf	no	yes	src/raidou1/sdk/libc/sscanf.c	src/raidou2/sdk/libc/sscanf.c	unique-reloc-hash
 0x00389BA8	0x00402A18	strcasecmp	no	yes	src/shared/sdk/libc/strcasecmp.c	src/shared/sdk/libc/strcasecmp.c	unique-reloc-hash
 0x00389C80	0x00402AF0	strcat	no	yes	src/shared/sdk/libc/strcat.c	src/shared/sdk/libc/strcat.c	unique-reloc-hash
 0x00389DAC	0x00402C1C	strchr	yes	yes	src/shared/sdk/libc/strchr.c	src/shared/sdk/libc/strchr.c	unique-reloc-hash
