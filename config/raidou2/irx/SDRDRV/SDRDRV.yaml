@@ -1,0 +1,11 @@
+# SDRDRV.IRX, Sony's sound driver RPC server: the EE side of libsdr calls into
+# libsd through it. Byte-identical in both Raidou games and SMT3, with no C in
+# smt3-decomp; see docs/sdf-irx-modules.md.
+name: SDRDRV.IRX
+sha1: b41ce826c60a141ec129cda0feb67e0b08c7ca32
+disc: /SOUNDIRX/SDRDRV.IRX
+
+module:
+  name: sdr_driver
+  version: 0x0401
+  entry: start
