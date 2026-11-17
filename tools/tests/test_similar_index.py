@@ -7,11 +7,11 @@ import tempfile
 import unittest
 from unittest import mock
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import find_similar as fs  # noqa: E402
 import similar_index as si  # noqa: E402
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 LW = 0x8C820010      # lw $v0, 0x10($a0)
 LW32 = 0x8C820020    # lw $v0, 0x20($a0)
 JAL = 0x0C080000     # jal 0x200000

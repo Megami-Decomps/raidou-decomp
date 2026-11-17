@@ -6,7 +6,7 @@ import sys
 import unittest
 from decimal import Decimal
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import float_literal as fl  # noqa: E402
 
 

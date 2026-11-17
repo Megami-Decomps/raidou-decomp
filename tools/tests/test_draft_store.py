@@ -8,7 +8,7 @@ import sys
 import tempfile
 import unittest
 
-TOOLS = pathlib.Path(__file__).resolve().parent
+TOOLS = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 sys.path.insert(0, str(TOOLS / "batch"))
 import decls  # noqa: E402

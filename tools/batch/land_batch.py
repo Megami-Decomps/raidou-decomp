@@ -29,8 +29,8 @@ import unit_text  # noqa: E402
 
 STEPS = ("patch", "renames", "splice", "r1only", "configure", "promote", "docs", "regress", "gate", "retire")
 DRY_STEPS = ("patch", "renames", "splice", "r1only")
-GATE = (["tools/check_config.py"], ["tools/check_nonmatching.py"], ["tools/test_raidou_c.py"],
-        ["tools/test_docs_index.py"], ["tools/docs_index.py", "--check"], ["tools/revisit_names.py", "--check"])
+GATE = (["tools/check_config.py"], ["tools/check_nonmatching.py"], ["tools/tests/test_raidou_c.py"],
+        ["tools/tests/test_docs_index.py"], ["tools/docs_index.py", "--check"], ["tools/revisit_names.py", "--check"])
 NONMATCHING_NAME = re.compile(r"^nonmatching (\w+), 0x", re.M)
 CACHE = Path.home() / ".local/state/raidou-decomp-work/cache"
 

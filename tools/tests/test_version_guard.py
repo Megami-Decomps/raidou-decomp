@@ -4,7 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import version_guard as g  # noqa: E402
 import units  # noqa: E402
 
@@ -147,7 +147,7 @@ class WriteUnitTest(unittest.TestCase):
 
 class IncludeDirectivesTest(unittest.TestCase):
     def test_version_view(self):
-        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
         from configure import include_directives
         names = lambda v: {n for _, _, n in include_directives(GUARDED, context="u.c", version=v)}
         self.assertIn("b", names(R1))

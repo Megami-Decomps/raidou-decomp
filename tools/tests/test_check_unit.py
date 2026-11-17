@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import check_unit  # noqa: E402
 from retail_elf import RETAIL, ROOT  # noqa: E402
 

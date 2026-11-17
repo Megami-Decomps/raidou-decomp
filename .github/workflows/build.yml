@@ -54,21 +54,21 @@ jobs:
           python3 tools/check_config.py
           python3 tools/check_nonmatching.py
           python3 tools/check_irx_nonmatching.py
-          python3 tools/test_check_irx_nonmatching.py
-          python3 tools/test_progress_site.py
-          python3 tools/test_raidou_c.py
-          python3 tools/test_docs_index.py
-          python3 tools/test_find_body.py
-          python3 tools/test_similar_index.py
-          python3 tools/test_find_similar.py
-          python3 tools/test_shape_clusters.py
-          python3 tools/test_perm_unit.py
-          python3 tools/test_land_batch.py
-          python3 tools/test_draft_store.py
-          python3 tools/test_version_guard.py
-          python3 tools/test_float_literal.py
-          python3 tools/ida/test_stylefix.py
-          python3 tools/ida/test_land_sync.py
+          python3 tools/tests/test_check_irx_nonmatching.py
+          python3 tools/tests/test_progress_site.py
+          python3 tools/tests/test_raidou_c.py
+          python3 tools/tests/test_docs_index.py
+          python3 tools/tests/test_find_body.py
+          python3 tools/tests/test_similar_index.py
+          python3 tools/tests/test_find_similar.py
+          python3 tools/tests/test_shape_clusters.py
+          python3 tools/tests/test_perm_unit.py
+          python3 tools/tests/test_land_batch.py
+          python3 tools/tests/test_draft_store.py
+          python3 tools/tests/test_version_guard.py
+          python3 tools/tests/test_float_literal.py
+          python3 tools/tests/test_stylefix.py
+          python3 tools/tests/test_land_sync.py
           if git ls-files | grep -E '^orig/.+|\.(iso|elf|bin)$' | grep -v '^orig/\.gitkeep$'; then
             echo "retail data is tracked" >&2
             exit 1
@@ -134,7 +134,7 @@ jobs:
       # Needs the retail executable, so it runs here rather than with the tool tests.
       - name: Check check_unit relocations
         if: steps.orig.outputs.available == 'true'
-        run: python3 tools/test_check_unit.py
+        run: python3 tools/tests/test_check_unit.py
 
       - name: Check the NON_MATCHING behaviour comparison
         run: python3 tools/test_nm_behaviour.py

@@ -6,7 +6,7 @@ import subprocess
 import tempfile
 import unittest
 
-SCRIPT = pathlib.Path(__file__).resolve().parent / "land_sync.sh"
+SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "ida" / "land_sync.sh"
 
 
 class LandSyncTests(unittest.TestCase):
