@@ -5769,15 +5769,12 @@ void effDrawTrackSet(effTrackSet_t *track, const effMatrix4_t *matrix)
     if (track->columns != NULL) {
         shared = track->shared;
         texture = NULL;
-        if (shared == NULL) {
-            if (track->kind == 3) {
-                shared = effData34[0];
-            } else if (track->kind == 4) {
-                shared = effData34[1];
-            }
-        }
         if (shared != NULL) {
             texture = sdfGetOrCreateTextureForReference(surface, shared);
+        } else if (track->kind == 3) {
+            texture = sdfGetOrCreateTextureForReference(surface, effData34[0]);
+        } else if (track->kind == 4) {
+            texture = sdfGetOrCreateTextureForReference(surface, effData34[1]);
         }
         sdfMatSetTex(track->handle, texture);
     }
