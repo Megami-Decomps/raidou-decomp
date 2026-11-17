@@ -174,7 +174,7 @@ typedef struct {
 typedef struct {
     s32 id;
     u16 kind;
-    u16 unk06;
+    u16 lock; /* areas in use; LoadSmg skips a locked one */
 } sdfSndBankStat_t;
 
 typedef struct {
@@ -298,6 +298,10 @@ extern u32 sdfSndBankFlagTbl[SDF_SND_KINDS + 1];
 extern s32 sdfSndBank1Loaded;
 extern s32 sdfSndBank3Loaded;
 extern u8 sdfSndBankAltSlot;
+#ifndef VERSION_RAIDOU2
+extern u8 sdfSndDevilAreaNext;
+extern u8 sdfSndSkillAreaNext;
+#endif
 extern u32 sdfSndSlotSerialNext;
 extern s32 sdfSndResumeIdx;
 extern s32 sdfSndSeqVolume;

@@ -93,6 +93,9 @@ s32 sdfSndStopAll(s32 which);
 s32 sdfSndInitSynth(sdfSndWorkArea_t *work);
 s32 sdfSndQuitSynth(void);
 s32 sdfSndFindSlotById(s32 idPacked);
+s32 sdfSndLockBank(s32 idPacked);
+void sdfSndUnlockBank(s32 idPacked);
+s32 sdfSndUnlockAllBanks(void);
 s32 sdfSndBgmPlay(sdfSndBgmReq_t *req);
 s32 sdfSndSaveResumePoint(s32 slot);
 sdfSndResume_t *sdfSndFindResumePoint(s32 id);
@@ -119,6 +122,7 @@ s32 sdfSndAllocSeSlot(void);
 s32 sdfSndSetSeqVolume(s32 vol);
 s32 sdfSndFadeOutAll(void);
 s32 sdfSndFadeInAll(void);
+s32 sdfSndSetVolumeById(s32 *req, s32 vol);
 s32 sdfSndSifCmdHandler(sdfSndCmd_t *pkt, void *harg);
 s32 sdfSndCreateRpcSema(void);
 s32 sdfSndLoadVolTables(void);
@@ -696,11 +700,47 @@ s32 sdfSndFindSlotById(s32 idPacked)
     return -1;
 }
 
-INCLUDE_ASM("SDFSDMAN", func_00001974);
+/* Mark the bank with this id in use, so LoadSmg will not load over it. */
+s32 sdfSndLockBank(s32 idPacked)
+{
+    s32 i;
 
-INCLUDE_ASM("SDFSDMAN", func_000019C4);
+    if (idPacked >= 0) {
+        idPacked >>= 16;
+        for (i = 0; i < SDF_SND_KINDS; i++) {
+            if (sdfSndWorkArea->stat[i].id == idPacked) {
+                sdfSndWorkArea->stat[i].lock++;
+                break;
+            }
+        }
+    }
+}
 
-INCLUDE_ASM("SDFSDMAN", func_00001A1C);
+void sdfSndUnlockBank(s32 idPacked)
+{
+    s32 i;
+
+    if (idPacked >= 0) {
+        idPacked >>= 16;
+        for (i = 0; i < SDF_SND_KINDS; i++) {
+            if (sdfSndWorkArea->stat[i].id == idPacked) {
+                if (sdfSndWorkArea->stat[i].lock != 0) {
+                    sdfSndWorkArea->stat[i].lock--;
+                }
+                break;
+            }
+        }
+    }
+}
+
+s32 sdfSndUnlockAllBanks(void)
+{
+    s32 i;
+
+    for (i = SDF_SND_KINDS - 1; i >= 0; i--) {
+        sdfSndWorkArea->stat[i].lock = 0;
+    }
+}
 
 INCLUDE_ASM("SDFSDMAN", sdfSndBgmPlay);
 
@@ -1047,7 +1087,7 @@ s32 sdfSndUnloadBank(s32 kind)
         sdfSndWorkArea->banks[kind].waveSize = 0;
         sdfSndWorkArea->banks[kind].size = 0;
         sdfSndWorkArea->stat[kind].id = -1;
-        sdfSndWorkArea->stat[kind].unk06 = 0;
+        sdfSndWorkArea->stat[kind].lock = 0;
         if (kind == 1) {
             sdfSndBank1Loaded = 0;
         }
@@ -1266,7 +1306,17 @@ s32 sdfSndFadeInAll(void)
     }
 }
 
-INCLUDE_ASM("SDFSDMAN", func_00003E34);
+s32 sdfSndSetVolumeById(s32 *req, s32 vol)
+{
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        if (sdfSndSlots[i].id == *req &&
+            (sdfSndMidiWork.tbl->seq[i].slot->flags & 2) != 0) {
+            sdfSndApplyVolume(sdfSndSlots[i].id, i, vol);
+        }
+    }
+}
 
 /* ENDF sdfSndFadeInAll */
 #ifdef NON_MATCHING
