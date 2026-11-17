@@ -340,8 +340,132 @@ INCLUDE_RODATA("SDFSDMAN", aC);
 INCLUDE_RODATA("SDFSDMAN", aAd);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSOpen);
 INCLUDE_RODATA("SDFSDMAN", aSdfsndfileread);
-INCLUDE_RODATA("SDFSDMAN", jtbl_000060F0);
-INCLUDE_ASM("SDFSDMAN", sdfSndGetVolTable);
+/* The volume table for a bank kind, and how many entries it has. */
+u8 *sdfSndGetVolTable(s32 kind, s32 *count)
+{
+    u8 *tbl;
+    s32 unused;
+
+    tbl = NULL;
+    if (count == NULL) {
+        count = &unused;
+    }
+    *count = 0;
+    if (kind < 0) {
+        return NULL;
+    }
+    switch (kind) {
+    case 0:
+        *count = 48;
+        tbl = sdfSndVolTblSeq;
+        break;
+    case 1:
+        *count = 64;
+        tbl = sdfSndVolTblBgm;
+        break;
+    case 2:
+        *count = 64;
+        tbl = sdfSndVolTblSe;
+        break;
+    case 3:
+        *count = 64;
+        tbl = sdfSndVolTblVoice;
+        break;
+    case 4:
+        *count = 32;
+        tbl = sdfSndVolTblKind4;
+        break;
+    case 5:
+        *count = 32;
+        tbl = sdfSndVolTblKind5;
+        break;
+    case 6:
+        *count = 32;
+        tbl = sdfSndVolTblKind6;
+        break;
+    case 7:
+        *count = 32;
+        tbl = sdfSndVolTblKind7;
+        break;
+    case 8:
+        *count = 3;
+        tbl = sdfSndVolTblKind8;
+        break;
+    case 9:
+        *count = 3;
+        tbl = sdfSndVolTblKind9;
+        break;
+    case 10:
+        *count = 3;
+        tbl = sdfSndVolTblKind10;
+        break;
+    case 11:
+        *count = 3;
+        tbl = sdfSndVolTblKind11;
+        break;
+    case 12:
+        *count = 3;
+        tbl = sdfSndVolTblKind12;
+        break;
+    case 13:
+        *count = 3;
+        tbl = sdfSndVolTblKind13;
+        break;
+    case 14:
+        *count = 3;
+        tbl = sdfSndVolTblKind14;
+        break;
+    case 15:
+        *count = 3;
+        tbl = sdfSndVolTblKind15;
+        break;
+    case 16:
+        *count = 3;
+        tbl = sdfSndVolTblKind16;
+        break;
+    case 17:
+        *count = 3;
+        tbl = sdfSndVolTblKind17;
+        break;
+    case 18:
+        *count = 3;
+        tbl = sdfSndVolTblKind18;
+        break;
+    case 19:
+        *count = 3;
+        tbl = sdfSndVolTblKind19;
+        break;
+    case 20:
+        *count = 3;
+        tbl = sdfSndVolTblKind20;
+        break;
+    case 21:
+        *count = 3;
+        tbl = sdfSndVolTblKind21;
+        break;
+    case 22:
+        *count = 3;
+        tbl = sdfSndVolTblKind22;
+        break;
+    case 23:
+        *count = 3;
+        tbl = sdfSndVolTblKind23;
+        break;
+    case 24:
+        *count = 3;
+        tbl = sdfSndVolTblKind24;
+        break;
+    case 25:
+        *count = 3;
+        tbl = sdfSndVolTblKind25;
+        break;
+    case 26:
+        *count = 2;
+        tbl = sdfSndVolTblKind26;
+        break;
+    }
+    return tbl;
+}
 
 #ifdef NON_MATCHING
 /* Scale the slot volume by the per sound entry in its volume table, and by
@@ -1196,9 +1320,97 @@ s32 sdfSndCreateRpcSema(void)
 INCLUDE_ASM("SDFSDMAN", sdfSndCreateRpcSema);
 #endif
 
-INCLUDE_ASM("SDFSDMAN", sdfSndLoadVolTables);
+/* The EE writes the volume tables into the work area; take a copy. */
+s32 sdfSndLoadVolTables(void)
+{
+    s32 i;
 
-INCLUDE_ASM("SDFSDMAN", sdfSndStoreVolTables);
+    for (i = 0; i < 48; i++) {
+        sdfSndVolTblSeq[i] = sdfSndWorkArea->volTable[0][i];
+    }
+    for (i = 0; i < 64; i++) {
+        sdfSndVolTblBgm[i] = sdfSndWorkArea->volTable[1][i];
+        sdfSndVolTblSe[i] = sdfSndWorkArea->volTable[2][i];
+    }
+    for (i = 0; i < 64; i++) {
+        sdfSndVolTblVoice[i] = sdfSndWorkArea->volTable[3][i];
+    }
+    for (i = 0; i < 32; i++) {
+        sdfSndVolTblKind4[i] = sdfSndWorkArea->volTable[4][i];
+        sdfSndVolTblKind5[i] = sdfSndWorkArea->volTable[5][i];
+        sdfSndVolTblKind6[i] = sdfSndWorkArea->volTable[6][i];
+        sdfSndVolTblKind7[i] = sdfSndWorkArea->volTable[7][i];
+    }
+    for (i = 0; i < 3; i++) {
+        sdfSndVolTblKind8[i] = sdfSndWorkArea->volTableSmall[0][i];
+        sdfSndVolTblKind9[i] = sdfSndWorkArea->volTableSmall[1][i];
+        sdfSndVolTblKind10[i] = sdfSndWorkArea->volTableSmall[2][i];
+        sdfSndVolTblKind11[i] = sdfSndWorkArea->volTableSmall[3][i];
+        sdfSndVolTblKind12[i] = sdfSndWorkArea->volTableSmall[4][i];
+        sdfSndVolTblKind13[i] = sdfSndWorkArea->volTableSmall[5][i];
+        sdfSndVolTblKind14[i] = sdfSndWorkArea->volTableSmall[6][i];
+        sdfSndVolTblKind15[i] = sdfSndWorkArea->volTableSmall[7][i];
+        sdfSndVolTblKind16[i] = sdfSndWorkArea->volTableSmall[8][i];
+        sdfSndVolTblKind17[i] = sdfSndWorkArea->volTableSmall[9][i];
+        sdfSndVolTblKind18[i] = sdfSndWorkArea->volTableSmall[10][i];
+        sdfSndVolTblKind19[i] = sdfSndWorkArea->volTableSmall[11][i];
+        sdfSndVolTblKind20[i] = sdfSndWorkArea->volTableSmall[12][i];
+        sdfSndVolTblKind21[i] = sdfSndWorkArea->volTableSmall[13][i];
+        sdfSndVolTblKind22[i] = sdfSndWorkArea->volTableSmall[14][i];
+        sdfSndVolTblKind23[i] = sdfSndWorkArea->volTableSmall[15][i];
+        sdfSndVolTblKind24[i] = sdfSndWorkArea->volTableSmall[16][i];
+        sdfSndVolTblKind25[i] = sdfSndWorkArea->volTableSmall[17][i];
+    }
+    for (i = 0; i < 2; i++) {
+        sdfSndVolTblKind26[i] = sdfSndWorkArea->volTable[8][i];
+    }
+}
+
+s32 sdfSndStoreVolTables(void)
+{
+    s32 i;
+
+    for (i = 0; i < 48; i++) {
+        sdfSndWorkArea->volTable[0][i] = sdfSndVolTblSeq[i];
+    }
+    for (i = 0; i < 64; i++) {
+        sdfSndWorkArea->volTable[1][i] = sdfSndVolTblBgm[i];
+        sdfSndWorkArea->volTable[2][i] = sdfSndVolTblSe[i];
+    }
+    for (i = 0; i < 64; i++) {
+        sdfSndWorkArea->volTable[3][i] = sdfSndVolTblVoice[i];
+    }
+    for (i = 0; i < 32; i++) {
+        sdfSndWorkArea->volTable[4][i] = sdfSndVolTblKind4[i];
+        sdfSndWorkArea->volTable[5][i] = sdfSndVolTblKind5[i];
+        sdfSndWorkArea->volTable[6][i] = sdfSndVolTblKind6[i];
+        sdfSndWorkArea->volTable[7][i] = sdfSndVolTblKind7[i];
+    }
+    for (i = 0; i < 3; i++) {
+        sdfSndWorkArea->volTableSmall[0][i] = sdfSndVolTblKind8[i];
+        sdfSndWorkArea->volTableSmall[1][i] = sdfSndVolTblKind9[i];
+        sdfSndWorkArea->volTableSmall[2][i] = sdfSndVolTblKind10[i];
+        sdfSndWorkArea->volTableSmall[3][i] = sdfSndVolTblKind11[i];
+        sdfSndWorkArea->volTableSmall[4][i] = sdfSndVolTblKind12[i];
+        sdfSndWorkArea->volTableSmall[5][i] = sdfSndVolTblKind13[i];
+        sdfSndWorkArea->volTableSmall[6][i] = sdfSndVolTblKind14[i];
+        sdfSndWorkArea->volTableSmall[7][i] = sdfSndVolTblKind15[i];
+        sdfSndWorkArea->volTableSmall[8][i] = sdfSndVolTblKind16[i];
+        sdfSndWorkArea->volTableSmall[9][i] = sdfSndVolTblKind17[i];
+        sdfSndWorkArea->volTableSmall[10][i] = sdfSndVolTblKind18[i];
+        sdfSndWorkArea->volTableSmall[11][i] = sdfSndVolTblKind19[i];
+        sdfSndWorkArea->volTableSmall[12][i] = sdfSndVolTblKind20[i];
+        sdfSndWorkArea->volTableSmall[13][i] = sdfSndVolTblKind21[i];
+        sdfSndWorkArea->volTableSmall[14][i] = sdfSndVolTblKind22[i];
+        sdfSndWorkArea->volTableSmall[15][i] = sdfSndVolTblKind23[i];
+        sdfSndWorkArea->volTableSmall[16][i] = sdfSndVolTblKind24[i];
+        sdfSndWorkArea->volTableSmall[17][i] = sdfSndVolTblKind25[i];
+    }
+    for (i = 0; i < 2; i++) {
+        sdfSndWorkArea->volTable[8][i] = sdfSndVolTblKind26[i];
+    }
+    return p2sdIrxSpuIopMap();
+}
 
 /* The IOP idles its clock without a running thread, which upsets the timing
  * of everything else; this one never sleeps. */

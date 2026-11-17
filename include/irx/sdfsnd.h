@@ -321,6 +321,59 @@ extern u8 sdfSndVolTblSeq[48];   /* 32 in SMT3 */
 extern u8 sdfSndVolTblBgm[64];   /* 128 in SMT3 */
 extern u8 sdfSndVolTblSe[64];    /* 128 in SMT3 */
 extern u8 sdfSndVolTblVoice[64]; /* 128 in SMT3 */
+/* The other kinds' tables, by kind; what each kind holds is not known. */
+#ifdef VERSION_RAIDOU2
+extern u8 sdfSndVolTblKind4[32];
+extern u8 sdfSndVolTblKind5[32];
+extern u8 sdfSndVolTblKind6[32];
+extern u8 sdfSndVolTblKind7[32];
+extern u8 sdfSndVolTblKind8[3];
+extern u8 sdfSndVolTblKind9[3];
+extern u8 sdfSndVolTblKind10[3];
+extern u8 sdfSndVolTblKind11[3];
+extern u8 sdfSndVolTblKind12[3];
+extern u8 sdfSndVolTblKind13[3];
+extern u8 sdfSndVolTblKind14[3];
+extern u8 sdfSndVolTblKind15[3];
+extern u8 sdfSndVolTblKind16[3];
+extern u8 sdfSndVolTblKind17[3];
+extern u8 sdfSndVolTblKind18[3];
+extern u8 sdfSndVolTblKind19[3];
+extern u8 sdfSndVolTblKind20[3];
+extern u8 sdfSndVolTblKind21[3];
+extern u8 sdfSndVolTblKind22[3];
+extern u8 sdfSndVolTblKind23[3];
+extern u8 sdfSndVolTblKind24[3];
+extern u8 sdfSndVolTblKind25[3];
+extern u8 sdfSndVolTblKind26[2];
+#else
+extern u8 sdfSndVolTblKind4[2];
+extern u8 sdfSndVolTblKind5[32];
+extern u8 sdfSndVolTblKind6[2];
+extern u8 sdfSndVolTblKind7[4];
+extern u8 sdfSndVolTblKind8[32];
+extern u8 sdfSndVolTblKind9[32];
+extern u8 sdfSndVolTblKind10[32];
+extern u8 sdfSndVolTblKind11[3];
+extern u8 sdfSndVolTblKind12[3];
+extern u8 sdfSndVolTblKind13[3];
+extern u8 sdfSndVolTblKind14[3];
+extern u8 sdfSndVolTblKind15[3];
+extern u8 sdfSndVolTblKind16[3];
+extern u8 sdfSndVolTblKind17[3];
+extern u8 sdfSndVolTblKind18[3];
+extern u8 sdfSndVolTblKind19[3];
+extern u8 sdfSndVolTblKind20[3];
+extern u8 sdfSndVolTblKind21[3];
+extern u8 sdfSndVolTblKind22[3];
+extern u8 sdfSndVolTblKind23[3];
+extern u8 sdfSndVolTblKind24[3];
+extern u8 sdfSndVolTblKind25[3];
+extern u8 sdfSndVolTblKind26[3];
+extern u8 sdfSndVolTblKind27[3];
+extern u8 sdfSndVolTblKind28[3];
+extern u8 sdfSndVolTblKind29[2];
+#endif
 extern char sdfSndSmgPath[256];
 extern sdfSndSlot_t sdfSndSlots[16];
 extern sdfSndResume_t sdfSndResume[32];
