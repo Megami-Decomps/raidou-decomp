@@ -224,7 +224,10 @@ def write(m: Module, path: Path) -> bytes:
     struct.pack_into("<HHIIIIIHHHHHH", out, 0x10, ET_IRX, EM_MIPS, 1, m.entry,
                      52, shoff, m.flags, 52, 32, 2, 40, len(order) + 1,
                      index[id(shstrtab)])
-    struct.pack_into("<8I", out, 52, PT_IOPMOD, IOPMOD_OFFSET, 0, 0, len(iopmod), 0, 4, 4)
+    # With an empty name (sdfprint) the program header counts one byte more
+    # than the .iopmod section header does.
+    iopmod_filesz = len(iopmod) + (0 if m.name else 1)
+    struct.pack_into("<8I", out, 52, PT_IOPMOD, IOPMOD_OFFSET, 0, 0, iopmod_filesz, 0, 4, 4)
     memsz = max(s.addr + s.size for s in alloc)
     filesz = end - base
     struct.pack_into("<8I", out, 52 + 32, 1, base, 0, 0, filesz, memsz, 7, 0x10)
