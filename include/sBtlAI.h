@@ -5,6 +5,7 @@
 #include "enums.h"
 
 struct SBTLUNIT_WORK;
+struct SBTLSKILLP_TBL;
 struct sdfMemHandle_t;
 
 /* AI state of a unit, 0x90 bytes, made by Create_sbtlAI. */
@@ -41,28 +42,43 @@ typedef struct SBTLAI_WORK {
 s8 CheckAIScript(struct SBTLUNIT_WORK *wk);
 s32 Proc_sbtlAI(SBTLAI_WORK *aiwk);
 void Support_SetAisyo(s32 unitIndex, s32 mode);
-s32 SEquationno_00(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_05(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_07(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_08(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_09(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_0a(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_0b(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_0c(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_0d(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_0e(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_10(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_11(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_12(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_14(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_15(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_16(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 SEquationno_17(struct SBTLUNIT_WORK *wk, SKLID skillid);
-s32 TEquationno_0c(struct SBTLUNIT_WORK *wk);
-s32 TEquationno_0d(struct SBTLUNIT_WORK *wk);
-s32 TEquationno_0e(struct SBTLUNIT_WORK *wk);
+s32 SEquationno_00(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_05(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_07(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_08(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_09(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_0a(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_0b(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_0c(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_0d(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_0e(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_10(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_11(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_12(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_14(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_15(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_16(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_17(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 CheckBSTTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl);
+s32 SetNextTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl, s32 no);
+u8 TEquationno_01(struct SBTLUNIT_WORK *wk);
+u8 TEquationno_0c(struct SBTLUNIT_WORK *wk);
+u8 TEquationno_0d(struct SBTLUNIT_WORK *wk);
+u8 TEquationno_0e(struct SBTLUNIT_WORK *wk);
 s32 sbtlAI_SetSeikaku_Action(struct SBTLUNIT_WORK *wk);
-s32 sbtlCheckSkillEquation(struct SBTLUNIT_WORK *wk, s16 adr, SKLID skillid);
+/* One step of a skill equation: run SEquationno_<id>, then op/flag decide the percentage change. */
+typedef struct SBTL_SKILLEQ_STEP {
+    s16 id;
+    u8 op; /* 1 add, 2 subtract, 255 fail the check */
+    s8 flag;
+    s16 value;
+} SBTL_SKILLEQ_STEP;
+
+extern SBTL_SKILLEQ_STEP sbtlCheckSkillEquationData[];
+extern SBTL_SKILLEQ_STEP sbtlCheckSkillEquationData2[];
+extern s32 (*sbtlCheckSkillEquationData3[])(struct SBTLUNIT_WORK *wk, s16 skillid);
+
+s32 sbtlCheckSkillEquation(struct SBTLUNIT_WORK *wk, s16 *adr, s16 skillid);
 s32 sbtlCheckTargetEquation(struct SBTLUNIT_WORK *wk);
 s32 sbtlGetTargetUnit(struct SBTLUNIT_WORK *wk);
 struct SBTLAI_WORK *sbtlLeaf64(void);

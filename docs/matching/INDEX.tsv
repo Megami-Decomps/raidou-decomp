@@ -204,11 +204,41 @@ sbtlNormalProc_Huuma	code_r1_00259A88	raidou1 0x378	157 of 222 words differ	docs
 sbtlPlayerRKaitenInit	code_r1_00259A88	raidou1 0x3F8	68 of 254 words differ	docs/matching/code_r1_00259A88.md	91		
 sbtlRefSbtl17	code_r1_00259A88	raidou1 0x84	5 of 33 words differ	docs/matching/code_r1_00259A88.md	97		
 sbtlSetVibe	code_r1_00259A88	raidou1 0x10C	13 of 13 words differ	docs/matching/code_r1_00259A88.md	103		
+sbtlRefSbtl12	code_r1_00259A88	raidou1 0x5C	16 of 23 words differ	docs/matching/code_r1_00259A88.md	113		
+SEquationno_10	code_r1_00259A88	raidou1 0x60	8 of 22 words differ	docs/matching/code_r1_00259A88.md	119		
+SEquationno_0b	code_r1_00259A88	raidou1 0x70	11 of 24 words differ	docs/matching/code_r1_00259A88.md	125		
+sbtlGetPlayerUnit	code_r1_00259A88	raidou1 0x74	15 of 29 words differ	docs/matching/code_r1_00259A88.md	131		
+SEquationno_11	code_r1_00259A88	raidou1 0x84	13 of 30 words differ	docs/matching/code_r1_00259A88.md	137		
+sbtlGetRandomTarget	code_r1_00259A88	raidou1 0xB8	4 of 46 words differ	docs/matching/code_r1_00259A88.md	143		
+sbtlCallObjectBaseSetPadControl	code_r1_00259A88	raidou1 0xC0	21 of 48 words differ	docs/matching/code_r1_00259A88.md	149		
+FakeRndHit	code_r1_00259A88	raidou1 0xDC	14 of 56 words differ	docs/matching/code_r1_00259A88.md	155		
+sbtlCallBtlSearchUnitID12	code_r1_00259A88	raidou1 0xDC	49 of 53 words differ	docs/matching/code_r1_00259A88.md	161		
+sbtlCallBtlSearchUnitID6	code_r1_00259A88	raidou1 0xF8	3 of 62 words differ	docs/matching/code_r1_00259A88.md	167		
+CheckHuuma_Moon	code_r1_00259A88	raidou1 0x114	21 of 69 words differ	docs/matching/code_r1_00259A88.md	173		
+sbtlCallMemset8	code_r1_00259A88	raidou1 0x124	59 of 72 words differ	docs/matching/code_r1_00259A88.md	179		
+SetOrderTarget	code_r1_00259A88	raidou1 0x128	64 of 74 words differ	docs/matching/code_r1_00259A88.md	185		
+SEquationno_15	code_r1_00259A88	raidou1 0x12C	44 of 75 words differ	docs/matching/code_r1_00259A88.md	191		
+SEquationno_17	code_r1_00259A88	raidou1 0x12C	43 of 75 words differ	docs/matching/code_r1_00259A88.md	197		
+sbtlSetReturn	code_r1_00259A88	raidou1 0x134	7 of 77 words differ	docs/matching/code_r1_00259A88.md	203		
+sbtlCallBtlSearchUnitID11	code_r1_00259A88	raidou1 0x14C	65 of 76 words differ	docs/matching/code_r1_00259A88.md	209		
+sbtlCallBtlCheckDamageTarget6	code_r1_00259A88	raidou1 0x154	25 of 83 words differ	docs/matching/code_r1_00259A88.md	215		
+SEquationno_03	code_r1_00259A88	raidou1 0x158	32 of 82 words differ	docs/matching/code_r1_00259A88.md	221		
+sbtlCheckTargetEquation	code_r1_00259A88	raidou1 0x168	56 of 90 words differ	docs/matching/code_r1_00259A88.md	227		
+sbtlCallBtlResetMenuPara	code_r1_00259A88	raidou1 0x1BC	54 of 93 words differ	docs/matching/code_r1_00259A88.md	233		
+sbtlCallMemset9	code_r1_00259A88	raidou1 0x1C4	107 of 111 words differ	docs/matching/code_r1_00259A88.md	239		
+CheckHuuma2	code_r1_00259A88	raidou1 0x1EC	89 of 119 words differ	docs/matching/code_r1_00259A88.md	245		
+sbtlCallBtlSearchUnitID8	code_r1_00259A88	raidou1 0x278	21 of 157 words differ	docs/matching/code_r1_00259A88.md	251		
+AtkProc_Nakama	code_r1_00259A88	raidou1 0x28C	7 of 163 words differ	docs/matching/code_r1_00259A88.md	257		
+nakamamode_UnitPad	code_r1_00259A88	raidou1 0x2BC	159 of 172 words differ	docs/matching/code_r1_00259A88.md	263		
+NormalProc_Nakama	code_r1_00259A88	raidou1 0x2C0	10 of 176 words differ	docs/matching/code_r1_00259A88.md	269		
+sbtlCheckSkillEquation	code_r1_00259A88	raidou1 0x2D4	153 of 172 words differ	docs/matching/code_r1_00259A88.md	275		
+sbtlCallBtlSearchUnitID9	code_r1_00259A88	raidou1 0x364	172 of 206 words differ	docs/matching/code_r1_00259A88.md	281		
+KaihiProc_Nakama	code_r1_00259A88	raidou1 0x438	220 of 258 words differ	docs/matching/code_r1_00259A88.md	287		
 sbtlBtlLoadPlayerOnMemDataSub	code_r1_0028A298	raidou1 0x88	28 of 30 words differ	docs/matching/code_r1_0028A298.md	3		
 Draw_sbtlSTP	code_r1_00291A80	raidou1 0x1F8	88 of 91 words differ	docs/matching/code_r1_00291A80.md	3		
 sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words differ	docs/matching/code_r1_00292930.md	3		
 sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matching/code_r1_00295298.md	3		
-sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3	the -DNON_MATCHING code moves with the declarations the unit includes; adding three prototypes to fld.h (mapGetHit, mapGetAttr_DevilWall, mapHamidasiCheckSub) turned 380 of 404 differing words into a full-unit CONTEXT result; the R22 SBTL_* field and prototype edits in sbtlWork.h shift it again, with no matched function affected.	
+sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3	the -DNON_MATCHING code moves with the declarations the unit includes; adding three prototypes to fld.h (mapGetHit, mapGetAttr_DevilWall, mapHamidasiCheckSub) turned 380 of 404 differing words into a full-unit CONTEXT result; the R22 SBTL_* field and prototype edits in sbtlWork.h shift it again, with no matched function affected. The U03-battle edits to sbtlWork.h and the sBtl* headers take it from DIFF 380/404 to CONTEXT 381/406.	
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3		
 sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	3	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h. The K03-effect header declaration edits moved Raidou 2 from CONTEXT 37/288 to CONTEXT 46/288 (Raidou 1 41/288). The K02-effect-data header edits moved Raidou 1 to CONTEXT 43/288.	
 effDrawTextureSlot	code_r1_002CA3F0	raidou1 0x2CC, raidou2 0x2D4	2 of 179 words differ	docs/matching/code_r1_002CA3F0.md	3		
@@ -257,7 +287,7 @@ fldGbInit_Field	fclDrawBack	raidou1 0x94	12 of 37 words differ	docs/matching/fcl
 fclCallGetProcessData	fclDrawBack	raidou1 0x38	4 of 13 words differ	docs/matching/fclDrawBack.md	21		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue. Tried: void (tail j), the s32 return of dds3ProcessFunc_t with no return statement (still j, 4 of 13 words differ); the call is the last statement of straight-line code, so statement order has nothing to move. Only a dead store after the call remains, which is banned.
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		
 mapAiboTask	field/fldFileResolver	raidou1 0x9A8	54 of 618 words differ	docs/matching/field/fldFileResolver.md	14	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618. The B4-field-big header declaration edits (11 headers, no change to the unit) moved it again, DIFF 323/618 to CONTEXT 12/618, and the K03-effect header declaration edits from CONTEXT 54/618 to CONTEXT 319/616.	
-mapSummonDvTask	field/fldFileResolver	raidou1 0x944	6 of 593 words differ	docs/matching/field/fldFileResolver.md	24	the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit.	
+mapSummonDvTask	field/fldFileResolver	raidou1 0x944	6 of 593 words differ	docs/matching/field/fldFileResolver.md	24	the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit. The U03-battle sbtlWork.h and sBtl* header edits move it from CONTEXT 88/593 to CONTEXT 140/593.	
 PlayerCalc_Nml_fld	field/fldFileResolver	raidou1 0xB74	404 of 731 words differ	docs/matching/field/fldFileResolver.md	34		
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	14		

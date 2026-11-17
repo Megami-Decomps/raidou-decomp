@@ -2853,7 +2853,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
         if (wk->framecnt >= 270 && !wk->action_flg) {
             wk->action_flg = 1;
             sbtlCallBtlSearchUnitID4(wk_sbtl->summonIndex[0], 1);
-            sbtlGetDamage(&wk_sbtl->summonBit, wk_sbtl->summonIndex[0]);
+            sbtlResetBit(&wk_sbtl->summonBit, wk_sbtl->summonIndex[0]);
             sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUIN_N, SKLID_NONE);
         }
         return 1;

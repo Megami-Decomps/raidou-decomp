@@ -6183,7 +6183,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0025F0E0	0x0027F4E8	SetColor	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-masked-hash
 0x00261558	0x002807C8	sbtlCheckBit	yes	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-reloc-hash
 0x00261568	0x002807D8	sbtlSetBit	yes	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-reloc-hash
-0x00261580	0x002807F0	sbtlGetDamage	yes	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-reloc-hash
+0x00261580	0x002807F0	sbtlResetBit	yes	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-reloc-hash
 0x002624D0	0x002820E0	sbtlRefSbtl37	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-masked-hash
 0x002624F8	0x00282B88	sbtlCheckSkillEquation	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	unique-masked-hash
 0x002627D0	0x00282E60	sbtlCheckTargetEquation	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_0027A1E8.s	run-order-near
@@ -6784,7 +6784,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0029B358	0x002D4F80	CalcAisyo	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	size
 0x0029B8D8	0x002D57E0	sbtlCheckAutoSkill_Action	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
 0x0029BC68	0x002D5D00	sbtlGetDropMoney	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
-0x0029BC98	0x002D5D30	LimitRange_2	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
+0x0029BC98	0x002D5D30	sbtlCheckEvtBit_Table	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x0029BE08	0x002D5E30	sbtlCheckUseSkill	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
 0x0029BE78	0x002D5F88	sbtlCheckCost	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	size
 0x0029C1A8	0x002D6278	sbtlDecVice	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash

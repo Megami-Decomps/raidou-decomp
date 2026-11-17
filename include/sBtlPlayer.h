@@ -67,7 +67,7 @@ s32 sbtlBtlDrawProcessSub(struct sBtlMenu_t *menu);
 s32 sbtlCheckBit(u32 *bits, s32 bit);
 s32 sbtlCheckPad(void);
 s32 sbtlClearEffHitData(struct SBTLUNIT_WORK *wk);
-s32 sbtlGetRandomTarget(struct SBTLUNIT_WORK *wk, s32 flg, s32 bNewTgt);
+s32 sbtlGetRandomTarget(struct SBTLUNIT_WORK *wk, s32 *skill0, s32 *skill1);
 s32 sbtlNormalProcNakamaSub(struct SBTLUNIT_WORK *wk);
 void sbtlResetColorFlag(void);
 void sbtlResetCharge(struct SBTLUNIT_WORK *wk);
@@ -90,6 +90,9 @@ s32 sbtlCallBtlSearchUnitID8(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallMemset10(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetSkilltbl2(struct SBTLUNIT_WORK *wk, s16 *mode);
 s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode);
+s32 NormalProc_Nakama(struct SBTLUNIT_WORK *wk);
+s32 sbtlNormalProcNakamaSub2(s32 no);
+s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode);
 s32 KaihiProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode);
 s32 sbtlLeaf3(struct SBTLUNIT_WORK *wk, s16 *mode);
 

@@ -230,7 +230,7 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl24);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetDropMoney);
 
-INCLUDE_ASM(const s32, "sbtl", LimitRange_2);
+INCLUDE_ASM(const s32, "sbtl", sbtlCheckEvtBit_Table);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetDevilDataSBtlSub5);
 

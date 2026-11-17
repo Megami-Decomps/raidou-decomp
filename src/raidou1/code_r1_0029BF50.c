@@ -13,5 +13,5 @@ s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 arg)
     if ((tbl->type & 0x1000) != 0) {
         return 1;
     }
-    return sbtlCallBtlGetSkilltbl22(wk, wk->skillid, arg);
+    return sbtlCheckCost_SkillID(wk, wk->skillid, arg);
 }

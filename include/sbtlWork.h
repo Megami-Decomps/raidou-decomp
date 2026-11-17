@@ -76,7 +76,9 @@ typedef struct SBTL_PANEL {
     SBTLPNL_WORK mds_waku0;
     SBTLPNL_WORK mds_waku1;
     SBTLPNL_WORK mds_light;
-    u8 padD0[0x460];
+    u8 padD0[0x522 - 0xD0];
+    s16 meirei_no; /* order given to the summoned demon (HD SBTLPNL_SETDATA meirei_no) */
+    u8 pad524[0x530 - 0x524];
 } SBTL_PANEL;
 
 struct SBTLDMG_HITLISTWORK;
@@ -152,9 +154,10 @@ typedef struct SBTL_WORK {
     s32 eventListID;
     u8 pad21C[4];
     s16 summonIndex[2];
-    u8 pad224[0x22C - 0x224];
+    s32 field224;
+    u8 pad228[0x22C - 0x228];
     s32 useitemID;
-    u8 pad230[4];
+    SKLID field230; /* effect skill id checked before the item list is refilled */
     s16 useitem_stock; /* stock slot the item is used on, -1 for none */
     u8 pad236[0x238 - 0x236];
     s32 equipBulletBk;
@@ -177,20 +180,21 @@ typedef struct SBTL_WORK {
     s32 stackID[2]; /* stock slots of the summoned demons (HD stack_id) */
     u8 pad3A0[0x3A4 - 0x3A0];
     s32 unitPadID;
-    u8 pad3A8[0x3AC - 0x3A8];
+    s32 field3A8;
     SBTLVIBE_WORK vibe[2];
     s32 vibe_startf[2];
     s32 vibe_frame[2];
     u8 vibe_power[2];
     u8 vibe_type[2];
     struct SBTLUNIT_LISTWORK *list3E8;
-    u8 pad3EC[8];
+    s32 field3EC;
+    u8 pad3F0[4];
     struct SBTLDMG_LISTWORK *animList;
     struct SBTLDMG_HITLISTWORK *hitList;
     u8 pad3FC[4];
     struct SBTLEFF_LISTWORK *effList;
-    s32 field404;
-    s32 field408;
+    struct SBTLUNIT_LISTWORK *field404; /* HD friend_List */
+    struct SBTLUNIT_LISTWORK *field408; /* HD other_List */
     struct SBTLUNIT_LISTWORK *field40C;
     struct SBTLITEM_LISTWORK *itemList;
     struct SBTLITEM_LISTWORK *bulletList;
@@ -212,7 +216,9 @@ typedef struct SBTL_WORK {
     s16 field444;
     u8 pad446[0x448 - 0x446];
     s32 mag;
-    u8 pad44C[0x458 - 0x44C];
+    u8 pad44C[4];
+    s32 gunskillid;
+    u8 pad454[4];
     s32 hgunNum;
     u8 pad45C[0x478 - 0x45C];
     s16 field478;
@@ -230,8 +236,8 @@ typedef struct SBTL_WORK {
     s32 field4A4;
     s32 field4A8;
     s32 field4AC;
-    u8 pad4B0[0x4B4 - 0x4B0];
-    u8 field4B4;
+    s32 field4B0;
+    s8 field4B4;
     u8 pad4B5;
     s16 field4B6;
     s16 field4B8;
@@ -240,7 +246,8 @@ typedef struct SBTL_WORK {
     s16 field4BE;
     u8 pad4C0[0x4CE - 0x4C0];
     s16 field4CE;
-    u8 pad4D0[0x4D4 - 0x4D0];
+    s16 huumamagnone;
+    u8 pad4D2[2];
     s32 huumaTargetID;
     s32 huumaDevilID[12];
     s16 field508;
@@ -725,7 +732,7 @@ s32 sbtlCallBtlCheckGeneratorGroupID(void);
 void sbtlCallBtlCheckTutorialBattle2(void);
 s32 sbtlCallBtlEndAction(struct SBTLUNIT_WORK *wk, u32 action, s32 flg);
 s32 sbtlSetMotionHit(struct SBTLUNIT_WORK *wk, s32 motionno, SKLID skillid);
-s32 sbtlCallBtlGetItemtbl(void);
+void sbtlCallBtlGetItemtbl(void);
 s32 sbtlCallBtlGetNumUnitGroupID(void);
 s32 sbtlCallBtlMapInit(void);
 s32 sbtlCallBtlSearchEffectSABActer(struct SBTLUNIT_WORK *wk);
@@ -747,6 +754,8 @@ struct SBTLUNIT_WORK *sbtlRefSbtl38(void);
 f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */
 s32 sbtlCheckLoadFlg(void);
 void sbtlCallSetColor(void);
+s32 sbtlCallSetColor2(u32 color);
+s32 sbtlCallSetColor3(u32 color);
 s32 sbtlCheckPad(void);
 s32 sbtlCheckUnit_Exec(void);
 s32 sbtlChkBossEventStart_EnemySummonWait(void);
@@ -769,6 +778,20 @@ s32 sbtlRefSbtl15(s32 x, s32 y);
 s32 sbtlCallBtlSprite(s32 a, s32 b);
 s32 sbtlRefSbtl23(void);
 s32 sbtlRefSbtl24(struct SBTLUNIT_WORK *wk, s8 flg);
+s32 sbtlRefSbtl36(void);
+u32 sbtlRefSbtl37(void);
+void sbtlCutMotion(struct SBTLUNIT_WORK *wk, f32 rate);
+s32 sbtlCallBtlSearchUnitID9(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallMemset9(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *target, f32 frame);
+extern s32 (*sbtlCallBtlSearchUnitID8Data[])(struct SBTLUNIT_WORK *wk);
+struct SBTLUNIT_WORK *sbtlCallMemset7(s32 a, s32 motionId, s32 stock, s8 flg);
+s32 sbtlCallBtlGetDevilDataSBtlSub5(sdatUnitWork_t *summoner, sdatUnitWork_t *unit, s32 devilId);
+void FakeRndHit(struct SBTLUNIT_WORK *wk, s32 pow);
+s32 sbtlCallBtlSearchUnitID12(void);
+void sbtlBeginSetsumaSub(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallHirukoYukaGoIdx2B(u32 color);
+void *sbtlCallGetProcessData43(void);
+void sbtlSummonMenuFuncOpen00Sub(u32 no);
 s32 sbtlRefSbtl27(void);
 s32 sbtlRefSbtl29(void);
 void sbtlRefSbtl4(void);
@@ -786,11 +809,11 @@ void sbtlSbtlmenuMain(void);
 s32 sbtlRefSbtl13(void);
 s32 sbtlSearchPacData(s32 major, s32 minor, s32 devilid);
 s32 sbtlSearchPacData2(s32 major, s32 minor, s32 devilid);
-s32 sbtlSetBit(u32 *bits, s32 no);
+void sbtlSetBit(u32 *bits, s32 no);
 s32 sbtlSetDevilSkillID(s32 id, s32 flg);
 s32 sbtlSetMotion_sbtlUnit(struct SBTLUNIT_WORK *wk, s32 motion, s32 bframe, s32 aframe, s8 flg);
 s32 sbtlSetPacData_MHT(s32 major, s32 minor, s32 devilid, void *data, s32 size);
-s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 a, s8 b, s32 c, s8 d);
+s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 flg, s8 usePos, const sdfVector4_t *pos, s8 mode);
 void sbtlUpdateVibe(void);
 
 s32 sbtlInitPlayerData(void);

@@ -134,11 +134,12 @@ s32 sbtlCheckMeshiyose(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckMotionMove(struct SBTLUNIT_WORK *wk);
 s32 sbtlDeletePlayer(struct SBTLUNIT_WORK *wk);
 void sbtlGeneratorD_On(void);
-s32 sbtlGetDamage(u32 *flg, s32 no); /* clears bit no of *flg */
+void sbtlResetBit(u32 *flg, s32 no); /* clears bit no of *flg */
 s32 sbtlGetHelperPos(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, s32 devilid);
 s32 sbtlModelNodeFadeout(struct SBTLUNIT_WORK *wk, char *pName);
 s32 sbtlProcSub(struct SBTLEFF_LISTWORK *lwk, s32 effectid, u8 flg);
 struct SBTLUNIT_WORK *sbtlSetEncountData4(s32 devil, s32 point, u32 addst);
 s32 sbtlSetMapFade(s32 frame, u32 abgr, s16 mode);
+s32 sbtlSetMapFade_H(s32 frame, u32 abgr, s16 mode);
 
 #endif

@@ -27,7 +27,7 @@ Raidou 1: 6 of 593 words differ, first at +0x444.
 
 Raidou 1: 8 of 593 words differ, one temp register (f0 vs f8) in the spd_max clamp arm. A separate follow flag from the per-branch mode keeps the mode=0 stores; rot declared before axis puts axis at sp+16; the extern sdfVector4_t table copied at its declaration gives the prologue ldl/ldr copy. Raidou 2's body differs, so Raidou 2 keeps the asm. Vector checked (menu).
 
-Fragile: the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit.
+Fragile: the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit. The U03-battle sbtlWork.h and sBtl* header edits move it from CONTEXT 88/593 to CONTEXT 140/593.
 
 Related: register choice in the spd_max clamp.
 

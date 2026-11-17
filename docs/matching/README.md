@@ -16,9 +16,9 @@ menu scenarios); an entry says which paths they covered.
 
 | Entries | Unit | Games | Page |
 |---|---|---|---|
+| 43 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
 | 18 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
 | 15 | sbtlActAI | raidou1 | [sbtlActAI.md](sbtlActAI.md) |
-| 13 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
 | 13 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
 | 11 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
 | 10 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |

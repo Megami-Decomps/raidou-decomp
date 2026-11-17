@@ -3443,7 +3443,6 @@
 0x0027EBC0	sbtlCallBtlResetAction	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlDrawEscapeGauge; calls sbtlResetAction
 0x0027F558	sbtlCallBtlResetJump	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlDrawEscapeGauge; calls sbtlResetJump
 0x00280558	sbtlCallBtlGetSkilltbl2	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlCheckBit; calls sbtlGetSkilltbl
-0x002807F0	sbtlGetDamage	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlGetDamage, score 7.0 band B
 0x00280810	sbtlCallBtlGetMotionVisualDataSBtlVi	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlGetDamage; calls sbtlGetMotionVisualData_sbtlVisual
 0x00280A50	sbtlCallBtlSearchUnitID4	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlGetNearTarget_Random; calls sbtlSearchUnit_ID
 0x002813A8	sbtlCallBtlGetNakama3	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlGetNearTarget_Random; calls sbtlGetNakama

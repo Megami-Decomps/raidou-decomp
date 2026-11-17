@@ -28,6 +28,7 @@ void sbtlCallDestroyFontRequestAfter(struct SBTLUNIT_WORK *wk, s32 x, s32 y, s32
 void sbtlCallDevilName(s32 X, s32 Y, s32 AlphaRate, void *pData, struct sprHandle_t *pSpr);
 void sbtlCallGetSmallFontFRQ23(s32 x, s32 y, s32 z, u32 rgba, s32 id);
 s32 sbtlCheckVerticalArea(const sdfVector4_t *pos0, const sdfVector4_t *rot, const sdfVector4_t *pos1, f32 area);
+f32 sbtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 void sbtlDrawAisyoName(s32 x, s32 y, s32 z, u32 rgba, s32 id);
 void sbtlDrawBSTName(s32 x, s32 y, s32 z, u32 rgba, s32 id);
 char *sbtlGetAisyoHelpFont(s32 id);

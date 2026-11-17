@@ -9,10 +9,11 @@ struct SBTLSKLVISUAL_TBL;
 struct SBTLUNIT_WORK;
 
 s32 sbtlCallBtlCreateSideList4(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 r_kaja);
-s32 sbtlCallBtlGetSkilltbl22(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg);
+u8 sbtlCheckCost_SkillID(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg);
 s32 CheckBadStatus_sbtlSkill(struct SBTLUNIT_WORK *wk, SKLID sklid);
 s32 sbtlCallBtlGetSklVisualTbl2(struct SBTLUNIT_WORK *wk, SKLID sklid);
 s32 sbtlCheckMHTData(struct SBTLUNIT_WORK *wk, SKLID sklid);
+s32 sbtlCheckUseSkill(struct SBTLUNIT_WORK *wk, SKLID sklid);
 struct SBTLSKILLP_TBL *sbtlGetSkilltbl(SKLID skillid);
 void sbtlDecVice(struct SBTLUNIT_WORK *wk, s32 vice);
 void sbtlRefSbtl64(s32 mag);

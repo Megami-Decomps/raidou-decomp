@@ -7024,7 +7024,7 @@
 0x00280558	sbtlCallBtlGetSkilltbl2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlCheckBit; calls sbtlGetSkilltbl
 0x002807C8	sbtlCheckBit	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.sBtlCheckBit score 9.6 flag I: calls2 calls-of-match votes2 st1:call r1+r2
 0x002807D8	sbtlSetBit	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.sBtlSetBit score 8.1 flag I: calls2 calls-of-match votes2 st1:call r1+r2
-0x002807F0	sbtlGetDamage	hd-inferred	hd: Raidou HD sBtlCalc.sBtlGetDamage, score 7.0 band B
+0x002807F0	sbtlResetBit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sbtlplayer.h sBtlResetBit(u32 *data, s32 bit), body clears the bit; neighbours sbtlCheckBit/sbtlSetBit; replaces sbtlGetDamage
 0x00280810	sbtlCallBtlGetMotionVisualDataSBtlVi	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlGetDamage; calls sbtlGetMotionVisualData_sbtlVisual
 0x00280A50	sbtlCallBtlSearchUnitID4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlGetNearTarget_Random; calls sbtlSearchUnit_ID
 0x00280DF0	sbtlGetNearTarget_Random	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.sBtlGetNearTarget_Random score 7.1 flag I: calls3 callers-of-match votes3 st2:call r1-disagree:0x261950
@@ -8056,7 +8056,7 @@
 0x002D57E0	sbtlCheckAutoSkill_Action	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckAutoSkill_Action score 10.8 flag I: calls2 next calls-of-match votes2 st1:call r1+r2
 0x002D5860	CalcAutoSkill	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCalc.CalcAutoSkill score 7.4 flag -: calls5 callers-of-match votes5 st2:call r1-disagree:0x29b958
 0x002D5D00	sbtlGetDropMoney	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetDropMoney score 8.1 flag I: prev gap4/3 st1:gap r1+r2
-0x002D5D30	LimitRange_2	hd	hd: Raidou HD sBtl.LimitRange_2, score 7.2 band B
+0x002D5D30	sbtlCheckEvtBit_Table	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is evtBitCheck(u16 table[idx]) (IDA 0x29bc98); HD LimitRange_2(s16*,l,h) is a different function; replaces LimitRange_2
 0x002D5D90	sbtlGetSkillCost	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetSkillCost score 7.9 flag I: calls3 calls-of-match votes3 st2:call r2-only
 0x002D5E28	sbtlGetMagCost	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetMagCost score 5.2 flag I: calls1 prev calls-of-match-uniq votes2 st2:call r2-only
 0x002D5E30	sbtlCheckUseSkill	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckUseSkill score 6.6 flag I: calls2 prev callee-index votes2 st2:cidx r2-only

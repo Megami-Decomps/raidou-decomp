@@ -249,7 +249,8 @@ struct SBTLUNIT_WORK {
     struct SBTL_AISYO_TBL aisyoBase;
     u8 pad32C[0x330 - 0x32C];
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
-    u8 pad348[0x358 - 0x348];
+    s8 field348;
+    u8 pad349[0x358 - 0x349];
     u32 field358;
     s32 field35C;
     s16 field360;

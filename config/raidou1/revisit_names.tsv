@@ -3157,7 +3157,6 @@
 0x00260E88	sbtlCallBtlResetCharge2	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckBit; calls sbtlResetCharge
 0x00261098	sbtlCallBtlSearchUnitID9	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckBit; calls sbtlSearchUnit_ID
 0x00261400	sbtlCallBtlSearchUnitID10	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckBit; calls sbtlSearchUnit_ID
-0x00261580	sbtlGetDamage	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlGetDamage, score 7.0 band B
 0x00261800	sbtlCallBtlSearchUnitID11	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetSummon_Unit; calls sbtlSearchUnit_ID
 0x00261950	sbtlCallMemset11	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetSummon_Unit; calls memset
 0x00261D08	sbtlCallBtlSearchUnitID12	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetSummon_Unit; calls sbtlSearchUnit_ID
@@ -3170,14 +3169,11 @@
 0x00262B90	sbtlCallBtlCheckDamageTarget5	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckTargetEquation; calls sbtlCheckDamageTarget
 0x00262E68	sbtlCallBtlGetSkilltbl3	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckTargetEquation; calls sbtlGetSkilltbl
 0x00263068	sbtlCallBtlGetSkilltbl4	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckTargetEquation; calls sbtlGetSkilltbl
-0x00263650	sbtlCallBtlGetSkilltbl5	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlAI_SetSeikaku_Action; calls sbtlGetSkilltbl
-0x002637B8	sbtlCallBtlGetSkilltbl6	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlAI_SetSeikaku_Action; calls sbtlGetSkilltbl
 0x00264270	sbtlCheckAreaCount	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEquat.sBtlCheckAreaCount, score 7.6 band B
 0x00264370	sbtlCheckArea_Atk	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEquat.sBtlCheckArea_Atk, score 8.1 band B
 0x00264488	sbtlCheckArea_Masic	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEquat.sBtlCheckArea_Masic, score 8.8 band B
 0x00264890	sbtlCallBtlCheckDamageTarget6	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlGetTargetUnit; calls sbtlCheckDamageTarget
 0x00264A40	sbtlGetTargetUnit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlAI.sBtlGetTargetUnit, score 7.8 band B
-0x00264BB0	sbtlCallSetOrderTarget	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlGetTargetUnit; calls SetOrderTarget
 0x002650B0	sbtlCheckScriptData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlAI.sBtlCheckScriptData, score 9.6 band B, hd-ab: calls2 next calls-of-match votes2 st1:call r1+r2
 0x00265190	sbtlLeaf64	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlCheckScriptData; no named callee, caller or string
 0x00265228	sbtlCallMemset12	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetAIMode; calls memset
@@ -3661,7 +3657,6 @@
 0x0029BCF8	sbtlCallBtlGetDevilDataSBtlSub5	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetDevilData_sbtlSub
 0x0029BE78	sbtlCheckCost	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlCheckCost, score 7.3 band B
 0x0029BE98	sbtlCallBtlSearchUnitID34	func	tier=D	derived-callee	na	unit sbtl; calls sbtlSearchUnit_ID
-0x0029BFB8	sbtlCallBtlGetSkilltbl22	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetSkilltbl
 0x0029C1F0	sbtlRefSbtl64	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x0029C258	sbtlRefDDS3GBWK22	func	tier=D	derived-data	na	unit sbtl; references DDS3_GBWK
 0x0029C288	sbtlRefSbtl63	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
@@ -19471,6 +19466,7 @@
 0x002615A0	sbtlSetSummon_Unit	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlUnit.sBtlSetSummon_Unit score 6.9 flag I: calls4 callers-of-match votes4 st1:call r2-disagree:0x280810
 0x00261FB8	BeginSetsuma	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.BeginSetsuma score 6.7 flag -: calls3 callers-of-match votes2 st1:call r1-only
 0x00262A48	SEquationno_01	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlAI.SEquationno_01 score 6.3 flag -: calls3 callers-of-match votes2 st1:call r2-disagree:0x283108
+0x00264BB0	TEquationno_01	func	tier=B	hd-role	na	HD sBtlGetTargetUnit calls TEquationno_01 where Raidou sbtlGetTargetUnit calls sbtlCallSetOrderTarget (flg & 1 arm and fallback); replaces sbtlCallSetOrderTarget
 0x00265198	Create_sbtlAI	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlAI.Create score 6.3 flag -: calls1 prev~ next gap1/2 st1:gap r1+r2
 0x00266688	sbtlDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlScript.sBtlDamage score 5.5 flag I: calls2 prev calls-of-match votes2 st1:call r2-disagree:0x288200
 0x00269FE0	sbtlScriptSub_ResetBadStatus	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCommand.sBtlScriptSub_ResetBadStatus score 6.2 flag -: calls4 callers-of-match votes3 st1:call r2-disagree:0x28bac0
@@ -19508,6 +19504,7 @@
 0x00297128	sbtlGetVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetVisualData(major, id): per-major VISUALDATA_WORK table; replaces sbtlGetMotionVisualData
 0x00297170	sbtlGetMotionVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
 0x0029B3C8	sbtlSetAutoSkill_GB	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlSetAutoSkill_GB score 5.9 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2d4ff0
+0x0029BFB8	sbtlCheckCost_SkillID	func	tier=B	hd-role	na	HD SEquationno_12 returns sBtlCheckCost_SkillID(wk, skillid, 0), the call at the same place in Raidou SEquationno_12; replaces sbtlCallBtlGetSkilltbl22
 0x0029C608	sbtlCheckKuishibari	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlCheckKuishibari score 6.1 flag I: calls4 callee-index votes3 st1:cidx r2-disagree:0x2d68b8
 0x0029EE00	sbtlGetDamage_GB	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlGetDamage_GB score 6.0 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2d9ad8
 0x002A0910	sbtlGetDamage_The_W	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlCalc.sBtlGetDamage_The_W score 6.3 flag I: calls1 callers-of-match-uniq st1:call r1+r2

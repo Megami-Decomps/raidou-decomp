@@ -6,6 +6,6 @@
 struct AW_WORK_t;
 
 s32 sbtlResetColor(u32 color);
-s32 sbtlResetNSTOP(void);
+void sbtlResetNSTOP(void);
 
 #endif

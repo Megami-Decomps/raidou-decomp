@@ -16,7 +16,7 @@
 #include "sBtlSM.h"
 #include "sbtlSub.h"
 
-s32 sbtlCallBtlGetSkilltbl22(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg)
+u8 sbtlCheckCost_SkillID(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg)
 {
     struct SBTLSKILLP_TBL *skill;
     struct SBTLUNIT_WORK *target;

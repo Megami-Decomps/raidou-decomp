@@ -21,6 +21,7 @@ BST sbtlGetBadStatus(struct sdatUnitWork_t *unit);
 /* HP (isMp 0) or MP gain to add to unit, cut so it stops at the maximum. */
 s32 LimitRange(struct sdatUnitWork_t *unit, s32 value, s32 isMp);
 s32 sbtlCallLimitRange(struct SBTLUNIT_WORK *wk, s32 value);
+s32 sbtlCheckEvtBit_Table(s32 idx);
 s32 sbtlCheckKuishibari(struct SBTLUNIT_WORK *wk, s32 damage);
 s32 sbtlCallBtlGetSkilltbl21(SKLID id, s16 *badst, s16 *power);
 s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk);

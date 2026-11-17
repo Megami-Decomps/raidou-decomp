@@ -15,6 +15,9 @@
 #include "sBtlSM.h"
 #include "sBtlItem.h"
 #include "sdatUnit.h"
+#include "dat.h"
+#include "sBtlEXP.h"
+#include "sBtlEncount.h"
 #include "sdfMemory.h"
 #include "sdfChip.h"
 #include "mdlManager.h"
@@ -67,9 +70,45 @@ void sbtlSetVibe(SBTLPLAYER_VTYPE mode)
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlSetVibe);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID5);
+s32 sbtlCallBtlSearchUnitID5(void) {
+    s32 id;
+    struct SBTLUNIT_WORK *unit;
 
+    if (wk_sbtl->flg & 0x4000000) {
+        id = wk_sbtl->unitPadID;
+    } else {
+        id = wk_sbtl->targetUnitID;
+    }
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
+    if (unit != NULL && sbtlCheckDamageTarget(unit) != 0) {
+        if (wk_sbtl->mode != 6) {
+            return id;
+        }
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->scrWarp[0]);
+        if (unit != NULL && sbtlCheckDamageTarget(unit) != 0) {
+            return wk_sbtl->scrWarp[0];
+        }
+    }
+    return wk_sbtl->targetUnitID;
+}
+
+/* NON_MATCHING: 14 of 29 words match. retail keeps the first search result in v0 to the exit and copies it to s1 in a delay slot, reloading wk_sbtl into a2. Logic as retail. */
+#ifdef NON_MATCHING
+struct SBTLUNIT_WORK *sbtlGetPlayerUnit(s32 id) {
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
+    struct SBTLUNIT_WORK *target;
+
+    if (wk_sbtl->mode == 6) {
+        target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->scrWarp[0]);
+        if (target != NULL && sbtlCheckDamageTarget(target) != 0) {
+            unit = target;
+        }
+    }
+    return unit;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlGetPlayerUnit);
+#endif
 
 s32 sbtlCheckPad(void)
 {
@@ -135,19 +174,98 @@ s32 sbtlCallFalseHuuma(struct SBTLUNIT_WORK *wk)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlRefSbtl36);
+s32 sbtlRefSbtl36(void) {
+    wk_sbtl->modebk = wk_sbtl->mode;
+    wk_sbtl->mode = 7;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlActiveAction);
+s32 sbtlActiveAction(void) {
+    wk_sbtl->mode = wk_sbtl->modebk;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetItemtbl);
+void sbtlCallBtlGetItemtbl(void) {
+    SBTLITEM_TBL *item;
 
+    if (wk_sbtl->battleMode != 3) {
+        sbtlProcSub(wk_sbtl->effList, 144, 1);
+        sbtlProcSub(wk_sbtl->effList, 145, 1);
+        sbtlProcSub(wk_sbtl->effList, 146, 1);
+        sbtlProcSub(wk_sbtl->effList, 147, 1);
+        sbtlProcSub(wk_sbtl->effList, 148, 1);
+        item = sbtlGetItemtbl(wk_sbtl->equipBullet);
+        sbtlProcSub(wk_sbtl->effList, item->sklid, 1);
+    }
+}
+
+/* NON_MATCHING: 14 of 73 words match. frame layout: retail has the VU0 direction at sp+0 and the zeroed offset vector at sp+16 (reloaded with a fresh addiu a0,sp,16), mine swaps them whatever the declaration order (u128 dir via _MEMOPS, f32[4] and sdfVector4_t ofs tried). Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallMemset8(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *target) {
+    sdfVector4_t ofs;
+    u128 dir;
+
+    memset(&ofs, 0, sizeof(ofs));
+    sbtlGetRotateDeg(&wk->rot, 90.0f);
+    SDF_VU0_STOREVECTOR_MEMOPS(dir);
+    ofs.z = -(wk->model->field120 + target->model->field11C);
+    SDF_VU0_LOADVECTOR_B(&ofs);
+    SDF_VU0_LOADVECTOR_MEMOPS(dir);
+    ToMatrix();
+    SDF_VU0_APPLYMATRIX_B();
+    SDF_VU0_LOADVECTOR(&wk->pos);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&target->pos);
+    SDF_VU0_LOADVECTOR(&wk->rot);
+    SDF_VU0_STOREVECTOR(&target->rot);
+    if (!(target->flg & 0x20)) {
+        sbtlSetMotion_sbtlUnit(target, 0, 0, 0, 0);
+    }
+    target->flg &= ~1;
+    wk_sbtl->modebk = 1;
+    wk->flg &= ~0x800000;
+    wk->model->flags &= ~0x20;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallMemset8);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlResetCombine);
+void sbtlResetCombine(void) {
+    wk_sbtl->gunskillid = 0;
+}
 
+/* NON_MATCHING: 27 of 48 words match. retail sets v0 = 1 at a join after the mode 1 arm and the default reaches the epilogue with the compare constant. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallObjectBaseSetPadControl(s32 arg, struct SBTLUNIT_WORK *wk, s32 mode) {
+    switch (mode) {
+    case 0:
+        wk_sbtl->unitPadID = wk->field1A0;
+        wk_sbtl->flg = (wk_sbtl->flg | 0x4000000) & ~2;
+        wk->flg &= ~6;
+        wk->vstatus |= 0x4000;
+        return 1;
+    case 1:
+        wk_sbtl->flg &= ~0x4000002;
+        wk->flg |= 6;
+        dds3ObjectBaseSetPadControl(wk->pBasic, NULL);
+        wk->vstatus &= ~0x4000;
+        return 1;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallObjectBaseSetPadControl);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlLeaf63);
+s32 sbtlLeaf63(struct SBTLUNIT_WORK *wk) {
+    u32 status = wk->status;
+
+    if (status >= 7 && (status < 11 || status == 34)) {
+        return 0;
+    }
+    return 1;
+}
 
 s32 sbtlNormalProcNakamaSub(struct SBTLUNIT_WORK *wk)
 {
@@ -667,11 +785,60 @@ s32 sbtlCallBtlGetBadStatus2(struct SBTLUNIT_WORK *wk)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlSetNSTOP);
+void sbtlSetNSTOP(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlResetNSTOP);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && unit->hModel != NULL) {
+            unit->vstatus |= 0x8000000;
+        }
+    }
+}
 
+void sbtlResetNSTOP(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && unit->hModel != NULL) {
+            unit->vstatus &= ~0x8000000;
+        }
+    }
+}
+
+/* NON_MATCHING: 7 of 23 words match. retail keeps the result in v0 from the first delay slot and wk_sbtl in a1. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlRefSbtl12(void) {
+    s32 result = 0;
+    s32 no;
+
+    if (wk_sbtl->mode == 14) {
+        no = wk_sbtl->field4B6;
+        result = 1;
+        if (no != 4) {
+            result = 1;
+            if (no != 2) {
+                result = 1;
+                if (no != 8) {
+                    if (no == 9) {
+                        return 1;
+                    }
+                    result = 0;
+                    if (no == 10) {
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlRefSbtl12);
+#endif
 
 /* NON_MATCHING: 186 of 254 words match. Retail returns 1 with bne+delay where cc1 uses bnel (return-0 reorg class), and keeps a redundant ret = 2 after RestartBattle in mode 16 that cc1 drops; mode switch case order and store order taken from the asm; pad control proc (dds3BasicControlProc_t), retail reads neither argument; the mode procs (sbtlCallBtlGetSkilltbl2, sbtlPlayerRKaitenInit, KaihiProc_Nakama, GuardProc_Nakama, sbtlLeaf3) get s16 *mode = &wk_sbtl->mode as a second, unused argument (a1 set in the call's fallthrough, also in nakamamode_UnitPad); SBTL_WORK field440/442/444/478; vector checked (32 rows: flag early returns, mode 1 with ret 0 (walk_counter reset), the 0x478 counter and the field480 store at >= 20); other modes checked against the asm only. */
 #ifdef NON_MATCHING
@@ -869,7 +1036,109 @@ s32 nakamamodeCallGetActiveScene(dds3PoseSet_t *pose, dds3Basic_t *basic)
 INCLUDE_ASM(const s32, "code_r1_00259A88", nakamamodeCallGetActiveScene);
 #endif
 
+/* NON_MATCHING: 16 of 175 words match. retail tests flg&0x10000 and flg&8 into separate temps (mine merges when written as one condition, nested ifs fix it) and keeps the flg load in a0 / mask in v1 where mine uses v1 / v0. Logic as retail. */
+#ifdef NON_MATCHING
+s32 nakamamode_UnitPad(dds3PoseSet_t *pose, dds3Basic_t *basic) {
+    struct SBTLUNIT_WORK *unit;
+    sdfVector4_t oldpos;
+    s32 ret;
+    s32 status;
+    u32 flg;
+
+    flg = wk_sbtl->flg;
+    if ((flg & 0x10000) != 0) {
+        if ((flg & 8) != 0) {
+            return 0;
+        }
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
+        if (unit != NULL) {
+            unit->mv_spd.z = 0;
+            unit->mv_spd.x = 0;
+            unit->field424 = 0;
+            if ((wk_sbtl->flg & 0x40) == 0 || wk_sbtl->mode == 7 || wk_sbtl->mode == 16 || wk_sbtl->mode == 8) {
+                SDF_VU0_LOADVECTOR(&unit->pos);
+                SDF_VU0_STOREVECTOR(&oldpos);
+                SDF_VU0_STOREVECTOR(&unit->nextpos);
+                ret = 0;
+                if (sbtlCallBtlGetBadStatus3(unit) != 0) {
+                    sbtlCallBtlGetBadStatus2(unit);
+                    if (sbtlCallBtlCheckDamageTarget3(unit) == 0) {
+                        switch (wk_sbtl->mode) {
+                        case 1:
+                            ret = NormalProc_Nakama(unit);
+                            break;
+                        case 2:
+                            ret = 2;
+                            break;
+                        case 3:
+                            ret = AtkProc_Nakama(unit, &wk_sbtl->mode);
+                            break;
+                        case 7:
+                            status = sbtlGetMenuStatus();
+                            if (status == 1) {
+                                sbtlCallBtlSetReturn(unit);
+                                ret = 2;
+                            } else {
+                                ret = 2;
+                                if (status == 2) {
+                                    RestartBattle();
+                                    sbtlCallBtlGetScrollID();
+                                    sbtlActiveAction();
+                                    wk_sbtl->gstat[1] = 0;
+                                    wk_sbtl->gstat[0] = 0;
+                                    sbtlResetNSTOP();
+                                    wk_sbtl->flg2 &= ~2;
+                                    sbtlResetMidashiAnim(0);
+                                    sbtlResetSelectAnim(0);
+                                    wk_sbtl->field442 = 0;
+                                    wk_sbtl->field444 = 0;
+                                    wk_sbtl->field436 = 0;
+                                    wk_sbtl->field440 = 0;
+                                    sbtlResetColor(0x80808080);
+                                    ret = 2;
+                                }
+                            }
+                            break;
+                        case 8:
+                            ret = sbtlCallLightSet(unit);
+                            break;
+                        case 11:
+                            if ((wk_sbtl->flg & 0x40) == 0) {
+                                ret = KaihiProc_Nakama(unit, &wk_sbtl->mode);
+                            }
+                            break;
+                        case 13:
+                            if ((wk_sbtl->flg & 0x40) == 0) {
+                                ret = GuardProc_Nakama(unit, &wk_sbtl->mode);
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                        if (ret == 0) {
+                            if (unit->next_motionID == 5) {
+                                sbtlSetMotion_sbtlUnit(unit, 0, 0, 0, 0);
+                            }
+                        } else if (ret == 1) {
+                            if (sbtlSetMotion(unit, SBTLUNIT_MOTION_WALK) != 0) {
+                                sbtlSetMotion_sbtlUnit(unit, 5, 0, 0, 0);
+                            }
+                        }
+                        if (unit != NULL) {
+                            CheckMapHit(unit, &oldpos);
+                        }
+                        return 1;
+                    }
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", nakamamode_UnitPad);
+#endif
 
 s32 CheckStop_BadStatus(struct SBTLUNIT_WORK *wk)
 {
@@ -939,23 +1208,275 @@ s32 sbtlCallBtlGetBadStatus3(struct SBTLUNIT_WORK *wk)
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetBadStatus3);
 #endif
 
+/* NON_MATCHING: 42 of 46 words match. i and n swap s2/s3. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlGetRandomTarget(struct SBTLUNIT_WORK *wk, s32 *skill0, s32 *skill1) {
+    s32 skills[2];
+    s32 *skill;
+    s32 n;
+    s32 i;
+
+    skills[0] = 0;
+    skills[1] = 0;
+    skill = &wk->haveskill[2];
+    n = 0;
+    for (i = 0; i < 10 && n < 2; i++) {
+        if (!(sbtlGetSkilltbl(*skill)->type & 0x3000)) {
+            skills[n++] = *skill;
+        }
+        skill++;
+    }
+    *skill0 = skills[0];
+    *skill1 = skills[1];
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlGetRandomTarget);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlNormalProcNakamaSub2);
+s32 sbtlNormalProcNakamaSub2(s32 no) {
+    if (no < 120) {
+        return no < 118;
+    }
+    return 1;
+}
 
+/* NON_MATCHING: 164 of 176 words match. retail's local frame has an 8-byte hole before the two skill slots (sbtlGetRandomTarget out params at sp+40/44, mine 32/36) and its mode-13 block fills the jal slot with field488 = 0 where mine uses skillid = 0. Logic as retail. */
+#ifdef NON_MATCHING
+s32 NormalProc_Nakama(struct SBTLUNIT_WORK *wk) {
+    SBTL_MOTION_VISUAL *visual;
+    BST bst;
+    f32 key;
+    s32 skill0;
+    s32 skill1;
+    sdfVector4_t dir;
+    sdfVector4_t pos;
+    f32 deg;
+    s32 ret;
+
+    ret = 0;
+
+    visual = sbtlGetVisualData(wk->major, wk->minor);
+    bst = sbtlGetBadStatus(&wk->unit);
+    sbtlGetRandomTarget(wk, &skill0, &skill1);
+    if (sbtlNormalProcNakamaSub(wk) != 0) {
+        if (dds3PadButtonState[35] != 0) {
+            if (wk_sbtl->field3A8 == 0) {
+                wk->skillid = SKLID_NONE;
+                wk_sbtl->mode = 13;
+                wk_sbtl->field494 = 0;
+                wk_sbtl->field484 = 0;
+                wk_sbtl->field488 = 0;
+                sbtlCallBtlEndAction(wk, 15, 0);
+                sbtlSetMotion_sbtlUnit(wk, 29, 0, 0, 0);
+                return 2;
+            }
+        } else if (dds3PadButtonState[0] < 0) {
+            if (wk_sbtl->field484 == 0) {
+                wk->skillid = SKLID_ATK;
+                wk_sbtl->field484 = 1;
+                wk_sbtl->mode = 3;
+                return 2;
+            }
+        } else if (dds3PadButtonState[2] < 0) {
+            sbtlGetSkilltbl(skill0);
+            if (skill0 != 0) {
+                if (bst != BST_MOUDOKU) {
+                    wk->skillid = skill0;
+                    if (sbtlCheckUseSkill(wk, skill0) == 0) {
+                        return 2;
+                    }
+                    if (sbtlNormalProcNakamaSub2(wk->skillid) != 0) {
+                        wk_sbtl->field484 = 1;
+                        wk_sbtl->mode = 3;
+                    }
+                    return 2;
+                }
+            }
+        } else if (dds3PadButtonState[1] < 0) {
+            sbtlGetSkilltbl(skill1);
+            if (skill1 != 0) {
+                if (bst != BST_MOUDOKU) {
+                    wk->skillid = skill1;
+                    if (sbtlCheckUseSkill(wk, skill1) == 0) {
+                        return 2;
+                    }
+                    if (sbtlNormalProcNakamaSub2(wk->skillid) != 0) {
+                        wk_sbtl->field484 = 1;
+                        wk_sbtl->mode = 3;
+                    }
+                    return 2;
+                }
+            }
+        }
+    }
+    key = GetAnlogKey(wk, &dir);
+    if ((wk->vstatus & 0x80) != 0) {
+        key = 0.0f;
+    }
+    if (sbtlNormalProcNakamaSub(wk) != 0 && key >= 48.0f) {
+        wk->mv_spd.z = visual->field04;
+        deg = mapGetScreenDir(wk->pos.x, wk->pos.y, wk->pos.z, 0.0f);
+        SetRotateMatrixY(-deg * 0.017453293f);
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_SCALEVECTOR(2.0f);
+        SDF_VU0_LOADVECTOR_B(&wk->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR_NOMEM(&pos);
+        sbtlGetRotate(wk, &pos);
+        ret = 1;
+        UnitMV(wk, &pos);
+        sbtlCallBtlEndAction(wk, 2, 0);
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", NormalProc_Nakama);
+#endif
 
+/* NON_MATCHING: 156 of 163 words match. delay-slot choice: retail fills sbtlGetSkilltbl's jal slot with lw a0,skillid after the field484 store, mine hoists the lw above the lw/addiu/sw. Logic as retail. */
+#ifdef NON_MATCHING
+s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
+    struct SBTLUNIT_WORK *target;
+    f32 deg;
+
+    wk_sbtl->field494++;
+    wk_sbtl->field494 = (wk_sbtl->field494 <= 0) ? 0 : (wk_sbtl->field494 > 0x7FFF) ? 0x7FFF : wk_sbtl->field494;
+    switch (wk_sbtl->field484) {
+    case 1:
+        wk->model->mode = 15;
+        sbtlSetUseSkill_sbtlActAI(wk, wk->skillid, 0);
+        sbtlCallBtlEndAction(wk, 12, 0);
+        wk_sbtl->field484++;
+        if ((sbtlGetSkilltbl(wk->skillid)->area & 0x4000) != 0) {
+            wk->model->field104 = wk->field1A0;
+        } else {
+            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 4, 150.0f, 0.6f, 0.1f);
+            if (wk->model->field104 != -1
+                || (wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 3, 1800.0f, 0.6f, 0.1f), wk->model->field104 != -1)) {
+                target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+                if (target != NULL) {
+                    deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, &target->pos, 1.0f);
+                    SDF_VU0_STOREVECTOR(&wk->rot);
+                    sbtlAddUnitDeg(wk, deg);
+                    FromEuler(0.0f, wk->angleY * 0.017453293f, 0.0f);
+                    SDF_VU0_STOREVECTOR(&wk->rot);
+                    SDF_VU0_STOREVECTOR(&wk->rotbk);
+                }
+            }
+        }
+        break;
+    case 2:
+        if (wk->hModel->first->frame >= 0.0f) {
+            wk_sbtl->field494 = 0;
+            wk_sbtl->field484 = 3;
+            wk_sbtl->field48C = 0;
+            sbtlCheckMHTData(wk, wk->skillid);
+            sdfRemoveTaskItem(wk, 1);
+        }
+        break;
+    case 3:
+        if (sbtlCallBtlSearchEffectSABActer(wk)) {
+            wk_sbtl->mode = 1;
+            wk_sbtl->gstat[0] = 0;
+            wk_sbtl->gstat[1] = 0;
+            sbtlCallFalseHuuma(wk);
+            sbtlCallBtlEndAction(wk, 1, 0);
+            sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+        }
+        break;
+    }
+    return 2;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", AtkProc_Nakama);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSetReturn);
 
+/* NON_MATCHING: 70 of 77 words match. register allocation of the field358[summonIndex[0]] == 2 test: retail hoists li a2,2 and loads wk_sbtl into a1/lbu a0, mine a0/a1. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlSetReturn(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
+    f32 deg;
+
+    if (sbtlCheckBit(&wk_sbtl->summonBit, wk_sbtl->summonIndex[0])) {
+        if (wk_sbtl->field358[wk_sbtl->summonIndex[0]] == 2) {
+            sbtlCreateDvltk_Priority(wk_sbtl->dvltkList, unit, SBTLDVLTK_MODE_RETURN);
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, &unit->pos, 1.0f);
+                SDF_VU0_STOREVECTOR(&wk->rot);
+                sbtlAddUnitDeg(wk, deg);
+            }
+            sbtlCallBtlGetSkilltbl8(unit, 0x400);
+            sbtlForceDelete_ID_Acter(wk_sbtl->effList, unit, EFFID_RENKEIOR);
+            sbtlCallBtlSearchUnitID4(wk_sbtl->summonIndex[0], 0);
+            sbtlResetBit(&wk_sbtl->summonBit, wk_sbtl->summonIndex[0]);
+            if (unit->bst_effserialID2 != -1) {
+                sbtlDeleteEffectData_SerialID2(wk_sbtl->effList, unit->bst_effserialID2);
+                unit->bst_effserialID2 = -1;
+            }
+            return 1;
+        }
+        return 0;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlSetReturn);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallHirukoYukaGoIdx2B);
+s32 sbtlCallHirukoYukaGoIdx2B(u32 color) {
+    fldHirukoYukaGo_Idx2_B(color);
+    sbtlCallSetColor2(color);
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlResetColor);
+s32 sbtlResetColor(u32 color) {
+    fldHirukoYukaGo_Idx2_B(color);
+    sbtlCallSetColor3(color);
+    return 1;
+}
 
+/* NON_MATCHING: 57 of 111 words match. mine is 72 bytes shorter: retail reloads wk_sbtl after each sbtlSearchEffect_SAB call and keeps sbtlReleaseItemList in both arms of both tests, gcc shares them. Logic as retail. */
+#ifdef NON_MATCHING
+void sbtlCallBtlResetMenuPara(void) {
+    SBTLITEM_TBL *item;
+
+    sbtlSbattle3();
+    sbtlRefSbtl36();
+    sbtlResetMenuPara();
+    sbtlCallHirukoYukaGoIdx2B(0x80303030);
+    wk_sbtl->field436 = 0;
+    wk_sbtl->field224 = 0;
+    wk_sbtl->flg2 |= 2;
+    wk_sbtl->field440 = 0;
+    wk_sbtl->field442 = 0;
+    sbtlCallGetProcessData43();
+    sbtlSummonMenuFuncOpen00Sub(0);
+    if (wk_sbtl->field230 != 0
+        && (sbtlSearchEffect_SAB(wk_sbtl->effList, wk_sbtl->field230, 1) != 0
+            || sbtlSearchEffect_SAB(wk_sbtl->effList, wk_sbtl->field230, 2) != 0
+            || sbtlSearchEffect_SAB(wk_sbtl->effList, wk_sbtl->field230, 5) != 0)) {
+        sbtlReleaseItemList(wk_sbtl->itemList);
+    } else {
+        sbtlReleaseItemList(wk_sbtl->itemList);
+        sbtlEntryItemList(wk_sbtl->itemList);
+    }
+    if (wk_sbtl->equipBulletBk != 0
+        && ((item = sbtlGetItemtbl(wk_sbtl->equipBulletBk), sbtlSearchEffect_SAB(wk_sbtl->effList, item->sklid, 1) != 0)
+            || sbtlSearchEffect_SAB(wk_sbtl->effList, item->sklid, 2) != 0
+            || sbtlSearchEffect_SAB(wk_sbtl->effList, item->sklid, 5) != 0)) {
+        sbtlReleaseItemList(wk_sbtl->bulletList);
+    } else {
+        sbtlReleaseItemList(wk_sbtl->bulletList);
+        sbtlEntryItemList_Type(wk_sbtl->bulletList, 4);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlResetMenuPara);
+#endif
 
 f32 GetAnlogKey(struct SBTLUNIT_WORK *wk, sdfVector4_t *dir)
 {
@@ -1223,9 +1744,23 @@ s32 sbtlCallGetAnlogKey(struct SBTLUNIT_WORK *wk, s32 input)
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetAnlogKey);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlRefSbtl13);
+s32 sbtlRefSbtl13(void) {
+    SBTL_WORK *work = wk_sbtl;
+    SBTL_STAGE_DATA *stage = sbtlData100;
+    u32 flg;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlRefSbtl14);
+    stage += work->stageNo;
+    if (stage->flags & 0x10) {
+        return 2;
+    }
+    flg = work->flg & 0x400000;
+    return flg != 0;
+}
+
+void sbtlRefSbtl14(struct SBTLUNIT_WORK *wk) {
+    wk_sbtl->field4A8 = 1;
+    wk_sbtl->field4AC = 0;
+}
 
 void sbtlResetCharge(struct SBTLUNIT_WORK *wk)
 {
@@ -1266,9 +1801,63 @@ s32 ChkHuuma_PlayerInputOk(struct SBTLUNIT_WORK *wk)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallMemset9);
+/* NON_MATCHING: 6 of 113 words match. mine keeps the local array addresses in an extra callee-saved register (s2, 8 bytes longer) where retail rematerializes addiu v1,sp,N before every lqc2/sqc2. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallMemset9(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *target, f32 frame) {
+    sdfVector4_t posA;
+    sdfVector4_t posB;
+    f32 a[4];
+    f32 b[4];
+    f32 c[4];
+    f32 dot;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", NormalProc);
+    memset(a, 0, sizeof(a));
+    a[0] = 100.0f;
+    memset(b, 0, sizeof(b));
+    b[0] = 100.0f;
+    memset(c, 0, sizeof(c));
+    sbtlGetUnitHelperPos(wk, SBTLUNIT_MARK__1SHOT);
+    SDF_VU0_STOREVECTOR(&posA);
+    sbtlGetUnitHelperPos(target, SBTLUNIT_MARK__1SHOT);
+    SDF_VU0_STOREVECTOR(&posB);
+    a[1] = posA.y;
+    b[1] = posB.y;
+    c[1] = posA.y;
+    SDF_VU0_LOADVECTOR(b);
+    SDF_VU0_LOADVECTOR_B(c);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(b);
+    SDF_VU0_LOADVECTOR(a);
+    SDF_VU0_LOADVECTOR_B(c);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(a);
+    SDF_VU0_LOADVECTOR_B(b);
+    SDF_VU0_INNERPRODUCT(dot);
+    if (dot > 0.5f || dot < 0.0f || posB.y > posA.y) {
+        return sbtlSetMotion_sbtlUnit(wk, 6, (s32)frame, 0, 1);
+    }
+    return sbtlSetMotion_sbtlUnit(wk, 26, (s32)frame, 0, 1);
+}
+#else
+INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallMemset9);
+#endif
+
+s32 NormalProc(struct SBTLUNIT_WORK *wk) {
+    s32 id = sbtlCallMemset11(wk, &wk->rot, 3, 300.0f, 0.59999997f, 0.099999995f);
+    s32 id2;
+
+    wk->model->field104 = id;
+    if (id == -1) {
+        id2 = sbtlCallMemset11(wk, &wk->rot, 3, 1600.0f, 0.59999997f, 0.099999995f);
+        wk->model->field104 = id2;
+        if (id2 == -1) {
+            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 3, 3000.0f, -1.0f, -1.0f);
+        }
+    }
+    return wk->model->field104;
+}
 
 /* NON_MATCHING: 184 of 254 words match. cc1 keeps &wk->rot in s0 across FromEuler in step 2 where retail rematerialises it, which shifts registers; sbtlRefSbtl10 takes the unit (retail passes it); new SBTLITEM_TBL (HD first six fields, 24 bytes) and sbtlGetItemtbl in sBtlItem.h; float literals 0.6f/0.1f give the retail bits (ee-gcc rounds them down); vector checked (32 rows, steps 1 and 2, stores match). */
 #ifdef NON_MATCHING
@@ -1377,7 +1966,111 @@ s32 GuardProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode)
     return 2;
 }
 
+/* NON_MATCHING: 50 of 270 words match. early-return layout: retail jumps from both GetAnlogKey and map-hit checks to two out-of-line copies of the FalseHuuma/SetMotion/SetUseSkill tail (return-0 reorg class) and mine inlines them with branch-likely, shifting everything after +0x98. Logic as retail. */
+#ifdef NON_MATCHING
+s32 KaihiProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
+    SBTL_WORK *w;
+    f32 pos[4];
+    sdfVector4_t dir;
+    f32 speed;
+    f32 sumLevelA;
+    f32 sumLevelB;
+    f32 cntA;
+    f32 cntB;
+    f32 rate;
+    s32 i;
+    struct SBTLUNIT_WORK *u;
+    s32 level;
+    s32 hit;
+
+    wk_sbtl->field494++;
+    wk_sbtl->field494 = (wk_sbtl->field494 <= 0) ? 0 : (wk_sbtl->field494 > 0x7FFF) ? 0x7FFF : wk_sbtl->field494;
+    if (!(GetAnlogKey(wk, &dir) >= 48.0f) && wk_sbtl->field484 < 2) {
+        sbtlCallFalseHuuma(wk);
+        sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+        sbtlSetUseSkill_sbtlActAI(wk, SKLID_NONE, 0);
+        return 2;
+    }
+    speed = wk->max_mvspd.z;
+    SetRotateMatrixY(-mapGetScreenDir(wk->pos.x, wk->pos.y, wk->pos.z, 0.0f) * 0.017453293f);
+    SDF_VU0_LOADVECTOR(&dir);
+    SDF_VU0_APPLYMATRIX();
+    SDF_VU0_STOREVECTOR(&dir);
+    SDF_VU0_LOADVECTOR(&dir);
+    SDF_VU0_SCALEVECTOR(speed);
+    SDF_VU0_LOADVECTOR_B(&wk->pos);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(pos);
+    hit = sbtlCallBtlCheckMapHitData(pos[0], pos[2]);
+    w = wk_sbtl;
+    if (hit && w->field484 < 2) {
+        sbtlCallFalseHuuma(wk);
+        sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+        sbtlSetUseSkill_sbtlActAI(wk, SKLID_NONE, 0);
+        return 2;
+    }
+    switch (w->field484) {
+    case 0:
+        i = 0;
+        sumLevelA = 0.0f;
+        sumLevelB = 0.0f;
+        cntA = 0.0f;
+        cntB = 0.0f;
+        if (wk_sbtl->unitList->number > 0) {
+            do {
+                u = wk_sbtl->unitList->pUnitL[i++].pUnit;
+                if (u != NULL && sbtlCheckDamageTarget(u)) {
+                    level = u->unit.level;
+                    if (u->field414 & 2) {
+                        cntA += 1.0f;
+                        sumLevelA += (f32)level;
+                    } else {
+                        cntB += 1.0f;
+                        sumLevelB += (f32)level;
+                    }
+                }
+            } while (i < wk_sbtl->unitList->number);
+        }
+        rate = (sumLevelA / cntA - sumLevelB / cntB + 1.0f + (f32)(41 - wk->unit.now.luck) * 0.1f) * 0.5f + 2.0f;
+        if (rate <= 1.0f) {
+            rate = 1.0f;
+        }
+        wk_sbtl->field50C = 128;
+        wk_sbtl->field510 = 0.0f;
+        wk_sbtl->field484++;
+        wk_sbtl->field514 = 128.0f / (rate * 60.0f);
+        break;
+    case 1:
+        wk_sbtl->field510 += wk_sbtl->field514;
+        if ((f32)wk_sbtl->field50C <= wk_sbtl->field510) {
+            w->field510 = (f32)wk_sbtl->field50C;
+            w->field484 = 2;
+            sbtlCreateSM(w->sysmsgList, wk, SBTLSM_MODE_ESCAPE, SKLID_NONE);
+            wk_sbtl->field494 = 0;
+            wk->flg |= 0x4000;
+        }
+        break;
+    case 2:
+        if (wk_sbtl->field494 == 1) {
+            dds3FadeOut(255, 255, 255, 60);
+        }
+        if (wk_sbtl->field494 >= 60) {
+            wk_sbtl->field484++;
+        }
+        break;
+    case 3:
+        if (sbtlCheckUnit_Exec()) {
+            wk_sbtl->flg |= 0x40000008;
+            sbtlInitDropWork();
+            sbtlSetEndData();
+        }
+        break;
+    }
+    return 2;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", KaihiProc_Nakama);
+#endif
 
 /* NON_MATCHING: 32 of 320 words match. 310 of 320 words emitted, 92 aligned diff lines: retail puts return 0 in each early branch's delay slot (reorg class, accounts for the size), keeps the 0x50A clamp as branches where cc1 uses movz, and rematerializes 1.0f around sbtlCallBtlSearchUnitID6 where cc1 keeps it in a saved FP register; the 32767 clamp only survives with an s32 copy of the counter; constant 0x3DCCCCCC written 0.1f (ee-gcc rounds it down); sdatUnitWork_t.level is s8 (lb, HD s8); VRF_DeltaTime s8 (lb; HD name looks wrong, it is a one-shot flag); SBTL_WORK field508/514/518; sbtlCallBtlSearchUnitID6 is f32 (f32); vector checked (32 rows, all take the flg & 0x1400000 early return 0); states 0-3 walked against the asm only. */
 #ifdef NON_MATCHING
@@ -1514,7 +2207,26 @@ s32 sbtlCallBtlCheckDamageTarget3(struct SBTLUNIT_WORK *wk)
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlCheckDamageTarget3);
 #endif
 
+/* NON_MATCHING: 59 of 62 words match. second quotient lands in f1 where retail divides in f20 (rate's register). Logic as retail. */
+#ifdef NON_MATCHING
+f32 sbtlCallBtlSearchUnitID6(f32 rate) {
+    struct SBTLUNIT_WORK *unit;
+
+    if (wk_sbtl->field344 > 0) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
+        if (unit != NULL && CheckLiveTarget(unit)) {
+            if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&unit->unit, 0), &unit->unit.autost_cnt, &unit->unit.autost_cnt2) == 5) {
+                rate = (f32)unit->unit.autost_cnt2 / 100.0f;
+            } else if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&unit->unit, 1), &unit->unit.autost_cnt, &unit->unit.autost_cnt2) == 5) {
+                rate = (f32)unit->unit.autost_cnt2 / 100.0f;
+            }
+        }
+    }
+    return rate;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID6);
+#endif
 
 /* NON_MATCHING: x words match. Same tests in retail order; retail sets return 0 in each delay slot and keeps mode == 16 as its own block (branch-likely class). sbtlEscapeGauge gets (s16) of the f32 count as retail truncates and sign-extends, vector checked (32 rows, flg test path). */
 #ifdef NON_MATCHING
@@ -1568,11 +2280,120 @@ s32 sbtlRefSbtl15(s32 x, s32 y)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SetColor);
+s32 SetColor(struct SBTLUNIT_WORK *wk) {
+    s32 i;
 
+    for (i = 0; i < 12; i++) {
+        if (wk_sbtl->huumaDevilID[i] == -1) {
+            wk_sbtl->huumaDevilID[i] = sbtlGetDevilData_sbtlSub(wk->unit.devilId)->huumaMesNo;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/* NON_MATCHING: 48 of 69 words match. retail keeps wk in s1, unit in s0, ret in s2. Logic as retail. */
+#ifdef NON_MATCHING
+s32 CheckHuuma_Moon(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    s32 ret;
+
+    ret = 1;
+    if (unit != NULL) {
+        if (sbtlGetDevilData_sbtlSub(unit->unit.devilId)->field0E == 7) {
+            if (!sbtlCheckEvtBit_Table(8)) {
+                ret = 0;
+                sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMAMISS_GIKEI, SKLID_NONE);
+                wk_sbtl->field4CE = 42;
+            }
+        } else if (sbtlCheckEvtBit_Table(8)) {
+            ret = 0;
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMAFULLMOON, SKLID_NONE);
+            wk_sbtl->field4CE = 39;
+        }
+    } else {
+        ret = 0;
+    }
+    if (ret != 0) {
+        return ret;
+    }
+    sbtlSbattle3();
+    wk_sbtl->nego_gstat = 0;
+    wk_sbtl->eventno = 3;
+    wk_sbtl->eventgstat = 0;
+    wk_sbtl->flg |= 0x400;
+    wk_sbtl->eventListID = unit->field1A0;
+    sbtlSetNSTOP();
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", CheckHuuma_Moon);
+#endif
 
+/* NON_MATCHING: 34 of 123 words match. retail keeps wk in s1, stage/target in s2, player in s3. Logic as retail. */
+#ifdef NON_MATCHING
+s32 CheckHuuma2(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *target;
+    SBTL_PLAYER_DATA *player;
+    SBTL_STAGE_DATA *stage;
+    s32 *p;
+    s32 n;
+    s32 i;
+    s32 id;
+    s16 msgNo;
+
+    n = 0;
+    stage = &sbtlData100[wk_sbtl->stageNo];
+    if (wk_sbtl->battleMode != 0 && wk_sbtl->battleMode != 2) {
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMAMISS_NORMAL, SKLID_NONE);
+        return 0;
+    }
+    if (sbtlGetBadStatus(&wk->unit) == BST_MOUDOKU || (stage->flags & 6) != 0) {
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMAMISS_NORMAL, SKLID_NONE);
+        return 0;
+    }
+    player = sbtlGetPlayerData();
+    i = 11;
+    p = &wk_sbtl->huumaDevilID[11];
+    do {
+        id = *p--;
+        i--;
+        if (id != -1) {
+            n++;
+        }
+    } while (i >= 0);
+    target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    if (wk_sbtl->stockNum + n >= player->partyNum) {
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMAKUDA, SKLID_NONE);
+        msgNo = 41;
+    } else {
+        id = sbtlGetDevilData_sbtlSub(target->unit.devilId)->huumaMesNo;
+        i = 11;
+        p = &wk_sbtl->huumaDevilID[11];
+        do {
+            if (*p-- == id) {
+                break;
+            }
+        } while (--i >= 0);
+        if (i < 0) {
+            return 1;
+        }
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMANONE, SKLID_NONE);
+        msgNo = 40;
+    }
+    sbtlSbattle3();
+    wk_sbtl->nego_gstat = 0;
+    wk_sbtl->eventno = 3;
+    wk_sbtl->eventgstat = 0;
+    wk_sbtl->flg |= 0x400;
+    wk_sbtl->field4CE = msgNo;
+    wk_sbtl->eventListID = target->field1A0;
+    sbtlSetNSTOP();
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", CheckHuuma2);
+#endif
 
 s32 sbtlCallBtlCheckDamageTarget4(struct SBTLUNIT_WORK *wk)
 {
@@ -1628,7 +2449,16 @@ INCLUDE_RODATA(const s32, "code_r1_00259A88", sbtlCallMemset10Table);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallMemset10);
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SetHuumaMiss);
+void SetHuumaMiss(struct SBTLUNIT_WORK *wk, s16 flg) {
+    wk_sbtl->field4B6 = 2;
+    wk_sbtl->huumamagnone = flg;
+    wk_sbtl->field4BC = 0;
+    sbtlPlaySpecialSE(NULL, 3);
+    sbtlDeleteEffectData_SkillID(wk_sbtl->effList, SKLID_HUUMAST);
+    wk->model->field104 = -1;
+    sbtlCallBtlGetSklVisualTbl2(wk, SKLID_HUUMAMIS);
+    wk->flg |= 0x4000;
+}
 
 s32 FalseHuuma(struct SBTLUNIT_WORK *wk)
 {
@@ -1656,11 +2486,105 @@ s32 FalseHuuma(struct SBTLUNIT_WORK *wk)
     return 1;
 }
 
+/* NON_MATCHING: 42 of 56 words match. last switch arm (KAITEN) jal plus shared epilogue where retail's other two arms sibcall with j. Logic as retail. */
+#ifdef NON_MATCHING
+void FakeRndHit(struct SBTLUNIT_WORK *wk, s32 pow) {
+    switch (wk->skillid) {
+    case SKLID_NOUSE_SORD3:
+        if (pow == 14 && !sbtlResetJump()) {
+            dds3SetQuake(8, 60);
+        }
+        break;
+    case SKLID_OFS_BUTURI:
+        if (pow == 6 && !sbtlResetJump()) {
+            dds3SetQuake(9, 60);
+        }
+        break;
+    case SKLID_NOUSE_KAITEN:
+        if (pow == 4 && !sbtlResetJump()) {
+            dds3SetQuake(13, 60);
+        }
+        break;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", FakeRndHit);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetSkilltbl2);
 
+/* NON_MATCHING: 137 of 158 words match. retail's default arm (mode = 1) reloads wk_sbtl into v1 in a stub before the body where mine reuses the cached t0, 4 words and branch offsets. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlSearchUnitID8(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit;
+
+    switch (wk_sbtl->field4A4) {
+    case 0:
+        switch (wk_sbtl->field4B4) {
+        case 0:
+            wk_sbtl->field4A4 = 1;
+            wk_sbtl->field498 = 0;
+            wk_sbtl->field4B0 = 0;
+            wk->model->field104 = -1;
+            sbtlCallBtlEndAction(wk, 15, 0);
+            wk->skillid = SKLID_NOUSE_SORD3;
+            break;
+        case 1:
+            wk_sbtl->field4A4 = 1;
+            wk_sbtl->field4B0 = 4;
+            wk_sbtl->field498 = 0;
+            wk->model->field104 = -1;
+            sbtlCallBtlEndAction(wk, 15, 0);
+            wk->skillid = SKLID_NOUSE_SORD2;
+            break;
+        case 3:
+            wk_sbtl->field498 = 0;
+            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 0, 1600.0f, 0.75f, 0.1f);
+            wk_sbtl->field4B0 = 1;
+            wk_sbtl->field4A4++;
+            sbtlCallBtlEndAction(wk, 12, 0);
+            unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                wk->skillid = unit->order_skillid;
+            } else {
+                wk->skillid = SKLID_NONE;
+            }
+            wk_sbtl->gunskillid = 0;
+            if (wk->model->field104 != -1) {
+                unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+                if (unit != NULL) {
+                    sbtlCallMemset9(wk, unit, 4.0f);
+                    break;
+                }
+            }
+            sbtlSetMotion_sbtlUnit(wk, 6, 4, 0, 0);
+            break;
+        case 4:
+            wk_sbtl->field4A4 = 1;
+            wk_sbtl->field4B0 = 6;
+            wk_sbtl->field498 = 0;
+            sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+            wk->skillid = SKLID_NOUSE_KAITEN;
+            break;
+        }
+        break;
+    case 1:
+        sbtlCallBtlSearchUnitID8Data[wk_sbtl->field4B0](wk);
+        break;
+    default:
+        wk_sbtl->mode = 1;
+        wk->m_rate = 0.5f;
+        sbtlCallBtlEndAction(wk, 0, 0);
+        wk_sbtl->gstat[1] = 0;
+        wk_sbtl->field4A4 = 0;
+        wk_sbtl->gstat[0] = 0;
+        break;
+    }
+    return 2;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID8);
+#endif
 
 INCLUDE_RODATA(const s32, "code_r1_00259A88", sbtlCallMemset10Table3);
 
@@ -1674,24 +2598,277 @@ INCLUDE_RODATA(const s32, "code_r1_00259A88", sbtlCallBtlGetSkilltbl2Table2);
 
 INCLUDE_RODATA(const s32, "code_r1_00259A88", sbtlCallBtlGetSkilltbl2Table3);
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlResetCharge2);
+s32 sbtlCallBtlResetCharge2(struct SBTLUNIT_WORK *wk) {
+    wk_sbtl->field494++;
+    wk_sbtl->field494 = (wk_sbtl->field494 <= 0) ? 0 : (wk_sbtl->field494 > 0x7FFF) ? 0x7FFF : wk_sbtl->field494;
+    wk->flg2 |= 0x20;
+    switch (wk_sbtl->field484) {
+    case 0:
+        if (wk_sbtl->field494 > 0) {
+            wk_sbtl->field494 = 0;
+            wk_sbtl->field484++;
+            sbtlResetCharge(wk);
+        }
+        break;
+    case 1:
+        sbtlSetUseSkill_sbtlActAI(wk, wk->skillid, 0);
+        sbtlCallBtlEndAction(wk, 12, 0);
+        wk_sbtl->field484++;
+        break;
+    case 2:
+        if (wk->hModel->first->frame >= 0.0f) {
+            wk_sbtl->field484++;
+            wk_sbtl->field494 = 0;
+            wk_sbtl->field490 = 0;
+            wk_sbtl->field48C = 0;
+            sbtlCheckMHTData(wk, wk->skillid);
+        }
+        break;
+    case 3:
+        FakeRndHit(wk, wk_sbtl->field494);
+        if (sbtlCallBtlSearchEffectSABActer(wk)) {
+            wk->flg2 &= ~0x20;
+            wk_sbtl->mode = 1;
+            wk_sbtl->gstat[0] = 0;
+            wk_sbtl->gstat[1] = 0;
+            sbtlCallFalseHuuma(wk);
+            sbtlCallBtlEndAction(wk, 1, 0);
+            sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+        }
+        break;
+    case 4:
+        if (sbtlCallBtlSearchEffectSABActer(wk)) {
+            wk_sbtl->mode = 1;
+            wk_sbtl->gstat[0] = 0;
+            wk_sbtl->gstat[1] = 0;
+            sbtlCallFalseHuuma(wk);
+            sbtlCallBtlEndAction(wk, 1, 0);
+            sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+        }
+        break;
+    }
+    return 2;
+}
 
+/* NON_MATCHING: 45 of 217 words match. block layout: retail emits the case 0 gstat else-branch (frame==0.5 check) out of line after the jump table and reloads model->field104 after storing it (sw/lw through a1) where mine keeps the id in a register. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlSearchUnitID9(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_WORK *target;
+    s32 id;
+    f32 deg;
+    SBTL_WORK *sbtl;
+    SBTL_WORK *cur;
+
+    cur = wk_sbtl;
+    cur->field494++;
+    cur->field494 = (cur->field494 <= 0) ? 0 : (cur->field494 > 0x7FFF) ? 0x7FFF : cur->field494;
+    sbtl = wk_sbtl;
+    switch (wk_sbtl->field484) {
+    case 0:
+        if (wk_sbtl->gstat[0] != 0) {
+            wk->m_rate = 0.5f;
+            if (wk_sbtl->field494 == 18) {
+                sbtlCallBtlSearchEffectData(wk, wk->skillid, 1, 0, wk->field414, -1, 0);
+            }
+            if (wk_sbtl->field494 == 20) {
+                unit = sbtlSearchUnit_ID(wk_sbtl->list3E8, wk_sbtl->field3EC);
+                if (unit != NULL && sbtlSearchUnit_ID(wk_sbtl->unitList, unit->field1A0) != NULL
+                    && (unit->field414 & 2) != 0 && sbtlCheckDamageTarget(unit)) {
+                    id = unit->field1A0;
+                } else {
+                    id = sbtlCallMemset11(wk, &wk->rot, 0, 1600.0f, 0.75f, 0.1f);
+                }
+                wk->model->field104 = id;
+                if (wk->model->field104 != -1) {
+                    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+                    if (unit != NULL) {
+                        deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, &unit->pos, 0.5f);
+                        SDF_VU0_STOREVECTOR(&wk->rot);
+                        sbtlAddUnitDeg(wk, deg);
+                    }
+                }
+            }
+            if (wk_sbtl->field494 >= 26 && wk_sbtl->field488 < 5) {
+                wk_sbtl->field484++;
+            }
+            if (wk_sbtl->field494 >= 40) {
+                sbtlSetMotion_sbtlUnit(wk, 19, 4, 0, 0);
+                sbtlCallBtlEndAction(wk, 1, 0);
+                wk_sbtl->field484 = 4;
+            }
+        } else if (wk->hModel->first->frame == 0.5f) {
+            wk_sbtl->field484 = 3;
+            sbtl->gstat[0] = 1;
+            sbtl->field494 = 0;
+        }
+        break;
+    case 1:
+        if (wk->model->field104 == -1 || (target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104)) == NULL) {
+            sbtlSetMotion_sbtlUnit(wk, 6, 0, 0, 1);
+        } else {
+            sbtlCallMemset9(wk, target, 0.0f);
+        }
+        wk_sbtl->field488++;
+        wk_sbtl->field484++;
+        break;
+    case 2:
+        wk_sbtl->field484++;
+        break;
+    case 3:
+        sbtlCutMotion(wk, 4.0f);
+        wk_sbtl->field494 = 17;
+        wk_sbtl->field484 = 0;
+        break;
+    case 4:
+        wk_sbtl->mode = 1;
+        wk->m_rate = 0.5f;
+        wk_sbtl->gstat[1] = 0;
+        wk_sbtl->gstat[0] = 0;
+        break;
+    }
+    return 2;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID9);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID10);
+s32 sbtlCallBtlSearchUnitID10(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit;
+
+    wk_sbtl->field494++;
+    wk_sbtl->field494 = (wk_sbtl->field494 <= 0) ? 0 : (wk_sbtl->field494 > 0x7FFF) ? 0x7FFF : wk_sbtl->field494;
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
+    switch (wk_sbtl->field484) {
+    case 0:
+        if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+            wk_sbtl->field358[wk_sbtl->summonIndex[0]] = 3;
+            sbtlRefSbtl24(sbtlCallMemset6(wk_sbtl->summonIndex[0], 0), 0);
+            wk_sbtl->field484++;
+        } else {
+            wk_sbtl->field484 = 4;
+        }
+        break;
+    case 1:
+        if (sbtlCheckStatus_Move(unit)) {
+            wk_sbtl->field484 = 4;
+        }
+        break;
+    case 4:
+        wk_sbtl->mode = 1;
+        wk->m_rate = 0.5f;
+        wk_sbtl->gstat[0] = 0;
+        wk_sbtl->gstat[1] = 0;
+        break;
+    }
+    return 2;
+}
 
 s32 sbtlCheckBit(u32 *bits, s32 bit)
 {
     return (*bits >> bit) & 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlSetBit);
+void sbtlSetBit(u32 *bits, s32 no) {
+    *bits |= 1 << no;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlGetDamage);
+void sbtlResetBit(u32 *bits, s32 no) {
+    *bits &= ~(1 << no);
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlSetSummon_Unit);
+s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 flg, s8 usePos, const sdfVector4_t *pos, s8 mode) {
+    SBTL_DEVIL_DATA *devil = sbtlGetDevilData_sbtlSub(wk_sbtl->stockDevilSkill[stock]);
+    SBTL_MOTION_VISUAL *visual = sbtlGetVisualData(2, wk_sbtl->stockMinor[stock]);
+    SBTL_UNIT_SUB *motion = sbtlGetMotionVisualData(2, wk_sbtl->stockMinor[stock], 0);
+    struct SBTLUNIT_WORK *unit;
+    SBTL_WORK *sbtl;
+    s32 mag;
 
+    unit = sbtlCallMemset7(1, devil->motionId, stock, mode);
+    if (usePos != 0) {
+        SDF_VU0_LOADVECTOR(pos);
+        SDF_VU0_STOREVECTOR(&unit->pos);
+    }
+    sbtl = wk_sbtl;
+    if (sbtl->battleMode == 3) {
+        SDF_VU0_LOADVECTOR(&main_data.pos);
+        SDF_VU0_STOREVECTOR(&unit->pos);
+        SDF_VU0_LOADVECTOR(&main_data.rot);
+        SDF_VU0_STOREVECTOR(&unit->rot);
+    }
+    unit->visual[0] = visual->scale;
+    unit->unit.devilId = sbtl->stockDevilSkill[stock];
+    unit->visual[1] = visual->scale;
+    unit->field400 = devil->field0A;
+    unit->visual[2] = visual->scale;
+    unit->field404 = devil->aisyoId;
+    unit->flg |= devil->flag | flg;
+    unit->visual[3] = visual->scale;
+    unit->visualKind = visual->kind;
+    SDF_VU0_LOADVECTOR(&unit->pos);
+    SDF_VU0_STOREVECTOR(&unit->model->vec20);
+    unit->model->field12C = 1000.0f;
+    unit->actMax = devil->field14;
+    unit->model->field11C = visual->field10;
+    unit->model->field120 = motion->field04;
+    unit->model->field124 = devil->field60;
+    unit->model->field128 = devil->field64;
+    unit->mv_spd.z = 0;
+    unit->field424 = 0;
+    unit->max_mvspd.z = visual->field04;
+    unit->field428 = visual->field08;
+    sbtlSetactcounter(unit);
+    unit->actCounter = unit->actMax;
+    if (mode == 0 || mode == 2) {
+        sbtlRefSbtl24(unit, 0);
+    }
+    mag = 0;
+    if (wk_sbtl->battleMode != 3) {
+        mag = sbtlCallBtlGetDevilDataSBtlSub5(&wk->unit, &unit->unit, unit->unit.devilId);
+    }
+    sbtlRefSbtl64(mag);
+    sbtlCheckBattlePara(unit);
+    return 1;
+}
+
+/* NON_MATCHING: 18 of 83 words match. retail has one sbtlCallMemset11 call with type, range and width chosen in two arms (flg 0: 200.0f, 0.4f. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlSearchUnitID11(struct SBTLUNIT_WORK *wk, s32 flg) {
+    struct SBTLUNIT_WORK *unit;
+    f32 deg;
+
+    if (wk->model->field104 == -1) {
+        if (flg == 0) {
+            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 0, 200.0f, 0.39999998f, 1.0f);
+        } else if (flg == 1) {
+            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 3, 400.0f, 0.78f, 1.0f);
+        }
+        if (wk->model->field104 == -1) {
+            return 1;
+        }
+    }
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+    if (unit == NULL) {
+        return 0;
+    }
+    if (!sbtlCheckDamageTarget(unit)) {
+        return 0;
+    }
+    if (unit->vstatus & 0x10000) {
+        return 0;
+    }
+    deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, &unit->pos, 1.0f);
+    SDF_VU0_STOREVECTOR(&wk->rot);
+    sbtlAddUnitDeg(wk, deg);
+    FromEuler(0.0f, wk->angleY * 0.017453293f, 0.0f);
+    SDF_VU0_STOREVECTOR(&wk->rot);
+    SDF_VU0_STOREVECTOR(&wk->rotbk);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID11);
+#endif
 
 /* NON_MATCHING: 159 of 238 words match. Only FP registers differ: cc1 hoists the 1.0f out of the target loop, retail loads it per pass; type is s8 (retail sign-extends it); para is s16[48] with a 48-byte memset (retail frame); SBTL_WORK.field40C is the temporary SBTLUNIT_LISTWORK *, SBTLUNIT_WORK.field4A2 s16; unit gains sbtlSub_0027ED08.h; vector checked (16 rows, types 2 and 3 reach sbtlCheckVerticalArea and sbtlCheckCrossCircle_Rot respectively, return -1). */
 #ifdef NON_MATCHING
@@ -1800,7 +2977,43 @@ s32 sbtlCallMemset11(struct SBTLUNIT_WORK *wk, const sdfVector4_t *rot, s8 type,
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallMemset11);
 #endif
 
+/* NON_MATCHING: 6 of 55 words match. retail branches bgtz over an unconditional b with li v0,-1 in its delay slot and sinks li s3,-1 into that bgtz delay slot. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlSearchUnitID12(void) {
+    s32 ret = -1;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+    s32 *haveskill;
+
+    if (wk_sbtl->field344 <= 0) {
+        return -1;
+    }
+    if (wk_sbtl->expList->field10 >= 300) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
+        if (unit == NULL) {
+            return -1;
+        }
+        i = 0;
+        if (sbtlCheckDamageTarget(unit)) {
+            haveskill = unit->haveskill;
+            do {
+                if (sbtlGetSkilltbl(*haveskill)->type & 0x1000) {
+                    if (datCheckSkillEnable(&unit->unit, *haveskill)) {
+                        return *haveskill;
+                    }
+                    ret = -2;
+                }
+                i++;
+                haveskill++;
+            } while (i < 10);
+        }
+        return ret;
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID12);
+#endif
 
 /* NON_MATCHING: 65 of 66 words match. One branch: retail tests the button byte with beq and loads wk_sbtl in the slot, cc1 uses beql; field358 (u8[12] at 0x358) is a per-stock state, vector checked (32 rows, no flag 0x40000 path). */
 #ifdef NON_MATCHING
@@ -1852,9 +3065,48 @@ s32 CheckAction_Nakama(struct SBTLUNIT_WORK *wk)
     return CheckStop_BadStatus(unit) != 0;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", BeginSetsuma);
+s32 BeginSetsuma(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
+    SKLID sklid = sbtlCallBtlSearchUnitID12();
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlBeginSetsumaSub);
+    if (sklid >= SKLID_NONE) {
+        sbtlCallBtlEndAction(wk, 1, 0);
+        wk_sbtl->mode = 15;
+        wk->model->flags |= 0x4000;
+        sbtlSetMotion_sbtlUnit(wk, 35, 0, 0, 0);
+        unit->actCounter = unit->actMax;
+        unit->aiwk->mode = 19;
+        wk_sbtl->flg &= ~0x40000;
+        unit->model->stat = 1;
+        unit->skillid = SKLID_NONE;
+        unit->aiwk->stat = 2;
+        unit->order_sklidbk = sklid;
+        sbtlCallBtlGetSkilltbl8(unit, 0x400);
+        sbtlClearHitC(wk_sbtl->hitList, unit);
+        sbtlForceReset(wk_sbtl->effList, unit);
+        sbtlCallBtlEndAction(unit, 2, 0);
+        sbtlCheckCost_SkillID(unit, sklid, 1);
+        wk->flg |= 0x4010;
+        unit->flg |= 0x4010;
+        sbtlCreateDvltk_Priority(wk_sbtl->dvltkList, unit, SBTLDVLTK_MODE_COMBINATION);
+        sbtlResetCharge(wk);
+        sbtlSetMapFade_H(10, sbtlRefSbtl37(), 1);
+        sbtlSbattle3();
+        sbtlBeginSetsumaSub(wk);
+        sbtlBeginSetsumaSub(unit);
+        return 1;
+    }
+    if (sklid == -2) {
+        sbtlCreateDvltk_Priority(wk_sbtl->dvltkList, unit, SBTLDVLTK_MODE_MAGGET);
+    }
+    return 0;
+}
+
+void sbtlBeginSetsumaSub(struct SBTLUNIT_WORK *wk) {
+    wk->model->flags &= ~0x20;
+    wk->flg &= ~0x20;
+    wk->vstatus &= ~0x800;
+}
 
 s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk)
 {
@@ -1919,59 +3171,658 @@ s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlRefSbtl37);
+u32 sbtlRefSbtl37(void) {
+    return !(wk_sbtl->scrFlag & 0x20000) ? 0x80202020 : 0x80181818;
+}
 
+/* NON_MATCHING: 28 of 181 words match. register allocation: retail holds wk s5, adr s1, skillid s6, steps s2, i s3, 255 in s4, table s7 and saves s6,s1,s5,s0,s2,s3,s4,s7. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCheckSkillEquation(struct SBTLUNIT_WORK *wk, s16 *adr, s16 skillid) {
+    SBTL_SKILLEQ_STEP *steps;
+    SBTLUNIT_SIDE side;
+    SBTLUNIT_SIDE other;
+    s32 ret;
+    s32 i;
+
+    if (skillid == SKLID_OFS_PROGRAM) {
+        steps = sbtlCheckSkillEquationData;
+    } else {
+        steps = sbtlCheckSkillEquationData2;
+    }
+    side = wk->field414 & 0x3F;
+    if (wk_sbtl->field404 != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->field404);
+        wk_sbtl->field404 = NULL;
+    }
+    if (wk_sbtl->field408 != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->field408);
+        wk_sbtl->field408 = NULL;
+    }
+    if (sbtlGetBadStatus(&wk->unit) == BST_MAHUU) {
+        side = SBTLUNIT_SIDE_ENEMY;
+    }
+    wk_sbtl->field404 = sbtlCreateTargetList(side);
+    other = SBTLUNIT_SIDE_PLAYER;
+    if (side == SBTLUNIT_SIDE_PLAYER) {
+        other = SBTLUNIT_SIDE_ENEMY;
+    }
+    wk_sbtl->field408 = sbtlCreateTargetList(other);
+    if ((wk_sbtl->flg & 0x2000000) != 0) {
+        wk_sbtl->field404->count = 0;
+    }
+    for (i = 0; steps[i].id != -1; i++) {
+        SBTL_SKILLEQ_STEP *step = &steps[i];
+
+        ret = sbtlCheckSkillEquationData3[step->id](wk, skillid);
+        if (ret != 0) {
+            if (step->op == 255) {
+                if (step->flag == 0) {
+                    goto fail;
+                }
+            } else if (step->op == 1) {
+                if (step->flag != 0) {
+                    *adr += step->value;
+                }
+            } else if (step->op == 2) {
+                if (step->flag != 0) {
+                    *adr -= step->value;
+                }
+            }
+        } else {
+            switch (step->op) {
+            case 255:
+                if (step->flag != 0) {
+                    goto fail;
+                }
+                break;
+            case 1:
+                if (step->flag == 0) {
+                    *adr += step->value;
+                }
+                break;
+            case 2:
+                if (step->flag == 0) {
+                    *adr -= step->value;
+                }
+                break;
+            }
+        }
+    }
+    if (*adr <= 0) {
+        *adr = 0;
+    }
+    sbtlDeleteUnitList(wk_sbtl->field404);
+    sbtlDeleteUnitList(wk_sbtl->field408);
+    wk_sbtl->field408 = NULL;
+    wk_sbtl->field404 = NULL;
+    return 1;
+fail:
+    *adr = -1;
+    sbtlDeleteUnitList(wk_sbtl->field404);
+    sbtlDeleteUnitList(wk_sbtl->field408);
+    wk_sbtl->field408 = NULL;
+    wk_sbtl->field404 = NULL;
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckSkillEquation);
+#endif
 
+/* NON_MATCHING: 34 of 90 words match. retail branches bnel s0,1 with li side in the delay slot and stores aiwk->bstside in both percentage arms. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCheckTargetEquation(struct SBTLUNIT_WORK *wk) {
+    SBTLUNIT_SIDE side = wk->field414 & 0x3F;
+    s32 bst = sbtlGetBadStatus(&wk->unit);
+    struct SBTLUNIT_LISTWORK *list;
+    struct SBTLUNIT_WORK *unit;
+    s32 id;
+
+    if ((u32)(bst - 9) < 2) {
+        if (side != SBTLUNIT_SIDE_PLAYER) {
+            side = SBTLUNIT_SIDE_PLAYER;
+        } else {
+            if (bst == BST_MAHUU || GetPercentage() >= 40) {
+                side = SBTLUNIT_SIDE_ENEMY;
+            }
+            wk->aiwk->bstside = side;
+        }
+    }
+    wk_sbtl->field404 = sbtlCreateTargetList(side);
+    if (side == SBTLUNIT_SIDE_PLAYER) {
+        id = wk->model->field108;
+        if (id == -1) {
+            list = sbtlCreateTargetList_PForward(SBTLUNIT_SIDE_ENEMY);
+        } else {
+            unit = sbtlSearchUnit_GroupID(wk_sbtl->unitList, id);
+            if (unit != NULL) {
+                list = sbtlCreateTargetList_Group(SBTLUNIT_SIDE_ENEMY, unit->GroupID);
+            } else {
+                list = sbtlCreateTargetList(SBTLUNIT_SIDE_ENEMY);
+            }
+        }
+    } else {
+        list = sbtlCreateTargetList(SBTLUNIT_SIDE_PLAYER);
+    }
+    wk_sbtl->field408 = list;
+    if (!sbtlGetTargetUnit(wk)) {
+        sbtlDeleteUnitList(wk_sbtl->field408);
+        if (side == SBTLUNIT_SIDE_PLAYER) {
+            wk_sbtl->field408 = sbtlCreateTargetList(SBTLUNIT_SIDE_ENEMY);
+        } else {
+            wk_sbtl->field408 = sbtlCreateTargetList(SBTLUNIT_SIDE_PLAYER);
+        }
+        sbtlGetTargetUnit(wk);
+    }
+    sbtlDeleteUnitList(wk_sbtl->field404);
+    sbtlDeleteUnitList(wk_sbtl->field408);
+    wk_sbtl->field408 = NULL;
+    wk_sbtl->field404 = NULL;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckTargetEquation);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_00);
+s32 SEquationno_00(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_01);
+    if (tbl->area & 0x4000) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                return 1;
+            }
+        }
+    } else {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlCheckDamageTarget5);
+s32 SEquationno_01(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 ok = 0;
+    u32 bit;
+    s32 i;
 
+    if ((tbl->type & 0xFFF) == 1) {
+        bit = tbl->flg & 1;
+        ok = bit != 0;
+    }
+    switch (skillid) {
+    case SKLID_MHRAGI:
+    case SKLID_MHRAGON:
+    case SKLID_MHBUHU:
+    case SKLID_MHBUHUR:
+    case SKLID_MHJIO:
+    case SKLID_MHJIONGA:
+    case SKLID_MHZAN:
+    case SKLID_MHZANMA:
+    case SKLID_MARINKA:
+    case SKLID_DORUMIN:
+        ok = 1;
+        break;
+    default:
+        break;
+    }
+    if (ok == 1) {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (sbtlCheckCrossCircle(&wk->pos, wk->model->field11C * 2.5f, &unit->pos, unit->model->field11C)) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+    return 0;
+}
+
+s32 sbtlCallBtlCheckDamageTarget5(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLUNIT_WORK *unit;
+    s32 ok;
+    s32 i;
+
+    switch (skillid) {
+    case SKLID_MHRAGI:
+    case SKLID_MHRAGON:
+    case SKLID_MHBUHU:
+    case SKLID_MHBUHUR:
+    case SKLID_MHJIO:
+    case SKLID_MHJIONGA:
+    case SKLID_MHZAN:
+    case SKLID_MHZANMA:
+    case SKLID_MARINKA:
+    case SKLID_DORUMIN:
+    case 149:
+        ok = 0;
+        break;
+    default:
+        ok = 1;
+        break;
+    }
+    if (ok == 1) {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (sbtlCheckCrossCircle(&wk->pos, wk->model->field11C * 8.0f, &unit->pos, unit->model->field11C)) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+/* NON_MATCHING: 54 of 86 words match. tail: retail compares meirei_no with 3 and 4 by branching (bnel/beq into shared li 1 / li 0) where mine folds the final test to xori/sltiu (4 words longer). Logic as retail. */
+#ifdef NON_MATCHING
+s32 SEquationno_03(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    u32 aisyo;
+    s32 count;
+    s32 type;
+    s32 i;
+
+    if (!(tbl->area & 0x4000)) {
+        count = 0;
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                aisyo = sbtlSEquationno03Sub(&unit->unit.aisyo, tbl->attr);
+                if (aisyo != 0x1000 && aisyo != 0x2000) {
+                    count++;
+                }
+            }
+        }
+        if (count == 0) {
+            type = tbl->type & 0xFFF;
+            if (type != 3) {
+                if (type < 4) {
+                    if (type != 0 && wk_sbtl->panel->meirei_no == 3) {
+                        return 1;
+                    }
+                    return 0;
+                }
+                if (type != 5) {
+                    return 0;
+                }
+            }
+            if (wk_sbtl->panel->meirei_no != 4) {
+                return 0;
+            }
+            return 1;
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_03);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetSkilltbl3);
+s32 sbtlCallBtlGetSkilltbl3(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 ret = 0;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_05);
+    for (i = 0; i < wk_sbtl->field404->count; i++) {
+        unit = wk_sbtl->field404->pUnitL[i].pUnit;
+        if (unit == NULL || !sbtlCheckDamageTarget(unit)) {
+            continue;
+        }
+        if (tbl->flg & 0x20) {
+            if (tbl->flg & 0x400000) {
+                if (unit->field348 == 0) {
+                    ret = 1;
+                }
+            } else if (unit->field360 <= 0) {
+                ret = 1;
+            }
+        } else {
+            ret = 1;
+        }
+    }
+    return ret;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetSkilltbl4);
+s32 SEquationno_05(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    u32 flg = sbtlGetSkilltbl(skillid)->flg;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_07);
+    if ((flg & 4) && (flg & 0x81F000)) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (unit->unit.now.maxhp != 0 && 100 * unit->unit.now.hp / unit->unit.now.maxhp < 40) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_08);
+s32 sbtlCallBtlGetSkilltbl4(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_09);
+    if ((tbl->flg & 0x10004) == 4) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (unit->unit.now.maxhp != 0 && unit->unit.now.hp < unit->unit.now.maxhp) {
+                    if (!(tbl->flg & 0x800000)) {
+                        return 1;
+                    }
+                    if (unit->field362 <= 0) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_0a);
+s32 SEquationno_07(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    s32 type = sbtlGetSkilltbl(skillid)->type & 0x2000;
 
+    return type != 0;
+}
+
+s32 SEquationno_08(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    u32 flg = sbtlGetSkilltbl(skillid)->flg;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if ((flg & 4) && (flg & 0x81F000)) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (unit->unit.now.maxhp != 0 && 100 * unit->unit.now.hp / unit->unit.now.maxhp < 70) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+s32 SEquationno_09(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if ((tbl->attr & 1) && (tbl->flg & 1)) {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit) && (unit->flg2 & 0x10)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+s32 SEquationno_0a(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if (tbl->flg & 1) {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit) && sbtlSEquationno03Sub(&unit->unit.aisyo, tbl->attr) == 0x4000) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+/* NON_MATCHING: 17 of 28 words match. retail sets result=1 with bnel after slt where mine if-converts to slt s1. Logic as retail. */
+#ifdef NON_MATCHING
+s32 SEquationno_0b(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    s32 result = 0;
+    s32 type = sbtlGetSkilltbl(skillid)->type & 0xFFF;
+
+    if (type < 3 && type != 0) {
+        if (wk->unit.now.str < wk->unit.now.tec) {
+            result = 1;
+        }
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_0b);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_0c);
+s32 SEquationno_0c(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    s32 result = 0;
+    s32 type = sbtlGetSkilltbl(skillid)->type & 0xFFF;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_0d);
+    if (type == 3 || type == 5) {
+        result = wk->unit.now.str > wk->unit.now.tec;
+    }
+    return result;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_0e);
+s32 SEquationno_0d(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetSkilltbl5);
+    if (SetNextTarget(wk, tbl, sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2))) {
+        return 1;
+    }
+    if (SetNextTarget(wk, tbl, sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2))) {
+        return 1;
+    }
+    if ((wk->field358 & 0x1000000) && (tbl->type & 0xFFF) == 1) {
+        return 1;
+    }
+    return 0;
+}
 
+s32 SEquationno_0e(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    s32 type = sbtlGetSkilltbl(skillid)->type & 0x1000;
+
+    return type != 0;
+}
+
+s32 SEquationno_0f(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+
+    if (wk_sbtl->panel->meirei_no != 6) {
+        return 0;
+    }
+    if (tbl->s_type && tbl->para != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+/* NON_MATCHING: 16 of 24 words match. retail branches with bne to a field424 reload where mine uses bnel. Logic as retail. */
+#ifdef NON_MATCHING
+s32 SEquationno_10(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    if (skillid != SKLID_OFS_PROGRAM) {
+        return 0;
+    }
+    if (wk_sbtl->field424 == 1 && wk_sbtl->field408->count == 0) {
+        return 1;
+    }
+    if (wk_sbtl->field424 <= 0) {
+        return 1;
+    }
+    return wk_sbtl->field408->count == 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_10);
+#endif
 
+/* NON_MATCHING: 20 of 33 words match. prologue matches with a result variable. Logic as retail. */
+#ifdef NON_MATCHING
+s32 SEquationno_11(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    BST bst = sbtlGetBadStatus(&wk->unit);
+    s32 result = 0;
+
+    if (tbl->s_type && tbl->para) {
+        result = 0;
+        if (bst == BST_MOUDOKU) {
+            if (skillid != 149) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_11);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_12);
+s32 SEquationno_12(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    return sbtlCheckCost_SkillID(wk, skillid, 0);
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetSkilltbl6);
+s32 SEquationno_13(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_14);
+    for (i = 0; i < 6; i++) {
+        if (((tbl->s_type >> i) & 1) && tbl->para > 0 && wk_sbtl->panel->meirei_no == 6) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
+s32 SEquationno_14(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    u32 badst;
+    s32 i;
+
+    if ((tbl->flg & 0x10004) == 0x10004) {
+        badst = tbl->badst;
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if ((unit->unit.badStatus & badst) != 0 && (badst & 0x8000) == 0) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+    return 1;
+}
+
+/* NON_MATCHING: 31 of 75 words match. retail compares (type&0xFFF) against a register holding 1 or 3 (shared tail, beq) where mine emits xori/sltiu. Logic as retail. */
+#ifdef NON_MATCHING
+s32 SEquationno_15(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    u32 flg;
+
+    switch (wk_sbtl->panel->meirei_no) {
+    case 3:
+        if (tbl->flg & 1) {
+            return (tbl->type & 0xFFF) == 1;
+        }
+        return 0;
+    case 4:
+        if (tbl->flg & 1) {
+            return (tbl->type & 0xFFF) == 3;
+        }
+        return 0;
+    case 5:
+        flg = tbl->flg;
+        if (!(flg & 4) || !(flg & 0x81F000)) {
+            if ((flg & 0x10004) == 0x10004) {
+                return 1;
+            }
+            if (flg & 0x20) {
+                if (flg & 0x400000) {
+                    return wk->field348 != 1;
+                }
+                return wk->field360 < 1;
+            }
+            return 0;
+        }
+        return 1;
+    default:
+        return 1;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_15);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_16);
+s32 SEquationno_16(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    u32 flg = sbtlGetSkilltbl(skillid)->flg;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
 
+    if ((flg & 4) && (flg & 0x81F000)) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (unit->unit.now.maxhp != 0 && 100 * unit->unit.now.hp / unit->unit.now.maxhp < 20) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+/* NON_MATCHING: 32 of 75 words match. same shared (type&0xFFF)==kind tail as SEquationno_15 (beq against a0 holding 1 or 3, mine xori/sltiu). Logic as retail. */
+#ifdef NON_MATCHING
+s32 SEquationno_17(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    u32 flg;
+
+    switch (wk_sbtl->panel->meirei_no) {
+    case 3:
+        if (tbl->flg & 1) {
+            return (tbl->type & 0xFFF) == 1;
+        }
+        return 0;
+    case 4:
+        if (tbl->flg & 1) {
+            return (tbl->type & 0xFFF) == 3;
+        }
+        return 0;
+    case 5:
+        flg = tbl->flg;
+        if (!(flg & 4) || !(flg & 0x81F000)) {
+            if ((flg & 0x10004) != 0x10004 && (flg & 0x20)) {
+                if (flg & 0x400000) {
+                    return wk->field348 != 1;
+                }
+                return wk->field360 <= 0;
+            }
+        }
+        return 1;
+    default:
+        return 0;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", SEquationno_17);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlAI_SetSeikaku_Action);
 
@@ -2008,23 +3859,233 @@ s32 sbtlCheckAreaCount(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos)
     return count;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckArea_Atk);
+s32 sbtlCheckArea_Atk(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos, f32 area) {
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckArea_Masic);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+            if ((unit->field414 & 7) != 0 && (unit->field414 & 7) != (wk->field414 & 7)
+                && sbtlCheckCrossCircle(pos, area, &unit->pos, unit->model->field11C)) {
+                if (unit->model->mode >= 15 && unit->model->field104 == wk->field1A0) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
 
+s32 sbtlCheckArea_Masic(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos, f32 area, s32 flg) {
+    struct SBTLUNIT_WORK *unit;
+    sdfVector4_t vertex;
+    sdfVector4_t dir;
+    sdfVector4_t pos2;
+    f32 len;
+    s32 ok;
+    s32 i;
+
+    memset(&dir, 0, sizeof(dir));
+    dir.z = -1.0f;
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&pos2);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+            if ((unit->field414 & 7) != 0 && (unit->field414 & 7) != (wk->field414 & 7)
+                && sbtlCheckCrossCircle(&pos2, area, &unit->pos, unit->model->field11C)) {
+                if (unit->model->mode >= 15 && unit->status == 6) {
+                    ok = TRUE;
+                    if (flg != 0) {
+                        ok = unit->model->field104 == wk->field1A0;
+                    }
+                    if (ok == 1) {
+                        SDF_VU0_LOADVECTOR(&unit->rot);
+                        ToMatrix();
+                        SDF_VU0_LOADVECTOR(&dir);
+                        SDF_VU0_APPLYMATRIX();
+                        SDF_VU0_NORMALIZE();
+                        SDF_VU0_SCALEVECTOR(2000.0f);
+                        SDF_VU0_LOADVECTOR_B(&unit->pos);
+                        SDF_VU0_ADDVECTOR();
+                        SDF_VU0_STOREVECTOR_NOMEM(&vertex);
+                        sbtlGetVerticalLength_Point(&unit->pos.x, &vertex.x, &wk->pos.x);
+                        SDF_VU0_STOREVECTOR(&dir);
+                        SDF_VU0_LOADVECTOR(&pos2);
+                        SDF_VU0_LOADVECTOR_B(&dir);
+                        SDF_VU0_SUBVECTOR();
+                        SDF_VU0_GETLENGTH(len);
+                        if (len <= wk->model->field11C + wk->model->field11C) {
+                            return unit->field1A0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return -1;
+}
+
+/* NON_MATCHING: 10 of 74 words match. retail keeps a result in v0 and branches with beq plus delay-slot li on the early exits (aiwk status and field414 tests), mine uses beql with ld in the slot. Logic as retail. */
+#ifdef NON_MATCHING
+s32 SetOrderTarget(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *target;
+    s32 id;
+    u16 area;
+
+    if ((u32)(sbtlGetBadStatus(&wk->unit) - 9) < 2) {
+        return 0;
+    }
+    if (!(wk->aiwk->status & 1)) {
+        return 0;
+    }
+    if (!(wk->field414 & 1)) {
+        return 0;
+    }
+    target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->order_targetID);
+    if (target != NULL && sbtlCheckDamageTarget(target)) {
+        wk->model->field104 = target->field1A0;
+        return 1;
+    }
+    id = wk->model->field104;
+    if (id == -1) {
+        return 0;
+    }
+    target = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
+    if (target == NULL || !sbtlCheckDamageTarget(target)) {
+        return 0;
+    }
+    area = sbtlGetSkilltbl(wk->skillid)->area;
+    if ((area & 0x4000) && (target->field414 & 1)) {
+        return 1;
+    }
+    if ((area & 0x8000) && (target->field414 & 2)) {
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", SetOrderTarget);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", SetNextTarget);
+s32 SetNextTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl, s32 no) {
+    switch (no) {
+    case 12:
+        if ((tbl->type & 0xFFF) != 1) {
+            break;
+        }
+        return 1;
+    case 13:
+        if ((tbl->type & 0xFFF) != 3) {
+            break;
+        }
+        return 1;
+    case 14:
+        if (!(tbl->attr & (1 << wk->unit.autost_cnt) & 0xFFF)) {
+            break;
+        }
+        return 1;
+    }
+    return 0;
+}
 
+/* NON_MATCHING: 60 of 85 words match. tail only: retail scales the pick index (sll 8*pick) in the delay slot before testing pick == -1 and compares low against pick (CSE of -1), mine tests first and reloads. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlCheckDamageTarget6(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit;
+    u32 aisyo;
+    s32 hp;
+    s32 low;
+    s32 pick;
+    s32 i;
+
+    if (!(wk->field414 & 1)) {
+        return 0;
+    }
+    low = -1;
+    pick = -1;
+    hp = 9999;
+    for (i = 0; i < wk_sbtl->field408->count; i++) {
+        unit = wk_sbtl->field408->pUnitL[i].pUnit;
+        if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+            if (hp >= unit->unit.now.hp) {
+                hp = unit->unit.now.hp;
+                low = i;
+                aisyo = sbtlSEquationno03Sub(&unit->unit.aisyo, sbtlGetSkilltbl(wk->skillid)->attr);
+                if (aisyo != 0x1000 && aisyo != 0x2000) {
+                    pick = i;
+                }
+            }
+        }
+    }
+    if (pick == -1) {
+        if (low == -1) {
+            return 0;
+        }
+        pick = low;
+    }
+    wk->model->field104 = wk_sbtl->field408->pUnitL[pick].pUnit->field1A0;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlCheckDamageTarget6);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", CheckEnemyTarget);
+s32 CheckEnemyTarget(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *target;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlGetTargetUnit);
+    if (!(wk->field414 & 2)) {
+        return 0;
+    }
+    target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+    if (target != NULL && sbtlCheckDamageTarget(target) != 0) {
+        return 1;
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", CheckBSTTarget);
+s32 sbtlGetTargetUnit(struct SBTLUNIT_WORK *wk) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(wk->skillid);
+    u32 flg;
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetOrderTarget);
+    if (CheckBSTTarget(wk, tbl)) {
+        return 1;
+    }
+    flg = tbl->flg;
+    if (flg & 1) {
+        return TEquationno_01(wk);
+    }
+    if (flg & 4) {
+        if (flg & 0x10000) {
+            return TEquationno_0d(wk);
+        }
+        return TEquationno_0c(wk);
+    }
+    if (flg & 0x200) {
+        return TEquationno_0e(wk);
+    }
+    return TEquationno_01(wk);
+}
+
+s32 CheckBSTTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl) {
+    BST bst = sbtlGetBadStatus(&wk->unit);
+
+    if (!(tbl->area & 0x4000) && (bst == BST_BOUDO || bst == BST_MAHUU)) {
+        if (wk->aiwk->mode == 18) {
+            wk->model->field104 = wk->field1A0;
+        } else {
+            if (wk->aiwk->bstside & 1) {
+                return 0;
+            }
+            wk->model->field104 = wk_sbtl->targetUnitID;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+INCLUDE_ASM(const s32, "code_r1_00259A88", TEquationno_01);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", TEquationno_0c);
 
