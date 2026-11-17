@@ -189,6 +189,8 @@ extern s32 p2sdLoadCheckMidi(s32 MidiNo);
 extern s32 p2sdSmgHandle;
 
 #include "sdk_libc.h"
+#include "sndManager.h"
+#include "sdk_libkernl.h"
 
 extern sndFileRequestState_t sdfSndPcmRequest;
 extern s32 sdfSndPcmBufferAddr;

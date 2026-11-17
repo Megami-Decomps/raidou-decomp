@@ -36,6 +36,7 @@
 #include "sdfDevCons.h"
 #include "sdfGsMemIO.h"
 #include "sdfMath.h"
+#include "sdf_packet_list.h"
 
 typedef struct TMX_HEADER_t TMX_HEADER_t;
 

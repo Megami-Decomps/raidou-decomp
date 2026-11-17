@@ -1,6 +1,7 @@
 #include "common.h"
 #include "mapData.h"
 #include "field.h"
+#include "code_r1_0010DF68.h"
 
 s32 mapObjPointGet(s16 uniq, f32 *x, f32 *y, f32 *z, f32 *r)
 {

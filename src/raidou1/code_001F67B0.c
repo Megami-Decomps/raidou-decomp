@@ -1,6 +1,7 @@
 #include "common.h"
 #include "effManager.h"
 #include "effModelTrackPoly.h"
+#include "sdfChip.h"
 
 INCLUDE_ASM(const s32, "code_001F67B0", effReturnEventSetupWord);
 

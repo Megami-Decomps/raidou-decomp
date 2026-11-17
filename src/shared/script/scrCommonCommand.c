@@ -145,6 +145,7 @@ s32 scrCommand_BLUR_ALLOFF(void);
 s32 scrCommand_FILTER_ALLOFF(void);
 
 #include "newdata.h"
+#include "effEvent.h"
 
 #define SCR_PROCESS_CONTROL_FLAG 210
 

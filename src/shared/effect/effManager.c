@@ -62,6 +62,8 @@ extern char dds3EffectProcessName[7];
 #include "draw3d.h"
 #include "evtEventViewer.h"
 #include "evtEventViewerMenu.h"
+#include "dds3Billboard.h"
+#include "dds3KernelCore.h"
 
 extern void effObjectListCountersReset(void);
 

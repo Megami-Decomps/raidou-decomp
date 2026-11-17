@@ -907,6 +907,7 @@ void corePktEmitMultiTexPass(sdfCorePacketCb_t *cb) {
                                   node->mtexClampData, node->alphaState, 0);
 }
 
+void corePktEmitRefMapPass(sdfCorePacketCb_t *cb);
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktEmitRefMapPass);
 
 void corePktEmitAllPasses(sdfCorePacketCb_t *cb) {

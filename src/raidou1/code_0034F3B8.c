@@ -14,6 +14,7 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "code_r1_001CC1D0.h"
+#include "sdfChip.h"
 
 INCLUDE_ASM(const s32, "code_0034F3B8", jmsCallGetProcessData2);
 

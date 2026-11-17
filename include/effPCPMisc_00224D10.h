@@ -79,6 +79,8 @@ typedef struct effModelOwner_t {
     u32 unk10;
 } effModelOwner_t;
 
+void effRecreateModelFromSource(effModelOwner_t *work, effModelOwner_t *source);
+
 SIZE_CHECK(effModelOwnerSizeCheck, effModelOwner_t, 0x14);
 
 mdlObj_t *effHandleCreate(const u8 *data, s32 size);

@@ -714,6 +714,7 @@ void effPCPWwSpherePolyPartMove(effPCPWwSpherePoly_tag *pWwSpherePoly, s32 index
 void effPCPWwSpherePolyDraw(effPCPWwSpherePoly_tag *hData);
 u32 dds3WhirlwindPolyListGetABGR(dds3WhirlwindPolyList_tag *hPoly, s32 index);
 
+effPCPHamaCardSpiral_tag *effPCPHamaCardSpiralCreate(void *param, u32 resource, void *child);
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralCreate);
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:855, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
@@ -948,6 +949,7 @@ void effPCPHamaCardSpiralSetScale(effPCPHamaCardSpiral_tag *hData, f32 scale) {
     hData->param.radius_e *= scale;
 }
 
+effPCPHamaCardSphere_tag *effPCPHamaCardSphereCreate(void *param, u32 resource, void *child);
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereCreate);
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:1173, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
@@ -1178,6 +1180,7 @@ void effPCPHamaCardSphereSetColor(effPCPHamaCardSphere_tag *hData, u32 abgr)
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf248);
 
+effPCPHamaCardScatter_tag *effPCPHamaCardScatterCreate(void *param, u32 resource, void *child);
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterCreate);
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:1490, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */

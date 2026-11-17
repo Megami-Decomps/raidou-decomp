@@ -14,6 +14,7 @@
 #include "dds3PadManager.h"
 #include "code_r1_00226EC8.h"
 #include "code_r1_0021CE60.h"
+#include "dds3AdminiProcess.h"
 
 /* body: matched in raidou @ 1424963: src/shared/code_r1_001F5DA8.c:6, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
 void effLeaf338(void) {

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "effEvent.h"
+#include "sdfMemory.h"
 
 effArrHdr_t *effCallMemAllocDirect(s32 number) {
     void *allocation = sdfMemAllocDirect(number * sizeof(effBezierCurve_t) + sizeof(effArrHdr_t));

@@ -21,6 +21,7 @@ dds3Basic_t *dds3SetActiveCameraSceneBasic(dds3Basic_t *pSceneBasic, dds3Basic_t
 #include "kernel.h"
 
 s32 dds3SceneBasicExistBasic(dds3Basic_t *scene, dds3Basic_t *target);
+s32 dds3SceneBasicExistBasicFromType(dds3Basic_t *scene, s32 type, dds3Basic_t *target);
 void dds3SceneBasicMakeScene_FromMemory(dds3Basic_t *pBasic, u32 field, u32 area, saddr_t pF1, saddr_t pF2,
                                         const struct sdfTextureOffsetListHeader_t *pTB, s32 pBF);
 u32 dds3SceneBasicSearchSerialID_Used(u32 serialID);

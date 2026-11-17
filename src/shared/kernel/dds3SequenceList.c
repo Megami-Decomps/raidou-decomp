@@ -21,8 +21,13 @@ extern void fmProcTrigSequence(s32 mode);
 extern s32 fmProcessChk(void);
 extern void titleExit(void);
 extern void titleStart(u32 mode);
+extern void InitOoyTest(void);
+extern void fldCallElvReset2(s32 eventNo);
 
 #include "sdk_libc.h"
+#include "dds3KernelDraw.h"
+#include "evtSky.h"
+#include "dds3AdminiProcess.h"
 
 
 extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);

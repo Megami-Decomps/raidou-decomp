@@ -32,5 +32,6 @@ void dds3MultiBillboardTagLink(billHandle_t *obj, billRenderPair_t *node);
 f32 dds3BillboardGetDirectionRotate(const sdfVector4_t *pPos, const sdfVector4_t *pVec);
 f32 dds3BillboardGetDirectionScale(const sdfVector4_t *pPos, const sdfVector4_t *pVec);
 s32 dds3BillboardGetAnimFrame(const billHandle_t *hBillboard);
+u16 dds3BillboardGetAnimState(const billHandle_t *hBillboard);
 
 #endif

@@ -4,6 +4,7 @@
 #include "basic.h"
 #include "evtEventViewer.h"
 #include "evtEventViewerMenu.h"
+#include "dds3KernelCore.h"
 
 /* body: matched in dds @ 18d1fa88f: src/dds1/event/evtEventViewerFrameVar.c:34, found, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
 dds3TaskUpdateResult_t evtUpdateFrameVariableTask(dds3ProcessID_t *task) {

@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "enums.h"
+#include "sdf_types.h"
 
 /* An effect handle: the type's entry in EffMajorTable plus the instance that
  * entry's create returned. version is stamped from the data revision. */
@@ -25,6 +26,7 @@ typedef struct effResourceHeader_t
 } effResourceHeader_t;
 
 effHandle_t *dds3EffectCopy(effHandle_t *node);
+void dds3EffectSetRotateMatrix(effHandle_t *pData, sdfMatrix4_t *pMatrix);
 effHandle_t *dds3EffectCreate(u16 major, u16 minor, saddr_t pData);
 void dds3EffectDataRevision(effResourceHeader_t *header);
 void dds3EffectDelete(effHandle_t *pData);

@@ -5,6 +5,7 @@
 #include "jmsInit.h"
 #include "gohMain.h"
 #include "code_00346258.h"
+#include "gohInit.h"
 
 INCLUDE_ASM(const s32, "code_00349B80", TalkSelCalcProcess);
 

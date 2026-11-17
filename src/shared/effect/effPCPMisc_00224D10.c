@@ -27,6 +27,7 @@
 #include "sdfChip.h"
 #include "slMain.h"
 #include "mdlManager.h"
+#include "sdfMemory.h"
 
 /* Apply volume and pan to a sequence track through the command queue. */
 

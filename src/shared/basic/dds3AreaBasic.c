@@ -13,6 +13,7 @@ typedef struct dds3AreaBasicWorkData_t
 } dds3AreaBasicWorkData_t;
 
 #include "sdk_libc.h"
+#include "dds3ObjectBase.h"
 
 extern dds3BasicArrayHandle_t *dds3GetBasicArrayHandle(s32 bufcnt);
 extern void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *hndl);

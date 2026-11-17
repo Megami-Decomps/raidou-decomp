@@ -62,6 +62,7 @@ s32 Deci2Call(s32 command, void *packet);
 s32 DeleteSema(s32 sema);
 void ExitDeleteThread(void);
 void FlushCache(s32 mode);
+void InvalidDCache(void *start, void *end);
 void GetOsdConfigParam(u32 *param);
 s32 GetThreadId(void);
 u64 GsGetIMR(void);

@@ -72,6 +72,7 @@ enum {
 
 #include "include_asm.h"
 #include "dds3UnitObjectBasic.h"
+#include "sdfModel.h"
 
 dds3ObjectBaseControlWorkData_t *dds3CreateSlotResourceState(dds3Basic_t *owner);
 

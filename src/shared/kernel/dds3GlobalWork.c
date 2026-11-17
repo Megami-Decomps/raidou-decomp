@@ -11,6 +11,7 @@
 #include "sdfVu0.h"
 #include "sdfPacketBuff.h"
 #include "dds3GlobalWork.h"
+#include "sdfDraw.h"
 
 /* Declared here because no header carries these. */
 typedef void (*sdfGrOtRegFunc_t)(sdfGrOt_t *ot, sdfDrawTag_t *tag);
