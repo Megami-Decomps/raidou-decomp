@@ -1,0 +1,12 @@
+# SDFIOPFL.IRX, file I/O forwarded to the EE. Byte-identical to SMT3's; see
+# docs/irx-modules.md.
+name: SDFIOPFL.IRX
+sha1: 7361734e8500f2437484c7aee27a647074a7ba26
+disc: /USERIRX/SDFIOPFL.IRX
+
+# The fields tools/irx.py writes into .iopmod. Everything else in the
+# container is derived from the link.
+module:
+  name: sdf_iop_file_rpc
+  version: 0x0000
+  entry: start
