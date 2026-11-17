@@ -136,6 +136,20 @@ class RenameTests(unittest.TestCase):
             self.assertEqual([r[1:3] for r in added], [("a", "t"), ("b", "a"), ("t", "b")])
             self.assertEqual(len(out), 6)
 
+    def test_sources_rename_reaches_untracked_headers(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "include").mkdir()
+            (root / "include/old.h").write_text("void fldFunc17(void);\n")
+            (root / "include/new.h").write_text("void fldFunc17(void);\n")
+            git = lambda *a: subprocess.run(["git", *a], cwd=root, check=True, capture_output=True)
+            git("init", "-q")
+            git("add", "include/old.h")
+            renames.rename_sources(root, "fldFunc17", "mapAutoMapInit")
+            for name in ("old.h", "new.h"):
+                self.assertEqual((root / "include" / name).read_text(), "void mapAutoMapInit(void);\n", name)
+
+
 class DocsTests(unittest.TestCase):
     PAGE = "# Draft notes: u\n\n## f (u, raidou1 0x8)\n\nA.\n\n## g (u, raidou1 0x8)\n\nB.\n"
 
@@ -271,6 +285,47 @@ class RodataTests(unittest.TestCase):
         p, note = segments.plan("r", "rodata", labels, {n: {"u"} for _, n in labels}, "u")
         self.assertIsNone(p)
         self.assertIn("section alignment", note)
+
+    def test_c_literals_take_their_run_when_the_range_is_refused(self) -> None:
+        """code_00323280: its C strings lead the chunk, its asm functions' labels lie past other units' labels."""
+        labels = [(0x462880, "sMain"), (0x462898, "sDraw"), (0x4628B0, "cmpStrValuables"), (0x4628C0, "sAsm")]
+        users = {"sMain": {"u"}, "sDraw": {"u"}, "cmpStrValuables": {"v"}, "sAsm": {"u"}}
+        p, note = segments.plan("rodata_00462880", "rodata", labels, users, "u", {"sMain", "sDraw"})
+        self.assertEqual((p.start, p.rest, p.c_only, note), (0x462880, 0x4628B0, True, ""))
+        p, note = segments.plan("rodata_00462880", "rodata", labels, users, "u")
+        self.assertIsNone(p)
+        self.assertIn("inside its range", note)
+
+    def test_c_literals_that_cannot_be_owned_name_the_address(self) -> None:
+        labels = [(0x462880, "sMain"), (0x4628B0, "cmpStrValuables"), (0x4628C0, "sDraw")]
+        users = {"sMain": {"u"}, "cmpStrValuables": {"v"}, "sDraw": {"u"}}
+        p, note = segments.plan("r", "rodata", labels, users, "u", {"sMain", "sDraw"})
+        self.assertIsNone(p)
+        self.assertIn("u: rodata r", note)
+        self.assertIn("its C uses sMain at 0x00462880", note)
+
+    def test_plan_unit_reads_the_c_functions_labels(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            labels = [(0x462880, "sMain"), (0x4628B0, "sOther"), (0x4628C0, "sAsm")]
+            files = {
+                "config/raidou1/x.yaml": ("  - name: main\n    start: 0x1000\n    vram: 0x100000\n"
+                                          "    subsegments:\n      - [0x363880, rodata, rodata_00462880]\n"
+                                          "      - [0x3647B0, .rodata, k]\n"),
+                "asm/raidou1/data/rodata_00462880.rodata.s": "".join(
+                    f"dlabel {n}\n    /* {a - 0xFF000:06X} {a:08X} */ .asciz \"x\"\n" for a, n in labels),
+                "asm/raidou1/u.s": ("nonmatching start, 0x8\nglabel start\n addiu $a0, %lo(sMain)\n"
+                                    "nonmatching later, 0x8\nglabel later\n addiu $a0, %lo(sAsm)\n"),
+                "asm/raidou1/other.s": "addiu $a0, %lo(sOther)\n",
+            }
+            for name, text in files.items():
+                (root / name).parent.mkdir(parents=True, exist_ok=True)
+                (root / name).write_text(text)
+            (p,), notes = segments.plan_unit(root, "raidou1", "u", {"start"})
+            self.assertEqual((p.start, p.rest, p.c_only, notes), (0x462880, 0x4628B0, True, []))
+            plans, notes = segments.plan_unit(root, "raidou1", "u", {"start", "later"})
+            self.assertEqual(plans, [])
+            self.assertIn("its C uses sMain at 0x00462880", notes[0])
 
     def test_apply_splits_the_chunk_at_rom_offsets(self) -> None:
         yaml = ("  - name: main\n    start: 0x1000\n    vram: 0x100000\n    subsegments:\n"

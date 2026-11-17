@@ -62,15 +62,33 @@ class Plan:
     start: int  # vram of the unit's first label
     rest: int | None  # vram where the chunk resumes after the unit, or None
     left: list[str] = field(default_factory=list)  # the unit's leading labels kept in the chunk for alignment
+    c_only: bool = False  # only the labels its C functions use; its asm functions' labels stay in the chunk
 
 
 def plan(chunk: str, kind: str, labels: list[tuple[int, str]], users: dict[str, set[str]],
-         unit: str) -> tuple[Plan | None, str]:
+         unit: str, c_used: set[str] = frozenset()) -> tuple[Plan | None, str]:
     """Decide the unit's share of one chunk: the labels from its first to its last, none used elsewhere, starting at
-    the first one its section alignment allows."""
+    the first one its section alignment allows. When that range is refused, the labels its C functions use
+    (`c_used`), which the compiler emits into the unit's own .rodata, are the share instead."""
     mine = [i for i, (_, n) in enumerate(labels) if unit in users.get(n, ())]
     if not mine:
         return None, ""
+    p, note = plan_range(chunk, kind, labels, users, unit, mine)
+    if p or not note:
+        return p, note
+    c = [i for i in mine if labels[i][1] in c_used]
+    if not c:
+        return None, note
+    p, c_note = plan_range(chunk, kind, labels, users, unit, c)
+    if not p:
+        a, n = labels[c[0]]
+        return None, f"{note}; its C uses {n} at 0x{a:08X}, which needs its .rodata: {c_note}"
+    p.c_only = True
+    return p, ""
+
+
+def plan_range(chunk: str, kind: str, labels: list[tuple[int, str]], users: dict[str, set[str]], unit: str,
+               mine: list[int]) -> tuple[Plan | None, str]:
     shared = [labels[i][1] for i in mine if users[labels[i][1]] - {unit}]
     if shared:
         return None, f"{unit}: {kind} {chunk}: {', '.join(shared)} also used by " + \
@@ -146,14 +164,27 @@ def piece_labels(data: Path, yaml_text: str, found: dict[str, str]) -> tuple[dic
     return labels, sources, notes
 
 
-def plan_unit(tree: Path, game: str, unit: str) -> tuple[list[Plan], list[str]]:
-    """Plans for the rodata and lit4 that a gap unit's asm uses, and the cases left for a hand decision."""
+def function_words(asm_text: str, names: set[str]) -> set[str]:
+    """Words of the named functions' blocks in a unit's asm (each from its `nonmatching` line to the next)."""
+    out: set[str] = set()
+    for block in re.split(r"^(?=nonmatching \w+, 0x)", asm_text, flags=re.M):
+        m = re.match(r"nonmatching (\w+), 0x", block)
+        if m and m.group(1) in names:
+            out |= set(WORD.findall(block))
+    return out
+
+
+def plan_unit(tree: Path, game: str, unit: str, c_funcs: set[str] = frozenset()) -> tuple[list[Plan], list[str]]:
+    """Plans for the rodata and lit4 that a gap unit's asm uses, and the cases left for a hand decision. `c_funcs`
+    are the unit's functions that become C, by their names in its asm."""
     asm = tree / "asm" / game
     text = yaml_path(tree, game).read_text()
     found = {name: kind for name, kind in chunks(text).items()}
     labels, sources, notes = piece_labels(asm / "data", text, found)
     where = {n: c for c, ls in labels.items() for _, n in ls}
-    words = set(WORD.findall((asm / f"{unit}.s").read_text()))
+    asm_text = (asm / f"{unit}.s").read_text()
+    words = set(WORD.findall(asm_text))
+    c_used = function_words(asm_text, c_funcs)
     used = {where[w] for w in words if w in where}
     if not used:
         return [], notes
@@ -168,7 +199,7 @@ def plan_unit(tree: Path, game: str, unit: str) -> tuple[list[Plan], list[str]]:
             users.setdefault(w, set()).add(o)
     plans = []
     for c in sorted(used):
-        p, note = plan(c, found[c], labels[c], users, unit)
+        p, note = plan(c, found[c], labels[c], users, unit, c_used)
         if p:
             plans.append(p)
         if note:

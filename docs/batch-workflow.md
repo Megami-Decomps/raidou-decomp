@@ -98,7 +98,7 @@ in order (skip any with `--skip step,...`):
    cleanly.
 3. `renames`: symbol_addrs, smt3 aliases at the same address, name_sources rows
    (tier from the reason), the carried config tables and the pair tables of
-   both games, then `src`, `include` and `docs`; then `drop_symbols.tsv` and
+   both games, then `src`, `include` and `docs`, untracked files included; then `drop_symbols.tsv` and
    `revisit_names.py`. It lists derived data labels used only by a batch
    function as candidates for `drop_symbols.tsv`. The sources are renamed once
    for both games, so a row for one game whose old name the other game also
@@ -114,8 +114,12 @@ in order (skip any with `--skip step,...`):
    chunk, in any order (a piece split off earlier in the run has no asm/data
    file yet, so its labels come from the file that covers its range). The `.rodata` starts at the first of those labels that
    the section's alignment allows (16 bytes when it holds a jump table, else 8);
-   labels before it stay in the chunk. Anything else (a label another unit
-   uses, labels in several chunks) is reported for a hand decision. The run
+   labels before it stay in the chunk. When that run is refused, the unit
+   takes only the labels its plain C functions use (string literals and
+   constants the compiler emits into its own `.rodata`), if those form a run;
+   its asm functions' labels stay in the chunk. Anything else (a label another
+   unit uses, labels in several chunks) is reported for a hand decision, with
+   the first C label's address when the C needs it. The run
    stops (refused) when a unit's `.c` gained, against the base, a draft store
    entry's declaration, a function prototype for a function the unit does not
    define, or an `#include` below its first declaration: those belong in

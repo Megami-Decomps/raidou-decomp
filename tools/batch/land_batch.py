@@ -386,7 +386,8 @@ class Run:
 
     def gap_unit(self, row: batch_files.Row, finals: dict[str, str]) -> None:
         asm = self.tree / "asm" / row.game / f"{row.unit}.s"
-        names = [self.maps[row.game].get(n, n) for n in NONMATCHING_NAME.findall(asm.read_text())]
+        asm_names = NONMATCHING_NAME.findall(asm.read_text())
+        names = [self.maps[row.game].get(n, n) for n in asm_names]
         pre = self.batch.dir / "units" / f"{row.unit}.pre"
         if not pre.exists():
             self.note(f"{row.unit}: no units/{row.unit}.pre, wrote #include \"common.h\" only")
@@ -395,7 +396,9 @@ class Run:
                                   by_name)
         (self.tree / row.source).parent.mkdir(parents=True, exist_ok=True)
         (self.tree / row.source).write_text(text)
-        plans, notes = segments.plan_unit(self.tree, row.game, row.unit)
+        # a NON_MATCHING draft is still its INCLUDE_ASM in the matching build
+        c_funcs = {a for a, n in zip(asm_names, names) if n in by_name and unit_text.unwrap(by_name[n]) is None}
+        plans, notes = segments.plan_unit(self.tree, row.game, row.unit, c_funcs)
         if not segments.make_c(self.tree, row.game, row.unit):
             self.note(f"{row.unit}: no asm subsegment in the {row.game} yaml")
         yaml = segments.yaml_path(self.tree, row.game)
@@ -407,7 +410,8 @@ class Run:
                 continue
             rest = f", {p.kind} resumes at 0x{p.rest:08X}" if p.rest is not None else ""
             left = f", {', '.join(p.left)} left in the chunk for alignment" if p.left else ""
-            self.say(f"segments: {row.unit} owns {p.kind} of {p.chunk} from 0x{p.start:08X}{rest}{left}")
+            only = ", only the labels its C uses" if p.c_only else ""
+            self.say(f"segments: {row.unit} owns {p.kind} of {p.chunk} from 0x{p.start:08X}{rest}{left}{only}")
         for n in notes:
             self.note(n)
         drafted = sum(n in by_name for n in names)
