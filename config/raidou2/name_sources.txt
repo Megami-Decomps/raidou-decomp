@@ -13184,8 +13184,8 @@
 0x00401980	_puts_r	inferred	SMT3HD name via SLUS_209.11 0x002D47B8, reloc-identical; map-agrees
 0x00401A08	puts	inferred	SMT3HD name via SLUS_209.11 0x002D4840, shared-hash-in-run; map-agrees
 0x00401A28	qsort	inferred	SMT3HD name via SLUS_209.11 0x002D4860, reloc-identical; map-agrees
-0x00402418	ctnLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_003895A8, neighbour ctnNormalizeVec; no named callee, caller or string
-0x00402430	ctnNormalizeVec	hd-inferred	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD ctn.ctnNormalizeVec score 4.8 flag I: calls1 calls-of-match-uniq st1:call r1+r2
+0x00402418	srand	evidence	newlib srand: stores the seed in _impure_ptr->_new._reent._rand_next (+0xA8)
+0x00402430	rand	evidence	newlib rand: _rand_next = _rand_next * 0x5851F42D4C957F2D + 1, returns its high word & 0x7FFFFFFF
 0x00402498	_sbrk_r	inferred	SMT3HD name via SLUS_209.11 0x002D5250, shared-hash-in-run; map-agrees
 0x004024F0	_init_signal_r	inferred	SMT3HD name via SLUS_209.11 0x002D52A8, reloc-identical; map-agrees
 0x00402560	_signal_r	inferred	SMT3HD name via SLUS_209.11 0x002D5318, reloc-identical; map-agrees
@@ -26662,7 +26662,7 @@
 0x004DF910	evtFileMajor	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C6A8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtFileName2Head
 0x004DF912	evt_file_minor	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C6AA); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtFileName2Head
 0x004DF914	evtData14	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: evtFileName2Menu, evtPfsEventPmvtool, evtCallEventFadeOutAllBgm
-0x004DF916	Process3Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by Process3
+0x004DF916	winoff_x	inferred	method=manual; p=na; tier=D; source=smt3; evidence=smt3-decomp winoff_x 0x0054F828, an s16 in evtEventViewer .sdata; Process3 clears it
 0x004DF91C	pmv_pid	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCheckProcess returns pmv_pid != 0; replaces RunFrame1Data
 0x004DF920	last_skip_stat	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCheckLastSkipStat returns last_skip_stat; replaces evtData15
 0x004DF924	evt_camera	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 evtRunFrame stores the camera track in evt_camera, same use; replaces evtRunFrameData

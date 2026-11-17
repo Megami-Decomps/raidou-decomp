@@ -6761,7 +6761,6 @@
 0x004007E8	sdfLeaf20	func	tier=D	derived-unit	na	unit code_004003D8, neighbour sdfPackFloat; no named callee, caller or string
 0x00400820	sdfLeaf21	func	tier=D	derived-unit	na	unit code_004003D8, neighbour sdfPackFloat; no named callee, caller or string
 0x00400858	sdfLeaf22	func	tier=D	derived-unit	na	unit code_004003D8, neighbour sdfPackFloat; no named callee, caller or string
-0x00402418	ctnLeaf4	func	tier=D	derived-unit	na	unit code_003895A8, neighbour ctnNormalizeVec; no named callee, caller or string
 0x00402838	sprintfRaiseRSub	func	tier=D	derived-caller	na	unit code_003899C8, nearest named function sprintf; called by _raise_r
 0x00402968	sprintfLeaf	func	tier=D	derived-unit	na	unit code_00389A68, neighbour sprintf; no named callee, caller or string
 0x00402970	sscanfCallStrlen	func	tier=D	derived-callee	na	unit sdk/libc/sscanf; calls strlen
@@ -18889,7 +18888,7 @@
 0x004DF8F0	evtSceneDispRowsEntry10	data	tier=D	derived-table	na	pointed to by evtSceneDispRows
 0x004DF8F8	evtSceneDispRowsEntry11	data	tier=D	derived-table	na	pointed to by evtSceneDispRows
 0x004DF914	evtData14	data	tier=D	derived-shared	na	used by 4 functions: evtFileName2Menu, evtPfsEventPmvtool, evtCallEventFadeOutAllBgm
-0x004DF916	Process3Data	data	tier=D	derived-sole	na	used by Process3
+0x004DF916	winoff_x	data	tier=D	manual	na	smt3-decomp winoff_x 0x0054F828, an s16 in evtEventViewer .sdata; Process3 clears it
 0x004DF928	evtCallGetFrameIDData	data	tier=D	derived-sole	na	used by evtCallGetFrameID
 0x004DF92C	evtData16	data	tier=D	derived-shared	na	used by 2 functions: evtFRAMESETOK, evtCallGetPIDfromUID
 0x004DF930	evtFRAMESETOKDataEntry	data	tier=D	derived-table	na	pointed to by evtFRAMESETOKData
@@ -24230,7 +24229,6 @@
 0x003FE4D8	sdfDestroyTaskWorkerTasks	func	tier=C	dds-fuzzy-60-tie-single	0.30 (n=4)	dds body 0x2cb278 sim 0.677 margin 0.03 single
 0x00400960	__assert	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2fe260 sim 1.000 margin 0.58 pair
 0x00400A60	fiprintf	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2fe978 sim 1.000 margin 0.00 pair
-0x00402430	ctnNormalizeVec	func	tier=C	hd-both	0.71 (n=206)	Raidou HD ctn.ctnNormalizeVec score 4.8 flag I: calls1 calls-of-match-uniq st1:call r1+r2
 0x00403970	_vfiprintf_r	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x3026f8 sim 1.000 margin 0.49 pair
 0x0040A570	__srefill	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x300f30 sim 1.000 margin 0.44 pair
 0x0040BFB0	_realloc_r	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x3652a8 sim 1.000 margin 0.80 pair

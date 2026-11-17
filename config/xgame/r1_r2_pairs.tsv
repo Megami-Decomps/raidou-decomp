@@ -10055,8 +10055,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00388B10	0x00401980	_puts_r	no	yes	asm/raidou1/sdk/libc/puts.s	asm/raidou2/sdk/libc/puts.s	unique-reloc-hash
 0x00388B98	0x00401A08	puts	no	yes	asm/raidou1/code_00388B98.s	asm/raidou2/code_00401A08.s	masked-hash-in-gap
 0x00388BB8	0x00401A28	qsort	no	yes	src/shared/sdk/libc/qsort.c	src/shared/sdk/libc/qsort.c	unique-reloc-hash
-0x003895A8	0x00402418	ctnLeaf4	no	yes	asm/raidou1/code_003895A8.s	asm/raidou2/code_00402418.s	unique-reloc-hash
-0x003895C0	0x00402430	ctnNormalizeVec	no	yes	asm/raidou1/code_003895A8.s	asm/raidou2/code_00402418.s	unique-reloc-hash
+0x003895A8	0x00402418	srand	no	yes	asm/raidou1/code_003895A8.s	asm/raidou2/code_00402418.s	unique-reloc-hash
+0x003895C0	0x00402430	rand	no	yes	asm/raidou1/code_003895A8.s	asm/raidou2/code_00402418.s	unique-reloc-hash
 0x00389628	0x00402498	_sbrk_r	no	yes	asm/raidou1/code_003895A8.s	asm/raidou2/code_00402418.s	masked-hash-in-gap
 0x00389680	0x004024F0	_init_signal_r	no	yes	src/shared/sdk/libc/signal.c	src/shared/sdk/libc/signal.c	unique-reloc-hash
 0x003896F0	0x00402560	_signal_r	no	yes	src/shared/sdk/libc/signal.c	src/shared/sdk/libc/signal.c	unique-reloc-hash

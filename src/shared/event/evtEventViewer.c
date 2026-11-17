@@ -3868,7 +3868,7 @@ INCLUDE_SDATA(const s32, "event/evtEventViewer", evt_file_minor);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData14);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewer", Process3Data);
+INCLUDE_SDATA(const s32, "event/evtEventViewer", winoff_x);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewer", pmv_pid);
 

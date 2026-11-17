@@ -8455,7 +8455,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046C6A8	0x004DF910	evtFileMajor	.sdata	0x2	yes	code-ref
 0x0046C6AA	0x004DF912	evt_file_minor	.sdata	0x2	yes	code-ref
 0x0046C6AC	0x004DF914	evtData14	.sdata	0x2	yes	code-ref
-0x0046C6AE	0x004DF916	Process3Data	.sdata	0x6	yes	code-ref
+0x0046C6AE	0x004DF916	winoff_x	.sdata	0x6	yes	code-ref
 0x0046C6B4	0x004DF91C	pmv_pid	.sdata	0x4	yes	code-ref
 0x0046C6B8	0x004DF920	last_skip_stat	.sdata	0x4	yes	code-ref
 0x0046C6BC	0x004DF924	evt_camera	.sdata	0x4	yes	code-ref
