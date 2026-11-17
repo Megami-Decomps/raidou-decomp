@@ -89,7 +89,17 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlInitLoadAttackHitData_pData);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlForceDelete_AttackHitData);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlBtlLoadAttackHitDataDecodeSub);
+s32 sbtlBtlLoadAttackHitDataDecodeSub(struct SBTLUNIT_WORK *wk, s32 id) {
+    if (wk->flg & 0x800) {
+        return 1;
+    }
+    if (wk->hitwk.status & 1) {
+        return 1;
+    }
+    memcpy(&wk->hitwk, &sbtlWork2.hitwk, sizeof(wk->hitwk));
+    wk->hitwk.status |= 2;
+    return 1;
+}
 
 INCLUDE_RODATA(const s32, "sbtlDMG", CreateAnimTable);
 
@@ -236,7 +246,34 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlHitCProc);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCheckActDamage);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCheckGround);
+struct SBTLUNIT_WORK *sbtlCheckGround(struct SBTLDMG_HITWORK *hwk) {
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_WORK *near;
+    s32 i;
+    f32 min;
+    f32 len;
+
+    min = 9999.0f;
+    near = NULL;
+    for (i = 0; i < hwk->lwk->count; i++) {
+        unit = hwk->lwk->pUnitL[i].pUnit;
+        if (unit == NULL) {
+            continue;
+        }
+        if (!sbtlCheckHitArea_sbtlDMG(hwk, unit)) {
+            continue;
+        }
+        SDF_VU0_LOADVECTOR(&hwk->pos);
+        SDF_VU0_LOADVECTOR_B(&unit->pos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_GETLENGTH(len);
+        if (len < min) {
+            near = unit;
+            min = len;
+        }
+    }
+    return near;
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallMemset7);
 
@@ -350,7 +387,7 @@ s32 sbtlCheckHitArea(struct SBTLDMG_HITWORK *wk, SKLID skillid) {
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlGetSkilltbl7);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlCheckPlayerDead);
+INCLUDE_ASM(const s32, "sbtlDMG", sbtlCheckHitArea_sbtlDMG);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCHitFunc_ATTACK);
 

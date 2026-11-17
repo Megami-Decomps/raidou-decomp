@@ -151,4 +151,9 @@ s32 dds3AllocRenderTexture(u16 sx, u16 sy, f32 aspect);
 s32 dds3RenderTextureON(void);
 extern struct sdfTexHandle_t *dds3RenderTexture;
 
+#ifdef VERSION_RAIDOU2
+extern u8 fadetype;
+void FadeTypeSet(DDS3_FADETYPE eType);
+#endif
+
 #endif

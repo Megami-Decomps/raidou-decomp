@@ -31,4 +31,9 @@ extern s32 gMoonCngCnt;
 extern s32 gMoonAgeOld;
 extern s32 gMoonAge16Old;
 
+#ifdef VERSION_RAIDOU2
+extern s32 Process2_evtMoonData8;
+void evtBtlBarCtrlSub(s32 ot);
+#endif
+
 #endif

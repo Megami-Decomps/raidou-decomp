@@ -794,15 +794,13 @@ s32 slExitToTitleSub(void) {
 }
 #else
 INCLUDE_ASM(const s32, "mc/slMain", slExitToTitleSub);
-
-INCLUDE_ASM(const s32, "mc/slMain", slExitToTitle);
 #endif
 
-#ifdef VERSION_RAIDOU1
 s32 slExitToTitle(void) {
     return slExitToTitleSub();
 }
 
+#ifdef VERSION_RAIDOU1
 s32 slCallAdminiCallSequence(void) {
     u32 v = 2;
 
@@ -863,7 +861,10 @@ s32 slCallSetInfo6(void) {
     return slCallMcRegetInfo(&slCallSetInfo5, &slLeaf7, 1);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slLoadProc1st);
+dds3ProcessFunc_t slLoadProc1st(void)
+{
+    return EE_ADDR_AS(dds3ProcessFunc_t, slTop());
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slLeaf9);
 
@@ -1404,20 +1405,31 @@ s32 slCalc(dds3ProcessID_t *id) {
     return 0;
 }
 
-#ifdef VERSION_RAIDOU1
 dds3ProcessFunc_t slDraw_slMain(dds3ProcessID_t *id) {
     if (0 < slData5 && slData5 < 600) {
         slData5++;
     }
+#ifdef VERSION_RAIDOU1
     eglSetOt(102);
+#else
+    eglSetOt(103);
+#endif
     eglLinkAlpha(0);
     eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 1);
     if (gslDrawFlagBg != 0) {
+#ifdef VERSION_RAIDOU1
         rstCallCalcAlphaRate(fmShutDownData, 0x100, 102);
         itfDrawGridWithResolvedSlot(0, 0, 0, 32, slNewCycleData16, 15, 102);
         itfDrawGridWithResolvedSlot(7456, 0, 0, 32, slNewCycleData16, 15, 102);
         itfDrawGridWithResolvedSlot(0, 0, 0, 32, slNewCycleData16, 16, 103);
         itfDrawGridWithResolvedSlot(7120, 0, 0, 32, slNewCycleData16, 17, 103);
+#else
+        rstCallCalcAlphaRate(fmShutDownData, 0x100, 103);
+        itfDrawGridWithResolvedSlot(0, 0, 0, 32, slNewCycleData16, 15, 103);
+        itfDrawGridWithResolvedSlot(7456, 0, 0, 32, slNewCycleData16, 15, 103);
+        itfDrawGridWithResolvedSlot(0, 0, 0, 32, slNewCycleData16, 16, 104);
+        itfDrawGridWithResolvedSlot(7120, 0, 0, 32, slNewCycleData16, 17, 104);
+#endif
     }
     if (gslDrawFlagFile != 0) {
         slNewCycle(id);
@@ -1430,6 +1442,7 @@ dds3ProcessFunc_t slDraw_slMain(dds3ProcessID_t *id) {
     return 0;
 }
 
+#ifdef VERSION_RAIDOU1
 /* NON_MATCHING: 124 of 192 words match.  */
 #ifdef NON_MATCHING
 void fmProcTrigSequence_slMain(s32 mode) {
@@ -1535,8 +1548,6 @@ INCLUDE_RODATA(const s32, "mc/slMain", fmStrSaveloadSpr);
 INCLUDE_ASM(const s32, "mc/slMain", fmProcTrigSequence_slMain);
 #endif
 #else
-INCLUDE_ASM(const s32, "mc/slMain", slDraw_slMain);
-
 INCLUDE_ASM(const s32, "mc/slMain", fmProcTrigSequence_slMain);
 #endif
 

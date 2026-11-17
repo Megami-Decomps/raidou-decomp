@@ -9,7 +9,20 @@
 
 INCLUDE_ASM(const s32, "code_00155DD8", mapKaidanAdd);
 
-INCLUDE_ASM(const s32, "code_00155DD8", mapCHitAdd);
+void mapCHitAdd(s16 uniq, f32 x, f32 z, f32 r) {
+    s32 i;
+
+    for (i = 0; i < 256; i++) {
+        if (mapData28[i].use == 0) {
+            mapData28[i].use = 1;
+            mapData28[i].uniq = uniq;
+            mapData28[i].x = x;
+            mapData28[i].z = z;
+            mapData28[i].r = r;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00155DD8", mapWHitAdd);
 

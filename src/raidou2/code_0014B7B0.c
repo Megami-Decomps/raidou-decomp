@@ -5,6 +5,8 @@
 #include "mdlManager.h"
 #include "sdfMemory.h"
 #include "enums.h"
+#include "dds3Randomize.h"
+#include "dds3ObjectBase.h"
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallSetOt6);
 
@@ -183,7 +185,16 @@ s32 mapObjectRefreshSub(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit,
     return mapObjFloorAdd_Cash(-1, uniq, major, minor, motion, cut_bit, 0, x, y, z, r, s);
 }
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjCheck);
+s32 mapObjCheck(s16 uniq) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjDel);
 

@@ -11,6 +11,8 @@
 #include "code_002929C8.h"
 #include "evt.h"
 #include "sBtlEncount.h"
+#include "newdata.h"
+#include "sdfChip.h"
 
 s32 sbtlCheckLoadFlg(void) {
     u32 load;
@@ -83,7 +85,31 @@ u32 sbtlCallRefSbtl51(void) {
 
 INCLUDE_RODATA(const s32, "code_002C5D78", sbtlRefSbtl50Table);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlSummonMenuProc);
+void sbtlSummonMenuProc(struct SBTLUNIT_WORK *wk) {
+    switch (wk_sbtl->field436) {
+    case 1:
+        sbtlRefSbtl51Data[wk_sbtl->field440](wk, &wk_sbtl->mode);
+        break;
+    case 2:
+        sbtlRefSbtl51Data2[wk_sbtl->field440](wk, &wk_sbtl->mode);
+        break;
+    case 3:
+        sbtlRefSbtl51Data3[wk_sbtl->field440](wk, &wk_sbtl->mode);
+        break;
+    case 4:
+        sbtlRefSbtl51Data4[wk_sbtl->field440](wk, &wk_sbtl->mode);
+        break;
+    case 5:
+        sbtlRefSbtl51Data5[wk_sbtl->field440](wk, &wk_sbtl->mode);
+        break;
+    case 6:
+        sbtlRefSbtl51Data6[wk_sbtl->field440](wk, &wk_sbtl->mode);
+        break;
+    case 7:
+        sbtlRefSbtl51Data7[wk_sbtl->field440](wk, &wk_sbtl->mode);
+        break;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlResetSummonPanel);
 
@@ -119,13 +145,57 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlResetColorFlag);
 
 INCLUDE_ASM(const s32, "code_002C5D78", CheckSummonTarget);
 
-INCLUDE_ASM(const s32, "code_002C5D78", effAllocateModelBindings);
+struct SBTL_MODELBIND_LIST *effAllocateModelBindings(void) {
+    struct SBTL_MODELBIND_LIST *list = sdfChipAllocZeroDirect(sizeof(SBTL_MODELBIND_LIST));
+
+    list->num = 0;
+    list->top = NULL;
+    return list;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallMemAllocDirect6);
 
 INCLUDE_ASM(const s32, "code_002C5D78", Proc_sbtlEXP);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallMemFreeDirect6);
+s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *stp, u8 flg) {
+    struct SBTL_MODELBIND *node;
+    struct SBTL_MODELBIND *next;
+
+
+    if (stp == NULL) {
+        return 0;
+    }
+    node = stp->top;
+    if (node == NULL || stp->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            node->status = 2;
+        }
+        if (node->status == 2) {
+            if (node->prev != NULL) {
+                node->prev->next = node->next;
+            }
+            if (node->next != NULL) {
+                node->next->prev = node->prev;
+            }
+            if (node->prev == NULL) {
+                stp->top = node->next;
+                if (stp->top != NULL) {
+                    stp->top->prev = NULL;
+                }
+            }
+            next = node->next;
+            sdfMemFreeDirect(node->handle);
+            node = next;
+            stp->num--;
+        } else {
+            node = node->next;
+        }
+    } while (node != NULL);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlBattleEnd);
 
@@ -283,9 +353,15 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetEncountPacData);
 
 INCLUDE_ASM(const s32, "code_002C5D78", SetEncountData_Sub_sbtlEncount);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetEncountData);
+struct SBTLUNIT_WORK *sbtlSetEncountData(s32 devil, s32 posid, s32 groupID)
+{
+    return SetEncountData_Sub_sbtlEncount(devil, posid, groupID, 0);
+}
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlAddAWXAtkPadSub);
+struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub(s32 devilId, s32 point, s32 arg)
+{
+    return SetEncountData_Sub_sbtlEncount(devilId, point, arg, 1);
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlAddAWXAtkPadSub2);
 
@@ -330,13 +406,21 @@ INCLUDE_ASM(const s32, "code_002C5D78", campUpdateEffectStep);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBitCheck4);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetRndEncCnt);
+s32 sbtlGetRndEncCnt(void)
+{
+    return DDS3_GBWK->encountcnt;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallGetRandIntA);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlRefDDS3GBWK3);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlResetRndEncCount);
+void sbtlResetRndEncCount(void)
+{
+    DDS3_GBWK->encountkyori = 0.0f;
+    DDS3_GBWK->encountcnt = 0;
+    encmax = 0;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlRndEncTopPriorityMap);
 
@@ -411,7 +495,14 @@ SBTLITEM_TBL *sbtlGetItemtbl(s32 id)
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlRefSbtl19);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCreateItemList);
+SBTLITEM_LISTWORK *sbtlCreateItemList(void)
+{
+    SBTLITEM_LISTWORK *lwk = sdfChipAllocZeroDirect(sizeof(SBTLITEM_LISTWORK));
+
+    lwk->handle = NULL;
+    lwk->num = 0;
+    return lwk;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlEntryItemList);
 

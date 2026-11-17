@@ -10,18 +10,49 @@
 #include "sdfQuat.h"
 #include "sdk_libm.h"
 #include "sdfMemory.h"
+#include "dds3KernelCore.h"
+#include "mdlManager.h"
 
 INCLUDE_ASM(const s32, "code_001416C0", fldProcSequenceSub2);
 
 INCLUDE_ASM(const s32, "code_001416C0", fldPlayerMotReset2);
 
-INCLUDE_ASM(const s32, "code_001416C0", fldPlayerMotReset3);
+void fldPlayerMotReset3(void) {
+    s16 motion = playerModel->current.h.motionIndex;
+
+    if (fldGlobalBase.nakamaMode == 0) {
+        fldLeaf18(motion, 0, 15.0f);
+    } else {
+        NakamaMotion(motion, 0, 15.0f);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001416C0", fldNakamaMotReset2);
 
-INCLUDE_ASM(const s32, "code_001416C0", fldNakamaMotReset3);
+s32 fldNakamaMotReset3(void) {
+    if (summonDvBasic != NULL) {
+        s16 motion = summonDvModel->current.h.motionIndex;
 
-INCLUDE_ASM(const s32, "code_001416C0", fldAiboMotReset);
+        if (fldGlobalBase.nakamaMode == 0) {
+            NakamaMotion(motion, 0, 15.0f);
+        }
+    }
+#ifdef FIX_BUGS
+    return 0;
+#endif
+}
+
+s32 fldAiboMotReset(void) {
+    if (aiboBasic != NULL) {
+        if (fldGlobalBase.nakamaMode == 0) {
+            aiboModel->first->speed = 0.5f;
+            mdlSmoothLoopMotion(aiboModel, 0, 2, 15.0f, 15.0f);
+        }
+    }
+#ifdef FIX_BUGS
+    return 0;
+#endif
+}
 
 INCLUDE_ASM(const s32, "code_001416C0", fldPlayerForceRotStart);
 
@@ -172,7 +203,21 @@ void fldCallMemFreeDirect(void) {
     fldData24 = 0;
 }
 
-INCLUDE_ASM(const s32, "code_001416C0", mapCallMemAllocDirect);
+void mapCallMemAllocDirect(s32 w, s32 h) {
+    s32 x;
+    s32 y;
+
+    fldRunMapData = sdfMemAllocDirect(w * h * 8);
+    fldRunMapCellData = sdfMemGetPtr(fldRunMapData);
+    pFroMapHead = w;
+    fldRunMapScale = h;
+    for (x = 0; x < w; x++) {
+        for (y = 0; y < h; y++) {
+            fldRunMapCellData[y * w + x] = -1;
+        }
+    }
+    fldData24 = fldGlobalBase.nameU;
+}
 
 void mapFreeMapDataSub(void) {
     fldCallMemFreeDirect();

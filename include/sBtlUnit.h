@@ -23,7 +23,8 @@ struct effRefObj_t;
 typedef struct SBTLUNIT_MODEL {
     u8 pad000[0x90];
     sdfVector4_t scrPos3;
-    u8 pad0A0[0x6C];
+    u8 pad0A0[0x68];
+    struct sdfMemHandle_t *handle;
     u16 mode;
     u8 pad10E[0x2];
     u32 flags;
@@ -138,7 +139,7 @@ s32 Draw_sbtlUnit(void);
 s32 Exit_sbtlUnit(void);
 s32 Init_sbtlUnit(s8 flg);
 s32 ResetAction(struct SBTLUNIT_WORK *wk, s8 flg);
-s32 sbtlCallFalseHuuma(struct SBTLUNIT_WORK *wk);
+s32 sbtlResetAction(struct SBTLUNIT_WORK *wk);
 s32 sbtlSetUseSkill_sbtlActAI(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 after_frame);
 s32 GuardProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode);
 s32 CheckStop_BadStatus(struct SBTLUNIT_WORK *wk);
@@ -286,7 +287,8 @@ struct SBTLUNIT_WORK {
     s32 fadepara;
     s32 cmpfade;
     u32 color;
-    u8 pad4E4[0x18];
+    u32 chgcolor;
+    u8 pad4E8[0x14];
     s32 next_motionno;
     u8 pad500[0x8];
     struct dds3Basic_t *pBasic;
@@ -502,5 +504,11 @@ typedef struct SBTLUNIT_LISTWORK {
     struct sdfMemHandle_t *handle;
     SBTLUNIT_LISTWK *pUnitL;
 } SBTLUNIT_LISTWORK;
+
+#ifdef VERSION_RAIDOU2
+void sbtlCallSync(void);
+void KaihiInit_Sub(struct SBTLUNIT_WORK *wk, s32 mode);
+void sbtlKaihiInit(struct SBTLUNIT_WORK *wk);
+#endif
 
 #endif

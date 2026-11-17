@@ -66,13 +66,13 @@ INCLUDE_ASM(const s32, "code_00298540", sbtlSetEncountData);
 
 struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub(s32 devilId, s32 point, s32 arg)
 {
-    return sbtlCallMemset21(devilId, point, arg, 1);
+    return SetEncountData_Sub_sbtlEncount(devilId, point, arg, 1);
 }
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_00298540.c:67, near, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
 struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub2(s32 devilId, s32 point, s32 arg)
 {
-    return sbtlCallMemset21(devilId, point, arg, 2);
+    return SetEncountData_Sub_sbtlEncount(devilId, point, arg, 2);
 }
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlSetEncountData4);

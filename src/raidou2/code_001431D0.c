@@ -4,25 +4,67 @@
 #include "mapData.h"
 #include "mapLbWork.h"
 #include "sdfTex.h"
+#include "fileManager.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "fldDbg.h"
+#include "kernel_draw.h"
+#include "sdf3D.h"
+#include "fldProcess.h"
+#include "ps2asm.h"
+#include "sdfVu0.h"
 
 INCLUDE_ASM(const s32, "code_001431D0", mapGetScreenDir);
 
 INCLUDE_ASM(const s32, "code_001431D0", mapCallSetOt5);
 
-INCLUDE_ASM(const s32, "code_001431D0", mapBgDrawOnOff);
+void mapBgDrawOnOff(s32 on)
+{
+    fldDbg.bgDrawOn = on;
+}
 
 void mapDrawSBtlSceneSub(void) {
 }
 
 INCLUDE_ASM(const s32, "code_001431D0", mapSKYBGEDIT);
 
-INCLUDE_ASM(const s32, "code_001431D0", mapBgSetScrollReset);
+void mapBgSetScrollReset(void) {
+    dds3ScreenParam.height = 448.0f;
+    sdf3DScreenAdjust = 0;
+    sdf3DScreenAdjustOffsetX = 0.0f;
+    sdf3DScreenAdjustOffsetY = 0.0f;
+    sdf3DScreenAdjustScaleX = 1.0f;
+    sdf3DScreenAdjustScaleY = 1.0f;
+    dds3SetScreenFovy(0.628f);
+}
 
 INCLUDE_ASM(const s32, "code_001431D0", map_fldPoint3To2);
 
 INCLUDE_ASM(const s32, "code_001431D0", map_fldPoint3To2O);
 
-INCLUDE_ASM(const s32, "code_001431D0", map_fldPoint3To2O2);
+void map_fldPoint3To2O2(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2) {
+    sdfVector4_t scale = {mapData73 * 512.0f, 224.0f, 1.0f, 1.0f};
+    sdfVector4_t point;
+    sdfVector4_t screen;
+
+    point.x = x3;
+    point.y = y3;
+    point.z = z3;
+    point.w = 1.0f;
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
+    MultMatrixRev(&dds3ScreenParam.TM);
+    SDF_VU0_COPYMATRIX_A_TO_B();
+    SDF_VU0_LOADVECTOR(&point);
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_LOADVECTOR_B(&scale);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.trans);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&screen);
+    *x2 = screen.x;
+    *y2 = screen.y;
+}
 
 INCLUDE_ASM(const s32, "code_001431D0", map_fldPoint3To2O3);
 

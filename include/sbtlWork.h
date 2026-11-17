@@ -137,11 +137,15 @@ typedef struct SBTL_WORK {
     struct SBTLEFF_LISTWORK *effList;
     u8 pad744[0x20];
     s32 field424;
-    u8 pad768[0xE];
+    u8 pad768[0x8];
+    s16 mode;
+    u8 pad772[0x4];
     s16 field436;
     u8 pad778[0x8];
     s16 field440;
-    u8 pad782[0xFE];
+    u8 pad782[0x1A];
+    s32 hgunNum;
+    u8 pad7A0[0xE0];
     SBTLDROP_WORK drop;
     u8 pad880[0x9BC - 0x880 - sizeof(SBTLDROP_WORK)];
     SBTL_PANEL *panel;

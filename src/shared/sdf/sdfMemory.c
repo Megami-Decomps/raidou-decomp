@@ -482,7 +482,10 @@ sdfMemHandle_t *sdfMemSearchHandle(s32 ptr)
 }
 
 #ifdef VERSION_RAIDOU2
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfCallMemAllocDirect);
+void *sdfCallMemAllocDirect(s32 aSize)
+{
+    return sdfMemLock(sdfMemAllocDirect(aSize));
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfCallMemAllocDirect2);
 

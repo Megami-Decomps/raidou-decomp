@@ -136,7 +136,19 @@ INCLUDE_ASM(const s32, "code_00169A40", fldDestroyTitleTask);
 
 INCLUDE_ASM(const s32, "code_00169A40", fldProcSequenceSub6);
 
-INCLUDE_ASM(const s32, "code_00169A40", fldSe_Init);
+void fldSe_Init(void) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        mapSoundKankyoSeSetWork[i].active = 0;
+        mapSoundKankyoSeSetWork[i].se = 0;
+        mapSoundKankyoSeSetWork[i].vol = 0;
+        mapSoundKankyoSeSetWork[i].update = 0;
+        mapSoundKankyoSeSetWork[i].state = 0;
+    }
+    mapData131 = 0;
+    mapSoundKankyoTaskSubData = 100;
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", fldCallSoundKankyoSeSet);
 
@@ -148,7 +160,16 @@ INCLUDE_ASM(const s32, "code_00169A40", mapCallBitCheck5);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallBitCheck6);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapCallPlaySEVolLoop);
+void mapCallPlaySEVolLoop(void) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapSoundKankyoSeSetWork[i].active != 0) {
+            p2sdPlaySE_Vol_Loop(mapSoundKankyoSeSetWork[i].se);
+        }
+    }
+    fldSe_Init();
+}
 
 void mapProcSequenceSub10(void) {
     s32 i;
@@ -164,7 +185,16 @@ void mapProcSequenceSub10(void) {
 
 INCLUDE_ASM(const s32, "code_00169A40", mapFileLoadSub8);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapCallPlaySEVolLoop2);
+void mapCallPlaySEVolLoop2(void) {
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        if (mapFileLoadSub8Work[i].active != 0) {
+            p2sdPlaySE_Vol_Loop(mapFileLoadSub8Work[i].se);
+        }
+    }
+    mapProcSequenceSub10();
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapSoundMoveSeVol);
 
@@ -221,7 +251,9 @@ INCLUDE_ASM(const s32, "code_00169A40", mapCallBitCheck7);
 
 INCLUDE_ASM(const s32, "code_00169A40", p2sdProcSequenceSub);
 
-INCLUDE_ASM(const s32, "code_00169A40", p2sdSoundSmgLoadChkSub);
+s32 p2sdSoundSmgLoadChkSub(s32 map) {
+    return p2sdSoundSmgLoadChkSubData[map];
+}
 
 void p2sdPlaySE_Vol(s32 se, s32 vol) {
     p2sdPlaySE(p2sdData2 + se, vol, 63);
@@ -318,7 +350,9 @@ INCLUDE_ASM(const s32, "code_00169A40", mapLeaf7);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallPreCalcStrWidth);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapProcSequenceSub11);
+void mapProcSequenceSub11(void) {
+    mapData133 = 0;
+}
 
 INCLUDE_RODATA(const s32, "code_00169A40", mapStrTakaraOpenanmObjid);
 

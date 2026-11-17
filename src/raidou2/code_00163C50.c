@@ -1,6 +1,9 @@
 #include "common.h"
 #include "mapData.h"
 #include "sdfMemory.h"
+#include "fldProcess.h"
+#include "EventBit.h"
+#include "fld.h"
 
 INCLUDE_ASM(const s32, "code_00163C50", fldLeaf22);
 
@@ -265,11 +268,17 @@ INCLUDE_ASM(const s32, "code_00163C50", mapNakamaChikaraTaskSub);
 
 INCLUDE_ASM(const s32, "code_00163C50", nbCallEffectReset);
 
-INCLUDE_ASM(const s32, "code_00163C50", nbEffEplLoadLBGENBASub);
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplEnd);
 
 INCLUDE_ASM(const s32, "code_00163C50", nbFreeEventPack);
 
-INCLUDE_ASM(const s32, "code_00163C50", mapEffEplAllEnd);
+void mapEffEplAllEnd(void) {
+    s32 i;
+
+    for (i = 0; i < 33; i++) {
+        mapEffEplEnd(i);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", mapProcSequenceSub2);
 

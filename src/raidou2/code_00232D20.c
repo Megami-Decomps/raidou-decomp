@@ -5,12 +5,15 @@
 #include "effBlur_Filter.h"
 #include "code_r1_00226EC8.h"
 #include "code_r1_0021CE60.h"
+#include "code_0016AD90.h"
 
 INCLUDE_ASM(const s32, "code_00232D20", effLeaf338);
 
 INCLUDE_ASM(const s32, "code_00232D20", effLeaf339);
 
-INCLUDE_ASM(const s32, "code_00232D20", effGetFlags);
+u32 effGetFlags(void) {
+    return flags_stat;
+}
 
 INCLUDE_ASM(const s32, "code_00232D20", effLeaf);
 
@@ -32,7 +35,20 @@ void Init_effStat(void) {
     proc_stat = dds3StartProcess(Init_effStatStrEffStat, 11010, 0, 0, Process_effStat, NULL, NULL);
 }
 
-INCLUDE_ASM(const s32, "code_00232D20", Process_effStat);
+s32 Process_effStat(dds3ProcessID_t *proc) {
+    if (flags_stat & 4) {
+        if (~flags_stat & 1) {
+            if (dds3PadButtonState[0x31] < 0) {
+                effFadeInBlur();
+            }
+        } else if (dds3PadButtonState[0x31] == 0) {
+            effCallRestoreStat();
+        }
+    }
+    effUpdateBlur();
+    effUpdate();
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00232D20", effLeaf342);
 
@@ -202,7 +218,9 @@ INCLUDE_ASM(const s32, "code_00232D20", fclLeaf10);
 
 INCLUDE_ASM(const s32, "code_00232D20", fclLeaf11);
 
-INCLUDE_ASM(const s32, "code_00232D20", fclBtlDebugSetStatusflgSub);
+void fclBtlDebugSetStatusflgSub(void) {
+    effModelUpdateControlFlags = 0;
+}
 
 INCLUDE_RODATA(const s32, "code_00232D20", Init_effStatStrEffStat);
 

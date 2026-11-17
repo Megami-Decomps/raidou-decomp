@@ -13,6 +13,7 @@ void fclLinkData(u8 *a_pDatMsg);
 void fclLinkDataEx(dds3ProcessID_t *PID, u8 *a_pDatMsg);
 dds3ProcessID_t *fclProcessStart(void);
 void fclRefMainPIDFclMsg(s32 a_mode);
+extern dds3ProcessID_t *g_mainPID_fclMsg;
 void fclResetEx(dds3ProcessID_t *PID);
 void fclSetClsModeEx(dds3ProcessID_t *PID, s32 a_mode);
 void fclSetMessagePosEx(dds3ProcessID_t *PID, u8 a_pos);

@@ -4,6 +4,7 @@
 #include "ps2asm.h"
 #include "dds3KernelCore.h"
 #include "newdata.h"
+#include "sBtlUnit.h"
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlRaidouKatana);
 
@@ -163,7 +164,10 @@ INCLUDE_ASM(const s32, "code_00261DF0", slQueryYesNoDraw_slMain);
 
 INCLUDE_ASM(const s32, "code_00261DF0", slCallSin);
 
-INCLUDE_ASM(const s32, "code_00261DF0", slFirstInitSub);
+void slFirstInitSub(void)
+{
+    sbtlCallSync();
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", slCampEFFTES);
 

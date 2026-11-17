@@ -32,4 +32,6 @@ s32 dds3CameraObjectBasicFourceCalc(dds3Basic_t *pBasic) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "dds3CameraObjectBasic_0011A520", dds3UnitObjectBasicGetControlWorkData);
+dds3ObjectBaseControlWorkData_t *dds3UnitObjectBasicGetControlWorkData(dds3Basic_t *pBasic) {
+    return ((dds3UnitObjectBasicWorkData_t *)pBasic->workdata)->pObjectBaseControlWorkData;
+}

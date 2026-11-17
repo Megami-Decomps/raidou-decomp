@@ -2,6 +2,14 @@
 #include "mapData.h"
 #include "mapLbWork.h"
 #include "sdfTex.h"
+#include "fld.h"
+#include "sbtlWork.h"
+#include "dds3CameraObjectBasic.h"
+#include "kernel_draw.h"
+#include "ps2asm.h"
+#include "dds3KernelDraw.h"
+#include "sdfVu0.h"
+#include "fldProcess.h"
 
 INCLUDE_ASM(const s32, "code_0015D870", mapMapSetAreaRefresh);
 
@@ -77,11 +85,23 @@ INCLUDE_ASM(const s32, "code_0015D870", mapRefMapAreaNow);
 
 INCLUDE_ASM(const s32, "code_0015D870", mapGetCut_FXY);
 
-INCLUDE_ASM(const s32, "code_0015D870", mapProcSequenceSub5);
+s32 mapProcSequenceSub5(f32 x, f32 z) {
+    s32 i;
+
+    for (i = 0; i < 64; i++) {
+        if (mapData27[i].use != 0 && mapData27[i].x0 < x && x < mapData27[i].x1 && z < mapData27[i].z0 &&
+            mapData27[i].z1 < z && mapData27[i].type == 2) {
+            return mapData27[i].basyo;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0015D870", mapGetFloorY);
 
-INCLUDE_ASM(const s32, "code_0015D870", mapGetY);
+f32 mapGetY(f32 x, f32 z) {
+    return mapGetFloorY(-1, x, z);
+}
 
 INCLUDE_ASM(const s32, "code_0015D870", mapCallSetPlayerTargetData5);
 

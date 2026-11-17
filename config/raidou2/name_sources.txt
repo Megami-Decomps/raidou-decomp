@@ -1535,7 +1535,7 @@
 0x0013F630	rstDrawEvoBgFade	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x223e20 sim 0.708 margin 0.34 pair
 0x0013F660	fldSetUnitSub3	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; called by fldSetUnit
 0x0013F690	fldLeaf20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; no named callee, caller or string
-0x0013F6D0	fldCallBtlGetMotionVisualDataSBtlVi	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; calls sbtlGetMotionVisualData_sbtlVisual
+0x0013F6D0	NakamaMotion	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same callee as R1's NakamaMotion (HD name) in fldNakamaMotReset3 and fldPlayerMotReset3; replaces fldCallBtlGetMotionVisualDataSBtlVi
 0x0013F7F0	fldPlayerCalcNmlFldSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; called by PlayerCalc_Nml_fld
 0x0013F840	PlayerMotionSe2	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD fld.PlayerMotionSe2 score 3.1 flag -: calls1 calls-of-match st2:call r2-only
 0x00140030	PlayerMotionSe	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD fld.PlayerMotionSe score 4.7 flag -: calls1 calls-of-match st1:call r1+r2
@@ -1880,7 +1880,7 @@
 0x00168D30	mapCallCheckEnd	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour mapEffEplLoad_LB_TAKUMI; calls pacCheckEnd
 0x00168DE0	mapNakamaChikaraTaskSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001626B0, neighbour mapEffEplLoad_LB_TAKUMI; called by mapNakamaChikaraTask
 0x00168E10	nbCallEffectReset	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001626B0, neighbour nbFreeEventPack; calls dds3EffectReset
-0x00168F08	nbEffEplLoadLBGENBASub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001626B0, neighbour nbFreeEventPack; called by mapEffEplLoad_LB_GENBA
+0x00168F08	mapEffEplEnd	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same callee as R1's mapEffEplEnd (HD name) in mapEffEplAllEnd; replaces nbEffEplLoadLBGENBASub
 0x00168F38	nbFreeEventPack	inferred	method=smt3-fuzzy-70-m-single; p=0.83 (n=60); tier=B; source=smt3; evidence=smt3 body 0x290bc8 sim 0.860 margin 0.10 single
 0x00168F98	mapEffEplAllEnd	hd	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD fld.mapEffEplAllEnd score 6.0 flag -: calls1 callers-of-match st1:call r1+r2
 0x00168FD8	mapProcSequenceSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001626B0, neighbour mapEffEplAllEnd; called by ProcSequence
@@ -7040,8 +7040,8 @@
 0x002820E0	sbtlRefSbtl37	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlCheckSkillEquation; references wk_sbtl
 0x00282108	sbtlRefSbtl12	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlNakamaWarpReset; references wk_sbtl
 0x00282170	sbtlCallBtlResetAction2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlPlayerRJigenKiriProc; calls sbtlResetAction
-0x00282248	sbtlCallGetScreenDir	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlPlayerRJigenKiriProc; calls mapGetScreenDir
-0x002825C0	sbtlKaihiInitNakamaSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlPlayerRJigenKiriProc; called by KaihiInit_Nakama
+0x00282248	KaihiInit_Sub	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlPlayer.KaihiInit_Sub: sBtlKaihiInit calls it with mode 0; replaces sbtlCallGetScreenDir
+0x002825C0	sbtlKaihiInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlPlayer.sBtlKaihiInit (KaihiInit_Sub(wk, 0)); replaces sbtlKaihiInitNakamaSub
 0x002825D8	sbtlKaihiInitNakamaSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlPlayerRJigenKiriProc; called by KaihiInit_Nakama
 0x002825F0	sbtlCallGetScreenDir2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlPlayerRJigenKiriProc; calls mapGetScreenDir
 0x002829A0	sbtlPlayerRJigenKiriProc	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlPlayer_JigenKiri.sBtlPlayerRJigenKiriProc score 8.7 flag I: calls4 callers-of-match votes3 st2:call r2-only
@@ -7318,7 +7318,7 @@
 0x002941A0	sbtlCreate	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlActAI.sBtlCreate score 6.8 flag I: calls1 next calls-of-match st1:call r1+r2
 0x00294258	sbtlDelete	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlActAI.sBtlDelete score 6.7 flag I: calls1 next calls-of-match st1:call r1+r2
 0x00294280	sbtlCallBtlAAIProc	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlAAIProc
-0x002943A0	sbtlBtlCheckScriptDataSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlCheckScriptData
+0x002943A0	sbtlGetAITBL	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same callee as R1 sbtlGetAITBL (HD sBtlActAI.sBtlGetAITBL) in sbtlCheckScriptData; replaces sbtlBtlCheckScriptDataSub
 0x002943C0	sbtlLeaf23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
 0x00294400	sbtlSetSkillData_AI	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlSetSkillData_AI score 9.4 flag I: calls3 callers-of-match votes4 st1:call r1+r2
 0x00294458	sbtlCallBtlCheckEquationProc	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCheckEquationProc
@@ -7635,7 +7635,7 @@
 0x002B2B58	sbtlCreateTargetList_csr	hd-inferred	hd: Raidou HD sBtlDMG.sBtlCreateTargetList_csr, score 10.1 band A
 0x002B2E10	sbtlCheckHitArea	hd-inferred	hd: Raidou HD sBtlDMG.sBtlCheckHitArea, score 10.0 band A
 0x002B2F88	sbtlCallBtlGetSkilltbl7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlGetSkilltbl
-0x002B2FE8	sbtlCallBtlCheckPlayerDead	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlCheckPlayerDead
+0x002B2FE8	sbtlCheckHitArea_sbtlDMG	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same callee as R1's sbtlCheckHitArea_sbtlDMG (HD name) in sbtlCheckGround; replaces sbtlCallBtlCheckPlayerDead
 0x002B3280	sbtlCHitFunc_ATTACK	hd-inferred	hd: Raidou HD sBtlDMG.sBtlCHitFunc_ATTACK, score 8.8 band B
 0x002B3300	sbtlGetSide	hd-inferred	hd: Raidou HD sBtlDMG.sBtlGetSide, score 8.8 band B
 0x002B3418	CheckDamageTarget	hd	hd: Raidou HD sBtlDMG.CheckDamageTarget, score 7.65 band B
@@ -17379,7 +17379,7 @@
 0x004AC8C0	mapStrMapMnameName03600Tmx	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapMnameTmx; string "/map/mname/m_name036_00.tmx"
 0x004AC8E0	mapStrMapMnameName03900Tmx	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapMnameTmx; string "/map/mname/m_name039_00.tmx"
 0x004AC900	mapStrMapMnameSinnyuWakuTmx	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapTitleStart_fld; string "/map/mname/sinnyu_waku.tmx"
-0x004AC920	p2sdSoundSmgLoadChkSubTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by p2sdSoundSmgLoadChkSub
+0x004AC920	p2sdSoundSmgLoadChkSubData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same object as R1 p2sdSoundSmgLoadChkSubData: p2sdSoundSmgLoadChkSub alignment; replaces p2sdSoundSmgLoadChkSubTable
 0x004ACA10	mapStrNowAnmReOpenAnmObjid	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapTakaraOpen_fld; string "NowAnmReOpen anm_objid:%x?"
 0x004ACA30	mapStrTakaraOpenanmObjid	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapTakaraTask; string "takara_openanm_objid:%x?"
 0x004ACA50	saveStrRitualOfEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by savePointMenuMoverFuncData
@@ -25649,7 +25649,7 @@
 0x004DE378	fadergba	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B278); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004DE37B	dds3Data28	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: dds3FadeIn2, dds3FadeOut2, dds3FadeUpdate
 0x004DE37C	dds3Data29	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: dds3FadeModeSet, dds3CallGetFrameID
-0x004DE37D	dds3Data49	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: dds3FadeTypeGet, FadeTypeSet
+0x004DE37D	fadetype	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD dds3KernelDraw.c FadeTypeSet and dds3FadeTypeGet use fadetype; replaces dds3Data49
 0x004DE380	dds3Data30	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: dds3BistaClear, dds3BistaOutEx
 0x004DE383	dds3Data31	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: dds3BistaIn, dds3BistaOutEx, dds3BistaCheck
 0x004DE384	dds3DrawBistaData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3DrawBista (2 of 6 refs, 5 functions)

@@ -314,7 +314,10 @@ INCLUDE_ASM(const s32, "code_002F5CF0", DrawStatusBar);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", btlLoadInterfaceSprite);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallBtlCheckTutorialBattle3);
+s64 sbtlCallBtlCheckTutorialBattle3(void)
+{
+    return sbtlCheckTutorialBattle();
+}
 
 char *sbtlLeaf112(u8 n)
 {
@@ -344,7 +347,10 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlInitDevil);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlGetRaceName);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSpriteEx);
+void sbtlSpriteEx(s32 a_x, s32 a_y, u8 a_alpha, s32 a_sprNo, DDS3_OT a_ot)
+{
+    itfDrawMiscSpriteAlpha(a_x, a_y, 0, a_alpha, wk_sbtl->panel->hPanelSpr3, a_sprNo, a_ot);
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSprite);
 

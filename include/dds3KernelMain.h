@@ -19,6 +19,7 @@ extern u32 dds3DebugSign;
 extern const char dds3ResetExecPath[];
 
 #ifdef VERSION_RAIDOU2
+extern u8 dds3CallEventSubData;
 void dds3CallEventSub(u8 enable);
 #endif
 

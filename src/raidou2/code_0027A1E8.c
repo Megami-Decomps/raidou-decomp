@@ -8,6 +8,9 @@
 #include "sBtlCalc.h"
 #include "dds3PadManager.h"
 #include "ps2asm.h"
+#include "sbtlActAI.h"
+#include "itfMesManager.h"
+#include "sbtlSub.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -216,9 +219,12 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl12);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlResetAction2);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallGetScreenDir);
+INCLUDE_ASM(const s32, "code_0027A1E8", KaihiInit_Sub);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlKaihiInitNakamaSub);
+void sbtlKaihiInit(struct SBTLUNIT_WORK *wk)
+{
+    KaihiInit_Sub(wk, 0);
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlKaihiInitNakamaSub2);
 
@@ -308,7 +314,10 @@ INCLUDE_ASM(const s32, "code_0027A1E8", TEquationno_0d);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", TEquationno_0e);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckScriptData);
+s32 sbtlCheckScriptData(s32 devilId)
+{
+    return sbtlGetAITBL(devilId)->scr_no != 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", CheckAIScript);
 

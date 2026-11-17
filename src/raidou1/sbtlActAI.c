@@ -2391,7 +2391,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
         }
         sbtlSetUseSkill_sbtlActAI(wk, SKLID_NONE, 0);
         if (wk_sbtl->mode == 6) {
-            sbtlCallFalseHuuma(wk);
+            sbtlResetAction(wk);
             wk_sbtl->mode2 = 1;
             wk->flg |= 1;
             wk->vstatus &= ~0x80;
@@ -2400,7 +2400,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
                                    0, 0, 1);
             return 1;
         }
-        sbtlCallFalseHuuma(wk);
+        sbtlResetAction(wk);
         return 1;
     case 7:
         if (wk->vstatus & 4) {
@@ -3437,7 +3437,7 @@ void sbtlBS_MUNAKA_Init_Imad_Restart(struct SBTLUNIT_WORK *wk) {
         wk->flg &= ~0x4010;
         target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
         if (target != NULL) {
-            sbtlCallFalseHuuma(target);
+            sbtlResetAction(target);
         }
     }
 }

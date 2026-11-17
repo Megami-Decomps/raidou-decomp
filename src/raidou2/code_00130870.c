@@ -1,4 +1,11 @@
 #include "common.h"
+#include "fldProcess.h"
+#include "dds3CameraObjectBasic.h"
+#include "field.h"
+#include "dds3Basic.h"
+#include "ps2asm.h"
+#include "mapData.h"
+#include "fld.h"
 
 INCLUDE_ASM(const s32, "code_00130870", fldCallElvReset);
 
@@ -20,7 +27,9 @@ INCLUDE_ASM(const s32, "code_00130870", mapRetuenFromNakamaAna);
 
 INCLUDE_ASM(const s32, "code_00130870", sbtlEpSc);
 
-INCLUDE_ASM(const s32, "code_00130870", mapExitFieldSub);
+s32 mapExitFieldSub(void) {
+    return ProcSequenceData4;
+}
 
 INCLUDE_ASM(const s32, "code_00130870", sbtlReLoadFldScene);
 

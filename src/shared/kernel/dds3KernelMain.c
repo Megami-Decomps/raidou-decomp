@@ -292,14 +292,11 @@ void dds3SoftResetOn(void)
 #ifdef VERSION_RAIDOU1
 /* body: matched in raidou @ 385e897: src/shared/kernel/dds3KernelMain.c:208, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
 #endif
+#ifdef VERSION_RAIDOU1
 void dds3SoftResetOff(void)
 {
     dds3SoftResetDisableFlag = 1;
 }
-#ifdef VERSION_RAIDOU2
-
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3CallEventSub);
-#endif
 
 void dds3KernelMain(void)
 {
@@ -354,6 +351,71 @@ top:
 done:
     LoadExecPS2(dds3ResetExecPath, 0, 0);
 }
+#else
+void dds3SoftResetOff(void)
+{
+    dds3SoftResetDisableFlag = 1;
+}
+
+void dds3CallEventSub(u8 enable)
+{
+    dds3CallEventSubData = enable;
+}
+
+void dds3KernelMain(void)
+{
+    u32 base;
+    s32 time;
+    s32 sign;
+
+    dds3FirstInit();
+    dds3FrameID = 0;
+    goto top;
+frame:
+    dds3FrameCount++;
+    dds3FrameRunTime = sdfGetRunTimeCount(base) - sdfReqDrawDelaySleepCount;
+    dds3LastDrawFrameCount = sdfDrawFrameCounter;
+    dds3FrameID ^= 1;
+    goto runcount;
+pause:
+    time = dds3PauseTime;
+    sign = dds3PauseSign;
+    if (time > 0) {
+        time--;
+        if (time == 0) {
+            sign = 0;
+        }
+        dds3PauseTime = time;
+        dds3PauseSign = sign;
+    }
+runcount:
+    dds3RunCount++;
+    if (dds3FileCmdLoPrio == 0) {
+        sdfFileCmdThreadSetHiPrio();
+    }
+top:
+    if (dds3SoftResetFlag != 0) {
+        goto done;
+    }
+    sdfWaitVblank(dds3VblanksPerFrame);
+    sdfGrReqDrawDelay(dds3VblanksPerFrame - 1);
+    sdfPadWork();
+    if (dds3FileCmdLoPrio != 0) {
+        sdfFileCmdThreadSetLoPrio();
+    }
+    if (dds3PauseSign != 0) {
+        goto pause;
+    }
+    base = sdfGetRunTimeCountBase();
+    dds3RunProcessList();
+    if (dds3ProcessMain() == 0) {
+        goto done;
+    }
+    goto frame;
+done:
+    LoadExecPS2(dds3ResetExecPath, 0, 0);
+}
+#endif
 #ifdef VERSION_RAIDOU2
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameCount);
 

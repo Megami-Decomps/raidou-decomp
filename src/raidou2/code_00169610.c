@@ -28,7 +28,9 @@ void mapIsFldKeyFreeSub4(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00169610", mapWaitCbScreenFadeBSub);
+void mapWaitCbScreenFadeBSub(s32 mode) {
+    mapData121 = mode;
+}
 
 INCLUDE_ASM(const s32, "code_00169610", mapCampBADEPL);
 

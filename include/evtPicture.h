@@ -47,4 +47,9 @@ dds3ProcessID_t *evtStartPictureProcess(u32 priority, void *texpath);
 s32 evtPictureSetDrawCol(dds3ProcessID_t *id, s32 r, s32 g, s32 b, s32 a);
 dds3ProcessID_t *evtPictureStartProcess4(s32 x, s32 y, u32 priority, s32 start, s32 end, s32 *p_now, u32 type, u32 uid, void (*callback)(u32 uid), const char *texpath);
 
+#ifdef VERSION_RAIDOU2
+extern s32 evtData28;
+void evtCutInCreateSub(s32 ot);
+#endif
+
 #endif

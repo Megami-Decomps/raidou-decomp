@@ -12,7 +12,9 @@ typedef struct fclMsgWork_t {
     struct sdfMemHandle_t *hMem;  /* 0x00: this block */
     struct sdfMemHandle_t *hData; /* 0x04 */
     void *data;                   /* 0x08 */
-    u8 unk0C[0x14];
+    u8 unk0C[0xC];
+    s32 unk18;                    /* 0x18: fclUpdateEx's result */
+    u8 unk1C[0x4];
 } fclMsgWork_t;
 SIZE_CHECK(fclMsgWorkSizeCheck, fclMsgWork_t, 0x20);
 

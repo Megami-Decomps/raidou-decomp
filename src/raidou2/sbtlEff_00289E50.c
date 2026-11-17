@@ -7,6 +7,7 @@
 #include "code_00291C78.h"
 #include "sBtlSkill.h"
 #include "code_r1_0021CE60.h"
+#include "nbDebugProcess.h"
 
 s32 OnDataLoadProc(dds3ProcessID_t *id) {
     s32 i;
@@ -26,7 +27,8 @@ s32 OnDataLoadProc(dds3ProcessID_t *id) {
     return -1;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf75);
+void sbtlLeaf75(dds3ProcessID_t *id) {
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlFunc6);
 
@@ -264,7 +266,14 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlInitEffectWork);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckLoadEnd_EffectWork);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateDelList);
+SBTLEFF_DELLISTWORK *sbtlCreateDelList(void)
+{
+    SBTLEFF_DELLISTWORK *lwk = sdfChipAllocZeroDirect(sizeof(SBTLEFF_DELLISTWORK));
+
+    lwk->num = 0;
+    lwk->dwk = NULL;
+    return lwk;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckDelWork_Request);
 
@@ -435,7 +444,14 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf76);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl44);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", evtAllocateContext);
+SBTL_STP *evtAllocateContext(void)
+{
+    SBTL_STP *stp = sdfChipAllocZeroDirect(sizeof(SBTL_STP));
+
+    stp->enabled = 0;
+    stp->head = NULL;
+    return stp;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateSTP_Unit);
 
@@ -542,7 +558,9 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlResetMidashiAnim);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl48);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl49);
+s32 sbtlRefSbtl49(void) {
+    return wk_sbtl->mode == 2;
+}
 
 s32 sbtlCallCommandFLDSETTAKARAOPEN(void)
 {

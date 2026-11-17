@@ -176,7 +176,10 @@ void mapAM_MaskClear(void) {
     }
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00128378", NewGameInit);
+void NewGameInit(void)
+{
+    memset(DDS3_GBWK->mesLog, 0, sizeof(DDS3_GBWK->mesLog));
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskSetCurrent);
 #endif
@@ -577,7 +580,11 @@ INCLUDE_ASM(const s32, "code_r1_00128378", sdfLoadMapFromMemorySub);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", sbtlRefDDS3GBWK);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", sbtlCountClear);
+void sbtlCountClear(void)
+{
+    sbtlCheckEndEscape();
+    fldPlayerAFree();
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", sbtlTitleNewGameStartSub);
 
@@ -828,7 +835,10 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fldRefBasic);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldAiboCashLoad_EndCheck);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldSetUnitSub2);
+s32 fldSetUnitSub2(void)
+{
+    return fldData12 != NULL;
+}
 
 #ifdef VERSION_RAIDOU1
 void cmpModelFreeResource(void) {

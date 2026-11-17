@@ -4,6 +4,9 @@
 #include "sdk_libc.h"
 #include "sBtlEXP.h"
 #include "sbtlWork.h"
+#include "sBtlSM.h"
+#include "sBtlCalc.h"
+#include "sBtlDraw.h"
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckMsgMemType);
 
@@ -139,11 +142,39 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlKettouProc);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", GetMessagePrio);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", DeleteMessage);
+void DeleteMessage(SBTLSM_LISTWORK *lwk, SBTLSM_WORK *dwk)
+{
+    SBTLSM_WORK *prev;
+    SBTLSM_WORK *next;
+
+    if (dwk != NULL && lwk->num != 0) {
+        prev = dwk->prev;
+        next = dwk->next;
+        sdfMemFreeDirect(dwk->handle);
+        if (prev != NULL) {
+            prev->next = next;
+        }
+        if (next != NULL) {
+            next->prev = prev;
+        }
+        if (--lwk->num == 0) {
+            lwk->dwk = NULL;
+        } else if (prev == NULL) {
+            lwk->dwk = next;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlAddMessage);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCreateSMList);
+SBTLSM_LISTWORK *sbtlCreateSMList(void)
+{
+    SBTLSM_LISTWORK *lwk = sdfChipAllocZeroDirect(sizeof(SBTLSM_LISTWORK));
+
+    lwk->num = 0;
+    lwk->dwk = NULL;
+    return lwk;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemAllocDirect10);
 
@@ -153,7 +184,45 @@ INCLUDE_ASM(const s32, "code_002DF1D0", Proc);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", Draw_sbtlSM);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlReleaseSM_List);
+s32 sbtlReleaseSM_List(SBTLSM_LISTWORK *lwk, u8 flg)
+{
+    SBTLSM_WORK *dwk;
+    SBTLSM_WORK *next;
+
+    if (lwk == NULL) {
+        return 0;
+    }
+    dwk = lwk->dwk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            dwk->gstat = SBTLSM_ST_END;
+        }
+        if (dwk->gstat == SBTLSM_ST_END) {
+            if (dwk->prev != NULL) {
+                dwk->prev->next = dwk->next;
+            }
+            if (dwk->next != NULL) {
+                dwk->next->prev = dwk->prev;
+            }
+            if (dwk->prev == NULL) {
+                lwk->dwk = dwk->next;
+                if (lwk->dwk != NULL) {
+                    lwk->dwk->prev = NULL;
+                }
+            }
+            next = dwk->next;
+            sdfMemFreeDirect(dwk->handle);
+            dwk = next;
+            lwk->num--;
+        } else {
+            dwk = dwk->next;
+        }
+    } while (dwk != NULL);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeleteSMList);
 

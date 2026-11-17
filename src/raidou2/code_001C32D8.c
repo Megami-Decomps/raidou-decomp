@@ -5,6 +5,7 @@
 #include "evtPicture.h"
 #include "newdata.h"
 #include "EventBit.h"
+#include "dds3Randomize.h"
 
 INCLUDE_ASM(const s32, "code_001C32D8", evtCallGetScriptHandle);
 
@@ -62,11 +63,17 @@ INCLUDE_ASM(const s32, "code_001C32D8", nbCreateBasicEffect);
 
 INCLUDE_ASM(const s32, "code_001C32D8", prm_DH_PLUS);
 
-INCLUDE_ASM(const s32, "code_001C32D8", evtMoonTakaraCntReset);
+void evtMoonTakaraCntReset(void) {
+    DDS3_GBWK->takaraCnt = dds3GetRandIntA(NULL, 5) + 6;
+}
 
-INCLUDE_ASM(const s32, "code_001C32D8", evtMoonZeniCntReset);
+void evtMoonZeniCntReset(void) {
+    DDS3_GBWK->zeniCnt = dds3GetRandIntA(NULL, 5) + 6;
+}
 
-INCLUDE_ASM(const s32, "code_001C32D8", evtMoonTakumiCntReset);
+void evtMoonTakumiCntReset(void) {
+    DDS3_GBWK->takumiCnt = dds3GetRandIntA(NULL, 5) + 16;
+}
 
 INCLUDE_ASM(const s32, "code_001C32D8", evtMoonTeisatuCntReset);
 

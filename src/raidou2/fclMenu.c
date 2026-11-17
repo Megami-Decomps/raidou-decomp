@@ -1,6 +1,8 @@
 #include "common.h"
 #include "fclDrawBack.h"
 #include "sdfMemory.h"
+#include "fclMsg.h"
+#include "dds3KernelCore.h"
 
 INCLUDE_ASM(const s32, "fclMenu", MoverUpdate);
 
@@ -104,7 +106,10 @@ INCLUDE_ASM(const s32, "fclMenu", fclLinkData);
 
 INCLUDE_ASM(const s32, "fclMenu", fclResetEx);
 
-INCLUDE_ASM(const s32, "fclMenu", ButtonLineHelpDispSet);
+void ButtonLineHelpDispSet(void)
+{
+    fclResetEx(g_mainPID_fclMsg);
+}
 
 INCLUDE_ASM(const s32, "fclMenu", fclSetSelInvild);
 
@@ -124,12 +129,23 @@ INCLUDE_ASM(const s32, "fclMenu", fclRefMainPIDFclMsg);
 
 INCLUDE_ASM(const s32, "fclMenu", _Update);
 
-INCLUDE_ASM(const s32, "fclMenu", fclUpdateEx);
+s32 fclUpdateEx(dds3ProcessID_t *PID)
+{
+    fclMsgWork_t *wk = dds3GetProcessData(PID);
 
-INCLUDE_ASM(const s32, "fclMenu", Update_fclMsg);
+    return wk->unk18;
+}
+
+s32 Update_fclMsg(void)
+{
+    return fclUpdateEx(g_mainPID_fclMsg);
+}
 
 INCLUDE_ASM(const s32, "fclMenu", Process_fclMsg);
 
-INCLUDE_ASM(const s32, "fclMenu", Create_fclMsg);
+void Create_fclMsg(void)
+{
+    g_mainPID_fclMsg = fclProcessStart();
+}
 
 INCLUDE_ASM(const s32, "fclMenu", Delete_fclMsg);

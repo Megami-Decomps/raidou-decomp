@@ -147,7 +147,7 @@ s32 sbtlCheckPad(void)
     return 1;
 }
 
-s32 sbtlCallFalseHuuma(struct SBTLUNIT_WORK *wk)
+s32 sbtlResetAction(struct SBTLUNIT_WORK *wk)
 {
     wk->vstatus &= 0xF67DFFFF;
     wk->flg &= 0xFFFFBEEE;
@@ -347,7 +347,7 @@ s32 sbtlCallBtlResetCharge(struct SBTLUNIT_WORK *wk, s32 type)
     case 4:
         if (wk_sbtl->battleMode != 1) {
             sbtlCallMemset17(wk_sbtl->effList, wk, 38, 0, &wk->pos.x, 0x80808080, 0);
-            sbtlCallFalseHuuma(wk);
+            sbtlResetAction(wk);
             sbtlCallBtlEndAction(wk, 1, 0);
             sbtlResetCharge(wk);
             wk_sbtl->field4AC = 20;
@@ -395,7 +395,7 @@ s32 sbtlCallBtlResetCharge(struct SBTLUNIT_WORK *wk, s32 type)
         wk_sbtl->mode = 1;
         wk_sbtl->gstat[0] = 0;
         wk_sbtl->gstat[1] = 0;
-        sbtlCallFalseHuuma(wk);
+        sbtlResetAction(wk);
         sbtlCallBtlEndAction(wk, 1, 0);
         sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         sbtlRefSbtl11(wk, 10);
@@ -1381,7 +1381,7 @@ s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
             wk_sbtl->mode = 1;
             wk_sbtl->gstat[0] = 0;
             wk_sbtl->gstat[1] = 0;
-            sbtlCallFalseHuuma(wk);
+            sbtlResetAction(wk);
             sbtlCallBtlEndAction(wk, 1, 0);
             sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         }
@@ -1939,7 +1939,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
                 wk_sbtl->mode = 1;
                 wk_sbtl->gstat[0] = 0;
                 wk_sbtl->gstat[1] = 0;
-                sbtlCallFalseHuuma(wk);
+                sbtlResetAction(wk);
                 sbtlCallBtlEndAction(wk, 1, 0);
                 sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
             }
@@ -1959,7 +1959,7 @@ s32 GuardProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode)
     wk->flg |= 0x100;
     wk->vstatus |= SBTLUNIT_VST_GRAV;
     if (!dds3PadButtonState[3]) {
-        sbtlCallFalseHuuma(wk);
+        sbtlResetAction(wk);
         sbtlSetUseSkill_sbtlActAI(wk, 0, 0);
         sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
     }
@@ -1986,7 +1986,7 @@ s32 KaihiProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
     wk_sbtl->field494++;
     wk_sbtl->field494 = (wk_sbtl->field494 <= 0) ? 0 : (wk_sbtl->field494 > 0x7FFF) ? 0x7FFF : wk_sbtl->field494;
     if (!(GetAnlogKey(wk, &dir) >= 48.0f) && wk_sbtl->field484 < 2) {
-        sbtlCallFalseHuuma(wk);
+        sbtlResetAction(wk);
         sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         sbtlSetUseSkill_sbtlActAI(wk, SKLID_NONE, 0);
         return 2;
@@ -2004,7 +2004,7 @@ s32 KaihiProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
     hit = sbtlCallBtlCheckMapHitData(pos[0], pos[2]);
     w = wk_sbtl;
     if (hit && w->field484 < 2) {
-        sbtlCallFalseHuuma(wk);
+        sbtlResetAction(wk);
         sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         sbtlSetUseSkill_sbtlActAI(wk, SKLID_NONE, 0);
         return 2;
@@ -2631,7 +2631,7 @@ s32 sbtlCallBtlResetCharge2(struct SBTLUNIT_WORK *wk) {
             wk_sbtl->mode = 1;
             wk_sbtl->gstat[0] = 0;
             wk_sbtl->gstat[1] = 0;
-            sbtlCallFalseHuuma(wk);
+            sbtlResetAction(wk);
             sbtlCallBtlEndAction(wk, 1, 0);
             sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         }
@@ -2641,7 +2641,7 @@ s32 sbtlCallBtlResetCharge2(struct SBTLUNIT_WORK *wk) {
             wk_sbtl->mode = 1;
             wk_sbtl->gstat[0] = 0;
             wk_sbtl->gstat[1] = 0;
-            sbtlCallFalseHuuma(wk);
+            sbtlResetAction(wk);
             sbtlCallBtlEndAction(wk, 1, 0);
             sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         }

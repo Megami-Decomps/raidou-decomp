@@ -594,8 +594,8 @@ s32 sbtlCallMessageNumSearch4(s32 a_x, s32 a_y, s32 a_z, u32 a_color, SBTLSM a_m
     half = width >> 4;
     x = 256 - (width >> 5);
     hSpr->descriptions[11].rect[3] = half;
-    itfCallSetOt2(x - 24, a_y - 7, 0, 255, hSpr, 11, 103);
-    itfCallSetOt2(x + half, a_y - 6, 0, 255, hSpr, 15, 103);
+    itfDrawMiscSpriteAlpha(x - 24, a_y - 7, 0, 255, hSpr, 11, 103);
+    itfDrawMiscSpriteAlpha(x + half, a_y - 6, 0, 255, hSpr, 15, 103);
     frFontMoveChainTo(x * 16, a_y * 8, frq);
     frSetFontColor(frq, 0xA09DC380);
     frDrawFontEx(frq, 1);
@@ -3128,7 +3128,7 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf121);
 
 void sbtlSpriteEx(s32 a_x, s32 a_y, u8 a_alpha, s32 a_sprNo, DDS3_OT a_ot)
 {
-    itfCallSetOt2(a_x, a_y, 0, a_alpha, wk_sbtl->panel->hPanelSpr3, a_sprNo, a_ot);
+    itfDrawMiscSpriteAlpha(a_x, a_y, 0, a_alpha, wk_sbtl->panel->hPanelSpr3, a_sprNo, a_ot);
 }
 
 void sbtlSprite(s32 a_x, s32 a_y, u8 a_alpha, s32 a_sprNo)

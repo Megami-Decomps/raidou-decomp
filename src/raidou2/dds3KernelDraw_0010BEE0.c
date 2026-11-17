@@ -54,11 +54,15 @@ void fldSetFilterAnime(s32 anime)
     gFilterAnimeOfsA = 0;
 }
 
-INCLUDE_ASM(const s32, "dds3KernelDraw_0010BEE0", dds3FilterSetAlpha);
+void dds3FilterSetAlpha(s32 alp) {
+    gFilterAlpha = alp;
+}
 
 INCLUDE_ASM(const s32, "dds3KernelDraw_0010BEE0", dds3FilterGetAlpha);
 
-INCLUDE_ASM(const s32, "dds3KernelDraw_0010BEE0", dds3FilterSetAlphaOfs);
+void dds3FilterSetAlphaOfs(s32 alp) {
+    gFilterFilterAlpOfs = alp;
+}
 
 INCLUDE_ASM(const s32, "dds3KernelDraw_0010BEE0", dds3FilterGetAlphaOfs);
 

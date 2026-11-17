@@ -95,8 +95,6 @@ enum {
 #include "evt_world.h"
 #include "code_r1_001CC1D0.h"
 
-s8 fclEndMessage(void);
-
 typedef s32 EvtMessageWindowPageValueResult;
 
 #define EVT_MESSAGE_WINDOW_PAGE_VALUE_NO_WINDOW 0
@@ -399,7 +397,10 @@ s8 evtGetCapturedWindowPanelValue(void) {
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclEndMessageEx);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclEndMessage);
+s32 fclEndMessage(void)
+{
+    return fclEndMessageEx(1);
+}
 
 s32 fclDestroyMessage(void)
 {

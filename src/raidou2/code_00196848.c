@@ -80,9 +80,13 @@ void nbSetFormPosRot(s32 idx, frFontCtx_t *ctx) {
 
 INCLUDE_ASM(const s32, "code_00196848", nbCallSetFormPosRot);
 
-INCLUDE_ASM(const s32, "code_00196848", nbTag0Sub);
+s32 nbTag0Sub(s32 tag) {
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_00196848", nbTag0Sub2);
+s32 nbTag0Sub2(s32 tag) {
+    return 1;
+}
 
 void nbRefDDS3GBWK14(void) {
     u32 i;

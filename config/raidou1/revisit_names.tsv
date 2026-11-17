@@ -956,7 +956,6 @@
 0x0018D048	itfMoverUpdate	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMoverUpdate, score 8.4 band B
 0x0018D268	itfMoverGetPosition	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMoverGetPosition, score 8.1 band B
 0x0018D3A0	itfCallSetOt	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfMoverGetRatio; calls eglSetOt
-0x0018D450	itfCallSetOt2	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfDrawMiscSpriteListSelect; calls eglSetOt
 0x0018D6A8	itfCallEnableMode	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfDrawMiscSpriteList; calls frEnableMode
 0x0018DCB0	itfLeaf15	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfDrawMiscHelp; no named callee, caller or string
 0x0018DDD0	itfCallSetOt3	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfDrawMiscHelp; calls eglSetOt
@@ -3114,7 +3113,6 @@
 0x002590F8	sbtlCallBtlCheckEnshutuSummonUnit2	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckMotionMove; calls sbtlCheckEnshutuSummonUnit
 0x00259448	sbtlCallBtlCreateUnit	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlGetPlayer_HitTarget; calls sbtlCreateUnit
 0x00259B98	sbtlCallBtlSearchUnitID5	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetVibe; calls sbtlSearchUnit_ID
-0x00259E28	sbtlCallFalseHuuma	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckPad; calls FalseHuuma
 0x00259F00	sbtlRefSbtl36	func	tier=D	derived-data	na	unit code_0024AAD8, neighbour sbtlActiveAction; references wk_sbtl
 0x00259F38	sbtlCallBtlGetItemtbl	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlActiveAction; calls sbtlGetItemtbl
 0x00259FE8	sbtlCallMemset8	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlResetCombine; calls memset
@@ -3609,7 +3607,6 @@
 0x002978F8	sbtlCallBtlCheckDamageTarget8	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlCheckDamageTarget
 0x00297AE0	sbtlGetPointData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEncount.sBtlGetPointData, score 11.8 band A
 0x00297C30	sbtlCallBitCheck	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls evtBitCheck
-0x00297EF0	sbtlCallMemset21	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls memset
 0x00298558	sbtlAddAWXAtkPadSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by Add_AW_XAtkPad
 0x00298570	sbtlAddAWXAtkPadSub2	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by Add_AW_XAtkPad
 0x00298A90	sbtlCallBtlClearGeneratorWork	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlClearGeneratorWork
@@ -19321,6 +19318,7 @@
 0x00189888	InitializeSelect	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cfcc8 sim 0.933 margin 0.55 pair
 0x00189928	InitializeCurCtr	func	tier=B	smt3-role	na	SMT3 name: same role (isdisp guard on isdraw, phase/ctr reset), called for both instance cursors from itfMesMngInitialize; replaces itfMesMngInitializeSub
 0x00189A58	ConvertZenkakuNumber	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1cfe48 sim 0.895 margin 0.62 pair
+0x0018D450	itfDrawMiscSpriteAlpha	func	tier=B	hd-role	na	HD itf.itfDrawMiscSpriteAlpha (R2 name, same callee in SetSelect and sbtlSpriteEx); replaces itfCallSetOt2
 0x0018E110	itfDrawFanBezierPt3	func	tier=B	hd-role	na	HD itf.c itfDrawFanBezierPt3(x0..vy, rgba0..2, ot): same itfGetDivBezierPt3(x1,y1,x2,y2,vx,vy,0.1) count, per-step itfGetRatePosBezierPt3 and eglLinkTri fan with lerped rgba; ot unused in both; replaces itfCallLinkTri
 0x0018E6E0	itfGetDivBezierPt3	func	tier=B	hd-role	na	HD itf.c itfGetDivBezierPt3: halves rate from 1.0 until the itfGetRatePosBezierPt3 point is within divLength of (x0, y0), returns the count; same 7-float signature; replaces itfFunc3
 0x0018EE68	MenuSetMoverDisappear01	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD itf.MenuSetMoverDisappear01 score 6.7 flag -: prev gap=exact st1:gap r1+r2
@@ -19446,6 +19444,7 @@
 0x00255AF0	sbtlItem_CheckSetItem	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlUnit.sBtlItem_CheckSetItem score 6.7 flag -: calls3 callers-of-match votes5 st1:call r1-only
 0x00256020	sbtlEntryStockData	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlUnit.sBtlEntryStockData score 6.4 flag I: calls4 callers-of-match votes5 st1:call r2-disagree:0x275030
 0x00259310	sbtlReleaseUnitList_ID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlUnit.sBtlReleaseUnitList_ID score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
+0x00259E28	sbtlResetAction	func	tier=B	hd-role	na	HD sBtlPlayer.sBtlResetAction (R2 name, same callee in sbtlBS_MUNAKA_Init_Imad_Restart); replaces sbtlCallFalseHuuma
 0x0025BBC8	CheckStop_BadStatus	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.CheckStop_BadStatus score 6.8 flag -: calls2 calls-of-match-uniq votes3 st1:call r1-only
 0x0025C960	sbtlSetReturn	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.sBtlSetReturn score 6.9 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x27cdd0
 0x0025CAC8	sbtlResetColor	func	tier=B	hd-body	na	HD sBtlPlayer.sBtlResetColor(u32 abgr): called with 0x80808080, returns 1; HD UseItemProc takes the unit (R2 UseItemProc_sbtlPlayer)
@@ -19494,6 +19493,7 @@
 0x00296FE0	sbtlGetMotionMoveData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetMotionMoveData (0x2131aa0): same per-major table select, called by sbtlGetMotionMove; replaces sbtlBtlGetMotionMoveSub
 0x00297128	sbtlGetVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetVisualData(major, id): per-major VISUALDATA_WORK table; replaces sbtlGetMotionVisualData
 0x00297170	sbtlGetMotionVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
+0x00297EF0	SetEncountData_Sub_sbtlEncount	func	tier=B	hd-role	na	HD sBtlEncount.SetEncountData_Sub (R2 name, same callee in sbtlAddAWXAtkPadSub and sbtlSetEncountData); replaces sbtlCallMemset21
 0x0029B3C8	sbtlSetAutoSkill_GB	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlSetAutoSkill_GB score 5.9 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2d4ff0
 0x0029BFB8	sbtlCheckCost_SkillID	func	tier=B	hd-role	na	HD SEquationno_12 returns sBtlCheckCost_SkillID(wk, skillid, 0), the call at the same place in Raidou SEquationno_12; replaces sbtlCallBtlGetSkilltbl22
 0x0029C608	sbtlCheckKuishibari	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlCheckKuishibari score 6.1 flag I: calls4 callee-index votes3 st1:cidx r2-disagree:0x2d68b8

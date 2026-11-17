@@ -127,11 +127,17 @@ void DelProcessAll(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_001E37C0", Callback_evtCutIn);
+void Callback_evtCutIn(u32 UID) {
+    DelUID(UID);
+}
 
-INCLUDE_ASM(const s32, "code_001E37C0", DestructProcess_evtCutIn);
+s32 DestructProcess_evtCutIn(dds3ProcessID_t *PID) {
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_001E37C0", DestructDestroy_evtCutIn);
+void DestructDestroy_evtCutIn(dds3ProcessID_t *PID) {
+    DelProcessAll();
+}
 
 INCLUDE_ASM(const s32, "code_001E37C0", evtStart);
 

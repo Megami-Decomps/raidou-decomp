@@ -19,7 +19,7 @@
 
 /* NON_MATCHING: 24 of 404 words match. Register allocation shifts, extern GBWK not gp-relative. */
 #ifdef NON_MATCHING
-struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode)
+struct SBTLUNIT_WORK *SetEncountData_Sub_sbtlEncount(s32 devilId, s32 point, s32 arg, s32 mode)
 {
     struct SBTLUNIT_WORK *unit;
     SBTL_DEVIL_DATA *devil;
@@ -170,5 +170,5 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
     return unit;
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00297EF0", sbtlCallMemset21);
+INCLUDE_ASM(const s32, "code_r1_00297EF0", SetEncountData_Sub_sbtlEncount);
 #endif

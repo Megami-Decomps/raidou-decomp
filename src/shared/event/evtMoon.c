@@ -47,7 +47,10 @@ void evtSetAgeOfMoon(s32 age)
 
 INCLUDE_ASM(const s32, "event/evtMoon", evtExitSBtlSub);
 
-INCLUDE_ASM(const s32, "event/evtMoon", evtBtlBarCtrlSub);
+void evtBtlBarCtrlSub(s32 ot)
+{
+    Process2_evtMoonData8 = ot;
+}
 #endif
 
 void evtEnableMoonCalc(void)

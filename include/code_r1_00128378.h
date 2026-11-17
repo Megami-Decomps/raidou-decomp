@@ -13,6 +13,7 @@ s32 fldPlayerALoadEndCheck(void);
 void fldPlayerALoadStart(void);
 void fldRegistUnitPad(void);
 s32 fldSetUnitSub(void);
+extern void *fldData12;
 s32 fldSetUnitSub2(void);
 s32 mapGetCircleCircleH(f32 x1, f32 y1, f32 r1, f32 x2, f32 y2, f32 r2, f32 *x3, f32 *y3);
 void mapGetEyeTgtRot(f32 eyex, f32 eyez, f32 tgtx, f32 tgtz);

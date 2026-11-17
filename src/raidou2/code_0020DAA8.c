@@ -1,4 +1,5 @@
 #include "common.h"
+#include "effManager.h"
 
 INCLUDE_ASM(const s32, "code_0020DAA8", effReturnEventSetupWord);
 
@@ -15,7 +16,9 @@ void effEctManagerInitSub(void) {
 
 INCLUDE_ASM(const s32, "code_0020DAA8", effLeaf49);
 
-INCLUDE_ASM(const s32, "code_0020DAA8", effProcSequenceSub);
+s32 effProcSequenceSub(void) {
+    return effProcSequenceSubData;
+}
 
 INCLUDE_ASM(const s32, "code_0020DAA8", effLeaf50);
 

@@ -2,6 +2,11 @@
 #include "newdata.h"
 #include "sBtlDvltk.h"
 #include "sbtlWork.h"
+#include "fldProcess.h"
+#include "sdfChip.h"
+#include "sBtlCalc.h"
+#include "sdk_libc.h"
+#include "sdfMemory.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
@@ -65,7 +70,9 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallCameraObjectBasicGetFovy);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallSetPosPoseSetDds3Basic2);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf103);
+s32 sbtlLeaf103(dds3ProcessID_t *id) {
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf87);
 
@@ -146,7 +153,9 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Magic);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Rec);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill);
+s32 sbtlCheckAutoSkill(sdatUnitWork_t *unit, s32 flg) {
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_Enemy);
 
@@ -216,7 +225,10 @@ INCLUDE_ASM(const s32, "sbtl", sbtlSetGunNum);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl66);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetGun_Num);
+s32 sbtlGetGun_Num(void)
+{
+    return wk_sbtl->hgunNum;
+}
 
 SBTL_AISYO_TBL *sbtlGetAisyotbl(s32 id)
 {
@@ -367,7 +379,14 @@ INCLUDE_ASM(const s32, "sbtl", sbtlRecalcAisyoMember);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlBtlLoadHuumaMesDataSub);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallChipAllocZeroDirect);
+SBTLDVLTK_LISTWORK *sbtlCallChipAllocZeroDirect(void)
+{
+    SBTLDVLTK_LISTWORK *lwk = sdfChipAllocZeroDirect(sizeof(SBTLDVLTK_LISTWORK));
+
+    lwk->num = 0;
+    lwk->dwk = NULL;
+    return lwk;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf101);
 
@@ -383,7 +402,45 @@ INCLUDE_ASM(const s32, "sbtl", sbtlSearchDvltk);
 
 INCLUDE_ASM(const s32, "sbtl", Draw_sbtlDvltk);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlReleaseDvltk_List);
+s32 sbtlReleaseDvltk_List(SBTLDVLTK_LISTWORK *stp, u8 flg)
+{
+    SBTLDVLTK_WORK *node;
+    SBTLDVLTK_WORK *next;
+
+    if (stp == NULL) {
+        return 0;
+    }
+    node = stp->dwk;
+    if (node == NULL || stp->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            node->status = 2;
+        }
+        if (node->status == 2) {
+            if (node->prev != NULL) {
+                node->prev->next = node->next;
+            }
+            if (node->next != NULL) {
+                node->next->prev = node->prev;
+            }
+            if (node->prev == NULL) {
+                stp->dwk = node->next;
+                if (stp->dwk != NULL) {
+                    stp->dwk->prev = NULL;
+                }
+            }
+            next = node->next;
+            sdfMemFreeDirect(node->handle);
+            node = next;
+            stp->num--;
+        } else {
+            node = node->next;
+        }
+    } while (node != NULL);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlDeleteDvltkList);
 

@@ -225,11 +225,11 @@ typedef struct
     /* 0x1E80 */ u8 unk1E80[0x100];
     /* 0x1F80 */ u8 moonFlags;
     /* 0x1F81 */ u8 moonPhase;
-    /* 0x1F82 */ u8 unk1F82;
-    /* 0x1F83 */ u8 unk1F83;
+    /* 0x1F82 */ s8 takaraCnt;
+    /* 0x1F83 */ s8 zeniCnt;
     /* 0x1F84 */ f32 moonTimer;
-    /* 0x1F88 */ u8 unk1F88;
-    /* 0x1F89 */ u8 unk1F89;
+    /* 0x1F88 */ s8 takumiCnt;
+    /* 0x1F89 */ s8 teisatuCnt;
     /* 0x1F8A */ u8 unk1F8A;
     /* 0x1F8B */ u8 unk1F8B;
     /* 0x1F8C */ u8 unk1F8C;
@@ -258,14 +258,16 @@ typedef struct
     /* 0x48E8 */ u32 unk48E8;
     /* 0x48EC */ u16 unk48EC;
     /* 0x48EE */ u8 unk48EE[0x2];
-    /* 0x48F0 */ u32 unk48F0;
-    /* 0x48F4 */ u32 unk48F4;
+    /* 0x48F0 */ f32 encountkyori;
+    /* 0x48F4 */ u32 encountcnt;
     /* 0x48F8 */ u32 unk48F8;
     /* 0x48FC */ u32 unk48FC;
     /* 0x4900 */ u8 unk4900[0x30];
     /* 0x4930 */ u16 unk4930;
     /* 0x4932 */ u16 unk4932;
-    /* 0x4934 */ u8 unk4934[0x158C];
+    /* 0x4934 */ u8 unk4934[0x4];
+    /* 0x4938 */ u8 mesLog[0x1580]; /* message log, cleared by NewGameInit (HD MesLogData_t.mesLog) */
+    /* 0x5EB8 */ u8 unk5EB8[0x8];
     /* 0x5EC0 */ u32 unk5EC0;
     /* 0x5EC4 */ u32 unk5EC4;
     /* 0x5EC8 */ u8 unk5EC8[0x1208];

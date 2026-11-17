@@ -9,6 +9,7 @@
 #include "mselGlobal.h"
 #include "scrTraceCode.h"
 #include "itf.h"
+#include "sdk_libc.h"
 
 void fldCallMemGetPtr7(dds3ProcessID_t *id) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
@@ -58,7 +59,12 @@ INCLUDE_ASM(const s32, "code_0035E5B8", fldCallMemGetPtr11);
 
 INCLUDE_ASM(const s32, "code_0035E5B8", fldCallMemGetPtr4);
 
-INCLUDE_ASM(const s32, "code_0035E5B8", fldFunc20);
+void fldFunc20(fldNmeDraw_t *draw) {
+    if (draw->hSpr != NULL) {
+        effDestroyResourceSlotSet(draw->hSpr);
+        draw->hSpr = NULL;
+    }
+}
 
 void fldNameNameSpr(fldNmeDraw_t *draw) {
     u32 data = 0;
@@ -74,7 +80,9 @@ void fldLeaf29(fldNmeDraw_t *draw, s32 x, s32 y, s32 z, u32 alpha, s16 *list) {
     itfDrawMiscSpriteList(x, y, z, alpha, draw->hSpr, 104, (itfSprList_t *)list);
 }
 
-INCLUDE_ASM(const s32, "code_0035E5B8", SetSelect);
+void SetSelect(fldNmeDraw_t *draw) {
+    itfDrawMiscSpriteAlpha(0, 0, 0xFFF, 255, draw->hSpr, 0, 13);
+}
 
 INCLUDE_ASM(const s32, "code_0035E5B8", fldLeaf30);
 
@@ -82,7 +90,9 @@ INCLUDE_ASM(const s32, "code_0035E5B8", fldLeaf31);
 
 INCLUDE_ASM(const s32, "code_0035E5B8", fldFunc21);
 
-INCLUDE_ASM(const s32, "code_0035E5B8", fldLeaf32);
+void fldLeaf32(fldNmeDraw_t *draw, s32 x, s32 y) {
+    itfDrawMiscSpriteAlpha(x, y, 0, 255, draw->hSpr, 40, 104);
+}
 
 void fldCallEnableMode(s32 x, s32 y, s32 color, u8 *text) {
     frFontHandle_t *font;
@@ -157,7 +167,17 @@ void fldFunc25(fldNmeDraw_t *draw, s32 flag) {
     fldFunc23(flag);
 }
 
-INCLUDE_ASM(const s32, "code_0035E5B8", fldLeaf33);
+void fldLeaf33(fldNmeDraw_t *draw, s32 row, s32 column) {
+    s32 y = 162;
+
+    if (row != 1) {
+        if (row != 0) {
+            return;
+        }
+        y = 127;
+    }
+    itfDrawMiscSpriteAlpha(column * 21 + 173, y, 0, 255, draw->hSpr, 41, 104);
+}
 
 INCLUDE_ASM(const s32, "code_0035E5B8", fclLeaf14);
 
@@ -289,9 +309,11 @@ INCLUDE_ASM(const s32, "code_0035E5B8", fclLeaf18);
 
 INCLUDE_ASM(const s32, "code_0035E5B8", fclFunc7);
 
-INCLUDE_ASM(const s32, "code_0035E5B8", fclLeaf19);
+void fclLeaf19(fldNmeDraw_t *draw) {
+}
 
-INCLUDE_ASM(const s32, "code_0035E5B8", fclLeaf20);
+void fclLeaf20(fldNmeDraw_t *draw) {
+}
 
 void fclFunc8(fldNmeDraw_t *draw, s32 row) {
     fldCallEnableMode(60, 239, 0, fclFunc8Data2[1]);

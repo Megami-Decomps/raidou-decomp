@@ -266,7 +266,12 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstMapReturnChkXFade);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstLeaf13);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", InitBgCore);
+rstBG_t *InitBgCore(sprHandle_t *pSpr) {
+    rstBG_t *bg = sdfChipAllocDirect(sizeof(rstBG_t));
+    memset(bg, 0, sizeof(rstBG_t));
+    bg->pSpr = pSpr;
+    return bg;
+}
 
 rstBG_t *InitBG(void) {
     return InitBgCore(effLoadIndexedResource(rstStrResult, rstStrRsHaikeiSpr, 0));

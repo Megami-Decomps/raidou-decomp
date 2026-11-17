@@ -135,7 +135,7 @@ void fldLeaf29(fldNmeDraw_t *draw, s32 x, s32 y, s32 z, u32 alpha, s16 *list) {
 }
 
 void SetSelect(fldNmeDraw_t *draw) {
-    itfCallSetOt2(0, 0, 0xFFF, 255, draw->hSpr, 0, 13);
+    itfDrawMiscSpriteAlpha(0, 0, 0xFFF, 255, draw->hSpr, 0, 13);
 }
 
 INCLUDE_ASM(const s32, "code_002FA4F0", fldLeaf30);
@@ -145,7 +145,7 @@ INCLUDE_ASM(const s32, "code_002FA4F0", fldLeaf31);
 INCLUDE_ASM(const s32, "code_002FA4F0", fldFunc21);
 
 void fldLeaf32(fldNmeDraw_t *draw, s32 x, s32 y) {
-    itfCallSetOt2(x, y, 0, 255, draw->hSpr, 40, 103);
+    itfDrawMiscSpriteAlpha(x, y, 0, 255, draw->hSpr, 40, 103);
 }
 
 void fldCallEnableMode(s32 x, s32 y, s32 color, u8 *text) {
@@ -228,7 +228,7 @@ void fldLeaf33(fldNmeDraw_t *draw, s32 row, s32 column) {
         }
         y = 127;
     }
-    itfCallSetOt2(column * 21 + 173, y, 0, 255, draw->hSpr, 41, 103);
+    itfDrawMiscSpriteAlpha(column * 21 + 173, y, 0, 255, draw->hSpr, 41, 103);
 }
 
 INCLUDE_ASM(const s32, "code_002FA4F0", fclLeaf14);

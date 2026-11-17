@@ -895,6 +895,9 @@ void mapFileLoadSub10(s32 a0);
 s32 mdlCallMemGetSize(sdfMemHandle_t *handle, s32 major, s32 minor);
 void mdlCallMemGetSize2(void);
 void mdlCallMemFreeDirect(void);
+#ifdef VERSION_RAIDOU2
+void sbtlCheckEndEscape(void);
+#endif
 struct sdfMat_t *dds3CallMatNew2(struct sdfTexHandle_t *tex);
 void pipeFileLoadSub(s32 a0);
 void pipeFileLoadSub2(s32 a0);

@@ -3,6 +3,7 @@
 #include "sdfMemory.h"
 #include "code_r1_002C8188.h"
 #include "dds3KernelCore.h"
+#include "sdfChip.h"
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverInit);
 
@@ -191,7 +192,12 @@ INCLUDE_ASM(const s32, "code_001A1FD0", itfDrawBtnIconSub);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfLeaf20);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfCallLoadIconSprite2);
+s32 itfCallLoadIconSprite2(void)
+{
+    itfLoadIconSprite();
+    itfCallLoadIconSprite();
+    return itfCallMemFreeDelayedDirect();
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfFunc5);
 

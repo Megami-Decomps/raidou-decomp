@@ -1066,11 +1066,7 @@ void fldSetUnitSub3(s32 motion, f32 speed) {
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf20);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "field/fldFileResolver", NakamaMotion);
-#else
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallBtlGetMotionVisualDataSBtlVi);
-#endif
 
 #ifdef VERSION_RAIDOU1
 void PlayerMotionSe2(s32 se, f32 x, f32 z) {

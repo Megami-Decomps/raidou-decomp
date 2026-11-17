@@ -30,27 +30,27 @@ void DrawTop(struct tagCMP_MAP_WORK *wk) {
     }
     itfDrawMiscSpriteList(0, 0, 0, 0xFF, spr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL, DrawTopData);
     if (flg & 4) {
-        itfCallSetOt2(242, 62, 0, 0xFF, spr, 21, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(242, 62, 0, 0xFF, spr, 21, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
     }
     if (flg & 8) {
-        itfCallSetOt2(242, 375, 0, 0xFF, spr, 22, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(242, 375, 0, 0xFF, spr, 22, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
     }
     if (flg & 0x10) {
-        itfCallSetOt2(26, 218, 0, 0xFF, spr, 20, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(26, 218, 0, 0xFF, spr, 20, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
     }
     if (flg & 0x20) {
-        itfCallSetOt2(459, 219, 0, 0xFF, spr, 19, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(459, 219, 0, 0xFF, spr, 19, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
     }
     if (flg & 1) {
         itfIconDrawSprite(11, 17, 0, 0xFF, 53, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
-        itfCallSetOt2(43, 15, 0, 0xFF, spr, 2, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(43, 15, 0, 0xFF, spr, 2, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
     }
     if (flg & 2) {
         itfIconDrawSprite(435, 17, 0, 0xFF, 54, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
-        itfCallSetOt2(467, 15, 0, 0xFF, spr, 3, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(467, 15, 0, 0xFF, spr, 3, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
     }
     itfIconDrawSprite(438, 419, 0, 0xFF, 13, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
-    itfCallSetOt2(460, 420, 0, 0xFF, spr, 4, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    itfDrawMiscSpriteAlpha(460, 420, 0, 0xFF, spr, 4, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
 }
 
 s32 DrawProcess(dds3ProcessID_t *PID) {

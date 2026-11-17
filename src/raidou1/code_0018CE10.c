@@ -46,7 +46,7 @@ void itfCallSetOt(s32 a_x, s32 a_y, s32 a_z, struct sprHandle_t *a_hSpr, s32 a_s
     itfDrawGridWithResolvedSlot(a_x * 16, a_y * 8, a_z, 0x60, a_hSpr, a_sprNo, a_otNo);
 }
 
-void itfCallSetOt2(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo)
+void itfDrawMiscSpriteAlpha(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo)
 {
     eglSetOt(a_otNo);
     eglLinkTest(1, 5, 1, 1, 0, 0, 1, 1);
@@ -70,7 +70,7 @@ void itfDrawMiscSpriteListSelect(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, str
         y = a_y + a_list[a_no].ofsy;
     }
     if (a_list[a_no].flag & 1) {
-        itfCallSetOt2(x, y, a_z, a_alphaRate, a_hSpr, a_list[a_no].sprNo, a_otNo);
+        itfDrawMiscSpriteAlpha(x, y, a_z, a_alphaRate, a_hSpr, a_list[a_no].sprNo, a_otNo);
     } else {
         itfCallSetOt(x, y, a_z, a_hSpr, a_list[a_no].sprNo, a_otNo);
     }
@@ -327,7 +327,7 @@ s32 itfCallLoadIconSprite(void)
 
 void itfIconDrawSprite(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, s32 a_sprNo, DDS3_OT a_otNo)
 {
-    itfCallSetOt2(a_x, a_y, a_z, a_alphaRate, itfData6, a_sprNo, a_otNo);
+    itfDrawMiscSpriteAlpha(a_x, a_y, a_z, a_alphaRate, itfData6, a_sprNo, a_otNo);
 }
 
 void itfIconDrawBadStatus(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, u32 a_bstNo, DDS3_OT a_otNo)

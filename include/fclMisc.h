@@ -11,6 +11,7 @@ s32 fclChkMessageDraw(void);
 s32 fclChkMessageInvalid(void);
 s32 fclChkSelMessage(void);
 s32 fclEndMessageEx(s32 ClsMode);
+s32 fclEndMessage(void);
 void fclFilterOFF(void);
 void fclFreeStage(void);
 struct plistHandle_t;

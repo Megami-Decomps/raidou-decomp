@@ -845,7 +845,10 @@ void dds3FadeIn2(s32 frame)
     }
 }
 #else
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", FadeTypeSet);
+void FadeTypeSet(DDS3_FADETYPE eType)
+{
+    fadetype = eType;
+}
 #endif
 
 #ifdef VERSION_RAIDOU1
@@ -2464,7 +2467,7 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data28);
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data29);
 
 #ifdef VERSION_RAIDOU2
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data49);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", fadetype);
 
 #endif
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data30);

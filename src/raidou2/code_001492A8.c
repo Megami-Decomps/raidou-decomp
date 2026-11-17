@@ -1,8 +1,38 @@
 #include "common.h"
 #include "fpu.h"
 #include "dds3KernelDraw.h"
+#include "mapData.h"
+#include "dds3KernelCore.h"
+#include "code_r1_00128378.h"
 
-INCLUDE_ASM(const s32, "code_001492A8", mapDebugLightSet);
+void mapDebugLightSet(s32 lightid) {
+    LightTbl_t *tbl;
+
+    if (dds3SearchProcessName(mapStrLightEditUnit) == NULL) {
+        tbl = &LightDataTbl[fldGlobalBase.amSBlock][lightid];
+        mapData21.col[0] = tbl->col0[0];
+        mapData21.col[1] = tbl->col0[1];
+        mapData21.col[2] = tbl->col0[2];
+        mapUnitSetLightData.col[0] = tbl->col1[0];
+        mapUnitSetLightData.col[1] = tbl->col1[1];
+        mapUnitSetLightData.col[2] = tbl->col1[2];
+        mapUnitSetLightData2.col[0] = tbl->col2[0];
+        mapUnitSetLightData2.col[1] = tbl->col2[1];
+        mapUnitSetLightData2.col[2] = tbl->col2[2];
+        fldSkyPlayerIdx[0] = tbl->cola[0];
+        fldSkyPlayerIdx[1] = tbl->cola[1];
+        fldSkyPlayerIdx[2] = tbl->cola[2];
+        mapData21.dir[0] = tbl->dir0[0];
+        mapData21.dir[1] = tbl->dir0[1];
+        mapData21.dir[2] = tbl->dir0[2];
+        mapUnitSetLightData.dir[0] = tbl->dir1[0];
+        mapUnitSetLightData.dir[1] = tbl->dir1[1];
+        mapUnitSetLightData.dir[2] = tbl->dir1[2];
+        mapUnitSetLightData2.dir[0] = tbl->dir2[0];
+        mapUnitSetLightData2.dir[1] = tbl->dir2[1];
+        mapUnitSetLightData2.dir[2] = tbl->dir2[2];
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001492A8", mapUnitSetLight);
 

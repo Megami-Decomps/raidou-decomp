@@ -5,6 +5,11 @@
 #include "sBtlAI.h"
 #include "sbtlActAI.h"
 #include "sBtlPath.h"
+#include "sBtlCalc.h"
+#include "sBtlSkill.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "ps2asm.h"
 
 INCLUDE_ASM(const s32, "sbtlActAI", datLeaf81);
 
@@ -342,15 +347,24 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallGetIntPara29);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallGetIntPara30);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlACTAIFLG_Clr);
+void sbtlACTAIFLG_Clr(struct SBTLUNIT_WORK *wk)
+{
+    wk->model->flags &= ~0x201;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCreate);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlDelete);
+s32 sbtlDelete(SBTLUNIT_MODEL *model)
+{
+    if (model != NULL) {
+        sdfMemFreeDirect(model->handle);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlAAIProc);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlBtlCheckScriptDataSub);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetAITBL);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf23);
 
@@ -644,7 +658,9 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetMovePos_MapHit_Nakama);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetMovePos_MapHit_2);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckMapHit);
+s32 sbtlCheckMapHit(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis) {
+    return sbtlCheckMapHit_Cross(pos0, ppos, dis);
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc);
 
@@ -789,7 +805,19 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetHangekiFlag_sbtlAction);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetAction);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlBS_MUNAKA_Init_Imad_Restart);
+void sbtlBS_MUNAKA_Init_Imad_Restart(struct SBTLUNIT_WORK *wk) {
+    SBTLUNIT_MODEL *model = wk->model;
+    struct SBTLUNIT_WORK *target;
+
+    if ((model->flags & 0x4000) && (wk->field414 & 1)) {
+        model->flags &= ~0x4000;
+        wk->flg &= ~0x4010;
+        target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        if (target != NULL) {
+            sbtlResetAction(target);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckStatus_Move);
 

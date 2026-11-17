@@ -170,7 +170,10 @@ void evtFunc(evtPictureProcessData_t *data)
 }
 
 #ifdef VERSION_RAIDOU2
-INCLUDE_ASM(const s32, "event/evtPicture", evtCutInCreateSub);
+void evtCutInCreateSub(s32 ot)
+{
+    evtData28 = ot;
+}
 
 #endif
 #ifdef VERSION_RAIDOU1

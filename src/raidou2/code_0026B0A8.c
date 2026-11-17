@@ -8,6 +8,7 @@
 #include "sbtlWork.h"
 #include "sBtlSound.h"
 #include "sbtlSub.h"
+#include "dds3KernelCore.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
@@ -74,9 +75,14 @@ INCLUDE_ASM(const s32, "code_0026B0A8", cmpCallMemFreeDirect);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDevilFootSEProcSub);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBtlLoadSkillSESub);
+void sbtlBtlLoadSkillSESub(s32 arg)
+{
+    sdfCallSndSendCmd(arg);
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBtlForceDeleteEffectWorkIDSub);
+s32 sbtlBtlForceDeleteEffectWorkIDSub(s32 arg) {
+    return sdfCallSndSendCmd2(arg);
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf57);
 
@@ -92,7 +98,10 @@ void sbtlSEVolCalc(u32 frame)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSEVolAngleCalc_sbtlSound);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSEVolAngleCalc);
+void sbtlSEVolAngleCalc(u32 no, s32 vol)
+{
+    p2sdPlaySE(no, vol, 63);
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlay3DSE_BaseVol);
 
@@ -339,7 +348,10 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlResetColorSub);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBtlFadeOutBadStatusEffectSub);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf59);
+void sbtlLeaf59(struct SBTLUNIT_WORK *wk, u32 color)
+{
+    wk->chgcolor = color;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf60);
 
