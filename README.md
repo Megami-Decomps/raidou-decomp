@@ -98,13 +98,14 @@ python -m pip install -r requirements.txt
 python tools/download_tools.py
 
 # Copy the disc images into the repository root or orig/, then:
-python tools/extract.py        # or copy each ELF to orig/<version>/<serial>
+python tools/extract.py        # or copy each ELF to orig/<version>/<serial>, IRX to orig/<version>/irx/
 python configure.py            # every version with an ELF in orig/, or name one
 ninja                          # or: ninja raidou1
 python tools/progress.py       # source coverage
 ```
 
-`ninja` ends by checking each linked ELF against `config/<version>/checksum.sha1`.
+`ninja` ends by checking each linked ELF against `config/<version>/checksum.sha1`
+and each IOP module against its retail file ([docs/irx-modules.md](docs/irx-modules.md)).
 `tools/check_unit.py <unit.c>` compares one unit's objects with retail.
 CI checks the scripts and source layout without retail executables. When the
 private inputs are available, it also verifies both builds and publishes the
@@ -126,6 +127,7 @@ that do not need retail inputs.
 - [docs/tus.md](docs/tus.md): how `.text` is split into translation units.
 - [docs/shared-c.md](docs/shared-c.md): units compiled into both versions.
 - [docs/smt3-names.md](docs/smt3-names.md): names carried over from smt3-decomp.
+- [docs/irx-modules.md](docs/irx-modules.md): the IOP modules (`USERIRX/`, `SOUNDIRX/`).
 - [docs/batch-workflow.md](docs/batch-workflow.md): landing a drafted batch with `tools/batch/land_batch.py`, and checking a header's includers.
 - `config/xgame/r1_r2_pairs.tsv`: functions present in both games, by address and unit, so none is matched twice.
 - `config/xgame/r1_r2_data_pairs.tsv`: data symbols present in both games. A pair has one name in both ([naming rule](docs/CONTRIBUTING.md#names-in-both-games)).

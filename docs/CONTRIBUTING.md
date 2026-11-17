@@ -195,6 +195,7 @@ and both versions for a shared unit. Then:
 ninja                                # fails unless each ELF is byte-identical to retail
 python3 tools/check_config.py
 python3 tools/check_nonmatching.py
+python3 tools/check_irx_nonmatching.py   # the IOP modules' drafts
 ```
 
 A passing `check_unit.py` is not the proof; `ninja` is. After a header change,
