@@ -3,9 +3,9 @@
 
 #include "common.h"
 
-s32 evtMoonTakaraCntReset(void);
-s32 evtMoonZeniCntReset(void);
-s32 evtMoonTakumiCntReset(void);
+void evtMoonTakaraCntReset(void);
+void evtMoonZeniCntReset(void);
+void evtMoonTakumiCntReset(void);
 s32 evtMoonTeisatuCntReset(void);
 
 #endif

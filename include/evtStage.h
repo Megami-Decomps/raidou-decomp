@@ -8,6 +8,7 @@
 s32 evtCheckPathStat(dds3Basic_t *obj);
 void evtEffectLoopControl(dds3Basic_t *eff, s32 sw);
 void evtFreeAllUnit(void);
+void evtKillFieldScript(void);
 void evtFreeStage(void);
 s32 evtLoadArea(s32 fld, s32 area);
 s32 evtLoadArea_FromMemory(s32 fld, s32 area, saddr_t pF1, saddr_t pF2, const sdfTextureOffsetListHeader_t *pTB, s32 pBF);

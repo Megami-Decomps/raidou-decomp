@@ -32,6 +32,7 @@ void nbCallDecodeFontImage(dds3NameImage_t *image, s32 style, u16 code);
 void nbRefDDS3GBWK12(s32 idx, dds3NameChar_t *name, u32 length, s32 style);
 void nbSetFormPosRot(s32 idx, frFontCtx_t *ctx);
 void nbCallSetFormPosRot(s32 tag, frFontCtx_t *ctx);
+void frTag0Sub(frFontCtx_t *ctx);
 s32 nbTag0Sub(s32 tag);
 s32 nbTag0Sub2(s32 tag);
 void nbRefDDS3GBWK14(void);

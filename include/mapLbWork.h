@@ -114,5 +114,9 @@ void mapSKYBGEDIT(void);
 extern struct sdfTexHandle_t *fldTitleMiniTex2;
 extern struct sdfTexHandle_t *fldTitleMiniWork2;
 void fldCallMemFreeDelayedDirect4(void);
+void fldCallGrAllocPacketBuff2(u8 *image);
+void fldCallGrAllocPacketBuff3(u8 *image);
+void fldCallGrAllocPacketBuff4(u8 *image);
+void fldCallGrAllocPacketBuff5(u8 *image);
 
 #endif /* MAPLBWORK_H */

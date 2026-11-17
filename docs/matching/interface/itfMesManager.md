@@ -62,3 +62,12 @@ Raidou 2: 209 of 274 words differ, first at +0xE4; emitted 1112 bytes, native 10
 Retail keeps x in s1 and y in s0 and builds the fourth sprite from position.x - 256 held in s5; the draft swaps the pair and recomputes, 209 of 274 words differ on both games. A pcurctr local for curctr[1] fixed the prologue; an x2 temporary made it worse (217). Retail has no return value after the regFunc call (v0 is whatever regFunc leaves), so the draft has no final return either. Checked against retail call records (menu) and the asm.
 
 Related: register-allocation.
+
+## itfCallGrAllocPacketBuff2 (interface/itfMesManager, raidou1 0x4D8, raidou2 0x4D8)
+
+Raidou 1: 145 of 310 words differ, first at +0x94.
+Raidou 2: 145 of 310 words differ, first at +0x94.
+
+size/vertex initializers built in a temp and block-copied like retail; size[1] subtracts uv[2]'s origin as retail does; remaining: x/y pseudos swap v0/v1 and mes sits in t1, then float/alpha scheduling Vector checked.
+
+Related: regalloc.

@@ -31,6 +31,10 @@
 #include "sdfQuat.h"
 #include "sdfMath.h"
 #include "dds3Randomize.h"
+#include "sbtlWork.h"
+#include "sBtlSound.h"
+#include "sdfSound.h"
+#include "fld.h"
 
 /* The field-area loader interprets these serialized packet-header values. */
 typedef enum FldPackedResourceKind {
@@ -388,7 +392,243 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAdd);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboGet);
 
+#ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 372 of 618 words match.  */
+#ifdef NON_MATCHING
+void mapAiboTask(void) {
+    sdfVector4_t rot;
+    sdfVector4_t axis = VRF_Disable;
+    f32 bx;
+    f32 by;
+    f32 bz;
+    f32 ox;
+    f32 oy;
+    f32 oz;
+    f32 tx;
+    f32 ty;
+    f32 tz;
+    f32 dist;
+    f32 limit;
+    f32 speed;
+    f32 ang;
+    f32 diff;
+    f32 step;
+    s32 mode;
+    s32 i;
+
+    if (aiboBasic == NULL) {
+        return;
+    }
+    fldAiboTaskSub();
+    if (fldGlobalBase.aiboRunStop != 0) {
+        if (aiboBasic != NULL && aiboModel->current.h.motionIndex != 2) {
+            aiboModel->first->speed = 0.5f;
+            mdlSmoothLoopMotion(aiboModel, 0, 2, 15.0f, 15.0f);
+        }
+        return;
+    }
+    ox = map_aibo_pos[0];
+    oy = map_aibo_pos[1];
+    oz = map_aibo_pos[2];
+    if (mapAiboTaskData2 != 0) {
+        tx = mapData56;
+        ty = mapData57;
+        tz = mapData58;
+    } else if (fldGlobalBase.nakamaMode != 0) {
+        tx = ox;
+        ty = oy;
+        tz = oz;
+    } else {
+        tx = fldGlobalBase.focusX;
+        ty = fldGlobalBase.focusY;
+        tz = fldGlobalBase.focusZ;
+    }
+    dist = fldPointDistance(ox, oy, oz, tx, ty, tz);
+    if (mapAiboTaskData2 != 0) {
+        for (i = 0; i < 2; i++) {
+            mapAiboAdd(tx, ty, tz);
+        }
+    } else if (dist > 160.0f) {
+        mapAiboAdd(tx, ty, tz);
+    }
+    mapAiboGet(&bx, &by, &bz);
+    dist = fldPointDistance(map_aibo_pos[0], map_aibo_pos[1], map_aibo_pos[2], bx, by, bz);
+    if (mapAiboTaskData2 != 0) {
+        gMapAiboMotionBugCnt = 0;
+        if (dist < 1.0f) {
+            mode = 0;
+            map_aibo_pos[0] = bx;
+            map_aibo_pos[1] = by;
+            map_aibo_pos[2] = bz;
+            speed = 0.5f;
+            map_aibo_spd_max = 10.0f;
+        } else {
+            limit = 80.0f;
+            if (mapAiboTaskData2 == 2) {
+                limit = 20.0f;
+            }
+            if (dist > limit) {
+                map_aibo_pos[0] -= (map_aibo_pos[0] - bx) / dist * limit * 0.125f;
+                map_aibo_pos[1] -= (map_aibo_pos[1] - by) / dist * limit * 0.125f;
+                map_aibo_pos[2] -= (map_aibo_pos[2] - bz) / dist * limit * 0.125f;
+            } else {
+                map_aibo_pos[0] -= (map_aibo_pos[0] - bx) * 0.125f;
+                map_aibo_pos[1] -= (map_aibo_pos[1] - by) * 0.125f;
+                map_aibo_pos[2] -= (map_aibo_pos[2] - bz) * 0.125f;
+            }
+            dist = fldPointDistance(map_aibo_pos[0], map_aibo_pos[1], map_aibo_pos[2], ox, oy, oz);
+            if (dist > 6.5f) {
+                mode = 6;
+                speed = 0.79999995f;
+            } else if (dist > 6.0f) {
+                mode = 6;
+                speed = 0.59999996f;
+            } else if (dist > 5.5f) {
+                mode = 6;
+                speed = 0.5f;
+            } else if (dist > 5.0f) {
+                mode = 1;
+                speed = 1.0f;
+            } else if (dist > 4.5f) {
+                speed = 1.0f;
+                mode = 1;
+            } else if (dist > 4.0f) {
+                mode = 1;
+                speed = 0.79999995f;
+            } else {
+                mode = 1;
+                speed = 0.59999996f;
+            }
+        }
+        if (fldPointDistance(map_aibo_pos[0], map_aibo_pos[1], map_aibo_pos[2], tx, ty, tz) < 100.0f) {
+            mapAiboMinAlpDown(-1);
+        }
+        gMapAiboWakeUpMode = 0;
+    } else if (dist < 1.0f) {
+        mode = 0;
+        map_aibo_pos[0] = bx;
+        map_aibo_pos[1] = by;
+        map_aibo_pos[2] = bz;
+        speed = 0.5f;
+        map_aibo_spd_max = 10.0f;
+        gMapAiboMotionBugCnt = 0;
+    } else {
+        if (dist >= map_aibo_spd_max) {
+            if (dist < map_aibo_spd_max + 5.0f) {
+                map_aibo_spd_max = dist;
+            } else {
+                map_aibo_spd_max += 5.0f;
+            }
+            if (map_aibo_spd_max > 80.0f) {
+                map_aibo_spd_max = 80.0f;
+            }
+        } else {
+            if (map_aibo_spd_max - 5.0f < dist) {
+                map_aibo_spd_max = dist;
+            } else {
+                map_aibo_spd_max -= 5.0f;
+            }
+            if (map_aibo_spd_max < 10.0f) {
+                map_aibo_spd_max = 10.0f;
+            }
+        }
+        if (dist > map_aibo_spd_max) {
+            map_aibo_pos[0] -= (map_aibo_pos[0] - bx) / dist * map_aibo_spd_max / 10.0f;
+            map_aibo_pos[1] -= (map_aibo_pos[1] - by) / dist * map_aibo_spd_max / 10.0f;
+            map_aibo_pos[2] -= (map_aibo_pos[2] - bz) / dist * map_aibo_spd_max / 10.0f;
+        } else {
+            map_aibo_pos[0] -= (map_aibo_pos[0] - bx) / 10.0f;
+            map_aibo_pos[1] -= (map_aibo_pos[1] - by) / 10.0f;
+            map_aibo_pos[2] -= (map_aibo_pos[2] - bz) / 10.0f;
+        }
+        dist = fldPointDistance(map_aibo_pos[0], map_aibo_pos[1], map_aibo_pos[2], ox, oy, oz);
+        if (dist > 6.5f) {
+            speed = 0.79999995f;
+            gMapAiboMotionBugCnt = 3;
+            mode = 6;
+        } else if (dist > 6.0f) {
+            speed = 0.59999996f;
+            gMapAiboMotionBugCnt = 3;
+            mode = 6;
+        } else if (dist > 5.5f) {
+            speed = 0.5f;
+            gMapAiboMotionBugCnt = 3;
+            mode = 6;
+        } else if (dist > 5.0f) {
+            speed = 1.0f;
+            mode = 1;
+            if (gMapAiboMotionBugCnt > 0) {
+                mode = 6;
+                gMapAiboMotionBugCnt--;
+            }
+        } else if (dist > 4.5f) {
+            mode = 1;
+            speed = 1.0f;
+            gMapAiboMotionBugCnt = 0;
+        } else if (dist > 4.0f) {
+            mode = 1;
+            speed = 0.79999995f;
+            gMapAiboMotionBugCnt = 0;
+        } else {
+            mode = 1;
+            speed = 0.59999996f;
+            gMapAiboMotionBugCnt = 0;
+        }
+        gMapAiboWakeUpMode = 0;
+    }
+    aiboBasic->poseset->pos.x = map_aibo_pos[0];
+    aiboBasic->poseset->pos.y = map_aibo_pos[1];
+    aiboBasic->poseset->pos.z = map_aibo_pos[2];
+    dds3OnPoseSetFlag(aiboBasic->poseset, 1);
+    dds3OnPoseSetFlag(aiboBasic->poseset, 8);
+    SDF_VU0_COPYVECTOR(&aiboBasic->poseset->pos2, &aiboBasic->poseset->pos);
+    bx = ox - map_aibo_pos[0];
+    bz = oz - map_aibo_pos[2];
+    if (bx > 0.099999994f || bx < -0.099999994f || bz > 0.099999994f || bz < -0.099999994f) {
+        ang = sdfAtan2(bx, bz) * 57.324841f;
+        if (ang < 0.0f) {
+            ang += 360.0f;
+        }
+        if (ang > 360.0f) {
+            ang -= 360.0f;
+        }
+        SDF_VU0_LOADVECTOR(&axis);
+        diff = R360_LR(map_aibo_rot, -ang);
+        step = diff / 5.0f;
+        if (step < 0.0f) {
+            step = -step;
+        }
+        if (step < 2.0f) {
+            step = 2.0f;
+        }
+        if ((diff >= 0.0f && diff <= step) || (diff <= 0.0f && diff >= -step)) {
+            diff = -ang;
+        } else if (diff < 0.0f) {
+            diff = map_aibo_rot - step;
+        } else {
+            diff = map_aibo_rot + step;
+        }
+        map_aibo_rot = diff;
+        FromRotation(diff * 3.14f / 180.0f);
+        SDF_VU0_STOREVECTOR(&rot);
+        dds3SetRotPoseSet(aiboBasic, &rot);
+    }
+    if (gMapAiboWakeUpMode == 0) {
+        if (aiboModel->current.h.motionIndex != mode) {
+            mdlSmoothLoopMotion(aiboModel, 0, mode, 8.0f, 8.0f);
+        }
+        aiboModel->first->speed = speed;
+    }
+    mapUnitSetLight(aiboBasic, mapGetLight(map_aibo_pos[0], map_aibo_pos[2]), 10);
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboTask);
+#endif
+#else
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboTask);
+
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapEnemy_SetFAtk_PlayerDir);
+#endif
 
 #ifdef VERSION_RAIDOU1
 void mapSummonDvInit(void) {
@@ -409,8 +649,6 @@ void mapSummonDvInit(void) {
     map_summondv_rot = 0.0f;
 }
 #else
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapEnemy_SetFAtk_PlayerDir);
-
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvInit);
 #endif
 
@@ -503,7 +741,217 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", fldCatGetNakamaSub);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", sndSeStatus);
 
+#ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 585 of 593 words match.  */
+#ifdef NON_MATCHING
+void mapSummonDvTask(void) {
+    sdfVector4_t rot;
+    sdfVector4_t axis = mapSummonDvTaskTable;
+    f32 bx;
+    f32 by;
+    f32 bz;
+    f32 ox;
+    f32 oy;
+    f32 oz;
+    f32 px;
+    f32 py;
+    f32 pz;
+    f32 dist;
+    f32 speed;
+    f32 ang;
+    f32 diff;
+    f32 step;
+    f32 r;
+    SBTL_UNIT_SUB *sub;
+    s32 follow = 0;
+    s32 mode;
+    s32 se;
+    s16 motion;
+    s32 i;
+
+    if (!fldEncountTestFlag(0x40)) {
+        follow = gMapNakamaRunAtumaru == 0;
+    }
+    ox = map_summondv_pos[0];
+    oy = map_summondv_pos[1];
+    oz = map_summondv_pos[2];
+    px = fldGlobalBase.focusX;
+    py = fldGlobalBase.focusY;
+    pz = fldGlobalBase.focusZ;
+    dist = fldPointDistance(ox, oy, oz, px, py, pz);
+    if (gMapNakamaRunAtumaru != 0) {
+        for (i = 0; i < 2; i++) {
+            mapSummonDvAdd(px, py, pz);
+        }
+    } else if (dist > 200.0f) {
+        mapSummonDvAdd(px, py, pz);
+    }
+    mapSummonDvGet(&bx, &by, &bz);
+    dist = fldPointDistance(map_summondv_pos[0], map_summondv_pos[1], map_summondv_pos[2], bx, by, bz);
+    if (follow != 0) {
+        if (dist < 4.0f) {
+            mode = 0;
+            map_summondv_pos[0] = bx;
+            map_summondv_pos[1] = by;
+            map_summondv_pos[2] = bz;
+            mapSummonDvTaskData2 = 4.0f;
+        } else {
+            if (dist > 80.0f) {
+                map_summondv_pos[0] -= (map_summondv_pos[0] - bx) / dist * 80.0f * 0.125f;
+                map_summondv_pos[1] -= (map_summondv_pos[1] - by) / dist * 80.0f * 0.125f;
+                map_summondv_pos[2] -= (map_summondv_pos[2] - bz) / dist * 80.0f * 0.125f;
+            } else {
+                map_summondv_pos[0] -= (map_summondv_pos[0] - bx) * 0.125f;
+                map_summondv_pos[1] -= (map_summondv_pos[1] - by) * 0.125f;
+                map_summondv_pos[2] -= (map_summondv_pos[2] - bz) * 0.125f;
+            }
+            mode = 1;
+        }
+    } else if (gMapNakamaRunAtumaru != 0) {
+        if (dist < 1.0f) {
+            mode = 0;
+            map_summondv_pos[0] = bx;
+            map_summondv_pos[1] = by;
+            map_summondv_pos[2] = bz;
+            mapSummonDvTaskData2 = 4.0f;
+        } else {
+            if (dist > 80.0f) {
+                map_summondv_pos[0] -= (map_summondv_pos[0] - bx) / dist * 80.0f * 0.125f;
+                map_summondv_pos[1] -= (map_summondv_pos[1] - by) / dist * 80.0f * 0.125f;
+                map_summondv_pos[2] -= (map_summondv_pos[2] - bz) / dist * 80.0f * 0.125f;
+            } else {
+                map_summondv_pos[0] -= (map_summondv_pos[0] - bx) * 0.125f;
+                map_summondv_pos[1] -= (map_summondv_pos[1] - by) * 0.125f;
+                map_summondv_pos[2] -= (map_summondv_pos[2] - bz) * 0.125f;
+            }
+            mode = 1;
+        }
+        if (fldPointDistance(map_summondv_pos[0], map_summondv_pos[1], map_summondv_pos[2], px, py, pz) < 100.0f) {
+            mapNakamaMinAlpDown(-1);
+        }
+    } else {
+        if (dist < 1.0f) {
+            mode = 0;
+            map_summondv_pos[0] = bx;
+            map_summondv_pos[1] = by;
+            map_summondv_pos[2] = bz;
+            mapSummonDvTaskData2 = 4.0f;
+        } else {
+            if (dist >= mapSummonDvTaskData2) {
+                r = mapSummonDvTaskData2 + 3.0f;
+                if (dist < r) {
+                    mapSummonDvTaskData2 = dist;
+                } else {
+                    mapSummonDvTaskData2 = r;
+                }
+                if (mapSummonDvTaskData2 > 70.0f) {
+                    mapSummonDvTaskData2 = 70.0f;
+                }
+            } else {
+                r = mapSummonDvTaskData2 - 4.0f;
+                if (r < dist) {
+                    mapSummonDvTaskData2 = dist;
+                } else {
+                    mapSummonDvTaskData2 = r;
+                }
+                if (mapSummonDvTaskData2 < 6.0f) {
+                    mapSummonDvTaskData2 = 6.0f;
+                }
+            }
+            if (dist > mapSummonDvTaskData2) {
+                map_summondv_pos[0] -= (map_summondv_pos[0] - bx) / dist * mapSummonDvTaskData2 * 0.125f;
+                map_summondv_pos[1] -= (map_summondv_pos[1] - by) / dist * mapSummonDvTaskData2 * 0.125f;
+                map_summondv_pos[2] -= (map_summondv_pos[2] - bz) / dist * mapSummonDvTaskData2 * 0.125f;
+            } else {
+                map_summondv_pos[0] -= (map_summondv_pos[0] - bx) * 0.125f;
+                map_summondv_pos[1] -= (map_summondv_pos[1] - by) * 0.125f;
+                map_summondv_pos[2] -= (map_summondv_pos[2] - bz) * 0.125f;
+            }
+            mode = 1;
+            fldPointDistance(map_summondv_pos[0], map_summondv_pos[1], map_summondv_pos[2], ox, oy, oz);
+        }
+    }
+    if (summonDvBasic == NULL) {
+        return;
+    }
+    if (mode == 0 && mapCheckDying(1) != 0) {
+        mode = 2;
+    }
+    sub = sbtlGetMotionVisualData(1, DDS3_GBWK->mapSummonID, mode);
+    if (sub->flags & 1) {
+        speed = sub->field10;
+    } else {
+        speed = sbtlGetVisualData(1, DDS3_GBWK->mapSummonID)->field0C;
+    }
+    summonDvBasic->poseset->pos.x = map_summondv_pos[0];
+    summonDvBasic->poseset->pos.y = map_summondv_pos[1];
+    summonDvBasic->poseset->pos.z = map_summondv_pos[2];
+    dds3OnPoseSetFlag(summonDvBasic->poseset, 1);
+    dds3OnPoseSetFlag(summonDvBasic->poseset, 8);
+    SDF_VU0_COPYVECTOR(&summonDvBasic->poseset->pos2, &summonDvBasic->poseset->pos);
+    bx = ox - map_summondv_pos[0];
+    bz = oz - map_summondv_pos[2];
+    if (bx > 0.099999994f || bx < -0.099999994f || bz > 0.099999994f || bz < -0.099999994f) {
+        ang = sdfAtan2(bx, bz) * 57.324841f;
+        if (ang < 0.0f) {
+            ang += 360.0f;
+        }
+        if (ang > 360.0f) {
+            ang -= 360.0f;
+        }
+        SDF_VU0_LOADVECTOR(&axis);
+        diff = R360_LR(map_summondv_rot, -ang);
+        step = diff * 0.125f;
+        if (step < 0.0f) {
+            step = -step;
+        }
+        if (step < 2.0f) {
+            step = 2.0f;
+        }
+        if ((diff >= 0.0f && diff <= step) || (diff <= 0.0f && diff >= -step)) {
+            diff = -ang;
+        } else if (diff < 0.0f) {
+            diff = map_summondv_rot - step;
+        } else {
+            diff = map_summondv_rot + step;
+        }
+        map_summondv_rot = diff;
+        FromRotation(diff * 3.14f / 180.0f);
+        SDF_VU0_STOREVECTOR(&rot);
+        dds3SetRotPoseSet(summonDvBasic, &rot);
+    } else {
+        SDF_VU0_LOADVECTOR(&axis);
+        FromRotation(map_summondv_rot * 3.14f / 180.0f);
+        SDF_VU0_STOREVECTOR(&rot);
+        dds3SetRotPoseSet(summonDvBasic, &rot);
+    }
+    motion = summonDvModel->current.h.motionIndex;
+    if (motion >= 3 && (mode == 0 || mode == 2)) {
+        return;
+    }
+    if (mode == 0 && motion == 13 && summonDvModel->first->stat != 5) {
+        return;
+    }
+    if (motion != mode) {
+        if (mode != 1) {
+            sbtlSummonDvTaskSub(&mapSummonDvTaskData);
+        }
+        mdlSmoothLoopMotion(summonDvModel, 0, mode, 8.0f, 8.0f);
+    } else if (motion == 1) {
+        se = NakamaMotion3DSE(&mapSummonDvTaskData, DDS3_GBWK->mapSummonID, summonDvModel->first->frame);
+        if (se != -1) {
+            p2sdPlaySE(se, 127, 63);
+        }
+    }
+    summonDvModel->first->speed = speed;
+    mapUnitSetLight(summonDvBasic, mapGetLight(map_summondv_pos[0], map_summondv_pos[2]), 10);
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvTask);
+#endif
+#else
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvTask);
+#endif
 
 void fldLeaf18(s32 hisMotion, s32 upMotion, f32 hokan) {
     if (hisMotion != upMotion) {

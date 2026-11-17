@@ -18,6 +18,7 @@
 #include "mdlManager.h"
 #include "sdfQuat.h"
 #include "sdfMath.h"
+#include "fldDraw.h"
 
 /* Declared here because no header carries these. */
 
@@ -309,7 +310,135 @@ s32 dds3UnitObjectBasicMainProcedure(dds3Basic_t *basic)
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", MainProcedure_dds3UnitObjectBasic);
 #endif
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3CallMemset2);
+s32 dds3UnitObjectBasicDrawProcedure(dds3Basic_t *basic) {
+    sdfVector4_t worldPosition;
+    dds3UnitObjectBasicWorkData_t *work;
+    dds3ObjectBaseControlWorkData_t *control;
+    struct evtUnit_t *unit;
+    mdlObj_t *model;
+    s32 alpha;
+    s32 shadow;
+
+    memset(&worldPosition, 0, sizeof(worldPosition));
+    worldPosition.w = 1.0f;
+    if (dds3ObjectBaseCheckFlag(basic, 1)) {
+        return 1;
+    }
+
+    unit = dds3GetUnitHandleObjectBasic(basic);
+    work = basic->workdata;
+    if (work->ot == -1) {
+        dds3ObjectBaseModelLinkOt(&ModelOt[0], basic);
+    } else {
+        dds3ObjectBaseModelLinkOt(&ModelOt[work->ot], basic);
+    }
+
+    if (!dds3ObjectBaseCheckFlag(basic, 0x400)) {
+        return 1;
+    }
+    if (dds3ObjectBaseCheckFlag(basic, 0x1000)) {
+        return 1;
+    }
+    if (unit == NULL) {
+        return 1;
+    }
+
+    control = dds3UnitObjectBasicGetControlWorkData(basic);
+    model = control->pModel;
+    if (dds3ObjectBaseCheckFlag(basic, 0x4000)) {
+        alpha = unit->ShadowAlpha;
+    } else {
+        alpha = ((const u8 *)&model->inner->color)[3];
+    }
+    shadow = dds3ObjectBaseCheckFlag(basic, 0x8000) != 0;
+
+    if (!dds3ObjectBaseCheckFlag(basic, 0x40000)) {
+        if (!dds3ObjectBaseCheckFlag(basic, 0x80000)) {
+            if (sdfModelGetMarkPos_sdfModel(unit->owner->inner, 0)) {
+                SDF_VU0_STOREVECTOR(&worldPosition);
+                worldPosition.y = shadow == 1 ? unit->ShadowY : basic->poseset->pos.y;
+                if (dds3ObjectBaseCheckFlag(basic, 0x20000)) {
+                    nbCallGetY(worldPosition.x, worldPosition.y, worldPosition.z, basic->poseset->r, alpha * 2 / 3);
+                } else {
+                    nbCallSetOt4(worldPosition.x, worldPosition.y, worldPosition.z, basic->poseset->r, alpha * 2 / 3);
+                }
+            } else {
+                if (dds3CheckPoseSetFlag(basic->poseset, 8)) {
+                    worldPosition.x = basic->poseset->pos2.x;
+                    worldPosition.y = basic->poseset->pos2.y;
+                    worldPosition.z = basic->poseset->pos2.z;
+                } else {
+                    worldPosition.x = basic->poseset->pos.x;
+                    worldPosition.y = basic->poseset->pos.y;
+                    worldPosition.z = basic->poseset->pos.z;
+                }
+                if (shadow == 1) {
+                    worldPosition.y = unit->ShadowY;
+                }
+                nbCallSetOt4(worldPosition.x, worldPosition.y, worldPosition.z, basic->poseset->r, alpha * 2 / 3);
+            }
+        } else {
+            if (dds3CallGetBaseControlWorkData(basic) < 1700.0f) {
+                if (sdfModelGetMarkPos_sdfModel(unit->owner->inner, 601)) {
+                    SDF_VU0_STOREVECTOR(&worldPosition);
+                    worldPosition.y = shadow == 1 ? unit->ShadowY : basic->poseset->pos.y;
+                    if (dds3ObjectBaseCheckFlag(basic, 0x20000)) {
+                        nbCallGetY(worldPosition.x, worldPosition.y, worldPosition.z, 25.0f, 48);
+                    } else {
+                        nbCallSetOt4(worldPosition.x, worldPosition.y, worldPosition.z, 25.0f, 48);
+                    }
+                }
+                if (sdfCallModelMakeMarkPos(unit->owner->inner, 601)) {
+                    SDF_VU0_STOREVECTOR(&worldPosition);
+                    worldPosition.y = shadow == 1 ? unit->ShadowY : basic->poseset->pos.y;
+                    if (dds3ObjectBaseCheckFlag(basic, 0x20000)) {
+                        nbCallGetY(worldPosition.x, worldPosition.y, worldPosition.z, 25.0f, 48);
+                    } else {
+                        nbCallSetOt4(worldPosition.x, worldPosition.y, worldPosition.z, 25.0f, 48);
+                    }
+                }
+            }
+            if (sdfModelGetMarkPos_sdfModel(unit->owner->inner, 600)) {
+                SDF_VU0_STOREVECTOR(&worldPosition);
+                worldPosition.y = shadow == 1 ? unit->ShadowY : basic->poseset->pos.y;
+                if (dds3ObjectBaseCheckFlag(basic, 0x20000)) {
+                    nbCallGetY(worldPosition.x, worldPosition.y, worldPosition.z, basic->poseset->r, 80);
+                } else {
+                    nbCallSetOt4(worldPosition.x, worldPosition.y, worldPosition.z, basic->poseset->r, 80);
+                }
+            } else {
+                if (dds3CheckPoseSetFlag(basic->poseset, 8)) {
+                    worldPosition.x = basic->poseset->pos2.x;
+                    worldPosition.y = basic->poseset->pos2.y;
+                    worldPosition.z = basic->poseset->pos2.z;
+                } else {
+                    worldPosition.x = basic->poseset->pos.x;
+                    worldPosition.y = basic->poseset->pos.y;
+                    worldPosition.z = basic->poseset->pos.z;
+                }
+                if (shadow == 1) {
+                    worldPosition.y = unit->ShadowY;
+                }
+                nbCallSetOt4(worldPosition.x, worldPosition.y, worldPosition.z, basic->poseset->r, 80);
+            }
+        }
+    } else {
+        if (dds3CheckPoseSetFlag(basic->poseset, 8)) {
+            worldPosition.x = basic->poseset->pos2.x;
+            worldPosition.y = basic->poseset->pos2.y;
+            worldPosition.z = basic->poseset->pos2.z;
+        } else {
+            worldPosition.x = basic->poseset->pos.x;
+            worldPosition.y = basic->poseset->pos.y;
+            worldPosition.z = basic->poseset->pos.z;
+        }
+        if (shadow == 1) {
+            worldPosition.y = unit->ShadowY;
+        }
+        nbCallSetOt4(worldPosition.x, worldPosition.y, worldPosition.z, basic->poseset->r, alpha * 2 / 3);
+    }
+    return 1;
+}
 
 void dds3UnitObjectBasicEL_LinkFree(dds3Basic_t *unitBasic) {
     dds3UnitObjectBasicWorkData_t *work;

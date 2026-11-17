@@ -7,6 +7,7 @@
 #include "code_r1_00128378.h"
 #include "dds3Randomize.h"
 #include "EventBit.h"
+#include "sdfMath.h"
 
 void mapObjEveHitSet(s16 uniq, s32 act, char *scr_name) {
     s32 i;
@@ -69,7 +70,189 @@ INCLUDE_ASM(const s32, "code_00148310", mapLeaf16);
 
 INCLUDE_ASM(const s32, "code_00148310", mapNpcTableGetMSK);
 
+/* NON_MATCHING: 19 of 419 words match.  */
+#ifdef NON_MATCHING
+char *mapScriptGet_Pos(f32 x, f32 y, f32 z, f32 r, s32 *attr, f32 *objx, f32 *objy, f32 *objz, s32 *type) {
+    s32 ix;
+    s32 iz;
+    s32 i;
+    s32 hit;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
+    f32 angle;
+
+    *type = 0;
+    fldGlobalBase.word154 = -1;
+    fldGlobalBase.word148 = 0;
+    fldGlobalBase.word14C = 0;
+    fldGlobalBase.word150 = 0;
+    fldGlobalBase.nowTakaraTblIdx = 0;
+    fldGlobalBase.word158 = 0;
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].use != 1) {
+            continue;
+        }
+        if (mapObjTaskData2[i].visible == 0) {
+            continue;
+        }
+        if (mapObjTaskData2[i].uniq <= 0) {
+            continue;
+        }
+        if (mapObjTaskData2[i].scr_name[0] == '\0') {
+            continue;
+        }
+        hit = 0;
+        dy = y - mapObjTaskData2[i].y;
+        dx = x - mapObjTaskData2[i].x;
+        dz = z - mapObjTaskData2[i].z;
+        dist = fsqrtf(dx * dx + dy * dy + dz * dz);
+        if (!(dist < mapObjTaskData2[i].evehitsize)) {
+            continue;
+        }
+        if (mapObjTaskData2[i].evehitdir == 0 && dist < 70.0f) {
+            hit = 1;
+        } else {
+            angle = R360_LR(sdfAtan2(dx, dz) * 57.32484055f, -r);
+            if (angle < 80.0f && angle > -80.0f) {
+                hit = 1;
+            }
+        }
+        if (!hit) {
+            continue;
+        }
+        *objx = mapObjTaskData2[i].x;
+        *objy = mapObjTaskData2[i].y;
+        *attr = mapObjTaskData2[i].act;
+        *objz = mapObjTaskData2[i].z;
+        if (mapObjTaskData2[i].basic != NULL) {
+            fldGlobalBase.nowTalkModelID = mapObjTaskData2[i].basic->serialID;
+        }
+        fldGlobalBase.mskIndex = 0;
+        fldGlobalBase.nowTakaraTblIdx = fldGlobalBase.nowHealTblIdx = mapObjTaskData2[i].uniq & 0xFF;
+        fldGlobalBase.word148 = 0;
+        if (mapObjTaskData2[i].npc_idx > 0) {
+            fldGlobalBase.mskIndex = mapNpcTableGetMSK(mapObjTaskData2[i].npc_idx);
+        }
+        if ((u16)mapObjTaskData2[i].uniq >= 0x2000 && (u16)mapObjTaskData2[i].uniq < 0x2040) {
+            if ((u8)mapObjTaskData2[i].uniq == 0) {
+                DDS3_GBWK->unk2C72 = 0;
+                DDS3_GBWK->unk2C70 = 0;
+            } else {
+                DDS3_GBWK->unk2C70 = 1;
+                DDS3_GBWK->unk2C72 = (u8)mapObjTaskData2[i].uniq;
+            }
+        }
+        *type = 1;
+        if (fldGlobalBase.nakamaMode != 0 && mapObjTaskData2[i].npc_idx > 0 && mapObjTaskData2[i].npc_idx < 320) {
+            fldGlobalBase.word150 = mapObjTaskData2[i].npc_idx;
+            fldGlobalBase.word14C = 1;
+        }
+        if (mapObjTaskData2[i].npc_idx > 0 && mapObjTaskData2[i].npc_kuse_time > 0) {
+            fldGlobalBase.word158 = mapObjTaskData2[i].uniq;
+        }
+        return mapObjTaskData2[i].scr_name;
+    }
+
+    fldSetPlayerTargetData(&ix, &iz, x, z);
+    for (i = 0; i < 128; i++) {
+        if (mapScriptGet_PosData2[i].use != 1) {
+            continue;
+        }
+        if (mapScriptGet_PosData2[i].on != 1) {
+            continue;
+        }
+        if (mapScriptGet_PosData2[i].flag0 != 0) {
+            if (mapScriptGet_PosData2[i].flag0j == 0) {
+                if (evtBitCheck(mapScriptGet_PosData2[i].flag0)) {
+                    continue;
+                }
+            } else {
+                if (!evtBitCheck(mapScriptGet_PosData2[i].flag0)) {
+                    continue;
+                }
+            }
+        }
+        if (mapScriptGet_PosData2[i].flag1 != 0) {
+            if (mapScriptGet_PosData2[i].flag1j == 0) {
+                if (evtBitCheck(mapScriptGet_PosData2[i].flag1)) {
+                    continue;
+                }
+            } else {
+                if (!evtBitCheck(mapScriptGet_PosData2[i].flag1)) {
+                    continue;
+                }
+            }
+        }
+        if (ix < mapScriptGet_PosData2[i].ix || ix >= mapScriptGet_PosData2[i].ix + mapScriptGet_PosData2[i].iw) {
+            continue;
+        }
+        if (iz < mapScriptGet_PosData2[i].iy || iz >= mapScriptGet_PosData2[i].iy + mapScriptGet_PosData2[i].ih) {
+            continue;
+        }
+        if (fldGlobalBase.nakamaMode == 0 && ((mapScriptGet_PosData2[i].id & 0xF000) == 0x1000 || (mapScriptGet_PosData2[i].id & 0xF000) == 0x2000) &&
+            mapScriptGet_PosData2[i].scr_name[0] == '\0') {
+            continue;
+        }
+        if (mapScriptGet_PosData2[i].act == 15 && fldGlobalBase.nakamaMode == 0) {
+            continue;
+        }
+        if (mapScriptGet_PosData2[i].act == 16 && fldGlobalBase.nakamaMode != 0) {
+            continue;
+        }
+        if (mapScriptGet_PosData2[i].act != 0 && !(mapScriptGet_PosData2[i].act == 15 && fldGlobalBase.nakamaMode != 0) &&
+            !(mapScriptGet_PosData2[i].act == 16 && fldGlobalBase.nakamaMode == 0) && mapScriptGet_PosData2[i].act != 17 && mapScriptGet_PosData2[i].act != 18) {
+            hit = 0;
+            switch (mapScriptGet_PosData2[i].dir) {
+            case 0:
+                hit = 1;
+                break;
+            case 1:
+                angle = R360_LR(fldGlobalBase.floatC0, 90.0f);
+                if (angle < 80.0f && angle > -80.0f) {
+                    hit = 1;
+                }
+                break;
+            case 2:
+                angle = R360_LR(fldGlobalBase.floatC0, 270.0f);
+                if (angle < 80.0f && angle > -80.0f) {
+                    hit = 1;
+                }
+                break;
+            case 3:
+                angle = R360_LR(fldGlobalBase.floatC0, 0.0f);
+                if (angle < 80.0f && angle > -80.0f) {
+                    hit = 1;
+                }
+                break;
+            case 4:
+                angle = R360_LR(fldGlobalBase.floatC0, 180.0f);
+                if (angle < 80.0f && angle > -80.0f) {
+                    hit = 1;
+                }
+                break;
+            }
+            if (!hit) {
+                continue;
+            }
+        }
+        *objx = mapScriptGet_PosData2[i].x;
+        *objy = mapScriptGet_PosData2[i].y;
+        *objz = mapScriptGet_PosData2[i].z;
+        *attr = mapScriptGet_PosData2[i].act;
+        *type = 2;
+        fldGlobalBase.mskIndex = mapScriptGet_PosData2[i].msk;
+        fldGlobalBase.word148 = mapScriptGet_PosData2[i].id;
+        fldGlobalBase.word15C = mapScriptGet_PosData2[i].dir;
+        mapEveHitMsk_Find(mapScriptGet_PosData2[i].id);
+        return mapScriptGet_PosData2[i].scr_name;
+    }
+    return NULL;
+}
+#else
 INCLUDE_ASM(const s32, "code_00148310", mapScriptGet_Pos);
+#endif
 
 s32 mapCallSetPlayerTargetData(f32 x, f32 z) {
     s32 ix;

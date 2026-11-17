@@ -129,6 +129,7 @@ s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex, void *resourceBase, frFont
 struct dds3BillResource_t;
 struct dds3Billboard_Basic_t;
 
+void frFontAppendIndexedTextToGlyphChain(u8 VarNo, frFontCtx_t *ctx);
 void frFontCreateContext(frFontCtx_t *ctx);
 void frMessageReturnCode(frFontCtx_t *pMsgInfo);
 s32 execTag_0(s32 code, frFontCtx_t *ctx);

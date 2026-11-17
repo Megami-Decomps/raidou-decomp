@@ -29,6 +29,7 @@ struct SBTLSOUND_FOOTWORK;
 
 void sbtlRefSbtl5(struct SBTLUNIT_WORK *wk);
 void sbtlSummonDvTaskSub(struct SBTLSOUND_FOOTWORK *fwk);
+s32 NakamaMotion3DSE(struct SBTLSOUND_FOOTWORK *fwk, s32 devilID, f32 frame);
 DVLFOOTSE_WORK *sbtlDevilFootSEProcSub(s32 devilID);
 void sbtlBtlLoadSkillSESub(s32 arg);
 s32 sbtlBtlPlay3DSEBaseVolSub(const sdfVector4_t *pos, f32 maxlen, f32 minlen, s32 basevol, s32 minvol);

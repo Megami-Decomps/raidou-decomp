@@ -2,6 +2,7 @@
 #define FLDFILERESOLVER_H
 
 #include "common.h"
+#include "sdf_types.h"
 
 struct mdlObj_t;
 
@@ -12,6 +13,7 @@ void fldDrawFrushOt(s32 r, s32 g, s32 b, s32 alp, s32 scl, s32 ot);
 s32 fldPlayerCalc(void);
 void fldPlayer_MoveCalc(void);
 void fldPlayer_MoveStart(f32 sx, f32 sy, f32 sz, f32 sr, f32 ex, f32 ey, f32 ez, f32 er);
+void fldAiboTaskSub(void);
 void mapAiboAdd(f32 x, f32 y, f32 z);
 void mapAiboFoceSet(f32 x, f32 y, f32 z);
 void mapAiboFoceSet3(f32 x, f32 y, f32 z);
@@ -56,6 +58,13 @@ extern s32 map_summondv_buff_add_idx;
 extern f32 mapSummonDvTaskData2;
 extern f32 map_summondv_rot;
 extern s32 gMapNakamaRunAtumaru;
+extern sdfVector4_t mapSummonDvTaskTable;
+extern sdfVector4_t VRF_Disable;
+extern s32 mapAiboTaskData2;
+extern f32 mapData56;
+extern f32 mapData57;
+extern f32 mapData58;
+extern struct SBTLSOUND_FOOTWORK mapSummonDvTaskData;
 extern s32 PlayerMotionSe2Data;
 
 #endif

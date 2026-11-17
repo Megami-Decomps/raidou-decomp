@@ -100,7 +100,7 @@ void fldGbInit_System(s32 mode) {
     fldGlobalBase.resourceArea = -1;
     fldGlobalBase.word28 = 0;
     fldGlobalBase.word2C = 0;
-    fldGlobalBase.word90 = 0;
+    fldGlobalBase.lastMoveLeng = 0.0f;
     fldGlobalBase.aiboRunStop = 0;
     fldGlobalBase.focusX = 0.0f;
     fldGlobalBase.focusY = 0.0f;
@@ -135,9 +135,9 @@ void fldGbInit_System(s32 mode) {
     fldGlobalBase.wordFC = 0;
     fldGlobalBase.x = 0.0f;
     fldGlobalBase.y = 0.0f;
-    fldGlobalBase.hitZ = 0.0f;
-    fldGlobalBase.camAngle = 0.0f;
-    fldGlobalBase.camAngle2 = 0.0f;
+    fldGlobalBase.nowTalkModelID = 0;
+    fldGlobalBase.nowTakaraTblIdx = 0;
+    fldGlobalBase.nowHealTblIdx = 0;
     fldGlobalBase.word12C = -1;
     fldGlobalBase.mskIndex = 0;
     fldGlobalBase.word148 = 0;
@@ -290,20 +290,20 @@ void fldGbInit_System(s32 mode) {
 INCLUDE_ASM(const s32, "fclDrawBack", fldGbInit_System);
 #endif
 
-/* NON_MATCHING: 30 of 37 words match.  */
+/* NON_MATCHING: 25 of 37 words match. Fragile: retyping fldAreaWork_t 0x120..0x128 moves its stores. */
 #ifdef NON_MATCHING
 void fldGbInit_Field(void) {
     fldGlobalBase.word1D8 = 1;
     fldGlobalBase.word138 = 24;
-    fldGlobalBase.word90 = 0;
+    fldGlobalBase.lastMoveLeng = 0.0f;
     fldGlobalBase.word5C = 0;
     fldGlobalBase.word24 = 0;
     fldGlobalBase.previousFloor = -1;
     fldGlobalBase.hitX = 0.0f;
-    fldGlobalBase.hitZ = 0.0f;
+    fldGlobalBase.nowTalkModelID = 0;
     fldGlobalBase.hitY = 0.0f;
-    fldGlobalBase.camAngle = 0.0f;
-    fldGlobalBase.camAngle2 = 0.0f;
+    fldGlobalBase.nowTakaraTblIdx = 0;
+    fldGlobalBase.nowHealTblIdx = 0;
     fldGlobalBase.word158 = 0;
     fldDbg.menuOn = 0;
     fldDbg.menuCur = 0;

@@ -51,6 +51,7 @@ s32 sbtlCheckGeneratorGroupID(s32 group);
 s32 sbtlGetRndEncJoken(s32 id);
 s32 sbtlGetRndEncMax(s32 id);
 s32 sbtlRndEncCalc(s32 id, f32 length);
+void pbCallBtlGetRndEncJoken(s32 id);
 s32 sbtlGetLevelAverage(s32 encountId);
 
 struct SBTL_AISYO_TBL *sbtlGetAisyotbl(s32 id);

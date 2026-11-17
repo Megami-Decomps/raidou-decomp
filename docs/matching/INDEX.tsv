@@ -19,16 +19,20 @@ sndSePlay_sndAt3	code_0013CDE0	raidou1 0x80	8 of 32 words differ	docs/matching/c
 fldBgZoomTest	code_0013CDE0	raidou1 0x2B4		docs/matching/code_0013CDE0.md	19		three FAKEMATCH_ASM_LIVE(mode) after the mapZoomSetGoal calls that must stay jal. Without them the function is 14 words off; the same result with C dead stores matches but is not allowed.
 mapCutBgLoad	code_0013CDE0	raidou1 0x88		docs/matching/code_0013CDE0.md	25		one FAKEMATCH_ASM_LIVE(cut) after mapBgFree2. Without it the function is 30 words off; the same result with a C dead store matches but is not allowed.
 mapUnitSetLight	code_00140960	raidou1 0x43C	154 of 271 words differ	docs/matching/code_00140960.md	3		
-mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11		
+mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11	adding the fld.h prototype mapObjCheck, with no other change, turns the full-unit result from 3 into a CONTEXT 5 of 50.	
+mapHamidasiCheck	code_00142A10	raidou1 0x210	24 of 132 words differ	docs/matching/code_00142A10.md	3	matched until B1-big's declaration edits to fld.h (six prototypes) and mapData.h; removing any one of the new fld.h prototypes, or reverting mapData.h, makes it match again, so it shifts with the count of declarations the unit includes, not with its own C.	
 mapLeaf12	code_00143568	raidou1 0x50	2 of 20 words differ	docs/matching/code_00143568.md	3		
 mdlCallMemGetSize	code_00143568	raidou1 0x140	25 of 78 words differ	docs/matching/code_00143568.md	11		
 mdlCallMemGetInfo	code_00143568	raidou1 0x12C	22 of 73 words differ	docs/matching/code_00143568.md	19		
+mapObjOnOff	code_00144130	raidou1 0x5C8	354 of 363 words differ	docs/matching/code_00144130.md	3		
 mapCallPositioningGuardSystem2	code_00148310	raidou1 0x1B4	5 of 109 words differ	docs/matching/code_00148310.md	3		
 mapCallSetPlayerTargetData2	code_00148310	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00148310.md	11		
 mapCallPositioningGuardSystem3	code_00148310	raidou1 0x17C	8 of 95 words differ	docs/matching/code_00148310.md	19	matched until R22's declaration edits to fld.h and mapData.h; with either header back at its R21 state it matches again, so it shifts with the declarations the unit includes, not with its own C.	
+mapScriptGet_Pos	code_00148310	raidou1 0x68C	400 of 407 words differ	docs/matching/code_00148310.md	27		
 mapNpcTblAdd_fld	code_0014B660	raidou1 0x3E0	189 of 246 words differ	docs/matching/code_0014B660.md	3		
 mapNpcTblRefresh	code_0014B660	raidou1 0x408	144 of 258 words differ	docs/matching/code_0014B660.md	11		
 mapNpcTblRefresh_Wait	code_0014B660	raidou1 0x35C	121 of 216 words differ	docs/matching/code_0014B660.md	19		
+mapMapObjectRefresh	code_0014B660	raidou1 0x6C0	4 of 432 words differ	docs/matching/code_0014B660.md	27		
 mapMapSetEnc	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	3		
 mapMapSetForm	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	11		
 mapGetHit	code_00153438	raidou1 0x60	4 of 24 words differ	docs/matching/code_00153438.md	19		
@@ -39,6 +43,7 @@ mapCallSetPlayerTargetData5	code_00153438	raidou1 0x5C	4 of 23 words differ	docs
 mapCallSetPlayerTargetData6	code_00153438	raidou1 0x70	12 of 28 words differ	docs/matching/code_00153438.md	59		
 mapCutSet_From_Pos	code_00153438	raidou1 0x204	1 of 129 words differ	docs/matching/code_00153438.md	67		
 fldCallGrAllocPacketBuff2	code_00156778	raidou1 0x160	2 of 88 words differ	docs/matching/code_00156778.md	3		
+fldCallLinkAlpha	code_00156EA8	raidou1 0x7E4	20 of 505 words differ	docs/matching/code_00156EA8.md	3		
 mapSpotPointDrawEndChk	code_00157CD0	raidou1 0xA4	2 of 41 words differ	docs/matching/code_00157CD0.md	3		
 mefMistFastCreate	code_00157CD0	raidou1 0x158	4 of 86 words differ	docs/matching/code_00157CD0.md	11		
 mapSoundKankyoTaskSub	code_0015D490	raidou1 0x5C	13 of 23 words differ	docs/matching/code_0015D490.md	3		
@@ -61,6 +66,7 @@ itfMenuSetSpriteData	code_00190668	raidou1 0xDC	1 of 55 words differ	docs/matchi
 itfMenuSetImageColorSub	code_00190668	raidou1 0x4C	1 of 19 words differ	docs/matching/code_00190668.md	11		
 MenuDrawProcess	code_00190668	raidou1 0x32C	181 of 203 words differ	docs/matching/code_00190668.md	19		
 itfMenuProcessCheck	code_00190668	raidou1 0x50	1 of 20 words differ	docs/matching/code_00190668.md	27		
+MenuProcess	code_00190668	raidou1 0x6DC	404 of 426 words differ	docs/matching/code_00190668.md	35		
 evtMoonTeisatuCntReset	code_001AD4E8	raidou1 0x10	4 of 4 words differ	docs/matching/code_001AD4E8.md	3		
 sbtlRefSbtl31	code_0024DF70	raidou1 0x94	34 of 35 words differ	docs/matching/code_0024DF70.md	3		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
@@ -118,7 +124,7 @@ mapHitWorkCalcSetup	code_r1_00142038	raidou1 0x874, raidou2 0x874	525 of 542 wor
 mapObjFloorAdd_Cash	code_r1_00143B78	raidou1 0x5B8	287 of 366 words differ	docs/matching/code_r1_00143B78.md	3		
 mapObjTask	code_r1_00145808	raidou1 0x2B08	2210 of 2224 words differ	docs/matching/code_r1_00145808.md	3		
 mapObjPointAdd2	code_r1_0014B328	raidou1 0x170, raidou2 0x170	76 of 77 words differ	docs/matching/code_r1_0014B328.md	3		
-mapMapObjectRefresh_fld	code_r1_0014CF58	raidou1 0x1018	885 of 894 words differ	docs/matching/code_r1_0014CF58.md	3		
+mapMapObjectRefresh_fld	code_r1_0014CF58	raidou1 0x1018	887 of 900 words differ	docs/matching/code_r1_0014CF58.md	3		
 fldFreeMapData	code_r1_0014F378	raidou1 0x24C	5 of 148 words differ	docs/matching/code_r1_0014F378.md	3		
 mapFileLoad	code_r1_0014F378	raidou1 0x23AC	1924 of 1972 words differ	docs/matching/code_r1_0014F378.md	9		
 mapMapSetArea	code_r1_00151980	raidou1 0x440, raidou2 0x440	107 of 272 words differ	docs/matching/code_r1_00151980.md	3		
@@ -231,8 +237,10 @@ evtLeaf28	evtTmxPreLoad	raidou1 0x4C	17 of 20 words differ	docs/matching/evtTmxP
 EndCallback_evtTmxPreLoad	evtTmxPreLoad	raidou1 0x180	53 of 94 words differ	docs/matching/evtTmxPreLoad.md	11		
 mapNakamaStockOnCheck_fld	facility/fclCombineInit	raidou1 0xF4	45 of 60 words differ	docs/matching/facility/fclCombineInit.md	3		
 fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/fclDrawBack.md	3		
-fldGbInit_Field	fclDrawBack	raidou1 0x94	7 of 37 words differ	docs/matching/fclDrawBack.md	11		
+fldGbInit_Field	fclDrawBack	raidou1 0x94	12 of 37 words differ	docs/matching/fclDrawBack.md	11	retyping fldAreaWork_t 0x120..0x128 (hitZ/camAngle/camAngle2 to the s32 nowTalkModelID/nowTakaraTblIdx/nowHealTblIdx, or the same as f32/s32 unions) moved it from 7 to 12 differing words with the same stores.	
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		
+mapAiboTask	field/fldFileResolver	raidou1 0x9A8	246 of 618 words differ	docs/matching/field/fldFileResolver.md	12		
+mapSummonDvTask	field/fldFileResolver	raidou1 0x944	8 of 593 words differ	docs/matching/field/fldFileResolver.md	20		
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	12		
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.	
@@ -253,6 +261,7 @@ CalcSelect	interface/itfMesManager	raidou1 0x2EC, raidou2 0x2EC	2 of 187 words d
 itfCalcMesFlowItfSub	interface/itfMesManager	raidou1 0x320, raidou2 0x320	155 of 200 words differ	docs/matching/interface/itfMesManager.md	39		
 itfFunc2	interface/itfMesManager	raidou1 0x1EC, raidou2 0x1EC	67 of 123 words differ	docs/matching/interface/itfMesManager.md	48		
 itfCallGrAllocPacketBuff	interface/itfMesManager	raidou1 0x448, raidou2 0x448	209 of 274 words differ	docs/matching/interface/itfMesManager.md	57		
+itfCallGrAllocPacketBuff2	interface/itfMesManager	raidou1 0x4D8, raidou2 0x4D8	145 of 310 words differ	docs/matching/interface/itfMesManager.md	66		
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3		
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3		
 dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11		

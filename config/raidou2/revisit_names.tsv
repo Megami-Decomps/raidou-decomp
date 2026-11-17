@@ -274,7 +274,6 @@
 0x0011D280	dds3UnitObjectBasicSetKubiTerget	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3UnitObjectBasic.dds3UnitObjectBasicSetKubiTerget, score 9.6 band B
 0x0011D520	dds3CtnGetSub	func	tier=D	derived-caller	na	unit basic/dds3UnitObjectBasic; called by mapCtnGet
 0x0011D540	dds3UnitMVSBtlUnitSub	func	tier=D	derived-caller	na	unit basic/dds3UnitObjectBasic; called by UnitMV_sbtlUnit
-0x0011DAD0	dds3CallMemset2	func	tier=D	derived-callee	na	unit basic/dds3UnitObjectBasic; calls memset
 0x0011E378	dds3Leaf28	func	tier=D	derived-unit	na	unit basic/dds3MatterObjectBasic; no named callee, caller or string
 0x0011E850	dds3RefreshStoredVec3	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001143B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011F408	dds3EffectObjectBasicAddD3P2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3EffectObjectBasic.dds3EffectObjectBasicAddD3P2, score 7.45 band B

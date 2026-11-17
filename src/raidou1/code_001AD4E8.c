@@ -68,28 +68,16 @@ void sndCallCheckLastSkipStat(void) {
     scrSetIntReturnValue(evtCheckLastSkipStat());
 }
 
-s32 evtMoonTakaraCntReset(void) {
-    s32 count;
-
-    count = dds3GetRandIntA(NULL, 5) + 6;
-    DDS3_GBWK->takaraCnt = count;
-    return count;
+void evtMoonTakaraCntReset(void) {
+    DDS3_GBWK->takaraCnt = dds3GetRandIntA(NULL, 5) + 6;
 }
 
-s32 evtMoonZeniCntReset(void) {
-    s32 count;
-
-    count = dds3GetRandIntA(NULL, 5) + 6;
-    DDS3_GBWK->zeniCnt = count;
-    return count;
+void evtMoonZeniCntReset(void) {
+    DDS3_GBWK->zeniCnt = dds3GetRandIntA(NULL, 5) + 6;
 }
 
-s32 evtMoonTakumiCntReset(void) {
-    s32 count;
-
-    count = dds3GetRandIntA(NULL, 5) + 16;
-    DDS3_GBWK->takumiCnt = count;
-    return count;
+void evtMoonTakumiCntReset(void) {
+    DDS3_GBWK->takumiCnt = dds3GetRandIntA(NULL, 5) + 16;
 }
 
 /* NON_MATCHING: 0 of 4 words match.  */

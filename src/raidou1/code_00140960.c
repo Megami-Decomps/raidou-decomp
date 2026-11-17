@@ -254,7 +254,7 @@ s32 mapHamidasiNpcSub(f32 cx, f32 cz, f32 *updx, f32 *updz) {
     return hit;
 }
 
-/* NON_MATCHING: 47 of 50 words match.  */
+/* NON_MATCHING: 47 of 50 words match. Fragile: the fld.h declaration set moves it in the full unit. */
 #ifdef NON_MATCHING
 s32 mapHamidasiWHitSub(f32 *cx, f32 *cz, f32 r) {
     f32 hitx;

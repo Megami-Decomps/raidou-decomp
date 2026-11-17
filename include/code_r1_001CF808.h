@@ -27,6 +27,9 @@ extern u32 sndData[2];
 extern u32 sndInitializeStreamTransferBuffersData;
 extern u64 mnuCopySoundStreamOnStatusChangeWork;
 s32 sndCopyWordsToIopSynchronously(const void *source, u32 iopAddress, u32 wordCount);
+void mnuSetTitleVoicePrefixIndex(s32 prefixIndex);
+void fldNowPlayengStart(s32 fileNo);
+s32 mnuGetTitleEffectFrameCounter(void);
 
 /* The PCM voice owner stores idle as 0 and active playback as 1. */
 typedef s32 MnuTitleSoundBusyState;

@@ -242,7 +242,6 @@
 0x0011A818	dds3UnitObjectBasicSetKubiTerget	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3UnitObjectBasic.dds3UnitObjectBasicSetKubiTerget, score 9.6 band B
 0x0011AAB8	dds3CtnGetSub	func	tier=D	derived-caller	na	unit basic/dds3UnitObjectBasic; called by mapCtnGet
 0x0011AAD8	effObjInitializeFollowModelData	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00113490, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0011AED0	dds3CallMemset2	func	tier=D	derived-callee	na	unit basic/dds3UnitObjectBasic; calls memset
 0x0011B778	dds3Leaf28	func	tier=D	derived-unit	na	unit basic/dds3MatterObjectBasic; no named callee, caller or string
 0x0011BC50	dds3RefreshStoredVec3	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001143B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011C808	dds3EffectObjectBasicAddD3P2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3EffectObjectBasic.dds3EffectObjectBasicAddD3P2, score 7.45 band B
@@ -19289,6 +19288,7 @@
 0x00117EB8	scenedestructor	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x10ee08 sim 0.902 margin 0.48 pair
 0x00118510	dds3SceneBasicLoadScriptFile	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD dds3SceneBasic.dds3SceneBasicLoadScriptFile score 6.7 flag R: calls1 prev~ next gap1/1 st1:gap r1+r2
 0x0011ABF8	dds3UnitObjectBasicMainProcedure	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x112c28 sim 0.804 margin 0.54 single
+0x0011AED0	dds3UnitObjectBasicDrawProcedure	func	tier=B	smt3-role	na	SMT3 dds3UnitObjectBasicDrawProcedure: same memset/flag 1/work->ot LinkOt/0x400,0x1000/mark 0 shadow structure; replaces dds3CallMemset2
 0x0011EB50	dds3GlobalWorkInit	func	tier=B	smt3-role	na	SMT3; replaces datGlobalWorkInit
 0x0011EC28	dds3GlobalWorkMainProc	func	tier=B	smt3-role	na	SMT3 dds3GlobalWork.c (process func of GBWK); replaces UserInit
 0x0011EC50	UserInit	func	tier=B	hd-role	na	HD dat.c UserInit (tail of dds3GlobalWorkInit); after the line above; replaces datCallGlobalWorkClearFlags

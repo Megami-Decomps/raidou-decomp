@@ -144,7 +144,12 @@ typedef struct Menu_t {
     s8 selNo[4];
     s8 topNo[4];
     s8 drwNo[4];
-    u8 padB80[0xB8C - 0xB80];
+    s32 delId;                  /* 0xB80: menu id MenuDelMenuSub removes */
+    s32 initSelectID;           /* 0xB84 */
+    u8 moveType;                /* 0xB88 */
+    u8 retFunc;                 /* 0xB89: last select->func result */
+    u8 bEnableCtrl;             /* 0xB8A */
+    s8 dummy[1];
     u16 gflag;
     u16 lflag;
     s32 frame;
@@ -195,6 +200,18 @@ void cmpItfmenuScrollbarTexture(Menu_t *wk, s32 a_topno, s32 a_selmax, u8 a_alph
 void MenuUpdateLinkMover(Menu_t *wk);
 s32 MenuUpdateSelectMenu(Menu_t *wk);
 s32 MenuRemakeLinkSub(struct Menu_t *wk);
+void MenuCtrlSelect(Menu_t *wk, s32 a_keytype, s32 a_bPlaySE);
+void itfCallMoverInit2(Menu_t *wk, s32 a_type);
+void MenuSetMoverDisappear(Menu_t *wk, s32 a_type);
+s32 MenuUpdateMover(Menu_t *wk);
+void MenuMoveEnd(Menu_t *wk);
+void MenuPlayDecideSE(MenuCB_tag *cb);
+void MenuPlayCancelSE(MenuCB_tag *cb);
+s32 itfCallMenuSetMoverDisappear(Menu_t *wk, s32 a_type);
+void itfCallMenuGetSelectMenu(Menu_t *wk);
+void itfCallMenuGetSelectMenu2(Menu_t *wk);
+void itfLeaf(Menu_t *wk);
+void itfCallGetProcessData5(dds3ProcessID_t *PID, s32 a_id);
 u8 MoneyCheckProcEnd(struct tagITF_MONEY_WORK *wk);
 void itfDrawFont(ITF_DM_STYLE a_style, s32 a_x, s32 a_y, s32 a_z, s32 a_w, s32 a_space, u32 a_color, f32 a_alphaRate, DDS3_OT a_ot, char *a_str);
 void MoneyDrawPanel(s32 a_offX, s32 a_offY, u8 a_alpha);

@@ -28,5 +28,9 @@ void datAddMaka(s32 add);
 s32 datCheckMoney(s32 money);
 s32 datCheckDying(struct sdatUnitWork_t *pUnit);
 void datResetBadStat(struct sdatUnitWork_t *pWork, u32 badstat);
+#ifdef VERSION_RAIDOU1
+void datCallCalcGetBadStatus(s32 type);
+s32 datCallCalcGetBadStatus2(s32 bst);
+#endif
 
 #endif /* DATCALC_H */

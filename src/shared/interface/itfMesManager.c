@@ -2945,7 +2945,103 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf14);
 
+/* NON_MATCHING: 165 of 310 words match.  */
+#ifdef NON_MATCHING
+/* Page-wait cursor sheet for itfCallGrAllocPacketBuff2: three uv rects in
+ * 1/16 texels, drawn at fixed rects below the message panel. */
+typedef struct itfMesMngWaitUvTable_t {
+    s32 uv[3][4];
+} itfMesMngWaitUvTable_t;
+
+typedef struct itfMesMngWaitSize_t {
+    s32 size[3][2];
+} itfMesMngWaitSize_t;
+
+typedef struct itfMesMngWaitRect_t {
+    s32 rect[3][4];
+} itfMesMngWaitRect_t;
+
+extern itfMesMngWaitUvTable_t itfCallGrAllocPacketBuff2Table;
+extern itfMesMngCursorColor_t itfCallGrAllocPacketBuff2Table2;
+
+void itfCallGrAllocPacketBuff2(instanceMes_tag *pinst) {
+    itfMesMngWaitUvTable_t uv = itfCallGrAllocPacketBuff2Table;
+    itfMesMngWaitSize_t size = { {
+        { (uv.uv[0][2] - uv.uv[0][0]) >> 4, (uv.uv[0][3] - uv.uv[0][1]) >> 4 },
+        { (uv.uv[1][2] - uv.uv[2][0]) >> 4, (uv.uv[1][3] - uv.uv[2][1]) >> 4 },
+        { (uv.uv[2][2] - uv.uv[2][0]) >> 4, (uv.uv[2][3] - uv.uv[2][1]) >> 4 },
+    } };
+    itfpanel_t *mes = pinst->window.mes;
+    s32 top = mes != NULL ? mes->top : 0;
+    itfMesMngWaitRect_t vertex = { {
+        { 435 << 4, top + (76 << 3), (size.size[0][0] + 435) << 4, top + ((size.size[0][1] + 76) << 3) },
+        { 433 << 4, top + (70 << 3), (size.size[1][0] + 433) << 4, top + ((size.size[1][1] + 70) << 3) },
+        { 433 << 4, top + (81 << 3), (size.size[2][0] + 433) << 4, top + ((size.size[2][1] + 81) << 3) },
+    } };
+    itfMesMngCursorColor_t color = itfCallGrAllocPacketBuff2Table2;
+    s32 rect[4];
+    curctr_tag *pcurctr = &pinst->curctr[0];
+    sdfDrawTag_t *tag;
+    s32 fade;
+    s32 alpha;
+    s32 cx;
+    s32 cy;
+    s32 halfWidth;
+    s32 halfHeight;
+    sdfGrOt_t *otp;
+
+    if (mes == NULL) {
+        return;
+    }
+    tag = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(tag);
+    fade = pinst->curctr[0].lf_after_wait * 32 < 129 ? pinst->curctr[0].lf_after_wait * 32 : 128;
+    alpha = 128 - fade;
+    if (alpha < 0) {
+        alpha = 0;
+    }
+    color.rgba[3] = alpha;
+    itfMiscDrawSpritePrim(vertex.rect[0], uv.uv[0], &color, pinst->z, itfMesMngManager.windowTexture, 0, tag);
+
+    halfWidth = (f32)(size.size[1][0] << 4) * pcurctr->unk14 * 0.5f;
+    halfHeight = (f32)(size.size[1][1] << 3) * pcurctr->unk18 * 0.5f;
+    alpha = pcurctr->ctr0 - fade;
+    if (alpha < 0) {
+        alpha = 0;
+    }
+    color.rgba[3] = alpha;
+    cx = vertex.rect[1][0] + (size.size[1][0] << 3);
+    cy = vertex.rect[1][1] + (size.size[1][1] << 2);
+    rect[0] = cx - halfWidth;
+    rect[1] = cy - halfHeight;
+    rect[2] = cx + halfWidth;
+    rect[3] = cy + halfHeight;
+    itfMiscDrawAlphaPrim(tag, 1, 0);
+    itfMiscDrawSpritePrim(rect, uv.uv[1], &color, pinst->z, itfMesMngManager.windowTexture, 0, tag);
+    itfMiscDrawAlphaPrim(tag, 0, 0);
+
+    halfWidth = (f32)(size.size[2][0] << 4) * pcurctr->unk1C * 0.5f;
+    halfHeight = (f32)(size.size[2][1] << 3) * pcurctr->unk20 * 0.5f;
+    alpha = pcurctr->ctr1 - fade;
+    if (alpha < 0) {
+        alpha = 0;
+    }
+    color.rgba[3] = alpha;
+    cx = vertex.rect[2][0] + (size.size[2][0] << 3);
+    cy = vertex.rect[2][1] + (size.size[2][1] << 2);
+    rect[0] = cx - halfWidth;
+    rect[1] = cy - halfHeight;
+    rect[2] = cx + halfWidth;
+    rect[3] = cy + halfHeight;
+    itfMiscDrawAlphaPrim(tag, 1, 0);
+    itfMiscDrawSpritePrim(rect, uv.uv[2], &color, pinst->z, itfMesMngManager.windowTexture, 0, tag);
+    itfMiscDrawAlphaPrim(tag, 0, 0);
+    otp = &sdfGrOtTable[pinst->otindex];
+    otp->regFunc(otp, tag);
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff2);
+#endif
 
 s32 CalcMsgMng_Process(dds3ProcessID_t *id) {
     itfMesLink_t *node = itfMesMngManager.pool.activeHead;

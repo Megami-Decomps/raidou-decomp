@@ -6,6 +6,7 @@
 #include "fpu.h"
 #include "code_r1_00128378.h"
 #include "dds3Randomize.h"
+#include "fldProcess.h"
 
 s32 mapAddHukidashi(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s) {
     return mapObjFloorAdd_Cash(-1, uniq, major, minor, motion, cut_bit, cash, x, y, z, r, s);
@@ -102,7 +103,185 @@ INCLUDE_ASM(const s32, "code_00144130", mapLeaf15);
 
 INCLUDE_ASM(const s32, "code_00144130", mapObjNoClip);
 
+/* NON_MATCHING: 16 of 370 words match. 9 of 370 words match; same blocks, branch-likely and register choices differ. */
+#ifdef NON_MATCHING
+void mapObjOnOff(void) {
+    MAP_OBJ_t *obj;
+    s32 i;
+    s32 cut;
+    u16 uniq;
+
+    fldGlobalBase.word2D8 = 0;
+    mapGenbaPosEffClipSet();
+    for (i = 0; i < 128; i++) {
+        obj = &mapObjTaskData2[i];
+        if (obj->use != 1) {
+            continue;
+        }
+        if (obj->basic == NULL) {
+            continue;
+        }
+        cut = fldGlobalBase.hitMatterIndex != 0 ? fldGlobalBase.hitMatterIndex : fldGlobalBase.cutIdx;
+        if (obj->visible == 0) {
+            continue;
+        }
+        uniq = obj->uniq;
+        if (uniq == 0xE028) {
+            if (fldGlobalBase.cutIdx == 10) {
+                dds3ObjectBaseOnFlag(obj->basic, 1);
+            } else {
+                dds3ObjectBaseOffFlag(obj->basic, 1);
+            }
+            continue;
+        }
+        if (fldGlobalBase.amSBlock == 22 && fldGlobalBase.nameU == 2 && (u16)(uniq - 426) < 5) {
+            dds3ObjectBaseOnFlag(obj->basic, 1);
+            continue;
+        }
+        if (fldGlobalBase.amSBlock == 13) {
+            if (fldGlobalBase.nameU == 3 && obj->uniq == 461) {
+                if (fldGlobalBase.cutIdx == 9) {
+                    dds3ObjectBaseOnFlag(obj->basic, 1);
+                } else {
+                    dds3ObjectBaseOffFlag(obj->basic, 1);
+                }
+                continue;
+            }
+            if (fldGlobalBase.nameU == 4) {
+                if (obj->uniq == 461) {
+                    if (fldGlobalBase.cutIdx == 9) {
+                        dds3ObjectBaseOnFlag(obj->basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(obj->basic, 1);
+                    }
+                    continue;
+                }
+                if (obj->uniq == 4150) {
+                    if (fldGlobalBase.cutIdx == 16) {
+                        dds3ObjectBaseOnFlag(obj->basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(obj->basic, 1);
+                    }
+                    continue;
+                }
+            }
+            if (fldGlobalBase.nameU == 5) {
+                if (obj->uniq == 461) {
+                    if (fldGlobalBase.cutIdx == 13) {
+                        dds3ObjectBaseOnFlag(obj->basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(obj->basic, 1);
+                    }
+                    continue;
+                }
+                if (obj->uniq == 4148) {
+                    if (fldGlobalBase.cutIdx == 13) {
+                        dds3ObjectBaseOnFlag(obj->basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(obj->basic, 1);
+                    }
+                    continue;
+                }
+                if (obj->uniq == 4149) {
+                    if (fldGlobalBase.cutIdx == 13) {
+                        dds3ObjectBaseOnFlag(obj->basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(obj->basic, 1);
+                    }
+                    continue;
+                }
+                if (obj->uniq == 4150) {
+                    if (fldGlobalBase.cutIdx == 13) {
+                        dds3ObjectBaseOnFlag(obj->basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(obj->basic, 1);
+                    }
+                    continue;
+                }
+            }
+            if (fldGlobalBase.nameU == 9) {
+                if (mapObjTaskData2[i].uniq == 0 && mapObjTaskData2[i].x > 1049.0f && mapObjTaskData2[i].x < 1051.0f &&
+                    mapObjTaskData2[i].z > 5149.0f && mapObjTaskData2[i].z < 5151.0f) {
+                    dds3ObjectBaseOffFlag(mapObjTaskData2[i].basic, 1);
+                    continue;
+                }
+                if (mapObjTaskData2[i].uniq == 0 && mapObjTaskData2[i].x > 549.0f && mapObjTaskData2[i].x < 551.0f &&
+                    mapObjTaskData2[i].z > 6149.0f && mapObjTaskData2[i].z < 6151.0f) {
+                    if (fldGlobalBase.cutIdx == 31) {
+                        dds3ObjectBaseOnFlag(mapObjTaskData2[i].basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(mapObjTaskData2[i].basic, 1);
+                    }
+                    continue;
+                }
+                if (mapObjTaskData2[i].uniq == 4157) {
+                    if (fldGlobalBase.cutIdx == 31) {
+                        dds3ObjectBaseOnFlag(mapObjTaskData2[i].basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(mapObjTaskData2[i].basic, 1);
+                    }
+                    continue;
+                }
+                if ((u16)(mapObjTaskData2[i].uniq - 4164) < 3 ||
+                    mapObjTaskData2[i].uniq == 443 || mapObjTaskData2[i].uniq == 514) {
+                    if (fldGlobalBase.cutIdx == 29) {
+                        dds3ObjectBaseOnFlag(obj->basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(obj->basic, 1);
+                    }
+                    continue;
+                }
+                if (mapObjTaskData2[i].uniq == 0 && mapObjTaskData2[i].x > -1451.0f && mapObjTaskData2[i].x < -1449.0f &&
+                    mapObjTaskData2[i].z > 2149.0f && mapObjTaskData2[i].z < 2151.0f) {
+                    if (fldGlobalBase.cutIdx == 29) {
+                        dds3ObjectBaseOnFlag(mapObjTaskData2[i].basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(mapObjTaskData2[i].basic, 1);
+                    }
+                    continue;
+                }
+            }
+            if (fldGlobalBase.nameU == 10) {
+                if (mapObjTaskData2[i].uniq == 4157) {
+                    if (fldGlobalBase.cutIdx == 24) {
+                        dds3ObjectBaseOnFlag(mapObjTaskData2[i].basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(mapObjTaskData2[i].basic, 1);
+                    }
+                    continue;
+                }
+                if (mapObjTaskData2[i].uniq == 0 && mapObjTaskData2[i].x > -1951.0f && mapObjTaskData2[i].x < -1949.0f &&
+                    mapObjTaskData2[i].z > 6149.0f && mapObjTaskData2[i].z < 6151.0f) {
+                    if (fldGlobalBase.cutIdx == 24) {
+                        dds3ObjectBaseOnFlag(mapObjTaskData2[i].basic, 1);
+                    } else {
+                        dds3ObjectBaseOffFlag(mapObjTaskData2[i].basic, 1);
+                    }
+                    continue;
+                }
+            }
+        }
+        if (mapObjTaskData2[i].noclip) {
+            dds3ObjectBaseOffFlag(mapObjTaskData2[i].basic, 1);
+            continue;
+        }
+        if (mapBigClipChkF(cut, mapObjTaskData2[i].x, mapObjTaskData2[i].y, mapObjTaskData2[i].z)) {
+            if (((mapObjTaskData2[i].cut_bit >> fldGlobalBase.cutIdx) & 1) == 0) {
+                dds3ObjectBaseOnFlag(mapObjTaskData2[i].basic, 1);
+                continue;
+            }
+            if (mapObjTaskData2[i].model_id1 == 3 && mapObjTaskData2[i].uniq >= 0) {
+                fldGlobalBase.word2D8++;
+            }
+            dds3ObjectBaseOffFlag(obj->basic, 1);
+        } else {
+            dds3ObjectBaseOnFlag(mapObjTaskData2[i].basic, 1);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00144130", mapObjOnOff);
+#endif
 
 INCLUDE_ASM(const s32, "code_00144130", mapObjPos);
 

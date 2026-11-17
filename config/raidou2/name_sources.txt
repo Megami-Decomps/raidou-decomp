@@ -835,7 +835,7 @@
 0x0011D550	Constructor_dds3UnitObjectBasic	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD dds3UnitObjectBasic.Constructor score 4.8 flag -: calls2 next callers-of-match votes4 st2:call r1-disagree:0x11aad8
 0x0011D610	dds3UnitObjectBasicDestructor	inferred	SMT3HD name via SLUS_209.11 0x00112BB0, reloc-identical; map-agrees
 0x0011D688	MainProcedure_dds3UnitObjectBasic	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD dds3UnitObjectBasic.MainProcedure score 8.3 flag -: calls12 next~ callers-of-match votes10 st2:call r1-disagree:0x11abf8
-0x0011DAD0	dds3CallMemset2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit basic/dds3UnitObjectBasic; calls memset
+0x0011DAD0	dds3UnitObjectBasicDrawProcedure	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=same function as Raidou 1 (identical body); replaces dds3CallMemset2
 0x0011DFE0	dds3UnitObjectBasicEL_LinkFree	inferred	SMT3HD name via SLUS_209.11 0x001130D0, reloc-identical; map-agrees
 0x0011E028	dds3UnitObjectBasicEL_Link	inferred	SMT3HD name via SLUS_209.11 0x00113118, reloc-identical; map-agrees
 0x0011E210	dds3MatterObjectBasicGetControlWorkData	inferred	SMT3HD name via SLUS_209.11 0x00113300, shared-hash-in-run; map-agrees

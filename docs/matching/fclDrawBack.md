@@ -10,8 +10,10 @@ Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-
 
 ## fldGbInit_Field (fclDrawBack, raidou1 0x94)
 
-Raidou 1: 7 of 37 words differ, first at +0x34.
+Raidou 1: 12 of 37 words differ, first at +0x34.
 
 store scheduling only: zero stores to menuCur/floatE4/word318 issue early in retail, hitX/hitZ early in mine; same store set; ordsearch single-line moves bottomed at 7 from retail order (25); vector checked (boot)
 
 Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
+
+Fragile: retyping fldAreaWork_t 0x120..0x128 (hitZ/camAngle/camAngle2 to the s32 nowTalkModelID/nowTakaraTblIdx/nowHealTblIdx, or the same as f32/s32 unions) moved it from 7 to 12 differing words with the same stores.

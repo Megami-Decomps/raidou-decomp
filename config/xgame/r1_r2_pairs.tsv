@@ -759,7 +759,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0011AA70	0x0011D4D8	dds3ClaimSoundSlot	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011AAB8	0x0011D520	dds3CtnGetSub	yes	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011AB80	0x0011D610	dds3UnitObjectBasicDestructor	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
-0x0011AED0	0x0011DAD0	dds3CallMemset2	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
+0x0011AED0	0x0011DAD0	dds3UnitObjectBasicDrawProcedure	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011B3E0	0x0011DFE0	dds3UnitObjectBasicEL_LinkFree	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011B428	0x0011E028	dds3UnitObjectBasicEL_Link	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011B610	0x0011E210	dds3MatterObjectBasicGetControlWorkData	yes	yes	asm/raidou1/code_0011B610.s	asm/raidou2/code_0011E210.s	masked-hash-in-gap

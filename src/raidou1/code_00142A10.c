@@ -48,6 +48,8 @@ s32 mapHitCalc(s32 mode, f32 posx, f32 posz, f32 r, f32 *getx, f32 *getz) {
 
 INCLUDE_ASM(const s32, "code_00142A10", mapHitAidaCalc);
 
+/* NON_MATCHING: 108 of 132 words match. Fragile: shifts with the count of declarations in fld.h and mapData.h. */
+#ifdef NON_MATCHING
 void mapHamidasiCheck(void) {
     f32 cx;
     f32 cz;
@@ -105,3 +107,6 @@ void mapHamidasiCheck(void) {
         }
     }
 }
+#else
+INCLUDE_ASM(const s32, "code_00142A10", mapHamidasiCheck);
+#endif

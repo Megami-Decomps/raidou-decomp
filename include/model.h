@@ -40,6 +40,8 @@ typedef struct
     sdfGrOt_t *ot[4];
 } sdfModelOt_t;
 
+extern sdfModelOt_t ModelOt[15];
+
 /* The five lists below are all sdfItemArray_t (libsdf.h); each repeats the
  * header so items carries its element type. elemSize is 4 for the three
  * pointer lists and 16 for the morph list. */

@@ -22,6 +22,7 @@ s32 dds3ObjectBaseSetPrimaryControl(dds3Basic_t *basic, dds3BasicControlProc_t f
 #include "model.h"
 
 f32 dds3CallMemset(dds3Basic_t *pObjectBasic, sdfModelRootNode_t *model_root);
+f32 dds3CallGetBaseControlWorkData(dds3Basic_t *pObjectBasic);
 void *dds3ObjectBaseGetUserValue(dds3Basic_t *pObjectBasic);
 void *dds3ObjectBaseGetModelHandle(dds3Basic_t *pObjectBasic);
 void dds3ObjectBaseMakeMatter(dds3Basic_t *pObjectBasic);

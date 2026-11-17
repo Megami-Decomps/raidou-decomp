@@ -8,6 +8,7 @@
 #include "dds3KernelDraw.h"
 #include "sdk_libc.h"
 #include "datCalc.h"
+#include "dds3PadManager.h"
 
 INCLUDE_ASM(const s32, "code_00190668", itfMenuChkSetMenu);
 
@@ -227,7 +228,251 @@ INCLUDE_ASM(const s32, "code_00190668", MenuPlayDecideSE);
 
 INCLUDE_ASM(const s32, "code_00190668", MenuPlayCancelSE);
 
+/* NON_MATCHING: 35 of 439 words match.  */
+#ifdef NON_MATCHING
+s32 MenuProcess(dds3ProcessID_t *PID) {
+    Menu_t *wk = dds3GetProcessData(PID);
+    MenuCB_tag *cb;
+    s32 ret;
+
+    if (wk->lflag & 0x4000) {
+        if (wk->step < 2 || wk->step >= 7) {
+            wk->lflag &= ~0x4000;
+        } else if (wk->step != 2) {
+            MenuDelMenuSub(wk, wk->delId);
+        }
+    }
+
+    switch (wk->step) {
+    case 0:
+    case 1:
+        if (wk->lflag & 8) {
+            MenuUpdatePrevLink(wk);
+            wk->nowHierarchy = 0;
+            wk->selNo[0] = 0;
+            if (!MenuUpdateSelectMenu(wk)) {
+                MenuCtrlSelect(wk, 3, 0);
+            }
+            if (wk->lflag & 0x8000) {
+                itfCallGetProcessData5(PID, wk->initSelectID);
+                wk->lflag &= ~0x8000;
+            }
+            wk->lflag &= ~8;
+        }
+        if (wk->lflag & 0x20) {
+            if (wk->lflag & 0x10) {
+                wk->lflag &= ~2;
+                wk->step = 2;
+                wk->bEnableCtrl = 0;
+                itfCallMoverInit2(wk, wk->dispType[0]);
+                wk->lflag |= 0x2E00;
+            }
+        }
+        break;
+    case 2:
+        if (MenuUpdateMover(wk)) {
+            wk->bEnableCtrl = 0;
+            break;
+        }
+        wk->bEnableCtrl = 1;
+        if (wk->gflag & 0x80) {
+            wk->gflag &= ~0x80;
+            MenuMoveEnd(wk);
+            return 0;
+        }
+        if (wk->lflag & 0x4000) {
+            wk->lflag &= ~0x4000;
+            MenuDelMenuSub(wk, wk->delId);
+        }
+        if (wk->gflag & 0x800) {
+            if (wk->select->gflag & 0x40) {
+                wk->lflag &= ~0x2000;
+            } else {
+                wk->lflag |= 0x2000;
+            }
+            MenuSetMoverDisappear(wk, wk->dispType[1]);
+            wk->step = 3;
+            wk->ctrlType = 6;
+            wk->gflag &= ~0x800;
+            break;
+        }
+        if (!(wk->gflag & 8)) {
+            break;
+        }
+        if (wk->gflag & 0x100) {
+            return 0;
+        }
+        if (wk->gflag & 0x40) {
+            if (dds3PadButtonState[0x22] < 0 || dds3PadButtonState[0x21] < 0 || dds3PadButtonState[0x23] < 0 || dds3PadButtonState[0x20] < 0 ||
+                dds3PadButtonState[0x2A] < 0 || dds3PadButtonState[0x2B] < 0 || dds3PadButtonState[0x28] < 0 || dds3PadButtonState[0x29] < 0) {
+                if (wk->select->func != NULL) {
+                    wk->select->func();
+                    if (wk->moveType != 0) {
+                        itfCallMenuSetMoverDisappear(wk, wk->moveType);
+                        wk->moveType = 0;
+                        return 0;
+                    }
+                    return 0;
+                }
+            }
+            itfLeaf(wk);
+            return 0;
+        }
+        if (dds3PadButtonState[0x21] < 0 && itfCallMenuSetMoverDisappear(wk, 1)) {
+            MenuPlayCancelSE(wk->select);
+            return 0;
+        }
+        if (dds3PadButtonState[0x23] < 0) {
+            cb = wk->select;
+            if (cb->gflag & 6) {
+                if (cb->gflag & 0x20) {
+                    if (cb->func != NULL) {
+                        cb->func();
+                    }
+                    itfCallMenuSetMoverDisappear(wk, 1);
+                    MenuPlayCancelSE(wk->select);
+                    return 0;
+                }
+                if ((cb->gflag & 0x80) && cb->func != NULL) {
+                    wk->step = 5;
+                    MenuPlayDecideSE(cb);
+                    return 0;
+                }
+                if ((cb->gflag & 0x100) && cb->func != NULL) {
+                    wk->retFunc = cb->func();
+                    if (wk->moveType != 0) {
+                        ret = itfCallMenuSetMoverDisappear(wk, wk->moveType);
+                        if (ret) {
+                            if (wk->moveType == 2) {
+                                MenuPlayDecideSE(wk->select);
+                            } else if (wk->moveType == 1) {
+                                MenuPlayCancelSE(wk->select);
+                            }
+                        }
+                        wk->moveType = 0;
+                        if (ret) {
+                            return 0;
+                        }
+                    }
+                }
+                if (itfCallMenuSetMoverDisappear(wk, 2)) {
+                    MenuPlayDecideSE(wk->select);
+                    return 0;
+                }
+            }
+        }
+        itfLeaf(wk);
+        return 0;
+    case 3:
+        MenuUpdateMover(wk);
+        wk->step = 4;
+        break;
+    case 4:
+        if (MenuUpdateMover(wk)) {
+            return 0;
+        }
+        switch (wk->ctrlType) {
+        case 2:
+            itfCallMenuGetSelectMenu(wk);
+            itfCallMoverInit2(wk, wk->dispType[0]);
+            wk->step = 2;
+            break;
+        case 3:
+            itfCallMenuGetSelectMenu2(wk);
+            itfCallMoverInit2(wk, wk->dispType[0]);
+            wk->step = 2;
+            break;
+        case 4:
+            cb = wk->select;
+            if (cb->gflag & 0x40) {
+                wk->lflag |= 0x40;
+            }
+            wk->lflag = (wk->lflag & ~0x2C20) | 0x2400;
+            if (!(cb->gflag & 0x100)) {
+                wk->step = 5;
+                return 0;
+            }
+            if (wk->retFunc != 0) {
+                wk->step = 6;
+                return 0;
+            }
+            wk->count = 0;
+            wk->step = 7;
+            return 0;
+        case 5:
+            wk->lflag = (wk->lflag & ~0x2C20) | 0x2000;
+            if (!(wk->gflag & 0x10)) {
+                wk->step = 6;
+                return 0;
+            }
+            wk->count = 0;
+            wk->step = 7;
+            return 0;
+        case 6:
+            ret = wk->gflag & 0x1000;
+            wk->gflag |= 0x2000;
+            if (ret) {
+                if (wk->select->gflag & 0x40) {
+                    wk->lflag &= ~0x2000;
+                } else {
+                    wk->lflag |= 0x2000;
+                }
+                itfCallMoverInit2(wk, wk->dispType[0]);
+                wk->step = 2;
+                wk->gflag &= ~0x3000;
+            }
+            break;
+        }
+        break;
+    case 5:
+        wk->retFunc = wk->select->func();
+        if (wk->retFunc == 0) {
+            wk->count = 0;
+            wk->step = 7;
+            return 0;
+        }
+        if (wk->moveType != 0) {
+            itfCallMenuSetMoverDisappear(wk, wk->moveType);
+            wk->moveType = 0;
+            return 0;
+        }
+        wk->step = 6;
+        return 0;
+    case 6:
+        if (wk->lflag & 0x20) {
+            cb = wk->select;
+            wk->lflag |= 0xC00;
+            if (cb->gflag & 0x40) {
+                wk->lflag &= ~0x2000;
+            } else {
+                wk->lflag |= 0x2000;
+            }
+            if (!(cb->gflag & 0x80)) {
+                itfCallMoverInit2(wk, wk->dispType[0]);
+            }
+            wk->ctrlType = 0;
+            wk->step = 2;
+        }
+        break;
+    case 7:
+        if (wk->count == 0) {
+            wk->lflag &= ~0x200;
+            wk->count = 1;
+        } else if (wk->count >= 2) {
+            wk->count = 0;
+            wk->step = 8;
+        } else {
+            wk->count++;
+        }
+        break;
+    case 8:
+        return -1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00190668", MenuProcess);
+#endif
 
 INCLUDE_ASM(const s32, "code_00190668", MenuDrawFont);
 

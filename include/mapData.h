@@ -277,7 +277,7 @@ typedef struct MAP_OBJ_t
     f32 z;
     f32 r;
     f32 s;
-    u32 cut_bit;
+    s32 cut_bit;
     char scr_name[32];
     f32 hitsize;
     s16 evehitdir;
@@ -376,6 +376,15 @@ typedef struct MAP_STOPOBJ_t
     u16 flag1;
     u16 flag1j;
 } MAP_STOPOBJ_t;
+
+/* Event-bit condition per 0x50xx map object (low byte indexes the table). */
+typedef struct mapMapObjectRefreshData_t
+{
+    u16 flag0;
+    u16 flag0j;
+    u16 flag1;
+    u16 flag1j;
+} mapMapObjectRefreshData_t;
 
 typedef struct MAP_LIGHTOBJ_t
 {
@@ -654,7 +663,7 @@ typedef struct fldSeId_t {
 extern fldSeId_t mapData4[64];
 extern s8 mapData5[48][64];
 extern u8 fldData2[48];
-extern u8 mapMapObjectRefreshData[512];
+extern mapMapObjectRefreshData_t mapMapObjectRefreshData[64];
 extern u8 nbCallGetIntParaData4[192];
 extern u8 nbData[16];
 extern u8 mapData8[1024];
@@ -816,7 +825,7 @@ extern s32 mapData98;
 void mapMapObjectRefresh_fld(void);
 s32 mapObjFloorAdd_Cash(s32 floor, s16 uniq, MODELTYPE major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s);
 s32 mapAddHukidashi(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s);
-s32 mapObjectRefreshSub(s32 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, f32 x, f32 y, f32 z, f32 r, f32 s);
+s32 mapObjectRefreshSub(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, f32 x, f32 y, f32 z, f32 r, f32 s);
 void mapObjLightAdd(s16 uniq, f32 x, f32 y, f32 z, f32 in_r, f32 out_r, f32 dif_r, f32 dif_g, f32 dif_b, f32 amb_r, f32 amb_g, f32 amb_b);
 void mapObjEveHitSet2(s16 uniq, s32 act, s32 dir, f32 size, char *scr_name);
 void mapNpcTblAdd(s32 uniq, f32 x, f32 y, f32 z);
@@ -942,6 +951,7 @@ void mapEffEplAllDrawTask(void);
 void mapCutSetSub(s32 cut);
 
 void mapEveHitMsk_Find(s32 evehitid);
+u32 mapNpcTableGetMSK(s32 npc_idx);
 
 void fldJmsQuestMapLoad_fld(s32 area, s32 sub);
 void mapCallFilterSet(s32 no);

@@ -5,6 +5,13 @@
 
 void fldEncountClearFlag(u32 flag);
 
+typedef struct {
+    u32 flags;
+    s32 stage;
+} fldSequenceController_t;
+
+extern fldSequenceController_t fldAutoMapSeqFlags;
+
 struct fldSceneParam_t;
 struct dds3ProcessID_t;
 struct dds3PoseSet_t;
@@ -28,7 +35,7 @@ extern s32 mapNakamaTaskData;
 extern s32 mapNakamaTaskData2;
 extern s32 s_MapNakamaColorCnt;
 extern s32 s_MapNakamaColorNow;
-extern u8 ProcSequenceData[52];
+extern struct SBTLMAIN_DATA ProcSequenceData; /* battle start request for sequence 19 */
 extern s32 fldData14;
 extern s32 gMapRndEncLoad_Mode;
 extern s32 gSubFloorID;
@@ -78,6 +85,8 @@ void mapWaitCbScreenFadeBSub(s32 mode);
 void fldRefTexLoadLast(void);
 s32 mapGetFloorLight(s32 floor, f32 x, f32 z);
 s32 fldEncountTestFlag(u32 flag);
+void fldAutoMapSeqSetFlag(u32 flag);
+s32 fldAutoMapSeqTestFlag(u32 flag);
 void fldEncountSetFlag(u32 flag);
 s32 fldLeaf6(struct dds3PoseSet_t *pose, struct dds3Basic_t *basic);
 void mapSoundKankyoSeSet(s32 map, s32 floor, s32 cut);
@@ -204,6 +213,12 @@ void ProcessStart_cmpMap(void);
 void fldDrwZAlloc(void);
 
 extern struct dds3Basic_t *playerBasic;
+extern s32 ProcRandomEncountCheck_fldData3; /* moon age of the last treasure search */
+extern s32 ProcRandomEncountCheck_fldData4; /* moon age of the last money search */
+extern s32 ProcRandomEncountCheck_fldData5; /* moon age of the last takumi search */
+extern const char fldKiretaLabel[];
+extern const char ProcRandomEncountCheck_fldStrTakaraSagasiDvlItem[];
+extern const char ProcRandomEncountCheck_fldStrZeniSagasiDvlYen[];
 /* The last mapCallMap request (map 0 repeats it) and its script name buffer. */
 extern struct fldSceneParam_t mapCallScriptBuf;
 extern char mapCallMapFmt[];

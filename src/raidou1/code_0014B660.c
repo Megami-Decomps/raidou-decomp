@@ -428,4 +428,177 @@ INCLUDE_ASM(const s32, "code_0014B660", mapNpcTblRefresh_Wait);
 
 INCLUDE_ASM(const s32, "code_0014B660", mapBtlReLoadMapSBtlSceneSub);
 
+/* NON_MATCHING: 428 of 432 words match.  */
+#ifdef NON_MATCHING
+void mapMapObjectRefresh(void) {
+    s32 i;
+    s32 flag;
+    s32 idx;
+    f32 pos[2];
+    f32 y;
+
+    for (i = 0; i < pMapAreaNow->objCount; i++) {
+        if ((u16)(pMapObjNow[i].id - 0x5000) < 0x40) {
+            idx = pMapObjNow[i].id & 0xFF;
+            flag = 1;
+            if (mapMapObjectRefreshData[idx].flag0 != 0) {
+                if (mapMapObjectRefreshData[idx].flag0j == 0) {
+                    if (evtBitCheck(mapMapObjectRefreshData[idx].flag0)) {
+                        flag = 0;
+                    }
+                } else if (!evtBitCheck(mapMapObjectRefreshData[idx].flag0)) {
+                    flag = 0;
+                }
+            }
+            if (mapMapObjectRefreshData[idx].flag1 != 0) {
+                if (mapMapObjectRefreshData[idx].flag1j == 0) {
+                    if (evtBitCheck(mapMapObjectRefreshData[idx].flag1)) {
+                        flag = 0;
+                    }
+                } else if (!evtBitCheck(mapMapObjectRefreshData[idx].flag1)) {
+                    flag = 0;
+                }
+            }
+            if (flag == 0) {
+                if (mapObjCheck(pMapObjNow[i].id) != -1) {
+                    mapObjDel(pMapObjNow[i].id);
+                }
+            }
+        }
+    }
+
+    for (i = 0; i < pMapAreaNow->objCount; i++) {
+        if ((u16)(pMapObjNow[i].id - 0x5000) < 0x40) {
+            idx = pMapObjNow[i].id & 0xFF;
+            flag = 1;
+            if (mapMapObjectRefreshData[idx].flag0 != 0) {
+                if (mapMapObjectRefreshData[idx].flag0j == 0) {
+                    if (evtBitCheck(mapMapObjectRefreshData[idx].flag0)) {
+                        flag = 0;
+                    }
+                } else if (!evtBitCheck(mapMapObjectRefreshData[idx].flag0)) {
+                    flag = 0;
+                }
+            }
+            if (mapMapObjectRefreshData[idx].flag1 != 0) {
+                if (mapMapObjectRefreshData[idx].flag1j == 0) {
+                    if (evtBitCheck(mapMapObjectRefreshData[idx].flag1)) {
+                        flag = 0;
+                    }
+                } else if (!evtBitCheck(mapMapObjectRefreshData[idx].flag1)) {
+                    flag = 0;
+                }
+            }
+            if (flag == 1 && mapObjCheck(pMapObjNow[i].id) == -1) {
+                PositioningGuardSystem(pMapObjNow[i].ix, pMapObjNow[i].iy, &pos[0], &pos[1]);
+                switch (pMapObjNow[i].ofs) {
+                case 0:
+                    pos[0] += 50.0f;
+                    pos[1] -= 50.0f;
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    pos[0] += 100.0f;
+                    break;
+                case 3:
+                    pos[1] -= 100.0f;
+                    break;
+                case 4:
+                    pos[0] += 100.0f;
+                    pos[1] -= 100.0f;
+                    break;
+                }
+                y = mapGetY(pos[0], pos[1]);
+                mapObjectRefreshSub(pMapObjNow[i].id, pMapObjNow[i].major, pMapObjNow[i].minor, pMapObjNow[i].motion, -1, pos[0], y, pos[1],
+                                    mapData20[pMapObjNow[i].dir], 1.0f);
+            }
+        }
+    }
+
+    if (pMapAreaDat == NULL) {
+        return;
+    }
+
+    for (i = 0; i < pMapAreaDat->objCount; i++) {
+        if ((u16)(pMapObjSub[i].id - 0x5000) < 0x40) {
+            idx = pMapObjSub[i].id & 0xFF;
+            flag = 1;
+            if (mapMapObjectRefreshData[idx].flag0 != 0) {
+                if (mapMapObjectRefreshData[idx].flag0j == 0) {
+                    if (evtBitCheck(mapMapObjectRefreshData[idx].flag0)) {
+                        flag = 0;
+                    }
+                } else if (!evtBitCheck(mapMapObjectRefreshData[idx].flag0)) {
+                    flag = 0;
+                }
+            }
+            if (mapMapObjectRefreshData[idx].flag1 != 0) {
+                if (mapMapObjectRefreshData[idx].flag1j == 0) {
+                    if (evtBitCheck(mapMapObjectRefreshData[idx].flag1)) {
+                        flag = 0;
+                    }
+                } else if (!evtBitCheck(mapMapObjectRefreshData[idx].flag1)) {
+                    flag = 0;
+                }
+            }
+            if (flag == 0) {
+                if (mapObjCheck(pMapObjSub[i].id) != -1) {
+                    mapObjDel(pMapObjSub[i].id);
+                }
+            }
+        }
+    }
+
+    for (i = 0; i < pMapAreaDat->objCount; i++) {
+        if ((u16)(pMapObjSub[i].id - 0x5000) < 0x40) {
+            idx = pMapObjSub[i].id & 0xFF;
+            flag = 1;
+            if (mapMapObjectRefreshData[idx].flag0 != 0) {
+                if (mapMapObjectRefreshData[idx].flag0j == 0) {
+                    if (evtBitCheck(mapMapObjectRefreshData[idx].flag0)) {
+                        flag = 0;
+                    }
+                } else if (!evtBitCheck(mapMapObjectRefreshData[idx].flag0)) {
+                    flag = 0;
+                }
+            }
+            if (mapMapObjectRefreshData[idx].flag1 != 0) {
+                if (mapMapObjectRefreshData[idx].flag1j == 0) {
+                    if (evtBitCheck(mapMapObjectRefreshData[idx].flag1)) {
+                        flag = 0;
+                    }
+                } else if (!evtBitCheck(mapMapObjectRefreshData[idx].flag1)) {
+                    flag = 0;
+                }
+            }
+            if (flag == 1 && mapObjCheck(pMapObjSub[i].id) == -1) {
+                fldWallObjTaskSub(gSubFloorID, pMapObjSub[i].ix, pMapObjSub[i].iy, &pos[0], &pos[1]);
+                switch (pMapObjSub[i].ofs) {
+                case 0:
+                    pos[0] += 50.0f;
+                    pos[1] -= 50.0f;
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    pos[0] += 100.0f;
+                    break;
+                case 3:
+                    pos[1] -= 100.0f;
+                    break;
+                case 4:
+                    pos[0] += 100.0f;
+                    pos[1] -= 100.0f;
+                    break;
+                }
+                y = mapGetFloorY(gSubFloorID, pos[0], pos[1]);
+                mapObjectRefreshSub(pMapObjSub[i].id, pMapObjSub[i].major, pMapObjSub[i].minor, pMapObjSub[i].motion, -1, pos[0], y, pos[1],
+                                    mapData20[pMapObjSub[i].dir], 1.0f);
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_0014B660", mapMapObjectRefresh);
+#endif

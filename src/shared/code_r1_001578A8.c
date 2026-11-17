@@ -3,9 +3,6 @@
 #include "field.h"
 #include "mapLbWork.h"
 
-extern void fldCallGrAllocPacketBuff2(void *buf);
-extern void fldCallGrAllocPacketBuff3(void *buf);
-
 /* NON_MATCHING: 8 of 265 words match. Same instruction count, scheduling and register allocation differ. */
 #ifdef NON_MATCHING
 void fldCallSetOt3(u32 color, f32 ox, f32 oy) {

@@ -189,7 +189,7 @@ typedef struct fldAreaWork_t
     s32 resourceFlag;           /* 0x084 */
     s32 resourceArea;           /* 0x088 */
     s32 resourceFloor;          /* 0x08C */
-    s32 word90;                 /* 0x090 */
+    f32 lastMoveLeng;           /* 0x090: distance moved this frame */
     s32 noEncountCnt;           /* 0x094 */
     s32 noInpPlCnt;             /* 0x098 */
     f32 focusX;                 /* 0x09C: camera focus point */
@@ -226,9 +226,9 @@ typedef struct fldAreaWork_t
     s32 bgZoomSet;              /* 0x114: set to 1 after fldBgZoomTest(3); never a float */
     f32 hitX;                   /* 0x118 */
     f32 hitY;
-    f32 hitZ;
-    f32 camAngle;               /* 0x124 */
-    f32 camAngle2;              /* 0x128 */
+    s32 nowTalkModelID;         /* 0x120: serialID of the talked-to object (HD) */
+    s32 nowTakaraTblIdx;        /* 0x124: low byte of the object uniq (HD) */
+    s32 nowHealTblIdx;          /* 0x128 */
     union { f32 float12C; s32 word12C; }; /* 0x12C: Raidou stores -1 */
     s32 mskIndex;               /* 0x130: MSK index from mapNpcTableGetMSK */
     s32 nowDoorSe;              /* 0x134 */
@@ -501,6 +501,7 @@ typedef struct fldAreaWork_t
 } fldAreaWork_t;
 
 extern fldAreaWork_t fldGlobalBase;
+extern sdfVector4_t ProcRandomEncountCheck_fldData2; /* player position at the last encounter check */
 
 s32 mapCheckDying(s32 mode);
 

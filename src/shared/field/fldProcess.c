@@ -42,11 +42,6 @@
 
 extern char dds3DebugLabelB[], dds3DebugLabelG[], dds3DebugLabelR[], dds3DebugFmtInt3[], dds3DebugFmtFloat3[];
 
-typedef struct {
-    u32 flags;
-    s32 stage;
-} fldSequenceController_t;
-
 extern const char fldProcDrawName[];
 extern const char fldStrFldProcSequence[];
 extern void fldAutoMapSeqSetFlag(u32 flag);

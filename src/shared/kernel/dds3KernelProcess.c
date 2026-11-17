@@ -73,7 +73,6 @@ extern sdfVector4_t fldAutoMapRect, fldAutoMapEye, fldAutoMapUp, aViewTarget, aV
 extern sdf3DScreenParam_t dds3RenderScreenParam, dds3ScreenParam, DrawEnv;
 extern sdfMatrix4_t dds3RenderViewportMatrix, aProjMatrix, sdfViewMatrix;
 extern sdf3DFogParam_t dds3RenderFogParam, dds3DrawFirstProcessData2, FogParam, dds3DrawFirstProcessData;
-extern sdfModelOt_t ModelOt[15];
 extern sdfDrawTag_t *dds3CallGrAllocPacketBuff9(void);
 extern void evtCheckSelectionState(void);
 extern void dds3SceneLightUpdateFirst(void);

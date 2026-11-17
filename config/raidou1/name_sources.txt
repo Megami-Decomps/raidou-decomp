@@ -796,7 +796,7 @@
 0x0011AAD8	effObjInitializeFollowModelData	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00113490, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011AB80	dds3UnitObjectBasicDestructor	inferred	SMT3HD name via SLUS_209.11 0x00112BB0, reloc-identical; map-agrees
 0x0011ABF8	dds3UnitObjectBasicMainProcedure	inferred	method=smt3-fuzzy-70-m-single; p=0.83 (n=60); tier=B; source=smt3; evidence=smt3 body 0x112c28 sim 0.804 margin 0.54 single
-0x0011AED0	dds3CallMemset2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit basic/dds3UnitObjectBasic; calls memset
+0x0011AED0	dds3UnitObjectBasicDrawProcedure	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 dds3UnitObjectBasicDrawProcedure: same memset/flag 1/work->ot LinkOt/0x400,0x1000/mark 0 shadow structure; replaces dds3CallMemset2
 0x0011B3E0	dds3UnitObjectBasicEL_LinkFree	inferred	SMT3HD name via SLUS_209.11 0x001130D0, reloc-identical; map-agrees
 0x0011B428	dds3UnitObjectBasicEL_Link	inferred	SMT3HD name via SLUS_209.11 0x00113118, reloc-identical; map-agrees
 0x0011B610	dds3MatterObjectBasicGetControlWorkData	inferred	SMT3HD name via SLUS_209.11 0x00113300, shared-hash-in-run; map-agrees

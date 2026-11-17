@@ -31,6 +31,7 @@ u32 sdfModelGetMarkPosCount(sdfModelRootNode_t *aRoot);
 s32 sdfModelGetMarkPosMatrix_sdfModel(sdfModelRootNode_t *aRoot, s32 aId);
 u32 sdfModelGetUniqueID(sdfModelRootNode_t *aRoot);
 s32 sdfModelGetMarkPos_sdfModel(sdfModelRootNode_t *aRoot, s32 aId);
+s32 sdfCallModelMakeMarkPos(sdfModelRootNode_t *aRoot, s32 aId);
 void sdfModelInitSystem(void);
 void sdfModelMakeMarkPosMatrix(sdfModelRootNode_t *aRoot, sdfModelMarkPos_t *aMark);
 sdfModelMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *aRoot, s32 aId);
