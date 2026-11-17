@@ -562,7 +562,25 @@ void datDebugPrintf(const char *format, ...)
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datDEBUGCONSOLE);
+extern char datDEBUGCONSOLEData[];
+
+void datDEBUGCONSOLE(const char *fmt, ...)
+{
+    char buf[512];
+    __builtin_va_list args;
+
+    if (dds3SearchProcessName("DEBUG CONSOLE") == NULL && evtConsoleFontResourceChain == 0) {
+        evtConsoleFontResourceChain = sdfDevConsOpen(0x7100, 0x7A60, 0x28, 0x14);
+        sdfDevConsSetMode(evtConsoleFontResourceChain, 2);
+        sdfDevConsAttribute(evtConsoleFontResourceChain, 7);
+    }
+    if (evtConsoleFontResourceChain != 0) {
+        __builtin_stdarg_start(args, fmt);
+        vsprintf(buf, fmt, args);
+        sdfDevConsPrintf(evtConsoleFontResourceChain, datDebugPrintfFmt, buf);
+        printf(datDEBUGCONSOLEData, buf);
+    }
+}
 
 s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     sdfMemInfo_t heapStats;
