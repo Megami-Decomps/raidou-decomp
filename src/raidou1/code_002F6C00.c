@@ -145,9 +145,26 @@ INCLUDE_ASM(const s32, "code_002F6C00", TitleConfigDestroy);
 
 INCLUDE_ASM(const s32, "code_002F6C00", TitleConfigCalcProcess);
 
-INCLUDE_ASM(const s32, "code_002F6C00", rstCallGetProcessData33);
+dds3ProcessFunc_t rstCallGetProcessData33(dds3ProcessID_t *PID) {
+    titleData_t *data;
+    dds3ProcessFunc_t ret;
 
-INCLUDE_ASM(const s32, "code_002F6C00", TitleAdvertiseInit);
+    data = dds3GetProcessData(PID);
+    rstFunc(data);
+    evtFunc11(&data->Cursor, data->sprite);
+    ret = menuRunPanel(&data->panel, &data->seqUnit, 1, PID);
+    menuRunPanel(&data->panel, &data->seqUnit, 2, PID);
+    return ret;
+}
+
+s32 TitleAdvertiseInit(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+
+    data->SkipTimer = 0;
+    data->AdvSkipFlag = 0;
+    data->Timer = 0;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002F6C00", rstCallGetProcessData34);
 

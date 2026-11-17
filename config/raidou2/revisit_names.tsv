@@ -6594,7 +6594,6 @@
 0x003E2AB8	sdfFileCmdSetDefaultDevice	func	tier=D	derived-unit	na	unit sdf/sdfFile; no named callee, caller or string
 0x003E3710	sdfFileCmdAnalyzeFileName	func	tier=D	derived-string	na	unit sdf/sdfFileIO; string 'cdrom0:'
 0x003E3EF0	sdfFirstInitSub	func	tier=D	derived-caller	na	unit code_0036E160, nearest named function sdfFileCmdStartThread; called by dds3FirstInit
-0x003E3F70	sdfHddInitLabel	data	tier=D	derived-dominant	na	used by sdfHddInit (2 of 3 refs, 2 functions)
 0x003E4150	sdfLeaf28	func	tier=D	derived-unit	na	unit sdf/sdfDev9; no named callee, caller or string
 0x003E4300	sdfLeaf29	func	tier=D	derived-unit	na	unit code_0036E570, nearest named function sdfBcdToDecimal; no named callee, caller or string
 0x003E4490	sdfDevResizeBufferedRequest	func	tier=D	derived-callee	na	unit code_0036E700, nearest named function sdfItemArrayGrow; calls sdfMemAllocDirect
@@ -21006,7 +21005,6 @@
 0x004E3A50	lmapCallSetFontStringDataEntry	data	tier=D	derived-table	na	pointed to by lmapCallSetFontStringData
 0x004E3A58	lmapCallSetFontStringDataEntry2	data	tier=D	derived-table	na	pointed to by lmapCallSetFontStringData
 0x004E3A60	lmapCallSetFontStringDataEntry3	data	tier=D	derived-table	na	pointed to by lmapCallSetFontStringData
-0x004E3A68	EffGrid_FinishData	data	tier=D	derived-dominant	na	used by EffGrid_Finish (4 of 10 refs, 7 functions)
 0x004E3A70	FldWnd_DrawProcessDataEntry	data	tier=D	derived-table	na	pointed to by FldWnd_DrawProcessData
 0x004E3A78	dds3Leaf6Data	data	tier=D	derived-dominant	na	used by dds3Leaf6 (2 of 3 refs, 2 functions)
 0x004E3A7F	dds3Func9Data	data	tier=D	derived-sole	na	used by dds3Func9
@@ -24178,8 +24176,8 @@
 0x003E3F88	sdfHddInit	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x2bfa38 sim 0.632 margin 0.31 pair
 0x003E53A0	sdfSndCmdTrans	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e8640 sim 1.000 margin 0.68 pair
 0x003E6328	sndSendChannelControlCommand	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e94b0 sim 1.000 margin 0.22 pair
-0x003E6358	sndSendChannelGroupCommand150	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2e9510 sim 1.000 margin 0.00 pair
-0x003E6388	sndSendChannelGroupCommand140	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2e9510 sim 1.000 margin 0.00 pair
+0x003E6358	sndSendChannelGroupCommand140	func	tier=C	derived-derived-role	na	retail ori 0x140 at 0x3E6358; replaces sndSendChannelGroupCommandSwap
+0x003E6388	sndSendChannelGroupCommand150	func	tier=C	derived-derived-role	na	retail ori 0x150 at 0x3E6388; replaces sndSendChannelGroupCommand140
 0x003E6440	sndGetNonnegativeEntryBalance	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e95c8 sim 1.000 margin 0.77 pair
 0x003E64A8	sndCopyGroupedMidiStateBytes	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e9630 sim 1.000 margin 0.48 pair
 0x003E6688	sndSendChannelGroupCommand110Duplicate	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2e9918 sim 1.000 margin 0.00 pair
@@ -24446,6 +24444,7 @@
 0x004E3770	gMjnRun	data	tier=C	hd	0.37 (n=D_r1_0046E7E0)	hd/medium: conf=medium, agree=2, using=3
 0x004E39A4	MenuWork2	data	tier=C	hd	0.37 (n=D_r1_0046EA0C)	hd/medium: conf=medium, agree=2, using=2; MenuWork is another symbol
 0x004E3A00	DDS3_GBWK2	data	tier=C	smt3-ref	0.88 (n=D_r1_0046EA68)	smt3-ref/loose: nfun=2, other=4, sim=1.0, games=2, size=True, sec=True, fn=datAllClearCommMemory; DDS3_GBWK is another symbol
+0x004E3A68	g_mainPID_FldWnd	data	tier=C	derived-derived-role	na	data at 0x46EB00 holds the PID started by FldWnd_ProcessStart; stored at gp-11376; replaces EffGrid_FinishData
 0x004E3AC0	fldTitleMiniWork4	data	tier=C	smt3-ref	0.80 (n=D_r1_0046EB40)	smt3-ref/close: nfun=2, other=0, sim=0.9714, games=2, size=True, sec=True, fn=mselCallEffectDelete; fldTitleMiniWork is another symbol
 0x004E3AC8	fldTitleMiniTex3	data	tier=C	smt3-ref	0.88 (n=D_r1_0046EB48)	smt3-ref/loose: nfun=2, other=2, sim=0.9714, games=2, size=False, sec=True, fn=mselCallEffectDelete; fldTitleMiniTex is another symbol
 0x004E3C34	g_hEffBst	data	tier=C	hd	0.37 (n=D_r1_0046ECFC)	hd/medium: conf=medium, agree=2, using=2

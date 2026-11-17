@@ -3,14 +3,26 @@
 #include "code_0032F2B8.h"
 #include "shpMain.h"
 #include "sbtlTubeSupport.h"
+#include "shpMessage.h"
+#include "sdfVu0.h"
+#include "kernel_draw.h"
+#include "ps2asm.h"
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpRefShpMessage);
 
-INCLUDE_ASM(const s32, "code_0032F2B8", shpCallRagTestSub);
+void shpCallRagTestSub(s32 aIndex)
+{
+    pb_draw_help_Shutdown(shpCallRagTestSubData[aIndex]);
+}
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpStartScript);
 
-INCLUDE_ASM(const s32, "code_0032F2B8", shpNewsStartScript);
+void shpNewsStartScript(void)
+{
+    if (wk_shpMessage != NULL) {
+        shpStartScript(0);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpOrderStartScript);
 
@@ -88,7 +100,25 @@ INCLUDE_ASM(const s32, "code_0032F2B8", shpUpdateGoma);
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpCallButtonLineHelpDispSet);
 
-INCLUDE_ASM(const s32, "code_0032F2B8", shpPoint3To2);
+/* body: matched in raidou @ 88f0d54: src/shared/field/fldDraw.c:238, rework, same function 1.00 (words 53/53, calls 1.00, shape 1.00) */
+void shpPoint3To2(f32 *x3, f32 *y3, f32 z3, f32 x2, f32 y2) {
+    sdfVector4_t vec = { z3, x2, y2, 1.0f };
+    sdfVector4_t result;
+
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
+    MultMatrixRev(&dds3ScreenParam.TM);
+    SDF_VU0_COPYMATRIX_A_TO_B();
+    SDF_VU0_LOADVECTOR_MEMOPS(*(const u128 *)&vec);
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.scale);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.trans);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&result);
+    *x3 = result.x;
+    *y3 = result.y;
+}
 
 INCLUDE_ASM(const s32, "code_0032F2B8", knyGetGoodPoint);
 
@@ -146,7 +176,14 @@ INCLUDE_ASM(const s32, "code_0032F2B8", _shpChkNewArrival);
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpChkNewArrival);
 
-INCLUDE_ASM(const s32, "code_0032F2B8", shpLeaf2);
+/* body: matched in raidou @ 88f0d54: src/shared/code_r1_002CAFD8.c:1123, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+void shpLeaf2(u64 *dst, u32 color)
+{
+    u64 wide = color;
+
+    dst[0] = ((color >> 24) & 0xFF) | ((u64)((color >> 16) & 0xFF) << 32);
+    dst[1] = ((wide & 0xFF00) >> 8) | ((u64)(color & 0xFF) << 32);
+}
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpCallDGetPrimPacketSize);
 

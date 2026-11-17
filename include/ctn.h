@@ -102,5 +102,11 @@ struct ctnGrid_t *ctnGetGrid(s32 x, s32 y);
 void ctnLoadDataIDFloor(s32 id, s32 floor);
 void ctnMemFree(void);
 void ctnUpdate(struct ctnInput_t *pInput);
+f32 ctnFindAheadListSub(f32 ax, f32 ay, f32 bx, f32 by);
+void ctnFunc3(struct ctnCitizen_t *pCitizen, f32 *pos, f32 *leftWallDist, f32 *rightWallDist);
+void ctnRefWorkCtn8(struct ctnCitizen_t *pCitizen, f32 *leftWallDist, f32 *rightWallDist);
+void ctnFunc4(struct ctnCitizen_t *pCitizen, struct ctnCitizen_t *pOther, f32 *leftWallDist, f32 *rightWallDist);
+
+extern const char stfProcName[];
 
 #endif

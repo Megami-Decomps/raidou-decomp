@@ -26,6 +26,7 @@
 #include "effect.h"
 #include "code_r1_0021C768.h"
 #include "code_r1_002250F8.h"
+#include "code_r1_00226EC8.h"
 #include "effPCPMisc_00224D10.h"
 
 enum {
@@ -144,6 +145,7 @@ void effMarkFloorModelForDestruction(effModelOwner_t *work);
 /* Render the model owner with staged GS TEST_2 packets, then restore the tests. */
 void effRenderModelOwnerWithGsTests(effModelOwner_t *owner);
 extern u32 effModelUpdateControlFlags;
+extern u64 effRenderModelOwnerWithGsTestsData2[];
 void effMarkFloorModelForUpdate(effModelOwner_t *work);
 extern char D_003B2AA0[];
 
@@ -251,7 +253,51 @@ void effMarkFloorModelForDestruction(effModelOwner_t *work) {
 
 INCLUDE_ASM(const s32, "code_r1_002250F8", effFunc14);
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", effRenderModelOwnerWithGsTests);
+void effRenderModelOwnerWithGsTests(effModelOwner_t *owner) {
+    sdfDrawTag_t *list;
+    u64 *packet;
+    s32 index;
+
+    mdlSetColor(owner->model, (mdlGetColor(owner->model) & 0xFFFFFF) | 0x80000000);
+
+    for (index = 0; index != 4; index++) {
+        list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+        sdfDrawTagInit(list);
+        packet = (u64 *)sdfGrAllocPacketBuff(0x30);
+        packet[0] = 2;
+        packet[1] = 0x5000000210000000ULL;
+        packet[2] = 0x1000000000008001ULL;
+        packet[3] = 0xE;
+        if (index == 0) {
+            packet[4] = 0x7000D;
+        } else {
+            packet[4] = 0x71007;
+        }
+        packet[5] = 0x47;
+        sdfDrawTagLink(list, (u32)packet);
+        ModelOt[2].ot[index]->regFunc(ModelOt[2].ot[index], list);
+    }
+
+    if (effComputeLightDirectionVU(owner->model, owner->ownedBuffer)) {
+        owner->model->inner->light = owner->ownedBuffer;
+    }
+
+    mdlLink(owner->model, &ModelOt[2]);
+
+    for (index = 1; index != 4; index++) {
+        list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+        sdfDrawTagInit(list);
+        packet = (u64 *)sdfGrAllocPacketBuff(0x30);
+        packet[0] = 2;
+        packet[1] = 0x5000000210000000ULL;
+        packet[2] = 0x1000000000008001ULL;
+        packet[3] = 0xE;
+        packet[4] = effRenderModelOwnerWithGsTestsData2[index];
+        packet[5] = 0x47;
+        sdfDrawTagLink(list, (u32)packet);
+        ModelOt[2].ot[index]->regFunc(ModelOt[2].ot[index], list);
+    }
+}
 
 void effMarkFloorModelForUpdate(effModelOwner_t *work) {
     u32 previous = work->flags;
@@ -321,11 +367,49 @@ void effSweepFloorModelList(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", mdlPropagateObjectFlag);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0029A840.c:416, rework, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+void mdlPropagateObjectFlag(void) {
+    effObjectNode_t *node = effFloorModelListHead;
+    effModelOwner_t *object;
+    s32 flags;
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", mdlClearListedObjectFlag);
+    if (node != NULL) {
+        do {
+            object = node->object;
+            flags = object->flags;
+            if ((flags & EFF_MODEL_OWNER_FLAG_DESTROY_REQUESTED) != 0) {
+                object->flags = flags | EFF_MODEL_OWNER_FLAG_DESTROY_READY;
+            }
+            node = node->next;
+        } while (node != NULL);
+    }
+}
 
-INCLUDE_ASM(const s32, "code_r1_002250F8", mdlSetListedObjectFlag);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0029A840.c:433, rework, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+void mdlClearListedObjectFlag(void) {
+    effModelOwner_t *object;
+    effObjectNode_t *node;
+
+    node = effFloorModelListHead;
+    while (node != NULL) {
+        object = node->object;
+        node = node->next;
+        object->flags = object->flags & ~EFF_MODEL_OWNER_FLAG_LISTED_OBJECT;
+    }
+}
+
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0029A840.c:445, rework, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+void mdlSetListedObjectFlag(void) {
+    effModelOwner_t *object;
+    effObjectNode_t *node;
+
+    node = effFloorModelListHead;
+    while (node != NULL) {
+        object = node->object;
+        node = node->next;
+        object->flags = object->flags | EFF_MODEL_OWNER_FLAG_LISTED_OBJECT;
+    }
+}
 
 void mdlMarkAndProcessObjectNodes(void) {
     effObjectNode_t *node = effFloorModelListHead;

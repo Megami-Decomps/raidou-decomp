@@ -10,6 +10,13 @@
 #include "sdfFrame.h"
 #include "sdfQuat.h"
 #include "dds3DebugStuff.h"
+#include "dds3KernelCore.h"
+#include "sdfDevCons.h"
+#include "dds3GlobalWork.h"
+#include "dds3KernelDraw.h"
+#include "sdfDraw.h"
+#include "dds3PadManager.h"
+#include "kernel_draw.h"
 
 typedef struct mdlBillboard_t mdlBillboard_t;
 
@@ -157,7 +164,7 @@ typedef struct
 } mdlLightParams_t;
 
 typedef void (*mdlOtRegFunc_t)(sdfGrOt_t *, sdfDrawTag_t *);
-extern f32 sdfViewMatrix[16];
+extern mdlDebugOption_t softenBiasWork;
 extern mdlDebugScale_t mdlDebugScaleWork;
 extern mdlDebugEntry_t mdlDebugEntryTable[];
 extern mdlDebugLabel_t mdlDebugLightLabels[4], mdlDebugScaleFogLabel, softenBiasLabels[4];
@@ -244,7 +251,7 @@ extern char softenBiasLabelOff[8];
 void mdlSetDebugMatrix(mdlDebugLight_t *context, f32 *position)
 {
     if (context->pad->stepUpA != 0) {
-        SDF_VU0_LOADVECTOR_MTXCOL(sdfViewMatrix + 1);
+        SDF_VU0_LOADVECTOR_MTXCOL(&sdfViewMatrix.m[1]);
         FromRotation(2.0f * 3.14159265f / 180.0f);
         ToMatrix();
         SDF_VU0_LOADVECTOR( position);
@@ -252,7 +259,7 @@ void mdlSetDebugMatrix(mdlDebugLight_t *context, f32 *position)
         SDF_VU0_VECTOR_W_SET_ONE();
         SDF_VU0_STOREVECTOR( position);
     } else if (context->pad->stepDownA != 0) {
-        SDF_VU0_LOADVECTOR_MTXCOL(sdfViewMatrix + 1);
+        SDF_VU0_LOADVECTOR_MTXCOL(&sdfViewMatrix.m[1]);
         FromRotation(-2.0f * 3.14159265f / 180.0f);
         ToMatrix();
         SDF_VU0_LOADVECTOR( position);
@@ -261,7 +268,7 @@ void mdlSetDebugMatrix(mdlDebugLight_t *context, f32 *position)
         SDF_VU0_STOREVECTOR( position);
     }
     if (context->pad->stepUpB != 0) {
-        SDF_VU0_LOADVECTOR_MTXCOL(sdfViewMatrix);
+        SDF_VU0_LOADVECTOR_MTXCOL(&sdfViewMatrix.m[0]);
         FromRotation(-2.0f * 3.14159265f / 180.0f);
         ToMatrix();
         SDF_VU0_LOADVECTOR( position);
@@ -269,7 +276,7 @@ void mdlSetDebugMatrix(mdlDebugLight_t *context, f32 *position)
         SDF_VU0_VECTOR_W_SET_ONE();
         SDF_VU0_STOREVECTOR( position);
     } else if (context->pad->stepDownB != 0) {
-        SDF_VU0_LOADVECTOR_MTXCOL(sdfViewMatrix);
+        SDF_VU0_LOADVECTOR_MTXCOL(&sdfViewMatrix.m[0]);
         FromRotation(2.0f * 3.14159265f / 180.0f);
         ToMatrix();
         SDF_VU0_LOADVECTOR( position);
@@ -375,9 +382,209 @@ void mdlGetDebugEntry(s32 valueEditIndex) {
     *target = value;
 }
 
-INCLUDE_ASM(const s32, "model/mdlEffect_001A1780", mdlDebugPrintEffectScale2);
+s32 mdlDebugPrintEffectScale2(dds3ProcessID_t *task) {
+    mdlDebugScale_t *state = &mdlDebugScaleWork;
+    s8 *pad;
+    s32 changed;
+    s32 value;
+    s32 i;
 
-INCLUDE_ASM(const s32, "model/mdlEffect_001A1780", soften_bias_Process);
+    if (dds3GetProcessData(task) == 0) {
+        pad = dds3PadBitTable + 16;
+    } else {
+        pad = dds3PadButtonState;
+    }
+    state->pad = (mdlDebugPad_t *)pad;
+    mdlDebugScaleWork.packetList = dds3CallGrAllocPacketBuff9();
+    if (++mdlDebugScaleWork.blinkTick == 30) {
+        mdlDebugScaleWork.blinkTick = 0;
+    }
+    if (mdlDebugScaleWork.editing == 0) {
+        changed = 1;
+        if (mdlDebugScaleWork.pad->stepUpB & 0x80) {
+            if (mdlDebugScaleWork.selection >= 6) {
+                mdlDebugScaleWork.selection = 0;
+            } else {
+                mdlDebugScaleWork.selection++;
+            }
+        } else if (mdlDebugScaleWork.pad->stepUpB & 2) {
+            if (mdlDebugScaleWork.selection < 6) {
+                mdlDebugScaleWork.selection++;
+            }
+        } else if (mdlDebugScaleWork.pad->stepDownB & 0x80) {
+            if (mdlDebugScaleWork.selection > 0) {
+                mdlDebugScaleWork.selection--;
+            } else {
+                mdlDebugScaleWork.selection = 6;
+            }
+        } else if (mdlDebugScaleWork.pad->stepDownB & 2) {
+            if (mdlDebugScaleWork.selection > 0) {
+                mdlDebugScaleWork.selection--;
+            }
+        } else if (mdlDebugScaleWork.pad->cancel & 0x80) {
+            mdlDebugScaleWork.editing = 1;
+        } else {
+            changed = 0;
+        }
+        if (changed != 0) {
+            mdlDebugScaleWork.blinkTick = 0;
+        }
+    } else {
+        if (mdlDebugScaleWork.pad->cancel & 0x80) {
+            mdlDebugScaleWork.editing = 0;
+        } else if (mdlDebugScaleWork.pad->confirm & 0x80) {
+            mdlDebugScaleWork.editing = 0;
+        } else if (mdlDebugScaleWork.selection < 4) {
+            mdlGetDebugEntry(mdlDebugScaleWork.selection);
+        } else {
+            dds3DebugColorEditEx(&dds3LightParam.fog.color, mdlDebugScaleWork.selection - 4, (s8 *)mdlDebugScaleWork.pad);
+        }
+    }
+    sdfDrawTagLink(mdlDebugScaleWork.packetList,
+                    (u32)(dds3PrimFrameRect(0x8590, 0x79A8, 0xFF007F, 0x960, 0x570, 0x60000000, 0x40806020)));
+    sdfDrawTagLink(mdlDebugScaleWork.packetList,
+                    (u32)(sdfDevPrintf(mdlDebugScaleFogLabel.x, mdlDebugScaleFogLabel.y, 0xFF0080, mdlDebugScaleFogLabel.style, mdlDebugScaleFogLabel.format)));
+    if (mdlDebugScaleWork.editing == 0 && mdlDebugScaleWork.blinkTick < 0x14) {
+        s32 y;
+
+        if (mdlDebugScaleWork.selection < 4) {
+            y = mdlDebugEntryTable[mdlDebugScaleWork.selection].y;
+        } else {
+            y = mdlDebugScaleWork.selection * 0x60 + 0x7AE0;
+        }
+        sdfDrawTagLink(mdlDebugScaleWork.packetList, (u32)(sdfDevPrintf(0x85C0, y, 0xFF0080, 0, mdlDebugScaleCursor)));
+    }
+    for (i = 0; i != 4; i++) {
+        s32 y = mdlDebugEntryTable[i].y;
+
+        sdfDrawTagLink(mdlDebugScaleWork.packetList, (u32)(sdfDevPrintf(0x8680, y, 0xFF0080, 0, mdlDebugEntryTable[i].label)));
+        value = *mdlDebugEntryTable[i].target + 0.5f;
+        sdfDrawTagLink(mdlDebugScaleWork.packetList,
+                        (u32)(sdfDevPrintf(0x8A40, y, 0xFF0080,
+                                                          (mdlDebugScaleWork.editing == 1 && mdlDebugScaleWork.selection == i) ? 6 : 0,
+                                                          mdlDebugEntryTable[i].format, value)));
+    }
+    mdlDebugTextBox(0x8680, 0x7C60, dds3LightParam.fog.color, mdlDebugScaleWork.selection - 4);
+    dds3Data10.regFunc(&dds3Data10, mdlDebugScaleWork.packetList);
+    return 0;
+}
+
+s32 soften_bias_Process(dds3ProcessID_t *task) {
+    mdlDebugOption_t *state = &softenBiasWork;
+    mdlDebugLabel_t *label;
+    s8 *pad;
+    f32 value;
+    f32 adjustment;
+    s32 changed;
+    s32 i;
+    s32 valueStyle;
+    s32 adjustmentStyle;
+    const char *format;
+
+    if (dds3GetProcessData(task) == 0) {
+        pad = dds3PadBitTable + 16;
+    } else {
+        pad = dds3PadButtonState;
+    }
+    value = sdfFaceDivSoften;
+    adjustment = sdfFaceDivBias;
+    state->pad = pad;
+    softenBiasWork.value = value;
+    softenBiasWork.adjustment = adjustment;
+    softenBiasWork.packetList = dds3CallGrAllocPacketBuff9();
+    softenBiasWork.control.fields.blink++;
+    if (softenBiasWork.control.fields.blink == 30) {
+        softenBiasWork.control.fields.blink = 0;
+    }
+
+    if (softenBiasWork.control.fields.active == 0) {
+        changed = 1;
+        if (softenBiasWork.pad[7] & 0x80) {
+            if (softenBiasWork.control.fields.cursor >= 2) {
+                softenBiasWork.control.fields.cursor = 0;
+            } else {
+                softenBiasWork.control.fields.cursor++;
+            }
+        } else if (softenBiasWork.pad[7] & 2) {
+            if (softenBiasWork.control.fields.cursor < 2) {
+                softenBiasWork.control.fields.cursor++;
+            }
+        } else if (softenBiasWork.pad[6] & 0x80) {
+            if (softenBiasWork.control.fields.cursor > 0) {
+                softenBiasWork.control.fields.cursor--;
+            } else {
+                softenBiasWork.control.fields.cursor = 2;
+            }
+        } else if (softenBiasWork.pad[6] & 2) {
+            if (softenBiasWork.control.fields.cursor > 0) {
+                softenBiasWork.control.fields.cursor--;
+            }
+        } else if (softenBiasWork.pad[3] & 0x80) {
+            if (softenBiasWork.control.fields.cursor == 2) {
+                corePktSoftenBias ^= 1;
+            } else {
+                softenBiasWork.control.fields.active = 1;
+            }
+        } else {
+            changed = 0;
+        }
+        if (changed != 0) {
+            softenBiasWork.control.fields.blink = 0;
+        }
+    } else {
+        if (softenBiasWork.pad[3] & 0x80) {
+            softenBiasWork.control.fields.active = 0;
+        } else if (softenBiasWork.pad[1] & 0x80) {
+            softenBiasWork.control.fields.active = 0;
+        } else {
+            switch (softenBiasWork.control.fields.cursor) {
+            case 0:
+                dds3DebugFloatEditEx(&softenBiasWork.value, (u8 *)softenBiasWork.pad,
+                                  1.0f, 50.0f, 1.0f, 0.1f);
+                break;
+            case 1:
+                dds3DebugFloatEditEx(&softenBiasWork.adjustment, (u8 *)softenBiasWork.pad,
+                                  -50.0f, 50.0f, 0.1f, 0.01f);
+                break;
+            }
+        }
+    }
+
+    sdfDrawTagLink(softenBiasWork.packetList,
+                    (u32)(dds3PrimFrameRect(0x84D0, 0x79A8, 0xFF007F, 0xA20, 0x270,
+                                  0x60000000, 0x40806020)));
+    label = softenBiasLabels;
+    for (i = 0; i != 4; i++, label++) {
+        sdfDrawTagLink(softenBiasWork.packetList,
+                        (u32)(sdfDevPrintf(label->x, label->y,
+                                                         0xFF0080, label->style,
+                                                         label->format)));
+    }
+    if (softenBiasWork.control.fields.active == 0 && softenBiasWork.control.fields.blink < 20) {
+        sdfDrawTagLink(softenBiasWork.packetList,
+                        (u32)(sdfDevPrintf(0x8500,
+                                                         softenBiasCursorY[softenBiasWork.control.fields.cursor],
+                                                         0xFF0080, 0, softenBiasCursor)));
+    }
+
+    /* Ignore the blink byte when testing the active mode and selected row. */
+    valueStyle = (softenBiasWork.control.packed & 0xFFFF00FF) == 1 ? 6 : 0;
+    sdfDrawTagLink(softenBiasWork.packetList,
+                    (u32)(sdfDevPrintf(0x8B00, 0x7A80, 0xFF0080,
+                                                     valueStyle, softenBiasValueFormat, softenBiasWork.value)));
+    adjustmentStyle = (softenBiasWork.control.packed & 0xFFFF00FF) == 0x10001 ? 6 : 0;
+    sdfDrawTagLink(softenBiasWork.packetList,
+                    (u32)(sdfDevPrintf(0x8B00, 0x7AE0, 0xFF0080,
+                                                     adjustmentStyle, softenBiasAdjustFormat, softenBiasWork.adjustment)));
+    format = corePktSoftenBias == 0 ? softenBiasLabelOn : softenBiasLabelOff;
+    sdfDrawTagLink(softenBiasWork.packetList,
+                    (u32)(sdfDevPrintf(0x8B00, 0x7BA0, 0xFF0080,
+                                                     0, format)));
+    dds3Data10.regFunc(&dds3Data10, softenBiasWork.packetList);
+    sdfFaceDivSoften = softenBiasWork.value;
+    sdfFaceDivBias = softenBiasWork.adjustment;
+    return 0;
+}
 INCLUDE_SDATA(const s32, "model/mdlEffect_001A1780", mdlDebugLightCursor);
 
 INCLUDE_SDATA(const s32, "model/mdlEffect_001A1780", mdlDebugLightFormat);

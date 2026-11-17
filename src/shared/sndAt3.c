@@ -103,6 +103,8 @@ s32 BgmPlaySub(void);
 void sndBgmFadeIn(void);
 
 extern sndBgmEntry_t sndBgmLoadId_XFData[];
+extern sndBgmEntry_t mnuQueueTitleSoundStreamEntryData[];
+extern sndBgmEntry_t mnuLoadTitleSoundBufferEntryData[];
 /* Each BGM's resume frame, by table index. */
 extern u16 sndBgmFadeOutWork[];
 extern titleAudioStreamState_t sndCallSeStopWork6;
@@ -453,7 +455,18 @@ void mnuWriteTitleStreamStatusLocked(titleAudioStreamStatusSnapshot_t *statusVal
     SignalSema(mnuTitleStreamSemaphore);
 }
 
-INCLUDE_ASM(const s32, "sndAt3", mnuLoadTitleStreamFrameData);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_00269C10.c:321, rework, same function 0.92 (words 32/32, calls 0.75, shape 1.00) */
+void mnuLoadTitleStreamFrameData(char *filePath, titleAudioStreamState_t *streamState) {
+    u32 resolvedAddress;
+    s32 frameCount;
+    struct sdfMemHandle_t *resourceHandle = sdfDevLoadFileEx(filePath, &resolvedAddress, 0);
+    s32 fileBytes = sdfMemGetSize(resourceHandle);
+    memcpy(streamState->compressedData, (void *)resolvedAddress, fileBytes);
+    frameCount = fileBytes / streamState->frameBytes;
+    streamState->frameIndex = 0;
+    streamState->frameCount = frameCount;
+    sdfMemFreeDirect(resourceHandle);
+}
 
 void File_BgmLoadStart(char *audioPath) {
     GetVolumeWork = fileLoadUseTail(audioPath);
@@ -688,17 +701,179 @@ void sndBgmFree(void) {
 
 INCLUDE_ASM(const s32, "sndAt3", sndCallLoad);
 
-INCLUDE_ASM(const s32, "sndAt3", sndCallFileCheckEnd);
+s32 sndCallFileCheckEnd(titleAudioStreamState_t *stream) {
+    sdfMemHandle_t *handle;
+    u8 *data;
+    s32 size;
 
+    if (pacFileCheckEnd(sndCallFileCheckEndWork) == 0) {
+        return 0;
+    }
+    handle = fileGetMemHandle(sndCallFileCheckEndWork);
+    data = fileGetLoadPtr(sndCallFileCheckEndWork);
+    size = fileGetLoadSize(sndCallFileCheckEndWork);
+    fileHandleFree(sndCallFileCheckEndWork);
+    mnuTitleSoundBufferState.compressedData = data;
+    mnuTitleSoundBufferState.allocation = handle;
+    stream->frameCount = size / stream->frameBytes;
+    stream->frameIndex = 0;
+    at3DecInit(sndWork3);
+    mnuTitleSoundBufferState.loadState = 2;
+    return 1;
+}
+
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_00269C10.c:517, rework, same function 0.93 (words 42/42, calls 0.80, shape 1.00) */
 INCLUDE_RODATA(const s32, "sndAt3", sndStrSoundat3At3);
 
-INCLUDE_ASM(const s32, "sndAt3", mnuInitializeTitleSoundBuffer);
+void mnuInitializeTitleSoundBuffer(void) {
+    titleAudioStreamState_t *streamState = &mnuTitleSoundBufferState;
+    u32 *decoder = sndWork3;
+    struct sdfMemHandle_t *allocation;
+    u8 *bufferAddress;
 
+    WaitSema(mnuTitleStreamSemaphore);
+    streamState->decoder = decoder;
+    allocation = sdfMemAllocDirect(96000);
+    bufferAddress = sdfMemGetPtr(allocation);
+    streamState->allocation = allocation;
+    streamState->control = 2;
+    streamState->decoder[2] = 2;
+    streamState->compressedData = bufferAddress;
+    streamState->samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    streamState->frameBytes = MNU_SOUND_FRAME_BYTES_MEDIUM;
+    mnuLoadTitleStreamFrameData("/soundat3/se01-2.at3", streamState);
+    at3DecInit(decoder);
+    SignalSema(mnuTitleStreamSemaphore);
+}
+
+#ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 21 of 62 words match.  */
+#ifdef NON_MATCHING
+void mnuQueueTitleSoundStreamEntry(s32 soundEntryIndex) {
+    char soundPath[MNU_TITLE_SOUND_PATH_BYTES];
+    s32 format;
+
+    WaitSema(mnuTitleStreamSemaphore);
+    sndDeadSePlay_VolAngle();
+    format = mnuQueueTitleSoundStreamEntryData[soundEntryIndex].format;
+    mnuTitleSoundBufferState.repeatFrame = mnuQueueTitleSoundStreamEntryData[soundEntryIndex].repeatFrame;
+    mnuTitleSoundBufferState.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    mnuTitleSoundBufferState.decoder = sndWork3;
+    mnuTitleSoundBufferState.control = 2;
+    if (format == 2) {
+        sndWork3[2] = format;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_MEDIUM;
+    } else if (format < 3) {
+        if (format == 1) {
+            sndWork3[2] = format;
+            mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_LARGE;
+        }
+    } else if (format == 3) {
+        sndWork3[2] = format;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_MEDIUM;
+    } else if (format == 4) {
+        sndWork3[2] = format;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_SMALL;
+    }
+    sprintf(soundPath, sndStrSoundat3At3, mnuQueueTitleSoundStreamEntryData[soundEntryIndex].name);
+    sndCallLoad(soundPath);
+    SignalSema(mnuTitleStreamSemaphore);
+}
+#else
+INCLUDE_ASM(const s32, "sndAt3", mnuQueueTitleSoundStreamEntry);
+#endif
+#else
 INCLUDE_ASM(const s32, "sndAt3", mnuQueueTitleSoundStreamEntry);
 
 INCLUDE_ASM(const s32, "sndAt3", mnuLoadTitleSoundBufferEntry);
+#endif
 
+#ifdef VERSION_RAIDOU1
+void mnuLoadTitleSoundBufferEntry(s32 soundEntryIndex) {
+    struct sdfMemHandle_t *allocation = NULL;
+    u8 *bufferAddress;
+    char soundPath[MNU_TITLE_SOUND_PATH_BYTES];
+
+    WaitSema(mnuTitleStreamSemaphore);
+    mnuTitleSoundBufferState.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    mnuTitleSoundBufferState.repeatFrame = mnuLoadTitleSoundBufferEntryData[soundEntryIndex].repeatFrame;
+    mnuTitleSoundBufferState.decoder = sndWork3;
+    mnuTitleSoundBufferState.control = 2;
+    switch (mnuLoadTitleSoundBufferEntryData[soundEntryIndex].format) {
+    case 1:
+        sndWork3[2] = 1;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_LARGE;
+        allocation = sdfMemAllocDirect(192000);
+        break;
+    case 2:
+        sndWork3[2] = 2;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_MEDIUM;
+        allocation = sdfMemAllocDirect(96000);
+        break;
+    case 3:
+        sndWork3[2] = 3;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_MEDIUM;
+        allocation = sdfMemAllocDirect(96000);
+        break;
+    case 4:
+        sndWork3[2] = 4;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_SMALL;
+        allocation = sdfMemAllocDirect(48000);
+        break;
+    }
+    bufferAddress = sdfMemGetPtr(allocation);
+    mnuTitleSoundBufferState.allocation = allocation;
+    mnuTitleSoundBufferState.compressedData = bufferAddress;
+    sprintf(soundPath, sndStrSoundat3At3, mnuLoadTitleSoundBufferEntryData[soundEntryIndex].name);
+    mnuLoadTitleStreamFrameData(soundPath, &mnuTitleSoundBufferState);
+    at3DecInit(sndWork3);
+    SignalSema(mnuTitleStreamSemaphore);
+}
+
+void mnuInstallTitleSoundBufferFromData(const void *compressedData, s32 dataBytes, s32 format) {
+    struct sdfMemHandle_t *allocation = NULL;
+    u8 *bufferAddress;
+
+    WaitSema(mnuTitleStreamSemaphore);
+    sndDeadSePlay_VolAngle();
+    mnuTitleSoundBufferState.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    mnuTitleSoundBufferState.decoder = sndWork3;
+    mnuTitleSoundBufferState.control = 2;
+    mnuTitleSoundBufferState.repeatFrame = -1;
+    switch (format) {
+    case 1:
+        sndWork3[2] = 1;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_LARGE;
+        allocation = sdfMemAllocDirect(192000);
+        break;
+    case 2:
+        sndWork3[2] = 2;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_MEDIUM;
+        allocation = sdfMemAllocDirect(96000);
+        break;
+    case 3:
+        sndWork3[2] = 3;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_MEDIUM;
+        allocation = sdfMemAllocDirect(96000);
+        break;
+    case 4:
+        sndWork3[2] = 4;
+        mnuTitleSoundBufferState.frameBytes = MNU_SOUND_FRAME_BYTES_SMALL;
+        allocation = sdfMemAllocDirect(48000);
+        break;
+    }
+    bufferAddress = sdfMemGetPtr(allocation);
+    mnuTitleSoundBufferState.allocation = allocation;
+    mnuTitleSoundBufferState.compressedData = bufferAddress;
+    memcpy(bufferAddress, compressedData, dataBytes);
+    mnuTitleSoundBufferState.frameCount = dataBytes / mnuTitleSoundBufferState.frameBytes - 1;
+    mnuTitleSoundBufferState.frameIndex = 0;
+    at3DecInit(sndWork3);
+    SignalSema(mnuTitleStreamSemaphore);
+}
+#else
 INCLUDE_ASM(const s32, "sndAt3", mnuInstallTitleSoundBufferFromData);
+#endif
 
 INCLUDE_ASM(const s32, "sndAt3", sndFunc2);
 
@@ -731,7 +906,17 @@ void sndDeadSePlay_VolAngle(void) {
 }
 
 
-INCLUDE_ASM(const s32, "sndAt3", sndSeStop);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_00269C10.c:659, rework, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+void sndSeStop(void) {
+    titleAudioStreamState_t *streamState = &mnuTitleSoundBufferState;
+    struct sdfMemHandle_t *allocationHandle = streamState->allocation;
+
+    if (allocationHandle == 0) {
+        return;
+    }
+    sdfMemFreeDirect(allocationHandle);
+    streamState->allocation = 0;
+}
 
 INCLUDE_ASM(const s32, "sndAt3", nbEffectShutdown);
 
@@ -896,7 +1081,10 @@ s32 sndProcSequenceSub2(void) {
     return evtData25;
 }
 
-INCLUDE_ASM(const s32, "sndAt3", sndProcSequenceSub3);
+/* body: matched in raidou @ 88f0d54: src/shared/sndAt3.c:887, near, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sndProcSequenceSub3(void) {
+    return sndData6;
+}
 
 INCLUDE_ASM(const s32, "sndAt3", sndLeaf3);
 

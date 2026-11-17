@@ -16,4 +16,6 @@ s32 _sceCd_scmd_prechk(s32 command);
 
 s32 sceCdStatus(void);
 
+s32 sceCdPowerOff(s32 *result);
+
 #endif

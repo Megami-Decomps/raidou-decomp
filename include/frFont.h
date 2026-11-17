@@ -8,6 +8,7 @@ frFontHandle_t *MessageRequest(s32 X, s32 Y, u8 *pMsg, frFontHandle_t *pFRQ);
 s32 frDrawFontOt(frFontHandle_t *pFRQ, s8 mode, u32 ot);
 s32 frCallGetFontWidth3(const char *str, u8 font, u8 unk2, s32 spacing);
 frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, frFontHandle_t *pFRQ);
+frFontHandle_t *frwGetSmallNumFontFRQ(s32 x, s32 y, s32 z, u32 color, u8 *text, frFontHandle_t *pFRQ);
 u16 frGetSmallFontFRQ2Sub(u16 code);
 frFontHandle_t *frCallSetFontString(u8 *pStr, s8 Style, s8 ColNo, s8 Tp, frFontHandle_t *pFRQ);
 frFontHandle_t *frDestroyFontRequestAfterSub(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2, s32 Mode);

@@ -9564,6 +9564,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0036E0B0	0x003E3E40	sdfFileCmdStartThread	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
 0x0036E160	0x003E3EF0	sdfFirstInitSub	no	yes	asm/raidou1/code_0036E160.s	asm/raidou2/code_003E3EF0.s	masked-hash-in-gap
 0x0036E170	0x003E3F00	sdfHddPowerOffTh	no	yes	asm/raidou1/sdf/sdfHdd.s	asm/raidou2/sdf/sdfHdd.s	unique-reloc-hash
+0x0036E1E0	0x003E3F70	sdfHddPowerOffHandler	no	yes	asm/raidou1/sdf/sdfHdd.s	asm/raidou2/sdf/sdfHdd.s	run-order-size
 0x0036E1F8	0x003E3F88	sdfHddInit	no	yes	asm/raidou1/sdf/sdfHdd.s	asm/raidou2/sdf/sdfHdd.s	unique-reloc-hash
 0x0036E340	0x003E40D0	sdfDev9LoadModule	no	yes	asm/raidou1/sdf/sdfDev9.s	asm/raidou2/sdf/sdfDev9.s	unique-reloc-hash
 0x0036E3C0	0x003E4150	sdfLeaf28	no	yes	asm/raidou1/sdf/sdfDev9.s	asm/raidou2/sdf/sdfDev9.s	unique-reloc-hash
@@ -9636,8 +9637,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00370500	0x003E6290	sdfCallStrlen	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
 0x00370538	0x003E62C8	p2sdSetPcmBuffer	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
 0x00370598	0x003E6328	sndSendChannelControlCommand	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
-0x003705C8	0x003E6358	sndSendChannelGroupCommand150	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
-0x003705F8	0x003E6388	sndSendChannelGroupCommand140	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
+0x003705C8	0x003E6358	sndSendChannelGroupCommand140	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
+0x003705F8	0x003E6388	sndSendChannelGroupCommand150	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
 0x00370628	0x003E63B8	sdfSndReleaseMidiTrack	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
 0x00370680	0x003E6410	sdfLeaf32	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	run-order-size
 0x00370698	0x003E6428	sdfLeaf33	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	run-order-size

@@ -20,6 +20,8 @@
 #include "code_r1_0034CE48.h"
 #include "code_r1_002C8188.h"
 #include "code_r1_0034C270.h"
+#include "code_r1_002CA3F0.h"
+#include "frFont.h"
 
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
@@ -275,6 +277,7 @@ mnuListNode_t *mnuListRetreatCursor(mnuList_t *list, s32 noScroll, s32 keepFade)
 void mnuDrawFourEntries(s32 x, s32 y, s32 depth, mnuList_t *list, mnuListNode_t *node, s32 drawArg);
 u32 mnuBlendListNodeColorByFlags(u32 previousColor, mnuListNode_t *entry);
 void mnuDispatchEntryWords(sprHandle_t *menu, s32 entryIndex, mnuListNode_t *entry);
+extern const char mnuDrawWindowListEntriesData[];
 
 /* Draw visible rows, preserving each row's glyph chain and callback state. */
 void mnuDrawWindowListEntries(s32 x, s32 y, s32 depth, s32 xOffset, s32 yOffset,
@@ -446,7 +449,60 @@ void mnuDispatchEntryWords(sprHandle_t *menu, s32 entryIndex, mnuListNode_t *ent
     }
 }
 
+/* NON_MATCHING: 18 of 148 words match.  */
+#ifdef NON_MATCHING
+void mnuDrawWindowListEntries(s32 x, s32 y, s32 depth, s32 xOffset, s32 yOffset,
+                   s32 fadeScale, u32 unusedFlags, mnuList_t *list, s32 drawArg) {
+    char text[0x10];
+    mnuListNode_t *node = list->head;
+    s32 textY = y;
+    s32 row = 0;
+
+    mnuDecreaseListNodeFadeCounters(list);
+    while (node != NULL && row < list->visibleCount) {
+        u32 color = 0xA09DC340;
+        frFontHandle_t *glyph = NULL;
+        u8 colorNo = 0;
+
+        if ((node->flags48 & 1) == 0) {
+            color = 0xD7CC9880;
+            if ((node->flags48 & 4) == 0) {
+                color = 0xA09DC380;
+            }
+        }
+        color = mnuBlendListNodeColorByFlags(color, node);
+        color = fclBlendColor(color, color & 0xFFFFFF00, fadeScale);
+        if ((node == list->cursor && (list->stateFlags & 8) == 0) || (node->flags48 & 2) != 0) {
+            colorNo = 4;
+        }
+        mnuDrawFourEntries(x, textY, depth, list, node, drawArg);
+        if (node->text != NULL) {
+            glyph = frLinkKanjiSub(x + xOffset, textY + yOffset, depth, color, node->text, NULL);
+            frSetFontColorNo(glyph, colorNo);
+            if ((list->id & 1) != 0) {
+                sprintf(text, mnuDrawWindowListEntriesData, node->sortKeyPrimary);
+                glyph = frwGetSmallNumFontFRQ(x + 0x1180, textY + 0x20, depth, color, (u8 *)text, glyph);
+                frSetFontColorNo(glyph, colorNo);
+            }
+        }
+        if (glyph != NULL) {
+            frDrawFontOt(glyph, 1, drawArg);
+            frDestroyFontRequestAfter(glyph);
+        }
+        if (list->drawCallback != NULL) {
+            if (list->drawCallback(x, y, depth, list, node, drawArg) == 0) {
+                return;
+            }
+        }
+        row++;
+        y += list->rowStep;
+        textY += list->rowStep;
+        node = node->next;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0034D128", mnuDrawWindowListEntries);
+#endif
 
 /* Invoke the native window renderer at full fade with its size/flag arguments zeroed. */
 void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg) {
@@ -492,7 +548,15 @@ void mnuInitializeBasicWindowLayout(mnuWindowContainer_t *menu, struct sprHandle
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf24);
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuSetWindowPanelBounds);
+void mnuSetWindowPanelBounds(mnuWindowContainer_t *panel, const struct mnuIconState_t *layout,
+                             u32 left, u32 top, u32 right, u32 bottom) {
+    panel->panel = *layout;
+    panel->panel.left = left;
+    panel->panel.top = top;
+    panel->panel.right = right;
+    panel->panel.bottom = bottom;
+    panel->flags |= 4;
+}
 
 void mnuCreateListWithDefaults(mnuWindowContainer_t *menu, u32 first, u32 second,
                                u32 third, sprHandle_t *spriteResource) {
@@ -502,7 +566,9 @@ void mnuCreateListWithDefaults(mnuWindowContainer_t *menu, u32 first, u32 second
                                        defaults.indices, 3);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", CmdMenuCursorDrawUnlock);
+void CmdMenuCursorDrawUnlock(mnuWindowContainer_t *window) {
+    window->flags = window->flags & ~4;
+}
 
 mnuListNode_t *jmsAddCmdMenuItem(mnuWindowContainer_t *menu, const void *text) {
     return mnuListAppendNode(menu->list, text);
@@ -631,19 +697,56 @@ void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, mnuWindowContainer
                   window->list, window->resource, option);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", jmsFunc45);
+void jmsFunc45(u32 x, u32 y, s32 depth, mnuWindowContainer_t *window, s32 count, s32 layer) {
+    s32 i;
+    struct sprHandle_t *sprite = window->spriteResource;
+    u32 fade = window->fadeScale;
+    s32 suppressBase = window->suppressBaseSprite;
+
+    if (sprite != NULL) {
+        if (suppressBase == 0) {
+            effDrawSpriteWithCornerFade(x - 0xD0, y - 0xB8, depth, fade, 1, sprite, window->baseSpriteSlot, layer);
+        }
+        for (i = 0; i < count; i++) {
+            effDrawSpriteWithCornerFade(x + window->originX, i * window->list->rowStep + y + window->originY, depth, fade, 1, window->spriteResource, window->rowSpriteSlot, layer);
+        }
+    }
+}
 
 void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, mnuWindowContainer_t *window, u32 option) {
     mnuDrawWindowIconRows(x, y, flags, window, window->list->visibleCount, option);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", jmsFunc46);
+void jmsFunc46(s32 x, s32 y, s32 depth, mnuWindowContainer_t *window, s32 layer) {
+    u32 i;
+    u32 fade = window->fadeScale;
+
+    for (i = 0; i < 3; i++) {
+        struct sprHandle_t *sprite = window->decorations[i].sprite;
+        u32 slot = window->decorations[i].parameter;
+        u32 offset = window->decorationX[i];
+
+        if (sprite != NULL) {
+            effDrawSpriteWithCornerFade(x + offset + 0xC0, y - 0xB8, depth, fade, 1, sprite, slot, layer);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", mnuDrawWindowSelectionPanel);
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", jmsFunc47);
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuSpinForWindowListCount);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0027BF00.c:599, rework, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+void mnuSpinForWindowListCount(mnuWindowContainer_t *window) {
+    s32 remaining;
+
+    remaining = window->list->count;
+    if (0 < remaining) {
+        do {
+            remaining = remaining - 1;
+        } while (remaining != 0);
+    }
+}
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", mnuCreateListWithDefaultsTable);
 
@@ -879,17 +982,71 @@ void mnuLinkItemList(mnuListNode_t **nodeArray, s32 count) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuComparePrimaryKeyDescending);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0027BF00.c:989, rework, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+s32 mnuComparePrimaryKeyDescending(mnuListNode_t **left, mnuListNode_t **right) {
+    u32 leftKey = (*left)->sortKeyPrimary;
+    u32 rightKey = (*right)->sortKeyPrimary;
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuComparePrimaryKeyAscending);
+    if (rightKey < leftKey) {
+        return -1;
+    }
+    return leftKey < rightKey;
+}
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuCompareSecondaryKeyDescending);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0027BF00.c:1000, rework, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+s32 mnuComparePrimaryKeyAscending(mnuListNode_t **left, mnuListNode_t **right) {
+    u32 leftKey = (*left)->sortKeyPrimary;
+    u32 rightKey = (*right)->sortKeyPrimary;
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuCompareSecondaryKeyAscending);
+    if (rightKey < leftKey) {
+        return 1;
+    }
+    return (leftKey < rightKey) ? -1 : 0;
+}
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuCompareTertiaryKeyDescending);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0027BF00.c:1011, rework, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+s32 mnuCompareSecondaryKeyDescending(mnuListNode_t **left, mnuListNode_t **right) {
+    u32 leftKey = (*left)->sortKeySecondary;
+    u32 rightKey = (*right)->sortKeySecondary;
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuCompareTertiaryKeyAscending);
+    if (rightKey < leftKey) {
+        return -1;
+    }
+    return leftKey < rightKey;
+}
+
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0027BF00.c:1022, rework, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+s32 mnuCompareSecondaryKeyAscending(mnuListNode_t **left, mnuListNode_t **right) {
+    u32 leftKey = (*left)->sortKeySecondary;
+    u32 rightKey = (*right)->sortKeySecondary;
+
+    if (rightKey < leftKey) {
+        return 1;
+    }
+    return (leftKey < rightKey) ? -1 : 0;
+}
+
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0027BF00.c:1033, rework, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+s32 mnuCompareTertiaryKeyDescending(mnuListNode_t **left, mnuListNode_t **right) {
+    u32 leftKey = (*left)->sortKeyTertiary;
+    u32 rightKey = (*right)->sortKeyTertiary;
+
+    if (rightKey < leftKey) {
+        return -1;
+    }
+    return leftKey < rightKey;
+}
+
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0027BF00.c:1044, rework, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+s32 mnuCompareTertiaryKeyAscending(mnuListNode_t **left, mnuListNode_t **right) {
+    u32 leftKey = (*left)->sortKeyTertiary;
+    u32 rightKey = (*right)->sortKeyTertiary;
+
+    if (rightKey < leftKey) {
+        return 1;
+    }
+    return (leftKey < rightKey) ? -1 : 0;
+}
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", mnuDrawIconPanelFadeTable);
 
@@ -941,7 +1098,20 @@ void mnuFreeListEntries(s32 *list) {
     } while (slotIndex < MNU_FADING_SLOT_COUNT);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", mnuAppendFadingWindowEntry);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0027BF00.c:1109, rework, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+void mnuAppendFadingWindowEntry(s32 activeValue, s32 windowAddress, s32 *list) {
+    u32 slotIndex = *list;
+    s32 *slot = list + slotIndex;
+    mnuFadeEntry_t *entry;
+
+    if (slotIndex < MNU_FADING_MUTATION_THRESHOLD) {
+        return;
+    }
+    entry = (mnuFadeEntry_t *)slot[1];
+    *list = slotIndex + 1;
+    entry->active = activeValue;
+    entry->window = (struct mnuWindowContainer_t *)windowAddress;
+}
 
 /* Native removal only accepts indices at least five. Propagate the tail
  * record backward to the target, clearing each source's window pointer. */

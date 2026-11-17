@@ -3,6 +3,7 @@
 #include "dds3KernelCore.h"
 #include "code_r1_001CC1D0.h"
 #include "jmsInit.h"
+#include "gohMain.h"
 #include "code_00346258.h"
 
 INCLUDE_ASM(const s32, "code_00349B80", TalkSelCalcProcess);
@@ -20,7 +21,12 @@ dds3ProcessFunc_t TalkSelUpdateProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_00349B80", TalkInit);
+u32 TalkInit(dds3ProcessID_t *task) {
+    gohData_t *work = dds3GetProcessData(task);
+
+    work->unk90[5] = 2;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00349B80", TalkDestroy);
 
@@ -138,7 +144,13 @@ INCLUDE_ASM(const s32, "code_00349B80", jmsFunc41);
 
 INCLUDE_ASM(const s32, "code_00349B80", jmsDrawCyousaPanelSub);
 
-INCLUDE_ASM(const s32, "code_00349B80", jmsLeaf16);
+/* body: matched in raidou @ 88f0d54: src/raidou1/TitleMain.c:20, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+s32 jmsLeaf16(s32 value, s32 low, s32 high) {
+    if (value >= low && value < high) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00349B80", jmsFunc42);
 

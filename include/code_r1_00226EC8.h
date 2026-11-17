@@ -94,4 +94,7 @@ typedef char effActiveResource_size_must_be_0x40[
 
 #include "effQuake.h"
 
+struct sdf3DLightParallelPacket_t;
+s32 effComputeLightDirectionVU(struct mdlObj_t *model, struct sdf3DLightParallelPacket_t *light);
+
 #endif

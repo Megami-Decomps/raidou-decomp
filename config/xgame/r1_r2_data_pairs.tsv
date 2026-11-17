@@ -1,7 +1,6 @@
 r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x00357F58	0x003CDCE0	sdfDispThread	.text	0x0	yes	code-ref
 0x0036D4C8	0x003E3258	sdfFileCdImageCmdThread	.text	0x0	yes	code-ref
-0x0036E1E0	0x003E3F70	sdfHddInitLabel	.text	0x0	yes	code-ref
 0x00373CD0	0x003E9910	sdfIpuFromDmacHandler	.text	0x0	yes	code-ref
 0x0039CD40	0x00415BC0	_kTLBExceptionLabel	.text	0x0	yes	code-ref
 0x0039CE80	0x00415D00	_kDebugException	.text	0x0	yes	code-ref
@@ -9638,7 +9637,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046EAE8	0x004E3A50	lmapCallSetFontStringDataEntry	.sdata	0x8	yes	data-word
 0x0046EAF0	0x004E3A58	lmapCallSetFontStringDataEntry2	.sdata	0x8	yes	data-word
 0x0046EAF8	0x004E3A60	lmapCallSetFontStringDataEntry3	.sdata	0x8	yes	data-word
-0x0046EB00	0x004E3A68	EffGrid_FinishData	.sdata	0x8	yes	code-ref
+0x0046EB00	0x004E3A68	g_mainPID_FldWnd	.sdata	0x8	yes	code-ref
 0x0046EB08	0x004E3A70	FldWnd_DrawProcessDataEntry	.sdata	0x8	no	data-word
 0x0046EB10	0x004E3AA0	evtFunc10Data	.sdata	0x8	yes	code-ref
 0x0046EB18	0x004E3AA8	evtFunc11Data	.sdata	0x8	yes	code-ref

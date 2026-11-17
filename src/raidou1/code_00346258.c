@@ -138,7 +138,10 @@ INCLUDE_ASM(const s32, "code_00346258", gohShutdown);
 
 INCLUDE_ASM(const s32, "code_00346258", DrawProcess_gohMenu);
 
-INCLUDE_ASM(const s32, "code_00346258", gohGetBackStat);
+s32 gohGetBackStat(void)
+{
+    return ((gohMenuWork_t *)dds3GetProcessData(g_mainPID_gohMenu))->backStat;
+}
 
 INCLUDE_ASM(const s32, "code_00346258", gohStart);
 
@@ -152,7 +155,19 @@ INCLUDE_ASM(const s32, "code_00346258", gohCallGetProcessData49);
 
 INCLUDE_ASM(const s32, "code_00346258", ProcessStart_gohMenu);
 
-INCLUDE_ASM(const s32, "code_00346258", ProcessEnd_gohMenu);
+void ProcessEnd_gohMenu(void)
+{
+    gohMenuWork_t *work;
+
+    if (g_mainPID_gohMenu != NULL && dds3ExistProcess(g_mainPID_gohMenu)) {
+        work = dds3GetProcessData(g_mainPID_gohMenu);
+        if (!(work->flags & 1)) {
+            work->flags |= 1;
+            work->step = 1;
+            work->count = 0;
+        }
+    }
+}
 
 s32 ProcessCheck_gohMenu(void) {
     if (g_mainPID_gohMenu == NULL) {
@@ -207,9 +222,18 @@ INCLUDE_ASM(const s32, "code_00346258", jmsDestroy_jmsInit);
 
 INCLUDE_ASM(const s32, "code_00346258", jmsJimusyoCalc);
 
-INCLUDE_ASM(const s32, "code_00346258", jmsProcessEnd);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/code_0022C578.c:963, rework, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
+void jmsProcessEnd(void)
+{
+    dds3KillProcessName(cmpCalcProcName3, 0);
+    dds3KillProcessName(campDrawProcName3, 0);
+    dds3KillProcessName(campUpdateProcName3, 0);
+}
 
-INCLUDE_ASM(const s32, "code_00346258", jmsProcessCheck);
+/* body: matched in raidou @ 88f0d54: src/shared/code_r1_0019D3A8.c:827, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+s32 jmsProcessCheck(void) {
+    return dds3SearchProcessName(cmpCalcProcName3) != 0;
+}
 
 INCLUDE_ASM(const s32, "code_00346258", jmsDebugProcessStart);
 
@@ -264,4 +288,13 @@ dds3ProcessFunc_t RootUpdateProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_00346258", nbUpdateEventProcessData);
+s32 nbUpdateEventProcessData(dds3ProcessID_t *PID) {
+    gohData_t *pData = dds3GetProcessData(PID);
+
+    if (pData->unk90[1] == 0) {
+        pData->unk8C = 0;
+    }
+    pData->unk90[0] = 1;
+    pData->unk90[2] = 0;
+    return 1;
+}

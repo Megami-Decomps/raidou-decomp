@@ -23,5 +23,7 @@ void shpSetStatDraw(s32 a_bDraw);
 void shpSetZoom(s32 a_objId);
 void shpUpdateBack(void);
 s32 shpWaitRelease(void);
+void pb_draw_help_Shutdown(const char *aScriptPath);
+extern const char *shpCallRagTestSubData[];
 
 #endif

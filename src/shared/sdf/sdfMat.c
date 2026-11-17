@@ -571,7 +571,28 @@ void sdfMatUpdatePacket(sdfMat_t *aMat, s32 aId)
     aMat->duty = duty & (0x55 << (aId ^ 1));
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfApplyAssetEntryChangesWithForcedTexture);
+/* body: matched in dds @ 18d1fa88f: src/dds1/sdf/sdfMat.c:584, match, same function 1.00 (words 58/58, calls 1.00, shape 1.00) */
+void sdfApplyAssetEntryChangesWithForcedTexture(sdfMat_t *aMat, s32 aId)
+{
+    u8 duty = aMat->duty;
+    sdfMatPacket_t *packet = aMat->packet[aId];
+
+    if ((duty >> aId) & 1) {
+        sdfMatUpdatePacketBasic(aMat, packet);
+    } else if (sdfForcedAssetTextureMode != 0) {
+        sdfMatUpdatePacketBasic(aMat, packet);
+    }
+    if (duty & (4 << aId)) {
+        sdfMatUpdatePacketUvwParm(aMat, packet);
+    }
+    if (duty & (0x10 << aId)) {
+        sdfMatUpdatePacketMultiTex(aMat, packet);
+    }
+    if (duty & (0x40 << aId)) {
+        sdfMatUpdatePacketFaceDiv(aMat, packet);
+    }
+    aMat->duty = duty & (0x55 << (aId ^ 1));
+}
 
 sdfItemArray_t *sdfMatListMake(sdfItemArray_t *aTexList, u32 *aData)
 {

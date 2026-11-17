@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfSystem.h"
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
@@ -135,7 +136,26 @@ void sdfPrintRpcThread(void)
     sceSifRpcLoop(&queue);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPrint", sdfPrintIopInit);
+void sdfPrintIopInit(void)
+{
+    s32 threadId;
+    s32 startTicks;
+
+    threadId = sdfCreateThreadWithStack(sdfPrintRpcThread, 0x1000, 0x4C);
+    _StartThread(threadId, 0);
+    while (1) {
+        if (sceSifMBindRpc((sceSifMClientData *)&sdfPrintRpcClient.client, 0x646E7270, 0) < 0) {
+            return;
+        }
+        if (sdfPrintRpcClient.client.server != NULL) {
+            break;
+        }
+        startTicks = sdfGetRunTimeCountBase();
+        while (sdfGetRunTimeCount(startTicks) < 4) {
+        }
+    }
+    sdfPrintIopFlag = 1;
+}
 
 /* Print text through the bound IOP dev client, or locally when it is unbound. */
 void sdfPuts(const char *str) {

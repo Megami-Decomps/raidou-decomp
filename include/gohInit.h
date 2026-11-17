@@ -10,6 +10,7 @@ void Destroy_gohInit(dds3ProcessID_t *PID);
 void ModelFree(struct gohData_t *pData);
 s32 ModelLoad_gohInit(struct gohData_t *pData);
 void TalkSelDrawProcess(u32 Mode);
+void campGohmadenCalc(void);
 void campKillProcesses(void);
 s32 gohBgmLoad(struct gohData_t *pData);
 s32 gohBgmPlay(struct gohData_t *pData);
@@ -23,6 +24,11 @@ s32 gohLoadBgModel(dds3ProcessID_t *PID, struct gohData_t *pData);
 s32 gohScrCmd_PresentItem(void);
 void gohStartEtcProcess(dds3ProcessID_t *PID);
 s32 jmsGetCursorPosID(void);
-void gohProcessCheck(void);
+s32 gohProcessCheck(void);
+void gohFunc(void);
+
+extern const char cmpCalcProcName2[];
+extern const char campDrawProcName2[];
+extern const char campUpdateProcName2[];
 
 #endif

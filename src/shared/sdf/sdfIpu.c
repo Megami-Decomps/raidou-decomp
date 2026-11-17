@@ -750,9 +750,27 @@ s32 sdfIpuToDmacHandler(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfLeaf38);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfIpu.c:870, near, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+void *sdfLeaf38(sdfIpuDecodeCb_t *cb)
+{
+    void *frame = NULL;
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfLeaf39);
+    if (cb->activeBuffCount != 0) {
+        frame = cb->frameBuffers[cb->getBuffId];
+    }
+    return frame;
+}
+
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfIpu.c:870, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+void *sdfLeaf39(sdfIpuDecodeCb_t *cb)
+{
+    void *frame = NULL;
+
+    if (cb->activeBuffCount != 0) {
+        frame = cb->transferPacketBuffers[cb->getBuffId];
+    }
+    return frame;
+}
 
 /* Consume a pending buffer when present, but always advance processed; loop only on exact equality. */
 void sdfIpuFinishActiveFrame(sdfIpuDecodeCb_t *cb) {
@@ -847,7 +865,13 @@ void sdfAdvanceStreamPlayback(s32 frames)
     sdfIpuExecQueue(0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfSoundInitFormattedAndAppendNode);
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfIpu.c:968, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+void sdfSoundInitFormattedAndAppendNode(sdfIpuDecodeCb_t *aNode, struct sdfIpuInitParm_t *aFormat, SdfStreamRead aRead, struct sdfMovieCb_t *aContext, s32 aResourceWord)
+{
+    sdfIpuSetDecodeParams(aNode, aFormat, aRead, aContext);
+    aNode->resourceWord = aResourceWord;
+    sdfIpuAttachTask(aNode);
+}
 
 void sdfIpuSetOutputTex(sdfIpuDecodeCb_t *node, struct sdfIpuInitParm_t *params, u8 *sourceData, s32 sourceSize, sdfTexHandle_t *source) {
     struct sdfIpuInitParm_t streamParams = *params;

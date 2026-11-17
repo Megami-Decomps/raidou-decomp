@@ -12598,7 +12598,7 @@
 0x003E3E40	sdfFileCmdStartThread	inferred	SMT3HD name via SLUS_209.11 0x002BF8F0, reloc-identical; map-agrees
 0x003E3EF0	sdfFirstInitSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0036E160, nearest named function sdfFileCmdStartThread; called by dds3FirstInit
 0x003E3F00	sdfHddPowerOffTh	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x2bf9a0 sim 0.862 margin 0.57 pair
-0x003E3F70	sdfHddInitLabel	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sdfHddInit (2 of 3 refs, 2 functions)
+0x003E3F70	sdfHddPowerOffHandler	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 name of the same body (iSignalSema wrapper after sdfHddPowerOffTh, the sceCdPOffCallback handler sdfHddInit installs); replaces sdfHddInitLabel
 0x003E3F88	sdfHddInit	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x2bfa38 sim 0.632 margin 0.31 pair
 0x003E40D0	sdfDev9LoadModule	inferred	SMT3HD name via SLUS_209.11 0x002BFBD8, reloc-identical; map-agrees
 0x003E4150	sdfLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfDev9; no named callee, caller or string
@@ -12671,8 +12671,8 @@
 0x003E6290	sdfCallStrlen	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; calls strlen
 0x003E62C8	p2sdSetPcmBuffer	inferred	SMT3HD name via SLUS_209.11 0x002C1DB0, reloc-identical; map-agrees
 0x003E6328	sndSendChannelControlCommand	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e94b0 sim 1.000 margin 0.22 pair
-0x003E6358	sndSendChannelGroupCommand150	inferred	method=dds-fuzzy-100-tie-pair; p=0.58 (n=653); tier=C; source=dds; evidence=dds body 0x2e9510 sim 1.000 margin 0.00 pair
-0x003E6388	sndSendChannelGroupCommand140	inferred	method=dds-fuzzy-100-tie-pair; p=0.58 (n=653); tier=C; source=dds; evidence=dds body 0x2e9510 sim 1.000 margin 0.00 pair
+0x003E6358	sndSendChannelGroupCommand140	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=retail ori 0x140 at 0x3E6358; replaces sndSendChannelGroupCommandSwap
+0x003E6388	sndSendChannelGroupCommand150	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=retail ori 0x150 at 0x3E6388; replaces sndSendChannelGroupCommand140
 0x003E63B8	sdfSndReleaseMidiTrack	inferred	smt3-decomp C name via SLUS_209.11 0x002C1EA0, unique-masked-hash-c; map-agrees
 0x003E6410	sdfLeaf32	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
 0x003E6428	sdfLeaf33	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
@@ -28962,7 +28962,7 @@
 0x004E3A50	lmapCallSetFontStringDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by lmapCallSetFontStringData
 0x004E3A58	lmapCallSetFontStringDataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by lmapCallSetFontStringData
 0x004E3A60	lmapCallSetFontStringDataEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by lmapCallSetFontStringData
-0x004E3A68	EffGrid_FinishData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by EffGrid_Finish (4 of 10 refs, 7 functions)
+0x004E3A68	g_mainPID_FldWnd	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data at 0x46EB00 holds the PID started by FldWnd_ProcessStart; stored at gp-11376; replaces EffGrid_FinishData
 0x004E3A70	FldWnd_DrawProcessDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by FldWnd_DrawProcessData
 0x004E3A78	dds3Leaf6Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by dds3Leaf6 (2 of 3 refs, 2 functions)
 0x004E3A7F	dds3Func9Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3Func9

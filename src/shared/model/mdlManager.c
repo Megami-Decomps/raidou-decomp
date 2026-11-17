@@ -1373,7 +1373,11 @@ s32 mdlGetMinorNum(mdlObj_t *aHandle)
     return aHandle->sub->minor;
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetNumOfMajor);
+/* body: matched in smt3 @ 9401f79e: src/smt3/model/mdlManager.c:1282, near, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 mdlGetNumOfMajor(void)
+{
+    return 8;
+}
 
 s32 mdlGetNumOfMinor(s32 aMajor)
 {

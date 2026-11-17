@@ -360,7 +360,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 002F6AE8	002F6AE8	code_r1_002F6AE8	c	none	
 002F6C00	002F7460	code_002F6C00	c	none	
 002F7568	002F77B8	code_r1_002F7568	c	none	
-002F77E0	002F8A50	code_002F77E0	asm	none	
+002F77E0	002F8A50	code_002F77E0	c	none	
 002F8AF8	002F8AF8	kernel/dds3TitleMain	c	smt3:map:1 of 1	kernel/dds3TitleMain
 002F8B88	002F92B8	code_002F8B88	asm	none	
 002F93D8	002F9548	code_r1_002F93D8	c	none	
@@ -389,10 +389,10 @@ start	last_func	unit	kind	evidence	smt3_unit
 00349B80	0034B7C0	code_00349B80	c	none	
 0034B898	0034BD68	jmsMisc	c	dds:7 of 11	
 0034C048	0034C148	code_r1_0034C048	c	dds:2 of 2	
-0034C170	0034C170	code_0034C170	asm	none	
+0034C170	0034C170	code_0034C170	c	none	
 0034C270	0034CE28	code_r1_0034C270	c	dds:14 of 18	
 0034CE48	0034CF48	code_r1_0034CE48	c	dds:2 of 2	
-0034D0B0	0034D0F0	code_0034D0B0	asm	none	
+0034D0B0	0034D0F0	code_0034D0B0	c	none	
 0034D128	0034EFF0	code_r1_0034D128	c	dds:47 of 64	
 0034F068	0034F210	code_r1_0034F068	c	dds:2 of 4	
 0034F3B8	00355EC0	code_0034F3B8	c	none	
@@ -402,7 +402,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00357800	00357800	sdf/sdfIop	c	smt3:map:1 of 1	sdf/sdfIop
 003578C0	00358128	sdf/sdfGraph	c	smt3:names:13+smt3:map:1 of 14	sdf/sdfGraph
 00358180	00358700	sdf/sdfGsMemory	c	smt3:names:12 of 12	sdf/sdfGsMemory
-003587A0	003587A8	code_003587A0	asm	none	
+003587A0	003587A8	code_003587A0	c	none	
 003587B0	00358D50	sdf/sdfImageSet	c	smt3:names:7 of 8	sdf/sdfImageSet
 00358D90	00358D90	code_00358D90	c	none	
 00358D98	0035A450	sdf/sdfTex	c	smt3:names:24+smt3:map:9+dds:2 of 44	sdf/sdfTex
@@ -416,7 +416,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00360F40	003620F0	sdf/sdfMat	c	smt3:names:31+smt3:map:2 of 46	sdf/sdfMat
 00362160	003642E0	sdf/sdfMotion	c	smt3:names:77 of 88	sdf/sdfMotion
 00364310	00364D88	sdf/sdfVu0	c	smt3:names:39 of 39	sdf/sdfVu0
-00364E18	00364E18	code_00364E18	asm	none	
+00364E18	00364E18	code_00364E18	c	none	
 00364E20	00367688	sdf/sdfVu1	c	smt3:names:38 of 38	sdf/sdfVu1
 003677B8	003681C0	sdf/sdfCoreDraw	c	smt3:names:4 of 7	sdf/sdfCoreDraw
 00368258	00368258	code_00368258	c	none	
@@ -434,7 +434,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0036CE20	0036E160	sdf/sdfFileIO	c	smt3:names:23+smt3:map:1 literal-cores:1 of 24+gap code_0036E160 (sdfFirstInitSub)	sdf/sdfFileIO
 0036E170	0036E1F8	sdf/sdfHdd	c	smt3:map:2 of 2	sdf/sdfHdd
 0036E340	0036E538	sdf/sdfDev9	c	smt3:names:4+smt3:map:1 of 5	sdf/sdfDev9
-0036E570	0036E570	code_0036E570	asm	none	
+0036E570	0036E570	code_0036E570	c	none	
 0036E5C0	0036E700	sdf/sdfMisc	c	smt3:names:3 of 3+gap code_0036E700 (sdfDevResizeBufferedRequest)	sdf/sdfMisc
 0036E7C8	0036EB78	sdf/sdfMath	c	smt3:names:8 of 8	sdf/sdfMath
 0036EBF0	0036F2C8	sdf/sdfQuat	c	smt3:names:13 of 14	sdf/sdfQuat

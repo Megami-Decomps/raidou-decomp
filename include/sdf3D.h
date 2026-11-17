@@ -27,6 +27,7 @@ void sdf3DSetDefaultLight(struct sdf3DLightParallelPacket_t *aLight);
 void sdf3DSetDefaultFog(struct sdf3DFogPacket_t *aFog);
 
 extern s8 sdf3DScreenAdjust;
+extern f32 sdf3DUpVector[4];
 extern f32 sdf3DScreenAdjustScaleX;
 extern f32 sdf3DScreenAdjustScaleY;
 extern f32 sdf3DScreenAdjustOffsetX;

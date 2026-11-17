@@ -3,7 +3,8 @@
 
 #include "common.h"
 
-void mnuLoadTitleStreamFrameData(char **fname, void *);
+struct titleAudioStreamState_t;
+void mnuLoadTitleStreamFrameData(char *filePath, struct titleAudioStreamState_t *streamState);
 void sndBgmContinue(void);
 void sndBgmFadeIn(void);
 void sndBgmFadeOut(void);
@@ -20,7 +21,8 @@ extern struct fileRequest *GetVolumeWork;
 
 struct titleAudioStreamState_t;
 /* Retail passes the stream record, not a file name pointer. */
-void sndCallFileCheckEnd(struct titleAudioStreamState_t *stream);
+s32 sndCallFileCheckEnd(struct titleAudioStreamState_t *stream);
+extern struct fileRequest *sndCallFileCheckEndWork;
 s32 sndCallLoad(void *);
 void sndCallMemset(void);
 s32 sndCallWaitSema3(void);
@@ -33,5 +35,7 @@ s32 sndSePlay(void);
 void sndSeFree(void);
 
 void sndBgmPlay(void);
+
+extern const char sndStrSoundat3At3[];
 
 #endif

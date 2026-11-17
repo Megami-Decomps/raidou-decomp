@@ -47,24 +47,6 @@ void sceSifMInitRpc(s32 mode);
 rpcPacket *_sceRpcGetPacket(rpcQueue *queue);
 void _sceRpcFreePacket(rpcPacket *p);
 
-/* The M-RPC client extends the shared client prefix. Packet addresses are
- * opaque, as in SifRpcClientData_t in include/irx/iop.h. */
-struct sceSifMClientData {
-    void *packet;
-    u32 sequence;
-    s32 sema;
-    u32 unk_C;
-    u32 serverId;
-    void *buffer;
-    void *cbuffer;
-    void (*endFunction)(void *);
-    void *endParam;
-    void *server;
-    s32 completionSema;
-    s32 result;
-    u32 parameters[3];
-};
-
 /* Observed completion-response prefix; fields after this prefix are unknown. */
 typedef struct rpcResponse {
     u32 commandHeader[4];
@@ -94,8 +76,6 @@ typedef struct sdfSemaParam_t {
 
 extern s32 CreateSema(sdfSemaParam_t *param);
 extern const char sceSifMModeErrorString[];
-s32 sceSifMBindRpcParam(rpcClient *client, u32 serverId, s32 mode, u32 arg0, u32 arg1, u32 arg2);
-s32 sceSifMBindRpc(rpcClient *client, u32 serverId, s32 mode);
 
 /* The EE command transfers the four-byte server-pointer representation. */
 typedef char rpcUnbindServerPointerSize[(sizeof(((rpcClient *)0)->server) == 4) ? 1 : -1];

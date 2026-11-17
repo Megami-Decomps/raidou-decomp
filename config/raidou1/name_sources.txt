@@ -11041,7 +11041,7 @@
 0x0036E0B0	sdfFileCmdStartThread	inferred	SMT3HD name via SLUS_209.11 0x002BF8F0, reloc-identical; map-agrees
 0x0036E160	sdfFirstInitSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0036E160, nearest named function sdfFileCmdStartThread; called by dds3FirstInit
 0x0036E170	sdfHddPowerOffTh	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x2bf9a0 sim 0.862 margin 0.57 pair
-0x0036E1E0	sdfHddInitLabel	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sdfHddInit (2 of 3 refs, 2 functions)
+0x0036E1E0	sdfHddPowerOffHandler	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 name of the same body (iSignalSema wrapper after sdfHddPowerOffTh, the sceCdPOffCallback handler sdfHddInit installs); replaces sdfHddInitLabel
 0x0036E1F8	sdfHddInit	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x2bfa38 sim 0.632 margin 0.31 pair
 0x0036E340	sdfDev9LoadModule	inferred	SMT3HD name via SLUS_209.11 0x002BFBD8, reloc-identical; map-agrees
 0x0036E3C0	sdfLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfDev9; no named callee, caller or string
@@ -11114,8 +11114,8 @@
 0x00370500	sdfCallStrlen	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; calls strlen
 0x00370538	p2sdSetPcmBuffer	inferred	SMT3HD name via SLUS_209.11 0x002C1DB0, reloc-identical; map-agrees
 0x00370598	sndSendChannelControlCommand	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e94b0 sim 1.000 margin 0.22 pair
-0x003705C8	sndSendChannelGroupCommand150	inferred	method=dds-fuzzy-100-tie-pair; p=0.58 (n=653); tier=C; source=dds; evidence=dds body 0x2e9510 sim 1.000 margin 0.00 pair
-0x003705F8	sndSendChannelGroupCommand140	inferred	method=dds-fuzzy-100-tie-pair; p=0.58 (n=653); tier=C; source=dds; evidence=dds body 0x2e9510 sim 1.000 margin 0.00 pair
+0x003705C8	sndSendChannelGroupCommand140	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=retail ori 0x140 at 0x3705C8; replaces sndSendChannelGroupCommandSwap
+0x003705F8	sndSendChannelGroupCommand150	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=retail ori 0x150 at 0x3705F8; replaces sndSendChannelGroupCommand140
 0x00370628	sdfSndReleaseMidiTrack	inferred	smt3-decomp C name via SLUS_209.11 0x002C1EA0, unique-masked-hash-c; map-agrees
 0x00370680	sdfLeaf32	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
 0x00370698	sdfLeaf33	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
@@ -23524,7 +23524,7 @@
 0x0046EAE8	lmapCallSetFontStringDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by lmapCallSetFontStringData
 0x0046EAF0	lmapCallSetFontStringDataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by lmapCallSetFontStringData
 0x0046EAF8	lmapCallSetFontStringDataEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by lmapCallSetFontStringData
-0x0046EB00	EffGrid_FinishData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by EffGrid_Finish (4 of 10 refs, 7 functions)
+0x0046EB00	g_mainPID_FldWnd	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data at 0x46EB00 holds the PID started by FldWnd_ProcessStart; stored at gp-11376; replaces EffGrid_FinishData
 0x0046EB08	FldWnd_DrawProcessDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by FldWnd_DrawProcessData
 0x0046EB10	evtFunc10Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtFunc10
 0x0046EB18	evtFunc11Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtFunc11

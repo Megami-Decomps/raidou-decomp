@@ -19,6 +19,20 @@ typedef struct lmapWork_t {
     u8 flags; /* 0x3150 */
 } lmapWork_t;
 
+/* One 0x30-byte entry of the DH window table. */
+typedef struct lmapDHWindow_t {
+    u8 unk00[0x20];
+    s32 unk20;
+    s32 unk24;
+    u8 unk28;
+    u8 unk29;
+    u8 unk2A;
+    s8 unk2B;
+    s8 unk2C;
+    u8 unk2D;
+    u8 unk2E[2];
+} lmapDHWindow_t;
+
 extern lmapWork_t *DDS3_GBWK2;
 
 dds3ProcessFunc_t ActWnd_Draw(dds3ProcessID_t *proc);
@@ -60,6 +74,8 @@ dds3ProcessFunc_t FldWnd_DrawProcess(dds3ProcessID_t *PID);
 void FldWnd_DrawThumbnail(struct tagLMAP_FLDWND_WORK *wk);
 void FldWnd_LinkSprite(struct sprHandle_t *a_hSpr);
 dds3ProcessFunc_t FldWnd_Process(dds3ProcessID_t *PID);
+s32 EffGrid_Main(dds3ProcessID_t *PID);
+void lmapLMAPPAC(struct tagLMAP_FLDWND_WORK *wk);
 void FldWnd_ProcessStart(void);
 void FldWnd_Start(sdfVector4_t *pos1, const sdfVector4_t *pos0);
 void ListCallProcEnd(struct tagLMAP_LIST_WORK *wk);
@@ -88,5 +104,35 @@ s16 dmCallLMAPPOINTNO(s32 no);
 dds3ProcessFunc_t lmapCallEffGridSetCBAll(dds3ProcessID_t *proc);
 void lmapCallTexFreeDelayed2(void);
 void mselNmeCamera(void);
+extern dds3ProcessID_t *g_mainPID_LmpList;
+extern dds3ProcessID_t *g_mainPID_FldWnd;
+
+/* Partial layout of the field window process work. */
+struct tagLMAP_FLDWND_WORK {
+    struct sdfMemHandle_t *hMem;
+    dds3ProcessID_t *drawPID;
+    u8 unk08[0xE9];
+    u8 flags; /* bit 1: stock visible. */
+    u8 unkF2[2];
+};
+
+/* Partial layout of the lmap list process work. */
+typedef struct lmapLmpListWork_t {
+    struct sdfMemHandle_t *hMem;
+    dds3ProcessID_t *drawPID;
+    u8 unk08[0x34];
+    u8 flags;
+    u8 step;
+    u8 pad3E[2];
+    s32 unk40;
+    s32 count;
+    u8 unk48[4];
+} lmapLmpListWork_t;
+
+extern const char M_InitScene_lmapData[];
+extern const char ListProcessStart_lmapStrLmapListMain[];
+extern const char ListProcessStart_lmapStrLmapListDraw[];
+extern const char FldWnd_ProcessStartStrLmapFldWndMainProc[];
+extern const char FldWnd_ProcessStartStrLmapFldWndDrawProc[];
 
 #endif

@@ -6,6 +6,7 @@
 #include "sdfTex.h"
 #include "sdfFile.h"
 #include "sdfMemory.h"
+#include "sdfAddrResolve.h"
 
 void *sdfDevLoadFile(const char *aFileName, u32 *aOutData, u32 *aOutSize, s32 aAlign);
 
@@ -156,12 +157,36 @@ sdfItemArray_t *sdfTexSetTB(const sdfTextureOffsetListHeader_t *aData) {
     return handle;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", sdfCallDevLoadFileEx);
+struct sdfItemArray_t *sdfCallDevLoadFileEx(const char *filename)
+{
+    sdfMemHandle_t *file;
+    struct sdfItemArray_t *tex;
+    u32 info[4];
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", sdfRelocatePackedResourceWordsFromHeader);
+    file = sdfDevLoadFileEx(filename, info, NULL);
+    tex = sdfTexSetTB(EE_ADDR_AS(const struct sdfTextureOffsetListHeader_t *, info[0]));
+    sdfMemFreeDirect(file);
+    return tex;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfDevFile.c:196, match, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+void *sdfRelocatePackedResourceWordsFromHeader(sdfBinaryHeader_t *aData)
+{
+    void *body = aData + 1;
+
+    sdfAddressResolver(body, body, (u8 *)body + aData->resolveOffset, aData->resolveCount);
+    return body;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfDevFile", sdfReadPackedResourceAndRelocateHeader);
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", sdfRelocatePackedResourcePayload);
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfDevFile.c:214, match, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+void *sdfRelocatePackedResourcePayload(sdfBinaryHeader_t *aData)
+{
+    void *body = aData + 1;
+
+    sdfAddressResolver(body, body, (u8 *)body + aData->resolveOffset, aData->resolveCount);
+    return body;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfDevFile", sdfLoadPackedResourceWithRelocatedPayload);

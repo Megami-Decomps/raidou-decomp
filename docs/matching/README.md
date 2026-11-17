@@ -33,13 +33,13 @@ menu scenarios); an entry says which paths they covered.
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 5 | code_0015D490 | raidou1 | [code_0015D490.md](code_0015D490.md) |
 | 5 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
+| 5 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 4 | code_0014B660 | raidou1 | [code_0014B660.md](code_0014B660.md) |
 | 4 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 4 | event/evtEventViewerMenu | raidou1, raidou2 | [event/evtEventViewerMenu.md](event/evtEventViewerMenu.md) |
 | 4 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 4 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
 | 4 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
-| 4 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 3 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
 | 3 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
@@ -63,6 +63,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_r1_00128378 | raidou1 | [code_r1_00128378.md](code_r1_00128378.md) |
 | 2 | code_r1_00142038 | raidou1, raidou2 | [code_r1_00142038.md](code_r1_00142038.md) |
 | 2 | code_r1_0016B498 | raidou1 | [code_r1_0016B498.md](code_r1_0016B498.md) |
+| 2 | code_r1_0019D3A8 | raidou1, raidou2 | [code_r1_0019D3A8.md](code_r1_0019D3A8.md) |
 | 2 | code_r1_001CA8F8 | raidou1, raidou2 | [code_r1_001CA8F8.md](code_r1_001CA8F8.md) |
 | 2 | code_r1_00242308 | raidou1, raidou2 | [code_r1_00242308.md](code_r1_00242308.md) |
 | 2 | dds3KernelDraw_0010BEE0 | raidou1 | [dds3KernelDraw_0010BEE0.md](dds3KernelDraw_0010BEE0.md) |
@@ -93,7 +94,9 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_002929C8 | raidou1 | [code_002929C8.md](code_002929C8.md) |
 | 1 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
 | 1 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
+| 1 | code_002D7950 | raidou1 | [code_002D7950.md](code_002D7950.md) |
 | 1 | code_00323280 | raidou1 | [code_00323280.md](code_00323280.md) |
+| 1 | code_0034F3B8 | raidou1 | [code_0034F3B8.md](code_0034F3B8.md) |
 | 1 | code_r1_00104370 | raidou1, raidou2 | [code_r1_00104370.md](code_r1_00104370.md) |
 | 1 | code_r1_0013B0F8 | raidou1 | [code_r1_0013B0F8.md](code_r1_0013B0F8.md) |
 | 1 | code_r1_001403E0 | raidou1, raidou2 | [code_r1_001403E0.md](code_r1_001403E0.md) |
@@ -131,6 +134,8 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_002CAFD8 | raidou1, raidou2 | [code_r1_002CAFD8.md](code_r1_002CAFD8.md) |
 | 1 | code_r1_002F59D0 | raidou1, raidou2 | [code_r1_002F59D0.md](code_r1_002F59D0.md) |
 | 1 | code_r1_00323138 | raidou1, raidou2 | [code_r1_00323138.md](code_r1_00323138.md) |
+| 1 | code_r1_0034CE48 | raidou1, raidou2 | [code_r1_0034CE48.md](code_r1_0034CE48.md) |
+| 1 | code_r1_0034D128 | raidou1, raidou2 | [code_r1_0034D128.md](code_r1_0034D128.md) |
 | 1 | dat | raidou1 | [dat.md](dat.md) |
 | 1 | effect/effBattle | raidou1, raidou2 | [effect/effBattle.md](effect/effBattle.md) |
 | 1 | effect/effEvent | raidou1, raidou2 | [effect/effEvent.md](effect/effEvent.md) |
@@ -141,6 +146,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | facility/fclMisc | raidou1, raidou2 | [facility/fclMisc.md](facility/fclMisc.md) |
 | 1 | interface/itfPanel | raidou1, raidou2 | [interface/itfPanel.md](interface/itfPanel.md) |
 | 1 | interface/itfTestMesManager_0018CC20 | raidou1, raidou2 | [interface/itfTestMesManager_0018CC20.md](interface/itfTestMesManager_0018CC20.md) |
+| 1 | jmsMisc | raidou1, raidou2 | [jmsMisc.md](jmsMisc.md) |
 | 1 | kernel/dds3KernelDraw_0010A750 | raidou1, raidou2 | [kernel/dds3KernelDraw_0010A750.md](kernel/dds3KernelDraw_0010A750.md) |
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
 | 1 | newbattle/nbTarSelProcess | raidou1, raidou2 | [newbattle/nbTarSelProcess.md](newbattle/nbTarSelProcess.md) |

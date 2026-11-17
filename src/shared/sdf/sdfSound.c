@@ -137,7 +137,10 @@ typedef struct sndMergedWork_t {
     u32 eeWorkByteCount;
     u32 opaque408;
     u32 opaque40C;
-    u8 opaque410[0x3A8];
+    u32 unk410;
+    u32 unk414;
+    u8 opaque418[0x360];
+    sndMidiStateGroup_t stateGroups[2];
 } sndMergedWork_t;
 
 extern sndMergedWork_t sdfSndWork FAKEMATCH_ASM_NAME("sdfSndMap");
@@ -555,14 +558,21 @@ s32 p2sdStopAllBgm(void)
     return sdfSndSendCmd(0x1A0, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfCommandPADDISABLESub);
+s32 sdfCommandPADDISABLESub(void)
+{
+    return sdfSndSendCmd(0x210, 0, 0, 0);
+}
 
 s32 p2sdStopAllSe(void)
 {
     return sdfSndSendCmd(0x40, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfLeaf31);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:666, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+s32 sdfLeaf31(s32 aSeId)
+{
+    return sdfSndSendCmd(aSeId | 0x50, 0, 0, 0);
+}
 
 /* Send a NUL-terminated command string; the transport excludes the terminator. */
 u32 sdfSndLoadHDFile(s32 aVcChNum, char *aFilename) {
@@ -723,7 +733,11 @@ void p2sdLoadSMGFile(s32 MidiNo) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfCallStrlen);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:804, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+u64 sdfCallStrlen(const char *aName)
+{
+    return sdfSndSendSyncCmd(0xA0, 0, (void *)aName, strlen(aName));
+}
 
 void p2sdSetPcmBuffer(saddr_t data, s32 size) {
     s32 *packet;
@@ -738,11 +752,23 @@ void p2sdSetPcmBuffer(saddr_t data, s32 size) {
     p2sdSmgHandle = -1;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sndSendChannelControlCommand);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:822, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+u64 sndSendChannelControlCommand(s32 aCh)
+{
+    return sdfSndSendSyncCmd((aCh & 0xF) | 0x1C0, 0, NULL, 0);
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sndSendChannelGroupCommand150);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:832, near, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+u64 sndSendChannelGroupCommand140(u8 aCh)
+{
+    return sdfSndSendSyncCmd(((aCh >> 3) & 0xF) | 0x140, 0, NULL, 0);
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sndSendChannelGroupCommand140);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:832, match, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+u64 sndSendChannelGroupCommand150(u8 aCh)
+{
+    return sdfSndSendSyncCmd(((aCh >> 3) & 0xF) | 0x150, 0, NULL, 0);
+}
 
 void sdfSndReleaseMidiTrack(s32 id) {
     u32 packet[4];
@@ -760,17 +786,45 @@ INCLUDE_ASM(const s32, "sdf/sdfSound", sdfLeaf32);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", sdfLeaf33);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sndGetNonnegativeEntryBalance);
+s32 sndGetNonnegativeEntryBalance(s32 aIndex)
+{
+    s32 remaining = sdfSndWork.slots[aIndex].unk4 - sdfSndWork.slots[aIndex].unk5;
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfLeaf34);
+    if (remaining > 0) {
+        return remaining;
+    }
+    return 0;
+}
+
+sndChannel_t *sdfLeaf34(void) {
+    return sdfSndWork.channels;
+}
 
 p2sdLoadEntry_t *sdfLeaf35(void) {
     return sdfSndWork.slots;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfLeaf36);
+u32 sdfLeaf36(u32 *aOutValue)
+{
+    if (aOutValue != NULL) {
+        *aOutValue = sdfSndWork.unk414;
+    }
+    return sdfSndWork.unk410;
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sndCopyGroupedMidiStateBytes);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:888, rework, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
+void sndCopyGroupedMidiStateBytes(u8 *out) {
+    s32 group;
+    if (out == NULL) {
+        return;
+    }
+    for (group = 0; group < 2; group++) {
+        s32 byteIndex;
+        for (byteIndex = 0; byteIndex < 24; byteIndex++) {
+            *out++ = ((sndMergedWork_t *)sdfSndMap)->stateGroups[group].values[byteIndex];
+        }
+    }
+}
 
 /* Sends a prepared track identifier with the 0x17f setting. */
 void p2sdPlayBGMFade(s32 trackId) {
@@ -824,7 +878,10 @@ s32 p2sdSyncSound(void)
     return sdfSndSendSyncCmd(0x100, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sndSendChannelGroupCommand110Duplicate);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:963, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void sndSendChannelGroupCommand110Duplicate(u8 channel) {
+    sdfSndSendSyncCmd(((channel >> 3) & 0xF) | 0x110, 0, 0, 0);
+}
 
 s32 sdfSndSetChannelCount(u32 aCh)
 {
@@ -864,7 +921,10 @@ s32 p2sdSyncMovie(void)
     return sdfSndSendSyncCmd(0x100, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sndSendChannelGroupCommand110);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:963, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void sndSendChannelGroupCommand110(u8 channel) {
+    sdfSndSendSyncCmd(((channel >> 3) & 0xF) | 0x110, 0, 0, 0);
+}
 
 s32 sdfFileRpcCallback(s32 unused, u32 event) {
     switch (event) {

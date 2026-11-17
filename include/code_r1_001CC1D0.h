@@ -374,7 +374,7 @@ struct mnuList_t {
     s32 count;
     s32 windowOffset;
     s32 rowStep;        /* 0x28: constructor argument scaled by eight */
-    void (*drawCallback)(); /* 0x2C: native callers supply list-specific arguments. */
+    s32 (*drawCallback)(); /* 0x2C: native callers supply list-specific arguments; a zero result stops the row loop. */
     /* 0x30 is generic list user data: a countdown pointer, a buffer or
      * staff draw context. */
     void *context;
@@ -406,6 +406,7 @@ struct mnuListNode_t *mnuListAppendNode(struct mnuList_t *list, const void *text
 
 /* Move the visible list window and return its unchanged cursor node. */
 struct mnuListNode_t *mnuAdvanceListWindowStart(struct mnuList_t *list);
+struct mnuListNode_t *mnuRetreatListWindowStart(struct mnuList_t *list);
 
 /* Anchored insertion defaults before; empty/null/last anchors append regardless of this option. */
 /* Insert a node borrowing display text; the list owns only its node. */
@@ -473,6 +474,19 @@ typedef struct mnuWindowContainer_t {
 typedef struct mnuWindowContainer_t mnuWindowContainer_t;
 
 typedef char mnuWindowContainer_size_must_be_0xA0[(sizeof(mnuWindowContainer_t) == 0xA0) ? 1 : -1];
+
+typedef struct mnuFadeFields_t {
+    mnuWindowContainer_t previousWindow;
+    s32 previousVisibleCount;
+    mnuIconSprites_t savedResource;
+    u32 hasResourceCopy;
+    s32 previousProgress;
+    mnuWindowContainer_t *currentWindow;
+    s32 currentProgress;
+} mnuFadeFields_t;
+
+/* Raidou's mnuWindowContainer_t is 8 bytes longer; the fade functions read currentProgress at 0xC8. */
+typedef char mnuFadeFields_size_must_be_0xCC[(sizeof(mnuFadeFields_t) == 0xCC) ? 1 : -1];
 
 /* Terminal/shop modes share this complete 0x38C-byte scene allocation. */
 typedef struct mnuTerminalContext_t {

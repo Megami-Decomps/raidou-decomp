@@ -85,9 +85,17 @@ INCLUDE_ASM(const s32, "code_00336E90", sdfGohmadenDraw);
 
 INCLUDE_ASM(const s32, "code_00336E90", campGohmadenCalc);
 
-INCLUDE_ASM(const s32, "code_00336E90", campKillProcesses);
+/* body: matched in smt3 @ 9401f79e: src/smt3/code_0022C578.c:963, rework, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
+void campKillProcesses(void)
+{
+    dds3KillProcessName(cmpCalcProcName2, 0);
+    dds3KillProcessName(campDrawProcName2, 0);
+    dds3KillProcessName(campUpdateProcName2, 0);
+}
 
-INCLUDE_ASM(const s32, "code_00336E90", gohProcessCheck);
+s32 gohProcessCheck(void) {
+    return dds3SearchProcessName(cmpCalcProcName2) != NULL;
+}
 
 INCLUDE_ASM(const s32, "code_00336E90", gohFunc);
 
@@ -101,7 +109,13 @@ void gohLeaf23(void) {
 
 INCLUDE_ASM(const s32, "code_00336E90", gohScrCmd_RenkenSpirit);
 
-INCLUDE_ASM(const s32, "code_00336E90", fldFacilityMistDraw);
+void fldFacilityMistDraw(s32 Mode) {
+    if (Mode == 0) {
+        campGohmadenCalc();
+    } else {
+        gohFunc();
+    }
+}
 
 void gohStopSequence(void) {
     campKillProcesses();

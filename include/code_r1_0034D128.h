@@ -162,6 +162,6 @@ typedef struct mnuPanelGroup_t {
 
 typedef char mnuPanelGroup_size_must_be_0x2C[(sizeof(mnuPanelGroup_t) == 0x2C) ? 1 : -1];
 
-void CmdMenuCursorDrawUnlock(void *pCmdMenu);
+void CmdMenuCursorDrawUnlock(mnuWindowContainer_t *pCmdMenu);
 
 #endif

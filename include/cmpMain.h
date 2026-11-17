@@ -30,5 +30,6 @@ void cmpProcessEnd(void);
 void cmpProcessStart(void);
 void cmpProcessStartEx(dds3ProcessID_t *id);
 void cmpSetMarkID(s32 a_markID);
+extern const char cmpStrStorySelectDebugProc[];
 
 #endif

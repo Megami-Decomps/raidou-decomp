@@ -95,7 +95,12 @@ void Normalize(void)
     VU0_SEQ_NORMALIZE();
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", sdfLeaf30);
+f32 sdfLeaf30(void)
+{
+    f32 lengthSq;
+    VU0_QUAT_LENGTHSQ(lengthSq);
+    return lengthSq;
+}
 
 /* vu0 routine: return the four-lane dot product of vf10 and vf11. */
 f32 SDF_QUAT_INNERPRODUCT(void)

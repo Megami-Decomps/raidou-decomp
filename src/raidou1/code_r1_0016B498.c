@@ -78,7 +78,6 @@ extern s32 fldData36;
 extern sdfTexHandle_t *effQueuedResourceNameRecord4;
 
 extern s32 fldLeaf24(void);
-extern void eglLinkSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 vh, u32 c0, u32 c1, u32 c2, u32 c3, void *th);
 extern void mapFunc2(s32 num, s32 x, s32 y);
 extern void fldProcSequenceSub4(f32 x, f32 z, f32 *outX, f32 *outY);
 extern void mapCallSin11(s32 x, s32 y);

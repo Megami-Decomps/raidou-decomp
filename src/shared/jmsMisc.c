@@ -10,6 +10,7 @@
 #include "evt_world.h"
 #include "code_r1_001CC1D0.h"
 #include "jmsMisc.h"
+#include "dds3PadManager.h"
 
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
@@ -316,7 +317,13 @@ void jmsSeqJumpAndFree(s32 *entrySlot, jmsSeqUnit_t *entry) {
     entry->Stat = retainedFlags | MNU_POPUP_INSERT_BEFORE_TOP;
 }
 
-INCLUDE_ASM(const s32, "jmsMisc", jmsSeqJumpAndPop);
+void jmsSeqJumpAndPop(struct jmsSeqUnit_t **pCurrentSeqUnit, struct jmsSeqUnit_t *pSeqUnit) {
+    u16 retainedFlags;
+
+    retainedFlags = pSeqUnit->Stat;
+    *pCurrentSeqUnit = pSeqUnit;
+    pSeqUnit->Stat = retainedFlags | 0x60000;
+}
 
 /* Bind the current popup entry only when its saved address is nonzero. */
 void jmsSeqReturn(jmsSeqHandle_t *state, s32 *entrySlot) {
@@ -326,7 +333,145 @@ void jmsSeqReturn(jmsSeqHandle_t *state, s32 *entrySlot) {
     }
 }
 
+/* NON_MATCHING: 182 of 183 words match.  */
+#ifdef NON_MATCHING
+u32 jmsChkCommonInput(u32 ControlBit) {
+    s32 flags = 0;
+
+    if (ControlBit & 1) {
+        flags = dds3PadButtonState[0x23] < 0;
+    }
+    if (ControlBit & 0x2) {
+        if (dds3PadButtonState[0x21] < 0) {
+            flags |= 0x2;
+        }
+    }
+    if (ControlBit & 0x10) {
+        if (dds3PadButtonState[0x26] & 2) {
+            flags |= 0x10;
+        }
+    }
+    if (ControlBit & 0x20) {
+        if (dds3PadButtonState[0x27] & 2) {
+            flags |= 0x20;
+        }
+    }
+    if (ControlBit & 0x40) {
+        if (dds3PadButtonState[0x24] & 2) {
+            flags |= 0x40;
+        }
+    }
+    if (ControlBit & 0x80) {
+        if (dds3PadButtonState[0x25] & 2) {
+            flags |= 0x80;
+        }
+    }
+    if (ControlBit & 0x4) {
+        if (dds3PadButtonState[0x22] < 0) {
+            flags |= 0x4;
+        }
+    }
+    if (ControlBit & 0x8) {
+        if (dds3PadButtonState[0x20] < 0) {
+            flags |= 0x8;
+        }
+    }
+    if (ControlBit & 0x200) {
+        if (dds3PadButtonState[0x2a] & 2) {
+            flags |= 0x200;
+        }
+    }
+    if (ControlBit & 0x100) {
+        if (dds3PadButtonState[0x28] & 2) {
+            flags |= 0x100;
+        }
+    }
+    if (ControlBit & 0x800) {
+        if (dds3PadButtonState[0x2b] & 2) {
+            flags |= 0x800;
+        }
+    }
+    if (ControlBit & 0x400) {
+        if (dds3PadButtonState[0x29] & 2) {
+            flags |= 0x400;
+        }
+    }
+    if (ControlBit & 0x1000) {
+        if (dds3PadButtonState[0x2c] < 0) {
+            flags |= 0x1000;
+        }
+    }
+    if (ControlBit & 0x2000) {
+        if (dds3PadButtonState[0x2d] < 0) {
+            flags |= 0x2000;
+        }
+    }
+    if (ControlBit & 0x20000) {
+        if (dds3PadButtonState[0x2a] < 0) {
+            flags |= 0x20000;
+        }
+    }
+    if (ControlBit & 0x10000) {
+        if (dds3PadButtonState[0x28] < 0) {
+            flags |= 0x10000;
+        }
+    }
+    if (ControlBit & 0x80000) {
+        if (dds3PadButtonState[0x2b] < 0) {
+            flags |= 0x80000;
+        }
+    }
+    if (ControlBit & 0x40000) {
+        if (dds3PadButtonState[0x29] < 0) {
+            flags |= 0x40000;
+        }
+    }
+    if (ControlBit & 0x10) {
+        if (dds3PadButtonState[0x26] != 0) {
+            flags |= 0x100000;
+        }
+    }
+    if (ControlBit & 0x20) {
+        if (dds3PadButtonState[0x27] != 0) {
+            flags |= 0x200000;
+        }
+    }
+    if (ControlBit & 0x40) {
+        if (dds3PadButtonState[0x24] != 0) {
+            flags |= 0x400000;
+        }
+    }
+    if (ControlBit & 0x80) {
+        if (dds3PadButtonState[0x25] != 0) {
+            flags |= 0x800000;
+        }
+        if (dds3PadButtonState[0x2A] != 0) {
+            flags |= 0x1000000;
+        }
+    }
+    if (ControlBit & 0x40) {
+        if (dds3PadButtonState[0x28] != 0) {
+            flags |= 0x2000000;
+        }
+    }
+    if (ControlBit & 0x80) {
+        if (dds3PadButtonState[0x2b] != 0) {
+            flags |= 0x4000000;
+        }
+    }
+    if (ControlBit & 0x40) {
+        if (dds3PadButtonState[0x29] != 0) {
+            flags |= 0x8000000;
+        }
+    }
+    if (flags & 1) {
+        flags = flags & 1;
+    }
+    return flags;
+}
+#else
 INCLUDE_ASM(const s32, "jmsMisc", jmsChkCommonInput);
+#endif
 
 #ifdef VERSION_RAIDOU1
 /* Detective menu sprite layout: parts are placed relative to their parent part (-1 for none). */

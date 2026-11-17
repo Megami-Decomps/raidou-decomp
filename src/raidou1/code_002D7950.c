@@ -1,5 +1,16 @@
 #include "common.h"
 #include "lmap.h"
+#include "fileManager.h"
+#include "dds3KernelDraw_0010A750.h"
+#include "dds3KernelCore.h"
+#include "ctn.h"
+#include "code_002D7950.h"
+#include "dds3WorldBasic.h"
+#include "basic.h"
+#include "dds3AreaBasic.h"
+#include "dds3Basic.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
 
 INCLUDE_ASM(const s32, "code_002D7950", nbRefWorkMjn3);
 
@@ -295,13 +306,113 @@ INCLUDE_ASM(const s32, "code_002D7950", SetPref);
 
 INCLUDE_ASM(const s32, "code_002D7950", ctnFunc);
 
-INCLUDE_ASM(const s32, "code_002D7950", ctnFindAheadListSub2);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/002E6B60.c:1, match */
+void ctnFindAheadListSub2(struct ctnCitizen_t *pCitizen, struct ctnCitizen_t *pOther) {
+    f32 leftWallDist;
+    f32 rightWallDist;
+    f32 width;
+    f32 left;
+    f32 right;
+    f32 start;
+    f32 end;
+
+    ctnFunc4(pCitizen, pOther, &leftWallDist, &rightWallDist);
+    width = leftWallDist + rightWallDist;
+    left = leftWallDist - 0.5f;
+    right = leftWallDist + 0.5f;
+
+    start = 0.0f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->aheadEvadeArray[0] = 0;
+    }
+    start = width / 6.0f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->aheadEvadeArray[1] = 0;
+    }
+    start = width / 3.0f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->aheadEvadeArray[2] = 0;
+    }
+    start = width * 5.0f / 12.0f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->aheadEvadeArray[3] = 0;
+    }
+    start = width * 0.5f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->aheadEvadeArray[4] = 0;
+    }
+    start = width / 6.0f + width * 0.5f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->aheadEvadeArray[5] = 0;
+    }
+    start = width / 3.0f + width * 0.5f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->aheadEvadeArray[6] = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002D7950", ctnRefWorkCtn3);
 
 INCLUDE_ASM(const s32, "code_002D7950", ctnRefWorkCtn4);
 
-INCLUDE_ASM(const s32, "code_002D7950", ctnFunc2);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/002E7108.c:1, match */
+void ctnFunc2(struct ctnCitizen_t *pCitizen) {
+    f32 leftWallDist;
+    f32 rightWallDist;
+    f32 width;
+    f32 left;
+    f32 right;
+    f32 start;
+    f32 end;
+
+    ctnRefWorkCtn8(pCitizen, &leftWallDist, &rightWallDist);
+    width = leftWallDist + rightWallDist;
+    left = leftWallDist - 0.5f;
+    right = leftWallDist + 0.5f;
+
+    start = 0.0f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->playerEvadeArray[0] = 0;
+    }
+    start = width / 6.0f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->playerEvadeArray[1] = 0;
+    }
+    start = width / 3.0f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->playerEvadeArray[2] = 0;
+    }
+    start = width * 5.0f / 12.0f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->playerEvadeArray[3] = 0;
+    }
+    start = width * 0.5f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->playerEvadeArray[4] = 0;
+    }
+    start = width / 6.0f + width * 0.5f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->playerEvadeArray[5] = 0;
+    }
+    start = width / 3.0f + width * 0.5f;
+    end = start + width / 6.0f;
+    if ((left <= start && start <= right) || (left <= end && end <= right) || (start <= left && right <= end)) {
+        pCitizen->playerEvadeArray[6] = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002D7950", UpdateTargetVelocity);
 
@@ -359,9 +470,16 @@ INCLUDE_ASM(const s32, "code_002D7950", stfLeaf);
 
 INCLUDE_ASM(const s32, "code_002D7950", stfCtnTestProcess);
 
-INCLUDE_ASM(const s32, "code_002D7950", stfInit);
+s32 stfInit(void)
+{
+    dds3KillProcessName(stfProcName, 0);
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_002D7950", stfLeaf2);
+void stfLeaf2(s32 x, s32 y, s32 width, s32 height, s32 color)
+{
+    evtSubmitDefaultDepthGradientRect(x, y, width, height, color, color, color, color);
+}
 
 INCLUDE_ASM(const s32, "code_002D7950", stfInterval);
 
@@ -425,7 +543,10 @@ INCLUDE_ASM(const s32, "code_002D7950", ListStart);
 
 INCLUDE_ASM(const s32, "code_002D7950", mapCallGetProcessData5);
 
-INCLUDE_ASM(const s32, "code_002D7950", ListSetFlagFocus);
+s32 ListSetFlagFocus(void)
+{
+    return ((lmapLmpListWork_t *)dds3GetProcessData(g_mainPID_LmpList))->unk40;
+}
 
 INCLUDE_ASM(const s32, "code_002D7950", ListSetFlagFocus_lmap);
 
@@ -439,15 +560,59 @@ INCLUDE_ASM(const s32, "code_002D7950", getFunc);
 
 INCLUDE_ASM(const s32, "code_002D7950", getListProcessStartSub);
 
-INCLUDE_ASM(const s32, "code_002D7950", ListProcessStart);
+void ListProcessStart(dds3ProcessID_t *PID)
+{
+    lmapLmpListWork_t *work = dds3GetProcessData(PID);
+
+    getListProcessStartSub(work);
+    if (dds3ExistProcess(work->drawPID)) {
+        dds3KillProcess(work->drawPID, 0);
+        work->drawPID = NULL;
+    }
+    sdfMemFreeDirect(work->hMem);
+    g_mainPID_LmpList = NULL;
+}
 
 INCLUDE_ASM(const s32, "code_002D7950", getLeaf);
 
-INCLUDE_ASM(const s32, "code_002D7950", ListProcessStart_lmap);
+void ListProcessStart_lmap(void) {
+    sdfMemHandle_t *hMem;
+    lmapLmpListWork_t *wk;
 
-INCLUDE_ASM(const s32, "code_002D7950", getCallExistProcess);
+    hMem = sdfMemAllocDirect(sizeof(lmapLmpListWork_t));
+    wk = sdfMemGetPtr(hMem);
+    memset(wk, 0, sizeof(lmapLmpListWork_t));
+    wk->hMem = hMem;
+    g_mainPID_LmpList = dds3StartProcess(ListProcessStart_lmapStrLmapListMain, 0x406, 0, 0, ListProcess, (dds3ProcessFunc_t)ListProcessStart, wk);
+    wk->drawPID = dds3StartProcess(ListProcessStart_lmapStrLmapListDraw, 0x2B17, 0, 0, ListDrawProcess, NULL, wk);
+    getLeaf(wk);
+}
 
-INCLUDE_ASM(const s32, "code_002D7950", getCallGetProcessStat);
+void getCallExistProcess(void)
+{
+    lmapLmpListWork_t *work;
+
+    if (g_mainPID_LmpList != NULL && dds3ExistProcess(g_mainPID_LmpList)) {
+        work = dds3GetProcessData(g_mainPID_LmpList);
+        if (!(work->flags & 1)) {
+            work->flags |= 1;
+            work->step = 17;
+            work->count = 0;
+        }
+    }
+}
+
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/002EB610.c:1, match */
+s32 getCallGetProcessStat(void) {
+    if (g_mainPID_LmpList == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(g_mainPID_LmpList) == 3 || dds3GetProcessStat(g_mainPID_LmpList) == 0) {
+        g_mainPID_LmpList = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002D7950", getCallStartGame);
 
@@ -504,9 +669,25 @@ INCLUDE_ASM(const s32, "code_002D7950", getCallTexFreeDelayed);
 
 INCLUDE_ASM(const s32, "code_002D7950", getCallSetOt);
 
-INCLUDE_ASM(const s32, "code_002D7950", M_InitScene_lmap);
+void M_InitScene_lmap(void)
+{
+    dds3Basic_t *scene = dds3AddScene();
 
-INCLUDE_ASM(const s32, "code_002D7950", getCallGetControlScene);
+    dds3SetControlScene(scene);
+    dds3SetActiveScene(scene);
+    dds3AddAreaBasic(dds3AllocObjectId(), M_InitScene_lmapData);
+}
+
+/* body: matched in raidou @ 88f0d54: src/shared/event/evtStage.c:194, rework, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+void getCallGetControlScene(void)
+{
+    dds3Basic_t *node;
+
+    node = (dds3Basic_t *)dds3GetControlScene();
+    if (node != 0) {
+        dds3DeleteScene(node);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002D7950", M_InitCamera);
 
@@ -596,7 +777,21 @@ INCLUDE_ASM(const s32, "code_002D7950", MdlUpdate);
 
 INCLUDE_ASM(const s32, "code_002D7950", campCallMemset);
 
+/* NON_MATCHING: 6 of 11 words match.  */
+#ifdef NON_MATCHING
+s32 campDhIconIsReady(campDhIcon_t *pIcon)
+{
+    s32 result;
+
+    result = 0;
+    if (pIcon != NULL && pIcon->handle != 0) {
+        result = (pIcon->flags & 7) == 7;
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "code_002D7950", campDhIconIsReady);
+#endif
 
 INCLUDE_ASM(const s32, "code_002D7950", campCallDhIconIsReady);
 

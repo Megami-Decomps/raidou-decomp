@@ -23,6 +23,7 @@ typedef struct QWORD_ALIGNED sdfModelMarkPos_t
 } sdfModelMarkPos_t;
 
 u8 *sdfModelAllocTmPacket(sdfModelNode_t *aNode);
+u32 sdfGetLodChunkValue(sdfModelRootNode_t *aRoot);
 void sdfModelCopyStat(sdfModelRootNode_t *aDstRoot, sdfModelRootNode_t *aSrcRoot);
 void sdfModelEvalTm(sdfModelRootNode_t *aRoot);
 void sdfModelLinkOt_sdfModel(sdfGrOt_t **aOt, sdfModelRootNode_t *aRoot);
@@ -45,5 +46,10 @@ void sdfModelLinkShapedDrawPacket(sdfModelNode_t *aNode, sdfShapeShapedPacket_t 
                                   sdfDrawTag_t *aDrawTag, s32 aId);
 /* Defined in sdfSortOt. */
 void sdfModelSetOtCallbacks(sdfGrOt_t *aOt);
+
+extern f32 sdfFaceDivSoften;
+extern f32 sdfFaceDivBias;
+extern u8 corePktSoftenBias;
+extern s32 sdfForcedAssetTextureMode;
 
 #endif

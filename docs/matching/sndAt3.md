@@ -43,3 +43,9 @@ Raidou 2: 2 of 24 words differ, first at +0x38.
 store order of a reset block: source order loadState/allocation/compressedData/samples then sndData5/6/7 is closest (7 words), retail puts sndData6 between loadState and allocation
 
 Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
+
+## mnuQueueTitleSoundStreamEntry (sndAt3, raidou1 0xF8)
+
+Raidou 1: 41 of 62 words differ, first at +0x28.
+
+41 words: retail computes table+id*16 separately for format, repeatFrame and name (no CSE); switch vs if-chain (==2,<3,==1,==3,==4) matches size; entry pointer local worse (57); raidou1 only (R2 uses 8-byte entries with a name pointer); vectors do not reach (no vector file in any scenario), checked against the asm

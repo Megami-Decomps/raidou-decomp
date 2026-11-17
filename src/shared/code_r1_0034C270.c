@@ -8,6 +8,7 @@
 #include "evt_world.h"
 #include "code_r1_001CC1D0.h"
 #include "code_r1_0034C270.h"
+#include "code_r1_002CAFD8.h"
 
 /* Select the indexed node and report whether the index exists. */
 s32 mnuSeekListNode(s32 index, struct mnuList_t *list);
@@ -314,15 +315,59 @@ mnuListNode_t *mnuRemoveListCursorNode(mnuList_t *list) {
     return list->cursor;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0034C270", mnuSetGridSpriteSlot);
+void mnuSetGridSpriteSlot(struct mnuListNode_t *node, s32 row, s32 col, s32 x, s32 y, struct sprHandle_t *sprite, s32 effect) {
+    node->sprites[row * 4 + col].sprite = sprite;
+    node->sprites[row * 4 + col].effect = effect;
+    itfSetGridEntryQuantizedAndRefresh(sprite, effect, x, y, x, y);
+}
 
-INCLUDE_ASM(const s32, "code_r1_0034C270", mnuWalkNodeList);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_00279CC0.c:997, rework, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+mnuListNode_t *mnuWalkNodeList(s32 targetIndex, mnuList_t *list) {
+    mnuListNode_t *node = list->first;
+    s32 index = 0;
 
-INCLUDE_ASM(const s32, "code_r1_0034C270", mnuSeekListNode);
+    if (node != NULL && targetIndex != index) {
+        do {
+            node = node->next;
+            index++;
+        } while (node != NULL && index != targetIndex);
+    }
+    return node;
+}
 
-INCLUDE_ASM(const s32, "code_r1_0034C270", jmsLeaf17);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_00279CC0.c:1010, rework, same function 1.00 (words 29/29, calls 1.00, shape 1.00) */
+s32 mnuSeekListNode(s32 targetIndex, mnuList_t *list) {
+    s32 size = list->count;
 
-INCLUDE_ASM(const s32, "code_r1_0034C270", jmsLeaf18);
+    if (targetIndex >= size) {
+        return 0;
+    }
+    list->windowOffset = 0;
+    list->head = list->first;
+    list->cursor = list->first;
+    if (targetIndex > 0) {
+        do {
+            if (size - list->head->index <= list->visibleCount) {
+                list->windowOffset += 1;
+            } else {
+                list->head = list->head->next;
+            }
+            list->cursor = list->cursor->next;
+            targetIndex--;
+        } while (targetIndex != 0);
+    }
+    return 1;
+}
+
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_00279CC0.c:1033, rework, same function 1.00 (words 7/7, calls 1.00, shape 1.00) */
+void jmsLeaf17(mnuList_t *list) {
+    mnuSeekListNode(0, list);
+}
+
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_00279CC0.c:1037, rework, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+void jmsLeaf18(mnuList_t *list) {
+    mnuSeekListNode(list->count - 1, list);
+}
 
 /* Advance the visible head when a prior window offset can be reduced. */
 mnuListNode_t *mnuAdvanceListWindowStart(mnuList_t *list) {

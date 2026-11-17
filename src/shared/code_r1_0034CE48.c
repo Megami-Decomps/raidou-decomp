@@ -33,19 +33,6 @@ typedef struct mnuProfilePanel_t {
 
 typedef char mnuProfilePanel_size_check[(sizeof(mnuProfilePanel_t) == 0x48) ? 1 : -1];
 
-typedef struct mnuFadeFields_t {
-    mnuWindowContainer_t previousWindow;
-    s32 previousVisibleCount;
-    mnuIconSprites_t savedResource;
-    u32 hasResourceCopy;
-    s32 previousProgress;
-    mnuWindowContainer_t *currentWindow;
-    s32 currentProgress;
-} mnuFadeFields_t;
-
-/* Raidou's mnuWindowContainer_t is 8 bytes longer; the fade functions read currentProgress at 0xC8. */
-typedef char mnuFadeFields_size_must_be_0xCC[(sizeof(mnuFadeFields_t) == 0xCC) ? 1 : -1];
-
 struct mnuListNode_t;
 
 struct staffMenuRuntime_t;
@@ -377,4 +364,55 @@ mnuListNode_t *mnuScrollListToEnd(mnuList_t *list) {
     return list->cursor;
 }
 
+/* NON_MATCHING: 63 of 89 words match.  */
+#ifdef NON_MATCHING
+mnuListNode_t *mnuScrollListToPreviousPage(mnuList_t *list) {
+    s32 i;
+    mnuListNode_t *node;
+
+    if (list->cursor == NULL) {
+        return 0;
+    }
+    i = 0;
+    while (i < list->visibleCount) {
+        if (list->head == list->first) {
+            if (i == 0) {
+                if (list->cursor == list->first) {
+                    return 0;
+                }
+                list->windowOffset = 0;
+                list->cursor = list->first;
+                return list->first;
+            }
+            break;
+        }
+        mnuRetreatListWindowStart(list);
+        i++;
+        list->cursor = list->cursor->prev;
+        list->windowOffset -= 1;
+    }
+    if (list->head == list->first) {
+        list->windowOffset = 0;
+        list->cursor = list->first;
+        return list->first;
+    }
+    node = list->head;
+    for (i = 0; i < list->visibleCount - 1; i++) {
+        node = node->next;
+        if (node == NULL) {
+            break;
+        }
+    }
+    if (list->cursor == node) {
+        list->cursor = list->head;
+        list->windowOffset = list->visibleCount - 2;
+        for (i = 0; i < list->visibleCount - 2; i++) {
+            list->cursor = list->cursor->next;
+        }
+    }
+    mnuUpdateListScrollFlags(list);
+    return list->cursor;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0034CE48", mnuScrollListToPreviousPage);
+#endif

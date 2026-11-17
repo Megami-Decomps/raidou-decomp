@@ -12,10 +12,14 @@
 #include "dds3PadManager.h"
 #include "sdfSound.h"
 #include "sdk_libc.h"
+#include "lmap.h"
 
 extern titleSpritePlacement_t evtLeaf31Data[];
 
-INCLUDE_ASM(const s32, "TitleMain", evtLeaf29);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/002F5470.c:1, match */
+s32 evtLeaf29(void) {
+    return NpcDelete();
+}
 
 s32 evtLeaf30(s32 value, s32 low, s32 high) {
     if (value >= low && value < high) {

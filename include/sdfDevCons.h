@@ -38,6 +38,7 @@ s32 sdfDevConsPrintf(sdfDevConsCB_tag *aHndl, const char *aFmt, ...);
 void sdfDevSetPrintCB(sdfDevPrintCB_t *aCB, u32 aX, u32 aY, u32 aZ, s32 aAttr);
 void *sdfDevVprintf(sdfDevPrintCB_t *aCB, const char *aStr, void *LegacyParamArray);
 void *sdfDevPrintfEx(sdfDevPrintCB_t *aCB, const char *aStr, ...);
+void sdfPktSetCmd(sdfDevPrintCB_t *aCB, s32 aMode);
 
 void *sdfDevPrintf(u32 x, u32 y, u32 z, s32 attr, const char *format, ...);
 

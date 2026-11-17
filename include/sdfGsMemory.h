@@ -12,5 +12,7 @@ sdfGsMemSlice_t *sdfGsMemAllocRect(s32 aWidth, s32 aHeight, s32 aFormat, s32 aTy
 void sdfGsMemFree(sdfGsMemSlice_t *aHandle);
 void sdfGsMemFreeDelayed(sdfGsMemSlice_t *aHandle);
 void sdfGsMemInit(void);
+extern sdfGsMemSlice_t *gsMemHandleLinkHead;
+extern sdfGsMemSlice_t *gsMemHandleLinkTail;
 
 #endif

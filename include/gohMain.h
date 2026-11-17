@@ -13,9 +13,18 @@ typedef struct gohData_t {
     u32 flag;
     jmsSeqHandle_t panel;
     s32 seqUnit;
-    u8 pad58[0xCC - 0x58];
+    u8 pad58[0x8C - 0x58];
+    s32 unk8C;
+    u32 unk90[10];
+    u8 padB8[0xCC - 0xB8];
     s32 unkCC;
 } gohData_t;
+
+/* Partial layout of the goh status process work. */
+typedef struct gohStatWork_t {
+    u8 unk00[0x20330];
+    s32 unk20330;
+} gohStatWork_t;
 
 s32 MahjanInit(dds3ProcessID_t *PID);
 dds3ProcessFunc_t MahjanUpdateProcess(dds3ProcessID_t *PID);
@@ -24,7 +33,7 @@ dds3ProcessFunc_t gohAccidentCalcProcess(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohBakBakDestroy(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohCallGetProcessData29(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohCallGetProcessData30(dds3ProcessID_t *PID);
-void gohCommandDEVILOUTAFTERSub(struct sdatUnitWork_t *unit, u32 *flag, s32 mode);
+s32 gohCommandDEVILOUTAFTERSub(struct sdatUnitWork_t *unit, u32 *flag, s32 mode);
 s32 gohCreateRecoverList(struct gohData_t *pData);
 s32 gohCreateSwordList(struct gohData_t *pData);
 dds3ProcessFunc_t gohCyuuseiDrawProcess(dds3ProcessID_t *PID);
@@ -42,5 +51,6 @@ dds3ProcessFunc_t gohRootWaitUpdateProcess(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohTalkCalcProcess(dds3ProcessID_t *PID);
 s32 jmsCheckScrRun(dds3ProcessID_t *PID);
 s32 scrLogStart(struct gohData_t *pData);
+extern jmsSeqUnit_t gohData5;
 
 #endif

@@ -9,8 +9,26 @@ void sdfModelResetFaceDivParm(sdfModelRootNode_t *aRoot)
     aRoot->flags = aRoot->flags & ~SDF_MODEL_FLAG_SELF_FACEDIV_PARM;
 }
 
-INCLUDE_ASM(const s32, "code_00360EE8", sdfLeaf23);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfModel.c:1606, adapt, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+f32 sdfLeaf23(sdfModelRootNode_t *aRoot)
+{
+    if (aRoot->flags & SDF_MODEL_FLAG_SELF_FACEDIV_PARM) {
+        return aRoot->faceDivSoften;
+    }
+    return sdfFaceDivSoften;
+}
 
-INCLUDE_ASM(const s32, "code_00360EE8", sdfLeaf24);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfModel.c:1606, adapt, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+f32 sdfLeaf24(sdfModelRootNode_t *aRoot)
+{
+    if (aRoot->flags & SDF_MODEL_FLAG_SELF_FACEDIV_PARM) {
+        return aRoot->faceDivBias;
+    }
+    return sdfFaceDivBias;
+}
 
-INCLUDE_ASM(const s32, "code_00360EE8", sdfSetForcedAssetTextureMode);
+/* body: matched in dds @ 18d1fa88f: src/dds1/sdf/sdfMat.c:74, adapt, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void sdfSetForcedAssetTextureMode(s32 aMode)
+{
+    sdfForcedAssetTextureMode = aMode;
+}
