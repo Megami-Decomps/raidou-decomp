@@ -20,5 +20,6 @@ void dds3MoverBasicSetPath(dds3Basic_t *pMoverBasic, dds3Basic_t *pPathBasic);
 dds3PathBasicControl_t *dds3MoverBasicGetPathControl(dds3Basic_t *pMoverBasic);
 
 s32 dds3MoverBasicUpdate(dds3Basic_t *pBasic);
+s32 MoverBasicMainprocuder(dds3Basic_t *pBasic);
 
 #endif

@@ -28,6 +28,7 @@ extern void fldCallElvReset2(s32 eventNo);
 #include "dds3KernelDraw.h"
 #include "evtSky.h"
 #include "dds3AdminiProcess.h"
+#include "cmpMain.h"
 
 
 extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);
