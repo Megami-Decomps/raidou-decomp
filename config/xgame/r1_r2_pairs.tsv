@@ -6410,7 +6410,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00274700	0x002997F0	PosOut	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00274748	0x00299838	sbtlBtlMVSupportSub	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00274798	0x00299888	sbtlBtlMVSupportSub2	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
-0x002747E0	0x002998D0	sbtlCheckExist2	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	size
+0x002747E0	0x002998D0	sbtlCheckHITCheck_Char	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	size
 0x00274820	0x00299910	sbtlPrivAreaCheck	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00274A80	0x00299B70	sbtlCheckSearchEnemy	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00274BA0	0x00299C90	sbtlLeaf69	yes	yes	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	masked-hash-in-gap
@@ -6422,7 +6422,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00274F90	0x0029A130	GetSenkaiPointSub	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00275490	0x0029AEA8	sbtlGetMovePos_MapHit	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00275640	0x0029B268	sbtlGetMovePos_MapHit_2	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
-0x002758A0	0x0029B4C8	sbtlAAIInit_None	no	yes	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	masked-hash-in-gap
+0x002758A0	0x0029B4C8	sbtlCheckMapHit	no	yes	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	masked-hash-in-gap
 0x00275948	0x0029B5B0	sbtlAAIInit_Free	yes	yes	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	masked-hash-in-gap
 0x002759F8	0x0029B6C8	sbtlBtlAAIInitSklSSub	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00275A18	0x0029B6E8	sbtlAAIInit_N_Escape	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash

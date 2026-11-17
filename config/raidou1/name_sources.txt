@@ -6986,7 +6986,7 @@
 0x00274700	PosOut	hd	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlActAI.PosOut score 6.5 flag -: calls1 prev gap5/9 st1:gap r1+r2
 0x00274748	sbtlBtlMVSupportSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlMVSupport
 0x00274798	sbtlBtlMVSupportSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlMVSupport
-0x002747E0	sbtlCheckExist2	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCheckExist2, score 8.1 band B
+0x002747E0	sbtlCheckHITCheck_Char	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same predicate as HD sBtlCheckHITCheck_Char (devilid != 292 and not 294..296); name unused in R1 symbol_addrs; replaces sbtlCheckExist2
 0x00274820	sbtlPrivAreaCheck	hd-inferred	hd: Raidou HD sBtlActAI.sBtlPrivAreaCheck, score 8.5 band B
 0x00274A80	sbtlCheckSearchEnemy	hd-inferred	hd: Raidou HD sBtlActAI.sBtlCheckSearchEnemy, score 8.3 band B
 0x00274BA0	sbtlLeaf69	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
@@ -7000,7 +7000,7 @@
 0x002753D0	sbtlCallBtlCreateSideListSBtlUnit3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCreateSideList_sbtlUnit
 0x00275490	sbtlGetMovePos_MapHit	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit, score 10.3 band A
 0x00275640	sbtlGetMovePos_MapHit_2	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_2, score 7.3 band B
-0x002758A0	sbtlAAIInit_None	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_None, score 8.25 band B, hd-ab: prev next gap=exact st1:gap r1+r2
+0x002758A0	sbtlCheckMapHit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlCheckMapHit(pos0, ppos, dis); callers GetSenkaiPointSub, sbtlGetMovePos_MapHit, sbtlAAIInit_N_Escape pass two vectors and a float; body forwards to sbtlCheckMapHit_Cross; replaces sbtlAAIInit_None
 0x002758C0	sbtlBtlProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlProc
 0x00275948	sbtlAAIInit_Free	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_Free, score 8.0 band B, hd-ab: calls1 next~ callers-of-match-uniq votes2 st1:call r1+r2
 0x00275950	sbtlCallBtlGetWarpUnitID	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlGetWarpUnit_ID
@@ -13826,11 +13826,11 @@
 0x0041A080	sbtlCheckSkillEquationData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckSkillEquation
 0x0041A110	sbtlCheckSkillEquationData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckSkillEquation
 0x0041A170	sbtlLeaf4Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf4
-0x0041A430	sbtlData14	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallBtlGetAITBL, sbtlCheckEquationProc
-0x0041A498	sbtlCallBtlCheckEquationData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlCheckEquation
-0x0041A4D8	sbtlCallBtlCheckEquationData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlCheckEquation
-0x0041A518	sbtlBtlProcSubData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlBtlProcSub
-0x0041A570	sbtlBtlProcSubData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlBtlProcSub
+0x0041A430	CheckFuncTbl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI CheckFuncTbl; table of check functions indexed by code >> 20 in sbtlCheckEquationProc; replaces sbtlData14
+0x0041A498	AAIInit_Func	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI AAIInit_Func; sbtlCallBtlCheckEquation calls it when model stat is 1, indexed by model mode; replaces sbtlCallBtlCheckEquationData
+0x0041A4D8	AAIProc_Func	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI AAIProc_Func; called when model stat is 2, indexed by model mode; replaces sbtlCallBtlCheckEquationData2
+0x0041A518	EAIInit_Func	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI EAIInit_Func; called when model stat is 1 (init) indexed by AI mode; replaces sbtlBtlProcSubData
+0x0041A570	EAIProc_Func	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD EAIProc_Func; called when model stat is 2 (proc); replaces sbtlBtlProcSubData2
 0x0041A5E0	sbtlLeaf73Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf73
 0x0041A5F0	sbtlGetMeireiFontData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetMeireiFont
 0x0041A628	sbtlCallDestroyFontRequestAfterData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter (4 of 6 refs, 2 functions)
@@ -22975,7 +22975,7 @@
 0x0046DAD8	sbtlRightData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRight
 0x0046DAE0	sbtlRightData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRight
 0x0046DAE8	sbtlRightData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRight
-0x0046DAF0	sbtlData93	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlGetAITBL, sbtlGetAIPatternData
+0x0046DAF0	ai_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD ai_tbldata, the AITBLDATA_WORK array sbtlGetAITBL indexes by devil id; replaces sbtlData93
 0x0046DAF8	gohData7	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 30 functions: gohCallGetProcessData13, cmpCallCheckSkillEnable, gohLeaf10
 0x0046DAFC	GetRandData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by GetRand
 0x0046DB00	GetPercentageData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by GetPercentage

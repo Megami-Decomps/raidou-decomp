@@ -123,11 +123,11 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
     } else {
         unit->motion_setno = 0;
     }
-    unit->field18 = 0;
+    unit->mv_spd.z = 0;
     unit->field414 = 2;
     unit->field424 = 0;
     model = unit->model;
-    unit->visualA = visual->field04;
+    unit->max_mvspd.z = visual->field04;
     model->field0FC = 0;
     model->field100 = unit->field1A0;
     unit->field428 = visual->field08;

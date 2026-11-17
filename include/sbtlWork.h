@@ -703,5 +703,6 @@ s32 sbtlInitPlayerData(void);
 
 extern SBTL_DEVIL_DATA *gohData7;
 s32 sbtlCheckDrink(void);
+u16 GetPercentage(void);
 
 #endif

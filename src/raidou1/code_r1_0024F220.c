@@ -1263,7 +1263,7 @@ void UnitMV(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos)
     if (wk->degcnt <= 0) {
         wk->degcnt = 0;
     } else {
-        wk->field18 *= 0.5f;
+        wk->mv_spd.z *= 0.5f;
     }
 }
 
@@ -1303,8 +1303,8 @@ s32 sbtlCallMemset5(struct SBTLUNIT_WORK *wk) {
         SDF_VU0_LOADVECTOR(&wk->posSaved);
         SDF_VU0_STOREVECTOR(&wk->pos);
     }
-    ofs.x = -wk->field10;
-    ofs.z = -wk->field18;
+    ofs.x = -wk->mv_spd.x;
+    ofs.z = -wk->mv_spd.z;
     if (wk_sbtl->battleMode == 3 ? (wk->field414 & 1) : (wk->field414 & 0x80)) {
         SDF_VU0_LOADVECTOR(&wk->rotbk);
         SDF_VU0_STOREVECTOR(&rot);
@@ -1789,7 +1789,7 @@ struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index)
     wk->GroupID = index;
     wk->field1A0 = id;
     wk->model->mode = 9;
-    wk->model->field11A = 1;
+    wk->model->stat = 1;
     wk->status = 0;
     sbtlResetAIPattern(wk, 0);
     wk->color = 0x808080;
@@ -2605,10 +2605,10 @@ s32 sbtlCallBtlCreateUnit(s8 flg) {
         visual = sbtlGetMotionVisualData(wk->major, wk->minor);
         sub = sbtlSetUnitSub(wk->major, wk->minor, 0);
         wk->field414 = 0x81;
-        wk->field18 = 0.0f;
+        wk->mv_spd.z = 0.0f;
         wk->field424 = 0.0f;
         wk->minor_d = 0;
-        wk->visualA = visual->field04;
+        wk->max_mvspd.z = visual->field04;
         wk->field428 = visual->field08;
         sbtlGetRotateDeg(&wk->rot, 180.0f);
         SDF_VU0_STOREVECTOR(&wk->rot);
@@ -3403,8 +3403,8 @@ s32 nakamamodeCallGetActiveScene(dds3PoseSet_t *pose, dds3Basic_t *basic)
         return 0;
     }
     wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
-    wk->field18 = 0.0f;
-    wk->field10 = 0.0f;
+    wk->mv_spd.z = 0.0f;
+    wk->mv_spd.x = 0.0f;
     wk->field424 = 0.0f;
     SDF_VU0_LOADVECTOR(&wk->pos);
     SDF_VU0_STOREVECTOR(&oldpos);
@@ -3729,11 +3729,11 @@ s8 sbtlNormalProc_Huuma(struct SBTLUNIT_WORK *wk)
     length = GetAnlogKey(wk, &key);
     input = ChkHuuma_PlayerInputOk(wk);
     if ((sbtlNormalProcNakamaSub(wk) || (wk->status == 15 && wk_sbtl->field484 == 4)) && length >= 48.0f) {
-        speed = wk->visualA;
+        speed = wk->max_mvspd.z;
         if (input == 4) {
             speed *= 0.14f;
         }
-        wk->field18 = speed;
+        wk->mv_spd.z = speed;
         SetRotateMatrixY(-mapGetScreenDir(wk->pos.x, wk->pos.y, wk->pos.z, 0.0f) * 0.017453292f);
         SDF_VU0_LOADVECTOR(&key);
         SDF_VU0_APPLYMATRIX();
@@ -4809,7 +4809,7 @@ s32 sbtlCallMemset12(struct SBTLUNIT_WORK *wk)
             wk_sbtl->flg &= ~0x40000;
         } else {
             unit = sbtlGetPlayerUnit(wk_sbtl->targetUnitID);
-            if (sbtlCheckCrossCircle(&wk->pos, wk->model->field120 + wk->visualA * 4.0f, &unit->pos,
+            if (sbtlCheckCrossCircle(&wk->pos, wk->model->field120 + wk->max_mvspd.z * 4.0f, &unit->pos,
                                      unit->model->field11C) &&
                 !(wk->flg & 0x800000) && (wk->next_motionID == 0 || wk->next_motionID == 2)) {
                 sbtlDeleteUnitList(list);
@@ -4857,14 +4857,14 @@ s32 sbtlCallMemset12(struct SBTLUNIT_WORK *wk)
         if (wk_sbtl->flg & 0x40000) {
             if (wk->aiwk->mode != 0) {
                 SDF_VU0_LOADVECTOR(&zero);
-                SDF_VU0_STOREVECTOR(&wk->field30);
+                SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
                 wk->aiwk->stat = 1;
                 wk->actCounter = wk->actMax;
             }
         } else if (wk->flg & 0x40000) {
             if (wk->aiwk->mode == 0 && wk_sbtl->field424 > 0 && list->count != 0) {
                 SDF_VU0_LOADVECTOR(&zero);
-                SDF_VU0_STOREVECTOR(&wk->field30);
+                SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
                 wk->aiwk->stat = 1;
                 wk->aiwk->status &= ~1;
                 wk->actCounter = wk->actMax;

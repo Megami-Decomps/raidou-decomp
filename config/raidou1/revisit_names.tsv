@@ -3400,7 +3400,6 @@
 0x00273B38	sbtlSetNoMP	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlSetNoMP, score 7.8 band B
 0x00274748	sbtlBtlMVSupportSub	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlMVSupport
 0x00274798	sbtlBtlMVSupportSub2	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlMVSupport
-0x002747E0	sbtlCheckExist2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCheckExist2, score 8.1 band B
 0x00274820	sbtlPrivAreaCheck	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlPrivAreaCheck, score 8.5 band B
 0x00274A80	sbtlCheckSearchEnemy	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlCheckSearchEnemy, score 8.3 band B
 0x00274BA0	sbtlLeaf69	func	tier=D	derived-unit	na	unit sbtlActAI; no named callee, caller or string
@@ -3412,7 +3411,6 @@
 0x002753D0	sbtlCallBtlCreateSideListSBtlUnit3	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCreateSideList_sbtlUnit
 0x00275490	sbtlGetMovePos_MapHit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit, score 10.3 band A
 0x00275640	sbtlGetMovePos_MapHit_2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_2, score 7.3 band B
-0x002758A0	sbtlAAIInit_None	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIInit_None, score 8.25 band B, hd-ab: prev next gap=exact st1:gap r1+r2
 0x002758C0	sbtlBtlProcSub	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlProc
 0x00275948	sbtlAAIInit_Free	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIInit_Free, score 8.0 band B, hd-ab: calls1 next~ callers-of-match-uniq votes2 st1:call r1+r2
 0x00275950	sbtlCallBtlGetWarpUnitID	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlGetWarpUnit_ID
@@ -7373,11 +7371,6 @@
 0x0041A080	sbtlCheckSkillEquationData2	data	tier=D	derived-sole	na	used by sbtlCheckSkillEquation
 0x0041A110	sbtlCheckSkillEquationData3	data	tier=D	derived-sole	na	used by sbtlCheckSkillEquation
 0x0041A170	sbtlLeaf4Data	data	tier=D	derived-sole	na	used by sbtlLeaf4
-0x0041A430	sbtlData14	data	tier=D	derived-shared	na	used by 2 functions: sbtlCallBtlGetAITBL, sbtlCheckEquationProc
-0x0041A498	sbtlCallBtlCheckEquationData	data	tier=D	derived-sole	na	used by sbtlCallBtlCheckEquation
-0x0041A4D8	sbtlCallBtlCheckEquationData2	data	tier=D	derived-sole	na	used by sbtlCallBtlCheckEquation
-0x0041A518	sbtlBtlProcSubData	data	tier=D	derived-sole	na	used by sbtlBtlProcSub
-0x0041A570	sbtlBtlProcSubData2	data	tier=D	derived-sole	na	used by sbtlBtlProcSub
 0x0041A5E0	sbtlLeaf73Data	data	tier=D	derived-sole	na	used by sbtlLeaf73
 0x0041A5F0	sbtlGetMeireiFontData	data	tier=D	derived-sole	na	used by sbtlGetMeireiFont
 0x0041A628	sbtlCallDestroyFontRequestAfterData	data	tier=D	derived-dominant	na	used by sbtlCallDestroyFontRequestAfter (4 of 6 refs, 2 functions)
@@ -15652,7 +15645,6 @@
 0x0046DAD8	sbtlRightData	data	tier=D	derived-sole	na	used by sbtlRight
 0x0046DAE0	sbtlRightData2	data	tier=D	derived-sole	na	used by sbtlRight
 0x0046DAE8	sbtlRightData3	data	tier=D	derived-sole	na	used by sbtlRight
-0x0046DAF0	sbtlData93	data	tier=D	derived-shared	na	used by 2 functions: sbtlGetAITBL, sbtlGetAIPatternData
 0x0046DAF8	gohData7	data	tier=D	derived-shared	na	used by 30 functions: gohCallGetProcessData13, cmpCallCheckSkillEnable, gohLeaf10
 0x0046DAFC	GetRandData	data	tier=D	derived-sole	na	used by GetRand
 0x0046DB00	GetPercentageData	data	tier=D	derived-sole	na	used by GetPercentage
@@ -18681,6 +18673,7 @@
 0x002714E0	sbtlGetBgmID	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlScene.sBtlGetBgmID score 1.0 flag I: calls1 callers-of-match st2:call r1-disagree:0x24e6a0
 0x00271A10	sbtlUseTableDataProc	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlActAI.sBtlUseTableDataProc score 4.8 flag I: calls2 calls-of-match votes2 st1:call r2-disagree:0x2961c0
 0x00273BB8	SetUnitHitApproach	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlActAI.SetUnitHitApproach score 3.6 flag -: calls1 next gap3/3 st1:gap r1-only
+0x002747E0	sbtlCheckHITCheck_Char	func	tier=C	derived-derived-role	na	same predicate as HD sBtlCheckHITCheck_Char (devilid != 292 and not 294..296); name unused in R1 symbol_addrs; replaces sbtlCheckExist2
 0x0027C7F8	sbtlBS_MUNAKA_Init_Imad_Restart	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlAction.sBtlBS_MUNAKA_Init_Imad_Restart score 2.8 flag I: calls1 gap70/1 st1:gap r1-only
 0x0027C918	sbtlDeletePlayer	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlDeletePlayer score 6.0 flag I: calls3 callers-of-match votes3 st1:call r2-disagree:0x2a6f78
 0x0027DCF8	sbtlGetChorikiDeg	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlSub.sBtlGetChorikiDeg score 6.6 flag I: calls3 callers-of-match votes2 st1:call r1-only
@@ -19719,6 +19712,11 @@
 0x003FF740	effBTLAimVerticalScale	data	tier=B	smt3-ref	0.80 (n=D_r1_003FF740)	smt3-ref/close: nfun=2, other=0, sim=0.8601, games=2, size=True, sec=True, fn=effBTLPartGetWorldPositionPtr
 0x00401A90	effPCPZiodin04Param	data	tier=B	smt3-ref	0.88 (n=D_r1_00401A90)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPZiodin04Init
 0x00401AF0	effPCPShockWave02Param	data	tier=B	smt3-ref	0.88 (n=D_r1_00401AF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPShockWave02Init
+0x0041A430	CheckFuncTbl	data	tier=B	hd-role	na	HD sBtlActAI CheckFuncTbl; table of check functions indexed by code >> 20 in sbtlCheckEquationProc; replaces sbtlData14
+0x0041A498	AAIInit_Func	data	tier=B	hd-role	na	HD sBtlActAI AAIInit_Func; sbtlCallBtlCheckEquation calls it when model stat is 1, indexed by model mode; replaces sbtlCallBtlCheckEquationData
+0x0041A4D8	AAIProc_Func	data	tier=B	hd-role	na	HD sBtlActAI AAIProc_Func; called when model stat is 2, indexed by model mode; replaces sbtlCallBtlCheckEquationData2
+0x0041A518	EAIInit_Func	data	tier=B	hd-role	na	HD sBtlActAI EAIInit_Func; called when model stat is 1 (init) indexed by AI mode; replaces sbtlBtlProcSubData
+0x0041A570	EAIProc_Func	data	tier=B	hd-role	na	HD EAIProc_Func; called when model stat is 2 (proc); replaces sbtlBtlProcSubData2
 0x00435410	cmpStatusModelPos	data	tier=B	smt3-ref	0.80 (n=D_r1_00435410)	smt3-ref/close: nfun=2, other=0, sim=0.90325, games=2, size=True, sec=True, fn=cmpSetStatusModelParam
 0x00435420	cmpStatusModelBasePos	data	tier=B	smt3-ref	0.80 (n=D_r1_00435420)	smt3-ref/close: nfun=2, other=0, sim=0.90325, games=2, size=True, sec=True, fn=cmpSetStatusModelParam
 0x0043F2F8	sdfIpuRgbModeBits	data	tier=B	smt3-ref	0.88 (n=D_r1_0043F2F8)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfIpuDecode
@@ -19856,6 +19854,7 @@
 0x0046D180	effPadVibePower	data	tier=B	smt3-ref	0.80 (n=D_r1_0046D180)	smt3-ref/close: nfun=2, other=0, sim=0.7596, games=2, size=True, sec=True, fn=effPadVibeFadeUpdate
 0x0046D188	effPadVibeFadeIn	data	tier=B	smt3-role	na	SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effData37
 0x0046DAB8	loadstep	data	tier=B	hd-role	na	HD DataLoadProc switches on loadstep; replaces DataLoadProcData
+0x0046DAF0	ai_tbldata	data	tier=B	hd-role	na	HD ai_tbldata, the AITBLDATA_WORK array sbtlGetAITBL indexes by devil id; replaces sbtlData93
 0x0046DD0C	sb_gen_d_flag	data	tier=B	hd-role	na	HD sBtlClearGeneratorWork zeroes sb_gen_d_flag after the loop; only code_00298540 uses it; replaces gFldSe3DNum
 0x0046DD10	datRndEncBase	data	tier=B	hd-role	na	HD sBtlGetRndEncMax reads datRndEncBase at this site; replaces nbGetEncountMaxData
 0x0046DD14	encmax	data	tier=B	hd-role	na	HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2

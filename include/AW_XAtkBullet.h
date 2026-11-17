@@ -5,6 +5,5 @@
 
 struct AW_WORK_t;
 
-void sbtlCheckStatus_Move(struct AW_WORK_t *aWork);
 
 #endif

@@ -1574,7 +1574,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0041A070	0x00477CD8	sbtlCheckSkillEquationData	.data	0x10	yes	code-ref
 0x0041A080	0x00477CE8	sbtlCheckSkillEquationData2	.data	0x90	yes	code-ref
 0x0041A110	0x00477D78	sbtlCheckSkillEquationData3	.data	0x60	no	code-ref
-0x0041A430	0x00477F18	sbtlData14	.data	0x68	no	code-ref
+0x0041A430	0x00477F18	CheckFuncTbl	.data	0x68	no	code-ref
 0x0041A5E0	0x00478C30	sbtlLeaf73Data	.data	0x10	no	code-ref
 0x0041A5F0	0x00478C40	sbtlGetMeireiFontData	.data	0x38	no	code-ref
 0x0041A628	0x00478C78	sbtlCallDestroyFontRequestAfterData	.data	0x38	no	code-ref

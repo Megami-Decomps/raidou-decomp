@@ -7396,7 +7396,7 @@
 0x002997F0	PosOut	hd	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlActAI.PosOut score 6.5 flag -: calls1 prev gap5/9 st1:gap r1+r2
 0x00299838	sbtlBtlMVSupportSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlMVSupport
 0x00299888	sbtlBtlMVSupportSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlMVSupport
-0x002998D0	sbtlCheckExist2	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCheckExist2, score 8.1 band B
+0x002998D0	sbtlCheckHITCheck_Char	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same predicate as HD sBtlCheckHITCheck_Char (devilid != 292 and not 294..296); name unused in R1 symbol_addrs; replaces sbtlCheckExist2
 0x00299910	sbtlPrivAreaCheck	hd-inferred	hd: Raidou HD sBtlActAI.sBtlPrivAreaCheck, score 8.5 band B
 0x00299B70	sbtlCheckSearchEnemy	hd-inferred	hd: Raidou HD sBtlActAI.sBtlCheckSearchEnemy, score 8.3 band B
 0x00299C90	sbtlLeaf69	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
@@ -7414,7 +7414,7 @@
 0x0029AEA8	sbtlGetMovePos_MapHit	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit, score 10.3 band A
 0x0029B058	sbtlGetMovePos_MapHit_Nakama	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_Nakama score 7.1 flag I: calls3 callers-of-match votes2 st2:call r1-disagree:0x275640
 0x0029B268	sbtlGetMovePos_MapHit_2	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_2, score 7.3 band B
-0x0029B4C8	sbtlAAIInit_None	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_None, score 8.25 band B, hd-ab: prev next gap=exact st1:gap r1+r2
+0x0029B4C8	sbtlCheckMapHit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlCheckMapHit(pos0, ppos, dis); callers GetSenkaiPointSub, sbtlGetMovePos_MapHit, sbtlAAIInit_N_Escape pass two vectors and a float; body forwards to sbtlCheckMapHit_Cross; replaces sbtlAAIInit_None
 0x0029B4E8	sbtlAAIProc	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc score 3.8 flag I: calls2 calls-of-match st2:call r1-disagree:0x2758c0
 0x0029B5B0	sbtlAAIInit_Free	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_Free, score 8.0 band B, hd-ab: calls1 next~ callers-of-match-uniq votes2 st1:call r1+r2
 0x0029B5B8	sbtlAAIInit_Free_sbtlActAI	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIInit_Free score 8.8 flag I: calls4 next~ callers-of-match votes6 st2:call r1-disagree:0x275950
@@ -15590,7 +15590,7 @@
 0x00477CE8	sbtlCheckSkillEquationData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckSkillEquation
 0x00477D78	sbtlCheckSkillEquationData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckSkillEquation
 0x00477DD8	sbtlCallGetIntPara24Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallGetIntPara24
-0x00477F18	sbtlData14	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallBtlGetAITBL, sbtlCheckEquationProc
+0x00477F18	CheckFuncTbl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI CheckFuncTbl; table of check functions indexed by code >> 20 in sbtlCheckEquationProc; replaces sbtlData14
 0x00477F90	sbtlEnemyAIData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEnemyAI
 0x00477FD0	sbtlEnemyAIData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEnemyAI
 0x00478010	sbtlAAIProcData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlAAIProc

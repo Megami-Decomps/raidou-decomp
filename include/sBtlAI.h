@@ -33,7 +33,8 @@ typedef struct SBTLAI_WORK {
     u8 pad078[0x80 - 0x78];
     s32 scrTargetCode;
     s32 scrSkillID;
-    u8 pad088[0x90 - 0x88];
+    s32 actcnt;
+    u8 pad08C[0x90 - 0x8C];
 } SBTLAI_WORK;
 
 s8 CheckAIScript(struct SBTLUNIT_WORK *wk);

@@ -18,29 +18,44 @@ struct fileRequest;
 struct sdfMemHandle_t;
 
 typedef struct SBTLUNIT_MODEL {
-    u8 pad000[0x20];
+    sdfVector4_t vec00;
+    u8 pad010[0x10];
     sdfVector4_t vec20;
     sdfVector4_t vec30;
     u8 pad40[0x90 - 0x40];
     sdfVector4_t scrPos3;
-    u8 padA0[0xF4 - 0xA0];
+    u8 padA0[0xF0 - 0xA0];
+    struct sdfMemHandle_t *handle;
     u16 mode;
     u8 pad0F6[0x2];
     u32 flags;
     s32 field0FC;
     s32 field100;
     s32 field104;
-    u8 pad108[0x11A - 0x108];
-    u16 field11A;
+    s32 field108;
+    s32 field10C;
+    s32 frame;
+    s32 cmpframe;
+    u8 pad118[0x11A - 0x118];
+    u16 stat;
     f32 field11C;
     f32 field120;
     f32 field124;
     f32 field128;
     f32 field12C;
     f32 field130;
-    u8 pad134[0x184 - 0x134];
+    u8 pad134[0x140 - 0x134];
+    s16 field140;
+    u8 pad142[0x170 - 0x142];
+    s8 nonempflg;
+    u8 pad171[0x174 - 0x171];
+    s8 dataflg;
+    u8 pad175[0x3];
+    s32 datamode;
+    s32 data_p[2];
     s32 ai_target[3]; /* unit IDs found by sbtlCallBtlCreateSideList2 (HD ai_target) */
-    u8 pad190[0x224 - 0x190];
+    u8 pad190[0x194 - 0x190];
+    u32 useskl[36]; /* skill-used bits, one per SKLID, up to field224 */
     s32 field224;
 } SBTLUNIT_MODEL;
 
@@ -102,7 +117,7 @@ void UnitMV(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos);
 void sbtlCallBtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
 s32 sbtlChangeModelColor(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckExist(struct SBTLUNIT_WORK *wk);
-s32 sbtlCheckExist2(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheckHITCheck_Char(struct SBTLUNIT_WORK *wk);
 void sbtlCheckGuardMotion(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckModelDataLoadEnd(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckMotionEnd(struct SBTLUNIT_WORK *wk);
@@ -189,13 +204,9 @@ extern s32 sbtlBtlCheckMotionNoSubData[][56];
 /* Partial layout: only the fields read so far are named, the rest is padding. */
 struct SBTLUNIT_WORK {
     f32 visual[4];
-    f32 field10;
-    u8 pad014[0x4];
-    f32 field18;
-    u8 pad01C[0xC];
-    f32 visualA;
-    u8 pad02C[0x4];
-    sdfVector4_t field30;
+    sdfVector4_t mv_spd;
+    sdfVector4_t max_mvspd;
+    sdfVector4_t mv_spdbk;
     sdfVector4_t pos;
     sdfVector4_t rot;
     sdfVector4_t rotBase;
