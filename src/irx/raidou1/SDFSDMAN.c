@@ -100,7 +100,7 @@ s32 sdfSndFindSlotById(s32 idPacked);
 s32 sdfSndLockBank(s32 idPacked);
 void sdfSndUnlockBank(s32 idPacked);
 s32 sdfSndUnlockAllBanks(void);
-s32 sdfSndBgmPlay(sdfSndBgmReq_t *req);
+void sdfSndBgmPlay(sdfSndBgmReq_t *req);
 s32 sdfSndSaveResumePoint(s32 slot);
 sdfSndResume_t *sdfSndFindResumePoint(s32 id);
 s32 sdfSndBgmResume(sdfSndBgmReq_t *req);
@@ -1134,7 +1134,7 @@ s32 sdfSndUnlockAllBanks(void)
  * $17-$19. */
 /* Start a sequence in one of the three BGM slots. A volume of 0x100 means
  * fade in from silence, anything over 127 plays at full. */
-s32 sdfSndBgmPlay(sdfSndBgmReq_t *req)
+void sdfSndBgmPlay(sdfSndBgmReq_t *req)
 {
     s32 id;
     s32 bank;
@@ -1168,7 +1168,7 @@ s32 sdfSndBgmPlay(sdfSndBgmReq_t *req)
     }
     slot = sdfSndAllocBgmSlot();
     if (slot < 0) {
-        return -1;
+        return;
     }
     sdfSndBgmSwitchReq = 0;
     sdfSndBgmSwitchSlot = -1;
