@@ -163,6 +163,7 @@ sbtlRefSbtl8	code_r1_0024F220	raidou1 0x118	51 of 68 words differ	docs/matching/
 sbtlSetLight_Map	code_r1_0024F220	raidou1 0x234	39 of 142 words differ	docs/matching/code_r1_0024F220.md	119		
 sbtlSetMotion_sbtlUnit	code_r1_0024F220	raidou1 0x1EC	1 of 123 words differ	docs/matching/code_r1_0024F220.md	125		
 sbtlCheckMapHit_Data	code_r1_0024F220	raidou1 0x54	0 of 21 words differ	docs/matching/code_r1_0024F220.md	132	matches only with the current declaration order in itfMesManager.h and the other headers of code_r1_0024F220.c. The B4-field-big header declaration edits turn the full-unit match into CONTEXT 4/21; the K02-effect-data edits do the same.	
+sbtlCallBtlGetDevilDataSBtlSub	code_r1_0024F220	raidou1 0xE0	35 of 55 words differ	docs/matching/code_r1_0024F220.md	140		
 nakamamodeCallGetActiveScene	code_r1_00259A88	raidou1 0x584	5 of 353 words differ	docs/matching/code_r1_00259A88.md	3		
 sbtlCallBtlCheckDamageTarget3	code_r1_00259A88	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_00259A88.md	13		
 sbtlCallBtlGetBadStatus3	code_r1_00259A88	raidou1 0x90	20 of 36 words differ	docs/matching/code_r1_00259A88.md	21		
