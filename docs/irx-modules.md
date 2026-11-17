@@ -70,7 +70,20 @@ the relocated fields masked, else `similar` by order and opcode similarity
 between those anchors, or `hand` from `hand_pairs.txt`, which also names data
 whose layout changed. Data names come from the operands of aligned equal
 instructions and from string contents. The result is `smt3_pairs.tsv` and,
-with `--symbols`, `symbol_addrs.txt`. New functions stay `func_<address>`.
+with `--symbols`, the block between `// BEGIN ida` and `// END ida` in
+`symbol_addrs.txt`. Names outside that block are curated, survive the
+regeneration and own their addresses. New functions stay `func_<address>`.
+
+`.rodata` is C source too. The split cuts it at each symbol and at each jump
+table (`jtbl_<address>`, found from the `%hi`/`%lo` loads in `.text`) into
+`asm/<version>/irx/SDFSDMAN/rodata/`, and `tools/irx_rodata.py` places an
+`INCLUDE_RODATA` line per piece in the C files: the pieces between two jump
+tables go right before the second table's function. A function in C emits its
+own jump table, so its line goes, and a `NON_MATCHING` draft keeps it in the
+`#else`. Placing a string before the C function that loads it would let gas
+fill the call's delay slot with the `%lo`, which retail never does. Rerun the
+tool after turning a jump table function into C; `--check` fails when a C file
+is out of date. A module whose C has no `INCLUDE_RODATA` links `rodata.s`.
 
 `tools/irx_carry.py` then writes the C: a `same` function takes smt3-decomp's
 text (the matching C, or its `NON_MATCHING` draft with the `INCLUDE_ASM`),

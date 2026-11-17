@@ -132,6 +132,22 @@ def jump_targets(module: irx.Module) -> set[int]:
     return out
 
 
+def jump_tables(module: irx.Module) -> set[int]:
+    """The .rodata addresses .text loads with %hi/%lo whose first word points into .text."""
+    text, rod = module.section(".text"), module.section(".rodata")
+    if not rod:
+        return set()
+    rod_relocs = reloc_map(rod)
+    out = set()
+    for addr in set(pair_hi_lo(text, text.addr).values()):
+        off = addr - rod.addr
+        if 0 <= off < rod.size and rod_relocs.get(off) == R_32:
+            word, = struct.unpack_from("<I", rod.data, off)
+            if text.addr <= word < text.addr + text.size:
+                out.add(addr)
+    return out
+
+
 def disasm_text(module: irx.Module, syms: SymbolMap, funcs,
                 exported: set[int]) -> list[tuple[str, str]]:
     """Walk .text end to end: functions where they are, tables in the gaps.
@@ -283,6 +299,27 @@ def dump_data(section, syms: SymbolMap, name: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def dump_pieces(section, syms: SymbolMap) -> list[tuple[str, str]]:
+    """.rodata cut at each label, one file per piece for the C files' INCLUDE_RODATA.
+
+    A piece keeps the padding after it, so placing the pieces in address order
+    rebuilds the section.
+    """
+    whole = dump_data(section, syms, section.name).splitlines()[2:]
+    starts = {n: a for a, n in syms.by_addr.items()}
+    pieces: list[tuple[str, list[str]]] = []
+    for line in whole:
+        if line.startswith("    .globl ") or not pieces:
+            name = line.split()[1] if line.startswith("    .globl ") else f"D_{section.addr:08X}"
+            # The alignment the piece's address allows, so the object that
+            # takes the first piece of a unit gets its section alignment right.
+            addr = starts.get(name, section.addr)
+            align = section.align.bit_length() - 1 if addr == section.addr else 2
+            pieces.append((name, [f"    .align {align}"] if addr % 4 == 0 else []))
+        pieces[-1][1].append(line)
+    return [(name, "\n".join(body) + "\n") for name, body in pieces]
+
+
 def dump_bss(module: irx.Module, syms: SymbolMap) -> str:
     """Reserve the bss symbols.
 
@@ -329,6 +366,8 @@ def split(module: str) -> None:
             stale.unlink()
     (out / "text").mkdir(parents=True, exist_ok=True)
 
+    for addr in jump_tables(mod):
+        syms.add(addr, f"jtbl_{addr:08X}")
     chunks = disasm_text(mod, syms, funcs, jump_targets(mod))
     for chunk_name, body in chunks:
         (out / "text" / f"{chunk_name}.s").write_text(body)
@@ -343,6 +382,15 @@ def split(module: str) -> None:
         sec = mod.section(sec_name)
         if sec:
             (out / fname).write_text(dump_data(sec, syms, sec_name))
+    rod = mod.section(".rodata")
+    if rod:
+        pieces = out / "rodata"
+        if pieces.is_dir():
+            for stale in pieces.glob("*.s"):
+                stale.unlink()
+        pieces.mkdir(exist_ok=True)
+        for name, body in dump_pieces(rod, syms):
+            (pieces / f"{name}.s").write_text(body)
     (out / "bss.s").write_text(dump_bss(mod, syms))
     nfunc = sum(1 for c, _ in chunks if c in {f[1] for f in funcs})
     print(f"{module}: {len(chunks)} chunks ({nfunc} functions)")

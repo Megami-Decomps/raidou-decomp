@@ -333,6 +333,15 @@ s32 sdfSndFileClose(s32 fd)
     return sdfiopfl_sdfIopFileClose(fd);
 }
 
+INCLUDE_RODATA("SDFSDMAN", aSdfSoundDriver);
+INCLUDE_RODATA("SDFSDMAN", aSdfsdmanIFThre);
+INCLUDE_RODATA("SDFSDMAN", aB1);
+INCLUDE_RODATA("SDFSDMAN", aC);
+INCLUDE_RODATA("SDFSDMAN", aD);
+INCLUDE_RODATA("SDFSDMAN", aAd);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSOpen);
+INCLUDE_RODATA("SDFSDMAN", aSdfsndfileread);
+INCLUDE_RODATA("SDFSDMAN", jtbl_000062A8);
 INCLUDE_ASM("SDFSDMAN", sdfSndGetVolTable);
 
 #ifdef NON_MATCHING
@@ -880,10 +889,35 @@ s32 sdfSndIsBankLoaded(s32 kind)
     return 0;
 }
 
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScems);
+INCLUDE_RODATA("SDFSDMAN", aHardTimerAlloc);
+INCLUDE_RODATA("SDFSDMAN", aTimerHandlerRe);
+INCLUDE_RODATA("SDFSDMAN", aHardTimerSetup);
+INCLUDE_RODATA("SDFSDMAN", aHardTimerRelea);
+INCLUDE_RODATA("SDFSDMAN", aHardTimerStart);
+INCLUDE_RODATA("SDFSDMAN", aHardTimerStopF);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi_0);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi_1);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScehs);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi_2);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi_3);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvPlayS);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi_4);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScehs_0);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSeSta);
+INCLUDE_RODATA("SDFSDMAN", jtbl_00006570);
 INCLUDE_ASM("SDFSDMAN", func_00002AD0);
 
 INCLUDE_ASM("SDFSDMAN", func_00002C24);
 
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvFileR);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvMidi0);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSData);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvDataS);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSRead);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScehs_1);
+INCLUDE_RODATA("SDFSDMAN", jtbl_000066C0);
 INCLUDE_ASM("SDFSDMAN", sdfSndLoadSmg);
 
 /* Waits on its semaphore and loads whatever path the EE last set. */
@@ -1248,4 +1282,12 @@ s32 sdfSndStartKeepAliveThread(void)
     return thbase_StartThread(tid, NULL);
 }
 
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvCreat);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvWaits);
+INCLUDE_RODATA("SDFSDMAN", aP2sdirxspuiopm);
+INCLUDE_RODATA("SDFSDMAN", aP2sdirxspuiopm_0);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScesi);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvIfcou);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvUnkno);
+INCLUDE_RODATA("SDFSDMAN", jtbl_00006800);
 INCLUDE_ASM("SDFSDMAN", sdfSndDrvRpcInit);

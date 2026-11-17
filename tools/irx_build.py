@@ -56,6 +56,7 @@ ENTRY(%(entry)s)
 """
 
 INCLUDE_ASM_LINE = re.compile(r'^\s*INCLUDE_ASM\("[^"]+",\s*([A-Za-z_.][\w.]*)\s*\)')
+INCLUDE_RODATA_LINE = re.compile(r'^\s*INCLUDE_RODATA\("[^"]+",\s*(\w+)\s*\)', re.M)
 HEADERS = ["include/irx/irx.h", "include/irx/iop.h", "include/irx/spu2.h", "include/irx/sdfsnd.h"]
 SPLIT_INPUTS = [TOOLS / "irx_split.py", TOOLS / "irx.py"]
 
@@ -155,6 +156,9 @@ def write(n, versions: list[str], prefix: str) -> tuple[list[str], list[str]]:
 
             asm = Path(cfg["paths"]["asm"])
             deps = [str(asm / "text" / f"{c}.s") for c in chunks(cfg)]
+            # Once the C files place .rodata piece by piece, rodata.s is not linked.
+            pieces = [p for src in cfg["paths"]["srcs"] for p in INCLUDE_RODATA_LINE.findall((ROOT / src).read_text())]
+            deps += [str(asm / "rodata" / f"{p}.s") for p in pieces]
             headers = [h for h in HEADERS + [f"include/irx/{module}.h"] if (ROOT / h).exists()]
             objs = []
             for src in cfg["paths"]["srcs"]:
@@ -166,7 +170,7 @@ def write(n, versions: list[str], prefix: str) -> tuple[list[str], list[str]]:
                 n.build(objs[-1], "iopcc", [src], implicit=deps + headers + [str(asmcheck)],
                         variables={"asm_root": cfg["paths"]["asm_root"],
                                    "version_define": f"VERSION_{version.upper()}"})
-            for part in ("rodata", "data", "bss"):
+            for part in ("data", "bss") if pieces else ("rodata", "data", "bss"):
                 part_src = asm / f"{part}.s"
                 if (ROOT / part_src).exists() and (ROOT / part_src).stat().st_size:
                     n.build(str(b / f"{part}.o"), "iopas", [str(part_src)])

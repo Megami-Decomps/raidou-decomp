@@ -45,6 +45,7 @@ typedef char *va_list;
 /* The container means nothing off the IOP; the host links the real
  * implementation under the same name instead. */
 #define INCLUDE_ASM(MODULE, NAME)
+#define INCLUDE_RODATA(MODULE, NAME)
 #define IRX_IMPORT_TABLE(LIB, MAJOR, MINOR)
 #define IRX_IMPORT_TABLE_END
 #define IRX_IMPORT(LIB, NAME, ORDINAL)
@@ -61,6 +62,14 @@ typedef char *va_list;
             "\t.include \"" ASM_ROOT MODULE "/text/" #NAME ".s\"\n" \
             "\t.set reorder\n"                                 \
             "\t.set at\n")
+
+/* Pull a piece of .rodata that is still assembly. tools/irx_rodata.py places
+ * the lines so that, with the jump tables the C functions emit, .rodata comes
+ * out in address order. gcc tracks the section itself, so this returns to .text. */
+#define INCLUDE_RODATA(MODULE, NAME)                                 \
+    __asm__(".section .rodata\n"                                     \
+            "\t.include \"" ASM_ROOT MODULE "/rodata/" #NAME ".s\"\n" \
+            "\t.section .text\n")
 
 /* The header of one IOP import table: the magic, the library version, and an
  * eight byte name field the loader matches against a resident library. The
