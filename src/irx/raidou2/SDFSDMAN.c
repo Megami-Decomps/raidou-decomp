@@ -561,7 +561,32 @@ s32 sdfSndMidiCbIgnore2(void)
     return 1;
 }
 
-INCLUDE_ASM("SDFSDMAN", sdfSndMidiCbMessage);
+/* The synthesiser calls this for every MIDI message. Controller 0 on the
+ * pending switch channel picks the next BGM. */
+s32 sdfSndMidiCbMessage(u32 msg, s32 slot)
+{
+    s32 val;
+
+    val = (msg >> 8) & 0xFF;
+    if ((msg & 0xF0) == 0xD0) {
+        switch (msg & 0xF) {
+        case 0:
+            if (sdfSndBgmSwitchReq != 0) {
+                if (sdfSndBgmSwitchMidi < 0) {
+                    if (val == 127) {
+                        sdfSndBgmSwitchReq = 0;
+                        break;
+                    }
+                    sdfSndBgmSwitchMidi = val;
+                }
+                sdfSndBgmSwitchSlot = slot;
+            }
+            break;
+        }
+        return 0;
+    }
+    return msg;
+}
 
 s32 sdfSndTimerHandler(sdfSndTimer_t *tm)
 {
@@ -712,7 +737,44 @@ INCLUDE_ASM("SDFSDMAN", sdfSndInitSpu2);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndMidiSelect);
 
-INCLUDE_ASM("SDFSDMAN", sdfSndStopAll);
+/* Stop every slot (0), the BGM slots (1) or the SE slots (2) and cancel a
+ * pending BGM switch. */
+s32 sdfSndStopAll(s32 which)
+{
+    s32 first;
+    s32 last;
+    s32 i;
+    s32 state;
+    sdfSndSlot_t *slot;
+
+    sdfSndBgmSwitchReq = 0;
+    sdfSndBgmSwitchSlot = -1;
+    sdfSndBgmSwitchMidi = -1;
+    if (which == 0) {
+        first = 0;
+        last = 16;
+    } else if (which == 1) {
+        first = 0;
+        last = 3;
+    } else {
+        first = 3;
+        last = 16;
+    }
+    for (i = first; i < last; i++) {
+        slot = &sdfSndSlots[i];
+        if ((sdfSndMidiWork.tbl->seq[i].slot->flags & 2) != 0) {
+            intrman_CpuSuspendIntr(&state);
+            modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, i, 0);
+            intrman_CpuResumeIntr(state);
+            sdfSndSlots[i].vol = 32512;
+            sdfSndSlots[i].is3d = 0;
+            slot->fadeIn = 0;
+            sdfSndSlots[i].volStep = 0;
+            sdfSndSlots[i].id = -1;
+            sdfSndSlots[i].unk34[0] = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("SDFSDMAN", sdfSndInitSynth);
 
@@ -795,7 +857,28 @@ s32 sdfSndUnlockAllBanks(void)
 
 INCLUDE_ASM("SDFSDMAN", sdfSndBgmPlay);
 
-INCLUDE_ASM("SDFSDMAN", sdfSndBgmStop);
+/* Stop every playing slot with the requested id and clear its state. */
+s32 sdfSndBgmStop(s32 *req)
+{
+    s32 i;
+    s32 state;
+    sdfSndSlot_t *slot;
+
+    for (i = 0; i < 16; i++) {
+        slot = &sdfSndSlots[i];
+        if (sdfSndSlots[i].id == *req &&
+            (sdfSndMidiWork.tbl->seq[i].slot->flags & 2) != 0) {
+            intrman_CpuSuspendIntr(&state);
+            modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, i, 0);
+            intrman_CpuResumeIntr(state);
+            sdfSndSlots[i].is3d = 0;
+            slot->fadeIn = 0;
+            sdfSndSlots[i].volStep = 0;
+            sdfSndSlots[i].id = -1;
+            sdfSndSlots[i].unk34[0] = 0;
+        }
+    }
+}
 
 /* Hand the synthesiser the wave data for a bank. */
 s32 sdfSndHsynLoad(s32 bank, s32 slot)
@@ -1238,7 +1321,29 @@ s32 sdfSndSetBankAddr(s32 kind, u32 waveSize)
 INCLUDE_ASM("SDFSDMAN", sdfSndSetBankAddr);
 #endif
 
-INCLUDE_ASM("SDFSDMAN", sdfSndStopByGroup);
+/* Stop every playing slot in the group, clearing its state first. */
+s32 sdfSndStopByGroup(s32 group)
+{
+    s32 i;
+    s32 state;
+    sdfSndSlot_t *slot;
+
+    for (i = 0; i < 16; i++) {
+        slot = &sdfSndSlots[i];
+        if (sdfSndSlots[i].id >= 0 && sdfSndSlots[i].group == group &&
+            (sdfSndMidiWork.tbl->seq[i].slot->flags & 2) != 0) {
+            sdfSndSlots[i].is3d = 0;
+            slot->fadeIn = 0;
+            sdfSndSlots[i].volStep = 0;
+            sdfSndSlots[i].id = -1;
+            sdfSndSlots[i].unk34[0] = 0;
+            intrman_CpuSuspendIntr(&state);
+            modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, i, 0);
+            modhsyn_e13(&sdfSndHsynWork, i);
+            intrman_CpuResumeIntr(state);
+        }
+    }
+}
 
 s32 sdfSndUnloadBank(s32 kind)
 {
