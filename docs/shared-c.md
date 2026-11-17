@@ -35,7 +35,10 @@ stays `INCLUDE_ASM`.
   bodies use where Raidou has no name, at the Raidou address (`ttyState =
   0x0050ACD0;`). The body text never changes between games; the address does.
   `include_rodata.py` and `include_sdata.py` treat these names as references
-  to the Raidou data at that address.
+  to the Raidou data at that address, and `check_unit.py` compares a
+  relocation against one at that address. An entry is the object retail uses
+  at the carried call site, which is not always SMT3's object of that name:
+  `tools/xgame/audit_smt3_symbols.py` lists those whose SMT3 code differs.
 - `config/<v>/smt3_c.tsv`: every function considered, `c` or `asm`, with the
   reason it stays asm.
 - SDK members that compile SMT3 C get SMT3's compiler and flags for that
