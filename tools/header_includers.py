@@ -116,8 +116,19 @@ def check(root: Path, path: Path, version: str, mode: str) -> dict[str, str]:
 JOBS = os.cpu_count() or 8
 
 
+def missing_build(root: Path, games: set[str]) -> list[str]:
+    """The split asm and eeas_compat output check_unit needs for each game, where absent. Without them every
+    full-unit check fails as NOASM, and NON_MATCHING functions then read as worse against the current tree."""
+    need = [Path("asm") / g / "nonmatchings" for g in sorted(games)]
+    need += [Path("build/eeasm/asm") / g / "nonmatchings" for g in sorted(games)]
+    return [p.as_posix() for p in need if not (root / p).is_dir()]
+
+
 def measure(root: Path, units: dict[Path, list[str]], jobs: int = JOBS) -> dict[str, dict[str, str]]:
     """"<path> <game> <mode>" -> function summary, for every unit, game and mode."""
+    if missing := missing_build(root, {g for games in units.values() for g in games}):
+        raise SystemExit(f"header_includers: {root} is not built (no {', '.join(missing)}); "
+                         "run configure.py && ninja there first")
     keys = [(path, game, mode) for path, games in units.items() for game in games for mode in MODES]
     # Largest units first, so a 6 s unit does not start last.
     size = {p: (root / p).stat().st_size if (root / p).exists() else 0 for p in units}
