@@ -48,6 +48,33 @@ struct SBDEBUG_CSRWORK {
 };
 typedef struct SBDEBUG_CSRWORK SBDEBUG_CSRWORK;
 
+/* Battle debug work (HD SBTLDEBUG_WORK), the members decompiled code reads. */
+typedef struct SBTLDEBUG_WORK {
+#ifdef VERSION_RAIDOU2
+    u8 pad000[0x490];
+#else
+    u8 pad000[0x7B0];
+#endif
+    s32 nef_poseture;
+    f32 nef_sokudo;
+    s32 ef_mode;
+    s32 ef_id;
+    s32 ef_num;
+    s32 ef_nowpage;
+    s32 ef_flgp;
+    s32 ef_dirflgp;
+    s32 ef_stendp;
+    s8 ef_wkflg[16];
+#ifdef VERSION_RAIDOU2
+    u8 pad4C4[0x16AC - 0x4C4];
+#else
+    u8 pad7E4[0x19CC - 0x7E4];
+#endif
+    s32 acterID;
+} SBTLDEBUG_WORK;
+
+extern SBTLDEBUG_WORK evtStageTestState;
+
 typedef s32 (*sbtlDebugModeFunc_t)(void);
 typedef s32 (*sbtlDebugHitEditorDrawFunc_t)(struct SBDEBUG_CSRWORK *wk, struct SBTLSKILLHIT_TBL *hwk, struct SBTLSKILLHIT_POSWORK *para, struct SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path);
 
@@ -121,6 +148,7 @@ s32 sbtlFunc21(dds3ProcessID_t *id);
 s32 sbtlFunc26(dds3ProcessID_t *id);
 s32 sbtlFunc28(void);
 s32 sbtlGetMotionNum(s32 id);
+s32 sbtlSetMDLHitPara(struct SBTLSKILLHIT_TBL *hwk, struct SBDEBUG_CSRWORK *wk, s32 flg);
 struct SBTLUNIT_WORK *sbtlGetUnit(s32 point);
 s32 sbtlLeaf100(dds3ProcessID_t *id);
 s32 sbtlLeaf102(dds3ProcessID_t *id);
