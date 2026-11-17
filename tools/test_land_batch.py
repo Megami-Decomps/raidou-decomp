@@ -296,6 +296,37 @@ class RodataTests(unittest.TestCase):
         self.assertTrue(out.endswith("      - [0x345680, rodata, rodata_00444680]\n      - [0x345688, .rodata, c]\n"
                                      "      - [0x345690, .rodata, b]\n      - [0x345698, rodata, rodata_00444698]\n"
                                      "      - [0x3456A0, .rodata, k]\n"), out)
+    def test_second_unit_in_one_run_finds_its_lit4(self) -> None:
+        """The first plan splits the chunk; the second unit's piece has no file until splat reruns."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            labels = [(0x469C00, "fa"), (0x469C08, "fb"), (0x469C24, "fc"), (0x469C38, "fd")]
+            files = {
+                "config/raidou1/x.yaml": ("  - name: main\n    start: 0x1000\n    vram: 0x100000\n"
+                                          "    subsegments:\n      - [0x36AC00, lit4, lit4_00469C00]\n"
+                                          "      - [0x36AC40, .lit4, k]\n"),
+                "asm/raidou1/data/lit4_00469C00.lit4.s": "".join(
+                    f"dlabel {n}\n    /* {a - 0xFF000:06X} {a:08X} 00000000 */ .float 0\n" for a, n in labels),
+                "asm/raidou1/u1.s": "lwc1 $f0, %lo(fa)($at)\n",
+                "asm/raidou1/u2.s": "lwc1 $f0, %lo(fc)($at)\n",
+                "asm/raidou1/other.s": "lwc1 $f0, %lo(fb)($at)\nlwc1 $f0, %lo(fd)($at)\n",
+            }
+            for name, text in files.items():
+                (root / name).parent.mkdir(parents=True, exist_ok=True)
+                (root / name).write_text(text)
+            yaml = root / "config/raidou1/x.yaml"
+            (p1,), notes = segments.plan_unit(root, "raidou1", "u1")
+            self.assertEqual((p1.start, p1.rest, notes), (0x469C00, 0x469C08, []))
+            yaml.write_text(segments.apply_plan(yaml.read_text(), p1))
+            (p2,), notes = segments.plan_unit(root, "raidou1", "u2")
+            self.assertEqual((p2.chunk, p2.start, p2.rest, notes), ("lit4_00469C08", 0x469C24, 0x469C38, []))
+            yaml.write_text(segments.apply_plan(yaml.read_text(), p2))
+            self.assertIn("      - [0x36AC24, .lit4, u2]\n      - [0x36AC38, lit4, lit4_00469C38]\n",
+                          yaml.read_text())
+            (root / "asm/raidou1/data/lit4_00469C00.lit4.s").unlink()
+            _, notes = segments.plan_unit(root, "raidou1", "u2")
+            self.assertTrue(any("no asm/data file holds its labels" in n for n in notes), notes)
+
 
 class IncluderTests(unittest.TestCase):
     def test_closure_through_headers_and_games(self) -> None:
@@ -338,6 +369,22 @@ class IncluderTests(unittest.TestCase):
         worse, _ = header_includers.compare({"k": {"f": "OK"}}, {"k": s})
         self.assertEqual(worse, ["k: unit: RODATA the full unit's .rodata differs from retail at 0x10",
                                  "k: f OK -> CONTEXT 2/21"])
+
+    def test_an_unbuilt_tree_is_refused(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "src/shared").mkdir(parents=True)
+            (root / "src/shared/x.c").write_text("")
+            units = {pathlib.Path("src/shared/x.c"): ["raidou1"]}
+            with self.assertRaises(SystemExit) as cm:
+                header_includers.measure(root, units)
+            self.assertIn("is not built", str(cm.exception))
+            self.assertIn("build/eeasm/asm/raidou1/nonmatchings", str(cm.exception))
+            (root / "asm/raidou1/nonmatchings").mkdir(parents=True)
+            self.assertEqual(header_includers.missing_build(root, {"raidou1"}),
+                             ["build/eeasm/asm/raidou1/nonmatchings"])
+            (root / "build/eeasm/asm/raidou1/nonmatchings").mkdir(parents=True)
+            self.assertEqual(header_includers.missing_build(root, {"raidou1"}), [])
 
 
 class DeclarationTests(unittest.TestCase):

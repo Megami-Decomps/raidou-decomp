@@ -111,7 +111,8 @@ in order (skip any with `--skip step,...`):
    functions in address order, its subsegment and tu_evidence row become `c`,
    and it takes the `.rodata` and `.lit4` labels that only its asm uses, when
    they form one run in one unowned chunk; several new units can split one
-   chunk, in any order. The `.rodata` starts at the first of those labels that
+   chunk, in any order (a piece split off earlier in the run has no asm/data
+   file yet, so its labels come from the file that covers its range). The `.rodata` starts at the first of those labels that
    the section's alignment allows (16 bytes when it holds a jump table, else 8);
    labels before it stay in the chunk. Anything else (a label another unit
    uses, labels in several chunks) is reported for a hand decision. The run
@@ -198,5 +199,7 @@ The first form lists every unit that includes the header directly or through
 another header, with the games that compile it. `--check` runs `check_unit.py`
 on each in the default build and with `-DNON_MATCHING`; with `--baseline FILE`
 or `--baseline-tree DIR` it prints every function that got worse or better and
-exits 1 on a regression. Run it after each header edit rather than at
+exits 1 on a regression. It refuses a tree without `asm/<game>/nonmatchings`
+and `build/eeasm/asm/<game>/nonmatchings` (configure.py and ninja not run
+there), whose every full-unit check would fail. Run it after each header edit rather than at
 packaging.
