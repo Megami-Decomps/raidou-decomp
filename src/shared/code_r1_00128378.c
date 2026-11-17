@@ -249,9 +249,7 @@ void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 id) {
     }
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK);
-
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK2);
+INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskOpen_ID);
 #endif
 
 #ifdef VERSION_RAIDOU1
@@ -350,6 +348,7 @@ void mapCallBitCheck(void) {
     }
 }
 #else
+INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskChk_ID);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapCallBitCheck);
 #endif

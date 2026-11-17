@@ -442,15 +442,11 @@
 0x0012AED8	fclBackSprite	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fclDrawBack.fclBackSprite, score 9.3 band B
 0x0012B150	fclCommandHelp	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fclDrawBack.fclCommandHelp, score 8.1 band B
 0x0012B4D0	fclCallNewGameInit	func	tier=D	derived-callee	na	unit fclDrawBack; calls NewGameInit
-0x0012B9C8	fldProcSequenceSub	func	tier=D	derived-caller	na	unit code_0012B9C8, nearest named function fldAllTblLoad; called by ProcSequence
 0x0012BA90	fldNewGameStartSub	func	tier=D	derived-caller	na	unit code_0012BA90, nearest named function fldAllTblLoad; called by dds3NewGameStart
 0x0012BB98	fldSnapAngleToCompassPoint	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00122100, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0012C998	fldPointDistance	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00122BB0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0012CB48	mapCallAtan2	func	tier=D	derived-callee	na	unit code_00128378, neighbour mapGetEyeTgtRot; calls sdfAtan2
 0x0012CC70	fldToggleWorldNodeState	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00122BE0, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x0012CF80	mapRefDDS3GBWK	func	tier=D	derived-data	na	unit code_0012C998, neighbour mapGetTaniVector; references DDS3_GBWK
-0x0012CFF0	mapRefDDS3GBWK2	func	tier=D	derived-data	na	unit code_0012C998, neighbour mapRndEncParamSet; references DDS3_GBWK
-0x0012D068	mapRefDDS3GBWK3	func	tier=D	derived-data	na	unit code_0012C998, neighbour mapRndEncParamSet; references DDS3_GBWK
 0x0012D0E0	mapCallBitCheck	func	tier=D	derived-callee	na	unit code_0012C998, neighbour mapRndEncParamSet; calls evtBitCheck
 0x0012D5C8	mapCallProcessCheck	func	tier=D	derived-callee	na	unit code_0012C998, neighbour mapSetPlayersVisible; calls tipsProcessCheck
 0x0012D7A8	effRefDvBasic2	func	tier=D	derived-data	na	unit code_00128378, neighbour effBTLFieldColorDraw; references summonDvBasic
@@ -587,7 +583,6 @@
 0x00142848	mapCallMemAllocDirect	func	tier=D	derived-callee	na	unit code_00139330, neighbour mapBigClipChkF; calls sdfMemAllocDirect
 0x001428F8	mapFreeMapDataSub	func	tier=D	derived-caller	na	unit code_00139330, neighbour mapBigClipChkF; called by fldFreeMapData
 0x00142910	mapSetAreaRefreshSub	func	tier=D	derived-caller	na	unit code_00139330, neighbour mapBigClipChkF; called by mapMapSetAreaRefresh
-0x00142998	mapCallSetPlayerTargetData	func	tier=D	derived-callee	na	unit code_001416C0, neighbour mapCalcLen; calls fldSetPlayerTargetData
 0x00142BF0	mapLeaf10	func	tier=D	derived-unit	na	unit code_00139330, neighbour mapBigClipChkF; no named callee, caller or string
 0x00142DC8	fldProcSequence2	func	tier=D	derived-string	na	unit code_001416C0, neighbour fldBgTaskInit; string 'fldProcSequence'
 0x00142E28	fldBgTaskInit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fld.fldBgTaskInit, score 11.2 band A
@@ -16146,11 +16141,11 @@
 0x004DC388	fldCallMemsetFloat	data	tier=D	derived-sole	na	used by fldCallMemset
 0x004DC38C	fldCallSin3Float	data	tier=D	derived-sole	na	used by fldCallSin3
 0x004DC390	fldCallFptodpFloat	data	tier=D	derived-sole	na	used by fldCallFptodp
-0x004DC394	mapCallSetPlayerTargetDataFloat	data	tier=D	derived-sole	na	used by mapCallSetPlayerTargetData
-0x004DC398	mapCallSetPlayerTargetDataFloat2	data	tier=D	derived-sole	na	used by mapCallSetPlayerTargetData
-0x004DC39C	mapCallSetPlayerTargetDataFloat3	data	tier=D	derived-sole	na	used by mapCallSetPlayerTargetData
-0x004DC3A0	mapCallSetPlayerTargetDataFloat4	data	tier=D	derived-sole	na	used by mapCallSetPlayerTargetData
-0x004DC3A4	mapCallSetPlayerTargetDataFloat5	data	tier=D	derived-sole	na	used by mapCallSetPlayerTargetData
+0x004DC394	mapBigClipChkFFloat	data	tier=D	derived-sole	na	used by mapBigClipChkF
+0x004DC398	mapBigClipChkFFloat2	data	tier=D	derived-sole	na	used by mapBigClipChkF
+0x004DC39C	mapBigClipChkFFloat3	data	tier=D	derived-sole	na	used by mapBigClipChkF
+0x004DC3A0	mapBigClipChkFFloat4	data	tier=D	derived-sole	na	used by mapBigClipChkF
+0x004DC3A4	mapBigClipChkFFloat5	data	tier=D	derived-sole	na	used by mapBigClipChkF
 0x004DC3A8	mapGetScreenDirFloat	data	tier=D	derived-sole	na	used by mapGetScreenDir
 0x004DC3AC	mapGetScreenDirFloat2	data	tier=D	derived-sole	na	used by mapGetScreenDir
 0x004DC3B0	mapGetScreenDirFloat3	data	tier=D	derived-sole	na	used by mapGetScreenDir
@@ -18400,7 +18395,7 @@
 0x004DEB40	mapCASHDATAData	data	tier=D	derived-sole	na	used by mapCASHDATA
 0x004DEB48	mapObjFloorAdd_CashData	data	tier=D	derived-sole	na	used by mapObjFloorAdd_Cash
 0x004DEB50	mapObjTaskData12	data	tier=D	derived-sole	na	used by mapObjTask
-0x004DEB54	mapCallSetPlayerTargetDataData	data	tier=D	derived-sole	na	used by mapCallSetPlayerTargetData
+0x004DEB54	mapBigClipChkFData	data	tier=D	derived-sole	na	used by mapBigClipChkF
 0x004DEB58	mapData98	data	tier=D	derived-shared	na	used by 2 functions: mapCallSetPlayerTargetData, mapProcSequenceSub4
 0x004DEB60	mapObjPointAdd2Data	data	tier=D	derived-sole	na	used by mapObjPointAdd2
 0x004DEB68	fldFreeMapDataData	data	tier=D	derived-dominant	na	used by fldFreeMapData (3 of 4 refs, 2 functions)
@@ -21641,7 +21636,6 @@
 0x00535251	sdf3DPrimDefaultFaceIndexEntry7	data	tier=D	derived-table	na	pointed to by sdf3DPrimDefaultFaceIndex
 0x00535543	bssWork173	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x413D
 0x00539680	sbtlStr1200SEntry	data	tier=D	derived-table	na	pointed to by sbtlStr1200S
-0x0053ECB8	mapWork34	data	tier=D	derived-shared	na	used by 3 functions: mapHitWorkCalcSetup, mapHitWorkCalc, mapCallSetOt6
 0x0053F4B8	mdlWork2	data	tier=D	derived-shared	na	used by 7 functions: mdlCallMemGetSize, mdlCallMemGetInfo, mapLeaf12
 0x0053F4D8	mdlWork3	data	tier=D	derived-shared	na	used by 6 functions: mapLeaf12, mapCASHDATA, mdlCallMemGetSize
 0x0053F4F8	mdlWork4	data	tier=D	derived-shared	na	used by 6 functions: mapLeaf12, mapCASHDATA, mdlCallMemGetSize
@@ -23312,9 +23306,13 @@
 0x00129D40	DrawTitle	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fclMenu.DrawTitle score 3.6 flag -: calls1 calls-of-match votes2 st1:call r1-only
 0x0012A828	fclSetClsModeEx	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fclMsg.fclSetClsModeEx score 5.7 flag I: calls1 prev gap3/2 st1:gap r1+r2
 0x0012AC50	dds3DestroyCallbackNodeAfterLastNotification	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x320c88 sim 0.703 margin 0.03 pair
+0x0012B9C8	fldGbInit_Field	func	tier=C	raidou1-code	na	same code as raidou1 fldGbInit_Field (0x1273D8), other fields
 0x0012C640	mapGet3Y	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.mapGet3Y score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
 0x0012CC38	mapGetTaniVector	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapGetTaniVector score 5.4 flag -: prev gap1/8 st1:gap r1+r2
 0x0012CD48	NewGameInit	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD MesLogMain.NewGameInit score 2.0 flag -: calls1 calls-of-match st2:call r2-only
+0x0012CF80	mapAM_MaskOpen_ID	func	tier=C	raidou1-code	na	same code as raidou1 mapAM_MaskOpen_ID (0x1288F0), other limits
+0x0012CFF0	mapRefDDS3GBWK3	func	tier=C	raidou1-code	na	same code as raidou1 mapRefDDS3GBWK3 (0x128990), other limits
+0x0012D068	mapAM_MaskChk_ID	func	tier=C	raidou1-code	na	same code as raidou1 mapAM_MaskChk_ID (0x128A38), other limits
 0x0012DB00	tipsProcessCheck	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD tips.tipsProcessCheck score 4.5 flag I: calls3 calls-of-match st2:call r1-disagree:0x121578
 0x0012DC50	mapTakaraChkOpen	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fld.mapTakaraChkOpen score 2.0 flag -: next~ gap14/32 st2:gap r2-only
 0x0012DCC8	fldGbLocationSavePointStore	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fld.fldGbLocationSavePointStore score 3.3 flag I: calls1 calls-of-match-uniq st2:call r2-only
@@ -23341,6 +23339,7 @@
 0x00140030	PlayerMotionSe	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.PlayerMotionSe score 4.7 flag -: calls1 calls-of-match st1:call r1+r2
 0x00141878	fldNakamaMotReset2	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.fldNakamaMotReset2 score 5.5 flag I: calls1 calls-of-match-uniq st1:call r1+r2
 0x00142310	fldPlayerForceSetPos	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fld.fldPlayerForceSetPos score 4.3 flag I: calls1 callers-of-match votes2 st2:call r2-only
+0x00142998	mapBigClipChkF	func	tier=C	raidou1-code	na	same code as raidou1 mapBigClipChkF (0x13A3F0)
 0x00142C58	mapCalcLen	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapCalcLen score 5.1 flag -: next gap6/113 st1:gap r1+r2
 0x00142C88	mapSeVolCalc	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapSeVolCalc score 5.4 flag -: next gap7/119 st1:gap r1+r2
 0x001437E8	mapBgDrawOnOff	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapBgDrawOnOff score 3.5 flag -: calls1 prev~ gap5/19 st2:gap r2-only
@@ -24497,6 +24496,7 @@
 0x004EA8C0	map_aibo_pos	data	tier=C	derived-derived-role	na	same slot in R2, shared fldFileResolver code; replaces mapAiboTaskWork
 0x004EA8D0	map_summondv_buff	data	tier=C	derived-derived-role	na	same slot in R2, shared fldFileResolver code; replaces mapWork2
 0x0050FBA0	evtStageTestState2	data	tier=C	dds-ref	0.59 (n=D_r1_00476710)	dds-ref/loose: nfun=2, other=0, sim=0.9677, games=2, size=False, sec=True, fn=fldCallMemFreeDelayedDirect4; evtStageTestState is another symbol
+0x0053ECB8	mapData34	data	tier=C	raidou1-code	na	same object as raidou1 mapData34, used by the same three functions
 0x00544700	mdl_linkflag	data	tier=C	hd	0.37 (n=D_r1_004B4B90)	hd/medium: conf=medium, agree=3, using=4
 0x005463FC	pinst	data	tier=C	dds-ref	0.59 (n=D_r1_004B67EC)	dds-ref/exact: nfun=62, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfMesMngMessage
 0x005468F0	mdlViewerState	data	tier=C	dds-ref	0.59 (n=D_r1_004B6CE0)	dds-ref/exact: nfun=64, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlLoadViewerResourceAndResetCursors

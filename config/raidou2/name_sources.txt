@@ -1265,7 +1265,7 @@
 0x0012B150	fclCommandHelp	hd-inferred	hd: Raidou HD fclDrawBack.fclCommandHelp, score 8.1 band B
 0x0012B1D0	fldAllTblLoad	inferred	smt3-pair: SMT3 fldAllTblLoad body: sdfFileOpen of the all-table file (/map/all/MAPALL.TBL here, /fld/f/bin/FLDALL.TBL in SMT3) then a run of sdfFileRead into tables, sdfFileClose
 0x0012B4D0	fclCallNewGameInit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit fclDrawBack; calls NewGameInit
-0x0012B9C8	fldProcSequenceSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0012B9C8, nearest named function fldAllTblLoad; called by ProcSequence
+0x0012B9C8	fldGbInit_Field	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same code as raidou1 fldGbInit_Field (0x1273D8), other fields
 0x0012BA90	fldNewGameStartSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0012BA90, nearest named function fldAllTblLoad; called by dds3NewGameStart
 0x0012BAC8	R360_LR	inferred	smt3-decomp name R360_LR, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.55 callees=0 size=1.000; R2 top op=1.00 full=1.00 margin=0.55 callees=0 size=1.000; replaces mapGetLight: hd: Raidou HD fld.mapGetLight, score 7.0 band B
 0x0012BB98	fldSnapAngleToCompassPoint	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00122100, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -1285,9 +1285,9 @@
 0x0012CC70	fldToggleWorldNodeState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00122BE0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0012CD48	NewGameInit	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD MesLogMain.NewGameInit score 2.0 flag -: calls1 calls-of-match st2:call r2-only
 0x0012CD70	mapAM_MaskSetCurrent	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapAutoMapUpdateLimit calls mapAM_MaskSetCurrent(am_map, floor) where fldFunc17 calls mapProcSequenceSub(mapCallSetOt2Data5, floor); replaces mapProcSequenceSub
-0x0012CF80	mapRefDDS3GBWK	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_0012C998, neighbour mapGetTaniVector; references DDS3_GBWK
-0x0012CFF0	mapRefDDS3GBWK2	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_0012C998, neighbour mapRndEncParamSet; references DDS3_GBWK
-0x0012D068	mapRefDDS3GBWK3	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_0012C998, neighbour mapRndEncParamSet; references DDS3_GBWK
+0x0012CF80	mapAM_MaskOpen_ID	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same code as raidou1 mapAM_MaskOpen_ID (0x1288F0), other limits
+0x0012CFF0	mapRefDDS3GBWK3	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same code as raidou1 mapRefDDS3GBWK3 (0x128990), other limits
+0x0012D068	mapAM_MaskChk_ID	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same code as raidou1 mapAM_MaskChk_ID (0x128A38), other limits
 0x0012D0E0	mapCallBitCheck	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0012C998, neighbour mapRndEncParamSet; calls evtBitCheck
 0x0012D290	mapRndEncParamSet	hd	hd: Raidou HD fld.mapRndEncParamSet, score 8.7 band B
 0x0012D2D8	mapGetPlayersBasic	hd	hd: Raidou HD fld.mapGetPlayersBasic, score 6.4 band C, hd-consensus: calls1 next calls-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 7.5,6.4,7.5,6.4,7.5,6.4,6.4,6.4,6.4,6.4
@@ -1575,7 +1575,7 @@
 0x00142848	mapCallMemAllocDirect	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00139330, neighbour mapBigClipChkF; calls sdfMemAllocDirect
 0x001428F8	mapFreeMapDataSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00139330, neighbour mapBigClipChkF; called by fldFreeMapData
 0x00142910	mapSetAreaRefreshSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00139330, neighbour mapBigClipChkF; called by mapMapSetAreaRefresh
-0x00142998	mapCallSetPlayerTargetData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001416C0, neighbour mapCalcLen; calls fldSetPlayerTargetData
+0x00142998	mapBigClipChkF	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same code as raidou1 mapBigClipChkF (0x13A3F0)
 0x00142BF0	mapLeaf10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00139330, neighbour mapBigClipChkF; no named callee, caller or string
 0x00142C58	mapCalcLen	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD fld.mapCalcLen score 5.1 flag -: next gap6/113 st1:gap r1+r2
 0x00142C88	mapSeVolCalc	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD fld.mapSeVolCalc score 5.4 flag -: next gap7/119 st1:gap r1+r2
@@ -23619,11 +23619,11 @@
 0x004DC388	fldCallMemsetFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallMemset
 0x004DC38C	fldCallSin3Float	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallSin3
 0x004DC390	fldCallFptodpFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallFptodp
-0x004DC394	mapCallSetPlayerTargetDataFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetPlayerTargetData
-0x004DC398	mapCallSetPlayerTargetDataFloat2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetPlayerTargetData
-0x004DC39C	mapCallSetPlayerTargetDataFloat3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetPlayerTargetData
-0x004DC3A0	mapCallSetPlayerTargetDataFloat4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetPlayerTargetData
-0x004DC3A4	mapCallSetPlayerTargetDataFloat5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetPlayerTargetData
+0x004DC394	mapBigClipChkFFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapBigClipChkF
+0x004DC398	mapBigClipChkFFloat2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapBigClipChkF
+0x004DC39C	mapBigClipChkFFloat3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapBigClipChkF
+0x004DC3A0	mapBigClipChkFFloat4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapBigClipChkF
+0x004DC3A4	mapBigClipChkFFloat5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapBigClipChkF
 0x004DC3A8	mapGetScreenDirFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapGetScreenDir
 0x004DC3AC	mapGetScreenDirFloat2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapGetScreenDir
 0x004DC3B0	mapGetScreenDirFloat3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapGetScreenDir
@@ -26035,7 +26035,7 @@
 0x004DEB40	mapCASHDATAData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCASHDATA
 0x004DEB48	mapObjFloorAdd_CashData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjFloorAdd_Cash
 0x004DEB50	mapObjTaskData12	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask
-0x004DEB54	mapCallSetPlayerTargetDataData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetPlayerTargetData
+0x004DEB54	mapBigClipChkFData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapBigClipChkF
 0x004DEB58	mapData98	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallSetPlayerTargetData, mapProcSequenceSub4
 0x004DEB60	mapObjPointAdd2Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjPointAdd2
 0x004DEB68	fldFreeMapDataData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldFreeMapData (3 of 4 refs, 2 functions)
@@ -30023,7 +30023,7 @@
 0x00535251	sdf3DPrimDefaultFaceIndexEntry7	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sdf3DPrimDefaultFaceIndex
 0x00535543	bssWork173	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x413D
 0x00539680	sbtlStr1200SEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlStr1200S
-0x0053ECB8	mapWork34	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapHitWorkCalcSetup, mapHitWorkCalc, mapCallSetOt6
+0x0053ECB8	mapData34	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same object as raidou1 mapData34, used by the same three functions
 0x0053F4B8	mdlWork2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: mdlCallMemGetSize, mdlCallMemGetInfo, mapLeaf12
 0x0053F4D8	mdlWork3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: mapLeaf12, mapCASHDATA, mdlCallMemGetSize
 0x0053F4F8	mdlWork4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: mapLeaf12, mapCASHDATA, mdlCallMemGetSize
