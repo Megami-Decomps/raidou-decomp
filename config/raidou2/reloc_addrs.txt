@@ -1,1 +1,2 @@
 // Relocation overrides for addresses spimdisasm pairs wrong (%hi/%lo, jump tables).
+rom:0x271DC8 reloc:MIPS_NONE symbol:none // 00370DC8 frCallMemAllocDirect2: addiu $6, $6, 8 steps the destination, not %lo(D_30000008)
