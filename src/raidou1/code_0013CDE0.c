@@ -1315,7 +1315,7 @@ void mapBgSetScroll(f32 x, f32 y, f32 z, s32 mode) {
     }
 
     mapSKYBGEDITData2 = 0.0f;
-    if (QuakeFrame) {
+    if (dds3QuakeFlag) {
         sdf3DScreenAdjust = 1;
         sdf3DScreenAdjustOffsetX += gMapScrollReset[0];
         mapSKYBGEDITData3 = gMapScrollReset[1] + mapSKYBGEDITData2;

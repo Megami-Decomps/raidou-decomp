@@ -25585,7 +25585,7 @@
 0x004DE230	dds3FirstProcessName	inferred	method=smt3-content; p=0.97 (n=D_r1_0046B138); tier=A; source=smt3; evidence=smt3-content/all: single
 0x004DE238	dds3DrawFirstProcessName	inferred	method=smt3-content; p=0.97 (n=D_r1_0046B140); tier=A; source=smt3; evidence=smt3-content/all: single
 0x004DE240	dds3DrawProcessFlag	inferred	method=smt3-ref; p=0.88 (n=D_r1_0046B148); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=0.92025, games=2, size=False, sec=True, fn=dds3DrawProcess
-0x004DE248	startinglistf_dds3KernelCore	hd	hd: Raidou HD dds3KernelCore.startinglistf, 8 of 8 functions agree, high confidence
+0x004DE248	startinglistf	hd	hd: Raidou HD dds3KernelCore.startinglistf, 8 of 8 functions agree, high confidence
 0x004DE24C	startinglistl	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B154); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=DeleteProcessList
 0x004DE250	startinglistcnt	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B158); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=8, other=0, sim=1.0, games=2, size=True, sec=True, fn=DeleteProcessList
 0x004DE254	endinglistf	inferred	method=smt3-ref; p=0.98 (n=endinglistf_dds3KernelCore); tier=A; source=smt3; evidence=smt3-ref/exact: SMT3 spelling of endinglistf_dds3KernelCore; replaces endinglistf_dds3KernelCore: hd: Raidou HD dds3KernelCore.endinglistf, 4 of 5 functions agree, high confidence
@@ -25636,12 +25636,12 @@
 0x004DE34A	dds3RenderTexHeight	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B24E); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3InitRenderDrawEnv
 0x004DE34C	dds3RenderDrawEnv	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B250); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3InitRenderDrawEnv
 0x004DE350	dds3DrawFlag	inferred	method=smt3-ref; p=0.98 (n=DrawFlag); tier=A; source=smt3; evidence=smt3-ref/exact: SMT3 spelling of DrawFlag; replaces DrawFlag: hd: Raidou HD dds3KernelDraw.DrawFlag, 17 of 17 functions agree, high confidence
-0x004DE354	ScreenBlurFlag	hd	hd: Raidou HD dds3KernelDraw.ScreenBlurFlag, 3 of 3 functions agree, high confidence
+0x004DE354	dds3ScreenBlurFlag	hd	hd: Raidou HD dds3KernelDraw.ScreenBlurFlag, 3 of 3 functions agree, high confidence
 0x004DE356	dds3ScreenBlurAlpha	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B25A); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=8, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3DrawProcess
 0x004DE358	dds3ScreenBlurScale	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B25C); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004DE360	dds3ScreenBlurOfsX	inferred	method=smt3-ref; p=0.88 (n=D_r1_0046B260); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=dds3DrawProcess
 0x004DE364	pbDebugPrintPanel2Data2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by pbDebugPrintPanel2
-0x004DE368	QuakeFrame	hd	hd: Raidou HD dds3KernelDraw.QuakeFrame, 3 of 3 functions agree, high confidence
+0x004DE368	dds3QuakeFlag	hd	hd: Raidou HD dds3KernelDraw.QuakeFrame, 3 of 3 functions agree, high confidence
 0x004DE36A	dds3QuakeFrame	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B26A); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3SetQuake
 0x004DE36C	dds3QuakeXRange	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B26C); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3SetQuake
 0x004DE36E	dds3QuakeYRange	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B26E); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
@@ -25783,7 +25783,7 @@
 0x004DE6F8	dds3DebugLabelR	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B5A0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3PrimDebugTextBoxRGB
 0x004DE700	dds3DebugFmtInt3	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B5A8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3PrimDebugTextBoxRGB
 0x004DE708	dds3DebugFmtFloat3	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B5B0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3PrimDebugTextBoxRGB
-0x004DE710	gMsgID_fclMisc	hd	hd: Raidou HD fclMisc.gMsgID, 14 of 15 functions agree, high confidence
+0x004DE710	gMsgID	hd	hd: Raidou HD fclMisc.gMsgID, 14 of 15 functions agree, high confidence
 0x004DE714	gMsgFlag	inferred	method=smt3-ref; p=0.98 (n=gMsgFlag_fclMisc); tier=A; source=smt3; evidence=smt3-ref/exact: SMT3 spelling of gMsgFlag_fclMisc; replaces gMsgFlag_fclMisc: hd: Raidou HD fclMisc.gMsgFlag, 4 of 4 functions agree, high confidence
 0x004DE715	gMsgInvFlag	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B5BD); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=8, other=0, sim=1.0, games=2, size=True, sec=True, fn=fclDestroyMessage
 0x004DE718	gSelMsgNo	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046B5C0); tier=B; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.9107000000000001, games=2, size=True, sec=True, fn=fclUpdateMessageEx
@@ -26542,7 +26542,7 @@
 0x004DF5CC	fldMapHaloRequest2	inferred	method=dds-ref; p=0.59 (n=D_004DF5CC); tier=C; source=dds; evidence=dds-ref/loose: nfun=1, other=1, sim=0.95, games=1, size=True, sec=False, fn=lmapCallGetProcessData2; fldMapHaloRequest is another symbol
 0x004DF5D0	fldMapHaloRequest3	inferred	method=dds-ref; p=0.59 (n=D_004DF5D0); tier=C; source=dds; evidence=dds-ref/close: nfun=1, other=0, sim=0.95, games=1, size=True, sec=False, fn=mphCommand_BUSTUP_LOAD; fldMapHaloRequest is another symbol
 0x004DF5D4	fldMapHaloRequest4	inferred	method=dds-ref; p=0.59 (n=D_004DF5D4); tier=C; source=dds; evidence=dds-ref/loose: nfun=1, other=1, sim=0.95, games=1, size=True, sec=False, fn=saveCallGetProcessData7; fldMapHaloRequest is another symbol
-0x004DF5D8	sndPathPrefix_mdlManager	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C378); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlSetFileName; sndPathPrefix is another symbol
+0x004DF5D8	mdlModelPathPrefix	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C378); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlSetFileName; sndPathPrefix is another symbol
 0x004DF5E0	mdlPackedBundleExt	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C380); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=1, other=0, sim=1.0, games=1, size=True, sec=True, fn=mdlPrepare
 0x004DF5E4	mdlHddFileIndexHandle	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C384); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlReleaseHddFileList
 0x004DF5E8	mdlHddFileListHandle	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C388); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlReleaseHddFileList
@@ -26709,7 +26709,7 @@
 0x004DFA60	evtData28	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: evtCutInCreateSub, evtCallGetSmallFontFRQ2
 0x004DFA68	evtCallGetSmallFontFRQ2Data2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCallGetSmallFontFRQ2
 0x004DFA70	evtPictureProcName	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C800); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtStartPictureProcess2
-0x004DFA78	skyanime_evtSky	hd	hd: Raidou HD evtSky.skyanime, 4 of 5 functions agree, high confidence
+0x004DFA78	skyanime	hd	hd: Raidou HD evtSky.skyanime, 4 of 5 functions agree, high confidence
 0x004DFA7C	fldbokasi	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046C80C); tier=B; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.8333, games=2, size=True, sec=True, fn=Process1
 0x004DFA80	evtSkyProcName	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046C810); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004DFA90	evtFrameListHeadDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtFrameListHeadData
@@ -27603,7 +27603,7 @@
 0x004E1590	gSlNowCardCheck	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CDF4); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=slBootProc1st
 0x004E1594	gslCheckCardWait	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CDF8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=slBootProc1st
 0x004E1598	gslDrawFlagBg	inferred	method=smt3-ref; p=0.98 (n=gslDrawFlagBg_slMain); tier=A; source=smt3; evidence=smt3-ref/exact: SMT3 spelling of gslDrawFlagBg_slMain; replaces gslDrawFlagBg_slMain: hd: Raidou HD slMain.gslDrawFlagBg, 4 of 4 functions agree, high confidence
-0x004E159C	gslDrawFlagFile_slMain	hd	hd: Raidou HD slMain.gslDrawFlagFile, 8 of 9 functions agree, high confidence
+0x004E159C	gslDrawFlagFile	hd	hd: Raidou HD slMain.gslDrawFlagFile, 8 of 9 functions agree, high confidence
 0x004E15A0	gslAnimCnt	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CE04); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=slCalc
 0x004E15A4	slNewCycleData17	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slNewCycle (6 of 7 refs, 2 functions)
 0x004E15A8	gSlExitMode	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same data as Raidou 1 0x0046CE0C (r1_r2_data_pairs): SMT3 fmProcTrigSequence clears gSlExitMode right after slSetInfo(0); Raidou stores 0 to 0x46CE0C there; replaces slDrawInfoData15
@@ -27613,18 +27613,18 @@
 0x004E15B8	slChooseSaveIndex	inferred	method=smt3-ref; p=0.88 (n=D_r1_0046CE1C); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=22, other=2, sim=1.0, games=2, size=True, sec=True, fn=slHeadLoad
 0x004E15BC	gSlFileErroeFlg	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same data as Raidou 1 0x0046CE20 (r1_r2_data_pairs): SMT3 order gSlNowCardCheck, gSlFileErroeFlg, slQueryYesNoMsg; Raidou 0x46CE20 in the same slot; replaces slFileSelCalcData2
 0x004E15C0	slQueryYesNoCursor	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046CE24); tier=B; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.8636, games=2, size=True, sec=True, fn=slCallMcRegetInfo
-0x004E15C4	saveloadSystem	hd	hd: Raidou HD slMain.saveloadSystem, 3 of 3 functions agree, high confidence
+0x004E15C4	slQueryYesNoMsg	hd	hd: Raidou HD slMain.saveloadSystem, 3 of 3 functions agree, high confidence
 0x004E15C8	slQueryYesNoKeyFlag	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046CE2C); tier=B; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.8636, games=2, size=True, sec=True, fn=slCallMcRegetInfo
 0x004E15CC	slNewCycleData18	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by slNewCycle
 0x004E15D0	slData2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: slFileSelCalc, slNewCycle, slInsertedInMEMORY
 0x004E15D4	slFileSelError	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CE38); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=slSaveProc_Write_mkdir
 0x004E15D8	gslMode	inferred	method=smt3-ref; p=0.98 (n=gslMode_slMain); tier=A; source=smt3; evidence=smt3-ref/exact: SMT3 spelling of gslMode_slMain; replaces gslMode_slMain: hd: Raidou HD slMain.gslMode, 3 of 3 functions agree, high confidence
 0x004E15DC	slData3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: slCallAdminiCallSequence, slCancel, fmProcTrigSequence_slMain
-0x004E15E0	slDrawInfoData16	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slDrawInfo (8 of 12 refs, 3 functions)
-0x004E15E4	gslErrorCode_slMain	hd	hd: Raidou HD slMain.gslErrorCode, 5 of 6 functions agree, high confidence
+0x004E15E0	gslInfoCode	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slDrawInfo (8 of 12 refs, 3 functions)
+0x004E15E4	gslErrorCode	hd	hd: Raidou HD slMain.gslErrorCode, 5 of 6 functions agree, high confidence
 0x004E15E8	gslErrorKeyFlag	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CE4C); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=slErrorWaitToFileMc
 0x004E15EC	gSlMcAccessCnt	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same data as Raidou 1 0x0046CE50 (r1_r2_data_pairs): SMT3 order slQueryYesNoKeyFlag, gSlMcAccessCnt, gSlWindowCnt; Raidou 0x46CE50 in the same slot; replaces effDebugPrintfData
-0x004E15F0	slData4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: slCallSetOt5, slSetInfo, slQueryYesNoProcSub
+0x004E15F0	gSlWindowCnt	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: slCallSetOt5, slSetInfo, slQueryYesNoProcSub
 0x004E15F4	setCallMcGetSlotIndexData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by setCallMcGetSlotIndex
 0x004E15F8	slData5	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: slDraw_slMain, fmProcTrigSequence_slMain, slLoadData
 0x004E15FC	fmData2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: fmShutDown, slNewCycle, fmProcTrigSequence_slMain

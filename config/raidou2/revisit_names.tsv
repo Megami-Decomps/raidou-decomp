@@ -19723,8 +19723,8 @@
 0x004E15CC	slNewCycleData18	data	tier=D	derived-sole	na	used by slNewCycle
 0x004E15D0	slData2	data	tier=D	derived-shared	na	used by 3 functions: slFileSelCalc, slNewCycle, slInsertedInMEMORY
 0x004E15DC	slData3	data	tier=D	derived-shared	na	used by 4 functions: slCallAdminiCallSequence, slCancel, fmProcTrigSequence_slMain
-0x004E15E0	slDrawInfoData16	data	tier=D	derived-dominant	na	used by slDrawInfo (8 of 12 refs, 3 functions)
-0x004E15F0	slData4	data	tier=D	derived-shared	na	used by 5 functions: slCallSetOt5, slSetInfo, slQueryYesNoProcSub
+0x004E15E0	gslInfoCode	data	tier=D	derived-dominant	na	used by slDrawInfo (8 of 12 refs, 3 functions)
+0x004E15F0	gSlWindowCnt	data	tier=D	derived-shared	na	used by 5 functions: slCallSetOt5, slSetInfo, slQueryYesNoProcSub
 0x004E15F4	setCallMcGetSlotIndexData	data	tier=D	derived-sole	na	used by setCallMcGetSlotIndex
 0x004E15F8	slData5	data	tier=D	derived-shared	na	used by 4 functions: slDraw_slMain, fmProcTrigSequence_slMain, slLoadData
 0x004E15FC	fmData2	data	tier=D	derived-shared	na	used by 3 functions: fmShutDown, slNewCycle, fmProcTrigSequence_slMain

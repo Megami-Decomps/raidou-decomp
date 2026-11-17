@@ -123,7 +123,7 @@ extern f32 mapSKYBGEDITData;
 extern f32 mapSKYBGEDITData2;
 extern f32 mapSKYBGEDITData3;
 extern s32 mapWork4;
-extern u16 QuakeFrame;
+extern u16 dds3QuakeFlag;
 extern f32 mapBgSetScrollData13;
 extern f32 mapBgSetScrollData14;
 extern f32 mapBgSetScrollData15;

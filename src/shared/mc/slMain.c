@@ -222,8 +222,6 @@ typedef struct fileLoadMirror_t {
     u32 previous;
 } fileLoadMirror_t;
 
-extern u32 gslErrorCode_slMain;
-extern u32 gslDrawFlagFile_slMain;
 extern u32 fileMemoryCardRequestIndex;
 extern s32 fileResetSelection(void);
 extern u32 D_003BC834;
@@ -824,8 +822,8 @@ dds3ProcessFunc_t slDefaultFileFlowProc1st(void) {
 s32 fileRestartSlotScan(void) {
     fileClearAllSlotFlags();
     slSetInfo(1);
-    gslErrorCode_slMain = 0;
-    gslDrawFlagFile_slMain = 0;
+    gslErrorCode = 0;
+    gslDrawFlagFile = 0;
     return fileResetSelection();
 }
 
@@ -848,7 +846,7 @@ INCLUDE_ASM(const s32, "mc/slMain", slLeaf6);
 
 s32 slCallSetInfo4(void) {
     slSetInfo(0);
-    gslDrawFlagFile_slMain = 0;
+    gslDrawFlagFile = 0;
     slQueryYesNoMsg = 12;
     return slCallMcRegetInfo(&slCallSetInfo5, &slLeaf7, 1);
 }
@@ -890,7 +888,7 @@ s32 slBootProc1st(void) {
 saddr_t slCallSetInfo7(void) {
     slSetInfo(0);
     slCallPlaySE2Data = 0;
-    gslDrawFlagFile_slMain = 0;
+    gslDrawFlagFile = 0;
     return EE_ADDR_S(slCallPlaySE2);
 }
 
