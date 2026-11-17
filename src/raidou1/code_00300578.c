@@ -1292,17 +1292,15 @@ void Shutdown_cmpStatus(dds3ProcessID_t *id) {
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_00190668.c:617, near, same function 0.90 (words 46/49, calls 0.83, shape 0.93) */
 dds3ProcessID_t *ProcessStart_cmpStatus(void)
 {
-    struct sdfMemHandle_t *hMem = sdfMemAllocDirect(sizeof(Menu_t));
-    Menu_t *wk = sdfMemGetPtr(hMem);
-    dds3ProcessID_t *PID;
+    struct sdfMemHandle_t *hMem = sdfMemAllocDirect(sizeof(cmpStatusWork_t));
+    cmpStatusWork_t *wk = sdfMemGetPtr(hMem);
 
-    memset(wk, 0, sizeof(Menu_t));
+    memset(wk, 0, sizeof(cmpStatusWork_t));
     wk->hMem = hMem;
-    PID = dds3StartProcess("camp_status_main", 1022, 0, 0, MenuProcess, MenuShutdown, wk);
-    wk->drawPID = dds3StartProcess("camp_status_draw", 11029, 0, 0, MenuDrawProcess, NULL, wk);
-    MenuInit_itf(wk);
-    wk->lflag |= 2;
-    return PID;
+    g_mainPID = dds3StartProcess("camp_status_main", 0x3EE, 0, 0, cmpCallGetProcessData2, (dds3ProcessFunc_t)Shutdown_cmpStatus, wk);
+    wk->drawPID = dds3StartProcess("camp_status_draw", 0x2B03, 0, 0, cmpCallGetProcessData3, NULL, wk);
+    cmpCallInitCmpModel(wk);
+    return g_mainPID;
 }
 #else
 INCLUDE_RODATA(const s32, "code_00300578", cmpCallSprintfTable);
