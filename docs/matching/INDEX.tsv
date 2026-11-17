@@ -257,13 +257,12 @@ fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 wo
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	14		
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.	
 fldSaveLabel	field/fldProcess	raidou1 0x14D4	1291 of 1334 words differ	docs/matching/field/fldProcess.md	22	the full-unit result moves with the declarations code_r1_00128378.h carries; A1-last-asm's added callee prototypes (fldSetUnitSub, fldJDataLoad and four more, none used here) turn CONTEXT 1251/1338 into DIFF 1291/1334 under -DNON_MATCHING.	
-MessageRequestNS	interface/frFont	raidou1 0x40, raidou2 0x40	7 of 15 words differ	docs/matching/interface/frFont.md	3		
-frCallGetFontWidth2	interface/frFont	raidou1 0x260	80 of 151 words differ	docs/matching/interface/frFont.md	27		
-frSetFont	interface/frFont	raidou1 0x148, raidou2 0x148	4 of 82 words differ	docs/matching/interface/frFont.md	35		
-frSetFontString	interface/frFont	raidou1 0x198	3 of 102 words differ	docs/matching/interface/frFont.md	44		
-frDrawEffect	interface/frFont	raidou1 0x348	64 of 208 words differ	docs/matching/interface/frFont.md	54		
-frDrawFontOt	interface/frFont	raidou1 0x34C	21 of 211 words differ	docs/matching/interface/frFont.md	62		
-frFontAppendIndexedTextToGlyphChain	interface/frFont	raidou1 0x170, raidou2 0x170	47 of 90 words differ	docs/matching/interface/frFont.md	70		
+frCallGetFontWidth2	interface/frFont	raidou1 0x260	80 of 151 words differ	docs/matching/interface/frFont.md	3		
+frSetFont	interface/frFont	raidou1 0x148, raidou2 0x148	4 of 82 words differ	docs/matching/interface/frFont.md	11		
+frSetFontString	interface/frFont	raidou1 0x198	3 of 102 words differ	docs/matching/interface/frFont.md	20		
+frDrawEffect	interface/frFont	raidou1 0x348	64 of 208 words differ	docs/matching/interface/frFont.md	30		
+frDrawFontOt	interface/frFont	raidou1 0x34C	21 of 211 words differ	docs/matching/interface/frFont.md	38		
+frFontAppendIndexedTextToGlyphChain	interface/frFont	raidou1 0x170, raidou2 0x170	47 of 90 words differ	docs/matching/interface/frFont.md	46		
 itfMesMngRequestSelect_itf	interface/itfMesManager	raidou1 0x118, raidou2 0x118	2 of 70 words differ	docs/matching/interface/itfMesManager.md	3		
 CalcWindow	interface/itfMesManager	raidou1 0x1F0, raidou2 0x1F0	50 of 123 words differ	docs/matching/interface/itfMesManager.md	12		
 CalcMessage	interface/itfMesManager	raidou1 0x28C, raidou2 0x31C	118 of 159 words differ	docs/matching/interface/itfMesManager.md	21		

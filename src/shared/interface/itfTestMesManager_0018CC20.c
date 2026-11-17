@@ -96,6 +96,13 @@ s32 TestMsgMngC_Process(dds3ProcessID_t *id)
 
 /* NON_MATCHING: 33 of 39 words match.  */
 #ifdef NON_MATCHING
+/* Ordering table entry the test message sprite is filed into. */
+#if defined(VERSION_RAIDOU2)
+#define TEST_MSG_OT 104
+#else
+#define TEST_MSG_OT 103
+#endif
+
 s32 TestMsgMngD_Process(dds3ProcessID_t *id) {
     sdfDrawTag_t *tag;
     sdfGrOt_t *ot;
@@ -106,7 +113,7 @@ s32 TestMsgMngD_Process(dds3ProcessID_t *id) {
         itfMiscDrawAlphaPrim(tag, 0, 0);
         itfMiscDrawSpritePrim(evtPictureSpritePos, evtPictureSpriteUv, evtPictureSpriteColor, 0xFFF, testMsgTexture, 0,
                               tag);
-        ot = &sdfGrOtTable[103];
+        ot = &sdfGrOtTable[TEST_MSG_OT];
         ((sdfGrOtRegFunc_t)ot->regFunc)(ot, tag);
     }
     return 0;

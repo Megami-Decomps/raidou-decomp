@@ -240,7 +240,7 @@ void fldCallFptodp(void) {
     f32 c;
 
     for (i = 0; i < 1000; i++) {
-        angle = (f32)i * 0.00157;
+        angle = (f32)i * 0.0015699999999999998;
         s = sdfSin(angle);
         c = sdfCos(angle);
         fldCallFptodpWork[(s32)(s * 100.0f)] = c;
