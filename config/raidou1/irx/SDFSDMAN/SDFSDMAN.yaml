@@ -1,0 +1,16 @@
+# SDFSDMAN.IRX, the sound driver. Raidou 1's build differs from SMT3's; see
+# docs/irx-modules.md.
+name: SDFSDMAN.IRX
+sha1: 1d8f8647b3f83ee81a0e08e3f994a6181151f4b4
+disc: /USERIRX/SDFSDMAN.IRX
+
+# The fields tools/irx.py writes into .iopmod. Everything else in the
+# container is derived from the link.
+module:
+  name: sdf_sound_driver
+  version: 0x0000
+  entry: sdfSdManInit
+
+# The C, by retail translation unit in link order. SDFSDMAN_adpcm (the EE RPC
+# call, the ADPCM stream and the import tables) is the same in both games.
+tus: [SDFSDMAN, SDFSDMAN_adpcm]

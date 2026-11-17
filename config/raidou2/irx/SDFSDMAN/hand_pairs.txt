@@ -1,0 +1,13 @@
+# Functions and data the code changed too much to pair by instructions:
+# Raidou address, SMT3 name. Checked against the IDB pseudocode.
+0x438 sdfSndGetVolTable
+0xA88 sdfSndTimerStart
+0x400C sdfSndLoadVolTables
+0x43EC sdfSndStoreVolTables
+0x4ECC sdfAdpcmFadeOut
+0x4EF0 sdfAdpcmStop
+0x6BF0 sdfSndVolTblSeq
+0x6C20 sdfSndVolTblBgm
+0x6C60 sdfSndVolTblSe
+0x6CA0 sdfSndVolTblVoice
+0x6EB0 sdfSndSlots
