@@ -2164,8 +2164,12 @@ void frFontCheckPendingGlyphState(frFontCtx_t *ctx) {
     if (pending == 0) {
         pending = ctx->pendingPosition;
     } else {
-        /* retail passes ctx in $a0 without setting it */
+        /* BUG: retail calls without setting $a0, which still holds ctx. */
+#ifdef FIX_BUGS
+        frFontCreateContext(ctx);
+#else
         ((void (*)())frFontCreateContext)();
+#endif
         pending = ctx->pendingPosition;
     }
     if (pending != 0) {
