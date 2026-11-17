@@ -80,8 +80,10 @@ table (`jtbl_<address>`, found from the `%hi`/`%lo` loads in `.text`) into
 `INCLUDE_RODATA` line per piece in the C files: the pieces between two jump
 tables go right before the second table's function. A function in C emits its
 own jump table, so its line goes, and a `NON_MATCHING` draft keeps it in the
-`#else`. Placing a string before the C function that loads it would let gas
-fill the call's delay slot with the `%lo`, which retail never does. Rerun the
+`#else`. A piece's label is `rodata_<name>` and the linker script defines
+`<name>`, so a C file never sees a string defined: gas fills a call's delay
+slot with the `%lo` of a symbol defined earlier in the file, which retail's
+build never does. Rerun the
 tool after turning a jump table function into C; `--check` fails when a C file
 is out of date. A module whose C has no `INCLUDE_RODATA` links `rodata.s`.
 

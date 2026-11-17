@@ -1691,5 +1691,197 @@ INCLUDE_RODATA("SDFSDMAN", aP2sdirxspuiopm_0);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScesi);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvIfcou);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvUnkno);
+#ifdef NON_MATCHING
+/* 3 instructions longer than the retail code; not yet tuned. */
+/* The driver's main loop: wait for a command packet from the EE, run it and
+ * acknowledge it. Command 1 (quit) is the only way out. */
+s32 sdfSndDrvRpcInit(void *arg)
+{
+    sdfSndCmd_t *pkt;
+    u32 opt;
+    s32 arg4;
+    s32 bank;
+    s32 vol;
+    u16 depth;
+    s32 state;
+
+    sdfSndStartKeepAliveThread();
+    sdfSndCreateRpcSema();
+    sdfSndCmdSemaParam.initial = 0;
+    sdfSndCmdSemaParam.max = 256;
+    sdfSndCmdSemaParam.option = 0;
+    sdfSndCmdSema = thsemap_CreateSema(&sdfSndCmdSemaParam);
+    if (sdfSndCmdSema <= 0) {
+        stdio_printf(aSdfsnddrvCreat);
+        thbase_ExitThread();
+    }
+    sifcmd_SifInitCmd();
+    intrman_CpuSuspendIntr(&state);
+    sifcmd_SifSetCmdBuffer(sdfSndSifCmdBuffer, 10);
+    sifcmd_SifAddCmdHandler(0, (void *(*)(void *, void *))sdfSndSifCmdHandler, NULL);
+    intrman_CpuResumeIntr(state);
+    sdfSndAckPacket.code = 31;
+    sdfSndAckPacket.arg = 1;
+    sifcmd_SifSendCmd(0x80000001, &sdfSndAckPacket, 24, NULL, NULL, 0);
+    sdfSndEeRpcSema = thsemap_CreateSema(&sdfSndEeRpcSemaParam);
+    if (sifcmd_SifBindRpc(&sdfSndEeRpcClient, 0x54524E53, 0) != 0) {
+        stdio_printf(aSdfsnddrvScesi);
+    }
+    while (1) {
+        do {
+            thsemap_WaitSema(sdfSndCmdSema);
+            if ((s16)sdfSndCmdCount > 0) {
+                break;
+            }
+            stdio_printf(aSdfsnddrvIfcou, (s16)sdfSndCmdCount);
+        } while (1);
+        pkt = &sdfSndCmdRing[(s16)sdfSndCmdHead];
+        opt = pkt->opt;
+        arg4 = (opt >> 16) & 0xF;
+        switch ((u8)(opt >> 20)) {
+        case 0:
+            sdfSndInitSynth(*(sdfSndWorkArea_t **)pkt->data);
+            break;
+        case 1:
+            sdfSndQuitSynth();
+            return 0;
+        case 2:
+            sdfSndBgmPlay((sdfSndBgmReq_t *)pkt->data);
+            break;
+        case 3:
+            sdfSndBgmStop((s32 *)pkt->data);
+            break;
+        case 4:
+            sdfSndStopAll(0);
+            break;
+        case 9:
+            sdfSndSePlay((sdfSndSeReq_t *)pkt->data);
+            break;
+        case 0xA:
+            sdfSndLoadSmg((const char *)pkt->data, 0);
+            break;
+        case 0xB:
+            bank = sdfSndFindSlotById(*(s32 *)pkt->data);
+            if (bank < 0) {
+                break;
+            }
+            sdfSndUnloadBank(bank);
+            p2sdIrxSpuIopMap();
+            break;
+        case 0xC0:
+            p2sdIrxSpuIopMap();
+            break;
+        case 0xD:
+            sdfSndFadeOutById((s32 *)pkt->data);
+            break;
+        case 0xE:
+            sdfSndRequestBgmSwitch(arg4 - 1);
+            break;
+        case 0xF:
+            vol = 8 * arg4;
+            if ((vol & 8) != 0) {
+                vol |= 7;
+            }
+            sdfAdpcmStreamPlay((const char *)pkt->data, vol, 0);
+            break;
+        case 0x10:
+            sdfAdpcmStop();
+            break;
+        case 0x11:
+            vol = 8 * arg4;
+            if ((vol & 8) != 0) {
+                vol |= 7;
+            }
+            sdfAdpcmSetVolume(vol);
+            break;
+        case 0x12:
+            vol = 8 * arg4;
+            if ((vol & 8) != 0) {
+                vol |= 7;
+            }
+            sdfAdpcmStreamPlay((const char *)pkt->data, vol, 1);
+            break;
+        case 0x13:
+            break;
+        case 0x14:
+            depth = arg4 << 10;
+            if ((opt & 0x10000) != 0) {
+                depth |= 0x3FF;
+            }
+            libsd_sceSdSetParam(0x980, depth);
+            libsd_sceSdSetParam(0xA80, depth);
+            libsd_sceSdSetParam(0x981, depth);
+            libsd_sceSdSetParam(0xA81, depth);
+            break;
+        case 0x15:
+            sdfSndSetSeqVolume(arg4);
+            break;
+        case 0x16:
+            sdfSndSetListener((sdfSndListenerReq_t *)pkt->data);
+            break;
+        case 0x17:
+            sdfSndSePlay3d((sdfSndSe3dReq_t *)pkt->data);
+            break;
+        case 0x18:
+            sdfSndFadeOutAll();
+            break;
+        case 0x19:
+            sdfSndFadeInAll();
+            break;
+        case 0x1A:
+            sdfSndStopAll(1);
+            break;
+        case 0x1B:
+            sdfSndLoadSmg(sdfSndSmgPathPtr, 1);
+            break;
+        case 0x1C:
+            intrman_CpuSuspendIntr(&state);
+            modhsyn_e18(arg4 == 0);
+            intrman_CpuResumeIntr(state);
+            break;
+        case 0x1D:
+            sdfAdpcmFadeOut(arg4 + 1);
+            break;
+        case 0x1F:
+            sdfSndLoadVolTables();
+            break;
+        case 0x20:
+            sdfSndStoreVolTables();
+            break;
+        case 0x21:
+            sdfSndStopAll(2);
+            break;
+        case 0x22:
+            vol = 8 * arg4;
+            if ((vol & 8) != 0) {
+                vol |= 7;
+            }
+            sdfSndSetVolumeById((s32 *)pkt->data, vol);
+            break;
+        case 0x23:
+            sdfSndLockBank(*(s32 *)pkt->data);
+            break;
+        case 0x24:
+            sdfSndUnlockBank(*(s32 *)pkt->data);
+            break;
+        case 0x25:
+            sdfSndUnlockAllBanks();
+            break;
+        default:
+            stdio_printf(aSdfsnddrvUnkno, (u8)(opt >> 20), (u16)pkt->opt);
+            sdfSndPostError(14);
+            break;
+        }
+        sdfSndAckPacket.code = 30;
+        sdfSndAckPacket.arg = pkt->tag;
+        intrman_CpuSuspendIntr(&state);
+        sdfSndCmdCount--;
+        sdfSndCmdHead = (u8)(sdfSndCmdHead + 1);
+        intrman_CpuResumeIntr(state);
+        sifcmd_SifSendCmd(0x80000001, &sdfSndAckPacket, 24, NULL, NULL, 0);
+    }
+}
+#else
 INCLUDE_RODATA("SDFSDMAN", jtbl_00006800);
 INCLUDE_ASM("SDFSDMAN", sdfSndDrvRpcInit);
+#endif

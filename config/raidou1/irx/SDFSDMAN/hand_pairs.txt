@@ -11,3 +11,5 @@
 0x6F90 sdfSndVolTblVoice
 0x71B0 sdfSndSlots
 0x6DAC sdfSndBank1Loaded
+0x1EE88 sdfSndCmdSemaParam
+0x1EEA0 sdfSndAckPacket

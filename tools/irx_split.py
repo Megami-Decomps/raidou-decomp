@@ -303,7 +303,8 @@ def dump_pieces(section, syms: SymbolMap) -> list[tuple[str, str]]:
     """.rodata cut at each label, one file per piece for the C files' INCLUDE_RODATA.
 
     A piece keeps the padding after it, so placing the pieces in address order
-    rebuilds the section.
+    rebuilds the section. Its label is `rodata_<name>`, and the linker script
+    defines `<name>`; see irx_build.py.
     """
     whole = dump_data(section, syms, section.name).splitlines()[2:]
     starts = {n: a for a, n in syms.by_addr.items()}
@@ -316,6 +317,8 @@ def dump_pieces(section, syms: SymbolMap) -> list[tuple[str, str]]:
             addr = starts.get(name, section.addr)
             align = section.align.bit_length() - 1 if addr == section.addr else 2
             pieces.append((name, [f"    .align {align}"] if addr % 4 == 0 else []))
+        if line.startswith("    .globl ") or line.endswith(":"):
+            line = line.replace(name, f"rodata_{name}")
         pieces[-1][1].append(line)
     return [(name, "\n".join(body) + "\n") for name, body in pieces]
 

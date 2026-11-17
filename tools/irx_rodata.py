@@ -2,10 +2,8 @@
 """Place a module's INCLUDE_RODATA lines: `python tools/irx_rodata.py raidou1/SDFSDMAN [--check]`."""
 # Retail .rodata is in the order of the functions that first load each piece.
 # A C function emits its own jump table, so the pieces between two tables go
-# right before the second table's function (or at the end of the unit), late as
-# possible: gas fills a delay slot with a %lo of a symbol it has already seen
-# defined, which retail never does. A NON_MATCHING draft keeps its table's line
-# in the #else beside its INCLUDE_ASM.
+# right before the second table's function (or at the end of the unit). A
+# NON_MATCHING draft keeps its table's line in the #else beside its INCLUDE_ASM.
 from __future__ import annotations
 
 import argparse
