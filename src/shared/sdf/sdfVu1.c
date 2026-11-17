@@ -264,9 +264,73 @@ void corePktSetFaceDivParm(sdfCorePacketFaceDivParm_t *out, sdfMatPacket_t *work
                   work->y + deltaY);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktSkinPointsFirst);
+/* NON_MATCHING: reference implementation, not a match candidate. The retail
+ * body is assembly and the arithmetic is not in it: it loads seven quadwords
+ * of matrix state (the 4x4 at mtx+0x00 into vf28-vf31, the three light basis
+ * rows at mtx+0x40 into vf24-vf26), then feeds vf2 and vf3 per vertex and runs
+ * `vcallms 0`. The operation below is what that microprogram does, inferred
+ * from the register setup and from corePktSkinVertFirst, which performs the
+ * position half inline. The loop is software pipelined: the next vertex is
+ * fetched before the current one's results are read back. */
+#ifdef NON_MATCHING
+void corePktSkinPointsFirst(sdfCorePacketPointBuff_tag *dst, s32 count, const f32 *mtx,
+                            const f32 *weighted, const u32 *norm)
+{
+    do {
+        const f32 *n = (const f32 *)norm;
+        f32 *lighting = (f32 *)dst->opaque10;
+        s32 lane;
 
+        for (lane = 0; lane < 4; lane++) {
+            dst->position[lane] = (mtx[lane] * weighted[0] + mtx[4 + lane] * weighted[1] +
+                                   mtx[8 + lane] * weighted[2] + mtx[12 + lane]) * weighted[3];
+        }
+        for (lane = 0; lane < 4; lane++) {
+            lighting[lane] = (mtx[16 + lane] * n[0] + mtx[20 + lane] * n[1] +
+                              mtx[24 + lane] * n[2]) * weighted[3];
+        }
+
+        weighted += 4;
+        norm += 3;
+        dst++;
+    } while (--count != 0);
+}
+#else
+INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktSkinPointsFirst);
+#endif
+
+/* NON_MATCHING: reference implementation, not a match candidate. As
+ * corePktSkinPointsFirst, but the microprogram is `vcallms 0x48` and it also
+ * takes the two destination quadwords in vf5 and vf6, so the bone's
+ * contribution accumulates. Retail runs the loop count - 1 times and repeats
+ * the body once after it, because the inputs for iteration i + 1 are fetched
+ * inside iteration i. */
+#ifdef NON_MATCHING
+void corePktSkinPointsAccum(sdfCorePacketPointBuff_tag *dst, s32 count, const f32 *mtx,
+                            const f32 *weighted, const u32 *norm)
+{
+    do {
+        const f32 *n = (const f32 *)norm;
+        f32 *lighting = (f32 *)dst->opaque10;
+        s32 lane;
+
+        for (lane = 0; lane < 4; lane++) {
+            dst->position[lane] += (mtx[lane] * weighted[0] + mtx[4 + lane] * weighted[1] +
+                                    mtx[8 + lane] * weighted[2] + mtx[12 + lane]) * weighted[3];
+        }
+        for (lane = 0; lane < 4; lane++) {
+            lighting[lane] += (mtx[16 + lane] * n[0] + mtx[20 + lane] * n[1] +
+                               mtx[24 + lane] * n[2]) * weighted[3];
+        }
+
+        weighted += 4;
+        norm += 3;
+        dst++;
+    } while (--count != 0);
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktSkinPointsAccum);
+#endif
 
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktSkinVertFirst);
 
