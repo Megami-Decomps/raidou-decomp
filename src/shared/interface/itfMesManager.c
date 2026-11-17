@@ -210,6 +210,9 @@ void itfMesMngSetStat(s32 id, u32 flag);
 s16 itfMesMngGetSelect(s32 id);
 u8 *itfMesMngGetVar(s32 id, s32 index);
 void itfMesMngSetVarImmediate(s32 id, u32 index, const char *pstr);
+/* Replace a retained text-slot allocation. Nonpositive byteCount copies the
+ * padded string span; positive counts copy that many bytes into a zeroed block.
+ * String mode has no memset. */
 void SetVar(instanceMes_tag *pinst, s32 index, const char *pstr, s32 length);
 void itfMesMngSetVarImmediate2(s32 id, s32 index, const char *pstr, s32 length);
 void ResolveResourceAddress(itfMesResource_t *pdata);
@@ -351,10 +354,6 @@ extern const char itfMesDebugLabelRightBottom[16];
 extern const char itfMesDebugLabelLeftTop[16];
 frFontHandle_t *GetLastLinkFontHandle(frFontHandle_t *pfont);
 
-/* Replace a retained text-slot allocation. Nonpositive byteCount copies the
- * padded string span; positive counts copy that many bytes into a zeroed block.
- * String mode has no memset. Keep the K&R declaration form. */
-void SetVar();
 s32 GetNumSelectItem(s32 allitem, u32 mask);
 s32 CountLineMessage(frFontHandle_t *pfont_top, frFontHandle_t *pfont);
 void ChangeFontColorAll(frFontHandle_t *pfont, u8 color);
@@ -2945,7 +2944,7 @@ void itfCallGetRandFloatA(void) {
     for (i = 0; i < 2; i++) {
         if (range[i] != 0.0f) {
             amplitude = dds3GetRandFloatA(0) * range[i] * 0.5f + range[i] * 0.5f;
-            if (range[i] * gain.axis[i] <= fabsf(itfData.dist[i])) {
+            if (range[i] * gain.axis[i] <= fabsf((f32)itfData.dist[i])) {
                 if (itfData.dist[i] <= 0.0f) {
                     itfData.dist[i] = (f32)itfData.dist[i] + amplitude;
                 } else {

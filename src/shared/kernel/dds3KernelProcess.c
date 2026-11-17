@@ -23,7 +23,6 @@
 
 extern dds3Basic_t *dds3TheWorld;
 
-typedef struct sdfGrRefPacketHeader_t sdfGrRefPacketHeader_t;
 
 /* Sprite GIF payload: RGBAQ followed by UV/XYZ2 for each corner.
  * The GS ignores the unused lanes; native writes XYZ's 16-bit ADC lane. */
@@ -150,7 +149,7 @@ s32 dds3DrawFirstProcess(dds3ProcessID_t *id)
     SDF_VU0_LOADVECTOR(&aViewEye);
     SDF_VU0_ADDVECTOR();
     SDF_VU0_STOREVECTOR(eye);
-    LookAtMatrix(target, eye, &aViewDown);
+    LookAtMatrix((f32 *)target, (f32 *)eye, &aViewDown);
     SDF_VU0_STOREMATRIX(&sdfViewMatrix);
     sdf3DMakeViewportPacket(&dds3DrawEnv[frame].viewport, &dds3ScreenParam, &sdfViewMatrix);
     sdf3DSetCamera(&dds3ScreenParam, &sdfViewMatrix);

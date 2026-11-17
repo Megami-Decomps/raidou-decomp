@@ -38,7 +38,6 @@
 #include "sdfMath.h"
 #include "sdf_packet_list.h"
 
-typedef struct TMX_HEADER_t TMX_HEADER_t;
 
 typedef struct sdfTexBuf_t sdfTexBuf_t;
 

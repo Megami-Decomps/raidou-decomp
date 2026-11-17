@@ -254,7 +254,7 @@ typedef char SBTL_TASK_size_must_be_0x170[(sizeof(SBTL_TASK) == 0x170) ? 1 : -1]
  * +0x90/+0xA0 respectively. Effect origin/scene extension are +0x31C/+0x320.
  * The actor chain ends at +0x344. Command state/action words are a different
  * object and must not be interpreted through this unit layout. */
-typedef struct SBTL_UNIT {
+struct SBTL_UNIT {
     f32 lightDirection[4]; /* 0x00: source direction restored by battle light transitions. */
     f32 colorStart[4]; /* 0x10: first source color used by the effect blend callback. */
     f32 colorEnd[4]; /* 0x20: second source color used by the effect blend callback. */
@@ -344,7 +344,7 @@ typedef struct SBTL_UNIT {
     struct sdfMemHandle_t *handle; /* 0x33C: allocation that owns this unit. */
     struct SBTL_UNIT *previousActor; /* 0x340 */
     struct SBTL_UNIT *next; /* 0x344: actor-list link, not a task-chain link */
-} SBTL_UNIT;
+};
 
 typedef char SBTL_UNITSizeCheck[(sizeof(SBTL_UNIT) == 0x348) ? 1 : -1];
 

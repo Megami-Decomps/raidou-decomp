@@ -29,7 +29,6 @@
 #include "code_r1_001D5158.h"
 #include "frFont.h"
 
-typedef struct fileRequest fileRequest_t;
 
 enum sl_slot_flag
 {
@@ -817,7 +816,7 @@ INCLUDE_ASM(const s32, "mc/slMain", slCallAdminiCallSequence);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001D65F8.c:1, match */
 dds3ProcessFunc_t slDefaultFileFlowProc1st(void) {
-    return slExitToTitleSub();
+    return EE_ADDR_AS(dds3ProcessFunc_t, slExitToTitleSub());
 }
 
 s32 fileRestartSlotScan(void) {

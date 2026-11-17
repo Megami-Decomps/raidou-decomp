@@ -791,7 +791,7 @@ void dds3FadeSet(s32 r, s32 g, s32 b, s32 a)
 
 /* Return the live color address through outColor, rather than copying channels. */
 void dds3FadeColorGet(dds3FadeColor_t **outColor) {
-    *outColor = &fadergba;
+    *outColor = (dds3FadeColor_t *)&fadergba;
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/kernel/dds3KernelDraw.c:642, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
@@ -984,7 +984,7 @@ void dds3CallGetFrameID(void)
         dds3FadePacket[frameId].sprite[3].reg = 5;
         dds3FadePacket[frameId].sprite[3].data = 0xFEFFFF00009000 | ((u64)bottom << 16);
         list = dds3CallGrAllocPacketBuff9();
-        sdfDrawTagLink(list, &dds3FadePacket[frameId]);
+        sdfDrawTagLink(list, EE_ADDR(&dds3FadePacket[frameId]));
         dds3CallGetFrameIDData.regFunc(&dds3CallGetFrameIDData, list);
     }
 }
@@ -2239,14 +2239,14 @@ void nbPnl_rsetTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, 
     u64 *packet;
     sdfGrOt_t *ot;
 
-    list = sdfGrAllocPacketBuff(0x20);
+    list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
     sdfDrawTagInit(list);
-    buff = sdfGrAllocPacketBuff(0x30);
-    packet = sdf2DMakeStdPacket(buff, 0x30);
+    buff = (u64 *)sdfGrAllocPacketBuff(0x30);
+    packet = (u64 *)sdf2DMakeStdPacket(EE_ADDR(buff), 0x30);
     packet[4] = (ztst << 17) | 0x10000 | (datm << 15) | (date << 14) | (afail << 12) |
                 (aref << 4) | (atst << 1) | ate;
     packet[5] = 0x48;
-    sdfDrawTagLink(list, buff);
+    sdfDrawTagLink(list, EE_ADDR(buff));
     ot = &sdfGrOtTable[egl_OT_Offset];
     ot->regFunc(ot, list);
 }

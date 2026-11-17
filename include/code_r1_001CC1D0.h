@@ -471,8 +471,6 @@ typedef struct mnuWindowContainer_t {
     u32 fadeScale;         /* 0x9C: read as the opacity by the window draw functions */
 } mnuWindowContainer_t;
 
-typedef struct mnuWindowContainer_t mnuWindowContainer_t;
-
 typedef char mnuWindowContainer_size_must_be_0xA0[(sizeof(mnuWindowContainer_t) == 0xA0) ? 1 : -1];
 
 typedef struct mnuFadeFields_t {

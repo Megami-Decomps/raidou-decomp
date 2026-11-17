@@ -595,7 +595,7 @@ s32 dds3EnsureDefaultResource(void) {
 void dds3InitDrawEnvSub(s32 i)
 {
     sdfDrawTagInit(&dds3DrawEnv[i].initTag);
-    sdf3DLinkInitPacket(&dds3DrawEnv[i].initTag, &dds3DrawEnv[i].initPacket);
+    sdf3DLinkInitPacket(&dds3DrawEnv[i].initTag, (DmaPacketHeader *)&dds3DrawEnv[i].initPacket);
     sdfDrawTagInit(&dds3DrawEnv[i].drawTag);
     sdfPreDrawTagInit(&dds3DrawEnv[i].preDrawTag);
     sdfGrSetStdDrawEnv(&dds3DrawEnv[i].stdEnv, &sdfGrFrameSet);
@@ -605,16 +605,17 @@ void dds3InitDrawEnvSub(s32 i)
                             sdfGrFrameSet.zbuffFormat);
         dds3DrawFlag &= ~0x10000000;
     }
-    sdfGrLinkStdDrawEnv(&dds3DrawEnv[i].drawTag, &dds3DrawEnv[i].preDrawTag, &dds3DrawEnv[i].stdEnv);
+    sdfGrLinkStdDrawEnv(&dds3DrawEnv[i].drawTag, &dds3DrawEnv[i].preDrawTag,
+                        (sdfPreDrawHook_t *)&dds3DrawEnv[i].stdEnv);
     sdf3DMakeViewportPacket(&dds3DrawEnv[i].viewport, &dds3ScreenParam, &sdfViewMatrix);
-    sdfDrawTagLink(&dds3DrawEnv[i].drawTag, &dds3DrawEnv[i].viewport);
+    sdfDrawTagLink(&dds3DrawEnv[i].drawTag, EE_ADDR(&dds3DrawEnv[i].viewport));
     sdf3DMakeLightParallelPacket(&dds3DrawEnv[i].light, dds3LightParam.parallel, &dds3LightObjectAmbient);
-    sdfDrawTagLink(&dds3DrawEnv[i].drawTag, &dds3DrawEnv[i].light);
+    sdfDrawTagLink(&dds3DrawEnv[i].drawTag, EE_ADDR(&dds3DrawEnv[i].light));
     sdfDrawTagInit(&dds3DrawEnv[i].subTag);
     sdf3DMakeViewportPacket(&dds3DrawEnv[i].subViewport, &DrawEnv, &aProjMatrix);
-    sdfDrawTagLink(&dds3DrawEnv[i].subTag, &dds3DrawEnv[i].subViewport);
+    sdfDrawTagLink(&dds3DrawEnv[i].subTag, EE_ADDR(&dds3DrawEnv[i].subViewport));
     sdf3DMakeLightParallelPacket(&dds3DrawEnv[i].subLight, dds3Data5, &dds3Data6);
-    sdfDrawTagLink(&dds3DrawEnv[i].subTag, &dds3DrawEnv[i].subLight);
+    sdfDrawTagLink(&dds3DrawEnv[i].subTag, EE_ADDR(&dds3DrawEnv[i].subLight));
 }
 #else
 INCLUDE_ASM(const s32, "code_r1_00104370", dds3InitDrawEnvSub);

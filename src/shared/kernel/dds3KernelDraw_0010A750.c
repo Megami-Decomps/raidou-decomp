@@ -747,11 +747,11 @@ void eglLinkPrint(s32 x, s32 y, s32 col, const char *str)
     sdfPrimTransPacket_t *packet;
 
     list = dds3CallGrAllocPacketBuff9();
-    packet = sdfGrAllocPacketBuff(0x40);
+    packet = (sdfPrimTransPacket_t *)sdfGrAllocPacketBuff(0x40);
     sdfPrimSetOpaquePacket(packet);
-    sdfDrawTagLink(list, packet);
+    sdfDrawTagLink(list, EE_ADDR(packet));
     sdfDevSetPrintCB(&printCB, x * 16 + 0x7000, y * 8 + 0x7900, 0x0FFFFF80, col);
-    sdfDrawTagLink(list, sdfDevPrintfEx(&printCB, str));
+    sdfDrawTagLink(list, EE_ADDR(sdfDevPrintfEx(&printCB, str)));
     sdfDebugGrOt.regFunc(&sdfDebugGrOt, list);
 }
 
