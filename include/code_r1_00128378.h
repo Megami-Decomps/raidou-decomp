@@ -12,7 +12,8 @@ s32 fldCtnGetSub(s32 modelId);
 s32 fldPlayerALoadEndCheck(void);
 void fldPlayerALoadStart(void);
 void fldRegistUnitPad(void);
-void fldSetUnitSub2(void);
+s32 fldSetUnitSub(void);
+s32 fldSetUnitSub2(void);
 s32 mapGetCircleCircleH(f32 x1, f32 y1, f32 r1, f32 x2, f32 y2, f32 r2, f32 *x3, f32 *y3);
 void mapGetEyeTgtRot(f32 eyex, f32 eyez, f32 tgtx, f32 tgtz);
 f32 mapGetEyeTgt_Rot_OfsPos(f32 eyex, f32 eyez, f32 tgtx, f32 tgtz, f32 olen, f32 *retx, f32 *retz);
@@ -41,6 +42,11 @@ void fldPlayerAFree(void);
 void fldPlayerALoad(void);
 void fldCallMemFreeDelayedDirect(void);
 void fldCallMemFreeDelayedDirect2(void);
+void fldCallMemFreeDelayedDirect3(void);
+void fldCallPackDecode(void);
+void nbResultFreeTextures(void);
+void fldNakamaCashLoad_Block(void);
+void fldJDataLoad(void);
 void cmpModelFreeResource(void);
 
 /* Field player model pack: the loaded block, its decode copy, the decode

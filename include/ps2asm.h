@@ -24,6 +24,12 @@
     ".set noreorder\n\tlq $2, 0(%1)\n\tsq $2, 0(%0)\n\t.set reorder" \
     : : "r" (dst), "r" (src) : "$2", "memory")
 
+/* The quadword copy without the memory clobber: values loaded before it stay
+ * live across it. */
+#define SDF_VU0_COPYVECTOR_NOMEM(dst, src) __asm__ volatile ( \
+    ".set noreorder\n\tlq $2, 0(%1)\n\tsq $2, 0(%0)\n\t.set reorder" \
+    : : "r" (dst), "r" (src) : "$2")
+
 /* Copy exactly four 16-byte-aligned f32 elements with explicit memory
  * operands, without a global memory clobber. Addresses must have no evaluation
  * side effects because each is used by both an address and memory operand;

@@ -70,6 +70,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | basic/dds3ObjectBase | raidou1, raidou2 | [basic/dds3ObjectBase.md](basic/dds3ObjectBase.md) |
 | 1 | basic/dds3SceneBasic | raidou1, raidou2 | [basic/dds3SceneBasic.md](basic/dds3SceneBasic.md) |
 | 1 | code_00109A70 | raidou1 | [code_00109A70.md](code_00109A70.md) |
+| 1 | code_0012A2E0 | raidou1 | [code_0012A2E0.md](code_0012A2E0.md) |
 | 1 | code_0012B6A0 | raidou1 | [code_0012B6A0.md](code_0012B6A0.md) |
 | 1 | code_00131C90 | raidou1 | [code_00131C90.md](code_00131C90.md) |
 | 1 | code_001326C0 | raidou1 | [code_001326C0.md](code_001326C0.md) |

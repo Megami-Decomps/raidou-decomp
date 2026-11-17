@@ -5,6 +5,7 @@ dds3SetPosPoseSet_dds3Basic	basic/dds3Basic	raidou1 0x2C, raidou2 0x2C	5 of 11 w
 dds3CallMemset	basic/dds3ObjectBase	raidou1 0xE0, raidou2 0xE0	12 of 56 words differ	docs/matching/basic/dds3ObjectBase.md	3		
 dds3SceneBasicSearchSerialID_Used	basic/dds3SceneBasic	raidou1 0xC0, raidou2 0xC0	33 of 48 words differ	docs/matching/basic/dds3SceneBasic.md	3		
 eglLinkBoxZ	code_00109A70	raidou1 0x370	6 of 220 words differ	docs/matching/code_00109A70.md	3		
+fldSetUnit	code_0012A2E0	raidou1 0x7FC	1 of 511 words differ	docs/matching/code_0012A2E0.md	3		
 ProcMskSub_B	code_0012B6A0	raidou1 0x2DC	8 of 183 words differ	docs/matching/code_0012B6A0.md	3		
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3		
 fldCallTexListFree	code_001326C0	raidou1 0x188	1 of 98 words differ	docs/matching/code_001326C0.md	3		
@@ -18,17 +19,17 @@ mapCutBgLoad	code_0013CDE0	raidou1 0x88		docs/matching/code_0013CDE0.md	17		one 
 mapBgSetScroll	code_0013CDE0	raidou1 0x1384	1085 of 1248 words differ	docs/matching/code_0013CDE0.md	23		
 mapZoomSetGoal	code_0013CDE0	raidou1 0x13F4	1223 of 1249 words differ	docs/matching/code_0013CDE0.md	31		
 mapUnitSetLight	code_00140960	raidou1 0x43C	154 of 271 words differ	docs/matching/code_00140960.md	3		
-mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; adding the fld.h prototype mapObjCheck alone, or splitting sdatUnitWork_t's padC0 into autost_cnt/autost_cnt2 (sdatUnit.h) alone, turns DIFF 3/50 into CONTEXT 5/50.	
+mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; adding the fld.h prototype mapObjCheck alone, or splitting sdatUnitWork_t's padC0 into autost_cnt/autost_cnt2 (sdatUnit.h) alone, turns DIFF 3/50 into CONTEXT 5/50. A1-last-asm's six unused prototypes in code_r1_00128378.h leave the full unit at 3/50 but move the function compiled alone from 3/50 to 5/50 (DIFF to CONTEXT).	
 mapHamidasiCheck	code_00142A10	raidou1 0x210	24 of 132 words differ	docs/matching/code_00142A10.md	3	matched until B1-big's declaration edits to fld.h (six prototypes) and mapData.h; removing any one of the new fld.h prototypes, or reverting mapData.h, makes it match again, so it shifts with the count of declarations the unit includes, not with its own C.	
 mapLeaf12	code_00143568	raidou1 0x50	2 of 20 words differ	docs/matching/code_00143568.md	3		
 mdlCallMemGetSize	code_00143568	raidou1 0x140	25 of 78 words differ	docs/matching/code_00143568.md	11		
 mdlCallMemGetInfo	code_00143568	raidou1 0x12C	22 of 73 words differ	docs/matching/code_00143568.md	19		
 mapObjOnOff	code_00144130	raidou1 0x5C8	354 of 363 words differ	docs/matching/code_00144130.md	3		
-mapCallPositioningGuardSystem2	code_00148310	raidou1 0x1B4	5 of 109 words differ	docs/matching/code_00148310.md	3		
-mapCallSetPlayerTargetData2	code_00148310	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00148310.md	11		
-mapCallPositioningGuardSystem3	code_00148310	raidou1 0x17C	8 of 95 words differ	docs/matching/code_00148310.md	19	matched until R22's declaration edits to fld.h and mapData.h; with either header back at its R21 state it matches again, so it shifts with the declarations the unit includes, not with its own C. The B4-field-big header declaration edits make the full unit match again (DIFF 8/95 to OK); it stays NON_MATCHING.	
-mapScriptGet_Pos	code_00148310	raidou1 0x68C	400 of 407 words differ	docs/matching/code_00148310.md	27		
-mapWallObjTask	code_00148310	raidou1 0xA90	27 of 676 words differ	docs/matching/code_00148310.md	35		
+mapCallPositioningGuardSystem2	code_00148310	raidou1 0x1B4	5 of 109 words differ	docs/matching/code_00148310.md	3	the full-unit result moves with the declarations code_r1_00128378.h carries; on 9d5a83f six added callee prototypes (fldSetUnitSub, fldJDataLoad and four more, all unused here) turned DIFF 5/109 into CONTEXT 12/109 at any position in the header; on top of B4-field-big's header edits they leave it at DIFF 5/109.	
+mapCallSetPlayerTargetData2	code_00148310	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00148310.md	13		
+mapCallPositioningGuardSystem3	code_00148310	raidou1 0x17C	8 of 95 words differ	docs/matching/code_00148310.md	21	matched until R22's declaration edits to fld.h and mapData.h; with either header back at its R21 state it matches again, so it shifts with the declarations the unit includes, not with its own C. The B4-field-big header declaration edits make the full unit match again (DIFF 8/95 to OK); it stays NON_MATCHING.	
+mapScriptGet_Pos	code_00148310	raidou1 0x68C	400 of 407 words differ	docs/matching/code_00148310.md	29		
+mapWallObjTask	code_00148310	raidou1 0xA90	27 of 676 words differ	docs/matching/code_00148310.md	37		
 mapNpcTblAdd_fld	code_0014B660	raidou1 0x3E0	189 of 246 words differ	docs/matching/code_0014B660.md	3		
 mapNpcTblRefresh	code_0014B660	raidou1 0x408	144 of 258 words differ	docs/matching/code_0014B660.md	11		
 mapNpcTblRefresh_Wait	code_0014B660	raidou1 0x35C	121 of 216 words differ	docs/matching/code_0014B660.md	19		
@@ -225,7 +226,7 @@ PlayerCalc_Nml_fld	field/fldFileResolver	raidou1 0xB74	404 of 731 words differ	d
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	14		
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.	
-fldSaveLabel	field/fldProcess	raidou1 0x14D4	1291 of 1334 words differ	docs/matching/field/fldProcess.md	22		
+fldSaveLabel	field/fldProcess	raidou1 0x14D4	1291 of 1334 words differ	docs/matching/field/fldProcess.md	22	the full-unit result moves with the declarations code_r1_00128378.h carries; A1-last-asm's added callee prototypes (fldSetUnitSub, fldJDataLoad and four more, none used here) turn CONTEXT 1251/1338 into DIFF 1291/1334 under -DNON_MATCHING.	
 MessageRequestNS	interface/frFont	raidou1 0x40, raidou2 0x40	7 of 15 words differ	docs/matching/interface/frFont.md	3		
 frCallGetFontWidth2	interface/frFont	raidou1 0x260	80 of 151 words differ	docs/matching/interface/frFont.md	27		
 frSetFont	interface/frFont	raidou1 0x148, raidou2 0x148	4 of 82 words differ	docs/matching/interface/frFont.md	35		

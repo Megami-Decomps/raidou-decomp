@@ -25,4 +25,6 @@ Raidou 1: 1291 of 1334 words differ, first at +0x0; emitted 5352 bytes, native 5
 
 Complete body, checked against the asm block by block (flow, call arguments, store order, the kind 9/10/4/14 if-chain, the word138 jump table); 5352 vs 5332 bytes, untuned. mapIgnite and mapIfDrawActionMaster take 6 arguments (t1 = word2A8); mapCallSetPlayerTargetData and mapCallSetPlayerTargetData2 take the r (f14) and attr (a0) arguments retail passes. Raidou 1 only. Vector checked (ingame: eveHitOn path with a NULL label, no target, no warp).
 
+Fragile: the full-unit result moves with the declarations code_r1_00128378.h carries; A1-last-asm's added callee prototypes (fldSetUnitSub, fldJDataLoad and four more, none used here) turn CONTEXT 1251/1338 into DIFF 1291/1334 under -DNON_MATCHING.
+
 Related: register allocation and frame: retail holds the constant 1 in s3 from entry (reused for kind; the mwall popup stores s3 as word298), frame 112 vs 96 with s7 = &fldDbg and s8 the string base; retail's second word148 test is word148 == 0x2000 unmasked.

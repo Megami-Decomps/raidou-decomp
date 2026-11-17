@@ -119,6 +119,8 @@ void fldCallSin5(void);
 void fldCallSin6(void);
 void fldCallSin7(void);
 void fldCallSetOt(s32 area, s32 floor, s32 cut);
+void mapNakamaCashLoadEndCheckSub(s32 id);
+s32 sndCallLoadCheckMidi(void);
 
 extern const char DecisionFeedInStrMapAll[];
 extern const char DecisionFeedInStrMapMeiSpr[];
