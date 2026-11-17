@@ -6146,7 +6146,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00255A88	0x00274B50	sbtlSetItem	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
 0x00255F30	0x00274F40	sbtlGetStockPoint	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	size
 0x00255F48	0x00274F58	sbtlEntryStockData_Huuma	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
-0x00256270	0x00275310	sbtlSetHangekiFlag	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
+0x00256270	0x00275310	sbtlHuumaParamUp	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
 0x002563C8	0x00275468	sbtlSetSummon	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
 0x00256DC8	0x00275F48	sbtlResetSummon_E	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
 0x00256E38	0x00275FB8	sbtlCallBtlCheckDamageTarget	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash

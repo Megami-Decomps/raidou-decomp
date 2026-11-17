@@ -54,10 +54,15 @@ void datCallGetPlayerMaxHP(struct sdatUnitWork_t *unit, s32 swordLevel);
 void datGlobalWorkDestroy(void);
 void dds3GlobalWorkInit(void);
 s32 sdatCalc_GetBadStatus(struct sdatUnitWork_t *unit);
+s32 datCreateDevilUnitExSub(s32 devilId);
 
 extern u32 sdatLvUpDevilGiftTbl;
 extern u32 sdatLvUpDevilGiftSize;
-extern u32 sdatLvUpDevilParamUp;
+typedef struct sdatLvUpDevilParamUp_t {
+    u8 Param[4];
+} sdatLvUpDevilParamUp_t;
+
+extern sdatLvUpDevilParamUp_t *sdatLvUpDevilParamUp;
 extern u32 sdatLvUpDevilParamUpSize;
 extern u32 sdatLvUpPlayerParamUp;
 extern u32 sdatLvUpPlayerParamUpSize;

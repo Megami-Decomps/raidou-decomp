@@ -3397,7 +3397,6 @@
 0x00274D58	sbtlRefSbtl9	func	tier=D	derived-data	na	unit code_00261DF0, neighbour sbtlSetItem; references wk_sbtl
 0x00274D70	sbtlCallBtlGetNakama	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlCheckSummonUnit_Dead_or_ALive; calls sbtlGetNakama
 0x00275030	sbtlCallBitOn	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlEntryStockData_Huuma; calls evtBitOn
-0x00275310	sbtlSetHangekiFlag	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlAction.sBtlSetHangekiFlag, score 6.8 band C, hd-consensus: calls2 callee-index votes2 st2:cidx r2-only; 10/10 fold runs agree, fold scores 8.4,8.8,8.8,8.4,8.8,8.8,8.8,8.4,6.3,8.8
 0x00275468	sbtlSetSummon	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlSetSummon, score 9.45 band B
 0x00275FB8	sbtlCallBtlCheckDamageTarget	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlResetSummon_E; calls sbtlCheckDamageTarget
 0x002761C0	sbtlCallBtlSearchUnitID20	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlResetAction_Flag; calls sbtlSearchUnit_ID
@@ -23713,6 +23712,7 @@
 0x002704D8	sbtlClearUnitList	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlClearUnitList score 4.0 flag I: next~ gap2/2 st1:gap r1+r2
 0x002712A8	sbtlResetMutekiColor	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlUnit.sBtlResetMutekiColor score 3.3 flag I: prev gap11/4 st2:gap r2-only
 0x00272A60	sbtlplayertblSetPlayerMotionData_Hokan	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sbtlplayertbl.sbtlplayertblSetPlayerMotionData_Hokan score 4.8 flag I: calls2 calls-of-match-uniq votes2 st2:call r1-disagree:0x254270
+0x00275310	sbtlHuumaParamUp	func	tier=C	derived-derived-role	na	same function as raidou1 0x256270 (r1_r2_pairs); HD sBtlSetHangekiFlag is a different function; replaces sbtlSetHangekiFlag
 0x00276980	sbtlPlayerDirectDmg	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlPlayer_Spirit.sBtlPlayerDirectDmg score 4.5 flag I: calls2 callee-index st2:cidx r2-only
 0x00277FC0	sbtlGetLight_SetPos	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlGetLight_SetPos score 4.6 flag I: next gap2/1 st1:gap r1+r2
 0x00277FF0	sbtlSetLight_SetPos	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlSetLight_SetPos score 5.3 flag I: next gap3/2 st1:gap r1+r2

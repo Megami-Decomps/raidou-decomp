@@ -26,11 +26,11 @@ s32 sbtlCallBtlGetDevilDataSBtlSub4(struct SBTLUNIT_WORK *wk)
         wk->msgData = sdfMemLock(wk->msgHandle);
         memcpy(wk->msgData, (void *)sbtlWork5[sbtlBtlLoadHuumaMesDataSub(huuma)],
                sbtlWork6[sbtlBtlLoadHuumaMesDataSub(huuma)]);
-        wk->msgSize = 0;
+        wk->field4E0 = 0;
         wk->msgState = 2;
-        wk->msgPos = 0;
+        wk->cacheHandle = NULL;
         wk->flg2 |= 1;
-        wk->msgOffset = 0;
+        wk->cacheRef = NULL;
         return 1;
     }
     if (wk->msgState == 0) {

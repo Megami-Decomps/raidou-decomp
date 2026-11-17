@@ -165,7 +165,7 @@ typedef struct SBTL_WORK {
     s32 tgt_csr; /* target cursor: unit ID under the cursor */
     u8 pad29C[0x2CC - 0x29C];
     struct SBTLUNIT_LISTWORK *list2CC;
-    u8 pad2D0[4];
+    s32 field2D0; /* list2D4 index found by sbtlCallBtlCheckDamageTarget2, -1 for none */
     struct SBTLUNIT_LISTWORK *list2D4;
     u8 pad2D8[4];
     s32 stockMinor[SDAT_STOCK_NUM];
@@ -173,7 +173,8 @@ typedef struct SBTL_WORK {
     u32 summonBit;
     s32 stockNum;
     s32 field344;
-    u8 pad348[0x358 - 0x348];
+    s32 field348;
+    u8 field34C[SDAT_STOCK_NUM];
     u8 field358[SDAT_STOCK_NUM];
     s32 stockUnitID[SDAT_STOCK_NUM];
     u8 pad394[0x398 - 0x394];
@@ -202,7 +203,7 @@ typedef struct SBTL_WORK {
     struct SBTLEFF_DELLISTWORK *effdelList;
     struct SBTLDMG_HITWORK *huka2hwk; /* hit whose attacker data later hits copy (HD name) */
     s32 field424;
-    u8 pad428[4];
+    s32 field428;
     s32 hitTargetID;
     s16 mode;
     s16 modebk;
@@ -339,6 +340,13 @@ typedef char SBTL_WORKSizeCheck[sizeof(SBTL_WORK) == 0x87C ? 1 : -1];
 
 extern SBTL_WORK *wk_sbtl;
 
+/* A devil's item drop slot. */
+typedef struct SBTLITEM_WORK {
+    s16 itemid;
+    u8 para;
+    s8 per;
+} SBTLITEM_WORK;
+
 /* Devil table entry returned by sbtlGetDevilData_sbtlSub. */
 typedef struct SBTL_DEVIL_DATA {
     u32 flag;
@@ -359,7 +367,8 @@ typedef struct SBTL_DEVIL_DATA {
     u16 resist[4];
     s16 param[9];
     s16 field42;
-    u8 pad44[0x60 - 0x44];
+    u8 pad44[0x50 - 0x44];
+    SBTLITEM_WORK item[4];
     f32 field60;
     f32 field64;
     s16 field68;                /* read by sbtlBtlLoadHuumaMesDataSub */
@@ -392,8 +401,9 @@ typedef struct SBTL_PACK_SLOT {
 
 SBTL_PLAYER_DATA *sbtlGetPlayerData(void);
 s32 sbtlCallBtlGetPlayerData3(void);
+void sbtlCallBtlGetPlayerData2(void);
 void sbtlCallBtlGetPlayerData6(s32 num);
-s32 sbtlCallBtlGetMotionVisualData(struct SBTLUNIT_WORK *wk, s32 motionID, s16 bframe, s16 aframe, s8 flg);
+s32 sbtlCallBtlGetMotionVisualData(struct SBTLUNIT_WORK *wk, s32 motionID, s32 bframe, s32 aframe, s8 flg);
 f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type);
 s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 flg);
 s32 sbtlCallBtlGetSkilltbl8(struct SBTLUNIT_WORK *wk, u32 flg);
@@ -549,6 +559,12 @@ struct SBTLUNIT_WORK;
 
 extern SBTL_START_DATA main_data;
 extern char sbtlData85[];
+extern char sbtlStrSoundat3Boss00At3[]; /* "/soundat3/boss00.at3" */
+extern char sbtlStrSoundat3Boss01At3[]; /* "/soundat3/boss01.at3" */
+extern char sbtlStrSoundat3Boss02At3[]; /* "/soundat3/boss02.at3" */
+extern char sbtlStr0204[];              /* "%02d %04x %d" */
+extern char sbtlStrEnmy[];              /* "ENMY: %d" */
+extern char sbtlENMYData[];             /* "SKL: %d" */
 extern s32 sbtlSbattleData;
 extern s32 sbtlSceneLoadData;
 extern s32 sbtlSceneLoadData2;
@@ -670,7 +686,10 @@ s32 sbtlSobedSAB(SKLID id, char *buf);
 SBTL_FIELD630_WORK *sbtlCallMemAllocDirect4(void);
 s32 sbtlRefSbtl42(SBTL_FIELD630_WORK *wk);
 SBTL_MOTION_VISUAL *sbtlGetVisualData(s32 a, s32 id);
+u32 *sbtlLeaf10(s32 id, s32 mode);
+s32 sbtlLeaf62(struct SBTLUNIT_WORK *wk, s32 mode);
 s32 sbtlGetScrollID(void);
+struct SBTLUNIT_WORK *sbtlRefSbtl(void);
 void sbtlInitDropWork(void);
 s32 sbtlLeaf(dds3ProcessID_t *id);
 s32 OnDataLoadProc(dds3ProcessID_t *id);
@@ -726,6 +745,9 @@ s32 sbtlBattleEventSb(void);
 void sbtlBattleStart(SBTL_STAGE_DATA *stage);
 void sbtlSupport_BattleStop(s32 motionFlag, s32 effectFlag, s32 SEFlag);
 s32 sbtlBtlEntryStockDataSub(sdatUnitWork_t *unit);
+s32 sbtlCheckAutoSkill(sdatUnitWork_t *unit, s32 flg);
+s32 sbtlSetAutoSkill_GB(sdatUnitWork_t *unit);
+s32 sbtlGetStockPoint(void);
 s32 sbtlBtlNakamaSetUpSub(sdatUnitWork_t *unit);
 void sbtlCallBtlCheckEnshutuSummonUnit(void);
 s32 sbtlCallBtlCheckGeneratorGroupID(void);
@@ -753,7 +775,7 @@ s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_WORK *sbtlRefSbtl38(void);
 f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */
 s32 sbtlCheckLoadFlg(void);
-void sbtlCallSetColor(void);
+s32 sbtlCallSetColor(void);
 s32 sbtlCallSetColor2(u32 color);
 s32 sbtlCallSetColor3(u32 color);
 s32 sbtlCheckPad(void);
@@ -780,7 +802,7 @@ s32 sbtlRefSbtl23(void);
 s32 sbtlRefSbtl24(struct SBTLUNIT_WORK *wk, s8 flg);
 s32 sbtlRefSbtl36(void);
 u32 sbtlRefSbtl37(void);
-void sbtlCutMotion(struct SBTLUNIT_WORK *wk, f32 rate);
+s32 sbtlCutMotion(struct SBTLUNIT_WORK *wk, f32 frame);
 s32 sbtlCallBtlSearchUnitID9(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallMemset9(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *target, f32 frame);
 extern s32 (*sbtlCallBtlSearchUnitID8Data[])(struct SBTLUNIT_WORK *wk);

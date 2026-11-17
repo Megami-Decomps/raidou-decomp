@@ -24,6 +24,7 @@ f32 sbtlGetChorikiDeg(const sdfVector4_t *pos, const sdfVector4_t *rot, const sd
 s32 sbtlGetRotateDeg(const sdfVector4_t *rot, f32 deg);
 s32 sbtlGetRotateDegX(const sdfVector4_t *rot, f32 deg);
 f32 sbtlGetUnitDeg(const sdfVector4_t *rot);
+f32 sbtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 s32 sbtlGetUnitHelperMatrix(struct SBTLUNIT_WORK *wk, SBTLUNIT_MARK mark);
 s32 sbtlGetUnitHelperPos(struct SBTLUNIT_WORK *wk, SBTLUNIT_MARK mark);
 void sbtlQuatFromVector(sdfVector4_t *qt, f32 x, f32 y, f32 z, f32 rad);

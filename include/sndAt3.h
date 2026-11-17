@@ -5,6 +5,8 @@
 
 struct titleAudioStreamState_t;
 void mnuLoadTitleStreamFrameData(char *filePath, struct titleAudioStreamState_t *streamState);
+void mnuInstallTitleSoundBufferFromData(const void *compressedData, s32 dataBytes, s32 format);
+void nbEffectShutdown(void);
 void sndBgmContinue(void);
 void sndBgmFadeIn(void);
 void sndBgmFadeOut(void);

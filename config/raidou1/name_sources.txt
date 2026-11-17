@@ -6581,7 +6581,7 @@
 0x00255F30	sbtlGetStockPoint	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.sBtlGetStockPoint score 9.3 flag I: prev next gap=exact st1:gap r1+r2
 0x00255F48	sbtlEntryStockData_Huuma	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.sBtlEntryStockData_Huuma score 12.0 flag I: calls2 next callers-of-match votes3 st1:call r1+r2
 0x00256020	sbtlEntryStockData	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlUnit.sBtlEntryStockData score 6.4 flag I: calls4 callers-of-match votes5 st1:call r2-disagree:0x275030
-0x00256270	sbtlSetHangekiFlag	hd-inferred	hd: Raidou HD sBtlAction.sBtlSetHangekiFlag, score 6.8 band C, hd-consensus: calls2 callee-index votes2 st2:cidx r2-only; 10/10 fold runs agree, fold scores 8.4,8.8,8.8,8.4,8.8,8.8,8.8,8.4,6.3,8.8
+0x00256270	sbtlHuumaParamUp	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlSetHangekiFlag is a different function; body adds one random huuma stat point per sdatLvUpDevilParamUp and calls datCallGetPlayerMaxHP; replaces sbtlSetHangekiFlag
 0x002563C8	sbtlSetSummon	hd-inferred	hd: Raidou HD sBtlUnit.sBtlSetSummon, score 9.45 band B
 0x00256458	sbtlCallMemset6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetSummon; calls memset
 0x00256620	sbtlCallMemset7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetSummon; calls memset

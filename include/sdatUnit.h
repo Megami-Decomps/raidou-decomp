@@ -43,8 +43,10 @@ typedef struct sdatUnitWork_t {
     /* 0x06 */ s16 devilId;
     /* 0x08 */ s8 level;
     /* 0x09 */ s8 seikaku;
-    /* 0x0A */ u8 pad0A[0x4];
-    /* 0x0E */ s16 chuusei; /* HD chuusei */
+    /* 0x0A */ s8 dummy0;
+    /* 0x0B */ u8 pad0B;
+    /* 0x0C */ s16 chuuseiHigh;
+    /* 0x0E */ s16 chuusei;
     /* 0x10 */ s16 vice; /* HD vice, spent by sbtlDecVice */
     /* 0x12 */ u8 pad12[0x2];
     /* 0x14 */ s32 exp;
@@ -60,7 +62,9 @@ typedef struct sdatUnitWork_t {
     /* 0xC0 */ u8 padC0[0x4];
     /* 0xC4 */ s16 autost_cnt;
     /* 0xC6 */ s16 autost_cnt2; /* frames between auto skill heals */
-    /* 0xC8 */ u8 padC8[0x8];
+    /* 0xC8 */ u32 itemstatus;
+    /* 0xCC */ s16 itemst_cnt;
+    /* 0xCE */ s16 itemst_cnt2;
     /* 0xD0 */ SBTL_AISYO_TBL aisyo;
 } sdatUnitWork_t;
 

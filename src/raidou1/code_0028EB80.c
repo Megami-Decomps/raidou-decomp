@@ -513,7 +513,7 @@ s32 sbtlLeaf9(dds3ProcessID_t *id) {
 }
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 sbtlLeaf10(dds3ProcessID_t *id) {
+u32 *sbtlLeaf10(s32 id, s32 mode) {
     return 0;
 }
 

@@ -3095,7 +3095,6 @@
 0x00255D60	sbtlCallBtlSearchUnitID2	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckSummonUnit_Exist2; calls sbtlSearchUnit_ID
 0x00255DD0	sbtlCallBtlSearchUnitID3	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckSummonUnit_Exist2; calls sbtlSearchUnit_ID
 0x00255EA8	sbtlRefSbtl9	func	tier=D	derived-data	na	unit code_0024AAD8, neighbour sbtlGetStockPoint; references wk_sbtl
-0x00256270	sbtlSetHangekiFlag	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlAction.sBtlSetHangekiFlag, score 6.8 band C, hd-consensus: calls2 callee-index votes2 st2:cidx r2-only; 10/10 fold runs agree, fold scores 8.4,8.8,8.8,8.4,8.8,8.8,8.8,8.4,6.3,8.8
 0x002563C8	sbtlSetSummon	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlSetSummon, score 9.45 band B
 0x00256458	sbtlCallMemset6	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetSummon; calls memset
 0x00256620	sbtlCallMemset7	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetSummon; calls memset

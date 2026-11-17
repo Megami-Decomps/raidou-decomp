@@ -44,5 +44,6 @@ SIZE_CHECK(sbtlExpListWorkSizeCheck, SBTLEXP_LISTWORK, 0x34);
 SBTLEXP_LISTWORK *InitTarSelProcessData(void);
 s32 sbtlRefSbtl60(SBTLEXP_LISTWORK *lwk);
 s32 sbtlReleaseEXP_List(SBTLEXP_LISTWORK *lwk, u8 flg);
+s32 sbtlResetVicePara(SBTLEXP_LISTWORK *lwk);
 
 #endif

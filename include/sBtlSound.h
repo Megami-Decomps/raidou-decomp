@@ -41,6 +41,8 @@ u32 sbtlPlayMotionSENowSub3(s32 devilID, s32 motionID);
 void PlayMotionSENow(struct SBTLUNIT_WORK *wk, s32 motionID, s32 startcnt);
 void sbtlCallEffectShutdown(struct SBTLUNIT_WORK *wk);
 void sbtlCallEffectShutdown2(struct SBTLUNIT_WORK *wk);
+s32 sbtlBtlForceDeleteEffectWorkIDSub(s32 arg);
+void sbtlSoundatBossAt(s32 id, char *name);
 void sbtlStopSkillSE(SKLID skillid, s32 type);
 void sbtlPlaySkillSE(const sdfVector4_t *pos, SKLID skillid, s32 type);
 void sbtlLeaf58(u32 seid);

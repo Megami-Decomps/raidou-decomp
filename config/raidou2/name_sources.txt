@@ -6913,7 +6913,7 @@
 0x00274F40	sbtlGetStockPoint	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.sBtlGetStockPoint score 9.3 flag I: prev next gap=exact st1:gap r1+r2
 0x00274F58	sbtlEntryStockData_Huuma	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.sBtlEntryStockData_Huuma score 12.0 flag I: calls2 next callers-of-match votes3 st1:call r1+r2
 0x00275030	sbtlCallBitOn	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlEntryStockData_Huuma; calls evtBitOn
-0x00275310	sbtlSetHangekiFlag	hd-inferred	hd: Raidou HD sBtlAction.sBtlSetHangekiFlag, score 6.8 band C, hd-consensus: calls2 callee-index votes2 st2:cidx r2-only; 10/10 fold runs agree, fold scores 8.4,8.8,8.8,8.4,8.8,8.8,8.8,8.4,6.3,8.8
+0x00275310	sbtlHuumaParamUp	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as raidou1 0x256270 (r1_r2_pairs); HD sBtlSetHangekiFlag is a different function; replaces sbtlSetHangekiFlag
 0x00275468	sbtlSetSummon	hd-inferred	hd: Raidou HD sBtlUnit.sBtlSetSummon, score 9.45 band B
 0x002754F8	sbtlResetSummon	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlUnit.sBtlResetSummon score 6.0 flag I: calls3 callers-of-match-uniq votes4 st2:call r1-disagree:0x256458
 0x002756F8	sbtlSetSummon_sbtlUnit	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlUnit.sBtlSetSummon score 6.8 flag I: calls4 callee-index st2:cidx r1-disagree:0x256620

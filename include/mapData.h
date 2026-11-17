@@ -701,6 +701,8 @@ extern MskEveHitTbl_t mapMskEveHitTbl[16];
 #endif
 extern s32 mapBtlReLoadMapSBtlSceneSub2Data[];
 void mapBtlReLoadMapSBtlSceneSub2(void);
+void mapBtlReLoadMapSBtlSceneSub3(void);
+void mapBtlReLoadMapSBtlSceneSub(s32 map0, s32 map1);
 extern s32 mapNpcTblRefresh_WaitData;
 extern s32 mapNpcTblRefresh_WaitData2;
 extern s32 npc_delcash_cnt;

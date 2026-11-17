@@ -104,6 +104,7 @@ void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2
 void fldDrwZLoad(void);
 void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst);
 void eglLinkSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 vh, u32 rgba0, u32 rgba1, u32 rgba2, u32 rgba3, struct sdfTexHandle_t *th);
+void eglLinkPrint(s32 x, s32 y, s32 col, const char *str);
 s32 sbtlResetJump(void);
 
 extern u32 dds3BackColor;

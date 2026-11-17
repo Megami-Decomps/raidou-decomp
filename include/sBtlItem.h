@@ -5,6 +5,7 @@
 #include "enums.h"
 
 struct sdfMemHandle_t;
+struct SBTLITEM_WORK;
 
 typedef struct SBTLITEM_DATA {
     s32 itemid;
@@ -32,5 +33,7 @@ extern SBTLITEM_TBL *tbldata;
 SBTLITEM_TBL *sbtlGetItemtbl(s32 id);
 s32 sbtlEntryItemList_Type(struct SBTLITEM_LISTWORK *lwk, u16 type);
 s32 sbtlReleaseItemList(struct SBTLITEM_LISTWORK *lwk);
+s32 sbtlItem_CheckSetItem(struct SBTLITEM_WORK *item, const sdfVector4_t *pos);
+s32 sbtlSetDropItem(s32 itemid, s32 num, s16 per);
 
 #endif
