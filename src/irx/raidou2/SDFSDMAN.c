@@ -734,7 +734,126 @@ s32 sdfSndInitWorkAreas(void)
 INCLUDE_ASM("SDFSDMAN", sdfSndInitWorkAreas);
 #endif
 
+#ifdef NON_MATCHING
+/* Two instructions short; gcc schedules the loop's pointer setup and
+ * allocates registers differently. */
+/* Woken 240 times a second by the hard timer: runs the synthesiser and the
+ * MIDI front end, applies the volume ramps and finishes the BGM switch the
+ * MIDI callback asked for. */
+void sdfSndSeqThread(void *arg)
+{
+    sceMidiSlot_t *ms;
+    s32 state;
+    s32 i;
+    s32 j;
+    s32 bank;
+    s32 slot;
+    s32 vol;
+    u32 serial;
+    sdfSndSlot_t *cur;
+
+    while (1) {
+        thbase_SleepThread();
+        intrman_CpuSuspendIntr(&state);
+        modmidi_e5(&sdfSndMidiWork);
+        intrman_CpuResumeIntr(state);
+        intrman_CpuSuspendIntr(&state);
+        modhsyn_e5(&sdfSndHsynWork);
+        intrman_CpuResumeIntr(state);
+        sdfSndUpdateVoiceMap();
+
+        for (i = 0, cur = sdfSndSlots; i < 16; i++, cur++) {
+            if ((sdfSndMidiWork.tbl->seq[i].slot->flags & 2) == 0) {
+                cur->fadeIn = 0;
+                sdfSndSlots[i].volStep = 0;
+                sdfSndSlots[i].unk34[0] = 0;
+                continue;
+            }
+            if (sdfSndListenerDirty && i >= 3) {
+                sdfSndUpdate3dVoice(i);
+            }
+            if (sdfSndBgmSwitchSlot == i && sdfSndBgmSwitchMidi >= 0) {
+                bank = sdfSndFindSlotById(sdfSndSlots[i].id);
+                slot = sdfSndAllocBgmSlot();
+                if (slot >= 0) {
+                    sdfSndMidiWork.tbl->seq[slot].data = sdfSndWorkArea->progData[bank].ptr;
+                    sdfSndHsynLoad(bank, slot);
+                    intrman_CpuSuspendIntr(&state);
+                    if (modmidi_sceMidi_Load(&sdfSndMidiWork, slot) != 0) {
+                        intrman_CpuResumeIntr(state);
+                        stdio_printf(aSdfsnddrvScemi);
+                        sdfSndPostError(17);
+                    } else {
+                        ms = &sdfSndMidiSlotWork[slot];
+                        ms->cbB = sdfSndMidiCbIgnore1;
+                        ms->msgCb = sdfSndMidiCbMessage;
+                        ms->cbBArg = slot;
+                        ms->msgCbArg = slot;
+                        ms->cbC = sdfSndMidiCbIgnore2;
+                        ms->cbCArg = slot;
+                        ms->slotMask = 1 << slot;
+                        for (j = 15; j >= 0; j--) {
+                            ms->chanMask[j] = 1 << slot;
+                        }
+                        modmidi_sceMidi_SelectMidi(&sdfSndMidiWork, slot, sdfSndBgmSwitchMidi);
+                        modmidi_sceMidi_MidiSetLocation(&sdfSndMidiWork, slot, 0);
+                        modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, slot, 1);
+                        sdfSndSlots[slot].volStep = sdfSndSlots[i].volStep;
+                        sdfSndSlots[slot].fadeIn = sdfSndSlots[i].fadeIn;
+                        sdfSndSlots[slot].vol = sdfSndSlots[i].vol;
+                        sdfSndSlots[slot].unk34[0] = sdfSndSlots[i].unk34[0];
+                        sdfSndSlots[slot].group = sdfSndSlots[i].group;
+                        sdfSndSlots[slot].serial = sdfSndSlotSerialNext++;
+                        sdfSndSlots[slot].id =
+                            (sdfSndSlots[i].id & 0xFFFF0000) | sdfSndBgmSwitchMidi;
+                        sdfSndApplyVolume(sdfSndSlots[slot].id, slot,
+                                          sdfSndSlots[i].vol >> 8);
+                        sdfSndPutMsg(slot);
+                        sdfSndBgmSwitchReq = 0;
+                        sdfSndBgmSwitchMidi = -1;
+                        sdfSndBgmSwitchSlot = -1;
+                        modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, i, 0);
+                        cur->fadeIn = 0;
+                        sdfSndSlots[i].volStep = 0;
+                        sdfSndSlots[i].id = -1;
+                        sdfSndSlots[i].unk34[0] = 0;
+                    }
+                    intrman_CpuResumeIntr(state);
+                }
+            }
+            if (sdfSndSlots[i].volStep == 0) {
+                continue;
+            }
+            vol = sdfSndSlots[i].vol + sdfSndSlots[i].volStep;
+            sdfSndSlots[i].vol = vol;
+            if (vol >= 32513) {
+                sdfSndSlots[i].vol = 32512;
+                sdfSndSlots[i].volStep = 0;
+            } else if (vol < 0) {
+                /* The fade reached silence: stop the sequence. The matching
+                 * suspend is the one in the switch block above. */
+                sdfSndSlots[i].vol = 0;
+                sdfSndSlots[i].volStep = 0;
+                sdfSndSlots[i].fadeIn = 0;
+                sdfSndSlots[i].id = -1;
+                sdfSndSlots[i].unk34[0] = 0;
+                modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, i, 0);
+                intrman_CpuResumeIntr(state);
+                continue;
+            } else if (sdfSndSlots[i].fadeIn && vol < 0x4000) {
+                sdfSndSlots[i].vol = 0x3FFF;
+                sdfSndSlots[i].volStep = 0;
+                sdfSndSlots[i].fadeIn = 0;
+            }
+            sdfSndApplyVolume(sdfSndSlots[i].id, i, sdfSndSlots[i].vol >> 8);
+        }
+        sdfSndListenerDirty = 0;
+        sdfAdpcmFadeTick();
+    }
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndSeqThread);
+#endif
 
 /* Initialise LIBSD, then give each core its effect area, effect attributes
  * and master volume, and cancel any pending BGM switch. */
