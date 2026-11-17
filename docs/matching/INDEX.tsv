@@ -175,8 +175,7 @@ sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words 
 sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matching/code_r1_00295298.md	3		
 sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3	the -DNON_MATCHING code moves with the declarations the unit includes; adding three prototypes to fld.h (mapGetHit, mapGetAttr_DevilWall, mapHamidasiCheckSub) turned 380 of 404 differing words into a full-unit CONTEXT result; the R22 SBTL_* field and prototype edits in sbtlWork.h shift it again, with no matched function affected.	
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3		
-effInitializeSlotWorkFromDescription	code_r1_002C8188	raidou1 0x1C4, raidou2 0x1C4	0 of 113 words differ	docs/matching/code_r1_002C8188.md	3		
-sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	14	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h.	
+sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	3	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h.	
 effDrawTextureSlot	code_r1_002CA3F0	raidou1 0x2CC, raidou2 0x2D4	2 of 179 words differ	docs/matching/code_r1_002CA3F0.md	3		
 cmpDrawBoxG	code_r1_002CAFD8	raidou1 0x190, raidou2 0x190	8 of 100 words differ	docs/matching/code_r1_002CAFD8.md	3		
 evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	docs/matching/code_r1_002F59D0.md	3		
@@ -235,9 +234,8 @@ dds3DrawBista	kernel/dds3KernelDraw	raidou1 0x2AC	151 of 157 words differ	docs/m
 dds3RunQuake	kernel/dds3KernelDraw	raidou1 0x1F4, raidou2 0x1F4	65 of 124 words differ	docs/matching/kernel/dds3KernelDraw.md	32		
 dds3CallGrAllocPacketBuff8	kernel/dds3KernelDraw_0010A750	raidou1 0x208, raidou2 0x208	15 of 130 words differ	docs/matching/kernel/dds3KernelDraw_0010A750.md	3		
 dds3DrawFirstProcess	kernel/dds3KernelProcess	raidou1 0x7C0	461 of 490 words differ	docs/matching/kernel/dds3KernelProcess.md	3		
-slDrawInfo	mc/slMain	raidou1 0x39C	7 of 231 words differ	docs/matching/mc/slMain.md	3		
-fmProcTrigSequence_slMain	mc/slMain	raidou1 0x300	68 of 190 words differ	docs/matching/mc/slMain.md	11		
-slQueryYesNoDraw	mc/slMain	raidou1 0x960	11 of 600 words differ	docs/matching/mc/slMain.md	19		
+fmProcTrigSequence_slMain	mc/slMain	raidou1 0x300	68 of 190 words differ	docs/matching/mc/slMain.md	3		
+slQueryYesNoDraw	mc/slMain	raidou1 0x960	0 of 600 words differ	docs/matching/mc/slMain.md	11		
 itfMenuGetMenuNum	newbattle/nbTarSelProcess	raidou1 0x20, raidou2 0x20	0 of 8 words differ	docs/matching/newbattle/nbTarSelProcess.md	3		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		

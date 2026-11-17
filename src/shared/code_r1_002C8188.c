@@ -563,8 +563,6 @@ void effInitializeSlotPhase(effTimedState_t *effect) {
     }
 }
 
-/* NON_MATCHING: 113 of 113 words match. Matches alone, but as C in this unit it changes the schedule of sdfDrawTexturedQuad, whose codegen depends on the declarations in scope. */
-#ifdef NON_MATCHING
 void effInitializeSlotWorkFromDescription(sprHandle_t *owner, s32 slotIndex, void *payload) {
     itfBdWork_t *entry = payload;
     effSlotDescription_t *description = &owner->descriptions[slotIndex];
@@ -609,9 +607,6 @@ void effInitializeSlotWorkFromDescription(sprHandle_t *owner, s32 slotIndex, voi
     }
     effUpdateTimedStates(owner, slotIndex, payload);
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_002C8188", effInitializeSlotWorkFromDescription);
-#endif
 
 /* Initialize the normal slot entry at the unchanged 0xA0-byte stride. */
 void effInitializeSlotWork(sprHandle_t *owner, s32 slotIndex) {

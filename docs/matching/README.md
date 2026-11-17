@@ -40,7 +40,6 @@ menu scenarios); an entry says which paths they covered.
 | 3 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
 | 3 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
-| 3 | mc/slMain | raidou1 | [mc/slMain.md](mc/slMain.md) |
 | 3 | sbtlSub | raidou1 | [sbtlSub.md](sbtlSub.md) |
 | 3 | sbtl_0029BFB8 | raidou1 | [sbtl_0029BFB8.md](sbtl_0029BFB8.md) |
 | 3 | sdf/sdfMovie | raidou1, raidou2 | [sdf/sdfMovie.md](sdf/sdfMovie.md) |
@@ -56,12 +55,12 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_r1_00128378 | raidou1 | [code_r1_00128378.md](code_r1_00128378.md) |
 | 2 | code_r1_00142038 | raidou1, raidou2 | [code_r1_00142038.md](code_r1_00142038.md) |
 | 2 | code_r1_0016B498 | raidou1 | [code_r1_0016B498.md](code_r1_0016B498.md) |
-| 2 | code_r1_002C8188 | raidou1, raidou2 | [code_r1_002C8188.md](code_r1_002C8188.md) |
 | 2 | dds3KernelDraw_0010BEE0 | raidou1 | [dds3KernelDraw_0010BEE0.md](dds3KernelDraw_0010BEE0.md) |
 | 2 | event/evtPolygonMovie | raidou1, raidou2 | [event/evtPolygonMovie.md](event/evtPolygonMovie.md) |
 | 2 | fclDrawBack | raidou1 | [fclDrawBack.md](fclDrawBack.md) |
 | 2 | field/fldFileResolver_00132080 | raidou1, raidou2 | [field/fldFileResolver_00132080.md](field/fldFileResolver_00132080.md) |
 | 2 | field/fldProcess | raidou1 | [field/fldProcess.md](field/fldProcess.md) |
+| 2 | mc/slMain | raidou1 | [mc/slMain.md](mc/slMain.md) |
 | 2 | sdk/libkernl/filestub | raidou1, raidou2 | [sdk/libkernl/filestub.md](sdk/libkernl/filestub.md) |
 | 1 | TitleMain | raidou1 | [TitleMain.md](TitleMain.md) |
 | 1 | basic/dds3ObjectBase | raidou1, raidou2 | [basic/dds3ObjectBase.md](basic/dds3ObjectBase.md) |
@@ -123,6 +122,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_00295298 | raidou1 | [code_r1_00295298.md](code_r1_00295298.md) |
 | 1 | code_r1_00297EF0 | raidou1 | [code_r1_00297EF0.md](code_r1_00297EF0.md) |
 | 1 | code_r1_002A1E48 | raidou1 | [code_r1_002A1E48.md](code_r1_002A1E48.md) |
+| 1 | code_r1_002C8188 | raidou1, raidou2 | [code_r1_002C8188.md](code_r1_002C8188.md) |
 | 1 | code_r1_002CA3F0 | raidou1, raidou2 | [code_r1_002CA3F0.md](code_r1_002CA3F0.md) |
 | 1 | code_r1_002CAFD8 | raidou1, raidou2 | [code_r1_002CAFD8.md](code_r1_002CAFD8.md) |
 | 1 | code_r1_002F59D0 | raidou1, raidou2 | [code_r1_002F59D0.md](code_r1_002F59D0.md) |

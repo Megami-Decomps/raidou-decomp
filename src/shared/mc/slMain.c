@@ -558,8 +558,6 @@ void slSetInfo(u32 id) {
 }
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 224 of 231 words match.  */
-#ifdef NON_MATCHING
 extern char slDrawInfoData[], slDrawInfoData2[], slDrawInfoData3[], slDrawInfoData4[];
 extern char slDrawInfoData5[], slDrawInfoData6[], slDrawInfoData7[], slDrawInfoData8[];
 extern char slDrawInfoData9[], slDrawInfoData10[], slDrawInfoData11[], slDrawInfoData12[];
@@ -634,9 +632,6 @@ void slDrawInfo(void) {
         gSlExitMode = 2;
     }
 }
-#else
-INCLUDE_ASM(const s32, "mc/slMain", slDrawInfo);
-#endif
 #else
 INCLUDE_ASM(const s32, "mc/slMain", slDrawInfo);
 #endif
@@ -1416,7 +1411,7 @@ INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProc);
 INCLUDE_ASM(const s32, "mc/slMain", slCallMcRegetInfo);
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 589 of 600 words match.  */
+/* NON_MATCHING: 600 of 600 words match; its string table lands in this unit's .rodata, which then differs from retail. */
 #ifdef NON_MATCHING
 extern char slQueryYesNoDrawData6[], slOverwriteMsg1[], slQueryYesNoDrawData7[], slQueryYesNoDrawData[];
 extern char slQueryYesNoDrawData2[], slQueryYesNoDrawData3[], slQueryYesNoDrawData4[], slQueryYesNoDrawData9[];

@@ -1,13 +1,5 @@
 # Draft notes: mc/slMain
 
-## slDrawInfo (mc/slMain, raidou1 0x39C)
-
-Raidou 1: 7 of 231 words differ, first at +0x14.
-
-each if (gslInfoCode == N) test after a block that calls the INCLUDE_ASM slDrawWindow is bnel where retail has bne with the next constant in the slot; expected to close when slCallSetOt5 is C above it (idioms.md 12)
-
-Related: callee-visibility.
-
 ## fmProcTrigSequence_slMain (mc/slMain, raidou1 0x300)
 
 Raidou 1: 68 of 190 words differ, first at +0x16C; emitted 760 bytes, native 768 bytes.
@@ -18,7 +10,9 @@ Related: [smt3 levers: stores](https://github.com/Megami-Decomps/smt3-decomp/blo
 
 ## slQueryYesNoDraw (mc/slMain, raidou1 0x960)
 
-Raidou 1: 11 of 600 words differ, first at +0x134.
+Raidou 1: 0 of 600 words differ.
+
+The text now matches all 600 words (slDrawWindow is C), but it stays NON_MATCHING: the local array's strings and pointer table land in this unit's .rodata, which then differs from retail at 0x455270 while slQueryYesNoDrawTable stays INCLUDE_RODATA. Promoting it needs that rodata moved into the C.
 
 y = 306; if (m != 5 && m != 6) y = 258; folds to addiu/sltiu/movz; nested if (m != 5) { if (m == 6) y = 306; else y = 258; } gives retail's beq + xori/movn; remaining residual is slDrawWindow callee-visibility
 
