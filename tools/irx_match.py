@@ -205,6 +205,7 @@ def main() -> None:
     srod, rrod = simg.mod.section(".rodata"), rimg.mod.section(".rodata")
     sdata = [(a, n, s) for a, n, s, k in ssyms if k == "D"]
     fnames = {s[1] for _, s, _, _ in pairs if s}
+    hand_addrs = set(hand_data.values())
     lines, dsyms = [], []
     for r, s, kind, ratio in pairs:
         lines.append(f"F\t0x{r[0]:08X}\t0x{r[2]:X}\t{s[1] if s else ''}\t{kind}\t{ratio:.2f}"
@@ -222,6 +223,8 @@ def main() -> None:
             hits, how = {rrod.addr + m for m in found}, "string"
         if n in hand_data:
             hits, how = {hand_data.pop(n)}, "hand"
+        else:
+            hits -= hand_addrs
         if len(hits) == 1:
             addr = hits.pop()
             dsyms.append((addr, n))

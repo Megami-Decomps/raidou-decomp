@@ -10,3 +10,4 @@
 0x6F50 sdfSndVolTblSe
 0x6F90 sdfSndVolTblVoice
 0x71B0 sdfSndSlots
+0x6DAC sdfSndBank1Loaded
