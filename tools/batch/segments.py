@@ -109,26 +109,64 @@ def aligned_start(kind: str, labels: list[tuple[int, str]], lo: int, hi: int) ->
     return None
 
 
+def piece_ranges(yaml_text: str) -> dict[str, tuple[int, int | None]]:
+    """Unowned chunk name -> vram range [start, end), the end being the next subsegment's start or None."""
+    off = rom_offset(yaml_text)
+    subs = [m for l in yaml_text.splitlines() if (m := SUBSEG.match(l))]
+    out = {}
+    for i, m in enumerate(subs):
+        if m.group(3) in KINDS:
+            out[m.group(4)] = (int(m.group(2), 16) + off, int(subs[i + 1].group(2), 16) + off if i + 1 < len(subs)
+                               else None)
+    return out
+
+
+def piece_labels(data: Path, yaml_text: str, found: dict[str, str]) -> tuple[dict, dict, list[str]]:
+    """(chunk -> labels, chunk -> files they came from, notes). A piece an earlier plan in this run split off has no
+    file until splat reruns, so its labels come from the files of its kind that cover its range."""
+    ranges = piece_ranges(yaml_text)
+    labels, sources, notes = {}, {}, []
+    for name, kind in found.items():
+        own = data / f"{name}.{kind}.s"
+        if own.exists():
+            labels[name], sources[name] = chunk_labels(own), [own]
+            continue
+        lo, hi = ranges[name]
+        got, files = {}, []
+        for path in sorted(data.glob(f"*.{kind}.s")):
+            inside = [(a, n) for a, n in chunk_labels(path) if a >= lo and (hi is None or a < hi)]
+            if inside:
+                files.append(path)
+                for a, n in inside:
+                    got.setdefault(a, n)
+        labels[name], sources[name] = sorted(got.items()), files
+        if not got:
+            notes.append(f"{kind} {name} (0x{lo:08X}): no asm/data file holds its labels; rerun configure.py "
+                         "and land the units that use it again")
+    return labels, sources, notes
+
+
 def plan_unit(tree: Path, game: str, unit: str) -> tuple[list[Plan], list[str]]:
     """Plans for the rodata and lit4 that a gap unit's asm uses, and the cases left for a hand decision."""
     asm = tree / "asm" / game
     text = yaml_path(tree, game).read_text()
     found = {name: kind for name, kind in chunks(text).items()}
-    labels = {name: chunk_labels(asm / "data" / f"{name}.{kind}.s") for name, kind in found.items()}
+    labels, sources, notes = piece_labels(asm / "data", text, found)
     where = {n: c for c, ls in labels.items() for _, n in ls}
     words = set(WORD.findall((asm / f"{unit}.s").read_text()))
     used = {where[w] for w in words if w in where}
     if not used:
-        return [], []
+        return [], notes
     wanted = {n for c in used for _, n in labels[c]}
+    skip = {f for c in used for f in sources[c]}
     users: dict[str, set[str]] = {}
     for path in asm.rglob("*.s"):
-        if path.parent.name == "data" and path.stem.rsplit(".", 1)[0] in used:
+        if path in skip:
             continue
         o = owner(asm, path)
         for w in set(WORD.findall(path.read_text(errors="replace"))) & wanted:
             users.setdefault(w, set()).add(o)
-    plans, notes = [], []
+    plans = []
     for c in sorted(used):
         p, note = plan(c, found[c], labels[c], users, unit)
         if p:
