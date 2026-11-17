@@ -65,9 +65,9 @@ def sha1(path: Path) -> str:
 
 
 def chunks(cfg: dict) -> list[str]:
-    """The .text chunks in link order: the C file's INCLUDE_ASM lines."""
-    src = irx_config.path(cfg, "src")
-    return [m[1] for m in (INCLUDE_ASM_LINE.match(l) for l in src.read_text().splitlines()) if m]
+    """The .text chunks in link order: the C files' INCLUDE_ASM lines."""
+    return [m[1] for src in cfg["paths"]["srcs"]
+            for m in (INCLUDE_ASM_LINE.match(l) for l in (ROOT / src).read_text().splitlines()) if m]
 
 
 def split_digest(cfg: dict) -> str:
@@ -98,6 +98,7 @@ def write_c(cfg: dict) -> None:
     src.parent.mkdir(parents=True, exist_ok=True)
     src.write_text('#include "irx.h"\n\n' + "".join(f'INCLUDE_ASM("{cfg["module_dir"]}", {c});\n' for c in names))
     cfg["paths"]["src"] = str(src.relative_to(ROOT))
+    cfg["paths"]["srcs"] = [cfg["paths"]["src"]]
     print(f"wrote {cfg['paths']['src']}")
 
 
@@ -143,20 +144,24 @@ def write(n, versions: list[str], prefix: str) -> tuple[list[str], list[str]]:
             (ROOT / b).mkdir(parents=True, exist_ok=True)
             split(cfg)
             write_c(cfg)
-            src = cfg["paths"]["src"]
-            inputs.append(src)
+            inputs += cfg["paths"]["srcs"]
             script = b / "link.ld"
-            (ROOT / script).write_text(LINKER_SCRIPT % {"entry": cfg["module"]["entry"]})
+            ld = LINKER_SCRIPT % {"entry": cfg["module"]["entry"]}
+            if not (ROOT / script).exists() or (ROOT / script).read_text() != ld:
+                (ROOT / script).write_text(ld)
 
             asm = Path(cfg["paths"]["asm"])
             deps = [str(asm / "text" / f"{c}.s") for c in chunks(cfg)]
             headers = [h for h in HEADERS + [f"include/irx/{module}.h"] if (ROOT / h).exists()]
-            asmcheck = b / "asmcheck.stamp"
-            n.build(str(asmcheck), "asmcheck", [src],
-                    implicit=["tools/check_inline_asm.py", "config/inline_asm_allow.txt"])
-            objs = [str(b / "text.o")]
-            n.build(objs[0], "iopcc", [src], implicit=deps + headers + [str(asmcheck)],
-                    variables={"asm_root": cfg["paths"]["asm_root"]})
+            objs = []
+            for src in cfg["paths"]["srcs"]:
+                stem = Path(src).stem
+                asmcheck = b / f"{stem}.asmcheck.stamp"
+                n.build(str(asmcheck), "asmcheck", [src],
+                        implicit=["tools/check_inline_asm.py", "config/inline_asm_allow.txt"])
+                objs.append(str(b / f"{stem}.o"))
+                n.build(objs[-1], "iopcc", [src], implicit=deps + headers + [str(asmcheck)],
+                        variables={"asm_root": cfg["paths"]["asm_root"]})
             for part in ("rodata", "data", "bss"):
                 part_src = asm / f"{part}.s"
                 if (ROOT / part_src).exists() and (ROOT / part_src).stat().st_size:

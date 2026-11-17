@@ -45,7 +45,11 @@ typedef long long s64;
 
 def check(module: str, shim: Path) -> int:
     cfg = irx_config.load(module)
-    src = irx_config.path(cfg, "src")
+    srcs = [ROOT / s for s in cfg["paths"]["srcs"]]
+    return sum(check_file(module if len(srcs) == 1 else f"{module} {s.name}", s, shim) for s in srcs)
+
+
+def check_file(module: str, src: Path, shim: Path) -> int:
     # Check both modes unconditionally, including FIX_BUGS uses in headers.
     # A corrected branch is otherwise as invisible to CI as an assembly-guarded
     # draft. This does not alter the production compiler or matching build.
@@ -90,7 +94,7 @@ def main() -> None:
         # A shared file is the same C for both games; check it once.
         seen = {}
         for key in keys:
-            seen.setdefault(irx_config.load(key)["paths"]["src"], key)
+            seen.setdefault(tuple(irx_config.load(key)["paths"]["srcs"]), key)
         bad = sum(check(key, shim) for key in seen.values())
     raise SystemExit(1 if bad else 0)
 

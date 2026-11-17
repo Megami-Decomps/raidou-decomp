@@ -12,8 +12,7 @@ import check_irx_nonmatching as checker
 
 class IRXDialectTests(unittest.TestCase):
     def run_mock(self, results):
-        with patch.object(checker.irx_config, 'load', return_value={}), \
-             patch.object(checker.irx_config, 'path', return_value=Path('draft.c')), \
+        with patch.object(checker.irx_config, 'load', return_value={'paths': {'srcs': ['draft.c']}}), \
              patch.object(checker.subprocess, 'run', side_effect=results) as run, \
              contextlib.redirect_stdout(io.StringIO()) as output:
             errors = checker.check('TEST', Path('/tmp'))
@@ -69,8 +68,7 @@ class RealCompilerModes(unittest.TestCase):
             path.write_text(source)
             if header is not None:
                 (root / 'mode.h').write_text(header)
-            with patch.object(checker.irx_config, 'load', return_value={}), \
-                 patch.object(checker.irx_config, 'path', return_value=path), \
+            with patch.object(checker.irx_config, 'load', return_value={'paths': {'srcs': [str(path)]}}), \
                  contextlib.redirect_stdout(io.StringIO()) as output:
                 errors = checker.check('CONTROL', root)
             return errors, output.getvalue()

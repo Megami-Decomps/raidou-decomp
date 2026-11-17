@@ -76,7 +76,7 @@ def stale_warning(cfg: dict, built: Path) -> None:
     """
     if not built.exists():
         raise SystemExit(f"{built}: not built yet; run configure.py and ninja")
-    newest = max((p.stat().st_mtime for p in (irx_config.path(cfg, "src"),)
+    newest = max((p.stat().st_mtime for p in (ROOT / s for s in cfg["paths"]["srcs"])
                   if p.exists()), default=0)
     if newest > built.stat().st_mtime:
         print(f"warning: {built.name} is older than {cfg['paths']['src']}; "

@@ -5,7 +5,8 @@ A module is named by its key, `<version>/<module>` (`raidou1/SDFSDMAN`). Its
 paths follow from the key; the C file is src/irx/<version>/<module>.c when the
 game has its own, else the src/irx/shared/<module>.c both games compile. They
 sit apart from the ELF's src/<version> and src/shared, whose tools read every .c
-there as an ELF unit.
+there as an ELF unit. A module of several retail TUs lists them under `tus:`, in
+link order, and each resolves the same way.
 """
 from __future__ import annotations
 
@@ -67,6 +68,7 @@ def load(key: str) -> dict:
         "asm": f"asm/{version}/irx/{module}",
         "asm_root": f"asm/{version}/irx/",
         "src": str(source(version, module)),
+        "srcs": [str(source(version, tu)) for tu in cfg.get("tus", [module])],
         "build": f"build/{version}/irx/{module}",
         "symbols": f"config/{version}/irx/{module}/symbol_addrs.txt",
     }
