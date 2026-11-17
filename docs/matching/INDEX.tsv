@@ -91,13 +91,13 @@ sbtlCallCheckDying	code_002A38D8	raidou1 0x1F8	48 of 126 words differ	docs/match
 sbtlCallBtlSearchUnitID37	code_002A38D8	raidou1 0x398	5 of 230 words differ	docs/matching/code_002A38D8.md	47		
 sbtlCallGetProcessData56	code_002A38D8	raidou1 0x3A4	101 of 231 words differ	docs/matching/code_002A38D8.md	55		
 sbtlCallEventBattleStopChack2	code_002A38D8	raidou1 0x298	70 of 166 words differ	docs/matching/code_002A38D8.md	63		
-sbtlCallExistProcess2	code_002A38D8	raidou1 0x68	11 of 25 words differ	docs/matching/code_002A38D8.md	71		
-sbtlDraw3DSphere	code_002A38D8	raidou1 0x294	26 of 165 words differ	docs/matching/code_002A38D8.md	77		
+sbtlCallExistProcess2	code_002A38D8	raidou1 0x68	8 of 26 words differ	docs/matching/code_002A38D8.md	71		
+sbtlDraw3DSphere	code_002A38D8	raidou1 0x294	26 of 165 words differ	docs/matching/code_002A38D8.md	79		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	13		
 pipeCampCAMPPACKLB	code_00300578	raidou1 0x158	3 of 86 words differ	docs/matching/code_00300578.md	3		
 cmpGetFlagCallDebug	code_00300578	raidou1 0x28	1 of 10 words differ	docs/matching/code_00300578.md	11		
-cmpProcessStartEx	code_00323280	raidou1 0x54	5 of 21 words differ	docs/matching/code_00323280.md	3		
+cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		
 mapCheckDying	code_r1_00128378	raidou1 0xFC	30 of 63 words differ	docs/matching/code_r1_00128378.md	11		
@@ -193,7 +193,7 @@ dds3FilterDraw	dds3KernelDraw_0010BEE0	raidou1 0xA80	3 of 672 words differ	docs/
 effBTL	effect/effBattle	raidou1 0x1A4, raidou2 0x1A4	5 of 105 words differ	docs/matching/effect/effBattle.md	3		
 effSimpleBEDDelete	effect/effEvent	raidou1 0x40, raidou2 0x40	1 of 16 words differ	docs/matching/effect/effEvent.md	3		
 effPCPShockWave02Init	effect/effPCPMisc	raidou1 0x2C0, raidou2 0x2C0	7 of 176 words differ	docs/matching/effect/effPCPMisc.md	3		
-effPCPZiodin03Init	effect/effPCPMisc	raidou1 0x2C0, raidou2 0x2C0	7 of 176 words differ	docs/matching/effect/effPCPMisc.md	12		
+effPCPZiodin03Init	effect/effPCPMisc	raidou1 0x2C0, raidou2 0x2C0	7 of 176 words differ	docs/matching/effect/effPCPMisc.md	14		
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3		
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3		
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9		
