@@ -137,7 +137,7 @@ jobs:
         run: python3 tools/tests/test_check_unit.py
 
       - name: Check the NON_MATCHING behaviour comparison
-        run: python3 tools/test_nm_behaviour.py
+        run: python3 tools/tests/test_nm_behaviour.py
 
       - name: Source coverage
         if: steps.orig.outputs.available == 'true'
