@@ -11,7 +11,13 @@ typedef struct mapFuncEntry_t {
     s16 type;
 } mapFuncEntry_t;
 
-extern mapFuncEntry_t mapFunc10Data[19];
+#ifdef VERSION_RAIDOU1
+#define MAP_FUNC10_NUM 19
+#else
+#define MAP_FUNC10_NUM 54
+#endif
+
+extern mapFuncEntry_t mapFunc10Data[MAP_FUNC10_NUM];
 extern s8 mapWork13[16];
 extern s32 am_map;
 extern s32 am_floor;
@@ -25,7 +31,7 @@ void mapFunc10(void) {
     for (i = 15; i >= 0; i--) {
         mapWork13[i] = -1;
     }
-    for (i = 0; i < 19; i++) {
+    for (i = 0; i < MAP_FUNC10_NUM; i++) {
         if (mapFunc10Data[i].scene != am_map) {
             continue;
         }
