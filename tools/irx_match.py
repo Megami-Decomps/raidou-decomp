@@ -1,0 +1,253 @@
+#!/usr/bin/env python3
+"""Pair a Raidou IRX module's functions and data with SMT3's retail module.
+
+    python tools/irx_match.py raidou1/SDFSDMAN [--funcs FUNCS.json] [--symbols]
+"""
+# FUNCS.json (idb_funcs.json) is the IDB export, irx_symbols.py's rows, giving
+# the Raidou function bounds. Functions pair when their words are equal with relocated fields
+# masked (`same`), else by order and opcode similarity between those anchors.
+# Data names come from operands at the same place in paired functions, and
+# strings by content. config/<v>/irx/<M>/hand_pairs.txt (ADDR NAME) pairs what
+# the code changed too much for that. The pairing goes to smt3_pairs.tsv.
+from __future__ import annotations
+
+import argparse
+import difflib
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+import irx  # noqa: E402
+import irx_config  # noqa: E402
+
+SMT3 = Path.home() / "projects/smt3-decomp"
+R_32, R_26, R_HI16, R_LO16 = 2, 4, 5, 6
+SYM = re.compile(r"^(\w+)\s*=\s*(0x[0-9A-Fa-f]+);(.*)$")
+
+
+def smt3_symbols(module: str) -> list[tuple[int, str, int, str]]:
+    rows = []
+    for line in (SMT3 / "config/irx" / module / "symbol_addrs.txt").read_text().splitlines():
+        m = SYM.match(line.strip())
+        if not m:
+            continue
+        attrs = dict(a.split(":", 1) for a in m[3].replace("//", " ").split() if ":" in a)
+        rows.append((int(m[2], 16), m[1], int(attrs.get("size", "0"), 0), "F" if attrs.get("type") == "func" else "D"))
+    return sorted(rows)
+
+
+class Image:
+    def __init__(self, path: Path):
+        self.mod = irx.read(path)
+        text = self.mod.section(".text")
+        self.text = text.data
+        self.relocs = dict(text.relocs)
+        # R_MIPS_32 words outside .text: (section address + offset) -> target.
+        self.words = {}
+        for s in self.mod.sections:
+            if s.name in (".rodata", ".data"):
+                for off, ty in s.relocs:
+                    if ty == R_32:
+                        self.words[s.addr + off] = int.from_bytes(s.data[off:off + 4], "little")
+
+    def word(self, addr: int) -> int:
+        return int.from_bytes(self.text[addr:addr + 4], "little")
+
+    def masked(self, addr: int, size: int) -> tuple[int, ...]:
+        out = []
+        for a in range(addr, addr + size, 4):
+            w = self.word(a)
+            ty = self.relocs.get(a)
+            if ty == R_26:
+                w &= 0xFC000000
+            elif ty in (R_HI16, R_LO16):
+                w &= 0xFFFF0000
+            elif ty == R_32:
+                w = 0
+            out.append(w)
+        return tuple(out)
+
+    def opcodes(self, addr: int, size: int) -> list[int]:
+        return [self.word(a) >> 26 or 0x40 | (self.word(a) & 0x3F) for a in range(addr, addr + size, 4)]
+
+    def targets(self, addr: int, size: int) -> list[tuple[int, int]]:
+        """(instruction address, target) for each relocated operand, in order."""
+        hi = {}
+        out = []
+        for a in range(addr, addr + size, 4):
+            w = self.word(a)
+            ty = self.relocs.get(a)
+            if ty == R_HI16:
+                hi[(w >> 16) & 31] = (w & 0xFFFF) << 16
+            elif ty == R_LO16:
+                base = (w >> 21) & 31
+                if base in hi:
+                    lo = w & 0xFFFF
+                    out.append((a, hi[base] + (lo - 0x10000 if lo & 0x8000 else lo)))
+            elif ty == R_26:
+                out.append((a, (w & 0x3FFFFFF) << 2))
+            elif ty == R_32:
+                out.append((a, w))
+        return out
+
+
+def pair_functions(rf, sf, rimg, simg):
+    """[(raidou row, smt3 row or None, kind, ratio)] in Raidou address order."""
+    rkey = [rimg.masked(a, s) for a, _n, s in rf]
+    skey = [simg.masked(a, s) for a, _n, s in sf]
+    out = {}
+    sm = difflib.SequenceMatcher(None, rkey, skey, autojunk=False)
+    for i, j, n in sm.get_matching_blocks():
+        for k in range(n):
+            out[i + k] = (j + k, "same", 1.0)
+    # Unique masked bodies anywhere count too (a function that moved).
+    sidx = {}
+    for j, key in enumerate(skey):
+        sidx.setdefault(key, []).append(j)
+    used = {v[0] for v in out.values()}
+    for i, key in enumerate(rkey):
+        if i not in out and len(sidx.get(key, [])) == 1 and sidx[key][0] not in used:
+            out[i] = (sidx[key][0], "same", 1.0)
+            used.add(sidx[key][0])
+    # Between anchors, the best opcode similarity within the gap.
+    anchors = sorted(out.items())
+    bounds = [(-1, -1)] + [(i, v[0]) for i, v in anchors] + [(len(rf), len(sf))]
+    for (i0, j0), (i1, j1) in zip(bounds, bounds[1:]):
+        if j1 < j0:
+            continue
+        cand = [j for j in range(j0 + 1, j1) if j not in used]
+        for i in range(i0 + 1, i1):
+            best = None
+            ro = rimg.opcodes(rf[i][0], rf[i][2])
+            for j in cand:
+                so = simg.opcodes(sf[j][0], sf[j][2])
+                r = difflib.SequenceMatcher(None, ro, so, autojunk=False).ratio()
+                if best is None or r > best[1]:
+                    best = (j, r)
+            if best and best[1] >= 0.6:
+                out[i] = (best[0], "similar", best[1])
+                used.add(best[0])
+                cand.remove(best[0])
+    return [(rf[i], sf[out[i][0]] if i in out else None,
+             out[i][1] if i in out else "none", out[i][2] if i in out else 0.0) for i in range(len(rf))]
+
+
+def join_split_functions(rf, img):
+    """Join an IDB function that does not end in `jr $ra` and a delay slot to the next."""
+    out = []
+    for a, n, s in rf:
+        if out and img.word(out[-1][0] + out[-1][2] - 8) != 0x03E00008 and out[-1][0] + out[-1][2] == a:
+            pa, pn, ps = out.pop()
+            out.append((pa, pn, ps + s))
+        else:
+            out.append((a, n, s))
+    return out
+
+
+def map_operands(pairs, rimg, simg, kinds):
+    """SMT3 operand target -> Raidou targets, from aligned equal instructions of pairs of `kinds`."""
+    smap = {}
+    for r, s, kind, _ in pairs:
+        if not s or kind not in kinds:
+            continue
+        rk, sk = rimg.masked(r[0], r[2]), simg.masked(s[0], s[2])
+        rt, st = dict(rimg.targets(r[0], r[2])), dict(simg.targets(s[0], s[2]))
+        for i, j, n in difflib.SequenceMatcher(None, rk, sk, autojunk=False).get_matching_blocks():
+            for k in range(n):
+                ra, sa = r[0] + 4 * (i + k), s[0] + 4 * (j + k)
+                if ra in rt and sa in st:
+                    smap.setdefault(st[sa], set()).add(rt[ra])
+    return smap
+
+
+def cstring(data: bytes, off: int) -> bytes:
+    end = data.find(b"\0", off)
+    return data[off:end + 1] if end >= 0 else b""
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("key")
+    ap.add_argument("--funcs", type=Path, help="default: idb_funcs.json beside the symbols")
+    ap.add_argument("--symbols", action="store_true", help="also write the module's symbol_addrs.txt")
+    args = ap.parse_args()
+    cfg = irx_config.load(args.key)
+    module = cfg["module_dir"]
+    rimg = Image(irx_config.path(cfg, "target"))
+    simg = Image(SMT3 / "orig/irx" / f"{module}.IRX")
+    ssyms = smt3_symbols(module)
+    sf = [(a, n, s) for a, n, s, k in ssyms if k == "F"]
+    rf = join_split_functions(sorted((r[1], r[2], r[3]) for r in json.loads((args.funcs or irx_config.path(cfg, "symbols").with_name("idb_funcs.json")).read_text()) if r[0] == "F"), rimg)
+    pairs = pair_functions(rf, sf, rimg, simg)
+    by_name = {f[1]: f for f in sf}
+    hand_data = {}
+    hand = irx_config.path(cfg, "symbols").with_name("hand_pairs.txt")
+    specs = [l.split() for l in hand.read_text().splitlines() if l.strip() and not l.startswith("#")] if hand.exists() else []
+    for addr, name in specs:
+        addr = int(addr, 16)
+        if name not in by_name:
+            hand_data[name] = addr
+            continue
+        pairs = [(r, by_name[name], "hand", 0.0) if r[0] == addr else p
+                 for p in pairs for r in [p[0]]]
+
+    # Data: operands of equal instructions, then strings by content.
+    # Equal functions first: a changed one can align a field of a changed struct.
+    maps = [map_operands(pairs, rimg, simg, {"same"}), map_operands(pairs, rimg, simg, {"same", "similar", "hand"})]
+    srod, rrod = simg.mod.section(".rodata"), rimg.mod.section(".rodata")
+    sdata = [(a, n, s) for a, n, s, k in ssyms if k == "D"]
+    fnames = {s[1] for _, s, _, _ in pairs if s}
+    lines, dsyms = [], []
+    for r, s, kind, ratio in pairs:
+        lines.append(f"F\t0x{r[0]:08X}\t0x{r[2]:X}\t{s[1] if s else ''}\t{kind}\t{ratio:.2f}"
+                     f"\t{f'0x{s[0]:08X}' if s else ''}\t{f'0x{s[2]:X}' if s else ''}")
+    for a, n, size in sdata:
+        hits = {rt - (st - a) for st, rts in maps[0].items() if a <= st < a + max(size, 1) for rt in rts}
+        how = "operand"
+        if not hits:
+            # In changed functions trust only references to the object's start.
+            hits, how = maps[1].get(a, set()), "operand-similar"
+        if not hits and srod.addr <= a < srod.addr + srod.size:
+            text = cstring(srod.data, a - srod.addr)
+            found = [m for m in range(0, rrod.size, 4) if len(text) > 1 and rrod.data.startswith(text, m)
+                     and (m == 0 or rrod.data[m - 1] == 0)]
+            hits, how = {rrod.addr + m for m in found}, "string"
+        if n in hand_data:
+            hits, how = {hand_data.pop(n)}, "hand"
+        if len(hits) == 1:
+            addr = hits.pop()
+            dsyms.append((addr, n))
+            lines.append(f"D\t0x{addr:08X}\t0x{size:X}\t{n}\t{how}\t1.00\t0x{a:08X}\t0x{size:X}")
+        elif hits:
+            lines.append(f"D\t\t\t{n}\tconflict\t0\t0x{a:08X}\t" + ",".join(f"0x{h:X}" for h in sorted(hits)))
+        else:
+            lines.append(f"D\t\t\t{n}\tnone\t0\t0x{a:08X}\t0x{size:X}")
+    if hand_data:
+        sys.exit(f"not SMT3 symbols: {', '.join(hand_data)}")
+    missing = [f[1] for f in sf if f[1] not in fnames]
+    text = "\n".join(lines) + "\n" + "".join(f"S\t\t\t{n}\tunpaired\t0\t\t\n" for n in missing)
+    irx_config.path(cfg, "symbols").with_name("smt3_pairs.tsv").write_text(
+        "# kind\traidou\tsize\tsmt3 name\thow\tratio\tsmt3\tsmt3 size\n" + text)
+    if args.symbols:
+        taken = {}
+        for addr, n in dsyms:
+            if addr in taken:
+                sys.exit(f"0x{addr:X} is both {taken[addr]} and {n}")
+            taken[addr] = n
+        rows = [(r[0], s[1] if s else f"func_{r[0]:08X}", f" // type:func size:0x{r[2]:X}") for r, s, _, _ in pairs]
+        rows += [(addr, n, "") for addr, n in dsyms]
+        irx_config.path(cfg, "symbols").write_text(
+            f"// Generated by tools/irx_match.py: SMT3 names by structural match, function bounds from the IDB.\n"
+            + "".join(f"{n} = 0x{a:08X};{attrs}\n" for a, n, attrs in sorted(rows)))
+    count = {}
+    for _, _, kind, _ in pairs:
+        count[kind] = count.get(kind, 0) + 1
+    print(f"{args.key}: {len(rf)} functions, " + ", ".join(f"{k} {v}" for k, v in sorted(count.items()))
+          + f"; SMT3 unpaired {len(missing)}; data named {len(dsyms)} of {len(sdata)}", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()
