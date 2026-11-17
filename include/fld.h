@@ -243,7 +243,7 @@ void map_fldPoint3To2O2(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2);
 void map_fldPoint3To2O3(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2);
 void mefMistDraw(f32 offX, f32 offY, s32 z);
 void mefMistTexDestroy(void);
-sdfVector4_t sbtlCallMemset25(struct camCustom_t *camParam);
+void sbtlCallMemset25(struct camCustom_t *camParam);
 void sndSeStatus_sndAt3(void);
 
 extern sdfVector4_t mapCutSetCamData;
