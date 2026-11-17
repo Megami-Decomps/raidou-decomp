@@ -5,13 +5,13 @@
 #include "kernel.h"
 
 struct tagNWDNEWS_WORK {
-    struct sdfMemHandle_t *hMem;
-    dds3ProcessID_t *drawPID;
-    u8 step;
-    s32 flag;
-    s16 count;
-    f32 x;
-    f32 y;
+    struct sdfMemHandle_t *hMem; /* 0x00 */
+    dds3ProcessID_t *drawPID;    /* 0x04 */
+    u8 unk08[8];
+    u8 step;                     /* 0x10 */
+    u8 flag;                     /* 0x11: bit 0 ends the process */
+    s16 count;                   /* 0x12 */
+    u8 unk14[8];
 };
 
 s32 Process_nwdNews(dds3ProcessID_t *PID);

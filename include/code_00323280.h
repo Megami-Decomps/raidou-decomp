@@ -3,6 +3,8 @@
 
 #include "common.h"
 #include "kernel.h"
+
+struct tagCMP_WORK;
 extern dds3ProcessID_t *g_mainPID_cmpMain;
 extern dds3ProcessID_t *g_mainPID_cmpMap;
 /* The map frame's sprite list, drawn first by DrawTop. */
@@ -11,6 +13,7 @@ extern struct itfSprList_t DrawTopData[];
 struct tagCMP_MAP_WORK;
 void DrawTop(struct tagCMP_MAP_WORK *wk);
 void Release_cmpMap(struct tagCMP_MAP_WORK *wk);
+void cmpRelease(struct tagCMP_WORK *wk);
 void Shutdown_cmpMap(dds3ProcessID_t *id);
 extern dds3ProcessID_t *effBTLFieldColorProcess;
 extern CMP_MODE cmpCallFuncData;
@@ -33,7 +36,9 @@ void evtClearDispatchVisualFlag(void);
 typedef struct fclJpcWork_t {
     struct sdfMemHandle_t *hMem;
     dds3ProcessID_t *drawPID;
-    u32 unk08;
+    u8 step;  /* 0x08 */
+    u8 flag;  /* 0x09: bit 0 ends the process */
+    u8 unk0A[2];
 } fclJpcWork_t;
 void fclCallExistProcess(void);
 void evtCallMemFreeDirect(void);

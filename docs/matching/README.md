@@ -16,22 +16,20 @@ menu scenarios); an entry says which paths they covered.
 
 | Entries | Unit | Games | Page |
 |---|---|---|---|
-| 20 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
 | 17 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
 | 15 | sbtlActAI | raidou1 | [sbtlActAI.md](sbtlActAI.md) |
-| 12 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
-| 11 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
+| 14 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
+| 11 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 10 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
+| 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 8 | interface/itfMesManager | raidou1, raidou2 | [interface/itfMesManager.md](interface/itfMesManager.md) |
-| 7 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 7 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
 | 6 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 5 | code_0015D490 | raidou1 | [code_0015D490.md](code_0015D490.md) |
-| 5 | code_00323280 | raidou1 | [code_00323280.md](code_00323280.md) |
 | 5 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
 | 5 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
 | 4 | code_0014B660 | raidou1 | [code_0014B660.md](code_0014B660.md) |
@@ -42,8 +40,8 @@ menu scenarios); an entry says which paths they covered.
 | 4 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 3 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
-| 3 | code_00179808 | raidou1 | [code_00179808.md](code_00179808.md) |
 | 3 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
+| 3 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 3 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 3 | sbtlSub | raidou1 | [sbtlSub.md](sbtlSub.md) |
 | 3 | sbtl_0029BFB8 | raidou1 | [sbtl_0029BFB8.md](sbtl_0029BFB8.md) |
@@ -54,7 +52,6 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_0016AD90 | raidou1 | [code_0016AD90.md](code_0016AD90.md) |
 | 2 | code_0018CE10 | raidou1 | [code_0018CE10.md](code_0018CE10.md) |
 | 2 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
-| 2 | code_00269318 | raidou1 | [code_00269318.md](code_00269318.md) |
 | 2 | code_002929C8 | raidou1 | [code_002929C8.md](code_002929C8.md) |
 | 2 | code_002999C0 | raidou1 | [code_002999C0.md](code_002999C0.md) |
 | 2 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
@@ -88,11 +85,13 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_00173D20 | raidou1 | [code_00173D20.md](code_00173D20.md) |
 | 1 | code_00174790 | raidou1 | [code_00174790.md](code_00174790.md) |
 | 1 | code_00175908 | raidou1 | [code_00175908.md](code_00175908.md) |
+| 1 | code_00179808 | raidou1 | [code_00179808.md](code_00179808.md) |
 | 1 | code_001AD4E8 | raidou1 | [code_001AD4E8.md](code_001AD4E8.md) |
 | 1 | code_0024DF70 | raidou1 | [code_0024DF70.md](code_0024DF70.md) |
 | 1 | code_00291C78 | raidou1 | [code_00291C78.md](code_00291C78.md) |
 | 1 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
 | 1 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
+| 1 | code_00323280 | raidou1 | [code_00323280.md](code_00323280.md) |
 | 1 | code_r1_00104370 | raidou1, raidou2 | [code_r1_00104370.md](code_r1_00104370.md) |
 | 1 | code_r1_0013B0F8 | raidou1 | [code_r1_0013B0F8.md](code_r1_0013B0F8.md) |
 | 1 | code_r1_001403E0 | raidou1, raidou2 | [code_r1_001403E0.md](code_r1_001403E0.md) |

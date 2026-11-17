@@ -894,10 +894,7 @@ void sbtlGetEffectData_Num(void)
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlGetEffectSerialID2_Now);
 
-/* NON_MATCHING: 28 of 46 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_0028A320.c:901, near, same function 0.99 (words 46/47, calls 1.00, shape 0.99) */
-s32 sbtlDeleteEffectData_SerialID2(SBTLEFF_LISTWORK *lwk, SKLID skillid)
+s32 sbtlDeleteEffectData_SerialID2(SBTLEFF_LISTWORK *lwk, s32 serialID)
 {
     SBTLEFF_WORK *wk = lwk->wk;
 
@@ -905,13 +902,12 @@ s32 sbtlDeleteEffectData_SerialID2(SBTLEFF_LISTWORK *lwk, SKLID skillid)
         return 0;
     }
     do {
-        if (wk->BEDsklid == skillid && sbtlCheckDeleteEffect(wk)) {
+        if (wk->serialID2 == serialID && sbtlCheckDeleteEffect(wk)) {
             if ((u32)(wk->st - SBTLEFF_ST_INIT) < 2) {
                 wk->flg |= SBTLEFF_FLG_SESTOP;
                 wk->flg |= SBTLEFF_FLG_FORCERESET;
             } else {
-                wk->st = SBTLEFF_ST_EXIT;
-                wk->alpha = 0;
+                wk->st = SBTLEFF_ST_END;
                 wk->flg |= SBTLEFF_FLG_SESTOP;
             }
         }
@@ -919,9 +915,6 @@ s32 sbtlDeleteEffectData_SerialID2(SBTLEFF_LISTWORK *lwk, SKLID skillid)
     } while (wk != NULL);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_0028A320", sbtlDeleteEffectData_SerialID2);
-#endif
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlSetDecAlpha_SerialID2);
 
@@ -1099,10 +1092,7 @@ SBTLEFF_WORK *sbtlGetEffectWork_ID(SBTLEFF_LISTWORK *lwk, s32 eListID)
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlGetEffectStat_ID);
 
-/* NON_MATCHING: 45 of 47 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_0028A320.c:901, near, same function 1.00 (words 47/47, calls 1.00, shape 1.00) */
-s32 sbtlForceDelete_ID(SBTLEFF_LISTWORK *lwk, SKLID skillid)
+s32 sbtlForceDelete_ID(SBTLEFF_LISTWORK *lwk, s32 eListID)
 {
     SBTLEFF_WORK *wk = lwk->wk;
 
@@ -1110,7 +1100,7 @@ s32 sbtlForceDelete_ID(SBTLEFF_LISTWORK *lwk, SKLID skillid)
         return 0;
     }
     do {
-        if (wk->BEDsklid == skillid && sbtlCheckDeleteEffect(wk)) {
+        if (wk->eListID == eListID && sbtlCheckDeleteEffect(wk)) {
             if ((u32)(wk->st - SBTLEFF_ST_INIT) < 2) {
                 wk->flg |= SBTLEFF_FLG_SESTOP;
                 wk->flg |= SBTLEFF_FLG_FORCERESET;
@@ -1124,9 +1114,6 @@ s32 sbtlForceDelete_ID(SBTLEFF_LISTWORK *lwk, SKLID skillid)
     } while (wk != NULL);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_0028A320", sbtlForceDelete_ID);
-#endif
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlForceDelete_ID_Acter);
 
@@ -1136,10 +1123,7 @@ INCLUDE_ASM(const s32, "code_0028A320", sbtlFadeOut_BadStatusEffect);
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlSetDecAlpha_SerialID);
 
-/* NON_MATCHING: 28 of 46 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_0028A320.c:901, near, same function 0.99 (words 46/47, calls 1.00, shape 0.99) */
-s32 sbtlForceDelete_SerialID(SBTLEFF_LISTWORK *lwk, SKLID skillid)
+s32 sbtlForceDelete_SerialID(SBTLEFF_LISTWORK *lwk, s32 serialID)
 {
     SBTLEFF_WORK *wk = lwk->wk;
 
@@ -1147,13 +1131,12 @@ s32 sbtlForceDelete_SerialID(SBTLEFF_LISTWORK *lwk, SKLID skillid)
         return 0;
     }
     do {
-        if (wk->BEDsklid == skillid && sbtlCheckDeleteEffect(wk)) {
+        if (wk->hitserialID == serialID && sbtlCheckDeleteEffect(wk)) {
             if ((u32)(wk->st - SBTLEFF_ST_INIT) < 2) {
                 wk->flg |= SBTLEFF_FLG_SESTOP;
                 wk->flg |= SBTLEFF_FLG_FORCERESET;
             } else {
-                wk->st = SBTLEFF_ST_EXIT;
-                wk->alpha = 0;
+                wk->st = SBTLEFF_ST_END;
                 wk->flg |= SBTLEFF_FLG_SESTOP;
             }
         }
@@ -1161,9 +1144,6 @@ s32 sbtlForceDelete_SerialID(SBTLEFF_LISTWORK *lwk, SKLID skillid)
     } while (wk != NULL);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_0028A320", sbtlForceDelete_SerialID);
-#endif
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlForceDelete_SkillFlag);
 

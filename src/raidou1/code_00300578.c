@@ -215,15 +215,9 @@ INCLUDE_ASM(const s32, "code_00300578", nbCallToMatrix2);
 
 INCLUDE_ASM(const s32, "code_00300578", nbCallToMatrix3);
 
-/* NON_MATCHING: 4 of 8 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/shared/file/fileManager.c:249, near, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
-fileRequest_t *nbLeaf69(const char *filename) {
-    return fileLoadEx(filename, 0, 0, 0);
+void nbLeaf69(s32 a, s32 b) {
+    nbLeaf71(b, a);
 }
-#else
-INCLUDE_ASM(const s32, "code_00300578", nbLeaf69);
-#endif
 
 INCLUDE_ASM(const s32, "code_00300578", nbFunc48);
 
@@ -517,18 +511,12 @@ INCLUDE_ASM(const s32, "code_00300578", jmsLeaf4);
 
 INCLUDE_ASM(const s32, "code_00300578", sdfLeaf);
 
-/* NON_MATCHING: 2 of 14 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_002C7EC8.c:446, near, same function 0.89 (words 14/17, calls 1.00, shape 0.84) */
-void sdfVec4Add(float *dst, float *lhs, float *rhs) {
-    *dst = *lhs + *rhs;
+f32 *sdfVec4Add(f32 *dst, f32 *lhs, f32 *rhs) {
+    dst[0] = lhs[0] + rhs[0];
     dst[1] = lhs[1] + rhs[1];
     dst[2] = lhs[2] + rhs[2];
-    dst[3] = lhs[3] + rhs[3];
+    return dst;
 }
-#else
-INCLUDE_ASM(const s32, "code_00300578", sdfVec4Add);
-#endif
 
 INCLUDE_ASM(const s32, "code_00300578", sdfLeaf2);
 
@@ -1287,22 +1275,17 @@ INCLUDE_ASM(const s32, "code_00300578", SetType);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallInitCmpModel);
 
-/* NON_MATCHING: 13 of 22 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_00323280.c:73, adapt, same function 0.91 (words 22/21, calls 0.80, shape 0.98) */
 void Shutdown_cmpStatus(dds3ProcessID_t *id) {
-    tagCMP_MAP_WORK *wk = dds3GetProcessData(id);
+    cmpStatusWork_t *wk = dds3GetProcessData(id);
 
-    Release_cmpMap(wk);
+    Release_cmpStatus(wk);
     if (dds3ExistProcess(wk->drawPID)) {
         dds3KillProcess(wk->drawPID, 0);
+        wk->drawPID = NULL;
     }
-    sdfMemFreeDirect(wk->handle);
+    sdfMemFreeDirect(wk->hMem);
     g_mainPID = NULL;
 }
-#else
-INCLUDE_ASM(const s32, "code_00300578", Shutdown_cmpStatus);
-#endif
 
 /* NON_MATCHING: 28 of 46 words match.  */
 #ifdef NON_MATCHING
@@ -1327,24 +1310,19 @@ INCLUDE_RODATA(const s32, "code_00300578", cmpCallSprintfTable);
 INCLUDE_ASM(const s32, "code_00300578", ProcessStart_cmpStatus);
 #endif
 
-/* NON_MATCHING: 17 of 25 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 0.97 (words 25/25, calls 1.00, shape 0.92) */
 void ProcessEnd_cmpStatus(void) {
-    tagMAP_MENU_WORK *wk;
+    cmpStatusWork_t *wk;
 
     if (g_mainPID != NULL && dds3ExistProcess(g_mainPID)) {
         wk = dds3GetProcessData(g_mainPID);
-        if (!(wk->flag & 1)) {
-            wk->flag |= 1;
-            wk->step = 2;
+        if (!(wk->flags & 1)) {
+            wk->flags |= 1;
+            wk->step2 = 3;
             wk->count = 0;
+            wk->step = 0;
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_00300578", ProcessEnd_cmpStatus);
-#endif
 
 s32 ProcessCheck_cmpStatus(void) {
     if (g_mainPID == NULL) {

@@ -73,5 +73,7 @@ void sbtlEndAction(struct SBTLUNIT_WORK *wk);
 
 /* The battle AI script, registered by sbtlCreateAIScript. */
 extern u8 *ai_scr;
+/* The script registered as SBTL_WORK.hDEADScript. */
+extern u8 *sbtlCallRegistScript2Data;
 
 #endif

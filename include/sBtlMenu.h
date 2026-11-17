@@ -53,6 +53,7 @@ extern char sbtlFuncDecideItemData[];
 /* Menu labels: [0] title, [1..7] root items, [8] cancel, [9..14] orders; the split labels [7] and [8..15] apart. */
 extern char *sbtlCallMenuSetRootMenuData[];
 extern dds3ProcessID_t *ProcessCheckData;
+extern struct sdfMemHandle_t *sbtlData118;
 extern struct itfSprList_t sbtlSetMenuImageData[];
 extern struct itfSprList_t sbtlSetMenuImageData2[];
 extern struct itfSprList_t sbtlSetMenuImageData3[];

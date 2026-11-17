@@ -6,8 +6,14 @@
 #include "kernel.h"
 
 struct tagCMP_WORK {
-    u8 unk00[0x1C];
-    s32 markID; /* 0x1C */
+    struct sdfMemHandle_t *hMem; /* 0x00 */
+    dds3ProcessID_t *drawPID;    /* 0x04 */
+    u8 unk08[0xC];
+    u8 step;                     /* 0x14 */
+    u8 flag;                     /* 0x15: bit 0 ends the process */
+    u8 unk16[6];
+    s32 markID;                  /* 0x1C */
+    s32 count;                   /* 0x20 */
 };
 
 void cmpCallGetSpriteHnd10(s32 a_sprNo, s32 a_x, s32 a_y, s32 a_alphaRate);

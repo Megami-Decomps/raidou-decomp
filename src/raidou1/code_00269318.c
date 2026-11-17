@@ -28,16 +28,10 @@ INCLUDE_ASM(const s32, "code_00269318", nbCallSetIntReturnValue4);
 
 INCLUDE_ASM(const s32, "code_00269318", nbCallGetIntPara10);
 
-/* NON_MATCHING: 5 of 10 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
 s32 nbCallGetIntPara11(void) {
-    wk_sbtl = scrGetIntPara(0);
+    wk_sbtl->scrCmpCnt = scrGetIntPara(0);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00269318", nbCallGetIntPara11);
-#endif
 
 INCLUDE_ASM(const s32, "code_00269318", at3decCallSetIntReturnValue);
 
@@ -107,16 +101,10 @@ INCLUDE_ASM(const s32, "code_00269318", sbtlCallGetIntPara43);
 
 INCLUDE_ASM(const s32, "code_00269318", sbtlCallSetIntReturnValue16);
 
-/* NON_MATCHING: 5 of 10 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
 s32 sbtlCallGetIntPara44(void) {
-    wk_sbtl = scrGetIntPara(0);
+    wk_sbtl->field674 = scrGetIntPara(0);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00269318", sbtlCallGetIntPara44);
-#endif
 
 INCLUDE_ASM(const s32, "code_00269318", sbtlCallSetIntReturnValue17);
 

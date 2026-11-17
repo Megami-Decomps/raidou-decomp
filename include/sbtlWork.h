@@ -287,9 +287,13 @@ typedef struct SBTL_WORK {
     s8 field64C;
     u8 pad64D[0x650 - 0x64D];
     struct scrProcessWork_s *hAIScript;
-    u8 pad654[0x4];
+    struct scrProcessWork_s *hDEADScript;
     struct SBTLUNIT_WORK *scrUnit;
-    u8 pad65C[0x674 - 0x65C];
+    u8 pad65C[0x664 - 0x65C];
+    s32 scrZoomFrame;
+    s32 scrZoomOutFrame;
+    s32 scrCutinID;
+    s32 scrMsgID;
     s32 field674;
     s32 field678;
     s32 field67C;

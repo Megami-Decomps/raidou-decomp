@@ -2978,21 +2978,15 @@ s32 sbtlCallGetProcessData53(dds3ProcessID_t *id) {
     return 0;
 }
 
-/* NON_MATCHING: 11 of 13 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_0018CE10.c:286, near, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
 s32 sbtlCallMemFreeDelayedDirect(void)
 {
-    if (itfData5 == NULL) {
+    if (sbtlData118 == NULL) {
         return 0;
     }
-    sdfMemFreeDelayedDirect(itfData5);
-    itfData5 = NULL;
+    sdfMemFreeDelayedDirect(sbtlData118);
+    sbtlData118 = NULL;
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallMemFreeDelayedDirect);
-#endif
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCampSubSpr);
 
@@ -3016,18 +3010,19 @@ void sbtlSbtlmenuMain(void) {
     sbtlData119 = 0;
 }
 
-/* NON_MATCHING: 15 of 26 words match.  */
+/* NON_MATCHING: 18 of 26 words match.  */
 #ifdef NON_MATCHING
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 0.91 (words 26/25, calls 0.80, shape 0.98) */
 void sbtlCallExistProcess2(void) {
-    tagMAP_MENU_WORK *wk;
+    sBtlMenu_t *menu;
 
     if (ProcessCheckData != NULL && dds3ExistProcess(ProcessCheckData)) {
-        wk = dds3GetProcessData(ProcessCheckData);
-        if (!(wk->flag & 1)) {
-            wk->flag |= 1;
-            wk->step = 2;
-            wk->count = 0;
+        menu = dds3GetProcessData(ProcessCheckData);
+        if (!(menu->flag & 1)) {
+            menu->flag |= 1;
+            menu->step = 6;
+            menu->count = 0;
+            evtEnableMoonDraw();
         }
     }
 }

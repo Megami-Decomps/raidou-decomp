@@ -2254,17 +2254,11 @@ s32 sbtlCreateAIScript(void)
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallReleaseScript);
 
-/* NON_MATCHING: 9 of 11 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_r1_00259A88.c:2215, near, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
 s32 sbtlCallRegistScript2(void)
 {
-    wk_sbtl->hAIScript = scrRegistScript2(ai_scr);
+    wk_sbtl->hDEADScript = scrRegistScript2(sbtlCallRegistScript2Data);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallRegistScript2);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallReleaseScript2);
 
@@ -2484,22 +2478,16 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSetMotionSBtlUnit);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetAITBL);
 
-/* NON_MATCHING: 21 of 22 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/shared/script/scrCommonCommand.c:489, near, same function 0.92 (words 22/22, calls 0.75, shape 1.00) */
 s32 sbtlCallGetIntPara31(void)
 {
-    s32 frames;
-    s32 alpha;
+    s32 motionFlag;
+    s32 effectFlag;
 
-    frames = scrGetIntPara(0);
-    alpha = scrGetIntPara(1);
-    dds3SetBlur(frames, alpha, scrGetIntPara(2));
+    motionFlag = scrGetIntPara(0);
+    effectFlag = scrGetIntPara(1);
+    sbtlSupport_BattleStop(motionFlag, effectFlag, scrGetIntPara(2));
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara31);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallEncGetPointNums4);
 
@@ -2519,27 +2507,15 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara33);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara34);
 
-/* NON_MATCHING: 5 of 10 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
 s32 sbtlCallGetIntPara35(void) {
-    wk_sbtl = scrGetIntPara(0);
+    wk_sbtl->scrCutinID = scrGetIntPara(0);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara35);
-#endif
 
-/* NON_MATCHING: 5 of 10 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
 s32 sbtlCallGetIntPara36(void) {
-    wk_sbtl = scrGetIntPara(0);
+    wk_sbtl->scrMsgID = scrGetIntPara(0);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara36);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetIntReturnValue10);
 
@@ -2553,28 +2529,16 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetFloatPara);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetFloatReturnValue);
 
-/* NON_MATCHING: 5 of 10 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
 s32 sbtlCallGetIntPara3(void) {
-    wk_sbtl = scrGetIntPara(0);
+    wk_sbtl->scrZoomFrame = scrGetIntPara(0);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara3);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetIntReturnValue);
 
-/* NON_MATCHING: 5 of 10 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
 s32 sbtlCallGetIntPara4(void) {
-    wk_sbtl = scrGetIntPara(0);
+    wk_sbtl->scrZoomOutFrame = scrGetIntPara(0);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara4);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetIntReturnValue2);

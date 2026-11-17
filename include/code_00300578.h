@@ -10,9 +10,15 @@ void cmpCallDrawSprList(s32 mode, s32 kind, dds3ProcessID_t *target, u32 flag, s
 void sysLeaf50(s32 arg);
 /* Process data of the cmpStatus process (g_mainPID). */
 typedef struct cmpStatusWork_t {
-    u8 unk00[8];
-    s32 flags; /* 0x08: sign bit read by cmpGetFlagCallDebug */
+    struct sdfMemHandle_t *hMem; /* 0x00 */
+    dds3ProcessID_t *drawPID;    /* 0x04 */
+    s32 flags;                   /* 0x08: bit 0 ends the process; sign bit read by cmpGetFlagCallDebug */
+    s8 step;                     /* 0x0C */
+    s8 step2;                    /* 0x0D */
+    u8 unk0E[6];
+    s16 count;                   /* 0x14 */
 } cmpStatusWork_t;
+void Release_cmpStatus(cmpStatusWork_t *wk);
 
 extern s32 nbData8;
 extern f32 cmpData6[3];
@@ -27,5 +33,9 @@ extern s32 cmpData26;
 extern struct sdfMemHandle_t *fldTitleMiniWork5;
 extern u32 cmpCampEFFTESData;
 extern struct effHandle_t *fldTitleMiniTex5;
+
+/* nbLeaf71 is empty in retail. */
+void nbLeaf69(s32 a, s32 b);
+void nbLeaf71(s32 a, s32 b);
 
 #endif

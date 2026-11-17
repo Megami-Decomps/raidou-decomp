@@ -255,14 +255,14 @@ INCLUDE_ASM(const s32, "code_00323280", cmpRelease);
 #ifdef NON_MATCHING
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_00323280.c:73, near, same function 0.92 (words 21/21, calls 0.80, shape 0.95) */
 void cmpProcessStartEx(dds3ProcessID_t *id) {
-    tagCMP_MAP_WORK *wk = dds3GetProcessData(id);
+    struct tagCMP_WORK *wk = dds3GetProcessData(id);
 
-    Release_cmpMap(wk);
+    cmpRelease(wk);
     if (dds3ExistProcess(wk->drawPID)) {
         dds3KillProcess(wk->drawPID, 0);
+        wk->drawPID = NULL;
     }
-    sdfMemFreeDirect(wk->handle);
-    g_mainPID_cmpMap = NULL;
+    sdfMemFreeDirect(wk->hMem);
 }
 #else
 INCLUDE_ASM(const s32, "code_00323280", cmpProcessStartEx);
@@ -274,24 +274,18 @@ INCLUDE_ASM(const s32, "code_00323280", cmpProcessStartEx_cmpMain);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpProcessStart);
 
-/* NON_MATCHING: 20 of 25 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 0.99 (words 25/25, calls 1.00, shape 0.96) */
 void cmpProcessEnd(void) {
-    tagMAP_MENU_WORK *wk;
+    struct tagCMP_WORK *wk;
 
     if (g_mainPID_cmpMain != NULL && dds3ExistProcess(g_mainPID_cmpMain)) {
         wk = dds3GetProcessData(g_mainPID_cmpMain);
         if (!(wk->flag & 1)) {
             wk->flag |= 1;
-            wk->step = 2;
+            wk->step = 8;
             wk->count = 0;
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_00323280", cmpProcessEnd);
-#endif
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/003261E8.c:1, found */
 s32 cmpProcessCheck(void) {
@@ -598,24 +592,17 @@ void fclJpcMain(void)
     evtClearDispatchVisualFlag();
 }
 
-/* NON_MATCHING: 14 of 24 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 0.98 (words 24/25, calls 1.00, shape 0.98) */
 void fclCallExistProcess(void) {
-    tagMAP_MENU_WORK *wk;
+    fclJpcWork_t *wk;
 
     if (fclCheckData != NULL && dds3ExistProcess(fclCheckData)) {
         wk = dds3GetProcessData(fclCheckData);
         if (!(wk->flag & 1)) {
             wk->flag |= 1;
-            wk->step = 2;
-            wk->count = 0;
+            wk->step = 1;
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_00323280", fclCallExistProcess);
-#endif
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0032AD40.c:1, match */
 s32 fclCheck(void) {
@@ -679,22 +666,17 @@ INCLUDE_ASM(const s32, "code_00323280", nwdCallNext);
 
 INCLUDE_ASM(const s32, "code_00323280", Release_nwdNews);
 
-/* NON_MATCHING: 13 of 22 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_00323280.c:73, near, same function 0.91 (words 22/21, calls 0.80, shape 0.98) */
 void Shutdown_nwdNews(dds3ProcessID_t *id) {
-    tagCMP_MAP_WORK *wk = dds3GetProcessData(id);
+    struct tagNWDNEWS_WORK *wk = dds3GetProcessData(id);
 
-    Release_cmpMap(wk);
+    Release_nwdNews(wk);
     if (dds3ExistProcess(wk->drawPID)) {
         dds3KillProcess(wk->drawPID, 0);
+        wk->drawPID = NULL;
     }
-    sdfMemFreeDirect(wk->handle);
-    g_mainPID_cmpMap = NULL;
+    sdfMemFreeDirect(wk->hMem);
+    g_mainPID_nwdNews = NULL;
 }
-#else
-INCLUDE_ASM(const s32, "code_00323280", Shutdown_nwdNews);
-#endif
 
 void nwdProcessStart(void)
 {
@@ -709,24 +691,18 @@ void nwdProcessStart(void)
     wk->drawPID = dds3StartProcess("nwdnews_draw", 0x2B07, 0, 0, DrawProcess_nwdNews, NULL, wk);
 }
 
-/* NON_MATCHING: 20 of 25 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
 void nwdProcessEnd(void) {
-    tagMAP_MENU_WORK *wk;
+    struct tagNWDNEWS_WORK *wk;
 
     if (g_mainPID_nwdNews != NULL && dds3ExistProcess(g_mainPID_nwdNews)) {
         wk = dds3GetProcessData(g_mainPID_nwdNews);
         if (!(wk->flag & 1)) {
             wk->flag |= 1;
-            wk->step = 2;
+            wk->step = 5;
             wk->count = 0;
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_00323280", nwdProcessEnd);
-#endif
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0032B520.c:1, match */
 s32 nwdProcessCheck(void) {

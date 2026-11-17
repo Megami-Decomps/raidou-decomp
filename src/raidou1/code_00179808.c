@@ -12,9 +12,6 @@ INCLUDE_ASM(const s32, "code_00179808", nbMAPSETTAKARA);
 
 INCLUDE_ASM(const s32, "code_00179808", nbCallSetIntReturnValue);
 
-/* NON_MATCHING: 21 of 23 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/shared/event/evtCommand.c:1801, near, same function 0.90 (words 23/23, calls 0.75, shape 0.96) */
 s32 nbCallGetIntPara3(void)
 {
     s32 map;
@@ -22,12 +19,9 @@ s32 nbCallGetIntPara3(void)
 
     map = scrGetIntPara(0);
     flor = scrGetIntPara(1);
-    mapCallMap(map, flor, scrGetIntPara(2), NULL);
+    mapTitleStart_fld(map, flor, scrGetIntPara(2), 1);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00179808", nbCallGetIntPara3);
-#endif
 
 INCLUDE_ASM(const s32, "code_00179808", nbDevilInfoEncid);
 
@@ -38,22 +32,16 @@ s32 nbCallGetIntPara4(void) {
     return 1;
 }
 
-/* NON_MATCHING: 21 of 22 words match.  */
-#ifdef NON_MATCHING
-/* body: matched in raidou @ 61f09dc: src/shared/script/scrCommonCommand.c:489, near, same function 0.92 (words 22/22, calls 0.75, shape 1.00) */
 s32 nbCallGetIntPara5(void)
 {
-    s32 frames;
-    s32 alpha;
+    s32 mode;
+    s32 point;
 
-    frames = scrGetIntPara(0);
-    alpha = scrGetIntPara(1);
-    dds3SetBlur(frames, alpha, scrGetIntPara(2));
+    mode = scrGetIntPara(0);
+    point = scrGetIntPara(1);
+    fldBgZoomTest2(mode, point, scrGetIntPara(2));
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00179808", nbCallGetIntPara5);
-#endif
 
 INCLUDE_ASM(const s32, "code_00179808", nbCallGetIntPara2);
 
