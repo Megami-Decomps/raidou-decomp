@@ -10166,7 +10166,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00393710	0x0040C590	isnanLeaf4	yes	yes	asm/raidou1/code_00393080.s	asm/raidou2/code_0040BEF0.s	unique-reloc-hash
 0x00393720	0x0040C5A0	isnanLeaf5	yes	yes	asm/raidou1/code_00393080.s	asm/raidou2/code_0040BEF0.s	unique-reloc-hash
 0x00393730	0x0040C5B0	isnanLeaf6	yes	yes	asm/raidou1/code_00393080.s	asm/raidou2/code_0040BEF0.s	unique-reloc-hash
-0x00393740	0x0040C5C0	isnanLeaf7	yes	yes	asm/raidou1/code_00393080.s	asm/raidou2/code_0040BEF0.s	unique-reloc-hash
+0x00393740	0x0040C5C0	_Exit	yes	yes	asm/raidou1/code_00393080.s	asm/raidou2/code_0040BEF0.s	unique-reloc-hash
 0x00393750	0x0040C5D0	isnanLeaf8	yes	yes	asm/raidou1/code_00393080.s	asm/raidou2/code_0040BEF0.s	unique-reloc-hash
 0x00393760	0x0040C5E0	isnanLeaf9	yes	yes	asm/raidou1/code_00393080.s	asm/raidou2/code_0040BEF0.s	unique-reloc-hash
 0x00393770	0x0040C5F0	_ExecPS2	yes	yes	src/raidou1/sdk/libkernl/klib.c	src/raidou2/sdk/libkernl/klib.c	unique-reloc-hash
@@ -10487,7 +10487,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0039C2A0	0x00415120	TerminateLibrary	no	yes	asm/raidou1/sdk/libkernl/exit.s	asm/raidou2/sdk/libkernl/exit.s	masked-hash-in-gap
 0x0039C2A8	0x00415128	ExecPS2	no	yes	asm/raidou1/sdk/libkernl/exit.s	asm/raidou2/sdk/libkernl/exit.s	unique-reloc-hash
 0x0039C318	0x00415198	LoadExecPS2	no	yes	asm/raidou1/sdk/libkernl/exit.s	asm/raidou2/sdk/libkernl/exit.s	unique-reloc-hash
-0x0039C360	0x004151E0	kCopyCallTerminateLibrary	no	yes	asm/raidou1/code_0039C360.s	asm/raidou2/code_004151E0.s	unique-reloc-hash
+0x0039C360	0x004151E0	Exit	no	yes	asm/raidou1/code_0039C360.s	asm/raidou2/code_004151E0.s	unique-reloc-hash
 0x0039C388	0x00415208	ExecOSD	no	yes	asm/raidou1/code_0039C360.s	asm/raidou2/code_004151E0.s	unique-reloc-hash
 0x0039C3D8	0x00415258	kCopyInitAlarmSub	yes	yes	asm/raidou1/code_0039C360.s	asm/raidou2/code_004151E0.s	masked-hash-in-gap
 0x0039C3E8	0x00415268	Copy_1	yes	yes	asm/raidou1/code_0039C360.s	asm/raidou2/code_004151E0.s	masked-hash-in-gap

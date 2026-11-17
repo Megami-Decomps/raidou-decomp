@@ -11644,7 +11644,7 @@
 0x00393710	isnanLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393720	isnanLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393730	isnanLeaf6	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
-0x00393740	isnanLeaf7	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
+0x00393740	_Exit	inferred	SCE libkernl _Exit: syscall 4 (Exit)
 0x00393750	isnanLeaf8	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393760	isnanLeaf9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393770	_ExecPS2	inferred	SMT3HD name via SLUS_209.11 0x002DBAF0, byte-identical; map-agrees
@@ -11965,7 +11965,7 @@
 0x0039C2A0	TerminateLibrary	inferred	SMT3HD name via SLUS_209.11 0x002E4620, shared-hash-in-run; map-agrees
 0x0039C2A8	ExecPS2	inferred	SMT3HD name via SLUS_209.11 0x002E4628, reloc-identical; map-agrees
 0x0039C318	LoadExecPS2	inferred	smt3-decomp C name via SLUS_209.11 0x002E4698, unique-masked-hash-c; map-agrees
-0x0039C360	kCopyCallTerminateLibrary	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0039C360, neighbour kCopy_2; calls TerminateLibrary
+0x0039C360	Exit	inferred	SCE libkernl Exit: TerminateLibrary, then the _Exit syscall
 0x0039C388	ExecOSD	inferred	fuzzy name from SLUS_209.11 0x002E4708, score 1.00, tools/xgame/fuzzy_apply.py
 0x0039C3D8	kCopyInitAlarmSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0039C360, neighbour kCopy_2; called by InitAlarm
 0x0039C3E8	Copy_1	inferred	SMT3HD name via SLUS_209.11 0x002E4768, shared-hash-in-run; map-agrees

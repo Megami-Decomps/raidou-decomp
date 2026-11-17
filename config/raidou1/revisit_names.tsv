@@ -5672,7 +5672,6 @@
 0x00393710	isnanLeaf4	func	tier=D	derived-unit	na	unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393720	isnanLeaf5	func	tier=D	derived-unit	na	unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393730	isnanLeaf6	func	tier=D	derived-unit	na	unit code_00393080, nearest named function isnan; no named callee, caller or string
-0x00393740	isnanLeaf7	func	tier=D	derived-unit	na	unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393750	isnanLeaf8	func	tier=D	derived-unit	na	unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393760	isnanLeaf9	func	tier=D	derived-unit	na	unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x00393780	RFU008	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -5762,7 +5761,6 @@
 0x003970E8	gcc2_compiled__13	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.11 0x002DF468, score 1.00, tools/xgame/fuzzy_apply.py
 0x0039BFB8	kCopyInitExecPS2Sub	func	tier=D	derived-caller	na	unit code_0039BFB8, neighbour kCopy_0; called by InitExecPS2
 0x0039C138	libosdSetArgSub	func	tier=D	derived-caller	na	unit sdk/libkernl/libosd; called by SetArg
-0x0039C360	kCopyCallTerminateLibrary	func	tier=D	derived-callee	na	unit code_0039C360, neighbour kCopy_2; calls TerminateLibrary
 0x0039C388	ExecOSD	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.11 0x002E4708, score 1.00, tools/xgame/fuzzy_apply.py
 0x0039C3D8	kCopyInitAlarmSub	func	tier=D	derived-caller	na	unit code_0039C360, neighbour kCopy_2; called by InitAlarm
 0x0039C910	tlbfuncLeaf	func	tier=D	derived-unit	na	unit sdk/libkernl/tlbfunc; no named callee, caller or string

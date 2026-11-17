@@ -105,4 +105,4 @@
 0x003F7F60 __ieee754_acosf void __ieee754_acosf(float a1)
 0x00400948 abort void abort(void)
 0x00402838 sprintfRaiseRSub s32 sprintfRaiseRSub(void)
-0x004151E0 kCopyCallTerminateLibrary void kCopyCallTerminateLibrary(void)
+0x004151E0 Exit void Exit(void)
