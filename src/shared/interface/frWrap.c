@@ -377,7 +377,7 @@ frFontHandle_t *frwGetSmallFont1FRQ(s32 x, s32 y, s32 priority, u32 color,
 }
 
 _FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, frFontTextBank_t *bank, s32 flags) {
-    const u8 *text = MessageNumSearch(textId, bank, 0);
+    const u8 *text = MessageNumSearch(textId, (frTextBank_t *)bank, 0);
     u32 mode;
     _FRQ *handle;
 

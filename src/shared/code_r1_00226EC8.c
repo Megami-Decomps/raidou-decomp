@@ -3968,14 +3968,14 @@ void effInitializeAlternatingTransformRows(u8 *node, u8 *config) {
 u8 *billCreateAnimatedTransform(effBillAnimatedFrameConfig_t *config, u32 resource) {
     u8 *node = billAllocateAnimatedTransformEntries(config);
     ((effBillFrameState_t *)node)->asset = effCreateTrackSetWithSharedReferences(config->frame.output.timed.count, 3, resource);
-    effInitializeAlternatingTransformRows(node, config);
+    effInitializeAlternatingTransformRows(node, (u8 *)config);
     return node;
 }
 
 u8 *billCloneAnimatedTransform(u8 *work) {
     u8 *config = ((effClassWork_t *)work)->payload;
     u8 *state = (u8 *)((effClassWork_t *)work)->resource;
-    u8 *node = billAllocateAnimatedTransformEntries(config);
+    u8 *node = billAllocateAnimatedTransformEntries((effBillAnimatedFrameConfig_t *)config);
     ((effBillFrameState_t *)node)->asset = effDuplicateResourceRefs(((effBillFrameState_t *)state)->asset);
     effInitializeAlternatingTransformRows(node, config);
     return node;
@@ -4254,9 +4254,9 @@ void billInitializeEmitterRows(u8 *work, u8 *descriptor) {
 }
 
 u8 *billCreateEmitterTransform(effBillEmitterFrameConfig_t *config, u32 resource) {
-    u8 *node = billAllocEmitterNode(config);
+    u8 *node = billAllocEmitterNode((u8 *)config);
     ((effBillFrameState_t *)node)->asset = effCreateTrackSetWithSharedReferences(config->frame.output.timed.count, 4, resource);
-    billInitializeEmitterRows(node, config);
+    billInitializeEmitterRows(node, (u8 *)config);
     return node;
 }
 
@@ -4557,10 +4557,10 @@ void billInitializeStripRows(u8 *node, u8 *config) {
 }
 
 u8 *billCreateStripTransform(effBillStripFrameConfig_t *config, u32 resource) {
-    u8 *node = billAllocStripNode(config);
+    u8 *node = billAllocStripNode((u8 *)config);
 
     ((effBillFrameState_t *)node)->asset = effCreateTrackSetWithSharedReferences(config->frame.output.timed.count, 3, resource);
-    billInitializeStripRows(node, config);
+    billInitializeStripRows(node, (u8 *)config);
     return node;
 }
 
@@ -5197,9 +5197,9 @@ void billInitializeQuadRows(u8 *work, u8 *descriptor) {
 }
 
 u8 *billCreateQuadTransform(effBillQuadFrameConfig_t *config, u32 resource) {
-    u8 *node = billAllocQuadNode(config);
+    u8 *node = billAllocQuadNode((u8 *)config);
     ((effBillFrameState_t *)node)->asset = effCreateTrackSetWithSharedReferences(config->frame.output.timed.count, 4, resource);
-    billInitializeQuadRows(node, config);
+    billInitializeQuadRows(node, (u8 *)config);
     return node;
 }
 
@@ -6377,7 +6377,7 @@ effClassWork_t *effCreateClassWork(u16 kind, void *source) {
     VU0_STORE_VF_UNCLOBBERED($vf0, effect + 0x10);
     memcpy(((effClassWork_t *)effect)->payload, source, size);
     ((effClassWork_t *)effect)->resource = effClassWorkOperations[kind].createResource(source);
-    effClassWorkOperations[kind].initialize(effect);
+    effClassWorkOperations[kind].initialize((struct effClassWork_t *)effect);
     return (effClassWork_t *)effect;
 }
 
@@ -7120,7 +7120,7 @@ void effDrawSurfaceTrailHistory(effSurfaceTrailHistory_t *history, u32 color) {
     effDrawSurfaceTrailHistoryWork.vertexColor = history->colors;
     for (i = 0; i < 2; i++) {
         draw = &effDrawSurfaceTrailHistoryWork;
-        draw->vertex = history->points + start[i];
+        draw->vertex = (sdfVector4_t *)(history->points + start[i]);
         draw->color = color;
         draw->faceCount = 16;
         remaining = length[i];
@@ -7141,7 +7141,7 @@ void effDrawSurfaceTrailHistory(effSurfaceTrailHistory_t *history, u32 color) {
         }
     }
     colors = history->endColors;
-    effWork2.vertex = history->endPoints;
+    effWork2.vertex = (sdfVector4_t *)history->endPoints;
     colors[0] = effDrawSurfaceTrailHistoryWork.vertexColor[-2];
     effWork2.vertexColor = colors;
     colors[7] = colors[6] = colors[5] = colors[4] =
@@ -7664,7 +7664,7 @@ void effDrawTintedFivePointGroupRows(effClassWork_t *work) {
             set->color = blended[0];
             set->type = header->alphaTrack.surfaceIndex;
             set->flag = config->drawFlag;
-            effDrawFivePointGroups(set, mtx);
+            effDrawFivePointGroups(set, (effMatrix4_t *)mtx);
         }
     }
 }
@@ -8335,7 +8335,7 @@ void effDrawFivePointGroups(effPointSet_t *set, effMatrix4_t *matrix) {
         }
         remaining = set->rows;
         effWork3[0].vertexColor = (u32 *)set->tail;
-        effWork3[0].vertex = (u128 *)set->buffer;
+        effWork3[0].vertex = (sdfVector4_t *)set->buffer;
         effWork3[0].color = set->color;
         effWork3[0].faceCount = 0x10;
         effWork3[0].pointCount = 0xF;
@@ -10098,8 +10098,8 @@ void effDrawRibbon(effRibbonWork_t *work, const effMatrix4_t *matrix) {
             if (segmentColor & 0xFF000000) {
                 remaining = rowStride;
                 effDrawRibbonWork.vertexColor = (u32 *)extra;
-                effDrawRibbonWork.vertex = (u128 *)positions;
-                effDrawRibbonWork.uv = (f32 *)uvs;
+                effDrawRibbonWork.vertex = (sdfVector4_t *)positions;
+                effDrawRibbonWork.uv = (sdfVector2_t *)uvs;
                 unpackNormalizedColor(segmentColor);
                 SDF_VU0_LOADVECTOR_B(baseVector);
                 SDF_VU0_MULVECTOR();
@@ -10225,17 +10225,17 @@ u32 *effPrepareTextureAnimation(effBillFlameConfig_t *work) {
     u32 *buffer = effAllocateAnimationBuffer(work);
 
     buffer[1] = effCreateTexturedStripWithSharedTexture(work->header.timed.count, work->header.segments);
-    effFillFadeColorRows(buffer, work);
+    effFillFadeColorRows((u8 *)buffer, (u8 *)work);
     return buffer;
 }
 
 u32 *effPrepareOwnedTextureAnimation(u8 *work) {
     u8 *anim = ((effClassWork_t *)work)->payload;
     u8 *owner = (u8 *)((effClassWork_t *)work)->resource;
-    u32 *buffer = effAllocateAnimationBuffer(anim);
+    u32 *buffer = effAllocateAnimationBuffer((effBillFlameConfig_t *)anim);
 
     buffer[1] = effAllocateStripFromWorkAndRetainTexture(((effFrameState_t *)owner)->asset);
-    effFillFadeColorRows(buffer, anim);
+    effFillFadeColorRows((u8 *)buffer, anim);
     return buffer;
 }
 
@@ -10283,7 +10283,7 @@ void effUpdateTintedScaledMesh(billCellDrawWork_t *work) {
     SDF_VU0_VECTOR_W_SET_ONE();
     SDF_VU0_SET_ROW3();
     VU0_STORE_MATRIX(mtx);
-    effDrawScalyTexturedStrip(out, mtx);
+    effDrawScalyTexturedStrip((effStripWork_t *)out, mtx);
 }
 
 void effInitializeAnimationPositions(effClassWork_t *work) {
@@ -10597,7 +10597,7 @@ void effUpdateFadedMeshTransform(billCellDrawWork_t *work) {
     SDF_VU0_VECTOR_W_SET_ONE();
     SDF_VU0_SET_ROW3();
     VU0_STORE_MATRIX(mtx);
-    effDrawScalyTexturedStrip(out, mtx);
+    effDrawScalyTexturedStrip((effStripWork_t *)out, mtx);
 }
 
 effClassWork_t *effAllocateBlockWithModel(u16 kind, void *source) {
@@ -11063,7 +11063,7 @@ void effDrawThreePointGroups(effPointSet_t *set, effMatrix4_t *matrix) {
         }
         remaining = set->rows;
         effWork4[0].vertexColor = (u32 *)set->tail;
-        effWork4[0].vertex = (u128 *)set->buffer;
+        effWork4[0].vertex = (sdfVector4_t *)set->buffer;
         effWork4[0].color = set->color;
         effWork4[0].faceCount = 0x10;
         effWork4[0].pointCount = 0xF;
@@ -11471,7 +11471,7 @@ s32 effComputeLightDirectionVU(mdlObj_t *vector, sdf3DLightParallelPacket_t *tar
         SDF_VU0_VECTOR_W_SET_ZERO();
         SDF_VU0_NORMALIZE();
         VU0_STORE_VF($vf10, effComputeLightDirectionVUWork);
-        sdf3DMakeLightParallelPacket(target, effComputeLightDirectionVUData, sbtlLeaf50Work2);
+        sdf3DMakeLightParallelPacket(target, effComputeLightDirectionVUData, (sdfVector4_t *)sbtlLeaf50Work2);
         return 1;
     }
     return result;

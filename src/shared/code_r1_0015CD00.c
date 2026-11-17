@@ -40,11 +40,11 @@ INCLUDE_ASM(const s32, "code_r1_0015CD00", mapGenbaPosEffAdd);
 void mapGenbaPosEffClipSet(void) {
     s32 i;
     f32 *pos = mapWork8[0];
-    s32 *eff = mapData37;
+    effHandle_t **eff = mapData37;
     s32 *clip = mapWork7;
 
     for (i = 0; i < 16; i++, pos += 4, clip++) {
-        if (*eff++ != 0) {
+        if (*eff++ != NULL) {
             *clip = mapBigClipChkF(fldGlobalBase.cutIdx, pos[0], pos[1], pos[2]) != 0;
         }
     }

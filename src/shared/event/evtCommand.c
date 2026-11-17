@@ -811,7 +811,7 @@ u32 evtCommand_MODEL_POS_XYZ(void)
     pos.x = scrGetFloatPara(1);
     pos.y = scrGetFloatPara(2);
     pos.z = scrGetFloatPara(3);
-    dds3SetPosPoseSet(unit, (u128 *)&pos);
+    dds3SetPosPoseSet(unit, (const sdfVector4_t *)&pos);
     return 1;
 }
 
@@ -840,7 +840,7 @@ u32 evtCommand_MODEL_ROT_XYZ(void) {
     FromEuler(0.0f, 0.0f, scrGetFloatPara(3) * toRad);
     Mult();
     SDF_VU0_STOREVECTOR(&v);
-    dds3SetRotPoseSet(unit, (u128 *)&v);
+    dds3SetRotPoseSet(unit, (const sdfVector4_t *)&v);
     return 1;
 }
 
@@ -1894,7 +1894,7 @@ u32 evtCommand_EFFECT_ROT_XYZ(void) {
         FromEuler(0.0f, 0.0f, scrGetFloatPara(3) * toRad);
         Mult();
         SDF_VU0_STOREVECTOR(&v);
-        dds3SetRotPoseSet(obj, (u128 *)&v);
+        dds3SetRotPoseSet(obj, (const sdfVector4_t *)&v);
     }
     return 1;
 }
@@ -2521,7 +2521,7 @@ s32 evtCommand_CAM_POS_XYZ(void) {
     position.x = scrGetFloatPara(1);
     position.y = scrGetFloatPara(2);
     position.z = scrGetFloatPara(3);
-    dds3SetPosPoseSet(effectUnit, (u128 *)&position);
+    dds3SetPosPoseSet(effectUnit, (const sdfVector4_t *)&position);
     return 1;
 }
 
@@ -2547,7 +2547,7 @@ s32 evtCommand_CAM_ROT_XYZ(void) {
     FromEuler(0.0f, 0.0f, scrGetFloatPara(3) * degreesToRadians);
     Mult();
     SDF_VU0_STOREVECTOR(&quaternion);
-    dds3SetRotPoseSet(effectUnit, (u128 *)&quaternion);
+    dds3SetRotPoseSet(effectUnit, (const sdfVector4_t *)&quaternion);
     return 1;
 }
 
@@ -2567,7 +2567,7 @@ s32 evtCommand_CAM_ROT_Q(void) {
     quaternion.y = scrGetFloatPara(2);
     quaternion.z = scrGetFloatPara(3);
     quaternion.w = scrGetFloatPara(4);
-    dds3SetRotPoseSet(effectUnit, (u128 *)&quaternion);
+    dds3SetRotPoseSet(effectUnit, (const sdfVector4_t *)&quaternion);
     return 1;
 }
 

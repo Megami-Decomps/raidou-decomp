@@ -2113,7 +2113,7 @@ void fileSetRecordWordFour(s32 record, u32 value) {
 
 void fileSetLoadObjectScale(effQueuedSurfaceNode_t *obj, f32 scale) {
     obj->opacity = scale;
-    dds3DispatchIndexedCallback(obj->record, scale);
+    dds3DispatchIndexedCallback((u16 *)obj->record, scale);
 }
 
 void fileResetSlotStates(bhvrHandle_t *table) {

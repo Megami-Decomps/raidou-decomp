@@ -1028,7 +1028,7 @@ s32 evtCallGetModelHandleFromUID(evtViewerInfo_t *pInfo, sdfTexHandle_t *pTex) {
     if (root->texList->count >= 2) {
         return 0;
     }
-    sdfTexListFree(root->texList, 1);
+    sdfTexListFree((sdfItemArray_t *)root->texList, 1);
     texList = sdfTexListNew(1);
     sdfTexListAdd(texList, sdfTexDup(pTex));
     sdfModelRootFree(root, 1, 1);

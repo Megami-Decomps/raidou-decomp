@@ -466,7 +466,7 @@ INCLUDE_ASM(const s32, "dat", datDelDevil);
 #ifdef VERSION_RAIDOU1
 void datLoadLvUpTables(void) {
     sdfDevLoadFileEx("/data/sdatLvUpDevilGift.dat", &sdatLvUpDevilGiftTbl, &sdatLvUpDevilGiftSize);
-    sdfDevLoadFileEx("/data/sdatLvUpDevilParamUp.dat", &sdatLvUpDevilParamUp, &sdatLvUpDevilParamUpSize);
+    sdfDevLoadFileEx("/data/sdatLvUpDevilParamUp.dat", (u32 *)&sdatLvUpDevilParamUp, &sdatLvUpDevilParamUpSize);
     sdfDevLoadFileEx("/data/sdatLvUpPlayerParamUp.dat", &sdatLvUpPlayerParamUp, &sdatLvUpPlayerParamUpSize);
     sdfDevLoadFileEx("/data/sdatLvUpPlayerRankUp.dat", &sdatLvUpPlayerRankUp, &sdatLvUpPlayerRankUpSize);
 }

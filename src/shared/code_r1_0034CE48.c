@@ -360,7 +360,7 @@ mnuListNode_t *mnuScrollListToEnd(mnuList_t *list) {
         list->cursor = list->cursor->next;
         list->windowOffset = 1;
     }
-    mnuUpdateListScrollFlags((u8 *)list);
+    mnuUpdateListScrollFlags((mnuList_t *)list);
     return list->cursor;
 }
 

@@ -1480,14 +1480,14 @@ s32 evtUnitMoveTypePathTrace(evtUnit_t *h) {
     dds3PathBasicControlIsFinished(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
     dds3PathBasicControlGetPos(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
     SDF_VU0_STOREVECTOR(&v);
-    dds3SetPosPoseSet(h->effObj, (u128 *)&v);
+    dds3SetPosPoseSet(h->effObj, (const sdfVector4_t *)&v);
     if (h->flags & 0x10) {
         dds3PathBasicControlGetRot(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
         SDF_VU0_COPYVECTOR_A_TO_B();
         FromEuler(0.0f, 3.14159265f, 0.0f);
         Mult();
         SDF_VU0_STOREVECTOR(&v);
-        dds3SetRotPoseSet(h->effObj, (u128 *)&v);
+        dds3SetRotPoseSet(h->effObj, (const sdfVector4_t *)&v);
     }
     return 1;
 }

@@ -882,9 +882,9 @@ void billCopyCurrentRecordToSnapshot(billHandle_t *obj, billSnapshot_t *snapshot
     billChildPayload_t *record;
 
     if (obj->type == 1) {
-        record = dds3Billboard_P2AAnimDraw(obj, obj->resolvedEntries);
+        record = (billChildPayload_t *)dds3Billboard_P2AAnimDraw(obj, obj->resolvedEntries);
     } else if (obj->type == 0 || obj->type == 3) {
-        record = obj->u.child;
+        record = (billChildPayload_t *)obj->u.child;
     } else {
         return;
     }

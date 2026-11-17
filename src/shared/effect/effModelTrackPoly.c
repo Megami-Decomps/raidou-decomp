@@ -127,7 +127,7 @@ void effTrackPolyUpdate(effTrackPolyWork_t *work) {
     if (work->params.startFrame <= currentFrame) {
         if (currentFrame <= work->params.endFrame) {
             if (work->updateCount % work->params.sampleInterval == 0) {
-                Eff_ModelTrackPolyGetMarkPosition(work);
+                Eff_ModelTrackPolyGetMarkPosition((effModelTrackPoly_t *)work);
             }
             dds3HermitianTrackPolyDraw(work->data);
         } else {

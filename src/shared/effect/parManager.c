@@ -1547,7 +1547,7 @@ void parCallGetRandA(dds3Particle_SphereSpiral_t3 *pSphereSpiral, u32 number) {
 
     packet += number;
     packet->color = 0;
-    packet->age = -SDF_FRAMES(dds3GetRandA(&ParRand) % (pSphereSpiral->spread + 1));
+    packet->age = -SDF_FRAMES(dds3GetRandA((effRandState_t *)&ParRand) % (pSphereSpiral->spread + 1));
     speed = pSphereSpiral->speed;
     jitter = pSphereSpiral->jitterA;
     directionVector.x = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
@@ -2890,7 +2890,7 @@ void parCallGetRandA2(dds3Particle_SphereSpiral2_t3 *pSphereSpiral2, u32 number)
 
     packet += number;
     packet->color = 0;
-    packet->age = -SDF_FRAMES(dds3GetRandA(&ParRand) % (pSphereSpiral2->spawnDelayFrames + 1));
+    packet->age = -SDF_FRAMES(dds3GetRandA((effRandState_t *)&ParRand) % (pSphereSpiral2->spawnDelayFrames + 1));
     initialRadius = pSphereSpiral2->initialRadius;
     jitterFactor = pSphereSpiral2->initialRadiusJitter;
     direction.x = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;

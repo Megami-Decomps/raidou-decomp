@@ -1196,7 +1196,7 @@ void sdfDrawFlagListVertices(sdfFlagListWork_t *work) {
     }
     packetList = (sdfDrawTag_t *)sdfGrAllocPacketBuff(SDF_FLAG_LIST_PACKET_BYTES);
     sdfDrawTagInit(packetList);
-    sdfDrawTagLink(packetList, (u32)effDebugDrawWireModel(copiedVertices, work->colors, work->params.count * SDF_FLAG_LIST_VERTICES_PER_ENTRY, 0x40));
+    sdfDrawTagLink(packetList, (u32)effDebugDrawWireModel((const sdfVector4_t *)copiedVertices, work->colors, work->params.count * SDF_FLAG_LIST_VERTICES_PER_ENTRY, 0x40));
     surface = sdfDrawFlagListVerticesData[work->params.alpha.surfaceIndex];
     surface->regFunc(surface, packetList);
     sdfMemFreeDirect(vertexAllocation);
@@ -3037,7 +3037,7 @@ u32 fileLoadEffectSlotHelp(void) {
         struct sdfMemHandle_t *oldAllocation;
         u32 queuedFile;
         job = fileCreateJob(6);
-        command = sdfFileOpen(&fileInfo);
+        command = sdfFileOpen(fileInfo.fullName);
         dataLength = sdfFileLength(command);
         totalLength = dataLength + headerBytes;
         allocation = sdfMemAllocDirect(totalLength);
@@ -3062,7 +3062,7 @@ u32 fileLoadEffectSlotHelp(void) {
         resource->size = dataLength + headerBytes;
         resource->mode = 0;
         memcpy(effWork6, &fileLoadEffectSlotHelpData, sizeof(effHelper_Params_t));
-        D_003BD064 = effCreateBattleCameraJob(resource);
+        D_003BD064 = effCreateBattleCameraJob((u8 *)resource);
         effQueuedFileObject = effFindAssetObject(entry);
         ((effDebugMenu_t *)effQueuedFileObject)->parent = &effPartsListMenu;
         effResetFileResourceManager();
@@ -3103,7 +3103,7 @@ u32 fileLoadEffectSlotB(void) {
         strcpy(entry->name, resource->name);
         fileData = fileResolvePrimaryBuffer(effQueuedFileHandle);
         memcpy(resource->buffer, fileData, resource->size);
-        D_003BD064 = effCreateBattleCameraJob(resource);
+        D_003BD064 = effCreateBattleCameraJob((u8 *)resource);
         effQueuedFileObject = effFindAssetObject(entry);
         ((effDebugMenu_t *)effQueuedFileObject)->parent = &effPartsListMenu;
         effResetFileResourceManager();
@@ -3162,7 +3162,7 @@ u32 effLoadFileSlotF2(void) {
         strcpy(entry->name, resource->name);
         fileData = fileResolvePrimaryBuffer(effQueuedFileHandle);
         memcpy(resource->buffer, fileData, resource->size);
-        D_003BD064 = effCreateBattleCameraJob(resource);
+        D_003BD064 = effCreateBattleCameraJob((u8 *)resource);
         effQueuedFileObject = effFindAssetObject(entry);
         ((effDebugMenu_t *)effQueuedFileObject)->parent = &effPartsListMenu;
         effResetFileResourceManager();
@@ -3203,7 +3203,7 @@ u32 effLoadMaterialFile(void) {
         strcpy(entry->name, resource->name);
         fileData = fileResolvePrimaryBuffer(effQueuedFileHandle);
         memcpy(resource->buffer, fileData, resource->size);
-        D_003BD064 = effCreateBattleCameraJob(resource);
+        D_003BD064 = effCreateBattleCameraJob((u8 *)resource);
         effQueuedFileObject = effFindAssetObject(entry);
         ((effDebugMenu_t *)effQueuedFileObject)->parent = &effPartsListMenu;
         effResetFileResourceManager();

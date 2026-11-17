@@ -16,7 +16,7 @@ typedef struct
     f32 y;
 } sdfVector2_t;
 
-typedef struct
+typedef struct sdfVector3_t
 {
     f32 x;
     f32 y;
