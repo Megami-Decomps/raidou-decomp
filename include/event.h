@@ -16,7 +16,7 @@ typedef union EvtViewParam {
 /* Raidou's key is 0x38 bytes: SMT3's layout with a 0x20-byte parameter area. */
 typedef struct evtFrameInfo_t {
     u16 frame;
-    u16 index; /* Also the consecutive index in type-0xB groups. */
+    u16 index; /* Also the consecutive index in type-0xB groups; span in frames for timed keys. */
     s32 nameIndex;
     union {
         union { s8 sb[0x20]; u16 sh[0x10]; s32 sw[8]; f32 sf[8]; } param;

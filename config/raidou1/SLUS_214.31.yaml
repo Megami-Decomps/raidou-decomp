@@ -274,7 +274,7 @@ segments:
       - [0xC5B78, c, code_r1_001C4B78]
       - [0xCA9F0, c, event/evtSound]
       - [0xCACD0, c, event/evtEventPack]
-      - [0xCB880, asm, code_001CA880]
+      - [0xCB880, c, code_001CA880]
       - [0xCB8F8, c, code_r1_001CA8F8]
       - [0xCD1D0, c, code_r1_001CC1D0]
       - [0xCD380, c, code_001CC380]

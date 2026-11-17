@@ -146,8 +146,8 @@ struct evtViewerInfo_t {
     char **itemNames;
     s32 filename_x;
     s32 filename_y;
-    char nameStorage[0xD];
-    u8 unk22E1[7];
+    char nameStorage[0xC];
+    char extension[8];
     union { char filename[0x14]; struct { char filenameText[0xC]; s32 objlist_y; s32 objlist_base; }; };
     s32 framelist_x;
     s32 frameFirst;
@@ -181,29 +181,20 @@ struct evtViewerInfo_t {
     s8 windowShadeFade; /* +0x23C4: signed viewer shade ramp, capped at 94. */
     s8 windowActive;
     s16 windowResultVariableIndex; /* VM integer destination for the completed message-window result. */
-    s32 tableColumn;
-    s32 cameraColorActive;
-    u8 pad23D0[0x10];
-    s32 selectedEntry;
-    s32 commandFirst;
-    EvtCommandArgument commandSecond;
-    EvtCommandArgument commandThird;
+    u8 pad23C8[8];
+    u8 pad23D0[0x20];
     s32 glyphTickCount;
     s32 editField;
     s32 framebufferQuadEnabled;
     const char *frameTextFormat; /* 0x23FC: format of the frame-list cell being measured */
     s32 frameTextWidth;          /* 0x2400: columns advanced by the formatter */
     s32 unk2404;
-    s32 colorSelection;
-    s32 colorEditorActive;
+    u8 pad2408[8];
     s32 unk2410; /* 0/1 viewer-menu toggle (evtCallMenuDisp2) */
     s32 timedActive;
     s32 timedStart;
     EvtTimedActionEnd timedEnd;
-    u8 shadowMode;
-    u8 shadowAlpha;
-    u8 pad2422[2];
-    f32 shadowY;
+    u8 pad2420[8];
     u8 *pendingFrameBuffer; /* Locked byte view used as the descriptor frame image. */
     sdfMemHandle_t *pendingFrameBufferAllocation; /* Owner released after queued draws finish. */
     s32 menuState;
@@ -212,21 +203,29 @@ struct evtViewerInfo_t {
     u8 pad243C[4];
     s32 fadeCount;
     evtBranchInfo_t branch;
-    u8 pad2448[8];
+    s32 tableColumn;
+    u8 pad244C[4];
     sdfTexHandle_t *ch71; /* last texture given to each effect: types 14, 15, 23, 17 */
     sdfTexHandle_t *ch72;
     sdfTexHandle_t *ch76;
     sdfTexHandle_t *ch75;
-    u8 pad2460[0x10];
+    s32 selectedEntry;
+    s32 commandFirst;
+    EvtCommandArgument commandSecond;
+    EvtCommandArgument commandThird;
     s32 dontskip_messagetime;
     u8 pad2474[4];
     s32 drawhblur;
-    u8 pad247C[0x14];
+    u8 pad247C[0x10];
+    s32 colorEditorActive;
     struct frFontHandle_t *glyph; /* camp font string */
     s32 nowMovieStat; /* 1 while a movie plays */
     s32 MovieStartFrame;
     s32 MovieEndFrame;
-    u8 pad24A0[8];
+    u8 shadowMode;
+    u8 shadowAlpha;
+    u8 pad24A2[2];
+    f32 shadowY;
     evtRenderInfo_t renderTexInfo;
     union { s32 headerMetadata; u32 optionFlags; };
     s32 titleStreamWaitFrames;
@@ -241,7 +240,8 @@ struct evtViewerInfo_t {
     s32 fadeAlpha; /* Initial background alpha, interpolated to 128 over 25 updates. */
     s32 optionFrameBase;
     s32 voiceFrame; /* nowframe when a voice conflict deferred the message */
-    u8 pad253C[0x10];
+    u8 pad253C[0xC];
+    s32 curveComponent; /* 0/1: which of the two bezier control points is edited */
     s32 playIndex;
     s32 last_meswin_mode;
     s32 last_mestype;

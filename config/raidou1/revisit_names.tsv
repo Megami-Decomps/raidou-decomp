@@ -9252,7 +9252,6 @@
 0x00450000	evtStrRdCancel	data	tier=D	derived-string	na	used by 6 functions: evtFloatChangeItem, evtIntChangeItem, evtFrameChangeItem; string " RD  = CANCEL"
 0x00450028	evtStrLRValue	data	tier=D	derived-string	na	used by 3 functions: evtIntChangeItem, evtNONEMESDATA, evtCMPVALUE; string " L,R = VALUE-+"
 0x00450038	evtIntChangeItemTable	data	tier=D	derived-sole	na	used by evtIntChangeItem
-0x00450044	evtEventViewerMenuStr10	data	tier=D	derived-unit	na	no code or data reference; unit evtEventViewerMenu, section .rodata, size 0xC
 0x00450068	evtStrFrameChange	data	tier=D	derived-string	na	used by evtFrameChangeHead; string "FRAME CHANGE."
 0x00450088	evtStrUDFrame10	data	tier=D	derived-string	na	used by evtFrameChangeItem; string " U,D = FRAME-+10"
 0x004500A0	evtStrL1R1Frame100	data	tier=D	derived-string	na	used by evtFrameChangeItem; string "L1,R1= FRAME-+100"
@@ -15098,6 +15097,7 @@
 0x0046CB40	evtNONEMESDATATableEntry	data	tier=D	derived-table	na	pointed to by evtNONEMESDATATable
 0x0046CB48	evtData17	data	tier=D	derived-shared	na	used by 2 functions: evtNONEMESDATA, evtCMPVALUE
 0x0046CB50	evtCMPVALUETableEntry	data	tier=D	derived-table	na	pointed to by evtCMPVALUETable
+0x0046CB58	evtSOUTAIColumnWidth	data	tier=D	derived-use	na	s8 column width table read by evtSOUTAI (lb via gp+index)
 0x0046CB60	evtSOUTAIDataEntry	data	tier=D	derived-table	na	pointed to by evtSOUTAIData
 0x0046CB68	evtSOUTAIDataEntry2	data	tier=D	derived-table	na	pointed to by evtSOUTAIData
 0x0046CB70	evtDrawGroupListRowData	data	tier=D	derived-sole	na	used by evtDrawGroupListRow

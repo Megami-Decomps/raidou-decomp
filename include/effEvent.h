@@ -19,6 +19,7 @@ typedef struct effEveBEDCut_t effEveBEDCut_t;
 
 struct effBTL_t *effEveBEDCreate(struct effBTL_t *pData);
 void effEveBEDDelete(struct effBTL_t *hEveBED);
+s8 effCallMemcpy3(void);
 effEveBEDCut_t *effEveBEDCutCreate(struct effBTL_t *hEveBED, u16 CutNum, const void *pParams);
 void effEveBEDCutDelete(effEveBEDCut_t *hEveBEDCut);
 void effEveBEDCutSetParams(effEveBEDCut_t *hEveBEDCut, const void *pParams);

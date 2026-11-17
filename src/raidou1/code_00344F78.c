@@ -56,7 +56,10 @@ dds3ProcessFunc_t evtCallGetProcessData34(dds3ProcessID_t *PID) {
 
 INCLUDE_ASM(const s32, "code_00344F78", evtCallSetMessageInvalid);
 
-INCLUDE_ASM(const s32, "code_00344F78", evtLeaf39);
+/* body: matched in raidou @ 1424963: src/raidou1/code_002F5BD0.c:214, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 evtLeaf39(dds3ProcessID_t *PID) {
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00344F78", evtPollDispatchAfterFade);
 

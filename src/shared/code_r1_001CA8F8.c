@@ -19,6 +19,7 @@
 #include "field.h"
 #include "code_r1_001C4B78.h"
 #include "evtEventViewer.h"
+#include "evtEventViewerMenu.h"
 #include "code_r1_001CC1D0.h"
 #include "code_r1_001CA8F8.h"
 #include "frFont.h"
@@ -29,6 +30,8 @@
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "itfMisc.h"
+#include "sdfGsMemIO.h"
+#include "sdfPrim.h"
 
 extern u8 evtCallSetFontStringData[];
 
@@ -262,7 +265,74 @@ void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold) {
     }
 }
 
+/* NON_MATCHING: 110 of 119 words match.  */
+#ifdef NON_MATCHING
+void mnuAdjustTimelineDurations(evtViewerInfo_t *world, s32 threshold, s32 delta) {
+    evtViewerObject_t *track;
+    evtFrameInfo_t *key;
+    s32 length;
+    s32 offset;
+    s32 i;
+    s32 end = 0;
+
+    for (track = world->firstobjinfo; track != NULL; track = track->next) {
+        for (key = track->children; key != NULL; key = key->next) {
+            for (i = 0; i < evtData5[track->type].columns; i++) {
+                switch (evtData5[track->type].fields[i]) {
+                case 1:
+                case 15:
+                    length = key->index;
+                    if (length != 0) {
+                        offset = key->frame;
+                        if (offset < threshold) {
+                            if (offset + length >= threshold) {
+                                key->index = length + delta;
+                            }
+                        }
+                    }
+                    break;
+                case 9:
+                    switch (track->type) {
+                    case 3:
+                    case 0x14:
+                    case 0x15:
+                    case 0x1A:
+                        end = key->p08.sh[1];
+                        break;
+                    case 0x12:
+                    case 0x21:
+                        end = key->p08.sh[0];
+                        break;
+                    }
+                    if (key->frame < threshold && end >= threshold && end != 0) {
+                        switch (track->type) {
+                        case 3:
+                        case 0x14:
+                        case 0x15:
+                        case 0x1A:
+                            key->p08.sh[1] += delta;
+                            if (key->p08.sh[1] < 0) {
+                                key->p08.sh[1] = 0;
+                            }
+                            break;
+                        case 0x12:
+                        case 0x21:
+                            key->p08.sh[0] += delta;
+                            if (key->p08.sh[0] < 0) {
+                                key->p08.sh[0] = 0;
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuAdjustTimelineDurations);
+#endif
 
 void evtInitCustomSceneLightSub(f32 (*color)[4], f32 (*dir)[4], f32 *ambient, f32 *soften, f32 *bias) {
     s32 i;
@@ -492,7 +562,16 @@ void evtGetMessageDataAndTypeFromFrame(evtFrameInfo_t *key, s32 *lowBitsOut, s32
     *highBitsOut = key->p08.h[0] >> CAMP_KEY_HIGH_BITS_SHIFT;
 }
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuCampFindMatchingEntryIndex);
+s32 mnuCampFindMatchingEntryIndex(struct evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s32 pm2nametable_idx) {
+    evtViewerObject_t *track = pInfo->firstobjinfo;
+    while (track != NULL) {
+        if (strcmp(pInfo->nametable[track->entryHeader], wdata->nameTable[pm2nametable_idx]) == 0) {
+            return track->entryHeader;
+        }
+        track = track->next;
+    }
+    return -1;
+}
 
 /* Return the first track with this fixed-width name, or NULL when absent. */
 evtViewerObject_t *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *name) {
@@ -506,7 +585,43 @@ evtViewerObject_t *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *na
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", campResolvePendingValue);
+void campResolvePendingValue(evtViewerInfo_t *scene, evtFrameInfo_t *cue) {
+    evtFrameInfo_t *linkedKey;
+    s32 entryCode;
+    u16 entryCodeBits;
+
+    if (cue == NULL) {
+        return;
+    }
+    entryCode = cue->p10.sh[0];
+    entryCodeBits = cue->p10.sh[0];
+    if (entryCode == 1) {
+        scene->selectedEntry = 0;
+        return;
+    }
+    if (entryCode == 0) {
+        linkedKey = cue->prev;
+        scene->selectedEntry = 0;
+        for (; ; linkedKey = linkedKey->prev) {
+            s32 linkedEntryCode;
+
+            if (linkedKey == NULL) {
+                return;
+            }
+            linkedEntryCode = linkedKey->p10.sh[0];
+            if (linkedEntryCode != 0) {
+                if (linkedEntryCode == 1) {
+                    scene->selectedEntry = 0;
+                    return;
+                }
+                scene->selectedEntry = (s32)mnuCampFindEntryByName(scene, scene->nametable[linkedEntryCode - 2])->texture;
+                return;
+            }
+        }
+    } else {
+        scene->selectedEntry = (s32)mnuCampFindEntryByName(scene, scene->nametable[(s16)entryCodeBits - 2])->texture;
+    }
+}
 
 void evtDrawTexture(sdfTexHandle_t *tex, pmdTmxData_t *display, s32 mask, sdfIVector2_t *maskOfs) {
     s32 width;
@@ -577,7 +692,18 @@ void evtDrawTexture(sdfTexHandle_t *tex, pmdTmxData_t *display, s32 mask, sdfIVe
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", fldResetCampSceneEntries);
+void fldResetCampSceneEntries(evtViewerInfo_t *scene) {
+    evtViewerObject_t *track;
+
+    track = scene->firstobjinfo;
+    if (track != 0) {
+        track->parameterKeySource = 0;
+        while (track = track->next, track != 0) {
+            track->parameterKeySource = 0;
+        }
+    }
+    scene->colorEditorActive = 0;
+}
 
 void evtCallSetFontString(evtViewerInfo_t *pInfo) {
     frFontHandle_t *font;
@@ -602,7 +728,11 @@ void mnuCampCheckClockDivisor(void) {
     quotient = 1 / heapStats.total;
 }
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtRenderTexStart);
+void evtRenderTexStart(evtViewerInfo_t *scene) {
+    if ((scene->renderTexInfo.stage == 0) || (scene->renderTexInfo.stage == 5)) {
+        scene->renderTexInfo.stage = 1;
+    }
+}
 
 void evtCallAllocRenderTexture(evtViewerInfo_t *viewer) {
     s32 stage = viewer->renderTexInfo.stage;
@@ -632,9 +762,37 @@ void evtCallAllocRenderTexture(evtViewerInfo_t *viewer) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallMemAllocFromTailDirect);
+void evtCallMemAllocFromTailDirect(evtViewerInfo_t *pInfo) {
+    sdfMemHandle_t *allocation;
+    sdfDrawTag_t *surface;
+    sdfPreDrawTag_t *context;
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallPrimAllocDrawTag);
+    if (pInfo->renderTexInfo.hImageMem == NULL) {
+        allocation = sdfMemAllocFromTailDirect(0x70000);
+        pInfo->renderTexInfo.hImageMem = allocation;
+        pInfo->renderTexInfo.pImage = sdfMemLock(allocation);
+    }
+    memset(pInfo->renderTexInfo.pImage, 0x40, 0x70000);
+    surface = sdfPrimAllocDrawTag(NULL);
+    context = (sdfPreDrawTag_t *)sdfGrAllocPacketBuff(0x10);
+    sdfPreDrawTagInit(context);
+    sdfLinkStoreFrameImage(surface, context, 0, 0, 0x200, 0xE0, (s32)pInfo->renderTexInfo.pImage, 0, 0, NULL);
+    sdfPreDrawChainLink(&dds3PreDrawChain, context);
+    dds3Data10.regFunc(&dds3Data10, surface);
+}
+
+void evtCallPrimAllocDrawTag(evtViewerInfo_t *scene) {
+    sdfDrawTag_t *drawPacket;
+
+    if (scene->renderTexInfo.pImage != NULL) {
+        drawPacket = sdfPrimAllocDrawTag(0);
+        sdfLinkLoadImage(drawPacket,
+                                  dds3RenderTexture->pixelGsHandle, 0, 0,
+                                  512, 224,
+                                  (s32)scene->renderTexInfo.pImage, 0);
+        dds3Data10.regFunc(&dds3Data10, drawPacket);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallGrAllocPacketBuff);
 

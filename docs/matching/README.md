@@ -36,6 +36,7 @@ menu scenarios); an entry says which paths they covered.
 | 5 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
 | 4 | code_0014B660 | raidou1 | [code_0014B660.md](code_0014B660.md) |
 | 4 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
+| 4 | event/evtEventViewerMenu | raidou1, raidou2 | [event/evtEventViewerMenu.md](event/evtEventViewerMenu.md) |
 | 4 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
 | 4 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 4 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
@@ -60,6 +61,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_r1_00128378 | raidou1 | [code_r1_00128378.md](code_r1_00128378.md) |
 | 2 | code_r1_00142038 | raidou1, raidou2 | [code_r1_00142038.md](code_r1_00142038.md) |
 | 2 | code_r1_0016B498 | raidou1 | [code_r1_0016B498.md](code_r1_0016B498.md) |
+| 2 | code_r1_001CA8F8 | raidou1, raidou2 | [code_r1_001CA8F8.md](code_r1_001CA8F8.md) |
 | 2 | code_r1_00242308 | raidou1, raidou2 | [code_r1_00242308.md](code_r1_00242308.md) |
 | 2 | dds3KernelDraw_0010BEE0 | raidou1 | [dds3KernelDraw_0010BEE0.md](dds3KernelDraw_0010BEE0.md) |
 | 2 | effect/effPCPMisc | raidou1, raidou2 | [effect/effPCPMisc.md](effect/effPCPMisc.md) |
@@ -112,7 +114,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_00175180 | raidou1, raidou2 | [code_r1_00175180.md](code_r1_00175180.md) |
 | 1 | code_r1_00175858 | raidou1, raidou2 | [code_r1_00175858.md](code_r1_00175858.md) |
 | 1 | code_r1_001C4B78 | raidou1, raidou2 | [code_r1_001C4B78.md](code_r1_001C4B78.md) |
-| 1 | code_r1_001CA8F8 | raidou1, raidou2 | [code_r1_001CA8F8.md](code_r1_001CA8F8.md) |
 | 1 | code_r1_001CEEF8 | raidou1, raidou2 | [code_r1_001CEEF8.md](code_r1_001CEEF8.md) |
 | 1 | code_r1_001CF808 | raidou1, raidou2 | [code_r1_001CF808.md](code_r1_001CF808.md) |
 | 1 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |

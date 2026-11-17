@@ -18918,6 +18918,7 @@ evtFmtIndentStr = 0x004DFDA8;
 evtNONEMESDATATableEntry = 0x004DFDB0;
 evtData17 = 0x004DFDB8;
 evtCMPVALUETableEntry = 0x004DFDC0;
+evtSOUTAIColumnWidth = 0x004DFDC8;
 evtSOUTAIDataEntry = 0x004DFDD0;
 evtSOUTAIDataEntry2 = 0x004DFDD8;
 evtDrawGroupListRowData = 0x004DFDE0;

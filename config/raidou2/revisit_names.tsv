@@ -19016,6 +19016,7 @@
 0x004DFDB0	evtNONEMESDATATableEntry	data	tier=D	derived-table	na	pointed to by evtNONEMESDATATable
 0x004DFDB8	evtData17	data	tier=D	derived-shared	na	used by 2 functions: evtNONEMESDATA, evtCMPVALUE
 0x004DFDC0	evtCMPVALUETableEntry	data	tier=D	derived-table	na	pointed to by evtCMPVALUETable
+0x004DFDC8	evtSOUTAIColumnWidth	data	tier=D	derived-use	na	s8 column width table read by evtSOUTAI (lb via gp+index)
 0x004DFDD0	evtSOUTAIDataEntry	data	tier=D	derived-table	na	pointed to by evtSOUTAIData
 0x004DFDD8	evtSOUTAIDataEntry2	data	tier=D	derived-table	na	pointed to by evtSOUTAIData
 0x004DFDE0	evtDrawGroupListRowData	data	tier=D	derived-sole	na	used by evtDrawGroupListRow

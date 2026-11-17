@@ -33,6 +33,10 @@
 #include "dds3KernelDraw.h"
 #include "evtSound.h"
 #include "code_r1_001CA8F8.h"
+#include "mviManager.h"
+#include "sdfDelayedResrc.h"
+#include "sdfFile.h"
+#include "sdfMemory.h"
 
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
@@ -66,13 +70,11 @@ typedef char evtSerializedChild_size_check[
     (sizeof(evtSerializedChild_t) == 0x2C) ? 1 : -1];
 
 extern void evtWriteSerializedBytes(s32 output, void *data, s32 size);
+extern u16 evtFileMajor;
+extern u16 evt_file_minor;
+extern u16 evtData14;
 
 struct sndMixer_t;
-
-typedef struct {
-    s16 enabled;
-    s8 fields[8]; /* Per-row signed lookup values at +0x2. */
-} EvtTblEntry; /* 0xA bytes */
 
 typedef s32 (*EvtMenuHeaderFn)();
 typedef void (*EvtMenuRowFn)();
@@ -390,7 +392,19 @@ s32 evtIndexGroupTypeTwentyFiveChildren(evtViewerInfo_t *runtime) {
 
 INCLUDE_ASM(const s32, "code_r1_001C4B78", evtViewerWriteTrackDirectory);
 
-INCLUDE_ASM(const s32, "code_r1_001C4B78", evtWriteRuntimeHeaderValues);
+void evtWriteRuntimeHeaderValues(s32 output, evtViewerInfo_t *state) {
+    s32 first = state->firstframe;
+    s32 second = state->lastframe.word;
+    s32 third = state->totalframe;
+    s32 metadata = state->headerMetadata;
+    s32 buf[4];
+
+    buf[0] = first;
+    buf[1] = second;
+    buf[2] = third;
+    buf[3] = metadata;
+    evtWriteSerializedBytes(output, buf, 0x10);
+}
 
 /* Filter groups by file format and serialize each child body. Type-8 spans use the
  * next start or terminal range halfword, unless their body marker disables them. */
@@ -457,7 +471,17 @@ void evtWriteFixedSizeEntries(s32 output, evtViewerInfo_t *table) {
 
 INCLUDE_ASM(const s32, "code_r1_001C4B78", evtWriteGroupHeader);
 
-INCLUDE_ASM(const s32, "code_r1_001C4B78", evtFunc6);
+void evtFunc6(s32 output, evtViewerInfo_t *runtime) {
+    evtViewerObject_t *group;
+    for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
+        if (group->type == 0xA) {
+            evtFrameInfo_t *child;
+            for (child = group->children; child != NULL; child = child->next) {
+                evtWriteSerializedBytes(output, child->payload, 0x70);
+            }
+        }
+    }
+}
 
 void evtEmitGroupTypeElevenPayloads(s32 output, evtViewerInfo_t *runtime) {
     evtViewerObject_t *group;
@@ -1336,7 +1360,56 @@ s32 evtSetGameData2and3(evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s3
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_001C4B78", evtCallEventFadeOutAllBgm);
+s32 evtCallEventFadeOutAllBgm(s32 resourceMode, evtViewerInfo_t *runtime) {
+    char path0[0x80];
+    char path1[0x80];
+    char path2[0x80];
+    evtPolygonMovieWork_t *work;
+
+    evtEventFadeOutAllBgm(runtime);
+    if (runtime->nowMovieStat == 1) {
+        movieStop();
+        runtime->nowMovieStat = 0;
+    }
+    while (sdfDelayedResrcCheck() != 0) {
+    }
+    if (runtime->renderTexInfo.hImageMem != NULL) {
+        sdfMemFreeDelayedDirect(runtime->renderTexInfo.hImageMem);
+        runtime->renderTexInfo.hImageMem = NULL;
+        runtime->renderTexInfo.pImage = NULL;
+    }
+    while (sdfDelayedResrcCheck() != 0) {
+    }
+    dds3FreeRenderTexture();
+    while (sdfDelayedResrcCheck() != 0) {
+    }
+    dds3DrawFlag |= 0x2000000;
+    SetPMFileName(evtFileMajor, evt_file_minor, path0, path1, path2);
+    if (resourceMode == 1) {
+        if (sdfFileCheckExist(path0) != 1) {
+            return 0;
+        }
+    } else {
+        if (sdfFileCheckExist(path0) != 1 || sdfFileCheckExist(path1) != 1) {
+            return 0;
+        }
+    }
+    FreeInfo(runtime);
+    evtFreeStage();
+    evtUnRegistUnit(runtime);
+    evtCallMemset7(runtime);
+    runtime->flags |= 1;
+    while (sdfDelayedResrcCheck() != 0) {
+    }
+    work = evtGetPolygonMovieWorkData2(evtFileMajor, evt_file_minor, evtData14, resourceMode);
+    if (work != NULL) {
+        runtime->workdata = work;
+        evtSetGameData1(work, runtime);
+        evtSetGameData2and3(work, runtime, 0);
+        return 1;
+    }
+    return 0;
+}
 INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtNpcSadaPBData);
 
 INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtNpcSadaPBData2);

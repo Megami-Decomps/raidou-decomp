@@ -168,13 +168,15 @@ def place(version):
         # A string that only a compiled initializer table points at (`.word` entries of
         # a table the C now writes as `{"..", ..}`) is compiled with that table: no
         # function names it and no other rodata or data word holds it.
+        # A holder in a .data chunk needs only the label's address, which
+        # symbol_addrs.txt gives the link.
         asm_named = set().union(*retail_refs.values()) if retail_refs else set()
         holders = word_holders(version)
         grown = True
         while grown:
             grown = False
             for sym in unit_rodata - compiled - set(defined_at):
-                held = holders.get(sym)
+                held = holders.get(sym, set()) - data_chunk_labels(version)
                 if held and held <= compiled and sym not in asm_named \
                         and not re.search(rf"\b{sym}\b", text):
                     compiled.add(sym)
@@ -280,6 +282,18 @@ def word_holders(version):
                     holders.setdefault(m.group(1), set()).add(current)
         _WORD_HOLDERS[version] = holders
     return _WORD_HOLDERS[version]
+
+
+_DATA_CHUNK_LABELS = {}
+
+
+def data_chunk_labels(version):
+    """Labels of the version's asm .data chunks (asm/<v>/data/data_*.data.s)."""
+    if version not in _DATA_CHUNK_LABELS:
+        _DATA_CHUNK_LABELS[version] = {
+            m for path in (ROOT / "asm" / version / "data").glob("data_*.data.s")
+            for m in re.findall(r"^\s*dlabel (\w+)", path.read_text(), re.M)}
+    return _DATA_CHUNK_LABELS[version]
 
 
 def function_text(text, start):

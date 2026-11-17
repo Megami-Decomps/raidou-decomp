@@ -120,7 +120,18 @@ s32 evtPlaySe(s32 eventno, s32 seno)
     return soundIndex;
 }
 
-INCLUDE_ASM(const s32, "event/evtSound", evtStopSe);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtSound.c:136, match, same function 0.97 (words 17/18, calls 1.00, shape 0.97) */
+s32 evtStopSe(s32 eventId, s32 variation)
+{
+    s32 sound;
+
+    if ((u32)(eventId - 0x258) >= 0x100) {
+        return 0;
+    }
+    sound = evtGetSoundIndex(eventId, variation);
+    p2sdStopSe(sound);
+    return sound;
+}
 
 void evtMakeEventPackName(s32 index, char *buffer)
 {

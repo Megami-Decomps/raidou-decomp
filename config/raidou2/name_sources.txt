@@ -26815,6 +26815,7 @@
 0x004DFDB0	evtNONEMESDATATableEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtNONEMESDATATable
 0x004DFDB8	evtData17	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: evtNONEMESDATA, evtCMPVALUE
 0x004DFDC0	evtCMPVALUETableEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtCMPVALUETable
+0x004DFDC8	evtSOUTAIColumnWidth	inferred	method=derived-use; p=na; tier=D; source=derived; evidence=s8 column width table read by evtSOUTAI (lb via gp+index)
 0x004DFDD0	evtSOUTAIDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtSOUTAIData
 0x004DFDD8	evtSOUTAIDataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtSOUTAIData
 0x004DFDE0	evtDrawGroupListRowData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtDrawGroupListRow

@@ -16066,7 +16066,6 @@
 0x00450000	evtStrRdCancel	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by 6 functions: evtFloatChangeItem, evtIntChangeItem, evtFrameChangeItem; string " RD  = CANCEL"
 0x00450028	evtStrLRValue	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by 3 functions: evtIntChangeItem, evtNONEMESDATA, evtCMPVALUE; string " L,R = VALUE-+"
 0x00450038	evtIntChangeItemTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtIntChangeItem
-0x00450044	evtEventViewerMenuStr10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=no code or data reference; unit evtEventViewerMenu, section .rodata, size 0xC
 0x00450068	evtStrFrameChange	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by evtFrameChangeHead; string "FRAME CHANGE."
 0x00450078	evtFmtIndentInt_evtEventViewerMenu	inferred	method=smt3-ref; p=0.88 (n=D_r1_00450078); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=0.9299, games=2, size=False, sec=False, fn=evtFrameChangeItem; evtFmtIndentInt is another symbol
 0x00450088	evtStrUDFrame10	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by evtFrameChangeItem; string " U,D = FRAME-+10"
@@ -22376,6 +22375,7 @@
 0x0046CB40	evtNONEMESDATATableEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtNONEMESDATATable
 0x0046CB48	evtData17	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: evtNONEMESDATA, evtCMPVALUE
 0x0046CB50	evtCMPVALUETableEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtCMPVALUETable
+0x0046CB58	evtSOUTAIColumnWidth	inferred	method=derived-use; p=na; tier=D; source=derived; evidence=s8 column width table read by evtSOUTAI (lb via gp+index)
 0x0046CB60	evtSOUTAIDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtSOUTAIData
 0x0046CB68	evtSOUTAIDataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by evtSOUTAIData
 0x0046CB70	evtDrawGroupListRowData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtDrawGroupListRow

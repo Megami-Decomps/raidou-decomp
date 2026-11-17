@@ -195,6 +195,8 @@ void evtHokanRipBlur(s32 hokan, f32 ratio, dds3Effect_RippleBlurParam_t *key1, d
 struct pmdProcessWork_t;
 struct pmdSeqData_t;
 
+void SetPMFileName(s32 eventno, s32 cutno, char *pm1, char *pm2, char *pm3);
+evtPolygonMovieWork_t *evtGetPolygonMovieWorkData2(s32 eventno, s32 cutno, u16 seqno, s32 mode);
 evtPolygonMovieWork_t *GetWorkData1(evtPolygonMovieWork_t *wdata, pmdHeader_t *pm1data);
 evtPolygonMovieWork_t *InitPolygonMovieWorkData(void);
 void evtCheckLoad(evtPolygonMovieWork_t *wdata);

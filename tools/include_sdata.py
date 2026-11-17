@@ -132,6 +132,37 @@ def place(version):
                 ):
                     anchors.append((addr_of[sym], m.start(), sym))
         compiled = {s for _, _, s in anchors}
+        # A short literal that only compiled initializer tables point at (`.word`
+        # entries of a table the C writes as `{"..", ..}`) goes with the first C
+        # function that uses one of those tables.
+        rodata_file = ROOT / "asm" / version / "data" / f"{unit}.rodata.s"
+        rodata_labels = set(re.findall(r"^dlabel (\w+)", rodata_file.read_text(), re.M)) \
+            if rodata_file.exists() else set()
+        c_refs = [(m.start(), refs.get(m.group(1), set())) for m in DEF.finditer(text)]
+        asm_named = set().union(*refs.values()) if refs else set()
+
+        def named(sym):
+            return any(re.search(rf"\b{n}\b", text)
+                       for n in [sym, *alias_names.get(names.get(sym), ())])
+
+        def compiled_table(h):
+            if h in compiled:
+                return True
+            return h in rodata_labels and h not in still_asm and not named(h) \
+                and any(h in r for _, r in c_refs)
+
+        from include_rodata import word_holders  # include_rodata imports this module
+
+        for sym in sorted(mine - compiled):
+            held = word_holders(version).get(sym, set())
+            if not held or not held <= (mine | rodata_labels) or not all(map(compiled_table, held)):
+                continue
+            if sym in asm_named or sym in written_symbols or named(sym):
+                continue
+            pos = next((p for p, r in c_refs if r & held), None)
+            if pos is not None:
+                anchors.append((addr_of[sym], pos, sym))
+                compiled.add(sym)
         order = sorted([(a, None, s) for a, s in syms if s not in compiled] + anchors, key=lambda x: x[0])
         following, placed = len(text), []
         for addr, pos, sym in reversed(order):

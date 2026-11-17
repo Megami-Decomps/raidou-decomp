@@ -34,7 +34,7 @@ void evtDrawTexture(sdfTexHandle_t *tex, pmdTmxData_t *display, s32 mask, sdfIVe
 MnuCampSecondaryOptionIndex evtEventSkipStartSub(evtViewerInfo_t *scene);
 u32 evtFindInputBranchMessage(evtViewerInfo_t *pInfo);
 
-struct evtViewerObject_t *campResolvePendingValue(evtViewerInfo_t *pInfo, char *objname);
+void campResolvePendingValue(evtViewerInfo_t *scene, evtFrameInfo_t *cue);
 void evtEventFadeOutAllBgm(evtViewerInfo_t *pInfo);
 void evtEventRegistBGM(evtViewerInfo_t *pInfo, s32 regbgm_no);
 void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, struct evtViewerObject_t *track, s32 frame, pmdTmxData_t *display);

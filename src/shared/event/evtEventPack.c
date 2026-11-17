@@ -13,6 +13,8 @@
 #include "effEvent.h"
 #include "dds3KernelCore.h"
 #include "fileManager.h"
+#include "dds3EffectObjectBasic.h"
+#include "evtEffectScale.h"
 
 dds3ProcessID_t *evtSearchEventPack(u32 eventno);
 
@@ -44,6 +46,8 @@ s32 evtGetEventPackStat(u32 eventno);
 evtPackProcessData_t *evtGetPackProcessData(u32 eventno);
 void *evtGetResorceData(u32 eventno, s32 rid);
 extern s32 evtMotionSeWork;
+extern EvtModelScaleEntry *evtCallMemset9Data;
+extern EvtModelScaleEntry *evtData12;
 
 #include "sdk_libc.h"
 
@@ -188,9 +192,46 @@ void *evtGetResorceData(u32 eventno, s32 rid) {
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtCallGetPackProcessData);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventPack.c:234, match, same function 0.99 (words 33/34, calls 1.00, shape 0.99) */
+void evtCallGetPackProcessData(s32 taskId, s32 key) {
+    evtPackProcessData_t *data = evtGetPackProcessData(taskId);
+    void *address = evtGetResorceData(taskId, key);
+    sdfTexHandle_t *texture;
+    if (address != 0) {
+        sdfTexHandle_t *old = data->effect72;
+        if (old != 0) {
+            sdfTexFreeDelayed(old);
+            data->effect72 = 0;
+        }
+        texture = sdfTexSet((TMX_HEADER_t *)(address));
+        Eve_DistortionBlurSetTex(texture);
+        data->effect72 = texture;
+    }
+}
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtCallMemset9);
+dds3Basic_t *evtCallMemset9(u32 eventId, s32 key, s32 index) {
+    u8 vecA[16];
+    u8 vecB[16];
+    void *found;
+    dds3Basic_t *obj;
+
+    memset(vecA, 0, 0x10);
+    memset(vecB, 0, 0x10);
+    found = evtGetResorceData(eventId, key);
+    if (found != 0) {
+        obj = dds3AddBEDEffectObjectBasic2(found, vecA, vecB);
+        if (obj != 0) {
+            dds3EffectObjectBasicStatOn(obj, 1);
+            if (index >= 0) {
+                effEveBEDCutSetScale(((EvtEffectInner *)obj->workdata)->scaledObject,
+                                     evtData12[index].modelScale / evtCallMemset9Data->modelScale);
+            }
+            return obj;
+        }
+        return obj;
+    }
+    return found;
+}
 
 /* Decode one retained unit payload and return its new viewer-object key. */
 s32 evtInitMotionSeProcess(s32 eventId, s32 resourceId) {
@@ -486,7 +527,14 @@ void evtKillEventPack(s32 eventno) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtCallKillProcess);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/event/evtEventPack.c:588, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+void evtCallKillProcess(void) {
+    dds3ProcessID_t *task;
+
+    while (task = dds3SearchProcessPriority(DDS3_PRIORITY_EVENT_PACK), task != NULL) {
+        dds3KillProcess(task, 0);
+    }
+}
 
 const char evtMotionSeNameFormat[0x10] __attribute__((aligned(8))) = "mse_%d_%d";
 

@@ -217,7 +217,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001C4B78	001C9840	code_r1_001C4B78	c	dds:65+smt3:map:1 of 75 clipped	event/evtEventViewerMenu
 001C99F0	001C9CA8	event/evtSound	c	smt3:names:9+smt3:map:1 of 10	event/evtSound
 001C9CD0	001CA848	event/evtEventPack	c	smt3:names:15+smt3:map:3 of 18	event/evtEventPack
-001CA880	001CA880	code_001CA880	asm	none	
+001CA880	001CA880	code_001CA880	c	none	
 001CA8F8	001CC160	code_r1_001CA8F8	c	dds:24+smt3:map:1 of 36	newbattle/nbMainProcess
 001CC1D0	001CC298	code_r1_001CC1D0	c	dds:2 of 2	
 001CC380	001CD660	code_001CC380	c	none	

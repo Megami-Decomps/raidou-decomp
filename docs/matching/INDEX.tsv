@@ -146,6 +146,7 @@ mapNpcPathMakeControl	code_r1_00175180	raidou1 0x1C4, raidou2 0x1C4	91 of 96 wor
 mapNpcPathTask	code_r1_00175858	raidou1 0xB0, raidou2 0xB0	40 of 42 words differ	docs/matching/code_r1_00175858.md	3		
 evtSetGameData1	code_r1_001C4B78	raidou1 0x550, raidou2 0x550	36 of 340 words differ	docs/matching/code_r1_001C4B78.md	3		
 evtGetValueNewSLightFrame	code_r1_001CA8F8	raidou1 0x238, raidou2 0x238	15 of 142 words differ	docs/matching/code_r1_001CA8F8.md	3		
+mnuAdjustTimelineDurations	code_r1_001CA8F8	raidou1 0x1DC, raidou2 0x1DC	9 of 119 words differ	docs/matching/code_r1_001CA8F8.md	10		
 Start_evtTmxPreLoad	code_r1_001CEEF8	raidou1 0x2D8, raidou2 0x2D8	156 of 172 words differ	docs/matching/code_r1_001CEEF8.md	3		
 scrCallLoadCheckMidi	code_r1_001CF808	raidou1 0x74, raidou2 0x74	6 of 29 words differ	docs/matching/code_r1_001CF808.md	3		
 fileAllocateGridRecordSlots	code_r1_0021CE60	raidou1 0x158, raidou2 0x158	83 of 84 words differ	docs/matching/code_r1_0021CE60.md	3		
@@ -231,6 +232,10 @@ RunFrame2	event/evtEventViewer	raidou1 0xC44, raidou2 0xC44	770 of 786 words dif
 ValidateRenderTex	event/evtEventViewer	raidou1 0x1F8, raidou2 0x1F8	61 of 126 words differ	docs/matching/event/evtEventViewer.md	61		
 DrawMessage	event/evtEventViewer	raidou1 0x1C0, raidou2 0x1C0	48 of 110 words differ	docs/matching/event/evtEventViewer.md	68		
 oldEventSceneUnload	event/evtEventViewer	raidou1 0xAC, raidou2 0xAC	22 of 43 words differ	docs/matching/event/evtEventViewer.md	75		
+evtMainMenu	event/evtEventViewerMenu	raidou1 0xCC, raidou2 0xCC	10 of 51 words differ	docs/matching/event/evtEventViewerMenu.md	3		
+evtSelectMenu	event/evtEventViewerMenu	raidou1 0xFC, raidou2 0xFC	8 of 63 words differ	docs/matching/event/evtEventViewerMenu.md	12		
+evtSOUTAI	event/evtEventViewerMenu	raidou1 0x2C8, raidou2 0x2C8	156 of 177 words differ	docs/matching/event/evtEventViewerMenu.md	21		
+evtCallConsPanelTagLinkZ	event/evtEventViewerMenu	raidou1 0x42C, raidou2 0x42C	194 of 267 words differ	docs/matching/event/evtEventViewerMenu.md	30		
 Process2_evtMoon	event/evtMoon	raidou1 0xB8C	624 of 723 words differ	docs/matching/event/evtMoon.md	3		
 evtHokanSceneLight	event/evtPolygonMovie	raidou1 0x194, raidou2 0x194	38 of 101 words differ	docs/matching/event/evtPolygonMovie.md	3		
 evtCheckSeqEnd	event/evtPolygonMovie	raidou1 0x64, raidou2 0x64	3 of 25 words differ	docs/matching/event/evtPolygonMovie.md	9		

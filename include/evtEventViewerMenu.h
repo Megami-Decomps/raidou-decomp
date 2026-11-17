@@ -4,6 +4,18 @@
 #include "common.h"
 #include "sdf_resource.h"
 #include "evtEventPack.h"
+#include "event.h"
+
+typedef struct {
+    union {
+        s16 enabled; /* menu rows */
+        s16 columns; /* timeline columns */
+    };
+    s8 fields[8]; /* Per-row signed lookup values at +0x2. */
+} EvtTblEntry; /* 0xA bytes */
+
+extern EvtTblEntry evtData6[];
+extern EvtTblEntry evtData5[];
 
 /* Camera-color timeline keys interpolate two banks of three values. */
 typedef struct evtBlendKey_t {
@@ -69,5 +81,23 @@ typedef char evtPackHeader_size_must_be_0x20[(sizeof(evtPackHeader_t) == 0x20) ?
 typedef char EvtPackLoadPhase_must_be_4_bytes[(sizeof(EvtPackLoadPhase) == 4) ? 1 : -1];
 
 #define DDS3_TASK_UPDATE_RETAIN_CALLBACK 0
+
+/* Menu row callbacks take the draw list, the cell position, the row index and the viewer. */
+void evtMainMenuItem(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
+s32 evtUpdateGroupPropertyDialog(s32 x, s32 y, evtViewerInfo_t *runtime);
+void evtSOUTAI(sdfDrawTag_t *list, s32 x, s32 y, s32 hidden, evtViewerInfo_t *runtime);
+void evtViewerDrawShadowConfigRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
+void evtCMPVALUE(sdfDrawTag_t *list, s32 x, s32 y, u32 index, evtViewerInfo_t *ctx);
+void evtObjectListItem(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
+void evtCallDevPrintf(sdfDrawTag_t *list, s32 x, s32 y, s32 kind, evtViewerInfo_t *work);
+s32 evtSelectHead(sdfDrawTag_t *output, s32 x, s32 y, evtViewerInfo_t *work);
+void evtSelectItem(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *work);
+s32 evtFileNameHead(sdfDrawTag_t *list, s32 x, s32 y, evtViewerInfo_t *work);
+void evtFileNameItem(sdfDrawTag_t *list, s32 x, s32 y, s32 row, evtViewerInfo_t *work);
+void evtIntChangeItem(sdfDrawTag_t *list, s32 x, s32 y, u32 index, evtViewerInfo_t *ctx);
+s32 evtIntChangeHead(sdfDrawTag_t *tag, s32 ox, s32 oy);
+s32 evtFloatChangeHead(sdfDrawTag_t *tag, s32 ox, s32 oy);
+void evtFloatChangeItem(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
+void evtBasicListItem(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
 
 #endif
