@@ -12,6 +12,7 @@
 #include "sdfMemory.h"
 #include "sdfPacketBuff.h"
 #include "polyManager.h"
+#include "sdfMath.h"
 
 /* One needle instance: position plus the colour the draw loop stamps. */
 typedef struct dds3NeedleModelPart_tag
@@ -163,7 +164,13 @@ void effPCPNeedleSpiralDelete(effPCPNeedleSpiral_tag *hData) {
     sdfMemFreeDirect(hData->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPNeedle.c:203, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPNeedleSpiral_tag *effPCPNeedleSpiralCreatePCF(void *data) {
+    effPCPNeedleSpiralParam_t *work;
+
+    work = dds3EffectPCPDataGetData(data, 0);
+    return effPCPNeedleSpiralCreate(work);
+}
 
 void *effPCPNeedleSpiralCopy(void *arg) {
     return effPCPNeedleSpiralCreate(arg);
@@ -176,7 +183,10 @@ INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf265);
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf266);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf267);
+void effPCPNeedleSpiralSetColor(effPCPNeedleSpiral_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 dds3NeedleModel_tag *dds3NeedleModelCreate(u32 number)
 {
@@ -276,13 +286,99 @@ void dds3NeedleModelDraw(dds3NeedleModel_tag *hNModel)
     dds3NeedleModelDrawSurfaces[hNModel->blend]->append(dds3NeedleModelDrawSurfaces[hNModel->blend], packet);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effBuildRadialFanStreams);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPNeedle.c:495, near, same function 0.98 (words 138/142, calls 1.00, shape 0.97) */
+void effBuildRadialFanStreams(dds3NeedleModel_tag *hNModel, u32 split, u32 radius, u32 length, f32 abgr_in, f32 abgr_out)
+{
+    void *allocation;
+    f32 (*position)[4];
+    f32 (*normal)[4];
+    u32 *color;
+    u32 vertexCount;
+    u32 i;
+    f32 angle;
+    f32 step;
+    f32 mid;
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effReleaseOptionalResource);
+    if (split < 3) {
+        split = 3;
+    }
+    if (hNModel->hVNMem != NULL) {
+        dds3NeedleModelVNCListDelete(hNModel);
+    }
+    angle = 0.0f;
+    vertexCount = split * 3;
+    allocation = sdfMemAllocDirect(vertexCount * 36);
+    hNModel->hVNMem = allocation;
+    position = (f32 (*)[4])sdfMemLock(allocation);
+    normal = position + vertexCount;
+    color = (u32 *)(normal + vertexCount);
+    hNModel->point = vertexCount;
+    hNModel->positions = (sdfVector4_t *)position;
+    hNModel->normals = (sdfVector4_t *)normal;
+    hNModel->pVC = color;
+    step = EFFECT_RING_FULL_TURN / (f32)split;
+    for (i = 0; i < split; i++) {
+        mid = step * 0.5f;
+        normal[0][0] = sdfCos(angle);
+        normal[0][1] = sdfSin(angle);
+        normal[0][2] = 0.0f;
+        mid = angle + step * 0.5f;
+        position[0][0] = normal[0][0] * abgr_in;
+        angle += step;
+        position[0][1] = normal[0][1] * abgr_in;
+        position[0][2] = -abgr_out;
+        normal++;
+        position++;
+        normal[0][0] = sdfCos(mid);
+        normal[0][1] = sdfSin(mid);
+        normal[0][2] = 0.0f;
+        position[0][0] = 0.0f;
+        position[0][1] = 0.0f;
+        position[0][2] = 0.0f;
+        normal++;
+        position++;
+        normal[0][0] = sdfCos(angle);
+        normal[0][1] = sdfSin(angle);
+        normal[0][2] = 0.0f;
+        color[0] = length;
+        color[1] = radius;
+        color[2] = length;
+        color += 3;
+        position[0][0] = normal[0][0] * abgr_in;
+        position[0][1] = normal[0][1] * abgr_in;
+        position[0][2] = -abgr_out;
+        normal++;
+        position++;
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelSetPosition);
+/* body: matched in dds @ 18d1fa88f: src/dds1/effect/effPCPNeedle.c:563, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effReleaseOptionalResource(dds3NeedleModel_tag *hNModel)
+{
+    if (hNModel->hVNMem != NULL) {
+        sdfMemFreeDirect(hNModel->hVNMem);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelGetPosition);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPNeedle.c:569, match, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+void dds3NeedleModelSetPosition(dds3NeedleModel_tag *hNModel, s32 index, f32 *pPos)
+{
+    f32 *dst = (f32 *)(index * sizeof(dds3NeedleModelPart_tag) + EE_ADDR_S(hNModel->pPart));
+
+    dst[0] = pPos[0];
+    dst[1] = pPos[1];
+    dst[2] = pPos[2];
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPNeedle.c:578, match, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+void dds3NeedleModelGetPosition(dds3NeedleModel_tag *hNModel, s32 index, f32 *pPos)
+{
+    f32 *src = (f32 *)(index * sizeof(dds3NeedleModelPart_tag) + EE_ADDR_S(hNModel->pPart));
+
+    pPos[0] = src[0];
+    pPos[1] = src[1];
+    pPos[2] = src[2];
+}
 
 void dds3NeedleModelSetColor(dds3NeedleModel_tag *hNModel, s32 index, u32 abgr)
 {

@@ -36,6 +36,7 @@
 #include "sbtlWork.h"
 #include "sBtlEff.h"
 #include "sBtlUnit.h"
+#include "dds3Randomize.h"
 
 typedef struct effPCPBossBED_t
 {
@@ -494,8 +495,6 @@ typedef struct effPCP_HBED2_tag
 } effPCP_HBED2_tag;
 
 extern u8 dds3RenderTargetVector[], dds3RenderEyeVector[];
-extern u32 dds3GetRandA(u8 *name);
-extern f32 dds3GetRandFloatA(u8 *name);
 
 #include "sdk_libc.h"
 
@@ -3177,7 +3176,12 @@ void effResetAlternateKindWorkFrame(effKindWork_t *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallSRAnimation6);
+void effCallSRAnimation6(effKindWork_t *work) {
+    effData6[work->kind].update(work);
+    if ((effGetFlags() & 1) == 0) {
+        work->frame++;
+    }
+}
 
 void effSetAlternateKindWorkPosition(effKindWork_t *work, const f32 position[4]) {
     SDF_VU0_COPYVECTOR(work->position, position);
@@ -9000,7 +9004,22 @@ void effBlendBillboardInstanceColorsAndTransforms(u8 *work) {
     effDrawRibbon(out, (effMatrix4_t *)mtx);
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effResetBillboardFrameInstanceCounters);
+void effResetBillboardFrameInstanceCounters(effClassWork_t *work) {
+    u32 index = 0;
+    effFrameState_t *state = work->resource;
+    u32 count = ((effBillEmitterCommon_t *)work->payload)->header.timed.count;
+    effBillEmitterEntry_t *entry = (effBillEmitterEntry_t *)state->entries;
+    u32 *flags = ((effRibbonWork_t *)state->asset)->colors;
+
+    if (count != 0) {
+        do {
+            index++;
+            *flags++ = 0;
+            entry->timer = -1;
+            entry++;
+        } while (index < count);
+    }
+}
 
 u8 *effAllocateBillFadeFrameEntries(effBillColumnConfig_t *config) {
     struct sdfMemHandle_t *base = sdfMemAllocDirect(config->common.header.timed.count * sizeof(effBillEmitterEntry_t) + 0xC);
@@ -9693,11 +9712,107 @@ void effUpdateCompactRingDrawColorAndTransform(u8 *work) {
     effDrawRibbon(out, (effMatrix4_t *)mtx);
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf368);
+/* body: matched in raidou @ 1424963: src/shared/code_r1_00226EC8.c:8662, match, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
+void effLeaf368(u8 *work) {
+    u32 index = 0;
+    u8 *state = (u8 *)((effClassWork_t *)work)->resource;
+    u32 count = ((effBillEmitterCommon_t *)((effClassWork_t *)work)->payload)->header.timed.count;
+    effBillEmitterEntry_t *entry = (effBillEmitterEntry_t *)((effFrameState_t *)state)->entries;
+    u32 *flags = ((effRibbonWork_t *)((effFrameState_t *)state)->asset)->colors;
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallMemAllocDirect2);
+    if (count != 0) {
+        do {
+            index++;
+            *flags++ = 0;
+            entry->timer = -1;
+            entry++;
+        } while (index < count);
+    }
+}
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallMemcpy4);
+/* body: matched in raidou @ 1424963: src/shared/code_r1_00226EC8.c:8679, match, same function 1.00 (words 28/28, calls 1.00, shape 1.00) */
+u8 *effCallMemAllocDirect2(effBillVortexConfig_t *config) {
+    struct sdfMemHandle_t *base = sdfMemAllocDirect(config->common.header.timed.count * sizeof(effBillEmitterEntry_t) + 0xC);
+    effFrameState_t *node = (effFrameState_t *)sdfMemLock(base);
+    u32 count = config->common.header.segments;
+    u8 *entries = (u8 *)(node + 1);
+
+    node->entries = entries;
+    node->allocation = base;
+    if (count < 3) {
+        config->common.header.segments = 3;
+    }
+    return (u8 *)node;
+}
+
+/* body: matched in raidou @ 1424963: src/shared/code_r1_00226EC8.c:8697, match, same function 1.00 (words 146/146, calls 1.00, shape 1.00) */
+void effCallMemcpy4(u8 *node, effBillEmitterCommon_t *config) {
+    effBillEmitterCommon_t *cfg = config;
+    effRibbonWork_t *table;
+    u32 *colors;
+    f32 *radii;
+    u32 *colorsStart;
+    f32 *radiiStart;
+    u32 layers;
+    s32 segments;
+    s32 fadeInEnd;
+    s32 fadeOutStart;
+    u32 entries;
+    u32 words;
+    f32 radius;
+    f32 fadeIn;
+    f32 fadeOut;
+    f32 fade;
+    u32 alpha;
+    u32 color;
+    u32 i;
+
+    layers = cfg->header.timed.count;
+    if (layers == 0) {
+        return;
+    }
+    segments = cfg->header.segments;
+    entries = segments + 1;
+    words = entries * 4;
+    table = (effRibbonWork_t *)((effFrameState_t *)node)->asset;
+    colors = (u32 *)table->extra;
+    radii = (f32 *)table->uvs;
+    colorsStart = colors;
+    radiiStart = radii;
+    fadeOut = cfg->header.fadeOut;
+    fadeIn = cfg->header.fadeIn;
+    fadeInEnd = (s32)(fadeIn * (f32)segments);
+    fadeOutStart = (s32)(fadeOut * (f32)segments);
+    radius = cfg->rowRadius / 3.0f;
+    for (i = 0; i < entries; i++) {
+        if (i < fadeInEnd) {
+            fade = (f32)i / (f32)fadeInEnd;
+        } else {
+            fade = 1.0f;
+            if (fadeOutStart < i) {
+                fade = (f32)(segments - i) / (f32)(segments - fadeOutStart);
+            }
+        }
+        alpha = (u32)(fade * 128.0f);
+        color = (alpha << 24) | 0x808080;
+        colors[0] = 0x808080;
+        colors[1] = color;
+        colors[2] = color;
+        colors[3] = 0x808080;
+        radii[0] = 0.0f;
+        radii[2] = radius;
+        radii[4] = radius * 2.0f;
+        radii[6] = radius * 3.0f;
+        colors += 4;
+        radii += 8;
+    }
+    for (i = 1; i < layers; i++) {
+        memcpy(colors, colorsStart, words * 4);
+        colors += words;
+        memcpy(radii, radiiStart, words * 8);
+        radii += words * 2;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effFunc16);
 
@@ -9713,7 +9828,41 @@ void effFunc17(s32 work) {
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallGetRandFloatA2);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallColorAnimation2);
+void effCallColorAnimation2(billCellDrawWork_t *work) {
+    effBillColumnConfig_t *config = (effBillColumnConfig_t *)work->config;
+    u32 limit = work->frameLimit;
+    u32 progress = config->common.header.timed.time.progress;
+    u32 *list = work->instances;
+    effRibbonWork_t *out = (effRibbonWork_t *)(u32)list[1];
+    u128 mtx[4];
+    u32 packed;
+    u32 unit;
+    u32 second;
+
+    if (progress < limit && progress != 0) {
+        return;
+    }
+    second = effColorAnimation(&config->common.header.timed.colorTrack, &config->common.header.timed.alphaTrack, limit, progress);
+    unit = 0x3C000000;
+    eeUnpackRGBAWord(work->baseColor, unit);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    eeUnpackRGBAWord(second, unit);
+    SDF_VU0_MULVECTOR();
+    packed = eePackRGBAWord(128.0f);
+    out->color = packed;
+    out->surfaceIndex = config->common.header.timed.alphaTrack.surfaceIndex;
+    out->drawMode = config->common.drawMode;
+    SDF_VU0_LOADVECTOR(work->transform);
+    ToMatrix();
+    SDF_VU0_LOADVECTOR(effOnesVector);
+    VU0_SCALAR_OP_CLOBBER(work->scale, "vmulx.xyzw vf10, vf10, vf2x");
+    SDF_VU0_SCALE_XYZ();
+    SDF_VU0_LOADVECTOR(work);
+    SDF_VU0_VECTOR_W_SET_ONE();
+    SDF_VU0_SET_ROW3();
+    VU0_STORE_MATRIX(mtx);
+    effDrawRibbon(out, (effMatrix4_t *)mtx);
+}
 
 effClassWork_t *effAllocateBlock(u16 kind, void *source) {
     u32 headerSize = 0x40;
@@ -10388,7 +10537,28 @@ void effReleaseBillboardFrameAsset(s32 work) {
     sdfMemFreeDirect(state->allocation);
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effOffsetNodeRowsVU);
+void effOffsetNodeRowsVU(effClassWork_t *work) {
+    u32 *buffer = work->resource;
+    effBillQuantizedConfig_t *config = work->payload;
+    s32 rows = config->samples.signedRows + 1;
+    s32 count = buffer[0];
+    f32 *uv = (f32 *)((effStripWork_t *)buffer[1])->uvsB;
+    s32 i;
+    s32 j;
+    s32 k;
+    f32 *v;
+
+    for (i = 0; i < count; i++) {
+        for (j = 0; j < rows; j++) {
+            v = uv + 1;
+            for (k = 0; k < 4; k++) {
+                *v += config->rowOffset;
+                v += 2;
+            }
+            uv += 8;
+        }
+    }
+}
 
 /* vu0 routine: fade-blended colour and scaled transform of a mesh draw record */
 void effUpdateFadedMeshTransform(billCellDrawWork_t *work) {
@@ -10524,7 +10694,42 @@ void effReleaseScalyTextureReference(s32 unused) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effAllocateTexturedStripWork);
+extern sdf3DPrimPolyParm_t effDrawScalyTexturedStripWork;
+
+u8 *effAllocateTexturedStripWork(u32 count, u32 repeat) {
+    u32 rowStride = repeat * 4 + 4;
+    u32 size = (rowStride * 36 + 4) * count;
+    u32 cells = rowStride * count;
+    struct sdfMemHandle_t *allocation = sdfMemAllocDirect(size + sizeof(effStripWork_t));
+    u8 *p = sdfMemLock(allocation);
+    effStripWork_t *work = (effStripWork_t *)(p + size);
+    u32 i;
+
+    work->positions = p;
+    p += cells * 16;
+    work->uvsA = p;
+    p += cells * 8;
+    work->uvsB = p;
+    p += cells * 8;
+    work->extra = p;
+    p += cells * 4;
+    work->type = 2;
+    work->color = 0x80808080;
+    work->rowStride = rowStride;
+    work->repeat = repeat;
+    work->allocation = allocation;
+    work->colors = (u32 *)p;
+    work->count = count;
+    work->flag = 0;
+    for (i = 0; i < count; i++) {
+        ((u32 *)p)[i] = 0x80808080;
+    }
+    work->handle = sdfMatNew();
+    sdfMatSetConstant(work->handle, 1.0f);
+    memset(&effDrawScalyTexturedStripWork, 0, sizeof(sdf3DPrimPolyParm_t));
+    effDrawScalyTexturedStripWork.attr = 0x4000;
+    return (u8 *)work;
+}
 
 /* Create a scaly strip and retain its shared texture reference. */
 u32 effCreateTexturedStripWithSharedTexture(u32 count, u32 repeat) {
@@ -10893,13 +11098,82 @@ void effDrawThreePointGroups(effPointSet_t *set, effMatrix4_t *matrix) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", PartsInit);
+/* One part of an object particle: its rotation axis, start angle and speed. */
+typedef struct effObjectParticle_Parts_t {
+    f32 axis[4];
+    f32 rotate;
+    f32 rotate_s;
+} effObjectParticle_Parts_t;
 
+void PartsInit(opcHandle_t *hParticle, effObjectParticle_Parts_t *pParts) {
+    sdfVector4_t axis;
+    f32 value;
+
+    if (!hParticle->param.random) {
+        axis.x = hParticle->param.axis[0];
+        axis.y = hParticle->param.axis[1];
+        axis.z = hParticle->param.axis[2];
+    } else {
+        value = dds3GetRandFloatA(effSharedRandomState) - 0.5f;
+        axis.x = value + value;
+        value = dds3GetRandFloatA(effSharedRandomState) - 0.5f;
+        axis.y = value + value;
+        value = dds3GetRandFloatA(effSharedRandomState) - 0.5f;
+        axis.z = value + value;
+    }
+    SDF_VU0_LOADVECTOR(&axis);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&axis);
+    pParts->axis[0] = axis.x;
+    pParts->axis[1] = axis.y;
+    pParts->axis[2] = axis.z;
+    pParts->rotate_s = hParticle->param.rotate *
+                       (dds3GetRandFloatA(effSharedRandomState) * hParticle->param.rotate_r + (1.0f - hParticle->param.rotate_r));
+    pParts->rotate = dds3GetRandFloatA(effSharedRandomState) * 6.28318500518798828125f;
+}
+
+/* NON_MATCHING: 19 of 31 words match.  */
+#ifdef NON_MATCHING
+void PartsCalc(opcHandle_t *hParticle, effObjectParticle_Parts_t *pParts, s32 frame) {
+    sdfVector4_t axis;
+    f32 rotate;
+
+    rotate = pParts->rotate_s * frame + hParticle->param.rotate_a * frame * frame * 0.5f;
+    if (rotate < 0.0f) {
+        rotate = 0.0f;
+    }
+    axis.x = pParts->axis[0];
+    axis.y = pParts->axis[1];
+    axis.z = pParts->axis[2];
+    axis.w = 0.0f;
+    SetRotateMatrixAxis(rotate + pParts->rotate, (const sdfVector3_t *)&axis);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00226EC8", PartsCalc);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", Create_effObjectParticle);
+opcHandle_t *Create_effObjectParticle(u32 number) {
+    opcHandle_t *hParticle = sdfChipAllocZeroDirect(sizeof(opcHandle_t));
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", ParamsCreate);
+    hParticle->number = number;
+    hParticle->abgr = 0x80808080;
+    hParticle->scale = 1.0f;
+    hParticle->state = 1;
+    hParticle->hModel = NULL;
+    hParticle->pEarlyModel = NULL;
+    hParticle->hBehavior = NULL;
+    hParticle->phPartsList = NULL;
+    hParticle->partsListAllocation = NULL;
+    hParticle->flags = 0;
+    return hParticle;
+}
+
+opcHandle_t *ParamsCreate(fileKeyBlock_t *pParams) {
+    u32 rows = pParams->emissionDuration;
+    u32 count = (rows != 0 ? rows : pParams->spawnRate) * (rows != 0 ? pParams->spawnRate : pParams->length);
+
+    return Create_effObjectParticle(count <= 300 ? count : 300);
+}
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effCreateSlotNodeFromFileJob);
 
@@ -10907,11 +11181,92 @@ INCLUDE_ASM(const s32, "code_r1_00226EC8", Delete_effObjectParticle);
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effCloneOwnedState);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effCloneSlotNodeSecondaryResources);
+void ResourceCopy_effObjectParticle(opcHandle_t *dst, opcHandle_t *src) {
+    s32 kind = src->matType;
+    mdlObj_t *model;
+    dds3ModelResrc_t *sub;
+    u32 count;
+    u32 i;
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", BehaviorSet);
+    switch (kind) {
+    case 3:
+        if (dst->hModel != NULL) {
+            effDestroyModelContext(dst->hModel);
+        }
+        if (dst->pEarlyModel != NULL) {
+            sdfModelRootFree(dst->pEarlyModel, 1, 1);
+        }
+        model = effHandleCopy(src->hModel);
+        sub = model->sub;
+        dst->hModel = model;
+        dst->pEarlyModel = sdfModelMakeEarly(sub->texList, sub->modelDefPtr);
+        kind = src->matType;
+        break;
+    case 6:
+        count = src->hBehavior->count;
+        if (count == 0) {
+            return;
+        }
+        if (dst->partsListAllocation != NULL) {
+            for (i = 0; i < count; i++) {
+                effPartsDelete(dst->phPartsList[i]);
+            }
+            sdfMemFreeDirect(dst->partsListAllocation);
+            dst->phPartsList = NULL;
+            dst->partsListAllocation = NULL;
+        }
+        if (count * sizeof(struct plistHandle_t *) == 0) {
+            return;
+        }
+        dst->partsListAllocation = sdfMemAllocDirect(count * sizeof(struct plistHandle_t *));
+        dst->phPartsList = sdfMemLock(dst->partsListAllocation);
+        for (i = 0; i < count; i++) {
+            dst->phPartsList[i] = effPartsCreateFinish(src->phPartsList[0]);
+        }
+        kind = src->matType;
+        break;
+    }
+    dst->matType = kind;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", ModelSet);
+void BehaviorSet(opcHandle_t *hParticle, EFFBEHAVIOR_TYPE type, struct effBehavior_Params_Basic_t *pParams) {
+    effObjectParticle_Parts_t *pParts;
+    u32 count;
+    u32 i;
+
+    if (hParticle->hBehavior != NULL) {
+        effPCPHelperBEDGetModel(hParticle->hBehavior);
+    }
+    hParticle->hBehavior = fileAllocateGridRecordSlots(type, hParticle->number, pParams);
+    if (hParticle->partsAllocation != NULL) {
+        sdfMemFreeDirect(hParticle->partsAllocation);
+    }
+    count = hParticle->hBehavior->count;
+    hParticle->partsAllocation = sdfMemAllocDirect(count * sizeof(effObjectParticle_Parts_t));
+    pParts = hParticle->pParts = sdfMemLock(hParticle->partsAllocation);
+    for (i = 0; i < count; i++) {
+        PartsInit(hParticle, pParts);
+        pParts++;
+    }
+}
+
+void ModelSet(opcHandle_t *hParticle, u8 *pPB, s32 size) {
+    mdlObj_t *model;
+    dds3ModelResrc_t *sub;
+
+    if (hParticle->hModel != NULL) {
+        effDestroyModelContext(hParticle->hModel);
+        hParticle->hModel = NULL;
+    }
+    if (hParticle->pEarlyModel != NULL) {
+        sdfModelRootFree(hParticle->pEarlyModel, 1, 1);
+        hParticle->pEarlyModel = NULL;
+    }
+    model = effHandleCreate(pPB, size);
+    sub = model->sub;
+    hParticle->hModel = model;
+    hParticle->pEarlyModel = sdfModelMakeEarly(sub->texList, sub->modelDefPtr);
+}
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", PartsListSet_effObjectParticle);
 
@@ -11083,7 +11438,15 @@ s32 sbtlEffSetActer(s32 id) {
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlEffSetActer);
 #endif
 
+#ifdef VERSION_RAIDOU1
+/* body: matched in raidou @ 1424963: src/shared/code_r1_00226EC8.c:11073, near, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+s32 sbtlEffSetTarget(s32 id) {
+    sbtleffbo_target = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlEffSetTarget);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlEffCreateUnitList);
 
@@ -11119,7 +11482,19 @@ s32 effComputeLightDirectionVU(mdlObj_t *vector, sdf3DLightParallelPacket_t *tar
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effResetDefaultColorTables);
+extern u128 sbtlLeaf50Work[];
+
+void effResetDefaultColorTables(void) {
+    u128 *dst = sbtlLeaf50Work;
+    u128 *src = (u128 *)dds3LightParam.parallel[0];
+
+    SDF_VU0_COPYVECTOR(dst, src);
+    dst++;
+    src++;
+    SDF_VU0_COPYVECTOR(dst, src);
+    SDF_VU0_COPYVECTOR(sbtlLeaf50Work2, &dds3LightObjectAmbient);
+    effData36 = 0;
+}
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlLeaf50);
 
@@ -11148,9 +11523,17 @@ INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallBtlEffCreateUnitList);
 void effLeaf376(void) {
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf377);
+/* body: matched in raidou @ 1424963: src/shared/effect/effPCPBoss.c:1029, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 effLeaf377(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf378);
+/* body: matched in raidou @ 1424963: src/shared/effect/effPCPBoss.c:1029, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 effLeaf378(void)
+{
+    return 0;
+}
 
 void effDestroyCopiedEffectPayload(effCopiedPayload_t *payload) {
     dds3Basic_t **effects = payload->effects;

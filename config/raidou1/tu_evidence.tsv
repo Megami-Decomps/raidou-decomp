@@ -279,9 +279,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 00217CF8	00218708	effect/effPCPNeedle	c	smt3:names:6+smt3:map:2 of 16	effect/effPCPNeedle
 00218728	00218728	code_00218728	asm	none	
 00218750	002193B8	effect/effDebug	c	smt3:names:8+smt3:map:1 of 9	effect/effDebug
-00219478	00219500	code_00219478	asm	none	
+00219478	00219500	code_00219478	c	none	
 00219508	0021ACB8	effect/effPCPBoss	c	smt3:names:13+smt3:map:6 of 72	effect/effPCPBoss
-0021ACF0	0021AD08	code_0021ACF0	asm	none	
+0021ACF0	0021AD08	code_0021ACF0	c	none	
 0021AD10	0021B910	newbattle/nbCameraHelper	c	smt3:names:7+smt3:map:4 literal-cores:1 of 17	newbattle/nbCameraHelper
 0021BA28	0021C558	code_0021BA28	c	none	
 0021C560	0021C578	code_r1_0021C560	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc

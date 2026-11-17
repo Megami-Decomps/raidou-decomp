@@ -681,6 +681,9 @@ u32 dds3GetRandA(effRandState_t *name);
 f32 dds3GetRandFloatA(effRandState_t *name);
 extern sdfGrOt_t *effPCPFlashQuadSurfaces[];
 extern u32 effPCPFlashQuadIndices[];
+extern u32 effPCPFlashFanIndices[];
+extern sdfGrOt_t *effPCPFlashFanSurfaces[];
+extern sdfGrOt_t *effPCPFlashFanHSurfaces[];
 
 extern sdf3DPrimPolyParm_t effPCPFlashPolyParams[];
 extern sdfGrOt_t *effPCPFlashTriangleSurfaces[];
@@ -698,7 +701,12 @@ extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
 
 extern sdfGrOt_t sdfGrOtTable[85];
 
-#define effFlashOtNode ((sdfGrOt_t *)&sdfGrOtTable[45])
+/* Flash state surface: SMT3 45, Raidou 66, Raidou 2 67. */
+#ifdef VERSION_RAIDOU2
+#define effFlashOtNode (&sdfGrOtTable[67])
+#else
+#define effFlashOtNode (&sdfGrOtTable[66])
+#endif
 
 /* Parameter prefixes retained by the flash particle constructors. */
 typedef struct effPCPFlashPolyRingParam_t {
@@ -853,6 +861,7 @@ extern f32 aViewEye[], aViewTarget[];
 extern f32 effPCPFlashPolySphere2Vertex[], effPCPFlashPolySphereVertex[];
 extern f32 effPCPFlashPolyRingVertex[], effPCPFlashPolySphereExpVertex[];
 extern f32 def_dir[], effPCPFlashPolyRingExp2Vertex[], effPCPFlashPolyCircleVertex[];
+extern f32 effPCPFlashPolyRingExpHVertex[], effPCPFlashPolyRingExpVertex[];
 
 typedef struct effFlashOrbitArcBlock_t {
     effPCPFlashPolyRingExp_tag header;
@@ -899,6 +908,9 @@ void effPCPFlashPolyPipePartRotate(effPCPFlashPolyPipe_tag *pFlashPoly, s32 numb
 void effPCPFlashPolyPipeDraw(effPCPFlashPolyPipe_tag *hData);
 effPCPFlashPolyRingExp_tag *effPCPFlashPolyRingExpHCreate(effPCPFlashPolyRingExpParam_t *pParam);
 effPCPFlashPolyRingExp_tag *effPCPFlashPolyRingExpCopy(effPCPFlashPolyRingExpParam_t *params);
+void effPCPFlashPolyRingExpPartSetVC(effPCPFlashPolyRingExp_tag *work, s32 index, s32 color);
+void effPCPFlashPolyRingExpHPartSetVertex(effPCPFlashPolyRingExpH_tag *work, s32 index);
+void effPCPFlashPolyRingExpPartRotate(effPCPFlashPolyRingExp_tag *pFlashPoly, s32 number);
 effPCPFlashPolySphereExp_tag *effPCPFlashPolySphereExpCreate(effPCPFlashPolySphereExpParam_t *pParam);
 effPCPFlashPolySphereExp_tag *effPCPFlashPolySphereExpCopy(effPCPFlashPolySphereExpParam_t *params);
 void effPCPFlashPolySphereExpDelete(effPCPFlashPolySphereExp_tag *hData);
@@ -934,6 +946,9 @@ void effPCPFlashPolyCirclePartSetVertex(effPCPFlashPolyCircle_tag *work, s32 ind
 void effPCPFlashPolyCircleDraw(effPCPFlashPolyCircle_tag *hData);
 effPCPFlashPolyRingExpH_tag *effPCPFlashPolyRingExpCreate(effPCPFlashPolyRingExpH_tag *pParam);
 effPCPFlashPolyRingExpH_tag *effPCPFlashPolyRingExpHCopy(effPCPFlashPolyRingExpH_tag *params);
+void effPCPFlashPolyRingExpHPartSetVC(effPCPFlashPolyRingExpH_tag *work, s32 index, s32 color);
+void effPCPFlashPolyRingExpPartSetVertex(effPCPFlashPolyRingExp_tag *work, s32 index);
+void effPCPFlashPolyRingExpHPartRotate(effPCPFlashPolyRingExpH_tag *pFlashPoly, s32 number);
 
 effPCPFlashPolySphere2_tag *effPCPFlashPolySphere2Create(effPCPFlashPolySphere2Param_t *pParam)
 {
@@ -957,7 +972,11 @@ effPCPFlashPolySphere2_tag *effPCPFlashPolySphere2Create(effPCPFlashPolySphere2P
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2CreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:1031, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolySphere2_tag *effPCPFlashPolySphere2CreatePCF(void *table)
+{
+    return effPCPFlashPolySphere2Create((effPCPFlashPolySphere2Param_t *)dds3EffectPCPDataGetData(table, 0));
+}
 
 effPCPFlashPolySphere2_tag *effPCPFlashPolySphere2Copy(effPCPFlashPolySphere2Param_t *params)
 {
@@ -972,7 +991,10 @@ void effPCPFlashPolySphere2Delete(effPCPFlashPolySphere2_tag *hData)
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf209);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf210);
+void effPCPFlashPolySphere2SetColor(effPCPFlashPolySphere2_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf211);
 
@@ -1134,18 +1156,30 @@ effPCPFlashPolySphere_tag *effPCPFlashPolySphereCreate(effPCPFlashPolySpherePara
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:1219, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolySphere_tag *effPCPFlashPolySphereCreatePCF(void *data)
+{
+    return effPCPFlashPolySphereCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolySphere_tag *effPCPFlashPolySphereCopy(effPCPFlashPolySphereParam_t *src)
 {
     return effPCPFlashPolySphereCreate(src);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereDelete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:1229, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effPCPFlashPolySphereDelete(effPCPFlashPolySphere_tag *hData)
+{
+    dds3FlashPolyListDelete(hData->hPoly);
+    sdfMemFreeDirect(hData->allocationHandle);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf212);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf213);
+void effPCPFlashPolySphereSetColor(effPCPFlashPolySphere_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf214);
 
@@ -1388,7 +1422,11 @@ effPCPFlashPolyRing_tag *effPCPFlashPolyRingCreate(effPCPFlashPolyRingParam_t *p
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:1488, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolyRing_tag *effPCPFlashPolyRingCreatePCF(void *data)
+{
+    return effPCPFlashPolyRingCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolyRing_tag *effPCPFlashPolyRingCopy(effPCPFlashPolyRingParam_t *params)
 {
@@ -1403,7 +1441,10 @@ void effPCPFlashPolyRingDelete(effPCPFlashPolyRing_tag *hData)
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf215);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf216);
+void effPCPFlashPolyRingSetColor(effPCPFlashPolyRing_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf217);
 
@@ -1616,18 +1657,30 @@ effPCPFlashPolyPipe_tag *effPCPFlashPolyPipeCreate(effPCPFlashPolyPipeParam_t *p
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyPipeCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:1727, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolyPipe_tag *effPCPFlashPolyPipeCreatePCF(void *data)
+{
+    return effPCPFlashPolyPipeCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolyPipe_tag *effPCPFlashPolyPipeCopy(effPCPFlashPolyPipeParam_t *params)
 {
     return effPCPFlashPolyPipeCreate(params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyPipeDelete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:1737, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effPCPFlashPolyPipeDelete(effPCPFlashPolyPipe_tag *hData)
+{
+    dds3FlashPolyList3Delete(hData->hPoly);
+    sdfMemFreeDirect(hData->allocationHandle);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf218);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf219);
+void effPCPFlashPolyPipeSetColor(effPCPFlashPolyPipe_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf220);
 
@@ -1811,30 +1864,271 @@ void effPCPFlashPolyPipeDraw(effPCPFlashPolyPipe_tag *hData)
     dds3FlashPolyList3Draw(handle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHCreate);
+effPCPFlashPolyRingExp_tag *effPCPFlashPolyRingExpHCreate(effPCPFlashPolyRingExpParam_t *pParam)
+{
+    sdfMemHandle_t *handle;
+    effFlashOrbitArcBlock_t *block;
+    effPCPFlashPolyRingExp_tag *ring;
+    dds3FlashPolyList_t *record;
+    f32 angle;
+    f32 step;
+    u32 spread;
+    u32 i;
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpCreatePCF);
+    handle = sdfMemAllocDirect((u32)pParam->number * 16 + 0x80);
+    block = EE_ADDR_AS(effFlashOrbitArcBlock_t *, sdfMemLock(handle));
+    ring = &block->header;
+    memcpy(ring, pParam, 0x58);
+    ring->pPart = block->parts;
+    ring->allocationHandle = handle;
+    ring->abgr = EFF_NEUTRAL_COLOR;
+    ring->radius = ring->orbitRadiusStart;
+    ring->width_in = ring->upSpanStart;
+    ring->width_out = ring->acrossSpanStart;
+    ring->frame = 0;
+    ring->scale = 1.0f;
+    if (ring->randomRange == 0) {
+        ring->randomRange = 1;
+    }
+    angle = EFFECT_RING_START_ANGLE;
+    record = dds3FlashPolyListCreate(ring->particleCount);
+    record->scale = 1.0f;
+    record->blend = ring->drawMode;
+    ring->hPoly = record;
+    step = EFFECT_RING_FULL_TURN / (u32)ring->particleCount;
+    spread = ring->randomRange;
+    for (i = 0; i < (u32)ring->particleCount; i++) {
+        ring->pPart[i].frame = -SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % spread);
+        ring->pPart[i].accumulator = angle;
+        angle += step;
+    }
+    return ring;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:1978, near, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolyRingExp_tag *effPCPFlashPolyRingExpCreatePCF(void *data)
+{
+    return effPCPFlashPolyRingExpHCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolyRingExp_tag *effPCPFlashPolyRingExpCopy(effPCPFlashPolyRingExpParam_t *params)
 {
     return effPCPFlashPolyRingExpHCreate(params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpDelete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:1988, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effPCPFlashPolyRingExpDelete(effPCPFlashPolyRingExp_tag *hData)
+{
+    dds3FlashPolyListDelete(hData->hPoly);
+    sdfMemFreeDirect(hData->allocationHandle);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf221);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf222);
+void effPCPFlashPolyRingExpHSetColor(effPCPFlashPolyRingExpH_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf223);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpPartSetVC);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:2008, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
+void effPCPFlashPolyRingExpPartSetVC(effPCPFlashPolyRingExp_tag *work, s32 index, s32 color)
+{
+    u32 *vc;
+    s32 rgb1;
+    s32 rgb2;
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHPartSetVertex);
+    vc = (u32 *)dds3FlashPolyListGetVC(work->hPoly, index);
+    rgb1 = work->centerColor & 0xFFFFFF;
+    rgb2 = work->edgeColor & 0xFFFFFF;
+    vc[0] = effMagaCylinderCalcColor(rgb2, color);
+    vc[1] = effMagaCylinderCalcColor(rgb2, color);
+    if (index & 1) {
+        vc[2] = effMagaCylinderCalcColor(0x80000000, color);
+        vc[3] = effMagaCylinderCalcColor(rgb1 | 0xFF000000, color);
+        vc[4] = effMagaCylinderCalcColor(0x80000000, color);
+    } else {
+        vc[2] = effMagaCylinderCalcColor(0xFF000000, color);
+        vc[3] = effMagaCylinderCalcColor(rgb1 | 0x40000000, color);
+        vc[4] = effMagaCylinderCalcColor(0xFF000000, color);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpPartRotate);
+void effPCPFlashPolyRingExpHPartSetVertex(effPCPFlashPolyRingExpH_tag *work, s32 index) {
+    effPCPFlashPolyRingExpHPart_tag *part = &work->pPart[index];
+    f32 *positions = (f32 *)dds3FlashPolyListGetVertex(work->hPoly, index);
+    sdfVector4_t orbitOffset;
+    sdfVector4_t radialDirection;
+    sdfVector4_t axisOffset;
+    sdfVector4_t sideOffsetA;
+    sdfVector4_t sideOffsetB;
+    f32 sine;
+    f32 basisFactor;
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHDraw);
+    VEC3_SPLAT(&axisOffset.x, work->length);
+    VEC3_SPLAT(&sideOffsetA.x, work->currentSideOffsetA);
+    VEC3_SPLAT(&sideOffsetB.x, work->currentSideOffsetB);
+    radialDirection.x = sdfCos(part->rotate);
+    radialDirection.y = 0;
+    sine = sdfSin(part->rotate);
+    radialDirection.z = sine;
+    orbitOffset.x = radialDirection.x * work->radius;
+    orbitOffset.y = 0;
+    orbitOffset.z = sine * work->radius;
+    basisFactor = part->spread;
+    effPCPFlashPolyRingExpHVertex[0] = radialDirection.x * basisFactor;
+    effPCPFlashPolyRingExpHVertex[1] = basisFactor + -1.0f;
+    effPCPFlashPolyRingExpHVertex[2] = sine * basisFactor;
+    SDF_VU0_LOADVECTOR(effPCPFlashPolyRingExpHVertex);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&radialDirection);
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(&sideOffsetA);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(&sideOffsetA);
+    SDF_VU0_LOADVECTOR(&sideOffsetB);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(&sideOffsetB);
+    SDF_VU0_COPYVECTOR_C_TO_A();
+    SDF_VU0_LOADVECTOR_B(&axisOffset);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&orbitOffset);
+    SDF_VU0_LOADVECTOR_B(&sideOffsetB);
+    SDF_VU0_STOREVECTOR(positions + 12);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(positions + 8);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR(positions + 16);
+    SDF_VU0_LOADVECTOR(&orbitOffset);
+    SDF_VU0_LOADVECTOR_B(&sideOffsetA);
+    SDF_VU0_ADDVECTOR_A_C();
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(positions);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR(positions + 4);
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:2093, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+void effPCPFlashPolyRingExpPartRotate(effPCPFlashPolyRingExp_tag *pFlashPoly, s32 number)
+{
+    effPCPFlashPolyRingExpPart_tag *part;
+
+    part = &pFlashPoly->pPart[number];
+    part->accumulator += SDF_FRAME_STEP(pFlashPoly->angularStep);
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:2101, near, same function 0.88 (words 214/214, calls 0.62, shape 1.00) */
+void effPCPFlashPolyRingExpHDraw(effPCPFlashPolyRingExp_tag *hData)
+{
+    s32 index;
+    s32 count;
+    effPCPFlashPolyRingExpPart_tag *part;
+    s32 lifetime;
+    s32 fadeIn;
+    s32 fadeOut;
+    u32 randomRange;
+    s32 restart;
+    s32 tintColor;
+    dds3FlashPolyList_t *handle;
+    f32 heightDelta;
+    f32 delta;
+    f32 progress;
+    f32 factor;
+    f32 start;
+    f32 radiusEnd;
+    f32 upStart;
+    f32 acrossStart;
+    f32 upEnd;
+    f32 acrossEnd;
+    f32 normalEnd;
+
+    part = hData->pPart;
+    count = hData->particleCount;
+    lifetime = SDF_FRAMES(hData->lifetime);
+    fadeIn = SDF_FRAMES(hData->fadeInTime);
+    fadeOut = SDF_FRAMES(hData->fadeOutTime);
+    restart = hData->restartRandomly;
+    randomRange = hData->randomRange;
+    tintColor = hData->abgr;
+    heightDelta = hData->heightEnd - hData->heightStart;
+    progress = 1.0f;
+    if (lifetime > 0) {
+        progress = (f32)hData->frame / (f32)lifetime;
+    }
+    start = hData->orbitRadiusStart;
+    radiusEnd = hData->orbitRadiusEnd;
+    delta = radiusEnd - start;
+    hData->radius = start + delta * progress;
+    if (start > 0.0f) {
+        factor = radiusEnd / start;
+    } else {
+        factor = radiusEnd;
+    }
+    upStart = hData->upSpanStart;
+    acrossStart = hData->acrossSpanStart;
+    upEnd = upStart * factor;
+    acrossEnd = acrossStart * factor;
+    start = hData->normalSpanStart;
+    normalEnd = hData->normalSpanEnd;
+    delta = upEnd - upStart;
+    hData->width_in = upStart + delta * progress;
+    delta = acrossEnd - acrossStart;
+    hData->width_out = acrossStart + delta * progress;
+    delta = normalEnd - start;
+    hData->length = start + delta * progress;
+
+    for (index = 0; index < count; index++, part++) {
+        s32 age = part->frame;
+        s32 color;
+
+        if (age == 0) {
+            part->stepSpeed = hData->heightStart;
+            effPCPFlashPolyRingExpHPartSetVertex((effPCPFlashPolyRingExpH_tag *)hData, index);
+            effPCPFlashPolyRingExpPartSetVC(hData, index, 0);
+            part->color = EFF_NEUTRAL_COLOR;
+        } else if (age >= lifetime) {
+            if (restart != 0) {
+                part->frame = ~(SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % randomRange + 1) - 1);
+            }
+            color = 0;
+            effPCPFlashPolyRingExpPartSetVC(hData, index, color);
+        } else if (age > 0) {
+            progress = (f32)age / (f32)lifetime;
+            part->stepSpeed = heightDelta * progress + hData->heightStart;
+            effPCPFlashPolyRingExpPartRotate(hData, index);
+            effPCPFlashPolyRingExpHPartSetVertex((effPCPFlashPolyRingExpH_tag *)hData, index);
+            if (part->frame < fadeIn && fadeIn != 0) {
+                factor = (f32)part->frame / (f32)fadeIn;
+            } else if (fadeOut >= lifetime - part->frame && fadeOut != 0) {
+                factor = (f32)(lifetime - part->frame) / (f32)fadeOut;
+            } else {
+                factor = 1.0f;
+            }
+            color = effMagaCylinderCalcColor(effColorBlend(0, part->color, factor), tintColor);
+            effPCPFlashPolyRingExpPartSetVC(hData, index, color);
+        }
+        part->frame = part->frame + 1;
+    }
+    if (hData->frame == lifetime) {
+        hData->frame = 0;
+    } else {
+        hData->frame++;
+    }
+    handle = hData->hPoly;
+    handle->pos[0] = hData->origin[0];
+    handle->pos[1] = hData->origin[1];
+    handle->pos[2] = hData->origin[2];
+    handle->scale = hData->scale;
+    dds3FlashPolyListDraw(handle);
+}
 
 effPCPFlashPolySphereExp_tag *effPCPFlashPolySphereExpCreate(effPCPFlashPolySphereExpParam_t *pParam)
 {
@@ -1863,7 +2157,11 @@ effPCPFlashPolySphereExp_tag *effPCPFlashPolySphereExpCreate(effPCPFlashPolySphe
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereExpCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:2232, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolySphereExp_tag *effPCPFlashPolySphereExpCreatePCF(void *data)
+{
+    return effPCPFlashPolySphereExpCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolySphereExp_tag *effPCPFlashPolySphereExpCopy(effPCPFlashPolySphereExpParam_t *params)
 {
@@ -1878,7 +2176,10 @@ void effPCPFlashPolySphereExpDelete(effPCPFlashPolySphereExp_tag *hData)
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf224);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf225);
+void effPCPFlashPolySphereExpSetColor(effPCPFlashPolySphereExp_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf226);
 
@@ -2102,7 +2403,11 @@ effPCPFlashPolySphere2Exp_tag *effPCPFlashPolySphere2ExpCreate(effPCPFlashPolySp
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2ExpCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:2482, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolySphere2Exp_tag *effPCPFlashPolySphere2ExpCreatePCF(void *data)
+{
+    return effPCPFlashPolySphere2ExpCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolySphere2Exp_tag *effPCPFlashPolySphere2ExpCopy(effPCPFlashPolySphere2ExpParam_t *params)
 {
@@ -2117,7 +2422,10 @@ void effPCPFlashPolySphere2ExpDelete(effPCPFlashPolySphere2Exp_tag *hData)
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf227);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf228);
+void effPCPFlashPolySphere2ExpSetColor(effPCPFlashPolySphere2Exp_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf229);
 
@@ -2287,7 +2595,11 @@ effPCPFlashPolySphere3_tag *effPCPFlashPolySphere3Create(effFlashRadialStripPara
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere3CreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:2678, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolySphere3_tag *effPCPFlashPolySphere3CreatePCF(void *data)
+{
+    return effPCPFlashPolySphere3Create(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolySphere3_tag *effPCPFlashPolySphere3Copy(effFlashRadialStripParam_t *params)
 {
@@ -2302,7 +2614,10 @@ void effPCPFlashPolySphere3Delete(effPCPFlashPolySphere3_tag *hData)
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf230);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf231);
+void effPCPFlashPolySphere3SetColor(effPCPFlashPolySphere3_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf232);
 
@@ -2541,7 +2856,11 @@ effPCPFlashPolyRingExp2_tag *effPCPFlashPolyRingExp2Create(effPCPFlashPolyRingEx
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExp2CreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:2943, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolyRingExp2_tag *effPCPFlashPolyRingExp2CreatePCF(void *data)
+{
+    return effPCPFlashPolyRingExp2Create(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolyRingExp2_tag *effPCPFlashPolyRingExp2Copy(effPCPFlashPolyRingExp2Param_t *params)
 {
@@ -2552,7 +2871,10 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", effFunc9);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf233);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf234);
+void effPCPFlashPolyRingExp2SetColor(effPCPFlashPolyRingExp2_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf235);
 
@@ -2761,7 +3083,11 @@ effPCPFlashPolyCircle_tag *effPCPFlashPolyCircleCreate(effPCPFlashPolyCirclePara
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyCircleCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3178, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolyCircle_tag *effPCPFlashPolyCircleCreatePCF(void *data)
+{
+    return effPCPFlashPolyCircleCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPFlashPolyCircle_tag *effPCPFlashPolyCircleCopy(effPCPFlashPolyCircleParam_t *params)
 {
@@ -2772,7 +3098,10 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", effFunc10);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf236);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf237);
+void effPCPFlashPolyCircleSetColor(effPCPFlashPolyCircle_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf238);
 
@@ -2916,9 +3245,52 @@ void effPCPFlashPolyCircleDraw(effPCPFlashPolyCircle_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpCreate);
+effPCPFlashPolyRingExpH_tag *effPCPFlashPolyRingExpCreate(effPCPFlashPolyRingExpH_tag *pParam)
+{
+    sdfMemHandle_t *allocation;
+    effPCPFlashPolyRingExpH_tag *ring;
+    effRingBlock_t *block;
+    f32 angle;
+    f32 step;
+    u32 spread;
+    u32 i;
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHCreatePCF);
+    allocation = sdfMemAllocDirect(pParam->count * EFF_RING_VERTEX_BYTES + EFF_RING_HEADER_BYTES);
+    block = EE_ADDR_AS(effRingBlock_t *, sdfMemLock(allocation));
+    ring = &block->header;
+    memcpy(ring, pParam, EFF_RING_PARAM_BYTES);
+    ring->pPart = &block->vertices[0];
+    ring->allocationHandle = allocation;
+    ring->abgr = EFF_NEUTRAL_COLOR;
+    ring->radius = ring->param38;
+    ring->currentSideOffsetB = ring->param30;
+    ring->currentSideOffsetA = ring->param34;
+    ring->frame = 0;
+    ring->scale = 1.0f;
+    if (ring->spread == 0) {
+        ring->spread = 1;
+    }
+    angle = EFFECT_RING_START_ANGLE;
+    ring->hPoly = dds3FlashPolyListHCreate(ring->count);
+    ring->hPoly->scale = 1.0f;
+    ring->hPoly->blend = ring->drawMode;
+    step = EFFECT_RING_FULL_TURN / ring->count;
+    spread = ring->spread;
+    for (i = 0; i < ring->count; i++) {
+        ring->pPart[i].frame = -SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % spread);
+        ring->pPart[i].rotate = angle;
+        angle += step;
+    }
+    return ring;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3387, near, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+effPCPFlashPolyRingExpH_tag *effPCPFlashPolyRingExpHCreatePCF(void *table) {
+    void *parameterBlock;
+
+    parameterBlock = dds3EffectPCPDataGetData(table, 0);
+    return effPCPFlashPolyRingExpCreate(parameterBlock);
+}
 
 effPCPFlashPolyRingExpH_tag *effPCPFlashPolyRingExpHCopy(effPCPFlashPolyRingExpH_tag *params)
 {
@@ -2929,19 +3301,215 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", effCallFlashPolyListHDelete);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf239);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf240);
+void effPCPFlashPolyRingExpSetColor(effPCPFlashPolyRingExp_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf241);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHSetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3418, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effPCPFlashPolyRingExpHSetRotateMatrix(effPCPFlashPolyRingExpH_tag *hData, void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hData->hPoly->matrix);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHPartSetVC);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3423, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
+void effPCPFlashPolyRingExpHPartSetVC(effPCPFlashPolyRingExpH_tag *work, s32 index, s32 modulationColor) {
+    u32 *vc;
+    s32 firstRgb;
+    s32 secondRgb;
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpPartSetVertex);
+    vc = (u32 *)dds3FlashPolyListHGetVC(work->hPoly, index);
+    firstRgb = work->firstColor & EFF_RGB_MASK;
+    secondRgb = work->secondColor & EFF_RGB_MASK;
+    vc[0] = effMagaCylinderCalcColor(secondRgb, modulationColor);
+    vc[1] = effMagaCylinderCalcColor(secondRgb, modulationColor);
+    if (index & 1) {
+        vc[2] = effMagaCylinderCalcColor(0x80000000, modulationColor);
+        vc[3] = effMagaCylinderCalcColor(firstRgb | 0xFF000000, modulationColor);
+        vc[4] = effMagaCylinderCalcColor(0x80000000, modulationColor);
+    } else {
+        vc[2] = effMagaCylinderCalcColor(0xFF000000, modulationColor);
+        vc[3] = effMagaCylinderCalcColor(firstRgb | 0x40000000, modulationColor);
+        vc[4] = effMagaCylinderCalcColor(0xFF000000, modulationColor);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHPartRotate);
+void effPCPFlashPolyRingExpPartSetVertex(effPCPFlashPolyRingExp_tag *work, s32 index)
+{
+    effPCPFlashPolyRingExpPart_tag *part = &work->pPart[index];
+    f32 *quad = (f32 *)dds3FlashPolyListHGetVertex(work->hPoly, index);
+    sdfVector4_t offset;
+    sdfVector4_t unit;
+    sdfVector4_t scaleA;
+    sdfVector4_t scaleB;
+    sdfVector4_t scaleC;
+    f32 sinv;
+    f32 height;
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpDraw);
+    VEC3_SPLAT(&scaleA.x, work->length);
+    VEC3_SPLAT(&scaleB.x, work->width_out);
+    VEC3_SPLAT(&scaleC.x, work->width_in);
+    unit.x = sdfCos(part->accumulator);
+    unit.y = 0;
+    sinv = sdfSin(part->accumulator);
+    unit.z = sinv;
+    offset.x = unit.x * work->radius;
+    offset.y = 0;
+    offset.z = sinv * work->radius;
+    height = part->stepSpeed;
+    effPCPFlashPolyRingExpVertex[0] = unit.x * height;
+    effPCPFlashPolyRingExpVertex[1] = height + -1.0f;
+    effPCPFlashPolyRingExpVertex[2] = sinv * height;
+    SDF_VU0_LOADVECTOR(effPCPFlashPolyRingExpVertex);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&unit);
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(&scaleB);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(&scaleB);
+    SDF_VU0_LOADVECTOR(&scaleC);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(&scaleC);
+    SDF_VU0_COPYVECTOR_C_TO_A();
+    SDF_VU0_LOADVECTOR_B(&scaleA);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&offset);
+    SDF_VU0_LOADVECTOR_B(&scaleC);
+    SDF_VU0_STOREVECTOR(quad + 12);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(quad + 8);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR(quad + 16);
+    SDF_VU0_LOADVECTOR(&offset);
+    SDF_VU0_LOADVECTOR_B(&scaleB);
+    SDF_VU0_ADDVECTOR_A_C();
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(quad);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR(quad + 4);
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3507, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+void effPCPFlashPolyRingExpHPartRotate(effPCPFlashPolyRingExpH_tag *pFlashPoly, s32 number) {
+    effPCPFlashPolyRingExpHPart_tag *particle;
+
+    particle = &pFlashPoly->pPart[number];
+    particle->rotate = particle->rotate + SDF_FRAME_STEP(pFlashPoly->increment);
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3514, near, same function 0.88 (words 214/214, calls 0.62, shape 1.00) */
+void effPCPFlashPolyRingExpDraw(effPCPFlashPolyRingExpH_tag *hData)
+{
+    s32 index;
+    s32 count;
+    effPCPFlashPolyRingExpHPart_tag *part;
+    s32 lifetime;
+    s32 fadeIn;
+    s32 fadeOut;
+    u32 randomRange;
+    s32 restart;
+    s32 tintColor;
+    dds3FlashPolyList_t *handle;
+    f32 heightDelta;
+    f32 delta;
+    f32 progress;
+    f32 factor;
+    f32 start;
+    f32 radiusEnd;
+    f32 upStart;
+    f32 acrossStart;
+    f32 upEnd;
+    f32 acrossEnd;
+    f32 normalEnd;
+
+    part = hData->pPart;
+    count = hData->count;
+    lifetime = SDF_FRAMES(hData->duration);
+    fadeIn = SDF_FRAMES(hData->fadeIn);
+    fadeOut = SDF_FRAMES(hData->fadeOut);
+    restart = hData->respawn;
+    randomRange = hData->spread;
+    tintColor = hData->abgr;
+    heightDelta = hData->param4C - hData->param48;
+    progress = 1.0f;
+    if (lifetime > 0) {
+        progress = (f32)hData->frame / (f32)lifetime;
+    }
+    start = hData->param38;
+    radiusEnd = hData->param3C;
+    delta = radiusEnd - start;
+    hData->radius = start + delta * progress;
+    if (start > 0.0f) {
+        factor = radiusEnd / start;
+    } else {
+        factor = radiusEnd;
+    }
+    upStart = hData->param30;
+    acrossStart = hData->param34;
+    upEnd = upStart * factor;
+    acrossEnd = acrossStart * factor;
+    start = hData->param40;
+    normalEnd = hData->param44;
+    delta = upEnd - upStart;
+    hData->currentSideOffsetB = upStart + delta * progress;
+    delta = acrossEnd - acrossStart;
+    hData->currentSideOffsetA = acrossStart + delta * progress;
+    delta = normalEnd - start;
+    hData->length = start + delta * progress;
+
+    for (index = 0; index < count; index++, part++) {
+        s32 age = part->frame;
+        s32 color;
+
+        if (age == 0) {
+            part->spread = hData->param48;
+            effPCPFlashPolyRingExpPartSetVertex((effPCPFlashPolyRingExp_tag *)hData, index);
+            effPCPFlashPolyRingExpHPartSetVC(hData, index, 0);
+            part->abgr = EFF_NEUTRAL_COLOR;
+        } else if (age >= lifetime) {
+            if (restart != 0) {
+                part->frame = ~(SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % randomRange + 1) - 1);
+            }
+            color = 0;
+            effPCPFlashPolyRingExpHPartSetVC(hData, index, color);
+        } else if (age > 0) {
+            progress = (f32)age / (f32)lifetime;
+            part->spread = heightDelta * progress + hData->param48;
+            effPCPFlashPolyRingExpHPartRotate(hData, index);
+            effPCPFlashPolyRingExpPartSetVertex((effPCPFlashPolyRingExp_tag *)hData, index);
+            if (part->frame < fadeIn && fadeIn != 0) {
+                factor = (f32)part->frame / (f32)fadeIn;
+            } else if (fadeOut >= lifetime - part->frame && fadeOut != 0) {
+                factor = (f32)(lifetime - part->frame) / (f32)fadeOut;
+            } else {
+                factor = 1.0f;
+            }
+            color = effMagaCylinderCalcColor(effColorBlend(0, part->abgr, factor), tintColor);
+            effPCPFlashPolyRingExpHPartSetVC(hData, index, color);
+        }
+        part->frame = part->frame + 1;
+    }
+    if (hData->frame == lifetime) {
+        hData->frame = 0;
+    } else {
+        hData->frame++;
+    }
+    handle = hData->hPoly;
+    handle->pos[0] = hData->origin[0];
+    handle->pos[1] = hData->origin[1];
+    handle->pos[2] = hData->origin[2];
+    handle->scale = hData->scale;
+    dds3FlashPolyListHDraw(handle);
+}
 
 dds3FlashPolyList_t *dds3FlashPolyListCreate(u32 face) {
     dds3FlashPolyList_t *pool;
@@ -2975,17 +3543,97 @@ dds3FlashPolyList_t *dds3FlashPolyListCreate(u32 face) {
     return pool;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effCallMatFreeDelayed2);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3650, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effCallMatFreeDelayed2(dds3FlashPolyList_t *hPoly) {
+    sdfMatFreeDelayed(hPoly->pMat);
+    sdfMemFreeDirect(hPoly->hMem);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyListDraw);
+void dds3FlashPolyListDraw(dds3FlashPolyList_t *work)
+{
+    f32 matrix[EFF_MATRIX_WORD_COUNT] __attribute__((aligned(16)));
+    sdfDrawTag_t *list;
+    s32 remaining;
+    s32 fanCount;
+    u64 *packet;
+    sdfDrawTag_t *stateList;
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySpherePartSetVerSub);
+    list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(EFF_PACKET_LIST_BYTES));
+    sdfDrawTagInit(list);
+    SDF_VU0_STOREIDENTITY(matrix);
+    matrix[0] = work->scale;
+    matrix[5] = work->scale;
+    matrix[10] = work->scale;
+    matrix[12] = work->pos[0];
+    matrix[13] = work->pos[1];
+    matrix[14] = work->pos[2];
+    SDF_VU0_LOADMATRIX(matrix);
+    sdf3DPrimLinkTm(list, 0);
+    sdf3DPrimLinkMat(list, work->pMat, 0);
+    remaining = work->point;
+    effPCPFlashPolyParams->vertexColor = (u32 *)work->pVC;
+    effPCPFlashPolyParams->vertex = (sdfVector4_t *)work->pVertex;
+    effPCPFlashPolyParams->color = work->abgr;
+    effPCPFlashPolyParams->faceCount = EFF_FAN_BATCH_PARAMS;
+    effPCPFlashPolyParams->pointCount = EFF_FAN_BATCH_VERTICES;
+    effPCPFlashPolyParams->faceIndex = effPCPFlashFanIndices;
+    while (remaining >= EFF_FAN_BATCH_VERTICES) {
+        remaining -= EFF_FAN_BATCH_VERTICES;
+        sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(effPCPFlashPolyParams)));
+        effPCPFlashPolyParams->vertex += EFF_FAN_BATCH_VERTICES;
+        effPCPFlashPolyParams->vertexColor += EFF_FAN_BATCH_VERTICES;
+    }
+    if (remaining >= EFF_FAN_VERTEX_COUNT) {
+        fanCount = remaining / EFF_FAN_VERTEX_COUNT;
+        effPCPFlashPolyParams->pointCount = remaining;
+        effPCPFlashPolyParams->faceCount = fanCount * 3;
+        sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(effPCPFlashPolyParams)));
+    }
+    if (work->blend < EFF_DIRECT_SURFACE_COUNT) {
+        effPCPFlashFanSurfaces[work->blend]->regFunc(effPCPFlashFanSurfaces[work->blend], list);
+    } else {
+        stateList = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(EFF_PACKET_LIST_BYTES));
+        sdfDrawTagInit(stateList);
+        packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(EFF_STATE_PACKET_BYTES));
+        packet[4] = 6;
+        packet[0] = 2;
+        packet[1] = 0x5000000210000000ULL;
+        packet[2] = 0x1000000000008001ULL;
+        packet[3] = 0xE;
+        packet[5] = 0x42;
+        sdfDrawTagLink(stateList, EE_ADDR(packet));
+        effFlashOtNode->regFunc(effFlashOtNode, stateList);
+        packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(EFF_STATE_PACKET_BYTES));
+        packet[0] = 2;
+        packet[1] = 0x5000000210000000ULL;
+        packet[2] = 0x1000000000008001ULL;
+        packet[3] = 0xE;
+        packet[4] = 0x42;
+        packet[5] = 0x42;
+        sdfDrawTagLink(list, EE_ADDR(packet));
+        effFlashOtNode->regFunc(effFlashOtNode, list);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySpherePartSetVCSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3721, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void *dds3FlashPolyListGetVertex(dds3FlashPolyList_t *group, s32 groupIndex) {
+    return group->pVertex + groupIndex * EFF_FAN_POSITION_BYTES;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPCrackInitSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3725, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void *dds3FlashPolyListGetVC(dds3FlashPolyList_t *group, s32 groupIndex) {
+    return group->pVC + groupIndex * EFF_FAN_COLOR_BYTES;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPCrackDrawSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3729, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void effPCPCrackInitSub(dds3FlashPolyList_t *hPoly, u32 blend) {
+    hPoly->blend = blend;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3733, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void effPCPCrackDrawSub(dds3FlashPolyList_t *hPoly, u32 abgr) {
+    hPoly->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf242);
 
@@ -3020,7 +3668,11 @@ dds3FlashPolyList_t *dds3FlashPolyList2Create(s32 face) {
     return pool;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effCallMatFreeDelayed3);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3772, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effCallMatFreeDelayed3(dds3FlashPolyList_t *hPoly) {
+    sdfMatFreeDelayed(hPoly->pMat);
+    sdfMemFreeDirect(hPoly->hMem);
+}
 
 void dds3FlashPolyList2Draw(dds3FlashPolyList_t *pool)
 {
@@ -3099,7 +3751,11 @@ dds3FlashPolyList_t *dds3FlashPolyList3Create(s32 face) {
     return pool;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effCallMatFreeDelayed4);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3854, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effCallMatFreeDelayed4(dds3FlashPolyList_t *hPoly) {
+    sdfMatFreeDelayed(hPoly->pMat);
+    sdfMemFreeDirect(hPoly->hMem);
+}
 
 void dds3FlashPolyList3Draw(dds3FlashPolyList_t *pool)
 {
@@ -3161,8 +3817,75 @@ void dds3FlashPolyListHDelete(dds3FlashPolyList_t *hPoly)
     dds3FlashPolyListDelete(hPoly);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyListHDraw);
+void dds3FlashPolyListHDraw(dds3FlashPolyList_t *work)
+{
+    f32 matrix[EFF_MATRIX_WORD_COUNT] __attribute__((aligned(16)));
+    sdfDrawTag_t *list;
+    s32 remaining;
+    s32 fanCount;
+    u64 *packet;
+    sdfDrawTag_t *stateList;
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyListHGetVertex);
+    list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(EFF_PACKET_LIST_BYTES));
+    sdfDrawTagInit(list);
+    VU0_COPY_MATRIX(matrix, work->matrix);
+    matrix[12] = work->pos[0];
+    matrix[13] = work->pos[1];
+    matrix[14] = work->pos[2];
+    SDF_VU0_LOADMATRIX(matrix);
+    sdf3DPrimLinkTm(list, 0);
+    sdf3DPrimLinkMat(list, work->pMat, 0);
+    remaining = work->point;
+    effPCPFlashPolyParams->vertexColor = (u32 *)work->pVC;
+    effPCPFlashPolyParams->vertex = (sdfVector4_t *)work->pVertex;
+    effPCPFlashPolyParams->color = work->abgr;
+    effPCPFlashPolyParams->faceCount = EFF_FAN_BATCH_PARAMS;
+    effPCPFlashPolyParams->pointCount = EFF_FAN_BATCH_VERTICES;
+    effPCPFlashPolyParams->faceIndex = effPCPFlashFanIndices;
+    while (remaining >= EFF_FAN_BATCH_VERTICES) {
+        remaining -= EFF_FAN_BATCH_VERTICES;
+        sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(effPCPFlashPolyParams)));
+        effPCPFlashPolyParams->vertex += EFF_FAN_BATCH_VERTICES;
+        effPCPFlashPolyParams->vertexColor += EFF_FAN_BATCH_VERTICES;
+    }
+    if (remaining >= EFF_FAN_VERTEX_COUNT) {
+        fanCount = remaining / EFF_FAN_VERTEX_COUNT;
+        effPCPFlashPolyParams->pointCount = remaining;
+        effPCPFlashPolyParams->faceCount = fanCount * 3;
+        sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(effPCPFlashPolyParams)));
+    }
+    if (work->blend < EFF_DIRECT_SURFACE_COUNT) {
+        effPCPFlashFanHSurfaces[work->blend]->regFunc(effPCPFlashFanHSurfaces[work->blend], list);
+    } else {
+        stateList = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(EFF_PACKET_LIST_BYTES));
+        sdfDrawTagInit(stateList);
+        packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(EFF_STATE_PACKET_BYTES));
+        packet[4] = 6;
+        packet[0] = 2;
+        packet[1] = 0x5000000210000000ULL;
+        packet[2] = 0x1000000000008001ULL;
+        packet[3] = 0xE;
+        packet[5] = 0x42;
+        sdfDrawTagLink(stateList, EE_ADDR(packet));
+        effFlashOtNode->regFunc(effFlashOtNode, stateList);
+        packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(EFF_STATE_PACKET_BYTES));
+        packet[0] = 2;
+        packet[1] = 0x5000000210000000ULL;
+        packet[2] = 0x1000000000008001ULL;
+        packet[3] = 0xE;
+        packet[4] = 0x42;
+        packet[5] = 0x42;
+        sdfDrawTagLink(list, EE_ADDR(packet));
+        effFlashOtNode->regFunc(effFlashOtNode, list);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyListHGetVC);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3981, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void *dds3FlashPolyListHGetVertex(dds3FlashPolyList_t *group, s32 groupIndex) {
+    return group->pVertex + groupIndex * EFF_FAN_POSITION_BYTES;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3985, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+u32 *dds3FlashPolyListHGetVC(dds3FlashPolyList_t *group, s32 groupIndex) {
+    return (u32 *)(group->pVC + groupIndex * EFF_FAN_COLOR_BYTES);
+}

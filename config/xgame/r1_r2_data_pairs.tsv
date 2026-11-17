@@ -821,7 +821,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x00402500	0x0045E2C0	effPCPFlashPolyCircleVertex2	.data	0x10	yes	code-ref
 0x00402510	0x0045E2D0	effPCPFlashPolyRingExp2Vertex	.data	0x10	yes	code-ref
 0x00402520	0x0045E2E0	effPCPFlashPolyCircleVertex	.data	0x10	yes	code-ref
-0x00402530	0x0045E2F0	effPCPFlashPolyRingExpHVertex2	.data	0x10	yes	code-ref
+0x00402530	0x0045E2F0	effPCPFlashPolyRingExpVertex	.data	0x10	yes	code-ref
 0x00402540	0x0045E300	effPCPFlashFanIndices	.data	0x48	yes	code-ref
 0x00402588	0x0045E348	effPCPFlashFanSurfaces	.data	0x10	no	code-ref
 0x00402598	0x0045E358	effPCPFlashTriangleSurfaces	.data	0x18	no	code-ref

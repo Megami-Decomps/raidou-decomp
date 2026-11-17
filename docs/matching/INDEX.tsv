@@ -154,7 +154,9 @@ billAdvanceTrailInstances	code_r1_00226EC8	raidou1 0x7A8, raidou2 0x7A8	18 of 49
 effCreateSurfaceGridNode	code_r1_00226EC8	raidou1 0x150, raidou2 0x150	33 of 84 words differ	docs/matching/code_r1_00226EC8.md	19		
 effDrawTrackSet	code_r1_00226EC8	raidou1 0x504, raidou2 0x504	214 of 313 words differ	docs/matching/code_r1_00226EC8.md	27		
 effCallGetRandFloatA	code_r1_00226EC8	raidou1 0x6FC, raidou2 0x6FC	280 of 448 words differ	docs/matching/code_r1_00226EC8.md	33		
+PartsCalc	code_r1_00226EC8	raidou1 0x7C, raidou2 0x7C	12 of 31 words differ	docs/matching/code_r1_00226EC8.md	42		
 effEditMColorTrack	code_r1_00242308	raidou1 0x64, raidou2 0x64	7 of 25 words differ	docs/matching/code_r1_00242308.md	3		
+effSelectCameraFileJobFromRows	code_r1_00242308	raidou1 0x390, raidou2 0x390	2 of 228 words differ	docs/matching/code_r1_00242308.md	9		
 sbtlInitPlayerData	code_r1_0024B510	raidou1 0x274	114 of 157 words differ	docs/matching/code_r1_0024B510.md	3		
 pbCallBtlCheckLoadFlg	code_r1_0024B788	raidou1 0x3DC	81 of 243 words differ	docs/matching/code_r1_0024B788.md	3		
 sbtlBtlEntryStockDataSub	code_r1_0024B788	raidou1 0x248	8 of 146 words differ	docs/matching/code_r1_0024B788.md	11		
@@ -206,7 +208,7 @@ sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words 
 sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matching/code_r1_00295298.md	3		
 sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3	the -DNON_MATCHING code moves with the declarations the unit includes; adding three prototypes to fld.h (mapGetHit, mapGetAttr_DevilWall, mapHamidasiCheckSub) turned 380 of 404 differing words into a full-unit CONTEXT result; the R22 SBTL_* field and prototype edits in sbtlWork.h shift it again, with no matched function affected.	
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3		
-sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	3	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h.	
+sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	3	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h. The K03-effect header declaration edits moved Raidou 2 from CONTEXT 37/288 to CONTEXT 46/288 (Raidou 1 41/288).	
 effDrawTextureSlot	code_r1_002CA3F0	raidou1 0x2CC, raidou2 0x2D4	2 of 179 words differ	docs/matching/code_r1_002CA3F0.md	3		
 cmpDrawBoxG	code_r1_002CAFD8	raidou1 0x190, raidou2 0x190	8 of 100 words differ	docs/matching/code_r1_002CAFD8.md	3		
 evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	docs/matching/code_r1_002F59D0.md	3		
@@ -217,7 +219,7 @@ dds3FilterDraw	dds3KernelDraw_0010BEE0	raidou1 0xA80	3 of 672 words differ	docs/
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3		
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3		
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9		
-ReqMessage	event/evtEventViewer	raidou1 0x1E8	4 of 122 words differ	docs/matching/event/evtEventViewer.md	17	renaming the fldProcess.h prototype mapCalcFXY to mapDebugLightSet, with no other change, turned a full-unit match into 4 differing words. The B4-field-big header declaration edits make the full unit match again; it stays NON_MATCHING.	
+ReqMessage	event/evtEventViewer	raidou1 0x1E8	4 of 122 words differ	docs/matching/event/evtEventViewer.md	17	renaming the fldProcess.h prototype mapCalcFXY to mapDebugLightSet, with no other change, turned a full-unit match into 4 differing words. The B4-field-big header declaration edits make the full unit match again; it stays NON_MATCHING. The K03-effect header declaration edits (8 headers, no change to the unit) turned the match back into DIFF 4/122.	
 ValidateAt3Bgm	event/evtEventViewer	raidou1 0x19C, raidou2 0x19C	86 of 104 words differ	docs/matching/event/evtEventViewer.md	25		
 Validate1stAt3Bgm	event/evtEventViewer	raidou1 0x148, raidou2 0x148	34 of 82 words differ	docs/matching/event/evtEventViewer.md	34		
 OutFrame1	event/evtEventViewer	raidou1 0x120, raidou2 0x120	38 of 72 words differ	docs/matching/event/evtEventViewer.md	43		
@@ -236,7 +238,7 @@ mapNakamaStockOnCheck_fld	facility/fclCombineInit	raidou1 0xF4	45 of 60 words di
 fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/fclDrawBack.md	3		
 fldGbInit_Field	fclDrawBack	raidou1 0x94	12 of 37 words differ	docs/matching/fclDrawBack.md	11	retyping fldAreaWork_t 0x120..0x128 (hitZ/camAngle/camAngle2 to the s32 nowTalkModelID/nowTakaraTblIdx/nowHealTblIdx, or the same as f32/s32 unions) moved it from 7 to 12 differing words with the same stores.	
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		
-mapAiboTask	field/fldFileResolver	raidou1 0x9A8	246 of 618 words differ	docs/matching/field/fldFileResolver.md	14	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618. The B4-field-big header declaration edits (11 headers, no change to the unit) moved it again, DIFF 323/618 to CONTEXT 12/618.	
+mapAiboTask	field/fldFileResolver	raidou1 0x9A8	246 of 618 words differ	docs/matching/field/fldFileResolver.md	14	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618. The B4-field-big header declaration edits (11 headers, no change to the unit) moved it again, DIFF 323/618 to CONTEXT 12/618, and the K03-effect header declaration edits from CONTEXT 54/618 to CONTEXT 319/616.	
 mapSummonDvTask	field/fldFileResolver	raidou1 0x944	8 of 593 words differ	docs/matching/field/fldFileResolver.md	24	the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit.	
 PlayerCalc_Nml_fld	field/fldFileResolver	raidou1 0xB74	404 of 731 words differ	docs/matching/field/fldFileResolver.md	34		
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		

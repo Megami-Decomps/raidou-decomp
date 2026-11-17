@@ -716,7 +716,14 @@ u32 dds3WhirlwindPolyListGetABGR(dds3WhirlwindPolyList_tag *hPoly, s32 index);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:855, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
+effPCPHamaCardSpiral_tag *effPCPHamaCardSpiralCreatePCF(void *parameterTable)
+{
+    return (effPCPHamaCardSpiral_tag *)effPCPHamaCardSpiralCreate(
+        dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_PARAM_BLOCK),
+        EE_ADDR(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_RESOURCE_BLOCK)),
+        dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_CHILD_BLOCK));
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralCopy);
 
@@ -930,13 +937,24 @@ void effPCPHamaCardSpiralDraw(effPCPHamaCardSpiral_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf244);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf245);
+void effPCPHamaCardSpiralSetColor(effPCPHamaCardSpiral_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", sdfVectorScale);
+void effPCPHamaCardSpiralSetScale(effPCPHamaCardSpiral_tag *hData, f32 scale) {
+    hData->param.up_s *= scale;
+    hData->param.radius_s *= scale;
+    hData->param.radius_e *= scale;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:1173, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
+effPCPHamaCardSphere_tag *effPCPHamaCardSphereCreatePCF(void *parameterTable)
+{
+    return (effPCPHamaCardSphere_tag *)effPCPHamaCardSphereCreate(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_PARAM_BLOCK), EE_ADDR(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_RESOURCE_BLOCK)), dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_CHILD_BLOCK));
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereCopy);
 
@@ -1153,13 +1171,20 @@ void effPCPHamaCardSphereDraw(effPCPHamaCardSphere_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf246);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf247);
+void effPCPHamaCardSphereSetColor(effPCPHamaCardSphere_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf248);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:1490, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
+void effPCPHamaCardScatterCreatePCF(void *parameterTable)
+{
+    effPCPHamaCardScatterCreate(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_PARAM_BLOCK), EE_ADDR(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_RESOURCE_BLOCK)), dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_CHILD_BLOCK));
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterCopy);
 
@@ -1365,7 +1390,10 @@ void effPCPHamaCardScatterDraw(effPCPHamaCardScatter_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf249);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf250);
+void effPCPHamaCardScatterSetColor(effPCPHamaCardScatter_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 void effPCPHamaCardScatterSetScale(void) {
 }
@@ -1505,7 +1533,11 @@ dds3ScatterPolyListTexResource_tag *dds3ScatterPolyListTexResourceCopy(dds3Scatt
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:1911, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+effPCPWhirlwindPoly_tag *effPCPWhirlwindPolyCreatePCF(void *parameterTable)
+{
+    return effPCPWhirlwindPolyCreate(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_PARAM_BLOCK), EE_ADDR(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_RESOURCE_BLOCK)));
+}
 
 effPCPWhirlwindPoly_tag *effPCPWhirlwindPolyCopy(effPCPWhirlwindPoly_tag *work) {
     effPCPWhirlwindPoly_tag *child;
@@ -1690,13 +1722,27 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf251);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf252);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf253);
+void effPCPWhirlwindPolySetColor(effPCPWhirlwindPoly_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolySetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:2659, match, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
+void effPCPWhirlwind3PolySetRotateMatrix(effPCPWhirlwind3Poly_tag *hData, void *pMatrix)
+{
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_LOADMATRIX_B(hData->param.matrix);
+    MultMatrixNoArg();
+    SDF_VU0_STOREMATRIX(hData);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolyCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolyCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:2162, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+effPCPWhirlwind2Poly_tag *effPCPWhirlwind2PolyCreatePCF(void *parameterTable)
+{
+    return effPCPWhirlwind2PolyCreate(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_PARAM_BLOCK), EE_ADDR(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_RESOURCE_BLOCK)));
+}
 
 effPCPWhirlwind2Poly_tag *effPCPWhirlwind2PolyCopy(effPCPWhirlwind2Poly_tag *work)
 {
@@ -1901,13 +1947,27 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf254);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf255);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf256);
+void effPCPWhirlwind2PolySetColor(effPCPWhirlwind2Poly_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolySetRotateMatrix);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:2381, match, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
+void effPCPWhirlwind2PolySetRotateMatrix(effPCPWhirlwind2Poly_tag *hData, void *pMatrix)
+{
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_LOADMATRIX_B(hData->param.matrix);
+    MultMatrixNoArg();
+    SDF_VU0_STOREMATRIX(hData);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolyCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolyCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:2433, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCreatePCF(void *parameterTable)
+{
+    return effPCPWhirlwind3PolyCreate(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_PARAM_BLOCK), EE_ADDR(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_RESOURCE_BLOCK)));
+}
 
 effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCopy(effPCPWhirlwind3Poly_tag *work)
 {
@@ -2119,13 +2179,27 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf257);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf258);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf259);
+void effPCPWhirlwind3PolySetColor(effPCPWhirlwind3Poly_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effCallMultMatrixNoArg);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/effect/effPCPScatter.c:2110, match, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
+void effCallMultMatrixNoArg(effPCPWhirlwindPoly_tag *hData, void *pMatrix)
+{
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_LOADMATRIX_B(hData->param.matrix);
+    MultMatrixNoArg();
+    SDF_VU0_STOREMATRIX(hData);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWwSpherePolyCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWwSpherePolyCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:2707, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+effPCPWwSpherePoly_tag *effPCPWwSpherePolyCreatePCF(void *parameterTable)
+{
+    return effPCPWwSpherePolyCreate(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_PARAM_BLOCK), EE_ADDR(dds3EffectPCPDataGetData(parameterTable, EFF_SCATTER_RESOURCE_BLOCK)));
+}
 
 effPCPWwSpherePoly_tag *effPCPWwSpherePolyCopy(effPCPWwSpherePoly_tag *work)
 {
@@ -2286,9 +2360,14 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf260);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf261);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf262);
+void effPCPWwSpherePolySetColor(effPCPWwSpherePoly_tag *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effLeaf263);
+void effPCPWwSpherePolySetRotateMatrix(effPCPWwSpherePoly_tag *hData, void *pMatrix) {
+    VU0_COPY_MATRIX(hData->matrix, pMatrix);
+}
 
 dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face) {
     s32 vectors = face * 2 + 2;
@@ -2441,4 +2520,8 @@ u32 dds3WhirlwindPolyListGetABGR(dds3WhirlwindPolyList_tag *hPoly, s32 index) {
     return hPoly->colors[index];
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyDrawSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPScatter.c:3036, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void effPCPWhirlwindPolyDrawSub(dds3WhirlwindPolyList_tag *hPoly, const void *pMatrix) {
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STOREMATRIX(hPoly->matrix);
+}

@@ -11,24 +11,38 @@ struct effBillboardWork_t;
 struct effObjectParticle_Parts_t;
 struct effPartsHandle_t;
 struct effPolygonTexTemp_t;
+struct fileKeyBlock_t;
 struct opcHandle_t;
 struct ptexHandle_t;
 struct fileJobPayload_t;
 
 #define EFFOPRT_FLAG_IGNORESTOP 1
 
+/* The file's 0x50-byte particle parameters, copied into the handle on create. */
+typedef struct effObjectParticles_Params_t {
+    u8 random;     /* 0x00: random axis per part */
+    u8 pad01[3];
+    f32 axis[4];   /* 0x04 */
+    f32 rotate;    /* 0x14 */
+    f32 rotate_r;  /* 0x18 */
+    f32 rotate_a;  /* 0x1C */
+    u8 unk20[0x30];
+} effObjectParticles_Params_t;
+
 /* Object particle, file job type 24 (0x80, Create_effObjectParticle). */
 typedef struct opcHandle_t {
-    void *option;  /* 0x00 */
+    u32 number;    /* 0x00 */
     u32 abgr;      /* 0x04 */
     f32 scale;     /* 0x08 */
-    u8 unkC[0x54];
-    void *unk60;
-    void *unk64;
-    void *unk68;
-    void *unk6C;
-    void *unk70;
-    u8 unk74[8];
+    s32 matType;   /* 0x0C: 3 model, 6 parts list */
+    effObjectParticles_Params_t param; /* 0x10 */
+    struct mdlObj_t *hModel;
+    struct sdfModelRootNode_t *pEarlyModel;
+    struct plistHandle_t **phPartsList;
+    struct sdfMemHandle_t *partsListAllocation;
+    struct bhvrHandle_t *hBehavior; /* 0x70: count sizes phPartsList */
+    struct effObjectParticle_Parts_t *pParts; /* 0x74: hBehavior->count parts */
+    struct sdfMemHandle_t *partsAllocation;   /* 0x78 */
     u16 state;     /* 0x7C */
     u16 flags;     /* 0x7E: EFFOPRT_FLAG_* */
 } opcHandle_t;
@@ -37,13 +51,14 @@ typedef char opcHandleSizeCheck[sizeof(opcHandle_t) == 0x80 ? 1 : -1];
 
 void BehaviorSet(struct opcHandle_t *hParticle, EFFBEHAVIOR_TYPE type, struct effBehavior_Params_Basic_t *pParams);
 void Calc(struct opcHandle_t *hParticle);
+struct opcHandle_t *Create_effObjectParticle(u32 number);
 void CalcAndDraw(struct effPartsHandle_t *handle);
 void Delete_effObjectParticle(struct effPartsHandle_t *handle);
 void Delete_effPolygonTex(struct effPartsHandle_t *handle);
 void Draw_effMuzzleFlash(struct effBillboardWork_t *work);
 void Draw_effObjectParticle(struct opcHandle_t *hParticle);
 void Draw_effPolygonTex(struct effPartsHandle_t *handle);
-struct opcHandle_t *ParamsCreate(struct effBehavior_Params_Basic_t *pParams);
+struct opcHandle_t *ParamsCreate(struct fileKeyBlock_t *pParams);
 void PartsCalc(struct opcHandle_t *hParticle, struct effObjectParticle_Parts_t *pParts, s32 frame);
 struct ptexHandle_t *PartsCreate(struct fileJobPayload_t *payload);
 void PartsInit(struct opcHandle_t *hParticle, struct effObjectParticle_Parts_t *pParts);

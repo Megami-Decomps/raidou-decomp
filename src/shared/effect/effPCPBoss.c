@@ -598,7 +598,15 @@ effPCPCrack_t *effPCPCrackCreate(effPCPCrackParam_t *pParam, void *pPB)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPBoss.c:1743, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+effPCPCrack_t *effPCPCrackCreatePCF(void *parameterTable) {
+    effPCPCrackParam_t *bossParams;
+    void *effectParams;
+
+    bossParams = dds3EffectPCPDataGetData(parameterTable, 0);
+    effectParams = dds3EffectPCPDataGetData(parameterTable, 1);
+    return effPCPCrackCreate(bossParams, effectParams);
+}
 
 effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src)
 {
@@ -943,7 +951,17 @@ effPCPBossBael_t *effPCPBossBaelCreate(void *pParam, void *pPB, void *pPCF)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPBossBaelCreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPBoss.c:2106, match, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
+effPCPBossBael_t *effPCPBossBaelCreatePCF(void *parameterTable) {
+    void *firstBlock;
+    void *secondBlock;
+    void *thirdBlock;
+
+    firstBlock = dds3EffectPCPDataGetData(parameterTable, 0);
+    secondBlock = dds3EffectPCPDataGetData(parameterTable, 1);
+    thirdBlock = dds3EffectPCPDataGetData(parameterTable, 2);
+    return effPCPBossBaelCreate(firstBlock, secondBlock, thirdBlock);
+}
 
 effPCPBossBael_t *effPCPBossBaelCopy(effPCPBossBael_t *hData, s32 bPos, s32 tbldata)
 {
@@ -1166,7 +1184,15 @@ effPCPCrack_t *effPCPCrack2Create(effPCPCrackParam_t *pParam, void *pPB)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2CreatePCF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPBoss.c:3523, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+effPCPCrack_t *effPCPCrack2CreatePCF(void *data) {
+    effPCPCrackParam_t *bossParams;
+    void *effectParams;
+
+    bossParams = dds3EffectPCPDataGetData(data, 0);
+    effectParams = dds3EffectPCPDataGetData(data, 1);
+    return effPCPCrack2Create(bossParams, effectParams);
+}
 
 effPCPCrack_t *effPCPCrack2Copy(effPCPCrack_t *src)
 {

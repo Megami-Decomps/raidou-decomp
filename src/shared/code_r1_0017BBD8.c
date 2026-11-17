@@ -367,7 +367,6 @@ u32 btlCmdReportUnsupportedEvent(void);
 u32 btlCmdReportUnsupportedTaikyo(void);
 u32 btlCmdReportUnsupportedAllTaikyo(void);
 u32 btlCmdClearSpecialEnemyFlags(void);
-void btlBossDebugPrintfN(s32 x, s32 y, s32 color, s32 format, ...);
 void btlClosePfsDebugDirectory(s32 directoryHandle);
 
 /* Debug mode delegates to the native reader. Built-in mode returns each name's length,
@@ -393,7 +392,7 @@ void btlReplaceResourceHandle(SBTLRESOURCE_DESCRIPTOR *descriptor, TMX_HEADER_t 
 
 #define EDITOR_DELETE_CODE (EDITOR_KEY_CELLS + 3)
 
-void btlBossDebugPrintfN(s32 x, s32 y, s32 color, s32 format, ...) {
+void btlBossDebugPrintfN(s32 x, s32 y, s32 color, const char *format, ...) {
 }
 
 void btlDebugDrawText(s32 x, s32 y, s32 style, const char *text) {

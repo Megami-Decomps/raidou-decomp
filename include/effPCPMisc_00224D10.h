@@ -82,6 +82,7 @@ typedef struct effModelOwner_t {
 SIZE_CHECK(effModelOwnerSizeCheck, effModelOwner_t, 0x14);
 
 mdlObj_t *effHandleCreate(const u8 *data, s32 size);
+mdlObj_t *effHandleCopy(mdlObj_t *sourceModel);
 void Delete(effModelOwner_t *owner);
 effModelOwner_t *effCreateModelOwner(struct fileJobPayload_t *source);
 effModelOwner_t *effPCPAnalyzeBEDCopy(effModelOwner_t *source);

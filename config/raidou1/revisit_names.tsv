@@ -2127,71 +2127,58 @@
 0x0020BDA8	effPCPFlashPolySphere2CreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020BDC8	effPCPFlashPolySphere2Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020BE10	effLeaf209	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x0020BE20	effLeaf210	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020BE28	effLeaf211	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020C458	effPCPFlashPolySphereCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020C478	effPCPFlashPolySphereCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020C490	effPCPFlashPolySphereDelete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020C4C0	effLeaf212	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x0020C4D0	effLeaf213	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020C4D8	effLeaf214	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020CE10	effPCPFlashPolyRingCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020CE30	effPCPFlashPolyRingCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020CE78	effLeaf215	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x0020CE88	effLeaf216	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020CE90	effLeaf217	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020D638	effPCPFlashPolyPipeCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020D658	effPCPFlashPolyPipeCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020D670	effPCPFlashPolyPipeDelete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020D6A0	effLeaf218	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x0020D6B0	effLeaf219	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020D6B8	effLeaf220	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020DF38	effPCPFlashPolyRingExpCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020DF58	effPCPFlashPolyRingExpCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020DF70	effPCPFlashPolyRingExpDelete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020DFA0	effLeaf221	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x0020DFB0	effLeaf222	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020DFB8	effLeaf223	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020DFC0	effPCPFlashPolyRingExpPartSetVC	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020E278	effPCPFlashPolyRingExpPartRotate	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020E7B0	effPCPFlashPolySphereExpCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020E7D0	effPCPFlashPolySphereExpCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020E818	effLeaf224	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x0020E828	effLeaf225	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020E830	effLeaf226	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020EFE0	effPCPFlashPolySphere2ExpCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020F000	effPCPFlashPolySphere2ExpCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020F048	effLeaf227	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x0020F058	effLeaf228	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020F060	effLeaf229	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020F718	effPCPFlashPolySphere3CreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020F738	effPCPFlashPolySphere3Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x0020F780	effLeaf230	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x0020F790	effLeaf231	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x0020F798	effLeaf232	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x002100C0	effPCPFlashPolyRingExp2CreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x002100E0	effPCPFlashPolyRingExp2Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x002100F8	effFunc9	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x00210128	effLeaf233	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x00210138	effLeaf234	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x00210140	effLeaf235	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x00210840	effPCPFlashPolyCircleCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00210860	effPCPFlashPolyCircleCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00210878	effFunc10	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x002108A8	effLeaf236	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x002108B8	effLeaf237	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x002108C0	effLeaf238	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x00211020	effPCPFlashPolyRingExpHCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00211040	effPCPFlashPolyRingExpHCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00211058	effCallFlashPolyListHDelete	func	tier=D	derived-callee	na	unit effect/effPCPFlash; calls dds3FlashPolyListHDelete
 0x00211088	effLeaf239	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
-0x00211098	effLeaf240	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x002110A0	effLeaf241	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
 0x002110D8	effPCPFlashPolyRingExpHPartSetVC	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00211390	effPCPFlashPolyRingExpHPartRotate	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00211828	effCallMatFreeDelayed2	func	tier=D	derived-callee	na	unit effect/effPCPFlash; calls sdfMatFreeDelayed
-0x00211B08	effPCPFlashPolySpherePartSetVerSub	func	tier=D	derived-caller	na	unit effect/effPCPFlash; called by effPCPFlashPolySpherePartSetVertex
-0x00211B20	effPCPFlashPolySpherePartSetVCSub	func	tier=D	derived-caller	na	unit effect/effPCPFlash; called by effPCPFlashPolySpherePartSetVC
 0x00211B38	effPCPCrackInitSub	func	tier=D	derived-caller	na	unit effect/effPCPFlash; called by effPCPCrackInit
 0x00211B40	effPCPCrackDrawSub	func	tier=D	derived-caller	na	unit effect/effPCPFlash; called by effPCPCrackDraw
 0x00211B48	effLeaf242	func	tier=D	derived-unit	na	unit effect/effPCPFlash; no named callee, caller or string
@@ -2205,40 +2192,31 @@
 0x00212498	effLeaf243	func	tier=D	derived-unit	na	unit code_00212488, nearest named function effPCPHamaCardSpiralCreate; no named callee, caller or string
 0x00212788	effPCPHamaCardSpiralCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00213110	effLeaf244	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
-0x00213120	effLeaf245	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x002133E0	effPCPHamaCardSphereCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00213D20	effLeaf246	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
-0x00213D30	effLeaf247	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00213D38	effLeaf248	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00214000	effPCPHamaCardScatterCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00214848	effLeaf249	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
-0x00214858	effLeaf250	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00214860	effPCPHamaCardScatterSetScale	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00214EE8	effPCPWhirlwindPolyCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x002156C0	effLeaf251	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x002156D8	effLeaf252	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
-0x002156E0	effLeaf253	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00215978	effPCPWhirlwind2PolyCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x002161F8	effLeaf254	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00216210	effLeaf255	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
-0x00216218	effLeaf256	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00216480	effPCPWhirlwind3PolyCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00216DA8	effLeaf257	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00216DC0	effLeaf258	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
-0x00216DC8	effLeaf259	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00216DD0	effCallMultMatrixNoArg	func	tier=D	derived-callee	na	unit effect/effPCPScatter; calls MultMatrixNoArg
 0x00217020	effPCPWwSpherePolyCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00217700	effLeaf260	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00217718	effLeaf261	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
-0x00217720	effLeaf262	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
-0x00217728	effLeaf263	func	tier=D	derived-unit	na	unit effect/effPCPScatter; no named callee, caller or string
 0x00217CC8	effPCPWhirlwindPolyDrawSub	func	tier=D	derived-caller	na	unit effect/effPCPScatter; called by effPCPWhirlwindPolyDraw
 0x00217FF0	effPCPNeedleSpiralCreatePCF	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00218010	effPCPNeedleSpiralCopy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00218028	effLeaf264	func	tier=D	derived-unit	na	unit effect/effPCPNeedle; no named callee, caller or string
 0x00218030	effLeaf265	func	tier=D	derived-unit	na	unit effect/effPCPNeedle; no named callee, caller or string
 0x00218040	effLeaf266	func	tier=D	derived-unit	na	unit effect/effPCPNeedle; no named callee, caller or string
-0x00218058	effLeaf267	func	tier=D	derived-unit	na	unit effect/effPCPNeedle; no named callee, caller or string
 0x00218728	dds3Leaf41	func	tier=D	derived-unit	na	unit code_00218728, nearest named function dds3NeedleModelSetColor; no named callee, caller or string
 0x00219478	effLeaf268	func	tier=D	derived-unit	na	unit code_00219478, nearest named function effDebugWindowDraw; no named callee, caller or string
 0x00219480	effLeaf269	func	tier=D	derived-unit	na	unit code_00219478, nearest named function effDebugWindowDraw; no named callee, caller or string
@@ -2802,7 +2780,6 @@
 0x0023EBB0	effDrawThreePointGroups	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B2440, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023F080	effCreateSlotNodeFromFileJob	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x002FA5F0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0023F2D8	effCloneOwnedState	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x002FA848, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023F408	effCloneSlotNodeSecondaryResources	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x002FA978, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0023F7C0	effClearSurfaceRecordReferences	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x002FAD30, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023FF90	effSetActiveSlotPrimaryRecordVector	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x002FB428, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023FFA8	effSetActiveSlotSecondaryRecordVector	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x002FB440, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -4057,7 +4034,6 @@
 0x002C97C0	effUpdateTimedStates	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BDF28, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x002C9958	effSetSlotOverrideWork	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BE0C0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002C99C0	effSetMaterialSlots	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BE128, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002C9A60	sysLeaf46	func	tier=D	derived-unit	na	unit code_002C8188, no named neighbour; no named callee, caller or string
 0x002C9A80	effConfigureSlotResource	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BE1E8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002C9AF0	effConfigureIndexedSlotResource	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BE258, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002C9B70	effConfigureIndexedSlotMaterial	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002BE2D8, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -18523,7 +18499,9 @@
 0x002110A8	effPCPFlashPolyRingExpHSetRotateMatrix	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1824c0 sim 1.000 margin 0.04 pair
 0x002111C8	effPCPFlashPolyRingExpPartSetVertex	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1825e0 sim 1.000 margin 0.00 pair
 0x002113B0	effPCPFlashPolyRingExpDraw	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1827c8 sim 1.000 margin 0.00 pair
-0x00213128	sdfVectorScale	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2c84c8 sim 1.000 margin 0.00 pair
+0x00211B08	dds3FlashPolyListGetVertex	func	tier=C	derived-derived-role	na	0x211B08 returns pVertex(0x60)+i*0x50, smt3_symbols alias; called by effPCPFlashPolyRingExpHPartSetVertex; replaces effPCPFlashPolySpherePartSetVerSub
+0x00211B20	dds3FlashPolyListGetVC	func	tier=C	derived-derived-role	na	0x211B20, smt3_symbols alias, pairs with 0x211B08; replaces effPCPFlashPolySpherePartSetVCSub
+0x00213128	effPCPHamaCardSpiralSetScale	func	tier=C	derived-derived-role	na	scales param.up_s/radius_s/radius_e of effPCPHamaCardSpiral_tag by f12; SetScale column (index 5) of the HamaCardSpiral row in effPart.c, as smt3 effPCPFlashPolyRingSetScale; the dds-fuzzy name was a 0.58 tie; replaces sdfVectorScale
 0x002156E8	effPCPWhirlwind3PolySetRotateMatrix	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1881e8 sim 1.000 margin 0.00 pair
 0x00216220	effPCPWhirlwind2PolySetRotateMatrix	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1881e8 sim 1.000 margin 0.00 pair
 0x00218450	effBuildRadialFanStreams	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x176e20 sim 1.000 margin 0.71 pair
@@ -19048,7 +19026,7 @@
 0x00401D50	effPCPShockWave02Param2	data	tier=C	smt3-ref	0.88 (n=D_r1_00401D50)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effPCPZiodin03Init; effPCPShockWave02Param is another symbol
 0x004024C0	effPCPFlashPolyRingExp2Vertex2	data	tier=C	smt3-ref	0.98 (n=D_r1_004024C0)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effPCPFlashPolyRingPartSetVertex; effPCPFlashPolyRingExp2Vertex is another symbol
 0x00402500	effPCPFlashPolyCircleVertex2	data	tier=C	smt3-ref	0.98 (n=D_r1_00402500)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effPCPFlashPolySphere2ExpPartSetVertex; effPCPFlashPolyCircleVertex is another symbol
-0x00402530	effPCPFlashPolyRingExpHVertex2	data	tier=C	smt3-ref	0.98 (n=D_r1_00402530)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effPCPFlashPolyRingExpPartSetVertex; effPCPFlashPolyRingExpHVertex is another symbol
+0x00402530	effPCPFlashPolyRingExpVertex	data	tier=C	derived-derived-role	na	data 0x402530 is the scratch vector of effPCPFlashPolyRingExpPartSetVertex (smt3 name); replaces effPCPFlashPolyRingExpHVertex2
 0x00402990	effOnesVector	data	tier=C	dds-ref	0.59 (n=D_r1_00402990)	dds-ref/loose: nfun=60, other=0, sim=1.0, games=2, size=False, sec=True, fn=billAdvanceFrameInstances
 0x00402E40	effWaveEmitterNegativeYAxis	data	tier=C	dds-ref	0.59 (n=D_r1_00402E40)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effUpdateWaveEmitterSlots
 0x00402E50	effEmitterTypeDescriptors	data	tier=C	dds-ref	0.59 (n=D_r1_00402E50)	dds-ref/close: nfun=2, other=0, sim=0.95265, games=2, size=True, sec=True, fn=fileAllocateGridRecordSlots
@@ -19477,6 +19455,7 @@
 0x00225C48	ColorSet_effModel	func	tier=B	hd-role	na	HD effModel.c ColorSet: mdlSetColor on the part model (PS2 passes a packed u32); replaces effLeaf353
 0x00225C60	ScaleSet_effModel	func	tier=B	hd-role	na	HD effModel.c ScaleSet: scale * part scale into vf10, mdlSetScale; replaces effCallSetScale
 0x0023EFE0	Create_effObjectParticle	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD effObjectParticle.Create score 6.3 flag -: gap=exact st1:gap r1+r2
+0x0023F408	ResourceCopy_effObjectParticle	func	tier=B	hd-role	na	HD effObjectParticle.c ResourceCopy (same kind 3/6 logic on opcHandle_t); unit already uses ResourceCopy_effPolygonTex; replaces effCloneSlotNodeSecondaryResources
 0x002420F0	effPadVibeFadeUpdate	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a14c0 sim 0.760 margin 0.43 pair
 0x0024C4F0	sbtlSearchPacData2	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlMain.sBtlSearchPacData2 score 5.5 flag I: prev gap=exact st1:gap r1-only
 0x0024C780	sbtlSetPacData_MHT	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlMain.sBtlSetPacData_MHT score 5.5 flag I: calls2 gap=exact votes3 st1:gap r2-disagree:0x2640b8

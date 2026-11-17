@@ -62,10 +62,16 @@ extern sdfMatrix4_t sdfViewMatrix;
 extern sdfMatrix4_t sdfProjectionMatrix;
 
 /* Native frame renderer ordering table: map size 0xE40, stride 0x20. */
+/* DDS3_OT_DEBUG: debug text and window surface (SMT3 83), the second to last entry.
+ * DDS3_OT_DEBUG_WIRE: debug wireframe surface (SMT3 44). */
 #ifdef VERSION_RAIDOU2
 extern sdfGrOt_t sdfGrOtTable[115];
+#define DDS3_OT_DEBUG 113
+#define DDS3_OT_DEBUG_WIRE 65
 #else
 extern sdfGrOt_t sdfGrOtTable[114];
+#define DDS3_OT_DEBUG 112
+#define DDS3_OT_DEBUG_WIRE 64
 #endif
 extern sdfGrOt_t dds3Data10;
 void sdfGrSetStdDrawEnv(dds3StdDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet);

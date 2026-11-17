@@ -15,9 +15,15 @@
 #include "code_r1_00226EC8.h"
 #include "code_r1_0021CE60.h"
 
-INCLUDE_ASM(const s32, "code_0021BA28", effLeaf338);
+/* body: matched in raidou @ 1424963: src/shared/code_r1_001F5DA8.c:6, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+void effLeaf338(void) {
+    dds3AdminiCallSequence(0, 0, 0, 0);
+}
 
-INCLUDE_ASM(const s32, "code_0021BA28", effLeaf339);
+/* body: matched in raidou @ 1424963: src/shared/code_r1_001F5DA8.c:6, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+void effLeaf339(void) {
+    dds3AdminiCallSequence(0, 0, 0, 0);
+}
 
 u32 effGetFlags(void) {
     return flags_stat;
@@ -56,7 +62,10 @@ s32 Process_effStat(dds3ProcessID_t *proc) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0021BA28", effLeaf342);
+/* body: matched in raidou @ 1424963: src/shared/code_r1_00242308.c:1223, adapt, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void effLeaf342(void) {
+    flags_blur = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0021BA28", effLeaf343);
 

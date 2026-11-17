@@ -370,7 +370,26 @@ s32 effRemoveSlotRecord(effOwnerRecord_t *list, effSlotOwner_t *work, s32 slotIn
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_r1_002C8188", effReleaseRecordBuckets);
+void effReleaseRecordBuckets(effOwnerRecord_t *list) {
+    effRecord_t **bucketHead = list->entries;
+    s32 bucketCountdown;
+    for (bucketCountdown = ARRAY_COUNT(list->entries) - 1; bucketCountdown >= 0; bucketCountdown--, bucketHead++) {
+        effRecord_t *record = *bucketHead;
+        while (record != 0) {
+            if (record->prev != 0) {
+                record->prev->next = record->next;
+            }
+            if (record->next != 0) {
+                record->next->prev = record->prev;
+            }
+            if (record == *bucketHead) {
+                *bucketHead = record->next;
+            }
+            sdfChipFreeDirect(record);
+            record = record->next;
+        }
+    }
+}
 
 /* Dispatch every bucket record and optionally refresh its owner/slot lookup. */
 u32 effDispatchRecordBuckets(u32 refresh, effOwnerRecord_t *list, s32 drawOption) {
@@ -497,7 +516,15 @@ struct sdfMemHandle_t *effLoadMappedStatusRecords(const u8 *source, effMappedHea
     return allocation;
 }
 
-INCLUDE_ASM(const s32, "code_r1_002C8188", effCreateMappedResource);
+effMappedResource_t *effCreateMappedResource(const u8 *source) {
+    effMappedResource_t *mappedResource = (effMappedResource_t *)sdfChipAllocDirect(sizeof(effMappedResource_t));
+    effMappedHeader_t header;
+
+    mappedResource->allocation = effLoadMappedStatusRecords(source, &header);
+    mappedResource->records = (effMappedRecord_t *)sdfMemLock(mappedResource->allocation);
+    mappedResource->count = header.count;
+    return mappedResource;
+}
 
 /* Build one zeroed status record and allocate the category's required status storage. */
 effMappedResource_t *effCreateStatusBatch(u32 category) {
@@ -931,7 +958,10 @@ u32 effSetMaterialSlots(sprHandle_t *owner, s32 index, u32 materialFlags, void *
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_002C8188", sysLeaf46);
+u32 effClearSlotOverrideWork(sprHandle_t *owner, s32 index) {
+    owner->workEntries[index].alternate.payload = NULL;
+    return 1;
+}
 
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags) {
     itfBdWork_t *effect = &((sprHandle_t *)work)->workEntries[index];

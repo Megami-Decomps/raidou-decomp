@@ -4827,7 +4827,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0020BDC8	0x002230C0	effPCPFlashPolySphere2Copy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020BDE0	0x002230D8	effPCPFlashPolySphere2Delete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020BE10	0x00223108	effLeaf209	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x0020BE20	0x00223118	effLeaf210	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x0020BE20	0x00223118	effPCPFlashPolySphere2SetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020BE28	0x00223120	effLeaf211	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020BE30	0x00223128	effPCPFlashPolySphere2PartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020BED0	0x002231C8	effPCPFlashPolySphere2PartSetVertex	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4837,7 +4837,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0020C478	0x00223770	effPCPFlashPolySphereCopy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020C490	0x00223788	effPCPFlashPolySphereDelete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020C4C0	0x002237B8	effLeaf212	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x0020C4D0	0x002237C8	effLeaf213	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x0020C4D0	0x002237C8	effPCPFlashPolySphereSetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020C4D8	0x002237D0	effLeaf214	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020C4E0	0x002237D8	effPCPFlashPolySpherePartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020C5D0	0x002238C8	effPCPFlashPolySpherePartInit	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4849,7 +4849,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0020CE30	0x00224128	effPCPFlashPolyRingCopy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020CE48	0x00224140	effPCPFlashPolyRingDelete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020CE78	0x00224170	effLeaf215	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x0020CE88	0x00224180	effLeaf216	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x0020CE88	0x00224180	effPCPFlashPolyRingSetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020CE90	0x00224188	effLeaf217	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020CE98	0x00224190	effPCPFlashPolyRingPartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020CF88	0x00224280	effPCPFlashPolyRingPartSetVertex	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4860,7 +4860,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0020D658	0x00224950	effPCPFlashPolyPipeCopy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020D670	0x00224968	effPCPFlashPolyPipeDelete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020D6A0	0x00224998	effLeaf218	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x0020D6B0	0x002249A8	effLeaf219	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x0020D6B0	0x002249A8	effPCPFlashPolyPipeSetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020D6B8	0x002249B0	effLeaf220	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020D6C0	0x002249B8	effPCPFlashPolyPipePartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020D7B0	0x00224AA8	effPCPFlashPolyPipePartSetVertex	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4871,7 +4871,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0020DF58	0x00225250	effPCPFlashPolyRingExpCopy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020DF70	0x00225268	effPCPFlashPolyRingExpDelete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020DFA0	0x00225298	effLeaf221	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x0020DFB0	0x002252A8	effLeaf222	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x0020DFB0	0x002252A8	effPCPFlashPolyRingExpHSetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020DFB8	0x002252B0	effLeaf223	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020DFC0	0x002252B8	effPCPFlashPolyRingExpPartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020E0B0	0x002253A8	effPCPFlashPolyRingExpHPartSetVertex	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
@@ -4882,7 +4882,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0020E7D0	0x00225AC8	effPCPFlashPolySphereExpCopy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020E7E8	0x00225AE0	effPCPFlashPolySphereExpDelete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020E818	0x00225B10	effLeaf224	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x0020E828	0x00225B20	effLeaf225	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x0020E828	0x00225B20	effPCPFlashPolySphereExpSetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020E830	0x00225B28	effLeaf226	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020E838	0x00225B30	effPCPFlashPolySphereExpPartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020E928	0x00225C20	effPCPFlashPolySphereExpPartInit	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4894,7 +4894,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0020F000	0x002262F8	effPCPFlashPolySphere2ExpCopy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020F018	0x00226310	effPCPFlashPolySphere2ExpDelete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020F048	0x00226340	effLeaf227	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x0020F058	0x00226350	effLeaf228	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x0020F058	0x00226350	effPCPFlashPolySphere2ExpSetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020F060	0x00226358	effLeaf229	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020F068	0x00226360	effPCPFlashPolySphere2ExpPartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020F108	0x00226400	effPCPFlashPolySphere2ExpPartSetVertex	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4904,7 +4904,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0020F738	0x00226A30	effPCPFlashPolySphere3Copy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x0020F750	0x00226A48	effPCPFlashPolySphere3Delete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020F780	0x00226A78	effLeaf230	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x0020F790	0x00226A88	effLeaf231	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x0020F790	0x00226A88	effPCPFlashPolySphere3SetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020F798	0x00226A90	effLeaf232	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x0020F7A0	0x00226A98	effPCPFlashPolySphere3PartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x0020F890	0x00226B88	effPCPFlashPolySphere3PartInit	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4916,7 +4916,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002100E0	0x002273D8	effPCPFlashPolyRingExp2Copy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x002100F8	0x002273F0	effFunc9	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x00210128	0x00227420	effLeaf233	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x00210138	0x00227430	effLeaf234	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x00210138	0x00227430	effPCPFlashPolyRingExp2SetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x00210140	0x00227438	effLeaf235	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x00210148	0x00227440	effPCPFlashPolyRingExp2PartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x00210238	0x00227530	effPCPFlashPolyRingExp2PartSetVertex	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4927,7 +4927,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00210860	0x00227B58	effPCPFlashPolyCircleCopy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x00210878	0x00227B70	effFunc10	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x002108A8	0x00227BA0	effLeaf236	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x002108B8	0x00227BB0	effLeaf237	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x002108B8	0x00227BB0	effPCPFlashPolyCircleSetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x002108C0	0x00227BB8	effLeaf238	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x002108C8	0x00227BC0	effPCPFlashPolyCirclePartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x00210968	0x00227C60	effPCPFlashPolyCirclePartSetVertex	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
@@ -4937,7 +4937,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00211040	0x00228338	effPCPFlashPolyRingExpHCopy	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x00211058	0x00228350	effCallFlashPolyListHDelete	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x00211088	0x00228380	effLeaf239	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
-0x00211098	0x00228390	effLeaf240	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
+0x00211098	0x00228390	effPCPFlashPolyRingExpSetColor	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x002110A0	0x00228398	effLeaf241	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
 0x002110A8	0x002283A0	effPCPFlashPolyRingExpHSetRotateMatrix	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x002110D8	0x002283D0	effPCPFlashPolyRingExpHPartSetVC	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
@@ -4947,8 +4947,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00211708	0x00228A00	dds3FlashPolyListCreate	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-reloc-hash
 0x00211828	0x00228B20	effCallMatFreeDelayed2	no	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x00211858	0x00228B50	dds3FlashPolyListDraw	no	no	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	unique-masked-hash
-0x00211B08	0x00228E00	effPCPFlashPolySpherePartSetVerSub	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
-0x00211B20	0x00228E18	effPCPFlashPolySpherePartSetVCSub	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
+0x00211B08	0x00228E00	dds3FlashPolyListGetVertex	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
+0x00211B20	0x00228E18	dds3FlashPolyListGetVC	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x00211B38	0x00228E30	effPCPCrackInitSub	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x00211B40	0x00228E38	effPCPCrackDrawSub	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	masked-hash-in-gap
 0x00211B48	0x00228E40	effLeaf242	yes	yes	asm/raidou1/effect/effPCPFlash.s	asm/raidou2/effect/effPCPFlash.s	run-order-size
@@ -4977,8 +4977,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00212968	0x00229C60	effPCPHamaCardSpiralPartInit	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00212B28	0x00229E20	effPCPHamaCardSpiralDraw	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00213110	0x0022A408	effLeaf244	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x00213120	0x0022A418	effLeaf245	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x00213128	0x0022A420	sdfVectorScale	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
+0x00213120	0x0022A418	effPCPHamaCardSpiralSetColor	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
+0x00213128	0x0022A420	effPCPHamaCardSpiralSetScale	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00213150	0x0022A448	effPCPHamaCardSphereCreate	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x002133E0	0x0022A6D8	effPCPHamaCardSphereCreatePCF	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
 0x00213448	0x0022A740	effPCPHamaCardSphereCopy	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
@@ -4986,7 +4986,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002135C0	0x0022A8B8	effPCPHamaCardSpherePartInit	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00213728	0x0022AA20	effPCPHamaCardSphereDraw	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00213D20	0x0022B018	effLeaf246	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x00213D30	0x0022B028	effLeaf247	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
+0x00213D30	0x0022B028	effPCPHamaCardSphereSetColor	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x00213D38	0x0022B030	effLeaf248	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00213D58	0x0022B050	effPCPHamaCardScatterCreate	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00214000	0x0022B2F8	effPCPHamaCardScatterCreatePCF	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
@@ -4995,7 +4995,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002141F0	0x0022B4E8	effPCPHamaCardScatterPartInit	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x002142E8	0x0022B5E0	effPCPHamaCardScatterDraw	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00214848	0x0022BB40	effLeaf249	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x00214858	0x0022BB50	effLeaf250	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
+0x00214858	0x0022BB50	effPCPHamaCardScatterSetColor	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x00214860	0x0022BB58	effPCPHamaCardScatterSetScale	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
 0x00214868	0x0022BB60	dds3ScatterPolyListCreate	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00214970	0x0022BC68	dds3ScatterPolyListDelete	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
@@ -5016,7 +5016,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002154C8	0x0022C7C0	effPCPWhirlwindPolyDraw	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x002156C0	0x0022C9B8	effLeaf251	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x002156D8	0x0022C9D0	effLeaf252	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x002156E0	0x0022C9D8	effLeaf253	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
+0x002156E0	0x0022C9D8	effPCPWhirlwindPolySetColor	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x002156E8	0x0022C9E0	effPCPWhirlwind3PolySetRotateMatrix	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
 0x00215748	0x0022CA40	effPCPWhirlwind2PolyCreate	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00215978	0x0022CC70	effPCPWhirlwind2PolyCreatePCF	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
@@ -5027,7 +5027,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00215F50	0x0022D248	effPCPWhirlwind2PolyDraw	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x002161F8	0x0022D4F0	effLeaf254	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x00216210	0x0022D508	effLeaf255	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x00216218	0x0022D510	effLeaf256	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
+0x00216218	0x0022D510	effPCPWhirlwind2PolySetColor	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x00216220	0x0022D518	effPCPWhirlwind2PolySetRotateMatrix	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
 0x00216280	0x0022D578	effPCPWhirlwind3PolyCreate	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00216480	0x0022D778	effPCPWhirlwind3PolyCreatePCF	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
@@ -5038,7 +5038,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00216AD0	0x0022DDC8	effPCPWhirlwind3PolyDraw	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00216DA8	0x0022E0A0	effLeaf257	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x00216DC0	0x0022E0B8	effLeaf258	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x00216DC8	0x0022E0C0	effLeaf259	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
+0x00216DC8	0x0022E0C0	effPCPWhirlwind3PolySetColor	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x00216DD0	0x0022E0C8	effCallMultMatrixNoArg	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
 0x00216E30	0x0022E128	effPCPWwSpherePolyCreate	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00217020	0x0022E318	effPCPWwSpherePolyCreatePCF	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	masked-hash-in-gap
@@ -5049,8 +5049,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00217508	0x0022E800	effPCPWwSpherePolyDraw	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00217700	0x0022E9F8	effLeaf260	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x00217718	0x0022EA10	effLeaf261	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x00217720	0x0022EA18	effLeaf262	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
-0x00217728	0x0022EA20	effLeaf263	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
+0x00217720	0x0022EA18	effPCPWwSpherePolySetColor	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
+0x00217728	0x0022EA20	effPCPWwSpherePolySetRotateMatrix	yes	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	run-order-size
 0x00217750	0x0022EA48	dds3WhirlwindPolyListCreate	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x00217988	0x0022EC80	dds3WhirlwindPolyListDelete	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
 0x002179D0	0x0022ECC8	dds3WhirlwindPolyListDraw	no	yes	asm/raidou1/effect/effPCPScatter.s	asm/raidou2/effect/effPCPScatter.s	unique-reloc-hash
@@ -5067,7 +5067,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00218028	0x0022F320	effLeaf264	yes	yes	asm/raidou1/effect/effPCPNeedle.s	asm/raidou2/effect/effPCPNeedle.s	masked-hash-in-gap
 0x00218030	0x0022F328	effLeaf265	yes	yes	asm/raidou1/effect/effPCPNeedle.s	asm/raidou2/effect/effPCPNeedle.s	run-order-size
 0x00218040	0x0022F338	effLeaf266	no	yes	asm/raidou1/effect/effPCPNeedle.s	asm/raidou2/effect/effPCPNeedle.s	unique-reloc-hash
-0x00218058	0x0022F350	effLeaf267	yes	yes	asm/raidou1/effect/effPCPNeedle.s	asm/raidou2/effect/effPCPNeedle.s	run-order-size
+0x00218058	0x0022F350	effPCPNeedleSpiralSetColor	yes	yes	asm/raidou1/effect/effPCPNeedle.s	asm/raidou2/effect/effPCPNeedle.s	run-order-size
 0x00218060	0x0022F358	dds3NeedleModelCreate	no	yes	asm/raidou1/effect/effPCPNeedle.s	asm/raidou2/effect/effPCPNeedle.s	unique-reloc-hash
 0x00218180	0x0022F478	dds3NeedleModelDelete	no	yes	asm/raidou1/effect/effPCPNeedle.s	asm/raidou2/effect/effPCPNeedle.s	unique-reloc-hash
 0x002181B8	0x0022F4B0	dds3NeedleModelDraw	no	yes	asm/raidou1/effect/effPCPNeedle.s	asm/raidou2/effect/effPCPNeedle.s	unique-reloc-hash
@@ -5802,7 +5802,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0023F080	0x00256388	effCreateSlotNodeFromFileJob	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
 0x0023F208	0x00256510	Delete_effObjectParticle	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
 0x0023F2D8	0x002565E0	effCloneOwnedState	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
-0x0023F408	0x00256710	effCloneSlotNodeSecondaryResources	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
+0x0023F408	0x00256710	ResourceCopy_effObjectParticle	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
 0x0023F570	0x00256878	BehaviorSet	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
 0x0023F638	0x00256940	ModelSet	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
 0x0023F6C8	0x002569D0	PartsListSet_effObjectParticle	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
@@ -7172,7 +7172,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002C97C0	0x00329A70	effUpdateTimedStates	no	yes	asm/raidou1/code_002C8188.s	asm/raidou2/code_00328438.s	unique-reloc-hash
 0x002C9958	0x00329C08	effSetSlotOverrideWork	no	yes	asm/raidou1/code_002C8188.s	asm/raidou2/code_00328438.s	unique-reloc-hash
 0x002C99C0	0x00329C70	effSetMaterialSlots	no	yes	asm/raidou1/code_002C8188.s	asm/raidou2/code_00328438.s	unique-reloc-hash
-0x002C9A60	0x00329D10	sysLeaf46	yes	yes	asm/raidou1/code_002C8188.s	asm/raidou2/code_00328438.s	unique-reloc-hash
+0x002C9A60	0x00329D10	effClearSlotOverrideWork	yes	yes	asm/raidou1/code_002C8188.s	asm/raidou2/code_00328438.s	unique-reloc-hash
 0x002C9A80	0x00329D30	effConfigureSlotResource	no	yes	asm/raidou1/code_002C8188.s	asm/raidou2/code_00328438.s	unique-reloc-hash
 0x002C9AF0	0x00329DA0	effConfigureIndexedSlotResource	no	yes	asm/raidou1/code_002C8188.s	asm/raidou2/code_00328438.s	unique-reloc-hash
 0x002C9B70	0x00329E20	effConfigureIndexedSlotMaterial	no	yes	asm/raidou1/code_002C8188.s	asm/raidou2/code_00328438.s	unique-reloc-hash

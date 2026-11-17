@@ -418,7 +418,16 @@ effModelOwner_t *effCreateModelOwner(fileJobPayload_t *source) {
     return owner;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", Delete);
+void Delete(effModelOwner_t *owner) {
+    sdf3DLightParallelPacket_t *buffer = owner->ownedBuffer;
+    if (buffer != NULL) {
+        sdfChipFreeDirect(buffer);
+    }
+    if (owner->model != 0) {
+        effDestroyModelContext(owner->model);
+    }
+    sdfChipFreeDirect(owner);
+}
 
 effModelOwner_t *effPCPAnalyzeBEDCopy(effModelOwner_t *source) {
     effModelOwner_t *owner = effCreateModelOwner(NULL);
