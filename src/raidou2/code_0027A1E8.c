@@ -81,7 +81,7 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetRandomTarget);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetSummonFunc);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetNakama2);
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetReturn);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallHirukoYukaGoIdx2B);
 

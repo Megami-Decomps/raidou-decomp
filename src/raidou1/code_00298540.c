@@ -142,7 +142,7 @@ s32 sbtlCheckGeneratorGroupID(s32 group)
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlCallBtlCheckGeneratorGroupID);
 
-INCLUDE_ASM(const s32, "code_00298540", datBossRashChk);
+INCLUDE_ASM(const s32, "code_00298540", sbtlCheckGenerator_D);
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlChkBossEventStart_EnemySummonWait);
 

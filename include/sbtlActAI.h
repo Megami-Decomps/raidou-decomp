@@ -7,6 +7,16 @@
 
 struct SBTLUNIT_WORK;
 
+/* SBTLUNIT_MODEL flags an AI mode change clears (HD ACTAIFLGMASK). */
+#define ACTAIFLGMASK_R1                                                                                        \
+    (SBTL_ACTAIFLG_CMBIN | SBTL_ACTAIFLG_STAND | SBTL_ACTAIFLG_SPRAT | SBTL_ACTAIFLG_RANKS | SBTL_ACTAIFLG_POINT | \
+     SBTL_ACTAIFLG_SEARCH)
+#ifdef VERSION_RAIDOU2
+#define ACTAIFLGMASK (ACTAIFLGMASK_R1 | SBTL_ACTAIFLG_SKIPSEARCH)
+#else
+#define ACTAIFLGMASK ACTAIFLGMASK_R1
+#endif
+
 /* One action choice: percent weight, packed skill code and packed target code. */
 typedef struct AIACT_TBL {
     s16 per;
@@ -101,7 +111,7 @@ s32 sbtlAAIProc_Skl_SMV(struct SBTLUNIT_WORK *wk);
 s32 sbtlAAIProc_Skl_SRT(struct SBTLUNIT_WORK *wk);
 s32 sbtlAAIProc_TurnMV(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckEnemyTarget(struct SBTLUNIT_WORK *wk, s32 id);
-s32 sbtlCheckSearchEnemy(struct SBTLUNIT_WORK *wk, s32 id, s8 mode);
+s32 sbtlCheckSearchEnemy(struct SBTLUNIT_WORK *wk, s32 *targetid, s8 mode);
 s32 sbtlEAIInit_BtlInit(struct SBTLUNIT_WORK *wk);
 s32 sbtlEAIInit_BtlWait(struct SBTLUNIT_WORK *wk);
 s32 sbtlEAIInit_Summon(struct SBTLUNIT_WORK *wk);
@@ -131,6 +141,8 @@ s32 sbtlCallMemset12(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallMemset5(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallSin(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckMeshiyose(struct SBTLUNIT_WORK *wk);
+s32 CheckLoadData_sbtlScript(void);
+struct SBTLUNIT_WORK *sbtlCheckCharmTarget(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckMotionMove(struct SBTLUNIT_WORK *wk);
 s32 sbtlDeletePlayer(struct SBTLUNIT_WORK *wk);
 void sbtlGeneratorD_On(void);

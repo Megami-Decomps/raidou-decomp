@@ -58,6 +58,8 @@ extern itfMover_t sbtlWork7[128];
 extern struct frTextBank_t *sbtlCallMessageNumSearch4Data;
 extern u8 sbtlData119;
 extern s8 sbtlData121;
+void sbtlLeaf113(void);
+void sbtlEnableSceneGroupAdvancementSub(void);
 extern s32 sbtlRefSbtl57Data;
 extern s32 sbtlRefSbtl61Data;
 extern s32 sbtlRefSbtl59Data;

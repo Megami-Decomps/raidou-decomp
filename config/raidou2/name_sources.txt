@@ -7000,7 +7000,7 @@
 0x0027C3E8	sbtlCheckMove_BadStatus	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlPlayer.sBtlCheckMove_BadStatus score 6.3 flag I: calls3 calls-of-match votes2 st2:call r1-disagree:0x25bc20
 0x0027C490	sbtlGetRandomTarget	hd-inferred	hd: Raidou HD sBtlPlayer.sBtlGetRandomTarget, score 7.1 band B
 0x0027C548	sbtlSetSummonFunc	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.sBtlSetSummonFunc score 7.8 flag I: calls8 callers-of-match votes4 st2:call r1-disagree:0x25c2d0
-0x0027CDD0	sbtlCallBtlGetNakama2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlSetSummonFunc; calls sbtlGetNakama
+0x0027CDD0	sbtlSetReturn	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as R1 sbtlSetReturn (HD sBtlPlayer.sBtlSetReturn, r2-disagree:0x27cdd0); replaces sbtlCallBtlGetNakama2
 0x0027CF80	sbtlCallHirukoYukaGoIdx2B	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetReturn; calls fldHirukoYukaGo_Idx2_B
 0x0027CFB0	sbtlResetColor	hd	method=hd-body; p=na; tier=B; source=hd; evidence=HD sBtlPlayer.sBtlResetColor(u32 abgr): called with 0x80808080, returns 1; HD UseItemProc takes the unit (R2 UseItemProc_sbtlPlayer)
 0x0027CFE0	SetSummonMenu	hd	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlPlayer.SetSummonMenu score 5.5 flag -: calls3 callers-of-match votes3 st2:call r1-disagree:0x25caf8
@@ -8219,7 +8219,7 @@
 0x002E1308	DeleteMessage	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlSM.DeleteMessage score 12.8 flag -: calls1 prev next gap=exact votes2 st1:gap r1+r2
 0x002E1388	sbtlAddMessage	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlSM.sBtlAddMessage score 9.9 flag I: calls1 calls-of-match votes2 st1:call r1+r2
 0x002E1560	sbtlCreateSMList	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlSM.sBtlCreateSMList score 9.5 flag I: calls1 next edge st1:edge r1+r2
-0x002E1588	sbtlCallMemAllocDirect10	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sdfMemAllocDirect
+0x002E1588	sbtlCreateSM	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as R1 sbtlCreateSM (HD sBtlSM.sBtlCreateSM, r2-disagree:0x2e1588); R1 keeps sbtlCallMemAllocDirect10 on other code; replaces sbtlCallMemAllocDirect10
 0x002E16A8	sbtlCallSprintf8	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sprintf
 0x002E1870	Proc	hd	method=hd-gap-single-raidou2; p=0.96 (n=405); tier=A; source=hd; evidence=Raidou HD sBtlSM.Proc score 4.5 flag -: calls1 prev~ gap=exact st2:gap r1-disagree:0x2a55c0
 0x002E19B0	Draw_sbtlSM	hd	method=hd-gap-single-raidou2; p=0.96 (n=405); tier=A; source=hd; evidence=Raidou HD sBtlSM.Draw score 5.8 flag -: calls1 next gap=exact st2:gap r1-disagree:0x2a56e8

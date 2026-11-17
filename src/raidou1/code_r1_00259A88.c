@@ -70,7 +70,7 @@ void sbtlSetVibe(SBTLPLAYER_VTYPE mode)
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlSetVibe);
 #endif
 
-s32 sbtlCallBtlSearchUnitID5(void) {
+s32 sbtlGetPlayerID(void) {
     s32 id;
     struct SBTLUNIT_WORK *unit;
 
@@ -348,7 +348,7 @@ s32 sbtlCallBtlResetCharge(struct SBTLUNIT_WORK *wk, s32 type)
         if (wk_sbtl->battleMode != 1) {
             sbtlCallMemset17(wk_sbtl->effList, wk, 38, 0, &wk->pos.x, 0x80808080, 0);
             sbtlResetAction(wk);
-            sbtlCallBtlEndAction(wk, 1, 0);
+            sbtlSetAction(wk, 1, 0);
             sbtlResetCharge(wk);
             wk_sbtl->field4AC = 20;
             wk_sbtl->field4A8 = 2;
@@ -375,7 +375,7 @@ s32 sbtlCallBtlResetCharge(struct SBTLUNIT_WORK *wk, s32 type)
         wk_sbtl->field484 = 0;
         wk_sbtl->field488 = 0;
         wk_sbtl->field494 = 0;
-        sbtlCallBtlEndAction(wk, 15, 0);
+        sbtlSetAction(wk, 15, 0);
         sbtlSetMotion_sbtlUnit(wk, 29, 0, 0, 0);
         sbtlResetCharge(wk);
         sbtlRefSbtl11(wk, 7);
@@ -396,7 +396,7 @@ s32 sbtlCallBtlResetCharge(struct SBTLUNIT_WORK *wk, s32 type)
         wk_sbtl->gstat[0] = 0;
         wk_sbtl->gstat[1] = 0;
         sbtlResetAction(wk);
-        sbtlCallBtlEndAction(wk, 1, 0);
+        sbtlSetAction(wk, 1, 0);
         sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         sbtlRefSbtl11(wk, 10);
         break;
@@ -1267,7 +1267,7 @@ s32 NormalProc_Nakama(struct SBTLUNIT_WORK *wk) {
                 wk_sbtl->field494 = 0;
                 wk_sbtl->field484 = 0;
                 wk_sbtl->field488 = 0;
-                sbtlCallBtlEndAction(wk, 15, 0);
+                sbtlSetAction(wk, 15, 0);
                 sbtlSetMotion_sbtlUnit(wk, 29, 0, 0, 0);
                 return 2;
             }
@@ -1327,7 +1327,7 @@ s32 NormalProc_Nakama(struct SBTLUNIT_WORK *wk) {
         sbtlGetRotate(wk, &pos);
         ret = 1;
         UnitMV(wk, &pos);
-        sbtlCallBtlEndAction(wk, 2, 0);
+        sbtlSetAction(wk, 2, 0);
     }
     return ret;
 }
@@ -1347,7 +1347,7 @@ s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
     case 1:
         wk->model->mode = 15;
         sbtlSetUseSkill_sbtlActAI(wk, wk->skillid, 0);
-        sbtlCallBtlEndAction(wk, 12, 0);
+        sbtlSetAction(wk, 12, 0);
         wk_sbtl->field484++;
         if ((sbtlGetSkilltbl(wk->skillid)->area & 0x4000) != 0) {
             wk->model->field104 = wk->field1A0;
@@ -1382,7 +1382,7 @@ s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
             wk_sbtl->gstat[0] = 0;
             wk_sbtl->gstat[1] = 0;
             sbtlResetAction(wk);
-            sbtlCallBtlEndAction(wk, 1, 0);
+            sbtlSetAction(wk, 1, 0);
             sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         }
         break;
@@ -1572,7 +1572,7 @@ s8 sbtlNormalProc_Huuma(struct SBTLUNIT_WORK *wk)
         result = 1;
         sbtlGetRotate(wk, &target);
         UnitMV(wk, &target);
-        sbtlCallBtlEndAction(wk, 2, 0);
+        sbtlSetAction(wk, 2, 0);
         wk_sbtl->wait_counter = 0;
     }
     if (input == 0 && sbtlNormalProcNakamaSub(wk) && !(wk->vstatus & 0x80) && dds3PadButtonState[35] != 0 &&
@@ -1581,7 +1581,7 @@ s8 sbtlNormalProc_Huuma(struct SBTLUNIT_WORK *wk)
         wk_sbtl->mode = 13;
         wk_sbtl->field484 = 0;
         wk_sbtl->field488 = 0;
-        sbtlCallBtlEndAction(wk, 15, 0);
+        sbtlSetAction(wk, 15, 0);
         sbtlSetMotion_sbtlUnit(wk, 29, 0, 0, 0);
         sbtlResetCharge(wk);
         return 2;
@@ -1608,7 +1608,7 @@ s8 sbtlNormalProc_Huuma(struct SBTLUNIT_WORK *wk)
                         deg = sbtlGetChorikiDeg(&enemy->pos, rot, &wk->pos, 1.0f);
                         SDF_VU0_STOREVECTOR(rot);
                         sbtlAddUnitDeg(enemy, deg);
-                        sbtlCallBtlEndAction(enemy, 35, 0);
+                        sbtlSetAction(enemy, 35, 0);
                         sbtlSetMotion_sbtlUnit(wk, 35, 0, 0, 0);
                         enemy->flg |= 0x4000;
                     }
@@ -1877,7 +1877,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
     case 0:
         rot = &wk->rot;
         sbtlSetUseSkill_sbtlActAI(wk, item->sklid, 0);
-        sbtlCallBtlEndAction(wk, 12, 0);
+        sbtlSetAction(wk, 12, 0);
         wk_sbtl->field484++;
         wk->model->field104 = sbtlCallMemset11(wk, rot, 2, 300.0f, 0.6f, 0.1f);
         if (wk->model->field104 == -1) {
@@ -1940,7 +1940,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
                 wk_sbtl->gstat[0] = 0;
                 wk_sbtl->gstat[1] = 0;
                 sbtlResetAction(wk);
-                sbtlCallBtlEndAction(wk, 1, 0);
+                sbtlSetAction(wk, 1, 0);
                 sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
             }
         } else {
@@ -2467,7 +2467,7 @@ s32 FalseHuuma(struct SBTLUNIT_WORK *wk)
     if (wk_sbtl->field4B6 != 0 || wk_sbtl->mode == 14) {
         target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
         if (target != NULL) {
-            sbtlCallBtlEndAction(target, 9, 0);
+            sbtlSetAction(target, 9, 0);
             target->flg &= ~0x4000;
             sbtlCheckBadStatus(target);
             if (wk_sbtl->field4B6 == 1) {
@@ -2526,7 +2526,7 @@ s32 sbtlCallBtlSearchUnitID8(struct SBTLUNIT_WORK *wk) {
             wk_sbtl->field498 = 0;
             wk_sbtl->field4B0 = 0;
             wk->model->field104 = -1;
-            sbtlCallBtlEndAction(wk, 15, 0);
+            sbtlSetAction(wk, 15, 0);
             wk->skillid = SKLID_NOUSE_SORD3;
             break;
         case 1:
@@ -2534,7 +2534,7 @@ s32 sbtlCallBtlSearchUnitID8(struct SBTLUNIT_WORK *wk) {
             wk_sbtl->field4B0 = 4;
             wk_sbtl->field498 = 0;
             wk->model->field104 = -1;
-            sbtlCallBtlEndAction(wk, 15, 0);
+            sbtlSetAction(wk, 15, 0);
             wk->skillid = SKLID_NOUSE_SORD2;
             break;
         case 3:
@@ -2542,7 +2542,7 @@ s32 sbtlCallBtlSearchUnitID8(struct SBTLUNIT_WORK *wk) {
             wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 0, 1600.0f, 0.75f, 0.1f);
             wk_sbtl->field4B0 = 1;
             wk_sbtl->field4A4++;
-            sbtlCallBtlEndAction(wk, 12, 0);
+            sbtlSetAction(wk, 12, 0);
             unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
             if (unit != NULL && sbtlCheckDamageTarget(unit)) {
                 wk->skillid = unit->order_skillid;
@@ -2574,7 +2574,7 @@ s32 sbtlCallBtlSearchUnitID8(struct SBTLUNIT_WORK *wk) {
     default:
         wk_sbtl->mode = 1;
         wk->m_rate = 0.5f;
-        sbtlCallBtlEndAction(wk, 0, 0);
+        sbtlSetAction(wk, 0, 0);
         wk_sbtl->gstat[1] = 0;
         wk_sbtl->field4A4 = 0;
         wk_sbtl->gstat[0] = 0;
@@ -2612,7 +2612,7 @@ s32 sbtlCallBtlResetCharge2(struct SBTLUNIT_WORK *wk) {
         break;
     case 1:
         sbtlSetUseSkill_sbtlActAI(wk, wk->skillid, 0);
-        sbtlCallBtlEndAction(wk, 12, 0);
+        sbtlSetAction(wk, 12, 0);
         wk_sbtl->field484++;
         break;
     case 2:
@@ -2632,7 +2632,7 @@ s32 sbtlCallBtlResetCharge2(struct SBTLUNIT_WORK *wk) {
             wk_sbtl->gstat[0] = 0;
             wk_sbtl->gstat[1] = 0;
             sbtlResetAction(wk);
-            sbtlCallBtlEndAction(wk, 1, 0);
+            sbtlSetAction(wk, 1, 0);
             sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         }
         break;
@@ -2642,7 +2642,7 @@ s32 sbtlCallBtlResetCharge2(struct SBTLUNIT_WORK *wk) {
             wk_sbtl->gstat[0] = 0;
             wk_sbtl->gstat[1] = 0;
             sbtlResetAction(wk);
-            sbtlCallBtlEndAction(wk, 1, 0);
+            sbtlSetAction(wk, 1, 0);
             sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         }
         break;
@@ -2694,7 +2694,7 @@ s32 sbtlCallBtlSearchUnitID9(struct SBTLUNIT_WORK *wk) {
             }
             if (wk_sbtl->field494 >= 40) {
                 sbtlSetMotion_sbtlUnit(wk, 19, 4, 0, 0);
-                sbtlCallBtlEndAction(wk, 1, 0);
+                sbtlSetAction(wk, 1, 0);
                 wk_sbtl->field484 = 4;
             }
         } else if (wk->hModel->first->frame == 0.5f) {
@@ -3070,7 +3070,7 @@ s32 BeginSetsuma(struct SBTLUNIT_WORK *wk) {
     SKLID sklid = sbtlCallBtlSearchUnitID12();
 
     if (sklid >= SKLID_NONE) {
-        sbtlCallBtlEndAction(wk, 1, 0);
+        sbtlSetAction(wk, 1, 0);
         wk_sbtl->mode = 15;
         wk->model->flags |= 0x4000;
         sbtlSetMotion_sbtlUnit(wk, 35, 0, 0, 0);
@@ -3084,7 +3084,7 @@ s32 BeginSetsuma(struct SBTLUNIT_WORK *wk) {
         sbtlForceDelete_SkillFlag_Acter(unit, 0x400);
         sbtlClearHitC(wk_sbtl->hitList, unit);
         sbtlForceReset(wk_sbtl->effList, unit);
-        sbtlCallBtlEndAction(unit, 2, 0);
+        sbtlSetAction(unit, 2, 0);
         sbtlCheckCost_SkillID(unit, sklid, 1);
         wk->flg |= 0x4010;
         unit->flg |= 0x4010;

@@ -3410,7 +3410,6 @@
 0x0027B5E8	sbtlNormalProcNakamaSub	func	tier=D	derived-caller	na	unit code_0024AAD8, neighbour sbtlResetCombine; called by NormalProc_Nakama
 0x0027B9B8	sbtlCallGetActiveScene2	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlResetNSTOP; calls dds3GetActiveScene
 0x0027C490	sbtlGetRandomTarget	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlPlayer.sBtlGetRandomTarget, score 7.1 band B
-0x0027CDD0	sbtlCallBtlGetNakama2	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlSetSummonFunc; calls sbtlGetNakama
 0x0027CF80	sbtlCallHirukoYukaGoIdx2B	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetReturn; calls fldHirukoYukaGo_Idx2_B
 0x0027D1A0	slCallMemset	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour slExitToTitleSub; calls memset
 0x0027E498	slCallBtlGetPChara	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour slExitToTitleSub; calls sbtlGetPChara
@@ -4066,7 +4065,6 @@
 0x002E0B80	sbtlCallBtlGetSklVisualTbl3	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetSklVisualTbl
 0x002E1190	sbtlCheckMHTData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSkill.sBtlCheckMHTData, score 10.0 band A
 0x002E1228	sbtlRefSbtl58	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
-0x002E1588	sbtlCallMemAllocDirect10	func	tier=D	derived-callee	na	unit sbtl; calls sdfMemAllocDirect
 0x002E16A8	sbtlCallSprintf8	func	tier=D	derived-callee	na	unit sbtl; calls sprintf
 0x002E1A70	sbtlReleaseSM_List	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSM.sBtlReleaseSM_List, score 7.3 band B
 0x002E1B88	sbtlFunc20	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
@@ -23677,6 +23675,7 @@
 0x002795F8	sbtlSetRunAway	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlUnit.sBtlSetRunAway score 4.8 flag I: calls1 next gap4/1 st2:gap r2-only
 0x0027B5A0	sbtlResetCombine	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlPlayer.sBtlResetCombine score 3.3 flag I: calls1 calls-of-match-uniq st2:call r2-only
 0x0027B8B8	sbtlSetNSTOP	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlPlayer.sBtlSetNSTOP score 6.2 flag I: calls2 calls-of-match votes2 st2:call r2-only
+0x0027CDD0	sbtlSetReturn	func	tier=C	derived-derived-role	na	same function as R1 sbtlSetReturn (HD sBtlPlayer.sBtlSetReturn, r2-disagree:0x27cdd0); replaces sbtlCallBtlGetNakama2
 0x0027E5A0	slCallSetFirstAtkGun	func	tier=C	derived-derived-role	na	fuzzy p=0.33 name was wrong: 0x27E5A0 sets wk_sbtl+0xEB0 = 0x50, checks sbtlGetGun_Num < 6 and calls SetFirstAtk_Core(0x29F, 0); neighbour slCallSetFirstAtkCore; frees the SMT3 name for 0x1ECE10; replaces slExitToTitleSub
 0x00285FC8	IsKaja	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlAI.IsKaja score 4.4 flag -: calls1 next gap3/4 st2:gap r2-only
 0x002862F8	sbtlProc_YoyakuEnd	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlAI.sBtlProc_YoyakuEnd score 2.6 flag I: prev gap3/1 st2:gap r2-only
@@ -23777,6 +23776,7 @@
 0x002DF118	sbtlLoadOnMemMsg	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlDvltk.sBtlLoadOnMemMsg score 5.9 flag I: calls1 prev calls-of-match votes2 st2:call r2-only
 0x002DF1D0	sbtlCheckMsgMemType	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlDvltk.sBtlCheckMsgMemType score 5.3 flag I: calls1 calls-of-match st1:call r1+r2
 0x002E0FA0	CheckBadStatus_sbtlSkill	func	tier=C	derived-derived-role	na	same call site: R2 sbtlCheckMHTData calls it with (wk, sklid) where R1 calls CheckBadStatus_sbtlSkill (HD sBtlSkill.CheckBadStatus); replaces sbtlCallBtlGetSkilltbl18
+0x002E1588	sbtlCreateSM	func	tier=C	derived-derived-role	na	same function as R1 sbtlCreateSM (HD sBtlSM.sBtlCreateSM, r2-disagree:0x2e1588); R1 keeps sbtlCallMemAllocDirect10 on other code; replaces sbtlCallMemAllocDirect10
 0x002E1B50	sbtlDeleteSMList	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlSM.sBtlDeleteSMList score 5.1 flag I: calls1 prev callers-of-match votes2 st2:call r2-only
 0x002E2090	evtBEnterStateA	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x24bd48 sim 0.633 margin 0.00 pair
 0x002E2E80	sbtlDebug_DrawHPGauge	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sbattle.sBtlDebug_DrawHPGauge score 6.2 flag -: calls2 prev~ callers-of-match votes4 st2:call r2-only

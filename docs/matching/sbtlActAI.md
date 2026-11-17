@@ -129,3 +129,81 @@ v0/v1 swapped through the body, the SetUseskl shape (docs/matching/sbtlActAI.md)
 Related: regalloc.
 
 Vectors (battle, calls1): pass, 15 of 16 words covered.
+
+## sbtlRefSbtl21 (sbtlActAI, raidou1 0x48)
+
+Raidou 1: 12 of 18 words differ, first at +0x4.
+
+Register allocation: retail holds status in a1, the draft in a0. Three separate &= statements give retail's three unfolded and instructions; a status local or repeating wk->aiwk does not move the register.
+
+## sbtlCallBtlDeleteHitHelper (sbtlActAI, raidou1 0x8C)
+
+Raidou 1: 3 of 35 words differ, first at +0x14.
+
+Register allocation: retail reads wk->flg into v0 after sbtlRefSbtl19, the draft into v1, because sbtlRefSbtl19's s32 return keeps v0 live. Declaring the callee void would free it but needs a header change.
+
+## sbtlAAIInit_N_Renkei_sbtlActAI (sbtlActAI, raidou1 0xA4)
+
+Raidou 1: 37 of 42 words differ, first at +0xC; emitted 168 bytes, native 164 bytes.
+
+The draft keeps the constant 2 for mode and stat in s2, which grows the frame; retail materialises it at each use. A model local, no local and a rot pointer local all keep the shared register.
+
+## sbtlCallBtlGetBadStatus6 (sbtlActAI, raidou1 0x48)
+
+Raidou 1: 8 of 18 words differ, first at +0x18.
+
+Register allocation: retail keeps flg in s0 and the result in a0; the draft swaps them. Computing the result before or after the call, or as a ternary, leaves the swap.
+
+## sbtlCallBtlGetBadStatus6 (sbtlActAI, raidou2 0x48)
+
+Raidou 2: 8 of 18 words differ, first at +0x18.
+
+The Raidou 1 C; the same register swap: retail keeps flg in s0 and the result in a0, the draft swaps them.
+
+## sbtlCheckCharmTarget (sbtlActAI, raidou1 0x54)
+
+Raidou 1: 17 of 19 words differ, first at +0x0; emitted 76 bytes, native 84 bytes.
+
+Retail saves s1 in a 32-byte frame and never uses it; the draft has no s1 and a smaller frame. A ret local or an early return does not bring it back.
+
+## sbtlCheckCharmTarget (sbtlActAI, raidou2 0x54)
+
+Raidou 2: 17 of 19 words differ, first at +0x0; emitted 76 bytes, native 84 bytes.
+
+The Raidou 1 C; as there, retail saves an s1 it never uses and the draft does not.
+
+## sbtlEAIInit_BtlInit (sbtlActAI, raidou1 0x70)
+
+Raidou 1: 2 of 28 words differ, first at +0x48.
+
+Scheduling: retail loads the constant 13 before the ld into s0 and 60 after it; the draft does the reverse. sbtlEAIInit_BtlWait, the same shape, matches. Storing mode first costs 4 words.
+
+## sbtlEAIInit_BtlInit (sbtlActAI, raidou2 0x70)
+
+Raidou 2: 2 of 28 words differ, first at +0x48.
+
+The Raidou 1 C; the same scheduling of the constants 13 and 60 around the ld into s0.
+
+## sbtlAAIInit_BAttack (sbtlActAI, raidou1 0xA4)
+
+Raidou 1: 2 of 41 words differ, first at +0x48.
+
+Scheduling: the loads of 14 and 180 swap. Writing cmpframe before mode gives retail's store order; the reverse order swaps the stores as well.
+
+## sbtlAAIInit_BAttack (sbtlActAI, raidou2 0xA4)
+
+Raidou 2: 2 of 41 words differ, first at +0x48.
+
+The Raidou 1 C with Raidou 2's flag constants ((flags | 4) & ~0x21B); the same swap of the 14 and 180 loads.
+
+## sbtlAAIInit_SUMMON (sbtlActAI, raidou1 0x8C)
+
+Raidou 1: 13 of 35 words differ, first at +0x20.
+
+Retail applies ori 4, and ~0x21B, ori 0x160 and and ~0x80 in that order with model in a0; gcc reassociates the draft's flag operations, and the frame and cmpframe stores swap. One expression, three statements and two statements all reassociate.
+
+## sbtlAAIInit_SUMMON (sbtlActAI, raidou2 0x8C)
+
+Raidou 2: 13 of 35 words differ, first at +0x20.
+
+The Raidou 1 C; the same flag operation order and model register difference.

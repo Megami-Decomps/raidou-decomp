@@ -984,7 +984,7 @@ s32 pbCallBtlCheckLoadFlg(void)
             sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
             sbtlSetMotion_sbtlUnit(wk, 4, 0, 0, 0);
         }
-        sbtlCallBtlEndAction(wk, 42, 0);
+        sbtlSetAction(wk, 42, 0);
         sbtlSetEndBadStatus();
     }
     if (wk_sbtl->endcnt < 180) {

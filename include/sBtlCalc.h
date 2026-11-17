@@ -41,5 +41,6 @@ s32 sbtlCallBtlGetSkilltbl24(struct sdatUnitWork_t *unit, s32 mode, s32 value, S
 s32 sbtlResetBadStatus_GB(struct sdatUnitWork_t *unit, BSTF flg);
 s32 sbtlSetBadStatus_No(struct SBTLUNIT_WORK *wk, SKLID sklid, BST badstno, s32 flg, s32 acterID);
 s32 sbtlSetItem(struct SBTLUNIT_WORK *wk);
+s32 sbtlDeleteHitHelper(struct SBTLUNIT_WORK *wk);
 
 #endif

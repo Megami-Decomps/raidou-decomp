@@ -85,6 +85,7 @@ struct SBTLUNIT_WORK *sbtlCallMemset6(s32 index, s32 flg);
 s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk);
 s32 sbtlRefSbtl12(void);
 s32 sbtlCallBtlSetReturn(struct SBTLUNIT_WORK *wk);
+s32 sbtlSetReturn(struct SBTLUNIT_WORK *wk);
 s32 sbtlActiveAction(void);
 s32 sbtlCheckUnit_Exec_R(void);
 s32 sbtlCallLightSet(struct SBTLUNIT_WORK *wk);

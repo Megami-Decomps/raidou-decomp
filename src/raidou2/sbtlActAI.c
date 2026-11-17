@@ -10,6 +10,11 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "ps2asm.h"
+#include "sBtlDraw.h"
+#include "scrTraceCode.h"
+#include "sBtlEncount.h"
+#include "code_r1_0027CBE8.h"
+#include "sBtlSM.h"
 #include "sBtlPlayer.h"
 
 INCLUDE_ASM(const s32, "sbtlActAI", datLeaf81);
@@ -208,23 +213,79 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlIncNodeColorFromName);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlWkScrData);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlFunc11);
+s32 sbtlFunc11(void) {
+    sbtlLeaf113();
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlFunc12);
+s32 sbtlFunc12(void) {
+    sbtlEnableSceneGroupAdvancementSub();
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", CheckLoadData_sbtlScript);
+s32 CheckLoadData_sbtlScript(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
 
-INCLUDE_ASM(const s32, "sbtlActAI", evtIsFadeCompleteAndMessageWindowIdle);
+    if (wk_sbtl->mode == 9 || wk_sbtl->mode == 16) {
+        return 1;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number;) {
+        unit = wk_sbtl->unitList->pUnitL[i++].pUnit;
+        if (unit == NULL) {
+            continue;
+        }
+        if ((unit->mode == 1 || unit->mode == 2) && sbtlSearchReturn_Unit(unit) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlRefSbtl39);
+s32 evtIsFadeCompleteAndMessageWindowIdle(void) {
+    if (CheckLoadData_sbtlScript() != 0) {
+        return 0;
+    }
+    wk_sbtl->flg2 |= 0x200;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", fldEnableSceneGroupAdvancement);
+s32 sbtlRefSbtl39(void) {
+    wk_sbtl->flg2 &= ~0x200;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallGetIntPara52);
+s32 fldEnableSceneGroupAdvancement(void) {
+    sbtlEnableSceneGroupAdvancementSub();
+    wk_sbtl->flg2 |= 0xE0;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlKudaHuuinCheck);
+s32 sbtlCallGetIntPara52(void) {
+    s32 para = scrGetIntPara(0);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallGetIntPara53);
+    sbtlLeaf113();
+    wk_sbtl->flg2 &= ~0x80;
+    if (para != 1) {
+        wk_sbtl->flg2 &= ~0x40;
+        wk_sbtl->flg2 &= ~0x20;
+    }
+    return 1;
+}
+
+s32 sbtlKudaHuuinCheck(void) {
+    scrSetIntReturnValue(sbtlCheckPlayerDead() != 0);
+    return 1;
+}
+
+s32 sbtlCallGetIntPara53(void) {
+    if (scrGetIntPara(0) == 1) {
+        wk_sbtl->flg2 &= ~0x80;
+    } else {
+        wk_sbtl->flg2 |= 0x80;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallGetIntPara54);
 
@@ -369,23 +430,42 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetAITBL);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf23);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetSkillData_AI);
+s32 sbtlSetSkillData_AI(struct SBTLUNIT_WORK *wk, SKLID skillid) {
+    wk->skillid = skillid;
+    sbtlSetAIMode(wk);
+    wk->model->stat = 1;
+    sbtlCheckTargetEquation(wk);
+    wk->aiwk->stat = 2;
+    wk->model->mode = 14;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckEquationProc);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetChkskl);
+s32 sbtlSetChkskl(struct SBTLUNIT_WORK *wk, s32 sklid) {
+    return (wk->model->chkskl[sklid / 32] & (1 << sklid)) != 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", SetChkskl);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf65);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetUseskl);
+s32 sbtlSetUseskl(struct SBTLUNIT_WORK *wk, s32 sklid) {
+    return (wk->model->useskl[sklid / 32] & (1 << sklid)) != 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", SetUseskl);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlResetUseskl);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckMeshiyose);
+s32 sbtlCheckMeshiyose(struct SBTLUNIT_WORK *wk) {
+    s32 ret = 0;
+
+    if (sbtlCheckGenerator_D() != 0) {
+        ret = wk_sbtl->field424 < 6;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckEquationProc);
 
@@ -393,13 +473,51 @@ s32 sbtlBtlCheckEquationProcSub(s16 code) {
     return code != 0x16;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlGetBadStatus6);
+/* NON_MATCHING: 10 of 18 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlGetBadStatus6(struct SBTLUNIT_WORK *wk, u8 flg) {
+    s32 ret = flg;
 
+    if (sbtlGetBadStatus(&wk->unit) == BST_MAHUU) {
+        ret = 1;
+        if (!(flg & 2)) {
+            ret = 2;
+        }
+    }
+    return ret;
+}
+#else
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlGetBadStatus6);
+#endif
+
+/* NON_MATCHING: 4 of 21 words match.  */
+#ifdef NON_MATCHING
+struct SBTLUNIT_WORK *sbtlCheckCharmTarget(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *target;
+
+    if (sbtlGetBadStatus(&wk->unit) == BST_MAHUU) {
+        target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        if (target != NULL) {
+            wk = target;
+        }
+    }
+    return wk;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckCharmTarget);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf66);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckCharmTarget);
+s32 sbtlCallBtlCheckCharmTarget(struct SBTLUNIT_WORK *wk, s32 per, s32 idx) {
+    struct SBTLUNIT_WORK *unit = sbtlCheckCharmTarget(wk);
+
+    if (per * 10 >= unit->unit.now.hp * 1000 / unit->unit.now.maxhp) {
+        wk->model->ai_target[idx] = wk->field1A0;
+        return 1;
+    }
+    return 0;
+}
 
 s32 sbtlCallBtlCreateSideList2(struct SBTLUNIT_WORK *wk, s32 r, s32 idx)
 {
@@ -423,19 +541,41 @@ s32 sbtlCallBtlCreateSideList2(struct SBTLUNIT_WORK *wk, s32 r, s32 idx)
     return hit;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckCharmTarget2);
+s32 sbtlCallBtlCheckCharmTarget2(struct SBTLUNIT_WORK *wk, s32 per, s32 idx) {
+    struct SBTLUNIT_WORK *unit = sbtlCheckCharmTarget(wk);
+
+    if (unit->unit.now.hp * 1000 / unit->unit.now.maxhp >= per * 10) {
+        wk->model->ai_target[idx] = wk->field1A0;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSearchUnitID21);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideListSBtlUnit5);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckCharmTarget3);
+s32 sbtlCallBtlCheckCharmTarget3(struct SBTLUNIT_WORK *wk, s32 per, s32 idx) {
+    struct SBTLUNIT_WORK *unit = sbtlCheckCharmTarget(wk);
+
+    if (unit->unit.now.hp * 100 < unit->unit.now.maxhp * per) {
+        wk->model->ai_target[idx] = wk->field1A0;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideList3);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideListSBtlUnit6);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf67);
+s32 sbtlLeaf67(struct SBTLUNIT_WORK *wk, s32 cnt, s32 idx) {
+    if (wk->aiwk->syscnt_stop >= cnt) {
+        wk->model->ai_target[idx] = wk->field1A0;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSetChkskl2);
 
@@ -449,7 +589,9 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallCheckLiveTarget);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallCheckLiveTarget2);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetBgmID);
+s32 sbtlGetBgmID(s32 encountid, u16 bit) {
+    return sbtlCheckEvtBit_Table(bit) != 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideList4);
 
@@ -465,7 +607,9 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideList5);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideListSBtlUnit8);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetUseTable_Target);
+s32 sbtlGetUseTable_Target(struct SBTLUNIT_WORK *wk) {
+    return sbtlCheckMeshiyose(wk) != 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf24);
 
@@ -554,9 +698,41 @@ s32 sbtlEAIInit_None(struct SBTLUNIT_WORK *wk) {
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_Summon);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_BtlInit);
+/* NON_MATCHING: 26 of 28 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlEAIInit_BtlInit(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t zero;
+    struct SBTLUNIT_MODEL *model;
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_BtlWait);
+    memset(&zero, 0, sizeof(zero));
+    wk->model->flags = (wk->model->flags | 4) & ~0x21B;
+    SDF_VU0_LOADVECTOR(&zero);
+    SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+    model = wk->model;
+    model->cmpframe = 60;
+    model->mode = 13;
+    model->frame = 0;
+    return 1;
+}
+#else
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_BtlInit);
+#endif
+
+s32 sbtlEAIInit_BtlWait(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t zero;
+    struct SBTLUNIT_MODEL *model;
+
+    memset(&zero, 0, sizeof(zero));
+    wk->model->flags = (wk->model->flags | 5) & ~0x21A;
+    SDF_VU0_LOADVECTOR(&zero);
+    SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+    model = wk->model;
+    model->stat = 2;
+    model->mode = 11;
+    model->cmpframe = 60;
+    model->frame = 0;
+    return 1;
+}
 
 s32 sbtlEAIProc_Dummy(struct SBTLUNIT_WORK *wk) {
     wk->model->stat = 2;
@@ -582,23 +758,67 @@ s32 sbtlEAIProc_Movef(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_BtlWait);
+s32 sbtlEAIProc_BtlWait(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_MODEL *model = wk->model;
+    struct SBTLUNIT_MODEL *next;
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Guard);
+    if (model->cmpframe <= model->frame) {
+        model->flags &= ~1;
+        sbtlResetAAI(wk);
+        next = wk->model;
+        next->stat = 1;
+        next->mode = 0;
+        sbtlSetMotion_sbtlUnit(wk, 0, 4, 0, 0);
+    }
+    return 1;
+}
+
+s32 sbtlEAIProc_Guard(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_MODEL *model = wk->model;
+
+    wk->flg |= 0x100;
+    if (model->cmpframe <= model->frame) {
+        sbtlResetAAI(wk);
+        sbtlSetAIWkStat(wk);
+        wk->flg &= ~0x100;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Ctact);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Search);
+s32 sbtlEAIProc_Search(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_MODEL *model = wk->model;
+    s32 targetid[4];
+
+    if (model->cmpframe <= model->frame) {
+        model->mode = 0;
+        model->stat = 1;
+        return 1;
+    }
+    if (sbtlCheckSearchEnemy(wk, targetid, 0) != 0) {
+        sbtlSetSearchEnemyMode(wk, targetid[0]);
+        wk->model->stat = 1;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Chase);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Escape);
+s32 sbtlEAIProc_Escape(struct SBTLUNIT_WORK *wk) {
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Summonw);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_BtlAI);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetSearchEnemyMode);
+s32 sbtlSetSearchEnemyMode(struct SBTLUNIT_WORK *wk, s32 targetid) {
+    wk->model->field118 = 1;
+    sbtlSetGroupAction(wk, targetid, 12, 0);
+    sbtlResetAIPattern(wk, 0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetGroupAction);
 
@@ -669,7 +889,15 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf71);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf72);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetNoMP_sbtlActAI);
+void sbtlSetNoMP_sbtlActAI(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_MODEL *model = wk->model;
+
+    if (model->nonempflg == 0 && (wk->field414 & 2)) {
+        model->nonempflg = 1;
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_NOTMP, wk->skillid);
+        sbtlResetAIPattern(wk, 0);
+    }
+}
 
 INCLUDE_RODATA(const s32, "sbtlActAI", sbtlSetGroupActionTable);
 
@@ -699,19 +927,46 @@ s32 sbtlCheckMapHit(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis)
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_Free);
+s32 sbtlAAIInit_Free(struct SBTLUNIT_WORK *wk) {
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_Free_sbtlActAI);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlBtlAAIInitSklSSub);
+void sbtlBtlAAIInitSklSSub(struct SBTLUNIT_WORK *wk) {
+    wk->model->stat = 2;
+    wk->model->mode = 14;
+    wk->model->frame = 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Escape);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Kaihi);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Wait);
+s32 sbtlAAIInit_N_Wait(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_MODEL *model;
+    f32 max;
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Sabato);
+    wk->model->mode = 2;
+    wk->model->flags = (wk->model->flags | 4) & ~0x21B;
+    sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+    model = wk->model;
+    model->stat = 2;
+    max = wk->actMax;
+    model->frame = 0;
+    wk->model->cmpframe = GetIntervalRand(max * 0.8f, max * 1.2f);
+    return 1;
+}
+
+s32 sbtlAAIInit_N_Sabato(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_MODEL *model = wk->model;
+
+    model->mode = 2;
+    model->flags &= ~ACTAIFLGMASK;
+    sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+    wk->model->stat = 2;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_GardeT);
 
@@ -725,11 +980,55 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf27);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlGetSkilltbl5);
 
+/* NON_MATCHING: 39 of 41 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlAAIInit_BAttack(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t zero;
+    struct SBTLUNIT_MODEL *model;
+
+    memset(&zero, 0, sizeof(zero));
+    wk->model->flags = (wk->model->flags | 4) & ~0x21B;
+    SDF_VU0_LOADVECTOR(&zero);
+    SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+    model = wk->model;
+    model->cmpframe = 180;
+    model->mode = 14;
+    model->frame = 0;
+    sbtlSetMotion_sbtlUnit(wk, 18, 4, 0, 0);
+    sbtlSetAction(wk, 2, 0);
+    wk->model->stat = 2;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_BAttack);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_Skl_S);
 
+/* NON_MATCHING: 22 of 35 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlAAIInit_SUMMON(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t zero;
+    struct SBTLUNIT_MODEL *model;
+
+    memset(&zero, 0, sizeof(zero));
+    model = wk->model;
+    model->mode = 2;
+    model->flags = (model->flags | 4) & ~0x21B;
+    model->flags |= 0x160;
+    model->flags &= ~0x80;
+    wk->model->field100 = sbtlGetPlayerID();
+    SDF_VU0_LOADVECTOR(&zero);
+    SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+    model = wk->model;
+    model->stat = 2;
+    model->frame = 0;
+    model->cmpframe = 0;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_SUMMON);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_GuardH);
 
@@ -761,19 +1060,34 @@ void sbtlResetAAI(struct SBTLUNIT_WORK *wk) {
     }
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetWarpUnit_ID);
+struct SBTLUNIT_WORK *sbtlGetWarpUnit_ID(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, sbtlSetNoMP(wk));
+
+    if (unit == NULL || sbtlCheckExist(unit) == 0) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    }
+    return unit;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSetMotion);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlBtlAAIProcNKaihiSub);
+s32 sbtlBtlAAIProcNKaihiSub(struct SBTLUNIT_WORK *wk) {
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Free);
+s32 sbtlAAIProc_Free(struct SBTLUNIT_WORK *wk) {
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Free_sbtlActAI);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Wait);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Sabato);
+s32 sbtlAAIProc_N_Sabato(struct SBTLUNIT_WORK *wk) {
+    wk->actCounter++;
+    wk->actCounter = (wk->actCounter <= 0) ? 0 : (wk->actCounter < wk->actMax) ? wk->actCounter : wk->actMax;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Renkei);
 
@@ -781,7 +1095,14 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSetMapFadeH);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Comb_R);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Return);
+s32 sbtlAAIProc_N_Return(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+
+    if (unit != NULL && sbtlCheckDamageTarget(unit) != 0) {
+        sbtlSetReturn(unit);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Escape);
 
@@ -803,9 +1124,23 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Skl_SRT);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_SUMMON);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_GuardH);
+s32 sbtlAAIProc_N_GuardH(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_MODEL *model = wk->model;
 
-INCLUDE_ASM(const s32, "sbtlActAI", Proc_sbtlAction);
+    model->frame++;
+    model->frame = (model->frame <= 0) ? 0 : (model->frame < 4001) ? model->frame : 4000;
+    wk->flg |= 0x100;
+    if (model->cmpframe <= model->frame) {
+        sbtlResetAAI(wk);
+        wk->flg &= ~0x100;
+    }
+    return 1;
+}
+
+s32 Proc_sbtlAction(struct SBTLUNIT_WORK *wk) {
+    sbtlResetAAI(wk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlMawariChk);
 

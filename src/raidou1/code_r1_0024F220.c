@@ -3733,7 +3733,7 @@ s32 sbtlCallBtlSearchUnitID4(s32 index, s32 flg) {
         if (kansen == 1 || flg == 1) {
             wk->m_rate = 0.0f;
         } else {
-            sbtlCallBtlEndAction(wk, 1, 0);
+            sbtlSetAction(wk, 1, 0);
             sbtlSetMotion_sbtlUnit(wk, 7, 0, 0, 0);
         }
     }

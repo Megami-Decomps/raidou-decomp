@@ -52,6 +52,7 @@ struct SBTLUNIT_WORK *sbtlSetEncountData(s32 devil, s32 posid, s32 groupID);
 struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub2(s32 devilId, s32 point, s32 arg);
 s32 sbtlCallBtlClearGeneratorWork(s32 stageNo);
 s32 sbtlCheckGeneratorGroupID(s32 group);
+s32 sbtlCheckGenerator_D(void);
 s32 sbtlGetRndEncJoken(s32 id);
 s32 sbtlGetRndEncMax(s32 id);
 s32 sbtlRndEncCalc(s32 id, f32 length);

@@ -29,21 +29,29 @@ typedef struct SBTLUNIT_MODEL {
     u16 mode;
     u8 pad10E[0x2];
     u32 flags;
-    u8 pad114[0x8];
+    s32 field0FC;
+    s32 field100;
     s32 field104;
     u8 pad120[0x8];
     s32 frame;
     s32 cmpframe;
-    u8 pad130[0x16];
+    u8 pad130[0x14];
+    s8 field118;
+    u8 pad145;
     u16 stat;
     f32 field11C;
     f32 field120;
-    u8 pad150[0x34];
+    u8 pad150[0x30];
+    s8 nonempflg;
+    u8 pad181[0x3];
     s8 dataflg;
     u8 pad185[0x3];
     s32 datamode;
     s32 data_p[2];
     s32 ai_target[3]; /* unit IDs found by sbtlCallBtlCreateSideList2 (HD ai_target) */
+    u8 pad1A0[0x1A4 - 0x1A0];
+    u32 useskl[41]; /* skill-used bits, one per SKLID */
+    u32 chkskl[41]; /* 0x248: skill-checked bits (HD chkskl); length not read yet */
 } SBTLUNIT_MODEL;
 #else
 typedef struct SBTLUNIT_MODEL {
@@ -147,6 +155,7 @@ s32 CheckStop_BadStatus(struct SBTLUNIT_WORK *wk);
 s32 CheckAction_Nakama(struct SBTLUNIT_WORK *wk);
 s32 BeginSetsuma(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_WORK *sbtlGetPlayerUnit(s32 id);
+s32 sbtlGetPlayerID(void);
 s32 sbtlCallBtlGetBadStatus5(struct SBTLUNIT_WORK *wk);
 s32 sbtlRefSbtl16(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_LISTWORK *sbtlCallBtlCreateUnitList(u8 side);

@@ -197,7 +197,7 @@ SBTLSM_LISTWORK *sbtlCreateSMList(void)
     return lwk;
 }
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemAllocDirect10);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCreateSM);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallSprintf8);
 

@@ -3107,7 +3107,6 @@
 0x00258CE0	sbtlCallGetLightParam	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetUnitLight; calls mapGetLightParam
 0x002590F8	sbtlCallBtlCheckEnshutuSummonUnit2	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckMotionMove; calls sbtlCheckEnshutuSummonUnit
 0x00259448	sbtlCallBtlCreateUnit	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlGetPlayer_HitTarget; calls sbtlCreateUnit
-0x00259B98	sbtlCallBtlSearchUnitID5	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetVibe; calls sbtlSearchUnit_ID
 0x00259F00	sbtlRefSbtl36	func	tier=D	derived-data	na	unit code_0024AAD8, neighbour sbtlActiveAction; references wk_sbtl
 0x00259F38	sbtlCallBtlGetItemtbl	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlActiveAction; calls sbtlGetItemtbl
 0x00259FE8	sbtlCallMemset8	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlResetCombine; calls memset
@@ -3376,7 +3375,6 @@
 0x0027BD88	sbtlCallBtlSearchEffectSABActer	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlSearchEffect_SAB_Acter
 0x0027BE18	sbtlRefSbtl22	func	tier=D	derived-data	na	unit sbtlActAI; references wk_sbtl
 0x0027BF40	sbtlSetUseSkill	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlAction.sBtlSetUseSkill, score 8.05 band B
-0x0027C728	sbtlCallBtlEndAction	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlEndAction
 0x0027C888	sbtlCallBtlDeleteHitHelper	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlDeleteHitHelper
 0x0027D118	sbtlGetUnitHelperPos	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetUnitHelperPos, score 9.8 band B
 0x0027D208	sbtlGetUnitHelperMatrix	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetUnitHelperMatrix, score 11.45 band A
@@ -18595,7 +18593,6 @@
 0x00298A58	sbtlClearGeneratorWork	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlEncount.sBtlClearGeneratorWork score 4.2 flag I: calls2 calls-of-match votes2 st1:call r2-disagree:0x2cbeb0
 0x00298B60	sbtlGeneratorD_On	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlEncount.sBtlGeneratorD_On score 3.2 flag I: calls1 next gap1/2 st2:gap r2-only
 0x00298B70	sbtlCheckGeneratorGroupID	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlEncount.sBtlCheckGeneratorGroupID score 6.5 flag I: calls2 calls-of-match-uniq votes3 st2:call r2-only
-0x00298C50	datBossRashChk	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x246038 sim 0.618 margin 0.21 single
 0x00298CE8	sbtlChkBossEventStart_EnemySummonWait	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlMain.sBtlChkBossEventStart_EnemySummonWait score 2.0 flag I: calls1 calls-of-match st1:call r1-only
 0x00298FA0	sbtlGetRndEncJoken	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlEncount.sBtlGetRndEncJoken score 2.8 flag I: calls1 prev gap11/5 st1:gap r2-disagree:0x2cc808
 0x00299170	sbtlRndEncCalc	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlEncount.sBtlRndEncCalc score 3.6 flag I: calls1 callers-of-match votes2 st1:call r2-disagree:0x2cd0a8
@@ -19438,6 +19435,7 @@
 0x00255AF0	sbtlItem_CheckSetItem	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlUnit.sBtlItem_CheckSetItem score 6.7 flag -: calls3 callers-of-match votes5 st1:call r1-only
 0x00256020	sbtlEntryStockData	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlUnit.sBtlEntryStockData score 6.4 flag I: calls4 callers-of-match votes5 st1:call r2-disagree:0x275030
 0x00259310	sbtlReleaseUnitList_ID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlUnit.sBtlReleaseUnitList_ID score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
+0x00259B98	sbtlGetPlayerID	func	tier=B	hd-role	na	HD sBtlPlayer.sBtlGetPlayerID (R2 0x27B208, tier B); same function, r1-disagree:0x259b98; R2 keeps sbtlCallBtlSearchUnitID5 on other code; replaces sbtlCallBtlSearchUnitID5
 0x00259E28	sbtlResetAction	func	tier=B	hd-role	na	HD sBtlPlayer.sBtlResetAction (R2 name, same callee in sbtlBS_MUNAKA_Init_Imad_Restart); replaces sbtlCallFalseHuuma
 0x0025BBC8	CheckStop_BadStatus	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.CheckStop_BadStatus score 6.8 flag -: calls2 calls-of-match-uniq votes3 st1:call r1-only
 0x0025C960	sbtlSetReturn	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlPlayer.sBtlSetReturn score 6.9 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x27cdd0
@@ -19463,6 +19461,7 @@
 0x00274700	PosOut	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlActAI.PosOut score 6.5 flag -: calls1 prev gap5/9 st1:gap r1+r2
 0x002751D8	sbtlGetEscapePoint	func	tier=B	hd-role	na	HD sBtlGetEscapePoint (sBtlActAI.c:4499) is what sBtlSetAIData case 15 calls with (wk, wklock, &actaiwk->ppos, area); R2 0x29A578 is sbtlGetEscapePoint; R1 0x2751D8 sits beside GetSenkaiPointSub as in R2; replaces sbtlCallMemset13
 0x00276A00	sbtlSetWalk	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlActAI.sBtlSetWalk score 6.4 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x29c738
+0x0027C728	sbtlSetAction	func	tier=B	hd-role	na	HD sBtlAction.sBtlSetAction (R2 0x2A6C80, tier A); same function, r1-disagree:0x27c728; replaces sbtlCallBtlEndAction
 0x0027CD48	sbtlSetVibeFadeIn	func	tier=B	hd-role	na	HD sBtlSub.c sBtlSetVibeFadeIn (0x1fc9f00): vibe_startf/frame/power then vibe_type = 1, returns 1; replaces sbtlRefSbtl40
 0x0027CD90	sbtlSetVibeFadeOut	func	tier=B	hd-role	na	HD sBtlSub.c sBtlSetVibeFadeOut (0x1fc9fd0): same with vibe_type = 0; replaces sbtlRefSbtl41
 0x0027EC00	sbtlCheckWorldtoScreen	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlSub.sBtlCheckWorldtoScreen score 6.2 flag I: prev next gap=exact st2:gap r2-only
@@ -19490,6 +19489,7 @@
 0x00297128	sbtlGetVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetVisualData(major, id): per-major VISUALDATA_WORK table; replaces sbtlGetMotionVisualData
 0x00297170	sbtlGetMotionVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
 0x00297EF0	SetEncountData_Sub_sbtlEncount	func	tier=B	hd-role	na	HD sBtlEncount.SetEncountData_Sub (R2 name, same callee in sbtlAddAWXAtkPadSub and sbtlSetEncountData); replaces sbtlCallMemset21
+0x00298C50	sbtlCheckGenerator_D	func	tier=B	hd-role	na	HD sBtlEncount.sBtlCheckGenerator_D (R2 0x2CC1E0, tier A); takes no argument, loops over sb_gen_work; replaces datBossRashChk
 0x0029B3C8	sbtlSetAutoSkill_GB	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlSetAutoSkill_GB score 5.9 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2d4ff0
 0x0029BFB8	sbtlCheckCost_SkillID	func	tier=B	hd-role	na	HD SEquationno_12 returns sBtlCheckCost_SkillID(wk, skillid, 0), the call at the same place in Raidou SEquationno_12; replaces sbtlCallBtlGetSkilltbl22
 0x0029C608	sbtlCheckKuishibari	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlCheckKuishibari score 6.1 flag I: calls4 callee-index votes3 st1:cidx r2-disagree:0x2d68b8

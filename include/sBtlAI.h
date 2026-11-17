@@ -14,7 +14,8 @@ typedef struct SBTLAI_WORK {
     struct sdfMemHandle_t *handle;
     s16 stat;
     u16 mode;
-    u8 pad008[0x60];
+    u8 pad008[0x5C];
+    s32 syscnt_stop;
     s32 field4C;
     s8 scr_actcheckflg;
     u8 pad06D[0x3];
@@ -32,7 +33,9 @@ typedef struct SBTLAI_WORK {
     s16 act_p;
     u8 pad012[0x42 - 0x12];
     u8 bstside; /* bit 0: confused unit stays on its own side */
-    u8 pad043[0x48 - 0x43];
+    u8 hcnt;
+    s16 meirei_nobk; /* SBTLPNL_MENU */
+    u8 pad046[0x48 - 0x46];
     s32 syscnt_stop;
     s32 field4C;
     s8 scr_actcheckflg;

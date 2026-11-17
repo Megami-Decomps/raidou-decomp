@@ -17,7 +17,6 @@ s32 datGetDefPow(datUnitWork_t *work);
 s32 datAddHp(datUnitWork_t *work, s32 hp);
 s32 datGetBaseParam(datUnitWork_t *work, s32 paratype);
 s32 datGetParam(datUnitWork_t *work, s32 paratype);
-s32 datBossRashChk(s32 eid);
 
 extern datBossPress_t datBossPress[40];
 
