@@ -116,6 +116,15 @@ class ReduceTests(unittest.TestCase):
         self.assertEqual(nmb.diff_facts(direct, spilled)["call"][1], {"callee": 1})
         self.assertNotIn("imm", nmb.diff_facts(direct, spilled))
 
+    def test_return_constant_set_in_two_arms_is_kept(self) -> None:
+        facts = self.retail("""
+            bne a0,zero,100c
+            daddu v0,zero,zero
+            addiu v0,zero,1
+            jr ra
+            nop""")
+        self.assertIn(1, facts.c["imm"])
+
     def test_alignment_test_of_an_address_is_not_a_constant(self) -> None:
         facts = self.retail("lui v1,0x40\naddiu v1,v1,16\nandi v0,v1,0x7\nsw v0,0(a0)")
         self.assertNotIn(7, facts.c["imm"])

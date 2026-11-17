@@ -310,7 +310,7 @@ class Facts:
 
 @dataclass
 class Val:
-    kind: str               # c const, a address, L obj-local, hi, p param, ld loaded, r return, u unknown
+    kind: str               # c const, cs consts by path, a address, L obj-local, hi, p param, ld loaded, r return, u unknown
     v: object = None
     off: int = 0
     ix: bool = False        # an index was added to an address
@@ -382,6 +382,9 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
             if val.kind == "c":
                 if val.v + val.off not in (0,):
                     f.add("imm", val.v + val.off)
+            elif val.kind == "cs":
+                for c in val.v - {0}:
+                    f.add("imm", c)
             elif val.off and val.kind != "hi":
                 f.add("imm", val.off)
 
@@ -498,7 +501,7 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
                 continue
             if op == "jr":
                 if a and a[0] == "ra":
-                    if "v0" in regs and regs["v0"].kind == "c" and addr_of(regs["v0"]) is None:
+                    if "v0" in regs and regs["v0"].kind in ("c", "cs") and addr_of(regs["v0"]) is None:
                         consume("v0")   # a constant returned; an address left in v0 may be garbage of a void
                 continue
             if op == "b":
@@ -650,8 +653,19 @@ def meet(states: list[dict]) -> dict:
     """Registers whose value is the same on every incoming path."""
     if not states:
         return {}
-    first = states[0]
-    return {r: v for r, v in first.items() if all(s.get(r) == v for s in states[1:])}
+    out = {}
+    for r, v in states[0].items():
+        vals = [s.get(r) for s in states]
+        if all(x == v for x in vals):
+            out[r] = v
+        elif all(x is not None and x.kind in ("c", "cs") for x in vals):
+            # Constants that differ by path, such as a return value set in two arms.
+            cs = set()
+            for x in vals:
+                cs |= x.v if x.kind == "cs" else {x.v + x.off}
+            if all(abs(c) < 0x10000 for c in cs):
+                out[r] = Val("cs", frozenset(cs))
+    return out
 
 
 class DraftResolver(Resolver):
