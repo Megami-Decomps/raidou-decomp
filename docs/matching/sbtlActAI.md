@@ -127,3 +127,11 @@ Raidou 1: 11 of 14 words differ, first at +0x0.
 register allocation only: retail wk_sbtl in a2, result in v0 from the start; tried && chain, ret local, nested ifs with id local (all wk_sbtl in a1, result in a2 or two exits); find_similar no matched sibling; vector checked (menu, ret 0)
 
 Related: regalloc.
+
+## sbtlGetUseTable_Target_sbtlActAI (sbtlActAI, raidou1 0x64C)
+
+Raidou 1: 346 of 381 words differ, first at +0x3C; emitted 1524 bytes, native 1612 bytes.
+
+Flow follows retail with shared search/fail/found tails; wk_sbtl reload register in cases 1/2 and s-register rotation differ, so case 2's tail cross-jumps. Vector checked.
+
+Related: regalloc.

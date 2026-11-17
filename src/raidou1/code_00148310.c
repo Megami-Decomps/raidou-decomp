@@ -8,6 +8,9 @@
 #include "dds3Randomize.h"
 #include "EventBit.h"
 #include "sdfMath.h"
+#include "dds3KernelDraw.h"
+#include "fldProcess.h"
+#include "ps2asm.h"
 
 void mapObjEveHitSet(s16 uniq, s32 act, char *scr_name) {
     s32 i;
@@ -539,9 +542,266 @@ s32 mapFileLoadSub4(s32 floor, s16 kind) {
 
 INCLUDE_ASM(const s32, "code_00148310", mapWallGetUniq);
 
+/* NON_MATCHING: 649 of 676 words match.  */
+#ifdef NON_MATCHING
+void mapWallObjTask(f32 x, f32 y, f32 z)
+{
+    f32 vec[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+    s32 ix, iz;
+    f32 x0, z0, x1, z1, x2, z2, x3, z3;
+    f32 py, y3, y0, pz, px, rot;
+    f32 scale;
+    s32 i, uniq, link, found, color;
+
+    eglSetOt(0x44);
+    eglLinkAlpha(0);
+    y0 = 0.0f;
+    y3 = 0.0f;
+    py = 0.0f;
+    pz = 0.0f;
+    rot = 0.0f;
+    px = 0.0f;
+    fldSetPlayerTargetData(&ix, &iz, fldGlobalBase.focusX, fldGlobalBase.focusZ);
+    SDF_VU0_LOADVECTOR_MEMOPS(*(u128 *)vec);
+    for (i = 0; i < 4; i++) {
+        mapObjVisible(0x9000 + i, 0);
+        mapObjVisible(0x9010 + i, 0);
+        mapObjVisible(0x9020 + i, 0);
+        mapObjVisible(0x9030 + i, 0);
+        mapObjVisible(0x9040 + i, 0);
+        mapObjVisible(0x9050 + i, 0);
+        mapObjVisible(0x9060 + i, 0);
+        mapObjVisible(0x9070 + i, 0);
+    }
+    for (i = 0; i < 64; i++) {
+        if (mapWallObjTaskData[i].use == 0) {
+            continue;
+        }
+        if (ix >= mapWallObjTaskData[i].vix0 && ix < mapWallObjTaskData[i].vix1
+            && iz >= mapWallObjTaskData[i].viy0 && iz < mapWallObjTaskData[i].viy1) {
+            mapWallObjTaskData[i].alpha += 8;
+            if (mapWallObjTaskData[i].alpha > 128) {
+                mapWallObjTaskData[i].alpha = 128;
+            }
+        } else {
+            mapWallObjTaskData[i].alpha -= 8;
+            if (mapWallObjTaskData[i].alpha < 0) {
+                mapWallObjTaskData[i].alpha = 0;
+            }
+        }
+        if (mapWallObjTaskData[i].alpha == 0) {
+            mapWallObjTaskData[i].view = 0;
+            mapWallObjTaskData[i].link_idx = -1;
+            continue;
+        }
+        uniq = -1;
+        switch (mapWallObjTaskData[i].type) {
+        case 0:
+            link = mapWallObjTaskData[i].link_idx;
+            if (link == -1) {
+                found = mapWallGetUniq(0);
+                if (found != -1) {
+                    uniq = found + 0x9060;
+                    mapWallObjTaskData[i].link_idx = found;
+                }
+            } else {
+                uniq = link + 0x9060;
+            }
+            break;
+        case 1:
+            link = mapWallObjTaskData[i].link_idx;
+            if (link == -1) {
+                found = mapWallGetUniq(1);
+                if (found != -1) {
+                    uniq = found + 0x9070;
+                    mapWallObjTaskData[i].link_idx = found;
+                }
+            } else {
+                uniq = link + 0x9070;
+            }
+            break;
+        case 2:
+            link = mapWallObjTaskData[i].link_idx;
+            if (link == -1) {
+                found = mapWallGetUniq(2);
+                if (found != -1) {
+                    uniq = found + 0x9000;
+                    mapWallObjTaskData[i].link_idx = found;
+                }
+            } else {
+                uniq = link + 0x9000;
+            }
+            break;
+        case 3:
+            link = mapWallObjTaskData[i].link_idx;
+            if (link == -1) {
+                found = mapWallGetUniq(3);
+                if (found != -1) {
+                    uniq = found + 0x9010;
+                    mapWallObjTaskData[i].link_idx = found;
+                }
+            } else {
+                uniq = link + 0x9010;
+            }
+            break;
+        case 4:
+            link = mapWallObjTaskData[i].link_idx;
+            if (link == -1) {
+                found = mapWallGetUniq(4);
+                if (found != -1) {
+                    uniq = found + 0x9020;
+                    mapWallObjTaskData[i].link_idx = found;
+                }
+            } else {
+                uniq = link + 0x9020;
+            }
+            break;
+        case 5:
+            link = mapWallObjTaskData[i].link_idx;
+            if (link == -1) {
+                found = mapWallGetUniq(5);
+                if (found != -1) {
+                    uniq = found + 0x9030;
+                    mapWallObjTaskData[i].link_idx = found;
+                }
+            } else {
+                uniq = link + 0x9030;
+            }
+            break;
+        case 6:
+            link = mapWallObjTaskData[i].link_idx;
+            if (link == -1) {
+                found = mapWallGetUniq(6);
+                if (found != -1) {
+                    uniq = found + 0x9040;
+                    mapWallObjTaskData[i].link_idx = found;
+                }
+            } else {
+                uniq = link + 0x9040;
+            }
+            break;
+        case 7:
+            link = mapWallObjTaskData[i].link_idx;
+            if (link == -1) {
+                found = mapWallGetUniq(7);
+                if (found != -1) {
+                    uniq = found + 0x9050;
+                    mapWallObjTaskData[i].link_idx = found;
+                }
+            } else {
+                uniq = link + 0x9050;
+            }
+            break;
+        }
+        if (uniq == -1) {
+            continue;
+        }
+        fldWallObjTaskSub(mapWallObjTaskData[i].floor, mapWallObjTaskData[i].ix, mapWallObjTaskData[i].iy, &x0, &z0);
+        fldWallObjTaskSub(mapWallObjTaskData[i].floor, mapWallObjTaskData[i].ix + mapWallObjTaskData[i].iw,
+                          mapWallObjTaskData[i].iy, &x1, &z1);
+        fldWallObjTaskSub(mapWallObjTaskData[i].floor, mapWallObjTaskData[i].ix,
+                          mapWallObjTaskData[i].iy + mapWallObjTaskData[i].ih, &x2, &z2);
+        fldWallObjTaskSub(mapWallObjTaskData[i].floor, mapWallObjTaskData[i].ix + mapWallObjTaskData[i].iw,
+                          mapWallObjTaskData[i].iy + mapWallObjTaskData[i].ih, &x3, &z3);
+        switch (mapWallObjTaskData[i].dir) {
+        case 0:
+            y0 = mapGetFloorY(mapWallObjTaskData[i].floor, x0, z0);
+            mapGetFloorY(mapWallObjTaskData[i].floor, x1 - 10.0f, z1);
+            mapGetFloorY(mapWallObjTaskData[i].floor, x2, z2);
+            y3 = mapGetFloorY(mapWallObjTaskData[i].floor, x3 - 10.0f, z3);
+            break;
+        case 8:
+            y0 = mapGetFloorY(mapWallObjTaskData[i].floor, x0, z0);
+            mapGetFloorY(mapWallObjTaskData[i].floor, x1 - 10.0f, z1);
+            mapGetFloorY(mapWallObjTaskData[i].floor, x2, z2);
+            y3 = mapGetFloorY(mapWallObjTaskData[i].floor, x3 - 10.0f, z3);
+            break;
+        case 4:
+            y0 = mapGetFloorY(mapWallObjTaskData[i].floor, x0, z0);
+            mapGetFloorY(mapWallObjTaskData[i].floor, x1, z1);
+            mapGetFloorY(mapWallObjTaskData[i].floor, x2, z2 + 10.0f);
+            y3 = mapGetFloorY(mapWallObjTaskData[i].floor, x3, z3 + 10.0f);
+            break;
+        case 12:
+            y0 = mapGetFloorY(mapWallObjTaskData[i].floor, x0, z0);
+            mapGetFloorY(mapWallObjTaskData[i].floor, x1, z1);
+            mapGetFloorY(mapWallObjTaskData[i].floor, x2, z2 + 10.0f);
+            y3 = mapGetFloorY(mapWallObjTaskData[i].floor, x3, z3 + 10.0f);
+            break;
+        }
+        switch (mapWallObjTaskData[i].dir) {
+        case 0:
+            rot = 180.0f;
+            py = (y0 + y3) * 0.5f;
+            px = (x0 + x3) * 0.5f;
+            pz = z3;
+            break;
+        case 8:
+            rot = 0.0f;
+            py = (y0 + y3) * 0.5f;
+            px = (x0 + x3) * 0.5f;
+            pz = z0;
+            break;
+        case 4:
+            rot = 90.0f;
+            py = (y0 + y3) * 0.5f;
+            pz = (z0 + z3) * 0.5f;
+            px = x0;
+            break;
+        case 12:
+            rot = -90.0f;
+            py = (y0 + y3) * 0.5f;
+            pz = (z0 + z3) * 0.5f;
+            px = x3;
+            break;
+        }
+        color = mapWallObjTaskData[i].alpha << 24;
+        eglSetOt(0x44);
+        switch (mapWallObjTaskData[i].type) {
+        case 0:
+            if (mapWallObjTaskData[i].view == 0) {
+                mapWallObjTaskData[i].view = 1;
+                p2sdPlaySE_Vol(32, 127);
+            }
+            scale = mapWallObjTaskData[i].haba;
+            mapObjPos(uniq, px, py, pz);
+            mapObjRot(uniq, rot);
+            mapObjScale(uniq, scale / 3.0f, scale / 3.0f, 1.0f);
+            mapObjVisible(uniq, 1);
+            mapObjColor(uniq, color | 0x808080);
+            break;
+        case 1:
+            if (mapWallObjTaskData[i].view == 0) {
+                mapWallObjTaskData[i].view = 1;
+                p2sdPlaySE_Vol(32, 127);
+            }
+            scale = mapWallObjTaskData[i].haba;
+            mapObjPos(uniq, px, py, pz);
+            mapObjRot(uniq, rot);
+            mapObjScale(uniq, scale * 0.25f, scale * 0.25f, 1.0f);
+            mapObjVisible(uniq, 1);
+            mapObjColor(uniq, color | 0x808080);
+            break;
+        default:
+            if (mapWallObjTaskData[i].view == 0) {
+                mapWallObjTaskData[i].view = 1;
+                p2sdPlaySE_Vol(32, 127);
+            }
+            scale = mapWallObjTaskData[i].haba;
+            mapObjPos(uniq, px, py, pz);
+            mapObjRot(uniq, rot);
+            mapObjScale(uniq, scale, scale, 4.0f);
+            mapObjVisible(uniq, 1);
+            mapObjColor(uniq, color | 0x808080);
+            break;
+        }
+    }
+}
+#else
 INCLUDE_RODATA(const s32, "code_00148310", mapWallObjTaskTable);
 
 INCLUDE_ASM(const s32, "code_00148310", mapWallObjTask);
+#endif
 
 INCLUDE_ASM(const s32, "code_00148310", mapSetAreaRefreshSub2);
 

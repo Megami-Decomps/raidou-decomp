@@ -114,7 +114,12 @@ void dds3CallGetFrameID(void);
 void dds3BlurUpdate(void);
 void dds3DrawDistRipOverError(void);
 extern s32 dds3ScreenBlurOfsX[2];
-extern struct FIL_t *gFilterBuff;
+typedef struct FIL_t {
+    s32 mode;
+    s32 colors[8][9];
+} FIL_t;
+
+extern FIL_t *gFilterBuff;
 extern const char fldStrMapAllFilterFld[];
 extern s32 dds3Data34;
 extern s32 gFilterAlpha;

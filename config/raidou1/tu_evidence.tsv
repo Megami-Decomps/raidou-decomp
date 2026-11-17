@@ -139,7 +139,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001676C8	001676C8	code_r1_001676C8	c	none	
 001677D0	001677D0	code_001677D0	c	none	
 001677D8	001677D8	field/fldSnow	c	smt3:names:1 of 1	field/fldSnow
-001677F0	001698D0	code_001677F0	asm	none	
+001677F0	001698D0	code_001677F0	c	none	
 0016A298	0016A298	code_r1_0016A298	c	none	
 0016A558	0016A610	code_0016A558	c	none	
 0016A638	0016A668	code_r1_0016A638	c	none	

@@ -15,6 +15,8 @@ extern const char itfStrItfHanyoMenuSpr[];
 extern const char mapStrMapMenu[];
 extern const char mapStrBattlePanelBattleWakuSpr[];
 s32 nmeCallGetProcessData(dds3ProcessID_t *id);
+s32 nmeCalc(void);
+s32 mapCallGetProcessData(void);
 dds3ProcessID_t *savePointMenuCreateMenuPID(void);
 s32 cmpCallGetProcessStat(void);
 void evtCallExistProcess(void);

@@ -40,7 +40,7 @@ void fldCallMemGetPtr7(dds3ProcessID_t *id) {
 
 INCLUDE_ASM(const s32, "code_002FA4F0", fldNakamaCashLoad_Decode);
 
-s32 fldCallMemGetPtr3(dds3ProcessID_t *id, u32 *index) {
+s32 fldCallMemGetPtr3(dds3ProcessID_t *id, s32 *index) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
     fldNmeSlotList_t *list;
     u32 i;
@@ -493,7 +493,7 @@ INCLUDE_ASM(const s32, "code_002FA4F0", fclLeaf18);
 INCLUDE_ASM(const s32, "code_002FA4F0", fclFunc7);
 
 /* body: matched in raidou @ 112d69c: src/shared/code_r1_002CD5A8.c:95, found, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-void fclLeaf19(void) {
+void fclLeaf19(fldNmeDraw_t *draw) {
 }
 
 void fclLeaf20(fldNmeDraw_t *draw) {

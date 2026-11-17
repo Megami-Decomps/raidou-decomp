@@ -54,6 +54,7 @@ s32 sbtlBtlUseTableDataProcSub(s32 type);
 s32 sbtlBtlMVSupportSub(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
 void sbtlSetUseSkill(struct SBTLUNIT_WORK *wk, SKLID skillid);
 void SetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
+void SetAction_ProgramSkill(struct SBTLUNIT_WORK *wk, SKLID skillID);
 void sbtlSetWalk(struct SBTLUNIT_WORK *wk, f32 length);
 void sbtlBS_MUNAKA_Init_Imad_Restart(struct SBTLUNIT_WORK *wk);
 s32 sbtlSetNoMP(struct SBTLUNIT_WORK *wk);
@@ -64,7 +65,7 @@ s32 sbtlProc(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckEquation(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlCheckEquation(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlSearchUnitID21(struct SBTLUNIT_WORK *wk, s32 num, s32 idx);
-s32 sbtlCallBtlSetNormalAction(struct SBTLUNIT_WORK *wk, s32 code, s32 arg, s32 codet, s32 arg2);
+s32 sbtlSetAIData(struct SBTLUNIT_WORK *wk, s32 code, s32 arg, s32 codet, s32 arg2);
 s32 sbtlUseTableDataProc(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckEquationProc(struct SBTLUNIT_WORK *wk);
 s32 sbtlEAIInit_None(struct SBTLUNIT_WORK *wk);
@@ -72,6 +73,7 @@ s32 sbtlSetNormalAction(struct SBTLUNIT_WORK *wk, u16 type, s8 flg, s32 time, s3
 s32 sbtlGetUseTable_Target_sbtlActAI(struct SBTLUNIT_WORK *wk, s32 type, s32 index);
 s32 sbtlAAIInit_Attack(struct SBTLUNIT_WORK *wk);
 s32 GetSenkaiPointSub(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, sdfVector4_t *pos, s32 area);
+s32 sbtlGetEscapePoint(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, sdfVector4_t *pos, s32 area);
 s32 sbtlBtlMVSupportSub2(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
 
 s32 PosOut(struct SBTLUNIT_WORK *wk);

@@ -41,7 +41,7 @@ typedef struct fldNmeWork_t {
     dds3ProcessID_t *drawProcess;
     u32 unk8;
     u32 unkC;
-    s32 unk10;
+    u32 unk10;
     s32 unk14;
     fldNmeSlotList_t list[2];   /* 0x18 */
     s32 unk30;
@@ -128,6 +128,16 @@ extern s16 fldFunc25Data2[];
 void fclLeaf25(fldNmeSlotList_t *list, fldNmeSlot_t *slot, s32 count, s32 unk4);
 
 void fldNameNameSpr(fldNmeDraw_t *draw);
+s32 fldCallMemGetPtr3(dds3ProcessID_t *id, s32 *index);
+s32 fldCallMemGetPtr6(dds3ProcessID_t *id, s32 *code);
+void fldCallMemGetPtr7(dds3ProcessID_t *id);
+void fldNakamaCashLoad_Decode(dds3ProcessID_t *id);
+void fclFunc3(fldNmeDraw_t *draw);
+void fclLeaf19(fldNmeDraw_t *draw);
+void fclNakamaCashLoadDecodeSub(fldNmeDraw_t *draw, s32 arg1, s32 arg2);
+void fclCallSetFontString2(fldNmeSlotList_t *list, s32 id);
+void fclFunc9(fldNmeSlotList_t *list);
+s32 titleFunc3(void);
 
 void fclLeaf20(fldNmeDraw_t *draw);
 void fclFunc5(fldNmeDraw_t *draw);

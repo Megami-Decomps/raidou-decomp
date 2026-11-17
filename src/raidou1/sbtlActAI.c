@@ -17,6 +17,7 @@
 #include "sdfVu0.h"
 #include "code_r1_0027CBE8.h"
 #include "mdlManager.h"
+#include "sBtlScript.h"
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlFunc11);
 
@@ -205,7 +206,7 @@ s32 sbtlCheckEquationProc(struct SBTLUNIT_WORK *wk) {
         sklid = tbl->acttbl[n][i].sklid;
         target = tbl->acttbl[n][i].targetid;
         n = sklid >> 16;
-        sbtlCallBtlSetNormalAction(wk, n, sklid & 0xFFFF, target >> 16, target & 0xFFFF);
+        sbtlSetAIData(wk, n, sklid & 0xFFFF, target >> 16, target & 0xFFFF);
         if (sbtlBtlCheckEquationProcSub(n)) {
             wk->model->dataflg = 0;
         }
@@ -362,7 +363,7 @@ s32 sbtlUseTableDataProc(struct SBTLUNIT_WORK *wk) {
             codet = (pat & 0xFFFF0000) >> 16;
             arg2 = pat & 0xFFFF;
         }
-        ret = sbtlCallBtlSetNormalAction(wk, code, arg, codet, arg2);
+        ret = sbtlSetAIData(wk, code, arg, codet, arg2);
         switch (ret) {
         case 2:
         case 3:
@@ -394,9 +395,453 @@ s32 sbtlBtlUseTableDataProcSub(s32 type) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSetNormalAction);
+s32 sbtlSetAIData(struct SBTLUNIT_WORK *wk, s32 code, s32 arg, s32 codet, s32 arg2)
+{
+    struct SBTLUNIT_WORK *unit;
+    s32 ret = 0;
+    s32 i;
+    s32 sel;
+    f32 len;
 
+    switch (code) {
+    case 0:
+        ret = 1;
+        break;
+    case 1:
+        wk->model->mode = 1;
+        sbtlSetNormalAction(wk, 1, 0, arg, 0);
+        ret = 2;
+        wk->model->stat = 2;
+        wk->aiwk->stat = 2;
+        wk->model->dataflg = 1;
+        break;
+    case 21:
+        ret = 2;
+        wk->model->mode = 1;
+        sbtlSetNormalAction(wk, wk->model->mode, 0, GetRand((u16)(arg + 1)), 0);
+        wk->model->stat = 2;
+        wk->aiwk->stat = 2;
+        wk->model->dataflg = 1;
+        break;
+    case 20:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, sbtlCheckEnemyTarget(wk, sbtlGetUseTable_Target_sbtlActAI(wk, codet, arg2)));
+        if (unit != NULL) {
+            wk->model->mode = 6;
+            wk->model->field104 = unit->field1A0;
+            wk->model->field100 = unit->field1A0;
+            sbtlSetNormalAction(wk, 6, 0, arg, 0);
+            wk->model->stat = 2;
+            wk->aiwk->stat = 2;
+        }
+        ret = 4;
+        wk->model->dataflg = 1;
+        break;
+    case 2:
+        wk->model->mode = 2;
+        sbtlSetNormalAction(wk, 2, 0, arg, 0);
+        ret = 2;
+        wk->model->stat = 2;
+        wk->aiwk->stat = 2;
+        wk->model->dataflg = 1;
+        break;
+    case 23:
+        wk->model->mode = 3;
+        sbtlSetNormalAction(wk, 3, 0, arg, 0);
+        ret = 2;
+        wk->model->stat = 2;
+        wk->aiwk->stat = 2;
+        wk->model->dataflg = 1;
+        break;
+    case 13:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, sbtlCheckEnemyTarget(wk, sbtlGetUseTable_Target_sbtlActAI(wk, codet, arg2)));
+        if (unit != NULL) {
+            struct SBTLUNIT_MODEL *model;
+
+            wk->model->flags = (wk->model->flags | 0x14) & ~0x20B;
+            SDF_VU0_LOADVECTOR(&wk->max_mvspd);
+            SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+            wk->model->mode = 2;
+            SDF_VU0_LOADVECTOR(&unit->pos);
+            model = wk->model;
+            SDF_VU0_STOREVECTOR(model);
+            SDF_VU0_LOADVECTOR_B(&wk->pos);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_GETLENGTH(len);
+            len = len / wk->mv_spdbk.z;
+            if (len <= (f32)arg) {
+                len = arg;
+            }
+            model->cmpframe = len;
+            model->frame = 0;
+            sbtlSetMotion_sbtlUnit(wk, 5, 0, 0, 0);
+            sbtlCallBtlEndAction(wk, 2, 0);
+            wk->model->stat = 2;
+            wk->aiwk->stat = 2;
+        }
+        ret = 4;
+        wk->model->dataflg = 1;
+        break;
+    case 17:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, sbtlCheckEnemyTarget(wk, sbtlGetUseTable_Target_sbtlActAI(wk, codet, arg2)));
+        if (unit != NULL) {
+            wk->model->flags = (wk->model->flags | 0x14) & ~0x20B;
+            SDF_VU0_LOADVECTOR(&wk->max_mvspd);
+            SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+            wk->model->mode = 2;
+            SDF_VU0_LOADVECTOR(&unit->pos);
+            SDF_VU0_STOREVECTOR(wk->model);
+            SDF_VU0_LOADVECTOR_B(&wk->pos);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_GETLENGTH(len);
+            SDF_VU0_NORMALIZE();
+            SDF_VU0_SCALEVECTOR_BITS(len * 2.5f);
+            SDF_VU0_LOADVECTOR_B(&wk->pos);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(wk->model);
+            len = len / wk->mv_spdbk.z * 2.5f;
+            wk->model->frame = 0;
+            wk->model->cmpframe = len;
+            sbtlSetMotion_sbtlUnit(wk, 5, 4, 0, 0);
+            sbtlCallBtlEndAction(wk, 2, 0);
+            wk->model->stat = 2;
+            wk->aiwk->stat = 2;
+        }
+        ret = 4;
+        wk->model->dataflg = 1;
+        break;
+    case 15:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, sbtlGetUseTable_Target_sbtlActAI(wk, codet, arg2));
+        if (unit != NULL) {
+            wk->model->flags = (wk->model->flags | 0x14) & ~0x20B;
+            SDF_VU0_LOADVECTOR(&wk->max_mvspd);
+            SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+            wk->model->mode = 2;
+            len = wk->mv_spdbk.z * (f32)arg;
+            sbtlGetEscapePoint(wk, unit, &wk->model->vec00, len);
+            wk->model->cmpframe = arg;
+            wk->model->frame = 0;
+            sbtlSetMotion_sbtlUnit(wk, 5, 4, 0, 0);
+            sbtlCallBtlEndAction(wk, 2, 0);
+            wk->model->stat = 2;
+            wk->aiwk->stat = 2;
+        }
+        ret = 4;
+        wk->model->dataflg = 1;
+        break;
+    case 16:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, sbtlGetUseTable_Target_sbtlActAI(wk, codet, arg2));
+        if (unit != NULL) {
+            wk->model->flags = (wk->model->flags | 0x14) & ~0x20B;
+            SDF_VU0_LOADVECTOR(&wk->max_mvspd);
+            SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+            wk->model->mode = 2;
+            len = wk->mv_spdbk.z * (f32)arg;
+            GetSenkaiPointSub(wk, unit, &wk->model->vec00, len);
+            wk->model->cmpframe = arg;
+            wk->model->frame = 0;
+            sbtlSetMotion_sbtlUnit(wk, 5, 4, 0, 0);
+            sbtlCallBtlEndAction(wk, 2, 0);
+            wk->model->stat = 2;
+            wk->aiwk->stat = 2;
+        }
+        ret = 4;
+        wk->model->dataflg = 1;
+        break;
+    case 14:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, sbtlCheckEnemyTarget(wk, sbtlGetUseTable_Target_sbtlActAI(wk, codet, arg2)));
+        if (unit != NULL) {
+            struct SBTLUNIT_MODEL *model;
+
+            wk->model->flags = (wk->model->flags | 0x14) & ~0x20B;
+            SDF_VU0_LOADVECTOR(&wk->max_mvspd);
+            SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+            wk->model->mode = 2;
+            SDF_VU0_LOADVECTOR(&unit->pos);
+            SDF_VU0_STOREVECTOR(wk->model);
+            SDF_VU0_LOADVECTOR_B(&wk->pos);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_GETLENGTH(len);
+            SDF_VU0_NORMALIZE();
+            SDF_VU0_SCALEVECTOR_BITS(len * 0.5f);
+            SDF_VU0_LOADVECTOR_B(&wk->pos);
+            SDF_VU0_ADDVECTOR();
+            model = wk->model;
+            SDF_VU0_STOREVECTOR(model);
+            len = len * 0.5f / wk->mv_spdbk.z;
+            if (len <= (f32)arg) {
+                len = arg;
+            }
+            model->cmpframe = len;
+            model->frame = 0;
+            sbtlSetMotion_sbtlUnit(wk, 5, 4, 0, 0);
+            sbtlCallBtlEndAction(wk, 2, 0);
+            wk->model->stat = 2;
+            wk->aiwk->stat = 2;
+        }
+        ret = 4;
+        wk->model->dataflg = 1;
+        break;
+    case 7:
+        wk->model->data_p[1] = arg;
+        break;
+    case 22:
+        wk->model->data_p[0] = arg - 8;
+        wk->model->data_p[1] = 0;
+        sbtlUseTableDataProc(wk);
+        wk->model->dataflg = 1;
+        ret = 1;
+        break;
+    case 12:
+        sel = arg;
+        for (i = 0; i < 12; i++) {
+            if (wk->haveskill[i] == SKLID_ATK || wk->haveskill[i] == SKLID_AVOID || wk->haveskill[i] == 0) {
+                continue;
+            }
+            if (GetPercentage() < 50) {
+                sel = wk->haveskill[i];
+                break;
+            }
+        }
+        if (i == 10) {
+            sel = SKLID_ATK;
+        }
+        wk->skillid = sel;
+        ret = 4;
+        wk->model->field104 = sbtlGetUseTable_Target_sbtlActAI(wk, codet, arg2);
+        wk->model->field104 = sbtlCheckEnemyTarget(wk, wk->model->field104);
+        sbtlSetAIMode(wk);
+        wk->model->stat = 1;
+        wk->aiwk->stat = 2;
+        wk->model->mode = 14;
+        wk->model->dataflg = 1;
+        break;
+    case 9:
+        wk->skillid = arg;
+        ret = 4;
+        wk->model->field104 = sbtlGetUseTable_Target_sbtlActAI(wk, codet, arg2);
+        wk->model->field104 = sbtlCheckEnemyTarget(wk, wk->model->field104);
+        sbtlSetAIMode(wk);
+        wk->model->stat = 1;
+        wk->aiwk->stat = 2;
+        wk->model->mode = 14;
+        wk->model->dataflg = 1;
+        break;
+    case 10:
+        ret = 1;
+        wk->model->dataflg = 0;
+        wk->model->data_p[0] = 0;
+        wk->model->data_p[1] = 0;
+        break;
+    case 11:
+        wk->model->data_p[0] = arg;
+        wk->model->data_p[1] = 0;
+        break;
+    case 19:
+        sbtlResetAIPattern(wk, arg);
+        ret = 1;
+        break;
+    case 18:
+        wk->model->mode = 12;
+        sbtlSetNormalAction(wk, 12, 0, arg, 0);
+        ret = 2;
+        wk->model->stat = 2;
+        wk->aiwk->stat = 2;
+        wk->model->dataflg = 1;
+        break;
+    case 8:
+        break;
+    default:
+        ret = 2;
+        break;
+    }
+    return ret;
+}
+
+/* NON_MATCHING: 57 of 403 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetUseTable_Target_sbtlActAI(struct SBTLUNIT_WORK *wk, s32 type, s32 index)
+{
+    s32 ids[32];
+    s16 rates[32];
+    struct SBTLUNIT_LISTWORK *list;
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_LISTWORK *ulist;
+    s32 id = -1;
+    s32 best = 101;
+    s32 tid;
+    s32 i;
+    s32 n;
+    s32 sel;
+    s16 rate;
+    f32 len;
+    f32 val;
+    f32 ratio;
+
+    switch (type) {
+    case 2:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        if (unit != NULL && CheckLiveTarget(unit)) {
+            return unit->field1A0;
+        }
+        if (wk_sbtl->field344 <= 0) {
+            return -1;
+        }
+        ulist = wk_sbtl->unitList;
+        tid = wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]];
+        goto search;
+    case 1:
+        if (wk_sbtl->field344 > 0) {
+            ulist = wk_sbtl->unitList;
+            tid = wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]];
+        } else {
+            tid = wk_sbtl->targetUnitID;
+            ulist = wk_sbtl->unitList;
+        }
+        goto search;
+    case 3:
+        n = 0;
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit) && (wk->field414 & 7) == (unit->field414 & 7)) {
+                ids[n] = unit->field1A0;
+                rates[n] = GetPercentage();
+                n++;
+            }
+        }
+        if (n <= 0) {
+            return -1;
+        }
+        for (i = 0; i < n; i++) {
+            if (rates[i] <= best) {
+                id = ids[i];
+                best = rates[i];
+            }
+        }
+        return id;
+    case 4:
+        n = 0;
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit) && (wk->field414 & 7) == (unit->field414 & 7) &&
+                wk->field1A0 != unit->field1A0) {
+                ids[n] = unit->field1A0;
+                rates[n] = GetPercentage();
+                n++;
+            }
+        }
+        if (n <= 0) {
+            return wk->field1A0;
+        }
+        for (i = 0; i < n; i++) {
+            if (rates[i] <= best) {
+                id = ids[i];
+                best = rates[i];
+            }
+        }
+        return id;
+    case 8:
+        list = sbtlCreateSideList(wk->field414, 1);
+        if (list->count <= 0) {
+            goto fail;
+        }
+        rate = 49;
+        if (list->count == 1) {
+            unit = list->pUnitL[0].pUnit;
+        } else {
+            for (i = 0; i < list->count; i++) {
+                unit = list->pUnitL[i].pUnit;
+                if (GetPercentage() <= rate) {
+                    goto found;
+                }
+                rate += 50;
+            }
+            goto fail;
+        }
+        goto found;
+    case 9:
+        val = 2000.0f;
+        list = sbtlCreateSideList(wk->field414, 1);
+        sel = 0;
+        for (i = 0; i < list->count; i++) {
+            unit = list->pUnitL[i].pUnit;
+            SDF_VU0_LOADVECTOR(&wk->pos);
+            SDF_VU0_LOADVECTOR_B(&unit->pos);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_GETLENGTH(len);
+            if (len <= val) {
+                val = len;
+                sel = i;
+            }
+        }
+        if (sel >= list->count) {
+            goto fail;
+        }
+        unit = list->pUnitL[sel].pUnit;
+        goto found;
+    case 7:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field10C);
+        if (unit != NULL && CheckLiveTarget(unit) && !(unit->field414 & wk->field414)) {
+            return wk->model->field10C;
+        }
+        tid = wk_sbtl->targetUnitID;
+        ulist = wk_sbtl->unitList;
+    search:
+        unit = sbtlSearchUnit_ID(ulist, tid);
+        if (unit != NULL && CheckLiveTarget(unit)) {
+            return unit->field1A0;
+        }
+        return -1;
+    case 10:
+        val = 0.0f;
+        list = sbtlCreateSideList(wk->field414, 1);
+        sel = 0;
+        for (i = 0; i < list->count; i++) {
+            unit = list->pUnitL[i].pUnit;
+            ratio = (f32)unit->unit.now.hp * 100.0f / (f32)unit->unit.now.maxhp;
+            if (val < ratio) {
+                val = ratio;
+                sel = i;
+            }
+        }
+        if (sel >= list->count) {
+            goto fail;
+        }
+        unit = list->pUnitL[sel].pUnit;
+        goto found;
+    case 11:
+        val = 100.0f;
+        list = sbtlCreateSideList(wk->field414, 1);
+        sel = 0;
+        for (i = 0; i < list->count; i++) {
+            unit = list->pUnitL[i].pUnit;
+            ratio = (f32)unit->unit.now.hp * 100.0f / (f32)unit->unit.now.maxhp;
+            if (ratio <= val) {
+                val = ratio;
+                sel = i;
+            }
+        }
+        if (sel >= list->count) {
+            goto fail;
+        }
+        unit = list->pUnitL[sel].pUnit;
+        goto found;
+    case 5:
+        return wk->model->ai_target[index];
+    case 6:
+        return wk->field1A0;
+    default:
+        return -1;
+    }
+fail:
+    sbtlDeleteUnitList(list);
+    return -1;
+found:
+    sbtlDeleteUnitList(list);
+    return unit->field1A0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetUseTable_Target_sbtlActAI);
+#endif
 
 s32 sbtlCheckEnemyTarget(struct SBTLUNIT_WORK *wk, s32 id) {
     struct SBTLUNIT_WORK *target = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
@@ -921,7 +1366,7 @@ s32 GetSenkaiPointSub(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, sd
 INCLUDE_ASM(const s32, "sbtlActAI", GetSenkaiPointSub);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallMemset13);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetEscapePoint);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideListSBtlUnit3);
 
@@ -1166,7 +1611,7 @@ s32 sbtlCallMemset14(struct SBTLUNIT_WORK *wk) {
                 wk->model->cmpframe = 0;
                 wk->model->frame = 0;
                 wk->model->mode = 16;
-                sbtlCallBtlGetNumOfEffectSAB(wk, wk->skillid, 0);
+                sbtlSetUseSkill_sbtlActAI(wk, wk->skillid, 0);
             } else {
                 sbtlSetNoMP_sbtlActAI(wk);
                 sbtlResetAAI(wk);
@@ -1266,7 +1711,262 @@ void sbtlSetUseSkill(struct SBTLUNIT_WORK *wk, SKLID skillid) {
     }
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlGetNumOfEffectSAB);
+s32 sbtlSetUseSkill_sbtlActAI(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 after_frame)
+{
+    SBTL_STAGE_DATA *stage;
+    struct SBTLSKILLP_TBL *skl;
+    struct SBTLUNIT_WORK *unit;
+    s32 n0;
+    s32 n1;
+    s32 n2;
+    s32 n5;
+    s32 i;
+
+    stage = &sbtlData100[wk_sbtl->stageNo];
+    if (!(stage->flags & 4) && (wk->field414 & 2)) {
+        n0 = sbtlGetNumOfEffect_SAB(wk_sbtl->effList, 0, 2);
+        if (n0 >= 6) {
+            return 1;
+        }
+        n1 = sbtlGetNumOfEffect_SAB(wk_sbtl->effList, 1, 2);
+        if (n1 >= 6) {
+            return 1;
+        }
+        n2 = sbtlGetNumOfEffect_SAB(wk_sbtl->effList, 2, 2);
+        if (n2 >= 4) {
+            return 1;
+        }
+        n5 = sbtlGetNumOfEffect_SAB(wk_sbtl->effList, 5, 2);
+        if (n5 >= 4) {
+            return 1;
+        }
+        if (n0 + n1 + n2 + n5 >= 8) {
+            return 1;
+        }
+    }
+    if ((stage->flags & 4) && sbtlCheckSkillCancel(wk, skillid)) {
+        return 1;
+    }
+    wk->skillid = skillid;
+    SetUseskl(wk, skillid);
+    sbtlSetSkill_MotionData(wk, wk->skillid);
+    sbtlSetHatData(wk, wk->skillid);
+    skl = sbtlGetSkilltbl(skillid);
+    if (skl->flg & 0x10) {
+        SetAction_ProgramSkill(wk, skillid);
+        wk->action_count = 0;
+        return 1;
+    }
+    if (skillid == SKLID_C_RESUM) {
+        wk->flg |= 0x4000;
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_SUMMONOK, wk->skillid);
+    }
+    switch (skl->type & 0xFFF) {
+    case 0:
+        sbtlCallBtlEndAction(wk, 1, 0);
+        break;
+    case 1:
+    case 12:
+    case 13:
+        sbtlCallBtlEndAction(wk, 3, 0);
+        break;
+    case 3:
+    case 15:
+        sbtlCallBtlEndAction(wk, 6, 90);
+        break;
+    case 8:
+        sbtlCallBtlEndAction(wk, 37, 0);
+        break;
+    case 2:
+    case 5:
+    case 14:
+        sbtlCallBtlEndAction(wk, 31, 90);
+        break;
+    case 10:
+        sbtlCallBtlEndAction(wk, 41, 0);
+        break;
+    case 11:
+        sbtlCallBtlEndAction(wk, 43, 0);
+        break;
+    case 16:
+        sbtlCallBtlEndAction(wk, 45, 0);
+        break;
+    case 9:
+        sbtlCallBtlEndAction(wk, 40, 0);
+        switch (skillid) {
+        case SKLID_BS0_ESCAPE:
+            wk->effect_flg = 10;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 35;
+            wk->cmpframecnt = 45;
+            wk->flg2 |= 8;
+            break;
+        case SKLID_E_DEADIM2:
+            wk->effect_flg = 4;
+            wk->cmpframecnt = 1000;
+            wk->framecntC = 0;
+            break;
+        case SKLID_E_DEADIM:
+            wk->effect_flg = 10;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 430;
+            wk->cmpframecnt = 60;
+            break;
+        case SKLID_BS2_DEAD:
+            wk->effect_flg = 4;
+            wk->framecntC = 150;
+            wk->cmpframecnt = 0;
+            break;
+        case SKLID_BS3_DEAD:
+            wk->effect_flg = 6;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 220;
+            wk->cmpframecnt = 60;
+            break;
+        case SKLID_BS4_ESCAPE:
+            wk->effect_flg = 6;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 240;
+            wk->cmpframecnt = 60;
+            wk->flg2 |= 8;
+            break;
+        case SKLID_BS4_DEAD:
+            wk->effect_flg = 6;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 300;
+            wk->cmpframecnt = 60;
+            break;
+        case SKLID_BS6_DEAD0:
+            wk->effect_flg = 4;
+            wk->framecntC = 105;
+            wk->cmpframecnt = 0;
+            break;
+        case SKLID_BS6_DEAD1:
+            wk->effect_flg = 9;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 330;
+            wk->cmpframecnt = 60;
+            break;
+        case SKLID_BS7_DEADWAIT:
+            wk->effect_flg = 0;
+            wk->framecntC = 0;
+            wk->cmpframecnt = 0;
+            break;
+        case SKLID_BS7_DEAD:
+            wk->effect_flg = 10;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 630;
+            wk->cmpframecnt = 60;
+            break;
+        case SKLID_BS8_DEAD_N:
+            wk->effect_flg = 4;
+            wk->framecntC = 400;
+            wk->cmpframecnt = 0;
+            break;
+        case SKLID_BS8_DEAD_A:
+            wk->effect_flg = 4;
+            wk->framecntC = 400;
+            wk->cmpframecnt = 0;
+            break;
+        case SKLID_BS8_DEAD:
+            wk->effect_flg = 6;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 450;
+            wk->cmpframecnt = 60;
+            break;
+        case SKLID_BS9_CHANGE1:
+            wk->effect_flg = 4;
+            wk->cmpframecnt = 270;
+            wk->framecntC = 0;
+            break;
+        case SKLID_BS9_CHANGE2:
+            wk->effect_flg = 4;
+            wk->cmpframecnt = 270;
+            wk->framecntC = 0;
+            break;
+        case SKLID_BS9_CHANGE3:
+            wk->effect_flg = 4;
+            wk->cmpframecnt = 270;
+            wk->framecntC = 0;
+            break;
+        case SKLID_BS9_DEAD:
+            wk->effect_flg = 4;
+            wk->cmpframecnt = 260;
+            wk->framecntC = 0;
+            break;
+        case SKLID_BS10_DEAD:
+            wk->effect_flg = 6;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 370;
+            wk->cmpframecnt = 60;
+            sbtlForceResetDecAlpha(wk_sbtl->effList, wk, 4);
+            break;
+        case SKLID_BS12_DEAD:
+            wk->effect_flg = 6;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 420;
+            wk->cmpframecnt = 60;
+            sbtlForceResetDecAlpha(wk_sbtl->effList, wk, 4);
+            break;
+        case SKLID_BS14_DEAD_S:
+            wk->effect_flg = 10;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 300;
+            wk->cmpframecnt = 60;
+            break;
+        case SKLID_BS14_CHANGE:
+            wk->effect_flg = 6;
+            wk->framecntC = 144;
+            wk->cmpframecnt = 143;
+            break;
+        case SKLID_BS14_DEAD:
+            wk->effect_flg = 0;
+            wk_sbtl->flg |= 0x40000000;
+            wk->cmpframecnt = 60;
+            wk->framecntC = 0;
+            break;
+        case SKLID_BS15_DEAD:
+            wk->effect_flg = 10;
+            wk_sbtl->flg |= 0x40000000;
+            wk->framecntC = 270;
+            wk->cmpframecnt = 60;
+            break;
+        case SKLID_OFS_AUTO:
+            wk->effect_flg = 4;
+            wk->framecntC = 0;
+            wk->cmpframecnt = 0;
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_BOSS, SKLID_NONE);
+            break;
+        case SKLID_E_TETTAI:
+            wk->effect_flg = 4;
+            wk->framecntC = 120;
+            wk->flg2 |= 8;
+            wk->cmpframecnt = 0;
+            break;
+        default:
+            wk->effect_flg = 0;
+            break;
+        }
+        if (wk->effect_flg & 4) {
+            sbtlFadeOut_BadStatusEffect(wk, 4);
+        }
+        if (wk->effect_flg & 8) {
+            for (i = 0; i < wk_sbtl->unitList->number; i++) {
+                unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+                if (unit != NULL && (unit->field414 & 2)) {
+                    sbtlFadeOut_BadStatusEffect(unit, 4);
+                }
+            }
+        }
+        break;
+    case 4:
+    case 6:
+    case 7:
+        break;
+    }
+    wk->action_count = 0;
+    return 1;
+}
 
 s32 sbtlCallBtlEndAction(struct SBTLUNIT_WORK *wk, u32 action, s32 flg) {
     switch (action) {

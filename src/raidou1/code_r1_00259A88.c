@@ -1297,7 +1297,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
     switch (wk_sbtl->field484) {
     case 0:
         rot = &wk->rot;
-        sbtlCallBtlGetNumOfEffectSAB(wk, item->sklid, 0);
+        sbtlSetUseSkill_sbtlActAI(wk, item->sklid, 0);
         sbtlCallBtlEndAction(wk, 12, 0);
         wk_sbtl->field484++;
         wk->model->field104 = sbtlCallMemset11(wk, rot, 2, 300.0f, 0.6f, 0.1f);
@@ -1381,7 +1381,7 @@ s32 GuardProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode)
     wk->vstatus |= SBTLUNIT_VST_GRAV;
     if (!dds3PadButtonState[3]) {
         sbtlCallFalseHuuma(wk);
-        sbtlCallBtlGetNumOfEffectSAB(wk, 0, 0);
+        sbtlSetUseSkill_sbtlActAI(wk, 0, 0);
         sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
     }
     return 2;

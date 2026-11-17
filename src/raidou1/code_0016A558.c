@@ -9,18 +9,20 @@ void mapIsFldKeyFreeSub(void) {
 INCLUDE_ASM(const s32, "code_0016A558", mapLeaf2);
 
 void mapIfMenuInit(void) {
+    mapMenuWin_t *win = &mapWork11[1];
+
     mapBadMafuHajikiData2 = 4;
-    mapWork12.unk00 = 1;
-    mapWork12.unk04 = 0;
-    mapWork12.unk08 = 0;
-    mapWork12.unk0C = 0;
-    mapWork12.unk10 = 0;
-    mapWork12.unk14 = 300;
-    mapWork12.unk18 = 32;
-    mapWork12.unk1C = 192;
-    mapWork12.unk20 = 176;
-    mapWork12.unk24 = 2;
-    mapWork12.unk28 = 7;
+    win->state = 1;
+    win->scroll = 0;
+    win->sel = 0;
+    win->devilBase = 0;
+    win->phase = 0;
+    win->x = 300;
+    win->y = 32;
+    win->w = 192;
+    win->h = 176;
+    win->unk24 = 2;
+    win->rows = 7;
 }
 
 INCLUDE_ASM(const s32, "code_0016A558", mapIgnite2);

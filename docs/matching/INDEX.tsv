@@ -29,6 +29,7 @@ mapCallPositioningGuardSystem2	code_00148310	raidou1 0x1B4	5 of 109 words differ
 mapCallSetPlayerTargetData2	code_00148310	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00148310.md	11		
 mapCallPositioningGuardSystem3	code_00148310	raidou1 0x17C	8 of 95 words differ	docs/matching/code_00148310.md	19	matched until R22's declaration edits to fld.h and mapData.h; with either header back at its R21 state it matches again, so it shifts with the declarations the unit includes, not with its own C.	
 mapScriptGet_Pos	code_00148310	raidou1 0x68C	400 of 407 words differ	docs/matching/code_00148310.md	27		
+mapWallObjTask	code_00148310	raidou1 0xA90	27 of 676 words differ	docs/matching/code_00148310.md	35		
 mapNpcTblAdd_fld	code_0014B660	raidou1 0x3E0	189 of 246 words differ	docs/matching/code_0014B660.md	3		
 mapNpcTblRefresh	code_0014B660	raidou1 0x408	144 of 258 words differ	docs/matching/code_0014B660.md	11		
 mapNpcTblRefresh_Wait	code_0014B660	raidou1 0x35C	121 of 216 words differ	docs/matching/code_0014B660.md	19		
@@ -201,6 +202,7 @@ evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	d
 cmpDrawBackPattern	code_r1_00323138	raidou1 0x144, raidou2 0x144	9 of 81 words differ	docs/matching/code_r1_00323138.md	3		
 datCheckSkillEnable	dat	raidou1 0x144	63 of 76 words differ	docs/matching/dat.md	3		
 dds3FilterClear	dds3KernelDraw_0010BEE0	raidou1 0x3C	3 of 15 words differ	docs/matching/dds3KernelDraw_0010BEE0.md	3		
+dds3FilterDraw	dds3KernelDraw_0010BEE0	raidou1 0xA80	3 of 672 words differ	docs/matching/dds3KernelDraw_0010BEE0.md	11		
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3		
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3		
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9		
@@ -276,6 +278,7 @@ GetSenkaiPointSub	sbtlActAI	raidou1 0x244	57 of 145 words differ	docs/matching/s
 sbtlCheckMapHit	sbtlActAI	raidou1 0x1C	3 of 5 words differ	docs/matching/sbtlActAI.md	107		
 sbtlCallMemset14	sbtlActAI	raidou1 0x408	125 of 256 words differ	docs/matching/sbtlActAI.md	115		
 sbtlRefSbtl22	sbtlActAI	raidou1 0x38	11 of 14 words differ	docs/matching/sbtlActAI.md	123		
+sbtlGetUseTable_Target_sbtlActAI	sbtlActAI	raidou1 0x64C	346 of 381 words differ	docs/matching/sbtlActAI.md	131		
 sbtlCheckHitArea_sbtlDMG	sbtlDMG	raidou1 0x270	71 of 154 words differ	docs/matching/sbtlDMG.md	3		
 sbtlCreateHitC_New_sbtlDMG	sbtlDMG	raidou1 0x884	294 of 545 words differ	docs/matching/sbtlDMG.md	11		
 sbtlGetSide	sbtlDMG	raidou1 0x114	53 of 70 words differ	docs/matching/sbtlDMG.md	21		

@@ -102,7 +102,7 @@ s32 Exit_sbtlUnit(void);
 s32 Init_sbtlUnit(s8 flg);
 s32 ResetAction(struct SBTLUNIT_WORK *wk, s8 flg);
 s32 sbtlCallFalseHuuma(struct SBTLUNIT_WORK *wk);
-s32 sbtlCallBtlGetNumOfEffectSAB(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 after_frame);
+s32 sbtlSetUseSkill_sbtlActAI(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 after_frame);
 s32 GuardProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode);
 s32 CheckStop_BadStatus(struct SBTLUNIT_WORK *wk);
 s32 CheckAction_Nakama(struct SBTLUNIT_WORK *wk);

@@ -13,7 +13,9 @@ typedef struct mapMenuWin_t {
     s32 y;
     s32 w;
     s32 h;
-    s32 pad24[3];
+    s32 unk24;
+    s32 rows;       /* sel wraps modulo this */
+    s32 unk2C;
 } mapMenuWin_t;
 
 extern mapMenuWin_t mapWork11[];
