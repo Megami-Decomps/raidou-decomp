@@ -7,7 +7,10 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
-import check_irx_nonmatching as checker
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import check_irx_nonmatching as checker  # noqa: E402
 
 
 class IRXDialectTests(unittest.TestCase):
