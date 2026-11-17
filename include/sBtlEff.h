@@ -214,20 +214,19 @@ s32 sbtlLoadEffectData_ID(SKLID id);
 s32 sbtlLoadEffectData_IDMask(SKLID id, EFFPAC_ST flg);
 s32 sbtlLoadEndCheck_PlayerOnMemData(void);
 s32 sbtlCallBtlLoadEffectDataIDMask(void);
+#ifdef VERSION_RAIDOU2
+/* R1 sbtlCallBtlLoadEffectDataIDMask, sbtlCallBtlGetSkilltbl10 and sbtlLoadEffectData_Nakama at the same call sites. */
+s32 evtCommand_PMV_LOAD_END_WAIT(void);
+s32 sbtlLoadEffectData(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallBtlSearchDelWorkSide(struct SBTLUNIT_WORK *wk);
+#endif
 s32 sbtlFunc(s32 id, void *pData);
 s32 sbtlLoadPlayerOnMemData(void);
 s32 sbtlReleaseEff(struct SBTLEFF_LISTWORK *lwk, u8 flg);
 s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg);
 s32 sbtlSearchDelWork_Side(struct SBTLEFF_DELLISTWORK *lwk, SBTLUNIT_SIDE side);
 s32 sbtlSearchEffectData(SKLID skillid);
-#ifdef VERSION_RAIDOU2
-/* R2's name for its sbtlForceDelete_EffectWork_ID. */
-s32 sbtlCallBtlSearchEffectData(SKLID id, s8 flg);
-/* R2's name for its sbtlCallBtlSearchEffectData. */
 s32 sbtlCheckEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param);
-#else
-s32 sbtlCallBtlSearchEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param);
-#endif
 void sbtlSetEffectData(struct SBTLEFF_WORK *ewk, struct SBTLUNIT_WORK *wk, SKLID sklid, s32 workID, u8 type, s32 no, u16 acterside,
                        s32 serialID2, s32 sttime);
 s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s32 index, s32 id, u16 acterside, s32 serialID2,

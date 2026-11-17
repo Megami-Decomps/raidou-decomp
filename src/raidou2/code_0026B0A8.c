@@ -368,7 +368,7 @@ s32 sbtlEntryUnitList(struct SBTLUNIT_LISTWORK *lwk, struct SBTLUNIT_WORK *wk)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf4);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallMemAllocDirect);
+INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateUnit);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDeleteUnit_UnWork);
 
@@ -462,7 +462,23 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckMotionEnd);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckGuardMotion);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRestartMotion);
+s32 sbtlRestartMotion(struct SBTLUNIT_WORK *wk)
+{
+    SBTL_MOTION_VISUAL *visual;
+    SBTL_UNIT_SUB *sub;
+
+    if (wk->vstatus & 0x10) {
+        return 0;
+    }
+    visual = sbtlGetMotionVisualData(wk->major, wk->minor);
+    sub = sbtlGetMotionVisualData_sbtlVisual(wk->major, wk->minor, wk->next_motionno);
+    if (sub->flags & 1) {
+        wk->m_rate = sub->field10;
+    } else {
+        wk->m_rate = visual->field0C;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetMotion);
 
@@ -510,7 +526,7 @@ INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable19);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlResetAtkSklEff);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallBtlGetPChara);
+INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetMotion_sbtlUnit);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlplayertblSetPlayerMotionData_Hokan);
 

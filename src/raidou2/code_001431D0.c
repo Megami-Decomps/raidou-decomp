@@ -231,8 +231,68 @@ INCLUDE_ASM(const s32, "code_001431D0", mapCutSetTblID);
 
 INCLUDE_ASM(const s32, "code_001431D0", mapCallSpecificSceneOnVisible);
 
-INCLUDE_ASM(const s32, "code_001431D0", mapCutBgLoad);
+void mapCutBgLoad(void) {
+    s32 cut;
+
+    cut = fldGlobalBase.cutIdx;
+    if (cut < 127 && cut != 0 && bg_tex_load_last != cut) {
+        bg_tex_load_rec = -1;
+        bg_lay_load_rec = -1;
+        if (mapData5[fldGlobalBase.amSBlock][cut] != 0) {
+            mapAutomapFldClr(cut);
+            bg_tex_load_last = fldGlobalBase.cutIdx;
+        } else {
+            mapBgFree2();
+            FAKEMATCH_ASM_LIVE(cut);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001431D0", mapCutBgLoad_NB);
 
-INCLUDE_ASM(const s32, "code_001431D0", fldAllTblPacLoad);
+void fldAllTblPacLoad(void) {
+    fileRequest_t *pac;
+    sdfPacDecodeResrc_t *node;
+    s32 i;
+    sdfMemHandle_t *handle;
+    void *top;
+
+    i = 0;
+    pac = pacLoad(fldStrMapAllAlltblLb);
+    pacSync(pac);
+    for (node = pac->pac.resrcHead; node != NULL; node = node->next, i++) {
+        switch (i) {
+        case 2:
+            handle = node->resrc;
+            top = sdfMemGetPtr(handle);
+            memcpy(fldWork6, top, sdfMemGetSize(handle));
+            sdfMemFreeDirect(node->resrc);
+            break;
+        case 3:
+            handle = node->resrc;
+            top = sdfMemGetPtr(handle);
+            memcpy(LightDataTbl, top, sdfMemGetSize(handle));
+            sdfMemFreeDirect(node->resrc);
+            break;
+        case 0:
+            handle = node->resrc;
+            top = sdfMemGetPtr(handle);
+            memcpy(mapEXFloorData, top, sdfMemGetSize(handle));
+            sdfMemFreeDirect(node->resrc);
+            break;
+        case 1:
+            handle = node->resrc;
+            top = sdfMemGetPtr(handle);
+            memcpy(fldAllTblPacLoadData, top, sdfMemGetSize(handle));
+            sdfMemFreeDirect(node->resrc);
+            break;
+        default:
+            sdfMemFreeDirect(node->resrc);
+            break;
+        }
+    }
+    pacFileHandleFree_(pac);
+}
+
+INCLUDE_RODATA(const s32, "code_001431D0", fldStrMapAllAlltblLb);
+

@@ -26,10 +26,17 @@ typedef struct SBTLCAMERA_WORK {
     sdfVector4_t targetpos;
     sdfVector4_t direction;
     sdfVector4_t camerapos;
+#ifdef VERSION_RAIDOU2
+    u8 pad030[0x70];
+#endif
     struct dds3Basic_t *cm;
     f32 distance;
     f32 fovy;
+#ifdef VERSION_RAIDOU2
+    u8 padAC[4];
+#else
     u8 pad3C[4];
+#endif
 } SBTLCAMERA_WORK;
 
 /* HD SBTLVIBE_WORK: one pad's rumble envelope, SBTL_WORK.vibe at 0x3AC. */
@@ -489,7 +496,7 @@ void sbtlCallBtlGetPlayerData6(s32 num);
 s32 sbtlCallBtlGetMotionVisualData(struct SBTLUNIT_WORK *wk, s32 motionID, s32 bframe, s32 aframe, s8 flg);
 f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type);
 s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 flg);
-s32 sbtlCallBtlGetSkilltbl8(struct SBTLUNIT_WORK *wk, u32 flg);
+s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg);
 
 #ifdef VERSION_RAIDOU2
 /* One generator entry of a stage. Partial raidou2 layout: HD's s8 groupID, the rest unread so far. */
@@ -774,7 +781,7 @@ s32 sbtlCallCheckEnd(void);
 s32 sbtlCallBitCheck(s32 stageNo);
 s32 DrawProc(dds3ProcessID_t *id);
 s32 RestartBattle(void);
-s32 sbtlSbattle4(void);
+s32 CheckStopBattle(void);
 s32 sbtlCallBtlGetScrollID(void);
 void pbSetGameCamera0(void);
 s32 sbtlCallBtlDeleteOnData(void);
@@ -832,6 +839,7 @@ struct SBTLUNIT_WORK *sbtlSetSummon(s32 side, s32 devilId, s32 arg);
 #ifdef VERSION_RAIDOU2
 /* The raidou2 symbol of this name takes sbtlGetVisualData's arguments. */
 SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id);
+SBTL_UNIT_SUB *sbtlGetMotionVisualData_sbtlVisual(s32 a, s32 id, s32 b);
 SBTL_DEVIL_DATA *sbtlIfDrawActionSub(s32 id);
 #else
 SBTL_UNIT_SUB *sbtlGetMotionVisualData(s32 a, s32 id, s32 b);
@@ -858,7 +866,7 @@ s32 sbtlCallStartRain(void);
 s32 sbtlBattleEventSb(void);
 void sbtlBattleStart(SBTL_STAGE_DATA *stage);
 void sbtlSupport_BattleStop(s32 motionFlag, s32 effectFlag, s32 SEFlag);
-s32 sbtlBtlEntryStockDataSub(sdatUnitWork_t *unit);
+s32 sbtlCheckStockPara(sdatUnitWork_t *unit);
 s32 sbtlCheckAutoSkill(sdatUnitWork_t *unit, s32 flg);
 s32 sbtlSetAutoSkill_GB(sdatUnitWork_t *unit);
 s32 sbtlGetStockPoint(void);
@@ -935,12 +943,14 @@ void sbtlRefSbtl45(void);
 void sbtlInitTutorial(void);
 s32 sbtlRefSbtl47(void);
 s32 sbtlRefSbtl62(struct SBTLUNIT_WORK *wk);
-void sbtlBtlSetDamageSub(struct SBTLUNIT_WORK *wk);
-void sbtlBtlGetDamageGBSub(sdatUnitWork_t *unit, sdatParaWork_t *para);
+void CalcAisyo_sbtlCalc(struct SBTLUNIT_WORK *wk);
+void sbtlGetPlayerTec_ParaUp(sdatUnitWork_t *unit, sdatParaWork_t *para);
 s32 sbtlReleaseDelList(struct SBTLEFF_DELLISTWORK *lwk, u8 flg);
 s32 sbtlReleaseDvltk_List(struct SBTLDVLTK_LISTWORK *lwk, u8 flg);
 s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg);
+#ifdef VERSION_RAIDOU1
 s32 sbtlSbattle2(s32 flg);
+#endif
 void sbtlSbtlmenuMain(void);
 s32 sbtlRefSbtl13(void);
 s32 sbtlSearchPacData(s32 major, s32 minor, s32 devilid);

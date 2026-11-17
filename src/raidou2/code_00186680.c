@@ -14,8 +14,29 @@
 #include "fileManager.h"
 #include "sdk_libc.h"
 #include "sdf2D.h"
+#include "sdfMemory.h"
 
-INCLUDE_ASM(const s32, "code_00186680", encLoadTexture);
+void encLoadTexture(void)
+{
+    char path[32];
+    fileRequest_t *pac;
+    sdfPacDecodeResrc_t *resrc;
+
+    sprintf(path, encStrMapMap39Pac00BLb);
+    pac = pacLoad(path);
+    pacSync(pac);
+    for (resrc = pac->pac.resrcHead; resrc != NULL; resrc = resrc->next) {
+        if (((sdfPacStdBlockHeader_t *)resrc->header)->kind == 1) {
+            fldData42 = sdfTexSet(sdfMemGetPtr(resrc->resrc));
+            sdfMemFreeDelayedDirect(resrc->resrc);
+        } else {
+            sdfMemFreeDirect(resrc->resrc);
+        }
+    }
+    pacFileHandleFree_(pac);
+    fldCallSetOt5Data = 512.0f;
+    fldCallSetOt5Data2 = 0.0f;
+}
 
 void fldFreeRunMapData(void)
 {
@@ -154,3 +175,6 @@ void encStop(void)
     }
     fldFreeRunMapData();
 }
+
+INCLUDE_RODATA(const s32, "code_00186680", encStrMapMap39Pac00BLb);
+

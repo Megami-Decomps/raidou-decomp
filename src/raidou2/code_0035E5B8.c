@@ -10,6 +10,7 @@
 #include "scrTraceCode.h"
 #include "itf.h"
 #include "sdk_libc.h"
+#include "nmeInput0.h"
 
 void fldCallMemGetPtr7(dds3ProcessID_t *id) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
@@ -529,7 +530,37 @@ INCLUDE_ASM(const s32, "code_0035E5B8", fldFunc27);
 
 INCLUDE_ASM(const s32, "code_0035E5B8", nmeCallExistProcess);
 
-INCLUDE_ASM(const s32, "code_0035E5B8", nmeScrCmd_CALL_NAME);
+s32 nmeScrCmd_CALL_NAME(void) {
+    scrProcessWork_s *work;
+    dds3ProcessID_t *proc;
+
+    work = scrGetScriptHandle();
+    if (work == NULL) {
+        printf(nmeStr);
+        return 1;
+    }
+    if (work->ProcessID == NULL) {
+        printf(nmeStrCallName);
+        return 1;
+    }
+    switch ((u32)scrGetIntPara(0)) {
+    default:
+        printf(nmeStr2);
+        return 1;
+    case 0:
+        proc = fldNmeProcess();
+        break;
+    case 1:
+        proc = nmeStart(0);
+        break;
+    case 2:
+        proc = nmeStart(1);
+        break;
+    }
+    dds3LinkProcess(work->ProcessID, proc);
+    scrSetIntReturnValue((s32)proc);
+    return 1;
+}
 
 s32 nmeScrCmd_CALL_NAME_WAIT(void)
 {

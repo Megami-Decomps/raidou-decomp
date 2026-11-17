@@ -18,8 +18,6 @@
 #include "sdfDraw.h"
 #include "sdf_packet_list.h"
 
-extern const char encStrMapMap39Pac00BLb[];
-
 void encLoadTexture(void)
 {
     char path[32];

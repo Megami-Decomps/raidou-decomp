@@ -286,7 +286,21 @@ INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_17);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlAI_SetSeikaku_Action);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckArea);
+s32 sbtlCheckArea(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos)
+{
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && sbtlCheckDamageTarget(unit) && (unit->field414 & 7) && (unit->field414 & 7) != (wk->field414 & 7)) {
+            if (sbtlCheckCrossCircle(pos, r, &unit->pos, unit->model->field11C)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckAreaCount);
 

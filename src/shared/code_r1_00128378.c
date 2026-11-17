@@ -180,8 +180,6 @@ void NewGameInit(void)
 {
     memset(DDS3_GBWK->mesLog, 0, sizeof(DDS3_GBWK->mesLog));
 }
-
-INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskSetCurrent);
 #endif
 
 #ifdef VERSION_RAIDOU1
@@ -238,7 +236,13 @@ void mapAM_MaskSetCurrent(s32 map, s32 floor) {
     }
     fldGlobalBase.automapMaskCurrentIdx = -1;
 }
+#else
+INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskSetCurrent);
 
+INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskOpen_ID);
+#endif
+
+#ifdef VERSION_RAIDOU1
 void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 id) {
     s32 idx;
 
@@ -251,11 +255,7 @@ void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 id) {
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskOpen_ID);
-#endif
 
-#ifdef VERSION_RAIDOU1
 void mapRefDDS3GBWK3(s32 map, s32 floor, s32 id) {
     if (map < 32 && fldGlobalBase.automapMaskCurrentIdx != -1) {
         if (fldGlobalBase.automapMaskCurrentIdx < 80) {
@@ -265,10 +265,6 @@ void mapRefDDS3GBWK3(s32 map, s32 floor, s32 id) {
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK3);
-#endif
-#ifdef VERSION_RAIDOU1
 /* NON_MATCHING: 36 of 43 words match.  */
 #ifdef NON_MATCHING
 s32 mapAM_MaskChk_ID(s32 map, s32 floor, s32 id) {
@@ -302,6 +298,13 @@ s32 mapAM_MaskChk_ID(s32 map, s32 floor, s32 id) {
 INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskChk_ID);
 #endif
 
+#else
+INCLUDE_ASM(const s32, "code_r1_00128378", mapRefDDS3GBWK3);
+INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskChk_ID);
+
+/* body: matched in raidou @ 780f3f57: src/shared/code_r1_00128378.c:287, found, same function 0.96 (words 107/108, calls 1.00, shape 0.88) */
+#endif
+#ifdef VERSION_RAIDOU1
 void mapCallBitCheck(void) {
     s32 i;
 
@@ -350,10 +353,42 @@ void mapCallBitCheck(void) {
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskChk_ID);
 
-/* body: matched in raidou @ 780f3f57: src/shared/code_r1_00128378.c:287, found, same function 0.96 (words 107/108, calls 1.00, shape 0.88) */
+void mapRndEncParamSet(void) {
+    if (playerBasic != NULL) {
+        fldGlobalBase.rndEncMode = 1;
+        fldGlobalBase.rndEncFieldID = fldGlobalBase.amSBlock;
+        fldGlobalBase.rndEncFloorID = fldGlobalBase.nameU;
+        fldGlobalBase.rndEncX = fldGlobalBase.focusX;
+        fldGlobalBase.rndEncY = fldGlobalBase.focusY;
+        fldGlobalBase.rndEncZ = fldGlobalBase.focusZ;
+    }
+}
+
+dds3Basic_t *mapGetPlayersBasic(s32 type) {
+    switch (type) {
+        case 0:
+            return playerBasic;
+        case 1:
+            if (fldGlobalBase.nakamaMode == 0) {
+                return playerBasic;
+            }
+            return raidoBasic;
+        case 2:
+            fldGlobalBase.aiboRunStop = 1;
+            return aiboBasic;
+        case 3:
+            if (DDS3_GBWK->mapSummonID == 0) {
+                return NULL;
+            }
+            return summonDvBasic;
+        default:
+            return NULL;
+    }
+}
+
+INCLUDE_ASM(const s32, "code_r1_00128378", mapSetPlayersVisible);
+#else
 void mapCallBitCheck(void) {
     s32 i;
 
@@ -402,7 +437,6 @@ void mapCallBitCheck(void) {
         }
     }
 }
-#endif
 
 void mapRndEncParamSet(void) {
     if (playerBasic != NULL) {
@@ -438,6 +472,7 @@ dds3Basic_t *mapGetPlayersBasic(s32 type) {
 }
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapSetPlayersVisible);
+#endif
 
 #ifdef VERSION_RAIDOU1
 /* NON_MATCHING: 33 of 63 words match.  */
@@ -525,7 +560,6 @@ void mapNakamaOikakeBuffReset2(void) {
     }
 }
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "code_r1_00128378", mapGetEyeTgtRotTable);
 
 void mapRaidouBackUpPosReset(void) {
@@ -533,13 +567,25 @@ void mapRaidouBackUpPosReset(void) {
 
     if (fldGlobalBase.nakamaMode) {
         SDF_VU0_LOADVECTOR(axis);
+#ifdef VERSION_RAIDOU1
         fldGlobalBase.word190 = fldGlobalBase.amSBlock;
         fldGlobalBase.word194 = fldGlobalBase.nameU;
         fldGlobalBase.float184 = raidoBasic->poseset->pos.x;
         fldGlobalBase.float188 = raidoBasic->poseset->pos.y;
         fldGlobalBase.float18C = raidoBasic->poseset->pos.z;
+#else
+        fldGlobalBase.word1C8 = fldGlobalBase.amSBlock;
+        fldGlobalBase.word1CC = fldGlobalBase.nameU;
+        fldGlobalBase.float1BC = raidoBasic->poseset->pos.x;
+        fldGlobalBase.float1C0 = raidoBasic->poseset->pos.y;
+        fldGlobalBase.float1C4 = raidoBasic->poseset->pos.z;
+#endif
         dds3GetRotPoseSet(raidoBasic);
+#ifdef VERSION_RAIDOU1
         fldGlobalBase.float198 = (EulerAngleAxisY() * 180.0f) / 3.14f;
+#else
+        fldGlobalBase.float1D0 = (EulerAngleAxisY() * 180.0f) / 3.14f;
+#endif
     } else {
         SDF_VU0_LOADVECTOR(axis);
         fldGlobalBase.focusX = playerBasic->poseset->pos.x;
@@ -551,9 +597,6 @@ void mapRaidouBackUpPosReset(void) {
         fldPlayerForceSetPos_NoHokan(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00128378", mapRaidouBackUpPosReset);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapCallGetRotPoseSet);
 
@@ -584,10 +627,6 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fldGbLocationSavePointStore);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapChkTakaraEX);
 
-INCLUDE_RODATA(const s32, "code_r1_00128378", mapGetEyeTgtRotTable);
-
-INCLUDE_RODATA(const s32, "code_r1_00128378", mapRaidouBackUpPosResetTable);
-
 #endif
 INCLUDE_RODATA(const s32, "code_r1_00128378", mapCallGetRotPoseSetTable);
 
@@ -616,6 +655,11 @@ void fldFirstInit(void) {
     fldData9 = dds3CallMatNew2(fldGlobalBase.texture220);
     mapEffEplInit();
     mefMistFastCreate();
+}
+
+void mapCutFileLoad(void) {
+    playerBasic = NULL;
+    cameraBasic = NULL;
 }
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", fldReturnSavePointPositionRestore);
@@ -660,17 +704,15 @@ void fclMapAllShadow(void) {
     sdfMemFreeDelayedDirect(file);
     fldData9 = dds3CallMatNew2(fldGlobalBase.texture220);
     mapEffEplInit();
-#ifdef VERSION_RAIDOU2
     nbCameraInit();
-#endif
     mefMistFastCreate();
 }
-#endif
 
 void mapCutFileLoad(void) {
     playerBasic = NULL;
     cameraBasic = NULL;
 }
+#endif
 
 #ifdef VERSION_RAIDOU1
 void mapSetSceneParam(fldSceneParam_t *param, s32 field, s32 floor, s32 point) {

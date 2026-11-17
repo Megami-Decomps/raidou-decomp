@@ -42,7 +42,19 @@ INCLUDE_ASM(const s32, "code_00163C50", mapSIZE);
 
 INCLUDE_ASM(const s32, "code_00163C50", mapNakamaHajiki1_PosSet);
 
-INCLUDE_ASM(const s32, "code_00163C50", mapEveHitMsk_Find);
+void mapEveHitMsk_Find(s32 evehitid) {
+    MskEveHitTbl_t *tbl;
+    s32 i;
+
+    fldGlobalBase.word168 = -1;
+    tbl = mapMskEveHitTbl;
+    for (i = 0; i < 16; i++, tbl++) {
+        if (tbl->_map == fldGlobalBase.amSBlock && tbl->_floor == fldGlobalBase.nameU && tbl->_EveHitId == evehitid) {
+            fldGlobalBase.word168 = i;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", mapEveHitMsk_Set);
 

@@ -21,7 +21,8 @@ struct effRefObj_t;
 #ifdef VERSION_RAIDOU2
 /* Partial raidou2 layout: only the fields read so far are named, the rest is padding. */
 typedef struct SBTLUNIT_MODEL {
-    u8 pad000[0x90];
+    sdfVector4_t vec00;
+    u8 pad010[0x80];
     sdfVector4_t scrPos3;
     u8 pad0A0[0x68];
     struct sdfMemHandle_t *handle;
@@ -173,8 +174,6 @@ s32 sbtlCallBtlCreateUnit(s8 flg);
 extern const char Init_sbtlUnitStrSbtlunitProc[];
 s32 Proc_sbtlUnit(dds3ProcessID_t *id);
 s32 sbtlSetPlayerData(s8 flg);
-/* R2's name for its sbtlCreateUnit. */
-struct SBTLUNIT_WORK *sbtlCallMemAllocDirect(s32 major, s32 minor, s16 mode);
 #endif
 s32 EventBattleStopChack(void);
 s32 sbtlRefSbtl8(struct SBTLUNIT_WORK *wk);

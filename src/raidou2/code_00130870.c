@@ -45,7 +45,21 @@ INCLUDE_ASM(const s32, "code_00130870", ProcRandomEncountCheck);
 
 INCLUDE_ASM(const s32, "code_00130870", mapKiretaLabel);
 
-INCLUDE_ASM(const s32, "code_00130870", CutSet);
+void CutSet(s32 id) {
+    sdfVector4_t pos;
+    dds3PoseSet_t *poseset;
+
+    pos.x = fldGlobalBase.focusX;
+    pos.y = fldGlobalBase.focusY;
+    pos.z = fldGlobalBase.focusZ;
+    dds3SetPosPoseSet_dds3Basic(playerBasic, &pos);
+    poseset = playerBasic->poseset;
+    SDF_VU0_COPYVECTOR(&poseset->pos2, &pos);
+    dds3OnPoseSetFlag(poseset, 8);
+    mapCutSetTblID(id);
+    mapCutBgLoad();
+    mapCutSetCam(cameraBasic, 0);
+}
 
 INCLUDE_ASM(const s32, "code_00130870", mapIdouGo_Idx);
 

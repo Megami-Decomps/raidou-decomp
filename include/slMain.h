@@ -97,6 +97,16 @@ extern struct frFontHandle_t *slKanjiDrawH_handle2;
 s32 slSizeChk(void);
 dds3ProcessFunc_t slSystemDataProc(void);
 extern const char slIconPath[];
+/* slDrawInfo's message strings; the labels past slDrawInfoData13 differ per game. */
+extern char slDrawInfoData[], slDrawInfoData2[], slDrawInfoData3[], slDrawInfoData4[];
+extern char slDrawInfoData5[], slDrawInfoData6[], slDrawInfoData7[], slDrawInfoData8[];
+extern char slDrawInfoData9[], slDrawInfoData10[], slDrawInfoData11[], slDrawInfoData12[];
+extern char slDrawInfoData13[], slDrawInfoData14[];
+#ifdef VERSION_RAIDOU2
+extern char slDrawInfoData18[];
+#else
+extern char slDrawInfoData17[];
+#endif
 saddr_t slHitAnyKeyProc(void);
 s32 slFileSel(void);
 saddr_t slLoadProc_openFile(void);

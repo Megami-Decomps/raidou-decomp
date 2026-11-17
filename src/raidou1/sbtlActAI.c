@@ -1725,7 +1725,7 @@ void sbtlResetAAI(struct SBTLUNIT_WORK *wk) {
     SDF_VU0_STOREVECTOR(&wk->mv_spd);
     SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
     wk->aiwk->stat = 1;
-    sbtlCallBtlGetSkilltbl8(wk, 0x400);
+    sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
     if ((wk->field414 & 1) && (wk->flg & 0x40000)) {
         wk_sbtl->flg |= 0x4000;
     }
@@ -2023,7 +2023,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlCallMemset12(wk);
@@ -2059,7 +2059,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             } else if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlMVSupport(wk);
@@ -2077,7 +2077,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         goto end_proc;
@@ -2088,7 +2088,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlCallMemset12(wk);
@@ -2108,7 +2108,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(SKLID_BS14_GIGATO_P) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_GIGATO_P);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         if (wk->action_flg == 1 && sbtlCheckMotionEnd(wk)) {
@@ -2128,7 +2128,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(SKLID_BS14_GIGATO) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_GIGATO);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlCallMemset12(wk);
@@ -2147,7 +2147,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlMVSupport(wk);
@@ -2171,7 +2171,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         if (wk->action_flg == 1 && sbtlCheckMotionEnd(wk)) {
@@ -2300,7 +2300,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         if (wk->framecnt >= 8 && wk->framecnt <= 24) {
@@ -2335,7 +2335,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlCallMemset12(wk);
@@ -2372,7 +2372,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
                     }
                 }
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlMVSupport(wk);
@@ -2521,7 +2521,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         } else {
             wk_sbtl->scrCnt[3] = 0;
@@ -2679,7 +2679,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlCallMemset12(wk);
@@ -2888,7 +2888,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
                 sbtlSetUseSkill(wk, SKLID_BS14_CHOUSIN_HIT);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         if (wk->framecnt >= 225 && wk->action_flg == 1) {
@@ -3000,7 +3000,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         if (wk->framecnt >= frame + 30 && wk->action_flg == 1) {
@@ -3009,7 +3009,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         goto end_proc;
@@ -3058,7 +3058,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
     end_proc:
@@ -3083,7 +3083,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
-                sbtlCallBtlGetSkilltbl8(wk, 0x400);
+                sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
         }
         sbtlCallMemset12(wk);

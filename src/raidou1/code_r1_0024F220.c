@@ -1937,7 +1937,7 @@ s32 sbtlDeleteUnit(struct SBTLUNIT_WORK *wk) {
     if (wk->hitwk.status & 1) {
         sbtlCreateHitC_New(wk);
     }
-    sbtlCallBtlGetSkilltbl8(wk, 0x400);
+    sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
     sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
     if (!(wk->flg & 0x800)) {
         sbtlCallMemFreeDirect2(wk);
@@ -3552,7 +3552,7 @@ s32 sbtlEntryStockData(s32 devilid) {
     unit->backup.luck = data->resist[3];
     unit->backup.maxmp = data->stat24;
     sbtlHuumaParamUp(unit);
-    sbtlBtlEntryStockDataSub(unit);
+    sbtlCheckStockPara(unit);
     unit->now.hp = unit->now.maxhp;
     unit->now.mp = unit->now.maxmp;
     skill = unit->haveskill;
@@ -3719,7 +3719,7 @@ s32 sbtlCallBtlSearchUnitID4(s32 index, s32 flg) {
         } else if (wk_sbtl->field344 >= 4) {
             wk_sbtl->field344 = 3;
         }
-        sbtlCallBtlGetSkilltbl8(wk, 0x400);
+        sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
         sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
         if (wk->flg2 & 0x100) {
             sbtlCallMemset17(wk_sbtl->effList, wk, EFFID_RETURN_D, 0, &wk->pos.x, 0, 0);
@@ -3809,7 +3809,7 @@ s32 ResetAction(struct SBTLUNIT_WORK *wk, s8 flg)
     wk->vstatus &= ~0x08020000;
     wk->model->flags &= ~0x4000;
     sbtlResetAIPattern(wk, 0);
-    sbtlCallBtlGetSkilltbl8(wk, 0x400);
+    sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
     return 1;
 }
 #else

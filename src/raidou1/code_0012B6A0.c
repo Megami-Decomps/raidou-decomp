@@ -348,7 +348,7 @@ void CutSet(s32 id) {
     poseset = playerBasic->poseset;
     SDF_VU0_COPYVECTOR(&poseset->pos2, &pos);
     dds3OnPoseSetFlag(poseset, 8);
-    mapCutSetSub(id);
+    mapCutSetTblID(id);
     mapCutBgLoad();
     mapCutSetCam(cameraBasic, 0);
 }

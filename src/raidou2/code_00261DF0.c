@@ -21,7 +21,7 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlCheckSummon);
 
 INCLUDE_ASM(const s32, "code_00261DF0", CheckStopBattle);
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlSbattle2);
+INCLUDE_ASM(const s32, "code_00261DF0", RestartBattle);
 
 INCLUDE_ASM(const s32, "code_00261DF0", ReloadTableData);
 

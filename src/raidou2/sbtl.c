@@ -10,6 +10,8 @@
 #include "sbattle.h"
 #include "fld.h"
 #include "sBtlUnit.h"
+#include "ps2asm.h"
+#include "dds3CameraObjectBasic.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
@@ -81,7 +83,28 @@ INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl67);
 
 INCLUDE_ASM(const s32, "sbtl", SetPara);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallCameraObjectBasicGetFovy);
+s32 sbtlCallCameraObjectBasicGetFovy(SBTLCAMERA_WORK *wk, dds3Basic_t *cm) {
+    dds3CameraObjectBasicWorkData_t *work;
+    dds3PoseSet_t *poseset;
+    f32 distance;
+
+    wk->cm = cm;
+    work = cm->workdata;
+    poseset = cm->poseset;
+    SDF_VU0_LOADVECTOR(&work->targetPos);
+    SDF_VU0_STOREVECTOR(&wk->targetpos);
+    SDF_VU0_LOADVECTOR(&work->eyeVector);
+    SDF_VU0_STOREVECTOR(&wk->direction);
+    SDF_VU0_LOADVECTOR(&poseset->pos);
+    SDF_VU0_STOREVECTOR(&wk->camerapos);
+    SDF_VU0_LOADVECTOR(&wk->targetpos);
+    SDF_VU0_LOADVECTOR_B(&wk->camerapos);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_GETLENGTH(distance);
+    wk->distance = distance;
+    wk->fovy = dds3CameraObjectBasicGetFovy(cm);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallSetPosPoseSetDds3Basic2);
 
@@ -390,7 +413,38 @@ INCLUDE_ASM(const s32, "sbtl", sbtlResetBattlePara);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetPlayerTec_ParaUp);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckBattlePara);
+void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk)
+{
+    s16 max = 40;
+    sdatUnitWork_t *unit;
+    sdatParaWork_t para;
+
+    CalcAisyo(wk);
+    sbtlCheckStockPara(&wk->unit);
+    wk->unit.now.str += wk->kajyapara.str;
+    wk->unit.now.vit += wk->kajyapara.vit;
+    wk->unit.now.tec += wk->kajyapara.tec;
+    wk->unit.now.luck += wk->kajyapara.luck;
+    if (!(wk->field414 & 0x80) && (wk->field414 & 1)) {
+        unit = &sbtlGetPlayerData()->unit;
+        if (unit->flag & 1) {
+            memset(&para, 0, sizeof(para));
+            sbtlGetPlayerTec_ParaUp(unit, &para);
+            wk->unit.now.str += para.str;
+            wk->unit.now.vit += para.vit;
+            wk->unit.now.tec += para.tec;
+            wk->unit.now.luck += para.luck;
+        }
+    }
+    CalcAisyo_sbtlCalc(wk);
+    if (wk->field414 & 2) {
+        max = 99;
+    }
+    wk->unit.now.str = wk->unit.now.str > 0 ? (wk->unit.now.str < max ? wk->unit.now.str : max) : 0;
+    wk->unit.now.vit = wk->unit.now.vit > 0 ? (wk->unit.now.vit < max ? wk->unit.now.vit : max) : 0;
+    wk->unit.now.tec = wk->unit.now.tec > 0 ? (wk->unit.now.tec < max ? wk->unit.now.tec : max) : 0;
+    wk->unit.now.luck = wk->unit.now.luck > 0 ? (wk->unit.now.luck < max ? wk->unit.now.luck : max) : 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", CalcAisyo_sbtlCalc);
 

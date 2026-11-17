@@ -32,7 +32,42 @@ void sbtlLeaf75(dds3ProcessID_t *id) {
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlFunc6);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData_Decode);
+s32 sbtlLoadEffectData_Decode(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+    s32 match;
+    s32 exist;
+
+    exist = wk != NULL;
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit == NULL) {
+            continue;
+        }
+        if ((u16)(unit->mode - 1) < 2) {
+            continue;
+        }
+        match = 0;
+        if (exist != 1 || wk->field1A0 == unit->field1A0) {
+            match = 1;
+        }
+        if (match != 1) {
+            continue;
+        }
+        if (unit->field414 & 0x80) {
+            if (!evtCommand_PMV_LOAD_END_WAIT()) {
+                return 0;
+            }
+        } else if (unit->field414 & 2) {
+            if (!sbtlLoadEffectData(unit)) {
+                return 0;
+            }
+        } else if (!sbtlCallBtlSearchDelWorkSide(unit)) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlInitLoadPlayerOnMemData);
 
@@ -419,7 +454,7 @@ s32 sbtlDelProc(SBTLEFF_DELLISTWORK *lwk)
             if (!sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_KOUKA)
                 && !sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_HUKA)
                 && !sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_HUKA2)) {
-                sbtlCallBtlSearchEffectData(dwk->sklid, 1);
+                sbtlForceDelete_EffectWork_ID(dwk->sklid, 1);
                 dwk->gstat = SBTLEFF_DELST_EXIT;
             }
             break;
@@ -476,7 +511,7 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteDelList);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteHaveSkill_EffectWork);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchEffectData);
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_EffectWork_ID);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_EffectWork);
 

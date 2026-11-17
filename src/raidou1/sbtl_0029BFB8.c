@@ -528,7 +528,7 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlGetPlayerData4);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlBtlSetEndDataSub);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlBtlGetDamageGBSub);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetPlayerTec_ParaUp);
 
 void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk)
 {
@@ -537,7 +537,7 @@ void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk)
     sdatParaWork_t para;
 
     CalcAisyo(wk);
-    sbtlBtlEntryStockDataSub(&wk->unit);
+    sbtlCheckStockPara(&wk->unit);
     wk->unit.now.str += wk->kajyapara.str;
     wk->unit.now.vit += wk->kajyapara.vit;
     wk->unit.now.tec += wk->kajyapara.tec;
@@ -546,14 +546,14 @@ void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk)
         unit = &sbtlGetPlayerData()->unit;
         if (unit->flag & 1) {
             memset(&para, 0, sizeof(para));
-            sbtlBtlGetDamageGBSub(unit, &para);
+            sbtlGetPlayerTec_ParaUp(unit, &para);
             wk->unit.now.str += para.str;
             wk->unit.now.vit += para.vit;
             wk->unit.now.tec += para.tec;
             wk->unit.now.luck += para.luck;
         }
     }
-    sbtlBtlSetDamageSub(wk);
+    CalcAisyo_sbtlCalc(wk);
     if (wk->field414 & 2) {
         max = 99;
     }
@@ -563,7 +563,7 @@ void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk)
     wk->unit.now.luck = wk->unit.now.luck > 0 ? (wk->unit.now.luck < max ? wk->unit.now.luck : max) : 0;
 }
 
-void sbtlBtlSetDamageSub(struct SBTLUNIT_WORK *wk)
+void CalcAisyo_sbtlCalc(struct SBTLUNIT_WORK *wk)
 {
     s32 i;
 

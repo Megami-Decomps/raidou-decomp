@@ -552,7 +552,7 @@ void mapCutSet_From_Pos(f32 x, f32 y, f32 z) {
     }
     cut = mapGetCut_FXY(x, z);
     if (bg_tex_load_last != cut) {
-        mapCutSetSub(cut);
+        mapCutSetTblID(cut);
         mapCutBgLoad();
         bg_tex_load_last = bg_tex_load_rec;
     }
@@ -621,7 +621,7 @@ void mapCallSetPlayerTargetData4(void) {
         }
         fldGlobalBase.cutState = 2;
         fldGlobalBase.cutIdxPrev = fldGlobalBase.cutIdx;
-        mapCutSetSub(fldGlobalBase.cutIdx);
+        mapCutSetTblID(fldGlobalBase.cutIdx);
         mapCutBgLoad_NB();
         mapCutSetCam(cameraBasic, 0);
         dds3CameraObjectBasicFourceCalc(cameraBasic);
@@ -692,7 +692,7 @@ void mapCutSet_From_Idx(void) {
     if (fldGlobalBase.cutState != 1) {
         return;
     }
-    if (sbtlSbattle4() == 0) {
+    if (CheckStopBattle() == 0) {
         return;
     }
     fldGlobalBase.cutIdx = colm[area->w * iz + ix].cut & 0x7F;
@@ -701,7 +701,7 @@ void mapCutSet_From_Idx(void) {
     }
     fldGlobalBase.cutState = 2;
     fldGlobalBase.cutIdxPrev = fldGlobalBase.cutIdx;
-    mapCutSetSub(fldGlobalBase.cutIdx);
+    mapCutSetTblID(fldGlobalBase.cutIdx);
     mapCutBgLoad_NB();
     mapCutSetCam(mapData97, 0);
     dds3CameraObjectBasicFourceCalc(mapData97);

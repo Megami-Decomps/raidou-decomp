@@ -52,7 +52,7 @@ struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index)
     struct SBTLUNIT_WORK *wk;
     s32 id;
 
-    wk = sbtlCallMemAllocDirect(major, minor, 2);
+    wk = sbtlCreateUnit(major, minor, 2);
     id = sbtlEntryUnitList(wk_sbtl->unitList, wk);
     wk->GroupID = index;
     wk->field1A0 = id;

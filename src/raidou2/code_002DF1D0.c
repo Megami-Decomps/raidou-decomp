@@ -129,7 +129,7 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSklVisualTbl3);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetSkill_EffectData);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSkilltbl18);
+INCLUDE_ASM(const s32, "code_002DF1D0", CheckBadStatus_sbtlSkill);
 
 s32 sbtlSetHatData(struct SBTLUNIT_WORK *wk, SKLID sklid)
 {
@@ -143,7 +143,19 @@ s32 sbtlSetHatData(struct SBTLUNIT_WORK *wk, SKLID sklid)
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetSkillData);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckMHTData);
+s32 sbtlCheckMHTData(struct SBTLUNIT_WORK *wk, SKLID sklid) {
+    SBTLSKLVISUAL_TBL *tbl = sbtlGetSklVisualTbl(sklid);
+
+    sbtlGetBadStatus(&wk->unit);
+    if (tbl->flg & 4) {
+        if (!CheckBadStatus_sbtlSkill(wk, sklid)) {
+            sbtlSetMotionHit(wk, wk->next_motionno, sklid);
+        } else {
+            sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlRefSbtl58);
 

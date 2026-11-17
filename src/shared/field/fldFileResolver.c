@@ -745,7 +745,6 @@ void mapSummonDvInit(void) {
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAtumaru);
 
-#ifdef VERSION_RAIDOU1
 void mapSummonDvFoceSet(f32 x, f32 y, f32 z) {
     s32 i;
 
@@ -756,19 +755,24 @@ void mapSummonDvFoceSet(f32 x, f32 y, f32 z) {
         mapWork3[i] = fldGlobalBase.nameU;
     }
     map_summondv_buff_read_idx = 0;
+#ifdef VERSION_RAIDOU1
     map_summondv_buff_add_idx = 32;
+#else
+    map_summondv_buff_add_idx = 16;
+#endif
     map_summondv_pos[0] = x;
     map_summondv_pos[1] = y;
     map_summondv_pos[2] = z;
+#ifdef VERSION_RAIDOU1
     mapSummonDvTaskData2 = 6.0f;
+#else
+    mapSummonDvTaskData2 = 10.0f;
+#endif
     if (DDS3_GBWK->mapSummonID > 0 && summonDvBasic != NULL) {
         dds3GetRotPoseSet(summonDvBasic);
         map_summondv_rot = (EulerAngleAxisY() * 180.0f) / 3.14f;
     }
 }
-#else
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet);
-#endif
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapNakamaWachLock);
 

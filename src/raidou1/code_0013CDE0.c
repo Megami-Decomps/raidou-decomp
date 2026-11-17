@@ -1361,7 +1361,7 @@ void mapAutomapFldClr(s32 field) {
     fldGlobalBase.word30 = NULL;
 }
 
-void mapCutSetSub(s32 cut) {
+void mapCutSetTblID(s32 cut) {
     if (fldGlobalBase.word1DC == 1) {
         if (cut == 27 || cut == 33) {
             fldGlobalBase.cutIdx = 33;

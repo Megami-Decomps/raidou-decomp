@@ -209,7 +209,7 @@ INCLUDE_ASM(const s32, "code_00169A40", mapBgTexLoad);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapSoundKankyoTaskSub);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapCallBitCheck5);
+INCLUDE_ASM(const s32, "code_00169A40", mapSoundKankyoSeSet);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallBitCheck6);
 

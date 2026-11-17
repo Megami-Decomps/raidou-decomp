@@ -172,6 +172,9 @@ void effFirstInitSub(void);
 s32 fclLeaf21(s32 code);
 u16 fclSetSpriteNormalSub(s32 index);
 void fclCallSetFontString(fldNmeSlotList_t *list, u16 *text, u32 n);
+extern const char nmeStr[];
+extern const char nmeStrCallName[];
+extern const char nmeStr2[];
 
 #endif /* FLDNME_H */
 void fclCallSetFontColorNo(fldNmeDraw_t *draw, u32 page, s32 index, s32 mode, u32 col, s32 row);

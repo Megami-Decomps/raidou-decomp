@@ -20,10 +20,6 @@
 #include "scrTraceCode.h"
 #include "sdk_libc.h"
 
-extern const char nmeStr[];
-extern const char nmeStrCallName[];
-extern const char nmeStr2[];
-
 void fldCallMemGetPtr7(dds3ProcessID_t *id) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
     fldNmeListInit_t init[2] = {

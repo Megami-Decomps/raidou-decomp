@@ -56,6 +56,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | basic/dds3Basic | raidou1, raidou2 | [basic/dds3Basic.md](basic/dds3Basic.md) |
 | 2 | basic/dds3ObjectBase | raidou1, raidou2 | [basic/dds3ObjectBase.md](basic/dds3ObjectBase.md) |
 | 2 | code_00140960 | raidou1 | [code_00140960.md](code_00140960.md) |
+| 2 | code_001431D0 | raidou2 | [code_001431D0.md](code_001431D0.md) |
 | 2 | code_0014B7B0 | raidou2 | [code_0014B7B0.md](code_0014B7B0.md) |
 | 2 | code_0016AD90 | raidou1 | [code_0016AD90.md](code_0016AD90.md) |
 | 2 | code_00174790 | raidou1 | [code_00174790.md](code_00174790.md) |
@@ -92,7 +93,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_001326C0 | raidou1 | [code_001326C0.md](code_001326C0.md) |
 | 1 | code_0013AAC8 | raidou1 | [code_0013AAC8.md](code_0013AAC8.md) |
 | 1 | code_00142A10 | raidou1 | [code_00142A10.md](code_00142A10.md) |
-| 1 | code_001431D0 | raidou2 | [code_001431D0.md](code_001431D0.md) |
 | 1 | code_00144130 | raidou1 | [code_00144130.md](code_00144130.md) |
 | 1 | code_00156778 | raidou1 | [code_00156778.md](code_00156778.md) |
 | 1 | code_00156EA8 | raidou1 | [code_00156EA8.md](code_00156EA8.md) |

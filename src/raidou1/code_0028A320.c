@@ -356,7 +356,7 @@ s32 CheckEffectDataSingle(s32 type, s32 cmp)
     return 0;
 }
 
-s32 sbtlCallBtlSearchEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param)
+s32 sbtlCheckEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param)
 {
     EFFPDATA_WORK *data;
     s32 index;
@@ -1147,7 +1147,7 @@ s32 sbtlForceDelete_SerialID(SBTLEFF_LISTWORK *lwk, s32 serialID)
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlForceDelete_SkillFlag);
 
-s32 sbtlCallBtlGetSkilltbl8(struct SBTLUNIT_WORK *wk, u32 flg)
+s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg)
 {
     SBTLEFF_LISTWORK *lwk;
     SBTLEFF_WORK *ewk;

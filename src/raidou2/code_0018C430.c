@@ -86,7 +86,26 @@ INCLUDE_ASM(const s32, "code_0018C430", evtCommand_TEX_SWAP);
 
 INCLUDE_ASM(const s32, "code_0018C430", evtBCheckPanelMode);
 
-INCLUDE_ASM(const s32, "code_0018C430", evtCallGetIntPara3);
+s32 evtCallGetIntPara3(void) {
+    s32 se = scrGetIntPara(0);
+    s32 on = scrGetIntPara(1);
+
+    if (se == 0) {
+        fldGlobalBase.word358 = 1;
+        if (on == 0) {
+            mapBgTexLoad(0);
+        } else {
+            mapBgTexLoad(1);
+        }
+    } else {
+        if (on == 0) {
+            fldCallSoundKankyoSeSet(0);
+        } else {
+            fldCallSoundKankyoSeSet(1);
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0018C430", prm_MAKA_PLUS);
 

@@ -276,12 +276,12 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallBtlGetSklVisualTbl3);
 s32 sbtlCallBtlGetSklVisualTbl2(struct SBTLUNIT_WORK *wk, SKLID sklid) {
     SBTLSKLVISUAL_TBL *tbl = sbtlGetSklVisualTbl(sklid);
 
-    sbtlCallBtlGetSkilltbl8(wk, 0x400);
+    sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
     if (CheckBadStatus_sbtlSkill(wk, sklid)) {
         return 0;
     }
     if (tbl->SABno != 0 && sklid != 149) {
-        sbtlCallBtlSearchEffectData(wk, sklid, 1, 0, wk->field414, -1, 0);
+        sbtlCheckEffectData(wk, sklid, 1, 0, wk->field414, -1, 0);
     }
     return 1;
 }
@@ -327,7 +327,7 @@ s32 sbtlSetHatData(struct SBTLUNIT_WORK *wk, SKLID sklid)
     SBTLSKLVISUAL_TBL *tbl = sbtlGetSklVisualTbl(sklid);
 
     if (tbl->hatEffect != 0) {
-        sbtlCallBtlSearchEffectData(wk, tbl->hatEffect, 1, 0, wk->field414, -1, 0);
+        sbtlCheckEffectData(wk, tbl->hatEffect, 1, 0, wk->field414, -1, 0);
     }
     return 1;
 }

@@ -58,7 +58,7 @@ s32 sbtlCallBtlGetPlayerData(void)
     return ret;
 }
 
-s32 sbtlSbattle4(void) {
+s32 CheckStopBattle(void) {
     if (dds3SearchProcessName(sbtlData85) == NULL) {
         return 0;
     }

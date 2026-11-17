@@ -691,7 +691,6 @@ typedef struct fldSeId_t {
 } fldSeId_t;
 
 extern fldSeId_t mapData4[64];
-extern s8 mapData5[48][64];
 extern u8 fldData2[48];
 extern mapMapObjectRefreshData_t mapMapObjectRefreshData[64];
 typedef struct nbCallGetIntParaRate_t {
@@ -706,6 +705,8 @@ extern u8 mapData8[1024];
 extern u8 mapData9[1024];
 extern u8 mapData10[1024];
 extern u8 mapData11[1024];
+#endif
+extern s8 mapData5[48][64];
 /* Event hit mask row, 20 bytes (HD MskEveHitTbl_t plus padding). */
 typedef struct MskEveHitTbl_t {
     s16 _map;
@@ -720,7 +721,6 @@ typedef struct MskEveHitTbl_t {
     s16 pad12;
 } MskEveHitTbl_t;
 extern MskEveHitTbl_t mapMskEveHitTbl[16];
-#endif
 extern s32 mapBtlReLoadMapSBtlSceneSub2Data[];
 void mapBtlReLoadMapSBtlSceneSub2(void);
 void mapBtlReLoadMapSBtlSceneSub3(void);
@@ -853,6 +853,10 @@ extern f32 mapData104;
 
 extern fldGenbaTbl_t fldGenbaTbl[];
 extern f32 mapData20[16];
+#ifdef VERSION_RAIDOU2
+/* R2 name of R1 mapData20 (same use in mapEncPointGet). */
+extern f32 mapKazeLabelTable[16];
+#endif
 extern s32 mapMapObjectRefresh_fldData[];
 extern s32 evtWorkScriptContextReturnValue;
 extern s32 evtWorkScriptContextReturnValue2;
@@ -1006,7 +1010,7 @@ void mapCallEffectGetState(MAP_EPL_EFF_WORK_t *work);
 void fldCallEffectDrawDds3Effect(MAP_EPL_EFF_WORK_t *work);
 #endif
 void mapEffEplAllDrawTask(void);
-void mapCutSetSub(s32 cut);
+void mapCutSetTblID(s32 cut);
 
 void mapEveHitMsk_Find(s32 evehitid);
 u32 mapNpcTableGetMSK(s32 npc_idx);

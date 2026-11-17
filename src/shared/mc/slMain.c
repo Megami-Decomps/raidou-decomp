@@ -570,12 +570,6 @@ void slSetInfo(u32 id) {
     }
 }
 
-#ifdef VERSION_RAIDOU1
-extern char slDrawInfoData[], slDrawInfoData2[], slDrawInfoData3[], slDrawInfoData4[];
-extern char slDrawInfoData5[], slDrawInfoData6[], slDrawInfoData7[], slDrawInfoData8[];
-extern char slDrawInfoData9[], slDrawInfoData10[], slDrawInfoData11[], slDrawInfoData12[];
-extern char slDrawInfoData13[], slDrawInfoData14[], slDrawInfoData17[];
-
 void slDrawInfo(void) {
     if (gslInfoCode == 0) {
         return;
@@ -590,10 +584,17 @@ void slDrawInfo(void) {
     }
     if (gslInfoCode == 2) {
         if (slDrawWindow() != 0) {
+#ifdef VERSION_RAIDOU1
             slKanjiDrawH(46, 114, 0x64E6AA80, slDrawInfoData5);
             slKanjiDrawH(46, 138, 0x64E6AA80, slDrawInfoData7);
             slKanjiDrawH(46, 162, 0x64E6AA80, slDrawInfoData8);
             slKanjiDrawH(46, 186, 0x64E6AA80, slDrawInfoData9);
+#else
+            slKanjiDrawH(70, 114, 0x64E6AA80, slDrawInfoData5);
+            slKanjiDrawH(70, 138, 0x64E6AA80, slDrawInfoData7);
+            slKanjiDrawH(70, 162, 0x64E6AA80, slDrawInfoData8);
+            slKanjiDrawH(70, 186, 0x64E6AA80, slDrawInfoData9);
+#endif
             slMcAccessDraw();
         }
     }
@@ -637,17 +638,20 @@ void slDrawInfo(void) {
     }
     if (gslInfoCode == 30) {
         if (slDrawWindow() != 0) {
+#ifdef VERSION_RAIDOU1
             slKanjiDrawH(70, 114, 0x64E6AA80, slDrawInfoData13);
             slKanjiDrawH(70, 138, 0x64E6AA80, slDrawInfoData14);
             slKanjiDrawH(70, 162, 0x64E6AA80, slDrawInfoData17);
+#else
+            slKanjiDrawH(142, 114, 0x64E6AA80, slDrawInfoData13);
+            slKanjiDrawH(142, 138, 0x64E6AA80, slDrawInfoData18);
+            slKanjiDrawH(142, 162, 0x64E6AA80, slDrawInfoData14);
+#endif
             slNextPageDraw();
         }
         gSlExitMode = 2;
     }
 }
-#else
-INCLUDE_ASM(const s32, "mc/slMain", slDrawInfo);
-#endif
 
 void fileClearAllSlotFlags(void) {
     sdfMcSetCardStat(fileMemoryCardRequestIndex);

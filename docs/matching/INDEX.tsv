@@ -34,6 +34,7 @@ mapUnitSetLight	code_00140960	raidou1 0x43C	154 of 271 words differ	docs/matchin
 mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; adding the fld.h prototype mapObjCheck alone, or splitting sdatUnitWork_t's padC0 into autost_cnt/autost_cnt2 (sdatUnit.h) alone, turns DIFF 3/50 into CONTEXT 5/50. A1-last-asm's six unused prototypes in code_r1_00128378.h leave the full unit at 3/50 but move the function compiled alone from 3/50 to 5/50 (DIFF to CONTEXT).	
 mapHamidasiCheck	code_00142A10	raidou1 0x210	24 of 132 words differ	docs/matching/code_00142A10.md	3	matched until B1-big's declaration edits to fld.h (six prototypes) and mapData.h; removing any one of the new fld.h prototypes, or reverting mapData.h, makes it match again, so it shifts with the count of declarations the unit includes, not with its own C. The K07-misc-kernel header declaration edits move the full unit from OK to DIFF 24/132.	
 fldBgZoomTest	code_001431D0	raidou2 0x2B4		docs/matching/code_001431D0.md	3		the Raidou 1 body (code_0013CDE0), with its three FAKEMATCH_ASM_LIVE(mode) after the mapZoomSetGoal calls that must stay jal.
+mapCutBgLoad	code_001431D0	raidou2 0x88	30 of 34 words differ	docs/matching/code_001431D0.md	9		the Raidou 1 body (code_0013CDE0), with its FAKEMATCH_ASM_LIVE(cut) after mapBgFree2; without it 30 of 34 words differ (sd ra scheduled early, beql), as in Raidou 1.
 mapLeaf12	code_00143568	raidou1 0x50	2 of 20 words differ	docs/matching/code_00143568.md	3		
 mdlCallMemGetSize	code_00143568	raidou1 0x140	25 of 78 words differ	docs/matching/code_00143568.md	11		
 mdlCallMemGetInfo	code_00143568	raidou1 0x12C	22 of 73 words differ	docs/matching/code_00143568.md	19		
@@ -176,7 +177,7 @@ effEditMColorTrack	code_r1_00242308	raidou1 0x64, raidou2 0x64	7 of 25 words dif
 effSelectCameraFileJobFromRows	code_r1_00242308	raidou1 0x390, raidou2 0x390	2 of 228 words differ	docs/matching/code_r1_00242308.md	9		
 sbtlInitPlayerData	code_r1_0024B510	raidou1 0x274	114 of 157 words differ	docs/matching/code_r1_0024B510.md	3		
 pbCallBtlCheckLoadFlg	code_r1_0024B788	raidou1 0x3DC	81 of 243 words differ	docs/matching/code_r1_0024B788.md	3		
-sbtlBtlEntryStockDataSub	code_r1_0024B788	raidou1 0x248	8 of 146 words differ	docs/matching/code_r1_0024B788.md	11		
+sbtlCheckStockPara	code_r1_0024B788	raidou1 0x248	8 of 146 words differ	docs/matching/code_r1_0024B788.md	11		
 sbtlMapFadeProc	code_r1_0024B788	raidou1 0x11C	32 of 68 words differ	docs/matching/code_r1_0024B788.md	17		
 sbtlMapFadeProc_H	code_r1_0024B788	raidou1 0xFC	30 of 60 words differ	docs/matching/code_r1_0024B788.md	23		
 sbtlNakamaSetUp	code_r1_0024B788	raidou1 0x48C	249 of 291 words differ	docs/matching/code_r1_0024B788.md	29		

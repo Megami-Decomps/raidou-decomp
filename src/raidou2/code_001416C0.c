@@ -252,7 +252,7 @@ s32 BgProcSequence(dds3ProcessID_t *id) {
         mapAutomapFldClr(bg_tex_load_rec);
         bg_tex_load_last = bg_tex_load_rec;
         if (fldGlobalBase.word248 != 0) {
-            mapCallBitCheck5(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.cutIdx);
+            mapSoundKankyoSeSet(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.cutIdx);
         }
         mapBgSetScroll(bg_scroll_last_x, mapData71, mapData72, 0);
     }

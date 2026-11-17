@@ -17,7 +17,50 @@ INCLUDE_ASM(const s32, "code_0015D870", mapMapSetEnc);
 
 INCLUDE_ASM(const s32, "code_0015D870", mapMapSetForm);
 
-INCLUDE_ASM(const s32, "code_0015D870", mapEncPointGet);
+void mapEncPointGet(s16 point_id, f32 *x, f32 *y, f32 *z, f32 *r) {
+    MpbPoint_t *pt;
+    s32 i;
+    f32 pos[2];
+    f32 py;
+
+    *x = 0.0f;
+    *y = 0.0f;
+    *z = 0.0f;
+    *r = 0.0f;
+    if (mapData112 == NULL) {
+        return;
+    }
+    pt = pMpbPointNow;
+    for (i = 0; i < mapData112->num_encpos; i++, pt++) {
+        if (pt->id == point_id) {
+            PositioningGuardSystem(pt->x, pt->y, &pos[0], &pos[1]);
+            switch (pt->ofs) {
+            case 0:
+                pos[0] += 50.0f;
+                pos[1] -= 50.0f;
+                break;
+            case 1:
+                break;
+            case 2:
+                pos[0] += 100.0f;
+                break;
+            case 3:
+                pos[1] -= 100.0f;
+                break;
+            case 4:
+                pos[0] += 100.0f;
+                pos[1] -= 100.0f;
+                break;
+            }
+            py = mapGetY(pos[0], pos[1]);
+            *x = pos[0];
+            *y = py;
+            *z = pos[1];
+            *r = -mapKazeLabelTable[pt->dir];
+            return;
+        }
+    }
+}
 
 void fldSetPlayerTargetData(s32 *ix, s32 *iz, f32 x, f32 z) {
     f32 dz = -(z - mapData104) / 100.0f;
@@ -119,7 +162,58 @@ INCLUDE_ASM(const s32, "code_0015D870", mapCallBitOff);
 
 INCLUDE_ASM(const s32, "code_0015D870", mapCatChkMain_fld);
 
-INCLUDE_ASM(const s32, "code_0015D870", mapCutSet_From_Idx);
+void mapCutSet_From_Idx(void) {
+    fldMapAreaHead_t *area;
+    MapColm_t *colm;
+    s32 ix;
+    s32 iz;
+    volatile f32 target[4] QWORD_ALIGNED;
+    volatile f32 eye[4] QWORD_ALIGNED;
+
+    area = pMapAreaNow;
+    colm = pMapColmNow;
+    if (area == NULL || colm == NULL) {
+        return;
+    }
+    fldSetPlayerTargetData(&ix, &iz, mapCutSet_From_IdxData, mapCutSet_From_IdxData3);
+    if (fldGlobalBase.cutState != 1) {
+        return;
+    }
+    if (CheckStopBattle() == 0) {
+        return;
+    }
+    fldGlobalBase.cutIdx = colm[area->w * iz + ix].cut & 0x7F;
+    if (fldGlobalBase.hitMatterIndex > 0) {
+        fldGlobalBase.cutIdx = fldGlobalBase.hitMatterIndex;
+    }
+    fldGlobalBase.cutState = 2;
+    fldGlobalBase.cutIdxPrev = fldGlobalBase.cutIdx;
+    mapCutSetTblID(fldGlobalBase.cutIdx);
+    mapCutBgLoad_NB();
+    mapCutSetCam(mapData97, 0);
+    dds3CameraObjectBasicFourceCalc(mapData97);
+    sdf3MakeScreenParam(&dds3ScreenParam);
+    SDF_VU0_LOADVECTOR(&aViewTarget);
+    SDF_VU0_LOADVECTOR_B(&aViewEye);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SCALEVECTOR(600.0f);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_LOADVECTOR_B(gMapScrollReset);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(target);
+    SDF_VU0_LOADVECTOR(&aViewEye);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR_NOMEM(eye);
+    LookAtMatrix((const void *)target, (const void *)eye, &aViewDown);
+    SDF_VU0_STOREMATRIX_NOMEM(&sdfViewMatrix);
+    sdf3DSetCamera(&dds3ScreenParam, &sdfViewMatrix);
+    sdf3MakeScreenParam(&dds3ScreenParam);
+    mapBgSetScroll(mapCutSet_From_IdxData, mapCutSet_From_IdxData2, mapCutSet_From_IdxData3, 0);
+    sdf3MakeScreenParam(&dds3ScreenParam);
+    mapBgSetScroll(mapCutSet_From_IdxData, mapCutSet_From_IdxData2, mapCutSet_From_IdxData3, 0);
+    RestartBattle();
+}
 
 INCLUDE_ASM(const s32, "code_0015D870", mapCallWarpGetPos);
 

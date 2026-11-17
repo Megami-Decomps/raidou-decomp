@@ -24,6 +24,7 @@ extern s32 gencOn;
 extern sdfTexHandle_t *fldData42;
 extern f32 fldCallSetOt5Data;
 extern f32 fldCallSetOt5Data2;
+extern const char encStrMapMap39Pac00BLb[];
 extern char fldEncDrawName[];
 extern dds3Effect_PartialMultiBlurParam_t encBlurParam;
 s32 encDrawProc(dds3ProcessID_t *aProcId);

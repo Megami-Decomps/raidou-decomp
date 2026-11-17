@@ -361,14 +361,14 @@ s32 BgProcSequence(dds3ProcessID_t *id) {
     return 0;
 }
 
-s32 fldFunc(dds3ProcessID_t *id) {
+s32 fldProcSequence2(dds3ProcessID_t *id) {
     mapSKYBGEDIT();
     return 0;
 }
 
 void fldBgTaskInit(void) {
     dds3StartProcess(fldStrBgProcSequence, 1013, 0, 0, BgProcSequence, NULL, NULL);
-    dds3StartProcess(fldStrBgProcDraw, 11014, 0, 0, fldFunc, NULL, NULL);
+    dds3StartProcess(fldStrBgProcDraw, 11014, 0, 0, fldProcSequence2, NULL, NULL);
 }
 
 /* NON_MATCHING: 27 of 35 words match.  */

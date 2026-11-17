@@ -1112,6 +1112,41 @@ sdfTexHandle_t *itfMesGetWindowTexture(void) {
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf9);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf10);
+
+s32 itfMesMngInitialize(void *data) {
+    itfMesLink_t *node = (itfMesLink_t *)itfMiscLinkTake((itfmisclinkstack_t *)&itfMesMngManager.pool);
+    s32 window = node->index;
+    instanceMes_tag *mes;
+    sdfMemHandle_t *handle;
+
+    handle = sdfMemAllocDirect(sizeof(instanceMes_tag));
+    node->resourceHandle = handle;
+    mes = EE_ADDR_AS(instanceMes_tag *, sdfMemLock(handle));
+    node->state = mes;
+    mes->pdata = NULL;
+    itfMesMngSetResourcePtr(window, data);
+    mes->stat = 0;
+    mes->otindex = 0x67;
+    mes->z = 0xFFFFF0;
+    mes->type = 0;
+    mes->func_kuti = 0;
+    InitializeSpeaker(&mes->speaker, 1);
+    InitializeMessage(&mes->message, 1);
+    InitializeSelect(&mes->select);
+    InitializeWindow(&mes->window);
+    InitializeVariable(&mes->variable);
+    InitializeCurCtr(&mes->curctr[0], 0);
+    InitializeCurCtr(&mes->curctr[1], 0);
+    itfMesMngManager.activeWindowCount++;
+    return window;
+}
+
+/* Destroy an installed nonnegative window slot; no upper-bound validation. */
+void itfMesMngRelease(s32 id) {
+    if (id >= 0 && pinst[id].mes != NULL) {
+        DestructFlow(id);
+    }
+}
 #else
 void itfMesMngSetSelPhase(s32 msgid, s16 phase) {
     pinst[msgid].mes->select.phase = phase;
@@ -1322,9 +1357,7 @@ sdfTexHandle_t *itfMesGetWindowTexture(void) {
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf9);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf10);
-#endif
 
-#ifdef VERSION_RAIDOU1
 s32 itfMesMngInitialize(void *data) {
     itfMesLink_t *node = (itfMesLink_t *)itfMiscLinkTake((itfmisclinkstack_t *)&itfMesMngManager.pool);
     s32 window = node->index;
@@ -1338,7 +1371,7 @@ s32 itfMesMngInitialize(void *data) {
     mes->pdata = NULL;
     itfMesMngSetResourcePtr(window, data);
     mes->stat = 0;
-    mes->otindex = 0x67;
+    mes->otindex = 0x68;
     mes->z = 0xFFFFF0;
     mes->type = 0;
     mes->func_kuti = 0;
@@ -1352,9 +1385,6 @@ s32 itfMesMngInitialize(void *data) {
     itfMesMngManager.activeWindowCount++;
     return window;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngInitialize);
-#endif
 
 /* Destroy an installed nonnegative window slot; no upper-bound validation. */
 void itfMesMngRelease(s32 id) {
@@ -1362,6 +1392,7 @@ void itfMesMngRelease(s32 id) {
         DestructFlow(id);
     }
 }
+#endif
 
 #ifdef VERSION_RAIDOU1
 void itfMesMngClearCursor(s32 window) {

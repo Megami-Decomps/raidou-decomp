@@ -487,7 +487,7 @@ INCLUDE_ASM(const s32, "sbtlActAI", dds3EffectFldTypeIsSpecial);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetAIData);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSearchUnitID6);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetUseTable_Target_sbtlActAI);
 
 s32 sbtlCheckEnemyTarget(struct SBTLUNIT_WORK *wk, s32 id) {
     struct SBTLUNIT_WORK *target = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
@@ -500,9 +500,9 @@ s32 sbtlCheckEnemyTarget(struct SBTLUNIT_WORK *wk, s32 id) {
     bst = sbtlGetBadStatus(&wk->unit);
     if (bst == BST_BOUDO || bst == BST_MAHUU) {
         if (sbtlGetSkilltbl(wk->skillid)->area & 0x4000) {
-            return sbtlCallBtlSearchUnitID6(wk, 8, 0);
+            return sbtlGetUseTable_Target_sbtlActAI(wk, 8, 0);
         }
-        return sbtlCallBtlSearchUnitID6(wk, 4, 0);
+        return sbtlGetUseTable_Target_sbtlActAI(wk, 4, 0);
     }
     if (wk->flg & 0x100000) {
         if (target == NULL) {
@@ -571,7 +571,16 @@ s32 sbtlEAIProc_Wait(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Movef);
+s32 sbtlEAIProc_Movef(struct SBTLUNIT_WORK *wk) {
+    SBTLUNIT_MODEL *model = wk->model;
+
+    if (model->cmpframe <= model->frame ||
+        ((model->flags & 0x10) && sbtlCheckCrossCircle(&wk->pos, model->field120, &model->vec00, 2.0f))) {
+        sbtlResetAAI(wk);
+        sbtlSetAIWkStat(wk);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_BtlWait);
 
@@ -737,7 +746,20 @@ void sbtlSetAIWkStat(struct SBTLUNIT_WORK *wk) {
     model->mode = 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlResetAAI);
+void sbtlResetAAI(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t spd;
+
+    memset(&spd, 0, sizeof(spd));
+    spd.w = 1.0f;
+    SDF_VU0_LOADVECTOR(&spd);
+    SDF_VU0_STOREVECTOR(&wk->mv_spd);
+    SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+    wk->aiwk->stat = 1;
+    sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
+    if ((wk->field414 & 1) && (wk->flg & 0x40000)) {
+        wk_sbtl->flg |= 0x4000;
+    }
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetWarpUnit_ID);
 
@@ -817,7 +839,7 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetUseSkill);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckNextAction);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlGetSkilltbl6);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetMotionHit);
 
 INCLUDE_ASM(const s32, "sbtlActAI", CheckSkillMessage);
 

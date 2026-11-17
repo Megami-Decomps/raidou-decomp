@@ -70,7 +70,7 @@ s32 sbtlCallMemset2(struct SBTLUNIT_WORK *wk, s32 index) {
     s32 left;
     s32 id;
 
-    sbtlBtlEntryStockDataSub(src);
+    sbtlCheckStockPara(src);
     wk->unit = *src;
     wk->aisyoBase = wk->unit.aisyo;
     memset(skills, 0, sizeof(skills));
@@ -121,7 +121,7 @@ s32 sbtlBtlNakamaSetUpSub(sdatUnitWork_t *unit) {
 
 /* NON_MATCHING: 138 of 146 words match. Pbtl and pitem.x[0] loads swap places in the stat sums; vector checked (2 rows, devilId>=81 skips clamp, sums and hp/mp writes agree). */
 #ifdef NON_MATCHING
-s32 sbtlBtlEntryStockDataSub(sdatUnitWork_t *unit)
+s32 sbtlCheckStockPara(sdatUnitWork_t *unit)
 {
     unit->now.maxhp = unit->backup.maxhp + unit->pitem.maxhp + unit->pbtl.maxhp + unit->huuma.maxhp;
     unit->now.maxmp = unit->backup.maxmp + unit->pitem.maxmp + unit->pbtl.maxmp + unit->huuma.maxmp;
@@ -142,7 +142,7 @@ s32 sbtlBtlEntryStockDataSub(sdatUnitWork_t *unit)
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlBtlEntryStockDataSub);
+INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlCheckStockPara);
 #endif
 
 /* NON_MATCHING: 0 of 33 words match. 33 of 34 words differ. Retail keeps id, the item pointer base and num in three saved registers and clamps with blez/movz/movn; cc1 allocates two and branches. Logic as retail, including the returned max - total floored at 0. */

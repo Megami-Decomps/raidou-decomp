@@ -1409,7 +1409,7 @@ s32 sbtlSetReturn(struct SBTLUNIT_WORK *wk) {
                 SDF_VU0_STOREVECTOR(&wk->rot);
                 sbtlAddUnitDeg(wk, deg);
             }
-            sbtlCallBtlGetSkilltbl8(unit, 0x400);
+            sbtlForceDelete_SkillFlag_Acter(unit, 0x400);
             sbtlForceDelete_ID_Acter(wk_sbtl->effList, unit, EFFID_RENKEIOR);
             sbtlCallBtlSearchUnitID4(wk_sbtl->summonIndex[0], 0);
             sbtlResetBit(&wk_sbtl->summonBit, wk_sbtl->summonIndex[0]);
@@ -1596,7 +1596,7 @@ s8 sbtlNormalProc_Huuma(struct SBTLUNIT_WORK *wk)
                 wk_sbtl->field4BE = 0;
                 wk_sbtl->field4B6 = 0;
                 wk_sbtl->field4BC = 0;
-                sbtlCallBtlSearchEffectData(wk, SKLID_HUUMAST, 1, 0, wk->field414, -1, 0);
+                sbtlCheckEffectData(wk, SKLID_HUUMAST, 1, 0, wk->field414, -1, 0);
                 enemy = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
                 if (enemy != NULL) {
                     if (sbtlCheckDamageTarget(enemy)) {
@@ -2669,7 +2669,7 @@ s32 sbtlCallBtlSearchUnitID9(struct SBTLUNIT_WORK *wk) {
         if (wk_sbtl->gstat[0] != 0) {
             wk->m_rate = 0.5f;
             if (wk_sbtl->field494 == 18) {
-                sbtlCallBtlSearchEffectData(wk, wk->skillid, 1, 0, wk->field414, -1, 0);
+                sbtlCheckEffectData(wk, wk->skillid, 1, 0, wk->field414, -1, 0);
             }
             if (wk_sbtl->field494 == 20) {
                 unit = sbtlSearchUnit_ID(wk_sbtl->list3E8, wk_sbtl->field3EC);
@@ -3081,7 +3081,7 @@ s32 BeginSetsuma(struct SBTLUNIT_WORK *wk) {
         unit->skillid = SKLID_NONE;
         unit->aiwk->stat = 2;
         unit->order_sklidbk = sklid;
-        sbtlCallBtlGetSkilltbl8(unit, 0x400);
+        sbtlForceDelete_SkillFlag_Acter(unit, 0x400);
         sbtlClearHitC(wk_sbtl->hitList, unit);
         sbtlForceReset(wk_sbtl->effList, unit);
         sbtlCallBtlEndAction(unit, 2, 0);
@@ -3141,7 +3141,7 @@ s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk)
                     sbtlForceDelete_ID_SummonFR(wk_sbtl->effList, unit);
                     wk_sbtl->field358[i] = 3;
                     devil = sbtlCallMemset6(i, 0);
-                    sbtlCallBtlGetSkilltbl8(devil, 0x400);
+                    sbtlForceDelete_SkillFlag_Acter(devil, 0x400);
                     sbtlForceDelete_ID_Acter(wk_sbtl->effList, devil, EFFID_RENKEIOR);
                     sbtlClearHitC(wk_sbtl->hitList, devil);
                     sbtlForceReset(wk_sbtl->effList, devil);
@@ -4202,7 +4202,7 @@ s32 sbtlCallMemset12(struct SBTLUNIT_WORK *wk)
         if (!sbtlCallBtlGetBadStatus5(wk)) {
             break;
         }
-        sbtlCallBtlGetSkilltbl8(wk, 0x400);
+        sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
         sbtlCheckTargetEquation(wk);
         wk->aiwk->stat = 2;
         sbtlRefSbtl16(wk);
