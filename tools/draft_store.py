@@ -19,7 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import body_check  # noqa: E402
-from units import VERSIONS, unit_sources  # noqa: E402
+from units import VERSIONS  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 STORE = Path.home() / ".local/state/raidou-decomp-work/clusters/store"

@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from check_unit import drop_nonmatching  # noqa: E402
 from retail_elf import VERSIONS  # noqa: E402
-from units import SHARED, SRC, shared_sources, unit_name, unit_sources  # noqa: E402
+from units import SHARED, SRC, shared_sources, unit_sources  # noqa: E402
 
 OUT = ROOT / "build" / "raidou_c"
 # Read only: the smt3-port checkout follows smt3-decomp upstream.

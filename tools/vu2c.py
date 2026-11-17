@@ -1718,52 +1718,6 @@ def routine_map(rs, calls, here):
     return [e for e in sorted(bodies) if not any(e in v for v in inner.values())], inner
 
 
-def stack_link_regs(code, links, link_regs):
-    """Link registers whose every value is a link, the ones saved to memory included.
-
-    A register written only by a link, or by a load through a pointer that nothing but a link is
-    ever stored through, still holds nothing but return addresses however many times it goes out
-    to memory and back.  That closes the induction a plain write check cannot.
-    """
-    out = set()
-    for reg in sorted(link_regs):
-        loads, ok = set(), True
-        for ins in code:
-            if ins.ibit or reg not in ins.reads_writes()[1]:
-                continue
-            if ins.addr in links and links[ins.addr][0] == reg:
-                continue  # a link written straight into it
-            if ins.lname in ("ILW", "ILWR"):
-                loads.add(ins.lf.is_)  # the pointer it came back through
-                continue
-            ok = False  # written from somewhere this cannot account for
-            break
-        if not ok or not loads:
-            continue
-        for ins in code:
-            if ins.ibit or ins.lname not in ("ISW", "ISWR") or ins.lf.is_ not in loads:
-                continue
-            if vi(ins.lf.it) not in link_regs:
-                ok = False
-                break
-        if ok:
-            out.add(reg)
-    return out
-
-
-def link_stack(code, reg):
-    """Where a link register is stored to memory and read back, which is a return stack.
-
-    This is the usual reason a register carries nothing but return addresses and still cannot be
-    proved to: the value goes out to memory and comes back, and this does not follow it.
-    """
-    saved = [ins.addr for ins in code
-             if not ins.ibit and ins.lname in ("ISW", "ISWR") and vi(ins.lf.it) == reg]
-    restored = [ins.addr for ins in code
-                if not ins.ibit and ins.lname in ("ILW", "ILWR") and vi(ins.lf.it) == reg]
-    return saved, restored
-
-
 def loop_note(code, base, loop, ran):
     """What one loop counts, from the register its branch tests and what the body does to it."""
     start, end, _, at = loop

@@ -216,19 +216,9 @@ def owned_nobits_range(yaml_text, unit, section):
     return matches[0] if len(matches) == 1 else None
 
 
-def owned_bss_range(yaml_text, unit):
-    """Compatibility wrapper for an exact source-owned .bss span."""
-    return owned_nobits_range(yaml_text, unit, ".bss")
-
-
 def owned_nobits_size(yaml_text, unit, section):
     owned = owned_nobits_range(yaml_text, unit, section)
     return owned[1] if owned is not None else None
-
-
-def owned_bss_size(yaml_text, unit):
-    """Compatibility wrapper for an exact source-owned .bss size."""
-    return owned_nobits_size(yaml_text, unit, ".bss")
 
 
 def nobits_symbols(objdump_text, section_name):
@@ -258,11 +248,6 @@ def nobits_symbols(objdump_text, section_name):
             continue
         result.append((offset, size, name, "O" in parts[1:section]))
     return result
-
-
-def bss_symbols(objdump_text):
-    """Compatibility wrapper for explicit .bss symbols."""
-    return nobits_symbols(objdump_text, ".bss")
 
 
 def _retail_nobits_inventory(start, size, syms, explicit_sizes=None):
@@ -393,13 +378,6 @@ def nobits_ownership_problems(
             "section has no explicit symbols"
         )
     return problems
-
-
-def bss_ownership_problems(yaml_text, unit, section_size, emitted, syms):
-    """Compatibility wrapper for exact .bss ownership diagnostics."""
-    return nobits_ownership_problems(
-        yaml_text, unit, ".bss", section_size, emitted, syms
-    )
 
 
 def common_symbols(nm_text):
@@ -1228,7 +1206,7 @@ def main():
         roff = va_to_off(segs, addr)
         diffs = []
         # A function may not run into the next retail function: that means the
-        # retail "start" there is really part of this one (tools/find_fragments.py).
+        # retail "start" there is really part of this one.
         nxt = next((a for a in func_starts if a > addr), None)
         comparison_size, overrun = text_comparison_extent(text, off, size, addr, nxt)
         if overrun:

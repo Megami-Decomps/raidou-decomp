@@ -15,7 +15,7 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from units import VERSIONS, unit_name, unit_sources  # noqa: E402
+from units import VERSIONS, unit_sources  # noqa: E402
 from version_guard import view  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent

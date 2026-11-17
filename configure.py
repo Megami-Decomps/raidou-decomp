@@ -544,17 +544,6 @@ def objdiff_progress_category(version: str, name: str) -> str:
 _EVIDENCE: dict[str, dict[str, str]] = {}
 
 
-def unit_evidence(version: str) -> dict[str, str]:
-    if version not in _EVIDENCE:
-        out = {}
-        for line in (ROOT / "config" / version / "tu_evidence.tsv").read_text().splitlines():
-            cols = line.split("\t")
-            if not line.startswith("#") and len(cols) > 4 and cols[0] != "start":
-                out[cols[2]] = cols[4].split(":")[0]
-        _EVIDENCE[version] = out
-    return _EVIDENCE[version]
-
-
 def used_categories(categories: list[dict], units: list[dict]) -> list[dict]:
     """Drop categories that no unit belongs to.
 
@@ -670,7 +659,6 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
             break
     for version in versions:
         serial = VERSIONS[version]["serial"]
-        yaml = Path("config") / version / f"{serial}.yaml"
         provide_symbol_aliases(version)
         ld_script = Path("build") / version / f"{serial}.ld"
         if not (ROOT / ld_script).exists():
