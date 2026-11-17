@@ -67,7 +67,8 @@ def rename_config(tree: Path, game: str, old: str, new: str, reason: str) -> Non
 
 
 def rename_sources(tree: Path, old: str, new: str) -> int:
-    files = subprocess.run(["git", "grep", "-l", "-w", old, "--", "src", "include", "docs"], cwd=tree,
+    # --untracked: a batch's new headers and units are not added yet
+    files = subprocess.run(["git", "grep", "--untracked", "-l", "-w", old, "--", "src", "include", "docs"], cwd=tree,
                            capture_output=True, text=True).stdout.split()
     for f in files:
         rewrite(tree / f, lambda t: re.sub(r"\b%s\b" % re.escape(old), new, t))
