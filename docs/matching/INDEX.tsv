@@ -5,6 +5,15 @@ dds3SetPosPoseSet_dds3Basic	basic/dds3Basic	raidou1 0x2C, raidou2 0x2C	5 of 11 w
 dds3CallMemset	basic/dds3ObjectBase	raidou1 0xE0, raidou2 0xE0	12 of 56 words differ	docs/matching/basic/dds3ObjectBase.md	3		
 dds3SceneBasicSearchSerialID_Used	basic/dds3SceneBasic	raidou1 0xC0, raidou2 0xC0	33 of 48 words differ	docs/matching/basic/dds3SceneBasic.md	3		
 eglLinkBoxZ	code_00109A70	raidou1 0x370	2 of 220 words differ	docs/matching/code_00109A70.md	3		
+sbtlRefDDS3GBWK17	code_0010F2C0	raidou1 0xCC	0 of 51 words differ	docs/matching/code_0010F2C0.md	3		
+nbRefDDS3GBWK5	code_0010F2C0	raidou1 0xCC	0 of 51 words differ	docs/matching/code_0010F2C0.md	9		
+nbRefDDS3GBWK6	code_0010F2C0	raidou1 0xCC	0 of 51 words differ	docs/matching/code_0010F2C0.md	15		
+nbRefDDS3GBWK7	code_0010F2C0	raidou1 0xCC	0 of 51 words differ	docs/matching/code_0010F2C0.md	21		
+nbRefDDS3GBWK8	code_0010F2C0	raidou1 0xCC	0 of 51 words differ	docs/matching/code_0010F2C0.md	27		
+sbtlRefDDS3GBWK19	code_0010F2C0	raidou1 0xE4	0 of 57 words differ	docs/matching/code_0010F2C0.md	33		
+sbtlRefDDS3GBWK15	code_0010F2C0	raidou1 0x160	10 of 88 words differ	docs/matching/code_0010F2C0.md	39		
+sbtlCallCheckItem	code_0010F2C0	raidou1 0x174	7 of 93 words differ	docs/matching/code_0010F2C0.md	45		
+sbtlCallGetDevilLevelUpUnit	code_0010F2C0	raidou1 0x254	66 of 147 words differ	docs/matching/code_0010F2C0.md	51		
 fldSetUnit	code_0012A2E0	raidou1 0x7FC	1 of 511 words differ	docs/matching/code_0012A2E0.md	3		
 ProcMskSub_B	code_0012B6A0	raidou1 0x2DC	8 of 183 words differ	docs/matching/code_0012B6A0.md	3		
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3		
@@ -58,6 +67,7 @@ mapNpcPathMake_Rot	code_00174790	raidou1 0x118	18 of 70 words differ	docs/matchi
 GetElement	code_00174790	raidou1 0x164	38 of 89 words differ	docs/matching/code_00174790.md	11		
 mapCtnGet	code_00175908	raidou1 0x112C	984 of 1095 words differ	docs/matching/code_00175908.md	3		
 nbCallGetIntPara9	code_00179808	raidou1 0xB0	3 of 44 words differ	docs/matching/code_00179808.md	3		
+nbCallGetIntPara6	code_00179808	raidou1 0xBC	24 of 46 words differ	docs/matching/code_00179808.md	13		
 cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3		
 cmbRefDDS3GBWK	code_00181858	raidou1 0xD0	7 of 52 words differ	docs/matching/code_00181858.md	11		
 _MenuSetMenu	code_0018CE10	raidou1 0x5C	18 of 24 words differ	docs/matching/code_0018CE10.md	3		
@@ -67,6 +77,8 @@ MenuProcess	code_00190668	raidou1 0x6DC	404 of 426 words differ	docs/matching/co
 MenuShutdown	code_00190668	raidou1 0x50	4 of 19 words differ	docs/matching/code_00190668.md	19		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, same form as fclCallGetProcessData. Tried: the s32 return of dds3ProcessFunc_t with no return statement (still j, 4 of 19 words differ); the call is last, nothing to reorder. Header: cmpCallMenuDeleteMenu declared in itf.h.
 evtMoonTeisatuCntReset	code_001AD4E8	raidou1 0x10	4 of 4 words differ	docs/matching/code_001AD4E8.md	3		
 sbtlRefSbtl31	code_0024DF70	raidou1 0x94	34 of 35 words differ	docs/matching/code_0024DF70.md	3		
+sbtlRefSbtl3	code_0024DF70	raidou1 0x2C	6 of 11 words differ	docs/matching/code_0024DF70.md	11		
+sbtlRefSbtl2	code_0024DF70	raidou1 0x88	29 of 33 words differ	docs/matching/code_0024DF70.md	17		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
@@ -149,6 +161,12 @@ sbtlBtlEntryStockDataSub	code_r1_0024B788	raidou1 0x248	8 of 146 words differ	do
 sbtlMapFadeProc	code_r1_0024B788	raidou1 0x11C	32 of 68 words differ	docs/matching/code_r1_0024B788.md	17		
 sbtlMapFadeProc_H	code_r1_0024B788	raidou1 0xFC	30 of 60 words differ	docs/matching/code_r1_0024B788.md	23		
 sbtlNakamaSetUp	code_r1_0024B788	raidou1 0x48C	249 of 291 words differ	docs/matching/code_r1_0024B788.md	29		
+sbtlRefSbtl	code_r1_0024B788	raidou1 0x44	11 of 17 words differ	docs/matching/code_r1_0024B788.md	35		
+BattleSkillSort	code_r1_0024B788	raidou1 0x84	33 of 34 words differ	docs/matching/code_r1_0024B788.md	41		
+sbtlSetMapFade	code_r1_0024B788	raidou1 0x170	74 of 90 words differ	docs/matching/code_r1_0024B788.md	47		
+sbtlSetMapFade_H	code_r1_0024B788	raidou1 0x170	74 of 90 words differ	docs/matching/code_r1_0024B788.md	53		
+sbtlCallMemset	code_r1_0024B788	raidou1 0x1BC	5 of 111 words differ	docs/matching/code_r1_0024B788.md	59		
+sbtlCallMemset2	code_r1_0024B788	raidou1 0x258	5 of 150 words differ	docs/matching/code_r1_0024B788.md	65		
 sbtlSceneLoad	code_r1_0024DE98	raidou1 0xD4	25 of 53 words differ	docs/matching/code_r1_0024DE98.md	3		
 sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	23 of 233 words differ	docs/matching/code_r1_0024EE78.md	3	the full-unit count moves with the declarations the unit includes (mapData.h, rstInit.h, sndAt3.h), 20 to 37 words with declaration edits alone. The B4-field-big header declaration edits moved it from DIFF 37/233 to CONTEXT 35/233.	
 CheckMapHit	code_r1_0024F220	raidou1 0x88	5 of 34 words differ	docs/matching/code_r1_0024F220.md	3	the full-unit count moves with header declarations alone; the GetPercentage prototype in sbtlWork.h took it from 5 to 9 of 34 words, and the SBTLUNIT_WORK and sdatUnitWork_t field splits (sBtlUnit.h, sdatUnit.h) take it from 5 to 9 again. The B4-field-big header declaration edits moved it from CONTEXT to DIFF 5/34.	

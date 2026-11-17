@@ -13,10 +13,22 @@
 #include "sdfDelayedResrc.h"
 #include "dds3SceneBasic.h"
 #include "basic.h"
+#include "evtMoon.h"
+#include "sBtlScene.h"
 
-INCLUDE_ASM(const s32, "code_0024DF70", sbtlCallBgDrawOnOff);
+void sbtlCallBgDrawOnOff(void) {
+    if (!(wk_sbtl->flg & 0x200000)) {
+        mapBgDrawOnOff(0);
+        wk_sbtl->flg |= 0x200000;
+    }
+}
 
-INCLUDE_ASM(const s32, "code_0024DF70", sbtlMapVisiblerSet);
+void sbtlMapVisiblerSet(void) {
+    if (wk_sbtl->flg & 0x200000) {
+        mapBgDrawOnOff(1);
+        wk_sbtl->flg &= ~0x200000;
+    }
+}
 
 s32 Draw_sbtlScene(void) {
     dds3Basic_t *scene;
@@ -61,16 +73,60 @@ f32 sbtlFree(f32 x, f32 z) {
     return mapGetY(x, z);
 }
 
-INCLUDE_ASM(const s32, "code_0024DF70", sbtlCallDisableMoonDraw);
+s32 sbtlCallDisableMoonDraw(void) {
+    if (!(wk_sbtl->flg & 1)) {
+        return 0;
+    }
+    if (wk_sbtl != NULL && (wk_sbtl->flg & 0x10)) {
+        return 1;
+    }
+    mapLeaf11();
+    evtDisableMoonDraw();
+    BasicSceneFree();
+    while (sdfDelayedResrcCheck()) {
+    }
+    wk_sbtl->flg |= 0x10;
+    return 1;
+}
 
 s32 sbtlSetScrollID(s32 id) {
     wk_sbtl->scrollID = id;
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0024DF70", sbtlCallBtlGetScrollID);
+s32 sbtlCallBtlGetScrollID(void) {
+    SBTL_WORK *wk = wk_sbtl;
 
+    wk->gstat[1] = 0;
+    wk->gstat[0] = 0;
+    wk->flg &= ~0x40;
+    sbtlSetScrollID(sbtlGetScrollID());
+    return 1;
+}
+
+/* NON_MATCHING: 5 of 34 words match. 29 of 33 words differ. Retail counts i up (slti 3) and computes &wk->light[i] from i each pass, with wk copied back from a second register after the stores; cc1 strength-reduces every address and reverses the loop. */
+#ifdef NON_MATCHING
+s32 sbtlRefSbtl2(void) {
+    SBTL_WORK *wk = wk_sbtl;
+    s32 i;
+
+    if (wk->flg & 0x100) {
+        for (i = 0; i < 3; i++) {
+            if (dds3LightParam.parallel[i] != NULL) {
+                SDF_VU0_LOADVECTOR(&wk->light[i].color);
+                SDF_VU0_STOREVECTOR(&dds3LightParam.parallel[i]->color);
+                SDF_VU0_LOADVECTOR(&wk->light[i].v);
+                SDF_VU0_STOREVECTOR(&dds3LightParam.parallel[i]->v);
+                SDF_VU0_LOADVECTOR(&wk->ambient);
+                SDF_VU0_STOREVECTOR(&dds3LightParam.ambient);
+            }
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0024DF70", sbtlRefSbtl2);
+#endif
 
 /* NON_MATCHING: 3 of 37 words match.  */
 #ifdef NON_MATCHING
@@ -97,11 +153,44 @@ s32 sbtlRefSbtl31(void) {
 INCLUDE_ASM(const s32, "code_0024DF70", sbtlRefSbtl31);
 #endif
 
+/* NON_MATCHING: 5 of 11 words match. 6 of 11 words differ. Same stores; retail keeps the zoom_time store last (in the jr delay slot) where cc1 schedules it right after the first swc1. */
+#ifdef NON_MATCHING
+s32 sbtlRefSbtl3(s32 time, u32 flag, f32 x, f32 y, f32 z, f32 bairitu) {
+    SBTL_WORK *wk = wk_sbtl;
+
+    wk->zoom_x = x;
+    wk->zoom_y = y;
+    wk->startFlg |= flag;
+    wk->zoom_z = z;
+    wk->zoom_bairitu = bairitu;
+    wk->zoom_time = time;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0024DF70", sbtlRefSbtl3);
+#endif
 
-INCLUDE_ASM(const s32, "code_0024DF70", sbtlSetZoomLock);
+s32 sbtlSetZoomLock(struct SBTLUNIT_WORK *unit, f32 zoom) {
+    SBTL_WORK *wk;
 
-INCLUDE_ASM(const s32, "code_0024DF70", sbtlResetZoomLock);
+    wk_sbtl->zoomlockID = unit->field1A0;
+    if (zoom != 0.0f) {
+        wk_sbtl->zoom_bairitu = zoom;
+    }
+    wk = wk_sbtl;
+    wk->zoomlockflg = 0;
+    wk->zoomlocktime = 0;
+    wk->startFlg |= 4;
+    return 1;
+}
+
+s32 sbtlResetZoomLock(void) {
+    SBTL_WORK *wk = wk_sbtl;
+
+    wk->zoomlockflg = 0;
+    wk->startFlg &= ~4;
+    return 1;
+}
 
 s32 sbtlCheckZoom(void) {
     struct SBTLUNIT_WORK *unit;

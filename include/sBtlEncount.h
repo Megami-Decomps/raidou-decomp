@@ -14,9 +14,7 @@ typedef struct datRndEncRitu_t {
 } datRndEncRitu_t;
 
 typedef struct datRndEncTbl_t {
-    u8 map;
-    u8 floor;
-    u16 flag0;
+    s16 mapNo[2]; /* HD has u8 map, u8 floor, u16 flag0; Raidou reads two halfwords (pbCallBtlGetRndEncJoken) */
     u16 flag1;
     u16 flag0j;
     u16 flag1j;
@@ -36,6 +34,7 @@ typedef struct SB_GENERATOR_WORK {
 extern SB_GENERATOR_WORK sb_gen_work[13];
 extern s32 sb_gen_d_flag;
 extern datRndEncTbl_t (*sbtlData101)[3];
+extern s32 pbCallBtlGetRndEncJokenData;
 extern s32 datRndEncBase;
 extern s32 encmax;
 /* The encounter sbtlRndEncCalc picked: its datRndEncRitu_t field04 and type. */

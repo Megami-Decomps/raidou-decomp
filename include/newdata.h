@@ -305,6 +305,7 @@ SIZE_CHECK(dds3GlobalWorkSizeCheck, dds3GlobalWork_t, 0xD380);
 #endif
 
 extern dds3GlobalWork_t *DDS3_GBWK;
+extern s32 btlConditionalEncounterCachedInterval;
 
 typedef struct
 {

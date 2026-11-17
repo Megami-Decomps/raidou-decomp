@@ -643,7 +643,15 @@ typedef struct FloorName_t {
 } FloorName_t;
 
 extern FloorName_t mapData2[96];
-extern u8 nbCallGetIntParaData[4096];
+typedef struct nbCallGetIntParaEntry_t {
+    s32 mode;
+    s16 value1;
+    s16 value2;
+    s32 value3;
+    s32 value4;
+} nbCallGetIntParaEntry_t;
+
+extern nbCallGetIntParaEntry_t nbCallGetIntParaData[256];
 extern u8 mapData3[1024];
 extern s16 p2sdData[48][16];
 /* Ambient (kankyo) sound effect per map: its volume for each cut of the map. */
@@ -664,7 +672,13 @@ extern fldSeId_t mapData4[64];
 extern s8 mapData5[48][64];
 extern u8 fldData2[48];
 extern mapMapObjectRefreshData_t mapMapObjectRefreshData[64];
-extern u8 nbCallGetIntParaData4[192];
+typedef struct nbCallGetIntParaRate_t {
+    s16 id;
+    u8 sub;
+    u8 rate;
+} nbCallGetIntParaRate_t;
+
+extern nbCallGetIntParaRate_t nbCallGetIntParaData4[8][6];
 extern u8 nbData[16];
 extern u8 mapData8[1024];
 extern u8 mapData9[1024];
@@ -818,6 +832,8 @@ extern f32 mapData20[16];
 extern s32 mapMapObjectRefresh_fldData[];
 extern s32 evtWorkScriptContextReturnValue;
 extern s32 evtWorkScriptContextReturnValue2;
+extern s32 nbCallGetIntPara2Data[4];
+extern s32 nbCallGetIntParaData5;
 /* Wall object index and flag of the warp mapCallSetPlayerTargetData last hit. */
 extern s32 mapCallSetPlayerTargetDataData;
 extern s32 mapData98;

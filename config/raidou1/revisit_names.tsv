@@ -335,7 +335,6 @@
 0x00122298	btlSelectConditionalEncounterGroup	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0011C790, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00122498	datEncountCalcSub	func	tier=D	derived-caller	na	unit newdata/datCalc; called by nbEncountCalc
 0x001224F8	btlGetConditionalEncounterInterval	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0011CAB0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00122850	nbRefDDS3GBWK11	func	tier=D	derived-data	na	unit code_00122850, nearest named function nbEncountCalc; references DDS3_GBWK
 0x00122868	nbLeaf54	func	tier=D	derived-unit	na	unit code_00122850, nearest named function nbEncountCalc; no named callee, caller or string
 0x00122870	btlPreemptiveChanceHook	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0011CE38, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00122878	btlSerialBattleChanceHook	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0011CE40, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -2292,12 +2291,8 @@
 0x0021ACF8	effLeaf337	func	tier=D	derived-unit	na	unit code_0021ACF0, nearest named function effPCPBossMETATOBeamDelete; no named callee, caller or string
 0x0021AD08	dds3Leaf42	func	tier=D	derived-unit	na	unit code_0021ACF0, nearest named function dds3EffectDirOpen; no named callee, caller or string
 0x0021AD60	nbEffectFileListCreateSub	func	tier=D	derived-caller	na	unit newbattle/nbCameraHelper; called by dds3EffectFileListCreate
-0x0021B818	nbLeaf57	func	tier=D	derived-unit	na	unit newbattle/nbCameraHelper; no named callee, caller or string
 0x0021B828	nbLeaf58	func	tier=D	derived-unit	na	unit newbattle/nbCameraHelper; no named callee, caller or string
 0x0021B830	dds3EffectFileListWindowGetState	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x0021B880	nbLeaf59	func	tier=D	derived-unit	na	unit newbattle/nbCameraHelper; no named callee, caller or string
-0x0021B888	nbLeaf60	func	tier=D	derived-unit	na	unit newbattle/nbCameraHelper; no named callee, caller or string
-0x0021B890	nbLeaf61	func	tier=D	derived-unit	na	unit newbattle/nbCameraHelper; no named callee, caller or string
 0x0021BA28	effLeaf338	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effSRAnimation; no named callee, caller or string
 0x0021BA50	effLeaf339	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effSRAnimation; no named callee, caller or string
 0x0021BA80	effCallStopStat	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour effSRAnimation; calls effStopStat

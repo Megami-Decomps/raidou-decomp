@@ -44,6 +44,7 @@ typedef struct SBTLSM_LISTWORK {
 extern char (*sbtlData94)[17];
 extern char (*g_itemNo)[21];
 extern char (*sbtlData95)[SBTL_SKILL_NAME_SIZE];
+extern char (*cmpSetupData4)[21];
 
 s32 sbtlCallDeleteMessage(SBTLSM_LISTWORK *lwk);
 s32 sbtlCallSetVarSBtlSM(SBTLSM_LISTWORK *lwk);

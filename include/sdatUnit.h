@@ -43,7 +43,8 @@ typedef struct sdatUnitWork_t {
     /* 0x06 */ s16 devilId;
     /* 0x08 */ s8 level;
     /* 0x09 */ s8 seikaku;
-    /* 0x0A */ u8 pad0A[0x6];
+    /* 0x0A */ u8 pad0A[0x4];
+    /* 0x0E */ s16 chuusei; /* HD chuusei */
     /* 0x10 */ s16 vice; /* HD vice, spent by sbtlDecVice */
     /* 0x12 */ u8 pad12[0x2];
     /* 0x14 */ s32 exp;

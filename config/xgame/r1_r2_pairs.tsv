@@ -961,7 +961,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00122498	0x00126718	datEncountCalcSub	no	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
 0x001224F8	0x00126778	btlGetConditionalEncounterInterval	no	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
 0x001225D8	0x00126858	nbEncountCalc	no	no	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-masked-hash
-0x00122850	0x00126AD0	nbRefDDS3GBWK11	no	no	asm/raidou1/code_00122850.s	asm/raidou2/code_00126AD0.s	masked-hash-in-gap
+0x00122850	0x00126AD0	dds3WorkClear	no	no	asm/raidou1/code_00122850.s	asm/raidou2/code_00126AD0.s	masked-hash-in-gap
 0x00122868	0x00126AE8	nbLeaf54	yes	yes	asm/raidou1/code_00122850.s	asm/raidou2/code_00126AD0.s	masked-hash-in-gap
 0x00122870	0x00126AF0	btlPreemptiveChanceHook	yes	yes	asm/raidou1/code_00122850.s	asm/raidou2/code_00126AD0.s	masked-hash-in-gap
 0x00122878	0x00126AF8	btlSerialBattleChanceHook	yes	yes	asm/raidou1/code_00122850.s	asm/raidou2/code_00126AD0.s	masked-hash-in-gap
@@ -5187,13 +5187,13 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0021B2C8	0x002325C0	dds3EffectFileListWindowCreate	no	no	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	unique-masked-hash
 0x0021B358	0x00232650	dds3EffectFileListWindowDraw	no	no	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	unique-masked-hash
 0x0021B7D8	0x00232AD0	dds3EffectFileListWindowDelete	no	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	unique-reloc-hash
-0x0021B818	0x00232B10	nbLeaf57	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	run-order-size
+0x0021B818	0x00232B10	dds3EffectFileListWindowSetPos	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	run-order-size
 0x0021B828	0x00232B20	nbLeaf58	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	masked-hash-in-gap
 0x0021B830	0x00232B28	dds3EffectFileListWindowGetState	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	masked-hash-in-gap
 0x0021B838	0x00232B30	dds3EffectFileListWindowGetFilename	no	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	unique-reloc-hash
-0x0021B880	0x00232B78	nbLeaf59	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	run-order-size
-0x0021B888	0x00232B80	nbLeaf60	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	run-order-size
-0x0021B890	0x00232B88	nbLeaf61	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	run-order-size
+0x0021B880	0x00232B78	dds3EffectFileListWindowSetOt	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	run-order-size
+0x0021B888	0x00232B80	dds3EffectFileListWindowSetPadWait	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	run-order-size
+0x0021B890	0x00232B88	dds3EffectFileListWindowSetWindowColor	yes	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	run-order-size
 0x0021B8A0	0x00232B98	dds3EffectListSetTexture	no	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	unique-reloc-hash
 0x0021B910	0x00232C08	dds3EffectFileListWindowDrawSprite	no	yes	asm/raidou1/newbattle/nbCameraHelper.s	asm/raidou2/newbattle/nbCameraHelper.s	unique-reloc-hash
 0x0021BA28	0x00232D20	effLeaf338	no	yes	asm/raidou1/code_0021BA28.s	asm/raidou2/code_00232D20.s	masked-hash-in-gap

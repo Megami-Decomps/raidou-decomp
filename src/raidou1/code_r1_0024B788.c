@@ -22,23 +22,102 @@
 #include "fld.h"
 #include "newdata.h"
 #include "code_r1_0027CBE8.h"
+#include "sBtlEncount.h"
 
 SBTL_PLAYER_DATA *sbtlGetPlayerData(void)
 {
     return &DDS3_GBWK->playerData;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlGetStockUnitData);
+sdatUnitWork_t *sbtlGetStockUnitData(s32 id) {
+    if (DDS3_GBWK->playerData.stock[id].devilId == 0 || !(DDS3_GBWK->playerData.stock[id].flag & 1)) {
+        return NULL;
+    }
+    return &DDS3_GBWK->playerData.stock[id];
+}
 
+/* NON_MATCHING: 106 of 111 words match. scheduling of li a0,9 vs move a1,sp before the compaction loop (retail a1 then a0). Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallMemset(struct SBTLUNIT_WORK *wk, s32 index) {
+    sdatUnitWork_t *dest = &DDS3_GBWK->playerData.stock[index];
+    s32 skills[10];
+    s32 *out;
+    s32 left;
+    s32 id;
+
+    memset(skills, 0, sizeof(skills));
+    out = skills;
+    for (left = 9; left >= 0; left--) {
+        id = wk->unit.haveskill[9 - left];
+        if (id != SKLID_ATK && id != SKLID_NONE && id != SKLID_OFS_PROGRAM) {
+            *out++ = id;
+        }
+    }
+    memcpy(wk->unit.haveskill, skills, sizeof(skills));
+    *dest = wk->unit;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlCallMemset);
+#endif
 
+/* NON_MATCHING: 145 of 150 words match. order of the loop setup moves (li a0,9 and a1=sp+8 before the two constants. Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlCallMemset2(struct SBTLUNIT_WORK *wk, s32 index) {
+    sdatUnitWork_t *src = &DDS3_GBWK->playerData.stock[index];
+    s32 skills[10];
+    s32 *out;
+    s32 left;
+    s32 id;
+
+    sbtlBtlEntryStockDataSub(src);
+    wk->unit = *src;
+    wk->aisyoBase = wk->unit.aisyo;
+    memset(skills, 0, sizeof(skills));
+    skills[0] = SKLID_ATK;
+    skills[1] = SKLID_OFS_PROGRAM;
+    out = &skills[2];
+    for (left = 9; left >= 0; left--) {
+        id = wk->unit.haveskill[9 - left];
+        if (id != SKLID_ATK && id != SKLID_NONE && id != SKLID_OFS_PROGRAM) {
+            *out++ = id;
+        }
+    }
+    memcpy(wk->unit.haveskill, skills, sizeof(skills));
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlCallMemset2);
+#endif
 
+/* NON_MATCHING: 6 of 17 words match. 11 of 17 words differ. Retail keeps wk_sbtl in $a1 and sets $v0 = 0 before the field344 test; cc1 uses $v1 and sets it on the return path. */
+#ifdef NON_MATCHING
+struct SBTLUNIT_WORK *sbtlRefSbtl(void) {
+    SBTL_WORK *wk = wk_sbtl;
+    struct SBTLUNIT_WORK *unit = NULL;
+
+    if (wk->field344 > 0) {
+        unit = sbtlSearchUnit_ID(wk->unitList, wk->stockUnitID[wk->summonIndex[0]]);
+    }
+    return unit;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlRefSbtl);
+#endif
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlLeaf53);
+s32 sbtlLeaf53(sdatUnitWork_t *unit) {
+    if (unit->badStatus & 0x8000) {
+        return 0;
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlBtlNakamaSetUpSub);
+s32 sbtlBtlNakamaSetUpSub(sdatUnitWork_t *unit) {
+    if (unit->flag & 1) {
+        return (unit->badStatus & 0xC000) == 0;
+    }
+    return 0;
+}
 
 /* NON_MATCHING: 138 of 146 words match. Pbtl and pitem.x[0] loads swap places in the stat sums; vector checked (2 rows, devilId>=81 skips clamp, sums and hp/mp writes agree). */
 #ifdef NON_MATCHING
@@ -66,9 +145,86 @@ s32 sbtlBtlEntryStockDataSub(sdatUnitWork_t *unit)
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlBtlEntryStockDataSub);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", BattleSkillSort);
+/* NON_MATCHING: 0 of 33 words match. 33 of 34 words differ. Retail keeps id, the item pointer base and num in three saved registers and clamps with blez/movz/movn; cc1 allocates two and branches. Logic as retail, including the returned max - total floored at 0. */
+#ifdef NON_MATCHING
+s32 BattleSkillSort(s32 id, s16 num) {
+    s16 *item = &DDS3_GBWK->playerData.item[id];
+    s32 max = sbtlGetItemtbl(id)->max_num;
+    s16 value = 0;
+    s16 total;
+    s32 rest;
 
+    total = *item + num;
+    *item = total;
+    rest = max - total;
+    if (total > 0) {
+        value = total < max ? total : max;
+    }
+    *item = value;
+    return rest < 0 ? 0 : rest;
+}
+#else
+INCLUDE_ASM(const s32, "code_r1_0024B788", BattleSkillSort);
+#endif
+
+/* NON_MATCHING: 18 of 92 words match. retail walks three induction pointers with mode-test code duplicated per path (shared NEG and POS tails). Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlSetMapFade(s32 frame, u32 abgr, s16 mode) {
+    SBTL_WORK *wk = wk_sbtl;
+    SBTL_WORK *work;
+    s32 cur[3];
+    s32 tgt[3];
+    s16 step[3];
+    s32 i;
+    s32 from;
+    s32 to;
+    s32 count;
+    s32 delta;
+
+    if (wk == NULL) {
+        return 1;
+    }
+    wk->mf_mode = mode;
+    wk->mf_counter = 0;
+    wk->startFlg |= 8;
+    wk->mf_cmpcounter = frame;
+    if (frame == 0) {
+        wk->mf_cmpcounter = 1;
+    }
+    work = wk_sbtl;
+    work->mf_abgr_s = abgr;
+    cur[0] = work->mf_abgr & 0xFF;
+    cur[1] = (work->mf_abgr >> 8) & 0xFF;
+    cur[2] = (work->mf_abgr & 0xFF0000) >> 16;
+    tgt[0] = work->mf_abgr_s & 0xFF;
+    tgt[1] = (work->mf_abgr_s >> 8) & 0xFF;
+    tgt[2] = (work->mf_abgr_s & 0xFF0000) >> 16;
+    for (i = 0; i < 3; i++) {
+        from = cur[i];
+        to = tgt[i];
+        count = work->mf_cmpcounter;
+        if (mode != 0 ? from < to : to >= from) {
+            step[i] = (to - from) / count;
+            if (step[i] <= 0) {
+                step[i] = 1;
+            }
+        } else {
+            delta = from - to;
+            step[i] = delta / count;
+            if (step[i] <= 0) {
+                step[i] = 1;
+            }
+            step[i] = -step[i];
+        }
+    }
+    work->mf_r = step[0];
+    work->mf_g = step[1];
+    work->mf_b = step[2];
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlSetMapFade);
+#endif
 
 /* NON_MATCHING: 39 of 71 words match. Retail keeps a dead lh of mf_mode before each colour term and reloads wk_sbtl after the clamp store; vector checked (rows only cover the startFlg-clear return). */
 #ifdef NON_MATCHING
@@ -105,7 +261,64 @@ s32 sbtlMapFadeProc(void)
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlMapFadeProc);
 #endif
 
+/* NON_MATCHING: 18 of 92 words match. retail walks three induction pointers with mode-test code duplicated per path (shared NEG and POS tails). Logic as retail. */
+#ifdef NON_MATCHING
+s32 sbtlSetMapFade_H(s32 frame, u32 abgr, s16 mode) {
+    SBTL_WORK *wk = wk_sbtl;
+    SBTL_WORK *work;
+    s32 cur[3];
+    s32 tgt[3];
+    s16 step[3];
+    s32 i;
+    s32 from;
+    s32 to;
+    s32 count;
+    s32 delta;
+
+    if (wk == NULL) {
+        return 1;
+    }
+    wk->mfh_mode = mode;
+    wk->mfh_counter = 0;
+    wk->startFlg |= 0x10;
+    wk->mfh_cmpcounter = frame;
+    if (frame == 0) {
+        wk->mfh_cmpcounter = 1;
+    }
+    work = wk_sbtl;
+    work->mfh_abgr_s = abgr;
+    cur[0] = work->mfh_abgr & 0xFF;
+    cur[1] = (work->mfh_abgr >> 8) & 0xFF;
+    cur[2] = (work->mfh_abgr & 0xFF0000) >> 16;
+    tgt[0] = work->mfh_abgr_s & 0xFF;
+    tgt[1] = (work->mfh_abgr_s >> 8) & 0xFF;
+    tgt[2] = (work->mfh_abgr_s & 0xFF0000) >> 16;
+    for (i = 0; i < 3; i++) {
+        from = cur[i];
+        to = tgt[i];
+        count = work->mfh_cmpcounter;
+        if (mode != 0 ? from < to : to >= from) {
+            step[i] = (to - from) / count;
+            if (step[i] <= 0) {
+                step[i] = 1;
+            }
+        } else {
+            delta = from - to;
+            step[i] = delta / count;
+            if (step[i] <= 0) {
+                step[i] = 1;
+            }
+            step[i] = -step[i];
+        }
+    }
+    work->mfh_r = step[0];
+    work->mfh_g = step[1];
+    work->mfh_b = step[2];
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlSetMapFade_H);
+#endif
 
 /* NON_MATCHING: 33 of 63 words match. Retail keeps a dead lh of mfh_mode before each colour term and reloads wk_sbtl after the clamp store; vector checked (rows only cover the startFlg-clear return). */
 #ifdef NON_MATCHING
@@ -263,9 +476,94 @@ void sbtlPacData_Init(void)
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlCallMemFreeDirect);
+void sbtlCallMemFreeDirect(void) {
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlPacData_FreeIndex);
+    for (i = 0; i < SBTL_PACDATA_NUM; i++) {
+        if (sbtlData84->pac[i].key.major || sbtlData84->pac[i].key.minor || sbtlData84->pac[i].key.devilid) {
+            if (sbtlData84->pac[i].hit.status & 1) {
+                for (j = 0; j < sbtlData84->pac[i].hit.num; j++) {
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle08) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle08);
+                        sbtlData84->pac[i].hit.pwk[j]->handle08 = NULL;
+                    }
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle10) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle10);
+                        sbtlData84->pac[i].hit.pwk[j]->handle10 = NULL;
+                    }
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle);
+                        sbtlData84->pac[i].hit.pwk[j]->handle = NULL;
+                    }
+                }
+                sbtlData84->pac[i].hit.status = 0;
+            }
+            if (sbtlData84->pac[i].mht.handle) {
+                sdfMemFreeDirect(sbtlData84->pac[i].mht.handle);
+                sbtlData84->pac[i].mht.handle = NULL;
+                sbtlData84->pac[i].mht.data = NULL;
+            }
+            if (sbtlData84->pac[i].motionSE.handle) {
+                sdfMemFreeDirect(sbtlData84->pac[i].motionSE.handle);
+                sbtlData84->pac[i].motionSE.handle = NULL;
+                sbtlData84->pac[i].motionSE.data = NULL;
+            }
+            if (sbtlData84->pac[i].file20.handle) {
+                sdfMemFreeDirect(sbtlData84->pac[i].file20.handle);
+                sbtlData84->pac[i].file20.handle = NULL;
+                sbtlData84->pac[i].file20.data = NULL;
+            }
+        }
+    }
+}
+
+void sbtlPacData_FreeIndex(MODELTYPE major, s32 minor, s32 devilid) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < SBTL_PACDATA_NUM; i++) {
+        if ((sbtlData84->pac[i].key.major || sbtlData84->pac[i].key.minor || sbtlData84->pac[i].key.devilid)
+            && sbtlData84->pac[i].key.major == major && sbtlData84->pac[i].key.minor == minor
+            && sbtlData84->pac[i].key.devilid == devilid) {
+            if (sbtlData84->pac[i].hit.status & 1) {
+                for (j = 0; j < sbtlData84->pac[i].hit.num; j++) {
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle08) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle08);
+                        sbtlData84->pac[i].hit.pwk[j]->handle08 = NULL;
+                    }
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle10) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle10);
+                        sbtlData84->pac[i].hit.pwk[j]->handle10 = NULL;
+                    }
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle);
+                        sbtlData84->pac[i].hit.pwk[j]->handle = NULL;
+                    }
+                }
+                sbtlData84->pac[i].hit.status = 0;
+            }
+            if (sbtlData84->pac[i].mht.handle) {
+                sdfMemFreeDirect(sbtlData84->pac[i].mht.handle);
+                sbtlData84->pac[i].mht.handle = NULL;
+                sbtlData84->pac[i].mht.data = NULL;
+            }
+            if (sbtlData84->pac[i].motionSE.handle) {
+                sdfMemFreeDirect(sbtlData84->pac[i].motionSE.handle);
+                sbtlData84->pac[i].motionSE.handle = NULL;
+                sbtlData84->pac[i].motionSE.data = NULL;
+            }
+            if (sbtlData84->pac[i].file20.handle) {
+                sdfMemFreeDirect(sbtlData84->pac[i].file20.handle);
+                sbtlData84->pac[i].file20.handle = NULL;
+                sbtlData84->pac[i].file20.data = NULL;
+            }
+            sbtlData84->pac[i].key.major = 0;
+            sbtlData84->pac[i].key.minor = 0;
+            sbtlData84->pac[i].key.devilid = 0;
+        }
+    }
+}
 
 void sbtlCallMemset3(s32 battleMode, s32 stageNo)
 {
@@ -570,9 +868,22 @@ s32 Proc_sbtl(void)
     return dds3SearchProcessName(sbtlData85) != NULL;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", pbRefSbtl);
+s32 pbRefSbtl(void) {
+    SBTL_WORK *wk = wk_sbtl;
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", pbProcSequenceSub);
+    wk->endcnt = 0;
+    wk->flg |= 8;
+    sbtlCallBtlSearchUnitID32();
+    sbtlCallBtlSearchUnitID33();
+    return sbtlSetEndData();
+}
+
+s32 pbProcSequenceSub(void) {
+    if (VRF_DeltaTime == 1 || pbData == 1) {
+        return 1;
+    }
+    return 0;
+}
 
 /* NON_MATCHING: 162 of 243 words match. Endcnt clamp and early-return layout differ; vector checked (32 rows, all ret 1, only early-return and endcnt=0 paths covered). */
 #ifdef NON_MATCHING
@@ -686,6 +997,26 @@ void pbSetGameCamera0(void)
 
 INCLUDE_ASM(const s32, "code_r1_0024B788", pbLeaf19);
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", Init_sbtlScene);
+s32 Init_sbtlScene(void) {
+    dds3Basic_t *scene;
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", pbCallBtlGetRndEncJoken);
+    if (wk_sbtl == NULL || !(wk_sbtl->flg & 1)) {
+        return 0;
+    }
+    scene = dds3GetActiveCameraSceneBasic(dds3GetActiveScene());
+    if (scene == NULL) {
+        return 0;
+    }
+    dds3ObjectBaseSetPadControl(scene, NULL);
+    return 1;
+}
+
+void pbCallBtlGetRndEncJoken(s32 id) {
+    datRndEncTbl_t *tbl;
+
+    pbCallBtlGetRndEncJokenData = id;
+    tbl = &sbtlData101[id][sbtlGetRndEncJoken(id)];
+    sbtlSceneLoadData = tbl->mapNo[0];
+    sbtlSceneLoadData2 = tbl->mapNo[1];
+    sbtlSceneLoadData3 = 1;
+}

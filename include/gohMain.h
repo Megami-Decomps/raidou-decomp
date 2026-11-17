@@ -5,6 +5,8 @@
 #include "kernel.h"
 #include "code_r1_001CC1D0.h"
 
+struct sdatUnitWork_t;
+
 /* Work of the goh menu processes. HD holds a pointer to the sequence handle; R1 embeds it. Partial layout. */
 typedef struct gohData_t {
     struct sdfMemHandle_t *hMem;
@@ -22,6 +24,7 @@ dds3ProcessFunc_t gohAccidentCalcProcess(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohBakBakDestroy(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohCallGetProcessData29(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohCallGetProcessData30(dds3ProcessID_t *PID);
+void gohCommandDEVILOUTAFTERSub(struct sdatUnitWork_t *unit, u32 *flag, s32 mode);
 s32 gohCreateRecoverList(struct gohData_t *pData);
 s32 gohCreateSwordList(struct gohData_t *pData);
 dds3ProcessFunc_t gohCyuuseiDrawProcess(dds3ProcessID_t *PID);

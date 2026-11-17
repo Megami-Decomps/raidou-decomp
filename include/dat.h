@@ -39,13 +39,18 @@ extern SBTLADJUSTMENT_RECORD *datBattleAdjustmentRecords;
 #include "enums.h"
 
 struct sdatUnitWork_t;
+struct SBTL_PLAYER_DATA;
 
 void CallProcEnd_cmpStatus(void);
 s32 dds3GlobalWorkMainProc(dds3ProcessID_t *id);
 void UserInit(void);
 s32 datAddDevil(void);
 s32 datMoonAddMoveSub(void);
-char *datGetPlayerExp(CMP_TITLE_ID index);
+s32 datGetPlayerExp(s32 level);
+struct SBTL_PLAYER_DATA datGetPlayerLevelUpUnit(struct SBTL_PLAYER_DATA *player);
+s32 datGetDevilLevelUpNumsSub(s32 devilId, s32 level);
+struct sdatUnitWork_t datGetDevilLevelUpUnit(struct sdatUnitWork_t *unit);
+void datCallGetPlayerMaxHP(struct sdatUnitWork_t *unit, s32 swordLevel);
 void datGlobalWorkDestroy(void);
 void dds3GlobalWorkInit(void);
 s32 sdatCalc_GetBadStatus(struct sdatUnitWork_t *unit);
@@ -64,11 +69,16 @@ void cmpLoadModelTables(void);
 void datCallMemset(void);
 
 void datCallBitCheck(void);
+s32 datRefDDS3GBWK3(s32 value, s32 mode);
 void NewGame2Pop(void);
 void dds3GlobalWorkUserInit2(s32 mode);
 void datGlobalWorkDestroySub(void);
 
 s32 datGetStockDevilID(s32 index);
+s32 datGetStockDevilNums(void);
+void datCreateDevilUnitEx(s32 devilId, s32 skillMode, struct sdatUnitWork_t *unit);
+s32 datCallCreateDevilUnitEx(u32 itemId, s32 nums);
+s32 datCallGetStockDevilID2(u32 id);
 s32 datCheckSameDevil(u32 id);
 s32 datAllReleaseScriptSub(void);
 

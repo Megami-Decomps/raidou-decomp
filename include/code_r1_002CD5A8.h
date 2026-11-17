@@ -58,10 +58,10 @@ struct itfGridTextWidget_t {
     s32 width;                      /* 0x28 */
     s32 height;                     /* 0x2C */
     u32 reference;                  /* 0x30 */
-    void (*onSelect)(itfGridTextWidget_t *); /* 0x34 */
-    void (*onDraw)(s32, s32, s32, itfGridTextWidget_t *, s32); /* 0x38 */
+    s32 (*onSelect)(itfGridTextWidget_t *); /* 0x34 */
+    s32 (*onDraw)(s32, s32, s32, itfGridTextWidget_t *, s32); /* 0x38 */
     s32 rowOffset;                  /* 0x3C */
-    u32 unk40;                      /* 0x40: cleared by itfCreateGridTextWidget, no reader found */
+    itfGridTextWidget_t *parent;    /* 0x40: cleared by itfCreateGridTextWidget; the debug setters read the parent's selection */
 };
 
 /* Text rows share this 0x2C-byte node layout in both renderers. */
@@ -76,8 +76,8 @@ struct itfGridTextListItem_t {
     itfGridTextListItem_t *previous;     /* 0x18 */
     itfGridTextListItem_t *next;         /* 0x1C */
     itfGridTextWidget_t *child;          /* 0x20 */
-    void (*select)(itfGridTextWidget_t *); /* 0x24 */
-    void (*format)(void *, void *, char *, s32); /* 0x28 */
+    s32 (*select)(itfGridTextWidget_t *); /* 0x24 */
+    void (*format)(itfGridTextWidget_t *, itfGridTextListItem_t *, char *, s32); /* 0x28 */
 };
 
 typedef char itfGridTextWidgetSizeCheck[sizeof(itfGridTextWidget_t) == 0x44 ? 1 : -1];
@@ -91,8 +91,22 @@ void fldLocalMapDrawScrollIndicators(s32 offsetX, s32 offsetY, s32 z, u32 color,
 /* fldLmapDrawListTree's recursion depth and the last list it drew. */
 extern s32 fldLmapDrawListTreeData;
 extern itfGridTextWidget_t *fldLmapDrawListTreeWork;
+itfGridTextWidget_t *itfCreateGridTextWidget(const char *text, s32 x, s32 y, s32 columns, s32 rows, u32 reference);
+itfGridTextWidget_t *fclGohInitSkillChangeSub(itfGridTextListItem_t *item, itfGridTextWidget_t *parent, itfGridTextWidget_t *child);
+s32 itfSetGridNumericItemDescriptor(itfGridTextWidget_t *widget, itfGridTextListItem_t *item, itfGridNumericDescriptor_t *descriptor);
 u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
 s32 sdfGridSeekSelectedNodeByIndex(s32 index, itfGridTextWidget_t *widget);
+u32 itfDestroyGridTextWidgetTree(itfGridTextWidget_t *widget);
+itfGridTextListItem_t *itfAppendGridTextItem(itfGridTextWidget_t *owner, const char *text, u32 value);
+void fldLmapDrawListTree(s32 x, s32 y, s32 z, itfGridTextWidget_t *list, s32 channel);
+s32 itfActivateGridTextWidget(itfGridTextWidget_t *widget);
+s32 itfSetWidgetFlagsAndActivateChild(itfGridTextWidget_t *widget, u32 flags);
+void itfAdvanceSelectedGridScroll(itfGridTextWidget_t *widget, u32 steps);
+void itfReverseSelectedGridScroll(itfGridTextWidget_t *widget, u32 steps);
+itfGridTextListItem_t *fldLmapAdvanceCursor(itfGridTextWidget_t *list);
+itfGridTextListItem_t *fldLmapRewindCursor(itfGridTextWidget_t *list);
+itfGridTextListItem_t *fldLmapAdvanceThroughWindow(itfGridTextWidget_t *list);
+itfGridTextListItem_t *fldLmapRewindThroughWindow(itfGridTextWidget_t *list);
 
 /* Index consumed by sdfDevSetPrintCB and resolved through sdfDevConsColorTable. */
 typedef s32 ItfGridTextColorTableIndex;

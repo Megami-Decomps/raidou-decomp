@@ -424,9 +424,14 @@ void dds3EffectFileListWindowDelete(nbCameraHelper_effFLWinHandle_t *a) {
     sdfChipFreeDirect(a);
 }
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", nbLeaf57);
+void dds3EffectFileListWindowSetPos(nbCameraHelper_effFLWinHandle_t *a, s32 b, s32 c) {
+    a->x = b;
+    a->y = c;
+}
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", nbLeaf58);
+u32 nbLeaf58(nbCameraHelper_effFLWinHandle_t *work) {
+    return work->selectedIndex;
+}
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/newbattle/nbCameraHelper.c:426, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
 u32 dds3EffectFileListWindowGetState(nbCameraHelper_effFLWinHandle_t *a) {
@@ -438,11 +443,18 @@ u32 dds3EffectFileListWindowGetFilename(nbCameraHelper_effFLWinHandle_t *a, char
     return a->selectedEntry->type;
 }
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", nbLeaf59);
+void dds3EffectFileListWindowSetOt(nbCameraHelper_effFLWinHandle_t *hEffFLWin, u32 ot) {
+    hEffFLWin->repeatDelay = ot;
+}
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", nbLeaf60);
+void dds3EffectFileListWindowSetPadWait(nbCameraHelper_effFLWinHandle_t *hEffFLWin, u32 wait) {
+    hEffFLWin->drawSurface = wait;
+}
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", nbLeaf61);
+void dds3EffectFileListWindowSetWindowColor(nbCameraHelper_effFLWinHandle_t *hEffFLWin, u32 frame_c, u32 bg_c) {
+    hEffFLWin->borderColor = frame_c;
+    hEffFLWin->fillColor = bg_c;
+}
 
 void dds3EffectListSetTexture(nbCameraHelper_effFLWinHandle_t *work, char *textureResource) {
     sdfTexHandle_t *texture;

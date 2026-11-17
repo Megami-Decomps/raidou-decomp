@@ -7,9 +7,14 @@
 #include "model.h"
 #include "dds3ObjectBase.h"
 
-INCLUDE_ASM(const s32, "code_00122850", nbRefDDS3GBWK11);
+void dds3WorkClear(void) {
+    DDS3_GBWK->encountkyori = 0.0f;
+    DDS3_GBWK->encountcnt = 0;
+    btlConditionalEncounterCachedInterval = 0;
+}
 
-INCLUDE_ASM(const s32, "code_00122850", nbLeaf54);
+void nbLeaf54(void) {
+}
 
 /* body: matched in dds @ 18d1fa88f: src/dds1/newdata/datCalc.c:2059, found, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
 void btlPreemptiveChanceHook(void) {

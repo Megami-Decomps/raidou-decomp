@@ -9,6 +9,7 @@ s32 Process_effStat(dds3ProcessID_t *proc);
 void effUpdateBlur(void);
 void effFadeInBlur(void);
 void effCallRestoreStat(void);
+s32 effCallStopStat(void);
 void fclBtlDebugSetStatusflgSub(void);
 
 /* eff_stat process state: stop flags, the process, and the blur fade

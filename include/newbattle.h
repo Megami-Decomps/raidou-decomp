@@ -67,7 +67,7 @@ typedef struct nbFormation_t
     sdfVector4_t startpos;
 } nbFormation_t;
 
-nbFormation_t *nbGetEventForm(void);
+s32 nbGetEventForm(struct dds3ProcessID_t *id);
 void nbSetOrder(void);
 void nbCameraEnemyPartySet(void *camera, f32 pitch, f32 yaw);
 

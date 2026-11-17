@@ -20,10 +20,26 @@
 #include "fld.h"
 #include "newdata.h"
 #include "code_r1_0027CBE8.h"
+#include "effStat.h"
+#include "sBtlDvltk.h"
 
 INCLUDE_ASM(const s32, "code_r1_0024AC78", sbtlSbattle2);
 
-INCLUDE_ASM(const s32, "code_r1_0024AC78", sbtlSbattle3);
+s32 sbtlSbattle3(void) {
+    if (dds3SearchProcessName(sbtlData85) == NULL) {
+        return 0;
+    }
+    if (wk_sbtl == NULL) {
+        return 0;
+    }
+    wk_sbtl->flg |= 0x40;
+    if (!(wk_sbtl->flg & 0x8000000)) {
+        effCallStopStat();
+        wk_sbtl->flg |= 0x8000000;
+        sbtlCallEffectShutdown3(0);
+    }
+    return 1;
+}
 
 s32 sbtlCallBtlGetPlayerData(void)
 {
@@ -42,7 +58,15 @@ s32 sbtlCallBtlGetPlayerData(void)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0024AC78", sbtlSbattle4);
+s32 sbtlSbattle4(void) {
+    if (dds3SearchProcessName(sbtlData85) == NULL) {
+        return 0;
+    }
+    if (wk_sbtl == NULL) {
+        return 0;
+    }
+    return (wk_sbtl->flg & 0x100040) == 0x40;
+}
 
 s32 RestartBattle(void)
 {
@@ -60,7 +84,22 @@ s32 RestartBattle(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0024AC78", sbtlCallBtlDeleteOnData);
+s32 sbtlCallBtlDeleteOnData(void) {
+    sbtlFunc2();
+    sbtlDeleteOnData(1);
+    btlLoadSbPack();
+    sbtlLoadOnMemMsg();
+    sbtlForceDelete_EffectWork(2);
+    sbtlForceDelete_AttackHitData();
+    sbtlInitEffectWork();
+    sbtlInitLoadAttackHitData_pData();
+    sbtlBattleSBPACK();
+    while (!sbtlLoadEndCheck_PlayerOnMemData()) {
+    }
+    while (!sbtlLoadPlayerOnMemData()) {
+    }
+    return 1;
+}
 
 s32 sbtlCallBtlMapInit(void)
 {

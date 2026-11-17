@@ -25,6 +25,8 @@ struct sdatUnitWork_t;
 
 s32 datAddMag(s32 id);
 void datAddMaka(s32 add);
+void datAddItem(s32 itemId, s32 count);
+s32 datCheckItem(s32 itemId, s32 count);
 s32 datCheckMoney(s32 money);
 s32 datCheckDying(struct sdatUnitWork_t *pUnit);
 void datResetBadStat(struct sdatUnitWork_t *pWork, u32 badstat);

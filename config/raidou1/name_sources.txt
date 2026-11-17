@@ -1039,7 +1039,7 @@
 0x00122498	datEncountCalcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; called by nbEncountCalc
 0x001224F8	btlGetConditionalEncounterInterval	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0011CAB0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001225D8	nbEncountCalc	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x28cca8 sim 0.677 margin 0.47 pair
-0x00122850	nbRefDDS3GBWK11	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_00122850, nearest named function nbEncountCalc; references DDS3_GBWK
+0x00122850	dds3WorkClear	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=DDS datCalc.c dds3WorkClear: same body (two GBWK encounter fields and btlConditionalEncounterCachedInterval zeroed), same neighbours (precedes the chance hooks); name free in raidou; replaces nbRefDDS3GBWK11
 0x00122868	nbLeaf54	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00122850, nearest named function nbEncountCalc; no named callee, caller or string
 0x00122870	btlPreemptiveChanceHook	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0011CE38, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00122878	btlSerialBattleChanceHook	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0011CE40, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -5527,13 +5527,13 @@
 0x0021B2C8	dds3EffectFileListWindowCreate	inferred	smt3-decomp name via SLUS_209.11 0x001AB2B8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.421
 0x0021B358	dds3EffectFileListWindowDraw	inferred	smt3-decomp name via SLUS_209.11 0x001AB348, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.72
 0x0021B7D8	dds3EffectFileListWindowDelete	inferred	SMT3HD name via SLUS_209.11 0x001AB7C8, reloc-identical; map-agrees
-0x0021B818	nbLeaf57	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newbattle/nbCameraHelper; no named callee, caller or string
+0x0021B818	dds3EffectFileListWindowSetPos	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 nbCameraHelper.c same body and neighbour order (after WindowDelete/GetFilename) on nbCameraHelper_effFLWinHandle_t; replaces nbLeaf57
 0x0021B828	nbLeaf58	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newbattle/nbCameraHelper; no named callee, caller or string
 0x0021B830	dds3EffectFileListWindowGetState	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0021B838	dds3EffectFileListWindowGetFilename	inferred	SMT3HD name via SLUS_209.11 0x001AB828, reloc-identical; map-agrees
-0x0021B880	nbLeaf59	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newbattle/nbCameraHelper; no named callee, caller or string
-0x0021B888	nbLeaf60	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newbattle/nbCameraHelper; no named callee, caller or string
-0x0021B890	nbLeaf61	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newbattle/nbCameraHelper; no named callee, caller or string
+0x0021B880	dds3EffectFileListWindowSetOt	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 nbCameraHelper.c same body and neighbour order (after WindowDelete/GetFilename) on nbCameraHelper_effFLWinHandle_t; replaces nbLeaf59
+0x0021B888	dds3EffectFileListWindowSetPadWait	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 nbCameraHelper.c same body and neighbour order (after WindowDelete/GetFilename) on nbCameraHelper_effFLWinHandle_t; replaces nbLeaf60
+0x0021B890	dds3EffectFileListWindowSetWindowColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 nbCameraHelper.c same body and neighbour order (after WindowDelete/GetFilename) on nbCameraHelper_effFLWinHandle_t; replaces nbLeaf61
 0x0021B8A0	dds3EffectListSetTexture	inferred	SMT3HD name via SLUS_209.11 0x001AB890, reloc-identical; map-agrees
 0x0021B910	dds3EffectFileListWindowDrawSprite	inferred	SMT3HD name via SLUS_209.11 0x001AB900, reloc-identical; map-agrees
 0x0021BA28	effLeaf338	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021BA28, neighbour effSRAnimation; no named callee, caller or string
