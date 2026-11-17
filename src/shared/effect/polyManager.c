@@ -2339,7 +2339,7 @@ void dds3SpPoly_RollRingSetScale(dds3SpPoly_RollRing_t3 *hData, f32 scale) {
 }
 
 #ifdef NON_MATCHING
-/* 73 of 97 words differ (first at +0x54) */
+/* 77 of 99 words differ (first at +0x44) */
 void dds3SpPoly_RollRingDraw(dds3SpPoly_RollRing_t3 *hData) {
     s32 recordIndex = 0;
     u32 completed = 0;
@@ -2388,7 +2388,7 @@ void dds3SpPoly_RollRingDraw(dds3SpPoly_RollRing_t3 *hData) {
                 }
             }
 
-            if (age >= duration) {
+            if (age >= duration && duration > 1) {
                 if (loop != 0) {
                     age = POLY_INACTIVE_ENTRY_AGE;
                 } else {
