@@ -32,7 +32,7 @@ brief gives the batch directory D and the worktree T. Do that phase, then stop.
    paste a .decls line into a draft or a unit. Rows with action `required` are header edits
    the handoff lists; `differs` rows are the header's declaration winning, checked by the
    splice. Regenerate D/headers.wip.patch (`git diff` of T/include plus new headers).
-2. `./splice.py UNIT` for each unit (until tools/splice_batch.py exists): every draft
+2. `./splice.py UNIT` for each unit: every draft
    spliced into its unit, check_unit on both games. Record: a body that matches on both
    games `./rec.py NAME WORDS "match" "body: smt3 PATH"`; one that compiles but differs
    `"nonmatch N words" "body: PATH, first diff +0xOFF"`, left for the matcher.
@@ -50,15 +50,13 @@ brief gives the batch directory D and the worktree T. Do that phase, then stop.
 
 ## Phase land (after drafting)
 
-Follow docs/batch-workflow.md in the repo (until it exists, the "Packaging" sections of
-the previous batch's handoff.md). The steps, in order, with the tool for each:
+Follow docs/batch-workflow.md in the repo. The steps, in order, with the tool for each:
 1. Vector checks exist for every nonmatch (notes.json); fill any gap with `./vsum.py`.
-2. Renames in D/renames.tsv with evidence: `tools/batch/rename.py` (until it exists,
-   D/rename.py) across symbol_addrs, smt3_symbols alias removal, name_sources,
+2. Renames in D/renames.tsv with evidence: land_batch's `renames` step
+   (tools/batch/renames.py) across symbol_addrs, smt3_symbols alias removal, name_sources,
    revisit_names, r1_r2_pairs, src, include, drafts, batches.tsv. Interior labels listed in
    D/packaging_notes.txt are deleted.
-3. `tools/batch/land_batch.py --batch D --tree T` (until it exists: finalize.py, mkunitN.py,
-   mkdocs.py from D in that order): final/ with NON_MATCHING wrapping and measured
+3. `tools/batch/land_batch.py --batch D --tree T`: final/ with NON_MATCHING wrapping and measured
    distances, units written (gap units from units/*.pre in asm order), yaml subsegments
    asm -> c, rodata ownership for the labels in packaging_notes.txt, tu_evidence,
    docs/matching entries from notes.json, `python3 tools/docs_index.py`. land_batch refuses a
@@ -73,7 +71,7 @@ the previous batch's handoff.md). The steps, in order, with the tool for each:
    has the new name, or the function is in r1only.txt), add the other game's row to
    renames.tsv or rename those sites by hand, and say which in the handoff.
 4. Regression: check_unit of every touched unit on both games against the clean repo
-   (`tools/batch/regress_units.py`, until it exists D/regress*.sh); only the batch's own
+   (land_batch's regression run); only the batch's own
    units and promoted drafts may change. A worsened NON_MATCHING distance elsewhere is a
    regression to fix or to explain in its docs entry.
 5. Gates, repo .venv python. Every gate before the last is incremental: `python configure.py

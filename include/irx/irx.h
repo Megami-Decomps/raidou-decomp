@@ -37,7 +37,7 @@ typedef char *va_list;
 #endif
 
 #if !defined(IRX_HOST) && !defined(ASM_ROOT)
-#error "ASM_ROOT must be defined by the build (see tools/irx_configure.py)"
+#error "ASM_ROOT must be defined by the build (see tools/irx_build.py)"
 #endif
 
 #ifdef IRX_HOST

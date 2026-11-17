@@ -1,7 +1,7 @@
 #include "iop.h"
 
 /* SDFIOP.IRX: the EE asks this module, over RPC, to load another IRX off the
- * disc. See docs/sdf-irx-modules.md. */
+ * disc. See docs/irx-modules.md. */
 
 /* The strings stay in asm/<version>/irx/SDFIOP/rodata.s so .rodata keeps its layout. */
 extern const char fmt[];                /* "sdfLoadStartModule: %s args %d" */

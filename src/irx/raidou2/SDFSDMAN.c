@@ -2,10 +2,10 @@
 
 /* SDFSDMAN.IRX, the sound driver: it owns the SPU2, plays the .SMG banks and
  * the streamed ADPCM, and takes its orders from the EE over SIF.
- * See docs/sdf-irx-modules.md.
+ * See docs/irx-modules.md.
  *
  * The strings stay in asm/<version>/irx/SDFSDMAN/rodata.s so .rodata keeps its layout;
- * /tmp aside, their text is listed in docs/sdf-irx-modules.md. */
+ * /tmp aside, their text is listed in docs/irx-modules.md. */
 extern const char fmt[];
 extern const char aSdfsdmanIFThre[];
 extern const char aSdfsnddrvSOpen[];

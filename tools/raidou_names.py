@@ -2,7 +2,7 @@
 """Carry SMT3 function names to raidou1 and raidou2 through code pairing.
 
 Writes pairs_<v>.tsv (every candidate) and names_<v>.tsv (accepted); `--apply`
-puts the latter into config/<v>/. Method and rules: docs/smt3-names.md."""
+puts the latter into config/<v>/. Method and rules: docs/shared-c.md."""
 
 from __future__ import annotations
 

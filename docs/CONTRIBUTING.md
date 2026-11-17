@@ -69,7 +69,7 @@ data, worst tier first; `tools/revisit_names.py` writes it from `name_sources.tx
 and `tools/check_config.py` fails when it is stale.
 
 `config/<v>/ida_protos.txt` holds the prototypes the IDB analysis marked strong
-(`tools/xgame/sig_leads.py`), as leads for whoever decompiles the function. Nothing
+(written once from the IDB's signature proposals), as leads for whoever decompiles the function. Nothing
 reads it.
 
 ### Type names
@@ -96,12 +96,11 @@ build reads it. Check it before you pick a unit.
 Replace the `INCLUDE_ASM` line with your C, in the same position (link order
 matters). Leave `INCLUDE_RODATA` and `INCLUDE_SDATA` lines where they are:
 `configure.py` recomputes their placement. [docs/shared-c.md](shared-c.md) covers
-shared units and [docs/smt3-names.md](smt3-names.md) covers names carried over
-from smt3-decomp. smt3-decomp has C for many of the same functions; copy the body,
+shared units and names carried over from smt3-decomp. smt3-decomp has C for many of the same functions; copy the body,
 drop `static`, and adapt types.
 [smt3-decomp's matching levers](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/matching-levers.md)
-list what to try when a function is close, and [docs/levers.md](levers.md) adds
-the ones found here.
+list what to try when a function is close, and [the levers below](#matching-levers-found-here)
+add the ones found here.
 [docs/matching/](matching/README.md) records what was already tried on each
 draft here; grep its `INDEX.tsv` for the function first.
 
@@ -142,7 +141,7 @@ the distance from `check_unit.py --cflags=-DNON_MATCHING` ("N of M words
 differ", plus emitted and native sizes when they differ), what blocks the match,
 the shapes tried, and a link to the smt3-decomp lever page that names the cause.
 Then run `python3 tools/docs_index.py` to regenerate the README and `INDEX.tsv`.
-`tools/test_docs_index.py` fails when a draft has no entry, an entry has no
+`tools/tests/test_docs_index.py` fails when a draft has no entry, an entry has no
 draft, or the index is stale.
 
 Before drafting, `python3 tools/find_body.py NAME...` looks for an existing body
@@ -204,3 +203,15 @@ python3 tools/check_irx_nonmatching.py   # the IOP modules' drafts
 
 A passing `check_unit.py` is not the proof; `ninja` is. After a header change,
 run `ninja`: any unit that includes it can change.
+
+## Matching levers found here
+
+Shapes found while matching Raidou functions, in the format of
+[smt3-decomp's lever pages](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/matching-levers.md),
+which list the rest.
+
+### Control flow
+
+| Retail shows | Change |
+|---|---|
+| `bnez x, body` then `b exit` with `daddu $2, $0, $0` in its slot, a return-0 block of its own right after a guard chain, where your C hoists `v0 = 0` above the tests and threads every guard to the epilogue | write the guards that share the zero as one `||` with one `return 0`, keeping a guard that must come before a load on its own: `if (lwk == NULL) return 0; dwk = lwk->dwk; if (dwk == NULL || lwk->num == 0) return 0;`. Separate early returns let cc1 hoist the zero and branch each test straight to the shared epilogue; the `||` gives the last test its own `b` plus zero. Nine Raidou list walkers turned on this alone (`sbtlReleaseSM_List`, `sbtlReleaseDelList`, `sbtlCallMemFreeDirect6` in `code_002A38D8`), from 3 to 20 differing words each to exact. A mechanical sweep of the same rewrite over 31 further drafts found no other match: where the residual is register allocation or block layout it moves 0 to 7 words |

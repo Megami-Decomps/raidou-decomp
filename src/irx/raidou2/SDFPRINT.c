@@ -1,7 +1,7 @@
 #include "irx.h"
 
 /* sdfprint.irx, a network debug print server found in Raidou 2's DDS3.IMG.
- * Every function is still assembly. See docs/sdf-irx-modules.md. */
+ * Every function is still assembly. See docs/irx-modules.md. */
 
 INCLUDE_ASM("SDFPRINT", func_00000000);
 INCLUDE_ASM("SDFPRINT", func_000000F8);

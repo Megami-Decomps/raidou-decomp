@@ -1,7 +1,7 @@
 #include "irx.h"
 
 /* SDRDRV.IRX, Sony's sound driver RPC server, the same file in both games and
- * SMT3. Every function is still assembly. See docs/sdf-irx-modules.md. */
+ * SMT3. Every function is still assembly. See docs/irx-modules.md. */
 
 INCLUDE_ASM("SDRDRV", start);
 INCLUDE_ASM("SDRDRV", func_0000027C);

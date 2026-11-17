@@ -1,7 +1,7 @@
 #include "iop.h"
 
 /* SDFIOPFL.IRX: exports a four call file library to other IOP modules and
- * serves each call by an RPC to the EE. See docs/sdf-irx-modules.md. */
+ * serves each call by an RPC to the EE. See docs/irx-modules.md. */
 
 /* The strings stay in asm/<version>/irx/SDFIOPFL/rodata.s so .rodata keeps its layout. */
 extern const char fmt[];                /* "sdfIopFileReadOpen : fail!\n" */

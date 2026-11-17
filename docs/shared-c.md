@@ -37,8 +37,7 @@ stays `INCLUDE_ASM`.
   `include_rodata.py` and `include_sdata.py` treat these names as references
   to the Raidou data at that address, and `check_unit.py` compares a
   relocation against one at that address. An entry is the object retail uses
-  at the carried call site, which is not always SMT3's object of that name:
-  `tools/xgame/audit_smt3_symbols.py` lists those whose SMT3 code differs.
+  at the carried call site, which is not always SMT3's object of that name.
 - `config/<v>/smt3_c.tsv`: every function considered, `c` or `asm`, with the
   reason it stays asm.
 - SDK members that compile SMT3 C get SMT3's compiler and flags for that
@@ -232,3 +231,196 @@ python3 configure.py && ninja -k 0 > log; python3 tools/raidou_c.py verify --dds
 `port` and `verify` rerun both `pairs` steps when `configure.py --clean` has
 deleted their lists. `verify` rewrites only the `smt3_symbols.txt` rows it
 decides; names added by hand or `scripts/rename.py` stay.
+
+## SMT3 names for raidou1 and raidou2
+
+Both Raidou games are built on Nocturne's engine. Where a Raidou function is the
+same code as a function in smt3-decomp (`SLUS_209.11`), it takes that function's
+name. The method is the one smt3-decomp used for Digital Devil Saga (its
+`docs/dds-names.md`, and dds-decomp's `docs/smt3-names.md` for the rules).
+
+Every carried name is `inferred` in `config/<v>/name_sources.txt`:
+
+```
+0x<addr>  <name>  inferred  SMT3HD name via SLUS_209.11 0x<smt3 addr>, <evidence>; <map verdict>
+```
+
+`SMT3HD name` is the IDB's HD-recovered name. `smt3-decomp name` marks the cases
+where smt3-decomp's `symbol_addrs.txt` corrects the IDB (the soft-float runtime,
+`libc_*` placeholders, `_StartThread`); its spelling always wins, so SDK and libc
+names match smt3-decomp exactly.
+
+### Pipeline
+
+Three pairing runs with smt3-decomp's `tools/pair_build.py` (IDBs read only):
+
+```sh
+W=~/.local/state/raidou-decomp-work/names
+P=~/projects/smt3-decomp/tools/pair_build.py
+python3 $P --from-instance SLUS_209.11 --to-instance SLUS_214.31 \
+    --to-elf orig/raidou1/SLUS_214.31 --to-text-end 0x0039E9FC \
+    --cache-dir $W/cache_smt3_raidou1 --output $W/smt3_raidou1.tsv
+python3 $P --from-instance SLUS_209.11 --to-instance SLUS_218.45 \
+    --to-elf orig/raidou2/SLUS_218.45 --to-text-end 0x00418E48 \
+    --cache-dir $W/cache_smt3_raidou2 --output $W/smt3_raidou2.tsv
+python3 $P --from-instance SLUS_214.31 --to-instance SLUS_218.45 \
+    --from-elf orig/raidou1/SLUS_214.31 --from-text-end 0x0039E9FC \
+    --to-elf orig/raidou2/SLUS_218.45 --to-text-end 0x00418E48 \
+    --cache-dir $W/cache_raidou1_raidou2 --output $W/raidou1_raidou2.tsv
+```
+
+Then, in a configured tree (the tool reads `asm/<v>/code_*.s` for splat's
+function starts):
+
+```sh
+M=~/.local/state/smt3-port-work/raidou-map
+python3 tools/raidou_names.py \
+    --raidou1 $W/smt3_raidou1.tsv $W/cache_smt3_raidou1 \
+    --raidou2 $W/smt3_raidou2.tsv $W/cache_smt3_raidou2 \
+    --raidou1-raidou2 $W/raidou1_raidou2.tsv \
+    --map $M/raidou1_map.tsv $M/raidou2_map.tsv --out-dir $W/out
+python3 tools/raidou_names.py --apply --out-dir $W/out
+python3 configure.py && ninja
+```
+
+### Rules
+
+As dds-decomp's, in order: byte-identical unique pairs are forced, then
+relocation-identical ones; other pairs must be high tier with a hash unique on
+both sides, or share a hash only inside a constant-delta run. HD address tags,
+`gcc2_compiled` markers, IDA `_N` suffixes and placeholder names are rejected.
+A pair the raidou1-to-raidou2 alignment contradicts is dropped from both games,
+and a name accepted in one game carries to its strong-hash twin in the other.
+
+Two rules are new here:
+
+- **Splat function starts only.** A name lands only on an address splat emits
+  as a `glabel`; a function IDA found but splat did not is left for the TU work.
+- **The independent map must not disagree.** smt3-port's
+  function matcher paired the same games by another method. Where it
+  places the SMT3 function elsewhere, or a different SMT3 function at the
+  target, the name is not applied. Its silence is not a disagreement.
+
+### Counts (2026-11-10)
+
+```
+raidou1: accepted=3076  map-disagrees=9   shared-hash-off-run=169  tier-low=205
+         tier-medium=154  address-tag=80  smt3-placeholder=18  not-a-splat-function=7
+raidou2: accepted=3043  map-disagrees=11  shared-hash-off-run=165  tier-low=205
+         tier-medium=160  address-tag=80  smt3-placeholder=17  not-a-splat-function=8
+```
+
+3026 names are in both games. Of the accepted names, 2975 (raidou1) and 2943
+(raidou2) agree with the map; the other 101 and 100 are names the map has no
+entry for.
+
+The 20 disagreements are of two kinds. Eight are syscall stubs
+(`_iEnableIntc` to `_iDisableDmac`) whose raw bytes are unique on both sides,
+where the map is one stub off; the pairing is most likely right, but the names
+are held back until someone checks. The other twelve are `shared-hash-in-run`
+or unmarked-region pairs, where a function family shares one masked body and
+the two methods chose different members.
+
+## Translation units
+
+`.text` from `code_001001D8` to `.vutext` is split into one subsegment per
+translation unit (TU) where there is evidence for one, and `code_<vram>` asm
+gaps where there is none. `config/<v>/tu_evidence.tsv` lists every subsegment
+with its evidence and the smt3-decomp unit it corresponds to.
+
+| | raidou1 | raidou2 |
+|---|---|---|
+| functions in range | 12,003 | 13,707 |
+| TUs (c units) | 300 | 302 |
+| tied to an SMT3 unit | 290 | 288 |
+| functions in TUs | 5,155 | 5,315 |
+| gaps (asm units) | 158 | 163 |
+
+### Pipeline
+
+```sh
+python3 tools/sdk_objects.py raidou1 --sdk .../sce/296 --sdk .../sce/204 --sdk .../sce \
+    --range 0x377660:0x39E9FC -o config/raidou1/sdk_objects.tsv
+python3 tools/raidou_tus.py raidou1 --write      # .text subsegments + tu_evidence.tsv
+python3 configure.py                             # split with the new units
+python3 tools/split_rodata.py raidou1 --section rodata --write
+python3 tools/split_rodata.py raidou1 --section lit4 --write
+python3 tools/split_rodata.py raidou1 --section sdata --write
+python3 configure.py && ninja
+```
+
+raidou2 uses `--range 0x3ED2A0:0x418E48`. `raidou_tus.py` reads the split
+assembly, so it needs a configured tree, and re-running it on a split tree gives
+the same units.
+
+### Evidence
+
+`tools/raidou_tus.py` labels each function, strongest source first:
+
+1. **SMT3 pair.** The SMT3 function's unit in smt3-decomp's yaml, through the
+   pair in `config/<v>/name_sources.txt`, else the cross-game map
+   (`raidou<N>_map.tsv` in smt3-port's work data). smt3-decomp's own
+   `code_<vram>` gaps are not units and give no label.
+2. **DDS pair**, for code DDS shares and SMT3 lacks
+   (`dds_unique_in_raidou.tsv`), with dds-decomp's unit when both DDS games
+   agree. Otherwise DDS1's (else DDS2's) `code_<vram>` file, which in
+   dds-decomp is a TU too; the Raidou TU is then named `code_<its vram>`.
+   `raidou_tus.py <v> --gaps-only --write` keeps the current TUs and splits
+   only the gaps this way, clipping a DDS run that reaches into a current TU.
+3. **SDK archive member** (`config/<v>/sdk_objects.tsv`, from
+   `tools/sdk_objects.py`, matching by masked bytes or by a name defined in one
+   member). In the SDK region this replaces the SMT3 label: smt3-decomp's SDK
+   units are whole archives, the member is the object. The trees on hand are
+   2.0.4, 2.96 and 3.0.3; Raidou's 2.5.0 is not among them, so 27% of the
+   region is unattributed.
+
+Pairs of functions under 6 words are ignored (tiny bodies recur everywhere).
+
+A unit's labelled functions form a run; unlabelled functions inside the run
+belong to it, those at its edges go to gaps. A run is cut where:
+
+- a short run of another label sits inside it (dropped as noise; listed as
+  `dropped label` in `build/<v>/tu_plan.tsv`),
+- two members hold copies of the same string (`find_tus.py`'s boundary rule),
+- Raidou has more than 0x800 bytes and twice as much code between two members
+  as SMT3 has between their partners (new code that is likely another file).
+
+The largest piece keeps the unit name; other pieces with two or more members
+are named `<unit>_<vram>` and marked `part`. Literal cores (functions sharing a
+string, jump table or `.lit4` constant, `tools/find_tus.py`) extend a TU over
+unlabelled neighbours and rejoin pieces of one unit. A core spanning two
+different units would be a conflict; there are none.
+
+### Limits
+
+- TU edges are the first and last paired function. A TU may in truth extend
+  into the neighbouring gap.
+- `reordered` TUs have paired functions out of SMT3's order. Kept as one TU
+  because no other unit's function lies inside.
+- raidou2's `.text` ends in `.gnu.linkonce.t` code (`code_004179A8`, g++ inline
+  and template functions): it links after all objects while its literals stay
+  in each object's `.rodata`, so it is left out of the literal-order rule
+  (`LINKONCE_TEXT` in `raidou_tus.py`).
+- `.data` is not split per object. `.rodata`, `.lit4` and `.sdata` are, by
+  `tools/split_rodata.py` (from smt3-decomp), for c units only; data of gaps
+  stays in asm chunks.
+- An `.sdata` block that starts unaligned with no aligned symbol of its own (a
+  lone `char`) stays in the chunk before it: an ee-as `.sdata` section is
+  word-aligned, so the object could not start there.
+- One TU split in several: raidou1 `code_00144130` through at least
+  `code_00153438` (0x144130-0x1566D0, all evidence `none`). mapMapObjectRefresh
+  (`code_0014B660`) matches only with mapObjCheck (`code_00144130`) defined
+  above it in the same unit, and mapCutSet_From_Pos (`code_00153438`) closes
+  its `bgezl` only with mapObjOnOff (`code_00144130`) defined in the unit; no
+  string is duplicated across the range, and its `.rodata` gaps fit one
+  object (ee-gcc 2.96 aligns jump tables to 16, strings to 8). Not merged
+  yet: the range holds four shared units (`code_r1_0014B328`, `_0014B4B8`,
+  `_0014B610`, `_00151980`) that raidou2 places between its own asm gaps, and
+  unowned `.rodata`/`.sdata` chunks sit between the units, so the merge needs
+  the raidou2 TU and the data chunks resolved with it.
+
+### Source layout
+
+A TU both games compile the same way is `src/shared/<unit>.c`; a TU that
+differs is `src/<version>/<unit>.c`, and the per-game file wins.
+`tools/units.py` resolves a unit to its file; shared units are described [above](#layout).

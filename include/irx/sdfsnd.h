@@ -2,7 +2,7 @@
 #define IRX_SDFSND_H
 
 /* Types and data of SDFSDMAN.IRX, the sound driver. The behaviour of each
- * piece is described in docs/sdf-irx-modules.md. */
+ * piece is described in docs/irx-modules.md. */
 
 #include "iop.h"
 
