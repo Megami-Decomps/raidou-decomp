@@ -276,7 +276,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 00261DF0	0026A868	code_00261DF0	asm	none	
 0026A9B0	0026AF18	code_0026A9B0	c	none	
 0026AF90	0026AF90	code_r1_0024E730	c	none	
-0026B0A8	0027A170	code_0026B0A8	asm	none	
+0026B0A8	00274318	code_0026B0A8	asm	none	
+00274358	00274358	code_00274358	c	none	
+002743E0	0027A170	code_002743E0	asm	none	
 0027A1D0	0027A1D0	code_0027A1D0	c	dds:1 of 1	
 0027A1E8	002881A0	code_0027A1E8	asm	none	
 00288200	00288200	code_00288200	c	dds:1 of 1	
@@ -296,7 +298,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 002CE278	002CE278	newbattle/nbActionProcess	c	smt3:map:1 of 1	newbattle/nbActionProcess
 002CE2C0	002DF0F8	sbtl	asm	none	
 002DF118	002DF118	code_r1_002A3820	c	none	
-002DF1D0	00309F58	code_002DF1D0	asm	none	
+002DF1D0	002F55B8	code_002DF1D0	asm	none	
+002F5620	002F5620	code_002F5620	c	none	
+002F5CF0	00309F58	code_002F5CF0	asm	none	
 00309F88	00309F88	code_00309F88	c	dds:1 of 1	
 00309FE0	00309FE0	code_00309FE0	asm	none	
 00328108	00328108	newbattle/nbDebugProcess	c	smt3:map:1 of 1	newbattle/nbDebugProcess
