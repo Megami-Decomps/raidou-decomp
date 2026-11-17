@@ -1155,7 +1155,6 @@
 0x001A7A20	evtInitCustomSceneLight	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtInitCustomSceneLight, score 8.4 band B
 0x001A7AC8	evtSetCustomSceneLightData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtSetCustomSceneLightData, score 8.45 band B
 0x001A7BB0	evtSetCustomSceneLightData_SoftenAndBias	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtSetCustomSceneLightData_SoftenAndBias, score 8.6 band B
-0x001A7BE0	evtLeaf4	func	tier=D	derived-unit	na	unit event/evtUnitManager; no named callee, caller or string
 0x001A7CF0	evtMakeCustomSLightPacket	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtMakeCustomSLightPacket, score 8.8 band B
 0x001A8000	evtCallGetIntPara4	func	tier=D	derived-callee	na	unit event/evtCommand; calls scrGetIntPara
 0x001A8040	evtCommand_MODEL_DSP	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -1291,7 +1290,6 @@
 0x001BB408	evtPictureLoadStartTexFile	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtPicture.evtPictureLoadStartTexFile, score 7.15 band B
 0x001BB458	evtCallGetProcessData17	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
 0x001BB4C8	evtCallGetProcessData18	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
-0x001BB4F8	evtPictureSetSize	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001BB908	evtUpdateFrameVariableTask	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00235540, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x001BB960	evtCallChipFreeDirect	func	tier=D	derived-callee	na	unit code_001BB960, nearest named function evtInitFrameVar; calls sdfChipFreeDirect
 0x001BB9F0	evtLeaf9	func	tier=D	derived-unit	na	unit code_001BB960, nearest named function evtInitFrameVar; no named callee, caller or string
@@ -1695,13 +1693,10 @@
 0x001E6668	dblurProcess	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001E6720	dblurGetParam	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001E6798	effCallMemcpy2	func	tier=D	derived-callee	na	unit effect/effEvent; calls memcpy
-0x001E6850	dblurGetParam2	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001E6860	effLeaf29	func	tier=D	derived-unit	na	unit effect/effEvent; no named callee, caller or string
 0x001E68C0	mfilterRun	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001E6978	mfilterGetParam	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001E6988	effEventSetSolidRectangleParameters	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0018FE70, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001E69C8	effCallMemcpy3	func	tier=D	derived-callee	na	unit effect/effEvent; calls memcpy
-0x001E6A80	effEnterDataSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by EnterData
 0x001E6AE8	rblurProcess	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001E6BA0	rblurGetParam	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001E6BB0	effLeaf30	func	tier=D	derived-unit	na	unit effect/effEvent; no named callee, caller or string
@@ -18363,14 +18358,12 @@
 0x001A0A70	mapTrainCheckStartPos	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapTrainCheckStartPos score 2.5 flag -: calls1 callers-of-match st2:call r2-only
 0x001A57B8	GetBaseLightRGB2	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.GetBaseLightRGB2 score 4.4 flag -: next gap2/1 st1:gap r1+r2
 0x001A7EF0	evtGetCustomSLight_SoftenAndBias	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evt.evtGetCustomSLight_SoftenAndBias score 5.5 flag I: calls1 calls-of-match st1:call r1+r2
-0x001A8490	evtCommand_MODEL_SHADOW_OFF	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e4e30 sim 1.000 margin 0.00 pair
 0x001A8500	evtCommand_MODEL_SHADOW_ON2	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e4e30 sim 1.000 margin 0.00 pair
 0x001A8A58	gohScrCmd_GOH_EXIT	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohInit.gohScrCmd_GOH_EXIT score 2.2 flag I: calls2 callee-index st1:cidx r1-only
 0x001A8C50	KutiFunction	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evtCommand.KutiFunction score 4.7 flag -: next gap1/20 st1:gap r1+r2
 0x001A8D38	evtLipsStopFunction_evtCommand	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD evtCommand.evtLipsStopFunction score 4.8 flag R: calls2 callers-of-match votes2 st1:call r2-disagree:0x1bed70
 0x001AB408	titleCallNameEntry	func	tier=C	hd-d	0.53 (n=98)	Raidou HD title.titleCallNameEntry score 2.0 flag I: calls1 callers-of-match st2:call r2-only
-0x001ACAB8	evtCommand_PATH_START	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e8448 sim 1.000 margin 0.00 pair
-0x001ACB38	evtCommand_PATH_STOP	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e8448 sim 1.000 margin 0.00 pair
+0x001ACAB8	evtCommand_PATH_STOP	func	tier=C	derived-derived-role	na	swap through a temporary name; replaces evtCommand_PATH_STOP_swap
 0x001AD810	sndWaitForEarringPlayback	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x205438 sim 0.794 margin 0.04 pair
 0x001ADB78	evtMoonFadeOut	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtMoon.evtMoonFadeOut score 2.5 flag I: next gap4/3 st1:gap r1-only
 0x001ADBA8	evtMoonFadeCheck	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtMoon.evtMoonFadeCheck score 4.7 flag I: next gap5/4 st1:gap r1+r2
@@ -18386,6 +18379,7 @@
 0x001BAD70	LoadTexture	func	tier=C	derived-derived-role	na	smt3_symbols.txt alias; HD LoadTexture; replaces evtCallMiscLoadTexture
 0x001BB130	evtPictureProcess1	func	tier=C	derived-derived-role	na	smt3_symbols.txt alias; HD Process1; replaces evtCallGetProcessData14
 0x001BB240	evtPictureShutdown	func	tier=C	derived-derived-role	na	smt3_symbols.txt alias; HD Shutdown; replaces evtCallGetProcessData15
+0x001BB4F8	evtPictureSetDrawCol	func	tier=C	derived-derived-role	na	stores r,g,b,a into evtPictureProcessData_t.col and returns 1, same as HD evtPictureSetDrawCol(id, r, g, b, a); replaces evtPictureSetSize
 0x001BB558	evtPictureSetEndProcess	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evtPicture.evtPictureSetEndProcess score 4.0 flag I: calls1 next gap23/18 st2:gap r2-only
 0x001BDC40	evtFileName2Menu	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1f6158 sim 0.664 margin 0.66 pair
 0x001BE100	evtObjectListItem	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1f64f0 sim 0.603 margin 0.20 pair
@@ -18432,6 +18426,9 @@
 0x001E64C8	BlurEditorGetParams	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD Eve.BlurEditorGetParams score 5.7 flag -: prev~ next gap1/2 st1:gap r1+r2
 0x001E6600	rblurSetParam	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1add60 sim 1.000 margin 0.00 pair
 0x001E6730	dblurSetParam	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1add60 sim 1.000 margin 0.00 pair
+0x001E6850	effGetLoadDescD	func	tier=C	derived-derived-role	na	low confidence: 0x1E6850: EnterData case 27 copies 0x28 bytes (dds3Effect_Blur_t) from it, where SMT3/DDS EnterData case 27 calls effGetLoadDescD; T types it Filter_t (0x18); replaces dblurGetParam2
+0x001E6978	dblurGetParam2	func	tier=C	derived-derived-role	na	low confidence: 0x1E6978: EnterData case 16 copies 0x18 (dds3Effect_Filter_t), the SMT3/DDS case 16 callee dblurGetParam2; replaces mfilterGetParam
+0x001E6A80	mfilterGetParam	func	tier=C	derived-derived-role	na	low confidence: 0x1E6A80 returns &mfilterParam; EnterData case 17 copies 0x24 (PartialMultiFilterParam_t), the SMT3/DDS case 17 callee mfilterGetParam; replaces effEnterDataSub
 0x001E6D20	effBTLSys_Nego_Stone_Delete2	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x173bb0 sim 1.000 margin 0.00 pair
 0x001E9E98	sdfDevLoadTexList	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x2c3820 sim 1.000 margin 0.00 pair
 0x001EA150	nbGetUnitFromAction	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x28d178 sim 1.000 margin 0.00 pair

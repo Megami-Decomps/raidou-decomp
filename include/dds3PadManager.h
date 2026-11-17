@@ -6,6 +6,7 @@
 void dds3PadActAllStop(void);
 
 extern s8 dds3PadButtonState[64];
+extern s8 dds3PadBitTable[32];
 extern u8 dds3PadStickState[8];
 extern s8 dds3PadBitTable[0x20];
 

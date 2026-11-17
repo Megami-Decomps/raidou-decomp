@@ -42,11 +42,12 @@ Related: [smt3 levers: control flow](https://github.com/Megami-Decomps/smt3-deco
 
 ## OutFrame1 (event/evtEventViewer, raidou1 0x120, raidou2 0x120)
 
-Raidou 1: 38 of 72 words differ, first at +0x40; emitted 288 bytes, native 288 bytes.
-Raidou 2: 38 of 72 words differ, first at +0x40; emitted 288 bytes, native 288 bytes.
+Raidou 1: 42 of 70 words differ, first at +0x20; emitted 280 bytes, native 288 bytes.
+Raidou 2: 42 of 70 words differ, first at +0x20; emitted 280 bytes, native 288 bytes.
 
 Raidou adds the fade (index unless sb[8]) alpha via effSetEffectColorSubSub and case 33; retail loads the slot twice (lb for the test, lbu then sll/sra at uses) and puts the shared Del block before the color tail; tried s8/u8 slot, ||, nested ifs, cross-jumped double Del. vectors do not reach (opening has types 2,4,6,10,19,36 only), checked against the asm
 N3: the positive range test with an early return after the colour tail call takes 45 to 38; the Del block still sits after the colour block.
+Fragile: DelEffectTable_evtEventViewer becoming C in this unit (K04-event) turned DIFF 38/72 into 42/70; with it back to INCLUDE_ASM the draft is at 38/72 again, so it shifts with its callee's definition, not with its own C.
 
 
 ## RunFrame2 (event/evtEventViewer, raidou1 0xC44, raidou2 0xC44)
@@ -82,3 +83,30 @@ retail keeps a register copy of the data pointer and re-tests it at the loop top
 N3: the size read into a local before its zero test takes 42 to 22 (retail compares against the size loaded at the loop top); left is the per-pass data copy into t2 and no &count giv.
 
 Related: [smt3 levers: control flow](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/control-flow.md).
+
+## evtViewCmdResolveSlot (event/evtEventViewer, raidou1 0xD4, raidou2 0xD4)
+
+Raidou 1: 1 of 53 words differ, first at +0x94.
+Raidou 2: 1 of 53 words differ, first at +0x94.
+
+bnel where retail has bne+count++ in the delay slot at the type-0x18 count loop; tried while-loop with post-increment compare (34 words) and count++ after compare (best); work_base+work_y is the selection, firstobjinfo the list; vectors do not reach, checked against the asm
+
+Related: bnel vs bne at the count loop branch (delay slot fill of count++).
+
+## evtFRAMESETOK (event/evtEventViewer, raidou1 0x1E4, raidou2 0x1E4)
+
+Raidou 1: 95 of 119 words differ, first at +0x18; emitted 476 bytes, native 484 bytes.
+Raidou 2: 95 of 119 words differ, first at +0x18; emitted 476 bytes, native 484 bytes.
+
+retail shares PushMenu call tails between cases 0-2/3-4, 5/8 and 7/9 (cross-jump, a0 set before a shared jal) and orders case 5 before 3-4; tried source order 0-2,5,3-4 with return 0 and with uniform break (95 words, kept), no tail sharing emitted; needs a shape that makes ee-gcc cross-jump; added evtViewerInfo_t.unk2540; vectors do not reach, checked against the asm
+
+Related: cross-jumped PushMenu call tails shared between cases.
+
+## evtCallGetPIDfromUID (event/evtEventViewer, raidou1 0x29C, raidou2 0x29C)
+
+Raidou 1: 113 of 168 words differ, first at +0x54; emitted 676 bytes, native 668 bytes.
+Raidou 2: 113 of 168 words differ, first at +0x54; emitted 676 bytes, native 668 bytes.
+
+two extra nops shift the tail: retail fills the menusw==1 bne delay slot with the GetPendingNode a0 setup and drops a nop after its sh; tried && vs nested if, sp/nowmenu/menusw store orders (fixed), case 22 as switch before case 19 (fixed); goto-to-shared-pop form untried; vectors do not reach, checked against the asm
+
+Related: delay-slot fill of the menusw==1 branch; goto to a shared pop tail untried.

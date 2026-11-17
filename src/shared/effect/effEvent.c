@@ -285,10 +285,10 @@ void Eve_PartialMultiFilterSetDefTex(void);
 void Eve_EffectInit(void);
 dds3Effect_PartialMultiBlurParam_t *mblurGetParam(void);
 dds3Effect_DistortionBlurParam_t *dblurGetParam(void);
-dds3Effect_Filter_t *dblurGetParam2(void);
+dds3Effect_Filter_t *effGetLoadDescD(void);
 
 /* Expose the resource-template setup body by address. */
-dds3Effect_PartialMultiFilterParam_t *mfilterGetParam(void);
+dds3Effect_PartialMultiFilterParam_t *dblurGetParam2(void);
 void mfilterSetParam(dds3Effect_PartialMultiFilterParam_t *parameters);
 
 /* Expose the scale-blur setup parameters by address. */
@@ -737,7 +737,7 @@ void dblurSetParam(dds3Effect_DistortionBlurParam_t *parameters) {
 
 INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy2);
 
-dds3Effect_Filter_t *dblurGetParam2(void) {
+dds3Effect_Filter_t *effGetLoadDescD(void) {
     return &dblurData;
 }
 
@@ -748,7 +748,7 @@ void effLeaf29(const dds3Effect_Blur_t *source) {
 
 INCLUDE_ASM(const s32, "effect/effEvent", mfilterRun);
 
-dds3Effect_PartialMultiFilterParam_t *mfilterGetParam(void) {
+dds3Effect_PartialMultiFilterParam_t *dblurGetParam2(void) {
     return &dblurParam2;
 }
 
@@ -759,7 +759,7 @@ void effEventSetSolidRectangleParameters(dds3Effect_Filter_t *parameters) {
 
 INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy3);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEnterDataSub);
+INCLUDE_ASM(const s32, "effect/effEvent", mfilterGetParam);
 
 /* Replace the setup body without replacing the active textured-square work. */
 void mfilterSetParam(dds3Effect_PartialMultiFilterParam_t *parameters) {

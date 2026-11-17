@@ -113,7 +113,7 @@ void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode
 s32 evtUnitRotationQuat(evtUnit_t *h, f32 *rot, f32 radio);
 s32 evtUnitMoveType0(evtUnit_t *h);
 s32 evtUnitMoveTypePathTrace(evtUnit_t *h);
-void evtSetUnitRot1(evtUnit_t *h, s128 *rot, s32 para1);
+void evtSetUnitRot1(evtUnit_t *h, f32 *rot, s32 para1);
 void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1);
 void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 motion, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 data);
 void evtSetUnitMove2(evtUnit_t *work, s32 motionSubmode, s32 worldObjectKey, s32 motion, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 data);
@@ -972,9 +972,38 @@ void MakeLightPacket(evtUnit_t *h) {
 INCLUDE_ASM(const s32, "event/evtUnitManager", MakeLightPacket);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkLightObjectBasic);
+void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame) {
+    h->flags |= EVT_UNIT_FLAG_TARGET_TRANSITION;
+    h->previousTransitionValue = h->currentTransitionValue;
+    h->currentTransitionValue = EE_ADDR_S(light);
+    if (frame == 0) {
+        h->previousTransitionValue = 0;
+        h->transitionElapsed = 0;
+        h->transitionDuration = 0;
+        h->flags &= ~EVT_UNIT_FLAG_TARGET_BLEND_PHASES;
+    } else {
+        h->flags |= EVT_UNIT_FLAG_TARGET_BLEND_IN;
+        h->flags &= ~EVT_UNIT_FLAG_TARGET_BLEND_OUT;
+        h->transitionDuration = frame;
+        h->transitionElapsed = 0;
+    }
+}
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnlinkLightObjectBasic);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtUnitManager.c:798, match, same function 1.00 (words 26/26, calls 1.00, shape 1.00) */
+void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame) {
+    if (h->currentTransitionValue != 0) {
+        if (frame == 0) {
+            h->flags &= ~EVT_UNIT_FLAG_TARGET_TRANSITION;
+            h->flags &= ~EVT_UNIT_FLAG_TARGET_BLEND_PHASES;
+            h->currentTransitionValue = 0;
+        } else {
+            h->flags &= ~EVT_UNIT_FLAG_TARGET_BLEND_IN;
+            h->transitionDuration = frame;
+            h->flags |= EVT_UNIT_FLAG_TARGET_BLEND_OUT;
+            h->transitionElapsed = 0;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkExternalLightPacket);
 
@@ -983,7 +1012,31 @@ void evtUnlinkExternalLightPacket(evtUnit_t *h) {
     MakeLightPacket(h);
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtUnitManager.c:825, near, same function 1.00 (words 37/37, calls 1.00, shape 1.00) */
+void evtSetUnitLightAndAmbient(evtUnit_t *h, s32 frame, u32 lrgb, u32 argb) {
+    evtColorWork_t work[2];
+    union {
+        f32 value;
+        u32 bits;
+    } scale;
+    u32 light;
+    u32 ambient;
+
+    h->colorDuration = frame;
+    h->color08 = lrgb;
+    h->colorF8 = argb;
+    scale.value = 128.0f;
+    GetBaseLightRGB(h);
+    MMI_RGBA_PACK_UNIT(light, scale.bits);
+    /* Retail retains this colour-slot store in the ambient call delay slot,
+     * as does DDS evtInitializeUnitColorTransition. */
+    work[0].word = light;
+    h->firstCurrent = light;
+    GetBaseAmbientRGB(h);
+    MMI_RGBA_PACK_UNIT(ambient, scale.bits);
+    h->colorF4 = ambient;
+    h->flags = (h->flags | 0x800) & ~0x1000;
+}
 
 void evtSetUnitLightAndAmbient3(evtUnit_t *h, s32 frame, u32 lrgb, u32 lrgb2, u32 lrgb3, u32 argb) {
     union {
@@ -1162,8 +1215,8 @@ evtUnit_t *evtCreateUnitHandle(dds3Basic_t *owner, mdlObj_t *model) {
     work->endpointWork = sdfChipAllocDirect(0xE0);
     memset(work->endpointWork, 0, 0xE0);
     work->lightPacket = NULL;
-    work->unk178 = 0;
-    work->unk17C = 0;
+    work->LookRotFlag = 0;
+    work->LookRotY = 0;
     work->unk206 = 0;
     return work;
 }
@@ -1196,13 +1249,20 @@ s16 evtSetUnitStat(evtUnit_t *h, s32 stat) {
     return h->motionState = stat;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetWaitMotion);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtUnitManager.c:994, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void evtSetWaitMotion(evtUnit_t *h, s32 motion) {
+    h->waitMotion = motion;
+}
 
 void evtSetWaitMotionSpeed(evtUnit_t *h, f32 sp) {
     h->transitionMotionScale = sp;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetWaitHokanFrame);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtUnitManager.c:1002, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void evtSetWaitHokanFrame(evtUnit_t *h, s32 before, s32 smooth) {
+    h->waitBlendStart = before;
+    h->waitBlendEnd = smooth;
+}
 
 s32 evtCheckUnitWait(evtUnit_t *h) {
     s32 state = evtGetUnitStat(h);
@@ -1222,9 +1282,30 @@ void evtSetUnitKutiMotion(evtUnit_t *h, s32 group, s32 motion) {
     h->secondSlot = motion;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtRunUnitKutiMotion);
+void evtRunUnitKutiMotion(addr_t h) {
+    evtUnit_t *unit = EE_ADDR_AS(evtUnit_t *, h);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitExMotion);
+    evtSetUnitExMotion(unit, unit->firstSlot, unit->secondSlot, 0, 0, 2);
+}
+
+void evtSetUnitExMotion(evtUnit_t *h, s32 group, s32 motion, s32 before, s32 smooth, s32 mode)
+{
+    h->slotFlags[group] = 3;
+    h->slotA[group] = motion;
+    h->slotB[group] = before;
+    h->slotC[group] = smooth;
+    switch (mode) {
+    case 0:
+        h->slotFlags[group] |= 4;
+        break;
+    case 1:
+        h->slotFlags[group] |= 8;
+        break;
+    case 2:
+        h->slotFlags[group] |= 0x10;
+        break;
+    }
+}
 
 void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode) {
     h->flags &= ~0x1;
@@ -1339,6 +1420,47 @@ s32 evtUnitMoveType0(evtUnit_t *h) {
     return 1;
 }
 
+/* NON_MATCHING: 18 of 149 words match.  */
+#ifdef NON_MATCHING
+extern const char evtStrYmoveFrameno0[], evtStrYmoveFramenoAddvalue[];
+
+s32 evtCalcFrame_UnitMoveType0(evtUnit_t *org_h) {
+    evtUnit_t h;
+    f32 delta[4];
+    f32 pos[4];
+    f32 rot[4];
+    s32 frame = 0;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        pos[i] = ((f32 *)&org_h->effObj->poseset->pos)[i];
+        rot[i] = ((f32 *)&org_h->effObj->poseset->rot)[i];
+    }
+    h = *org_h;
+    while (evtCheckMoveEnd(&h) == 0) {
+        frame++;
+        evtUnitMoveType0(&h);
+    }
+    for (i = 0; i < 4; i++) {
+        ((f32 *)&org_h->effObj->poseset->pos)[i] = pos[i];
+        ((f32 *)&org_h->effObj->poseset->rot)[i] = rot[i];
+    }
+    if (frame == 0) {
+        printf(evtStrYmoveFrameno0);
+        org_h->moveYFrames = 0;
+        org_h->moveY = 0;
+        return 0;
+    }
+    SDF_VU0_LOADVECTOR(org_h->targetVector);
+    SDF_VU0_LOADVECTOR_B(&org_h->effObj->poseset->pos);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR(delta);
+    org_h->moveYFrames = frame;
+    org_h->moveY = delta[1] / (f32)frame;
+    printf(evtStrYmoveFramenoAddvalue, frame, org_h->moveY, delta[1]);
+    return frame;
+}
+#else
 INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable);
 
 INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable2);
@@ -1350,6 +1472,7 @@ INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitRotationTarget_evtTable
 INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitUpAxis);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtCalcFrame_UnitMoveType0);
+#endif
 
 s32 evtUnitMoveTypePathTrace(evtUnit_t *h) {
     sdfVector4_t v;
@@ -1371,7 +1494,7 @@ s32 evtUnitMoveTypePathTrace(evtUnit_t *h) {
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMovePos);
 
-void evtSetUnitRot1(evtUnit_t *h, s128 *rot, s32 para1) {
+void evtSetUnitRot1(evtUnit_t *h, f32 *rot, s32 para1) {
     if (para1 > 0 && para1 <= 100) {
         h->linkedUnit = NULL;
         h->motionState = EVT_UNIT_MOTION_STATE_VECTOR;
@@ -1390,7 +1513,7 @@ void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1) {
     worldUnit = dds3SearchSceneBasic(dds3GetControlScene(), posID, 0x10);
     if (worldUnit != NULL) {
         source = worldUnit->workdata;
-        evtSetUnitRot1(h, (s128 *)&source->rotation, para1);
+        evtSetUnitRot1(h, source->rotation, para1);
         h->linkedUnit = worldUnit;
     }
 }
@@ -1420,7 +1543,71 @@ void evtSetUnitMove2(evtUnit_t *work, s32 motionSubmode, s32 worldObjectKey, s32
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove3);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtUnitManager.c:1245, near, same function 1.00 (words 145/145, calls 1.00, shape 1.00) */
+void evtSetUnitMove3(evtUnit_t *h, s32 pathID, s32 para1, s32 para2, s32 movesys, s32 movedir, s32 rotsys) {
+    dds3Basic_t *pathSource;
+    dds3PathBasicControl_t *path;
+
+    pathSource = dds3SearchSceneBasic(dds3GetControlScene(), pathID, BASIC_TYPE_PATH);
+    if (pathSource == NULL) {
+        return;
+    }
+    if (h->pathHandle != 0) {
+        dds3DeletePathControl(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
+    }
+    path = dds3AllocPathBasicWorkData(pathSource);
+    h->pathHandle = EE_ADDR_S(path);
+    h->pathSpeed = 40.0f / GetSplineLength(path);
+    if (movedir == 0) {
+        dds3PathBasicControlSetRatio((dds3PathBasicControl_t *)path, 0.0f);
+        dds3PathBasicControlAlterMode(path, 0);
+    } else {
+        dds3PathBasicControlSetRatio((dds3PathBasicControl_t *)path, 1.0f);
+        dds3PathBasicControlAlterMode(path, 1);
+        h->pathSpeed = -h->pathSpeed;
+    }
+    switch (movesys) {
+    case 0:
+        h->motionSubmode = 0;
+        h->flags &= ~2;
+        break;
+    case 1:
+        h->motionSubmode = 3;
+        h->flags |= 2;
+        break;
+    }
+    switch (movedir) {
+    case 0:
+        h->flags &= ~EVT_UNIT_FLAG_PATH_REVERSE;
+        break;
+    case 1:
+        h->flags |= EVT_UNIT_FLAG_PATH_REVERSE;
+        break;
+    }
+    switch (rotsys) {
+    case 0:
+        h->flags &= ~8;
+        h->flags &= ~0x10;
+        break;
+    case 1:
+        h->flags |= 8;
+        h->flags &= ~0x10;
+        break;
+    case 2:
+        h->flags &= ~8;
+        h->flags |= 0x10;
+        break;
+    }
+    h->motionState = EVT_UNIT_MOTION_STATE_SOURCE;
+    h->transitionSourceKind = EVT_UNIT_TRANSITION_SOURCE_PATH_CURVE;
+    h->linkedUnit = pathSource;
+    dds3PathBasicControlGetPos(path);
+    SDF_VU0_STOREVECTOR(h->targetVector);
+    h->motionParameter = para1;
+    h->directionOffset = para2;
+    h->motionCallback = 0;
+    h->motionTicks = 0;
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", CheckMoveEndBustup);
 
@@ -1432,7 +1619,18 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMoveBustup);
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtLeaf);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitAction);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/event/evtUnitManager.c:1310, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+s32 evtSetUnitAction(evtUnit_t *work, s32 (*callback)(evtUnit_t *, s32)) {
+    s32 ret = 0;
+
+    if (callback != 0) {
+        work->motionCallback = callback;
+        work->motionTicks = 0;
+        work->motionState = EVT_UNIT_MOTION_STATE_VALUE;
+        ret = 1;
+    }
+    return ret;
+}
 
 #ifdef VERSION_RAIDOU1
 #ifdef NON_MATCHING
@@ -1676,7 +1874,32 @@ void evtSetCustomSceneLightData_SoftenAndBias(s32 index, f32 soften, f32 bias) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtLeaf4);
+s32 evtGetCustomSLightData(evtUnit_t *h, f32 *dir) {
+    s32 found = -1;
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        if (CustomSceneLightArray[i].lightType == 3 && CustomSceneLightArray[i].unitHandle == h) {
+            found = i;
+            break;
+        }
+    }
+    if (found == -1) {
+        for (i = 0; i < 7; i++) {
+            if (CustomSceneLightArray[i].lightType == 2) {
+                found = i;
+                break;
+            }
+        }
+        if (found == -1) {
+            return 0;
+        }
+    }
+    dir[0] = CustomSceneLightArray[found].dir[0][0];
+    dir[1] = CustomSceneLightArray[found].dir[0][1];
+    dir[2] = CustomSceneLightArray[found].dir[0][2];
+    return 1;
+}
 
 void evtMakeCustomSLightPacket(evtUnit_t *h) {
     sdf3DLight_t source[3];

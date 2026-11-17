@@ -13,14 +13,51 @@
 #include "newdata.h"
 #include "sBtlContinue.h"
 #include "dds3Randomize.h"
+#include "sdk_libc.h"
 
-INCLUDE_ASM(const s32, "code_001AD4E8", evtCallGetScriptHandle);
+extern const char evtMsgTexLoadNoProc2[];
+
+u32 evtCallGetScriptHandle(void)
+{
+    scrProcessWork_s *work;
+    dds3ProcessID_t *pid;
+
+    work = scrGetScriptHandle();
+    if (work == NULL) {
+        return 1;
+    }
+    if (work->ProcessID == NULL) {
+        printf(evtMsgTexLoadNoProc2);
+        return 1;
+    }
+    pid = StartProcess_evtPicture(DDS3_PRIORITY_DRAW_NEGO, scrGetStrPara(0));
+    dds3LinkProcess(work->ProcessID, pid);
+    scrSetIntReturnValue((s32)pid);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_001AD4E8", evtCallGetIntPara16);
 
 INCLUDE_ASM(const s32, "code_001AD4E8", evtCommand_CALL_FIELD);
 
-INCLUDE_ASM(const s32, "code_001AD4E8", evtCallGetIntPara17);
+u32 evtCallGetIntPara17(void)
+{
+    dds3ProcessID_t *id;
+    s32 r;
+    s32 g;
+    s32 b;
+    s32 a;
+
+    id = EE_ADDR_AS(dds3ProcessID_t *, scrGetIntPara(0));
+    r = scrGetIntPara(1);
+    g = scrGetIntPara(2);
+    b = scrGetIntPara(3);
+    a = scrGetIntPara(4);
+    if (dds3ExistProcess(id)) {
+        evtPictureSetDrawCol(id, r, g, b, a);
+    }
+    return 1;
+}
 
 s32 CUTIN_DSP(void) {
     scrProcessWork_s *work;

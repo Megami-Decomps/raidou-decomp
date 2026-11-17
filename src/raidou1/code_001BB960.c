@@ -15,4 +15,25 @@ void evtCallChipFreeDirect(void) {
     evtWork2.unk2B0 = 0;
 }
 
-INCLUDE_ASM(const s32, "code_001BB960", evtLeaf9);
+s32 evtLeaf9(s32 type) {
+    switch (type) {
+    case 10:
+        return 112;
+    case 14:
+    case 15:
+    case 23:
+        return 44;
+    case 13:
+    case 27:
+        return 40;
+    case 16:
+        return 24;
+    case 17:
+        return 36;
+    case 11:
+    case 25:
+        return 64;
+    default:
+        return 0;
+    }
+}

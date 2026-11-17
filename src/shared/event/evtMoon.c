@@ -538,7 +538,13 @@ void evtMoonInitProcess(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtMoon", fldFreeAddressProcess);
+/* body: matched in smt3 @ 9401f79e: src/smt3/field/fldPanel.c:259, match, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+void fldFreeAddressProcess(void)
+{
+    if (addressprocess_id != 0) {
+        dds3KillProcess(addressprocess_id, 1);
+    }
+}
 INCLUDE_SDATA(const s32, "event/evtMoon", moon_spr);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", gMoonBaseARate);

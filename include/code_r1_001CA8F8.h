@@ -67,5 +67,7 @@ void evtCallAllocRenderTexture(evtViewerInfo_t *viewer);
 void evtCallMemAllocFromTailDirect(evtViewerInfo_t *pInfo);
 void evtCallPrimAllocDrawTag(evtViewerInfo_t *pInfo);
 void evtLeaf15(evtViewerInfo_t *pInfo);
+void evtCallMessageDelete(evtViewerInfo_t *viewer, s32 delta, s32 frame);
+void mnuAdjustTimelineDurations(evtViewerInfo_t *viewer, s32 threshold, s32 delta);
 
 #endif

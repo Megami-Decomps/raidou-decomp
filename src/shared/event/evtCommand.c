@@ -11,6 +11,9 @@
 #include "evtCommand.h"
 #include "sdfQuat.h"
 #include "evtUnitManager.h"
+#include "dds3MoverBasic.h"
+#include "dds3ObjectBase.h"
+#include "sdfMath.h"
 #include "scrTraceCode.h"
 #include "dds3EffectObjectBasic.h"
 #include "evtStage.h"
@@ -176,9 +179,8 @@ u32 evtCommand_MODEL_PLAYER(void);
 u32 evtCommand_MODEL_DSP(void);
 u32 evtCommand_MODEL_BE(void);
 u32 evtCommand_MODEL_POS(void);
-u32 evtCommand_MODEL_SHADOW_ON(void);
 u32 evtCommand_MODEL_SHADOW_ON2(void);
-u32 evtCommand_MODEL_SHADOW_OFF(void);
+u32 evtCommand_MODEL_SHADOW_ON(void);
 u32 evtCommand_MODEL_POS_XYZ(void);
 u32 evtCommand_MODEL_ROT_XYZ(void);
 u32 evtCommand_MODEL_SCL_XYZ(void);
@@ -299,8 +301,8 @@ u32 evtCommand_DEL_BE(void);
 /* Create and return an event/scene movie task without setting bit 0.
  * The owning scheduler task supplies the viewer task's priority. */
 s32 evtCommand_PMV_RUN(void);
-s32 evtCommand_PATH_STOP(void);
 s32 evtCommand_PATH_START(void);
+s32 evtCommand_PATH_STOP(void);
 
 /* Apply the float state, then update a room flag when its parsed number is positive.
  * Values above 0.5 set that flag; the VM float parameter is deliberately re-read. */
@@ -347,7 +349,6 @@ u32 evtCommandSetDrawFlagWhileWaiting(void);
 extern const char evtMsgTexLoadNoProc[72];
 extern const char evtMsgSetSkyAlphaLow[40];
 
-#ifdef VERSION_RAIDOU1
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
  * directory extent rather than an enum-completeness claim. */
@@ -386,46 +387,6 @@ enum {
 void evtPolygonMovieClearFlagBits(struct dds3ProcessID_t *task,
                                   EvtPolygonMovieWorkFlags flags);
 
-#else
-/* Sparse world-node identities recovered from the paired operation tables and
- * concrete creators. Unlisted values stay unnamed; COUNT remains the full
- * directory extent rather than an enum-completeness claim. */
-enum {
-    EFF_WORLD_KIND_WORLD_INFO = 0,
-    EFF_WORLD_KIND_EVENT_TABLE = 1,
-    EFF_WORLD_KIND_WORLD_INDEX_OWNER = 2,
-    EFF_WORLD_KIND_SLOT_RING = 3,
-    EFF_WORLD_KIND_CAMERA = 4,
-    EFF_WORLD_KIND_FOLLOW_MODEL = 5,
-    EFF_WORLD_KIND_EFFECT_TRANSFORM = 6,
-    EFF_WORLD_KIND_EFFECT_OBJECT = 7,
-    EFF_WORLD_KIND_RESOURCE_OWNER = 8,
-    EFF_WORLD_KIND_LIGHT = 9,
-    EFF_WORLD_KIND_SCRIPT_OBJECT = 10,
-    EFF_WORLD_KIND_ACTION_B = 11,
-    EFF_WORLD_KIND_ACTION_D = 13,
-    EFF_WORLD_KIND_ACTION_10 = 16,
-    EFF_WORLD_KIND_TRANSFORM_SOURCE = 17,
-    EFF_WORLD_KIND_COUNT = 18
-};
-
-#include "include_asm.h"
-#include "draw3d.h"
-#include "billboard.h"
-#include "sdf_types.h"
-#include "sdf_lighting.h"
-#include "libsdf.h"
-#include "model.h"
-#include "motion.h"
-#include "fpu.h"
-#include "dds3UnitObjectBasic.h"
-#include "code_r1_001C4B78.h"
-#include "effPCPMisc_00224D10.h"
-
-void evtPolygonMovieClearFlagBits(struct dds3ProcessID_t *task,
-                                  EvtPolygonMovieWorkFlags flags);
-
-#endif
 
 /* Signed 32-bit scalar values carried in script VM integer slots and APIs. */
 typedef s32 ScrVmInteger;
@@ -467,9 +428,6 @@ ScrCommandResult evtCommandReattachObjectPath(void);
 #endif
 ScrCommandResult evtCommandStartPolygonMovie(void);
 
-#ifdef VERSION_RAIDOU1
-#else
-#endif
 
 enum EvtTargetInfoFlags {
     EVT_TARGET_INFO_FLAG_UNIT_OWNS_VECTOR = 0x8
@@ -549,7 +507,6 @@ ScrCommandResult evtOpRestoreUnitReferenceAngle(void);
 
 #ifdef VERSION_RAIDOU1
 struct EffNodeDescriptor;
-#else
 #endif
 
 #ifdef VERSION_RAIDOU1
@@ -618,13 +575,11 @@ s32 evtCallGetIntPara(void) {
     scrSetIntReturnValue(evtLoadUnit(major, minor));
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallBtlCountClear);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara2);
 #else
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallBtlCountClear);
+
 INCLUDE_ASM(const s32, "event/evtCommand", evtMODELDSPBUSTUP);
 #endif
 
@@ -700,11 +655,62 @@ s32 evtFldProcSequence(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_SHADOW_OFF);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:583, near, same function 0.93 (words 27/27, calls 0.80, shape 1.00) */
+u32 evtCommand_MODEL_SHADOW_ON(void)
+{
+    void *scene;
+    s32 key;
+    void *unit;
+    u32 ret = 1;
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_SHADOW_ON2);
+    scene = dds3GetActiveScene();
+    key = scrGetIntPara(0);
+    unit = dds3SearchSceneBasic(scene, key, 5);
+    if (unit == NULL) {
+        return ret;
+    }
+    dds3ObjectBaseOnFlag(unit, 0x400);
+    dds3ObjectBaseOffFlag(unit, 0x200);
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetActiveScene4);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:565, match, same function 1.00 (words 27/27, calls 1.00, shape 1.00) */
+u32 evtCommand_MODEL_SHADOW_ON2(void)
+{
+    void *scene;
+    s32 key;
+    void *unit;
+    u32 ret = 1;
+
+    scene = dds3GetActiveScene();
+    key = scrGetIntPara(0);
+    unit = dds3SearchSceneBasic(scene, key, 5);
+    if (unit == NULL) {
+        return ret;
+    }
+    dds3ObjectBaseOffFlag(unit, 0x400);
+    dds3ObjectBaseOnFlag(unit, 0x200);
+    return 1;
+}
+
+/* body: matched in smt3 @ 9401f79eb: src/smt3/event/evtCommand.c:583, match, same function 1.00 (words 27/27, calls 1.00, shape 1.00) */
+u32 evtCallGetActiveScene4(void)
+{
+    void *scene;
+    s32 key;
+    void *unit;
+    u32 ret = 1;
+
+    scene = dds3GetActiveScene();
+    key = scrGetIntPara(0);
+    unit = dds3SearchSceneBasic(scene, key, 5);
+    if (unit == NULL) {
+        return ret;
+    }
+    dds3ObjectBaseOffFlag(unit, 0x400);
+    dds3ObjectBaseOffFlag(unit, 0x200);
+    return 1;
+}
 
 u32 evtOpQueueWorldObjectPendingValue(void) {
     dds3Basic_t *ctx;
@@ -906,9 +912,27 @@ u32 gohScrCmd_GOH_EXIT(void)
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtMODELEXMOTION);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001A8B40.c:1, match */
+u32 evtMODELEXMOTION(void)
+{
+    evtUnit_t *unit;
 
-INCLUDE_ASM(const s32, "event/evtCommand", KutiFunction);
+    datDebugPrintf("MODEL_EXMOTION() %08X %X %X\n", scrGetIntPara(0), scrGetIntPara(1), scrGetIntPara(2));
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    if (unit == NULL) {
+        return 1;
+    }
+    evtSetUnitExMotion(unit, scrGetIntPara(1), scrGetIntPara(2), scrGetIntPara(3), scrGetIntPara(4), scrGetIntPara(5));
+    if (dds3SearchProcessName(evtStrFldProcSequence) != NULL) {
+        mapObjNpcKuseScriptStop(scrGetIntPara(0));
+    }
+    return 1;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:728, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void KutiFunction(void) {
+    evtRunUnitKutiMotion(evtKutiUnit);
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtLipsExecFunction);
 
@@ -979,11 +1003,60 @@ u32 evtCommand_MODEL_WAIT(void)
     return evtCheckUnitWait(unit) != 0;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_EXWAIT);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:793, match, same function 1.00 (words 30/30, calls 1.00, shape 1.00) */
+u32 evtCommand_MODEL_EXWAIT(void) {
+    s32 worldObjectKey;
+    evtUnit_t *unit;
+    s32 motionNodeIndex;
+    u32 result = 1;
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetActiveScene5);
+    worldObjectKey = scrGetIntPara(0);
+    unit = evtGetUnitHandle(worldObjectKey);
+    if (unit == NULL) {
+        return result;
+    }
+    motionNodeIndex = scrGetIntPara(1);
+    if (((unit->slotFlags[motionNodeIndex] & 1) & 0xFF) == 0) {
+        return result;
+    }
+    return mdlChkMotionEndEx(unit->owner, scrGetIntPara(1)) != 0;
+}
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_MOVE);
+u32 evtCallGetActiveScene5(void) {
+    void *scene;
+    void *unit;
+
+    scene = dds3GetActiveScene();
+    unit = dds3SearchSceneBasic(scene, scrGetIntPara(0), BASIC_TYPE_UNITOBJECT);
+    if (unit == NULL) {
+        return 1;
+    }
+    dds3DeleteSceneBasicData(unit);
+    return 1;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:827, near, same function 0.89 (words 49/42, calls 0.88, shape 0.92) */
+u32 evtCommand_MODEL_MOVE(void)
+{
+    evtUnit_t *unit;
+    s32 posId;
+    s32 moveType;
+    s32 para1;
+
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    if (unit == NULL) {
+        return 1;
+    }
+    unit->motionTicks = 0;
+    posId = scrGetIntPara(2);
+    moveType = scrGetIntPara(1);
+    para1 = scrGetIntPara(3);
+    evtSetUnitMove2(unit, posId, moveType, -1, para1, scrGetIntPara(4), NULL, 0);
+    if (scrGetIntPara(2) == 1) {
+        evtCalcFrame_UnitMoveType0(unit);
+    }
+    return 1;
+}
 
 u32 evtCommand_MODEL_MOVE2(void) {
     evtUnit_t *unit;
@@ -1009,7 +1082,16 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara6);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset6);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara7);
+s32 evtCallGetIntPara7(void)
+{
+    s32 unitID;
+    s32 frame;
+
+    unitID = scrGetIntPara(0);
+    frame = scrGetIntPara(1);
+    evtSetLightBustup(unitID, frame, scrGetIntPara(2));
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtWAITEXMOT);
 
@@ -1087,170 +1169,6 @@ f32 evtGetShortestAngleDelta(f32 fromDegrees, f32 toDegrees) {
     }
     return toDegrees - fromDegrees;
 }
-
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara8);
-
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara9);
-
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ON);
-
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_OFF);
-
-u32 evtCommand_MODEL_LIGHT_ON(void) {
-    s32 worldObjectKey;
-    evtUnit_t *unit;
-
-    worldObjectKey = scrGetIntPara(0);
-    unit = evtGetUnitHandle(worldObjectKey);
-    evtUnitLightOn(unit);
-    return 1;
-}
-
-u32 evtCommand_MODEL_LIGHT_OFF(void)
-{
-    s32 key;
-    void *unit;
-    s32 time;
-
-    key = scrGetIntPara(0);
-    unit = evtGetUnitHandle(key);
-    time = scrGetIntPara(1);
-    evtUnitLightOff(unit, time);
-    return 1;
-}
-
-u32 evtCommand_MODEL_LIGHT_WAIT(void)
-{
-    s32 key;
-    void *unit;
-    s32 stat;
-
-    key = scrGetIntPara(0);
-    unit = evtGetUnitHandle(key);
-    stat = evtUnitLightAnimeStat(unit);
-    return stat == 0;
-}
-
-u32 evtCommand_MODEL_LIGHT_RGB(void)
-{
-    evtColorWork_t work[2];
-    evtUnit_t *unit;
-    u32 light;
-    u32 ambient;
-    u32 scale;
-
-    unit = evtGetUnitHandle(scrGetIntPara(0));
-    SDF_VU0_SETVECTOR_X(scrGetFloatPara(2));
-    SDF_VU0_SETVECTOR_Y(scrGetFloatPara(3));
-    SDF_VU0_SETVECTOR_Z(scrGetFloatPara(4));
-    SDF_VU0_VECTOR_W_SET_ZERO();
-    scale = EVT_RGBA_SCALE_128;
-    MMI_RGBA_PACK_UNIT(light, scale);
-    work[0].word = light;
-    SDF_VU0_SETVECTOR_X(scrGetFloatPara(5));
-    SDF_VU0_SETVECTOR_Y(scrGetFloatPara(6));
-    SDF_VU0_SETVECTOR_Z(scrGetFloatPara(7));
-    SDF_VU0_VECTOR_W_SET_ONE();
-    MMI_RGBA_PACK_UNIT(ambient, scale);
-    work[1].word = ambient;
-    evtSetUnitLightAndAmbient(unit, scrGetIntPara(1), light, ambient);
-    return 1;
-}
-
-u32 evtCommand_MODEL_LIGHT_DIR(void)
-{
-    sdfVector4_t dir;
-    evtUnit_t *unit;
-    f32 mag;
-
-    memset(&dir, 0, sizeof(dir));
-    unit = evtGetUnitHandle(scrGetIntPara(0));
-    dir.x = scrGetFloatPara(2);
-    dir.y = scrGetFloatPara(3);
-    dir.z = scrGetFloatPara(4);
-    mag = sdfFabs(dir.x);
-    if (mag <= 0.01f) {
-        mag = sdfFabs(dir.y);
-        if (mag <= 0.01f) {
-            mag = sdfFabs(dir.z);
-            if (mag <= 0.01f) {
-                datDebugPrintf(evtMsgLightDirZero);
-                return 1;
-            }
-        }
-    }
-    SDF_VU0_LOADVECTOR(&dir);
-    evtSetUnitLightDir(unit, scrGetIntPara(1));
-    return 1;
-}
-
-u32 evtCommand_MODEL_RGB(void)
-{
-    evtColorWork_t work[1];
-    evtUnit_t *unit;
-    u32 color;
-    s32 duration;
-
-    unit = evtGetUnitHandle(scrGetIntPara(0));
-    SDF_VU0_SETVECTOR_X(scrGetFloatPara(2));
-    SDF_VU0_SETVECTOR_Y(scrGetFloatPara(3));
-    SDF_VU0_SETVECTOR_Z(scrGetFloatPara(4));
-    SDF_VU0_VECTOR_W_SET_ZERO();
-    MMI_RGBA_PACK_128_S2(color);
-    work[0].word = color;
-    duration = scrGetIntPara(1);
-    /* Qualified cc1 loop notes 106/126 keep the unit argument before the
-     * duration argument; the no-block control reverses those two copies.
-     * See docs/levers/control-flow.md. */
-    do {
-        evtSetUnitColorRGB(unit, duration, color);
-    } while (0);
-    return 1;
-}
-
-u32 evtCommand_MODEL_A(void)
-{
-    evtColorWork_t work[1];
-    evtUnit_t *unit;
-    u32 color;
-
-    unit = evtGetUnitHandle(scrGetIntPara(0));
-    SDF_VU0_LOADIDENTITYVECTOR();
-    SDF_VU0_SETVECTOR_W(scrGetFloatPara(2));
-    MMI_RGBA_PACK_128_S2(color);
-    work[0].word = color;
-    evtSetUnitColorA(unit, scrGetIntPara(1), color);
-    return 1;
-}
-
-u32 evtCommand_MODEL_LIGHT_LINK(void)
-{
-    s32 key;
-    void *unit;
-    void *target;
-
-    key = scrGetIntPara(0);
-    unit = evtGetUnitHandle(key);
-    target = evtSearchBasic(9, scrGetIntPara(2));
-    if (target == NULL) {
-        return 1;
-    }
-    evtLinkLightObjectBasic(unit, target, scrGetIntPara(1));
-    return 1;
-}
-
-u32 evtCommand_MODEL_LIGHT_UNLINK(void)
-{
-    s32 key;
-    void *unit;
-    s32 time;
-
-    key = scrGetIntPara(0);
-    unit = evtGetUnitHandle(key);
-    time = scrGetIntPara(1);
-    evtUnlinkLightObjectBasic(unit, time);
-    return 1;
-}
 #else
 f32 evtGetShortestAngleDelta(f32 a, f32 b) {
     f32 diff;
@@ -1271,14 +1189,159 @@ f32 evtGetShortestAngleDelta(f32 a, f32 b) {
     }
     return b - a;
 }
+#endif
 
+#ifdef VERSION_RAIDOU1
+u32 evtCallGetIntPara8(void) {
+    evtUnit_t *h;
+    dds3Basic_t *basic;
+    dds3Basic_t *target;
+    evtWorldSourceTransformPrefix_t *work;
+    f32 rot[4] QWORD_ALIGNED;
+    f32 pos[4] QWORD_ALIGNED;
+    f32 tpos[4] QWORD_ALIGNED;
+    f32 roty;
+    f32 delta;
+    s32 frame;
+
+    h = evtGetUnitHandle(scrGetIntPara(0));
+    if (h == NULL) {
+        return 1;
+    }
+    h->motionTicks = 0;
+    basic = dds3SearchSceneBasic(dds3GetActiveScene(), scrGetIntPara(0), 5);
+    if (basic == NULL) {
+        return 1;
+    }
+    target = dds3SearchSceneBasic(dds3GetActiveScene(), scrGetIntPara(1), 16);
+    if (target == NULL) {
+        return 1;
+    }
+    work = target->workdata;
+    dds3GetPosPoseSet(basic);
+    SDF_VU0_STOREVECTOR(pos);
+    SDF_VU0_COPYVECTOR(tpos, &work->position);
+    if (!(h->LookRotFlag & 1)) {
+        dds3GetRotPoseSet(basic);
+        roty = EulerAngleAxisY();
+        h->LookRotFlag |= 1;
+        h->LookRotY = -(roty * 57.29577637f);
+    }
+    roty = sdfAtan2(pos[0] - tpos[0], pos[2] - tpos[2]) * 57.32484055f;
+    delta = evtGetShortestAngleDelta(h->LookRotY, roty);
+    if (delta < -135.0f) {
+        roty -= delta + 135.0f;
+        delta = -135.0f;
+    } else if (delta > 135.0f) {
+        roty -= delta - 135.0f;
+        delta = 135.0f;
+    }
+    roty -= (delta + delta) / 3.0f;
+    FromEuler(0.0f, roty * 0.017453293f, 0.0f);
+    SDF_VU0_STOREVECTOR_NOMEM(rot);
+    frame = scrGetIntPara(2);
+    if (frame >= 101) {
+        frame = 100;
+    }
+    delta = evtGetShortestAngleDelta(h->LookRotY, roty);
+    if (delta < 0.0f) {
+        delta = -delta;
+    }
+    if (delta > 90.0f) {
+        delta = 90.0f;
+    }
+    frame = (frame * (s32)delta) / 90;
+    if (frame <= 0) {
+        frame = 1;
+    }
+    if (frame > 100) {
+        frame = 100;
+    }
+    evtSetUnitRot1(h, rot, frame);
+    dds3UnitObjectBasicKubiOn(basic, target->serialID);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara8);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara9);
+#endif
 
+#ifdef VERSION_RAIDOU1
+u32 evtCallGetIntPara9(void) {
+    evtUnit_t *h;
+    dds3Basic_t *basic;
+    f32 rot[4] QWORD_ALIGNED;
+    f32 roty;
+    f32 delta;
+    s32 frame;
+
+    h = evtGetUnitHandle(scrGetIntPara(0));
+    if (h == NULL) {
+        return 1;
+    }
+    h->motionTicks = 0;
+    if (!(h->LookRotFlag & 1)) {
+        return 1;
+    }
+    basic = dds3SearchSceneBasic(dds3GetActiveScene(), scrGetIntPara(0), 5);
+    if (basic == NULL) {
+        return 1;
+    }
+    dds3GetRotPoseSet(basic);
+    roty = -(EulerAngleAxisY() * 57.29577637f);
+    FromEuler(0.0f, h->LookRotY * 0.017453293f, 0.0f);
+    SDF_VU0_STOREVECTOR_NOMEM(rot);
+    frame = scrGetIntPara(1);
+    if (frame >= 101) {
+        frame = 100;
+    }
+    delta = evtGetShortestAngleDelta(roty, h->LookRotY);
+    if (delta < 0.0f) {
+        delta = -delta;
+    }
+    if (delta > 90.0f) {
+        delta = 90.0f;
+    }
+    frame = (frame * (s32)delta) / 90;
+    frame = (frame * 40) / 100;
+    if (frame <= 0) {
+        frame = 1;
+    }
+    if (frame > 100) {
+        frame = 100;
+    }
+    evtSetUnitRot1(h, rot, frame);
+    dds3UnitObjectBasicKubiOff(basic);
+    return 1;
+}
+
+u32 evtCommand_MODEL_ON(void)
+{
+    evtUnit_t *h;
+
+    h = evtGetUnitHandle(scrGetIntPara(0));
+    if (h != NULL) {
+        h->owner->flags &= ~1;
+    }
+    return 1;
+}
+
+u32 evtCommand_MODEL_OFF(void)
+{
+    evtUnit_t *h;
+
+    h = evtGetUnitHandle(scrGetIntPara(0));
+    if (h != NULL) {
+        h->owner->flags |= 1;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ON);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_OFF);
+#endif
 
 u32 evtCommand_MODEL_LIGHT_ON(void) {
     s32 worldObjectKey;
@@ -1435,7 +1498,6 @@ u32 evtCommand_MODEL_LIGHT_UNLINK(void)
     evtUnlinkLightObjectBasic(unit, time);
     return 1;
 }
-#endif
 
 #ifdef VERSION_RAIDOU1
 u32 evtCommand_EFFECT_BE(void) {
@@ -1587,7 +1649,18 @@ u32 evtCommand_EFFBED_START(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommandEFFBEDSTARTEVOSub);
+f32 evtCommandEFFBEDSTARTEVOSub(s32 uid)
+{
+    f32 scale;
+
+    scale = (evtData12[uid].formsize + evtData12[uid].formheight * 0.5f) * 0.5f * evtData12[uid].formscale * 0.014285714f;
+    if (2.0f < scale) {
+        scale = 2.0f;
+    } else if (scale < 0.8f) {
+        scale = 0.8f;
+    }
+    return scale;
+}
 
 u32 evtCommand_EFFBED_START_EVO(void) {
     void *unit;
@@ -1646,11 +1719,7 @@ u32 evtCallMemset(void) {
     evtCallMemsetData = NULL;
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset2);
-#endif
 
-#ifdef VERSION_RAIDOU1
 u32 evtCommand_EFFMG1_LOAD(void)
 {
     dds3Basic_t *basic;
@@ -1671,6 +1740,8 @@ INCLUDE_RODATA(const s32, "event/evtCommand", evtStrEffeplLoad);
 
 const char evtMsgEffmg1LoadHint[48] = "\xa5\xb9\xa5\xaf\xa5\xea\xa5\xd7\xa5\xc8\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\x45\x46\x46\x4d\x47\x31\x5f\x4c\x4f\x41\x44\x28\x29\xa4\xc7\xc2\xd0\xbe\xdd\xa5\xd5\xa5\xa1\xa5\xa4\xa5\xeb\x0a";
 #else
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset2);
+
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG1_LOAD);
 #endif
 
@@ -1990,7 +2061,25 @@ s32 evtCommand_EFFECT_OFF(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_PATH_MOVE);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:1638, near, same function 1.00 (words 35/35, calls 1.00, shape 1.00) */
+s32 evtCommand_EFFECT_PATH_MOVE(void)
+{
+    dds3Basic_t *effect;
+    dds3Basic_t *path;
+
+    effect = evtSearchBasic(BASIC_TYPE_EFFECTOBJECT, scrGetIntPara(0));
+    if (effect == NULL) {
+        datDebugPrintf("EFFECT_PATH_MOVE not found eff!\n");
+        return 1;
+    }
+    path = evtSearchBasic(BASIC_TYPE_PATH, scrGetIntPara(1));
+    if (path == NULL) {
+        datDebugPrintf("EFFECT_PATH_MOVE not found path!\n");
+        return 1;
+    }
+    evtPathLinkAndMake(path, effect);
+    return 1;
+}
 
 s32 evtCommand_EFFECT_PATH_WAIT(void)
 {
@@ -2046,7 +2135,11 @@ s32 evtCommand_RTRN_TITLE(void)
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_RTRN_TITLE);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_STAFF);
+s32 evtCommand_CALL_STAFF(void)
+{
+    dds3AdminiCallSequence(14, 0, 0, 0);
+    return 1;
+}
 
 s32 evtCommand_CALL_ENDSAVE(void)
 {
@@ -2079,7 +2172,13 @@ INCLUDE_ASM(const s32, "event/evtCommand", titleGetPressAnyButton);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_EVENT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", campDhWaitMessageEnd);
+u32 campDhWaitMessageEnd(void)
+{
+    if (scrGetCommandTimer() == 0) {
+        dds3AdminiExitSequence();
+    }
+    return 0;
+}
 
 #ifdef VERSION_RAIDOU1
 void CallBattleSub_evtCommand(s32 encno, s32 eventno) {
@@ -2286,7 +2385,22 @@ s32 evtCommand_UNIT_CLS_STOP(void)
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_UNIT_CLS);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CAM_SEL);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:2006, near, same function 0.93 (words 30/32, calls 0.92, shape 0.94) */
+u32 evtCommand_CAM_SEL(void)
+{
+    dds3Basic_t *camera;
+
+    if (scrGetIntPara(0) < 0) {
+        camera = fldGetUnitFollowCamera();
+    } else {
+        camera = evtSearchBasic(BASIC_TYPE_CAMERAOBJECT, scrGetIntPara(0));
+    }
+    if (camera == NULL) {
+        return 1;
+    }
+    dds3SetActiveCameraSceneBasic(dds3GetActiveScene(), camera);
+    return 1;
+}
 
 u32 evtCommand_CAM_SEL_FOVY(void)
 {
@@ -2305,7 +2419,36 @@ u32 evtCommand_CAM_SEL_FOVY(void)
     return 1;
 }
 
+#ifdef VERSION_RAIDOU1
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:2040, near, same function 1.00 (words 40/40, calls 1.00, shape 1.00) */
+s32 evtCommand_CAM_PATH_MOVE(void)
+{
+    dds3Basic_t *camera;
+    dds3Basic_t *path;
+
+    if (scrGetIntPara(0) < 0) {
+        camera = fldGetUnitFollowCamera();
+    } else {
+        camera = evtSearchBasic(BASIC_TYPE_CAMERAOBJECT, scrGetIntPara(0));
+    }
+    if (camera == NULL) {
+        printf("CAM_PATH_MOVE error!\n");
+        return 1;
+    }
+    path = evtSearchBasic(BASIC_TYPE_PATH, scrGetIntPara(1));
+    if (path == NULL) {
+        printf("CAM_PATH_MOVE error!\n");
+        return 1;
+    }
+    if (evtPathLinkAndMake(path, camera) == 0) {
+        printf("CAM_PATH_MOVE error!\n");
+        return 1;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CAM_PATH_MOVE);
+#endif
 
 s32 evtCommand_CAM_PATH_WAIT(void)
 {
@@ -2439,9 +2582,58 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara2);
 #ifdef VERSION_RAIDOU1
 const char evtMsgObjPathPara1[16] = "PARA1:%08x\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgObjPathMoveNoObj);
+extern const char evtStrReAttach[];
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtPARA);
+s32 evtPARA(void) {
+    dds3Basic_t *obj;
+    dds3Basic_t *path;
+    dds3ObjectBaseControlWorkData_t *data;
+    dds3Basic_t *mover;
+    dds3PathBasicControl_t *control;
+
+    obj = evtSearchBasic(6, scrGetIntPara(0));
+    if (obj == NULL) {
+        obj = fldGetMatter_From_ModelRangeID(scrGetIntPara(0));
+        if (obj == NULL) {
+            printf(evtMsgObjPathPara0, scrGetIntPara(0));
+            printf(evtMsgObjPathPara1, scrGetIntPara(1));
+            printf(evtMsgObjPathMoveNoObj);
+            return 1;
+        }
+    }
+    path = evtSearchBasic(15, scrGetIntPara(1));
+    if (path == NULL) {
+        return 1;
+    }
+    data = dds3MatterObjectBasicGetControlWorkData(obj);
+    mover = data->pBasic[1];
+    if (mover == NULL) {
+        dds3ObjectBaseCreateMover(obj);
+        mover = data->pBasic[1];
+    }
+    if (((dds3SlotResource_t *)mover->workdata)->sourceObject == NULL) {
+        dds3MoverBasicSetPath(mover, path);
+        dds3MoverBasicMakePath(mover);
+    } else {
+        dds3RefreshStoredVec3(obj);
+        dds3MoverBasicSetPath(mover, path);
+        dds3MoverBasicMakePath(mover);
+        printf(evtStrReAttach);
+    }
+    control = dds3MoverBasicGetPathControl(mover);
+    if (control == NULL) {
+        return 1;
+    }
+    switch (scrGetIntPara(2)) {
+    case 0:
+        dds3PathBasicControlAlterMode(control, 0);
+        break;
+    case 1:
+        dds3PathBasicControlAlterMode(control, 1);
+        break;
+    }
+    return 1;
+}
 
 s32 evtCommand_OBJ_PATH_WAIT(void)
 {
@@ -2581,6 +2773,10 @@ u32 evtCommand_DEL_BE(void)
 }
 
 #ifdef VERSION_RAIDOU1
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgObjPathMoveNoObj);
+
+INCLUDE_RODATA(const s32, "event/evtCommand", evtStrReAttach);
+
 const char evtMsgObjPathWaitNoObj[32] = "e OBJ_PATH_WAIT : obj==NULL\n";
 
 #endif
@@ -2677,9 +2873,49 @@ s32 evtCallGetIntPara13(void) {
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara14);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PATH_START);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:2462, near, same function 0.93 (words 32/32, calls 0.80, shape 1.00) */
+s32 evtCommand_PATH_STOP(void)
+{
+    s32 type;
+    void *obj;
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PATH_STOP);
+    type = 4;
+    do {
+        obj = evtSearchBasic(type, scrGetIntPara(0));
+        type++;
+    } while (type < 10 && obj == NULL);
+
+    if (obj == NULL) {
+        obj = fldGetMatter_From_ModelRangeID(scrGetIntPara(0));
+        if (obj == NULL) {
+            return 1;
+        }
+    }
+    evtPathStop(obj);
+    return 1;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:2441, near, same function 0.93 (words 32/32, calls 0.80, shape 1.00) */
+s32 evtCommand_PATH_START(void)
+{
+    s32 type;
+    void *obj;
+
+    type = 4;
+    do {
+        obj = evtSearchBasic(type, scrGetIntPara(0));
+        type++;
+    } while (type < 10 && obj == NULL);
+
+    if (obj == NULL) {
+        obj = fldGetMatter_From_ModelRangeID(scrGetIntPara(0));
+        if (obj == NULL) {
+            return 1;
+        }
+    }
+    evtPathStart(obj);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PATH_RATE);
 
@@ -2727,11 +2963,22 @@ s32 evtCommand_PATH_LOOP_OFF(void)
     return 1;
 }
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgPmvRunNoProc);
+extern const char evtMsgLightPathMoveError[], evtMsgLightPathMoveErrorDbg[];
 
+s32 evtCommand_LIGHT_PATH_MOVE(void)
+{
+    void *light;
+
+    light = evtSearchBasic(9, scrGetIntPara(0));
+    if (evtPathLinkAndMake(evtSearchBasic(15, scrGetIntPara(1)), light) != 0) {
+        return 1;
+    }
+#ifdef VERSION_RAIDOU1
+    printf(evtMsgLightPathMoveError);
 #endif
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_LIGHT_PATH_MOVE);
+    datDebugPrintf(evtMsgLightPathMoveErrorDbg);
+    return 1;
+}
 
 s32 evtCommand_LIGHT_PATH_WAIT(void)
 {
@@ -2749,14 +2996,71 @@ s32 evtCommand_LIGHT_PATH_WAIT(void)
         return 0;
     }
 }
-#ifdef VERSION_RAIDOU1
 
+#ifdef VERSION_RAIDOU1
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:2659, near, same function 1.00 (words 52/52, calls 1.00, shape 1.00) */
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgPmvRunNoProc);
+
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgLightPathMoveError);
+
+#endif
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgLightPathMoveErrorDbg);
+
+#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgTexBeNoProc);
+#else
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_TEX_BE);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_TEX_BE);
+#ifdef VERSION_RAIDOU1
+u32 evtCommand_TEX_BE(void) {
+    scrProcessWork_s *work;
+    s32 id;
+    struct sdfTexHandle_t *entry;
+    dds3ProcessID_t *task;
 
+    work = scrGetScriptHandle();
+    if (work == NULL) {
+        return 1;
+    }
+    if (work->ProcessID == NULL) {
+        printf(evtMsgTexBeNoProc);
+        return 1;
+    }
+    id = scrGetIntPara(0);
+    entry = evtGetResorceData(id, scrGetIntPara(1));
+    if (entry == 0) {
+        datDebugPrintf("TEX_BE not fount RID = %d\n", scrGetIntPara(1));
+        return 1;
+    }
+    task = evtStartPictureProcess(0x2AFC, entry);
+    dds3LinkProcess(work->ProcessID, task);
+    scrSetIntReturnValue(EE_ADDR_S(task));
+    return 1;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtCommand.c:2685, near, same function 1.00 (words 35/35, calls 1.00, shape 1.00) */
+u32 evtCommand_TEX_LOAD(void)
+{
+    void *pw;
+    void *process;
+
+    pw = scrGetScriptHandle();
+    if (pw == NULL) {
+        return 1;
+    }
+    if (*(s32 *)((u8 *)pw + 0xE4) == 0) {
+        printf(evtMsgTexLoadNoProc);
+        return 1;
+    }
+    process = evtStartPictureProcess2(0x2AFC, scrGetStrPara(0));
+    dds3LinkProcess(*(void **)((u8 *)pw + 0xE4), process);
+    scrSetIntReturnValue(EE_ADDR_S(process));
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_TEX_LOAD);
+#endif
 
 u32 evtCommand_TEX_ON(void)
 {
@@ -2875,37 +3179,51 @@ INCLUDE_ASM(const s32, "event/evtCommand", fldCommand_PAD_DISABLE);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_BGM_VOL_UP);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeSetBgmVolumePan);
-
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommandStartBgmWithFade);
-#else
 u32 evtOpcodeSetBgmVolumePan(void) {
+#ifdef VERSION_RAIDOU1
+    s32 eventno;
+    s32 seno;
+#else
     s32 eventId;
     EvtSoundVariation variation;
-
-    eventId = scrGetIntPara(0);
-    variation = scrGetIntPara(1);
-    evtPlaySe(eventId, variation);
-    return 1;
-}
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeRefreshTaskData);
-
-INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeInitializeEffectSoundChannel);
+    eventno = scrGetIntPara(0);
+    seno = scrGetIntPara(1);
+    evtPlaySe(eventno, seno);
 #else
-u32 evtCommandStartBgmWithFade(void) {
-    s32 eventId;
-    EvtSoundVariation variation;
-
     eventId = scrGetIntPara(0);
     variation = scrGetIntPara(1);
-    evtStartBgmBySoundIdAndFade(eventId, variation);
+    evtPlaySe(eventId, variation);
+#endif
     return 1;
 }
 
+u32 evtCommandStartBgmWithFade(void) {
+#ifdef VERSION_RAIDOU1
+    s32 eventno;
+    s32 seno;
+#else
+    s32 eventId;
+    EvtSoundVariation variation;
+#endif
+
+#ifdef VERSION_RAIDOU1
+    eventno = scrGetIntPara(0);
+    seno = scrGetIntPara(1);
+    evtStopSe(eventno, seno);
+#else
+    eventId = scrGetIntPara(0);
+    variation = scrGetIntPara(1);
+    evtStartBgmBySoundIdAndFade(eventId, variation);
+#endif
+    return 1;
+}
+
+#ifdef VERSION_RAIDOU1
+/* body: matched in raidou @ 1424963: src/shared/event/evtCommand.c:2127, match, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
+#endif
 u32 evtOpcodeRefreshTaskData(void) {
     s32 task;
     s32 value;
@@ -2916,11 +3234,13 @@ u32 evtOpcodeRefreshTaskData(void) {
     return 1;
 }
 
+#ifdef VERSION_RAIDOU1
+/* body: matched in raidou @ 1424963: src/shared/event/evtCommand.c:2137, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+#endif
 u32 evtOpcodeInitializeEffectSoundChannel(void) {
     Eve_DistortionBlurSetDefTex();
     return 1;
 }
-#endif
 
 u32 evtCallGetIntPara15(void)
 {

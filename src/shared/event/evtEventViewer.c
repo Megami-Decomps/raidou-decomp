@@ -45,6 +45,7 @@
 #include "sdfChip.h"
 #include "sdfDelayedResrc.h"
 #include "sdfMemory.h"
+#include "frFont.h"
 
 extern s16 winoff_x;
 extern sdfColor32_t evtCallGetFrameIDData;
@@ -299,7 +300,25 @@ void UnlinkFrameInfo(evtViewerObject_t *parent, evtFrameInfo_t *f) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", SortFrameInfo);
+void SortFrameInfo(evtViewerObject_t *parent) {
+    if (parent != 0) {
+        evtFrameInfo_t *anchorNode = parent->children;
+        while (anchorNode != 0) {
+            evtFrameInfo_t *resumeNode = anchorNode->next;
+            evtFrameInfo_t *candidateNode = resumeNode;
+            while (candidateNode != 0) {
+                if (candidateNode->frame < anchorNode->frame) {
+                    UnlinkFrameInfo(parent, candidateNode);
+                    LinkFrameInfo(parent, candidateNode);
+                    resumeNode = candidateNode->next;
+                    break;
+                }
+                candidateNode = candidateNode->next;
+            }
+            anchorNode = resumeNode;
+        }
+    }
+}
 
 evtFrameInfo_t *evtAddFrameInfo_evtViewer(evtViewerObject_t *obj, s32 frame, evtViewerInfo_t *pInfo) {
     pmdTmxData_t display;
@@ -513,7 +532,21 @@ evtFrameInfo_t *AddFrameInfo2(evtViewerObject_s *group, s32 frame, evtViewerInfo
     return evtAddFrameInfo(group, frame);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetSelectFrameInfo);
+evtFrameInfo_t *evtGetSelectFrameInfo(evtViewerInfo_t *viewer) {
+    evtViewerObject_t *target;
+    evtFrameInfo_t *node;
+    s32 i;
+
+    target = viewer->framelist_target;
+    if (target == NULL) {
+        return NULL;
+    }
+    node = target->children;
+    for (i = 0; i < viewer->frameCursor + viewer->frameFirst && node != NULL; i++) {
+        node = node->next;
+    }
+    return node;
+}
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:390 */
 void DelFrameInfo(evtViewerObject_t *parent, evtFrameInfo_t *f)
@@ -528,7 +561,37 @@ void DelFrameInfo(evtViewerObject_t *parent, evtFrameInfo_t *f)
     sdfChipFreeDirect(f);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtDelProcess);
+void evtDelProcess(evtViewerInfo_t *viewer) {
+    evtViewerObject_t *group = viewer->framelist_target;
+    evtFrameInfo_t *node = evtGetSelectFrameInfo(viewer);
+
+    switch (group->type) {
+    case 3:
+    case 20:
+    case 21:
+    case 26:
+        if (node->param.sb[0] >= 0) {
+            DelEffectTable_evtEventViewer(node->param.sb[0], viewer);
+        }
+        break;
+    case 18:
+        DelBED(node);
+        break;
+    case 33:
+        scrCallPictureSetEndProcess((s16)node->param.sh[1]);
+        break;
+    }
+    DelFrameInfo(group, node);
+    if (viewer->frameCursor == 0) {
+        if (viewer->frameFirst > 0) {
+            viewer->frameFirst--;
+        }
+    } else if (viewer->frameFirst > 0) {
+        viewer->frameFirst--;
+    } else {
+        viewer->frameCursor--;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallDelEffectTableEvtEventViewer);
 
@@ -607,7 +670,19 @@ evtViewerObject_t *evtAddViewerObject(s32 type, evtViewerInfo_t *pInfo) {
     return track;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetViewerObjectTypeCount);
+s32 evtGetViewerObjectTypeCount(s32 type, evtViewerInfo_t *pInfo)
+{
+    evtViewerObject_t *obj = pInfo->firstobjinfo;
+    s32 count = 0;
+
+    while (obj != NULL) {
+        if (obj->type == type) {
+            count++;
+        }
+        obj = obj->next;
+    }
+    return count;
+}
 
 s32 evtEventViewerCountEntries(evtViewerInfo_t *viewer) {
     evtViewerObject_t *entry;
@@ -662,9 +737,25 @@ void evtCallDelFrameInfo(evtViewerObject_t *obj, evtViewerInfo_t *pInfo) {
     sdfChipFreeDirect(obj);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetFirstFrame);
+void evtSetFirstFrame(evtViewerInfo_t *pInfo)
+{
+    s32 nowframe = pInfo->nowframe;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetLastFrame);
+    pInfo->firstframe = nowframe;
+    if (pInfo->lastframe.word < nowframe) {
+        pInfo->lastframe.word = nowframe;
+    }
+}
+
+void evtSetLastFrame(evtViewerInfo_t *pInfo)
+{
+    s32 nowframe = pInfo->nowframe;
+
+    pInfo->lastframe.word = nowframe;
+    if (nowframe < pInfo->firstframe) {
+        pInfo->firstframe = nowframe;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallMemset7);
 
@@ -727,7 +818,13 @@ s32 evtAddNameTable(char *name, evtViewerInfo_t *pInfo) {
     return newIndex;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", SearchBasicFromNameIndex);
+dds3Basic_t *SearchBasicFromNameIndex(s32 nameindex, evtViewerInfo_t *pInfo)
+{
+    if (nameindex < 0) {
+        return NULL;
+    }
+    return dds3SceneBasicSearchNameAndType(dds3GetActiveScene(), 7, pInfo->nametable[nameindex]);
+}
 
 void LinkEffectBasic(dds3Basic_t *eff, s32 nameindex, s32 posindex, s32 baseframe, evtViewerInfo_t *pInfo) {
     dds3Basic_t *owner;
@@ -845,7 +942,12 @@ s32 AddEffectTable2(s32 nowframe, evtViewerObject_t *object, evtFrameInfo_t *fra
     return index;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", DelEffectTable_evtEventViewer);
+void DelEffectTable_evtEventViewer(s32 index, evtViewerInfo_t *pInfo) {
+    if (pInfo->effectBasic[index] != NULL) {
+        dds3DeleteSceneBasicData(pInfo->effectBasic[index]);
+        pInfo->effectBasic[index] = NULL;
+    }
+}
 
 void *AddBED(void *data, s32 cutno, s32 nameindex, s32 posindex, s32 baseframe, evtViewerInfo_t *pInfo) {
     sdfVector4_t position;
@@ -1569,7 +1671,7 @@ s32 Validate1stAt3Bgm(evtViewerInfo_t *pInfo) {
 INCLUDE_ASM(const s32, "event/evtEventViewer", Validate1stAt3Bgm);
 #endif
 
-/* NON_MATCHING: 34 of 72 words match.  */
+/* NON_MATCHING: 28 of 70 words match.  */
 #ifdef NON_MATCHING
 void OutFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
     s32 fade;
@@ -2744,7 +2846,12 @@ void evtMessageDelete(evtViewerInfo_t *pInfo, s32 mode) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", rcvIsHealPhase);
+s32 rcvIsHealPhase(struct evtPolygonMovieWork_t *wdata) {
+    if (wdata->eventNo == 690 && wdata->cutNo == 1) {
+        return 1;
+    }
+    return 0;
+}
 
 void CalcNextMesSet(evtViewerInfo_t *pInfo) {
     if (evtViewerHasUpdateFlag(pInfo)) {
@@ -2983,7 +3090,18 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateRenderTex);
 void evtProcess3Sub(evtViewerInfo_t *viewer) {
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallDrawFont);
+void evtCallDrawFont(evtViewerInfo_t *pInfo) {
+    s32 time;
+
+    if (pInfo->nowframe < pInfo->lastframe.word - 3 && pInfo->dontskip_messagetime > 0) {
+        frDrawFont(pInfo->glyph);
+        time = pInfo->dontskip_messagetime + 1;
+        pInfo->dontskip_messagetime = time;
+        if (time >= 30) {
+            pInfo->dontskip_messagetime = 0;
+        }
+    }
+}
 
 void evtProcess3Sub2(evtViewerInfo_t *viewer) {
 }
@@ -3118,11 +3236,87 @@ void evtViewerDispatchFlagMode(evtViewerInfo_t *viewer) {
     evtEventViewerApplyPlaybackMode(EVT_VIEWER_PLAYBACK_RUNNING, viewer->nowframe, viewer);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtLeaf6);
+/* body: matched in raidou @ 1424963: src/shared/event/evtEventViewer.c:2458, near, same function 0.99 (words 32/32, calls 1.00, shape 0.97) */
+evtFrameInfo_t *evtLeaf6(evtViewerInfo_t *viewer) {
+    evtFrameInfo_t *result = NULL;
+    s32 best = 99999;
+    evtViewerObject_t *node = viewer->firstobjinfo;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtLeaf7);
+    while (node != NULL) {
+        if (node->type == 2) {
+            evtFrameInfo_t *glyph = node->children;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", PushMenu);
+            if (glyph != NULL) {
+                do {
+                    s32 frame = glyph->frame;
+
+                    if (frame > viewer->nowframe) {
+                        s32 distance = frame - viewer->nowframe;
+
+                        if (distance < best) {
+                            best = distance;
+                            result = glyph;
+                        }
+                    }
+                    glyph = glyph->next;
+                } while (glyph != NULL);
+            }
+        }
+        node = node->next;
+    }
+    return result;
+}
+
+/* body: matched in raidou @ 1424963: src/shared/event/evtEventViewer.c:2458, near, same function 0.99 (words 32/32, calls 1.00, shape 0.97) */
+evtFrameInfo_t *evtLeaf7(evtViewerInfo_t *viewer) {
+    evtFrameInfo_t *result = NULL;
+    s32 best = 99999;
+    evtViewerObject_t *node = viewer->firstobjinfo;
+
+    while (node != NULL) {
+        if (node->type == 2) {
+            evtFrameInfo_t *glyph = node->children;
+
+            if (glyph != NULL) {
+                do {
+                    s32 frame = glyph->frame;
+
+                    if (frame < viewer->nowframe) {
+                        s32 distance = viewer->nowframe - frame;
+
+                        if (distance < best) {
+                            best = distance;
+                            result = glyph;
+                        }
+                    }
+                    glyph = glyph->next;
+                } while (glyph != NULL);
+            }
+        }
+        node = node->next;
+    }
+    return result;
+}
+
+void PushMenu(s32 no, s32 x, s32 y, evtViewerInfo_t *viewer) {
+    s32 depth = viewer->sp + 1;
+
+    viewer->nowmenu = no;
+    viewer->sp = depth;
+    viewer->menuStack[depth].mode = no;
+    viewer->menuStack[depth].unk02 = x;
+    viewer->menuStack[depth].unk04 = y;
+    if (no > 0) {
+        if (no >= 3) {
+            if (no == 3) {
+                viewer->filename_x = 0;
+                viewer->filename_y = 0;
+                viewer->nameStorage[0] = 0;
+                viewer->nameStorage[0xC] = 0;
+            }
+        }
+    }
+}
 
 u16 evtViewerPopHistory(evtViewerInfo_t *viewer) {
     u16 historyId;
@@ -3237,6 +3431,76 @@ u32 evtViewerReturnZero(void) {
     return 0;
 }
 
+/* NON_MATCHING: 26 of 121 words match.  */
+#ifdef NON_MATCHING
+extern const char evtStrFrameSetOk[], evtStrStartFrameSelect[], evtStrSetBistamode[], evtStrSetSkipmode[];
+extern char *evtFRAMESETOKData[], *evtFRAMESETOKData2[], *evtFRAMESETOKData3[], *evtFRAMESETOKData4[];
+extern s32 evtData16;
+
+s32 evtFRAMESETOK(s32 arg0, s32 arg1, evtViewerInfo_t *viewer)
+{
+    switch (viewer->fileMode) {
+    case 0:
+    case 1:
+    case 2:
+        viewer->filename_x = 0;
+        viewer->filename_y = 0;
+        PushMenu(9, 228, 60, viewer);
+        break;
+    case 5:
+        viewer->max = 20000;
+        viewer->min = viewer->lastframe.word;
+        viewer->value = viewer->totalframe - 1;
+        PushMenu(7, 180, 120, viewer);
+        break;
+    case 3:
+    case 4:
+        viewer->select_header = (char *)evtStrFrameSetOk;
+        viewer->menuItemCount = 2;
+        viewer->itemNames = evtFRAMESETOKData;
+        viewer->select_y = 0;
+        PushMenu(2, 228, 60, viewer);
+        break;
+    case 6:
+        viewer->unk2540 = 1;
+        viewer->flags |= 1;
+        evtViewerDispatchFlagMode(viewer);
+        viewer->nowmenu = 0;
+        viewer->menusw = 0;
+        viewer->sp = 0;
+        evtData16 = 0;
+        return 1;
+    case 7:
+        viewer->select_y = evtMainMenuItemSub(viewer);
+        viewer->select_header = (char *)evtStrStartFrameSelect;
+        viewer->itemNames = evtFRAMESETOKData4;
+        viewer->menuItemCount = 2;
+        PushMenu(2, 228, 60, viewer);
+        break;
+    case 8:
+        viewer->min = -5000;
+        viewer->max = 5000;
+        viewer->value = 0;
+        PushMenu(7, 180, 120, viewer);
+        break;
+    case 9:
+        viewer->select_y = evtMainMenuItemSub(viewer);
+        viewer->select_header = (char *)evtStrSetBistamode;
+        viewer->itemNames = evtFRAMESETOKData2;
+        viewer->menuItemCount = 2;
+        PushMenu(2, 228, 60, viewer);
+        break;
+    case 10:
+        viewer->select_y = evtEventSkipStartSub(viewer);
+        viewer->select_header = (char *)evtStrSetSkipmode;
+        viewer->itemNames = evtFRAMESETOKData3;
+        viewer->menuItemCount = 3;
+        PushMenu(2, 228, 60, viewer);
+        break;
+    }
+    return 0;
+}
+#else
 INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrWhiteOut);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrBlackOut);
@@ -3246,6 +3510,7 @@ INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrCurrentFrame);
 INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrFirstFrame);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtFRAMESETOK);
+#endif
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallSetFirstFrame);
 
@@ -3302,7 +3567,139 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtDELETEFRAMEOK);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", EnterFrameChange);
 
+/* NON_MATCHING: 54 of 167 words match.  */
+#ifdef NON_MATCHING
+s32 evtCallGetPIDfromUID(s32 unused, s32 command, evtViewerInfo_t *viewer) {
+    s32 value = viewer->value;
+    f32 fvalue = viewer->fvalue;
+    evtFrameInfo_t *key;
+
+    if (viewer->menusw == 0) {
+        switch (viewer->fileMode) {
+        case 5:
+            viewer->totalframe = value + 1;
+            evtViewerPopHistory(viewer);
+            return 0;
+        case 8:
+            evtCallMessageDelete(viewer, value, viewer->nowframe);
+            mnuAdjustTimelineDurations(viewer, viewer->nowframe, value);
+            evtViewerPopHistory(viewer);
+            return 0;
+        case 7:
+            viewer->unk2540 = value;
+            viewer->flags |= 1;
+            viewer->nowframe = viewer->unk2544;
+            evtViewerDispatchFlagMode(viewer);
+            viewer->nowmenu = 0;
+            viewer->sp = 0;
+            viewer->menusw = 0;
+            evtData16 = 0;
+            return 1;
+        }
+    } else if (viewer->menusw == 1) {
+        if (command == 0xF) {
+            viewer->framelist_target->metadata.value = value;
+            evtViewerPopHistory(viewer);
+            return 0;
+        }
+    }
+    key = evtEventViewerGetPendingNode(viewer);
+    if (key == NULL) {
+        return 0;
+    }
+    switch (evtViewerFrameColumnCategories[viewer->framelist_x + viewer->framelist_target->type * 10]) {
+    case 1:
+        key->index = value;
+        break;
+    case 2:
+        if (viewer->framelist_target->type == 7) {
+            key->p08.sh[0] = value;
+        }
+        break;
+    case 3:
+        switch (viewer->framelist_target->type) {
+        case 8:
+            key->p08.sh[0] = value;
+            break;
+        case 12:
+            key->p08.sh[1] = value;
+            break;
+        case 31:
+            key->p08.sh[1] = value;
+            break;
+        }
+        break;
+    case 4:
+        key->p08.sh[1] = value;
+        break;
+    case 7:
+        key->p08.sh[1] = value;
+        break;
+    case 6:
+        key->p08.f = fvalue * 0.017453292f;
+        break;
+    case 8:
+        switch (viewer->framelist_target->type) {
+        case 3:
+            key->p0C.sb[1] = value;
+            break;
+        case 26:
+            key->p0C.sb[1] = value;
+            break;
+        case 4:
+            key->p08.sh[0] = value;
+            break;
+        case 5:
+            key->p08.sh[0] = value;
+            break;
+        case 29:
+            key->p08.sh[0] = value;
+            break;
+        case 30:
+            key->p08.sh[0] = value;
+            break;
+        case 12:
+            key->p0C.i = value;
+            break;
+        case 18:
+            key->p0C.sb[0] = value;
+            break;
+        case 19:
+            key->p08.sh[1] = value;
+            break;
+        case 28:
+            key->p08.sh[1] = value;
+            break;
+        case 33:
+        case 36:
+            scrCallPictureSetEndProcess(key->p08.sh[1]);
+            key->p08.sh[1] = value;
+            break;
+        }
+        break;
+    case 22:
+        switch (viewer->framelist_target->type) {
+        case 1:
+            key->p18.sh[0] = value;
+            break;
+        case 2:
+            key->p0C.sh[1] = value;
+            break;
+        }
+        break;
+    case 19:
+        if (key->p08.sb[0] == 6) {
+            key->p0C.sb[0] = value;
+        }
+        break;
+    }
+    evtRunFrame(viewer->nowframe, viewer);
+    evtViewerPopHistory(viewer);
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID);
+#endif
 
 /* Store the command value as a halfword and clear its extra halfword when tagged. */
 s32 evtViewCmdSetValue(s32 unused0, s32 unused1, evtViewerInfo_t *viewer) {
@@ -3366,22 +3763,121 @@ u32 evtViewCmdNoOp(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID2);
+u32 evtCallGetPIDfromUID2(u32 unused0, u32 unused1, evtViewerInfo_t *viewer) {
+    evtFrameInfo_t *entry = evtEventViewerGetPendingNode(viewer);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerCommitGroupSelection);
+    if (entry != NULL) {
+        entry->p0C.i = viewer->value;
+        entry->p1C.i = viewer->value2;
+        evtApplyViewerTimelineFrame(viewer->nowframe, viewer);
+        evtViewerPopHistory(viewer);
+        return 0;
+    }
+    return 0;
+}
+
+s32 evtEventViewerCommitGroupSelection(s32 unused0, s32 unused1, evtViewerInfo_t *viewer) {
+    evtViewerObject_t *obj;
+    s32 selection;
+    s32 target;
+    s32 count;
+
+    selection = viewer->work_base + viewer->work_y;
+    if (selection == 0) {
+        viewer->framelist_target->metadata.option = 0;
+    } else if (selection == 1) {
+        viewer->framelist_target->metadata.option = 1;
+    } else if (selection == 2) {
+        viewer->framelist_target->metadata.option = 2;
+    } else {
+        viewer->framelist_target->metadata.option = 3;
+        target = viewer->work_base + viewer->work_y - 3;
+        count = 0;
+        for (obj = viewer->firstobjinfo; obj != NULL; obj = obj->next) {
+            if (obj->type == 1) {
+                if (count == target) {
+                    viewer->framelist_target->metadata.extra2 = evtAddNameTable(obj->info->name, viewer);
+                    break;
+                }
+                count++;
+            }
+        }
+    }
+    evtApplyViewerTimelineFrame(viewer->nowframe, viewer);
+    evtViewerPopHistory(viewer);
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID3);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID4);
+s32 evtCallGetPIDfromUID4(s32 unused0, s32 unused1, evtViewerInfo_t *viewer) {
+    evtFrameInfo_t *entry = evtEventViewerGetPendingNode(viewer);
+
+    if (entry == NULL) {
+        return 0;
+    }
+    if (viewer->framelist_target == NULL) {
+        return 0;
+    }
+    entry->p08.f = viewer->unk2428;
+    entry->p0C.f = viewer->unk242C;
+    evtApplyViewerTimelineFrame(viewer->nowframe, viewer);
+    evtViewerPopHistory(viewer);
+    return 0;
+}
 
 u32 evtViewCmdCancelSelection(u32 unused0, u32 unused1, evtViewerInfo_t *viewer) {
     evtViewerPopHistory(viewer);
     return 0;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdResolveSlot);
+/* NON_MATCHING: 52 of 53 words match.  */
+#ifdef NON_MATCHING
+s32 evtViewCmdResolveSlot(s32 operation, void *argument, evtViewerInfo_t *viewer) {
+    s32 count = 0;
+    evtFrameInfo_t *key;
+    evtViewerObject_t *obj;
+    s32 selection;
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID5);
+    key = evtEventViewerGetPendingNode(viewer);
+    selection = viewer->work_base + viewer->work_y;
+    if (selection == 0) {
+        key->p10.h[0] = 0;
+    } else if (selection == 1) {
+        key->p10.h[0] = 1;
+    } else {
+        s32 ordinal = selection - 2;
+
+        obj = viewer->firstobjinfo;
+        while (obj != NULL) {
+            if (obj->type == 0x18) {
+                if (count == ordinal) {
+                    key->p10.h[0] = (u16)obj->entryHeader + 2;
+                    break;
+                }
+                count++;
+            }
+            obj = obj->next;
+        }
+    }
+    evtApplyViewerTimelineFrame(viewer->nowframe, viewer);
+    evtViewerPopHistory(viewer);
+    return 0;
+}
+#else
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdResolveSlot);
+#endif
+
+s32 evtCallGetPIDfromUID5(s32 unused0, s32 unused1, evtViewerInfo_t *viewer) {
+    evtFrameInfo_t *entry = evtEventViewerGetPendingNode(viewer);
+
+    entry->p0C.b[0] = viewer->shadowMode;
+    entry->p0C.b[1] = viewer->shadowAlpha;
+    entry->p14.f = viewer->shadowY;
+    evtApplyViewerTimelineFrame(viewer->nowframe, viewer);
+    evtViewerPopHistory(viewer);
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallSprintf);
 
@@ -3399,7 +3895,81 @@ u32 evtViewerClearPendingNodeAndPushHistory(u32 unused0, u32 unused1, evtViewerI
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrE303);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", EnterData);
+s32 EnterData(s32 unused0, s32 unused1, evtViewerInfo_t *viewer) {
+    evtFrameInfo_t *entry = evtEventViewerGetPendingNode(viewer);
+    pmdSceneLightTable_t *light;
+    pmdSceneFogTable_t *fog;
+    s32 i;
+
+    switch (viewer->framelist_target->type) {
+    case 10:
+        switch (viewer->framelist_type) {
+        case 13:
+            light = entry->payload;
+            for (i = 0; i < 3; i++) {
+                f32 *color = light->color[i];
+                sdf3DLight_t *src = dds3LightParam.parallel[i];
+                SDF_VU0_COPYVECTOR(color, &src->color);
+                SDF_VU0_COPYVECTOR(light->direction[i], &src->v);
+            }
+            SDF_VU0_COPYVECTOR(light->ambient, &dds3LightParam.ambient);
+            break;
+        case 14:
+            entry->p08.f = sdfFaceDivSoften;
+            entry->p0C.f = sdfFaceDivBias;
+            break;
+        }
+        break;
+    case 11:
+        fog = entry->payload;
+        fog->fog.vec[0] = dds3FogState.fogMin;
+        fog->fog.color = dds3FogState.color;
+        fog->fog.vec[1] = dds3FogState.fogMax;
+        fog->fog.vec[2] = dds3FogState.fogNear;
+        fog->fog.vec[3] = dds3FogState.fogFar;
+        break;
+    case 13:
+        memcpy(entry->payload, &BlurEditorGetParams()->source, sizeof(dds3Effect_Blur_t));
+        break;
+    case 14:
+        memcpy(entry->payload, mblurGetParam(), sizeof(dds3Effect_PartialMultiBlurParam_t));
+        break;
+    case 15:
+        memcpy(entry->payload, dblurGetParam(), sizeof(dds3Effect_DistortionBlurParam_t));
+        break;
+    case 23:
+        memcpy(entry->payload, rblurGetParam(), sizeof(dds3Effect_RippleBlurParam_t));
+        break;
+    case 27:
+        memcpy(entry->payload, effGetLoadDescD(), sizeof(dds3Effect_Blur_t));
+        break;
+    case 16:
+        memcpy(entry->payload, dblurGetParam2(), sizeof(dds3Effect_Filter_t));
+        break;
+    case 17:
+        memcpy(entry->payload, mfilterGetParam(), sizeof(dds3Effect_PartialMultiFilterParam_t));
+        break;
+    case 12:
+    case 18:
+    case 19:
+    case 20:
+    case 21:
+    case 22:
+    case 24:
+    case 25:
+    case 26:
+    case 28:
+    case 29:
+    case 30:
+    case 31:
+    case 32:
+    case 33:
+        break;
+    }
+    evtRunFrame(viewer->nowframe, viewer);
+    evtViewerPopHistory(viewer);
+    return 0;
+}
 
 /* Hand control back to the frame update whether or not the task still owns a viewer. */
 dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task) {
@@ -3748,7 +4318,20 @@ void evtEventViewerInitCampFontResource(evtViewerInfo_t *viewer) {
     mnuCampInitFontResource(viewer);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", mapInit);
+void mapInit(void) {
+    sdfMemHandle_t *block;
+    evtViewerInfo_t *pInfo;
+    dds3ProcessID_t *id;
+
+    dds3BackColor = 0x80000000;
+    block = sdfMemAllocDirect(0x2568);
+    pInfo = sdfMemLock(block);
+    memset(pInfo, 0, 0x2568);
+    pInfo->block = block;
+    id = dds3StartProcess(evtViewerTaskName, 0x3EB, 1, 1, evtCallGetProcessData10, evtEventViewerDestroyActive, pInfo);
+    dds3LinkProcess(id, evtInitSky());
+    evtEventViewerInitCampFontResource(pInfo);
+}
 
 void evtEventViewerDestroyTask(void) {
     dds3KillProcessName(evtViewerTaskName, 1);
@@ -3774,7 +4357,13 @@ void evtChgSeq(dds3ProcessID_t *id, s32 seqno) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtIgnoreFade);
+void evtIgnoreFade(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (pInfo != NULL) {
+        pInfo->flags |= 0x200;
+    }
+}
 
 void evtNoSkipMes(dds3ProcessID_t *id) {
     evtViewerInfo_t *pInfo = dds3GetProcessData(id);
@@ -3794,7 +4383,13 @@ s32 evtCheckLastSkipStat(void) {
     return last_skip_stat;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtSkipStart);
+/* body: matched in raidou @ 1424963: src/shared/event/evtEventViewer.c:3721, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+void evtSkipStart(dds3ProcessID_t *task) {
+    evtViewerInfo_t *viewer;
+
+    viewer = (evtViewerInfo_t *)dds3GetProcessData(task);
+    EventSkipStart(viewer);
+}
 
 s32 evtSetFrame(dds3ProcessID_t *id, s32 Frame) {
     evtViewerInfo_t *pInfo = dds3GetProcessData(id);

@@ -57,6 +57,7 @@ extern sdf3DScreenParam_t DrawEnv;
 extern sdf3DLight_t *dds3Data5[4];
 extern sdfVector4_t dds3Data6;
 extern sdfVector4_t dds3LightObjectAmbient;
+extern sdf3DFogParam_t dds3FogState;
 extern sdfMatrix4_t aProjMatrix;
 extern sdfMatrix4_t sdfViewMatrix;
 extern sdfMatrix4_t sdfProjectionMatrix;

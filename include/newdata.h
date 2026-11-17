@@ -383,35 +383,36 @@ SIZE_CHECK(nbUnitVisualMotions_size_must_be_0x310, nbUnitVisualMotions_t, 0x310)
 
 
 
-/* Model-visual records have a 0x310-byte native stride. The upstream packet
- * helpers use the scalar prefix; the action helpers index 0x1C-byte
- * visual-part records starting at +0x32, up to index 11. */
-typedef struct
+/* One 0x14-byte motion entry of a unit visual row (HD datUnitMotion_t). */
+typedef struct datUnitMotion_t
 {
-    u8 unk00;
-    s8 unk01;
-    u8 unk02[0x16];
+    s16 movetype;
     u16 actframe;
-    u8 unk1A[2];
-} datUnitVisualPart_t;
+    struct datUnitMotEnd_t *end;
+    f32 motionsp;
+    f32 atarisize;
+    struct datUnitMotHokan_t *hokan;
+} datUnitMotion_t;
 
+/* Raidou's 0x270-byte unit visual row (HD datUnitVisual_t with its motions inline). */
 typedef struct datUnitVisual_t
 {
     sdfVector4_t center;
+    f32 formscale;
+    f32 addz;
     f32 formsize;
     f32 formheight;
-    f32 formscale;
     f32 oneshotr;
     f32 allshotr;
-    u16 modelsize;
     u16 shadowsize;
     u16 badframe;
-    u16 autowait;
-    void *motion;
-    u16 unk30;
-    datUnitVisualPart_t part[12];
-    u8 unk182[0x18E];
+    datUnitMotion_t motion[29];
 } datUnitVisual_t;
+
+SIZE_CHECK(datUnitVisual_size_must_be_0x270, datUnitVisual_t, 0x270);
+
+/* Unit visual table read by evtCommandEFFBEDSTARTEVOSub and evtCallMemset9. */
+extern datUnitVisual_t *evtData12;
 
 typedef struct { u16 ritu, skill; u32 target; } datDevilAITbl_t;
 

@@ -194,9 +194,10 @@ struct evtViewerInfo_t {
     s32 timedActive;
     s32 timedStart;
     EvtTimedActionEnd timedEnd;
-    u8 pad2420[8];
-    u8 *pendingFrameBuffer; /* Locked byte view used as the descriptor frame image. */
-    sdfMemHandle_t *pendingFrameBufferAllocation; /* Owner released after queued draws finish. */
+    s32 unk2420; /* word pair cleared by evtDELETEFRAMEOK, read by evtCallMenuDisp6 */
+    s32 unk2424;
+    f32 unk2428; /* float pair written to the pending frame by evtCallGetPIDfromUID4 */
+    f32 unk242C;
     s32 menuState;
     s32 shopFlag;
     u32 auxResource;
@@ -222,7 +223,7 @@ struct evtViewerInfo_t {
     s32 nowMovieStat; /* 1 while a movie plays */
     s32 MovieStartFrame;
     s32 MovieEndFrame;
-    u8 shadowMode;
+    u8 shadowMode; /* shadow config row being edited (evtViewerDrawShadowConfigRow) */
     u8 shadowAlpha;
     u8 pad24A2[2];
     f32 shadowY;
@@ -240,7 +241,9 @@ struct evtViewerInfo_t {
     s32 fadeAlpha; /* Initial background alpha, interpolated to 128 over 25 updates. */
     s32 optionFrameBase;
     s32 voiceFrame; /* nowframe when a voice conflict deferred the message */
-    u8 pad253C[0xC];
+    u8 pad253C[4];
+    s32 unk2540; /* set to 1 by evtFRAMESETOK's play-from-frame item */
+    s32 unk2544; /* frame restored into nowframe by evtCallGetPIDfromUID's play item */
     s32 curveComponent; /* 0/1: which of the two bezier control points is edited */
     s32 playIndex;
     s32 last_meswin_mode;
@@ -248,6 +251,7 @@ struct evtViewerInfo_t {
     u32 tmxTexID; /* UID of the TMX texture applied to model 100, 0 none */
     sdfTexHandle_t *blankTex; /* 32x16 texture from evtCallMemAllocDirect */
     s32 real_movie_last_frame;
+    s32 value2;
 };
 
 struct pmdProcessWork_t;

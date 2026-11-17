@@ -2764,7 +2764,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001A7A20	0x001BD768	evtInitCustomSceneLight	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
 0x001A7AC8	0x001BD810	evtSetCustomSceneLightData	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
 0x001A7BB0	0x001BD8F8	evtSetCustomSceneLightData_SoftenAndBias	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
-0x001A7BE0	0x001BD928	evtLeaf4	no	no	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	run-order-size
+0x001A7BE0	0x001BD928	evtGetCustomSLightData	no	no	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	run-order-size
 0x001A7CF0	0x001BDA38	evtMakeCustomSLightPacket	no	no	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-masked-hash
 0x001A7EF0	0x001BDC38	evtGetCustomSLight_SoftenAndBias	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
 0x001A7F80	0x001BDCC8	evtSearchBasic	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
@@ -2773,7 +2773,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001A8040	0x001BDD88	evtCommand_MODEL_DSP	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
 0x001A81F0	0x001BDF70	evtCommand_MODEL_BE	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
 0x001A82E8	0x001BE068	evtFldProcSequence	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
-0x001A8490	0x001BE210	evtCommand_MODEL_SHADOW_OFF	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
+0x001A8490	0x001BE210	evtCommand_MODEL_SHADOW_ON	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
 0x001A8500	0x001BE280	evtCommand_MODEL_SHADOW_ON2	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
 0x001A8570	0x001BE2F0	evtCallGetActiveScene4	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
 0x001A85E0	0x001BE360	evtOpQueueWorldObjectPendingValue	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
@@ -2877,8 +2877,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001AC9A0	0x001C27C8	evtCallGetIntPara12	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
 0x001AC9F0	0x001C2818	evtCallGetIntPara13	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
 0x001ACA50	0x001C2878	evtCallGetIntPara14	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
-0x001ACAB8	0x001C28E0	evtCommand_PATH_START	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
-0x001ACB38	0x001C2960	evtCommand_PATH_STOP	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
+0x001ACAB8	0x001C28E0	evtCommand_PATH_STOP	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
+0x001ACB38	0x001C2960	evtCommand_PATH_START	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	masked-hash-in-gap
 0x001ACBB8	0x001C29E0	evtCommand_PATH_RATE	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
 0x001ACC50	0x001C2A78	evtCommand_PATH_DIR	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
 0x001ACCE8	0x001C2B10	evtCommand_PATH_LOOP_ON	no	yes	asm/raidou1/event/evtCommand.s	asm/raidou2/event/evtCommand.s	unique-reloc-hash
@@ -3121,7 +3121,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001BB430	0x001D1538	evtPictureLoadCheckProcess	no	yes	asm/raidou1/event/evtPicture.s	asm/raidou2/event/evtPicture.s	unique-reloc-hash
 0x001BB458	0x001D1560	evtCallGetProcessData17	no	yes	asm/raidou1/event/evtPicture.s	asm/raidou2/event/evtPicture.s	unique-reloc-hash
 0x001BB4C8	0x001D15D0	evtCallGetProcessData18	no	yes	asm/raidou1/event/evtPicture.s	asm/raidou2/event/evtPicture.s	unique-reloc-hash
-0x001BB4F8	0x001D1600	evtPictureSetSize	no	yes	asm/raidou1/event/evtPicture.s	asm/raidou2/event/evtPicture.s	unique-reloc-hash
+0x001BB4F8	0x001D1600	evtPictureSetDrawCol	no	yes	asm/raidou1/event/evtPicture.s	asm/raidou2/event/evtPicture.s	unique-reloc-hash
 0x001BB558	0x001D1660	evtPictureSetEndProcess	no	yes	asm/raidou1/event/evtPicture.s	asm/raidou2/event/evtPicture.s	unique-reloc-hash
 0x001BB588	0x001D1690	StartProcess_evtPicture	no	yes	asm/raidou1/event/evtPicture.s	asm/raidou2/event/evtPicture.s	unique-reloc-hash
 0x001BB5F8	0x001D1700	evtPictureStartProcess4	no	yes	asm/raidou1/event/evtPicture.s	asm/raidou2/event/evtPicture.s	unique-reloc-hash
@@ -3965,13 +3965,13 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001E6720	0x001FDA18	dblurGetParam	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
 0x001E6730	0x001FDA28	dblurSetParam	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
 0x001E6798	0x001FDA90	effCallMemcpy2	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
-0x001E6850	0x001FDB48	dblurGetParam2	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
+0x001E6850	0x001FDB48	effGetLoadDescD	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
 0x001E6860	0x001FDB58	effLeaf29	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
 0x001E68C0	0x001FDBB8	mfilterRun	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
-0x001E6978	0x001FDC70	mfilterGetParam	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
+0x001E6978	0x001FDC70	dblurGetParam2	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
 0x001E6988	0x001FDC80	effEventSetSolidRectangleParameters	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
 0x001E69C8	0x001FDCC0	effCallMemcpy3	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
-0x001E6A80	0x001FDD78	effEnterDataSub	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
+0x001E6A80	0x001FDD78	mfilterGetParam	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
 0x001E6A90	0x001FDD88	mfilterSetParam	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	unique-reloc-hash
 0x001E6AE8	0x001FDDE0	rblurProcess	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap
 0x001E6BA0	0x001FDE98	rblurGetParam	no	yes	asm/raidou1/effect/effEvent.s	asm/raidou2/effect/effEvent.s	masked-hash-in-gap

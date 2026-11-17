@@ -635,7 +635,12 @@ void evtRunUnitMode(dds3Basic_t *unit, PMD_UNIT mode, u32 addflag, u32 downflag)
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtSetFlag);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtResetFlag);
+void evtResetFlag(dds3ProcessID_t *id, PMD_FLAG flag)
+{
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    pInfo->workdata->loadFlags &= ~flag;
+}
 
 s32 evtStopMover(dds3Basic_t *mover, s32 sw, s32 baseframe, s32 nowframe) {
     dds3PathBasicControl_t *clip;
@@ -980,7 +985,24 @@ void evtFreeWorkData2and3(evtPolygonMovieWork_t *wdata) {
     sdfMemFreeDirect(wdata->mem);
 }
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtAllocMovieWork);
+sdfMemHandle_t *evtAllocMovieWork(pmdHeader_t **out, s32 *size)
+{
+    s32 header[16] = {0, 0, 0x32444D50, 0, 1, 0xB, 0, 0, 0, 0x10, 1, 0x30, 0, 999, 1000, 0};
+    s32 headerBytes;
+    sdfMemHandle_t *handle;
+    void *block;
+
+    headerBytes = 0x40;
+    header[1] = headerBytes;
+    if (size != NULL) {
+        *size = headerBytes;
+    }
+    handle = sdfMemAllocDirect(headerBytes);
+    block = EE_ADDR_AS(void *, sdfMemLock(handle));
+    memcpy(block, header, headerBytes);
+    *out = block;
+    return handle;
+}
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCallMemset8);
 
@@ -991,8 +1013,6 @@ void SetPMFileName(s32 eventno, s32 cutno, char *pm1, char *pm2, char *pm3) {
 }
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtSetDofTblFileName);
-
-INCLUDE_RODATA(const s32, "event/evtPolygonMovie", evtAllocMovieWorkTable);
 
 INCLUDE_RODATA(const s32, "event/evtPolygonMovie", SetPMFileNameStrEvent03030303E0303Pm1);
 

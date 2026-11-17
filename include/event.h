@@ -297,8 +297,8 @@ typedef struct evtUnit_t {
     u8 padRaidou172;
     u8 ShadowAlpha;
     f32 ShadowY;
-    u32 unk178;
-    u32 unk17C;
+    u32 LookRotFlag;
+    f32 LookRotY;
 #endif
     u8 slotFlags[12];              /* 0xCC */
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
@@ -332,7 +332,7 @@ typedef struct evtUnit_t {
     };
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
     f32 moveY; /* 0x200: vertical offset applied by the submode 1 move */
-    u8 pad204[2];
+    s16 moveYFrames; /* frame count of the submode 1 move, from evtCalcFrame_UnitMoveType0 */
     s16 unk206;
     u8 pad208[0x28];
 #endif

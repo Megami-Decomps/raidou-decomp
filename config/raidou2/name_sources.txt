@@ -3328,7 +3328,7 @@
 0x001BD768	evtInitCustomSceneLight	hd-inferred	hd: Raidou HD evt.evtInitCustomSceneLight, score 8.4 band B
 0x001BD810	evtSetCustomSceneLightData	hd-inferred	hd: Raidou HD evt.evtSetCustomSceneLightData, score 8.45 band B
 0x001BD8F8	evtSetCustomSceneLightData_SoftenAndBias	hd-inferred	hd: Raidou HD evt.evtSetCustomSceneLightData_SoftenAndBias, score 8.6 band B
-0x001BD928	evtLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit event/evtUnitManager; no named callee, caller or string
+0x001BD928	evtGetCustomSLightData	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=same body as HD evtGetCustomSLightData(h, lightv): type-3 slot for h else first type-2 slot, copies dir[0] xyz, returns 1/0; replaces evtLeaf4
 0x001BDA38	evtMakeCustomSLightPacket	hd-inferred	hd: Raidou HD evt.evtMakeCustomSLightPacket, score 8.8 band B
 0x001BDC38	evtGetCustomSLight_SoftenAndBias	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD evt.evtGetCustomSLight_SoftenAndBias score 5.5 flag I: calls1 calls-of-match st1:call r1+r2
 0x001BDCC8	evtSearchBasic	inferred	SMT3HD name via SLUS_209.11 0x001E4B50, reloc-identical; map-agrees
@@ -3339,7 +3339,7 @@
 0x001BDE80	evtMODELDSPBUSTUP	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit event/evtCommand; string 'MODEL_DSP_BUSTUP(%d,%d,%d) ...loadend\n'
 0x001BDF70	evtCommand_MODEL_BE	inferred	SMT3HD name via SLUS_209.11 0x001E4C18, reloc-identical; map-agrees
 0x001BE068	evtFldProcSequence	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit event/evtCommand; string 'fldProcSequence'
-0x001BE210	evtCommand_MODEL_SHADOW_OFF	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1e4e30 sim 1.000 margin 0.00 pair
+0x001BE210	evtCommand_MODEL_SHADOW_ON	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=0x1A8490 calls dds3ObjectBaseOnFlag(unit, 0x400) then dds3ObjectBaseOffFlag(unit, 0x200), the SMT3 evtCommand_MODEL_SHADOW_ON body; name came from a margin-0 fuzzy tie; replaces evtCommand_MODEL_SHADOW_OFF
 0x001BE280	evtCommand_MODEL_SHADOW_ON2	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1e4e30 sim 1.000 margin 0.00 pair
 0x001BE2F0	evtCallGetActiveScene4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtCommand; calls dds3GetActiveScene
 0x001BE360	evtOpQueueWorldObjectPendingValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00223DF0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -3466,8 +3466,8 @@
 0x001C27C8	evtCallGetIntPara12	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtCommand; calls scrGetIntPara
 0x001C2818	evtCallGetIntPara13	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtCommand; calls scrGetIntPara
 0x001C2878	evtCallGetIntPara14	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtCommand; calls scrGetIntPara
-0x001C28E0	evtCommand_PATH_START	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1e8448 sim 1.000 margin 0.00 pair
-0x001C2960	evtCommand_PATH_STOP	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1e8448 sim 1.000 margin 0.00 pair
+0x001C28E0	evtCommand_PATH_STOP	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=swap through a temporary name; replaces evtCommand_PATH_STOP_swap
+0x001C2960	evtCommand_PATH_START	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=0x1ACB38 calls evtPathStart (0x1A3C68, dds3PathBasicPauseOff); SMT3 evtCommand_PATH_START body; margin-0 tie pair with 0x1ACAB8; replaces evtCommand_PATH_STOP
 0x001C29E0	evtCommand_PATH_RATE	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001C2A78	evtCommand_PATH_DIR	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001C2B10	evtCommand_PATH_LOOP_ON	inferred	SMT3HD name via SLUS_209.11 0x001E86F0, reloc-identical; map-agrees
@@ -3720,7 +3720,7 @@
 0x001D1538	evtPictureLoadCheckProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as Raidou 1 0x001BB430 (r1_r2_pairs, unique-reloc-hash): HD evtPicture evtPictureLoadCheckProcess(id): dds3GetProcessData(id) field test returning bool; called on the cut-in PID as in HD CUTIN_DSP; replaces evtCallGetProcessData16
 0x001D1560	evtCallGetProcessData17	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls dds3GetProcessData
 0x001D15D0	evtCallGetProcessData18	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls dds3GetProcessData
-0x001D1600	evtPictureSetSize	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
+0x001D1600	evtPictureSetDrawCol	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=stores r,g,b,a into evtPictureProcessData_t.col and returns 1, same as HD evtPictureSetDrawCol(id, r, g, b, a); replaces evtPictureSetSize
 0x001D1660	evtPictureSetEndProcess	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD evtPicture.evtPictureSetEndProcess score 4.0 flag I: calls1 next gap23/18 st2:gap r2-only
 0x001D1690	StartProcess_evtPicture	hd	hd: Raidou HD evtPicture.StartProcess, score 9.0 band B, hd-ab: calls1 str1 callers-of-match-uniq votes2 st1:call r1+r2
 0x001D1700	evtPictureStartProcess4	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD evtPicture.evtPictureStartProcess4 score 6.2 flag I: calls1 str1 calls-of-match st1:call r1+r2
@@ -4578,13 +4578,13 @@
 0x001FDA18	dblurGetParam	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001FDA28	dblurSetParam	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1add60 sim 1.000 margin 0.00 pair
 0x001FDA90	effCallMemcpy2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effEvent; calls memcpy
-0x001FDB48	dblurGetParam2	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
+0x001FDB48	effGetLoadDescD	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=low confidence: 0x1E6850: EnterData case 27 copies 0x28 bytes (dds3Effect_Blur_t) from it, where SMT3/DDS EnterData case 27 calls effGetLoadDescD; T types it Filter_t (0x18); replaces dblurGetParam2
 0x001FDB58	effLeaf29	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effEvent; no named callee, caller or string
 0x001FDBB8	mfilterRun	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x001FDC70	mfilterGetParam	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
+0x001FDC70	dblurGetParam2	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=low confidence: 0x1E6978: EnterData case 16 copies 0x18 (dds3Effect_Filter_t), the SMT3/DDS case 16 callee dblurGetParam2; replaces mfilterGetParam
 0x001FDC80	effEventSetSolidRectangleParameters	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0018FE70, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001FDCC0	effCallMemcpy3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effEvent; calls memcpy
-0x001FDD78	effEnterDataSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by EnterData
+0x001FDD78	mfilterGetParam	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=low confidence: 0x1E6A80 returns &mfilterParam; EnterData case 17 copies 0x24 (PartialMultiFilterParam_t), the SMT3/DDS case 17 callee mfilterGetParam; replaces effEnterDataSub
 0x001FDD88	mfilterSetParam	inferred	SMT3HD name via SLUS_209.11 0x001ADC40, reloc-identical; map-agrees
 0x001FDDE0	rblurProcess	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001FDE98	rblurGetParam	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)

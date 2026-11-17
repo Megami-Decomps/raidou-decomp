@@ -14,7 +14,7 @@ void evtSetUnitExMotion(evtUnit_t *h, s32 group, s32 motion, s32 before, s32 smo
 evtUnit_t *evtGetUnitHandle(s32 serial);
 evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit);
 s16 evtSetUnitStat(evtUnit_t *h, s32 stat);
-void evtLinkLightObjectBasic(void *h, dds3Basic_t *light, s32 frame);
+void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame);
 void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame);
 void evtRunUnitKutiMotion(addr_t h);
 void evtSetUnitColorA(evtUnit_t *h, s32 frame, u32 a);
@@ -28,6 +28,9 @@ s32 evtSetUnitLightDir2(evtUnit_t *h, s32 frame);
 void evtSetWaitMotionSpeed(evtUnit_t *h, f32 sp);
 void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode);
 void evtSetUnitMove3(evtUnit_t *h, s32 pathID, s32 para1, s32 para2, s32 movesys, s32 movedir, s32 rotsys);
+void evtSetUnitRot1(evtUnit_t *h, f32 *rot, s32 para1);
+s32 evtCalcFrame_UnitMoveType0(evtUnit_t *org_h);
+void evtSetUnitMove2(evtUnit_t *work, s32 motionSubmode, s32 worldObjectKey, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast);
 void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1);
 u8 evtUnitLightAnimeStat(evtUnit_t *h);
 void evtUnitLightOff(evtUnit_t *h, s32 frame);

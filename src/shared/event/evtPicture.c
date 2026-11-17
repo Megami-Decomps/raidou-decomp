@@ -100,7 +100,11 @@ evtPictureProcessData_t *InitPictureProcessData(void)
     return data;
 }
 
-INCLUDE_ASM(const s32, "event/evtPicture", LoadTexture);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtPicture.c:297, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+void LoadTexture(evtPictureProcessData_t *data, const char *texpath)
+{
+    data->tex = itfMiscLoadTexture(texpath);
+}
 
 s32 GetNowFrame(evtPictureProcessData_t *data)
 {
@@ -273,7 +277,14 @@ dds3ProcessID_t *evtStartPictureProcess2(u32 priority, const char *texdata)
     return dds3StartProcess(evtPictureProcName, priority, 1, 1, evtPictureProcess1, (dds3ProcessFunc_t)evtPictureShutdown, work);
 }
 
-INCLUDE_ASM(const s32, "event/evtPicture", evtStartPictureProcess);
+/* body: matched in smt3 @ 9401f79e: src/smt3/event/evtPicture.c:385, match, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
+dds3ProcessID_t *evtStartPictureProcess(u32 priority, void *texpath)
+{
+    evtPictureProcessData_t *work = InitPictureProcessData();
+
+    work->tex = texpath;
+    return dds3StartProcess(evtPictureProcName, priority, 1, 1, evtPictureProcess1, evtPictureShutdown, work);
+}
 
 void LoadTexCallback(fileRequest_t *file, evtPictureProcessData_t *data)
 {
@@ -307,9 +318,24 @@ INCLUDE_ASM(const s32, "event/evtPicture", evtCallGetProcessData17);
 
 INCLUDE_ASM(const s32, "event/evtPicture", evtCallGetProcessData18);
 
-INCLUDE_ASM(const s32, "event/evtPicture", evtPictureSetSize);
+s32 evtPictureSetDrawCol(dds3ProcessID_t *id, s32 r, s32 g, s32 b, s32 a)
+{
+    evtPictureProcessData_t *data = dds3GetProcessData(id);
 
-INCLUDE_ASM(const s32, "event/evtPicture", evtPictureSetEndProcess);
+    data->col.pm[0] = r;
+    data->col.pm[1] = g;
+    data->col.pm[2] = b;
+    data->col.pm[3] = a;
+    return 1;
+}
+
+s32 evtPictureSetEndProcess(dds3ProcessID_t *id)
+{
+    evtPictureProcessData_t *data = dds3GetProcessData(id);
+
+    data->flag |= 8;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtPicture", StartProcess_evtPicture);
 

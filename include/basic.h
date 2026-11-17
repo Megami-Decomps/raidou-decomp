@@ -275,6 +275,7 @@ void dds3OnPoseSetFlag(dds3PoseSet_t *pPoseSet, u32 flag);
 dds3ObjectBaseControlWorkData_t *dds3UnitObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 dds3ObjectBaseControlWorkData_t *dds3MatterObjectBasicGetControlWorkData(const dds3Basic_t *pBasic);
 void dds3PathBasicControlAlterMode(dds3PathBasicControl_t *pControl, s32 mode);
+void dds3RefreshStoredVec3(dds3Basic_t *pBasic);
 s32 dds3PathBasicControlGetMode(dds3PathBasicControl_t *work);
 
 /* dds3AllocBasic rejects a type outside this range. */
