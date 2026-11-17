@@ -1,0 +1,13 @@
+# sdfprint.irx, a debug print server left in Raidou 2's DDS3.IMG: it forwards
+# printf output and memory reads to a host over the network. No string in
+# either ELF names it; see docs/sdf-irx-modules.md.
+name: SDFPRINT.IRX
+sha1: 6989142d4b09a7e7d7e00066477554a5ece714f3
+archive: /userirx/sdfprint.irx
+
+# The module has no moduleinfo block and an empty name in .iopmod.
+module:
+  name: ""
+  version: 0x0000
+  entry: start
+  moduleinfo: 0xffffffff
