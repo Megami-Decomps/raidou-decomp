@@ -13,8 +13,6 @@ INCLUDE_ASM(const s32, "code_002A20E0", sbtlCreateDvltk_Priority);
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlCallMemAllocDirect10);
 
-/* NON_MATCHING: 123 of 139 words match.  */
-#ifdef NON_MATCHING
 s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
 {
     SBTLDVLTK_WORK *dwk;
@@ -41,8 +39,8 @@ s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
             dwk->sincount = (dwk->sincount + 12) % 360;
             if ((u32)dwk->sincount < 180) {
                 s = sdfSin(((f32)((dwk->sincount + 90) % 360) / 180.0f) * 3.1415899f);
-                dwk->alpha += 12;
                 dwk->ofs_x = (s + 1.0f) * 0.5f * 128.0f + 386.0f;
+                dwk->alpha += 12;
                 dwk->alpha = dwk->alpha > 0 ? (dwk->alpha < 129 ? dwk->alpha : 128) : 0;
             } else {
                 dwk->ofs_x = 386;
@@ -51,9 +49,9 @@ s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
                 if (dwk->mode == 15) {
                     sbtlSbattle3();
                     wk_sbtl->eventno = 6;
-                    wk_sbtl->eventgstat = 0;
-                    wk_sbtl->flg |= 0x400;
                     wk_sbtl->eventcounter = 0;
+                    wk_sbtl->flg |= 0x400;
+                    wk_sbtl->eventgstat = 0;
                     sbtlSetNSTOP();
                 }
             }
@@ -70,9 +68,6 @@ s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
     }
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A20E0", Proc_sbtlDvltk);
-#endif
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlSearchDvltk);
 

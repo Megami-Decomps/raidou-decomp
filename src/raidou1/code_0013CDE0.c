@@ -232,8 +232,6 @@ void mapBgFScrollOn(f32 x, f32 y, f32 z, s32 hokan) {
 INCLUDE_ASM(const s32, "code_0013CDE0", mapBgFScrollOn);
 #endif
 
-/* NON_MATCHING: 24 of 32 words match.  */
-#ifdef NON_MATCHING
 void sndSePlay_sndAt3(s32 hokan) {
     f32 zero;
 
@@ -253,22 +251,19 @@ void sndSePlay_sndAt3(s32 hokan) {
         mapData64 = zero;
     } else {
         fscroll_mode = 2;
-        mapBgSetScrollData3 = hokan;
-        mapData62 = mapData59;
-        mapData63 = mapZoomSetGoalData4;
-        mapData64 = mapZoomSetGoalData5;
         mapData61 = hokan;
         mapData65 = mapData59;
         mapData66 = mapZoomSetGoalData4;
         mapData67 = mapZoomSetGoalData5;
+        mapBgSetScrollData3 = hokan;
+        mapData62 = mapData59;
+        mapData63 = mapZoomSetGoalData4;
+        mapData64 = mapZoomSetGoalData5;
         mapData68 = 0.0f;
         mapData69 = 0.0f;
         mapData70 = 0.0f;
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_0013CDE0", sndSePlay_sndAt3);
-#endif
 
 void setCngCameraDir(void) {
     mapBgSetScrollData20 = 1;

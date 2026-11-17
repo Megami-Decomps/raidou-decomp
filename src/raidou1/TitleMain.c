@@ -36,7 +36,7 @@ s32 evtFunc9(s32 frame, const titleKey_t *key, s32 count) {
     return (key[i].value + (key[i + 1].value - key[i].value) * frame / (key[i + 1].frame - key[i].frame)) * 2;
 }
 
-/* NON_MATCHING: 55 of 68 words match.  */
+/* NON_MATCHING: 59 of 68 words match.  */
 #ifdef NON_MATCHING
 void evtLeaf31(s32 slot, s32 value, const f32 *size, const f32 *scale, void **sprite) {
     sprHandle_t *set;
@@ -58,8 +58,8 @@ void evtLeaf31(s32 slot, s32 value, const f32 *size, const f32 *scale, void **sp
     height = (s32)((f32)(work->sourceHeight * 8) * size[1]);
     scaledWidth = width * scale[0];
     scaledHeight = height * scale[1];
-    work->geometry.bounds[3] = scaledHeight;
     work->geometry.bounds[2] = scaledWidth;
+    work->geometry.bounds[3] = scaledHeight;
     effDrawSpriteWithCornerFade(x + (s32)((width - scaledWidth) * 0.5f), y + (s32)((height - scaledHeight) * 0.5f), 0,
                                 value, 0, set, slotIndex, 79);
 }

@@ -84,6 +84,17 @@ different units would be a conflict; there are none.
 - An `.sdata` block that starts unaligned with no aligned symbol of its own (a
   lone `char`) stays in the chunk before it: an ee-as `.sdata` section is
   word-aligned, so the object could not start there.
+- One TU split in several: raidou1 `code_00144130` through at least
+  `code_00153438` (0x144130-0x1566D0, all evidence `none`). mapMapObjectRefresh
+  (`code_0014B660`) matches only with mapObjCheck (`code_00144130`) defined
+  above it in the same unit, and mapCutSet_From_Pos (`code_00153438`) closes
+  its `bgezl` only with mapObjOnOff (`code_00144130`) defined in the unit; no
+  string is duplicated across the range, and its `.rodata` gaps fit one
+  object (ee-gcc 2.96 aligns jump tables to 16, strings to 8). Not merged
+  yet: the range holds four shared units (`code_r1_0014B328`, `_0014B4B8`,
+  `_0014B610`, `_00151980`) that raidou2 places between its own asm gaps, and
+  unowned `.rodata`/`.sdata` chunks sit between the units, so the merge needs
+  the raidou2 TU and the data chunks resolved with it.
 
 ## Source layout
 

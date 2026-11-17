@@ -8,14 +8,6 @@ store order only: with each arm's retail-second store written last (sndSePlay_sn
 
 Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
 
-## sndSePlay_sndAt3 (code_0013CDE0, raidou1 0x80)
-
-Raidou 1: 8 of 32 words differ, first at +0x50.
-
-zero arm matches: f32 zero local (mtc1 + swc1, lever addressing-and-types.md:195) and one store per statement; sched2 hoists the source-last store to just after the first, so retail's second store (mapData64) is written last; nonzero arm is the same shape, next try: mapBgSetScrollData3 = hokan written last there (budget spent); vectors do not reach, checked against the asm
-
-Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
-
 ## fldBgZoomTest (code_0013CDE0, raidou1 0x2B4)
 
 Matches.

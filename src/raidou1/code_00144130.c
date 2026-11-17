@@ -16,7 +16,16 @@ INCLUDE_ASM(const s32, "code_00144130", mapLeaf13);
 
 INCLUDE_ASM(const s32, "code_00144130", mapObjectRefreshSub);
 
-INCLUDE_ASM(const s32, "code_00144130", mapObjCheck);
+s32 mapObjCheck(s16 uniq) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "code_00144130", mapObjDel);
 

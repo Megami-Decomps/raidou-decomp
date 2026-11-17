@@ -36,11 +36,3 @@ Raidou 1 and Raidou 2: 65 of 124 words differ, first at +0x58; emitted 496 bytes
 Loop register use and float scheduling differ; body from SMT3, no frame gating.
 
 Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
-
-## dds3BistaCheck (kernel/dds3KernelDraw, raidou1 0x80)
-
-Raidou 1: 15 of 32 words differ, first at +0x0.
-
-R1 compare tree on dds3DrawBistaData returns through v0 with a shared jr; tried switch with returns (16/30, 2 words short), switch into result var (15/32), pc if-chain (23/28). R2 body is a 5-case jump table, r1only. vector checked boot (mode 0, alpha 0 -> 0)
-
-Related: control-flow.

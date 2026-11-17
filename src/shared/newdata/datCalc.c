@@ -354,26 +354,19 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datPartyDamageMapSub);
 #endif
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 15 of 31 words match.  */
-#ifdef NON_MATCHING
 s32 datCallCalcGetBadStatus2(s32 bst)
 {
     s32 id;
 
-    if (sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.unit) != bst) {
-        id = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
-        if (id == -1) {
-            return 0;
-        }
-        if (sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[id]) != bst) {
-            return 0;
-        }
+    if (sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.unit) == bst) {
+        return 1;
     }
-    return 1;
+    id = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
+    if (id != -1 && sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[id]) == bst) {
+        return 1;
+    }
+    return 0;
 }
-#else
-INCLUDE_ASM(const s32, "newdata/datCalc", datCallCalcGetBadStatus2);
-#endif
 #else
 INCLUDE_ASM(const s32, "newdata/datCalc", datPartyDamageMapSub2);
 

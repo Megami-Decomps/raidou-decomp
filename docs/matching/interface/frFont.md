@@ -77,11 +77,3 @@ two frCallSetFontString sites: retail keeps them apart with beql/lbu Spd in the 
 N1 retry: with frSetFontString compiled as C the body is exact after ctx->glyphChain = frCallSetFontString(...); context = ctx->glyphChain; in the firstChild arm (the assignment chain stored the copy). Alone it is 47 off because the block layout follows frSetFontString's visibility, so it waits on frSetFontString.
 
 Related: cross-jump.
-
-## frAnalyzeMessage (interface/frFont, raidou1 0x1F0)
-
-Raidou 1: 1 of 124 words differ, first at +0x1A8.
-
-SMT3 frAnalyzeMessage loop on frFontCtx_t; one word: retail bne with addiu v0,10 in the slot, mine bnel; tried continue/else-if chain, inverted ModeFlag test, IDA if(code!=10) (61); lever addressing-and-types 526 says not reachable from the branch shape; R2 body differs (568 bytes, r1only); frMsgInfo_t merged into frFontCtx_t in frFont.c; vector checked (menu)
-
-Related: branch-likely.

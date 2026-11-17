@@ -18,4 +18,6 @@ Raidou 2: 5 of 11 words differ, first at +0x0.
 
 sibling SetRot shape; retail keeps pose in a0 and dst in a2 where the matched SetRot/SetScl siblings use a2/a0. Tried no dst local, no pose local, split |=/&=: all the same 5 words (register choice only). vector checked
 
+N2: a struct copy (12), the F32 and RWSRC copy macros and a dst-first form with no pose local (5 each) do not move pose to a0.
+
 Related: register-allocation.

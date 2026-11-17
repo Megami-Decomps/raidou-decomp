@@ -20,7 +20,7 @@ INCLUDE_ASM(const s32, "code_0016CA30", mapNakamaMinAlpDown);
 
 INCLUDE_ASM(const s32, "code_0016CA30", mapRefDvModel);
 
-/* NON_MATCHING: 11 of 24 words match.  */
+/* NON_MATCHING: 17 of 24 words match.  */
 #ifdef NON_MATCHING
 void mapNakamaWakeUp(s32 mode) {
     if (s_MapNakamaColorCnt != mode) {
@@ -31,8 +31,10 @@ void mapNakamaWakeUp(s32 mode) {
             s_MapNakamaColorNow = 128;
         }
         if (summonDvModel) {
-            s32 c = s_MapNakamaColorNow;
-            mdlSetColor(summonDvModel, (c << 24) | (c << 16) | (c << 8) | c);
+            do {
+                mdlSetColor(summonDvModel, (s_MapNakamaColorNow << 24) | (s_MapNakamaColorNow << 16) |
+                                               (s_MapNakamaColorNow << 8) | s_MapNakamaColorNow);
+            } while (0);
         }
     }
 }

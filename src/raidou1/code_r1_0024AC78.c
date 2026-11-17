@@ -44,8 +44,6 @@ s32 sbtlCallBtlGetPlayerData(void)
 
 INCLUDE_ASM(const s32, "code_r1_0024AC78", sbtlSbattle4);
 
-/* NON_MATCHING: 24 of 31 words match. V0 and v1 swap in the reload of wk_sbtl after effStopEffectStop; vector checked. */
-#ifdef NON_MATCHING
 s32 RestartBattle(void)
 {
     if (dds3SearchProcessName(sbtlData85) == NULL) {
@@ -61,9 +59,6 @@ s32 RestartBattle(void)
     wk_sbtl->flg &= ~0x40;
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0024AC78", RestartBattle);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_0024AC78", sbtlCallBtlDeleteOnData);
 

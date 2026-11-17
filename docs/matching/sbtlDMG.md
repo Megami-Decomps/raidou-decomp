@@ -48,6 +48,8 @@ Raidou 1: 12 of 75 words differ, first at +0x4.
 
 a1 and a2 swap (match flag and wk_sbtl). Retail has a dead field414 & 2 test, reproduced by the else-if branch with the same call.
 
+N2: declaring match and exist first is the same 12; match = 1 with the inverted test is worse.
+
 Related: [smt3 levers: cross-block locals with swapped registers](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/cross-block-locals.md).
 
 ## sbtlReleaseHitC_List (sbtlDMG, raidou1 0x158)

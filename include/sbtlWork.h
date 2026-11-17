@@ -698,7 +698,7 @@ s32 Draw_sbtlSTP(SBTL_STP *stp);
 s32 btlLoadSbPack(void);
 void campFreeStatusModel(void);
 struct SBTL_MODELBIND_LIST *effAllocateModelBindings(void);
-s32 effStopEffectStop(void);
+void effStopEffectStop(void);
 SBTL_STP *evtAllocateContext(void);
 s32 pbCallBtlCheckLoadFlg(void);
 void sbtlAllInit(void);

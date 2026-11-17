@@ -1162,7 +1162,7 @@ INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCheckMapHit_Data);
 
 /* NON_MATCHING: 44 of 69 words match. s3 and s4 swap for the position pointer and the count, and retail keeps the found test as branches where this build emits sltiu; vector checked (menu): rows return 1 only. */
 #ifdef NON_MATCHING
-s32 sbtlCheckMapHit_Cross(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis)
+s8 sbtlCheckMapHit_Cross(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis)
 {
     sdfVector4_t dir;
     sdfVector4_t pos;

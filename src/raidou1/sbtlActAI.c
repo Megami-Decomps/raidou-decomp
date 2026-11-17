@@ -39,7 +39,7 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallGetIntPara53);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallGetIntPara54);
 
-/* NON_MATCHING: 35 of 43 words match.  */
+/* NON_MATCHING: 38 of 43 words match.  */
 #ifdef NON_MATCHING
 SBTLUNIT_MODEL *sbtlCreate(void) {
     struct sdfMemHandle_t *handle = sdfMemAllocDirect(sizeof(SBTLUNIT_MODEL));
@@ -48,7 +48,6 @@ SBTLUNIT_MODEL *sbtlCreate(void) {
     memset(model, 0, sizeof(SBTLUNIT_MODEL));
     model->handle = handle;
     model->flags |= 0x24;
-    model->field10C = -1;
     model->field11C = 60.0f;
     model->field120 = 100.0f;
     model->field124 = 200.0f;
@@ -56,6 +55,7 @@ SBTLUNIT_MODEL *sbtlCreate(void) {
     model->mode = 0;
     model->field104 = -1;
     model->field108 = -1;
+    model->field10C = -1;
     model->dataflg = 0;
     model->data_p[1] = 0;
     return model;
@@ -92,8 +92,6 @@ s32 sbtlGetAIPatternData(s32 id, s32 p1, s32 p2) {
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetSkillData_AI);
 
-/* NON_MATCHING: 22 of 36 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlCheckEquation(struct SBTLUNIT_WORK *wk) {
     SBTLAI_WORK *aiwk = wk->aiwk;
     SBTLUNIT_MODEL *model;
@@ -105,22 +103,16 @@ s32 sbtlCheckEquation(struct SBTLUNIT_WORK *wk) {
     if (model->mode == 9 || model->mode == 10) {
         return 0;
     }
-    if (aiwk->stat != 1) {
-        return 0;
+    if (aiwk->stat == 1 && model->stat == 2) {
+        if (model->dataflg) {
+            sbtlUseTableDataProc(wk);
+        } else {
+            sbtlCheckEquationProc(wk);
+        }
+        return 1;
     }
-    if (model->stat != 2) {
-        return 0;
-    }
-    if (model->dataflg) {
-        sbtlUseTableDataProc(wk);
-    } else {
-        sbtlCheckEquationProc(wk);
-    }
-    return 1;
+    return 0;
 }
-#else
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckEquation);
-#endif
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetChkskl);
 
@@ -915,17 +907,14 @@ s32 sbtlCallBtlCheckEquation(struct SBTLUNIT_WORK *wk) {
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf68);
 
-/* NON_MATCHING: 29 of 40 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlEAIInit_None(struct SBTLUNIT_WORK *wk) {
     s16 stat = 1;
     SBTLUNIT_MODEL *model;
 
     if (sbtlCheckScriptData(wk->unit.devilId)) {
         wk->aiwk->stat = stat;
-        model = wk->model;
-        model->mode = 12;
-        model->stat = stat;
+        wk->model->mode = 12;
+        wk->model->stat = stat;
         return 0;
     }
     model = wk->model;
@@ -937,9 +926,6 @@ s32 sbtlEAIInit_None(struct SBTLUNIT_WORK *wk) {
     sbtlSetNormalAction(wk, SBTL_ACTAIMODE_WAIT, 0, -1, 0);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_None);
-#endif
 
 s32 sbtlEAIInit_Summon(struct SBTLUNIT_WORK *wk) {
     sdfVector4_t zero;
@@ -1374,16 +1360,9 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetMovePos_MapHit);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetMovePos_MapHit_2);
 
-/* NON_MATCHING: 2 of 5 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlCheckMapHit(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis) {
-    s32 hit = sbtlCheckMapHit_Cross(pos0, ppos, dis);
-
-    return hit;
+    return sbtlCheckMapHit_Cross(pos0, ppos, dis);
 }
-#else
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckMapHit);
-#endif
 
 s32 sbtlBtlProcSub(struct SBTLUNIT_WORK *wk) {
     switch (wk->model->stat) {

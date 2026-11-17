@@ -1934,19 +1934,17 @@ void mapSeNakamaDelayTask(void) {
 INCLUDE_ASM(const s32, "code_0015D490", mapSeNakamaDelayTask);
 #endif
 
-/* NON_MATCHING: 14 of 22 words match.  */
-#ifdef NON_MATCHING
 void mapSeWallHit(s32 hit) {
     if (mapSeWallHitData == 1 && hit == 0) {
         mapSeWallHitData = 0;
     } else if (mapSeWallHitData == 0 && hit == 1) {
-        mapSeWallHitData = 1;
-        p2sdPlaySE_Vol(33, 127);
+        /* The loop keeps ee-gcc from making the call a sibling call (calls.c tries none inside a loop), as in SMT3's dds3SceneBasicStartScript. */
+        do {
+            mapSeWallHitData = 1;
+            p2sdPlaySE_Vol(33, 127);
+        } while (0);
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_0015D490", mapSeWallHit);
-#endif
 
 void mapTakaraOpen(void) {
     takara_openanm_objid = -1;

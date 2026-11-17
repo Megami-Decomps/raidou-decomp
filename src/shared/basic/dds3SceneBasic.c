@@ -362,8 +362,6 @@ void dds3SceneBasicReleaseScriptFile(dds3Basic_t *scene)
     work->pScrFileData = NULL;
 }
 
-/* NON_MATCHING: 21 of 33 words match.  */
-#ifdef NON_MATCHING
 dds3ProcessID_t *dds3SceneBasicStartScript(dds3Basic_t *scene, char *procname)
 {
     void *script = ((dds3SceneBasic_t *)scene->workdata)->pScrFileData;
@@ -382,11 +380,11 @@ dds3ProcessID_t *dds3SceneBasicStartScript(dds3Basic_t *scene, char *procname)
     if (dds3SearchProcessName(procname) != NULL) {
         return NULL;
     }
-    return scrStartScript2(1002, script, procedure);
+    /* The loop keeps ee-gcc from making this a sibling call (calls.c tries none inside a loop), as in SMT3's copy of this function. */
+    do {
+        return scrStartScript2(1002, script, procedure);
+    } while (0);
 }
-#else
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicStartScript);
-#endif
 
 void dds3SceneBasicEndScript(dds3Basic_t *scene, const char *procname)
 {

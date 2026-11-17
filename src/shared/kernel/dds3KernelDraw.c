@@ -1024,33 +1024,27 @@ void dds3BistaOut(u32 frame)
 }
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 17 of 32 words match.  */
-#ifdef NON_MATCHING
 s32 dds3BistaCheck(void)
 {
-    s32 result = 1;
-
-    if ((dds3DrawFlag & 0x0C000000) == 0) {
-        switch (dds3DrawBistaData) {
-        case 0:
-        case 3:
-            if (0x80 - dds3Data30.a >= 0x80) {
-                result = 0;
-            }
-            break;
-        case 1:
-        case 2:
-            if (dds3ChangeBistaModeData == dds3DrawBistaData2) {
-                result = 0;
-            }
+    if (dds3DrawFlag & 0x0C000000) {
+        return 1;
+    }
+    switch (dds3DrawBistaData) {
+    case 0:
+    case 3:
+        if (0x80 - dds3Data30.a < 0x80) {
             break;
         }
+        return 0;
+    case 1:
+    case 2:
+        if (dds3ChangeBistaModeData != dds3DrawBistaData2) {
+            break;
+        }
+        return 0;
     }
-    return result;
+    return 1;
 }
-#else
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
-#endif
 #else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
 #endif

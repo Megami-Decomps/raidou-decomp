@@ -1,13 +1,5 @@
 # Draft notes: mc/slMain
 
-## slDrawError (mc/slMain, raidou1 0x4A0)
-
-Raidou 1: 5 of 296 words differ, first at +0xD4.
-
-same residual as slDrawInfo: bnel for bne on the if (gslErrorCode == N) chain while slDrawWindow is INCLUDE_ASM
-
-Related: callee-visibility.
-
 ## slDrawInfo (mc/slMain, raidou1 0x39C)
 
 Raidou 1: 7 of 231 words differ, first at +0x14.

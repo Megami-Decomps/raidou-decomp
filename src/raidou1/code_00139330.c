@@ -205,20 +205,18 @@ INCLUDE_ASM(const s32, "code_00139330", fldPlayerForceSetRot_NoHokan);
 
 INCLUDE_ASM(const s32, "code_00139330", fldCallSin3);
 
-/* NON_MATCHING: 9 of 18 words match.  */
-#ifdef NON_MATCHING
 void fldProcSequenceSub3(void) {
+    fldAreaWork_t *area;
+
     if (playerModel != NULL) {
-        if (fldGlobalBase.nakamaMode != 0 || playerModel->current.h.motionIndex != 1) {
-            fldGlobalBase.wordDC = 0;
+        area = &fldGlobalBase;
+        if (area->nakamaMode == 0 && playerModel->current.h.motionIndex == 1) {
+            area->wordDC++;
         } else {
-            fldGlobalBase.wordDC++;
+            area->wordDC = 0;
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_00139330", fldProcSequenceSub3);
-#endif
 
 /* NON_MATCHING: 7 of 50 words match.  */
 #ifdef NON_MATCHING
@@ -348,7 +346,7 @@ void fldBgTaskInit(void) {
     dds3StartProcess(fldStrBgProcDraw, 11014, 0, 0, fldFunc, NULL, NULL);
 }
 
-/* NON_MATCHING: 16 of 35 words match.  */
+/* NON_MATCHING: 27 of 35 words match.  */
 #ifdef NON_MATCHING
 void fldBgTexClear(void) {
     mapBgFree2();
@@ -358,12 +356,11 @@ void fldBgTexClear(void) {
     bg_lay_load_last = -1;
     bg_tex_load_rec = -1;
     bg_lay_load_rec = -1;
-    Zoom = 1.0f;
+    mapData73 = 1.0f;
     fldGlobalBase.cutIdx = 0;
     fldGlobalBase.cutIdxPrev = 0;
     fldGlobalBase.cutState = 0;
     fldGlobalBase.hitMatterIndex = 0;
-    mapData73 = 1.0f;
     mapZoomSetGoalData9 = 1.0f;
     mapZoomSetGoalData10 = 1.0f;
     mapData74 = 0;
@@ -373,6 +370,7 @@ void fldBgTexClear(void) {
     mapZoomClearData = 0;
     mapData77 = 0;
     mapData78 = 0;
+    Zoom = 1.0f;
 }
 #else
 INCLUDE_ASM(const s32, "code_00139330", fldBgTexClear);

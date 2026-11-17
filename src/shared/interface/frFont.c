@@ -2422,8 +2422,7 @@ s32 execTag_0(s32 code, frFontCtx_t *ctx) {
     return 0;
 }
 
-/* NON_MATCHING: 123 of 124 words match.  */
-#ifdef NON_MATCHING
+#ifdef VERSION_RAIDOU1
 frFontHandle_t *frAnalyzeMessage(frFontCtx_t *ctx) {
     u8 encodedText[3];
     s32 code;

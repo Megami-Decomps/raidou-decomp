@@ -1571,25 +1571,26 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID7);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlLeaf3);
 
-/* NON_MATCHING: 15 of 30 words match. Same flow; retail keeps wk_sbtl in a2 and uses bnel to the epilogue where cc1 picks a0 and plain branches, vector checked (32 rows, only the mode != 14 path). */
-#ifdef NON_MATCHING
 s32 sbtlRefSbtl15(s32 x, s32 y)
 {
     if (wk_sbtl == NULL) {
         return 0;
     }
-    if (wk_sbtl->mode == 14 && !(wk_sbtl->flg & 8) && wk_sbtl->field4B6 > 0) {
-        if (wk_sbtl->field4B6 == 8 && wk_sbtl->field4BC < 26) {
-            return 0;
-        }
-        sbtlCallBtlSprite(wk_sbtl->field4BA, wk_sbtl->field4B8);
-        return 1;
+    if (wk_sbtl->mode != 14) {
+        return 0;
     }
-    return 0;
+    if (wk_sbtl->flg & 8) {
+        return 0;
+    }
+    if (wk_sbtl->field4B6 <= 0) {
+        return 0;
+    }
+    if (wk_sbtl->field4B6 == 8 && wk_sbtl->field4BC < 26) {
+        return 0;
+    }
+    sbtlCallBtlSprite(wk_sbtl->field4BA, wk_sbtl->field4B8);
+    return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlRefSbtl15);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", SetColor);
 

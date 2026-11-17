@@ -37,8 +37,8 @@ First differing words:
 
 ## sndCallMemFreeDirect (sndAt3, raidou1 0x60, raidou2 0x60)
 
-Raidou 1: 7 of 24 words differ, first at +0x28.
-Raidou 2: 7 of 24 words differ, first at +0x28.
+Raidou 1: 2 of 24 words differ, first at +0x38.
+Raidou 2: 2 of 24 words differ, first at +0x38.
 
 store order of a reset block: source order loadState/allocation/compressedData/samples then sndData5/6/7 is closest (7 words), retail puts sndData6 between loadState and allocation
 

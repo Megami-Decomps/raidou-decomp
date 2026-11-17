@@ -6,6 +6,8 @@ Raidou 1: 13 of 57 words differ, first at +0x20.
 
 two empty count loops: count/i register pair swapped (a0/v1) and second loop bnel in retail; empty for over a field hoists into v0 then a0
 
+N2: s32 i with the field as the bound gives a count-down loop (12, different shape); u32 i that way is 44; count declared before i is the same 13.
+
 Related: register allocation.
 
 ## fclCallSetFontColorNo (code_002FA4F0, raidou1 0x6E0)

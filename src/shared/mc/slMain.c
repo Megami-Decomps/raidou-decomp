@@ -412,11 +412,46 @@ INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProcSub);
 
 INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProcSub2);
 
-INCLUDE_ASM(const s32, "mc/slMain", slDrawWindow);
+/* Raidou 2 inserts one OT layer below these. */
+#ifdef VERSION_RAIDOU1
+#define SL_WINDOW_OT 0x6A
+#define SL_WINDOW_RESTORE_OT 0x67
+#else
+#define SL_WINDOW_OT 0x6B
+#define SL_WINDOW_RESTORE_OT 0x68
+#endif
+
+s32 slDrawWindow(void) {
+    s32 y;
+    s32 h;
+    s32 alpha;
+
+    eglSetOt(SL_WINDOW_OT);
+    eglLinkAlpha(0);
+    eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 1);
+    alpha = 100;
+    y = 80;
+    gSlWindowCnt++;
+    if (gSlWindowCnt < 8) {
+        y = 224 - gSlWindowCnt * 18;
+        h = gSlWindowCnt * 36;
+    } else {
+        h = 288;
+    }
+    if (gSlWindowCnt < 8) {
+        alpha = gSlWindowCnt * 100 / 8;
+    }
+    evtSubmitDefaultDepthGradientRect(0, y, 0x200, h, ((alpha * 80 / 100) << 24) | 0x1C1C28,
+                                      ((alpha * 110 / 100) << 24) | 0xB0E19, ((alpha * 140 / 100) << 24) | 0x3030A,
+                                      ((alpha * 110 / 100) << 24) | 0xB0E19);
+    eglSetOt(SL_WINDOW_RESTORE_OT);
+    if (gSlWindowCnt >= 14) {
+        return 1;
+    }
+    return 0;
+}
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 291 of 296 words match.  */
-#ifdef NON_MATCHING
 extern char slInsertedInMEMORYData[], slInsertedInMEMORYData2[], slInsertedInMEMORYData3[];
 extern char slInsertedInMEMORYData4[], slInsertedInMEMORYData5[], slInsertedInMEMORYData6[];
 extern char slInsertedInMEMORYData7[], slInsertedInMEMORYData8[], slInsertedInMEMORYData9[];
@@ -508,9 +543,6 @@ void slDrawError(void) {
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "mc/slMain", slDrawError);
-#endif
 #else
 INCLUDE_ASM(const s32, "mc/slMain", slDrawError);
 #endif

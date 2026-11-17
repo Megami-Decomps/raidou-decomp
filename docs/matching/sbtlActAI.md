@@ -2,25 +2,21 @@
 
 ## sbtlCreate (sbtlActAI, raidou1 0xAC)
 
-Raidou 1: 8 of 43 words differ, first at +0x70.
+Raidou 1: 5 of 43 words differ, first at +0x70.
 
 store schedule only: retail sw field10C right after flags then the floats, mine emits field108/field10C together after the floats; tried flags-first, HD order, field10C before flags; lever right-rotation not applicable; vector checked (menu)
 
+N2: field10C = -1 written after field108 puts it right after the float stores (5 of 43); retail has it between the flags store and the floats. Chained 104/108 assignment and 10C after mode are worse (7, 8).
+
 Related: [smt3 levers: stores](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/stores.md).
-
-## sbtlCheckEquation (sbtlActAI, raidou1 0x90)
-
-Raidou 1: 14 of 36 words differ, first at +0xC.
-
-register allocation: retail keeps wk copy in a1 and reuses a1 for model, aiwk a2, const 1 a3, v0=0 in each delay slot; mine aiwk a3, model a2; tried early returns with and without model local (same), nested ifs with ret local (worse, 19); vector checked (menu)
-
-Related: regalloc.
 
 ## SetUseskl (sbtlActAI, raidou1 0x3C)
 
 Raidou 1: 10 of 15 words differ, first at +0x0.
 
 v0/v1 swapped through the whole body (cond and index); tried sklid / 32, evtBitOn's explicit (no < 0) ? no + 0x1F : no index (matched sibling template), an s32 parameter, a cached element pointer (9 words, swaps the addu); SBTLUNIT_MODEL gains useskl[36] at 0x194 (HD useskl, bounded by field224); vector checked (menu row: bit 8 of word 0 set)
+
+N2: a model pointer local, an index local and s32 useskl elements leave the v0/v1 swap unchanged (10).
 
 Related: regalloc.
 
@@ -47,14 +43,6 @@ Raidou 1: 79 of 90 words differ, first at +0x4; emitted 360 bytes, native 368 by
 (pat & 0xFFFF0000) >> 16 on s32 pat: the first use folds to srl, the loop-carried second keeps lui mask + and + srl, as retail; vector checked (menu, 30 rows)
 
 Related: constants.
-
-## sbtlEAIInit_None (sbtlActAI, raidou1 0xA0)
-
-Raidou 1: 11 of 40 words differ, first at +0x28.
-
-a local s16 stat = 1 (HD sBtlSetAIWkStat(wk, 1)) puts 1 in s1 from the prologue (35 -> 11 words); left: retail loads aiwk into a0 before model and an extra b-delay nop; tried 4 orders; vector checked (menu)
-
-Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
 
 ## sbtlEAIProc_Chase (sbtlActAI, raidou1 0x118)
 
@@ -86,6 +74,8 @@ Raidou 1: 13 of 19 words differ, first at +0x0.
 
 retail keeps the last test as beq around v0=1 with sltu in the delay slot, mine if-converts to movn; side byte in v0 vs v1; tried early-return chain, ret local, || tail (worse); vector checked (menu)
 
+N2: ret = 1 override after ret = side != sidelock (13), gotos to one return 1 (14) and a ret = 1 seed with nested tests (16) do not give retail's beq around v0 = 1.
+
 Related: [smt3 levers: callee visibility and branch-likely](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/callee-visibility.md).
 
 ## sbtlSetNormalAction (sbtlActAI, raidou1 0x354)
@@ -104,14 +94,6 @@ retail loop entered by a jump to a bottom test holding the calls = while (i < 2 
 
 Related: loop-shape.
 
-## sbtlCheckMapHit (sbtlActAI, raidou1 0x1C)
-
-Raidou 1: 3 of 5 words differ, first at +0x8; emitted 20 bytes, native 28 bytes.
-
-retail jal+epilogue wrapper of sbtlCheckMapHit_Cross; return f(), result local both sibcall (j), if-form adds sltu; vector checked (menu, a0..a2 passed through)
-
-Related: sibcall.
-
 ## sbtlCallMemset14 (sbtlActAI, raidou1 0x408)
 
 Raidou 1: 125 of 256 words differ, first at +0xA8; emitted 1024 bytes, native 1032 bytes.
@@ -125,6 +107,8 @@ Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-
 Raidou 1: 11 of 14 words differ, first at +0x0.
 
 register allocation only: retail wk_sbtl in a2, result in v0 from the start; tried && chain, ret local, nested ifs with id local (all wk_sbtl in a1, result in a2 or two exits); find_similar no matched sibling; vector checked (menu, ret 0)
+
+N2: if (a && b) return x == y; return 0; is the same 11, the inverted early return is 14, a ret = 1 flag is 11.
 
 Related: regalloc.
 

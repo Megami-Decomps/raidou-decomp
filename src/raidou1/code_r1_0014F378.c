@@ -663,9 +663,7 @@ INCLUDE_ASM(const s32, "code_r1_0014F378", mapFileLoad);
 
 INCLUDE_ASM(const s32, "code_r1_0014F378", mapBtlReLoadMapSBtlSceneSub3);
 
-/* NON_MATCHING: 142 of 147 words match. The tail loads -1 into one register for the gSubFloorID store and the return value; mine uses two. */
-#ifdef NON_MATCHING
-s32 fldFreeMapData(void)
+void fldFreeMapData(void)
 {
     s32 i;
 
@@ -777,11 +775,8 @@ s32 fldFreeMapData(void)
     {
         mefMistTexDestroy();
     }
-    return gSubFloorID = -1;
+    gSubFloorID = -1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0014F378", fldFreeMapData);
-#endif
 /* Battle debug menu tables (.data 0x41D5B0-0x41E858); the code that reads them is still asm. */
 dds3ProcessFunc_t sbdebug_procmenu[20] = {
     MainProc,

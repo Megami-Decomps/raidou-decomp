@@ -19,8 +19,6 @@ void mapProcSequenceSub12(s32 arg) {
     mapData147 = arg;
 }
 
-/* NON_MATCHING: 10 of 26 words match.  */
-#ifdef NON_MATCHING
 s32 mapFunc11(dds3ProcessID_t *id) {
     if (mapData148 == 0) {
         return 0;
@@ -28,19 +26,15 @@ s32 mapFunc11(dds3ProcessID_t *id) {
     if (mapData147 == 0) {
         mapFunc11Data2++;
     }
-    if (mapData147 != 1) {
-        return 0;
-    }
-    if (mapFunc11Data > 0) {
-        mapFunc11Data--;
-    } else {
-        mapLeaf28();
+    if (mapData147 == 1) {
+        if (mapFunc11Data > 0) {
+            mapFunc11Data--;
+        } else {
+            mapLeaf28();
+        }
     }
     return 0;
 }
-#else
-INCLUDE_ASM(const s32, "code_00174790", mapFunc11);
-#endif
 
 INCLUDE_ASM(const s32, "code_00174790", mapLeaf28);
 

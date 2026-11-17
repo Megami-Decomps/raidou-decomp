@@ -8,23 +8,17 @@
 #include "sBtlEff.h"
 #include "code_002929C8.h"
 
-/* NON_MATCHING: 2 of 11 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlCheckLoadFlg(void) {
-    SBTL_PANEL *panel;
     u32 load;
 
-    if (wk_sbtl != NULL && (panel = wk_sbtl->panel) != NULL) {
-        load = panel->flg & 2;
-        return load != 0;
+    if (wk_sbtl == NULL || wk_sbtl->panel == NULL) {
+        return 0;
     }
-    return 0;
+    load = wk_sbtl->panel->flg & 2;
+    return load != 0;
 }
-#else
-INCLUDE_ASM(const s32, "code_002929C8", sbtlCheckLoadFlg);
-#endif
 
-/* NON_MATCHING: 142 of 151 words match.  */
+/* NON_MATCHING: 144 of 151 words match.  */
 #ifdef NON_MATCHING
 s32 sbtlCallCheckEnd(void) {
     SBTL_PANEL *panel;
@@ -81,8 +75,8 @@ s32 sbtlCallCheckEnd(void) {
             while (!sbtlFunc(wk_sbtl->panelPackLen, node->data)) {
             }
             sdfMemFreeDirect(node->resrc);
-            node = node->next;
             wk_sbtl->panelPackLen++;
+            node = node->next;
         }
         pacFileHandleFree_(wk_sbtl->panelPack);
         wk_sbtl->panelPackPos = 3;

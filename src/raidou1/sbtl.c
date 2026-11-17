@@ -178,13 +178,11 @@ s32 sbtlCallBtlGetSkilltbl21(SKLID id, s16 *badst, s16 *power) {
     return -1;
 }
 
-/* NON_MATCHING: 48 of 57 words match.  */
-#ifdef NON_MATCHING
 SKLID sbtlGetAutoSkill_ID(sdatUnitWork_t *unit, s32 id) {
-    s32 n = 0;
+    s32 n;
     s32 i;
 
-    for (i = 0; i < 10; i++) {
+    for (i = 0, n = 0; i < 10; i++) {
         if (!datCheckSkillEnable(unit, unit->haveskill[i]) && unit->devilId < 80) {
             continue;
         }
@@ -201,9 +199,7 @@ SKLID sbtlGetAutoSkill_ID(sdatUnitWork_t *unit, s32 id) {
     }
     return SKLID_NONE;
 }
-#else
-INCLUDE_ASM(const s32, "sbtl", sbtlGetAutoSkill_ID);
-#endif
+
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf123);
 

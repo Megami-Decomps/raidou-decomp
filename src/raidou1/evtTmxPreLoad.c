@@ -4,6 +4,7 @@
 #include "sdfMemory.h"
 #include "sdfTex.h"
 #include "evtTmxPreLoad.h"
+#include "sdk_libc.h"
 
 void Destroy_evtTmxPreLoad(dds3ProcessID_t *PID)
 {
@@ -34,15 +35,12 @@ s32 GetIndexFromUID_evtTmxPreLoad(evtTmxPreLoad_t *pData, u32 id)
     return -1;
 }
 
-/* NON_MATCHING: 2 of 19 words match.  */
-#ifdef NON_MATCHING
 s32 evtLeaf28(evtTmxPreLoad_t *pData)
 {
     s32 used[2];
     s32 i;
 
-    used[0] = 0;
-    used[1] = 0;
+    memset(used, 0, sizeof(used));
 
     for (i = 0; i < 2; i++) {
         if (pData->order[i] != 0) {
@@ -51,9 +49,6 @@ s32 evtLeaf28(evtTmxPreLoad_t *pData)
     }
     return used[0] != 0;
 }
-#else
-INCLUDE_ASM(const s32, "evtTmxPreLoad", evtLeaf28);
-#endif
 
 /* NON_MATCHING: 43 of 96 words match.  */
 #ifdef NON_MATCHING

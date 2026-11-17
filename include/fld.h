@@ -233,7 +233,7 @@ void sndSeStatus_sndAt3(void);
 extern sdfVector4_t mapCutSetCamData;
 extern sdfVector4_t mapObjTaskData;
 
-s32 fldFreeMapData(void);
+void fldFreeMapData(void);
 s32 mapGetLight(f32 x, f32 z);
 s32 mapGetAttr(f32 x, f32 z);
 s32 mapGetHit(f32 x, f32 z);

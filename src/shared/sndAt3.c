@@ -662,7 +662,7 @@ void sndBgmFadeOut(void) {
 
 INCLUDE_ASM(const s32, "sndAt3", sndBgmFadeOut2);
 
-/* NON_MATCHING: 17 of 24 words match.  */
+/* NON_MATCHING: 22 of 24 words match.  */
 #ifdef NON_MATCHING
 void sndCallMemFreeDirect(void) {
     if (mnuTitleStreamStatus.allocation != NULL) {

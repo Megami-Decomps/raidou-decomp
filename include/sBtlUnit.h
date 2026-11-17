@@ -139,7 +139,7 @@ s32 sbtlModelDataLoad_sbtlUnit(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckModelDataLoadEnd_sbtlUnit(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlCheckEnshutuSummonUnit2(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetDevilDataSBtlSub3(struct SBTLUNIT_WORK *wk);
-s32 sbtlCheckMapHit_Cross(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis);
+s8 sbtlCheckMapHit_Cross(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis);
 u32 UnitRegist(MODELTYPE major, s32 minor);
 s32 sbtlCallPlayMotionSENow(struct SBTLUNIT_WORK *wk);
 s32 sbtlBtlCheckMotionNoSub(struct SBTLUNIT_WORK *wk, u8 flg, s32 no);
