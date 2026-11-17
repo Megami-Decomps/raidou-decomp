@@ -9,6 +9,9 @@
 orig/*
 !orig/.gitkeep
 
+# Local scripts and notes, never committed
+/local/
+
 # Generated
 /.claude/worktrees/
 /asm/
