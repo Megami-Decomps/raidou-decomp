@@ -174,7 +174,7 @@ void *sdfRelocatePackedResourceWordsFromHeader(sdfBinaryHeader_t *aData)
 {
     void *body = aData + 1;
 
-    sdfAddressResolver(body, body, (u8 *)body + aData->resolveOffset, aData->resolveCount);
+    sdfAddressResolver(body, EE_ADDR_S(body), (u8 *)body + aData->resolveOffset, aData->resolveCount);
     return body;
 }
 
@@ -185,7 +185,7 @@ void *sdfRelocatePackedResourcePayload(sdfBinaryHeader_t *aData)
 {
     void *body = aData + 1;
 
-    sdfAddressResolver(body, body, (u8 *)body + aData->resolveOffset, aData->resolveCount);
+    sdfAddressResolver(body, EE_ADDR_S(body), (u8 *)body + aData->resolveOffset, aData->resolveCount);
     return body;
 }
 

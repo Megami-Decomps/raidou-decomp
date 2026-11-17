@@ -303,7 +303,7 @@ void effCompleteMappedResourceJob(fileRequest_t *job,
     effMappedResource_t *mappedResource;
 
     allocation = fileGetMemHandle(job);
-    sourceAddress = sdfMemLock(allocation);
+    sourceAddress = EE_ADDR(sdfMemLock(allocation));
     mappedResource = effCreateMappedResource((const u8 *)sourceAddress);
     *outMappedResource = mappedResource;
     sdfMemFreeDirect(allocation);
@@ -537,7 +537,7 @@ effMappedResource_t *effCreateStatusBatch(u32 category) {
     batch->count = 1;
     allocation = sdfMemAllocDirect(EFF_STATUS_RECORD_BYTES);
     batch->allocation = allocation;
-    recordAddress = sdfMemLock(allocation);
+    recordAddress = EE_ADDR(sdfMemLock(allocation));
     batch->records = (effMappedRecord_t *)recordAddress;
     memset((void *)recordAddress, 0, EFF_STATUS_RECORD_BYTES);
     {

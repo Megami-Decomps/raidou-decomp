@@ -535,7 +535,7 @@ void fileJobSetPrimaryData(fileJobPayload_t *job, const void *src, s32 size, u16
     fileJobFreePrimaryBuffer(job);
     if (src != NULL && size > 0) {
         job->primary.allocation = sdfMemAllocDirect(size);
-        FILE_JOB_LOCATION_AS_LOCKED_ADDRESS_WORD(job->primary) = sdfMemLock(job->primary.allocation);
+        FILE_JOB_LOCATION_AS_LOCKED_ADDRESS_WORD(job->primary) = EE_ADDR(sdfMemLock(job->primary.allocation));
         job->primary.size = size;
         job->option = option;
         memcpy((void *)FILE_JOB_LOCATION_AS_LOCKED_ADDRESS_WORD(job->primary), src, size);
@@ -565,7 +565,7 @@ void fileJobSetSecondaryData(fileJobPayload_t *job, const void *src, s32 size, u
     fileJobFreeSecondaryBuffer(job);
     if (src != NULL && size > 0) {
         job->secondary.allocation = sdfMemAllocDirect(size);
-        FILE_JOB_LOCATION_AS_LOCKED_ADDRESS_WORD(job->secondary) = sdfMemLock(job->secondary.allocation);
+        FILE_JOB_LOCATION_AS_LOCKED_ADDRESS_WORD(job->secondary) = EE_ADDR(sdfMemLock(job->secondary.allocation));
         job->secondary.size = size;
         job->primary.selector = selector;
         memcpy((void *)FILE_JOB_LOCATION_AS_LOCKED_ADDRESS_WORD(job->secondary), src, size);

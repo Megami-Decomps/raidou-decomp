@@ -1081,7 +1081,7 @@ void mnuSortItems(mnuList_t *menu, s32 keyIndex, s32 ascending) {
 void mnuAllocateListEntries(s32 *list) {
     u32 slotIndex;
     for (slotIndex = 0; slotIndex < MNU_FADING_SLOT_COUNT; slotIndex++) {
-        list[slotIndex + 1] = sdfChipAllocZeroDirect(MNU_FADING_SLOT_BYTES);
+        list[slotIndex + 1] = EE_ADDR_S(sdfChipAllocZeroDirect(MNU_FADING_SLOT_BYTES));
     }
 }
 
@@ -1090,7 +1090,7 @@ void mnuFreeListEntries(s32 *list) {
     s32 *entries = list + 1;
     u32 slotIndex = 0;
     do {
-        sdfChipFreeDirect(*entries++);
+        sdfChipFreeDirect(EE_ADDR_AS(void *, *entries++));
         slotIndex++;
     } while (slotIndex < MNU_FADING_SLOT_COUNT);
 }

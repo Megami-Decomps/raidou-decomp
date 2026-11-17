@@ -681,7 +681,7 @@ s32 evtSetGameData1(evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo) {
     if (wdata->stageTable != NULL) {
         major = wdata->stageTable->MajorNum;
         minor = wdata->stageTable->MinorNum;
-        evtLoadArea_FromMemory(major, minor, wdata->stageF1, wdata->stageF2, wdata->stageTB, 0);
+        evtLoadArea_FromMemory(major, minor, EE_ADDR_S(wdata->stageF1), EE_ADDR_S(wdata->stageF2), wdata->stageTB, 0);
         obj = evtAddViewerObject(0, pInfo);
         obj->entryHeader = evtAddNameTable(wdata->nameTable1[wdata->stageTable->NameIndex], pInfo);
         obj->resourceIds.resourceGroup = major;

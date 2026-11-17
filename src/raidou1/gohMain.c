@@ -145,7 +145,7 @@ INCLUDE_ASM(const s32, "gohMain", gohLeaf28);
 s32 gohCallGetProcessData31(dds3ProcessID_t *PID)
 {
     jmsSeqWork_t *work = dds3GetProcessData(PID);
-    s32 result = menuRunPanel(&work->panel, &work->seqUnit, 0, PID);
+    s32 result = EE_ADDR_S(menuRunPanel(&work->panel, &work->seqUnit, 0, PID));
 
     if (result == 0) {
         if (ScrControl(PID) == 0) {

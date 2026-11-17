@@ -317,7 +317,7 @@ void fldDrawExpandedSpriteStrip(s32 alpha, s32 offset) {
     blendPacket[7] = 0x42;
     sdfDrawTagLink(list, EE_ADDR(blendPacket));
     sprite = sdf2DAllocSprite(1);
-    vertex = EE_ADDR_AS(fldSpriteVertex_t *, sdf2DGetPrimPtr(EE_ADDR_S(sprite)));
+    vertex = EE_ADDR_AS(fldSpriteVertex_t *, sdf2DGetPrimPtr(EE_ADDR_AS(sdfGrPacketHeader_t *, sprite)));
     vertex->r = 0x80;
     vertex->g = 0x80;
     vertex->b = 0x80;

@@ -2646,7 +2646,7 @@ void effEditMColorTrack(effBaObj_t *p) {
 
     effMappingState.items = effData15;
     effMappingState.itemCount = 8;
-    object = p->x0C;
+    object = EE_ADDR_S(p->x0C);
     effEditColorTrack(object + 0x7C, object + 0xA0, ((effMappingObject_t *)object)->value108);
     effMappingState.items = effData13;
     effMappingState.itemCount = 8;

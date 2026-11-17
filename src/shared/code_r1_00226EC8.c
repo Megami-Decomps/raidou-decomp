@@ -5799,14 +5799,14 @@ void effDrawTrackSet(effTrackSet_t *track, const effMatrix4_t *matrix)
         effDrawTrackSetWork.faceIndex = effDrawTrackSetData;
         while (rows >= 25) {
             rows -= 25;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawTrackSetWork)));
             effDrawTrackSetWork.vertex += 25;
             effDrawTrackSetWork.vertexColor += 25;
         }
         if (rows >= 5) {
             effDrawTrackSetWork.pointCount = rows;
             effDrawTrackSetWork.faceCount = 3 * (rows / 5);
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawTrackSetWork)));
         }
         break;
     case 1:
@@ -5815,7 +5815,7 @@ void effDrawTrackSet(effTrackSet_t *track, const effMatrix4_t *matrix)
         effDrawTrackSetWork.faceIndex = effDrawTrackSetData2;
         while (rows >= 13) {
             rows -= 13;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawTrackSetWork)));
             effDrawTrackSetWork.vertex += 13;
             effDrawTrackSetWork.vertexColor += 13;
         }
@@ -5826,14 +5826,14 @@ void effDrawTrackSet(effTrackSet_t *track, const effMatrix4_t *matrix)
         effDrawTrackSetWork.faceIndex = effDrawTrackSetData3;
         while (rows >= 32) {
             rows -= 32;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawTrackSetWork)));
             effDrawTrackSetWork.vertex += 32;
             effDrawTrackSetWork.vertexColor += 32;
         }
         if (rows >= 4) {
             effDrawTrackSetWork.pointCount = rows;
             effDrawTrackSetWork.faceCount = 2 * (rows >> 2);
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawTrackSetWork)));
         }
         break;
     case 3:
@@ -5843,7 +5843,7 @@ void effDrawTrackSet(effTrackSet_t *track, const effMatrix4_t *matrix)
         effDrawTrackSetWork.faceIndex = effDrawTrackSetData4;
         while (rows >= 32) {
             rows -= 32;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawTrackSetWork)));
             effDrawTrackSetWork.vertex += 32;
             effDrawTrackSetWork.vertexColor += 32;
             effDrawTrackSetWork.uv += 32;
@@ -5851,7 +5851,7 @@ void effDrawTrackSet(effTrackSet_t *track, const effMatrix4_t *matrix)
         if (rows >= 4) {
             effDrawTrackSetWork.pointCount = rows;
             effDrawTrackSetWork.faceCount = 2 * (rows >> 2);
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawTrackSetWork)));
         }
         break;
     default:
@@ -6192,7 +6192,7 @@ void billDrawClassUpdatedCellBlend(billCellDrawWork_t *work) {
         dst->scale = work->scale;
         SDF_VU0_COPYVECTOR(dst->transform, work);
         SDF_VU0_COPYVECTOR(dst->transform + 0x10, work->transform);
-        effRunClassPostFrame((s32)dst);
+        effRunClassPostFrame((effClassWork_t *)dst);
         out->type = ((effBillTimedHeader_t *)config)->alphaTrack.surfaceIndex;
         out->flag = ((effBillOutputHeader_t *)config)->outputMode;
         SDF_VU0_LOADVECTOR(work->transform);
@@ -6746,7 +6746,7 @@ void effRebuildSurfaceHandles(poltHandle_t *node, u16 kind, void *source) {
         sdfMemFreeDirect(node->handleBuffer);
     }
     node->handleBuffer = sdfMemAllocDirect(size);
-    node->index = sdfMemLock(node->handleBuffer);
+    node->index = EE_ADDR(sdfMemLock(node->handleBuffer));
     for (i = 0; i < node->handleCount; i++) {
         handle = effCreateSurfaceGridNode(params->opaque00[0], params->opaque00[1]);
         ((u32 *)node->index)[i] = (u32)handle;
@@ -7104,7 +7104,7 @@ void effDrawSurfaceTrailHistory(effSurfaceTrailHistory_t *history, u32 color) {
     if (history->activePointCount < 6) {
         return;
     }
-    sdf3DPrimLinkMat(effCurrentRenderPacket, history->resourceHandle, 0);
+    sdf3DPrimLinkMat(effCurrentRenderPacket, EE_ADDR_AS(sdfMat_t *, history->resourceHandle), 0);
     recent = history->activePointCount;
     start[0] = history->nextPointWriteIndex - recent;
     if (start[0] < 3) {
@@ -7128,7 +7128,7 @@ void effDrawSurfaceTrailHistory(effSurfaceTrailHistory_t *history, u32 color) {
         while (remaining >= 15) {
             remaining -= 12;
             list = effCurrentRenderPacket;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawSurfaceTrailHistoryWork));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawSurfaceTrailHistoryWork)));
             effDrawSurfaceTrailHistoryWork.vertex += 12;
             effDrawSurfaceTrailHistoryWork.vertexColor += 12;
         }
@@ -7136,7 +7136,7 @@ void effDrawSurfaceTrailHistory(effSurfaceTrailHistory_t *history, u32 color) {
             draw->faceCount = (remaining / 3) * 4 - 4;
             draw->pointCount = remaining;
             list = effCurrentRenderPacket;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(draw));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(draw)));
             draw->vertexColor += remaining;
         }
     }
@@ -7148,7 +7148,7 @@ void effDrawSurfaceTrailHistory(effSurfaceTrailHistory_t *history, u32 color) {
         colors[3] = colors[2] = colors[1] = effDrawSurfaceTrailHistoryWork.vertexColor[-3];
     effWork2.color = color;
     list = effCurrentRenderPacket;
-    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effWork2));
+    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effWork2)));
 }
 
 void effSubmitIndexedRenderPacket(u32 index) {
@@ -8342,14 +8342,14 @@ void effDrawFivePointGroups(effPointSet_t *set, effMatrix4_t *matrix) {
         effWork3[0].faceIndex = effDrawFivePointGroupsData;
         while (remaining >= 0xF) {
             remaining -= 0xA;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork3));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(effWork3)));
             effWork3[0].vertex += 0xA;
             effWork3[0].vertexColor += 0xA;
         }
         if (remaining >= 0xA) {
             effWork3[0].faceCount = 8;
             effWork3[0].pointCount = remaining;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork3));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(effWork3)));
         }
         if (set->flag == 0) {
             packet = (effGsPacket_t *)sdfGrAllocPacketBuff(0x30);
@@ -10109,7 +10109,7 @@ void effDrawRibbon(effRibbonWork_t *work, const effMatrix4_t *matrix) {
                 effDrawRibbonWork.faceIndex = effData7;
                 while (remaining >= 12) {
                     remaining -= 8;
-                    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawRibbonWork));
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawRibbonWork)));
                     effDrawRibbonWork.vertex += 8;
                     effDrawRibbonWork.vertexColor += 8;
                     effDrawRibbonWork.uv += 8;
@@ -10117,7 +10117,7 @@ void effDrawRibbon(effRibbonWork_t *work, const effMatrix4_t *matrix) {
                 if (remaining >= 8) {
                     effDrawRibbonWork.faceCount = 6;
                     effDrawRibbonWork.pointCount = remaining;
-                    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawRibbonWork));
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effDrawRibbonWork)));
                 }
             }
             positions += positionStep;
@@ -10728,7 +10728,7 @@ u8 *effAllocateTexturedStripWork(u32 count, u32 repeat) {
 
 /* Create a scaly strip and retain its shared texture reference. */
 u32 effCreateTexturedStripWithSharedTexture(u32 count, u32 repeat) {
-    u32 strip = effAllocateTexturedStripWork(count, repeat);
+    u32 strip = EE_ADDR(effAllocateTexturedStripWork(count, repeat));
     effRetainScalyTextureReference();
     return strip;
 }
@@ -10741,7 +10741,7 @@ void effReleaseScalyStripResources(u8 *work) {
 
 /* Recreate the source strip's dimensions and retain another shared texture reference. */
 u32 effAllocateStripFromWorkAndRetainTexture(u8 *work) {
-    u32 strip = effAllocateTexturedStripWork(((effStripWork_t *)work)->count, ((effStripWork_t *)work)->repeat);
+    u32 strip = EE_ADDR(effAllocateTexturedStripWork(((effStripWork_t *)work)->count, ((effStripWork_t *)work)->repeat));
     effSharedStripReferenceCount++;
     return strip;
 }
@@ -10749,7 +10749,7 @@ u32 effAllocateStripFromWorkAndRetainTexture(u8 *work) {
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effDrawScalyTexturedStrip);
 
 void effLoadScalyTexture(void) {
-    effLoadScalyTextureData = (u32)sdfDevLoadFileEx("/effect/scaly00.tmx", &effScalyTextureHandle, 0);
+    effLoadScalyTextureData = (struct sdfMemHandle_t *)sdfDevLoadFileEx("/effect/scaly00.tmx", &effScalyTextureHandle, 0);
 }
 
 u32 effGetScalyTextureHandle(void) {
@@ -11070,14 +11070,14 @@ void effDrawThreePointGroups(effPointSet_t *set, effMatrix4_t *matrix) {
         effWork4[0].faceIndex = (u32 *)effData8;
         while (remaining >= 0xF) {
             remaining -= 0xC;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork4));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(effWork4)));
             effWork4[0].vertex += 0xC;
             effWork4[0].vertexColor += 0xC;
         }
         if (remaining >= 6) {
             effWork4[0].faceCount = 4;
             effWork4[0].pointCount = remaining;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork4));
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(effWork4)));
         }
         if (set->flag == 0) {
             packet = (effGsPacket_t *)sdfGrAllocPacketBuff(0x30);

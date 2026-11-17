@@ -220,7 +220,7 @@ void mnuResetTitleEffectState(s32 command) {
     if (p2sdGetPcmState() != 0) {
         p2sdSyncSound();
     }
-    p2sdLoadPcmFile(command, 0x7f);
+    p2sdLoadPcmFile(EE_ADDR_AS(const char *, command), 0x7f);
     effectState->frameCounter = 0;
 }
 
@@ -360,7 +360,7 @@ void sndInitializeStreamTransferBuffers(s32 wordCount) {
     s32 bufferBytes = wordCount * SND_TRANSFER_WORD_BYTES;
     s32 halfwordIndex;
 
-    sndInitializeStreamTransferBuffersData = sdfMemGetPtr(sdfMemAllocDirect(bufferBytes));
+    sndInitializeStreamTransferBuffersData = EE_ADDR(sdfMemGetPtr(sdfMemAllocDirect(bufferBytes)));
     for (halfwordIndex = 0; halfwordIndex < wordCount * SND_TRANSFER_WORD_HALFWORDS; halfwordIndex++) {
         ((u16 *)sndInitializeStreamTransferBuffersData)[halfwordIndex] = 0;
     }

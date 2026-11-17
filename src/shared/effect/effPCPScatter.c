@@ -1541,7 +1541,7 @@ effPCPWhirlwindPoly_tag *effPCPWhirlwindPolyCreatePCF(void *parameterTable)
 effPCPWhirlwindPoly_tag *effPCPWhirlwindPolyCopy(effPCPWhirlwindPoly_tag *work) {
     effPCPWhirlwindPoly_tag *child;
 
-    child = effPCPWhirlwindPolyCreate(&work->param, NULL);
+    child = effPCPWhirlwindPolyCreate(&work->param, 0);
     dds3WhirlwindPolyListCopyTex(child->hPoly, work->hPoly);
     return child;
 }
@@ -1747,7 +1747,7 @@ effPCPWhirlwind2Poly_tag *effPCPWhirlwind2PolyCopy(effPCPWhirlwind2Poly_tag *wor
 {
     effPCPWhirlwind2Poly_tag *child;
 
-    child = effPCPWhirlwind2PolyCreate(&work->param, NULL);
+    child = effPCPWhirlwind2PolyCreate(&work->param, 0);
     dds3WhirlwindPolyListCopyTex(child->hPoly, work->hPoly);
     return child;
 }
@@ -1972,7 +1972,7 @@ effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCopy(effPCPWhirlwind3Poly_tag *wor
 {
     effPCPWhirlwind3Poly_tag *child;
 
-    child = effPCPWhirlwind3PolyCreate(&work->param, NULL);
+    child = effPCPWhirlwind3PolyCreate(&work->param, 0);
     dds3WhirlwindPolyListCopyTex(child->hPoly, work->hPoly);
     return child;
 }
@@ -2204,7 +2204,7 @@ effPCPWwSpherePoly_tag *effPCPWwSpherePolyCopy(effPCPWwSpherePoly_tag *work)
 {
     effPCPWwSpherePoly_tag *child;
 
-    child = effPCPWwSpherePolyCreate(&work->param, NULL);
+    child = effPCPWwSpherePolyCreate(&work->param, 0);
     dds3WhirlwindPolyListCopyTex(child->hPoly, work->hPoly);
     return child;
 }

@@ -899,7 +899,7 @@ void billCopyCurrentRecordToSnapshot(billHandle_t *obj, billSnapshot_t *snapshot
 billHandle_t *dds3BillboardCreate(s32 index, addr_t data) {
     billHandle_t *newobj;
 
-    newobj = dds3BillboardFuncTable[index].create(data);
+    newobj = dds3BillboardFuncTable[index].create(EE_ADDR_AS(void *, data));
     dds3Billboard_BasicInit(newobj);
     newobj->type = index;
     newobj->callback = dds3BillboardFuncTable[index].draw;

@@ -661,7 +661,7 @@ void aDrawBoxG(s32 x, s32 y, s32 w, s32 h, u32 r0, u32 g0, u32 b0, u32 a0, u32 r
     sdfDrawTagInit(command);
     packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 4)));
     sdf2DMakePrimPacketHeader(packet, 0x4C, 2, 0x41, 4);
-    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_AS(sdfGrPacketHeader_t *, packet)));
     for (i = 0, pos = coords; i < 4; i++) {
         if (i == 0) {
             dst[0] = (u64)r0 | ((u64)g0 << 32);
