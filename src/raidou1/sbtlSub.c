@@ -200,7 +200,17 @@ s32 sbtlGetRotateDeg(const sdfVector4_t *rot, f32 deg) {
 
 INCLUDE_ASM(const s32, "sbtlSub", sbtlSetRotateDeg);
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetRotateDegX);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtlSub.c:190, match, same function 1.00 (words 28/28, calls 1.00, shape 1.00) */
+s32 sbtlGetRotateDegX(const sdfVector4_t *rot, f32 deg) {
+    f32 axis[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+
+    SDF_VU0_LOADVECTOR(axis);
+    FromRotation(-deg * 0.017453294f);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(rot);
+    Mult();
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlSub", sbtlCheckCrossBox);
 
@@ -265,8 +275,6 @@ INCLUDE_ASM(const s32, "sbtlSub", sbtlCheckCrossCircle_Rot);
 #endif
 
 INCLUDE_ASM(const s32, "sbtlSub", sbtlCheckCrossCylinder_Circle);
-
-INCLUDE_RODATA(const s32, "sbtlSub", sbtlGetRotateDegXTable);
 
 f32 sbtlGetChorikiDeg(const sdfVector4_t *pos, const sdfVector4_t *rot, const sdfVector4_t *target, f32 per) {
     sdfVector4_t p0;

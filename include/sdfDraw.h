@@ -18,6 +18,7 @@ void sdfPreDrawChainLink(sdfPreDrawChain_t *aChain, sdfPreDrawTag_t *aTag);
 void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);
 void sdfDrawTagLinkCall(sdfDrawTag_t *aTag, addr_t aPacket);
 void sdfDrawTagLinkRefGif(sdfDrawTag_t *aTag, addr_t aPacket);
+void sdfGrSetFrameMaskRGB(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext);
 void sdfGrSetFrameMaskReset(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext);
 void sdfGrReqDraw(sdfDrawTag_t *aTag, sdfPreDrawChain_t *aPreDraw);
 sdfDrawTag_t *sdfGrOtClose(sdfGrOt_t *aOt);

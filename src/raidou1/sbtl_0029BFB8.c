@@ -634,7 +634,10 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_CHUUSEI);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_ITEMFLG);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlLeaf97);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00), proto differs */
+s32 sbtlLeaf97(dds3ProcessID_t *id) {
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetViceLevel);
 

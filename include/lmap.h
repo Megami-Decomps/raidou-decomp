@@ -75,7 +75,6 @@ void M_UpdateKaya(struct tagLMAP_CHR_WORK *kaya);
 s16 MapDat_GetRouteDat(s32 list_no, s32 type);
 void MdlUpdate(struct tagLMP_MODEL_WK *wk);
 s32 NpcDelete(void);
-dds3ProcessFunc_t Process_nwdNews(dds3ProcessID_t *PID);
 void Release_lmap(void);
 s32 Start_lmap(s8 aFieldNo);
 void Util_CalcLength(s16 *a_pDat, s16 a_no, s16 a_type);

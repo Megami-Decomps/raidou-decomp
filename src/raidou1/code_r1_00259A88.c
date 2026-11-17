@@ -52,6 +52,8 @@
 #include "EventBit.h"
 #include "fldProcess.h"
 #include "sdfMath.h"
+#include "scrTraceCode.h"
+#include "dds3KernelDraw.h"
 
 /* NON_MATCHING: 0 of 67 words match. Retail copies sbtlSetVibeTable onto the stack and indexes the copy; this reads the table in place, vector checked (6 rows, table reads). */
 #ifdef NON_MATCHING
@@ -1540,7 +1542,10 @@ s32 sbtlCallBtlSearchUnitID7(s32 x, s32 y)
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID7);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlLeaf3);
+s32 sbtlLeaf3(struct SBTLUNIT_WORK *wk, s16 *mode)
+{
+    return 2;
+}
 
 s32 sbtlRefSbtl15(s32 x, s32 y)
 {
@@ -1986,7 +1991,27 @@ s32 sbtlCheckArea(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos)
     return 0;
 }
 
+/* NON_MATCHING: 7 of 63 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_r1_00259A88.c:1973, near, same function 0.97 (words 63/61, calls 1.00, shape 0.94) */
+s32 sbtlCheckAreaCount(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos)
+{
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && sbtlCheckDamageTarget(unit) && (unit->field414 & 7) && (unit->field414 & 7) != (wk->field414 & 7)) {
+            if (sbtlCheckCrossCircle(pos, r, &unit->pos, unit->model->field11C)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckAreaCount);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckArea_Atk);
 
@@ -2040,7 +2065,10 @@ s8 CheckAIScript(struct SBTLUNIT_WORK *wk)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlLeaf64);
+struct SBTLAI_WORK *sbtlLeaf64(void)
+{
+    return NULL;
+}
 
 SBTLAI_WORK *Create_sbtlAI(void)
 {
@@ -2057,7 +2085,13 @@ SBTLAI_WORK *Create_sbtlAI(void)
     return aiwk;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", Proc_sbtlAI);
+s32 Proc_sbtlAI(SBTLAI_WORK *aiwk)
+{
+    if (aiwk != NULL) {
+        sdfMemFreeDirect(aiwk->handle);
+    }
+    return 1;
+}
 
 /* NON_MATCHING: 176 of 239 words match. Retail jumps to one epilogue with the return value in the delay slot and lays the stat switch out as a tree (==2, >2, !=1), cc1 emits ==1/==2 and duplicates the epilogue; tried case order, default/case 0, enum and narrower casts on the index; flow walked against the asm; SBTL_WORK 0x1C4 is flg; SBTLAI_WORK gains backmode/status (HD order, shifted by the R1 handle); SBTLUNIT_WORK.field30 vector; vector checked (32 rows, all take the early return 0). */
 #ifdef NON_MATCHING
@@ -2220,7 +2254,17 @@ s32 sbtlCreateAIScript(void)
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallReleaseScript);
 
+/* NON_MATCHING: 9 of 11 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_r1_00259A88.c:2215, near, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+s32 sbtlCallRegistScript2(void)
+{
+    wk_sbtl->hAIScript = scrRegistScript2(ai_scr);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallRegistScript2);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallReleaseScript2);
 
@@ -2440,7 +2484,22 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSetMotionSBtlUnit);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetAITBL);
 
+/* NON_MATCHING: 21 of 22 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/shared/script/scrCommonCommand.c:489, near, same function 0.92 (words 22/22, calls 0.75, shape 1.00) */
+s32 sbtlCallGetIntPara31(void)
+{
+    s32 frames;
+    s32 alpha;
+
+    frames = scrGetIntPara(0);
+    alpha = scrGetIntPara(1);
+    dds3SetBlur(frames, alpha, scrGetIntPara(2));
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara31);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallEncGetPointNums4);
 
@@ -2460,9 +2519,27 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara33);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara34);
 
+/* NON_MATCHING: 5 of 10 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
+s32 sbtlCallGetIntPara35(void) {
+    wk_sbtl = scrGetIntPara(0);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara35);
+#endif
 
+/* NON_MATCHING: 5 of 10 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
+s32 sbtlCallGetIntPara36(void) {
+    wk_sbtl = scrGetIntPara(0);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara36);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetIntReturnValue10);
 
@@ -2476,10 +2553,28 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetFloatPara);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetFloatReturnValue);
 
+/* NON_MATCHING: 5 of 10 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
+s32 sbtlCallGetIntPara3(void) {
+    wk_sbtl = scrGetIntPara(0);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara3);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetIntReturnValue);
 
+/* NON_MATCHING: 5 of 10 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
+s32 sbtlCallGetIntPara4(void) {
+    wk_sbtl = scrGetIntPara(0);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallGetIntPara4);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallSetIntReturnValue2);

@@ -71,7 +71,13 @@ SBTLUNIT_MODEL *sbtlCreate(void) {
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCreate);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlDelete);
+s32 sbtlDelete(SBTLUNIT_MODEL *model)
+{
+    if (model != NULL) {
+        sdfMemFreeDirect(model->handle);
+    }
+    return 1;
+}
 
 s32 sbtlProc(struct SBTLUNIT_WORK *wk) {
     if ((wk->field414 & 0x80) || (wk->vstatus & 0x4000)) {
@@ -123,9 +129,20 @@ s32 sbtlCheckEquation(struct SBTLUNIT_WORK *wk) {
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetChkskl);
 
+/* NON_MATCHING: 5 of 15 words match.  */
+#ifdef NON_MATCHING
+void SetChkskl(struct SBTLUNIT_WORK *wk, SKLID sklid)
+{
+    wk->model->chkskl[sklid / 32] |= 1 << sklid;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlActAI", SetChkskl);
+#endif
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf65);
+void sbtlLeaf65(struct SBTLUNIT_WORK *wk, SKLID sklid)
+{
+    wk->model->chkskl[sklid / 32] &= ~(1 << sklid);
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetUseskl);
 
@@ -138,7 +155,10 @@ void SetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid) {
 INCLUDE_ASM(const s32, "sbtlActAI", SetUseskl);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlResetUseskl);
+void sbtlResetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid)
+{
+    wk->model->useskl[sklid / 32] &= ~(1 << sklid);
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckMeshiyose);
 
@@ -227,7 +247,10 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlGetBadStatus6);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckCharmTarget);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf66);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, near, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf66(void) {
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckCharmTarget);
 
@@ -908,7 +931,10 @@ s32 sbtlCallBtlCheckEquation(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf68);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf68(void) {
+    return 1;
+}
 
 s32 sbtlEAIInit_None(struct SBTLUNIT_WORK *wk) {
     s16 stat = 1;
@@ -1409,13 +1435,21 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlPrivAreaCheck);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckSearchEnemy);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf69);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtlEff_00289E50.c:75, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void sbtlLeaf69(dds3ProcessID_t *id) {
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf70);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtlEff_00289E50.c:75, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void sbtlLeaf70(dds3ProcessID_t *id) {
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf71);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtlEff_00289E50.c:75, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void sbtlLeaf71(dds3ProcessID_t *id) {
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf72);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtlEff_00289E50.c:75, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void sbtlLeaf72(dds3ProcessID_t *id) {
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetNoMP_sbtlActAI);
 

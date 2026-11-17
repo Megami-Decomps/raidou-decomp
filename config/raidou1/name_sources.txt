@@ -9110,7 +9110,7 @@
 0x00314200	evtCallSetOt2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour evtStartTerminalMenuMessage; calls eglSetOt
 0x00314298	evtFunc15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour evtStartTerminalMenuMessage; no named callee, caller or string
 0x00314398	evtCallGrAllocPacketBuff3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour evtStartTerminalMenuMessage; calls sdfGrAllocPacketBuff
-0x00314568	evtCallMemcpy	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour evtStartTerminalMenuMessage; calls memcpy
+0x00314568	effPkt3DPrimMakePoly2	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is effPkt3DPrimMakePoly (effPacket.c) word for word except attr|0x40 and effPktDefaultFaceIndex2; old name tier D derived-callee; name free in both games; replaces evtCallMemcpy
 0x00314958	evtFunc16	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour evtStartTerminalMenuMessage; no named callee, caller or string
 0x003149D8	evtFunc17	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour evtStartTerminalMenuMessage; no named callee, caller or string
 0x00314A98	evtCreateLinkSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour evtStartTerminalMenuMessage; called by pipeCreateLink

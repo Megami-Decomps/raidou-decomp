@@ -20,5 +20,7 @@ extern char *sblist_mdlhitmenu_edit_para00[];
 extern char *sblist_mdlhitmenu_edit_para02[];
 extern char *sblist_mdlhitmenu_edit_para00_0[];
 extern char *sblist_mdlhitmenu_edit_para00_1[];
+extern char sbtlMotionDataSaveData4[];
+extern char sbtlData80[];
 
 #endif

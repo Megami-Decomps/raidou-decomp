@@ -27,6 +27,11 @@
 #include "fpu.h"
 #include "code_0027A1D0.h"
 #include "code_r1_0017BBD8.h"
+#include "sBtlSM.h"
+#include "sdfPacketBuff.h"
+#include "sdfDraw.h"
+#include "sdf2D.h"
+#include "sdfPrim.h"
 
 enum {
     BTL_RESOURCE_DESCRIPTOR_BYTES = 0x48,
@@ -378,7 +383,35 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(SBTLPROJECTEDSCR
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallFptodp);
 
 #endif
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallGrAllocPacketBuff);
+s32 sbtlCallGrAllocPacketBuff(s32 x0, s32 y0, s32 x1, s32 y1,
+                              s32 x2, s32 y2, s32 x3, s32 y3,
+                              s32 u, s32 v, s32 width, s32 height,
+                              const s32 *colors, sdfTexHandle_t *texture, s32 ot)
+{
+    sdfDrawTag_t *list;
+    s32 uFixed;
+    s32 vFixed;
+    s32 uRight;
+    s32 vBottom;
+    sdfGrOt_t *surface;
+
+    list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    sdf2DLinkTexPacket(list, texture, 0);
+    uFixed = u * 0x10;
+    vFixed = v * 0x10;
+    uRight = uFixed + width * 0x10;
+    vBottom = vFixed + height * 0x10;
+    sdfPrimLinkGt4(list, 0x40,
+        x0 * 0x10 + 0x7000, y0 * 8 + 0x7900, uFixed, vFixed, colors[0],
+        x1 * 0x10 + 0x7000, y1 * 8 + 0x7900, uRight, vFixed, colors[1],
+        x2 * 0x10 + 0x7000, y2 * 8 + 0x7900, uFixed, vBottom, colors[2],
+        x3 * 0x10 + 0x7000, y3 * 8 + 0x7900, uRight, vBottom, colors[3],
+        0xFEFFD0, NULL);
+    surface = &sdfGrOtTable[ot];
+    surface->regFunc(surface, list);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetLargePara);
 
@@ -424,7 +457,16 @@ INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfter);
 
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", slKanjiDrawN);
 
+/* NON_MATCHING: 5 of 7 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002A38D8.c:220, adapt, same function 0.94 (words 7/8, calls 1.00, shape 0.93) */
+struct SBTLSKILLP_TBL *sbtlGetSkillNameFont(SKLID skillid)
+{
+    return &sbtlData95[skillid];
+}
+#else
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetSkillNameFont);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawSkillName);
 

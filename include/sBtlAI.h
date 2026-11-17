@@ -39,7 +39,8 @@ typedef struct SBTLAI_WORK {
 } SBTLAI_WORK;
 
 s8 CheckAIScript(struct SBTLUNIT_WORK *wk);
-s32 Proc_sbtlAI(struct SBTLUNIT_WORK *wk);
+s32 Proc_sbtlAI(SBTLAI_WORK *aiwk);
+void Support_SetAisyo(s32 unitIndex, s32 mode);
 s32 SEquationno_00(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 SEquationno_05(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 SEquationno_07(struct SBTLUNIT_WORK *wk, SKLID skillid);

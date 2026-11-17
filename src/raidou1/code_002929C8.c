@@ -7,6 +7,8 @@
 #include "code_r1_002C8188.h"
 #include "sBtlEff.h"
 #include "code_002929C8.h"
+#include "dds3KernelDraw.h"
+#include "code_r1_002CA3F0.h"
 
 s32 sbtlCheckLoadFlg(void) {
     u32 load;
@@ -133,7 +135,19 @@ INCLUDE_ASM(const s32, "code_002929C8", sbtlBtlDrawTextSub);
 
 INCLUDE_ASM(const s32, "code_002929C8", sbtlLeaf81);
 
+/* NON_MATCHING: 10 of 44 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_0018CE10.c:43, near, same function 0.95 (words 44/47, calls 1.00, shape 0.92), proto differs */
+void sbtlDrawSprite_RGBA2(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo)
+{
+    eglSetOt(a_otNo);
+    eglLinkTest(1, 5, 1, 1, 0, 0, 1, 1);
+    eglLinkAlpha(0);
+    effDrawSpriteWithCornerFade(a_x * 16, a_y * 8, a_z, a_alphaRate, 96, a_hSpr, a_sprNo, a_otNo);
+}
+#else
 INCLUDE_ASM(const s32, "code_002929C8", sbtlDrawSprite_RGBA2);
+#endif
 
 INCLUDE_ASM(const s32, "code_002929C8", sbtlRefSbtl50);
 
@@ -302,7 +316,10 @@ INCLUDE_ASM(const s32, "code_002929C8", sbtlBattleEnd);
 
 INCLUDE_ASM(const s32, "code_002929C8", sbtlCallBtlSearchUnitID26);
 
-INCLUDE_ASM(const s32, "code_002929C8", sbtlLeaf82);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00), proto differs */
+s32 sbtlLeaf82(void) {
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002929C8", sbtlCallBtlCheckTutorialBattle);
 

@@ -25,6 +25,10 @@
 #include "code_r1_0019D3A8.h"
 #include "code_r1_0021CE60.h"
 #include "code_r1_0017BBD8.h"
+#include "eff_editor_menu.h"
+#include "dds3GlobalWork.h"
+#include "dds3PadManager.h"
+#include "billManager.h"
 
 /* Project spellings for the SCE iox layout, with retail's ordinary word alignment. */
 typedef struct sdfSceIoStat_t {
@@ -88,7 +92,7 @@ enum {
     BTL_PACKED_SCREEN_Y_BIAS = 0x7900,
     BTL_HP_PERCENT_SCALE = 100,
     BTL_DIRECTORY_PATH_BYTES = 0x70,
-    BTL_BUILTIN_NAME_COUNT = 8,
+    BTL_BUILTIN_NAME_COUNT = 62,
     BTL_DIRECTORY_FLAG_CLEAR = 0x1000,
     BTL_RESOURCE_ENTRY_BYTES = sizeof(SBTLRESOURCE_ENTRY),
     /* High-bit selectors are game-specific callback-table positions. */
@@ -392,10 +396,10 @@ void btlReplaceResourceHandle(SBTLRESOURCE_DESCRIPTOR *descriptor, TMX_HEADER_t 
 void btlBossDebugPrintfN(s32 x, s32 y, s32 color, s32 format, ...) {
 }
 
-void btlDebugDrawText(void) {
+void btlDebugDrawText(s32 x, s32 y, s32 style, const char *text) {
 }
 
-void btlDebugDrawRectangle(void) {
+void btlDebugDrawRectangle(s32 x, s32 y, s32 width, s32 height) {
 }
 
 void btlDebugDrawTwoColorRectangle(void) {
@@ -445,9 +449,47 @@ INCLUDE_ASM(const s32, "code_r1_0017BBD8", pbLeaf18);
 void btlDebugMenuRecordNoOp(void *context) {
 }
 
-INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlFindEntryByCommand);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_001F6110.c:2933, rework, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+u8 *btlFindEntryByCommand(EffQueuedFileObject *list, s32 command) {
+    s32 i;
+    EffEditorRow *entry = list->rows;
+    for (i = 0; i < list->count; i++) {
+        if ((s32)entry->payload.numeric.target == command) {
+            return (u8 *)entry;
+        }
+        entry++;
+    }
+    return (u8 *)entry;
+}
 
-INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlCountNonPartOpcodes);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_001F6110.c:2947, rework, same function 1.00 (words 24/24, calls 1.00, shape 1.00) */
+s32 btlCountNonPartOpcodes(EffQueuedFileObject *list) {
+    u32 count;
+    EffEditorRow *entry;
+    u32 i;
+    s32 found;
+    if (list == NULL) {
+        return 0;
+    }
+    count = list->count;
+    if (count == 0) {
+        return 0;
+    }
+    entry = list->rows;
+    found = 0;
+    for (i = 0; i < count; i++) {
+        switch (entry->kind) {
+        case 0x14:
+        case 0x15:
+            break;
+        default:
+            found++;
+            break;
+        }
+        entry++;
+    }
+    return found;
+}
 
 s32 btlOpenPfsDebugDirectory(const char *directoryName) {
     char pathBuffer[BTL_DIRECTORY_PATH_BYTES];
@@ -470,7 +512,19 @@ void btlClosePfsDebugDirectory(s32 directoryHandle) {
     sceDclose(directoryHandle);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlReadBattleResourceDirectoryEntry);
+s32 btlReadBattleResourceDirectoryEntry(s32 directoryHandle, fsDirectoryEntry_t *reader)
+{
+    if (sdfHddValid != 0) {
+        return sceDread(directoryHandle, reader);
+    }
+    if ((u32)btlBuiltinResourceNameIndex >= BTL_BUILTIN_NAME_COUNT) {
+        return 0;
+    }
+    strcpy(reader->name, dds3EffectFileNameTable2[btlBuiltinResourceNameIndex]);
+    reader->stat.mode &= ~BTL_DIRECTORY_FLAG_CLEAR;
+    btlBuiltinResourceNameIndex++;
+    return strlen(reader->name);
+}
 
 /* Build a scan-order list of built-in names and enabled resource-file categories. */
 SBTLRESOURCEENTRY_LIST *btlScanDirectory(const char *path, s32 flags) {
@@ -624,9 +678,196 @@ void btlAppendEntry(SBTLRESOURCEENTRY_LIST *list, const char *name, s32 category
     list->count++;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlCreateResourceDescriptor);
+SBTLRESOURCE_DESCRIPTOR *btlCreateResourceDescriptor(SBTLRESOURCEENTRY_LIST *list) {
+    SBTLRESOURCE_DESCRIPTOR *descriptor = sdfChipAllocDirect(sizeof(SBTLRESOURCE_DESCRIPTOR));
 
-INCLUDE_ASM(const s32, "code_r1_0017BBD8", Draw_effLensFlare);
+    descriptor->originX = 8;
+    descriptor->originY = 8;
+    descriptor->selectionStatus = BTL_RESOURCE_SELECTION_PENDING;
+    descriptor->entryCount = list->count;
+    descriptor->word10 = 0;
+    descriptor->selectedIndex = 0;
+    descriptor->visibleIndex = 0;
+    descriptor->previewActive = 0;
+    descriptor->repeatDelay = 0;
+    descriptor->drawSurfaceIndex = BTL_RESOURCE_DRAW_SURFACE;
+    descriptor->borderColor = 0x80806020;
+    descriptor->fillColor = 0x60000000;
+    descriptor->firstVisibleEntry = list->head;
+    descriptor->selectedEntry = list->head;
+    descriptor->cachedEntry = NULL;
+    descriptor->texture = 0;
+    descriptor->entryList = list;
+    return descriptor;
+}
+
+s32 Draw_effLensFlare(SBTLRESOURCE_DESCRIPTOR *descriptor) {
+    SBTLRESOURCE_ENTRY *visibleEntry;
+    sdfDrawTag_t *packetList;
+    sdfGrOt_t *surface;
+    s32 drawnRows;
+    s32 topRow;
+    s32 contentRow;
+    s32 packedY;
+
+    if (descriptor->repeatDelay != 0) {
+        descriptor->repeatDelay--;
+    } else if (descriptor->firstVisibleEntry == NULL) {
+        if (dds3PadBitTable[1] < 0) {
+            descriptor->selectionStatus = BTL_RESOURCE_SELECTION_CANCELED;
+        }
+    } else if (descriptor->selectionStatus == BTL_RESOURCE_SELECTION_PENDING) {
+        SBTLRESOURCE_ENTRY *navigationEntry;
+        SBTLRESOURCE_ENTRY *selectedEntry;
+        s32 navigationStep;
+        if ((dds3PadBitTable[6] & 2) != 0) {
+            if (descriptor->selectedEntry->prev != NULL) {
+                descriptor->selectedEntry = descriptor->selectedEntry->prev;
+                descriptor->selectedIndex--;
+                if (descriptor->visibleIndex != 0) {
+                    descriptor->visibleIndex--;
+                }
+                if (descriptor->selectedEntry == descriptor->firstVisibleEntry) {
+                    if (descriptor->selectedEntry->prev != NULL) {
+                        descriptor->firstVisibleEntry = descriptor->selectedEntry->prev;
+                        descriptor->visibleIndex = 1;
+                    }
+                }
+            }
+        } else if ((dds3PadBitTable[7] & 2) != 0) {
+            if (descriptor->selectedEntry->next != NULL) {
+                descriptor->selectedEntry = descriptor->selectedEntry->next;
+                descriptor->selectedIndex++;
+                descriptor->visibleIndex++;
+                if (descriptor->visibleIndex == 0x11) {
+                    if (descriptor->firstVisibleEntry->next != NULL) {
+                        descriptor->firstVisibleEntry = descriptor->firstVisibleEntry->next;
+                        descriptor->visibleIndex = 0x10;
+                    }
+                }
+            }
+        } else if ((dds3PadBitTable[9] & 2) != 0) {
+            selectedEntry = descriptor->selectedEntry;
+            for (navigationStep = 0; navigationStep < 0x12; navigationStep++) {
+                navigationEntry = selectedEntry->prev;
+                if (navigationEntry != NULL) {
+                    descriptor->selectedEntry = navigationEntry;
+                    descriptor->selectedIndex--;
+                    if (descriptor->visibleIndex != 0) {
+                        descriptor->visibleIndex--;
+                    }
+                    selectedEntry = descriptor->selectedEntry;
+                    if (selectedEntry == descriptor->firstVisibleEntry) {
+                        SBTLRESOURCE_ENTRY *previous = selectedEntry->prev;
+                        if (previous != NULL) {
+                            descriptor->firstVisibleEntry = previous;
+                            descriptor->visibleIndex = 1;
+                        }
+                    }
+                }
+            }
+        } else if ((dds3PadBitTable[11] & 2) != 0) {
+            for (navigationStep = 0; navigationStep < 0x12; navigationStep++) {
+                navigationEntry = descriptor->selectedEntry->next;
+                if (navigationEntry != NULL) {
+                    descriptor->selectedEntry = navigationEntry;
+                    descriptor->selectedIndex++;
+                    descriptor->visibleIndex++;
+                    if (descriptor->visibleIndex == 0x11) {
+                        SBTLRESOURCE_ENTRY *next = descriptor->firstVisibleEntry->next;
+                        if (next != NULL) {
+                            descriptor->firstVisibleEntry = next;
+                            descriptor->visibleIndex = 0x10;
+                        }
+                    }
+                }
+            }
+        } else if (dds3PadBitTable[1] < 0) {
+            descriptor->selectionStatus = BTL_RESOURCE_SELECTION_CANCELED;
+        } else if (dds3PadBitTable[3] < 0) {
+            descriptor->selectionStatus = BTL_RESOURCE_SELECTION_ACCEPTED;
+        } else {
+            SBTLRESOURCE_ENTRY *cachedEntry = descriptor->cachedEntry;
+            selectedEntry = descriptor->selectedEntry;
+            if (cachedEntry != selectedEntry) {
+                s32 category;
+                category = selectedEntry->category;
+                switch (category) {
+                case BTL_RESOURCE_ENTRY_CATEGORY_TMX:
+                    if (selectedEntry->id == 0) {
+                        char resourceName[0x70];
+                        btlFormatSelectedResourceName(descriptor, resourceName);
+                        btlLoadAndReplaceResourceHandle(descriptor, resourceName);
+                    } else {
+                        btlReplaceResourceHandle(descriptor, (void *)(u32)selectedEntry->id);
+                    }
+                    selectedEntry = descriptor->selectedEntry;
+                    descriptor->previewActive = descriptor->textureCategory = 1;
+                    break;
+                case BTL_RESOURCE_ENTRY_CATEGORY_GENERAL: {
+                    sdfTexHandle_t *texture = dds3BillboardGetGeneralTex(selectedEntry->value);
+                    descriptor->textureCategory = category;
+                    descriptor->texture = texture;
+                    descriptor->previewActive = 1;
+                    selectedEntry = descriptor->selectedEntry;
+                    break;
+                }
+                case BTL_RESOURCE_ENTRY_CATEGORY_P2A:
+                default:
+                    descriptor->previewActive = 0;
+                    break;
+                }
+                descriptor->cachedEntry = selectedEntry;
+            }
+            if (descriptor->previewActive != 0) {
+                btlDrawResourcePreview(descriptor);
+            }
+        }
+    }
+
+    packetList = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(packetList);
+    sdfDrawTagLink(packetList, (u32)dds3PrimFrameRect(
+        (descriptor->originX << 4) + 0x7000,
+        (descriptor->originY << 3) + 0x7900,
+        0xFEFFFF, 0xCC0, 0x740, descriptor->fillColor, descriptor->borderColor));
+
+    if (descriptor->previewActive != 0) {
+        sdfDrawTagLink(packetList, (u32)dds3PrimFrameRect(
+            (descriptor->originX << 4) + 0x7000,
+            (descriptor->originY << 3) + 0x8050,
+            0xFEFFFF, 0x800, 0x400, 0, descriptor->borderColor));
+    }
+
+    drawnRows = 0;
+    topRow = descriptor->originY;
+    contentRow = topRow + 2;
+    if (descriptor->entryList->pathPrefix != NULL) {
+        sdfDrawTagLink(packetList, (u32)sdfDevPrintf(
+            (descriptor->originX << 4) + 0x7020,
+            (contentRow << 3) + 0x7900, 0xFF0000, 5,
+            descriptor->entryList->pathPrefix));
+        contentRow = topRow + 0xE;
+    }
+    packedY = (contentRow << 3) + 0x7900;
+    visibleEntry = descriptor->firstVisibleEntry;
+    while (visibleEntry != NULL) {
+        s32 selectionFlags = visibleEntry == descriptor->selectedEntry ? 4 : 0;
+        sdfDrawTagLink(packetList, (u32)sdfDevPrintf(
+            (descriptor->originX << 4) + 0x7020,
+            packedY, 0xFF0000, selectionFlags, visibleEntry->name));
+        drawnRows++;
+        packedY += 0x60;
+        if (drawnRows >= 0x12) {
+            break;
+        }
+        visibleEntry = visibleEntry->next;
+    }
+
+    surface = &sdfGrOtTable[descriptor->drawSurfaceIndex];
+    surface->regFunc(surface, packetList);
+    return descriptor->selectionStatus;
+}
 
 /* Release an owned texture handle and the descriptor, but not its entry list. */
 void btlDestroyResourceDescriptor(SBTLRESOURCE_DESCRIPTOR *descriptor) {
@@ -766,7 +1007,120 @@ void btlDestroyResourceNameRecord(struct SBTLRESOURCENAME_RECORD *record) {
     sdfChipFreeDirect(record);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditor);
+void btlUpdateResourceNameEditor(SBTLRESOURCENAME_RECORD *record) {
+    char text[0x20];
+    s32 x = record->x;
+    s32 y = record->y;
+    s32 editCode = -1;
+    s32 deleteCharacter;
+    s32 editLimit;
+    s32 selection;
+    u32 index;
+    s32 row;
+    s32 column;
+
+    if (record->selectionStatus != BTL_RESOURCE_SELECTION_ACCEPTED) {
+        if ((dds3PadBitTable[6] & 2) != 0) {
+            if (record->selection == EDITOR_BACKSPACE_CELL) {
+                record->selection = EDITOR_KEY_CELLS - 2;
+            } else if (record->selection == EDITOR_CONFIRM_CELL) {
+                record->selection = EDITOR_BACKSPACE_CELL;
+            } else {
+                record->selection -= EDITOR_KEY_COLS;
+                if (record->selection < 0) {
+                    record->selection = EDITOR_CONFIRM_CELL;
+                }
+            }
+        } else if ((dds3PadBitTable[7] & 2) != 0) {
+            if (record->selection == EDITOR_BACKSPACE_CELL) {
+                record->selection = EDITOR_CONFIRM_CELL;
+            } else if (record->selection == EDITOR_CONFIRM_CELL) {
+                record->selection = EDITOR_KEY_COLS - 1;
+            } else {
+                record->selection += EDITOR_KEY_COLS;
+                if ((u32)record->selection >= EDITOR_BACKSPACE_CELL) {
+                    record->selection = EDITOR_BACKSPACE_CELL;
+                }
+            }
+        } else if ((dds3PadBitTable[4] & 2) != 0) {
+            selection = record->selection;
+            if ((u32)(selection - EDITOR_BACKSPACE_CELL) >= 2) {
+                if (selection % EDITOR_KEY_COLS == 0) {
+                    record->selection = selection + EDITOR_KEY_COLS - 1;
+                } else {
+                    record->selection = selection - 1;
+                }
+            }
+        } else if ((dds3PadBitTable[5] & 2) != 0) {
+            selection = record->selection;
+            if ((u32)(selection - EDITOR_BACKSPACE_CELL) >= 2) {
+                if (selection % EDITOR_KEY_COLS == EDITOR_KEY_COLS - 1) {
+                    record->selection = selection - (EDITOR_KEY_COLS - 1);
+                } else {
+                    record->selection = selection + 1;
+                }
+            }
+        } else if (dds3PadBitTable[3] < 0) {
+            selection = record->selection;
+            if (selection == EDITOR_CONFIRM_CELL) {
+                if (record->nameLength > 0) {
+                    record->selectionStatus = BTL_RESOURCE_SELECTION_ACCEPTED;
+                }
+            } else if (selection == EDITOR_BACKSPACE_CELL) {
+                editCode = EDITOR_DELETE_CODE;
+            } else if (selection == EDITOR_BLANK_CELL) {
+                /* Native001FC4E8 branches directly to shared001FC538. */
+                goto next_cell;
+            } else {
+                editCode = selection;
+            }
+        } else if (dds3PadBitTable[1] < 0) {
+            record->selectionStatus = BTL_RESOURCE_SELECTION_CANCELED;
+        }
+        if (record->selection == EDITOR_BLANK_CELL) {
+        next_cell:
+            record->selection++;
+        }
+        /* Stage the comparison bound before expansion; see docs/idioms.md,
+         * "Trace-justified comparison staging: resource-name editor". */
+        editLimit = EDITOR_DELETE_CODE - 1;
+        deleteCharacter = editLimit < editCode;
+        if (deleteCharacter && record->nameLength > 0) {
+            record->nameLength--;
+        } else if ((u32)editCode < EDITOR_CHARACTER_COUNT) {
+            record->resourceName[record->nameLength] = btlUpdateResourceNameEditorData[editCode];
+            if (record->nameLength < (s32)record->maximumNameLength) {
+                record->nameLength++;
+            }
+        }
+        record->resourceName[record->nameLength] = 0;
+    }
+    btlDebugDrawRectangle(x, y, 0xA4, 0x14);
+    sprintf(text, btlFormatSelectedResourceNameData, record->resourceName, record->extension);
+    btlDebugDrawText(x + 4, y + 4, 0, text);
+    y += 0x18;
+    btlDebugDrawRectangle(x, y, 0xA4, 0x44);
+    if (record->overwritePromptActive == 0) {
+        x += 4;
+        y += 4;
+        for (index = 0, row = 0; row < EDITOR_KEY_ROWS; row++) {
+            for (column = EDITOR_KEY_COLS - 1; column >= 0; column--) {
+                if (index < EDITOR_CHARACTER_COUNT) {
+                    s32 color = record->selection == index ? 4 : 0;
+                    btlUpdateResourceNameEditorData2[0] = btlUpdateResourceNameEditorData[index];
+                    btlDebugDrawText(x, y, color, btlUpdateResourceNameEditorData2);
+                }
+                x += 12;
+                index++;
+            }
+            x -= EDITOR_KEY_COLS * 12;
+            y += 12;
+        }
+        x += 0x84;
+        btlDebugDrawText(x, y, record->selection == index++ ? 4 : 0, btlUpdateResourceNameEditorData3);
+        btlDebugDrawText(x, y + 12, record->selection == index ? 4 : 0, fmData);
+    }
+}
 
 void btlSetResourceNamePosition(struct SBTLRESOURCENAME_RECORD *record, s32 x, s32 y) {
     record->x = x;

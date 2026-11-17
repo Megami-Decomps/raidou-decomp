@@ -61,10 +61,25 @@ typedef struct SBTLRESOURCE_DESCRIPTOR {
 typedef char SBTLRESOURCE_DESCRIPTOR_size_must_be_0x48[
     (sizeof(SBTLRESOURCE_DESCRIPTOR) == 0x48) ? 1 : -1];
 
+/* sdfGrOtTable index the resource browser draws into. */
+#ifdef VERSION_RAIDOU1
+#define BTL_RESOURCE_DRAW_SURFACE 0x70
+#else
+#define BTL_RESOURCE_DRAW_SURFACE 0x71
+#endif
+
 struct SBTLRESOURCE_DESCRIPTOR *
 btlCreateResourceDescriptor(struct SBTLRESOURCEENTRY_LIST *list);
 
 s32 Draw_effLensFlare(struct SBTLRESOURCE_DESCRIPTOR *descriptor);
+void btlDrawResourcePreview(struct SBTLRESOURCE_DESCRIPTOR *descriptor);
+
+extern char *dds3EffectFileNameTable2[];
+extern char btlFormatSelectedResourceNameData[];
+extern u8 btlUpdateResourceNameEditorData[];
+extern char btlUpdateResourceNameEditorData2[8];
+extern char btlUpdateResourceNameEditorData3[];
+extern char fmData[];
 
 typedef struct SBTLRESOURCENAME_RECORD {
     s32 x; /* UI origin for the name and overwrite prompts. */

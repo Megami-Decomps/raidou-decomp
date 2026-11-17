@@ -201,4 +201,12 @@ s32 sbtlEntryItemList_Type(SBTLITEM_LISTWORK *lwk, u16 type)
 INCLUDE_ASM(const s32, "code_002999C0", sbtlEntryItemList_Type);
 #endif
 
-INCLUDE_ASM(const s32, "code_002999C0", sbtlReleaseItemList);
+s32 sbtlReleaseItemList(SBTLITEM_LISTWORK *lwk)
+{
+    if (lwk->handle != NULL) {
+        sdfMemFreeDirect(lwk->handle);
+        lwk->handle = NULL;
+    }
+    lwk->num = 0;
+    return 1;
+}

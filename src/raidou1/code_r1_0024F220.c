@@ -1712,7 +1712,10 @@ INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallBtlGetDevilDataSBtlSub);
 
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlSearchHitHelper_ID);
 
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlLeaf62);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf62(void) {
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlGetDevilData);
 

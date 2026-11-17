@@ -3,6 +3,9 @@
 
 #include "common.h"
 
+struct dds3ProcessID_t;
+
 void datDebugPrintf(const char *fmt, ...);
+s32 evtDrawResourceCountDebugTask(struct dds3ProcessID_t *task);
 
 #endif

@@ -20,6 +20,17 @@
 #include "code_00300578.h"
 #include "cmpModel.h"
 #include "sdfTex.h"
+#include "effManager.h"
+#include "fclMisc.h"
+#include "kernel_draw.h"
+#include "dds3CameraObjectBasic.h"
+#include "sdfVu0.h"
+#include "ps2asm.h"
+#include "dds3KernelMain.h"
+#include "sdk_libc.h"
+#include "sdfPacketBuff.h"
+#include "mdlManager.h"
+#include "code_00323280.h"
 
 INCLUDE_ASM(const s32, "code_00300578", titleFunc4);
 
@@ -167,7 +178,10 @@ INCLUDE_ASM(const s32, "code_00300578", nbCallMultMatrixRevNoArg);
 
 INCLUDE_ASM(const s32, "code_00300578", nbCallIncResultCounter);
 
-INCLUDE_ASM(const s32, "code_00300578", nbIncResultCounter);
+void nbIncResultCounter(void)
+{
+    nbData8++;
+}
 
 INCLUDE_ASM(const s32, "code_00300578", nbLeaf66);
 
@@ -201,7 +215,15 @@ INCLUDE_ASM(const s32, "code_00300578", nbCallToMatrix2);
 
 INCLUDE_ASM(const s32, "code_00300578", nbCallToMatrix3);
 
+/* NON_MATCHING: 4 of 8 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/shared/file/fileManager.c:249, near, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+fileRequest_t *nbLeaf69(const char *filename) {
+    return fileLoadEx(filename, 0, 0, 0);
+}
+#else
 INCLUDE_ASM(const s32, "code_00300578", nbLeaf69);
+#endif
 
 INCLUDE_ASM(const s32, "code_00300578", nbFunc48);
 
@@ -495,7 +517,18 @@ INCLUDE_ASM(const s32, "code_00300578", jmsLeaf4);
 
 INCLUDE_ASM(const s32, "code_00300578", sdfLeaf);
 
+/* NON_MATCHING: 2 of 14 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_002C7EC8.c:446, near, same function 0.89 (words 14/17, calls 1.00, shape 0.84) */
+void sdfVec4Add(float *dst, float *lhs, float *rhs) {
+    *dst = *lhs + *rhs;
+    dst[1] = lhs[1] + rhs[1];
+    dst[2] = lhs[2] + rhs[2];
+    dst[3] = lhs[3] + rhs[3];
+}
+#else
 INCLUDE_ASM(const s32, "code_00300578", sdfVec4Add);
+#endif
 
 INCLUDE_ASM(const s32, "code_00300578", sdfLeaf2);
 
@@ -561,7 +594,132 @@ INCLUDE_ASM(const s32, "code_00300578", evtFunc15);
 
 INCLUDE_ASM(const s32, "code_00300578", evtCallGrAllocPacketBuff3);
 
-INCLUDE_ASM(const s32, "code_00300578", evtCallMemcpy);
+/* body: matched in raidou @ 61f09dc: src/shared/effect/effPacket.c:180, rework, same function 1.00 (words 252/252, calls 1.00, shape 1.00) */
+void *effPkt3DPrimMakePoly2(sdf3DPrimPolyParm_t *aParm) {
+    s32 parameterCount = aParm->faceCount;
+    s32 vertexCount = aParm->pointCount;
+    u32 primitive = aParm->attr | 0x40;
+    u32 mode = 0x60;
+    s32 stride = 3;
+    s32 overhead = 16;
+    s32 allocationSize;
+    s32 i;
+    s32 offset;
+    void *packet;
+    void *(*allocate)(s32);
+    u32 *cursor;
+    u32 *stream;
+    const u128 *vector;
+    u32 countCode;
+    u32 *stream2;
+
+    if (aParm->normal != NULL) {
+        mode = 0xE0;
+        overhead = 17;
+        stride = 6;
+    }
+    if (aParm->uv != NULL) {
+        mode |= 0x100;
+        primitive |= 0x10;
+        overhead++;
+        stride += 2;
+        if (aParm->multiUv != NULL) {
+            primitive |= 0x1000;
+            stride += 2;
+        }
+    }
+    if (aParm->vertexColor != NULL) {
+        mode |= 0x200;
+        primitive |= 0x800;
+        overhead++;
+        stride++;
+    }
+    allocationSize = (overhead + parameterCount + stride * vertexCount) * 4;
+    allocationSize = (allocationSize + 15) & ~15;
+    allocate = (void *(*)(s32))aParm->allocator;
+    if (allocate == NULL) {
+        allocate = (void *(*)(s32))sdfGrAllocPacketBuff;
+    }
+    packet = allocate(allocationSize);
+
+    *(u64 *)packet = (u64)(u16)((allocationSize >> 4) - 1) | 0x20000000ULL;
+    ((u32 *)packet)[2] = 0x6102C000;
+    ((u32 *)packet)[3] = (~aParm->attrInhibit) & 0xFFFF;
+    ((u32 *)packet)[4] = 0x6E01C002;
+    ((u32 *)packet)[5] = aParm->color;
+    ((u32 *)packet)[6] = 0x6001C003;
+    cursor = (u32 *)packet + 7;
+    *cursor++ = (u32)aParm->zBias;
+    *cursor++ = 0x04000004;
+    *cursor++ = 0x14000000;
+    *cursor++ = 0x6D01C000;
+    *cursor++ = (u16)parameterCount | ((u32)(u16)vertexCount << 16);
+    *cursor++ = (primitive & 0xFFFF) | (mode << 16);
+    *cursor++ = 0x6E00C001 | ((u32)parameterCount << 16);
+
+    if (aParm->faceIndex == NULL) {
+        memcpy(cursor, effPktDefaultFaceIndex2, parameterCount * 4);
+    } else {
+        memcpy(cursor, aParm->faceIndex, parameterCount * 4);
+    }
+    cursor += parameterCount;
+    offset = parameterCount + 1;
+    countCode = vertexCount << 16;
+    *cursor++ = countCode | offset | 0x6800C000;
+    vector = (u128 *)aParm->vertex;
+    i = 0;
+    do {
+        MMI_STORE_VEC3_VALUE(cursor, *vector);
+        i++;
+        cursor += 3;
+        vector++;
+    } while (i != vertexCount);
+    offset += vertexCount;
+
+    vector = (u128 *)aParm->normal;
+    if (vector != NULL) {
+        *cursor++ = countCode | offset | 0x6800C000;
+        i = 0;
+        do {
+            MMI_STORE_VEC3_VALUE(cursor, *vector);
+            i++;
+            cursor += 3;
+            vector++;
+        } while (i != vertexCount);
+        offset += vertexCount;
+    }
+    stream = (u32 *)aParm->uv;
+    if (stream != NULL) {
+        stream2 = (u32 *)aParm->multiUv;
+        if (stream2 == NULL) {
+            *cursor++ = countCode | offset | 0x6400C000;
+            memcpy(cursor, stream, vertexCount * 8);
+            cursor += vertexCount * 2;
+        } else {
+            *cursor++ = countCode | offset | 0x6C00C000;
+            i = 0;
+            do {
+                *cursor++ = *stream++;
+                *cursor++ = *stream++;
+                *cursor++ = *stream2++;
+                *cursor++ = *stream2++;
+                i++;
+            } while (i != vertexCount);
+        }
+        offset += vertexCount;
+    }
+    stream = aParm->vertexColor;
+    if (stream != NULL) {
+        *cursor++ = countCode | offset | 0x6E00C000;
+        memcpy(cursor, stream, vertexCount * 4);
+        cursor += vertexCount;
+    }
+    *cursor = 0x1400000C;
+    while (EE_ADDR(++cursor) & 15) {
+        *cursor = 0;
+    }
+    return packet;
+}
 
 INCLUDE_ASM(const s32, "code_00300578", evtFunc16);
 
@@ -718,7 +876,15 @@ struct sprHandle_t *cmpGetSpriteHnd(CMP_SPR a_no) {
     return hSpr;
 }
 
-INCLUDE_ASM(const s32, "code_00300578", cmpCallDevLoadFileEx);
+sdfTexHandle_t *cmpCallDevLoadFileEx(const char *filename)
+{
+    u32 resource;
+    sdfMemHandle_t *fileAllocation = sdfDevLoadFileEx(filename, &resource, 0);
+    sdfTexHandle_t *texture = sdfTexSet(EE_ADDR_AS(TMX_HEADER_t *, resource));
+
+    sdfMemFreeDelayedDirect(fileAllocation);
+    return texture;
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallGrAllocPacketBuff3);
 
@@ -782,7 +948,11 @@ INCLUDE_ASM(const s32, "code_00300578", fldLeaf34);
 
 INCLUDE_ASM(const s32, "code_00300578", fldCallSetFontColor);
 
-INCLUDE_ASM(const s32, "code_00300578", fldCamUpdateDefault);
+/* body: written from the asm when landing; the found body was a different function */
+void fldCamUpdateDefault(void)
+{
+    fldCallSetFontColor(255.0f);
+}
 
 s32 fldDrawProcessSub(f32 arg) {
     return fldCallSetFontColor(arg);
@@ -830,7 +1000,10 @@ INCLUDE_ASM(const s32, "code_00300578", End_cmpModel);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpFreeResource);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpCallPrepare);
+dds3ModelResrc_t *cmpCallPrepare(MODELTYPE MajorNo, s32 MinorNo, s32 BlockMode)
+{
+    return cmpCallPrepareData = EE_ADDR_AS(dds3ModelResrc_t *, mdlPrepare(MajorNo, MinorNo, BlockMode));
+}
 
 dds3ModelResrc_t *Setup(MODELTYPE MajorNo, s32 MinorNo, s32 BlockMode) {
     return cmpCallPrepare(MajorNo, MinorNo, BlockMode);
@@ -862,7 +1035,34 @@ INCLUDE_ASM(const s32, "code_00300578", cmpCallMemset2);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallFromEuler);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpSetStatusModelParam);
+void cmpSetStatusModelParam(void)
+{
+    sdfVector4_t target;
+    sdfVector4_t eye;
+    u32 frame = dds3GetFrameID();
+
+    SDF_VU0_COPYVECTOR(&aViewEye, &cmpStatusModelBasePos);
+    SDF_VU0_COPYVECTOR(&aViewTarget, &cmpStatusModelPos);
+    SDF_VU0_COPYVECTOR(&aViewDown, &cmpData2);
+    dds3ScreenParam.fovy = 0.43633229f;
+    sdf3MakeScreenParam(&dds3ScreenParam);
+    SDF_VU0_LOADVECTOR(&aViewTarget);
+    SDF_VU0_LOADVECTOR_B(&aViewEye);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SCALEVECTOR(600.0f);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_LOADVECTOR_B(gMapScrollReset);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR_NOMEM(&target);
+    SDF_VU0_LOADVECTOR(&aViewEye);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR_NOMEM(&eye);
+    LookAtMatrix(&target, &eye, &aViewDown);
+    SDF_VU0_STOREMATRIX_NOMEM(&sdfViewMatrix);
+    sdf3DMakeViewportPacket(&dds3DrawEnv[frame].viewport, &dds3ScreenParam, &sdfViewMatrix);
+    sdf3DSetCamera(&dds3ScreenParam, &sdfViewMatrix);
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallGetFlagScreenShot5);
 
@@ -880,7 +1080,12 @@ INCLUDE_ASM(const s32, "code_00300578", cmpAddRot);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpAddScl);
 
-INCLUDE_ASM(const s32, "code_00300578", itfMesMngDebugShutdown);
+void itfMesMngDebugShutdown(dds3ProcessID_t *proc_id)
+{
+    cmpData6[0] = 0.0f;
+    cmpData6[1] = 0.0f;
+    cmpData6[2] = 0.0f;
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpClearDat);
 
@@ -902,13 +1107,29 @@ INCLUDE_ASM(const s32, "code_00300578", ModelLoadBuffEnd);
 
 INCLUDE_RODATA(const s32, "code_00300578", cmpSetModelScaleTable);
 
-INCLUDE_RODATA(const s32, "code_00300578", cmpCampEFFTESTable);
+void cmpCampEFFTES(void)
+{
+    f32 position[4] = { 128.0f, -100.0f, 64.0f, 0.0f };
 
-INCLUDE_ASM(const s32, "code_00300578", cmpCampEFFTES);
+    if (fldTitleMiniWork5 == NULL) {
+        fldTitleMiniWork5 = sdfDevLoadFileEx("/camp/EFF_TES.EPL", &cmpCampEFFTESData, NULL);
+        fldTitleMiniTex5 = dds3EffectLoadEPL((void *)cmpCampEFFTESData);
+        fclInitDstEff2Sub((struct plistHandle_t *)fldTitleMiniTex5->instance);
+        dds3EffectReset(fldTitleMiniTex5);
+        dds3EffectSetPosition(fldTitleMiniTex5, position);
+        dds3EffectSetLoop_dds3Effect(fldTitleMiniTex5, 1);
+        dds3EffectSetScale(fldTitleMiniTex5, 1.5f);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpDeleteEffect);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpEffectSetRGBA);
+void cmpEffectSetRGBA(u32 a_rgba)
+{
+    if (fldTitleMiniTex5 != NULL) {
+        effSetEffectColorSubSub(fldTitleMiniTex5, a_rgba);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpDrawEffect);
 
@@ -996,7 +1217,11 @@ INCLUDE_ASM(const s32, "code_00300578", cmpGetSwordNameEx);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallDrawSprList);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpLeaf48);
+/* body: written from the asm when landing; the found body was a different function */
+void cmpLeaf48(dds3ProcessID_t *target, u32 flag, s32 type)
+{
+    cmpCallDrawSprList(0, 2, target, flag, type);
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallSprintf3);
 
@@ -1046,7 +1271,15 @@ INCLUDE_ASM(const s32, "code_00300578", cmpSetFlagCamp);
 
 INCLUDE_ASM(const s32, "code_00300578", StatusGoSword);
 
+/* NON_MATCHING: 9 of 10 words match.  */
+#ifdef NON_MATCHING
+s32 cmpGetFlagCallDebug(void)
+{
+    return ((cmpStatusWork_t *)dds3GetProcessData(g_mainPID))->flags < 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00300578", cmpGetFlagCallDebug);
+#endif
 
 INCLUDE_ASM(const s32, "code_00300578", Init_cmpStatus);
 
@@ -1054,13 +1287,64 @@ INCLUDE_ASM(const s32, "code_00300578", SetType);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallInitCmpModel);
 
-INCLUDE_ASM(const s32, "code_00300578", Shutdown_cmpStatus);
+/* NON_MATCHING: 13 of 22 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00323280.c:73, adapt, same function 0.91 (words 22/21, calls 0.80, shape 0.98) */
+void Shutdown_cmpStatus(dds3ProcessID_t *id) {
+    tagCMP_MAP_WORK *wk = dds3GetProcessData(id);
 
+    Release_cmpMap(wk);
+    if (dds3ExistProcess(wk->drawPID)) {
+        dds3KillProcess(wk->drawPID, 0);
+    }
+    sdfMemFreeDirect(wk->handle);
+    g_mainPID = NULL;
+}
+#else
+INCLUDE_ASM(const s32, "code_00300578", Shutdown_cmpStatus);
+#endif
+
+/* NON_MATCHING: 28 of 46 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00190668.c:617, near, same function 0.90 (words 46/49, calls 0.83, shape 0.93) */
+dds3ProcessID_t *ProcessStart_cmpStatus(void)
+{
+    struct sdfMemHandle_t *hMem = sdfMemAllocDirect(sizeof(Menu_t));
+    Menu_t *wk = sdfMemGetPtr(hMem);
+    dds3ProcessID_t *PID;
+
+    memset(wk, 0, sizeof(Menu_t));
+    wk->hMem = hMem;
+    PID = dds3StartProcess("camp_status_main", 1022, 0, 0, MenuProcess, MenuShutdown, wk);
+    wk->drawPID = dds3StartProcess("camp_status_draw", 11029, 0, 0, MenuDrawProcess, NULL, wk);
+    MenuInit_itf(wk);
+    wk->lflag |= 2;
+    return PID;
+}
+#else
 INCLUDE_RODATA(const s32, "code_00300578", cmpCallSprintfTable);
 
 INCLUDE_ASM(const s32, "code_00300578", ProcessStart_cmpStatus);
+#endif
 
+/* NON_MATCHING: 17 of 25 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 0.97 (words 25/25, calls 1.00, shape 0.92) */
+void ProcessEnd_cmpStatus(void) {
+    tagMAP_MENU_WORK *wk;
+
+    if (g_mainPID != NULL && dds3ExistProcess(g_mainPID)) {
+        wk = dds3GetProcessData(g_mainPID);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 2;
+            wk->count = 0;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00300578", ProcessEnd_cmpStatus);
+#endif
 
 s32 ProcessCheck_cmpStatus(void) {
     if (g_mainPID == NULL) {
@@ -1125,7 +1409,10 @@ INCLUDE_ASM(const s32, "code_00300578", cmpCallGetCharPID9);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallGetCharPID10);
 
-INCLUDE_ASM(const s32, "code_00300578", CmpOnMenu);
+void CmpOnMenu(s32 a_menu)
+{
+    CmpOnMenuData[a_menu >> 16]();
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpGetNoneItemText);
 
@@ -1161,7 +1448,10 @@ INCLUDE_ASM(const s32, "code_00300578", cmpEndMesChk);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpUpdateMaterial);
 
-INCLUDE_ASM(const s32, "code_00300578", Update_cmpItem);
+s32 Update_cmpItem(void)
+{
+    return Update_cmpItemData[cmpData26 >> 16]();
+}
 
 void cmpLoadScript(void) {
     cmpFreeScriptData = sdfDevLoadFileEx(cmpStrCampScriptCmpUseScrBf, &effScalyTextureHandle2, NULL);

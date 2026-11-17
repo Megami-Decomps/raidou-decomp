@@ -4802,7 +4802,6 @@
 0x00314200	evtCallSetOt2	func	tier=D	derived-callee	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; calls eglSetOt
 0x00314298	evtFunc15	func	tier=D	derived-unit	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; no named callee, caller or string
 0x00314398	evtCallGrAllocPacketBuff3	func	tier=D	derived-callee	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; calls sdfGrAllocPacketBuff
-0x00314568	evtCallMemcpy	func	tier=D	derived-callee	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; calls memcpy
 0x00314958	evtFunc16	func	tier=D	derived-unit	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; no named callee, caller or string
 0x003149D8	evtFunc17	func	tier=D	derived-unit	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; no named callee, caller or string
 0x00314A98	evtCreateLinkSub	func	tier=D	derived-caller	na	unit code_00300578, neighbour evtStartTerminalMenuMessage; called by pipeCreateLink

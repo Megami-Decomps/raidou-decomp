@@ -507,9 +507,15 @@ INCLUDE_ASM(const s32, "code_0028EB80", sbtlCallBtlSearchUnitID24);
 
 INCLUDE_ASM(const s32, "code_0028EB80", sbtlCallBtlSearchUnitID25);
 
-INCLUDE_ASM(const s32, "code_0028EB80", sbtlLeaf9);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf9(dds3ProcessID_t *id) {
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_0028EB80", sbtlLeaf10);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf10(dds3ProcessID_t *id) {
+    return 0;
+}
 
 SBTL_FIELD630_WORK *sbtlCallMemAllocDirect4(void)
 {
@@ -530,7 +536,11 @@ s32 sbtlRefSbtl42(SBTL_FIELD630_WORK *wk)
     return wk->num > 0;
 }
 
-INCLUDE_ASM(const s32, "code_0028EB80", sbtlCallMemFreeDirect4);
+s32 sbtlCallMemFreeDirect4(SBTL_FIELD630_WORK *wk)
+{
+    sdfMemFreeDirect(wk->handle);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0028EB80", sbtlSetDevilSkillID);
 

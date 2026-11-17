@@ -5,7 +5,10 @@
 #include "enums.h"
 #include "kernel.h"
 
-struct tagCMP_WORK;
+struct tagCMP_WORK {
+    u8 unk00[0x1C];
+    s32 markID; /* 0x1C */
+};
 
 void cmpCallGetSpriteHnd10(s32 a_sprNo, s32 a_x, s32 a_y, s32 a_alphaRate);
 void cmpCallGetSpriteHnd9(s32 a_sprNo, s32 a_x, s32 a_y, s32 a_alphaRate);
@@ -19,7 +22,7 @@ dds3ProcessFunc_t cmpProcess(dds3ProcessID_t *PID);
 s32 cmpProcessCheck(void);
 void cmpProcessEnd(void);
 void cmpProcessStart(void);
-void cmpProcessStartEx(CMP_MODE a_runmode);
+void cmpProcessStartEx(dds3ProcessID_t *id);
 void cmpSetMarkID(s32 a_markID);
 
 #endif

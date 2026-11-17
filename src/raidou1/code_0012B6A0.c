@@ -25,6 +25,7 @@
 #include "dds3WorldBasic.h"
 #include "dds3SceneBasic.h"
 #include "code_r1_0010DF68.h"
+#include "sndAt3.h"
 
 INCLUDE_ASM(const s32, "code_0012B6A0", fldCallElvReset);
 
@@ -48,7 +49,12 @@ s32 mapExitFieldSub(void) {
 
 INCLUDE_ASM(const s32, "code_0012B6A0", sbtlReLoadFldScene);
 
-INCLUDE_ASM(const s32, "code_0012B6A0", sbtlRefMapRndEncLoadMode);
+/* body: written from the asm when landing; the found body was a different function */
+void sbtlRefMapRndEncLoadMode(void) {
+    if (gMapRndEncLoad_Mode != 0) {
+        sndBgmLoadId_XF(ProcSequenceData5);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0012B6A0", mapRndEncReturn_BgmLoadEndCheck);
 

@@ -6,5 +6,7 @@
 extern dds3ProcessID_t *ProcessCheck_shpMainData;
 extern dds3ProcessID_t *fldCallGetProcessStatData;
 extern dds3ProcessID_t *gohCallGetProcessStatData;
+extern dds3ProcessID_t *fclCheckData;
+extern dds3ProcessID_t *g_mainPID_nwdNews;
 
 #endif

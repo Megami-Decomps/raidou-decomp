@@ -183,7 +183,26 @@ void nbRefDDS3GBWK14(void) {
     nbData5 = 0;
 }
 
+/* NON_MATCHING: 0 of 77 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00181858.c:35, near, same function 0.97 (words 77/79, calls 1.00, shape 0.92) */
+void nbCallChipAllocDirect(s32 idx, s32 count, dds3NameImage_t *image) {
+    GsFont_t **cell = cmbData[idx];
+    dds3NameImage_t *copy;
+    GsFont_t *font;
+    s32 i;
+
+    for (i = 0; i < count; i++) {
+        copy = sdfChipAllocDirect(sizeof(dds3NameImage_t));
+        *copy = image[i];
+        font = frTranslateUserData(24, 24, copy, 1);
+        cell[i] = font;
+        font->font_no = idx;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00181858", nbCallChipAllocDirect);
+#endif
 
 INCLUDE_ASM(const s32, "code_00181858", nbFunc27);
 
@@ -203,7 +222,15 @@ INCLUDE_ASM(const s32, "code_00181858", frCallEnableMode2);
 
 INCLUDE_ASM(const s32, "code_00181858", frCallEnableMode3);
 
-INCLUDE_ASM(const s32, "code_00181858", frCallDecodeFontImage);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00181858.c:115, match, same function 1.00 (words 66/66, calls 1.00, shape 1.00) */
+void frCallDecodeFontImage(dds3NameImage_t *image, s32 style, u16 code) {
+    u32 sjis = (((code & 0xFF) << 8) | (code >> 8)) - 0x8080;
+    dds3NameImage_t *glyph;
+
+    glyph = (dds3NameImage_t *)frDecodeFontImage(style, ((sjis & 0xFF00) >> 1) + (sjis & 0x7F));
+    *image = *glyph;
+    sdfChipFreeDirect(glyph);
+}
 
 INCLUDE_ASM(const s32, "code_00181858", frRefDDS3GBWK2);
 

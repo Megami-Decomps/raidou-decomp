@@ -70,6 +70,12 @@
 #include "sbtlDebugStr.h"
 #include "sbattle.h"
 #include "code_002A38D8.h"
+#include "sdfDevCons.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "kernel_draw.h"
+#include "sdf_Decomp.h"
+#include "billboard.h"
 
 s32 sbtlCheckMsgMemType(void)
 {
@@ -171,7 +177,10 @@ s32 sbtlRefSbtl60(SBTLEXP_LISTWORK *lwk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf124);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf124(void) {
+    return 1;
+}
 
 s32 sbtlReleaseEXP_List(SBTLEXP_LISTWORK *lwk, u8 flg)
 {
@@ -594,7 +603,10 @@ s32 sbtlCallMessageNumSearch4(s32 a_x, s32 a_y, s32 a_z, u32 a_color, SBTLSM a_m
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlBtlDebugInitSbattleSub);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/kernel/dds3SequenceList.c:914, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+void sbtlBtlDebugInitSbattleSub(const char *format, ...)
+{
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_CheckMainPanel);
 
@@ -1328,7 +1340,10 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf92);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallBtlCheckCrossCircle);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf89);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf89(void) {
+    return 1;
+}
 
 INCLUDE_RODATA(const s32, "code_002A38D8", sbtlLeaf92Table);
 
@@ -1370,7 +1385,10 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallDestroyFontRequestAfter2);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlFunc25);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf102);
+s32 sbtlLeaf102(dds3ProcessID_t *id)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlVisualDraw);
 
@@ -1751,7 +1769,10 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlDrawFloat_Num);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDrawInt_Num);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf100);
+s32 sbtlLeaf100(dds3ProcessID_t *id)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlSkillChangeProc);
 
@@ -1761,7 +1782,10 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlRefSbtl67);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlRefSbtl56);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf119);
+s32 sbtlLeaf119(dds3ProcessID_t *id)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlGetUnit);
 
@@ -2043,7 +2067,16 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf117);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallVsprintf);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGrAllocPacketBuff8);
+void sbtlCallGrAllocPacketBuff8(s32 x, s32 y, s32 attr, const char *format)
+{
+    sdfDrawTag_t *list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfGrOt_t *otp;
+
+    sdfDrawTagInit(list);
+    sdfDrawTagLink(list, (u32)sdfDevPrintf((x << 4) + 0x7000, (y << 3) + 0x7900, 0xFF0000, attr, format));
+    otp = &sdfGrOtTable[112];
+    otp->regFunc(otp, list);
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallMemset29);
 
@@ -2053,7 +2086,10 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGetRunTimeCount);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallVsprintf2);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf91);
+s32 sbtlLeaf91(void)
+{
+    return printf(sbtlMotionDataSaveData4, sbtlData80);
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlPfsBattleEfftime);
 
@@ -2083,9 +2119,92 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_DeleteHitList);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDrawHitList);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlDraw3DSphere);
+/* NON_MATCHING: 137 of 165 words match.  */
+#ifdef NON_MATCHING
+void sbtlDraw3DSphere(const sdfVector4_t *center, u32 color, const sdfMatrix4_t *rotation, f32 radius)
+{
+    sdfVector4_t point;
+    sdfMatrix4_t matrix;
+    sdfVector4_t vertices[22];
+    u32 colors[22];
+    sdfDrawTag_t *list;
+    sdfVector4_t *out;
+    f32 latitude;
+    f32 longitude;
+    f32 ringRadius;
+    f32 ringY;
+    u32 pass;
+    u32 ring = 0;
+    u32 segment;
 
+    list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    do {
+        colors[ring++] = color;
+    } while (ring < 22);
+
+    if (rotation == NULL) {
+        SDF_VU0_STOREIDENTITY(&matrix);
+    } else {
+        SDF_VU0_LOADMATRIX(rotation);
+        SDF_VU0_STOREMATRIX(&matrix);
+    }
+    for (pass = 0; pass < 2; pass++) {
+        latitude = 0.0f;
+        for (ring = 0; ring < 9; ring++) {
+            latitude += 0.31415924f;
+            out = vertices;
+            longitude = 0.0f;
+            ringY = radius * sdfCos(latitude);
+            ringRadius = radius * sdfSin(latitude);
+            SDF_VU0_LOADMATRIX(&matrix);
+            SDF_VU0_LOAD_ROW3(center);
+            point.x = ringRadius;
+            point.y = ringY;
+            point.z = 0.0f;
+            SDF_VU0_LOADVECTOR(&point);
+            SDF_VU0_APPLYMATRIX_XYZ1();
+
+            for (segment = 0; segment < 11; segment++) {
+                SDF_VU0_STOREVECTOR(out);
+                out++;
+                longitude += 0.57119858f;
+                point.x = sdfCos(longitude) * ringRadius;
+                point.y = ringY;
+                point.z = sdfSin(longitude) * ringRadius;
+                SDF_VU0_LOADVECTOR(&point);
+                SDF_VU0_APPLYMATRIX_XYZ1();
+                SDF_VU0_STOREVECTOR(out);
+                out++;
+            }
+            sdfDrawTagLink(list, (addr_t)effDebugDrawWireModel(vertices, colors, 22, 0x80));
+        }
+        SetRotateMatrixX(1.5707963f);
+        SDF_VU0_LOADMATRIX_B(&matrix);
+        MultMatrixNoArg();
+        SDF_VU0_STOREMATRIX_NOMEM(&matrix);
+    }
+    dds3MultiBillboardOt.regFunc(&dds3MultiBillboardOt, list);
+}
+#else
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlDraw3DSphere);
+#endif
+
+/* NON_MATCHING: 13 of 26 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_r1_0024F220.c:1671, near, same function 0.94 (words 26/23, calls 1.00, shape 0.94) */
+s32 sbtlGetMotionNumSub(struct SBTLUNIT_WORK *wk)
+{
+    s32 status = wk->status;
+
+    if ((u32)(status - 10) >= 2 && status != 14 && wk->model->mode != 9 && wk->mode >= 5 && status != 40) {
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlGetMotionNumSub);
+#endif
 
 INCLUDE_ASM(const s32, "code_002A38D8", sdfSetLocalMapCounterMarkerState);
 
@@ -2093,9 +2212,15 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGrAllocPacketBuff7);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGrAllocPacketBuff6);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf106);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf106(dds3ProcessID_t *id) {
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf116);
+/* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf116(dds3ProcessID_t *id) {
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlBtlDebugProcSub);
 
@@ -2414,7 +2539,18 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGetProcessData56);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlBtlDrawProcessSub);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlDrawProcess);
+s32 sbtlDrawProcess(dds3ProcessID_t *PID)
+{
+    sBtlMenu_t *menu = dds3GetProcessData(PID);
+
+    sbtlBtlDrawProcessSub(menu);
+    if (dds3ExistProcess(menu->drawPID)) {
+        dds3KillProcess(menu->drawPID, 0);
+        menu->drawPID = NULL;
+    }
+    sdfMemFreeDirect(menu->hMem);
+    ProcessCheckData = NULL;
+}
 
 s32 sbtlCallGetProcessData53(dds3ProcessID_t *id) {
     sBtlMenu_t *menu = dds3GetProcessData(id);
@@ -2446,7 +2582,21 @@ s32 sbtlCallGetProcessData53(dds3ProcessID_t *id) {
     return 0;
 }
 
+/* NON_MATCHING: 11 of 13 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_0018CE10.c:286, near, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+s32 sbtlCallMemFreeDelayedDirect(void)
+{
+    if (itfData5 == NULL) {
+        return 0;
+    }
+    sdfMemFreeDelayedDirect(itfData5);
+    itfData5 = NULL;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallMemFreeDelayedDirect);
+#endif
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCampSubSpr);
 
@@ -2470,7 +2620,24 @@ void sbtlSbtlmenuMain(void) {
     sbtlData119 = 0;
 }
 
+/* NON_MATCHING: 15 of 26 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 0.91 (words 26/25, calls 0.80, shape 0.98) */
+void sbtlCallExistProcess2(void) {
+    tagMAP_MENU_WORK *wk;
+
+    if (ProcessCheckData != NULL && dds3ExistProcess(ProcessCheckData)) {
+        wk = dds3GetProcessData(ProcessCheckData);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 2;
+            wk->count = 0;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallExistProcess2);
+#endif
 
 s32 ProcessCheck(void) {
     if (ProcessCheckData == NULL) {
@@ -2598,7 +2765,10 @@ s32 sbtlCallGetSmallFontFRQ4(s32 x, s32 y, u8 bRight, u32 color, u8 alpha, s32 o
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlNumFont);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlDrawRedGg);
+void sbtlDrawRedGg(s32 a_x, s32 a_y, u8 a_alphaRate, s32 a_sprNo, DDS3_OT a_ot)
+{
+    itfIconDrawSprite(a_x, a_y, 0, a_alphaRate, a_sprNo, a_ot);
+}
 
 void sbtlGetIdling_HD(s32 a_x, s32 a_y, u8 a_alphaRate, s32 a_otNo, struct sdatUnitWork_t *unit) {
     if (unit != NULL) {

@@ -13,7 +13,10 @@
 #include "dat.h"
 #include "sdatUnit.h"
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf125(void) {
+    return 1;
+}
 
 void sbtlSbtlCameraproc(void) {
     sdfVector4_t target = { 0.0f };
@@ -87,7 +90,9 @@ s32 sbtlLeaf103(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf87);
+s32 sbtlLeaf87(dds3ProcessID_t *id)
+{
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBitCheck5);
 
@@ -209,7 +214,15 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl18);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf110);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetDamageSub);
+s32 sbtlGetDamageSub(s32 type)
+{
+    s32 result = 0;
+
+    if (type == 3 || type == 17) {
+        result = 1;
+    }
+    return result;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_Action);
 

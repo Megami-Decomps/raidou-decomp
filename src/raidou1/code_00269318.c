@@ -1,5 +1,8 @@
 #include "common.h"
 #include "sBtlScene.h"
+#include "sbtlWork.h"
+#include "sBtlAI.h"
+#include "scrTraceCode.h"
 
 s32 datLeaf81(void) {
     return sbtlDefaultCutScroll();
@@ -25,7 +28,16 @@ INCLUDE_ASM(const s32, "code_00269318", nbCallSetIntReturnValue4);
 
 INCLUDE_ASM(const s32, "code_00269318", nbCallGetIntPara10);
 
+/* NON_MATCHING: 5 of 10 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
+s32 nbCallGetIntPara11(void) {
+    wk_sbtl = scrGetIntPara(0);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00269318", nbCallGetIntPara11);
+#endif
 
 INCLUDE_ASM(const s32, "code_00269318", at3decCallSetIntReturnValue);
 
@@ -63,7 +75,17 @@ INCLUDE_ASM(const s32, "code_00269318", sbtlCallGetIntPara37);
 
 INCLUDE_ASM(const s32, "code_00269318", sbtlCallGetIntPara38);
 
-INCLUDE_ASM(const s32, "code_00269318", sbtlCallGetIntPara39);
+/* body: matched in raidou @ 61f09dc: src/shared/event/evtCommand.c:1790, match, same function 0.89 (words 16/16, calls 0.67, shape 1.00) */
+s32 sbtlCallGetIntPara39(void)
+{
+    s32 unitIndex;
+    s32 mode;
+
+    unitIndex = scrGetIntPara(0);
+    mode = scrGetIntPara(1);
+    Support_SetAisyo(unitIndex, mode);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00269318", sbtlScriptSub_ResetBadStatus);
 
@@ -85,7 +107,16 @@ INCLUDE_ASM(const s32, "code_00269318", sbtlCallGetIntPara43);
 
 INCLUDE_ASM(const s32, "code_00269318", sbtlCallSetIntReturnValue16);
 
+/* NON_MATCHING: 5 of 10 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79eb: src/smt3/field/fldCommand.c:1732, adapt, same function 0.95 (words 10/9, calls 1.00, shape 0.95) */
+s32 sbtlCallGetIntPara44(void) {
+    wk_sbtl = scrGetIntPara(0);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00269318", sbtlCallGetIntPara44);
+#endif
 
 INCLUDE_ASM(const s32, "code_00269318", sbtlCallSetIntReturnValue17);
 

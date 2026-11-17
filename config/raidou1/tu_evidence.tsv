@@ -29,7 +29,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0010D758	0010DEF0	kernel/dds3SequenceList	c	smt3:names:10+smt3:map:5 literal-cores:1 of 54	kernel/dds3SequenceList
 0010DF50	0010DF60	code_0010DF50	asm	none	
 0010DF68	0010F1A8	code_r1_0010DF68	c	dds:13 literal-cores:1 of 87	
-0010F2C0	00111FD0	code_0010F2C0	asm	none	
+0010F2C0	00111FD0	code_0010F2C0	c	none	
 00111FF8	001122E8	kernel/dds3SequenceList_00111FF8	c	smt3:names:3+smt3:map:1 of 4 part	kernel/dds3SequenceList
 001123F8	00112998	script/scrScriptProcess	c	smt3:names:12+smt3:map:4+dds:2 of 19	script/scrScriptProcess
 001129F0	00113F08	script/scrTraceCode	c	smt3:names:47 of 50	script/scrTraceCode
@@ -69,7 +69,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0011EAF8	0011EB00	code_0011EAF8	asm	none	
 0011EB08	00121590	dat	c	dds:5+smt3:map:2 literal-cores:1 of 94 clipped	kernel/dds3GlobalWork
 001215C8	001225D8	newdata/datCalc	c	dds:6+smt3:names:2+smt3:map:1 of 66	newdata/datCalc
-00122850	00122880	code_00122850	asm	none	
+00122850	00122880	code_00122850	c	none	
 00122888	00122888	code_r1_00122888	c	dds:1 of 1	
 001228B0	00122C20	code_r1_001228B0	c	dds:2 of 10	
 00122C50	00122F50	kernel/dds3GlobalWork	c	smt3:names:3+smt3:map:1 of 4	kernel/dds3GlobalWork
@@ -174,7 +174,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001814F0	00181808	code_r1_001814F0	c	dds:3 of 3 part	
 00181858	00182B10	code_00181858	c	none	
 00182B48	00183A98	interface/frWrap	c	smt3:names:9+smt3:map:7 of 29 reordered	interface/frWrap
-00183AB8	00183AB8	code_00183AB8	asm	none	
+00183AB8	00183AB8	code_00183AB8	c	none	
 00183B00	00183C60	code_r1_00183B00	c	dds:4 of 6	
 00183C98	00183D50	code_r1_00183C98	c	dds:1 literal-cores:1 of 3	
 00183D90	00185120	interface/itfMisc	c	smt3:names:21+smt3:map:1 of 25	interface/itfMisc
@@ -347,7 +347,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 002CAFD8	002CD500	code_r1_002CAFD8	c	dds:14 of 46	
 002CD568	002CD568	code_r1_002CD568	c	dds:1 of 1	
 002CD5A8	002CE640	code_r1_002CD5A8	c	dds:21+smt3:names:1 of 29	facility/fclMisc
-002CE660	002CE660	code_002CE660	asm	none	
+002CE660	002CE660	code_002CE660	c	none	
 002CE680	002CED20	code_r1_002CE680	c	dds:10 of 10	
 002CEE00	002D7918	kernel/ModeSelect	c	smt3:map:1+smt3:names:1 literal-cores:1 of 103	kernel/ModeSelect
 002D7950	002F1AA8	code_002D7950	c	none	

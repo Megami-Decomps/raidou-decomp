@@ -15,6 +15,11 @@
 #include "sdfPacketBuff.h"
 #include "sdf2D.h"
 #include "sdf3DPrim.h"
+#include "dds3KernelMain.h"
+#include "cmpView.h"
+#include "dds3CameraObjectBasic.h"
+#include "sdfVu0.h"
+#include "sdf3D.h"
 
 typedef struct frFontHandle_t frFontHandle_t;
 
@@ -722,11 +727,41 @@ void itfSetGridEntryQuantizedAndRefresh(sprHandle_t *resource, s32 resourceIndex
     effInitializeSlotWorkFromDescription(resource, resourceIndex, record);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfGridSetQuantizedBounds);
+void itfGridSetQuantizedBounds(sprHandle_t *resource, s32 resourceIndex, s32 x, s32 y, s32 width, s32 height)
+{
+    effSlotDescription_t *entry = &resource->descriptions[resourceIndex];
+    s32 *dst = resource->workEntries[resourceIndex].bounds.grid.quantizedBounds;
+    s32 *src;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfGridSetBounds);
+    entry->bounds[0] = x >> 4;
+    entry->bounds[1] = y >> 3;
+    entry->bounds[2] = width >> 4;
+    entry->bounds[3] = height >> 3;
+    src = entry->bounds;
+    for (i = 0; i < 4; i++) {
+        *dst++ = *src++;
+    }
+}
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfGridCopyEntryQuad);
+void itfGridSetBounds(sprHandle_t *resource, s32 resourceIndex, s32 x, s32 y, s32 width, s32 height)
+{
+    itfBdWork_t *entry = (itfBdWork_t *)effGetSlotWorkOrOverride(resource, resourceIndex);
+
+    entry->parameters[0] = x;
+    entry->parameters[1] = y;
+    entry->parameters[2] = width;
+    entry->parameters[3] = height;
+}
+
+void itfGridCopyEntryQuad(sprHandle_t *resource, s32 resourceIndex)
+{
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        resource->workEntries[resourceIndex].geometry.cornerColors[i] = resource->workEntries[resourceIndex].savedColors[i];
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf34);
 
@@ -936,7 +971,20 @@ EffSlotPhaseStep itfGridApplyThresholdBoundsAndAlpha(itfBdWork_t *rectangle, itf
     return EFF_SLOT_PHASE_ONE / table->divisor;
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfUpdateAngleAndGetCycleStep);
+EffSlotPhaseStep itfUpdateAngleAndGetCycleStep(itfBdWork_t *rectangle, itfBdWork_t *out, effTimedState_t *timedState)
+{
+    itfGridAngleTable_t *table = (itfGridAngleTable_t *)timedState->source->status;
+    s32 i = 3;
+
+    do {
+        if (table->mirrored == 0) {
+            out->geometry.angleDegrees = 360.0f - (f32)timedState->value * 360.0f * (1.0f / 65536.0f);
+        } else {
+            out->geometry.angleDegrees = (f32)timedState->value * 360.0f * (1.0f / 65536.0f);
+        }
+    } while (--i >= 0);
+    return EFF_SLOT_PHASE_ONE / table->divisor;
+}
 
 /* Blend each saved corner color toward the table's target color. */
 EffSlotPhaseStep itfGridInterpolateCornerColorsToTarget(itfBdWork_t *rectangle, itfBdWork_t *out, effTimedState_t *timedState) {
@@ -1080,7 +1128,23 @@ void cmpExpandColor(u64 *dst, u32 color)
     dst[1] = ((wide & 0xFF00) >> 8) | ((u64)(color & 0xFF) << 32);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawSetup3DView);
+void cmpDrawSetup3DView(void)
+{
+    s32 i;
+
+    sdf3MakeScreenParam(&dds3ScreenParam);
+    LookAtMatrix(&aViewTarget, &aViewEye, &aViewDown);
+    SDF_VU0_STOREMATRIX(&sdfViewMatrix);
+    for (i = 0; i < 2; i++) {
+        sdfDrawTagInit(&cmpViewTag[i]);
+        sdf3DLinkInitPacket(&cmpViewTag[i], (DmaPacketHeader *)&cmpViewInitPacket[i]);
+        sdf3DMakeViewportPacket(&cmpViewportPacket[i], &dds3ScreenParam, &sdfViewMatrix);
+        sdfDrawTagLink(&cmpViewTag[i], EE_ADDR(&cmpViewportPacket[i]));
+        sdfDrawTagInit(&cmpLightTag[i]);
+        sdf3DMakeLightParallelPacket(&cmpLightPacket[i], dds3LightParam.parallel, &dds3LightObjectAmbient);
+        sdfDrawTagLink(&cmpLightTag[i], EE_ADDR(&cmpLightPacket[i]));
+    }
+}
 
 void cmpDrawSpriteFlag(u8 id, s32 flag, s32 ot)
 {
@@ -1105,7 +1169,11 @@ void cmpDrawSpriteFlag(u8 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf40);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/code_0022C578.c:7297, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+void cmpLeaf40(u8 id, s32 arg)
+{
+    cmpDrawSpriteFlag(id, 0, arg);
+}
 
 void cmpDrawSprite(s32 id, s32 flag, s32 ot)
 {
@@ -1299,7 +1367,13 @@ void cmpDrawBoxGDefault(s32 a, s32 b, s32 c, s32 d, s32 e, s32 *colors, s32 h)
     cmpDrawBoxG(a, b, c, d, e, colors, 0, h);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpCallDrawPanelEffCell);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_002BF790.c:766, match, same function 1.00 (words 59/59, calls 1.00, shape 1.00) */
+void cmpCallDrawPanelEffCell(u32 x, u32 y, u32 z, u32 width, u32 height, u32 color, u32 context) {
+    cmpDrawPanelEffCell(x, y, z, x + width, y, z, color, context);
+    cmpDrawPanelEffCell(x, y, z, x, y + height, z, color, context);
+    cmpDrawPanelEffCell(x + width, y, z, x + width, y + height, z, color, context);
+    cmpDrawPanelEffCell(x, y + height, z, x + width + 0x10, y + height, z, color, context);
+}
 
 void cmpDrawPanelEffCell(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h)
 {
@@ -1379,9 +1453,33 @@ void cmpDraw3DPoly(const f32 *first, const f32 *second, const f32 *third,
     surface->regFunc(surface, list);
 }
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpCallGrAllocPacketBuff);
+void cmpCallGrAllocPacketBuff(s32 ot)
+{
+    sdfDrawTag_t *tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfGrRefGifPacketHeader_t *buffer;
+    sdfGrOt_t *otp;
 
-INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpCallGrAllocPacketBuff2);
+    sdfDrawTagInit(tag);
+    buffer = EE_ADDR_AS(sdfGrRefGifPacketHeader_t *, sdfGrAllocPacketBuff(0x40));
+    sdfGrSetFrameMaskRGB((const u8 *)&dds3DrawEnv[dds3GetFrameID()].stdEnv, buffer, 0);
+    sdfDrawTagLinkRefGif(tag, EE_ADDR(buffer));
+    otp = &sdfGrOtTable[ot];
+    otp->regFunc(otp, tag);
+}
+
+void cmpCallGrAllocPacketBuff2(s32 ot)
+{
+    sdfDrawTag_t *tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfGrRefGifPacketHeader_t *buffer;
+    sdfGrOt_t *otp;
+
+    sdfDrawTagInit(tag);
+    buffer = EE_ADDR_AS(sdfGrRefGifPacketHeader_t *, sdfGrAllocPacketBuff(0x40));
+    sdfGrSetFrameMaskReset((const u8 *)&dds3DrawEnv[dds3GetFrameID()].stdEnv, buffer, 0);
+    sdfDrawTagLinkRefGif(tag, EE_ADDR(buffer));
+    otp = &sdfGrOtTable[ot];
+    otp->regFunc(otp, tag);
+}
 
 void uiDrawTexturedSurfaceAtFarDepth(s32 surface) {
     sdfSubmitGsTestOneRegisterPacket(0x30000, surface);

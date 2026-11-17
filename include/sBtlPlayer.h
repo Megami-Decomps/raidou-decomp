@@ -7,6 +7,7 @@
 #include "sdf_types.h"
 
 struct SBTLUNIT_WORK;
+struct sBtlMenu_t;
 
 typedef struct SBTLPLAYER_VIBE {
     s32 in;
@@ -62,7 +63,7 @@ s8 sbtlNormalProc_Huuma(struct SBTLUNIT_WORK *wk);
 void sbtlRefSbtl14(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlSearchUnitID11(struct SBTLUNIT_WORK *wk, s32 flg);
 s32 NormalProc(struct SBTLUNIT_WORK *wk);
-s32 sbtlBtlDrawProcessSub(void);
+s32 sbtlBtlDrawProcessSub(struct sBtlMenu_t *menu);
 s32 sbtlCheckBit(u32 *bits, s32 bit);
 s32 sbtlCheckPad(void);
 s32 sbtlClearEffHitData(struct SBTLUNIT_WORK *wk);

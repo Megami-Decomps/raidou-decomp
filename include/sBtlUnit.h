@@ -62,7 +62,8 @@ typedef struct SBTLUNIT_MODEL {
     s32 data_p[2];
     s32 ai_target[3]; /* unit IDs found by sbtlCallBtlCreateSideList2 (HD ai_target) */
     u8 pad190[0x194 - 0x190];
-    u32 useskl[36]; /* skill-used bits, one per SKLID, up to field224 */
+    u32 useskl[17]; /* skill-used bits, one per SKLID */
+    u32 chkskl[19]; /* 0x1D8: skill-checked bits (HD chkskl), up to field224 */
     s32 field224;
 } SBTLUNIT_MODEL;
 

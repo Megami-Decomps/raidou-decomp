@@ -162,7 +162,10 @@ s32 sbtlRefSbtl23(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlLeaf6);
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlLeaf6(void) {
+    return 1;
+}
 
 SBTLDMG_HITLISTWORK *sbtlCreateHitList(void) {
     SBTLDMG_HITLISTWORK *lwk;
@@ -852,7 +855,21 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetHitEndPos);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallMemAllocDirect2);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlSearchHit_SerialID);
+SBTLDMG_HITWORK *sbtlSearchHit_SerialID(SBTLDMG_HITLISTWORK *lwk, s32 serialID)
+{
+    SBTLDMG_HITWORK *wk = lwk->wk;
+
+    if (wk == NULL || lwk->num == 0) {
+        return NULL;
+    }
+    do {
+        if (wk->serialID == serialID) {
+            return wk;
+        }
+        wk = wk->next;
+    } while (wk != NULL);
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlGetKaraburiNum);
 

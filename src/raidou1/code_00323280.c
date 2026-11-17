@@ -10,6 +10,14 @@
 #include "code_r1_00323138.h"
 #include "code_0016A7D8.h"
 #include "code_00323280.h"
+#include "code_0032F2B8.h"
+#include "cmpMain.h"
+#include "sdfTex.h"
+#include "frFont.h"
+#include "nwdNews.h"
+#include "dds3WorldBasic.h"
+#include "dds3AreaBasic.h"
+#include "dds3Basic.h"
 
 void DrawTop(struct tagCMP_MAP_WORK *wk) {
     struct sprHandle_t *spr;
@@ -140,6 +148,46 @@ INCLUDE_ASM(const s32, "code_00323280", cmpCallMenuSetMenuTitle);
 
 INCLUDE_ASM(const s32, "code_00323280", TitleChange);
 
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrValuables);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrThrowAway);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrVibration);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrSubscreen);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrMoneyOnHand);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrReleaseDemon);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrReorganizeDemons);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrChooseDemonTo);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrCheckValuables);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrThrowAwayItems);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrChangeTheEquippedBullets);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrUseItems);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrLoadSavedData);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrVibrationSettings);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrCheckTheMapOfTheCurrent);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrViewStatusForRaidouAnd);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrChangeDemonSettings);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrConsumeItemsReloadCheck);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStrUseDemonAbility);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpCallMenuSetFlagMenu2Table);
+
 INCLUDE_ASM(const s32, "code_00323280", cmpCallFunc);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpDrawKeyHelp2);
@@ -182,11 +230,20 @@ INCLUDE_ASM(const s32, "code_00323280", cmpDrawProcess);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpCallGetProcessData6);
 
-INCLUDE_ASM(const s32, "code_00323280", cmpGetEndMode);
+CMP_MODE cmpGetEndMode(void)
+{
+    return cmpCallFuncData;
+}
 
-INCLUDE_ASM(const s32, "code_00323280", cmpSetMarkID);
+void cmpSetMarkID(s32 a_markID)
+{
+    ((struct tagCMP_WORK *)dds3GetProcessData(g_mainPID_cmpMain))->markID = a_markID;
+}
 
-INCLUDE_ASM(const s32, "code_00323280", cmpGetMarkID);
+s32 cmpGetMarkID(void)
+{
+    return ((struct tagCMP_WORK *)dds3GetProcessData(g_mainPID_cmpMain))->markID;
+}
 
 INCLUDE_ASM(const s32, "code_00323280", cmpCallProcEnd);
 
@@ -194,13 +251,47 @@ INCLUDE_ASM(const s32, "code_00323280", cmpCheckProcEnd);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpRelease);
 
+/* NON_MATCHING: 16 of 21 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00323280.c:73, near, same function 0.92 (words 21/21, calls 0.80, shape 0.95) */
+void cmpProcessStartEx(dds3ProcessID_t *id) {
+    tagCMP_MAP_WORK *wk = dds3GetProcessData(id);
+
+    Release_cmpMap(wk);
+    if (dds3ExistProcess(wk->drawPID)) {
+        dds3KillProcess(wk->drawPID, 0);
+    }
+    sdfMemFreeDirect(wk->handle);
+    g_mainPID_cmpMap = NULL;
+}
+#else
 INCLUDE_ASM(const s32, "code_00323280", cmpProcessStartEx);
+#endif
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpCallDrawKeyHelp2Table);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpProcessStartEx_cmpMain);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpProcessStart);
 
+/* NON_MATCHING: 20 of 25 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 0.99 (words 25/25, calls 1.00, shape 0.96) */
+void cmpProcessEnd(void) {
+    tagMAP_MENU_WORK *wk;
+
+    if (g_mainPID_cmpMain != NULL && dds3ExistProcess(g_mainPID_cmpMain)) {
+        wk = dds3GetProcessData(g_mainPID_cmpMain);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 2;
+            wk->count = 0;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00323280", cmpProcessEnd);
+#endif
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/003261E8.c:1, found */
 s32 cmpProcessCheck(void) {
@@ -218,7 +309,17 @@ INCLUDE_ASM(const s32, "code_00323280", cmpProcessStart_cmpMain);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpCallProcessEnd);
 
-INCLUDE_ASM(const s32, "code_00323280", cmpCallGetProcessStat2);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/003262A8.c:1, match */
+s32 cmpCallGetProcessStat2(void) {
+    if (effBTLFieldColorProcess == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(effBTLFieldColorProcess) == 3 || dds3GetProcessStat(effBTLFieldColorProcess) == 0) {
+        effBTLFieldColorProcess = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00323280", cmpClearDispatchVisualFlagSub);
 
@@ -316,7 +417,13 @@ INCLUDE_ASM(const s32, "code_00323280", cmpFunc24);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpCallSetOt9);
 
-INCLUDE_ASM(const s32, "code_00323280", cmpDrawItemListHeader);
+void cmpDrawItemListHeader(s32 index, s32 x, s32 y)
+{
+    frFontHandle_t *frq = frwGetSmallFontFRQ2(x * 16, y * 8, 0xFFFFFF, 0x80808080, cmpDrawItemListHeaderData[index], NULL);
+
+    frDrawFontOt(frq, 1, 103);
+    frDestroyFontRequestAfter(frq);
+}
 
 INCLUDE_ASM(const s32, "code_00323280", cmpCallSprintf4);
 
@@ -352,11 +459,66 @@ INCLUDE_ASM(const s32, "code_00323280", cmpLeaf32);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpLeaf50);
 
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr17);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr2);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr3);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr4);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr5);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr0);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr6);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr7);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr8);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr9);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr10);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr11);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr12);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr13);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr14);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr15);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr16);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr18);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr19);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr20);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr21);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr22);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr23);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr24);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr25);
+
+INCLUDE_RODATA(const s32, "code_00323280", cmpStr26);
+
 INCLUDE_ASM(const s32, "code_00323280", cmpCallGetRandIntA3);
 
 INCLUDE_ASM(const s32, "code_00323280", evtFunc21);
 
-INCLUDE_ASM(const s32, "code_00323280", evtLeaf35);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/00328DD0.c:1, match */
+void evtLeaf35(void) {
+    cmpFunc10();
+}
 
 INCLUDE_ASM(const s32, "code_00323280", evtFunc22);
 
@@ -376,9 +538,13 @@ INCLUDE_ASM(const s32, "code_00323280", evtCallPrintf);
 
 INCLUDE_ASM(const s32, "code_00323280", evtFunc26);
 
+INCLUDE_RODATA(const s32, "code_00323280", evtStr4);
+
 INCLUDE_ASM(const s32, "code_00323280", evtTargetNoIndex);
 
 INCLUDE_ASM(const s32, "code_00323280", evtCallPrintf2);
+
+INCLUDE_RODATA(const s32, "code_00323280", evtStrPlyEnm);
 
 INCLUDE_ASM(const s32, "code_00323280", evtTurnPhase);
 
@@ -410,21 +576,96 @@ INCLUDE_ASM(const s32, "code_00323280", trmCallGetProcessData);
 
 INCLUDE_ASM(const s32, "code_00323280", trmCallGetProcessData2);
 
-INCLUDE_ASM(const s32, "code_00323280", trmLeaf2);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0032ABB8.c:1, match */
+void trmLeaf2(void) {
+    evtCallMemFreeDirect();
+}
 
 INCLUDE_ASM(const s32, "code_00323280", fclCallGetProcessData2);
 
-INCLUDE_ASM(const s32, "code_00323280", fclJpcMain);
+void fclJpcMain(void)
+{
+    sdfMemHandle_t *hMem;
+    fclJpcWork_t *wk;
 
+    hMem = sdfMemAllocDirect(sizeof(fclJpcWork_t));
+    wk = sdfMemGetPtr(hMem);
+    memset(wk, 0, sizeof(fclJpcWork_t));
+    wk->hMem = hMem;
+    fclCheckData = dds3StartProcess("jpc_main", 0x3FF, 0, 0, trmCallGetProcessData, fclCallGetProcessData2, wk);
+    wk->drawPID = dds3StartProcess("jpc_draw", 0x2B07, 0, 0, trmCallGetProcessData2, NULL, wk);
+    dds3BackColor = 0x80404040;
+    evtClearDispatchVisualFlag();
+}
+
+/* NON_MATCHING: 14 of 24 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 0.98 (words 24/25, calls 1.00, shape 0.98) */
+void fclCallExistProcess(void) {
+    tagMAP_MENU_WORK *wk;
+
+    if (fclCheckData != NULL && dds3ExistProcess(fclCheckData)) {
+        wk = dds3GetProcessData(fclCheckData);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 2;
+            wk->count = 0;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00323280", fclCallExistProcess);
+#endif
 
-INCLUDE_ASM(const s32, "code_00323280", fclCheck);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0032AD40.c:1, match */
+s32 fclCheck(void) {
+    if (fclCheckData == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(fclCheckData) == 3 || dds3GetProcessStat(fclCheckData) == 0) {
+        fclCheckData = NULL;
+        return 0;
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_00323280", fclLeaf);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0032AD90.c:1, match */
+void fclLeaf(void) {
+    fclJpcMain();
+}
 
-INCLUDE_ASM(const s32, "code_00323280", fclLeaf2);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0032ADA8.c:1, match */
+void fclLeaf2(void) {
+    fclCallExistProcess();
+}
 
 INCLUDE_ASM(const s32, "code_00323280", fclCallCheck);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews01201Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews01101Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews01001Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews00901Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews00801Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews00701Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdLoadSpriteDataEntry);
+
+INCLUDE_RODATA(const s32, "code_00323280", sbtlStr0601Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews00501Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews00401Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews00301Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews00201Spr);
+
+INCLUDE_RODATA(const s32, "code_00323280", nwdStrShopNewsNews00101Spr);
 
 INCLUDE_ASM(const s32, "code_00323280", Process_nwdNews);
 
@@ -438,23 +679,111 @@ INCLUDE_ASM(const s32, "code_00323280", nwdCallNext);
 
 INCLUDE_ASM(const s32, "code_00323280", Release_nwdNews);
 
+/* NON_MATCHING: 13 of 22 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00323280.c:73, near, same function 0.91 (words 22/21, calls 0.80, shape 0.98) */
+void Shutdown_nwdNews(dds3ProcessID_t *id) {
+    tagCMP_MAP_WORK *wk = dds3GetProcessData(id);
+
+    Release_cmpMap(wk);
+    if (dds3ExistProcess(wk->drawPID)) {
+        dds3KillProcess(wk->drawPID, 0);
+    }
+    sdfMemFreeDirect(wk->handle);
+    g_mainPID_cmpMap = NULL;
+}
+#else
 INCLUDE_ASM(const s32, "code_00323280", Shutdown_nwdNews);
+#endif
 
-INCLUDE_ASM(const s32, "code_00323280", nwdProcessStart);
+void nwdProcessStart(void)
+{
+    sdfMemHandle_t *hMem;
+    struct tagNWDNEWS_WORK *wk;
 
+    hMem = sdfMemAllocDirect(sizeof(struct tagNWDNEWS_WORK));
+    wk = sdfMemGetPtr(hMem);
+    memset(wk, 0, sizeof(struct tagNWDNEWS_WORK));
+    wk->hMem = hMem;
+    g_mainPID_nwdNews = dds3StartProcess("nwdnews_main", 0x3FF, 0, 0, Process_nwdNews, (dds3ProcessFunc_t)Shutdown_nwdNews, wk);
+    wk->drawPID = dds3StartProcess("nwdnews_draw", 0x2B07, 0, 0, DrawProcess_nwdNews, NULL, wk);
+}
+
+/* NON_MATCHING: 20 of 25 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 61f09dc: src/raidou1/code_00195698.c:164, adapt, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
+void nwdProcessEnd(void) {
+    tagMAP_MENU_WORK *wk;
+
+    if (g_mainPID_nwdNews != NULL && dds3ExistProcess(g_mainPID_nwdNews)) {
+        wk = dds3GetProcessData(g_mainPID_nwdNews);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 2;
+            wk->count = 0;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00323280", nwdProcessEnd);
+#endif
 
-INCLUDE_ASM(const s32, "code_00323280", nwdProcessCheck);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0032B520.c:1, match */
+s32 nwdProcessCheck(void) {
+    if (g_mainPID_nwdNews == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(g_mainPID_nwdNews) == 3 || dds3GetProcessStat(g_mainPID_nwdNews) == 0) {
+        g_mainPID_nwdNews = NULL;
+        return 0;
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_00323280", shpCreateScene);
+/* body: matched in raidou @ 61f09dc: src/shared/code_r1_002F93D8.c:15, match, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
+void shpCreateScene(void)
+{
+    dds3Basic_t *scene = dds3AddScene();
 
-INCLUDE_ASM(const s32, "code_00323280", shpDeleteScene);
+    dds3SetControlScene(scene);
+    dds3SetActiveScene(scene);
+    dds3AddAreaBasic(dds3AllocObjectId(), "shop_area");
+}
+
+/* body: matched in raidou @ 61f09dc: src/shared/event/evtStage.c:194, match, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+void shpDeleteScene(void)
+{
+    dds3Basic_t *node;
+
+    node = (dds3Basic_t *)dds3GetControlScene();
+    if (node != 0) {
+        dds3DeleteScene(node);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00323280", shpMakeLightPacket);
 
 INCLUDE_ASM(const s32, "code_00323280", SetLight);
 
 INCLUDE_ASM(const s32, "code_00323280", shpSetCamera);
+
+INCLUDE_RODATA(const s32, "code_00323280", shpMakeLightPacketTable);
+
+INCLUDE_RODATA(const s32, "code_00323280", shpMakeLightPacketTable2);
+
+INCLUDE_RODATA(const s32, "code_00323280", shpMakeLightPacketTable3);
+
+INCLUDE_RODATA(const s32, "code_00323280", SetLightTable);
+
+INCLUDE_RODATA(const s32, "code_00323280", SetLightTable2);
+
+INCLUDE_RODATA(const s32, "code_00323280", SetLightTable3);
+
+INCLUDE_RODATA(const s32, "code_00323280", SetLightTable4);
+
+INCLUDE_RODATA(const s32, "code_00323280", SetLightTable5);
+
+INCLUDE_RODATA(const s32, "code_00323280", SetLightTable6);
 
 INCLUDE_ASM(const s32, "code_00323280", shpSetCamera_shpModel);
 
@@ -526,11 +855,22 @@ INCLUDE_ASM(const s32, "code_00323280", Init_shpModel);
 
 INCLUDE_ASM(const s32, "code_00323280", camp_update_status_Shutdown);
 
-INCLUDE_ASM(const s32, "code_00323280", campCallDevLoadFileEx);
+sdfTexHandle_t *campCallDevLoadFileEx(const char *filename)
+{
+    u32 resource = 0;
+    sdfMemHandle_t *fileAllocation = sdfDevLoadFileEx(filename, &resource, 0);
+    sdfTexHandle_t *texture = sdfTexSet(EE_ADDR_AS(TMX_HEADER_t *, resource));
+
+    sdfMemFreeDelayedDirect(fileAllocation);
+    return texture;
+}
 
 INCLUDE_ASM(const s32, "code_00323280", campCallSetOt);
 
-INCLUDE_ASM(const s32, "code_00323280", campRefShpDraw);
+void campRefShpDraw(s32 a_x, s32 a_y, s32 a_sprNo)
+{
+    itfCallSetOt(a_x, a_y, 256, wk_shpDraw->hSpr, a_sprNo, 0x67);
+}
 
 INCLUDE_ASM(const s32, "code_00323280", scrLeaf4);
 
@@ -538,7 +878,10 @@ INCLUDE_ASM(const s32, "code_00323280", scrRefShpDraw4);
 
 INCLUDE_ASM(const s32, "code_00323280", scrRefShpDraw5);
 
-INCLUDE_ASM(const s32, "code_00323280", scrClearProfileFlagsTable);
+void scrClearProfileFlagsTable(s32 a_x, s32 a_y, u32 a_alphaRate, itfSprList_t *a_list)
+{
+    itfDrawMiscSpriteList(a_x, a_y, 256, a_alphaRate, wk_shpDraw->hSpr, 0x67, a_list);
+}
 
 INCLUDE_ASM(const s32, "code_00323280", scrCallGetSmallFontFRQ2);
 
@@ -598,6 +941,13 @@ INCLUDE_ASM(const s32, "code_00323280", shpCommandHelp);
 
 INCLUDE_ASM(const s32, "code_00323280", shpRootMenuTitle);
 
+INCLUDE_RODATA(const s32, "code_00323280", shpSetRotYModelTable);
+
 INCLUDE_ASM(const s32, "code_00323280", shpShopKonnouyaTmx);
 
 INCLUDE_ASM(const s32, "code_00323280", nbRefShpDraw);
+
+INCLUDE_RODATA(const s32, "code_00323280", knyStrShopScriptNwdEvtBf);
+
+INCLUDE_RODATA(const s32, "code_00323280", shpStrShopScriptKnyEvtBf);
+

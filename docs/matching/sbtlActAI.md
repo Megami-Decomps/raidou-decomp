@@ -119,3 +119,11 @@ Raidou 1: 2834 of 3008 words differ, first at +0x8; emitted 12044 bytes, native 
 Size and control flow match retail when compiled alone (12032 bytes, 12044 inside the unit); case order follows the jump table, the shared tail is labelled at the end of case 51.
 
 Related: register allocation (retail holds &wk->rot in a 7th saved register) and a lw test of field414 & 0x82 that points at a u32 bitfield container at 0x414.
+
+## SetChkskl (sbtlActAI, raidou1 0x3C)
+
+Raidou 1: 10 of 15 words differ, first at +0x0.
+
+v0/v1 swapped through the body, the SetUseskl shape (docs/matching/sbtlActAI.md); the &= ~ siblings sbtlLeaf65/sbtlResetUseskl match with the same C; a bit temp gets worse (14); SBTLUNIT_MODEL useskl[36] split into useskl[17] + chkskl[19] at 0x1D8 (HD chkskl); vectors do not reach, checked against the asm
+
+Related: regalloc.
