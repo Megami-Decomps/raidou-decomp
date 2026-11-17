@@ -160,6 +160,11 @@ s32 sbtlDefaultCutScroll(void)
         sbtlCallMemset4Data6 = wk->pos.y;
         sbtlCallMemset4Data7 = wk->pos.z;
     }
+#ifdef FIX_BUGS
+    /* Retail returns the v0 sbtlSearchUnit_ID leaves. A script command:
+     * CodeFunc_Comm reads 0 as still pending. */
+    return wk != NULL;
+#endif
 }
 
 void sbtlSetZoom2(const sdfVector4_t *pos, f32 zoom, s32 time)
@@ -4178,6 +4183,9 @@ s32 sbtlCheckUnit_Exec(void)
 
 s32 sbtlModelDataLoad(dds3ProcessID_t *id)
 {
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 /* NON_MATCHING: 93 of 257 words match. One word longer; aligned diff ~15 lines: case 0 memcpy arg scheduling, the return-0 exits share a block differently, flg2 |= 0x200 register. sbtlCallBtlSearchPacData now takes a 5th s32 size (retail caller sets t0; only caller), R01 draft needs the unused param; SBTLSOUND_DEVILWORK field00[11] split into named fields; pacHandle is struct fileRequest *; vector checked (menu). */
