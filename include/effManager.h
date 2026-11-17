@@ -22,7 +22,7 @@ typedef struct effResourceHeader_t
     u32 arg;
     u32 unk08;
     f32 version;
-    u8 payload[16];
+    u8 payload[0]; /* type-specific, at least 16 bytes */
 } effResourceHeader_t;
 
 effHandle_t *dds3EffectCopy(effHandle_t *node);

@@ -45,7 +45,7 @@ extern void sdfMotInterpolateKeyUvwSub(f32 *aDst, f32 *aSrc0, f32 *aSrc1, f32 aR
 extern sdfMotGenNodeFunc sdfMotGenNodeTable[];
 extern sdfMotGenNodeFunc sdfMotGenNodeDef[];
 extern sdfMotGenNodeFunc sdfMotGenMatTable[];
-extern sdfMotGenNodeFunc sdfMotGenMorphTable[];
+extern sdfMotGenNodeFunc sdfMotGenMorphTable[2] __attribute__((section(".data")));
 extern sdfMotionNodeVTBL_t sdfMotModelLinerPosTable;
 extern sdfMotionNodeVTBL_t sdfMotModelLinerRotXYZTable;
 extern sdfMotionNodeVTBL_t sdfMotModelLinerScaleTable;
@@ -193,7 +193,6 @@ void sdfMotCLBK_morphInitBlend(sdfMotNodeMorph_t *aThis);
 extern sdfMotGenNodeFunc sdfMotGenNodeTable[4];
 extern sdfMotGenNodeFunc sdfMotGenNodeDef[5];
 extern sdfMotGenNodeFunc sdfMotGenMatTable[10];
-extern sdfMotGenNodeFunc sdfMotGenMorphTable[2] __attribute__((section(".data")));
 
 sdfMotionNode_t *sdfMotionNodeNew(sdfMotionCtrlr_t *aCtrlr, u32 aTypeId, u32 aNodeId)
 {

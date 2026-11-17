@@ -57,7 +57,7 @@ dds3Effect_Filter_t *effFilter2SwapSub(void);
 dds3Effect_PartialMultiFilter_t *effMFilterSwapSub(void);
 dds3Effect_PartialMultiBlurParam_t *mblurGetParam(void);
 dds3Effect_DistortionBlurParam_t *dblurGetParam(void);
-dds3Effect_Filter_t *effGetLoadDescD(void);
+dds3Effect_Blur_t *effGetLoadDescD(void);
 dds3Effect_PartialMultiFilterParam_t *dblurGetParam2(void);
 dds3Effect_PartialMultiFilterParam_t *mfilterGetParam(void);
 dds3Effect_RippleBlurParam_t *rblurGetParam(void);

@@ -324,17 +324,17 @@ void LoadOnMemoryData_BED(SBTLEFF_WORK *wk, struct SBTLUNIT_WORK *wklock, u16 no
             } else {
                 wk->dwk.hPartsList = Create_effPartsList(sbtlData83->effpac[wk->workID].pwk[wk->effectid]->pData);
             }
-            effPartsRotateSet(wk->dwk.hPartsList, &wk->rot.x);
+            effPartsRotateSet(wk->dwk.hPartsList, (const f32 *)&wk->rot);
             effPartsScaleSet(wk->dwk.hPartsList, wk->scale);
             if (wk->flg & SBTLEFF_FLG_LOCKHIT) {
                 hit = sbtlSearchHit_SerialID(wk_sbtl->hitList, wk->hitserialID);
                 if (hit != NULL) {
                     SDF_VU0_LOADVECTOR(&hit->pos);
                     SDF_VU0_STOREVECTOR(&wk->pos);
-                    effPartsPositionSet(wk->dwk.hPartsList, &wk->pos.x);
+                    effPartsPositionSet(wk->dwk.hPartsList, (const f32 *)&wk->pos);
                 }
             } else {
-                effPartsPositionSet(wk->dwk.hPartsList, &wk->pos.x);
+                effPartsPositionSet(wk->dwk.hPartsList, (const f32 *)&wk->pos);
             }
         }
         wk->st = SBTLEFF_ST_PROC;
@@ -378,7 +378,7 @@ s32 EffFunc_Hanyou_BED(SBTLEFF_WORK *wk)
             SDF_VU0_STOREMATRIX(&mat);
             sbtlGetQuatFromMatrix(&mat);
             SDF_VU0_STOREVECTOR(&wk->rot);
-            effPartsRotateSet(wk->dwk.hPartsList, &wk->rot.x);
+            effPartsRotateSet(wk->dwk.hPartsList, (const f32 *)&wk->rot);
         }
         if (wk->flg & SBTLEFF_FLG_LOCKHIT) {
             hit = sbtlSearchHit_SerialID(wk_sbtl->hitList, wk->hitserialID);
@@ -387,20 +387,20 @@ s32 EffFunc_Hanyou_BED(SBTLEFF_WORK *wk)
             }
             SDF_VU0_LOADVECTOR(&hit->rot);
             SDF_VU0_STOREVECTOR(&wk->rot);
-            effPartsRotateSet(wk->dwk.hPartsList, &wk->rot.x);
+            effPartsRotateSet(wk->dwk.hPartsList, (const f32 *)&wk->rot);
             SDF_VU0_LOADVECTOR(&hit->pos);
             SDF_VU0_STOREVECTOR(&wk->pos);
-            effPartsPositionSet(wk->dwk.hPartsList, &wk->pos.x);
+            effPartsPositionSet(wk->dwk.hPartsList, (const f32 *)&wk->pos);
         }
         if ((wk->flg & (SBTLEFF_FLG_LOCKHLP | SBTLEFF_FLG_LOCKHIT)) == SBTLEFF_FLG_LOCKHLP && unit != NULL) {
             sbtlGetUnitHelperPos(unit, wk->helperno);
             SDF_VU0_STOREVECTOR(&wk->pos);
-            effPartsPositionSet(wk->dwk.hPartsList, &wk->pos.x);
+            effPartsPositionSet(wk->dwk.hPartsList, (const f32 *)&wk->pos);
         }
         if ((wk->flg & SBTLEFF_FLG_LOCKHPOS) && unit != NULL && !(wk->flg & SBTLEFF_FLG_LOCKHIT)) {
             SetEffectPos(wk, unit);
-            effPartsRotateSet(wk->dwk.hPartsList, &wk->rot.x);
-            effPartsPositionSet(wk->dwk.hPartsList, &wk->pos.x);
+            effPartsRotateSet(wk->dwk.hPartsList, (const f32 *)&wk->rot);
+            effPartsPositionSet(wk->dwk.hPartsList, (const f32 *)&wk->pos);
         }
         break;
     case SBTLEFF_ST_END:

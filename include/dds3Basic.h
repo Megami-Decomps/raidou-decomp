@@ -28,7 +28,7 @@ void dds3GetSclPoseSet(dds3Basic_t *pBasic);
 void dds3MakeMatrix(const sdfVector4_t *scale, const sdfVector4_t *quaternion, const sdfVector4_t *transrate);
 u32 dds3AllocObjectId(void);
 void dds3SetPosPoseSet_dds3Basic(dds3Basic_t *pBasic, const sdfVector4_t *pos);
-void dds3SetUnitObjectId(dds3Basic_t *basic, char *name);
+void dds3SetUnitObjectId(dds3Basic_t *basic, const char *name);
 extern u32 dds3ObjectIdCounter;
 
 #endif

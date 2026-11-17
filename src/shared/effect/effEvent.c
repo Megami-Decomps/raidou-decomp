@@ -85,7 +85,7 @@ extern u8 rblurDefaultParam[];
 extern effScreenDrawParams_t BlurEditorGetParamsData;
 extern dds3Effect_PartialMultiBlurParam_t rblurParam;
 extern dds3Effect_DistortionBlurParam_t rblurParam2;
-extern dds3Effect_Filter_t dblurData;
+extern dds3Effect_Blur_t dblurData;
 extern dds3Effect_PartialMultiFilterParam_t mfilterParam;
 extern dds3Effect_PartialMultiFilterParam_t dblurParam2;
 extern dds3Effect_RippleBlurParam_t rblurParam3;
@@ -284,7 +284,7 @@ void Eve_PartialMultiFilterSetDefTex(void);
 void Eve_EffectInit(void);
 dds3Effect_PartialMultiBlurParam_t *mblurGetParam(void);
 dds3Effect_DistortionBlurParam_t *dblurGetParam(void);
-dds3Effect_Filter_t *effGetLoadDescD(void);
+dds3Effect_Blur_t *effGetLoadDescD(void);
 
 /* Expose the resource-template setup body by address. */
 dds3Effect_PartialMultiFilterParam_t *dblurGetParam2(void);
@@ -736,7 +736,7 @@ void dblurSetParam(dds3Effect_DistortionBlurParam_t *parameters) {
 
 INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy2);
 
-dds3Effect_Filter_t *effGetLoadDescD(void) {
+dds3Effect_Blur_t *effGetLoadDescD(void) {
     return &dblurData;
 }
 

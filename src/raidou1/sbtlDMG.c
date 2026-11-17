@@ -560,8 +560,8 @@ s32 sbtlCreateHitC_New_sbtlDMG(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_
     }
     if (hwk->flg & 0x2000) {
         hwk->hPartsList = Create_effPartsList(pwk->EpData);
-        effPartsRotateSet(hwk->hPartsList, &hwk->rot.x);
-        effPartsPositionSet(hwk->hPartsList, &hwk->pos.x);
+        effPartsRotateSet(hwk->hPartsList, (const f32 *)&hwk->rot);
+        effPartsPositionSet(hwk->hPartsList, (const f32 *)&hwk->pos);
         hwk->EPL_counter = 0.0f;
         hwk->EPL_st_time = pwk->time.st_time;
         hwk->EPL_life = pwk->time.life;
@@ -1370,8 +1370,8 @@ s32 sbtlDrawAttachEPL(struct SBTLDMG_HITLISTWORK *lwk) {
                         }
                     }
                     ColorSet(hwk->hPartsList, ((s32)hwk->EPL_alpha << 24) | 0x808080);
-                    effPartsRotateSet(hwk->hPartsList, &hwk->rot.x);
-                    effPartsPositionSet(hwk->hPartsList, &hwk->pos.x);
+                    effPartsRotateSet(hwk->hPartsList, (const f32 *)&hwk->rot);
+                    effPartsPositionSet(hwk->hPartsList, (const f32 *)&hwk->pos);
                     effPartsDraw(hwk->hPartsList);
                 }
             }

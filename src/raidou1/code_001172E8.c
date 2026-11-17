@@ -10,7 +10,7 @@ u32 dds3AllocObjectId(void)
     return dds3ObjectIdCounter;
 }
 
-void dds3SetUnitObjectId(dds3Basic_t *basic, char *name)
+void dds3SetUnitObjectId(dds3Basic_t *basic, const char *name)
 {
     if (basic != NULL) {
         basic->name = name;

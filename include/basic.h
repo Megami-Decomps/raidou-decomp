@@ -57,7 +57,7 @@ struct dds3Basic_t
 {
     u32 flag;
     u32 serialID;
-    char *name;
+    const char *name;
     u32 type; /* the basic type in the top byte: type << 24 */
     dds3BasicFunction_t *basicfunction;
     void *staticdata; /* unconfirmed */

@@ -16,7 +16,7 @@ void dds3PathBasicControlSetRatio(dds3PathBasicControl_t *pControl, f32 ratio);
 void dds3PathBasicPauseOn(dds3PathBasicControl_t *pControl);
 void dds3PathBasicPauseOff(dds3PathBasicControl_t *pControl);
 
-dds3Basic_t *dds3AddPathBasic(u32 serialID, void *pData, char *pName);
+dds3Basic_t *dds3AddPathBasic(u32 serialID, void *pData, const char *pName);
 void dds3PathBasicFreeControl(dds3PathBasicControl_t *pControl);
 
 #endif

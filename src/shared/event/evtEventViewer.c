@@ -788,7 +788,7 @@ void evtUnRegistUnit(evtViewerInfo_t *pInfo) {
 }
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:595 */
-s32 SearchNameTable(char *name, evtViewerInfo_t *pInfo) {
+s32 SearchNameTable(const char *name, evtViewerInfo_t *pInfo) {
     s32 index = 0;
 
     if (pInfo->nametablecnt > 0) {
@@ -803,7 +803,7 @@ s32 SearchNameTable(char *name, evtViewerInfo_t *pInfo) {
 }
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:610 */
-s32 evtAddNameTable(char *name, evtViewerInfo_t *pInfo) {
+s32 evtAddNameTable(const char *name, evtViewerInfo_t *pInfo) {
     s32 existingIndex = SearchNameTable(name, pInfo);
     s32 newIndex;
 
@@ -3310,7 +3310,7 @@ void PushMenu(s32 no, s32 x, s32 y, evtViewerInfo_t *viewer) {
                 viewer->filename_x = 0;
                 viewer->filename_y = 0;
                 viewer->nameStorage[0] = 0;
-                viewer->nameStorage[0xC] = 0;
+                viewer->extension[0] = 0;
             }
         }
     }

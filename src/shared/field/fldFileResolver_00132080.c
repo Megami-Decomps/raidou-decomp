@@ -415,7 +415,7 @@ typedef struct fldObjectPlacement_t {
 extern fldObjectPlacement_t *fldScriptResource;
 extern u32 fldScriptResourceCount;
 extern void *fldData15;
-extern void dds3SetUnitObjectId(dds3Basic_t *basic, char *name);
+extern void dds3SetUnitObjectId(dds3Basic_t *basic, const char *name);
 extern void dds3ObjectBaseMakeMatter(dds3Basic_t *basic);
 
 void MakeObjectBasic2(void)

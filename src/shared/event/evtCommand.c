@@ -2701,7 +2701,7 @@ s32 evtCommand_CHG_MOON(void)
 s32 evtCommand_LOAD_BE(void) {
     s32 taskId = scrGetIntPara(0);
     scrProcessWork_s *commandWork = scrGetScriptHandle();
-    char *message;
+    const char *message;
 
     if (commandWork == NULL) {
         return 1;

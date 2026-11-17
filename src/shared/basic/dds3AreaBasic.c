@@ -95,7 +95,7 @@ u32 dds3AreaBasicTypeHasItems(u32 type)
     return ret;
 }
 
-dds3Basic_t *dds3AddAreaBasic(u32 serialID, char *pName)
+dds3Basic_t *dds3AddAreaBasic(u32 serialID, const char *pName)
 {
     dds3Basic_t *basic = dds3AddSceneBasicData(BASIC_TYPE_AREA);
 

@@ -54,7 +54,7 @@ void dds3PathEvalSpline(u32 *segment, f32 *weight, fldResourcePathData_t *keys, 
     *weight = 1.0f;
 }
 
-dds3Basic_t *dds3AddPathBasic(u32 serialID, void *pData, char *pName)
+dds3Basic_t *dds3AddPathBasic(u32 serialID, void *pData, const char *pName)
 {
     dds3Basic_t *object = dds3AddSceneBasicData(BASIC_TYPE_PATH);
 

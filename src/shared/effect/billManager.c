@@ -1337,11 +1337,11 @@ void dds3P2APolygonDraw(dds3P2APolygon_tag *instance) {
     SDF_VU0_LOADMATRIX(instance->rot);
     SDF_VU0_LOADMATRIX_B(instance->dir);
     MultMatrixNoArg();
-    SDF_VU0_STOREMATRIX_NOMEM(matrix);
+    SDF_VU0_STOREMATRIX_NOMEM((f32 (*)[4])matrix);
     matrix[3][0] = instance->hBillboard->pos[0];
     matrix[3][1] = instance->hBillboard->pos[1];
     matrix[3][2] = instance->hBillboard->pos[2];
-    SDF_VU0_LOADMATRIX(matrix);
+    SDF_VU0_LOADMATRIX((f32 (*)[4])matrix);
     sdf3DPrimLinkTm(list, 0);
     memset(&params, 0, sizeof(params));
     params.attr = 0x4000;
