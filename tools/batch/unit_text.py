@@ -69,7 +69,10 @@ def splice(text: str, name: str, body: str, r1only: bool = False, version: str =
     if len(hits) == 2 and hits[1] == hits[0] + 2 and hits[0] > 0 and hits[1] + 1 < len(lines) and \
             lines[hits[0] - 1].strip() == "#ifdef VERSION_RAIDOU1" and lines[hits[0] + 1].strip() == "#else" and \
             ENDIF.match(lines[hits[1] + 1]):
-        # the games' INCLUDE_ASM lines under a version guard, from when their names differed
+        # the games' INCLUDE_ASM lines under a version guard, from when their names differed; a Raidou 2 draft
+        # replaces the Raidou 2 line only
+        if version == "raidou2":
+            return "\n".join(lines[:hits[1]] + body.split("\n") + lines[hits[1] + 1:])
         if r1only:
             return "\n".join(lines[:hits[0]] + body.split("\n") + lines[hits[0] + 1:])
         return "\n".join(lines[:hits[0] - 1] + body.split("\n") + lines[hits[1] + 2:])

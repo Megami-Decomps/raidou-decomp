@@ -178,6 +178,34 @@ class RenamedRowTests(unittest.TestCase):
         out = run.splice_row("u.c", text, run.batch.rows["old"], "void new(void) {}\n")
         self.assertEqual((out, run.notes), ("void new(void) {}\n", []))
 
+    def test_a_raidou2_row_splices_the_line_raidou2_builds(self) -> None:
+        run = self.run_with([])
+        run.batch.rows["old"].shared = "R2"
+        asm = 'INCLUDE_ASM(const s32, "u", old);'
+        # the R2 line in the #else of one guard, the R1 line in a later VERSION_RAIDOU1 block (evtCallMemset2)
+        text = f"#ifdef VERSION_RAIDOU1\nr1;\n#else\n{asm}\n#endif\nx;\n#ifdef VERSION_RAIDOU1\n{asm}\n#endif\n"
+        want = f"#ifdef VERSION_RAIDOU1\nr1;\n#else\nvoid old(void) {{}}\n#endif\nx;\n#ifdef VERSION_RAIDOU1\n{asm}\n#endif\n"
+        self.assertEqual((run.splice_row("u.c", text, run.batch.rows["old"], "void old(void) {}\n"), run.notes),
+                         (want, []))
+        # an R1 line no game builds and the R2 line in an #else (frAnalyzeMessage)
+        text = (f"#ifdef VERSION_RAIDOU1\n#ifdef VERSION_RAIDOU1\nr1;\n#else\n{asm}\n#endif\n#else\n{asm}\n#endif\n")
+        want = (f"#ifdef VERSION_RAIDOU1\n#ifdef VERSION_RAIDOU1\nr1;\n#else\n{asm}\n#endif\n#else\n"
+                "void old(void) {}\n#endif\n")
+        self.assertEqual(run.splice_row("u.c", text, run.batch.rows["old"], "void old(void) {}\n"), want)
+        # the adjacent pair keeps the Raidou 1 line
+        text = f"#ifdef VERSION_RAIDOU1\n{asm}\n#else\n{asm}\n#endif\n"
+        self.assertEqual(run.splice_row("u.c", text, run.batch.rows["old"], "void old(void) {}\n"),
+                         f"#ifdef VERSION_RAIDOU1\n{asm}\n#else\nvoid old(void) {{}}\n#endif\n")
+
+    def test_a_row_version_comes_from_the_shared_column(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "batches.tsv"
+            path.write_text("batch\tname\taddr\twords\tunit\tshared\n"
+                            "R\ta\t0\t1\tsrc/shared/u\tR2\nR\tb\t0\t1\tsrc/shared/u\tR1/R2\n"
+                            "R\tc\t0\t1\tsrc/raidou2/v\tR1\n")
+            rows = batch_files.load(pathlib.Path(tmp), path, "R").rows
+        self.assertEqual([rows[n].version for n in "abc"], ["raidou2", "raidou1", "raidou2"])
+
     def test_splice_reports_a_missing_line(self) -> None:
         run = self.run_with([])
         run.say = lambda line: None

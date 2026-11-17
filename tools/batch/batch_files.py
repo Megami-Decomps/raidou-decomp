@@ -17,6 +17,7 @@ class Row:
     words: int = 0
     result: str = ""
     addr: str = ""
+    shared: str = ""  # batches.tsv shared column: R1, R2 or R1/R2, the game the row was drafted against
 
     @property
     def gap(self) -> bool:
@@ -29,6 +30,13 @@ class Row:
     @property
     def game(self) -> str:
         return self.path.split("/")[1]
+
+    @property
+    def version(self) -> str:
+        """The game whose copy of the function the draft matches: the unit's game, else raidou2 for an R2 row."""
+        if self.game in ("raidou1", "raidou2"):
+            return self.game
+        return "raidou2" if self.shared == "R2" else "raidou1"
 
     @property
     def source(self) -> str:
@@ -80,8 +88,10 @@ def load(dir: Path, batches: Path | None = None, batch_id: str | None = None,
     dir = dir.resolve()
     batch_id = batch_id or dir.name
     batches = batches or dir.parent.parent / "batches.tsv"
-    rows = {r[1]: Row(r[1], r[4], addr=r[2]) for r in csv.reader(batches.read_text().splitlines(), delimiter="\t")
-            if r and r[0] == batch_id}
+    tsv = list(csv.reader(batches.read_text().splitlines(), delimiter="\t"))
+    col = tsv[0].index("shared") if tsv and "shared" in tsv[0] else None
+    rows = {r[1]: Row(r[1], r[4], addr=r[2], shared=r[col] if col is not None and col < len(r) else "")
+            for r in tsv if r and r[0] == batch_id}
     if not rows:
         raise SystemExit(f"land_batch: no rows for {batch_id} in {batches}")
     b = Batch(dir, batch_id, rows)

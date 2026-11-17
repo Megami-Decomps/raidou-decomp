@@ -349,11 +349,12 @@ class Run:
 
     def splice_row(self, source: str, text: str, row: batch_files.Row, final: str) -> str:
         """Splice at the INCLUDE_ASM of the renamed function, else of its batch name."""
-        names = dict.fromkeys([self.current(row.name), self.current(row.name, "raidou2"), row.name])
+        other = "raidou1" if row.version == "raidou2" else "raidou2"
+        names = dict.fromkeys([self.current(row.name, row.version), self.current(row.name, other), row.name])
         error = None
         for name in names:
             try:
-                return unit_text.splice(text, name, final, self.is_r1only(row))
+                return unit_text.splice(text, name, final, self.is_r1only(row), row.version)
             except ValueError as e:
                 error = error or e
         self.note(f"{source}: {error}")
@@ -464,7 +465,7 @@ class Run:
                     alt.write_text(trial)
                     results = {g: r[1] for g, r in self.check_games(source, unit_games, alt).items()}
                 # the draft matches and no other function of the unit gets worse
-                name = self.current(row.name)
+                name = self.current(row.name, row.version)
                 matches = [s.get(name) for s in results.values() if name in s]
                 worse, _ = header_includers.compare({g: base[g][1] for g in unit_games}, results)
                 worse = [w for w in worse if f": {name} " not in w]
@@ -496,6 +497,23 @@ class Run:
         self.say("configure: ok")
         return True
 
+    def draft_games(self, row: batch_files.Row, final: str) -> list[str]:
+        """The games that compile the spliced draft: a shared unit's guards decide, so a Raidou 2 draft in a
+        Raidou 2 block is measured for Raidou 2 only."""
+        if row.gap or self.is_r1only(row) or row.source.startswith("src/raidou1/"):
+            return ["raidou1"]
+        if row.source.startswith("src/raidou2/"):
+            return ["raidou2"]
+        path = self.tree / row.source
+        text = path.read_text() if path.exists() else ""
+        body = (unit_text.unwrap(final) or final).strip("\n").split("\n")[0]
+        at = text.find(body) if body else -1
+        if at >= 0:
+            built = unit_text.games(text)[text.count("\n", 0, at)]
+            if built:
+                return [g for g in ("raidou1", "raidou2") if g in built]
+        return ["raidou1", "raidou2"]
+
     def docs(self) -> None:
         finals = self.finals()
         drafted = {n for n in finals if n not in self.promoted and unit_text.unwrap(finals[n]) is not None}
@@ -508,9 +526,8 @@ class Run:
                 self.note(f"docs: {name} is NON_MATCHING and has no docs.json entry")
                 continue
             unit, text, lever = (self.batch.docs[name] + [""] * 3)[:3]
-            games = ["raidou1"] if row.gap or self.is_r1only(row) or row.source.startswith("src/raidou1/") \
-                else ["raidou1", "raidou2"]
-            fn = self.current(name)
+            games = self.draft_games(row, finals[name])
+            fn = self.current(name, row.version)
             measured = [matching_docs.measure(self.tree, row.source, g, fn) for g in games]
             # The page is the unit with its folder (event/evtMoon), as docs_index.py files it.
             if unit and unit != row.unit and unit != Path(row.unit).name:
