@@ -1,7 +1,7 @@
 # The IRX modules
 
-Each game ships IOP modules in `USERIRX/` and `SOUNDIRX/`. Seven per game build
-byte-identical from source, with iop-gcc 2.8.1, their own linker script and the
+Each game ships IOP modules in `USERIRX/` and `SOUNDIRX/`. Eight in Raidou 1
+and nine in Raidou 2 build byte-identical from source, with iop-gcc 2.8.1, their own linker script and the
 IRX container packer. `configure.py` adds them to `build.ninja`, and `ninja`
 ends each one in a verify step against `orig/<version>/irx/<module>.IRX`, so a
 green build is the proof. The method is smt3-decomp's: its
@@ -9,8 +9,8 @@ green build is the proof. The method is smt3-decomp's: its
 covers the toolchain, the container, splitting, the import tables and what
 iop-gcc wants ([irx-idioms.md](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/irx-idioms.md)).
 What the modules do is in its
-[sdf-irx-modules.md](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/sdf-irx-modules.md),
-which the C comments cite.
+[sdf-irx-modules.md](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/sdf-irx-modules.md);
+how Raidou's differ is in [sdf-irx-modules.md](sdf-irx-modules.md).
 
 ```
 python tools/download_tools.py   # brings in iop-gcc 2.8.1 with the EE compilers
@@ -29,22 +29,26 @@ ELF builds without them.
 | `SDFIOP.IRX` | = SMT3 | = SMT3 | smt3-decomp's, complete |
 | `SDFIOPFL.IRX` | = SMT3 | = SMT3 | smt3-decomp's, complete |
 | `LIBSD.IRX`, `MODHSYN.IRX`, `MODMIDI.IRX`, `MODMSIN.IRX` | = SMT3 | = SMT3 | smt3-decomp's, every function has C |
+| `SDRDRV.IRX` | = SMT3 | = SMT3 | none, `INCLUDE_ASM` only |
 | `SDFSDMAN.IRX` | own build | own build | SMT3's where a function is unchanged |
+| `SDFPRINT.IRX` | | own | none, `INCLUDE_ASM` only |
 
 "= SMT3" means the file is byte-identical to Nocturne's, so its C, symbols and
 headers are smt3-decomp's unchanged: `src/irx/shared/<module>.c`,
 `config/<version>/irx/<module>/symbol_addrs.txt` and `include/irx/`.
 
-Not set up yet: `SDRDRV.IRX` (identical in all three games, with no C in
-smt3-decomp either) and Raidou 2's `DDS3/userirx/sdfprint.irx`.
+`SDRDRV.IRX` has no C in smt3-decomp either. `SDFPRINT.IRX` is
+`/userirx/sdfprint.irx` inside Raidou 2's `DDS3.IMG`.
 
 ## Layout
 
 - `config/<version>/irx/<module>/<module>.yaml`: the retail sha1, the path on
-  the disc, the `.iopmod` fields, an optional `idb:` for `tools/irx_symbols.py`
+  the disc (`disc:`) or in `DDS3.IMG` (`archive:`), the `.iopmod` fields, an optional `idb:` for `tools/irx_symbols.py`
   and `irx_headers.py`, and `tus:` when the C is more than one file.
 - `config/<version>/irx/<module>/symbol_addrs.txt`: splat's format; function
-  bounds give the splitter one chunk per function.
+  bounds give the splitter one chunk per function. `tools/irx_symbols.py`
+  writes it from the IDB; for a module with no IDB (`SDRDRV`, `SDFPRINT`),
+  `tools/irx_scan.py` writes it from the module, keeping names added by hand.
 - `src/irx/<version>/<unit>.c` or `src/irx/shared/<unit>.c` (the per-game file
   wins), as for the ELF. They sit outside `src/<version>` and `src/shared`,
   whose tools treat every `.c` there as an ELF unit.
@@ -56,10 +60,8 @@ smt3-decomp either) and Raidou 2's `DDS3/userirx/sdfprint.irx`.
 
 ## SDFSDMAN
 
-The sound driver is the one module each game rebuilt. Both add code around a
-table of 30 reference counts in the work area, Raidou 1's `.bss` is 131 KB
-(SMT3's is 83 KB), Raidou 2 drops the "Hard timer" messages, and both drop
-SMT3's BGM resume points (`sdfSndSaveResumePoint`, `sdfSndFindResumePoint`, `sdfSndBgmResume`).
+The sound driver is the one module each game rebuilt from SMT3's; the
+differences are in [sdf-irx-modules.md](sdf-irx-modules.md).
 
 `tools/irx_match.py` pairs each Raidou function with SMT3's. The function
 bounds are the Raidou IDB's (`idb_funcs.json`, exported with

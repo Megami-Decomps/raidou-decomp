@@ -128,6 +128,7 @@ that do not need retail inputs.
 - [docs/shared-c.md](docs/shared-c.md): units compiled into both versions.
 - [docs/smt3-names.md](docs/smt3-names.md): names carried over from smt3-decomp.
 - [docs/irx-modules.md](docs/irx-modules.md): the IOP modules (`USERIRX/`, `SOUNDIRX/`).
+- [docs/sdf-irx-modules.md](docs/sdf-irx-modules.md): which IOP modules are SMT3's, and how each game's sound driver differs.
 - [docs/batch-workflow.md](docs/batch-workflow.md): landing a drafted batch with `tools/batch/land_batch.py`, and checking a header's includers.
 - `config/xgame/r1_r2_pairs.tsv`: functions present in both games, by address and unit, so none is matched twice.
 - `config/xgame/r1_r2_data_pairs.tsv`: data symbols present in both games. A pair has one name in both ([naming rule](docs/CONTRIBUTING.md#names-in-both-games)).
