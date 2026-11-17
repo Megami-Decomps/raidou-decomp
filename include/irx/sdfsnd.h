@@ -6,6 +6,18 @@
 
 #include "iop.h"
 
+/* Bank kinds, each with its own volume table: 30 in Raidou 1, 27 in Raidou 2
+ * (7 in SMT3). The bank and program arrays have room for 32. */
+#ifdef VERSION_RAIDOU2
+#define SDF_SND_KINDS 27
+#else
+#define SDF_SND_KINDS 30
+#endif
+#define SDF_SND_BANKS 32
+
+/* Sequencer slots of modhsyn and modmidi: 16 in SMT3. */
+#define SDF_SND_SEQS 32
+
 /* modhsyn: the hardware synthesiser that plays the .SMG sequences */
 typedef struct {
     u8 unk00;
@@ -186,6 +198,7 @@ typedef struct {
     s32 location;
     u32 unk2C;
     u32 unk30;
+    u32 unk34[4]; /* the slot is 0x44 bytes, 0x34 in SMT3 */
 } sdfSndSlot_t;
 
 typedef struct {
@@ -201,18 +214,17 @@ typedef struct {
     u32 unk04;
     void *xferBuf;
     u32 xferBufSize;
-    sdfSndBank_t banks[8];
-    u8 unk90[128];
-    sdfSndBankData_t progData[7];
-    u8 unk148[72];
-    sdfSndBankStat_t stat[7];
+    sdfSndBank_t banks[SDF_SND_BANKS];
+    sdfSndBankData_t progData[SDF_SND_BANKS];
+    sdfSndBankStat_t stat[SDF_SND_KINDS];
     void *eeAddr;
     u32 size;
     u32 unk1D0;
     u32 unk1D4;
     u32 errCount;
     s32 errCode;
-    u8 volTable[7][128];
+    u8 volTable[12][64];     /* [7][128] in SMT3 */
+    u8 volTableSmall[24][4]; /* the three-entry tables */
     u8 voiceMap[64];
 } sdfSndWorkArea_t;
 
@@ -279,10 +291,10 @@ typedef struct {
 } sdfSndListenerReq_t;
 
 /* The module's own data. Everything here lives in asm/irx/SDFSDMAN/. */
-extern u32 sdfSndBankSizeTbl[7];
-extern u32 sdfSndBankAddrTbl[7];
-extern u32 sdfSndBankOffTbl[8];
-extern u32 sdfSndBankFlagTbl[8];
+extern u32 sdfSndBankSizeTbl[SDF_SND_KINDS];
+extern u32 sdfSndBankAddrTbl[SDF_SND_KINDS];
+extern u32 sdfSndBankOffTbl[SDF_SND_KINDS + 1];
+extern u32 sdfSndBankFlagTbl[SDF_SND_KINDS + 1];
 extern s32 sdfSndBank1Loaded;
 extern s32 sdfSndBank3Loaded;
 extern u8 sdfSndBankAltSlot;
@@ -305,12 +317,10 @@ extern sdfSndWorkArea_t *sdfSndWorkArea;
 extern s32 sdfSndSeqThreadId;
 extern iop_sema_t sdfSndRpcSemaParam;
 extern s32 sdfSndRpcSema;
-extern u8 sdfSndVolTblSeq[32];
-extern u8 sdfSndVolTblBgm[128];
-extern u8 sdfSndVolTblSe[128];
-extern u8 sdfSndVolTblVoice[128];
-extern u8 sdfSndVolTblCore0[2];
-extern u8 sdfSndVolTblCore1[2];
+extern u8 sdfSndVolTblSeq[48];   /* 32 in SMT3 */
+extern u8 sdfSndVolTblBgm[64];   /* 128 in SMT3 */
+extern u8 sdfSndVolTblSe[64];    /* 128 in SMT3 */
+extern u8 sdfSndVolTblVoice[64]; /* 128 in SMT3 */
 extern char sdfSndSmgPath[256];
 extern sdfSndSlot_t sdfSndSlots[16];
 extern sdfSndResume_t sdfSndResume[32];
@@ -324,14 +334,14 @@ extern s32 sdfSndListenerAngle;
 extern s32 sdfSndListenerDirty;
 extern sceHSynWork_t sdfSndHsynWork;
 extern sceHSynTbl_t sdfSndHsynTbl;
-extern sceHSynEntry_t sdfSndHsynEntry[16];
-extern sceHSynSlot_t sdfSndHsynSlotWork[16];
-extern sceMSInBuf_t sdfSndMsInBuf[16];
+extern sceHSynEntry_t sdfSndHsynEntry[SDF_SND_SEQS];
+extern sceHSynSlot_t sdfSndHsynSlotWork[SDF_SND_SEQS];
+extern sceMSInBuf_t sdfSndMsInBuf[SDF_SND_SEQS];
 extern sceMidiWork_t sdfSndMidiWork;
 extern sceMidiTbl_t sdfSndMidiTbl;
-extern sceMidiSeq_t sdfSndMidiSeq[16];
-extern sceMidiVoice_t sdfSndMidiVoice[16];
-extern sceMidiSlot_t sdfSndMidiSlotWork[16];
+extern sceMidiSeq_t sdfSndMidiSeq[SDF_SND_SEQS];
+extern sceMidiVoice_t sdfSndMidiVoice[SDF_SND_SEQS];
+extern sceMidiSlot_t sdfSndMidiSlotWork[SDF_SND_SEQS];
 extern u8 sdfSndHsynLoadParam;
 extern u8 sdfSndHsynVoiceMap[48];
 extern iop_sema_t sdfSndSmgSemaParam;

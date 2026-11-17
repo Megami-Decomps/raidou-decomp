@@ -105,7 +105,7 @@ def write_c(cfg: dict) -> None:
 def write_rules(n, prefix: str) -> None:
     n.rule("iopas", f"{prefix}{IOP_AS} -EL -G 0 -I. -o $out $in", description="iop-as $in")
     n.rule("iopcc",
-           f"{prefix}{CPP} -lang-c {' '.join(CPP_DEFINES)} -DASM_ROOT=\\\"$asm_root\\\" -Iinclude/irx $in $out.i && "
+           f"{prefix}{CPP} -lang-c {' '.join(CPP_DEFINES)} -DASM_ROOT=\\\"$asm_root\\\" -D$version_define -Iinclude/irx $in $out.i && "
            f"{prefix}{CC1} -quiet -O2 -G 0 $out.i -o $out.s && "
            f"{prefix}{IOP_AS} -EL -G 0 -I. -o $out $out.s",
            description="iop-gcc $in")
@@ -164,7 +164,8 @@ def write(n, versions: list[str], prefix: str) -> tuple[list[str], list[str]]:
                         implicit=["tools/check_inline_asm.py", "config/inline_asm_allow.txt"])
                 objs.append(str(b / f"{stem}.o"))
                 n.build(objs[-1], "iopcc", [src], implicit=deps + headers + [str(asmcheck)],
-                        variables={"asm_root": cfg["paths"]["asm_root"]})
+                        variables={"asm_root": cfg["paths"]["asm_root"],
+                                   "version_define": f"VERSION_{version.upper()}"})
             for part in ("rodata", "data", "bss"):
                 part_src = asm / f"{part}.s"
                 if (ROOT / part_src).exists() and (ROOT / part_src).stat().st_size:

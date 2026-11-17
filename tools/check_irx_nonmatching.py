@@ -46,10 +46,10 @@ typedef long long s64;
 def check(module: str, shim: Path) -> int:
     cfg = irx_config.load(module)
     srcs = [ROOT / s for s in cfg["paths"]["srcs"]]
-    return sum(check_file(module if len(srcs) == 1 else f"{module} {s.name}", s, shim) for s in srcs)
+    return sum(check_file(module if len(srcs) == 1 else f"{module} {s.name}", s, shim, cfg) for s in srcs)
 
 
-def check_file(module: str, src: Path, shim: Path) -> int:
+def check_file(module: str, src: Path, shim: Path, cfg: dict) -> int:
     # Check both modes unconditionally, including FIX_BUGS uses in headers.
     # A corrected branch is otherwise as invisible to CI as an assembly-guarded
     # draft. This does not alter the production compiler or matching build.
@@ -64,6 +64,7 @@ def check_file(module: str, src: Path, shim: Path) -> int:
         out = subprocess.run(
             ["gcc", "-std=gnu17", "-m32", "-fsyntax-only", "-DNON_MATCHING",
              *(["-DFIX_BUGS"] if fix_bugs else []),
+             f"-DVERSION_{cfg['version'].upper()}",
              "-Werror=implicit-function-declaration",
              "-include", str(shim / "irx.h"),
              "-I", str(ROOT / "include" / "irx"), str(src)],
