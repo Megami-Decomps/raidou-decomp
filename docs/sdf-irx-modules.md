@@ -59,6 +59,7 @@ Persona 3 FES ships a later build (`86aa1be2`), whose export table adds
 Found in Raidou 2's `DDS3.IMG` under `/userirx/`, beside copies of `SDFIOP.IRX`
 and `sdfiopfl.irx`. Its strings describe a debug server that sends printf output
 and memory dumps to a host over the network (`printd_thread`, `get_req`,
-`send_mem`). Neither ELF names it. Its `.iopmod` has no moduleinfo block
+`send_mem`). Neither ELF names it, so it is never loaded: a debug leftover, not a
+decompilation target. Its `.iopmod` has no moduleinfo block
 (0xFFFFFFFF) and an empty module name. `tools/extract.py` reads it through
 `DDS3.DDT` (`archive:` in its yaml) rather than from the ISO file system.

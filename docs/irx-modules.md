@@ -97,11 +97,10 @@ and the import tables) are the same text in both games and are
 
 | | raidou1 | raidou2 |
 | --- | --- | --- |
-| functions (without import stubs) | 72 | 73 |
-| SMT3 C, matching | 17 | 13 |
-| SMT3 `NON_MATCHING` drafts | 9 | 9 |
-| `INCLUDE_ASM` only | 46 | 51 |
-| new, `func_` | 6 | 7 |
+| functions (without import stubs) | 75 | 76 |
+| C, matching | 50 | 51 |
+| `NON_MATCHING` drafts | 25 | 25 |
+| `INCLUDE_ASM` only | 0 | 0 |
 
 ## Checks
 
