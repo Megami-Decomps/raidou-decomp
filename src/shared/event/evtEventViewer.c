@@ -4162,7 +4162,6 @@ dds3ProcessFunc_t Process3(dds3ProcessID_t *task) {
 INCLUDE_ASM(const s32, "event/evtEventViewer", Process3);
 #endif
 
-#ifdef VERSION_RAIDOU1
 dds3ProcessFunc_t Process2_evtViewer(dds3ProcessID_t *id) {
     evtViewerInfo_t *pInfo = dds3GetProcessData(id);
 
@@ -4176,7 +4175,11 @@ dds3ProcessFunc_t Process2_evtViewer(dds3ProcessID_t *id) {
         return NULL;
     }
     if (pInfo->lastframe.word >= 10) {
+#ifdef VERSION_RAIDOU1
         dds3KernelDebugSign = 0;
+#else
+        dds3CallEventSub(0);
+#endif
     }
     evtRunFrame(pInfo->nowframe, pInfo);
     dds3LinkProcess(id, evtInitFrameVar());
@@ -4185,9 +4188,6 @@ dds3ProcessFunc_t Process2_evtViewer(dds3ProcessID_t *id) {
     last_skip_stat = 0;
     return (dds3ProcessFunc_t)Process3;
 }
-#else
-INCLUDE_ASM(const s32, "event/evtEventViewer", Process2_evtViewer);
-#endif
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData10);
 
@@ -4294,9 +4294,6 @@ s32 End_evtViewer(evtViewerInfo_t *pInfo) {
     pmv_pid = NULL;
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "event/evtEventViewer", End_evtViewer);
-#endif
 
 void evtEventViewerDestroyActive(dds3ProcessID_t *task) {
     evtViewerInfo_t *viewer;
@@ -4546,4 +4543,311 @@ INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameSfog);
 INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameFilter);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameMfilter);
+#else
+void End_evtViewer(evtViewerInfo_t *pInfo) {
+    f32 zero;
+
+    if (!evtEndEvtViewerSub(pInfo->workdata)) {
+        evtEventFadeOutAllBgm(pInfo);
+    }
+    evtInitCustomSceneLight();
+    evtMessageDelete(pInfo, 0);
+    mnuCampLinkFontGlyph(pInfo);
+    dds3StopQuake();
+    zero = 0.0f;
+    gMapScrollReset[3] = zero;
+    gMapScrollReset[2] = zero;
+    gMapScrollReset[1] = zero;
+    gMapScrollReset[0] = zero;
+    if (pInfo->nowMovieStat == 1) {
+        if (pInfo->MovieEndFrame == -2 && evtViewerHasUpdateFlag(pInfo) != 1) {
+            pInfo->nowMovieStat = 0;
+        } else {
+            movieStop();
+            pInfo->nowMovieStat = 0;
+        }
+    }
+    while (sdfDelayedResrcCheck()) {
+    }
+    evtFreeStage();
+    while (sdfDelayedResrcCheck()) {
+    }
+    if (pInfo->renderTexInfo.hImageMem != NULL) {
+        sdfMemFreeDelayedDirect(pInfo->renderTexInfo.hImageMem);
+        pInfo->renderTexInfo.hImageMem = NULL;
+        pInfo->renderTexInfo.pImage = NULL;
+    }
+    while (sdfDelayedResrcCheck()) {
+    }
+    dds3FreeRenderTexture();
+    while (sdfDelayedResrcCheck()) {
+    }
+    evtUnRegistUnit(pInfo);
+    FreeInfo(pInfo);
+    sdfMemFreeDirect(pInfo->block);
+    while (sdfDelayedResrcCheck()) {
+    }
+    dds3ChangeBistaMode(0);
+    dds3DrawFlag |= 0x2000000;
+    dds3SetScreenFovy(0.6283185f);
+    dds3ScreenParam.ox = 2048.0f;
+    dds3ScreenParam.oy = 2048.0f;
+    evtProcessEnd();
+    if (pInfo->blankTex != NULL) {
+        sdfTexReleaseReference(pInfo->blankTex);
+    }
+    evtCallChipFreeDirect();
+    dds3CallEventSub(1);
+    pmv_pid = NULL;
+}
+
+void evtEventViewerDestroyActive(dds3ProcessID_t *task) {
+    evtViewerInfo_t *viewer;
+
+    viewer = (evtViewerInfo_t *)dds3GetProcessData(task);
+    evtViewerRelease(viewer);
+}
+
+void evtEventViewerDestroyActiveAlternate(dds3ProcessID_t *task) {
+    evtViewerInfo_t *viewer;
+
+    viewer = (evtViewerInfo_t *)dds3GetProcessData(task);
+    evtViewerRelease(viewer);
+}
+
+void evtEventViewerInitCampFontResource(evtViewerInfo_t *viewer) {
+    mnuCampInitFontResource(viewer);
+}
+
+void mapInit(void) {
+    sdfMemHandle_t *block;
+    evtViewerInfo_t *pInfo;
+    dds3ProcessID_t *id;
+
+    dds3BackColor = 0x80000000;
+    block = sdfMemAllocDirect(0x2568);
+    pInfo = sdfMemLock(block);
+    memset(pInfo, 0, 0x2568);
+    pInfo->block = block;
+    id = dds3StartProcess(evtViewerTaskName, 0x3EB, 1, 1, evtCallGetProcessData10, (dds3ProcessFunc_t)evtEventViewerDestroyActive, pInfo);
+    dds3LinkProcess(id, evtInitSky());
+    evtEventViewerInitCampFontResource(pInfo);
+}
+
+void evtEventViewerDestroyTask(void) {
+    dds3KillProcessName(evtViewerTaskName, 1);
+}
+
+void evtEnd(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (pInfo != NULL) {
+        pInfo->flags |= 0x20;
+    }
+}
+
+void evtChgSeq(dds3ProcessID_t *id, s32 seqno) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (seqno != 0 && pInfo != NULL) {
+        pInfo->flags |= 0x40;
+        pInfo->playIndex = seqno - 1;
+        pInfo->flags &= ~0x80;
+        pInfo->flags &= ~0x200;
+        pInfo->fldfilter = -1;
+    }
+}
+
+void evtIgnoreFade(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (pInfo != NULL) {
+        pInfo->flags |= 0x200;
+    }
+}
+
+void evtNoSkipMes(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (pInfo != NULL) {
+        pInfo->flags |= 0x400;
+    }
+}
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData12);
+
+s32 evtCheckProcess(void) {
+    return pmv_pid != NULL;
+}
+
+s32 evtCheckLastSkipStat(void) {
+    return last_skip_stat;
+}
+
+/* body: matched in raidou @ 1424963: src/shared/event/evtEventViewer.c:3721, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+void evtSkipStart(dds3ProcessID_t *task) {
+    evtViewerInfo_t *viewer;
+
+    viewer = (evtViewerInfo_t *)dds3GetProcessData(task);
+    EventSkipStart(viewer);
+}
+
+s32 evtSetFrame(dds3ProcessID_t *id, s32 Frame) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (pInfo == NULL) {
+        return -1;
+    }
+    if (Frame >= 0) {
+        pInfo->nowframe = Frame;
+        pInfo->fldfilter = -1;
+    }
+    return pInfo->nowframe;
+}
+
+void evtIgnoreAtracPlay(dds3ProcessID_t *id) {
+    evtViewerInfo_t *pInfo = dds3GetProcessData(id);
+
+    if (pInfo != NULL) {
+        pInfo->flags |= 0x800;
+    }
+}
+
+/* NON_MATCHING: 21 of 43 words match.  */
+#ifdef NON_MATCHING
+void oldEventSceneUnload(evtPolygonMovieWork_t *wdata) {
+    s32 offset;
+    s32 size;
+    u8 *data;
+    pmdHeader_t *cut;
+
+    offset = 0;
+    data = wdata->pm2Data;
+    wdata->pm2CutCount = 0;
+    do {
+        if (data == NULL) {
+            break;
+        }
+        size = wdata->pm2Size;
+        if (size == 0) {
+            break;
+        }
+        cut = (pmdHeader_t *)(data + offset);
+        offset += cut->FileSize;
+        wdata->pm2Cuts[wdata->pm2CutCount++] = cut;
+    } while (offset < size);
+    offset = 0;
+    data = wdata->pm3Data;
+    wdata->pm3CutCount = 0;
+    do {
+        if (data == NULL) {
+            break;
+        }
+        size = wdata->pm3Size;
+        if (size == 0) {
+            break;
+        }
+        cut = (pmdHeader_t *)(data + offset);
+        offset += cut->FileSize;
+        wdata->pm3Cuts[wdata->pm3CutCount++] = cut;
+    } while (offset < size);
+}
+#else
+INCLUDE_ASM(const s32, "event/evtEventViewer", oldEventSceneUnload);
+#endif
+
+INCLUDE_RODATA(const s32, "event/evtEventViewer", evtViewerTaskName);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFileMajor);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evt_file_minor);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData14);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", winoff_x);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", pmv_pid);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", last_skip_stat);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evt_camera);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtCallGetFrameIDData);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData16);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKDataEntry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKDataEntry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData2Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData2Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData3Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData2Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData2Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData3Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData3Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData14Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry5);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry6);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry7);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData6Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData6Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData8Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData9Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData9Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData10Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData10Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData13Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData16Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData17Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameSfog);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameFilter);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameMfilter);
+#endif
 

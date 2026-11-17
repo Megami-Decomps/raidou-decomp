@@ -37,3 +37,11 @@ Raidou 1: 3 of 88 words differ, first at +0x70.
 Raidou 2: 3 of 88 words differ, first at +0x70.
 
 3 words off: store order of the sh/sb/sw into dds3RenderTexId at +0x70..0x7C (h, pixelFormat, frameHandle[1]); h before buffH fixed the registers but reorders the stores; vectors do not reach, no vector file
+
+## dds3BistaCheck (kernel/dds3KernelDraw, raidou2 0x80)
+
+Raidou 2: 7 of 32 words differ, first at +0x1C.
+
+R2 adds switch case 4 (return 0); branch polarity of the case 0/3 test and the shared return-0 tail differ; fall-through and single-return forms tried (10 and 7 words); 7 words
+
+Related: branch polarity and shared return tail in the switch.

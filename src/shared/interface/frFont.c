@@ -2594,7 +2594,75 @@ u32 itfReadEncodedCode(frFontCtx_t *stream) {
 
 INCLUDE_ASM(const s32, "interface/frFont", execTag_0);
 
+/* NON_MATCHING: 56 of 142 words match. branch layout around the code < 0x80 test. */
+#ifdef NON_MATCHING
+frFontHandle_t *frAnalyzeMessage(frFontCtx_t *ctx) {
+    u8 encodedText[3];
+    s32 code;
+
+    if ((ctx->encodedText[0] & 0xF0) != 0xF0 && ctx->encodedText[1] == 8) {
+        ctx->encodedTextOffset += 4;
+    }
+    gMessageRequestResult &= ~1;
+    gMessageRequestResult &= ~2;
+    gMessageRequestResult &= ~4;
+    gMessageRequestResult &= ~8;
+    gMessageRequestResult &= ~0x10;
+    frEnableMode(1);
+    frDisableMode(2);
+    while (1) {
+        code = ctx->encodedText[ctx->encodedTextOffset++];
+        if (code == 0) {
+            break;
+        }
+        if ((code & 0xF0) == 0xF0) {
+            if (execTag_0(code, ctx) != 0) {
+                break;
+            }
+            continue;
+        }
+        if (code == 0xA) {
+            if ((gModeFlag & 4) != 0) {
+                frMessageReturnCode(ctx);
+            }
+            continue;
+        }
+        frFontCheckPendingGlyphState(ctx);
+        if (code < 0x80) {
+            if (code == 0x24 && ctx->fontIndex == 0) {
+                encodedText[0] = 0x82;
+                encodedText[1] = 0xD4;
+                encodedText[2] = 0;
+            } else {
+                encodedText[0] = code;
+                encodedText[1] = 0;
+            }
+            ctx->glyphChain = frSetFontString(encodedText, ctx->fontIndex, ctx->firstOption, ctx->secondOption, ctx->glyphChain);
+        } else {
+            code = (code << FR_FONT_BYTE_SHIFT) | ctx->encodedText[ctx->encodedTextOffset++];
+            if (code <= 0xC07F) {
+                encodedText[0] = (u32)code >> FR_FONT_BYTE_SHIFT;
+                encodedText[1] = code;
+                encodedText[2] = 0;
+                ctx->glyphChain = frSetFontString(encodedText, ctx->fontIndex, ctx->firstOption, ctx->secondOption, ctx->glyphChain);
+            } else {
+                code -= 0x4000;
+                encodedText[0] = (u32)code >> FR_FONT_BYTE_SHIFT;
+                encodedText[1] = code;
+                encodedText[2] = 0;
+                ctx->glyphChain = frSetFontString(encodedText, FR_FONT_TEMPORARY_SLOT, ctx->firstOption, ctx->secondOption, ctx->glyphChain);
+            }
+        }
+        frSetFontSpace(ctx->glyphChain, gMessageSpaceX);
+        frSetPriority(ctx->glyphChain, ctx->z);
+    }
+    frDisableMode(1);
+    frEnableMode(2);
+    return ctx->glyphChain;
+}
+#else
 INCLUDE_ASM(const s32, "interface/frFont", frAnalyzeMessage);
+#endif
 
 frFontHandle_t *MessageRequest(s32 X, s32 Y, u8 *pMsg, frFontHandle_t *pFRQ) {
     return MessageRequestEx2(X, Y, 0, 0, 0, 0, 0x80, pMsg, pFRQ);

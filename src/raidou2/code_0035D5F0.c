@@ -6,6 +6,8 @@
 #include "mselGlobal.h"
 #include "sdfMemory.h"
 #include "fldNme.h"
+#include "dds3KernelCore.h"
+#include "dds3KernelMain.h"
 
 void mselCallEffectDelete(void) {
     if (fldTitleMiniTex3 != NULL) {
@@ -41,7 +43,32 @@ void Start_nmeMain(void) {
     mselLeaf6();
 }
 
-INCLUDE_ASM(const s32, "code_0035D5F0", fldNmeProcess);
+extern const char fldStrFontNameEntFnt[];
+extern const char fldStrNmeProcess[];
+extern const char fldStrNmeDrawProcess[];
+
+dds3ProcessID_t *fldNmeProcess(void) {
+    sdfMemHandle_t *mem = sdfMemAllocDirect(sizeof(fldNmeWork_t));
+    dds3ProcessID_t *process = dds3StartProcess(fldStrNmeProcess, 0x3FF, 0, 0, fldCallMemGetPtr, (dds3ProcessFunc_t)fldCallMemGetPtr5, mem);
+    fldNmeWork_t *work = sdfMemGetPtr(mem);
+
+    work->unk0 = 0;
+    work->drawProcess = dds3StartProcess(fldStrNmeDrawProcess, 0x2B07, 0, 0, fldCallMemGetPtr2, NULL, mem);
+    work->unk34 = 0;
+    work->unk38 = 0;
+    work->unk3C = 0;
+    work->unk14 = 0;
+    work->unk40 = 0;
+    work->unk30 = 0;
+    work->unk10 = 0;
+    work->unkC = 0;
+    work->unk44 = titleStartSub(0);
+    work->unk48 = titleStartSub2(work->unkC);
+    work->font = fileLoad(fldStrFontNameEntFnt);
+    work->unk8 = 0;
+    dds3CallEventSub(0);
+    return process;
+}
 
 INCLUDE_ASM(const s32, "code_0035D5F0", fldCallMemGetPtr);
 
@@ -49,7 +76,21 @@ INCLUDE_ASM(const s32, "code_0035D5F0", fldCallMemGetPtr2);
 
 INCLUDE_ASM(const s32, "code_0035D5F0", fldLeaf28);
 
-INCLUDE_ASM(const s32, "code_0035D5F0", fldCallMemGetPtr5);
+void fldCallMemGetPtr5(dds3ProcessID_t *id) {
+    fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
+    u32 i;
+
+    for (i = 0; i < 2; i++) {
+        fclFunc10(&work->list[i]);
+    }
+    fclFunc4(&work->draw);
+    if (work->drawProcess != NULL) {
+        dds3KillProcess(work->drawProcess, 0);
+    }
+    frCallMemFreeDirect(4);
+    dds3CallEventSub(1);
+    sdfMemFreeDelayedDirect(id->workdata);
+}
 
 s32 fldCallMemGetPtr6(dds3ProcessID_t *id, s32 *code) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);

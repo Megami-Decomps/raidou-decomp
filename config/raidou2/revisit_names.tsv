@@ -1331,7 +1331,6 @@
 0x001AEEF0	mphYataMenu	func	tier=D	derived-string	na	unit code_001A5768, neighbour mphShutDown; string 'yata_menu'
 0x001AEF88	mphCallExistProcess	func	tier=D	derived-callee	na	unit code_001A5768, neighbour mphShutDown; calls dds3ExistProcess
 0x001AEFF0	mphCallGetProcessStat	func	tier=D	derived-callee	na	unit code_001A5768, neighbour mphShutDown; calls dds3GetProcessStat
-0x001AF958	mdlCallWaitSema	func	tier=D	derived-callee	na	unit model/mdlManager; calls WaitSema
 0x001B2E60	mdlBuildViewerRectanglePacket	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0021A608, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001B2E80	mdlAppendViewerRectToDrawList	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0021A628, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001B2EB8	mdlUpdateViewerCursor	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0021A660, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -18840,7 +18839,6 @@
 0x004DF820	dds3BitEditorProcessData4	data	tier=D	derived-sole	na	used by dds3BitEditorProcess
 0x004DF838	evtStartEventData	data	tier=D	derived-sole	na	used by evtStartEvent
 0x004DF844	evtLipsStopFunction_evtCommandData	data	tier=D	derived-dominant	na	used by evtLipsStopFunction_evtCommand (3 of 4 refs, 2 functions)
-0x004DF848	evtCallMemset2Data	data	tier=D	derived-sole	na	used by evtCallMemset2
 0x004DF84C	sndCallProcTrigSequenceSlMainData	data	tier=D	derived-sole	na	used by sndCallProcTrigSequenceSlMain
 0x004DF864	Process2_evtMoonData8	data	tier=D	derived-dominant	na	used by Process2_evtMoon (40 of 41 refs, 2 functions)
 0x004DF868	Process2_evtMoonData9	data	tier=D	derived-dominant	na	used by Process2_evtMoon (41 of 43 refs, 2 functions)
@@ -21503,7 +21501,6 @@
 0x004F54D0	fldAllTblPacLoadWork	data	tier=D	derived-sole	na	used by fldAllTblPacLoad
 0x004F5F54	bssWork130	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x777C
 0x004FD6D0	fldCallFptodpWork	data	tier=D	derived-sole	na	used by fldCallFptodp
-0x004FD870	mapObjTaskWork	data	tier=D	derived-dominant	na	used by mapObjTask (90 of 210 refs, 45 functions)
 0x004FD874	mapObjOnOffWork	data	tier=D	derived-sole	na	used by mapObjOnOff
 0x004FD894	mapAnaLabelWork	data	tier=D	derived-sole	na	used by mapAnaLabel
 0x004FD8C4	mapWork21	data	tier=D	derived-shared	na	used by 2 functions: mapNpcTblAdd_fld, mapCallGetFloorY2
@@ -21516,32 +21513,21 @@
 0x005000F0	bssWork133	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x19
 0x00500109	nbFunc6Table2Entry5	data	tier=D	derived-table	na	pointed to by nbFunc6Table2Entry2
 0x0050017E	bssWork134	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x10F2
-0x00501270	mapAnaLabelWork2	data	tier=D	derived-dominant	na	used by mapAnaLabel (19 of 33 refs, 7 functions)
 0x00501274	mapCallPositioningGuardSystem2Work	data	tier=D	derived-sole	na	used by mapCallPositioningGuardSystem2
 0x00501292	mapCallPositioningGuardSystem2Work2	data	tier=D	derived-sole	na	used by mapCallPositioningGuardSystem2
 0x00503023	alarmPayloadEntry2	data	tier=D	derived-table	na	pointed to by alarmPayload
-0x00503270	mapWork22	data	tier=D	derived-shared	na	used by 9 functions: mapGetAttr, mapGetAttr_DevilWall, mapFileLoadSub2
 0x00503344	bssWork135	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0xD2C
-0x00504070	mapWork23	data	tier=D	derived-shared	na	used by 7 functions: mapWarpGet_Pos, mapWarpGo_Idx_fld, mapFileLoadSub2
 0x0050452E	bssWork136	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0xA20
 0x00504F4E	sdf3DPrimDefaultFaceIndexEntry5	data	tier=D	derived-table	na	pointed to by sdf3DPrimDefaultFaceIndex
 0x00504F54	bssWork137	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x1C
-0x00504F70	mapWork24	data	tier=D	derived-shared	na	used by 11 functions: mapWallObjAdd, mapCallSetOt, mapCallGetFloorY
 0x00504F74	mapEveHitTaskFldSub2Work	data	tier=D	derived-sole	na	used by mapEveHitTaskFldSub2
 0x00504FA0	mapEveHitTaskFldSubWork	data	tier=D	derived-sole	na	used by mapEveHitTaskFldSub
 0x00505520	bssWork138	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x28
 0x00505548	bssWork139	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x4
 0x0050554C	fldData6Entry2	data	tier=D	derived-table	na	pointed to by fldData6
 0x00505845	bssWork140	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x62B
-0x00505E70	mapWork25	data	tier=D	derived-shared	na	used by 4 functions: mapFileLoadSub2, mapSetAreaRefreshSub2, mapMapSetAreaRefresh
-0x00506170	mapWork26	data	tier=D	derived-shared	na	used by 2 functions: mapFileLoadSub2, mapObjLightAdd
 0x00506570	mapData26	data	tier=D	derived-shared	na	used by 6 functions: mapFileLoadSub2, mapObjPointAdd2, mapObjPointGet
 0x00508021	alarmPayloadEntry3	data	tier=D	derived-table	na	pointed to by alarmPayload
-0x0050B570	mapWork28	data	tier=D	derived-shared	na	used by 5 functions: mapFileLoadSub2, mapKaidanAdd, mapMapSetAreaRefresh
-0x0050C570	mapWork29	data	tier=D	derived-shared	na	used by 3 functions: mapFileLoadSub2, mapFileLoadSub5, mapGetFloorY
-0x0050CD70	mapWork30	data	tier=D	derived-shared	na	used by 4 functions: mapHamidasiNpcSub, mapFileLoadSub2, mapCHitAdd
-0x0050DD70	mapWork31	data	tier=D	derived-shared	na	used by 5 functions: mapHamidasiWHitSub, mapHitAidaCalc, mapFileLoadSub2
-0x0050ED70	mapWork32	data	tier=D	derived-shared	na	used by 7 functions: mapFileLoadSub2, mapNpcTblAdd, mapSpotPointGet2D
 0x0050EF70	mapData33	data	tier=D	derived-shared	na	used by 3 functions: mapFileLoad, mapCallFilterSet, mapSKYBGEDIT
 0x0050EF88	mapObjTaskWork2	data	tier=D	derived-sole	na	used by mapObjTask
 0x0050F770	mapCutSetCamData2	data	tier=D	derived-dominant	na	used by mapCutSetCam (4 of 6 refs, 2 functions)
@@ -21622,9 +21608,6 @@
 0x00535251	sdf3DPrimDefaultFaceIndexEntry7	data	tier=D	derived-table	na	pointed to by sdf3DPrimDefaultFaceIndex
 0x00535543	bssWork173	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x413D
 0x00539680	sbtlStr1200SEntry	data	tier=D	derived-table	na	pointed to by sbtlStr1200S
-0x0053F4B8	mdlWork2	data	tier=D	derived-shared	na	used by 7 functions: mdlCallMemGetSize, mdlCallMemGetInfo, mapLeaf12
-0x0053F4D8	mdlWork3	data	tier=D	derived-shared	na	used by 6 functions: mapLeaf12, mapCASHDATA, mdlCallMemGetSize
-0x0053F4F8	mdlWork4	data	tier=D	derived-shared	na	used by 6 functions: mapLeaf12, mapCASHDATA, mdlCallMemGetSize
 0x0053F518	mapMapSetAreaWork	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 16 refs, 7 functions)
 0x0053F618	mapMapSetAreaWork2	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 8 refs, 3 functions)
 0x0053F718	mapMapSetAreaWork3	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
@@ -24380,6 +24363,7 @@
 0x004DF5D0	fldMapHaloRequest3	data	tier=C	dds-ref	0.59 (n=D_004DF5D0)	dds-ref/close: nfun=1, other=0, sim=0.95, games=1, size=True, sec=False, fn=mphCommand_BUSTUP_LOAD; fldMapHaloRequest is another symbol
 0x004DF5D4	fldMapHaloRequest4	data	tier=C	dds-ref	0.59 (n=D_004DF5D4)	dds-ref/loose: nfun=1, other=1, sim=0.95, games=1, size=True, sec=False, fn=saveCallGetProcessData7; fldMapHaloRequest is another symbol
 0x004DF83C	evtPendingEventSelection	data	tier=C	dds-ref	0.59 (n=D_004DF83C)	dds-ref/close: nfun=2, other=0, sim=0.8621, games=1, size=True, sec=True, fn=CallEvent
+0x004DF848	evtCallMemsetData	data	tier=C	derived-derived-role	na	holds the file handle of evtCallMemset2 as in R1; replaces evtCallMemset2Data
 0x004DFF88	sndPathPrefix2	data	tier=C	smt3-ref	0.98 (n=D_r1_0046CD18)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=mnuBuildVoiceResourcePath; sndPathPrefix is another symbol
 0x004E1588	slProcShutDownFlg	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046CDEC (r1_r2_data_pairs): SMT3 fmProcTrigSequence sets slProcShutDownFlg = 1 after dds3StartProcess and fmShutDown tests and clears it; Raidou 0x46CDEC same (symbol_addrs also has D_003BC7FC there); replaces fmShutDownData2
 0x004E15A8	gSlExitMode	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046CE0C (r1_r2_data_pairs): SMT3 fmProcTrigSequence clears gSlExitMode right after slSetInfo(0); Raidou stores 0 to 0x46CE0C there; replaces slDrawInfoData15
@@ -24490,9 +24474,24 @@
 0x004EA2C0	map_aibo_buff	data	tier=C	derived-derived-role	na	same slot in R2, shared fldFileResolver code; replaces mapWork
 0x004EA8C0	map_aibo_pos	data	tier=C	derived-derived-role	na	same slot in R2, shared fldFileResolver code; replaces mapAiboTaskWork
 0x004EA8D0	map_summondv_buff	data	tier=C	derived-derived-role	na	same slot in R2, shared fldFileResolver code; replaces mapWork2
+0x004FD870	mapObjTaskData2	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapObjTaskData2 in R1 mapFileLoadSub2; replaces mapObjTaskWork
+0x00501270	mapScriptGet_PosData2	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapScriptGet_PosData2 in R1 mapFileLoadSub2; replaces mapAnaLabelWork2
+0x00503270	mapData23	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData23 in R1 mapFileLoadSub2; replaces mapWork22
+0x00504070	mapData24	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData24 in R1 mapFileLoadSub2; replaces mapWork23
+0x00504F70	mapWallObjTaskData	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapWallObjTaskData in R1 mapFileLoadSub2; replaces mapWork24
+0x00505E70	mapData32	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData32 in R1 mapFileLoadSub2; replaces mapWork25
+0x00506170	mapData25	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData25 in R1 mapFileLoadSub2; replaces mapWork26
+0x0050B570	mapData27	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData27 in R1 mapFileLoadSub2; replaces mapWork28
+0x0050C570	mapData30	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData30 in R1 mapFileLoadSub2; replaces mapWork29
+0x0050CD70	mapData28	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData28 in R1 mapFileLoadSub2; replaces mapWork30
+0x0050DD70	mapData29	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData29 in R1 mapFileLoadSub2; replaces mapWork31
+0x0050ED70	mapData31	data	tier=C	derived-derived-role	na	data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData31 in R1 mapFileLoadSub2; replaces mapWork32
 0x0050FA10	fldData5	data	tier=C	raidou1-code	na	fldCallSetOt3 reads it where raidou1 reads fldData5
 0x0050FBA0	evtStageTestState2	data	tier=C	dds-ref	0.59 (n=D_r1_00476710)	dds-ref/loose: nfun=2, other=0, sim=0.9677, games=2, size=False, sec=True, fn=fldCallMemFreeDelayedDirect4; evtStageTestState is another symbol
 0x0053ECB8	mapData34	data	tier=C	raidou1-code	na	same object as raidou1 mapData34, used by the same three functions
+0x0053F4B8	mdlData6	data	tier=C	derived-derived-role	na	sdfMemHandle cache table freed by mdlCallMemFreeDirect, as R1 mapLeaf12 mdlData6; replaces mdlWork2
+0x0053F4D8	mdlData7	data	tier=C	derived-derived-role	na	same, R1 mdlData7; replaces mdlWork3
+0x0053F4F8	mdlData8	data	tier=C	derived-derived-role	na	same, R1 mdlData8; replaces mdlWork4
 0x00544700	mdl_linkflag	data	tier=C	hd	0.37 (n=D_r1_004B4B90)	hd/medium: conf=medium, agree=3, using=4
 0x005463FC	pinst	data	tier=C	dds-ref	0.59 (n=D_r1_004B67EC)	dds-ref/exact: nfun=62, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfMesMngMessage
 0x005468F0	mdlViewerState	data	tier=C	dds-ref	0.59 (n=D_r1_004B6CE0)	dds-ref/exact: nfun=64, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlLoadViewerResourceAndResetCursors

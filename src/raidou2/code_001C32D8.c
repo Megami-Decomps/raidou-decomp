@@ -3,6 +3,8 @@
 #include "scrTraceCode.h"
 #include "evtCutIn.h"
 #include "evtPicture.h"
+#include "newdata.h"
+#include "EventBit.h"
 
 INCLUDE_ASM(const s32, "code_001C32D8", evtCallGetScriptHandle);
 
@@ -68,7 +70,10 @@ INCLUDE_ASM(const s32, "code_001C32D8", evtMoonTakumiCntReset);
 
 INCLUDE_ASM(const s32, "code_001C32D8", evtMoonTeisatuCntReset);
 
-INCLUDE_ASM(const s32, "code_001C32D8", prmRefDDS3GBWK5);
+void prmRefDDS3GBWK5(void) {
+    DDS3_GBWK->unk1F8A = 2;
+    evtBitOff(0x991);
+}
 
 INCLUDE_ASM(const s32, "code_001C32D8", prmCallGetRandIntA);
 

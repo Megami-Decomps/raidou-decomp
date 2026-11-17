@@ -127,7 +127,9 @@ void fldCallSin4(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 
 void fldCallSin5(void);
 void fldCallSin6(void);
 void fldCallSin7(void);
+#ifdef VERSION_RAIDOU1
 void fldCallSetOt(s32 area, s32 floor, s32 cut);
+#endif
 void mapNakamaCashLoadEndCheckSub(s32 id);
 s32 sndCallLoadCheckMidi(void);
 

@@ -1,4 +1,9 @@
 #include "common.h"
+#include "sdf_resource.h"
+#include "sBtlCmndMenuNew.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "dds3KernelCore.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -559,7 +564,18 @@ INCLUDE_ASM(const s32, "code_00309FE0", Shutdown_sbtlCmndMenuNew);
 
 INCLUDE_ASM(const s32, "code_00309FE0", DrawProc);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlInit);
+void sbtlInit(void) {
+    sdfMemHandle_t *hMem;
+    sbtlCmndMenuNew_t *wk;
+
+    hMem = sdfMemAllocDirect(sizeof(sbtlCmndMenuNew_t));
+    wk = sdfMemLock(hMem);
+    memset(wk, 0, sizeof(sbtlCmndMenuNew_t));
+    wk->hMem = hMem;
+    sbtlData181 = dds3StartProcess(sbtlStrCmndMenu, 0x3FE, 0, 0, Proc_sbtlCmndMenuNew, (dds3ProcessFunc_t)Shutdown_sbtlCmndMenuNew, wk);
+    wk->drawPID = dds3StartProcess(sbtlStrCmndMenuDraw, 0x2B15, 0, 0, DrawProc, NULL, wk);
+    wk->unk12 = 0;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", Delete_sbtlCmndMenuNew);
 

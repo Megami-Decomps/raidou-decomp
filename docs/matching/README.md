@@ -20,19 +20,20 @@ menu scenarios); an entry says which paths they covered.
 | 43 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
 | 15 | sbtlActAI | raidou1 | [sbtlActAI.md](sbtlActAI.md) |
 | 13 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
+| 11 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 11 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
-| 10 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 9 | code_0010F2C0 | raidou1 | [code_0010F2C0.md](code_0010F2C0.md) |
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
+| 9 | interface/itfMesManager | raidou1, raidou2 | [interface/itfMesManager.md](interface/itfMesManager.md) |
 | 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
-| 8 | interface/itfMesManager | raidou1, raidou2 | [interface/itfMesManager.md](interface/itfMesManager.md) |
+| 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 7 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
 | 6 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
-| 6 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 5 | code_0015D490 | raidou1 | [code_0015D490.md](code_0015D490.md) |
 | 5 | kernel/dds3AdminiProcess | raidou1, raidou2 | [kernel/dds3AdminiProcess.md](kernel/dds3AdminiProcess.md) |
+| 5 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 5 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
 | 5 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 4 | code_0014B660 | raidou1 | [code_0014B660.md](code_0014B660.md) |
@@ -40,7 +41,6 @@ menu scenarios); an entry says which paths they covered.
 | 4 | event/evtEventViewerMenu | raidou1, raidou2 | [event/evtEventViewerMenu.md](event/evtEventViewerMenu.md) |
 | 4 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 4 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
-| 4 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 3 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
 | 3 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
@@ -76,6 +76,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | field/fldFileResolver_00132080 | raidou1, raidou2 | [field/fldFileResolver_00132080.md](field/fldFileResolver_00132080.md) |
 | 2 | field/fldProcess | raidou1 | [field/fldProcess.md](field/fldProcess.md) |
 | 2 | kernel/dds3KernelDraw_0010A750 | raidou1, raidou2 | [kernel/dds3KernelDraw_0010A750.md](kernel/dds3KernelDraw_0010A750.md) |
+| 2 | sdf/sdfDraw | raidou1, raidou2 | [sdf/sdfDraw.md](sdf/sdfDraw.md) |
 | 2 | sdf/sdfVu1 | raidou1, raidou2 | [sdf/sdfVu1.md](sdf/sdfVu1.md) |
 | 2 | sdk/libkernl/filestub | raidou1, raidou2 | [sdk/libkernl/filestub.md](sdk/libkernl/filestub.md) |
 | 1 | TitleMain | raidou1 | [TitleMain.md](TitleMain.md) |
@@ -93,9 +94,11 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_00144130 | raidou1 | [code_00144130.md](code_00144130.md) |
 | 1 | code_00156778 | raidou1 | [code_00156778.md](code_00156778.md) |
 | 1 | code_00156EA8 | raidou1 | [code_00156EA8.md](code_00156EA8.md) |
+| 1 | code_00163C50 | raidou2 | [code_00163C50.md](code_00163C50.md) |
 | 1 | code_0016CA30 | raidou1 | [code_0016CA30.md](code_0016CA30.md) |
 | 1 | code_00173D20 | raidou1 | [code_00173D20.md](code_00173D20.md) |
 | 1 | code_00175908 | raidou1 | [code_00175908.md](code_00175908.md) |
+| 1 | code_001A5D20 | raidou2 | [code_001A5D20.md](code_001A5D20.md) |
 | 1 | code_001AD4E8 | raidou1 | [code_001AD4E8.md](code_001AD4E8.md) |
 | 1 | code_00291C78 | raidou1 | [code_00291C78.md](code_00291C78.md) |
 | 1 | code_002929C8 | raidou1 | [code_002929C8.md](code_002929C8.md) |
@@ -159,7 +162,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | sbtlEff_00289E50 | raidou1 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
 | 1 | sdf/sdfCoreDraw | raidou1, raidou2 | [sdf/sdfCoreDraw.md](sdf/sdfCoreDraw.md) |
 | 1 | sdf/sdfDefaultMain | raidou1, raidou2 | [sdf/sdfDefaultMain.md](sdf/sdfDefaultMain.md) |
-| 1 | sdf/sdfDraw | raidou1, raidou2 | [sdf/sdfDraw.md](sdf/sdfDraw.md) |
 | 1 | sdf/sdfFileIO | raidou1, raidou2 | [sdf/sdfFileIO.md](sdf/sdfFileIO.md) |
 | 1 | sdf/sdfGraph | raidou1, raidou2 | [sdf/sdfGraph.md](sdf/sdfGraph.md) |
 | 1 | sdf/sdfIpu | raidou1, raidou2 | [sdf/sdfIpu.md](sdf/sdfIpu.md) |

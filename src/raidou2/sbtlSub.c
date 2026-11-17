@@ -8,6 +8,7 @@
 #include "event.h"
 #include "sdfModel.h"
 #include "sBtlScript.h"
+#include "fpu.h"
 
 s32 sbtlSetVibeFadeIn(s32 index, u8 power, s32 frame) {
     wk_sbtl->vibe_startf[index] = frame;
@@ -109,7 +110,47 @@ s32 sbtlGetUnitHelperMatrix(struct SBTLUNIT_WORK *wk, SBTLUNIT_MARK mark) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetQuatFromMatrix);
+/* body: matched in raidou @ 780f3f57: src/raidou1/sbtlSub.c:133, found, same function 1.00 (words 155/155, calls 1.00, shape 0.99) */
+void sbtlGetQuatFromMatrix(const sdfMatrix4_t *mat) {
+    f32 q[4];
+    f32 trace;
+    f32 scale;
+    s32 i;
+    u8 j;
+    u8 k;
+    const f32 *m;
+
+    m = mat->m;
+    trace = m[0] + m[5] + m[10] + 1.0f;
+    if (trace > 1.0f) {
+        scale = 2.0f * fsqrtf(trace);
+        q[3] = -(scale * 0.25f);
+        q[0] = (m[6] - m[9]) / scale;
+        q[1] = (m[8] - m[2]) / scale;
+        q[2] = (m[1] - m[4]) / scale;
+    } else {
+        i = m[0] > m[5] ? 0 : 1;
+        if (m[i * 4 + i] < m[10]) {
+            i = 2;
+        }
+        j = (i + 1) % 3;
+        k = (j + 1) % 3;
+        scale = 2.0f * fsqrtf(m[i * 4 + i] - m[j * 4 + j] - m[k * 4 + k] + 1.0f);
+        if (scale != 0.0f) {
+            q[i] = scale * 0.25f;
+            q[j] = (m[i * 4 + j] + m[j * 4 + i]) / scale;
+            q[k] = (m[i * 4 + k] + m[k * 4 + i]) / scale;
+            q[3] = -((m[j * 4 + k] - m[k * 4 + j]) / scale);
+        } else {
+            q[i] = 1.0f;
+            q[j] = 0.0f;
+            q[k] = 0.0f;
+            q[3] = 0.0f;
+        }
+    }
+    SDF_VU0_LOADVECTOR(q);
+    Normalize();
+}
 
 INCLUDE_ASM(const s32, "sbtlSub", sbtlQuatFromVector);
 

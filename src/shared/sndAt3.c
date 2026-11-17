@@ -790,13 +790,7 @@ void mnuQueueTitleSoundStreamEntry(s32 soundEntryIndex) {
 #else
 INCLUDE_ASM(const s32, "sndAt3", mnuQueueTitleSoundStreamEntry);
 #endif
-#else
-INCLUDE_ASM(const s32, "sndAt3", mnuQueueTitleSoundStreamEntry);
 
-INCLUDE_ASM(const s32, "sndAt3", mnuLoadTitleSoundBufferEntry);
-#endif
-
-#ifdef VERSION_RAIDOU1
 void mnuLoadTitleSoundBufferEntry(s32 soundEntryIndex) {
     struct sdfMemHandle_t *allocation = NULL;
     u8 *bufferAddress;
@@ -837,6 +831,11 @@ void mnuLoadTitleSoundBufferEntry(s32 soundEntryIndex) {
     at3DecInit(sndWork3);
     SignalSema(mnuTitleStreamSemaphore);
 }
+#else
+INCLUDE_ASM(const s32, "sndAt3", mnuQueueTitleSoundStreamEntry);
+
+INCLUDE_ASM(const s32, "sndAt3", mnuLoadTitleSoundBufferEntry);
+#endif
 
 void mnuInstallTitleSoundBufferFromData(const void *compressedData, s32 dataBytes, s32 format) {
     struct sdfMemHandle_t *allocation = NULL;
@@ -844,6 +843,9 @@ void mnuInstallTitleSoundBufferFromData(const void *compressedData, s32 dataByte
 
     WaitSema(mnuTitleStreamSemaphore);
     sndDeadSePlay_VolAngle();
+#ifdef VERSION_RAIDOU2
+    sndData9 = 0;
+#endif
     mnuTitleSoundBufferState.samples = (s16 *)mnuTitleAudioSilenceBuffer;
     mnuTitleSoundBufferState.decoder = sndWork3;
     mnuTitleSoundBufferState.control = 2;
@@ -879,9 +881,6 @@ void mnuInstallTitleSoundBufferFromData(const void *compressedData, s32 dataByte
     at3DecInit(sndWork3);
     SignalSema(mnuTitleStreamSemaphore);
 }
-#else
-INCLUDE_ASM(const s32, "sndAt3", mnuInstallTitleSoundBufferFromData);
-#endif
 
 INCLUDE_ASM(const s32, "sndAt3", sndFunc2);
 

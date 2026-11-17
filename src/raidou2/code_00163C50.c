@@ -96,7 +96,43 @@ INCLUDE_ASM(const s32, "code_00163C50", mefLeaf);
 
 INCLUDE_ASM(const s32, "code_00163C50", mefLeaf2);
 
+/* NON_MATCHING: 85 of 88 words match.  */
+#ifdef NON_MATCHING
+mefMistSystem_t *mefMistFastCreate(void) {
+    sdfMemHandle_t *hMem;
+    mefMistSystem_t *mist;
+    s32 i;
+
+    hMem = sdfMemAllocDirect(sizeof(mefMistSystem_t));
+    mist = sdfMemLock(hMem);
+    mist->hMem = hMem;
+    pMapMoya = mist;
+    mist->ot = 80;
+    mist->saturation = 128;
+    mist->brightness = 90;
+    mist->fRun = 1;
+    mist->alpha = 80;
+    mist->num = 0;
+    mist->cnt = 0;
+    mist->frequency = 16;
+    mist->alphaMax = 16;
+    mist->fDebugMenu = 0;
+    mist->fDebugTimeGraph = 0;
+    mist->debugMenuIndex = 0;
+    mist->scroll = 0;
+    mist->mode = 0;
+    mist->texHandle = NULL;
+    for (i = 511; i >= 0; i--) {
+        mist->particle[i].fExist = 0;
+    }
+    for (i = 999; i >= 0; i--) {
+        mefMistUpdate();
+    }
+    return mist;
+}
+#else
 INCLUDE_ASM(const s32, "code_00163C50", mefMistFastCreate);
+#endif
 
 INCLUDE_ASM(const s32, "code_00163C50", mapLoadMistTexture);
 

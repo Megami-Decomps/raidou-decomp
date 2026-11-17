@@ -142,4 +142,8 @@ typedef struct nbKoukaProcessData_t
 nbMainProcessData_t *nbGetMainProcessData(void);
 nbKoukaProcessData_t *nbGetKoukaProcessData(void);
 
+#ifdef VERSION_RAIDOU2
+void nbCallFreeEventPack(void);
+#endif
+
 #endif /* SMT3_NB_H */

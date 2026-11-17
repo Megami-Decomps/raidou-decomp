@@ -23,6 +23,7 @@
 #include "dds3UnitObjectBasic.h"
 #include "mdlManager.h"
 #include "evtUnitManager.h"
+#include "itf.h"
 
 /* declarations needed in evtStage.c (Raidou 1 retail signatures) */
 extern char evtAreaPathFormat[];
@@ -168,11 +169,38 @@ s32 evtLoadUnit(s32 major, s32 minor) {
     return counter;
 }
 #else
-INCLUDE_ASM(const s32, "event/evtStage", evtLoadUnit);
+s32 evtLoadUnit(s32 major, s32 minor) {
+    sdfVector4_t position;
+    sdfVector4_t rotation;
+    s32 counter;
+    dds3Basic_t *object;
+
+    memset(&position, 0, 0x10);
+    position.w = 1.0f;
+    memset(&rotation, 0, 0x10);
+    rotation.w = 1.0f;
+    counter = dds3AllocObjectId();
+    object = dds3AddUnitObjectBasic(counter, &position, &rotation);
+    dds3ObjectBaseOnFlag(object, 0x20);
+    dds3ObjectBaseMakeUnit(object, major, minor);
+    mdlLoopMotion(dds3ObjectBaseGetModelHandle(object), 0, 0);
+    mdlSetMotionSpeedEx(dds3ObjectBaseGetModelHandle(object), 0, 0.5f);
+    mdlSetMotionSpeedEx(dds3ObjectBaseGetModelHandle(object), 1, 0.5f);
+    mdlSetMotionSpeedEx(dds3ObjectBaseGetModelHandle(object), 2, 0.5f);
+    evtSetWaitMotionSpeed(evtGetUnitHandle2(object), 0.5f);
+    dds3GetRadiusPoseSet(object, itfCriLipSyncManagerOff(major, minor));
+    dds3ObjectBaseSetControlBasic(object, dds3SearchSceneBasic(dds3GetControlScene(), 0x10000, 2));
+    dds3ObjectBaseRegistArea(object);
+    dds3ObjectBaseSetPadControl(object, 0);
+    dds3ObjectBaseOnFlag(object, 0x400);
+    return counter;
+}
 #endif
 #ifdef VERSION_RAIDOU2
 
-INCLUDE_ASM(const s32, "event/evtStage", evtLoadBustupData);
+void evtLoadBustupData(void) {
+    sdfDevLoadFileEx("/event/eveBustup.dat", &evtGetDefaultPosBustUpWork, &evtLoadBustupDataWork);
+}
 #endif
 
 INCLUDE_ASM(const s32, "event/evtStage", evtLeaf3);

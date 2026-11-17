@@ -5,12 +5,30 @@
 #include "datCalc.h"
 #include "code_r1_002C8188.h"
 #include "code_00195698.h"
+#include "kernel.h"
+#include "sdfMath.h"
+#include "itf.h"
+#include "frFont.h"
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuChkSetMenu);
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfCallDevLoadFileEx);
 
-INCLUDE_ASM(const s32, "code_001A5D20", itfMenuGetMenuNo);
+s32 itfMenuGetMenuNo(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, struct sprHandle_t *a_hSpr)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+    MenuImgDat_t *img;
+
+    if (a_hSpr == NULL || (u32)a_type >= ITFMENU_IMG_DAT_MAX) {
+        return 0;
+    }
+    img = &wk->imgDat[a_type];
+    if (img->flag & 2) {
+        return 0;
+    }
+    img->hSpr = a_hSpr;
+    return 1;
+}
 
 s32 itfMenuLinkSprite(dds3ProcessID_t *PID, struct sprHandle_t *a_hSpr)
 {
@@ -29,7 +47,34 @@ s32 itfMenuLinkSprite(dds3ProcessID_t *PID, struct sprHandle_t *a_hSpr)
     return ret;
 }
 
+/* NON_MATCHING: 57 of 58 words match.  */
+#ifdef NON_MATCHING
+s32 itfMenuSetSpriteData(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, s32 a_baseX, s32 a_baseY, s32 a_ofsX,
+                         s32 a_ofsY, s32 a_fontX, s32 a_fontY, u8 *a_strSprName, itfSprList_t *a_pList)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+    MenuImgDat_t *img;
+
+    if ((u32)a_type >= ITFMENU_IMG_DAT_MAX) {
+        return 0;
+    }
+    img = &wk->imgDat[a_type];
+    if (a_strSprName != NULL && img->hSpr == NULL) {
+        img->hSpr = itfCallDevLoadFileEx(a_strSprName);
+        img->flag |= 2;
+    }
+    img->pList = a_pList;
+    img->sx = a_baseX;
+    img->sy = a_baseY;
+    img->sw = a_ofsX;
+    img->sh = a_ofsY;
+    img->fx = a_fontX;
+    img->fy = a_fontY;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuSetSpriteData);
+#endif
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuSetImageColorSub);
 
@@ -138,7 +183,19 @@ INCLUDE_ASM(const s32, "code_001A5D20", MenuShutdown);
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuProcessStart);
 
-INCLUDE_ASM(const s32, "code_001A5D20", itfMenuProcessEnd);
+void itfMenuProcessEnd(dds3ProcessID_t *PID)
+{
+    Menu_t *wk;
+
+    if (PID != NULL && dds3ExistProcess(PID)) {
+        wk = dds3GetProcessData(PID);
+        if ((wk->lflag & 1) == 0) {
+            wk->lflag |= 1;
+            wk->step = 7;
+            wk->count = 0;
+        }
+    }
+}
 
 s32 itfMenuProcessCheck(dds3ProcessID_t *PID)
 {
@@ -414,7 +471,22 @@ void mapMenuShutdown(dds3ProcessID_t *PID) {
     mapMenuProcessCheckData = NULL;
 }
 
-INCLUDE_ASM(const s32, "code_001A5D20", mapMenuProcessStart);
+void mapMenuProcessStart(void) {
+    sdfMemHandle_t *hMem;
+    tagMAP_MENU_WORK *wk;
+
+    hMem = sdfMemAllocDirect(sizeof(tagMAP_MENU_WORK));
+    wk = sdfMemGetPtr(hMem);
+    memset(wk, 0, sizeof(tagMAP_MENU_WORK));
+    wk->hMem = hMem;
+    mapMenuProcessCheckData = dds3StartProcess(mapStrMapMenu, 0x3FE, 0, 0, lmapMenuProcess,
+                                               (dds3ProcessFunc_t)mapMenuShutdown, wk);
+    hMem = sdfDevLoadFileEx(mapStrBattlePanelBattleWakuSpr, NULL, NULL);
+    wk->hSpr = effCreateResourceSlotSetFromAllocation(hMem, 0);
+    sdfMemFreeDelayedDirect(hMem);
+    wk->selectID = -1;
+    wk->unk14 = 0x10000;
+}
 
 void awdMenuProcessEnd(void) {
     tagMAP_MENU_WORK *wk;

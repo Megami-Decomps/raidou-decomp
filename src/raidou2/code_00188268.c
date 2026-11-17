@@ -2,6 +2,11 @@
 #include "mapData.h"
 #include "ctn.h"
 #include "neko.h"
+#include "fld.h"
+#include "fldProcess.h"
+#include "lmap.h"
+#include "dds3WorldBasic.h"
+#include "dds3SceneBasic.h"
 
 INCLUDE_ASM(const s32, "code_00188268", mapDrinkClearMsg);
 
@@ -127,7 +132,18 @@ INCLUDE_ASM(const s32, "code_00188268", mapCallSetIntReturnValue);
 
 INCLUDE_ASM(const s32, "code_00188268", mapCallSetIntReturnValue2);
 
-INCLUDE_ASM(const s32, "code_00188268", fldCallReleaseUnitPad);
+s32 fldCallReleaseUnitPad(void) {
+    dds3Basic_t *object;
+
+    fldReleaseUnitPad();
+    mapCallBitOff2();
+    object = dds3GetActiveUnitSceneBasic(dds3GetActiveScene());
+    if (object == NULL) {
+        return 1;
+    }
+    Start_lmap(0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00188268", fldCommand_PAD_ENABLE);
 

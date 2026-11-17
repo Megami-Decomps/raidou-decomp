@@ -3075,7 +3075,7 @@
 0x001AF858	TbMbAbLoadEnd	inferred	SMT3HD name via SLUS_209.11 0x001DC910, reloc-identical; map-agrees
 0x001AF8B0	MbLoadCallback	inferred	SMT3HD name via SLUS_209.11 0x001DC9B8, reloc-identical; map-agrees
 0x001AF928	mdlSetFileName	inferred	SMT3HD name via SLUS_209.11 0x001DCA88, twin-of-raidou1-0x00199D38; map-agrees
-0x001AF958	mdlCallWaitSema	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit model/mdlManager; calls WaitSema
+0x001AF958	mdlPrepare	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body: WaitSema(mdlManagerWork), mdlSearchResrc, mdlCheckLoading as R1 mdlPrepare; same (major, minor, 0) call in evtCallBtlCountClear; replaces mdlCallWaitSema
 0x001AFB10	mdlLoadPrepare	inferred	SMT3HD name via SLUS_209.11 0x001DCCE8, shared-hash-in-run; map-agrees
 0x001AFB28	mdlUnlinkResrc	inferred	SMT3HD name via SLUS_209.11 0x001DCD00, reloc-identical; map-agrees
 0x001AFB88	mdlSetBlur	inferred	SMT3HD name via SLUS_209.11 0x001DCD60, reloc-identical; map-agrees
@@ -26625,7 +26625,7 @@
 0x004DF83C	evtPendingEventSelection	inferred	method=dds-ref; p=0.59 (n=D_004DF83C); tier=C; source=dds; evidence=dds-ref/close: nfun=2, other=0, sim=0.8621, games=1, size=True, sec=True, fn=CallEvent
 0x004DF840	evtKutiUnit	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C5DC); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtCommand_KUTISET
 0x004DF844	evtLipsStopFunction_evtCommandData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by evtLipsStopFunction_evtCommand (3 of 4 refs, 2 functions)
-0x004DF848	evtCallMemset2Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCallMemset2
+0x004DF848	evtCallMemsetData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=holds the file handle of evtCallMemset2 as in R1; replaces evtCallMemset2Data
 0x004DF84C	sndCallProcTrigSequenceSlMainData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sndCallProcTrigSequenceSlMain
 0x004DF850	moon_spr	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c moon_spr, loaded by Process1; replaces Process2_evtMoonData
 0x004DF854	gMoonBaseARate	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c static order before gMoonFade; Process2 alpha rate; replaces Process2_evtMoonData2
@@ -29901,7 +29901,7 @@
 0x004F54D0	fldAllTblPacLoadWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldAllTblPacLoad
 0x004F5F54	bssWork130	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x777C
 0x004FD6D0	fldCallFptodpWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallFptodp
-0x004FD870	mapObjTaskWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapObjTask (90 of 210 refs, 45 functions)
+0x004FD870	mapObjTaskData2	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapObjTaskData2 in R1 mapFileLoadSub2; replaces mapObjTaskWork
 0x004FD874	mapObjOnOffWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjOnOff
 0x004FD894	mapAnaLabelWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapAnaLabel
 0x004FD8C4	mapWork21	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapNpcTblAdd_fld, mapCallGetFloorY2
@@ -29914,32 +29914,32 @@
 0x005000F0	bssWork133	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x19
 0x00500109	nbFunc6Table2Entry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by nbFunc6Table2Entry2
 0x0050017E	bssWork134	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x10F2
-0x00501270	mapAnaLabelWork2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapAnaLabel (19 of 33 refs, 7 functions)
+0x00501270	mapScriptGet_PosData2	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapScriptGet_PosData2 in R1 mapFileLoadSub2; replaces mapAnaLabelWork2
 0x00501274	mapCallPositioningGuardSystem2Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallPositioningGuardSystem2
 0x00501292	mapCallPositioningGuardSystem2Work2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallPositioningGuardSystem2
 0x00503023	alarmPayloadEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by alarmPayload
-0x00503270	mapWork22	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 9 functions: mapGetAttr, mapGetAttr_DevilWall, mapFileLoadSub2
+0x00503270	mapData23	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData23 in R1 mapFileLoadSub2; replaces mapWork22
 0x00503344	bssWork135	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0xD2C
-0x00504070	mapWork23	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: mapWarpGet_Pos, mapWarpGo_Idx_fld, mapFileLoadSub2
+0x00504070	mapData24	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData24 in R1 mapFileLoadSub2; replaces mapWork23
 0x0050452E	bssWork136	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0xA20
 0x00504F4E	sdf3DPrimDefaultFaceIndexEntry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sdf3DPrimDefaultFaceIndex
 0x00504F54	bssWork137	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x1C
-0x00504F70	mapWork24	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 11 functions: mapWallObjAdd, mapCallSetOt, mapCallGetFloorY
+0x00504F70	mapWallObjTaskData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapWallObjTaskData in R1 mapFileLoadSub2; replaces mapWork24
 0x00504F74	mapEveHitTaskFldSub2Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapEveHitTaskFldSub2
 0x00504FA0	mapEveHitTaskFldSubWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapEveHitTaskFldSub
 0x00505520	bssWork138	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x28
 0x00505548	bssWork139	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x4
 0x0050554C	fldData6Entry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by fldData6
 0x00505845	bssWork140	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x62B
-0x00505E70	mapWork25	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapFileLoadSub2, mapSetAreaRefreshSub2, mapMapSetAreaRefresh
-0x00506170	mapWork26	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapFileLoadSub2, mapObjLightAdd
+0x00505E70	mapData32	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData32 in R1 mapFileLoadSub2; replaces mapWork25
+0x00506170	mapData25	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData25 in R1 mapFileLoadSub2; replaces mapWork26
 0x00506570	mapData26	inferred	same variable as raidou1 mapData26 (mapObjPointGet, mapLeaf20); replaces mapWork27: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: mapFileLoadSub2, mapObjPointAdd2, mapObjPointGet
 0x00508021	alarmPayloadEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by alarmPayload
-0x0050B570	mapWork28	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: mapFileLoadSub2, mapKaidanAdd, mapMapSetAreaRefresh
-0x0050C570	mapWork29	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapFileLoadSub2, mapFileLoadSub5, mapGetFloorY
-0x0050CD70	mapWork30	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapHamidasiNpcSub, mapFileLoadSub2, mapCHitAdd
-0x0050DD70	mapWork31	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: mapHamidasiWHitSub, mapHitAidaCalc, mapFileLoadSub2
-0x0050ED70	mapWork32	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: mapFileLoadSub2, mapNpcTblAdd, mapSpotPointGet2D
+0x0050B570	mapData27	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData27 in R1 mapFileLoadSub2; replaces mapWork28
+0x0050C570	mapData30	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData30 in R1 mapFileLoadSub2; replaces mapWork29
+0x0050CD70	mapData28	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData28 in R1 mapFileLoadSub2; replaces mapWork30
+0x0050DD70	mapData29	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData29 in R1 mapFileLoadSub2; replaces mapWork31
+0x0050ED70	mapData31	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=data of mapFileLoadSub2: same loop shape, count and stride as R1 mapData31 in R1 mapFileLoadSub2; replaces mapWork32
 0x0050EF70	mapData33	inferred	same variable as raidou1 mapData33 (mapCallFilterSet); replaces mapWork33: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapFileLoad, mapCallFilterSet, mapSKYBGEDIT
 0x0050EF88	mapObjTaskWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask
 0x0050F770	mapCutSetCamData2	inferred	same variable as raidou1 mapCutSetCamData2 (mapCutSetCam); replaces mapCutSetCamWork: method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCutSetCam (4 of 6 refs, 2 functions)
@@ -30024,9 +30024,9 @@
 0x00535543	bssWork173	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x413D
 0x00539680	sbtlStr1200SEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlStr1200S
 0x0053ECB8	mapData34	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same object as raidou1 mapData34, used by the same three functions
-0x0053F4B8	mdlWork2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: mdlCallMemGetSize, mdlCallMemGetInfo, mapLeaf12
-0x0053F4D8	mdlWork3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: mapLeaf12, mapCASHDATA, mdlCallMemGetSize
-0x0053F4F8	mdlWork4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: mapLeaf12, mapCASHDATA, mdlCallMemGetSize
+0x0053F4B8	mdlData6	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=sdfMemHandle cache table freed by mdlCallMemFreeDirect, as R1 mapLeaf12 mdlData6; replaces mdlWork2
+0x0053F4D8	mdlData7	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same, R1 mdlData7; replaces mdlWork3
+0x0053F4F8	mdlData8	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same, R1 mdlData8; replaces mdlWork4
 0x0053F518	mapMapSetAreaWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 16 refs, 7 functions)
 0x0053F618	mapMapSetAreaWork2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 8 refs, 3 functions)
 0x0053F718	mapMapSetAreaWork3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)

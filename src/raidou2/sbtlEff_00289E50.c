@@ -6,8 +6,25 @@
 #include "code_002929C8.h"
 #include "code_00291C78.h"
 #include "sBtlSkill.h"
+#include "code_r1_0021CE60.h"
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", OnDataLoadProc);
+s32 OnDataLoadProc(dds3ProcessID_t *id) {
+    s32 i;
+
+    if (!sbtlCallStartRain()) {
+        return 0;
+    }
+    if (!sbtlBattleEventSb()) {
+        return 0;
+    }
+    for (i = 0; i < 46; i++) {
+        if (sbtl_effonfilecheck[i] == 2) {
+            btlLoadSbPackData[i].unkC = Create_effPartsList(btlLoadSbPackData[i].data);
+        }
+    }
+    wk_sbtl->flg |= 4;
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf75);
 
@@ -76,7 +93,25 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckEffectData);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckEffectData_SeOnly);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlGetSkilltbl16);
+/* body: matched in raidou @ 780f3f57: src/raidou1/code_0028A320.c:405, found, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
+s32 sbtlCallBtlGetSkilltbl16(struct SBTLUNIT_WORK *tgtwk, SKLID sklid)
+{
+    u16 area = sbtlGetSkilltbl(sklid)->area;
+
+    if (!(area & 0x10)) {
+        return 1;
+    }
+    if ((tgtwk->flg & 0x8800) != 0x8800) {
+        return 1;
+    }
+    if (!(area & 0x4000)) {
+        return 1;
+    }
+    if (tgtwk->field498 == 0) {
+        return 0;
+    }
+    return 2;
+}
 
 s32 CheckEffectData_Core(struct SBTLUNIT_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SKLID sklid)
 {

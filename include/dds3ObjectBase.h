@@ -28,6 +28,9 @@ void *dds3ObjectBaseGetModelHandle(dds3Basic_t *pObjectBasic);
 void dds3ObjectBaseMakeMatter(dds3Basic_t *pObjectBasic);
 void dds3ObjectBaseMakeUnit(dds3Basic_t *pObjectBasic, MODELTYPE major, s32 minor);
 void dds3ObjectBaseModelLinkOt(sdfModelOt_t *pModelOt, dds3Basic_t *pObjectBasic);
+#ifdef VERSION_RAIDOU2
+void itfCampStartProcess(dds3Basic_t *pObjectBasic);
+#endif
 s32 dds3ObjectBaseRegistArea(dds3Basic_t *pObjectBasic);
 void dds3ObjectBaseSetControlBasicCamLen(dds3Basic_t *pObjectBasic);
 void *dds3ObjectBaseSetUserValue(dds3Basic_t *pObjectBasic, void *pUserValue);

@@ -242,7 +242,35 @@ s32 effObjInitializeFollowModelData(dds3Basic_t *object) {
 #else
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitMVSBtlUnitSub);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", Constructor_dds3UnitObjectBasic);
+s32 Constructor_dds3UnitObjectBasic(dds3Basic_t *object) {
+    effObjectData_t *data;
+    void *work;
+
+    dds3InitPoseSet(object);
+    work = sdfChipAllocDirect(sizeof(effObjectData_t));
+    object->workdata = work;
+    memset(work, 0, sizeof(effObjectData_t));
+    data = object->workdata;
+    data->modelHolder = dds3ObjectBaseInitControlWorkData(object);
+    data->transitionWork = NULL;
+    data->activeId = -1;
+    data->followParameterIndex = -1;
+    data->pendingTargetKey = 0;
+    data->angleReturnDelayFrames = 0;
+    data->angle = 0.0f;
+    data->limitMin2C = -45.0f;
+    data->limitMax30 = 45.0f;
+    data->word34 = 0;
+    data->limitMin38 = -45.0f;
+    data->limitMax3C = 45.0f;
+    data->unk40 = -1;
+    data->unk44 = 0;
+    data->word24 = 0;
+    data->unk48 = 0;
+    data->unk4C = 0;
+    dds3ObjectBaseOnFlag(object, 0x42);
+    return 1;
+}
 #endif
 
 void dds3UnitObjectBasicDestructor(dds3Basic_t *aPtr) {

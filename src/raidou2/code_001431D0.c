@@ -167,7 +167,21 @@ void mapBgFree2(void) {
     fldGlobalBase.word4C = 0;
 }
 
-INCLUDE_ASM(const s32, "code_001431D0", mapCallJmsQuestMapLoadFld);
+void mapCallJmsQuestMapLoadFld(s32 field) {
+    if (fldGlobalBase.word4C == 1) {
+        fldGlobalBase.word4C = 2;
+    }
+    fldJmsQuestMapLoad_fld(fldGlobalBase.amSBlock, field);
+    mapCallFilterSet(field);
+    if (fldGlobalBase.word30 != NULL) {
+        sdfTexFreeDelayed(fldGlobalBase.word30);
+        fldGlobalBase.word44 = -1;
+        fldGlobalBase.word30 = NULL;
+    }
+    fldGlobalBase.word44 = field;
+    mapCallBitOff();
+    fldGlobalBase.word30 = NULL;
+}
 
 INCLUDE_ASM(const s32, "code_001431D0", fldSpecificSceneOnVisible);
 

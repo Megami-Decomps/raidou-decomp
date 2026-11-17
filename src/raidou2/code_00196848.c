@@ -84,7 +84,15 @@ INCLUDE_ASM(const s32, "code_00196848", nbTag0Sub);
 
 INCLUDE_ASM(const s32, "code_00196848", nbTag0Sub2);
 
-INCLUDE_ASM(const s32, "code_00196848", nbRefDDS3GBWK14);
+void nbRefDDS3GBWK14(void) {
+    u32 i;
+    nbData6 = DDS3_GBWK->nbNameImage;
+    nbData7 = DDS3_GBWK->nbNameCode;
+    for (i = 0; i < 16; i++) {
+        nbWork3[i] = NULL;
+    }
+    nbData5 = 0;
+}
 
 INCLUDE_ASM(const s32, "code_00196848", nbCallChipAllocDirect);
 

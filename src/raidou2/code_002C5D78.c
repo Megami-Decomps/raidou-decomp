@@ -10,6 +10,7 @@
 #include "sdfSystem.h"
 #include "code_002929C8.h"
 #include "evt.h"
+#include "sBtlEncount.h"
 
 s32 sbtlCheckLoadFlg(void) {
     u32 load;

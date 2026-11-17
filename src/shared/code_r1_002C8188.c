@@ -698,7 +698,34 @@ u8 *effResolveResourceSlots(sprHandle_t *set, u8 *resourceBytes, s32 clearAllSlo
     return entryBytes;
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_002C8188", effResolveResourceSlots);
+u8 *effResolveResourceSlots(sprHandle_t *set, u8 *resourceBytes, s32 clearAllSlots, s32 selectedSlot) {
+    u32 slotIndex = 0;
+    u8 *entryBytes = resourceBytes;
+    u8 *tableBase = entryBytes;
+
+    entryBytes += ((effResourceTable_t *)entryBytes)->entryOffset;
+
+    if (set->TexNums != 0) {
+        do {
+            TMX_HEADER_t *resourceData = (TMX_HEADER_t *)(tableBase + ((effResourceEntry_t *)entryBytes)->resourceOffset);
+
+            entryBytes += EFF_RESOURCE_TABLE_ENTRY_BYTES;
+            if (clearAllSlots == 0) {
+                if (selectedSlot == -1 || selectedSlot == (s32)slotIndex) {
+                    if (set->textureReferences[slotIndex] == 0) {
+                        set->textureReferences[slotIndex] = sdfTexSet(resourceData);
+                    }
+                } else {
+                    set->textureReferences[slotIndex] = 0;
+                }
+            } else {
+                set->textureReferences[slotIndex] = 0;
+            }
+            slotIndex++;
+        } while (slotIndex < set->TexNums);
+    }
+    return entryBytes;
+}
 #endif
 
 void effResolveAndReleaseResource(sprHandle_t *owner) {

@@ -1086,7 +1086,35 @@ s32 dds3BistaCheck(void)
     return 1;
 }
 #else
+/* NON_MATCHING: 25 of 32 words match.  */
+#ifdef NON_MATCHING
+s32 dds3BistaCheck(void) {
+    if (dds3DrawFlag & 0x0C000000) {
+        return 1;
+    }
+    switch (dds3DrawBistaData) {
+    case 0:
+    case 3:
+        if (0x80 - dds3Data30.a < 0x80) {
+            return 1;
+        }
+        break;
+    case 1:
+    case 2:
+        if (dds3ChangeBistaModeData != dds3DrawBistaData2) {
+            return 1;
+        }
+        break;
+    case 4:
+        break;
+    default:
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
+#endif
 #endif
 #ifdef VERSION_RAIDOU2
 

@@ -2,6 +2,7 @@
 #include "itf.h"
 #include "sdfMemory.h"
 #include "code_r1_002C8188.h"
+#include "dds3KernelCore.h"
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverInit);
 
@@ -173,7 +174,14 @@ s32 itfCallLoadIconSprite(void)
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfIconDrawSprite);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfIconDrawBadStatus);
+void itfIconDrawBadStatus(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, u32 a_bstNo, DDS3_OT a_otNo)
+{
+    s32 sprNo[20] = { 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 0, 45, 46, 0, 0, 0, 55 };
+
+    if (a_bstNo < 20 && sprNo[a_bstNo] >= 32) {
+        itfIconDrawSprite(a_x, a_y, a_z, a_alphaRate, sprNo[a_bstNo], a_otNo);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfIconDrawBullet);
 
@@ -211,7 +219,17 @@ INCLUDE_ASM(const s32, "code_001A1FD0", itfCallMoverGetPosition);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallMoverUpdate);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", MenuGetBlankMenu);
+MenuCB_tag *MenuGetBlankMenu(Menu_t *wk)
+{
+    MenuCB_tag *cb;
+
+    for (cb = wk->pHead; cb != NULL; cb = cb->pNext) {
+        if ((cb->lflag & 1) == 0) {
+            return cb;
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallGetProcessData);
 
@@ -248,7 +266,16 @@ void itfGeneralMenuCreatePIDSub2(dds3ProcessID_t *PID, s32 a_type)
     itfListSetTypeApper(PID, 1, a_type);
 }
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetFlag);
+void itfMenuSetFlag(dds3ProcessID_t *PID, u32 a_bit, s8 a_bSet)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    if (a_bSet) {
+        wk->gflag |= a_bit;
+    } else {
+        wk->gflag &= ~a_bit;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetFlagMenuSub);
 

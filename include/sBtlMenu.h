@@ -8,6 +8,23 @@
 struct SBTLUNIT_WORK;
 struct sdfMemHandle_t;
 
+#ifdef VERSION_RAIDOU2
+/* Battle menu process data (0x48 bytes in R2, only the start fields are read). */
+typedef struct sBtlMenu_t {
+    struct sdfMemHandle_t *hMem; /* 0x00 */
+    dds3ProcessID_t *drawPID;    /* 0x04 */
+    u8 unk8[0x10];
+    u8 unk18;                    /* 0x18 */
+    u8 unk19[0x2F];
+} sBtlMenu_t;
+SIZE_CHECK(sBtlMenu_t_size, sBtlMenu_t, 0x48);
+extern const char sbtlStrSbtlmenuMain[];
+extern const char sbtlStrSbtlmenuDraw[];
+extern dds3ProcessID_t *ProcessCheckData;
+extern u8 sbtlFuncEscapeData;
+s32 sbtlFuncDecideItem_sbtlMenu(dds3ProcessID_t *id);
+s32 sbtlDrawProcess_sbtlMenu(dds3ProcessID_t *id);
+#else
 /* Battle menu process data (0x20 bytes in R1). */
 typedef struct sBtlMenu_t {
     struct sdfMemHandle_t *hMem; /* 0x00 */
@@ -22,6 +39,7 @@ typedef struct sBtlMenu_t {
     s32 cntAnalyze;              /* 0x1C */
 } sBtlMenu_t;
 SIZE_CHECK(sBtlMenu_t_size, sBtlMenu_t, 0x20);
+#endif
 
 void ProcessStart_sbtlMenu(void);
 s32 cmpUpdateSword(void);

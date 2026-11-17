@@ -4,6 +4,9 @@
 #include "common.h"
 
 struct titleAudioStreamState_t;
+#ifdef VERSION_RAIDOU2
+extern s32 sndData9;
+#endif
 void mnuLoadTitleStreamFrameData(char *filePath, struct titleAudioStreamState_t *streamState);
 void mnuInstallTitleSoundBufferFromData(const void *compressedData, s32 dataBytes, s32 format);
 void nbEffectShutdown(void);

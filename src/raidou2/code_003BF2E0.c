@@ -3,6 +3,8 @@
 #include "rstInit.h"
 #include "sdfChip.h"
 #include "TitleMain.h"
+#include "jmsMisc.h"
+#include "sdk_libc.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
@@ -150,7 +152,13 @@ INCLUDE_ASM(const s32, "code_003BF2E0", jmsFunc35);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsFunc36);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallMemset);
+void jmsCallMemset(jmsMemsetWork_t *work) {
+    memset(work, 0, sizeof(jmsMemsetWork_t));
+    work->unk00 = 0;
+    work->unk04 = -1;
+    work->unk08 = -1;
+    work->unk0C = 0;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsLeaf12);
 

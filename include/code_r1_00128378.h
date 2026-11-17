@@ -69,4 +69,8 @@ extern void *nbResultFreeTexturesData;
 extern s32 nbResultFreeTexturesData2;
 extern s32 fldNakamaCashLoad_EndCheckData;
 
+#ifdef VERSION_RAIDOU2
+void sbtlCountClear(void);
+#endif
+
 #endif

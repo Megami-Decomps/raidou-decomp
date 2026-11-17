@@ -463,16 +463,15 @@ INCLUDE_ASM(const s32, "dat", datCallGetStockDevilID2);
 INCLUDE_ASM(const s32, "dat", datDelDevil);
 #endif
 
-#ifdef VERSION_RAIDOU1
 void datLoadLvUpTables(void) {
     sdfDevLoadFileEx("/data/sdatLvUpDevilGift.dat", &sdatLvUpDevilGiftTbl, &sdatLvUpDevilGiftSize);
     sdfDevLoadFileEx("/data/sdatLvUpDevilParamUp.dat", (u32 *)&sdatLvUpDevilParamUp, &sdatLvUpDevilParamUpSize);
     sdfDevLoadFileEx("/data/sdatLvUpPlayerParamUp.dat", &sdatLvUpPlayerParamUp, &sdatLvUpPlayerParamUpSize);
     sdfDevLoadFileEx("/data/sdatLvUpPlayerRankUp.dat", &sdatLvUpPlayerRankUp, &sdatLvUpPlayerRankUpSize);
-}
-#else
-INCLUDE_ASM(const s32, "dat", datLoadLvUpTables);
+#ifdef VERSION_RAIDOU2
+    datRefDDS3GBWK19();
 #endif
+}
 
 #ifdef VERSION_RAIDOU1
 void cmpLoadModelTables(void)
@@ -591,7 +590,9 @@ INCLUDE_ASM(const s32, "dat", datSetPlayerUnitSword);
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK3);
 #else
-INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK12);
+s32 datRefDDS3GBWK12(s32 sword) {
+    return datSetPlayerUnitSword(&DDS3_GBWK->playerData, sword);
+}
 #endif
 
 #ifdef VERSION_RAIDOU1

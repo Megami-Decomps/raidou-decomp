@@ -4,7 +4,7 @@
 #include "common.h"
 #include "basic.h"
 
-/* Kind-5 constructors allocate and clear the complete 0x40-byte payload. */
+/* Kind-5 constructors allocate and clear the complete payload (0x40 bytes, 0x50 in R2). */
 typedef struct effObjectData_t {
     dds3ObjectBaseControlWorkData_t *handle;
     s32 word04; /* 0x04: room-mode flag selector; nonpositive bypasses room gating. */
@@ -22,9 +22,19 @@ typedef struct effObjectData_t {
     f32 word34; /* 0x34: entry-blend yaw, loaded directly into the float argument. */
     f32 limitMin38;
     f32 limitMax3C;
+#ifdef VERSION_RAIDOU2
+    s32 unk40;
+    u32 unk44;
+    u32 unk48;
+    u32 unk4C;
+#endif
 } effObjectData_t;
 
+#ifdef VERSION_RAIDOU2
+typedef char effObjectData_size_must_be_0x50[(sizeof(effObjectData_t) == 0x50) ? 1 : -1];
+#else
 typedef char effObjectData_size_must_be_0x40[(sizeof(effObjectData_t) == 0x40) ? 1 : -1];
+#endif
 
 #include "sdf_types.h"
 

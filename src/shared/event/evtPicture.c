@@ -211,7 +211,50 @@ void evtCallGetSmallFontFRQ2(evtPictureProcessData_t *data)
     ot->regFunc(ot, tag);
 }
 #else
-INCLUDE_ASM(const s32, "event/evtPicture", evtCallGetSmallFontFRQ2);
+extern char evtCallGetSmallFontFRQ2Data2[];
+extern s32 evtData28;
+
+void evtCallGetSmallFontFRQ2(evtPictureProcessData_t *data)
+{
+    frFontHandle_t *frq;
+    sdfDrawTag_t *tag;
+    sdfIVector4_t xy;
+    sdfTexHandle_t *tex;
+    s32 w;
+    s32 h;
+    sdfGrOt_t *ot;
+    s32 otNo;
+
+    otNo = data->ot;
+    if (evtData28 != 0) {
+        otNo = evtData28;
+    }
+    frq = frwGetSmallFontFRQ2(0, 0, 0, 0xA09DC380, evtCallGetSmallFontFRQ2Data2, NULL);
+    frSetFontColor(frq, 0);
+    frDrawFontOt(frq, 1, otNo);
+    frDestroyFontRequestAfter(frq);
+    tag = (sdfDrawTag_t *)sdfGrAllocPacketBuff(32);
+    sdfDrawTagInit(tag);
+    itfMiscDrawAlphaPrim(tag, 0, 0);
+    xy.pm[0] = data->xy.pm[0] + data->ofs_xy.pm[0] * 16;
+    xy.pm[1] = data->xy.pm[1] + data->ofs_xy.pm[1] * 8;
+    xy.pm[2] = data->xy.pm[2] + data->ofs_xy.pm[2] * 16;
+    xy.pm[3] = data->xy.pm[3] + data->ofs_xy.pm[3] * 8;
+    if (data->flag & 0x10) {
+        tex = data->tex;
+        w = tex->width / 2 * 16;
+        h = tex->height / 2 * 8;
+        xy.pm[0] -= w;
+        xy.pm[1] -= h;
+        xy.pm[2] -= w;
+        xy.pm[3] -= h;
+    } else {
+        tex = data->tex;
+    }
+    itfMiscDrawSpritePrim(&xy, &data->uv, &data->col, 4095, tex, 0, tag);
+    ot = &sdfGrOtTable[otNo];
+    ot->regFunc(ot, tag);
+}
 #endif
 
 s32 evtPictureProcess1(dds3ProcessID_t *id)

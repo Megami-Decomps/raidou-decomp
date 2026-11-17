@@ -1195,7 +1195,37 @@ void nbCallSetOt4(f32 x, f32 y, f32 z, f32 size, s32 alpha) {
     }
 }
 #else
-INCLUDE_ASM(const s32, "field/fldDraw", nbCallSetOt4);
+/* body: matched in raidou @ 780f3f57: src/shared/field/fldDraw.c:1142, found, same function 0.90 (words 170/148, calls 0.93, shape 0.91) */
+void nbCallSetOt4(f32 x, f32 y, f32 z, f32 size, s32 alpha) {
+    f32 r;
+    s32 color;
+    f32 y0;
+    f32 y1;
+    f32 y2;
+
+    r = size * 1.19999993f;
+    if (alpha != 0) {
+        if (fldEveHitTaskFldSub(x, z) != 0) {
+            fldCallSetOt(x, y, z, r, alpha);
+            return;
+        }
+        color = alpha & 0xFF;
+        eglSetOt(nbData4);
+        if (color > 128) {
+            color = 128;
+        }
+        color = (color << 24) | 0x808080;
+        if (fldDbgFmtHex != 0 && z < -900.0f) {
+            y0 = mapGetY(x, z + r) - 3.0f;
+            y1 = mapGetY(x, z) - 3.0f;
+            y2 = mapGetY(x, z - r) - 3.0f;
+            dds3CallGrAllocPacketBuff8(x - r, y0, z + r, x + r, y0, z + r, x - r, y1, z, x + r, y1, z, color, color, color, color, fldData9, 0.0f, 0.0f, 1.0f, 0.5f);
+            dds3CallGrAllocPacketBuff8(x - r, y1, z, x + r, y1, z, x - r, y2, z - r, x + r, y2, z - r, color, color, color, color, fldData9, 0.0f, 0.5f, 1.0f, 1.0f);
+        } else {
+            dds3CallGrAllocPacketBuff8(x - r, y - 1.0f, z + r, x + r, y - 1.0f, z + r, x - r, y - 1.0f, z - r, x + r, y - 1.0f, z - r, color, color, color, color, fldData9, 0.0f, 0.0f, 1.0f, 1.0f);
+        }
+    }
+}
 #endif
 
 void nbCallGetY(f32 x, f32 y, f32 z, f32 size, s32 alpha) {

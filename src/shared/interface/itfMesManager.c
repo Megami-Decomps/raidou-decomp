@@ -1455,10 +1455,17 @@ ItfMesVoiceCueResult itfMesSelectTableItemText(ItfMesWindowIndex window, ItfMesE
 
 /* Release/reset selected-entry glyphs and their status; optionally do the same
  * for primary text. Negative window is a no-op; no other slot validation. */
+#else
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesSelectTableItemText);
+
+#endif
 void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker) {
     instanceMes_tag *mes;
     message_tag *message;
     Speaker_tag *primaryTextBlock;
+#ifdef VERSION_RAIDOU2
+    frFontHandle_t *font;
+#endif
 
     if (id < 0) {
         return;
@@ -1466,11 +1473,24 @@ void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker) {
     mes = pinst[id].mes;
     message = &mes->message;
     primaryTextBlock = &mes->speaker;
+#ifdef VERSION_RAIDOU1
     if (message->pfont != NULL) {
         frDestroyFontRequestAfter(message->pfont);
         message->pfont = NULL;
     }
+#else
+    if (message->pfontPrev != NULL) {
+        frDestroyFontRequestAfter(message->pfontPrev);
+    }
+#endif
+#ifdef VERSION_RAIDOU2
+    font = message->pfont;
+#endif
     InitializeMessage(message, 0);
+#ifdef VERSION_RAIDOU2
+    message->limit = 0x80;
+    message->pfontPrev = font;
+#endif
     mes->stat &= ~ITF_MES_ENTRY_STATE_MASK;
     mes->stat &= ITF_MES_ENTRY_STATE_HIGH_CLEAR_MASK;
     if (cls_speaker == 0) {
@@ -1482,11 +1502,6 @@ void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker) {
     }
     InitializeSpeaker(primaryTextBlock, 0);
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesSelectTableItemText);
-
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngRequestMessageRelease);
-#endif
 
 /* NON_MATCHING: 73 of 123 words match.  */
 #ifdef NON_MATCHING
@@ -1833,6 +1848,8 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngChangeWindowType_itf)
 
 #ifdef VERSION_RAIDOU1
 /* body: matched in smt3 @ 9401f79e: src/smt3/interface/itfMesManager.c:1274, near, same function 1.00 (words 50/50, calls 1.00, shape 1.00) */
+#endif
+#ifdef VERSION_RAIDOU1
 s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index) {
     select_tag *optionBlock = &pinst[id].mes->select;
     defkey_tag *option = NULL;
@@ -1861,9 +1878,6 @@ s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index) {
     option->index = index;
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelectDefKey);
-#endif
 
 /* Build and release a temporary glyph chain to measure the widest grouped row.
  * Empty tables and zero/missing encoded items return zero. */
@@ -2118,12 +2132,7 @@ void ReadytoMessage(instanceMes_tag *pinst) {
     u32 result;
 
     if (mes->pfont != NULL) {
-#ifdef VERSION_RAIDOU1
         frDestroyFontRequestAfter(mes->pfont);
-#else
-        mes->pfontPrev = mes->pfont;
-        mes->limit = 128;
-#endif
         mes->pfont = NULL;
     }
     chain = MessageRequestEx(mes->x, mes->y, mes->color[0], mes->color[1], mes->color[2], mes->color[3],
@@ -2141,11 +2150,7 @@ void ReadytoMessage(instanceMes_tag *pinst) {
         }
     }
     GetLastMessagePara(chain, mes);
-#ifdef VERSION_RAIDOU1
     result = frGetMessageResult(3);
-#else
-    result = frGetMessageResult(0x13);
-#endif
     mes->textInterfaceMask = result;
     if ((result & 2) != 0) {
         pinst->stat |= 0x10000;
@@ -2454,6 +2459,621 @@ void InitializeSpeaker(Speaker_tag *pspeaker, s32 defaultpos) {
     pspeaker->pfont = 0;
     pspeaker->num = 0xffff;
 }
+#else
+s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index) {
+    select_tag *optionBlock = &pinst[id].mes->select;
+    defkey_tag *option = NULL;
+    s32 optionIndex;
+
+    if ((u32)key >= 0x10) {
+        return 0;
+    }
+    if (key == 3) {
+        key = 1;
+    }
+    if (key == 3 || key == 6 || key == 7) {
+        return 0;
+    }
+    for (optionIndex = 0; optionIndex < optionBlock->numdef; optionIndex++) {
+        if (optionBlock->defkey[optionIndex].key == key) {
+            option = &optionBlock->defkey[optionIndex];
+            break;
+        }
+    }
+    if (option == NULL) {
+        if (optionBlock->numdef >= 15) {
+            return 0;
+        }
+        option = &optionBlock->defkey[optionBlock->numdef];
+        optionBlock->numdef++;
+    }
+    option->key = key;
+    option->index = index;
+    return 1;
+}
+
+/* Build and release a temporary glyph chain to measure the widest grouped row.
+ * Empty tables and zero/missing encoded items return zero. */
+s32 itfMesMngGetWidth(s32 id, s32 message, s32 page) {
+    instanceMes_tag *mes = pinst[id].mes;
+    itfMesBinMesHeader_t *table;
+    u8 *encodedText;
+    frFontHandle_t *glyphChain;
+    s32 textExtent;
+
+    table = GetTypeHeader(mes, message)->ptr;
+    if (table->page == 0) {
+        return 0;
+    }
+    CommitVarTable((s32 *)mes->variable.pptr);
+    if (mes->pext != 0) {
+        frSetExtDic(mes->pext);
+    }
+    encodedText = GetMessagePagePtr(table, page);
+    if (encodedText == 0) {
+        return 0;
+    }
+    glyphChain = MessageRequest(0, 0, encodedText, 0);
+    textExtent = GetMessageWidth(glyphChain);
+    frDestroyFontRequestAfter(glyphChain);
+    return textExtent;
+}
+
+/* Set the fourth color channel used when this window's entry glyphs are built. */
+void itfMesMngSetDefaultSpeed(s32 id, u8 speed) {
+    pinst[id].mes->message.color[3] = speed;
+}
+
+void itfMesMngSetKutiCallback(s32 id, void (*func)(void)) {
+    pinst[id].mes->func_kuti = (addr_t)func;
+}
+
+void itfMesMngInitializeManager(void) {
+    itfMesLink_t *poolNode;
+
+    itfMesMngManager.activeWindowCount = 0;
+    itfMesMngManager.ctr = 0;
+    itfMesMngManager.flags = 0;
+    itfMesMngManager.windowTexture = itfMiscLoadTexture("/itf/MESWIN.TMX");
+    itfMiscLinkInitialize((itfmisclinkstack_t *)&itfMesMngManager.pool, (itfLink_t *)itfMesMngManager.nodes, ITF_MES_WINDOW_CAPACITY, ITF_MES_POOL_NODE_BYTES);
+    for (poolNode = itfMesMngManager.pool.firstFree; poolNode != NULL; poolNode = poolNode->next) {
+        poolNode->state = NULL;
+    }
+    dds3StartProcess("CalcMsgMng", 0x407, 0, 0, CalcMsgMng_Process, (dds3ProcessFunc_t)DrawMsgMng_Shutdown, NULL);
+    dds3StartProcess("DrawMsgMng", 0x2B18, 0, 0, DrawMsgMng_Process, (dds3ProcessFunc_t)DrawMsgMng_Shutdown, NULL);
+}
+
+/* Set manager flags; the stored result is narrowed to its existing u16 field. */
+void itfMesMngSetBitStatManager(u32 flags) {
+    itfMesMngManager.flags |= flags;
+}
+
+/* Clear manager flags; the stored result is narrowed to its existing u16 field. */
+void itfMesMngClearBitStatManager(u32 flags) {
+    itfMesMngManager.flags &= ~flags;
+}
+
+/* Read the manager's 16-bit flags, distinct from itfMessageFlags. */
+u16 itfMesMngGetStatManager(void) {
+    return itfMesMngManager.flags;
+}
+
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelChange);
+
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelPosition);
+
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelRightBottom);
+
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelLeftTop);
+
+s32 itfMesMngDebugProc(void) {
+    window_tag *panel;
+    itfpanel_t *panelSprite;
+    s32 *bounds;
+    sdfDrawTag_t *packetList;
+    s32 menuItemIndex;
+    s32 menuItemY;
+    const char *menuItemFormat;
+    const char *selectionMarker;
+    const char *coordinateFormat;
+
+    if (itfMesDebug.pmesflow == NULL) {
+        itfMesLink_t *window = DebugChangeInstance(NULL);
+
+        itfMesDebug.pmesflow = window;
+        if (window == NULL) {
+            return 0;
+        }
+    }
+    {
+        debug_tag *debug = &itfMesDebug;
+
+        panel = &debug->pmesflow->state->window;
+        switch (debug->mode) {
+        case 0:
+            if (dds3PadButtonState.secondaryUp & 2) {
+                if (--debug->cursor < 0) {
+                    debug->cursor = 2;
+                }
+            } else if (dds3PadButtonState.secondaryDown & 2) {
+                if (++debug->cursor >= 5) {
+                    debug->cursor = 0;
+                }
+            }
+            if (dds3PadButtonState.secondaryCancel < 0) {
+                debug_tag *confirmDebug = &itfMesDebug;
+
+                switch (confirmDebug->cursor) {
+                case 0:
+                case 1:
+                case 2:
+                    confirmDebug->mode = 1;
+                    break;
+                case 3:
+                    confirmDebug->mode = 2;
+                    break;
+                case 4:
+                    confirmDebug->pmesflow = DebugChangeInstance(confirmDebug->pmesflow);
+                    break;
+                }
+            } else if (dds3PadButtonState.secondaryCross < 0) {
+                return -1;
+            }
+            break;
+        case 1:
+            DebugMoveWinVert(panel, debug->cursor);
+            if (dds3PadButtonState.secondaryCross < 0) {
+                debug->mode = 0;
+            }
+            break;
+        case 2:
+            DebugMoveWinAlpha(panel);
+            if (dds3PadButtonState.secondaryCross < 0) {
+                itfMesDebug.mode = 0;
+            }
+            break;
+        }
+    }
+
+    packetList = dds3CallGrAllocPacketBuff9();
+    dds3ConsPanelTagLink(packetList, 0x10, 0x10, 0x1E, 9);
+    menuItemFormat = itfMesDebugItemFormat;
+    menuItemY = 0x7A00;
+    for (menuItemIndex = 0; menuItemIndex < 5; menuItemIndex++, menuItemY += 0x60) {
+        if (itfMesDebug.cursor == menuItemIndex) {
+            selectionMarker = itfMesSelectionMarkers[itfMesDebug.mode != 0];
+        } else {
+            selectionMarker = itfMesMarkerNone;
+        }
+        sdfDrawTagLink(packetList,
+                        EE_ADDR(sdfDevPrintf(0x7180, menuItemY, 0xFFFFF0, 0,
+                                                     menuItemFormat, selectionMarker, itfMesDebugMenuLabels[menuItemIndex])));
+    }
+
+    coordinateFormat = "( %3d,%3d )";
+    panelSprite = panel->mes;
+    bounds = &panelSprite->left;
+    sdfDrawTagLink(packetList,
+                    EE_ADDR(sdfDevPrintf(0x7E00, 0x7A00, 0xFFFFF0, 0,
+                                                 coordinateFormat, bounds[0] >> 4,
+                                                 bounds[1] >> 3)));
+    sdfDrawTagLink(packetList,
+                    EE_ADDR(sdfDevPrintf(0x7E00, 0x7A60, 0xFFFFF0, 0,
+                                                 coordinateFormat, bounds[2] >> 4,
+                                                 bounds[3] >> 3)));
+    sdfDrawTagLink(packetList,
+                    EE_ADDR(sdfDevPrintf(0x7E00, 0x7B20, 0xFFFFF0, 0,
+                                                 itfMesDebugFadeFormat, panel->fadeLimit)));
+    bounds = itfMesDebug.pmesflow->state->window.mes_offset;
+    sdfDrawTagLink(packetList,
+                    EE_ADDR(sdfDevPrintf(0x7180, 0x7C40, 0xFFFFF0, 0,
+                                                 "OFFSET : %3d,%3d - %3d,%3d",
+                                                 bounds[0] >> 4,
+                                                 bounds[1] >> 3,
+                                                 bounds[2] >> 4,
+                                                 bounds[3] >> 3)));
+    sdfDebugGrOt.regFunc(&sdfDebugGrOt, packetList);
+    return 0;
+}
+
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf11);
+
+/* Tear down installed content/resources, return the pool record and decrement
+ * the pool-array-relative counter. An empty record is a no-op. */
+void DestructFlow(s32 id) {
+    itfMesLink_t *windowRecord = &itfMesMngManager.nodes[id];
+    instanceMes_tag *mes = windowRecord->state;
+
+    if (mes != NULL) {
+        itfMesMngRequestMessageRelease(id, 1);
+        itfMesMngRequestSelectRelease(id);
+        ReleaseAllWindow(mes);
+        ReleaseAllVariable(&mes->variable);
+        mes->stat = 0;
+        sdfMemFreeDirect(windowRecord->resourceHandle);
+        windowRecord->state = NULL;
+        itfMiscLinkGive(windowRecord, &itfMesMngManager.pool);
+        itfMesMngManager.activeWindowCount -= 1;
+    }
+}
+
+void ResolveResourceAddress(itfMesResource_t *pdata)
+{
+    s32 *payload = (s32 *)pdata->entries;
+
+    if (pdata->relocated == 0) {
+        sdfAddressResolver(payload, EE_ADDR_S(payload), (u8 *)pdata + pdata->fixupTableOffset, pdata->fixupTableBytes);
+        pdata->relocated = 1;
+    }
+}
+
+itfMesBinTypeHeader_t *GetTypeHeader(instanceMes_tag *pinst, s32 index)
+{
+    itfMesBinTypeHeader_t *entries = pinst->pdata->entries;
+
+    return &entries[index];
+}
+
+itfMesBinTypeHeader_t *GetTypeHeader2(itfMesResource_t *pfileheader)
+{
+    itfMesBinTypeHeader_t *entries = pfileheader->entries;
+
+    return &entries[pfileheader->entryCount];
+}
+
+ItfMesEntryItemsResult itfGetMessageType(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex) {
+    return (ItfMesEntryItemsResult)GetTypeHeader(pinst[window].mes, entryIndex)->type;
+}
+
+u32 itfGetMessageNo(ItfMesWindowIndex window) {
+    return pinst[window].mes->pdata->entryCount;
+}
+
+u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index)
+{
+    s32 count = table->page;
+
+    if (index < 0 || index >= count) {
+        return NULL;
+    }
+    return EE_ADDR_AS(u8 *, table->addr[index]);
+}
+
+void ReadytoMessage(instanceMes_tag *pinst) {
+    message_tag *mes = &pinst->message;
+    frFontHandle_t *chain;
+    u32 result;
+
+    if (mes->pfont != NULL) {
+        mes->pfontPrev = mes->pfont;
+        mes->limit = 128;
+        mes->pfont = NULL;
+    }
+    chain = MessageRequestEx(mes->x, mes->y, mes->color[0], mes->color[1], mes->color[2], mes->color[3],
+                             GetMessagePagePtr(mes->table, mes->page), NULL);
+    if (pinst->type == 3) {
+        if (frCallEventVoiceSub(chain) == 1) {
+            frFontCenterGlyphChainAt(0x1000, 0xC60, chain);
+        } else {
+            frFontCenterGlyphChainAt(0x1000, 0xBF8, chain);
+        }
+    }
+    if (!(pinst->stat & 0x400000)) {
+        if ((itfMesMngManager.flags & 1) != 0) {
+            RaiseMessageSpeedMax(chain);
+        }
+    }
+    GetLastMessagePara(chain, mes);
+    result = frGetMessageResult(0x13);
+    mes->textInterfaceMask = result;
+    if ((result & 2) != 0) {
+        pinst->stat |= 0x10000;
+    } else {
+        pinst->stat &= 0xFFFEFFFF;
+    }
+    if (frGetMessageResult(4) != 0) {
+        if (pinst->func_kuti != 0) {
+            ((void (*)(void))pinst->func_kuti)();
+        }
+    }
+    if (frGetMessageResult(8) != 0) {
+        evtLipsExecFunction(itfGetTextLipsUnitId(), itfGetTextLipsMotionId());
+    }
+    ChangeZBuffer(chain, pinst->z);
+    mes->lines = CountLineMessage(GetLastLinkFontHandle(chain), chain);
+    mes->pfont = chain;
+}
+
+INCLUDE_ASM(const s32, "interface/itfMesManager", SetVar);
+
+void CommitVarTable(s32 *pvar)
+{
+    s32 i;
+
+    for (i = 0; i < 32; i++) {
+        frSetVariableRequest(i, pvar[i]);
+    }
+}
+
+u8 *GetSpeakerName(instanceMes_tag *pinst)
+{
+    u32 *items = GetTypeHeader2(pinst->pdata)->type;
+
+    return EE_ADDR_AS(u8 *, items[pinst->speaker.num]);
+}
+
+s32 GetNumSelectItem(s32 allitem, u32 mask)
+{
+    s32 n = 0;
+
+    while (allitem > 0) {
+        u32 bit = mask & 1;
+
+        mask >>= 1;
+        allitem--;
+        if (bit == 0) {
+            n++;
+        }
+    }
+    return n;
+}
+
+frFontHandle_t *GetFontHandleUnit(u32 *list, s32 count, u32 mask, s32 x, s32 y, s32 depth)
+{
+    frFontHandle_t *chain = NULL;
+    s32 i;
+
+    for (i = 0; i < count; i++, list++) {
+        if ((mask & 1) != 0) {
+            mask >>= 1;
+            continue;
+        }
+        chain = MessageRequestEx(x, y, 0, 0, 0, 0x80, EE_ADDR_AS(u8 *, *list), chain);
+        y += (s16)chain->parentDimensionsOrRenderWord.parentDimensions.cellHeight * 8;
+        mask >>= 1;
+    }
+    if (chain != NULL) {
+        ChangeZBuffer(chain, depth);
+        ChangeFontAlpha(chain, 0x80);
+    }
+    return chain;
+}
+
+/* Discard (to - from - 1) preceding rows when positive, retain the next
+ * complete y-group and queue everything after it. Requires non-NULL input;
+ * return NULL if discarding preceding rows exhausts the chain. */
+frFontHandle_t *UnchainFontHandleUnit(frFontHandle_t *pfont, s32 index, s32 lines) {
+    s32 rowsToDiscard = lines - index - 1;
+    s32 rowY = pfont->y;
+    frFontHandle_t *nextNode;
+    frFontHandle_t *rowHead;
+    frFontHandle_t *rowTail;
+
+    while (rowsToDiscard > 0) {
+        while (rowY == pfont->y) {
+            nextNode = pfont->previous;
+            pfont->next = NULL;
+            pfont->chainHead = pfont;
+            pfont->previous = NULL;
+            frDestroyFontRequestAfter(pfont);
+            pfont = nextNode;
+            if (pfont == NULL) {
+                return NULL;
+            }
+        }
+        rowsToDiscard--;
+        rowY = pfont->y;
+    }
+    rowHead = pfont;
+    do {
+        rowTail = pfont;
+        pfont = pfont->previous;
+    } while (pfont != NULL && rowY == pfont->y);
+    while (pfont != NULL) {
+        nextNode = pfont->previous;
+        pfont->next = NULL;
+        pfont->chainHead = pfont;
+        pfont->previous = NULL;
+        frDestroyFontRequestAfter(pfont);
+        pfont = nextNode;
+    }
+    rowHead->next = NULL;
+    rowTail->previous = NULL;
+    for (pfont = rowHead; pfont != NULL; pfont = pfont->previous) {
+        /* Despite its current name, this link points to the retained row tail. */
+        pfont->chainHead = rowTail;
+    }
+    return rowHead;
+}
+
+frFontHandle_t *GetLastLinkFontHandle(frFontHandle_t *pfont)
+{
+    while (pfont->previous != NULL) {
+        pfont = pfont->previous;
+    }
+    return pfont;
+}
+
+void GetLastMessagePara(frFontHandle_t *pfont, message_tag *pmessage)
+{
+    frTextHandle_t *shade = pfont->lastChild;
+
+    if (shade != NULL) {
+        u8 ctx = pfont->glyphCodeOrContext.byteRoles.encodedContextByte;
+
+        pmessage->color[3] = ctx >> 1;
+        pmessage->color[0] = shade->renderValueOrSetupOrShade.setupBytes.fontIndex;
+        pmessage->color[1] = shade->renderValueOrSetupOrShade.setupBytes.firstOption;
+        pmessage->color[2] = shade->renderValueOrSetupOrShade.setupBytes.secondOption;
+    }
+}
+
+s32 CountLineMessage(frFontHandle_t *pfont_top, frFontHandle_t *pfont)
+{
+    s16 h = pfont->parentDimensionsOrRenderWord.parentDimensions.cellHeight;
+
+    return ((pfont->y - pfont_top->y) >> 3) / h + 1;
+}
+
+/* Translate every linked node in text units; a NULL chain is a no-op. */
+void ChangeFontPosition(frFontHandle_t *pfont, s32 dist_x, s32 dist_y) {
+    if (pfont == NULL) {
+        return;
+    }
+    do {
+        pfont->x += dist_x;
+        pfont->y += dist_y;
+        pfont = pfont->previous;
+    } while (pfont != NULL);
+}
+
+void ChangeZBuffer(frFontHandle_t *pfont, s32 z)
+{
+    while (pfont != NULL) {
+        pfont->renderValueOrSetupOrShade.renderValue = z;
+        pfont = pfont->previous;
+    }
+}
+
+void ChangeFontColor(frFontHandle_t *pfont, s32 index, s32 lines, s32 color)
+{
+    s32 skip = lines - index - 1;
+    s32 y = pfont->y;
+    s32 cur = y;
+    frTextHandle_t *c;
+    u8 flag;
+
+    while (skip > 0) {
+        while (y == cur) {
+            pfont = pfont->previous;
+            if (pfont == NULL) {
+                return;
+            }
+            cur = pfont->y;
+        }
+        skip--;
+        y = cur;
+    }
+    flag = color;
+    do {
+        for (c = pfont->firstChild; c != NULL; c = c->next) {
+            c->renderValueOrSetupOrShade.setupBytes.firstOption = flag;
+        }
+        pfont = pfont->previous;
+    } while (pfont != NULL && y == pfont->y);
+}
+
+void ChangeFontColorAll(frFontHandle_t *pfont, u8 color)
+{
+    frTextHandle_t *c;
+
+    for (; pfont != NULL; pfont = pfont->previous) {
+        for (c = pfont->firstChild; c != NULL; c = c->next) {
+            c->renderValueOrSetupOrShade.setupBytes.firstOption = color;
+        }
+    }
+}
+
+/* Clear each child's low color byte, then OR the unmasked input word.
+ * High input bits can therefore also change the upper bytes. */
+void ChangeFontAlpha(frFontHandle_t *pfont, u32 alpha) {
+    frTextHandle_t *child;
+
+    for (; pfont != NULL; pfont = pfont->previous) {
+        for (child = pfont->firstChild; child != NULL; child = child->next) {
+            child->parentDimensionsOrRenderWord.renderWord = child->parentDimensionsOrRenderWord.renderWord & ITF_MES_COLOR_BYTE_CLEAR_MASK | alpha;
+        }
+    }
+}
+
+s32 GetMessageWidth(frFontHandle_t *pfont)
+{
+    s32 max = 0;
+
+    while (pfont != NULL) {
+        s32 y = pfont->y;
+        s32 w = 0;
+
+        do {
+            w += pfont->advance;
+            pfont = pfont->previous;
+        } while (pfont != NULL && y == pfont->y);
+        if (w > max) {
+            max = w;
+        }
+    }
+    return max << 4;
+}
+
+s32 GetMaskedIndex(s32 index, u32 mask)
+{
+    s32 i = 0;
+
+    while (i < 0x20) {
+        if ((mask & 1) == 0) {
+            if (--index < 0) {
+                break;
+            }
+        }
+        i++;
+        mask >>= 1;
+    }
+    return i;
+}
+
+INCLUDE_ASM(const s32, "interface/itfMesManager", RaiseMessageSpeedMax);
+
+void RaiseMessageSpeedMaxAll(frFontHandle_t *pfont) {
+    while (pfont != NULL) {
+        SwitchOK(pfont);
+        pfont = pfont->previous;
+    }
+}
+
+void OpenMessageWindow(instanceMes_tag *pinst) {
+    window_tag *place = &pinst->window;
+    message_tag *mes = &pinst->message;
+    s32 top;
+
+    if (place->mes == NULL) {
+        place->mes = itfPnlRegist2(6, EE_ADDR(itfMesMngManager.windowTexture));
+        if (place->spk != NULL) {
+            place->mes->textRightX = pinst->speaker.pfont->x + frCallGetStrWidth3(0, pinst->speaker.pfont);
+        }
+    }
+    top = mes->y + place->mes_offset[1];
+    itfPnlSetPosition(place->mes, mes->x + place->mes_offset[0], top,
+                      mes->x + place->mes_offset[2], mes->y + place->mes_offset[3], pinst->z);
+    place->mes->screenY = top;
+    itfPnlSetColor(place->mes, place->red, place->green, place->blue, 0);
+    pinst->stat = (pinst->stat & ~0x300) | 0x100;
+}
+
+void OpenCheckSpeakerWindow(instanceMes_tag *pinst) {
+    Speaker_tag *origin = &pinst->speaker;
+    window_tag *place = &pinst->window;
+    if (origin->pfont != NULL && !(pinst->stat & 0x10000)) {
+        if (place->spk == NULL) {
+            s32 width = origin->pfont->advance * 16;
+            place->spk = itfPnlRegist2(7, EE_ADDR(itfMesMngManager.windowTexture));
+            itfPnlSetPosition(place->spk, origin->x - 0x120, origin->y - 0x20, origin->x + width - 0x90, origin->y + 0xD0, pinst->z);
+            itfPnlSetColor(place->spk, 0x7F, 0x7F, 0x7F, 0);
+        }
+        pinst->stat = (pinst->stat & ~0x3000) | 0x1000;
+    } else if (place->spk != 0) {
+        pinst->stat |= 0x3000;
+    }
+}
+
+void InitializeSpeaker(Speaker_tag *pspeaker, s32 defaultpos) {
+    if (defaultpos != 0) {
+        pspeaker->x = 0x3D0;
+        pspeaker->y = 0x988;
+    }
+    pspeaker->pfont = 0;
+    pspeaker->num = 0xffff;
+}
+#endif
 
 #ifdef VERSION_RAIDOU1
 void InitializeMessage(message_tag *pmessage, s32 defaultpos) {
@@ -2474,7 +3094,29 @@ void InitializeMessage(message_tag *pmessage, s32 defaultpos) {
     pmessage->table = NULL;
 }
 #else
+/* NON_MATCHING: 8 of 19 words match.  */
+#ifdef NON_MATCHING
+void InitializeMessage(message_tag *pmessage, s32 defaultpos) {
+    if (defaultpos != 0) {
+        pmessage->x = 0x440;
+        pmessage->y = 0xA78;
+    }
+    pmessage->table = NULL;
+    pmessage->color[3] = 0x80;
+    pmessage->pfont = NULL;
+    pmessage->pfontPrev = NULL;
+    pmessage->phase = 0;
+    pmessage->textInterfaceMask = 0;
+    pmessage->lines = 0;
+    pmessage->page = 0;
+    pmessage->maxpage = 0;
+    pmessage->color[0] = 0;
+    pmessage->color[1] = 0;
+    pmessage->color[2] = 0;
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfMesManager", InitializeMessage);
+#endif
 #endif
 
 void InitializeSelect(select_tag *pselect)

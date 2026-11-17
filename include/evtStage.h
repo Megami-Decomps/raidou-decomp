@@ -32,4 +32,9 @@ s32 evtLoadUnit(s32 major, s32 minor);
 s32 evtLoadUnitBustUp(MODELTYPE major, s32 minor, s32 type);
 s32 evtPathLinkAndMake(dds3Basic_t *path, dds3Basic_t *obj);
 
+#ifdef VERSION_RAIDOU2
+extern u32 evtGetDefaultPosBustUpWork;
+extern u32 evtLoadBustupDataWork;
+#endif
+
 #endif

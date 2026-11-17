@@ -6,6 +6,8 @@
 #include "frFont.h"
 #include "sBtlMenu.h"
 #include "code_r1_001CC1D0.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf7);
 
@@ -251,7 +253,19 @@ INCLUDE_ASM(const s32, "code_002F5CF0", IsStart);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSetSummonMenuSub);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", ProcessStart);
+void ProcessStart(void) {
+    sdfMemHandle_t *hMem;
+    sBtlMenu_t *wk;
+
+    hMem = sdfMemAllocDirect(sizeof(sBtlMenu_t));
+    wk = sdfMemLock(hMem);
+    memset(wk, 0, sizeof(sBtlMenu_t));
+    wk->hMem = hMem;
+    ProcessCheckData = dds3StartProcess(sbtlStrSbtlmenuMain, 0x3FE, 0, 0, sbtlFuncDecideItem_sbtlMenu, sbtlDrawProcess, wk);
+    wk->drawPID = dds3StartProcess(sbtlStrSbtlmenuDraw, 0x2B15, 0, 0, sbtlDrawProcess_sbtlMenu, NULL, wk);
+    wk->unk18 = 0;
+    sbtlFuncEscapeData = 0;
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlProcessEnd);
 

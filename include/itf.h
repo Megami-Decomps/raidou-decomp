@@ -17,6 +17,10 @@ typedef struct tagMAP_MENU_WORK {
     u8 flag;                     /* 0x0D */
     s16 count;                   /* 0x0E */
     s32 selectID;                /* 0x10: -1 at start */
+#ifdef VERSION_RAIDOU2
+    s32 unk14;                   /* 0x14: 0x10000 at start */
+    s32 unk18;                   /* 0x18 */
+#endif
 } tagMAP_MENU_WORK;
 
 /* HD's awdMenu_t and elvMenu_t, with the sdfMemAllocDirect handle first as in tagMAP_MENU_WORK. */
@@ -112,8 +116,15 @@ typedef struct MenuImgDat_t {
     s8 dummy8;
     s16 strWidth;
     u16 flag;
+#ifdef VERSION_RAIDOU2
+    u8 unk20[0x10];
+#endif
 } MenuImgDat_t;
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(MenuImgDatSizeCheck, MenuImgDat_t, 0x30);
+#else
 SIZE_CHECK(MenuImgDatSizeCheck, MenuImgDat_t, 0x20);
+#endif
 
 typedef struct MenuCB_tag {
     s32 id;
@@ -121,8 +132,13 @@ typedef struct MenuCB_tag {
     s8 hierarchy;
     u8 alphaRate;
     s16 no;
+#ifdef VERSION_RAIDOU2
+    u32 gflag;
+    u32 lflag; /* bit 0: slot is blank */
+#else
     u16 gflag;
     u16 lflag; /* bit 0: slot is blank */
+#endif
     s32 decideSE;
     s32 cancelSE;
     char *str;
@@ -132,7 +148,11 @@ typedef struct MenuCB_tag {
     itfMenuFunc_t func;
     void *funcDraw;
 } MenuCB_tag;
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(MenuCBSizeCheck, MenuCB_tag, 0x34);
+#else
 SIZE_CHECK(MenuCBSizeCheck, MenuCB_tag, 0x30);
+#endif
 
 typedef struct MenuMover_t {
     itfMover_t mover;
@@ -174,13 +194,22 @@ typedef struct Menu_t {
     u8 retFunc;                 /* 0xB89: last select->func result */
     u8 bEnableCtrl;             /* 0xB8A */
     s8 dummy[1];
+#ifdef VERSION_RAIDOU2
+    u32 gflag;
+    u32 lflag;
+#else
     u16 gflag;
     u16 lflag;
+#endif
     s32 frame;
     s32 count;
     s32 pri;                    /* 0xB98: set by evtPictureSetPri */
 } Menu_t;
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(MenuSizeCheck, Menu_t, 0xBE4);
+#else
 SIZE_CHECK(MenuSizeCheck, Menu_t, 0xB9C);
+#endif
 /* One loaded devil message, 0x1C bytes (sdfChipAllocZeroDirect in DvlMsgCreateCB). */
 struct tagITFDVLMSG_CB {
     u8 unk00[0x10];
@@ -340,7 +369,12 @@ s32 itfGetFigure(s32 a_num);
 s32 itfGetFigureNum(s32 a_num, s32 a_figure);
 s32 itfCallGetProcessData7(dds3ProcessID_t *PID, u32 a_no, s32 a_val);
 void itfMenuSetDrawParam(dds3ProcessID_t *PID, s32 a_max, s32 a_bFix);
+#ifdef VERSION_RAIDOU2
+f32 itfCriLipSyncManagerOff(s32 major, s32 minor);
+void itfMenuSetFlag(dds3ProcessID_t *PID, u32 a_bit, s8 a_bSet);
+#else
 void itfMenuSetFlag(dds3ProcessID_t *PID, u16 a_bit, s8 a_bSet);
+#endif
 s32 itfMenuSetFlagMenu(dds3ProcessID_t *PID, s32 a_id, ITFMENU_CB_GF a_bit, s32 a_bSet);
 struct sprHandle_t *itfCallDevLoadFileEx(u8 *a_strSprName);
 s32 itfMenuSetSpriteData(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, s32 a_baseX, s32 a_baseY, s32 a_ofsX,
@@ -363,6 +397,9 @@ dds3ProcessID_t *mapMenuCreateMenuPID(void);
 s32 mapMenuDrawMagWindow(s32 a_initID);
 s32 mapMenuGetSelectUNIQ(void);
 void mapMenuProcessStart(void);
+#ifdef VERSION_RAIDOU2
+s32 lmapMenuProcess(dds3ProcessID_t *PID);
+#endif
 void mapMenuRelease(tagMAP_MENU_WORK *wk);
 void mapMenuShutdown(dds3ProcessID_t *PID);
 dds3ProcessFunc_t rstCallGetProcessData35(dds3ProcessID_t *PID);

@@ -577,7 +577,19 @@ s32 evtCallGetIntPara(void) {
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara2);
 #else
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallBtlCountClear);
+s32 evtCallBtlCountClear(void) {
+    s32 major;
+    s32 minor;
+    sbtlCountClear();
+    major = scrGetIntPara(0);
+    minor = scrGetIntPara(1);
+    if (mdlPrepare(major, minor, 0) == 0 || mdlPrepare(major, minor, 0) == -1) {
+        scrSetIntReturnValue(0);
+        return 0;
+    }
+    scrSetIntReturnValue(evtLoadUnit(major, minor));
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtMODELDSPBUSTUP);
 #endif
@@ -1758,7 +1770,36 @@ INCLUDE_RODATA(const s32, "event/evtCommand", evtStrEffeplLoad);
 
 const char evtMsgEffmg1LoadHint[48] = "\xa5\xb9\xa5\xaf\xa5\xea\xa5\xd7\xa5\xc8\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\x45\x46\x46\x4d\x47\x31\x5f\x4c\x4f\x41\x44\x28\x29\xa4\xc7\xc2\xd0\xbe\xdd\xa5\xd5\xa5\xa1\xa5\xa4\xa5\xeb\x0a";
 #else
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset2);
+u32 evtCallMemset2(void) {
+    sdfVector4_t position;
+    sdfVector4_t rotation;
+    sdfMemHandle_t *memory;
+    void *effectData;
+    dds3Basic_t *basic;
+
+    memset(&position, 0, sizeof(position));
+    memset(&rotation, 0, sizeof(rotation));
+    rotation.w = 1.0f;
+    if (evtCallMemsetData == NULL) {
+        evtCallMemsetData = fileLoadEx(scrGetStrPara(0), 0, 0, 0);
+    }
+    if (pacFileCheckEnd(evtCallMemsetData) == 0) {
+        return 0;
+    }
+    memory = fileGetMemHandle(evtCallMemsetData);
+    effectData = sdfMemLock(memory);
+    fileHandleFree(evtCallMemsetData);
+    basic = dds3EffectObjectBasicAddEPL(effectData, &position, &rotation);
+    sdfMemFreeDirect(memory);
+    if (basic == NULL) {
+        scrSetIntReturnValue(0);
+    } else {
+        dds3EffectObjectBasicStatOn(basic, 1);
+        scrSetIntReturnValue(basic->serialID);
+    }
+    evtCallMemsetData = NULL;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG1_LOAD);
 #endif
@@ -3284,9 +3325,5 @@ const char evtMsgSetSkyAlphaHigh[0x28] = "warning : SET_SKY_A alpha > 255\n";
 
 INCLUDE_SDATA(const s32, "event/evtCommand", evtLipsStopFunction_evtCommandData);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "event/evtCommand", evtCallMemsetData);
-#else
-INCLUDE_SDATA(const s32, "event/evtCommand", evtCallMemset2Data);
-#endif
 

@@ -70,7 +70,26 @@ void TitleDestroy(dds3ProcessID_t *PID) {
     sdfMemFreeDirect(data->hMem);
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_002F7568", TitleDestroy);
+void TitleDestroy(dds3ProcessID_t *PID) {
+    titleData_t *data;
+    u32 i;
+
+    data = dds3GetProcessData(PID);
+    for (i = 0; i < 4; i++) {
+        if (data->sprite[i] != NULL) {
+            effDestroyResourceSlotSet(data->sprite[i]);
+        }
+    }
+    if (data->PmvPID != NULL) {
+        evtEnd(data->PmvPID);
+        data->PmvPID = NULL;
+    }
+    evtCallStop(data);
+    fclFilterOFF();
+    effDestroyEffectList(data->spriteList);
+    dds3CallEventSub(1);
+    sdfMemFreeDirect(data->hMem);
+}
 #endif
 
 void TitleProcessStart(s32 mode)

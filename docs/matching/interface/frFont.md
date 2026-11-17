@@ -53,3 +53,11 @@ two frCallSetFontString sites: retail keeps them apart with beql/lbu Spd in the 
 N1 retry: with frSetFontString compiled as C the body is exact after ctx->glyphChain = frCallSetFontString(...); context = ctx->glyphChain; in the firstChild arm (the assignment chain stored the copy). Alone it is 47 off because the block layout follows frSetFontString's visibility, so it waits on frSetFontString.
 
 Related: cross-jump.
+
+## frAnalyzeMessage (interface/frFont, raidou2 0x238)
+
+Raidou 2: 86 of 140 words differ, first at +0x8C; emitted 560 bytes, native 568 bytes.
+
+retail shares the encodedText[2]=0 store with the double-byte paths and reads fontIndex with lbu in the 0x24 test; (u8) read and field-first order tried; 86 words, behaviour equal to the asm
+
+Related: branch layout around the code < 0x80 test.

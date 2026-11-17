@@ -48,6 +48,7 @@ s32 datAddDevil(void);
 s32 datMoonAddMoveSub(void);
 s32 datGetPlayerExp(s32 level);
 struct SBTL_PLAYER_DATA datGetPlayerLevelUpUnit(struct SBTL_PLAYER_DATA *player);
+s32 datSetPlayerUnitSword(struct SBTL_PLAYER_DATA *player, s32 sword);
 s32 datGetDevilLevelUpNumsSub(s32 devilId, s32 level);
 struct sdatUnitWork_t datGetDevilLevelUpUnit(struct sdatUnitWork_t *unit);
 void datCallGetPlayerMaxHP(struct sdatUnitWork_t *unit, s32 swordLevel);
@@ -70,6 +71,9 @@ extern u32 sdatLvUpPlayerRankUp;
 extern u32 sdatLvUpPlayerRankUpSize;
 
 void datLoadLvUpTables(void);
+#ifdef VERSION_RAIDOU2
+void datRefDDS3GBWK19(void);
+#endif
 void cmpLoadModelTables(void);
 void datCallMemset(void);
 

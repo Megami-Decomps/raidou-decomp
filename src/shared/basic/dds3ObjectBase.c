@@ -456,7 +456,117 @@ void dds3ObjectBaseModelLinkOt(sdfModelOt_t *pModelOt, dds3Basic_t *pObjectBasic
     }
 }
 #else
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseModelLinkOt);
+/* body: matched in raidou @ 780f3f57: src/shared/basic/dds3ObjectBase.c:343, found, same function 0.97 (words 237/227, calls 0.97, shape 0.98) */
+void dds3ObjectBaseModelLinkOt(sdfModelOt_t *pModelOt, dds3Basic_t *pObjectBasic)
+{
+    dds3ObjectBaseControlWorkData_t *control;
+    dds3UnitObjectBasicWorkData_t *work;
+    struct sdf3DLightParallelPacket_t *light;
+    s32 minor;
+
+    control = dds3GetBaseControlWorkData(pObjectBasic);
+    if (dds3ObjectBaseCheckFlag(pObjectBasic, 1) != 0) {
+        return;
+    }
+    if (control->pModel == NULL) {
+        return;
+    }
+    if (control->modelType != 1) {
+        if (control->modelType != 0) {
+            return;
+        }
+        if (dds3ObjectBaseCheckFlag(pObjectBasic, 0x400000) != 0) {
+            itfCampStartProcess(pObjectBasic);
+            return;
+        }
+        if (dds3ObjectBaseCheckFlag(pObjectBasic, 0x800) != 0) {
+            dds3ObjectBaseSetControlBasicCamLen(pObjectBasic);
+            if (control->cam_len < 100.0f) {
+                mdlLink_NoDraw(control->pModel, pModelOt);
+                return;
+            }
+        }
+        if (dds3ObjectBaseCheckFlag(pObjectBasic, 0x100000) != 0) {
+            mdlLink_NoDraw(control->pModel, pModelOt);
+            return;
+        }
+        light = ((dds3UnitObjectBasicWorkData_t *)pObjectBasic->workdata)->hUnit->lightPacket;
+        if (light != NULL) {
+            ((mdlObj_t *)control->pModel)->inner->light = light;
+        } else {
+            ((mdlObj_t *)control->pModel)->inner->light = NULL;
+        }
+        if (dds3ObjectBaseCheckFlag(pObjectBasic, 0x2000) != 0) {
+            work = pObjectBasic->workdata;
+            mdlLink_Kubi(control->pModel, pModelOt, control->kubinodeidx, work->kubiPitch, work->kubiYaw);
+            return;
+        }
+        if (pModelOt != &ModelOt[13]) {
+            sdf3DSetCamera(&dds3ScreenParam, &sdfViewMatrix);
+        } else {
+            sdf3DSetCamera(&DrawEnv, &aProjMatrix);
+        }
+        if (pModelOt == &ModelOt[0] && mdlGetMajorNum(control->pModel) == 1) {
+            minor = mdlGetMinorNum(control->pModel);
+            if (minor == 45 || minor == 252) {
+                mdlLink(control->pModel, &pModelOt[1]);
+                return;
+            }
+        }
+        if (mdlGetMajorNum(control->pModel) == 2) {
+            minor = mdlGetMinorNum(control->pModel);
+            if (minor == 13 || minor == 29) {
+                mdlLink(control->pModel, &ModelOt[8]);
+                return;
+            }
+        }
+        mdlLink(control->pModel, pModelOt);
+        return;
+    }
+    if ((pObjectBasic->color >> 24) != 0) {
+        if (control->pMot != NULL) {
+            switch (control->MotMode) {
+            case 0:
+                control->MotSpeed = 1.0f;
+                break;
+            case 1:
+                control->MotSpeed += SDF_FRAME_STEP(0.05f);
+                if (1.0f < control->MotSpeed) {
+                    control->MotSpeed = 1.0f;
+                }
+                break;
+            case 2:
+                control->MotSpeed += SDF_FRAME_STEP(0.025f);
+                if (1.0f < control->MotSpeed) {
+                    control->MotSpeed = 1.0f;
+                }
+                break;
+            case 3:
+                control->MotSpeed = 0.0f;
+                break;
+            case 4:
+                control->MotSpeed -= SDF_FRAME_STEP(0.05f);
+                if (control->MotSpeed < 0.0f) {
+                    control->MotSpeed = 0.0f;
+                }
+                /* fallthrough */
+            case 5:
+                control->MotSpeed -= SDF_FRAME_STEP(0.02f);
+                if (control->MotSpeed < 0.0f) {
+                    control->MotSpeed = 0.0f;
+                }
+                break;
+            }
+            if (0.0f < control->MotSpeed) {
+                control->pMot->speed = control->MotSpeed;
+                sdfMotionNext(control->pMot);
+            }
+            sdfModelEvalTm(control->pModel);
+        }
+        ((sdfModelRootNode_t *)control->pModel)->color = pObjectBasic->color;
+        sdfModelLinkOt_sdfModel(pModelOt->ot, control->pModel);
+    }
+}
 #endif
 
 void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic)

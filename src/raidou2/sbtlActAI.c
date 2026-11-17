@@ -594,7 +594,19 @@ s32 sbtlBtlMVSupportSub2(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckHITCheck_Char);
+s32 sbtlCheckHITCheck_Char(struct SBTLUNIT_WORK *wk) {
+    s32 ret = 1;
+
+    switch (wk->unit.devilId) {
+    case 659:
+    case 664:
+    case 665:
+    case 666:
+        ret = 0;
+        break;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlPrivAreaCheck);
 

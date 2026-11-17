@@ -48,7 +48,11 @@ void DrawEffect(evtViewerInfo_t *pInfo);
 s32 DrawMessage(evtViewerInfo_t *pInfo);
 void DrawTmxTexture(evtViewerInfo_t *pInfo);
 void DrawTmxTextureFrom2Frame(evtViewerInfo_t *pInfo, struct evtViewerObject_t *obj, evtFrameInfo_t *nearframe, evtFrameInfo_t *frame);
+#ifdef VERSION_RAIDOU2
+void End_evtViewer(evtViewerInfo_t *pInfo);
+#else
 s32 End_evtViewer(evtViewerInfo_t *pInfo);
+#endif
 void EventSkipStart(evtViewerInfo_t *pInfo);
 void FreeInfo(evtViewerInfo_t *pInfo);
 void evtCallMemset7(evtViewerInfo_t *pInfo);

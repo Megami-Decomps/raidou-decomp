@@ -9,6 +9,16 @@
 #include "sdfMovie.h"
 #include "fldProcess.h"
 #include "code_r1_002CAFD8.h"
+#include "dds3PadManager.h"
+#include "dds3KernelDraw.h"
+#include "jmsMisc.h"
+#include "libsdf.h"
+#include "basic.h"
+#include "kernel.h"
+#include "code_r1_001CC1D0.h"
+#include "rstResult.h"
+#include "code_r1_002C7ED0.h"
+#include "sdfSound.h"
 
 s32 evtCallStop(titleData_t *pData) {
     if (!(pData->flag & 0x40)) {
@@ -25,7 +35,65 @@ s32 evtCallStop(titleData_t *pData) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", evtCallPlay);
+s32 evtCallPlay(s32 MovieNo, s32 Length, s32 FadeFrame, s32 Mode, titleData_t *pData) {
+    s32 ret = 2;
+
+    if (!(pData->flag & 0x20)) {
+        if (pData->MoviePlayWait++ < 2) {
+            return 0;
+        }
+        if (pData->MovieCounter != 0) {
+            pData->MovieAlpha = 0;
+        } else {
+            pData->MovieAlpha = 128;
+        }
+        pData->MovieCounter = 0;
+        ret = 0;
+        sdfSetStreamFrameDrawMode(0);
+        moviePlay(MovieNo);
+        pData->MoviePlayWait = 0;
+        pData->flag |= 0x20;
+    } else {
+        if (mviDrawMessageSub() == 0 || movieDecodeWork.frameIndex < 20) {
+            return 0;
+        }
+        if (Length > 0) {
+            Length -= 20;
+            if (pData->MovieCounter >= Length - FadeFrame && pData->MovieAlpha > 0) {
+                pData->MovieAlpha = ((Length - pData->MovieCounter) << 7) / FadeFrame;
+            }
+            if (pData->MovieCounter <= FadeFrame && pData->MovieAlpha < 128) {
+                pData->MovieAlpha = (pData->MovieCounter << 7) / FadeFrame;
+            }
+            if (pData->MovieAlpha < 0) {
+                pData->MovieAlpha = 0;
+            }
+            if (pData->MovieAlpha > 128) {
+                pData->MovieAlpha = 128;
+            }
+        }
+        if (mviValidateMovieSub() != 0 && pData->MovieCounter > 0) {
+            evtCallStop(pData);
+            switch (Mode) {
+            case 0:
+                ret = 3;
+                break;
+            case 1:
+                ret = 2;
+                break;
+            }
+        } else if (pData->flag & 0x40) {
+            evtCallStop(pData);
+            return 2;
+        }
+        if (pData->MovieCounter == 0) {
+            ret = 1;
+        }
+        pData->MovieCounter++;
+    }
+    sdfSetGridScaledDrawBounds(0, 0, 512, 448, (pData->MovieAlpha << 24) | 0x808080);
+    return ret;
+}
 
 s32 TitleAt3Load(titleData_t *pData) {
     if (!(pData->flag & 4)) {
@@ -52,7 +120,71 @@ void TitleAt3Play(titleData_t *pData) {
 
 INCLUDE_ASM(const s32, "code_0035B048", evtCallBgmStop);
 
-INCLUDE_ASM(const s32, "code_0035B048", TitleFirstCalcProcess3);
+extern jmsSeqUnit_t TitleConfigCalcProcessData;
+extern jmsSeqUnit_t rstData;
+extern jmsSeqUnit_t TitleFirstCalcProcess3Data;
+
+s32 TitleFirstCalcProcess3(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+    s32 ret;
+    u32 i;
+    s32 midi;
+
+    ret = jmsSeqChange(&data->panel, &data->seqUnit, 0, PID);
+    if (ret != 0) {
+        return ret;
+    }
+    effPollResourceList(data->spriteList);
+    for (i = 0; i < 4; i++) {
+        if (data->sprite[i] == NULL) {
+            return 0;
+        }
+    }
+    data->flag |= 2;
+    midi = p2sdLoadCheckMidi(0x500000);
+    switch (midi) {
+    case 0:
+        p2sdLoadSMGFile(0x500000);
+        break;
+    case 2:
+        break;
+    default:
+        if (data->PmvPID == NULL) {
+            scrSetMovieCancel(0);
+            data->PmvPID = evtStart2(DDS3_KERNELPROC_PRIORITY, 600, 1, 2);
+            dds3LinkProcess(PID, data->PmvPID);
+            evtNoSkipMes(data->PmvPID);
+            evtIgnoreAtracPlay(data->PmvPID);
+        }
+        if (evtCheckRun(data->PmvPID) == 0) {
+            return 0;
+        }
+        evtSetFrame(data->PmvPID, 90);
+        switch (data->mode) {
+        case 0:
+            if (TitleAt3Load(data) == 0) {
+                return 0;
+            }
+            jmsSeqJump(&data->seqUnit, &rstData);
+            break;
+        case 2:
+            dds3FadeOut(0, 0, 0, 0);
+            data->flag |= 0x1C;
+            if (evtCallPlay(25, 5400, 30, 1, data) == 0) {
+                return 0;
+            }
+            TitleInitCursor(&data->Cursor);
+            dds3FadeIn(0, 0, 0, 30);
+            jmsSeqJump(&data->seqUnit, &TitleConfigCalcProcessData);
+            break;
+        case 3:
+            jmsSeqJump(&data->seqUnit, &TitleFirstCalcProcess3Data);
+            break;
+        }
+        break;
+    }
+    return 0;
+}
 
 s32 TitleFirstDrawProcess(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
@@ -76,7 +208,43 @@ s32 evtLeaf32(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", TitleAtlusLogoCalcProcess);
+extern jmsSeqUnit_t TitleAtlusLogoCalcProcessData;
+
+s32 TitleAtlusLogoCalcProcess(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+    s32 ret;
+    s32 skip;
+
+    ret = jmsSeqChange(&data->panel, &data->seqUnit, 0, PID);
+    if (ret != 0) {
+        return ret;
+    }
+    ret = TitleAt3Load(data);
+    if (ret == 0) {
+        return ret;
+    }
+    skip = FALSE;
+    if (dds3PadButtonState[0x23] != 0) {
+        skip = TRUE;
+    }
+    if (dds3PadButtonState[0x21] != 0) {
+        skip = TRUE;
+    }
+    if (dds3PadButtonState[0x2C] < 0) {
+        skip = TRUE;
+    }
+    if (skip && (u32)(data->WaitTimer - 30) < 60) {
+        data->WaitTimer = 90;
+    }
+    if (data->WaitTimer == 90) {
+        dds3FadeOut(0, 0, 0, 30);
+    }
+    if (data->WaitTimer >= 120) {
+        jmsSeqJumpAndFree(&data->seqUnit, &TitleAtlusLogoCalcProcessData);
+    }
+    data->WaitTimer++;
+    return 0;
+}
 
 s32 TitleAtlusLogoDrawProcess(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
@@ -101,7 +269,39 @@ s32 evtLeaf33(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", evtBStartSelectionChainAfterFade);
+extern jmsSeqUnit_t evtBStartSelectionChainAfterFadeData;
+
+s32 evtBStartSelectionChainAfterFade(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+    s32 ret;
+    s32 skip;
+
+    ret = jmsSeqChange(&data->panel, &data->seqUnit, 0, PID);
+    if (ret != 0) {
+        return ret;
+    }
+    skip = FALSE;
+    if (dds3PadButtonState[0x23] != 0) {
+        skip = TRUE;
+    }
+    if (dds3PadButtonState[0x21] != 0) {
+        skip = TRUE;
+    }
+    if (dds3PadButtonState[0x2C] < 0) {
+        skip = TRUE;
+    }
+    if (skip && (u32)(data->WaitTimer - 30) < 60) {
+        data->WaitTimer = 90;
+    }
+    if (data->WaitTimer == 90) {
+        dds3FadeOut(0, 0, 0, 30);
+    }
+    if (data->WaitTimer >= 120) {
+        jmsSeqJumpAndFree(&data->seqUnit, &evtBStartSelectionChainAfterFadeData);
+    }
+    data->WaitTimer++;
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0035B048", evtCallGetProcessData32);
 
@@ -132,7 +332,52 @@ s32 evtLeaf34(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", evtCallGetProcessData33);
+s32 evtCallGetProcessData33(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+    s32 ret;
+    s32 end;
+
+    ret = jmsSeqChange(&data->panel, &data->seqUnit, 0, PID);
+    if (ret != 0) {
+        return ret;
+    }
+    end = FALSE;
+    if (evtCheckSeqEnd(data->PmvPID) != 0) {
+        end = TRUE;
+    }
+    if (mviDrawMessageSub() != 0 && movieDecodeWork.frameIndex >= 20
+        && movieDecodeWork.frameIndex < movieDecodeWork.frameCount - 30 && data->MovieSkipFlag == 0) {
+        if (dds3PadButtonState[0x23] < 0) {
+            data->MovieSkipFlag = 1;
+        }
+        if (dds3PadButtonState[0x21] < 0) {
+            data->MovieSkipFlag = 1;
+        }
+        if (dds3PadButtonState[0x2C] < 0) {
+            data->MovieSkipFlag = 1;
+        }
+    }
+    switch (data->MovieSkipFlag) {
+    case 1:
+        dds3BistaIn(0);
+        dds3FadeSet(255, 255, 255, (data->SkipTimer << 7) / 5);
+        if (data->SkipTimer < 5) {
+            data->SkipTimer++;
+        } else {
+            data->MovieSkipFlag = 2;
+        }
+        break;
+    case 2:
+        end = TRUE;
+        dds3BistaIn(0);
+        dds3FadeSet(255, 255, 255, 128);
+        break;
+    }
+    if (end) {
+        TitleGoMain(data);
+    }
+    return 0;
+}
 
 s32 rstCallGetProcessData28(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
@@ -163,4 +408,44 @@ s32 rstLeaf10(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", rstLvUpWaitCalcProcess);
+extern jmsSeqUnit_t TitleConfigCalcProcessData;
+extern jmsSeqUnit_t rstData;
+
+s32 rstLvUpWaitCalcProcess(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+    s32 ret;
+
+    ret = jmsSeqChange(&data->panel, &data->seqUnit, 0, PID);
+    if (ret != 0) {
+        return ret;
+    }
+    if (evtCallPlay(25, 5400, 30, 1, data) == 0) {
+        evtSetFrame(data->PmvPID, 0);
+        return 0;
+    }
+    TitleAt3Play(data);
+    if (data->WaitTimer > 0) {
+        data->WaitTimer--;
+        return 0;
+    }
+    if (data->Timer < 1200) {
+        if (dds3PadButtonState[0x23] < 0 || dds3PadButtonState[0x2C] < 0) {
+            TitleInitCursor(&data->Cursor);
+            jmsSeqJumpAndFree(&data->seqUnit, &TitleConfigCalcProcessData);
+            p2sdPlaySE(0x500000, 127, 63);
+        }
+    } else if (data->FadeOut == 0) {
+        sndBgmFadeOut();
+        dds3FadeOut(0, 0, 0, 60);
+        data->FadeOut = 1;
+    } else if (dds3FadeCheck() == 0) {
+        if (evtCallStop(data) == 0) {
+            return 0;
+        }
+        evtCallBgmStop(data);
+        jmsSeqJumpAndFree(&data->seqUnit, &rstData);
+        data->AdvSkipFlag = 0;
+    }
+    data->Timer++;
+    return 0;
+}

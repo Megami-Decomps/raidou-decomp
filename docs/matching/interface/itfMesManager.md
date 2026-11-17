@@ -73,3 +73,11 @@ Raidou 2: 145 of 310 words differ, first at +0x94.
 size/vertex initializers built in a temp and block-copied like retail; size[1] subtracts uv[2]'s origin as retail does; remaining: x/y pseudos swap v0/v1 and mes sits in t1, then float/alpha scheduling Vector checked.
 
 Related: regalloc.
+
+## InitializeMessage (interface/itfMesManager, raidou2 0x4C)
+
+Raidou 2: 11 of 19 words differ, first at +0x18.
+
+gcc hoists the color[2] store (sb 0x1C) above the table store; source order follows the retail asm, the color[3]-first reorder was tried; 11 words, behaviour equal
+
+Related: store scheduling of the color stores.

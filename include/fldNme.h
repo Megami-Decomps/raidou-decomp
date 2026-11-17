@@ -155,6 +155,10 @@ u16 fclSetSpriteNormal(s32 page, s32 index);
 extern u8 titleStartSubData[4][2];
 s32 titleStartSub(s32 page);
 s32 titleStartSub2(s32 page);
+#ifdef VERSION_RAIDOU2
+s32 fldCallMemGetPtr(dds3ProcessID_t *id);
+s32 fldCallMemGetPtr2(dds3ProcessID_t *id);
+#endif
 s32 titleFunc(s32 page, s32 x, s32 y);
 u32 titleFunc6(u32 code);
 void titleFunc4(u32 code, s32 *page, s32 *index);

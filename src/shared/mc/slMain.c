@@ -1546,8 +1546,11 @@ void slShutDownProcess(dds3ProcessID_t *id) {
 
 void fmShutDownFade(void) {
 }
+#ifdef VERSION_RAIDOU2
 
-#ifdef VERSION_RAIDOU1
+extern struct sdfTexHandle_t *mcFormatSaveFilenameData;
+#endif
+
 void fmShutDown(void) {
     dds3Basic_t *scene;
 
@@ -1556,6 +1559,12 @@ void fmShutDown(void) {
     }
 
     slProcShutDownFlg = 0;
+#ifdef VERSION_RAIDOU2
+    if (mcFormatSaveFilenameData != NULL) {
+        sdfTexFreeDelayed(mcFormatSaveFilenameData);
+        mcFormatSaveFilenameData = NULL;
+    }
+#endif
     if (slNewCycleData19 != NULL) {
         sdfTexFreeDelayed(slNewCycleData19);
         slNewCycleData19 = NULL;
@@ -1599,9 +1608,6 @@ void fmShutDown(void) {
     dds3KillProcessName(slCalcName, 1);
     dds3SoftResetOn();
 }
-#else
-INCLUDE_ASM(const s32, "mc/slMain", fmShutDown);
-#endif
 
 s32 fmShutDown2_slMain(void) {
     return 1;

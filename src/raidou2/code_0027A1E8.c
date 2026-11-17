@@ -5,6 +5,9 @@
 #include "sBtlUnit.h"
 #include "sdk_libc.h"
 #include "scrScriptProcess.h"
+#include "sBtlCalc.h"
+#include "dds3PadManager.h"
+#include "ps2asm.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -83,7 +86,60 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetColor);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SetSummonMenu);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", slCallMemset);
+/* body: matched in raidou @ 780f3f57: src/raidou1/code_r1_00259A88.c:1481, found, same function 0.92 (words 159/157, calls 0.80, shape 0.96) */
+f32 slCallMemset(struct SBTLUNIT_WORK *wk, sdfVector4_t *dir)
+{
+    sdfVector4_t key;
+    sdfVector4_t norm;
+    f32 length;
+    BST bst;
+
+    memset(&key, 0, sizeof(key));
+    key.w = 1.0f;
+    bst = sbtlGetBadStatus(&wk->unit);
+    if (!IsSceanStop()) {
+        if (((wk->field414 & 0x80) || (wk_sbtl->battleMode == 3 && (wk->field414 & 1))) && bst == BST_BOUDO) {
+            key.x = -(GetAnlogKeyData[0] - 128.0f);
+            key.z = GetAnlogKeyData[1] - 128.0f;
+        } else {
+            key.x = GetAnlogKeyData[0] - 128.0f;
+            key.z = -(GetAnlogKeyData[1] - 128.0f);
+        }
+    }
+    SDF_VU0_LOADVECTOR(&key);
+    SDF_VU0_GETLENGTH(length);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&norm);
+    if (length < 48.0f) {
+        key.x = 0.0f;
+        key.z = 0.0f;
+        if (dds3PadButtonState[5]) {
+            key.x = 128.0f;
+        }
+        if (dds3PadButtonState[4]) {
+            key.x = -128.0f;
+        }
+        if (dds3PadButtonState[6]) {
+            key.z = 128.0f;
+        }
+        if (dds3PadButtonState[7]) {
+            key.z = -128.0f;
+        }
+        if (((wk->field414 & 0x80) || (wk_sbtl->battleMode == 3 && (wk->field414 & 1))) && bst == BST_BOUDO) {
+            key.x = -key.x;
+            key.z = -key.z;
+        }
+        SDF_VU0_LOADVECTOR(&key);
+        SDF_VU0_GETLENGTH(length);
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_STOREVECTOR(&norm);
+    }
+    if (dir != NULL) {
+        SDF_VU0_LOADVECTOR(&norm);
+        SDF_VU0_STOREVECTOR(dir);
+    }
+    return length;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", UseItemProc_sbtlPlayer);
 

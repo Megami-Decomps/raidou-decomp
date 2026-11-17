@@ -726,7 +726,7 @@ saddr_t mdlPrepare(s32 aMajor, s32 aMinor, s32 aBlockMode) {
     return 0;
 }
 #else
-INCLUDE_ASM(const s32, "model/mdlManager", mdlCallWaitSema);
+INCLUDE_ASM(const s32, "model/mdlManager", mdlPrepare);
 #endif
 
 dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id)

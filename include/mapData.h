@@ -360,6 +360,11 @@ typedef struct MAP_WALLOBJ_t
     s16 view;
     s16 link_idx;
     s32 floor;
+#ifdef VERSION_RAIDOU2
+    s32 unk30;
+    s32 unk34;
+    s32 unk38;
+#endif
 } MAP_WALLOBJ_t;
 
 typedef struct MAP_STOPOBJ_t
@@ -501,7 +506,11 @@ extern MAP_GRIDHIT_t mapData23[128];
 extern MAP_GRIDWARPHIT_t mapData24[80];
 extern MAP_WALLOBJ_t mapWallObjTaskData[64];
 extern MAP_STOPOBJ_t mapData32[32];
+#ifdef VERSION_RAIDOU2
+extern MAP_LIGHTOBJ_t mapData25[32];
+#else
 extern MAP_LIGHTOBJ_t mapData25[16];
+#endif
 extern MAP_KAIDAN_t mapData27[64];
 extern MAP_CHIT_t mapData28[256];
 extern MAP_WHIT_t mapData29[128];
@@ -854,6 +863,10 @@ void mapWHitAdd(s16 uniq, s32 attr, f32 x0, f32 z0, f32 x1, f32 z1, f32 vx, f32 
 void mapSetAreaRefreshSub(s32 ix, s32 iy, s32 type, s32 bit);
 void mapSetAreaRefreshSub2(s32 floor, s32 uniq, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9);
 void mapCallBitCheck2(s32 floor, s32 uniq, s32 kind, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8);
+#ifdef VERSION_RAIDOU2
+void mapCallBitOff(void);
+void mapCallBitOff2(void);
+#endif
 void mapCallPositioningGuardSystem2(s32 id, s32 ix, s32 iy, s32 iw, s32 ih, s32 dir, u16 flag0, u8 flag0j, u16 flag1, u8 flag1j, s32 act, s32 msk, void *scr_name);
 void mapCallPositioningGuardSystem3(s32 id, s32 ix, s32 iy, s32 iw, s32 ih, s32 act, s32 dir, s32 fieldID, s32 areaID, s32 posID, s32 se);
 /* Run-map refresh grid: w * h 64-bit cells, one bit per refresh type. */

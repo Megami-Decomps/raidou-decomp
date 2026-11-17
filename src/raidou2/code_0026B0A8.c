@@ -106,7 +106,52 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRefSbtl6);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayMotionSENowSub);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlGetBossSE);
+u32 sbtlGetBossSE(struct SBTLUNIT_WORK *wk, s32 motionID)
+{
+    u32 se;
+
+    se = 0;
+    switch (motionID) {
+    case 4:
+        se = dds3GetRandIntA(NULL, 2) ? 0x1000A : 0x1000B;
+        break;
+    case 5:
+    case 12:
+        se = 0x1000C;
+        break;
+    case 11:
+        se = 0x1000D;
+        break;
+    case 27:
+        se = 0x1000E;
+        break;
+    case 28:
+        se = 0x1000F;
+        break;
+    case 29:
+        se = 0x10010;
+        break;
+    case 39:
+        se = 0x10011;
+        break;
+    case 31:
+        se = 0x10012;
+        break;
+    case 24:
+        se = 0x10013;
+        break;
+    case 22:
+        se = 0x10017;
+        break;
+    case 26:
+        se = 0x10018;
+        break;
+    case 13:
+        se = 0x1001D;
+        break;
+    }
+    return se;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayDamageSE);
 

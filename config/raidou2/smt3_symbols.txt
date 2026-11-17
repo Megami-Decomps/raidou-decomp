@@ -84,7 +84,6 @@ itfMesMngChangeWindowType = 0x0019D4A0;
 itfMesMngSetSelectDefKey = 0x0019D508;
 ReleaseAllWindow = 0x0019EA18;
 CalcMesFlow = 0x0019EBC0;
-mdlPrepare = 0x001AF958;
 mdlMotion = 0x001B05C0;
 mdlHandleViewerAssetSelection = 0x001B3658;
 mdlUpdateViewerCameraFromPad = 0x001B3D68;

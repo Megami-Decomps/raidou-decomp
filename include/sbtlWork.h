@@ -737,6 +737,9 @@ s32 sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallCameraObjectBasicGetFovy(SBTLCAMERA_WORK *wk, struct dds3Basic_t *cm);
 s32 sbtlCheckScriptData(s32 devilId);
 s32 sbtlCheckTutorialBattle(void);
+#ifdef VERSION_RAIDOU2
+s32 IsSceanStop(void);
+#endif
 s64 sbtlCallBtlCheckTutorialBattle3(void);
 void sbtlGetDevilData(struct SBTLUNIT_WORK *wk, s32 a, s32 b);
 SBTL_DEVIL_DATA *sbtlGetDevilData_sbtlSub(s32 id);
