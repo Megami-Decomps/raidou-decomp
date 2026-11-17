@@ -209,6 +209,18 @@ extern s32 sbtlCheckModelDataLoadEnd_sbtlUnitData[];
 /* Motion number per SBTLUNIT_MOTION, one row per motion set. */
 extern s32 sbtlBtlCheckMotionNoSubData[][56];
 
+#ifdef VERSION_RAIDOU2
+/* Partial raidou2 layout: only the fields read so far are named, the rest is padding. */
+struct SBTLUNIT_WORK {
+    u8 pad000[0x1E8];
+    sdatUnitWork_t unit;
+    u8 pad2F8[0x4BC - 0x1E8 - sizeof(sdatUnitWork_t)];
+    s32 major;
+    s32 minor;
+    u8 pad4C4[0x534 - 0x4C4];
+    u32 flg;
+};
+#else
 /* Partial layout: only the fields read so far are named, the rest is padding. */
 struct SBTLUNIT_WORK {
     f32 visual[4];
@@ -370,6 +382,7 @@ struct SBTLUNIT_WORK {
     u8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;
 };
+#endif
 
 /* One slot of a unit list. */
 typedef struct SBTLUNIT_LISTWK {

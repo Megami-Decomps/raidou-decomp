@@ -684,7 +684,13 @@ s32 sbtlLeaf103(dds3ProcessID_t *id);
 s32 sbtlLeaf87(dds3ProcessID_t *id);
 s32 sbtlSetScrollID(s32 id);
 struct SBTLUNIT_WORK *sbtlSetSummon(s32 side, s32 devilId, s32 arg);
+#ifdef VERSION_RAIDOU2
+/* The raidou2 symbol of this name takes sbtlGetVisualData's arguments. */
+SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id);
+SBTL_DEVIL_DATA *sbtlIfDrawActionSub(s32 id);
+#else
 SBTL_UNIT_SUB *sbtlGetMotionVisualData(s32 a, s32 id, s32 b);
+#endif
 void sbtlStopVibe(void);
 s32 Draw_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk);
 s32 Draw_sbtlScene(void);
@@ -743,7 +749,11 @@ s32 sbtlClearGeneratorWork(void);
 struct SBTLEFF_LISTWORK *sbtlCreateEffList(void);
 struct SBTLITEM_LISTWORK *sbtlCreateItemList(void);
 s32 sbtlEntryItemList(struct SBTLITEM_LISTWORK *lwk);
+#ifdef VERSION_RAIDOU2
+s32 sbtlFunc2(struct SBTLUNIT_WORK *wk, s32 type);
+#else
 void sbtlFunc2(void);
+#endif
 s32 sbtlLoadEffectData_Decode(struct SBTLUNIT_WORK *wk);
 s32 sbtlMapFadeProc(void);
 s32 sbtlMapFadeProc_H(void);
