@@ -403,7 +403,9 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
             if op in ("ldl", "lwl", "sdl", "swl"):
                 imm -= width - 1    # the left half of an unaligned pair names the same object
             key = None
-            if base == "sp":
+            if base == "sp":     # a stack slot holds a register's value across a spill
+                if kind == "S":
+                    regs[f"@{imm}"] = get(insn.args[0]) if op in ("sw", "sd", "sq") else UNK
                 return None
             if insn.reloc and insn.reloc[0] in ("R_MIPS_GPREL16", "R_MIPS_LITERAL"):
                 key = canon(res.reloc_ref(insn.reloc[1], insn.reloc[2] + imm), op)
@@ -464,15 +466,19 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
                 continue
             if op in WIDTH:
                 key = mem(ins)
-                if op not in STORES:
+                if op not in STORES and key is None and a[1].endswith("(sp)"):
+                    regs[a[0]] = regs.get(f"@{parse_int(a[1].split('(')[0])}", UNK)
+                elif op not in STORES:
                     regs[a[0]] = Val("ld", key) if key else UNK
                 continue
             if op in COND_BRANCH:
                 if not (op.startswith("beq") and a[0] == "zero" and a[1] == "zero"):
                     f.add("branch", "conditional")
+                post, regs = regs, pre_slot     # the operands are read before the slot runs
                 for r in a:
-                    if re.fullmatch(r"[a-z]\w*", r) and r in regs or r in ("zero",):
+                    if r in regs:
                         consume(r)
+                regs = post
                 continue
             if op in ("jal", "j"):
                 t = parse_int("0x" + a[0])
@@ -796,13 +802,11 @@ class Result:
 
 
 def comparable(facts: Facts, cls: str) -> Counter:
-    """Counts only where codegen cannot change them: calls, stores and branches. A load or a
-    constant can be reused from a register or fetched again, so those compare as sets."""
+    """Calls and branches compare as counts. Everything else compares as a set: a load or constant
+    can be fetched again, and a store in two arms can be merged into one tail."""
     c = facts.c[cls]
     if cls in ("call", "branch"):
         return c
-    if cls in ("mem", "memx"):
-        return Counter({k: (n if k[2] == "S" else 1) for k, n in c.items()})
     return Counter(dict.fromkeys(c, 1))
 
 

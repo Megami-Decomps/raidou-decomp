@@ -101,6 +101,21 @@ class ReduceTests(unittest.TestCase):
             nop""")
         self.assertNotIn(128, facts.c["imm"])
 
+    def test_branch_reads_its_operands_before_the_slot(self) -> None:
+        facts = self.retail("""
+            addiu v0,zero,3
+            beq v1,v0,1010
+            daddu v0,zero,zero
+            jr ra
+            nop""")
+        self.assertIn(3, facts.c["imm"])
+
+    def test_spilled_value_comes_back_from_its_stack_slot(self) -> None:
+        spilled = self.retail("lui v1,0x6c07\nsw v1,4(sp)\njal 200000\nnop\nlw v1,4(sp)\nori v1,v1,0xc000\nsw v1,0(s0)")
+        direct = self.retail("lui v1,0x6c07\nori v1,v1,0xc000\nsw v1,0(s0)")
+        self.assertEqual(nmb.diff_facts(direct, spilled)["call"][1], {"callee": 1})
+        self.assertNotIn("imm", nmb.diff_facts(direct, spilled))
+
     def test_alignment_test_of_an_address_is_not_a_constant(self) -> None:
         facts = self.retail("lui v1,0x40\naddiu v1,v1,16\nandi v0,v1,0x7\nsw v0,0(a0)")
         self.assertNotIn(7, facts.c["imm"])
