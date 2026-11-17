@@ -301,7 +301,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         fldGlobalBase.word204 = 0;
         fldGlobalBase.float208 = (f32)dds3GetRandIntA(0, 2000) + 2500.0f;
         if (playerBasic) {
-            mapBgSetScroll(playerBasic->poseset->pos2.x, playerBasic->poseset->pos2.y - 128.0f, playerBasic->poseset->pos2.z, 0);
+            mapBgSetScroll(playerBasic->poseset->pos2.x, playerBasic->poseset->pos2.y - 130.0f, playerBasic->poseset->pos2.z, 0);
         }
         mapCutSetCam(cameraBasic, 0);
         if (!fldGlobalBase.nakamaMode) {
@@ -441,7 +441,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             fldBgZoomTest(5);
             mapScreenReset();
             if (playerBasic) {
-                mapBgSetScroll(playerBasic->poseset->pos.x, playerBasic->poseset->pos.y - 128.0f, playerBasic->poseset->pos.z, 0);
+                mapBgSetScroll(playerBasic->poseset->pos.x, playerBasic->poseset->pos.y - 130.0f, playerBasic->poseset->pos.z, 0);
             }
             fldBgZoomTest(2);
         }
@@ -578,7 +578,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 10);
         mapDebugLightSet(fldGlobalBase.wordF8);
         fldGlobalBase.encountState = mapProcSequenceSub5(fldGlobalBase.focusX, fldGlobalBase.focusZ);
-        if (fldGlobalBase.word35C) {
+        if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
         }
         mapProcSequenceSub11();
@@ -632,7 +632,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         fldGlobalBase.wordF8 = mapGetLight(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 10);
         fldGlobalBase.encountState = mapProcSequenceSub5(fldGlobalBase.focusX, fldGlobalBase.focusZ);
-        if (fldGlobalBase.word35C) {
+        if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
         }
         mapProcSequenceSub11();
@@ -933,18 +933,18 @@ s32 ProcSequence(dds3ProcessID_t *id)
         fldPlayerForceSetPos_NoHokan(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
         fldPlayerMotReset2();
         if (playerBasic) {
-            mapBgSetScroll(playerBasic->poseset->pos.x, playerBasic->poseset->pos.y - 128.0f, playerBasic->poseset->pos.z, 0);
+            mapBgSetScroll(playerBasic->poseset->pos2.x, playerBasic->poseset->pos2.y - 130.0f, playerBasic->poseset->pos2.z, 0);
         }
         if (fldGlobalBase.bgZoomSet) {
             fldGlobalBase.bgZoomSet = 0;
             fldBgZoomTest(4);
             mapScreenReset();
             if (playerBasic) {
-                mapBgSetScroll(playerBasic->poseset->pos.x, playerBasic->poseset->pos.y - 128.0f, playerBasic->poseset->pos.z, 0);
+                mapBgSetScroll(playerBasic->poseset->pos2.x, playerBasic->poseset->pos2.y - 130.0f, playerBasic->poseset->pos2.z, 0);
             }
             fldBgZoomTest(5);
             if (playerBasic) {
-                mapBgSetScroll(playerBasic->poseset->pos.x, playerBasic->poseset->pos.y - 128.0f, playerBasic->poseset->pos.z, 0);
+                mapBgSetScroll(playerBasic->poseset->pos2.x, playerBasic->poseset->pos2.y - 130.0f, playerBasic->poseset->pos2.z, 0);
             }
             fldBgZoomTest(2);
         }
@@ -1374,7 +1374,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
     if (fldAutoMapSeqFlags.stage < 0 || (fldAutoMapSeqFlags.stage >= 3 && (fldAutoMapSeqFlags.stage >= 25 || fldAutoMapSeqFlags.stage < 20))) {
         if (!effProcSequenceSub()) {
             if (playerBasic) {
-                mapBgSetScroll(playerBasic->poseset->pos.x, playerBasic->poseset->pos.y - 128.0f, playerBasic->poseset->pos.z, 0);
+                mapBgSetScroll(playerBasic->poseset->pos2.x, playerBasic->poseset->pos2.y - 130.0f, playerBasic->poseset->pos2.z, 0);
             }
         }
         if (cameraBasic) {

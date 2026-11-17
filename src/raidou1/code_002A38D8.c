@@ -2119,7 +2119,7 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_DeleteHitList);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDrawHitList);
 
-/* NON_MATCHING: 137 of 165 words match.  */
+/* NON_MATCHING: 139 of 165 words match.  */
 #ifdef NON_MATCHING
 void sbtlDraw3DSphere(const sdfVector4_t *center, u32 color, const sdfMatrix4_t *rotation, f32 radius)
 {
@@ -2152,7 +2152,7 @@ void sbtlDraw3DSphere(const sdfVector4_t *center, u32 color, const sdfMatrix4_t 
     for (pass = 0; pass < 2; pass++) {
         latitude = 0.0f;
         for (ring = 0; ring < 9; ring++) {
-            latitude += 0.31415924f;
+            latitude += 0.31415925f;
             out = vertices;
             longitude = 0.0f;
             ringY = radius * sdfCos(latitude);
@@ -2168,7 +2168,7 @@ void sbtlDraw3DSphere(const sdfVector4_t *center, u32 color, const sdfMatrix4_t 
             for (segment = 0; segment < 11; segment++) {
                 SDF_VU0_STOREVECTOR(out);
                 out++;
-                longitude += 0.57119858f;
+                longitude += 0.5711986f;
                 point.x = sdfCos(longitude) * ringRadius;
                 point.y = ringY;
                 point.z = sdfSin(longitude) * ringRadius;

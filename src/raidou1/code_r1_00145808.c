@@ -301,7 +301,7 @@ void mapObjTask(void)
     mapObjTaskData12++;
     if (fldGlobalBase.texture2B0 != NULL && fldGlobalBase.cutIdx < 64)
     {
-        fldGlobalBase.float2B4 = fldGlobalBase.float2B4 - 0.049999997f / mapData33[fldGlobalBase.cutIdx].skyScale;
+        fldGlobalBase.float2B4 = fldGlobalBase.float2B4 - 0.049999998f / mapData33[fldGlobalBase.cutIdx].skyScale;
         if (fldGlobalBase.float2B4 >= 512.0f)
         {
             fldGlobalBase.float2B4 = fldGlobalBase.float2B4 - 512.0f;
@@ -431,7 +431,7 @@ void mapObjTask(void)
                     pose->pos.x = 3500.0f;
                     pose->pos.z = -1950.0f;
                     SDF_VU0_LOADVECTOR(&axis);
-                    FromRotation(3.14f);
+                    FromRotation(3.1399997f);
                 }
                 else
                 {

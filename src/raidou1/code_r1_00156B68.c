@@ -92,7 +92,7 @@ void fldJmsQuestMapLoad_fld(s32 area, s32 sub) {
         data = fldJmsQuestMapLoad_fldData2;
         fldCallSetOt3Data = NULL;
         fldData21 = (mapLbIndex_t *)data;
-        mapSKYBGEDITData4 = (mapLbSprite_t *)(data + 16);
+        mapSKYBGEDITData4 = (mapLbSpriteBox_t *)(data + 16);
         for (i = 99; i >= 0; i--) {
             fldData5[i] = NULL;
         }

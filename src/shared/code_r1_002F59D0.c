@@ -19,9 +19,9 @@ void evtFunc11(titleCursor_t *cursor, void **sprite)
     titleKeyTable_t keys1 = evtFunc11Table2;
     s32 i;
 
-    evtLeaf31(cursor->Index + 5, evtFunc9(cursor->Timer, keys0.key, 3), size, scale, sprite);
     scale[0] = (f32)(6 - cursor->ScaleTimer) * 0.5f / 6.0f + 0.5f;
     scale[1] = 1.0f;
+    evtLeaf31(cursor->Index + 5, evtFunc9(cursor->Timer, keys0.key, 3), size, scale, sprite);
     cursor->Timer++;
     if (cursor->Timer > keys0.key[2].frame) {
         cursor->Timer = 0;

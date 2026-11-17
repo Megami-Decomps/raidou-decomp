@@ -1316,7 +1316,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesSelectTableItemText);
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngRequestMessageRelease);
 #endif
 
-/* NON_MATCHING: 68 of 70 words match.  */
+/* NON_MATCHING: 73 of 123 words match.  */
 #ifdef NON_MATCHING
 void itfMesMngRequestSelect_itf(s32 id, s32 select) {
     instanceMes_tag *panel = pinst[id].mes;
@@ -2283,20 +2283,21 @@ void CalcWindow(instanceMes_tag *pinst) {
     window_tag *place = &pinst->window;
     itfpanel_t *sprite = place->mes;
     itfpanel_t *frame;
+    itfpanel_t *overlay;
     u32 mode;
 
     mode = pinst->stat & 0x300;
     switch (mode) {
     case 0x100:
         sprite->alpha += SDF_FRAME_STEP(0x18);
-        if (sprite->alpha >= place->fadeLimit) {
+        if (sprite->alpha >= place->fadeLimit || pinst->type == 3) {
             sprite->alpha = place->fadeLimit;
             pinst->stat = (pinst->stat & ~0x307) | 0x203;
         }
         break;
     case 0x300:
         sprite->alpha -= SDF_FRAME_STEP(8);
-        if (sprite->alpha <= 0) {
+        if (sprite->alpha <= 0 || pinst->type == 3) {
             sprite->alpha = 0;
             pinst->stat &= ~0x300;
         }
@@ -2319,6 +2320,26 @@ void CalcWindow(instanceMes_tag *pinst) {
             pinst->stat &= ~0x3000;
             itfPnlRelease(frame);
             place->spk = NULL;
+        }
+        break;
+    }
+    overlay = place->overlay;
+    mode = pinst->stat & 0xC00;
+    switch (mode) {
+    case 0x400:
+        overlay->alpha += SDF_FRAME_STEP(0x18);
+        if (overlay->alpha >= place->fadeLimit) {
+            overlay->alpha = place->fadeLimit;
+            pinst->stat = (pinst->stat & ~0xC07) | 0x803;
+        }
+        break;
+    case 0xC00:
+        overlay->alpha -= SDF_FRAME_STEP(8);
+        if (overlay->alpha <= 0) {
+            overlay->alpha = 0;
+            pinst->stat &= ~0xC00;
+            itfPnlRelease(overlay);
+            place->overlay = NULL;
         }
         break;
     }

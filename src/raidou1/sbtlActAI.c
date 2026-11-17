@@ -2903,7 +2903,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
                 angle = sdfAtan2(dir.x, dir.z);
                 FromEuler(0.0f, angle, 0.0f);
                 SDF_VU0_STOREVECTOR(&wk->rot);
-                wk->angleY = angle * 57.295776f;
+                wk->angleY = angle * 57.295777f;
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
                 SDF_VU0_LOADVECTOR(&oldrot);
                 SDF_VU0_STOREVECTOR(&wk->rot);
@@ -2922,7 +2922,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
                 angle = sdfAtan2(dir.x, dir.z);
                 FromEuler(0.0f, angle, 0.0f);
                 SDF_VU0_STOREVECTOR(&wk->rot);
-                wk->angleY = angle * 57.295776f;
+                wk->angleY = angle * 57.295777f;
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
                 SDF_VU0_LOADVECTOR(&oldrot);
                 SDF_VU0_STOREVECTOR(&wk->rot);
@@ -2941,7 +2941,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
                 angle = sdfAtan2(dir.x, dir.z);
                 FromEuler(0.0f, angle, 0.0f);
                 SDF_VU0_STOREVECTOR(&wk->rot);
-                wk->angleY = angle * 57.295776f;
+                wk->angleY = angle * 57.295777f;
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
                 SDF_VU0_LOADVECTOR(&oldrot);
                 SDF_VU0_STOREVECTOR(&wk->rot);
@@ -2960,7 +2960,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
                 angle = sdfAtan2(dir.x, dir.z);
                 FromEuler(0.0f, angle, 0.0f);
                 SDF_VU0_STOREVECTOR(&wk->rot);
-                wk->angleY = angle * 57.295776f;
+                wk->angleY = angle * 57.295777f;
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
                 SDF_VU0_LOADVECTOR(&oldrot);
                 SDF_VU0_STOREVECTOR(&wk->rot);
@@ -2979,7 +2979,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
                 angle = sdfAtan2(dir.x, dir.z);
                 FromEuler(0.0f, angle, 0.0f);
                 SDF_VU0_STOREVECTOR(&wk->rot);
-                wk->angleY = angle * 57.295776f;
+                wk->angleY = angle * 57.295777f;
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_CHOUSIN_HIT);
                 SDF_VU0_LOADVECTOR(&oldrot);
                 SDF_VU0_STOREVECTOR(&wk->rot);

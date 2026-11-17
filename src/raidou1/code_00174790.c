@@ -64,7 +64,7 @@ void mapNpcPathMake_KeyFrame(s32 num, f32 spd, mapNpcPathData_t *pathdata) {
     }
 }
 
-/* NON_MATCHING: 50 of 70 words match.  */
+/* NON_MATCHING: 52 of 70 words match.  */
 #ifdef NON_MATCHING
 void mapNpcPathMake_Rot(s32 num, mapNpcPathData_t *pathdataT, mapNpcPathData_t *pathdataR) {
     sdfVector4_t axis;
@@ -79,7 +79,7 @@ void mapNpcPathMake_Rot(s32 num, mapNpcPathData_t *pathdataT, mapNpcPathData_t *
         f32 dx = pItem[i].x - pItem[i - 1].x;
         f32 dz = pItem[i].z - pItem[i - 1].z;
 
-        if (dx > 0.099999994f || dx < -0.099999994f || dz > 0.099999994f || dz < -0.099999994f) {
+        if (dx > 0.099999995f || dx < -0.099999995f || dz > 0.099999995f || dz < -0.099999995f) {
             f32 angle = sdfAtan2(dx, dz);
 
             SDF_VU0_LOADVECTOR(&axis);

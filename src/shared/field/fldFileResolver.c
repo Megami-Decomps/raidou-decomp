@@ -399,7 +399,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAdd);
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboGet);
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 372 of 618 words match.  */
+/* NON_MATCHING: 564 of 618 words match.  */
 #ifdef NON_MATCHING
 void mapAiboTask(void) {
     sdfVector4_t rot;
@@ -485,10 +485,10 @@ void mapAiboTask(void) {
             dist = fldPointDistance(map_aibo_pos[0], map_aibo_pos[1], map_aibo_pos[2], ox, oy, oz);
             if (dist > 6.5f) {
                 mode = 6;
-                speed = 0.79999995f;
+                speed = 0.79999996f;
             } else if (dist > 6.0f) {
                 mode = 6;
-                speed = 0.59999996f;
+                speed = 0.59999997f;
             } else if (dist > 5.5f) {
                 mode = 6;
                 speed = 0.5f;
@@ -500,10 +500,10 @@ void mapAiboTask(void) {
                 mode = 1;
             } else if (dist > 4.0f) {
                 mode = 1;
-                speed = 0.79999995f;
+                speed = 0.79999996f;
             } else {
                 mode = 1;
-                speed = 0.59999996f;
+                speed = 0.59999997f;
             }
         }
         if (fldPointDistance(map_aibo_pos[0], map_aibo_pos[1], map_aibo_pos[2], tx, ty, tz) < 100.0f) {
@@ -549,11 +549,11 @@ void mapAiboTask(void) {
         }
         dist = fldPointDistance(map_aibo_pos[0], map_aibo_pos[1], map_aibo_pos[2], ox, oy, oz);
         if (dist > 6.5f) {
-            speed = 0.79999995f;
+            speed = 0.79999996f;
             gMapAiboMotionBugCnt = 3;
             mode = 6;
         } else if (dist > 6.0f) {
-            speed = 0.59999996f;
+            speed = 0.59999997f;
             gMapAiboMotionBugCnt = 3;
             mode = 6;
         } else if (dist > 5.5f) {
@@ -573,11 +573,11 @@ void mapAiboTask(void) {
             gMapAiboMotionBugCnt = 0;
         } else if (dist > 4.0f) {
             mode = 1;
-            speed = 0.79999995f;
+            speed = 0.79999996f;
             gMapAiboMotionBugCnt = 0;
         } else {
             mode = 1;
-            speed = 0.59999996f;
+            speed = 0.59999997f;
             gMapAiboMotionBugCnt = 0;
         }
         gMapAiboWakeUpMode = 0;
@@ -590,7 +590,7 @@ void mapAiboTask(void) {
     SDF_VU0_COPYVECTOR(&aiboBasic->poseset->pos2, &aiboBasic->poseset->pos);
     bx = ox - map_aibo_pos[0];
     bz = oz - map_aibo_pos[2];
-    if (bx > 0.099999994f || bx < -0.099999994f || bz > 0.099999994f || bz < -0.099999994f) {
+    if (bx > 0.099999995f || bx < -0.099999995f || bz > 0.099999995f || bz < -0.099999995f) {
         ang = sdfAtan2(bx, bz) * 57.324841f;
         if (ang < 0.0f) {
             ang += 360.0f;
@@ -748,7 +748,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", fldCatGetNakamaSub);
 INCLUDE_ASM(const s32, "field/fldFileResolver", sndSeStatus);
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 585 of 593 words match.  */
+/* NON_MATCHING: 587 of 593 words match.  */
 #ifdef NON_MATCHING
 void mapSummonDvTask(void) {
     sdfVector4_t rot;
@@ -897,7 +897,7 @@ void mapSummonDvTask(void) {
     SDF_VU0_COPYVECTOR(&summonDvBasic->poseset->pos2, &summonDvBasic->poseset->pos);
     bx = ox - map_summondv_pos[0];
     bz = oz - map_summondv_pos[2];
-    if (bx > 0.099999994f || bx < -0.099999994f || bz > 0.099999994f || bz < -0.099999994f) {
+    if (bx > 0.099999995f || bx < -0.099999995f || bz > 0.099999995f || bz < -0.099999995f) {
         ang = sdfAtan2(bx, bz) * 57.324841f;
         if (ang < 0.0f) {
             ang += 360.0f;

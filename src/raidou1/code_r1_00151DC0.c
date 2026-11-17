@@ -4,13 +4,14 @@
 #include "mapData.h"
 #include "field.h"
 
-/* NON_MATCHING: 12 of 1437 words match. Draft 884 words vs retail 1437. All calls match in order except the object loop: retail unrolls id&0xF into a jump table with one mapCHitAdd site per mask case (16 sites) and an id compare tree with 7 mapWHitAdd sites; mapCallBitCheck2 appears twice (floor and sub-floor arms). Arguments and constants checked against the asm for all 4 CHit bit offsets and all 16 wall ids; the draft uses a loop and a table. */
+/* NON_MATCHING: 86 of 896 words match. Draft 884 words vs retail 1437. All calls match in order except the object loop: retail unrolls id&0xF into a jump table with one mapCHitAdd site per mask case (16 sites) and an id compare tree with 7 mapWHitAdd sites; mapCallBitCheck2 appears twice (floor and sub-floor arms). Arguments and constants checked against the asm for all 4 CHit bit offsets and all 16 wall ids; the draft uses a loop and a table. */
 #ifdef NON_MATCHING
 void mapMapSetAreaRefresh(void)
 {
     f32 pos[2];
     f32 pos2[2];
     f32 y;
+    f32 yOfs;
     s32 i;
     s32 j;
     s32 k;
@@ -174,6 +175,7 @@ void mapMapSetAreaRefresh(void)
     for (i = 0; i < pMapAreaNow->pointCount; i++)
     {
         pt = &mapMapSetAreaRefreshData2[i];
+        yOfs = 0.0f;
         PositioningGuardSystem(pt->ix, pt->iy, &pos[0], &pos[1]);
         switch (pt->ofs)
         {
@@ -191,8 +193,23 @@ void mapMapSetAreaRefresh(void)
             pos[0] += 100.0f;
             pos[1] -= 100.0f;
             break;
+        case 5:
+            yOfs = -200.0f;
+            break;
+        case 6:
+            yOfs = -400.0f;
+            break;
+        case 7:
+            yOfs = -600.0f;
+            break;
+        case 8:
+            yOfs = -800.0f;
+            break;
+        case 9:
+            yOfs = -1000.0f;
+            break;
         }
-        y = mapGetY(pos[0], pos[1]);
+        y = yOfs + mapGetY(pos[0], pos[1]);
         mapObjPointAdd2(pt->id, evtWorkScriptContextReturnValue2, pos[0], y, pos[1], mapData20[pt->dir]);
     }
     for (i = 0; i < pMapAreaNow->hit20Count; i++)

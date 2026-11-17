@@ -11,8 +11,8 @@ Related: constant-sharing.
 
 ## CalcWindow (interface/itfMesManager, raidou1 0x1F0, raidou2 0x1F0)
 
-Raidou 1: 77 of 81 words differ, first at +0x0; emitted 324 bytes, native 496 bytes.
-Raidou 2: 77 of 81 words differ, first at +0x0; emitted 324 bytes, native 496 bytes.
+Raidou 1: 50 of 123 words differ, first at +0x20; emitted 492 bytes, native 496 bytes.
+Raidou 2: 50 of 123 words differ, first at +0x20; emitted 492 bytes, native 496 bytes.
 
 SMT3 CalcWindow body (smt3 itfMesManager.c:2096) with Raidou fields; the difference is not analysed yet. Vectors reach it (menu, 32 rows from 0x189b3c, vsum), not replayed; checked against the asm.
 
@@ -42,6 +42,8 @@ Raidou 1: 155 of 200 words differ, first at +0x4; emitted 804 bytes, native 800 
 Raidou 2: 155 of 200 words differ, first at +0x4; emitted 804 bytes, native 800 bytes.
 
 Retail keeps the table address CSEs in s0-s1 with pcurctr in s2 and a 176-byte frame; the draft needs s3 and a 192-byte frame, which shifts the schedule of the four float and two integer lerps. Key pointer temporaries (174 of 178 off), direct phase field reads (164) and s16 phase and frame (155) do not fix it. 155 of 200 words differ on both games. Checked against retail call records (ingame, idle path) and the asm.
+
+Vectors: not reachable; the failing mutant points pinst at 0xe20000, where curctr[0].phase reads 104, so both runs index the five-key stack copy of itfCalcMesFlowItfSubTable far past its end and read their own differently sized frames; captured rows pass.
 
 Related: register-allocation.
 

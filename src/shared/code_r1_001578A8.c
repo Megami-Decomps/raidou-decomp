@@ -3,7 +3,7 @@
 #include "field.h"
 #include "mapLbWork.h"
 
-/* NON_MATCHING: 8 of 265 words match. Same instruction count, scheduling and register allocation differ. */
+/* NON_MATCHING: 5 of 262 words match. Same instruction count, scheduling and register allocation differ. */
 #ifdef NON_MATCHING
 void fldCallSetOt3(u32 color, f32 ox, f32 oy) {
     f32 scale = 1.0f;

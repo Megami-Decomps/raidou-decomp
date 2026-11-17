@@ -1218,7 +1218,7 @@ void sbtlGetRotate(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos) {
     SDF_VU0_STOREVECTOR(&wk->rot);
     deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, pos, 1.0f);
     SDF_VU0_STOREVECTOR(&wk->rotbk);
-    spd = mv->field08 * 57.295776f;
+    spd = mv->field08 * 57.295777f;
     if (deg <= -180.0f) {
         deg += 360.0f;
     }

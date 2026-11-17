@@ -673,7 +673,7 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlResetNSTOP);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlRefSbtl12);
 
-/* NON_MATCHING: 347 of 353 words match. Retail returns 1 with bne+delay where cc1 uses bnel (return-0 reorg class), and keeps a redundant ret = 2 after RestartBattle in mode 16 that cc1 drops; mode switch case order and store order taken from the asm; pad control proc (dds3BasicControlProc_t), retail reads neither argument; the mode procs (sbtlCallBtlGetSkilltbl2, sbtlPlayerRKaitenInit, KaihiProc_Nakama, GuardProc_Nakama, sbtlLeaf3) get s16 *mode = &wk_sbtl->mode as a second, unused argument (a1 set in the call's fallthrough, also in nakamamode_UnitPad); SBTL_WORK field440/442/444/478; vector checked (32 rows: flag early returns, mode 1 with ret 0 (walk_counter reset), the 0x478 counter and the field480 store at >= 20); other modes checked against the asm only. */
+/* NON_MATCHING: 186 of 254 words match. Retail returns 1 with bne+delay where cc1 uses bnel (return-0 reorg class), and keeps a redundant ret = 2 after RestartBattle in mode 16 that cc1 drops; mode switch case order and store order taken from the asm; pad control proc (dds3BasicControlProc_t), retail reads neither argument; the mode procs (sbtlCallBtlGetSkilltbl2, sbtlPlayerRKaitenInit, KaihiProc_Nakama, GuardProc_Nakama, sbtlLeaf3) get s16 *mode = &wk_sbtl->mode as a second, unused argument (a1 set in the call's fallthrough, also in nakamamode_UnitPad); SBTL_WORK field440/442/444/478; vector checked (32 rows: flag early returns, mode 1 with ret 0 (walk_counter reset), the 0x478 counter and the field480 store at >= 20); other modes checked against the asm only. */
 #ifdef NON_MATCHING
 s32 nakamamodeCallGetActiveScene(dds3PoseSet_t *pose, dds3Basic_t *basic)
 {
@@ -1041,7 +1041,7 @@ s8 sbtlNormalProc_Huuma(struct SBTLUNIT_WORK *wk)
             speed *= 0.14f;
         }
         wk->mv_spd.z = speed;
-        SetRotateMatrixY(-mapGetScreenDir(wk->pos.x, wk->pos.y, wk->pos.z, 0.0f) * 0.017453292f);
+        SetRotateMatrixY(-mapGetScreenDir(wk->pos.x, wk->pos.y, wk->pos.z, 0.0f) * 0.017453293f);
         SDF_VU0_LOADVECTOR(&key);
         SDF_VU0_APPLYMATRIX();
         SDF_VU0_SCALEVECTOR(2.0f);
@@ -1302,7 +1302,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
             deg = sbtlGetChorikiDeg(&wk->pos, rot, &target->pos, 1.0f);
             SDF_VU0_STOREVECTOR(rot);
             sbtlAddUnitDeg(wk, deg);
-            FromEuler(0.0f, wk->angleY * 0.017453292f, 0.0f);
+            FromEuler(0.0f, wk->angleY * 0.017453293f, 0.0f);
             SDF_VU0_STOREVECTOR(rot);
             SDF_VU0_STOREVECTOR(&wk->rotbk);
         }
@@ -1323,7 +1323,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
                 deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, &target->pos, 1.0f);
                 SDF_VU0_STOREVECTOR(&wk->rot);
                 sbtlAddUnitDeg(wk, deg);
-                FromEuler(0.0f, wk->angleY * 0.017453292f, 0.0f);
+                FromEuler(0.0f, wk->angleY * 0.017453293f, 0.0f);
                 SDF_VU0_STOREVECTOR(&wk->rot);
                 SDF_VU0_STOREVECTOR(&wk->rotbk);
             }

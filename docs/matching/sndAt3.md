@@ -24,7 +24,7 @@ Request a crossfade to BGM id; sndData2 records the outcome for sndBgmStatus_XF.
 
 Raidou 1: 589 of 603 words differ, first at +0x0; emitted 2412 bytes, native 2444 bytes.
 
-Nothing is recorded about this draft.
+Vectors: the 26 snapshot fails differ only in sceSdRemote packet words 2-5 (0x507bc8-0x507bdb), the a3-t2 register garbage passed as unused varargs through mnuCopySoundStreamOnStatusChange's sceSdRemote(1, 0x8100, 1); every call and defined argument equals retail.
 
 First differing words:
 

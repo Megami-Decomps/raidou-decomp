@@ -24,8 +24,13 @@ typedef struct mapLbSprite_t {
     s16 pos[8];     /* x0 y0 x1 y1 x2 y2 x3 y3, scaled by Zoom */
     s16 uv[8];
     s32 tex;        /* 0: not drawn */
-    u8 unk24[4];
 } mapLbSprite_t;
+
+typedef struct mapLbSpriteBox_t {
+    s16 pos[8];     /* x0 y0 x1 y1 x2 y2 x3 y3 */
+    s32 tex;        /* 0: not drawn */
+    u8 unk14[4];
+} mapLbSpriteBox_t;
 
 typedef struct mapLbIndex_t {
     s32 count;      /* sprites at mapSKYBGEDITData4 */
@@ -43,7 +48,7 @@ extern mapLbWork_t evtStageTestState2;
 extern s32 fldData23;
 extern s8 fldData[];
 extern mapLbIndex_t *fldData21;
-extern mapLbSprite_t *mapSKYBGEDITData4;
+extern mapLbSpriteBox_t *mapSKYBGEDITData4;
 extern mapLbSection_t *fldCallSetOt3Data;
 extern mapLbSprite_t *fldData5[];
 extern s32 fldData22;

@@ -52,7 +52,7 @@ extern void mapLeaf22(s32 camId);
     dds3CallGrAllocPacketBuff5(0x80000000, 0x80000000, 0x80000000, 0x80000000, (x), (y), (w), (h)); \
     eglSetOt(18)
 
-/* NON_MATCHING: 242 of 1850 words match. Functionally checked against the asm: call multiset and float literal pool equal retail. Retail duplicates the camId 3 block, reloads constants per eglLinkPoly4 call and orders the draws differently. */
+/* NON_MATCHING: 44 of 1652 words match. Functionally checked against the asm: call multiset and float literal pool equal retail. Retail duplicates the camId 3 block, reloads constants per eglLinkPoly4 call and orders the draws differently. */
 #ifdef NON_MATCHING
 void mapSKYBGEDIT(void) {
     f32 sizeX = 512.0f;
@@ -271,7 +271,7 @@ void mapSKYBGEDIT(void) {
         eglLinkAlpha(0);
         eglLinkTest(1, 1, 128, 3, 0, 0, 1, 3);
         for (i = 0; i < fldData21->count; i++) {
-            mapLbSprite_t *sp = &mapSKYBGEDITData4[i];
+            mapLbSpriteBox_t *sp = &mapSKYBGEDITData4[i];
             f32 gx;
             f32 gy;
             f32 zoom;

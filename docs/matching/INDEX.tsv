@@ -4,7 +4,7 @@ dds3AllocBasic	basic/dds3Basic	raidou1 0xD8, raidou2 0xD8	6 of 54 words differ	d
 dds3SetPosPoseSet_dds3Basic	basic/dds3Basic	raidou1 0x2C, raidou2 0x2C	5 of 11 words differ	docs/matching/basic/dds3Basic.md	14		
 dds3CallMemset	basic/dds3ObjectBase	raidou1 0xE0, raidou2 0xE0	12 of 56 words differ	docs/matching/basic/dds3ObjectBase.md	3		
 dds3SceneBasicSearchSerialID_Used	basic/dds3SceneBasic	raidou1 0xC0, raidou2 0xC0	33 of 48 words differ	docs/matching/basic/dds3SceneBasic.md	3		
-eglLinkBoxZ	code_00109A70	raidou1 0x370	6 of 220 words differ	docs/matching/code_00109A70.md	3		
+eglLinkBoxZ	code_00109A70	raidou1 0x370	2 of 220 words differ	docs/matching/code_00109A70.md	3		
 fldSetUnit	code_0012A2E0	raidou1 0x7FC	1 of 511 words differ	docs/matching/code_0012A2E0.md	3		
 ProcMskSub_B	code_0012B6A0	raidou1 0x2DC	8 of 183 words differ	docs/matching/code_0012B6A0.md	3		
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3		
@@ -54,7 +54,7 @@ mapFunc	code_0016AD90	raidou1 0x178	2 of 94 words differ	docs/matching/code_0016
 mapCallSin11	code_0016AD90	raidou1 0xF8	44 of 58 words differ	docs/matching/code_0016AD90.md	13		
 mapNakamaWakeUp	code_0016CA30	raidou1 0x60	7 of 24 words differ	docs/matching/code_0016CA30.md	3		
 encCallPrimAllocDrawTag2	code_00173D20	raidou1 0x1F0	41 of 124 words differ	docs/matching/code_00173D20.md	3		
-mapNpcPathMake_Rot	code_00174790	raidou1 0x118	20 of 70 words differ	docs/matching/code_00174790.md	3		
+mapNpcPathMake_Rot	code_00174790	raidou1 0x118	18 of 70 words differ	docs/matching/code_00174790.md	3		
 mapCtnGet	code_00175908	raidou1 0x112C	984 of 1095 words differ	docs/matching/code_00175908.md	3		
 nbCallGetIntPara9	code_00179808	raidou1 0xB0	3 of 44 words differ	docs/matching/code_00179808.md	3		
 nbCallGetIntPara5	code_00179808	raidou1 0x58	1 of 22 words differ	docs/matching/code_00179808.md	13		
@@ -103,7 +103,7 @@ sbtlCallEventBattleStopChack2	code_002A38D8	raidou1 0x298	70 of 166 words differ
 sbtlCallMemFreeDelayedDirect	code_002A38D8	raidou1 0x34	2 of 13 words differ	docs/matching/code_002A38D8.md	71		
 sbtlGetMotionNumSub	code_002A38D8	raidou1 0x68	13 of 23 words differ	docs/matching/code_002A38D8.md	77		
 sbtlCallExistProcess2	code_002A38D8	raidou1 0x68	11 of 25 words differ	docs/matching/code_002A38D8.md	83		
-sbtlDraw3DSphere	code_002A38D8	raidou1 0x294	28 of 165 words differ	docs/matching/code_002A38D8.md	89		
+sbtlDraw3DSphere	code_002A38D8	raidou1 0x294	26 of 165 words differ	docs/matching/code_002A38D8.md	89		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	13		
 pipeCampCAMPPACKLB	code_00300578	raidou1 0x158	3 of 86 words differ	docs/matching/code_00300578.md	3		
@@ -131,7 +131,7 @@ mapObjPointAdd2	code_r1_0014B328	raidou1 0x170, raidou2 0x170	76 of 77 words dif
 mapMapObjectRefresh_fld	code_r1_0014CF58	raidou1 0x1018	887 of 900 words differ	docs/matching/code_r1_0014CF58.md	3		
 mapFileLoad	code_r1_0014F378	raidou1 0x23AC	1924 of 1972 words differ	docs/matching/code_r1_0014F378.md	3		
 mapMapSetArea	code_r1_00151980	raidou1 0x440, raidou2 0x440	107 of 272 words differ	docs/matching/code_r1_00151980.md	3		
-mapMapSetAreaRefresh	code_r1_00151DC0	raidou1 0x1674	871 of 884 words differ	docs/matching/code_r1_00151DC0.md	3		
+mapMapSetAreaRefresh	code_r1_00151DC0	raidou1 0x1674	810 of 896 words differ	docs/matching/code_r1_00151DC0.md	3		
 fldJmsQuestMapLoad_fld	code_r1_00156B68	raidou1 0x33C	164 of 203 words differ	docs/matching/code_r1_00156B68.md	3		
 fldCallSetOt3	code_r1_001578A8	raidou1 0x424, raidou2 0x424	257 of 262 words differ	docs/matching/code_r1_001578A8.md	3		
 mapGenbaPosEffClipSet	code_r1_0015CD00	raidou1 0xAC, raidou2 0xAC	33 of 38 words differ	docs/matching/code_r1_0015CD00.md	3		
@@ -168,20 +168,20 @@ sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	23 of 233 words differ	docs/match
 CheckMapHit	code_r1_0024F220	raidou1 0x88	5 of 34 words differ	docs/matching/code_r1_0024F220.md	3	the full-unit count moves with header declarations alone; the GetPercentage prototype in sbtlWork.h took it from 5 to 9 of 34 words, and the SBTLUNIT_WORK and sdatUnitWork_t field splits (sBtlUnit.h, sdatUnit.h) take it from 5 to 9 again. The B4-field-big header declaration edits moved it from CONTEXT to DIFF 5/34.	
 sbtlCallBtlCheckEnshutuSummonUnit2	code_r1_0024F220	raidou1 0x218	0 of 134 words differ	docs/matching/code_r1_0024F220.md	13		
 sbtlCallBtlCreateUnit	code_r1_0024F220	raidou1 0x5A0	236 of 360 words differ	docs/matching/code_r1_0024F220.md	23		
-sbtlCallBtlGetBadStatus	code_r1_0024F220	raidou1 0x2F8	3 of 190 words differ	docs/matching/code_r1_0024F220.md	31		
-sbtlCallBtlGetDevilSESub	code_r1_0024F220	raidou1 0x20C	40 of 129 words differ	docs/matching/code_r1_0024F220.md	39		
-sbtlCallBtlGetSkilltbl	code_r1_0024F220	raidou1 0x2C0	155 of 170 words differ	docs/matching/code_r1_0024F220.md	45		
-sbtlCallGetRandIntA5	code_r1_0024F220	raidou1 0xF0	9 of 60 words differ	docs/matching/code_r1_0024F220.md	53		
-sbtlCheckMapHit_Cross	code_r1_0024F220	raidou1 0x114	25 of 69 words differ	docs/matching/code_r1_0024F220.md	61		
-sbtlCheckModelDataLoadEnd_sbtlUnit	code_r1_0024F220	raidou1 0x404	164 of 258 words differ	docs/matching/code_r1_0024F220.md	69		
-sbtlGetPlayer_HitTarget	code_r1_0024F220	raidou1 0xA0	37 of 40 words differ	docs/matching/code_r1_0024F220.md	77		
-sbtlGetRotate	code_r1_0024F220	raidou1 0x1AC	86 of 108 words differ	docs/matching/code_r1_0024F220.md	85		
-sbtlPlayMotionSENowSub2	code_r1_0024F220	raidou1 0x48	13 of 13 words differ	docs/matching/code_r1_0024F220.md	91		
-sbtlRefSbtl5	code_r1_0024F220	raidou1 0x98	4 of 38 words differ	docs/matching/code_r1_0024F220.md	99		
-sbtlRefSbtl8	code_r1_0024F220	raidou1 0x118	51 of 68 words differ	docs/matching/code_r1_0024F220.md	109		
-sbtlSetLight_Map	code_r1_0024F220	raidou1 0x234	39 of 142 words differ	docs/matching/code_r1_0024F220.md	117		
-sbtlSetMotion_sbtlUnit	code_r1_0024F220	raidou1 0x1EC	1 of 123 words differ	docs/matching/code_r1_0024F220.md	123		
-sbtlCheckMapHit_Data	code_r1_0024F220	raidou1 0x54	0 of 21 words differ	docs/matching/code_r1_0024F220.md	130	matches only with the current declaration order in itfMesManager.h and the other headers of code_r1_0024F220.c. The B4-field-big header declaration edits turn the full-unit match into CONTEXT 4/21; the K02-effect-data edits do the same.	
+sbtlCallBtlGetBadStatus	code_r1_0024F220	raidou1 0x2F8	3 of 190 words differ	docs/matching/code_r1_0024F220.md	33		
+sbtlCallBtlGetDevilSESub	code_r1_0024F220	raidou1 0x20C	40 of 129 words differ	docs/matching/code_r1_0024F220.md	41		
+sbtlCallBtlGetSkilltbl	code_r1_0024F220	raidou1 0x2C0	155 of 170 words differ	docs/matching/code_r1_0024F220.md	47		
+sbtlCallGetRandIntA5	code_r1_0024F220	raidou1 0xF0	9 of 60 words differ	docs/matching/code_r1_0024F220.md	55		
+sbtlCheckMapHit_Cross	code_r1_0024F220	raidou1 0x114	25 of 69 words differ	docs/matching/code_r1_0024F220.md	63		
+sbtlCheckModelDataLoadEnd_sbtlUnit	code_r1_0024F220	raidou1 0x404	164 of 258 words differ	docs/matching/code_r1_0024F220.md	71		
+sbtlGetPlayer_HitTarget	code_r1_0024F220	raidou1 0xA0	37 of 40 words differ	docs/matching/code_r1_0024F220.md	79		
+sbtlGetRotate	code_r1_0024F220	raidou1 0x1AC	86 of 108 words differ	docs/matching/code_r1_0024F220.md	87		
+sbtlPlayMotionSENowSub2	code_r1_0024F220	raidou1 0x48	13 of 13 words differ	docs/matching/code_r1_0024F220.md	93		
+sbtlRefSbtl5	code_r1_0024F220	raidou1 0x98	4 of 38 words differ	docs/matching/code_r1_0024F220.md	101		
+sbtlRefSbtl8	code_r1_0024F220	raidou1 0x118	51 of 68 words differ	docs/matching/code_r1_0024F220.md	111		
+sbtlSetLight_Map	code_r1_0024F220	raidou1 0x234	39 of 142 words differ	docs/matching/code_r1_0024F220.md	119		
+sbtlSetMotion_sbtlUnit	code_r1_0024F220	raidou1 0x1EC	1 of 123 words differ	docs/matching/code_r1_0024F220.md	125		
+sbtlCheckMapHit_Data	code_r1_0024F220	raidou1 0x54	0 of 21 words differ	docs/matching/code_r1_0024F220.md	132	matches only with the current declaration order in itfMesManager.h and the other headers of code_r1_0024F220.c. The B4-field-big header declaration edits turn the full-unit match into CONTEXT 4/21; the K02-effect-data edits do the same.	
 nakamamodeCallGetActiveScene	code_r1_00259A88	raidou1 0x584	5 of 353 words differ	docs/matching/code_r1_00259A88.md	3		
 sbtlCallBtlCheckDamageTarget3	code_r1_00259A88	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_00259A88.md	13		
 sbtlCallBtlGetBadStatus3	code_r1_00259A88	raidou1 0x90	20 of 36 words differ	docs/matching/code_r1_00259A88.md	21		
@@ -192,16 +192,16 @@ sbtlCallMemset11	code_r1_00259A88	raidou1 0x3B8	80 of 238 words differ	docs/matc
 sbtlCallMemset12	code_r1_00259A88	raidou1 0x3BC	196 of 240 words differ	docs/matching/code_r1_00259A88.md	65		
 sbtlCheckEffectCancel	code_r1_00259A88	raidou1 0xB0	16 of 44 words differ	docs/matching/code_r1_00259A88.md	75		
 sbtlNormalProc_Huuma	code_r1_00259A88	raidou1 0x378	157 of 222 words differ	docs/matching/code_r1_00259A88.md	85		
-sbtlPlayerRKaitenInit	code_r1_00259A88	raidou1 0x3F8	70 of 254 words differ	docs/matching/code_r1_00259A88.md	91		
+sbtlPlayerRKaitenInit	code_r1_00259A88	raidou1 0x3F8	68 of 254 words differ	docs/matching/code_r1_00259A88.md	91		
 sbtlRefSbtl17	code_r1_00259A88	raidou1 0x84	5 of 33 words differ	docs/matching/code_r1_00259A88.md	97		
 sbtlSetVibe	code_r1_00259A88	raidou1 0x10C	13 of 13 words differ	docs/matching/code_r1_00259A88.md	103		
-sbtlCallGetIntPara35	code_r1_00259A88	raidou1 0x28	5 of 9 words differ	docs/matching/code_r1_00259A88.md	112		
-sbtlCallGetIntPara36	code_r1_00259A88	raidou1 0x28	5 of 9 words differ	docs/matching/code_r1_00259A88.md	118		
-sbtlCallGetIntPara3	code_r1_00259A88	raidou1 0x28	5 of 9 words differ	docs/matching/code_r1_00259A88.md	124		
-sbtlCallGetIntPara4	code_r1_00259A88	raidou1 0x28	5 of 9 words differ	docs/matching/code_r1_00259A88.md	130		
-sbtlCallRegistScript2	code_r1_00259A88	raidou1 0x2C	2 of 11 words differ	docs/matching/code_r1_00259A88.md	136		
-sbtlCallGetIntPara31	code_r1_00259A88	raidou1 0x58	1 of 22 words differ	docs/matching/code_r1_00259A88.md	142		
-sbtlCheckAreaCount	code_r1_00259A88	raidou1 0xFC	56 of 61 words differ	docs/matching/code_r1_00259A88.md	148		
+sbtlCallGetIntPara35	code_r1_00259A88	raidou1 0x28	5 of 9 words differ	docs/matching/code_r1_00259A88.md	113		
+sbtlCallGetIntPara36	code_r1_00259A88	raidou1 0x28	5 of 9 words differ	docs/matching/code_r1_00259A88.md	119		
+sbtlCallGetIntPara3	code_r1_00259A88	raidou1 0x28	5 of 9 words differ	docs/matching/code_r1_00259A88.md	125		
+sbtlCallGetIntPara4	code_r1_00259A88	raidou1 0x28	5 of 9 words differ	docs/matching/code_r1_00259A88.md	131		
+sbtlCallRegistScript2	code_r1_00259A88	raidou1 0x2C	2 of 11 words differ	docs/matching/code_r1_00259A88.md	137		
+sbtlCallGetIntPara31	code_r1_00259A88	raidou1 0x58	1 of 22 words differ	docs/matching/code_r1_00259A88.md	143		
+sbtlCheckAreaCount	code_r1_00259A88	raidou1 0xFC	56 of 61 words differ	docs/matching/code_r1_00259A88.md	149		
 sbtlBtlLoadPlayerOnMemDataSub	code_r1_0028A298	raidou1 0x88	28 of 30 words differ	docs/matching/code_r1_0028A298.md	3		
 Draw_sbtlSTP	code_r1_00291A80	raidou1 0x1F8	88 of 91 words differ	docs/matching/code_r1_00291A80.md	3		
 sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words differ	docs/matching/code_r1_00292930.md	3		
@@ -242,8 +242,8 @@ mapNakamaStockOnCheck_fld	facility/fclCombineInit	raidou1 0xF4	45 of 60 words di
 fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/fclDrawBack.md	3		
 fldGbInit_Field	fclDrawBack	raidou1 0x94	12 of 37 words differ	docs/matching/fclDrawBack.md	11	retyping fldAreaWork_t 0x120..0x128 (hitZ/camAngle/camAngle2 to the s32 nowTalkModelID/nowTakaraTblIdx/nowHealTblIdx, or the same as f32/s32 unions) moved it from 7 to 12 differing words with the same stores.	
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		
-mapAiboTask	field/fldFileResolver	raidou1 0x9A8	246 of 618 words differ	docs/matching/field/fldFileResolver.md	14	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618. The B4-field-big header declaration edits (11 headers, no change to the unit) moved it again, DIFF 323/618 to CONTEXT 12/618, and the K03-effect header declaration edits from CONTEXT 54/618 to CONTEXT 319/616.	
-mapSummonDvTask	field/fldFileResolver	raidou1 0x944	8 of 593 words differ	docs/matching/field/fldFileResolver.md	24	the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit.	
+mapAiboTask	field/fldFileResolver	raidou1 0x9A8	54 of 618 words differ	docs/matching/field/fldFileResolver.md	14	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618. The B4-field-big header declaration edits (11 headers, no change to the unit) moved it again, DIFF 323/618 to CONTEXT 12/618, and the K03-effect header declaration edits from CONTEXT 54/618 to CONTEXT 319/616.	
+mapSummonDvTask	field/fldFileResolver	raidou1 0x944	6 of 593 words differ	docs/matching/field/fldFileResolver.md	24	the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit.	
 PlayerCalc_Nml_fld	field/fldFileResolver	raidou1 0xB74	404 of 731 words differ	docs/matching/field/fldFileResolver.md	34		
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	14		
@@ -257,13 +257,13 @@ frDrawEffect	interface/frFont	raidou1 0x348	64 of 208 words differ	docs/matching
 frDrawFontOt	interface/frFont	raidou1 0x34C	21 of 211 words differ	docs/matching/interface/frFont.md	62		
 frFontAppendIndexedTextToGlyphChain	interface/frFont	raidou1 0x170, raidou2 0x170	47 of 90 words differ	docs/matching/interface/frFont.md	70		
 itfMesMngRequestSelect_itf	interface/itfMesManager	raidou1 0x118, raidou2 0x118	2 of 70 words differ	docs/matching/interface/itfMesManager.md	3		
-CalcWindow	interface/itfMesManager	raidou1 0x1F0, raidou2 0x1F0	77 of 81 words differ	docs/matching/interface/itfMesManager.md	12		
+CalcWindow	interface/itfMesManager	raidou1 0x1F0, raidou2 0x1F0	50 of 123 words differ	docs/matching/interface/itfMesManager.md	12		
 CalcMessage	interface/itfMesManager	raidou1 0x28C, raidou2 0x31C	118 of 159 words differ	docs/matching/interface/itfMesManager.md	21		
 CalcSelect	interface/itfMesManager	raidou1 0x2EC, raidou2 0x2EC	2 of 187 words differ	docs/matching/interface/itfMesManager.md	30		
 itfCalcMesFlowItfSub	interface/itfMesManager	raidou1 0x320, raidou2 0x320	155 of 200 words differ	docs/matching/interface/itfMesManager.md	39		
-itfFunc2	interface/itfMesManager	raidou1 0x1EC, raidou2 0x1EC	67 of 123 words differ	docs/matching/interface/itfMesManager.md	48		
-itfCallGrAllocPacketBuff	interface/itfMesManager	raidou1 0x448, raidou2 0x448	209 of 274 words differ	docs/matching/interface/itfMesManager.md	57		
-itfCallGrAllocPacketBuff2	interface/itfMesManager	raidou1 0x4D8, raidou2 0x4D8	145 of 310 words differ	docs/matching/interface/itfMesManager.md	66		
+itfFunc2	interface/itfMesManager	raidou1 0x1EC, raidou2 0x1EC	67 of 123 words differ	docs/matching/interface/itfMesManager.md	50		
+itfCallGrAllocPacketBuff	interface/itfMesManager	raidou1 0x448, raidou2 0x448	209 of 274 words differ	docs/matching/interface/itfMesManager.md	59		
+itfCallGrAllocPacketBuff2	interface/itfMesManager	raidou1 0x4D8, raidou2 0x4D8	145 of 310 words differ	docs/matching/interface/itfMesManager.md	68		
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3		
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3		
 dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11		

@@ -22,7 +22,7 @@
 #include "sdfQuat.h"
 #include "sdfDelayedResrc.h"
 
-/* NON_MATCHING: 75 of 233 words match. Unit pointer lands in s1 not s0 and the following code shifts; globals and structure otherwise follow IDA. */
+/* NON_MATCHING: 199 of 233 words match. Unit pointer lands in s1 not s0 and the following code shifts; globals and structure otherwise follow IDA. */
 #ifdef NON_MATCHING
 s32 sbtlCallMemset4(s32 fld, s32 area)
 {
@@ -70,7 +70,7 @@ s32 sbtlCallMemset4(s32 fld, s32 area)
         unit->pos.x = x;
         unit->pos.y = y;
         unit->pos.z = z;
-        FromEuler(0.0f, r * 0.017453292f, 0.0f);
+        FromEuler(0.0f, r * 0.017453293f, 0.0f);
         VU0_STORE_VF(vf10, &unit->rot);
         VU0_LOAD_VF(vf10, &identity);
         VU0_STORE_VF(vf10, &unit->rotBase);
@@ -89,7 +89,7 @@ s32 sbtlCallMemset4(s32 fld, s32 area)
             } else {
                 sbtlCallMemset4Data2.x = sbtlCallMemset4Data2.x + 200.0f;
             }
-            FromEuler(0.0f, r * 0.017453292f, 0.0f);
+            FromEuler(0.0f, r * 0.017453293f, 0.0f);
             VU0_STORE_VF(vf10, &sbtlCallMemset4Data3);
             sbtlData92 = r;
         }

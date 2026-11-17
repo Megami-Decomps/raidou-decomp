@@ -17,7 +17,7 @@
 #include "code_r1_0027CBE8.h"
 #include "sdfQuat.h"
 
-/* NON_MATCHING: 18 of 404 words match. Register allocation shifts, extern GBWK not gp-relative. */
+/* NON_MATCHING: 24 of 404 words match. Register allocation shifts, extern GBWK not gp-relative. */
 #ifdef NON_MATCHING
 struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode)
 {
@@ -103,7 +103,7 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
         unit->pos.x = x;
         unit->pos.y = y;
         unit->pos.z = z;
-        FromEuler(0.0f, r * 0.017453292f, 0.0f);
+        FromEuler(0.0f, r * 0.017453293f, 0.0f);
         VU0_STORE_VF(vf10, &unit->rot);
         VU0_LOAD_VF(vf10, &identity);
         VU0_STORE_VF(vf10, &unit->rotBase);

@@ -74,7 +74,7 @@ void LinkSprite4F(f32 x0, f32 y0, f32 x1, f32 y1, f32 x2, f32 y2, f32 x3, f32 y3
 
 INCLUDE_ASM(const s32, "code_00109A70", evtSubmitTexturedGradientQuadPoints);
 
-/* NON_MATCHING: 214 of 220 words match.  */
+/* NON_MATCHING: 218 of 220 words match.  */
 #ifdef NON_MATCHING
 void eglLinkBoxZ(s32 x, s32 y, s32 w, s32 h, u32 depth, s32 color0, s32 color1, s32 color2, s32 color3) {
     s32 coords[8];
@@ -156,11 +156,11 @@ void eglLinkBoxZ(s32 x, s32 y, s32 w, s32 h, u32 depth, s32 color0, s32 color1, 
             dst[0] = (u64)r1 | ((u64)g1 << 32);
             dst[1] = (u64)b1 | ((u64)a1 << 32);
         } else if (i == 2) {
-            dst[0] = (u64)r2 | ((u64)g2 << 32);
-            dst[1] = (u64)b2 | ((u64)a2 << 32);
-        } else {
             dst[0] = (u64)r3 | ((u64)g3 << 32);
             dst[1] = (u64)b3 | ((u64)a3 << 32);
+        } else {
+            dst[0] = (u64)r2 | ((u64)g2 << 32);
+            dst[1] = (u64)b2 | ((u64)a2 << 32);
         }
         dst += 2;
         dst[1] = depth;

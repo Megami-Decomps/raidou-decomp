@@ -1,5 +1,6 @@
 #include "common.h"
 #include "fld.h"
+#include "fldProcess.h"
 #include "dds3KernelDraw.h"
 #include "EventBit.h"
 #include "code_0016AD90.h"
@@ -78,7 +79,6 @@ extern sdfTexHandle_t *effQueuedResourceNameRecord4;
 
 extern s32 fldLeaf24(void);
 extern void eglLinkSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 vh, u32 c0, u32 c1, u32 c2, u32 c3, void *th);
-extern void mapAM_MaskSetCurrent(s32 area);
 extern void mapFunc2(s32 num, s32 x, s32 y);
 extern void fldProcSequenceSub4(f32 x, f32 z, f32 *outX, f32 *outY);
 extern void mapCallSin11(s32 x, s32 y);
@@ -136,7 +136,7 @@ plain:
 INCLUDE_ASM(const s32, "code_r1_0016B498", mapFunc2);
 #endif
 
-/* NON_MATCHING: 145 of 809 words match. Same instruction count, frame size and register allocation differ. */
+/* NON_MATCHING: 3 of 667 words match. Same instruction count, frame size and register allocation differ. */
 #ifdef NON_MATCHING
 void mapCallSetOt2(void) {
     mapOt2Block_t *block;
@@ -190,7 +190,7 @@ void mapCallSetOt2(void) {
     block = mapCallSetOt2Data2[am_floor];
     h = block->h;
     w = block->w;
-    mapAM_MaskSetCurrent(am_map);
+    mapAM_MaskSetCurrent(am_map, am_floor);
     for (i = am_top_x; i < w; i++) {
         if (i >= 0) {
             if (cols >= 64) {
