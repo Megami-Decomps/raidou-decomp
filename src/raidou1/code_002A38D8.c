@@ -2461,7 +2461,17 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallBtlCheckBit2);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf117);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallVsprintf);
+void sbtlCallGrAllocPacketBuff8(s32 x, s32 y, s32 attr, const char *format);
+
+void sbtlCallVsprintf(s32 x, s32 y, s32 attr, const char *fmt, ...)
+{
+    char buf[512];
+    __builtin_va_list args;
+
+    __builtin_stdarg_start(args, fmt);
+    vsprintf(buf, fmt, args);
+    sbtlCallGrAllocPacketBuff8(x, y, attr, buf);
+}
 
 void sbtlCallGrAllocPacketBuff8(s32 x, s32 y, s32 attr, const char *format)
 {
@@ -2480,7 +2490,29 @@ INCLUDE_ASM(const s32, "code_002A38D8", evtStageTestRequestModelAsset);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGetRunTimeCount);
 
+void sbtlCallMemset29(void);
+
+/* NON_MATCHING: 28 of 48 words match. The log guard takes beql where retail has bnez with the strcat argument in its delay slot. */
+#ifdef NON_MATCHING
+s32 sbtlCallVsprintf2(const char *fmt, ...)
+{
+    char buf[512];
+    __builtin_va_list args;
+    s32 len;
+
+    __builtin_stdarg_start(args, fmt);
+    vsprintf(buf, fmt, args);
+    len = strlen(buf);
+    if (len + evtStageTestState.logLength >= 0xC00) {
+        sbtlCallMemset29();
+    }
+    strcat(evtStageTestState.log, buf);
+    evtStageTestState.logLength += len;
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallVsprintf2);
+#endif
 
 s32 sbtlLeaf91(void)
 {

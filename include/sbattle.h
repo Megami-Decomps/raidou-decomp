@@ -71,6 +71,11 @@ typedef struct SBTLDEBUG_WORK {
     u8 pad7E4[0x19CC - 0x7E4];
 #endif
     s32 acterID;
+#ifndef VERSION_RAIDOU2
+    u8 pad19D0[0x1C08 - 0x19D0];
+    char log[0xC00];
+    s32 logLength;
+#endif
 } SBTLDEBUG_WORK;
 
 extern SBTLDEBUG_WORK evtStageTestState;
