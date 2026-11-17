@@ -88,8 +88,6 @@ void dds3ProcSequenceSub(s32 mode)
     dds3Data34 = mode;
 }
 
-/* NON_MATCHING: matches alone; its jump table needs .rodata 0x444A58 to start 16-aligned.  */
-#ifdef NON_MATCHING
 void dds3FilterCalc(void)
 {
     if (dds3Data34 == 0) {
@@ -135,9 +133,6 @@ void dds3FilterCalc(void)
         break;
     }
 }
-#else
-INCLUDE_ASM(const s32, "dds3KernelDraw_0010BEE0", dds3FilterCalc);
-#endif
 
 INCLUDE_ASM(const s32, "dds3KernelDraw_0010BEE0", dds3FilterDraw);
 

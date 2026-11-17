@@ -198,7 +198,6 @@ evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	d
 cmpDrawBackPattern	code_r1_00323138	raidou1 0x144, raidou2 0x144	9 of 81 words differ	docs/matching/code_r1_00323138.md	3		
 datCheckSkillEnable	dat	raidou1 0x144	63 of 76 words differ	docs/matching/dat.md	3		
 dds3FilterClear	dds3KernelDraw_0010BEE0	raidou1 0x3C	3 of 15 words differ	docs/matching/dds3KernelDraw_0010BEE0.md	3		
-dds3FilterCalc	dds3KernelDraw_0010BEE0	raidou1 0x188	0 of 98 words differ	docs/matching/dds3KernelDraw_0010BEE0.md	11		
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3		
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3		
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9		

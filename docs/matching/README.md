@@ -58,7 +58,6 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_r1_0014F378 | raidou1 | [code_r1_0014F378.md](code_r1_0014F378.md) |
 | 2 | code_r1_0016B498 | raidou1 | [code_r1_0016B498.md](code_r1_0016B498.md) |
 | 2 | code_r1_002C8188 | raidou1, raidou2 | [code_r1_002C8188.md](code_r1_002C8188.md) |
-| 2 | dds3KernelDraw_0010BEE0 | raidou1 | [dds3KernelDraw_0010BEE0.md](dds3KernelDraw_0010BEE0.md) |
 | 2 | event/evtPolygonMovie | raidou1, raidou2 | [event/evtPolygonMovie.md](event/evtPolygonMovie.md) |
 | 2 | evtTmxPreLoad | raidou1 | [evtTmxPreLoad.md](evtTmxPreLoad.md) |
 | 2 | fclDrawBack | raidou1 | [fclDrawBack.md](fclDrawBack.md) |
@@ -120,6 +119,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_002F59D0 | raidou1, raidou2 | [code_r1_002F59D0.md](code_r1_002F59D0.md) |
 | 1 | code_r1_00323138 | raidou1, raidou2 | [code_r1_00323138.md](code_r1_00323138.md) |
 | 1 | dat | raidou1 | [dat.md](dat.md) |
+| 1 | dds3KernelDraw_0010BEE0 | raidou1 | [dds3KernelDraw_0010BEE0.md](dds3KernelDraw_0010BEE0.md) |
 | 1 | effect/polyManager | raidou1, raidou2 | [effect/polyManager.md](effect/polyManager.md) |
 | 1 | event/evtMoon | raidou1 | [event/evtMoon.md](event/evtMoon.md) |
 | 1 | facility/fclCombineInit | raidou1 | [facility/fclCombineInit.md](facility/fclCombineInit.md) |

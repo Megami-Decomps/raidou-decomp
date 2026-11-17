@@ -128,3 +128,6 @@ INCLUDE_ASM(const s32, "code_0012B6A0", mapIdouGo_Idx);
 
 void mapIsFldKeyFreeSub3(void) {
 }
+
+INCLUDE_RODATA(const s32, "code_0012B6A0", mapIdouGo_IdxTable);
+
