@@ -310,7 +310,8 @@ class Facts:
 
 @dataclass
 class Val:
-    kind: str               # c const, cs consts by path, a address, L obj-local, hi, p param, ld loaded, r return, u unknown
+    kind: str               # c const, cs consts by path, a address, L obj-local, hi, p param, ld loaded, r return,
+                            # sh shifted (fact recorded when read), u unknown
     v: object = None
     off: int = 0
     ix: bool = False        # an index was added to an address
@@ -379,6 +380,8 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
                     return
                 f.add("addr", canon(ref, "&"))
                 return
+            if val.kind == "sh":
+                f.add("shift", val.v)
             if val.kind == "c":
                 if val.v + val.off not in (0,):
                     f.add("imm", val.v + val.off)
@@ -420,6 +423,8 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
                 key = canon(("A", img.gp + imm), op)
             else:
                 bv = get(base)
+                if bv.kind == "sh":
+                    f.add("shift", bv.v)
                 ref = addr_of(bv)
                 if ref is not None:
                     ref = ref[:-1] + (ref[-1] + imm,)
@@ -501,7 +506,7 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
                 continue
             if op == "jr":
                 if a and a[0] == "ra":
-                    if "v0" in regs and regs["v0"].kind in ("c", "cs") and addr_of(regs["v0"]) is None:
+                    if "v0" in regs and regs["v0"].kind in ("c", "cs", "sh") and addr_of(regs["v0"]) is None:
                         consume("v0")   # a constant returned; an address left in v0 may be garbage of a void
                 continue
             if op == "b":
@@ -570,7 +575,9 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
                 if op == "srl" and sa == 31:
                     f.add("shift", "sign")
                 elif sa:
-                    f.add("shift", (op.rstrip("32"), sa))
+                    consume(a[1])
+                    regs[a[0]] = Val("sh", (op.rstrip("32"), sa))
+                    continue
                 consume(a[1])
                 regs[a[0]] = UNK
                 continue
@@ -581,6 +588,16 @@ def reduce_function(insns: list[Insn], res: Resolver, is_draft: bool, func_range
             if op in ("addu", "daddu") and len(a) == 3:
                 x, y = get(a[1]), get(a[2])
                 rx, ry = addr_of(x), addr_of(y)
+                if (x.kind == "sh") != (y.kind == "sh"):
+                    # An index scaled to an element size: a draft that walks a pointer has no shift.
+                    sh, other, oreg = (x, y, a[2]) if x.kind == "sh" else (y, x, a[1])
+                    if sh.v[0] == "sll" and not sh.off and (other.kind not in ("c", "cs") or addr_of(other)):
+                        f.add("shift", ("index", sh.v[1]))
+                        ref = addr_of(other)
+                        if ref is None:
+                            consume(oreg)
+                        regs[a[0]] = Val(other.kind, other.v, other.off, True) if ref is not None else UNK
+                        continue
                 if y.kind == "c" and ry is None and x.kind != "c":
                     regs[a[0]] = Val(x.kind, x.v, x.off + y.v + y.off, x.ix)
                     continue
@@ -824,13 +841,74 @@ def comparable(facts: Facts, cls: str) -> Counter:
     return Counter(dict.fromkeys(c, 1))
 
 
+BRANCH_SLACK = 2
+OFFSET = re.compile(r"\+(-?0x[0-9a-f]+|-?\d+)$")
+
+
+def is_index(item) -> bool:
+    return isinstance(item, tuple) and item[0] == "index"
+
+
+def as_sll(item):
+    return ("sll", item[1]) if is_index(item) else item
+
+
+def key_offset(key: str) -> int:
+    m = OFFSET.search(key)
+    return int(m.group(1), 0) if m else 0
+
+
 def diff_facts(retail: Facts, draft: Facts) -> dict:
     out = {}
     for cls in CLASSES:
         r, d = comparable(retail, cls), comparable(draft, cls)
+        if cls == "branch":
+            # gcc duplicates tests (tail duplication, switch range tests), so retail may carry a few
+            # more for the same logic. A draft with more tests than retail adds a condition.
+            rn, dn = sum(r.values()), sum(d.values())
+            if dn <= rn <= dn + BRANCH_SLACK:
+                continue
+        if cls == "shift":
+            # A draft that walks a pointer drops retail's index scaling; only a draft-only scale counts.
+            # The same left shift may scale an index on one path and feed arithmetic on another.
+            rs, ds = {as_sll(k) for k in r}, {as_sll(k) for k in d}
+            r, d = (Counter({k: n for k, n in r.items() if k in d or as_sll(k) not in ds}),
+                    Counter({k: n for k, n in d.items() if k in r or as_sll(k) not in rs}))
+            r = Counter({k: n for k, n in r.items() if not (is_index(k) and k not in d)})
         if r != d:
             out[cls] = (r - d, d - r)
+    if "memx" in out:
+        out = pair_unknown_bases(retail, draft, out)
     return out
+
+
+def pair_unknown_bases(retail: Facts, draft: Facts, diffs: dict) -> dict:
+    """An access through a base one side could not trace pairs with an access of the same offset,
+    width and kind on the other side. Two or more left over pair when one bias maps one side onto
+    the other (a loop pointer advanced at another point)."""
+    def shape(k):
+        return (key_offset(k[0]), k[1], k[2])
+
+    def shapes(facts):
+        return {shape(k) for cls in ("mem", "memx") for k in facts.c[cls]}
+
+    rx, dx = (Counter(c) for c in diffs["memx"])
+    rm, dm = (Counter(c) for c in diffs.get("mem", ({}, {})))
+    for xs, other_full, other_mem in ((rx, shapes(draft), dm), (dx, shapes(retail), rm)):
+        for k in list(xs):
+            if shape(k) in other_full:
+                del xs[k]
+                for m in [m for m in other_mem if shape(m) == shape(k)][:1]:
+                    del other_mem[m]
+    if len(rx) == len(dx) >= 2:
+        ro, do = sorted(map(shape, rx)), sorted(map(shape, dx))
+        if len({r[0] - d[0] for r, d in zip(ro, do)}) == 1 and [r[1:] for r in ro] == [d[1:] for d in do]:
+            rx, dx = Counter(), Counter()
+    out = {k: v for k, v in diffs.items() if k not in ("mem", "memx")}
+    for cls, (r, d) in (("mem", (rm, dm)), ("memx", (rx, dx))):
+        if r or d:
+            out[cls] = (r, d)
+    return {cls: out[cls] for cls in CLASSES if cls in out}
 
 
 def pair_literals(diffs: dict, res: "DraftResolver") -> dict:

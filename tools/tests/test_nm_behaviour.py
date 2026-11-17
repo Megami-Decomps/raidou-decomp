@@ -137,6 +137,49 @@ class ReduceTests(unittest.TestCase):
         self.assertEqual(caller.c["call"], nmb.Counter())
         self.assertEqual(caller.c["mem"], nmb.Counter({("arg0+0x4", 4, "S"): 1}))
 
+    def test_retail_may_carry_a_few_more_branches(self) -> None:
+        one = "beq a0,zero,1010\nnop\n"
+        body = "sw zero,0(a1)\njr ra\nnop"
+        self.assertEqual(nmb.diff_facts(self.retail(one * 2 + body), self.retail(one + body)), {})
+        self.assertEqual(set(nmb.diff_facts(self.retail(one * 4 + body), self.retail(one + body))), {"branch"})
+
+    def test_draft_with_an_extra_branch_differs(self) -> None:
+        one = "beq a0,zero,1010\nnop\n"
+        body = "sw zero,0(a1)\njr ra\nnop"
+        self.assertEqual(set(nmb.diff_facts(self.retail(one + body), self.retail(one * 2 + body))), {"branch"})
+
+    def test_index_scaling_dropped_by_a_pointer_walk_is_the_same(self) -> None:
+        retail = self.retail("lw v0,0(a0)\nsll v1,a1,5\naddu v0,v0,v1\nsw zero,4(v0)\njr ra\nnop")
+        walk = self.retail("lw v0,0(a0)\nsw zero,4(v0)\njr ra\nnop")
+        self.assertEqual(nmb.diff_facts(retail, walk), {})
+
+    def test_draft_scaling_by_another_size_differs(self) -> None:
+        retail = self.retail("lw v0,0(a0)\nsll v1,a1,5\naddu v0,v0,v1\nsw zero,4(v0)\njr ra\nnop")
+        wrong = self.retail("lw v0,0(a0)\nsll v1,a1,4\naddu v0,v0,v1\nsw zero,4(v0)\njr ra\nnop")
+        self.assertEqual(set(nmb.diff_facts(retail, wrong)), {"shift"})
+
+    def test_arithmetic_shift_is_kept(self) -> None:
+        d = nmb.diff_facts(self.retail("sll v0,a0,3\nsubu v0,v0,a0\nsw v0,0(a1)"), self.retail("sw a0,0(a1)"))
+        self.assertEqual(set(d), {"shift"})
+
+    def test_unknown_base_pairs_with_the_same_offset(self) -> None:
+        traced, lost = nmb.Facts(), nmb.Facts()
+        traced.add("mem", ("*(gSym)+0x8", 4, "L"))
+        lost.add("memx", ("?+0x8", 4, "L"))
+        self.assertEqual(nmb.diff_facts(traced, lost), {})
+        lost.c["memx"] = nmb.Counter({("?+0xc", 4, "L"): 1})
+        self.assertEqual(set(nmb.diff_facts(traced, lost)), {"mem", "memx"})
+
+    def test_unknown_base_biased_by_one_delta_is_the_same(self) -> None:
+        retail = self.retail("jal 200000\nnop\nlw v1,0(v0)\nsw v1,4(v0)\njr ra\nnop")
+        draft = self.retail("jal 200000\nnop\nlw v1,8(v0)\nsw v1,12(v0)\njr ra\nnop")
+        self.assertEqual(nmb.diff_facts(retail, draft), {})
+
+    def test_unknown_base_wrong_field_differs(self) -> None:
+        retail = self.retail("jal 200000\nnop\nlw v1,176(v0)\nsw v1,0(s0)\njr ra\nnop")
+        draft = self.retail("jal 200000\nnop\nlw v1,260(v0)\nsw v1,0(s0)\njr ra\nnop")
+        self.assertEqual(set(nmb.diff_facts(retail, draft)), {"memx"})
+
 
 def built(version: str) -> pathlib.Path | None:
     serial = json.loads((ROOT / "config/versions.json").read_text())[version]["serial"]
