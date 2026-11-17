@@ -304,6 +304,8 @@ extern u8 sdfSndSkillAreaNext;
 extern u8 sdfSndNakamaAreaNext;
 #endif
 extern u32 sdfSndSlotSerialNext;
+/* The id being selected, printed when sceMidi_SelectMidi fails. */
+extern s32 sdfSndSelectId;
 extern s32 sdfSndResumeIdx;
 extern s32 sdfSndSeqVolume;
 extern iop_sema_t sdfSndEeRpcSemaParam;

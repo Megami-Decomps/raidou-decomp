@@ -58,6 +58,9 @@ extern const char aSdfadpcmStartA[];
 extern const char aSdfadpcmAdpcmF[];
 extern const char a02xh[];
 extern const char aSdfadpcmOnMemo[];
+extern const char aSdfsnddrvReq08[];
+extern const char aSdfsnddrvSmgUn[];
+extern const char aSdfsnddrvSmgUn_0[];
 extern const char aSdfadpcmMono[];
 extern const char aSdfadpcmStreo[];
 extern const char aSdfadpcmFreqSL[];
@@ -977,7 +980,79 @@ s32 sdfSndHsynLoad(s32 bank, s32 slot)
     return intrman_CpuResumeIntr(state);
 }
 
+#ifdef NON_MATCHING
+/* Same instructions; gcc gives req, id, the sequence number and pan
+ * different callee-saved registers. */
+/* Start a sound effect in one of the 13 effect slots and return the slot. */
+s32 sdfSndSePlay(sdfSndSeReq_t *req)
+{
+    s32 ret;
+    s32 pan;
+    s32 slot;
+    s32 bank;
+    s32 seq;
+    s32 id;
+    s32 vol;
+    s32 state;
+
+    id = req->id;
+    seq = id & 0xFFFF;
+    bank = sdfSndFindSlotById(id);
+    pan = req->pan & 0x7F;
+    if (sdfSndIsSlotMuted(id) != 0) {
+        return -1;
+    }
+    if (bank < 0) {
+        sdfSndPostError(18);
+        return -1;
+    }
+    slot = sdfSndAllocSeSlot();
+    if (slot < 0) {
+        return -1;
+    }
+    sdfSndSelectId = id;
+    if (sdfSndMidiSelect(slot, seq, bank, sdfSndWorkArea->progData[bank].ptr, 0) != 0) {
+        return -1;
+    }
+    intrman_CpuSuspendIntr(&state);
+    ret = modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, slot, 1);
+    sdfSndPutMsg(slot);
+    if (ret != 0) {
+        intrman_CpuResumeIntr(state);
+        stdio_printf(aSdfsnddrvSeSta);
+        return -1;
+    }
+    sdfSndSlots[slot].volStep = 0;
+    sdfSndSlots[slot].fadeIn = 0;
+    sdfSndSlots[slot].is3d = 0;
+    sdfSndSlots[slot].id = id;
+    sdfSndSlots[slot].group = bank;
+    sdfSndSlots[slot].unk34[0] = 0;
+    sdfSndSlots[slot].serial = sdfSndSlotSerialNext++;
+    modmsin_sceMSIn_PutMsg(&sdfSndMidiWork, slot, (pan << 16) | 0xAB0);
+    vol = req->vol;
+    if (vol < 0) {
+        vol = 0;
+    } else if (vol >= 0x80) {
+        if ((vol & 0x100) != 0) {
+            sdfSndSlots[slot].volStep = 64;
+            vol = 0;
+        } else {
+            vol = 127;
+        }
+    }
+    sdfSndSlots[slot].vol = vol << 8;
+    sdfSndApplyVolume(id, slot, vol);
+    intrman_CpuResumeIntr(state);
+    if (ret != 0) {
+        stdio_printf(aSdfsnddrvScemi_4);
+        sdfSndPostError(13);
+    }
+    return slot;
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndSePlay);
+#endif
 
 #ifdef NON_MATCHING
 /* Matches instruction for instruction, but gcc chooses different
@@ -1204,6 +1279,7 @@ s32 sdfSndIsBankLoaded(s32 kind)
 
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScems);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvReq08);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi_0);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi_1);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScehs);
@@ -1333,6 +1409,8 @@ INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvFileR);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvMidi0);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSData);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvDataS);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSmgUn);
+INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSmgUn_0);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSRead);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScehs_1);
 INCLUDE_RODATA("SDFSDMAN", jtbl_00006468);
