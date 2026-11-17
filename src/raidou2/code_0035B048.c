@@ -7,6 +7,8 @@
 #include "evtEventViewer.h"
 #include "evtPolygonMovie.h"
 #include "sdfMovie.h"
+#include "fldProcess.h"
+#include "code_r1_002CAFD8.h"
 
 s32 evtCallStop(titleData_t *pData) {
     if (!(pData->flag & 0x40)) {
@@ -61,17 +63,43 @@ s32 TitleFirstDrawProcess(dds3ProcessID_t *PID) {
     return ret;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", TitleCesaInit);
+s32 TitleCesaInit(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
 
-INCLUDE_ASM(const s32, "code_0035B048", evtLeaf32);
+    data->WaitTimer = 0;
+    dds3FadeIn(0, 0, 0, 30);
+    return 1;
+}
+
+s32 evtLeaf32(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0035B048", TitleAtlusLogoCalcProcess);
 
-INCLUDE_ASM(const s32, "code_0035B048", TitleAtlusLogoDrawProcess);
+s32 TitleAtlusLogoDrawProcess(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+    s32 ret;
 
-INCLUDE_ASM(const s32, "code_0035B048", evtCallGetProcessData31);
+    itfDrawGridWithResolvedSlot(1648, 1352, 0, 0, data->sprite[0], 1, 104);
+    ret = jmsSeqChange(&data->panel, &data->seqUnit, 1, PID);
+    jmsSeqChange(&data->panel, &data->seqUnit, 2, PID);
+    return ret;
+}
 
-INCLUDE_ASM(const s32, "code_0035B048", evtLeaf33);
+s32 evtCallGetProcessData31(dds3ProcessID_t *PID) {
+    titleData_t *data = dds3GetProcessData(PID);
+
+    data->WaitTimer = 0;
+    dds3FadeIn(0, 0, 0, 30);
+    return 1;
+}
+
+s32 evtLeaf33(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0035B048", evtBStartSelectionChainAfterFade);
 
@@ -99,7 +127,10 @@ s32 TitleMovieInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", evtLeaf34);
+s32 evtLeaf34(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0035B048", evtCallGetProcessData33);
 
@@ -127,6 +158,9 @@ s32 rstCallGetProcessData29(dds3ProcessID_t *PID) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035B048", rstLeaf10);
+s32 rstLeaf10(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0035B048", rstLvUpWaitCalcProcess);

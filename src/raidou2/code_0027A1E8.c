@@ -2,6 +2,9 @@
 #include "sbtlWork.h"
 #include "sBtlSM.h"
 #include "sBtlAI.h"
+#include "sBtlUnit.h"
+#include "sdk_libc.h"
+#include "scrScriptProcess.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -51,7 +54,10 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetCombine);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlLeaf63);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlNormalProcNakamaSub);
+s32 sbtlNormalProcNakamaSub(struct SBTLUNIT_WORK *wk)
+{
+    return wk->status < 3;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSummonKey);
 
@@ -252,7 +258,20 @@ INCLUDE_ASM(const s32, "code_0027A1E8", CheckAIScript);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlLeaf64);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", Create_sbtlAI);
+SBTLAI_WORK *Create_sbtlAI(void)
+{
+    sdfMemHandle_t *handle;
+    SBTLAI_WORK *aiwk;
+
+    handle = sdfMemAllocDirect(sizeof(SBTLAI_WORK));
+    aiwk = sdfMemLock(handle);
+    memset(aiwk, 0, sizeof(SBTLAI_WORK));
+    aiwk->handle = handle;
+    aiwk->mode = 0;
+    aiwk->stat = 1;
+    aiwk->field4C = 0;
+    return aiwk;
+}
 
 s32 Proc_sbtlAI(SBTLAI_WORK *aiwk)
 {
@@ -280,9 +299,20 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetAIMode);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckActionEquationSub);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlProcScript);
+s32 sbtlProcScript(struct SBTLUNIT_WORK *wk)
+{
+    if (wk == NULL || (wk->status == 10 && !(wk->aiwk->scrflag & 0x120000)) || wk->status == 11
+        || wk->status == 14 || wk->model->mode == 9 || wk->status == 30 || wk->mode < 5) {
+        return 0;
+    }
+    return CheckAIScript(wk);
+}
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCreateAIScript);
+s32 sbtlCreateAIScript(void)
+{
+    wk_sbtl->hAIScript = scrRegistScript2(ai_scr);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallReleaseScript);
 

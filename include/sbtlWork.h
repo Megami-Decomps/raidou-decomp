@@ -14,7 +14,11 @@ struct sprHandle_t;
 
 /* Battle reward work, cleared by sbtlInitDropWork. The R1 layout differs from HD's and is not read yet. */
 typedef struct SBTLDROP_WORK {
+#ifdef VERSION_RAIDOU2
+    u8 pad00[0xF4];
+#else
     u8 pad00[0xC4];
+#endif
 } SBTLDROP_WORK;
 
 /* HD SBTLCAMERA_WORK, the head of SBTL_WORK; the PS2 layout starts at targetpos. */
@@ -95,6 +99,60 @@ struct SBTL_STP;
 struct SBTLEFF_WORK;
 struct scrProcessWork_s;
 
+#ifdef VERSION_RAIDOU2
+/* Partial raidou2 layout of the battle main work: only the fields read so far are named, the rest is padding. */
+typedef struct SBTL_WORK {
+    u8 pad000[0x400];
+    fileRequest_t *panelPack;
+    u32 panelPackPos;
+    s32 panelPackLen;
+    u8 pad40C[0x1C];
+    dds3ProcessID_t *process;
+    u8 pad42C[0x10];
+    u32 flg;
+    u32 flg2;
+    u8 pad444[0x10];
+    s32 targetUnitID;
+    u16 hitMdlNo; /* next mdl resource number for hit models (type 7) */
+    s16 battleMode;
+    s32 stageNo;
+    struct SBTLUNIT_LISTWORK *unitList;
+    u8 pad464[0x18];
+    s16 evtloadst;
+    u8 pad47E[0x2];
+    sdfMemHandle_t *evtloadHandle;
+    fileRequest_t *evtloadFile; /* /battle/event/sb_btlevent.bf */
+    u8 *evtloadpData;
+    u8 pad48C[0x114];
+    struct SBTLUNIT_LISTWORK *list2D4;
+    u8 pad5A4[0x148];
+    SBTLVIBE_WORK vibe[2];
+    s32 vibe_startf[2];
+    s32 vibe_frame[2];
+    u8 vibe_power[2];
+    u8 vibe_type[2];
+    u8 pad728[0x10];
+    struct SBTLDMG_HITLISTWORK *hitList;
+    u8 pad73C[0x4];
+    struct SBTLEFF_LISTWORK *effList;
+    u8 pad744[0x20];
+    s32 field424;
+    u8 pad768[0xE];
+    s16 field436;
+    u8 pad778[0x8];
+    s16 field440;
+    u8 pad782[0xFE];
+    SBTLDROP_WORK drop;
+    u8 pad880[0x9BC - 0x880 - sizeof(SBTLDROP_WORK)];
+    SBTL_PANEL *panel;
+    u8 pad9C0[0x4];
+    struct SBTL_FIELD630_WORK *field630;
+    u8 pad9C8[0x1C];
+    struct scrProcessWork_s *hAIScript;
+    u8 pad9E8[0x4];
+    struct SBTLUNIT_WORK *scrUnit;
+} SBTL_WORK;
+#else
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
 typedef struct SBTL_WORK {
     SBTLCAMERA_WORK camera;
@@ -337,6 +395,7 @@ typedef struct SBTL_WORK {
 } SBTL_WORK;
 
 typedef char SBTL_WORKSizeCheck[sizeof(SBTL_WORK) == 0x87C ? 1 : -1];
+#endif
 
 extern SBTL_WORK *wk_sbtl;
 

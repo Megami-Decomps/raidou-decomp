@@ -713,7 +713,6 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboTask);
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapEnemy_SetFAtk_PlayerDir);
 #endif
 
-#ifdef VERSION_RAIDOU1
 void mapSummonDvInit(void) {
     s32 i;
 
@@ -724,16 +723,17 @@ void mapSummonDvInit(void) {
         mapWork3[i] = 0;
     }
     map_summondv_buff_read_idx = 0;
+#ifdef VERSION_RAIDOU1
     map_summondv_buff_add_idx = 32;
+#else
+    map_summondv_buff_add_idx = 16;
+#endif
     map_summondv_pos[0] = 0.0f;
     map_summondv_pos[1] = 0.0f;
     map_summondv_pos[2] = 0.0f;
     mapSummonDvTaskData2 = 10.0f;
     map_summondv_rot = 0.0f;
 }
-#else
-INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvInit);
-#endif
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAtumaru);
 

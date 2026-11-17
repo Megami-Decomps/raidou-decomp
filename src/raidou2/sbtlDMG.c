@@ -5,6 +5,9 @@
 #include "code_r1_0021CE60.h"
 #include "sdfQuat.h"
 #include "sdk_libc.h"
+#include "dds3SceneBasic.h"
+#include "sBtlUnit.h"
+#include "sBtlCalc.h"
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCalcInOutPara);
 
@@ -100,11 +103,51 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallMemset6);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCreateHitC_None);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlAddSerialID2);
+void sbtlAddSerialID2(void) {
+    wk_sbtl->hitList->serialID2++;
+    if (wk_sbtl->hitList->serialID2 >= 0x7FFF) {
+        wk_sbtl->hitList->serialID2 = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetApos12);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlResetHitPos_XYZ);
+INCLUDE_RODATA(const s32, "sbtlDMG", sbtlCallMemset6Table);
+
+INCLUDE_RODATA(const s32, "sbtlDMG", sbtlSetApos12Table);
+
+s32 sbtlResetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, struct SBTLEFF_WORK *ewk, struct SBTLSKILLHIT_POSWORK *pwk, sdfVector4_t *pos, sdfVector4_t *rot, u16 tbltype) {
+    sdfVector4_t scale = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+    if (twk->skillid == 450) {
+        return 1;
+    }
+    sbtlSetHitPos_XYZ(wk, twk, ewk, pwk, pos, rot, tbltype);
+    if (twk->flg & 0x100) {
+        if (twk->flg & 0x1000) {
+            SDF_VU0_LOADVECTOR(&scale);
+            SDF_VU0_STOREVECTOR(&twk->pBasic->poseset->scl);
+            SDF_VU0_LOADVECTOR(&twk->rot);
+            SDF_VU0_STOREVECTOR(&twk->pBasic->poseset->rot);
+            SDF_VU0_LOADVECTOR(&twk->pos);
+            SDF_VU0_STOREVECTOR(&twk->pBasic->poseset->pos);
+            SDF_VU0_LOADVECTOR(&twk->pos);
+            SDF_VU0_STOREVECTOR(&twk->iwk.apos);
+            twk->iwk.addtime = 1.0f / twk->life;
+            wk_sbtl->hitMdlNo++;
+        } else {
+            twk->targetID = wk->model->field104;
+            SDF_VU0_LOADVECTOR(&wk->rot);
+            SDF_VU0_STOREVECTOR(&twk->rot);
+            SDF_VU0_LOADVECTOR(&twk->pos);
+            SDF_VU0_STOREVECTOR(&twk->iwk.apos);
+            sbtlSetApos12(&twk->pos, &twk->endpos, &twk->rot, twk->hittbl, &twk->iwk.apos0, &twk->iwk.apos1);
+            twk->spd = twk->sokudo;
+            twk->iwk.addtime = 0.0f;
+        }
+    }
+    return 1;
+}
 
 s32 sbtlSetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, struct SBTLEFF_WORK *ewk, struct SBTLSKILLHIT_POSWORK *pwk, sdfVector4_t *pos, sdfVector4_t *rot, u16 tbltype) {
     sdfVector4_t ofs;
@@ -144,12 +187,6 @@ s32 sbtlSetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, str
     SDF_VU0_STOREVECTOR(rot);
     return 1;
 }
-
-INCLUDE_RODATA(const s32, "sbtlDMG", sbtlCallMemset6Table);
-
-INCLUDE_RODATA(const s32, "sbtlDMG", sbtlSetApos12Table);
-
-INCLUDE_RODATA(const s32, "sbtlDMG", sbtlResetHitPos_XYZTable);
 
 INCLUDE_RODATA(const s32, "sbtlDMG", sbtlSetHitPosTable);
 
@@ -211,7 +248,61 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallColorSet3);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlDrawAttachEPL);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlReleaseHitC_List);
+s32 sbtlReleaseHitC_List(struct SBTLDMG_HITLISTWORK *lwk, u8 flg) {
+    struct SBTLDMG_HITWORK *hwk;
+    struct SBTLDMG_HITWORK *next;
+
+    if (wk_sbtl->hitList == NULL) {
+        return 0;
+    }
+    hwk = lwk->wk;
+    if (hwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            hwk->st = 2;
+        }
+        if (hwk->st == 2) {
+            if (hwk->prev != NULL) {
+                hwk->prev->next = hwk->next;
+            }
+            if (hwk->next != NULL) {
+                hwk->next->prev = hwk->prev;
+            }
+            if (hwk->prev == NULL) {
+                lwk->wk = hwk->next;
+                if (lwk->wk != NULL) {
+                    lwk->wk->prev = NULL;
+                }
+            }
+            next = hwk->next;
+            if (hwk->lwk != NULL) {
+                sbtlDeleteUnitList(hwk->lwk);
+                hwk->lwk = NULL;
+            }
+            if (hwk->pBasic != NULL) {
+                dds3DeleteSceneBasicData(hwk->pBasic);
+                hwk->pBasic = NULL;
+                hwk->hEveUnit = NULL;
+            }
+            if (hwk->hPartsList != NULL) {
+                effPartsDelete(hwk->hPartsList);
+                hwk->hPartsList = NULL;
+            }
+            if (hwk->hitlwk != NULL) {
+                sbtlDeleteUnitList(hwk->hitlwk);
+                hwk->hitlwk = NULL;
+            }
+            sdfMemFreeDirect(hwk->handle);
+            hwk = next;
+            lwk->num--;
+        } else {
+            hwk = hwk->next;
+        }
+    } while (hwk != NULL);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlDeleteHitList);
 
@@ -221,7 +312,41 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlCheckTargetList_csr);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCreateTargetList_csr);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCheckHitArea);
+s32 sbtlCheckHitArea(struct SBTLDMG_HITWORK *wk, SKLID skillid) {
+    struct SBTLUNIT_WORK *unit;
+    BST bst;
+    s32 i;
+
+    wk->lwk = sbtlCreateUnitList(48);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit == NULL) {
+            continue;
+        }
+        if (!(unit->field414 & SBTLUNIT_SIDE_MASK & wk->side)) {
+            continue;
+        }
+        if (!CheckDamageTarget(unit, wk, skillid)) {
+            continue;
+        }
+        bst = sbtlGetBadStatus(&unit->unit);
+        if ((wk->area & 0x1000) || bst == BST_BOUDO || bst == BST_MAHUU || wk->tchangeflg == 1) {
+            if (wk->acterID == unit->field1A0) {
+                continue;
+            }
+            if (wk->actID == unit->field1A0) {
+                continue;
+            }
+            if ((unit->flg & 0x800) && wk->actID == unit->field492) {
+                continue;
+            }
+            sbtlEntryUnitList(wk->lwk, unit);
+        } else if (!(unit->vstatus & 0x10000)) {
+            sbtlEntryUnitList(wk->lwk, unit);
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlGetSkilltbl7);
 
@@ -233,7 +358,15 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlGetSide);
 
 INCLUDE_ASM(const s32, "sbtlDMG", CheckDamageTarget);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCheckPlayerDead);
+s32 sbtlCheckPlayerDead(void) {
+    struct SBTLUNIT_WORK *wk;
+
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (wk != NULL && (wk->status == 34 || wk->status == 10 || wk->status == 40)) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCheckDamageTarget_Skilltbl);
 

@@ -416,7 +416,18 @@ void mapMenuShutdown(dds3ProcessID_t *PID) {
 
 INCLUDE_ASM(const s32, "code_001A5D20", mapMenuProcessStart);
 
-INCLUDE_ASM(const s32, "code_001A5D20", awdMenuProcessEnd);
+void awdMenuProcessEnd(void) {
+    tagMAP_MENU_WORK *wk;
+
+    if (mapMenuProcessCheckData != NULL && dds3ExistProcess(mapMenuProcessCheckData)) {
+        wk = dds3GetProcessData(mapMenuProcessCheckData);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 3;
+            wk->count = 0;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001A5D20", mapMenuProcessCheck);
 

@@ -66,7 +66,16 @@ void evtBitAllOff_FieldDebug(void) {
     } while (i < 0x1000);
 }
 #else
-INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff);
+void evtBitAllOff(void) {
+    s32 i = 0xFF;
+    u32 *word = DDS3_GBWK->EventBit;
+
+    do {
+        i -= 1;
+        *word = 0;
+        word += 1;
+    } while (i >= 0);
+}
 
 INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff_FieldDebug);
 #endif

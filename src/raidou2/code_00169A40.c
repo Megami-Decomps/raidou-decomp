@@ -267,7 +267,9 @@ INCLUDE_ASM(const s32, "code_00169A40", mapSeNakamaDelayTask);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapSeWallHit);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapTakaraOpen);
+void mapTakaraOpen(void) {
+    takara_openanm_objid = -1;
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapNowAnmRe);
 

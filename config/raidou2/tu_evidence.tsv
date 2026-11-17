@@ -282,7 +282,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0027A1D0	0027A1D0	code_0027A1D0	c	dds:1 of 1	
 0027A1E8	002881A0	code_0027A1E8	c	none	
 00288200	00288200	code_00288200	c	dds:1 of 1	
-00288220	0028AD38	code_00288220	asm	none	
+00288220	0028AD38	code_00288220	c	none	
 0028AD40	0028AD40	code_r1_002692F0	c	dds:1 of 1	
 0028AD68	002A93C8	sbtlActAI	c	none	
 002A9518	002A9548	code_r1_0027CBE8	c	dds:2 of 2	
@@ -384,7 +384,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003DABA0	003DABA0	code_003DABA0	asm	none	
 003DABA8	003DD410	sdf/sdfVu1	c	smt3:names:38 of 38	sdf/sdfVu1
 003DD540	003DDF48	sdf/sdfCoreDraw	c	smt3:names:4 of 7	sdf/sdfCoreDraw
-003DDFE0	003DDFE0	code_003DDFE0	asm	none	
+003DDFE0	003DDFE0	code_003DDFE0	c	none	
 003DDFE8	003DE198	sdf/sdf2D	c	smt3:names:5 of 7	sdf/sdf2D
 003DE1F8	003DEBD8	sdf/sdf3D	c	smt3:names:8+smt3:map:1 of 11	sdf/sdf3D
 003DEC98	003DEEC0	sdf/sdf3DPrim	c	smt3:names:5 of 5	sdf/sdf3DPrim

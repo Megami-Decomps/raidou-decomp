@@ -5,6 +5,7 @@
 #include "sdk_libc.h"
 #include "code_002929C8.h"
 #include "code_00291C78.h"
+#include "sBtlSkill.h"
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", OnDataLoadProc);
 
@@ -77,7 +78,25 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckEffectData_SeOnly);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlGetSkilltbl16);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckEffectData_Core);
+s32 CheckEffectData_Core(struct SBTLUNIT_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SKLID sklid)
+{
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if (sbtlGetSkilltbl(sklid)->area & 0x4000) {
+        if ((wk->flg & 0x8800) == 0x8800 || ((wk->flg & 0x1000) && wk->unit.devilId == 626)) {
+            for (i = 0; i < wk_sbtl->unitList->number;) {
+                unit = wk_sbtl->unitList->pUnitL[i++].pUnit;
+                if (unit != NULL && (unit->flg & 0xC800) == 0x8800 && unit->field498 != 0) {
+                    sbtlEntryUnitList(lwk, unit);
+                    return 1;
+                }
+            }
+        }
+    }
+    sbtlEntryUnitList(lwk, wk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", SetDamageProc);
 
@@ -91,7 +110,17 @@ INCLUDE_RODATA(const s32, "sbtlEff_00289E50", SetEffectPosTable);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", SetEffectPos);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectData_Num);
+void sbtlGetEffectData_Num(void)
+{
+    SBTLEFF_LISTWORK *lwk = wk_sbtl->effList;
+
+    if (lwk != NULL) {
+        lwk->serialID2++;
+        if (lwk->serialID2 > 0xFFFE) {
+            lwk->serialID2 = 0;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectSerialID2_Now);
 
@@ -353,7 +382,13 @@ SBTL_FIELD630_WORK *sbtlCallMemAllocDirect4(void)
     return wk;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl42);
+s32 sbtlRefSbtl42(SBTL_FIELD630_WORK *wk)
+{
+    if (wk_sbtl->field630 == NULL) {
+        return 0;
+    }
+    return wk->num > 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemFreeDirect4);
 
@@ -420,7 +455,23 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteSTPList);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", Check_SupportAction);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl45);
+void sbtlRefSbtl45(void) {
+    SBTL_PANEL *panel = sbtlCallMemAllocDirect5();
+
+    panel->resources = NULL;
+    panel->hPanelSpr2 = NULL;
+    panel->hPanelSpr3 = NULL;
+    panel->hPanelSpr4 = NULL;
+    panel->hPanelSpr5 = NULL;
+    wk_sbtl->panel = panel;
+    panel->mds_waku0.x = 314;
+    panel->mds_waku0.y = 2;
+    panel->mds_waku1.x = 314;
+    panel->mds_waku1.y = 2;
+    panel->mds_light.x = 297;
+    panel->mds_light.y = 0;
+    wk_sbtl->field630 = sbtlCallMemAllocDirect4();
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl46);
 
@@ -428,7 +479,21 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemAllocDirect5);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemFreeDirect5);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl47);
+s32 sbtlRefSbtl47(void) {
+    SBTL_PANEL *panel;
+
+    if (wk_sbtl == NULL || (panel = wk_sbtl->panel) == NULL) {
+        return 0;
+    }
+    if (!(panel->flg & 2)) {
+        return 0;
+    }
+    sbtlLeaf77(panel);
+    sbtlFunc13();
+    sbtlCallCommandFLDSETTAKARAOPEN();
+    sbtlRefSbtl42(wk_sbtl->field630);
+    return 1;
+}
 
 s32 sbtlFunc13(void)
 {

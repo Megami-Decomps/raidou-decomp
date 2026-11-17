@@ -8,8 +8,18 @@
 #include "code_r1_0021CE60.h"
 #include "sdfFile.h"
 #include "sdfSystem.h"
+#include "code_002929C8.h"
+#include "evt.h"
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckLoadFlg);
+s32 sbtlCheckLoadFlg(void) {
+    u32 load;
+
+    if (wk_sbtl == NULL || wk_sbtl->panel == NULL) {
+        return 0;
+    }
+    load = wk_sbtl->panel->flg & 2;
+    return load != 0;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallMemFreeDirect2);
 
@@ -46,7 +56,10 @@ s32 sbtlLeaf77(struct SBTL_PANEL *panel) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf78);
+s32 sbtlLeaf78(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf79);
 
@@ -62,7 +75,10 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlRefSbtl50);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID12);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallRefSbtl51);
+u32 sbtlCallRefSbtl51(void) {
+    sbtlSummonMenuProc(sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID));
+    return 1;
+}
 
 INCLUDE_RODATA(const s32, "code_002C5D78", sbtlRefSbtl50Table);
 
@@ -128,13 +144,54 @@ s32 sbtlCheckTutorialBattle(void) {
     return evtBitCheck(2100) != 0;
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallStartRain);
+s32 sbtlCallStartRain(void) {
+    s32 ret = 1;
+
+    if (wk_sbtl->stageNo == 26) {
+        switch (evtCallGetProcessData29()) {
+        case 0:
+            evtStartRain(1);
+            ret = 0;
+            break;
+        case 1:
+            ret = 0;
+            break;
+        case 2:
+            ret = 1;
+            break;
+        }
+    }
+    return ret;
+}
 
 INCLUDE_RODATA(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID26Table);
 
 INCLUDE_RODATA(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID26Table2);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlBattleEventSb);
+s32 sbtlBattleEventSb(void) {
+    if (wk_sbtl->flg & 0x10000000) {
+        return 1;
+    }
+    switch (wk_sbtl->evtloadst) {
+    case 0:
+        wk_sbtl->evtloadFile = fileLoad("/battle/event/sb_btlevent.bf");
+        wk_sbtl->evtloadst++;
+        break;
+    case 1:
+        if (wk_sbtl->evtloadpData == NULL && pacFileCheckEnd(wk_sbtl->evtloadFile)) {
+            wk_sbtl->evtloadHandle = fileGetMemHandle(wk_sbtl->evtloadFile);
+            wk_sbtl->evtloadpData = sdfMemLock(wk_sbtl->evtloadHandle);
+            fileHandleFree(wk_sbtl->evtloadFile);
+            wk_sbtl->evtloadFile = NULL;
+            wk_sbtl->flg |= 0x10000000;
+            return 1;
+        }
+        break;
+    default:
+        return 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlFreeUIScene);
 
@@ -235,7 +292,14 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetEncountData4);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf34);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetactcounter);
+void sbtlSetactcounter(struct SBTLUNIT_WORK *wk)
+{
+    f32 rate[5] = { 0.25f, 0.5f, 1.0f, 1.0f, 2.0f };
+
+    if (wk->field414 & 1) {
+        wk->actMax = wk->actMax * rate[wk->unit.seikaku];
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlInitSBtlSub);
 
@@ -353,6 +417,4 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlEntryItemList);
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlEntryItemList_Type);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlReleaseItemList);
-
-INCLUDE_RODATA(const s32, "code_002C5D78", sbtlSetactcounterTable);
 

@@ -3,6 +3,7 @@
 #include "sBtlSkill.h"
 #include "sdk_libc.h"
 #include "sBtlEXP.h"
+#include "sbtlWork.h"
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckMsgMemType);
 
@@ -22,7 +23,10 @@ SBTLEXP_LISTWORK *InitTarSelProcessData(void)
     return lwk;
 }
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlInitDropWork);
+void sbtlInitDropWork(void)
+{
+    memset(&wk_sbtl->drop, 0, sizeof(wk_sbtl->drop));
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetAutoSkillPoint);
 

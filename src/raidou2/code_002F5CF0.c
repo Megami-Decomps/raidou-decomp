@@ -5,6 +5,7 @@
 #include "sBtlDraw.h"
 #include "frFont.h"
 #include "sBtlMenu.h"
+#include "code_r1_001CC1D0.h"
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf7);
 
@@ -333,7 +334,24 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSpriteEx);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSprite);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlNum);
+void sbtlNum(s32 a_x, s32 a_y, u32 a_color, u8 a_alpha, s32 a_num, DDS3_OT a_ot) {
+    s32 i = 0;
+    s32 figure = itfGetFigure(a_num);
+    s32 sprNo;
+    s32 j;
+
+    for (; i < figure; i++) {
+        sprNo = itfGetFigureNum(a_num, figure - i);
+        if (sprNo >= 0) {
+            sprNo += 70;
+            for (j = 0; j < 4; j++) {
+                wk_sbtl->panel->hPanelSpr3->workEntries[sprNo].geometry.cornerColors[j] = a_color;
+            }
+            sbtlSpriteEx(a_x, a_y, a_alpha, sprNo, a_ot);
+            a_x += 9;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallGetFigure);
 

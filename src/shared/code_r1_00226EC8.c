@@ -11424,24 +11424,18 @@ typedef char sbtlEffLightParamSizeCheck[(sizeof(sbtlEffLightParam_t) == 0x20) ? 
 
 extern s8 sbtlLeaf51Data;
 
-#ifdef VERSION_RAIDOU1
 s32 sbtlEffSetActer(s32 id) {
     sbtleffbo_acter = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlEffSetActer);
-#endif
 
 #ifdef VERSION_RAIDOU1
 /* body: matched in raidou @ 1424963: src/shared/code_r1_00226EC8.c:11073, near, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
+#endif
 s32 sbtlEffSetTarget(s32 id) {
     sbtleffbo_target = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlEffSetTarget);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlEffCreateUnitList);
 

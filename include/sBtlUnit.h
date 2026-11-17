@@ -18,6 +18,32 @@ struct fileRequest;
 struct sdfMemHandle_t;
 struct effRefObj_t;
 
+#ifdef VERSION_RAIDOU2
+/* Partial raidou2 layout: only the fields read so far are named, the rest is padding. */
+typedef struct SBTLUNIT_MODEL {
+    u8 pad000[0x90];
+    sdfVector4_t scrPos3;
+    u8 pad0A0[0x6C];
+    u16 mode;
+    u8 pad10E[0x2];
+    u32 flags;
+    u8 pad114[0x8];
+    s32 field104;
+    u8 pad120[0x8];
+    s32 frame;
+    s32 cmpframe;
+    u8 pad130[0x16];
+    u16 stat;
+    f32 field11C;
+    f32 field120;
+    u8 pad150[0x34];
+    s8 dataflg;
+    u8 pad185[0x3];
+    s32 datamode;
+    s32 data_p[2];
+    s32 ai_target[3]; /* unit IDs found by sbtlCallBtlCreateSideList2 (HD ai_target) */
+} SBTLUNIT_MODEL;
+#else
 typedef struct SBTLUNIT_MODEL {
     sdfVector4_t vec00;
     u8 pad010[0x10];
@@ -68,6 +94,7 @@ typedef struct SBTLUNIT_MODEL {
     u32 chkskl[19]; /* 0x1D8: skill-checked bits (HD chkskl), up to field224 */
     s32 field224;
 } SBTLUNIT_MODEL;
+#endif
 
 struct SBTLUNIT_WORK;
 
@@ -229,13 +256,69 @@ extern s32 sbtlBtlCheckMotionNoSubData[][56];
 #ifdef VERSION_RAIDOU2
 /* Partial raidou2 layout: only the fields read so far are named, the rest is padding. */
 struct SBTLUNIT_WORK {
-    u8 pad000[0x1E8];
+    u8 pad000[0x40];
+    sdfVector4_t mv_spd;
+    u8 pad050[0x10];
+    sdfVector4_t mv_spdbk;
+    sdfVector4_t pos;
+    sdfVector4_t rot;
+    u8 pad090[0xE0];
+    SBTLSOUND_DEVILWORK se;
+    u8 pad170[0x1D4 - 0x170 - sizeof(SBTLSOUND_DEVILWORK)];
+    struct sdfMemHandle_t *handle;
+    struct fileRequest *pacHandle;
+    s32 GroupID;
+    s32 field1A0;
+    u16 mode;
+    u8 pad1E6[0x2];
     sdatUnitWork_t unit;
-    u8 pad2F8[0x4BC - 0x1E8 - sizeof(sdatUnitWork_t)];
+    u8 pad1E8[0x3F4 - 0x1E8 - sizeof(sdatUnitWork_t)];
+    sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
+    u8 pad3F4[0x4BC - 0x3F4 - sizeof(sdatParaWork_t)];
     s32 major;
     s32 minor;
-    u8 pad4C4[0x534 - 0x4C4];
+    s32 motionno;
+    s32 motionID;
+    f32 m_rate;
+    u8 pad4D0[0x4];
+    s16 fade_sttime;
+    s16 fadecnt;
+    s32 fadepara;
+    s32 cmpfade;
+    u32 color;
+    u8 pad4E4[0x18];
+    s32 next_motionno;
+    u8 pad500[0x8];
+    struct dds3Basic_t *pBasic;
+    struct evtUnit_t *hEveUnit;
+    struct mdlObj_t *hModel;
+    s8 gstat;
+    s8 changeflg;
+    u8 pad516[0x1A];
+    u8 field414;
+    u8 pad531[0x3];
     u32 flg;
+    u32 vstatus;
+    u32 flg2;
+    u8 pad540[0x8];
+    f32 angleY;
+    f32 deg;
+    s16 degcnt;
+    u8 pad552[0x2];
+    u32 status;
+    u8 pad558[0x14];
+    SKLID skillid;
+    u8 pad570[0x40];
+    struct SBTLUNIT_MODEL *model;
+    struct SBTLAI_WORK *aiwk;
+    s16 actCounter;
+    s16 actMax;
+    u8 pad5BC[0x2];
+    s16 field492; /* compared with a hit's actID when flg & 0x800 */
+    u8 pad5C0[0x4];
+    s16 field498;
+    u8 pad5C6[0x6E];
+    SBTL_PACDATA_HITLIST hitwk;
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */

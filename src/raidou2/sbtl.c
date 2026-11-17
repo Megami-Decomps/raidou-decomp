@@ -1,6 +1,7 @@
 #include "common.h"
 #include "newdata.h"
 #include "sBtlDvltk.h"
+#include "sbtlWork.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
@@ -68,7 +69,10 @@ INCLUDE_ASM(const s32, "sbtl", sbtlLeaf103);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf87);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf118);
+s32 sbtlLeaf118(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlSearchUnitID35);
 
@@ -393,7 +397,16 @@ INCLUDE_ASM(const s32, "sbtl", sbtlDrawTextFont);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlBtlDrawTextSub2);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetSpriteHandle);
+struct sprHandle_t *sbtlGetSpriteHandle(void)
+{
+    if (sbtlData104 == NULL) {
+        if (wk_sbtl->panel != NULL) {
+            return wk_sbtl->panel->hPanelSpr5;
+        }
+        return NULL;
+    }
+    return sbtlData105;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlExt_CalcProcess);
 

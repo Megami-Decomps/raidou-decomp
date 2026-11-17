@@ -3,22 +3,111 @@
 #include "sbtlWork.h"
 #include "ps2asm.h"
 #include "sdfQuat.h"
+#include "dds3PadManager.h"
+#include "sBtlUnit.h"
+#include "event.h"
+#include "sdfModel.h"
+#include "sBtlScript.h"
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlSetVibeFadeIn);
+s32 sbtlSetVibeFadeIn(s32 index, u8 power, s32 frame) {
+    wk_sbtl->vibe_startf[index] = frame;
+    wk_sbtl->vibe_frame[index] = frame;
+    wk_sbtl->vibe_power[index] = power;
+    wk_sbtl->vibe_type[index] = 1;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlSetVibeFadeOut);
+s32 sbtlSetVibeFadeOut(s32 index, u8 power, s32 frame) {
+    wk_sbtl->vibe_startf[index] = frame;
+    wk_sbtl->vibe_frame[index] = frame;
+    wk_sbtl->vibe_power[index] = power;
+    wk_sbtl->vibe_type[index] = 0;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlStopVibe);
+void sbtlStopVibe(void) {
+    wk_sbtl->vibe_startf[0] = 0;
+    wk_sbtl->vibe_frame[0] = 0;
+    wk_sbtl->vibe_power[0] = 0;
+    wk_sbtl->vibe_type[0] = 0;
+    wk_sbtl->vibe_startf[1] = 0;
+    wk_sbtl->vibe_frame[1] = 0;
+    wk_sbtl->vibe_power[1] = 0;
+    wk_sbtl->vibe_type[1] = 0;
+    dds3PadActAllStop();
+}
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlUpdateVibe);
+void sbtlUpdateVibe(void) {
+    s32 i;
+    f32 rate;
 
-INCLUDE_ASM(const s32, "sbtlSub", SetVibe);
+    for (i = 0; i < 2; i++) {
+        if (wk_sbtl->vibe_power[i] == 0) {
+            continue;
+        }
+        if (wk_sbtl->vibe_frame[i] > 0 && wk_sbtl->vibe_startf[i] > 0) {
+            rate = (f32)wk_sbtl->vibe_frame[i] / (f32)wk_sbtl->vibe_startf[i];
+            if (wk_sbtl->vibe_type[i]) {
+                rate = 1.0f - rate;
+            }
+            dds3PadAct(i, wk_sbtl->vibe_power[i] * rate, 100);
+            wk_sbtl->vibe_frame[i]--;
+        } else if (wk_sbtl->vibe_type[i] == 1) {
+            dds3PadAct(i, wk_sbtl->vibe_power[i], 100);
+        } else {
+            dds3PadAct(i, 0, 0);
+            wk_sbtl->vibe_startf[i] = 0;
+        }
+    }
+}
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlCalcVibe);
+s32 SetVibe(s32 in, s32 life, s32 out, s32 power) {
+    s32 i;
+
+    sbtlStopVibe();
+    for (i = 0; i < 2; i++) {
+        wk_sbtl->vibe[i].in = in;
+        wk_sbtl->vibe[i].out = out;
+        wk_sbtl->vibe[i].life = life;
+        wk_sbtl->vibe[i].power = power;
+        wk_sbtl->vibe[i].count = 0;
+    }
+    return 1;
+}
+
+s32 sbtlCalcVibe(void) {
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        if (wk_sbtl->vibe[i].life < wk_sbtl->vibe[i].out) {
+            return 0;
+        }
+        if (wk_sbtl->vibe[i].count == 0) {
+            sbtlSetVibeFadeIn(i, wk_sbtl->vibe[i].power, wk_sbtl->vibe[i].in);
+        }
+        if (wk_sbtl->vibe[i].life > 0 && wk_sbtl->vibe[i].count == wk_sbtl->vibe[i].life - wk_sbtl->vibe[i].out) {
+            sbtlSetVibeFadeOut(i, wk_sbtl->vibe[i].power, wk_sbtl->vibe[i].out);
+        }
+        wk_sbtl->vibe[i].count++;
+        wk_sbtl->vibe[i].count = (wk_sbtl->vibe[i].count <= 0) ? 0 : (wk_sbtl->vibe[i].count > 0x7FFF) ? 0x7FFF : wk_sbtl->vibe[i].count;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlSub", sbtlGetUnitHelperPos);
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetUnitHelperMatrix);
+s32 sbtlGetUnitHelperMatrix(struct SBTLUNIT_WORK *wk, SBTLUNIT_MARK mark) {
+    if (GetUnitHelperMatrix(wk, mark)) {
+        return 1;
+    }
+    if (wk->hModel != NULL && (!(wk->flg & 0x40) || !wk->changeflg)) {
+        sdfModelEvalTm(wk->hEveUnit->owner->inner);
+        sdfModelGetMarkPosMatrix_sdfModel(wk->hEveUnit->owner->inner, mark);
+        return 1;
+    }
+    SDF_VU0_LOADIDENTITY();
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlSub", sbtlGetQuatFromMatrix);
 
@@ -26,7 +115,17 @@ INCLUDE_ASM(const s32, "sbtlSub", sbtlQuatFromVector);
 
 INCLUDE_ASM(const s32, "sbtlSub", sbtlGetUnitDeg);
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlAddUnitDeg);
+void sbtlAddUnitDeg(struct SBTLUNIT_WORK *wk, f32 deg) {
+    wk->angleY += deg;
+    while (wk->angleY >= 360.0f || wk->angleY < 0.0f) {
+        if (wk->angleY >= 360.0f) {
+            wk->angleY -= 360.0f;
+        }
+        if (wk->angleY < 0.0f) {
+            wk->angleY += 360.0f;
+        }
+    }
+}
 
 s32 sbtlGetRotateDeg(const sdfVector4_t *rot, f32 deg) {
     f32 axis[4] = { 0.0f, 1.0f, 0.0f, 1.0f };

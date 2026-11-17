@@ -8,6 +8,7 @@
 #include "Quest.h"
 #include "mselGlobal.h"
 #include "scrTraceCode.h"
+#include "itf.h"
 
 void fldCallMemGetPtr7(dds3ProcessID_t *id) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
@@ -69,7 +70,9 @@ void fldNameNameSpr(fldNmeDraw_t *draw) {
     sdfMemFreeDelayedDirect(allocation);
 }
 
-INCLUDE_ASM(const s32, "code_0035E5B8", fldLeaf29);
+void fldLeaf29(fldNmeDraw_t *draw, s32 x, s32 y, s32 z, u32 alpha, s16 *list) {
+    itfDrawMiscSpriteList(x, y, z, alpha, draw->hSpr, 104, (itfSprList_t *)list);
+}
 
 INCLUDE_ASM(const s32, "code_0035E5B8", SetSelect);
 
@@ -290,7 +293,12 @@ INCLUDE_ASM(const s32, "code_0035E5B8", fclLeaf19);
 
 INCLUDE_ASM(const s32, "code_0035E5B8", fclLeaf20);
 
-INCLUDE_ASM(const s32, "code_0035E5B8", fclFunc8);
+void fclFunc8(fldNmeDraw_t *draw, s32 row) {
+    fldCallEnableMode(60, 239, 0, fclFunc8Data2[1]);
+    fldCallEnableMode(117, 271, 0, fclFunc8Data2[2]);
+    fldCallEnableMode(117, 297, 0, fclFunc8Data2[3]);
+    fldLeaf29(draw, 113, row * 26 + 270, 0, 255, fclFunc8Data);
+}
 
 INCLUDE_ASM(const s32, "code_0035E5B8", fclLoadFileAsync);
 
@@ -475,7 +483,9 @@ INCLUDE_ASM(const s32, "code_0035E5B8", effCallMemGetPtr14);
 
 INCLUDE_ASM(const s32, "code_0035E5B8", effCallMemGetPtr15);
 
-INCLUDE_ASM(const s32, "code_0035E5B8", effFirstInitSub);
+void effFirstInitSub(void) {
+    effData45 = 3;
+}
 
 INCLUDE_ASM(const s32, "code_0035E5B8", effLeaf404);
 

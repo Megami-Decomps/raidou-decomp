@@ -1,5 +1,10 @@
 #include "common.h"
 #include "sBtlUnit.h"
+#include "sbtlWork.h"
+#include "sbtlSub.h"
+#include "sBtlAI.h"
+#include "sbtlActAI.h"
+#include "sBtlPath.h"
 
 INCLUDE_ASM(const s32, "sbtlActAI", datLeaf81);
 
@@ -381,7 +386,27 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf66);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckCharmTarget);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideList2);
+s32 sbtlCallBtlCreateSideList2(struct SBTLUNIT_WORK *wk, s32 r, s32 idx)
+{
+    struct SBTLUNIT_LISTWORK *list;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+    s32 hit;
+    f32 radius;
+
+    list = sbtlCreateSideList(wk->field414, 1);
+    radius = r;
+    for (i = 0; i < list->count; i++) {
+        unit = list->pUnitL[i].pUnit;
+        if (sbtlCheckCrossCircle(&wk->pos, radius, &unit->pos, unit->model->field11C)) {
+            wk->model->ai_target[idx] = unit->field1A0;
+            break;
+        }
+    }
+    hit = i < list->count;
+    sbtlDeleteUnitList(list);
+    return hit;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckCharmTarget2);
 
@@ -453,13 +478,39 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckEnemyTarget);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetSmnNo);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlResetAIPattern);
+s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg) {
+    SBTLUNIT_MODEL *model = wk->model;
+
+    model->dataflg = 0;
+    model->datamode = flg;
+    wk->model->data_p[0] = 0;
+    wk->model->data_p[1] = 0;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEnemyAI);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf68);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_None);
+s32 sbtlEAIInit_None(struct SBTLUNIT_WORK *wk) {
+    s16 stat = 1;
+    SBTLUNIT_MODEL *model;
+
+    if (sbtlCheckScriptData(wk->unit.devilId)) {
+        wk->aiwk->stat = stat;
+        wk->model->mode = 12;
+        wk->model->stat = stat;
+        return 0;
+    }
+    model = wk->model;
+    if (model->flags & 0x400) {
+        sbtlSetNextPathData(wk);
+        return 0;
+    }
+    model->mode = SBTL_ACTAIMODE_WAIT;
+    sbtlSetNormalAction(wk, SBTL_ACTAIMODE_WAIT, 0, -1, 0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_Summon);
 
@@ -467,9 +518,18 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_BtlInit);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_BtlWait);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Dummy);
+s32 sbtlEAIProc_Dummy(struct SBTLUNIT_WORK *wk) {
+    wk->model->stat = 2;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Wait);
+s32 sbtlEAIProc_Wait(struct SBTLUNIT_WORK *wk) {
+    if (wk->model->cmpframe <= wk->model->frame) {
+        sbtlResetAAI(wk);
+        sbtlSetAIWkStat(wk);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Movef);
 
@@ -495,11 +555,32 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetGroupAction);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetNoMP);
 
-INCLUDE_ASM(const s32, "sbtlActAI", SetUnitHitApproach);
+s32 SetUnitHitApproach(struct SBTLUNIT_WORK *wk) {
+    u32 hit;
+
+    if (wk_sbtl->battleMode == 3) {
+        return 1;
+    }
+    hit = wk->vstatus & 0x4000;
+    return hit == 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlMVSupport);
 
-INCLUDE_ASM(const s32, "sbtlActAI", PosOut);
+s32 PosOut(struct SBTLUNIT_WORK *wk) {
+    s32 ret = 0;
+    u32 flg;
+
+    if (wk_sbtl->battleMode == 3) {
+        if (wk->field414 & 1) {
+            ret = 1;
+        }
+    } else {
+        flg = wk->field414 & 0x80;
+        ret = flg != 0;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlBtlMVSupportSub);
 
@@ -593,7 +674,14 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_SAttack);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_TurnMV);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetAIWkStat);
+void sbtlSetAIWkStat(struct SBTLUNIT_WORK *wk) {
+    SBTLUNIT_MODEL *model;
+
+    wk->aiwk->stat = 1;
+    model = wk->model;
+    model->stat = 1;
+    model->mode = 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlResetAAI);
 

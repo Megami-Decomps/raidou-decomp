@@ -2,6 +2,7 @@
 #include "code_r1_002C8188.h"
 #include "rstInit.h"
 #include "sdfChip.h"
+#include "TitleMain.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
@@ -373,7 +374,17 @@ s32 rstCalcAlphaRateSub(s32 value, s32 low, s32 high) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcAlphaRate);
+s32 rstCalcAlphaRate(s32 frame, const titleKey_t *key, s32 count) {
+    s32 i;
+
+    for (i = 0; i < count - 1; i++) {
+        if (rstCalcAlphaRateSub(frame, key[i].frame, key[i + 1].frame)) {
+            break;
+        }
+    }
+    frame -= key[i].frame;
+    return (key[i].value + (key[i + 1].value - key[i].value) * frame / (key[i + 1].frame - key[i].frame)) * 2;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcScale);
 

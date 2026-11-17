@@ -8,6 +8,20 @@ struct SBTLUNIT_WORK;
 struct SBTLSKILLP_TBL;
 struct sdfMemHandle_t;
 
+#ifdef VERSION_RAIDOU2
+/* AI state of a unit, 0x118 bytes, made by Create_sbtlAI. Partial raidou2 layout: only the fields read so far are named. */
+typedef struct SBTLAI_WORK {
+    struct sdfMemHandle_t *handle;
+    s16 stat;
+    u16 mode;
+    u8 pad008[0x60];
+    s32 field4C;
+    s8 scr_actcheckflg;
+    u8 pad06D[0x3];
+    u32 scrflag;
+    u8 pad074[0xA4];
+} SBTLAI_WORK;
+#else
 /* AI state of a unit, 0x90 bytes, made by Create_sbtlAI. */
 typedef struct SBTLAI_WORK {
     struct sdfMemHandle_t *handle;
@@ -38,6 +52,7 @@ typedef struct SBTLAI_WORK {
     s32 actcnt;
     u8 pad08C[0x90 - 0x8C];
 } SBTLAI_WORK;
+#endif
 
 s8 CheckAIScript(struct SBTLUNIT_WORK *wk);
 s32 Proc_sbtlAI(SBTLAI_WORK *aiwk);

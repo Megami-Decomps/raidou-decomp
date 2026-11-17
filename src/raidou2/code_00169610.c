@@ -2,6 +2,7 @@
 #include "fld.h"
 #include "sdfMemory.h"
 #include "code_0015D490.h"
+#include "fldFileResolver.h"
 
 INCLUDE_ASM(const s32, "code_00169610", mapGenbaPosEffStart);
 
@@ -9,11 +10,23 @@ INCLUDE_ASM(const s32, "code_00169610", mapGenbaPosEffAllEnd);
 
 INCLUDE_ASM(const s32, "code_00169610", mapGenbaPosEffDraw);
 
-INCLUDE_ASM(const s32, "code_00169610", mapProcSequenceSub8);
+void mapProcSequenceSub8(void) {
+    mapIsFldKeyFreeSub4Data = NULL;
+    mapIsFldKeyFreeSub4Data2 = NULL;
+}
 
 INCLUDE_ASM(const s32, "code_00169610", mapProcRandomEncountCheckFldSub);
 
-INCLUDE_ASM(const s32, "code_00169610", mapIsFldKeyFreeSub4);
+void mapIsFldKeyFreeSub4(void) {
+    if (mapIsFldKeyFreeSub4Data != 0) {
+        mapIsFldKeyFreeSub4Data2--;
+        if (mapIsFldKeyFreeSub4Data2 < 0) {
+            mapIsFldKeyFreeSub4Data = 0;
+        } else {
+            fldDrawFrushOt(128, 64, 64, (mapIsFldKeyFreeSub4Data2 << 6) / 20, 4, 97);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00169610", mapWaitCbScreenFadeBSub);
 

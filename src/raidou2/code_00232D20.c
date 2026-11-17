@@ -164,7 +164,14 @@ void effStop(effQuakeRequest_t *req) {
     req->flags &= 0xFFF3;
 }
 
-INCLUDE_ASM(const s32, "code_00232D20", effRemove);
+void effRemove(effQuakeRequest_t *req) {
+    if (req->flags & 4) {
+        if (req->flags & 8) {
+            effStop(req);
+        }
+    }
+    req->flags &= 0xFFFE;
+}
 
 INCLUDE_ASM(const s32, "code_00232D20", fclCallDrawSprite);
 

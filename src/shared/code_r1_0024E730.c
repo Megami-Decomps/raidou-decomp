@@ -14,7 +14,6 @@
 #include "fld.h"
 #include "sBtlScene.h"
 
-#ifdef VERSION_RAIDOU1
 s32 SetTestCamera(void)
 {
     sdfVector4_t up = { 0.0f, 1.0f, 0.0f, 1.0f };
@@ -34,10 +33,3 @@ s32 SetTestCamera(void)
     wk_sbtl->flg |= 1;
     return 1;
 }
-#else
-INCLUDE_RODATA(const s32, "code_r1_0024E730", SetTestCameraTable);
-
-INCLUDE_RODATA(const s32, "code_r1_0024E730", SetTestCameraTable2);
-
-INCLUDE_ASM(const s32, "code_r1_0024E730", SetTestCamera);
-#endif

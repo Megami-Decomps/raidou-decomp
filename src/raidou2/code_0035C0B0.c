@@ -12,7 +12,10 @@ s32 rstCallGetProcessData31(dds3ProcessID_t *PID)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035C0B0", rstLeaf11);
+s32 rstLeaf11(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0035C0B0", rstCallGetProcessData);
 
@@ -28,9 +31,15 @@ s32 rstCallGetProcessData32(dds3ProcessID_t *PID) {
     return ret;
 }
 
-INCLUDE_ASM(const s32, "code_0035C0B0", rstLeaf12);
+s32 rstLeaf12(void)
+{
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_0035C0B0", TitleEndWaitCalcProcess);
+s32 TitleEndWaitCalcProcess(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0035C0B0", TitleNewGameStart);
 
