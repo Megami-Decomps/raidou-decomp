@@ -933,40 +933,7 @@ s32 itfMesMng_SEL_SELNO(void)
     itfMesMngSetSelect(window, scrGetIntPara(0));
     return 1;
 }
-#else
-void itfMesMngSetSelPhase(s32 msgid, s16 phase) {
-    pinst[msgid].mes->select.phase = phase;
-}
 
-/* Return the same signed word forwarded as the script result when an option completes. */
-s32 itfMesMngGetSelectNo(s32 msgid) {
-    return pinst[msgid].mes->select.select;
-}
-
-/* Store the script's panel mask; a negative script window is a no-op. Return 1. */
-s32 itfMesMngMaskSelect(void) {
-    s32 window = scrGetMessageHandle();
-
-    if (window < 0) {
-        return 1;
-    }
-    itfMesMngSetMaskSelect(window, scrGetIntPara(0));
-    return 1;
-}
-
-s32 itfMesMng_SEL_SELNO(void)
-{
-    s32 window = scrGetMessageHandle();
-
-    if (window < 0) {
-        return 1;
-    }
-    itfMesMngSetSelect(window, scrGetIntPara(0));
-    return 1;
-}
-#endif
-
-#ifdef VERSION_RAIDOU1
 s32 itfMesMngOpenWindow(void)
 {
     s32 window = scrGetMessageHandle();
@@ -978,13 +945,7 @@ s32 itfMesMngOpenWindow(void)
     itfSetMesDispPriorityData[0] = 0;
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngOpenWindow);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngCloseWindow);
-#endif
-
-#ifdef VERSION_RAIDOU1
 s32 itfMesMngCloseWindow(void) {
     s32 window = scrGetMessageHandle();
     instanceMes_tag *mes;
@@ -1019,9 +980,6 @@ void itfMesMngMsgWndCls(s32 msgid) {
     FadeOutWindow();
     mes->stat &= ITF_MES_CLEAR_SCRIPT_PANEL_BIT;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngMsgWndCls);
-#endif
 
 u32 itfMesMngOpenSelectWindow(void) {
     return 1;
@@ -1154,6 +1112,217 @@ sdfTexHandle_t *itfMesGetWindowTexture(void) {
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf9);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf10);
+#else
+void itfMesMngSetSelPhase(s32 msgid, s16 phase) {
+    pinst[msgid].mes->select.phase = phase;
+}
+
+/* Return the same signed word forwarded as the script result when an option completes. */
+s32 itfMesMngGetSelectNo(s32 msgid) {
+    return pinst[msgid].mes->select.select;
+}
+
+/* Store the script's panel mask; a negative script window is a no-op. Return 1. */
+s32 itfMesMngMaskSelect(void) {
+    s32 window = scrGetMessageHandle();
+
+    if (window < 0) {
+        return 1;
+    }
+    itfMesMngSetMaskSelect(window, scrGetIntPara(0));
+    return 1;
+}
+
+s32 itfMesMng_SEL_SELNO(void)
+{
+    s32 window = scrGetMessageHandle();
+
+    if (window < 0) {
+        return 1;
+    }
+    itfMesMngSetSelect(window, scrGetIntPara(0));
+    return 1;
+}
+
+s32 itfMesMngOpenWindow(void)
+{
+    s32 window = scrGetMessageHandle();
+
+    if (window < 0) {
+        return 1;
+    }
+    itfMesMngMarkBitStat(window, 0x200000);
+    itfSetMesDispPriorityData[0] = 0;
+    return 1;
+}
+
+s32 itfMesMngCloseWindow(void) {
+    s32 window = scrGetMessageHandle();
+    instanceMes_tag *mes;
+    u32 scriptStatus;
+
+    if (window < 0) {
+        return 1;
+    }
+    mes = pinst[window].mes;
+    scriptStatus = mes->stat & ITF_MES_LOWER_STATUS_PAIR_MASK;
+    if (scriptStatus == ITF_MES_LOWER_STATUS_FIRST_BIT || scriptStatus == ITF_MES_LOWER_STATUS_SECOND_BIT) {
+        itfMesMngMsgWndCls(window);
+    }
+    return scriptStatus < 1;
+}
+
+void itfMesMngMsgWndCls(s32 msgid) {
+    instanceMes_tag *mes = pinst[msgid].mes;
+    u32 previousFlags = mes->stat;
+
+    if (previousFlags & ITF_MES_LOWER_STATUS_PAIR_MASK) {
+        mes->stat = previousFlags | ITF_MES_LOWER_STATUS_PAIR_MASK;
+    }
+    if (previousFlags & ITF_MES_UPPER_STATUS_PAIR_MASK) {
+        mes->stat = mes->stat | ITF_MES_UPPER_STATUS_PAIR_MASK;
+    }
+    if (previousFlags & 0xC00) {
+        mes->stat = mes->stat | 0xC00;
+    }
+    itfMesMngRequestMessageRelease(msgid, 1);
+    itfMesMngRequestSelectRelease(msgid);
+    FadeOutWindow();
+    mes->stat &= ITF_MES_CLEAR_SCRIPT_PANEL_BIT;
+}
+
+u32 itfMesMngOpenSelectWindow(void) {
+    return 1;
+}
+
+u32 itfMesMngCloseSelectWindow(void) {
+    return 1;
+}
+
+s32 itfMesMngSetVarScr(void)
+{
+    s32 window = scrGetMessageHandle();
+    s32 slot;
+    s32 value;
+    s32 selector;
+
+    if (window < 0) {
+        return 1;
+    }
+    slot = scrGetIntPara(0);
+    value = scrGetIntPara(1);
+    selector = scrGetIntPara(2);
+    itfMesMngSetVar(window, slot, value, selector);
+    return 1;
+}
+
+s32 itfMesMngIgnoreConfig(void)
+{
+    s32 window = scrGetMessageHandle();
+
+    if (window < 0) {
+        return 1;
+    }
+    if (scrGetIntPara(0)) {
+        itfMesMngMarkBitStat(window, 0x400000);
+    } else {
+        itfMesMngClearBitStat(window, 0x400000);
+    }
+    return 1;
+}
+
+s32 itfMesMngSetMesPositionScript(void)
+{
+    s32 window = scrGetMessageHandle();
+    s32 x;
+    s32 y;
+
+    if (window < 0) {
+        return 1;
+    }
+    x = scrGetIntPara(0);
+    y = scrGetIntPara(1);
+    itfMesMngSetMesPosition(window, x << 4, y << 3);
+    return 1;
+}
+
+s32 itfMesMngSetMesPosDefault(void) {
+    s32 window = scrGetMessageHandle();
+
+    if (window < 0) {
+        return 1;
+    }
+    itfMesMngSetMesPosition(window, 0x440, 0xA78);
+    return 1;
+}
+
+s32 itfMesMngValidateNext(void)
+{
+    s32 window = scrGetMessageHandle();
+
+    if (window < 0) {
+        return 1;
+    }
+    if (scrGetIntPara(0)) {
+        itfMesMngClearBitStat(window, 0x800000);
+        itfMesMngClearBitStat(window, 0x100000);
+    } else {
+        itfMesMngMarkBitStat(window, 0x800000);
+        itfMesMngMarkBitStat(window, 0x100000);
+    }
+    return 1;
+}
+
+s32 itfMesMngWindowType(void)
+{
+    s32 window = scrGetMessageHandle();
+
+    if (window < 0) {
+        return 1;
+    }
+    itfMesMngChangeWindowType(window, scrGetIntPara(0), 0);
+    return 1;
+}
+
+s32 itfMesMngWindowTypeAlpha(void)
+{
+    s32 window = scrGetMessageHandle();
+    s32 type;
+    s32 alpha;
+
+    if (window < 0) {
+        return 1;
+    }
+    type = scrGetIntPara(0);
+    alpha = scrGetIntPara(1);
+    itfMesMngChangeWindowType(window, type, alpha);
+    return 1;
+}
+
+s32 itfMesMngSelectDefKey(void)
+{
+    s32 window = scrGetMessageHandle();
+    s32 first;
+    s32 second;
+
+    if (window < 0) {
+        return 1;
+    }
+    first = scrGetIntPara(0);
+    second = scrGetIntPara(1);
+    itfMesMngSetSelectDefKey(window, first, second);
+    return 1;
+}
+
+/* Return the loaded message-window texture resource, not a window index. */
+sdfTexHandle_t *itfMesGetWindowTexture(void) {
+    return itfMesMngManager.windowTexture;
+}
+
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf9);
+
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf10);
+#endif
 
 #ifdef VERSION_RAIDOU1
 s32 itfMesMngInitialize(void *data) {
@@ -1206,11 +1375,8 @@ void itfMesMngClearCursor(s32 window) {
 }
 #else
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngClearCursor);
-
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngRequestMessage_itf);
 #endif
 
-#ifdef VERSION_RAIDOU1
 s32 itfMesMngRequestMessage_itf(s32 window, s32 entryIndex, s32 itemIndex) {
     instanceMes_tag *panel = pinst[window].mes;
     message_tag *mes = &panel->message;
@@ -1272,6 +1438,7 @@ s32 itfMesMngRequestMessage_itf(s32 window, s32 entryIndex, s32 itemIndex) {
     return 1;
 }
 
+#ifdef VERSION_RAIDOU1
 ItfMesVoiceCueResult itfMesSelectTableItemText(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex) {
     instanceMes_tag *mes = pinst[window].mes;
     itfMesBinMesHeader_t *table = GetTypeHeader(mes, entryIndex)->ptr;

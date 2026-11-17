@@ -1,0 +1,462 @@
+#include "common.h"
+#include "sdfChip.h"
+#include "sBtlSkill.h"
+#include "sdk_libc.h"
+#include "sBtlEXP.h"
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckMsgMemType);
+
+SBTLEXP_LISTWORK *InitTarSelProcessData(void)
+{
+    SBTLEXP_LISTWORK *lwk = sdfChipAllocZeroDirect(sizeof(SBTLEXP_LISTWORK));
+
+    memset(lwk, 0, sizeof(SBTLEXP_LISTWORK));
+    lwk->ewk = NULL;
+    lwk->riritu = 1.0f;
+    lwk->field10 = 100;
+    lwk->counter = 180;
+    lwk->alpha = 128;
+    lwk->o_alpha = 128;
+    lwk->ralpha = 0;
+    lwk->o_counter = 0;
+    return lwk;
+}
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlInitDropWork);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetAutoSkillPoint);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetChuuseiPoint);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetSpecialExp);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetSpecialMoney);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetExp_ChkMemSkl);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetChuusei_ChkMemSkl);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckDropItem);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckGetExpUnit);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckDrop);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBtlCheckDropItemSub);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckDrop_Normal);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemAllocDirect8);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", DecVice);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetVicePara);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlResetVicePara);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlSearchUnitID27);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetRirituNakamaHD);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlRefSbtl60);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf124);
+
+s32 sbtlReleaseEXP_List(SBTLEXP_LISTWORK *lwk, u8 flg)
+{
+    SBTLEXP_WORK *dwk;
+    SBTLEXP_WORK *next;
+
+    if (lwk == NULL) {
+        return 0;
+    }
+    dwk = lwk->ewk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            dwk->status = SBTLEXP_ST_END;
+        }
+        if (dwk->status == SBTLEXP_ST_END) {
+            if (dwk->prev != NULL) {
+                dwk->prev->next = dwk->next;
+            }
+            if (dwk->next != NULL) {
+                dwk->next->prev = dwk->prev;
+            }
+            if (dwk->prev == NULL) {
+                lwk->ewk = dwk->next;
+                if (lwk->ewk != NULL) {
+                    lwk->ewk->prev = NULL;
+                }
+            }
+            next = dwk->next;
+            sdfMemFreeDirect(dwk->handle);
+            dwk = next;
+            lwk->num--;
+        } else {
+            dwk = dwk->next;
+        }
+    } while (dwk != NULL);
+    return 1;
+}
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeleteEXPList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSkilltbl23);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetDamageSub2);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetSkilltbl);
+
+SBTLSKLVISUAL_TBL *sbtlGetSklVisualTbl(SKLID sklid)
+{
+    return &sbtlGetSklVisualTblData[sklid];
+}
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetSkill_MotionData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSklVisualTbl3);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetSkill_EffectData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSkilltbl18);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetHatData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetSkillData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckMHTData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlRefSbtl58);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlKettouProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", GetMessagePrio);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", DeleteMessage);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlAddMessage);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCreateSMList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemAllocDirect10);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallSprintf8);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", Proc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", Draw_sbtlSM);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlReleaseSM_List);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeleteSMList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc20);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMessageNumSearch);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMessageNumSearch2);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf120);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMessageNumSearch4);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf94);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBtlDebugInitSbattleSub);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_CheckMainPanel);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf111);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSbtlDebug_CheckFreeCameraFlg);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", evtBEnterStateA);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_Init);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSbtldebugProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_Draw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_SetDuummyData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallDrawMiscFontAlpha);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_DrawHPGauge);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf92);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlCheckCrossCircle);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf89);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallSprintf4);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCmndCntST);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallSprintf5);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlSearchUnitID36);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_DrawTCursor);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf109);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallSprintf6);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc26);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", ModelSelectDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlParaDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBSTDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFRAME);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlUnitChngDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDrawUnitChangeList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf114);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallDestroyFontRequestAfter2);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc25);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf102);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlVisualDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallChipAllocZeroDirect2);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemAllocDirect9);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeleteFileList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBattleMdlhit);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBattleEffhit);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEditDraw_MOVE);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEditDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_HitTypeMoveDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLoadDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlPBLoadDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol2);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol3);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol4);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEPLLoadDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol5);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol6);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol7);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol8);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", Calc_AW_GunTarget);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc27);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc22);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEffHitEditorDraw_Functbl_Cylinder);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEffHitEditorDraw_Functbl_Sphere);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEffHitEditorDraw_Functbl_Ring);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMDLHitEditorDraw_Functbl_Sphere);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMDLHitEditor_DrawMotion);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMDLHitEditorDraw_Functbl_Cylinder);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMDLHitEditorDraw_Functbl_Ring);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_EPLParaDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_MoveTypeDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEPLDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_EffHitPathDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlNEFMODEFuncEditSub);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDrawPoseture);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_DrawClrcle_Line);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_EffHitIdou);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_EffHitDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_MDLHitDraw);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallDrwZLoad);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallDrwZLoad2);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_DrawHitCircle);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDrawString);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDrawFloat_Num);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDrawInt_Num);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf100);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSkillChangeProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc15);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawONOFFList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawONOFFList2);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf119);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetUnit);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlTgtLock);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", SceneDel_Calc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugCheckLoadEncountData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", MainProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", ModelSelectProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugSetStatusflg);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallGetUnit);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", MotionChngProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlParaProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetUnitPara);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBSTProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlUnitChngProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_SetVisualData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf105);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlVisualProc);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf98);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf122);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf104);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlNEFMODE_Func_Open);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMDLMODE_Func_Open);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_MOVEMODE_Func_Open);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_LoadMotionMoveData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_LoadMHTData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckOpenMenu);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlResetMotionMovePos);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBtlDebugLoadMHTDataSub);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlNEFMODE_Func_Save);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlNEFMODE_Func_Load);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemset27);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBattleHitpath);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlPacPBFile);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBattleBed);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallFileCheckEnd);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetPathMotion);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlResetEPLData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCreateUnit2);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetPreViewModel);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeletePrevModel);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlNEFMODE_Func_PageList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMOVEMODE_Func_PageList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMDLMODE_Func_PageList);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlAddPrev);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDecPrev);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlClearEffHitData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf108);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf95);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSizeofData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc28);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallRestartBattle);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc17);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEPLDataDelete);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlPATHDataDelete);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCopyData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_ChangeModel);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetModelData);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMOVEMODE_Func_Edit);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetMotionMoveData_Buffer);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMDLMODE_Func_Edit);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlNEFMODE_Func_Edit);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetEffHitPara_S);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetEffHitPara_sbtl);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_SetMDLMOVEPara);
+
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetMotionNum);

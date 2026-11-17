@@ -1,0 +1,122 @@
+#include "common.h"
+#include "sdfChip.h"
+#include "cmbFont.h"
+
+INCLUDE_ASM(const s32, "code_00196848", cmbRefDDS3GBWK);
+
+void cmbCallChipAllocDirect(s32 idx, s32 count, dds3NameImage_t *image) {
+    GsFont_t **cell = cmbData[idx];
+    dds3NameImage_t *copy;
+    GsFont_t *font;
+    s32 i;
+
+    for (i = 0; i < count; i++) {
+        copy = sdfChipAllocDirect(sizeof(dds3NameImage_t));
+        *copy = image[i];
+        font = frTranslateUserData(24, 24, copy, 1);
+        cell[i] = font;
+        font->font_no = idx;
+    }
+}
+
+void cmbFunc(s32 idx, s32 count, dds3NameImage_t *image) {
+    s32 *ref = &cmbWork[idx];
+
+    if (*ref == 0) {
+        cmbCallChipAllocDirect(idx, count, image);
+    }
+    *ref += count;
+}
+
+INCLUDE_ASM(const s32, "code_00196848", cmbRefDDS3GBWK2);
+
+void cmbCallRetFontMem(s32 idx) {
+    GsFont_t **cell = cmbData[idx];
+    s32 i;
+
+    if (--cmbWork[idx] <= 0) {
+        for (i = 0; i < cmbData2[idx] && cell[i] != NULL; i++) {
+            fmRetFontMem(cell[i]->font_mem);
+            cell[i] = NULL;
+        }
+    }
+}
+
+INCLUDE_ASM(const s32, "code_00196848", cmbCallSetUserImage);
+
+INCLUDE_ASM(const s32, "code_00196848", cmbRefDDS3GBWK3);
+
+INCLUDE_ASM(const s32, "code_00196848", cmbCallMemset);
+
+INCLUDE_ASM(const s32, "code_00196848", cmbInitActionData);
+
+INCLUDE_ASM(const s32, "code_00196848", cmbCallEnableMode);
+
+INCLUDE_ASM(const s32, "code_00196848", cmbCallEnableMode2);
+
+INCLUDE_ASM(const s32, "code_00196848", cmbCallEnableMode3);
+
+INCLUDE_ASM(const s32, "code_00196848", cmbCallEnableMode4);
+
+void nbCallDecodeFontImage(dds3NameImage_t *image, s32 style, u16 code) {
+    u32 sjis = (((code & 0xFF) << 8) | (code >> 8)) - 0x8080;
+    dds3NameImage_t *glyph;
+
+    glyph = (dds3NameImage_t *)frDecodeFontImage(style, ((sjis & 0xFF00) >> 1) + (sjis & 0x7F));
+    *image = *glyph;
+    sdfChipFreeDirect(glyph);
+}
+
+INCLUDE_ASM(const s32, "code_00196848", nbRefDDS3GBWK12);
+
+INCLUDE_ASM(const s32, "code_00196848", nbLeaf56);
+
+INCLUDE_ASM(const s32, "code_00196848", nbRefDDS3GBWK13);
+
+void nbSetFormPosRot(s32 idx, frFontCtx_t *ctx) {
+    cmbRefDDS3GBWK2(idx);
+    cmbRefDDS3GBWK3(idx, ctx);
+}
+
+INCLUDE_ASM(const s32, "code_00196848", nbCallSetFormPosRot);
+
+INCLUDE_ASM(const s32, "code_00196848", nbTag0Sub);
+
+INCLUDE_ASM(const s32, "code_00196848", nbTag0Sub2);
+
+INCLUDE_ASM(const s32, "code_00196848", nbRefDDS3GBWK14);
+
+INCLUDE_ASM(const s32, "code_00196848", nbCallChipAllocDirect);
+
+INCLUDE_ASM(const s32, "code_00196848", nbFunc27);
+
+INCLUDE_ASM(const s32, "code_00196848", nbRefDDS3GBWK15);
+
+INCLUDE_ASM(const s32, "code_00196848", nbCallRetFontMem);
+
+INCLUDE_ASM(const s32, "code_00196848", nbCallSetUserImage);
+
+INCLUDE_ASM(const s32, "code_00196848", frRefDDS3GBWK);
+
+INCLUDE_ASM(const s32, "code_00196848", frCallMemset3);
+
+INCLUDE_ASM(const s32, "code_00196848", frCallMemset4);
+
+INCLUDE_ASM(const s32, "code_00196848", frCallEnableMode2);
+
+INCLUDE_ASM(const s32, "code_00196848", frCallEnableMode3);
+
+INCLUDE_ASM(const s32, "code_00196848", frCallDecodeFontImage);
+
+INCLUDE_ASM(const s32, "code_00196848", frRefDDS3GBWK2);
+
+INCLUDE_ASM(const s32, "code_00196848", frTag0Sub);
+
+s32 frLoadExchangeTable(void) {
+    sdfDevLoadFileEx(frStrFontExchg01Bin, &frWork, &frLoadExchangeTableData);
+    frLoadExchangeTableData >>= 1;
+    return 1;
+}
+
+INCLUDE_RODATA(const s32, "code_00196848", frStrFontExchg01Bin);
+

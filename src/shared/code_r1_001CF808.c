@@ -333,7 +333,11 @@ u8 mnuIsTitleStreamIdle(void) {
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", evtCallSePlay);
 
-INCLUDE_ASM(const s32, "code_r1_001CF808", evtFunc7);
+s32 evtFunc7(void)
+{
+    sndCallWaitSema();
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", evtCallEffectShutdown);
 

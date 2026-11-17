@@ -1,0 +1,323 @@
+#include "common.h"
+#include "sbtlWork.h"
+#include "sBtlSM.h"
+#include "sBtlAI.h"
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAny);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckEnableUseKaja);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlBtlCheckEnableUseSkillSub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckEnableUseSkill);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetBtlMagicStatus);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetBothSide);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlUnit_CheckSummon_LoadExecOk_sub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSummon_LoadExecOk);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetNakamaUnit);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCancelSystemSub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetPChara2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SetFirstAtk_Core);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetVibe);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetPlayerID);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl10);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallObjectBaseSetPadControl);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetAction);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl36);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlActiveAction);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetATKEffect);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetCombine);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlLeaf63);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlNormalProcNakamaSub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSummonKey);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetNSTOP);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetNSTOP);
+
+INCLUDE_RODATA(const s32, "code_0027A1E8", sbtlSetVibeTable);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallGetActiveScene2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckMove_BadStatus);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetRandomTarget);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetSummonFunc);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetNakama2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallHirukoYukaGoIdx2B);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetColor);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SetSummonMenu);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", slCallMemset);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", UseItemProc_sbtlPlayer);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", KaihiInit_Nakama);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", slCallBtlGetPChara);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", slCallSetFirstAtkGun);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", slCallSetFirstAtkCore);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlEscapeCheck);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl11);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlCreateEff);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", NormalProc);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlResetAction);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", EscapeGauge);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", CheckAutoSkill_Escape);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlDrawEscapeGauge);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SetColor);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlResetJump);
+
+INCLUDE_RODATA(const s32, "code_0027A1E8", CancelSystemTable);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", CancelSystem);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl2);
+
+s32 sbtlCheckBit(u32 *bits, s32 bit)
+{
+    return (*bits >> bit) & 1;
+}
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetBit);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetBit);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetMotionVisualDataSBtlVi);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlSearchUnitID4);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetNearTarget_Random);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", ShugouKaijyoSub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetNakama3);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", Check_Stls);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlReset_SupportAction_Shugou);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlShugouKaijyo);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlNakamaWarpReset);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallMemset4);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlLeaf7);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetBadStatus2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl37);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl12);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlResetAction2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallGetScreenDir);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlKaihiInitNakamaSub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlKaihiInitNakamaSub2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallGetScreenDir2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlPlayerRJigenKiriProc);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSkillEquation);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckTargetEquation);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_00);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl3);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_02);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl4);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_04);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_05);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_06);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_07);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_08);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_09);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0a);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0b);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0c);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0d);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0e);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0f);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_10);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_11);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_12);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_13);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_14);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_15);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_16);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_17);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlAI_SetSeikaku_Action);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckArea);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckAreaCount);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckArea_Atk);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckArea_Masic);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SetOrderTarget);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SetNextTarget);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", SetNextTarget_sbtlEquat);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", CheckEnemyTarget);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetTargetUnit);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", CheckBSTTarget);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", TEquationno_01);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", TEquationno_0c);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", TEquationno_0d);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", TEquationno_0e);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckScriptData);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", CheckAIScript);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlLeaf64);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", Create_sbtlAI);
+
+s32 Proc_sbtlAI(SBTLAI_WORK *aiwk)
+{
+    if (aiwk != NULL) {
+        sdfMemFreeDirect(aiwk->handle);
+    }
+    return 1;
+}
+
+INCLUDE_ASM(const s32, "code_0027A1E8", IsKaja);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", IsEnemyZenmetsu);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetByct);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlProc_YoyakuEndChk);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlProc_YoyakuEnd);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallMemset5);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", CheckActionEquation);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetAIMode);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckActionEquationSub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlProcScript);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCreateAIScript);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallReleaseScript);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallRegistScript2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallReleaseScript2);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl13);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", Init_sbtlScript);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSetHITNONE);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlEncountInit);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlBattleSummonEffectSub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", Delete_sbtlScript);
+
+void sbtlBattleStart(SBTL_STAGE_DATA *stage)
+{
+    if (stage->flags & 0x20) {
+        sbtlSupport_BattleStop(1, 1, 0);
+    }
+}
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetAttr);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckHuttobi);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlBtlCheckBadStatusSBtlCalcSub);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSkillCancel);
+
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckEnshutuSummonUnit);
+
+INCLUDE_RODATA(const s32, "code_0027A1E8", sbtlCheckSetHITNONETable);
+

@@ -576,7 +576,10 @@ INCLUDE_ASM(const s32, "dat", fldGetRestoreMode);
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "dat", datCheckStrongSwordAttack);
 #else
-INCLUDE_ASM(const s32, "dat", datSetPlayerUnitSwordSub);
+s32 datSetPlayerUnitSwordSub(void)
+{
+    return 0;
+}
 #endif
 
 #ifdef VERSION_RAIDOU1

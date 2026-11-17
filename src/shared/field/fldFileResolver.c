@@ -1397,7 +1397,6 @@ INCLUDE_RODATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagTable2)
 INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml_fld);
 #endif
 
-#ifdef VERSION_RAIDOU1
 s32 fldPlayerCalc(void) {
     if (fldDbg.menuOn != 0) {
         return 0;
@@ -1412,9 +1411,6 @@ s32 fldPlayerCalc(void) {
     }
     return 0;
 }
-#else
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalc);
-#endif
 
 void fldEnableCameraObjectFlag(void) {
     dds3ObjectBaseOnFlag(fldPlayerObject, 1);

@@ -15,16 +15,16 @@ start	last_func	unit	kind	evidence	smt3_unit
 00101BD8	00101BD8	sdf/sdfDefaultMain	c	smt3:map:1 of 1	sdf/sdfDefaultMain
 00101D60	00102978	kernel/dds3KernelProcess	c	smt3:map:4+smt3:names:1 of 5	kernel/dds3KernelProcess
 001029B8	00103658	kernel/dds3AdminiProcess	c	smt3:names:15+smt3:map:5 literal-cores:2 of 20	kernel/dds3AdminiProcess
-00103708	00103708	code_00103708	asm	none	
+00103708	00103708	code_00103708	c	none	
 00103710	00103A20	kernel/dds3KernelMisc	c	smt3:names:4 of 4	kernel/dds3KernelMisc
 00103A88	00104278	kernel/dds3PadManager	c	smt3:map:4+smt3:names:2 of 7	kernel/dds3PadManager
 00104370	00104370	code_00104370	asm	none	
 00104378	00104378	kernel/dds3Randomize	c	smt3:names:1 of 1	kernel/dds3Randomize
 001043A0	00105268	code_r1_00104370	c	dds:16 of 19	
 00105430	00109A80	kernel/dds3KernelDraw	c	smt3:names:52+smt3:map:6 of 100	kernel/dds3KernelDraw
-00109BE8	0010A558	code_00109BE8	asm	none	
+00109BE8	0010A558	code_00109BE8	c	none	
 0010A8C8	0010C490	kernel/dds3KernelDraw_0010A750	c	smt3:names:6+smt3:map:1 of 19 part	kernel/dds3KernelDraw
-0010C4E0	0010D8C0	dds3KernelDraw_0010BEE0	asm	none	
+0010C4E0	0010D8C0	dds3KernelDraw_0010BEE0	c	none	
 0010DC38	0010E198	code_r1_0010D1B8	c	dds:4 of 5 part	
 0010E1D8	0010E9A0	kernel/dds3SequenceList	c	smt3:names:10+smt3:map:5 literal-cores:1 of 54	kernel/dds3SequenceList
 0010EA00	0010EA10	code_0010EA00	asm	none	
@@ -36,28 +36,28 @@ start	last_func	unit	kind	evidence	smt3_unit
 00114F38	00116450	script/scrTraceCode	c	smt3:names:47 of 50	script/scrTraceCode
 00116468	001164C0	code_00116468	asm	none	
 001164D0	00117D90	script/scrCommonCommand	c	smt3:names:58+smt3:map:8+dds:3 of 73	script/scrCommonCommand
-00117DE0	00117E78	code_00117DE0	asm	none	
+00117DE0	00117E78	code_00117DE0	c	none	
 00117EC0	00118038	script/scrParameterCommand	c	smt3:map:5 of 7 reordered	script/scrParameterCommand
 00118038	00118F58	code_00118038	asm	none	
 00119000	00119388	basic/dds3DbgBasic	c	smt3:names:3 of 3	basic/dds3DbgBasic
 001194B0	00119AD8	basic/dds3Basic	c	smt3:names:18+smt3:map:2 of 26	basic/dds3Basic
-00119B18	00119B58	code_00119B18	asm	none	
+00119B18	00119B58	code_00119B18	c	none	
 00119B70	0011A5A8	basic/dds3WorldBasic	c	smt3:names:24 of 25	basic/dds3WorldBasic
 0011A628	0011B0E0	basic/dds3SceneBasic	c	smt3:names:15+smt3:map:10 of 28	basic/dds3SceneBasic
 0011B150	0011B150	code_0011B150	asm	none	
 0011B188	0011B520	basic/dds3AreaBasic	c	smt3:names:10+smt3:map:1 of 13	basic/dds3AreaBasic
 0011B598	0011B890	basic/dds3MoverBasic	c	smt3:names:6 of 8	basic/dds3MoverBasic
-0011B8C8	0011B8F0	code_0011B8C8	asm	none	
+0011B8C8	0011B8F0	code_0011B8C8	c	none	
 0011B950	0011C7F0	basic/dds3ObjectBase	c	smt3:names:21+smt3:map:2+dds:1 of 29	basic/dds3ObjectBase
-0011C898	0011C8E0	code_0011C898	asm	none	
+0011C898	0011C8E0	code_0011C898	c	none	
 0011C900	0011CE90	basic/dds3CameraObjectBasic	c	smt3:names:8+smt3:map:3+dds:1 of 17	basic/dds3CameraObjectBasic
-0011CF88	0011D0A8	dds3CameraObjectBasic_0011A520	asm	none	
+0011CF88	0011D0A8	dds3CameraObjectBasic_0011A520	c	none	
 0011D0B8	0011E028	basic/dds3UnitObjectBasic	c	smt3:names:4+smt3:map:1 of 17	basic/dds3UnitObjectBasic
 0011E210	0011E210	code_0011E210	asm	none	
 0011E220	0011E660	basic/dds3MatterObjectBasic	c	smt3:names:4+smt3:map:2 of 12	basic/dds3MatterObjectBasic
 0011E850	0011E850	code_0011E850	asm	none	
 0011E878	001201B0	basic/dds3EffectObjectBasic	c	smt3:names:29+smt3:map:6+dds:1 of 42	basic/dds3EffectObjectBasic
-001202B8	001202B8	code_001202B8	asm	none	
+001202B8	001202B8	code_001202B8	c	none	
 001202C0	001203A0	basic/dds3EventObjectBasic	c	smt3:names:4 of 4	basic/dds3EventObjectBasic
 00120418	00120418	code_00120418	asm	none	
 00120428	001209E8	basic/dds3LightObjectBasic	c	smt3:names:10 of 14	basic/dds3LightObjectBasic
@@ -66,7 +66,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00120BD8	00120BD8	basic/dds3EventBasic	c	smt3:names:1 of 1	basic/dds3EventBasic
 00120C28	00120C28	code_00120C28	asm	none	
 00120C30	00121638	basic/dds3PathBasic	c	smt3:names:10 of 13	basic/dds3PathBasic
-00121658	00121690	dds3PathBasic_0011EA58	asm	none	
+00121658	00121690	dds3PathBasic_0011EA58	c	none	
 001216A8	001216A8	basic/dds3PointBasic	c	smt3:names:1 of 1	basic/dds3PointBasic
 001216F8	00121700	code_001216F8	asm	none	
 00121708	00124B18	dat	c	dds:4+smt3:map:2 literal-cores:1 of 114 clipped	kernel/dds3GlobalWork
@@ -79,7 +79,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00127F38	00127F40	code_00127F38	asm	none	
 00127F48	00128860	facility/fclMisc	c	smt3:map:11+smt3:names:8 of 39	facility/fclMisc
 001288A8	001288A8	facility/fclShare	c	smt3:names:1 of 1	facility/fclShare
-001288F8	0012AAC0	fclMenu	asm	none	
+001288F8	0012AAC0	fclMenu	c	none	
 0012AAE8	0012AAE8	pb/pbGame	c	smt3:names:1 of 1	pb/pbGame
 0012AB08	0012B4D0	fclDrawBack	asm	none	
 0012B9C8	0012B9C8	code_0012B9C8	c	dds:1 of 1	
@@ -91,9 +91,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 0012C998	0012EC80	code_r1_00128378	c	dds:4 of 84	
 0012ECC0	0012FDD0	code_0012ECC0	asm	none	
 0012FFB8	0012FFB8	field/fldMain	c	smt3:map:1 of 1	field/fldMain
-001300B0	001300C0	code_001300B0	asm	none	
+001300B0	001300C0	code_001300B0	c	none	
 00130838	00130838	field/fldTest	c	smt3:names:1 of 1	field/fldTest
-00130870	00132518	code_00130870	asm	none	
+00130870	00132518	code_00130870	c	none	
 00132520	00136438	field/fldProcess	c	smt3:names:1 literal-cores:1 of 25	field/fldProcess
 00138560	00138A58	code_00138560	asm	none	
 00138A60	00138A60	newbattle/nbStageProcess	c	smt3:map:1 of 1	newbattle/nbStageProcess
@@ -102,30 +102,30 @@ start	last_func	unit	kind	evidence	smt3_unit
 00139818	001399A0	code_00139818	asm	none	
 001399A8	0013CD00	field/fldDraw	c	smt3:names:24+smt3:map:9 of 47; nbSetEncountMode run included: its .sdata sits inside fldDraw's	field/fldDraw
 0013CD60	00141698	field/fldFileResolver	c	dds:6 of 56	field/fldFileResolver
-001416C0	001430B8	code_001416C0	asm	none	
+001416C0	001430B8	code_001416C0	c	none	
 001430E8	001430E8	code_r1_0013A9E0	c	none	
-001431D0	00148B18	code_001431D0	asm	none	
+001431D0	00148B18	code_001431D0	c	none	
 00148CA0	00149058	code_r1_001403E0	c	none	
 001491D0	001491D0	code_001491D0	asm	none	
 00149258	00149258	field/fldSky	c	smt3:map:1 of 1	field/fldSky
-001492A8	0014AAF0	code_001492A8	asm	none	
+001492A8	0014AAF0	code_001492A8	c	none	
 0014ADD8	0014B650	code_r1_00142038	c	none	
-0014B7B0	001558D0	code_0014B7B0	asm	none	
+0014B7B0	001558D0	code_0014B7B0	c	none	
 00155B20	00155B20	code_r1_0014B328	c	none	
 00155C90	00155C90	code_00155C90	asm	none	
 00155CB0	00155CB0	code_r1_0014B4B8	c	none	
 00155D88	00155D88	code_r1_0014B610	c	none	
-00155DD8	0015D1D8	code_00155DD8	asm	none	
+00155DD8	0015D1D8	code_00155DD8	c	none	
 0015D430	0015D430	code_r1_00151980	c	none	
-0015D870	00162608	code_0015D870	asm	none	
+0015D870	00162608	code_0015D870	c	none	
 00162668	00162668	field/fldTitle	c	smt3:map:1 of 1	field/fldTitle
-001626B0	00163040	code_001626B0	asm	none	
+001626B0	00163040	code_001626B0	c	none	
 00163828	00163828	code_r1_001578A8	c	none	
-00163C50	001692F0	code_00163C50	asm	none	
+00163C50	001692F0	code_00163C50	c	none	
 00169318	00169560	code_r1_0015CD00	c	none	
-00169610	00169980	code_00169610	asm	none	
+00169610	00169980	code_00169610	c	none	
 00169A20	00169A20	code_r1_0015D470	c	dds:1 of 1	
-00169A40	00176AE0	code_00169A40	asm	none	
+00169A40	00176AE0	code_00169A40	c	none	
 00176AE8	00176AE8	field/fldSnow	c	smt3:names:1 of 1	field/fldSnow
 00176B00	0017A110	code_00176B00	asm	none	
 0017A210	0017A210	code_r1_0016A738	c	none	
@@ -133,17 +133,17 @@ start	last_func	unit	kind	evidence	smt3_unit
 0017AFE0	0017AFE0	code_r1_0016B3A0	c	none	
 0017B0D8	0017D868	code_0017B0D8	asm	none	
 0017D8B0	00185908	facility/fclCombineInit	c	smt3:map:3 literal-cores:1 of 53	facility/fclCombineInit
-00186680	00186FC8	code_00186680	asm	none	
+00186680	00186FC8	code_00186680	c	none	
 00186FF8	001870B8	field/fldEnc	c	smt3:map:2 of 2	field/fldEnc
-001870F0	001878D0	code_001870F0	asm	none	
+001870F0	001878D0	code_001870F0	c	none	
 00187998	00187A10	code_r1_00175038	c	none	
 00187A48	00187A88	code_00187A48	asm	none	
 00187AE0	00187AE0	code_r1_00175180	c	none	
 00187CA8	00188180	code_00187CA8	asm	none	
 001881B8	001881B8	code_r1_00175858	c	none	
-00188268	0018C370	code_00188268	asm	none	
+00188268	0018C370	code_00188268	c	none	
 0018C3B0	0018C3B0	field/fldCommand	c	smt3:names:1 of 1	field/fldCommand
-0018C430	0018F700	code_0018C430	asm	none	
+0018C430	0018F700	code_0018C430	c	none	
 0018F738	0018F9D0	interface/itfTestMesManager_0017AB10	c	smt3:names:2+smt3:map:1 of 3 part	interface/itfTestMesManager
 0018FF30	00190598	interface/itfTestMesManager	c	smt3:names:4+smt3:map:1 of 5	interface/itfTestMesManager
 00190710	001907B8	code_00190710	asm	none	
@@ -153,7 +153,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001923A0	001923A0	code_001923A0	asm	none	
 001923A8	001961F8	interface/frFont	c	smt3:names:30+smt3:map:24+dds:10 of 99	interface/frFont
 001964E0	001967F8	code_r1_001814F0	c	dds:3 of 3 part	
-00196848	00197B38	code_00196848	asm	none	
+00196848	00197B38	code_00196848	c	none	
 00197B70	00198AE8	interface/frWrap	c	smt3:names:9+smt3:map:7 of 29 reordered	interface/frWrap
 00198B08	00198B08	code_00198B08	asm	none	
 00198B50	00198CB0	code_r1_00183B00	c	dds:4 of 6	
@@ -162,13 +162,13 @@ start	last_func	unit	kind	evidence	smt3_unit
 0019A1A0	0019B8B0	interface/itfPanel	c	smt3:names:23+smt3:map:1 of 30	interface/itfPanel
 0019B920	001A1C90	interface/itfMesManager	c	smt3:names:70+smt3:map:24+dds:8 literal-cores:1 of 144	interface/itfMesManager
 001A1DE0	001A1FB0	interface/itfTestMesManager_0018CC20	c	smt3:names:5 of 5 part	interface/itfTestMesManager
-001A1FD0	001A5718	code_001A1FD0	asm	none	
+001A1FD0	001A5718	code_001A1FD0	c	none	
 001A5748	001A5748	newbattle/nbCommSelProcess	c	smt3:map:1 of 1	newbattle/nbCommSelProcess
 001A5768	001A5768	code_001A5768	asm	none	
 001A5D00	001A5D00	newbattle/nbTarSelProcess	c	smt3:map:1 of 1	newbattle/nbTarSelProcess
-001A5D20	001AEFF0	code_001A5D20	asm	none	
+001A5D20	001AEFF0	code_001A5D20	c	none	
 001AF040	001B16F0	model/mdlManager	c	smt3:names:59+smt3:map:7+dds:1 of 78	model/mdlManager
-001B1B18	001B1B20	code_001B1B18	asm	none	
+001B1B18	001B1B20	code_001B1B18	c	none	
 001B1B28	001B2E10	model/mdlEffect	c	smt3:names:30 of 34	model/mdlEffect
 001B2E60	001B7190	code_r1_0019D3A8	c	dds:53 literal-cores:3 of 56	
 001B7238	001B7E80	model/mdlEffect_001A1780	c	smt3:names:6 of 6 part	model/mdlEffect
@@ -177,7 +177,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001B88F8	001B9C30	event/evtStage	c	smt3:names:15+smt3:map:4 of 28	event/evtStage
 001B9CA8	001BDC38	event/evtUnitManager	c	smt3:names:25+smt3:map:8+dds:6 of 64	event/evtUnitManager
 001BDCC8	001C3268	event/evtCommand	c	smt3:names:84+smt3:map:49+dds:9 literal-cores:3 of 163	event/evtCommand
-001C32D8	001C38A8	code_001C32D8	asm	none	
+001C32D8	001C38A8	code_001C32D8	c	none	
 001C38B8	001C4C48	event/evtMoon	c	smt3:map:4+smt3:names:2 of 22	event/evtMoon
 001C4C80	001C4C80	code_001C4C80	asm	none	
 001C4C88	001C4D28	event/evtDebug	c	smt3:map:2+smt3:names:2 literal-cores:1 of 4	event/evtDebug
@@ -187,9 +187,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 001D0D40	001D1700	event/evtPicture	c	smt3:names:5+smt3:map:3 literal-cores:1 of 22 reordered	event/evtPicture
 001D17F0	001D17F0	code_001D17F0	asm	none	
 001D17F8	001D19A8	event/evtSky	c	smt3:names:4+smt3:map:1 literal-cores:1 of 7	event/evtSky
-001D1A10	001D1A10	code_001D1A10	asm	none	
+001D1A10	001D1A10	code_001D1A10	c	none	
 001D1A30	001D1A30	event/evtEventViewerFrameVar	c	smt3:names:1 of 1	event/evtEventViewerFrameVar
-001D1A68	001D1AF8	code_001D1A68	asm	none	
+001D1A68	001D1AF8	code_001D1A68	c	none	
 001D1B58	001D1B58	field/fldGlobal	c	smt3:map:1 of 1	field/fldGlobal
 001D1B98	001D2488	code_001D1B98	asm	none	
 001D24E8	001DA850	event/evtEventViewerMenu	c	smt3:map:28+smt3:names:1 literal-cores:1 of 65 joined by literal	event/evtEventViewerMenu
@@ -199,13 +199,13 @@ start	last_func	unit	kind	evidence	smt3_unit
 001E0968	001E0968	code_001E0968	asm	none	
 001E09E0	001E2248	code_r1_001CA8F8	c	dds:24+smt3:map:1 of 36	newbattle/nbMainProcess
 001E22B8	001E2380	code_r1_001CC1D0	c	dds:2 of 2	
-001E2468	001E3748	code_001E2468	asm	none	
+001E2468	001E3748	code_001E2468	c	none	
 001E3788	001E3788	code_r1_001CD6A0	c	dds:1 of 1	
-001E37C0	001E4D40	code_001E37C0	asm	none	
+001E37C0	001E4D40	code_001E37C0	c	none	
 001E4D70	001E4D70	code_r1_001CEBF8	c	dds:1 of 1	
-001E4DC8	001E4EF0	evtTmxPreLoad	asm	none	
+001E4DC8	001E4EF0	evtTmxPreLoad	c	none	
 001E5070	001E5228	code_r1_001CEEF8	c	none	
-001E5500	001E58C0	code_001E5500	asm	none	
+001E5500	001E58C0	code_001E5500	c	none	
 001E5950	001E5950	sound/sndManager	c	smt3:map:1 of 1	sound/sndManager
 001E5980	001E6488	code_r1_001CF808	c	dds:17 of 41	
 001E6518	001E8A10	sndAt3	c	dds:18 literal-cores:1 of 34+gap sndAt3_001D2178 (sndCallWaitSema3, sndBgmLoadId_XF and 14 more)	
@@ -219,7 +219,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001EB6A0	001F21F8	mc/slMain	c	smt3:map:35+smt3:names:28 literal-cores:3 of 116	mc/slMain
 001F2B80	001F2B88	code_001F2B80	asm	none	
 001F2B98	001F3190	code_r1_001DB8A0	c	dds:9 of 15 part	
-001F31B0	001F3230	code_001F31B0	asm	none	
+001F31B0	001F3230	code_001F31B0	c	none	
 001F3318	001F5AC8	effect/billManager	c	smt3:names:30+smt3:map:19+dds:1 of 64	effect/billManager
 001F6048	001F6810	code_r1_001DED50	c	dds:4 of 4	
 001F6878	001FAE40	effect/polyManager	c	smt3:names:60+smt3:map:8 of 87	effect/polyManager
@@ -241,12 +241,12 @@ start	last_func	unit	kind	evidence	smt3_unit
 0020D098	0020D098	code_0020D098	asm	none	
 0020D0A0	0020D0A0	code_r1_001F5DA8	c	dds:1 of 1	
 0020D0C8	0020D9B8	effect/effSpline	c	smt3:names:7+smt3:map:2 of 12	effect/effSpline
-0020DAA8	0020DC18	code_0020DAA8	asm	none	
+0020DAA8	0020DC18	code_0020DAA8	c	none	
 0020DC38	0020E7D0	effect/effModelTrackPoly	c	smt3:names:12+smt3:map:6+dds:1 of 22	effect/effModelTrackPoly
 0020EA98	0020EA98	code_r1_001F77A0	c	dds:1 of 1	
 0020EE08	0020F1D8	code_0020EE08	asm	none	
 0020F4C8	00210B90	effect/effBlur_Filter	c	smt3:map:12+smt3:names:10+dds:1 of 31	effect/effBlur_Filter
-00210C00	00210C90	code_00210C00	asm	none	
+00210C00	00210C90	code_00210C00	c	none	
 00210C98	002115A8	effect/effPart	c	smt3:names:16+smt3:map:15 of 38	effect/effPart
 002115F8	0021D8F0	effect/effPCPMisc	c	smt3:names:126+smt3:map:80 of 369	effect/effPCPMisc
 0021DBE0	0021DC60	code_0021DBE0	asm	none	
@@ -262,7 +262,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00230800	00231FB0	effect/effPCPBoss	c	smt3:names:13+smt3:map:6 of 72	effect/effPCPBoss
 00231FE8	00232000	code_00231FE8	asm	none	
 00232008	00232C08	newbattle/nbCameraHelper	c	smt3:names:7+smt3:map:4 literal-cores:1 of 17	newbattle/nbCameraHelper
-00232D20	00233860	code_00232D20	asm	none	
+00232D20	00233860	code_00232D20	c	none	
 00233868	00233880	code_r1_0021C560	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 00233900	00233900	newbattle/nbMisc	c	smt3:map:1 of 1	newbattle/nbMisc
 00233A70	002340C0	code_r1_0021C768	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
@@ -273,36 +273,36 @@ start	last_func	unit	kind	evidence	smt3_unit
 0023E1D0	00259408	code_r1_00226EC8	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 002595A8	002595E0	effect/effPCPBoss_00242290	c	smt3:map:2 of 2 part	effect/effPCPBoss
 00259620	00261D68	code_r1_00242308	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
-00261DF0	0026A868	code_00261DF0	asm	none	
+00261DF0	0026A868	code_00261DF0	c	none	
 0026A9B0	0026AF18	code_0026A9B0	c	none	
 0026AF90	0026AF90	code_r1_0024E730	c	none	
-0026B0A8	00274318	code_0026B0A8	asm	none	
+0026B0A8	00274318	code_0026B0A8	c	none	
 00274358	00274358	code_00274358	c	none	
-002743E0	0027A170	code_002743E0	asm	none	
+002743E0	0027A170	code_002743E0	c	none	
 0027A1D0	0027A1D0	code_0027A1D0	c	dds:1 of 1	
-0027A1E8	002881A0	code_0027A1E8	asm	none	
+0027A1E8	002881A0	code_0027A1E8	c	none	
 00288200	00288200	code_00288200	c	dds:1 of 1	
 00288220	0028AD38	code_00288220	asm	none	
 0028AD40	0028AD40	code_r1_002692F0	c	dds:1 of 1	
-0028AD68	002A93C8	sbtlActAI	asm	none	
+0028AD68	002A93C8	sbtlActAI	c	none	
 002A9518	002A9548	code_r1_0027CBE8	c	dds:2 of 2	
 002A95B0	002A95B0	code_r1_0027CC80	c	dds:1 of 1	
-002A9678	002AB508	sbtlSub	asm	none	
+002A9678	002AB508	sbtlSub	c	none	
 002AB610	002AC8F0	sbtlSub_0027ED08	c	dds:6 of 42 part	
-002AC940	002BAE48	sbtlDMG	asm	none	
+002AC940	002BAE48	sbtlDMG	c	none	
 002BAF80	002BAF80	code_r1_00289CA0	c	none	
 002BB0E8	002BB0E8	field/fldPanel	c	smt3:map:1 of 1	field/fldPanel
-002BB130	002C5C20	sbtlEff_00289E50	asm	none	
+002BB130	002C5C20	sbtlEff_00289E50	c	none	
 002C5CE0	002C5CE0	code_r1_00292930	c	none	
-002C5D78	002CE238	code_002C5D78	asm	none	
+002C5D78	002CE238	code_002C5D78	c	none	
 002CE278	002CE278	newbattle/nbActionProcess	c	smt3:map:1 of 1	newbattle/nbActionProcess
-002CE2C0	002DF0F8	sbtl	asm	none	
+002CE2C0	002DF0F8	sbtl	c	none	
 002DF118	002DF118	code_r1_002A3820	c	none	
-002DF1D0	002F55B8	code_002DF1D0	asm	none	
+002DF1D0	002F55B8	code_002DF1D0	c	none	
 002F5620	002F5620	code_002F5620	c	none	
-002F5CF0	00309F58	code_002F5CF0	asm	none	
+002F5CF0	00309F58	code_002F5CF0	c	none	
 00309F88	00309F88	code_00309F88	c	dds:1 of 1	
-00309FE0	00309FE0	code_00309FE0	asm	none	
+00309FE0	00309FE0	code_00309FE0	c	none	
 00328108	00328108	newbattle/nbDebugProcess	c	smt3:map:1 of 1	newbattle/nbDebugProcess
 00328160	00328160	code_00328160	asm	none	
 00328180	00328290	code_r1_002C7ED0	c	dds:3 of 3 part	
@@ -318,18 +318,18 @@ start	last_func	unit	kind	evidence	smt3_unit
 00354490	00354490	result/rstcalc	c	smt3:map:1 of 1	result/rstcalc
 003544B0	00359350	lmap	asm	none	
 003593E0	003593E0	code_r1_002F5430	c	dds:1 of 1	
-00359420	0035ABD0	TitleMain	asm	none	
+00359420	0035ABD0	TitleMain	c	none	
 0035AE48	0035AE48	code_r1_002F59D0	c	none	
-0035B048	0035BE00	code_0035B048	asm	none	
+0035B048	0035BE00	code_0035B048	c	none	
 0035BF98	0035BF98	code_r1_002F6AE8	c	none	
-0035C0B0	0035D048	code_0035C0B0	asm	none	
+0035C0B0	0035D048	code_0035C0B0	c	none	
 0035D160	0035D3B0	code_r1_002F7568	c	none	
 0035D3D8	0035D548	code_r1_002F93D8	c	none	
-0035D5F0	0035E468	code_0035D5F0	asm	none	
+0035D5F0	0035E468	code_0035D5F0	c	none	
 0035E548	0035E548	code_r1_002FA480	c	none	
-0035E5B8	00364730	code_0035E5B8	asm	none	
+0035E5B8	00364730	code_0035E5B8	c	none	
 003647D0	003647D0	code_r1_00300488	c	dds:1 of 1	
-003647F8	00364828	code_003647F8	asm	none	
+003647F8	00364828	code_003647F8	c	none	
 00364878	00364878	code_r1_00300530	c	dds:1 of 1	
 003648C0	0038AA18	code_003648C0	asm	none	
 0038AC38	0038AC38	code_r1_00323138	c	none	
@@ -360,7 +360,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003BCFD8	003BD018	code_003BCFD8	asm	none	
 003BD050	003BEF18	code_r1_0034D128	c	dds:47 of 64	
 003BEF90	003BF138	code_r1_0034F068	c	dds:2 of 4	
-003BF2E0	003CBBD8	code_003BF2E0	asm	none	
+003BF2E0	003CBBD8	code_003BF2E0	c	none	
 003CBBE0	003CC4F0	sdf/sdfSystem	c	smt3:names:19+smt3:map:5 of 26	sdf/sdfSystem
 003CC520	003CC990	sdf/sdfChip	c	smt3:names:10 of 11	sdf/sdfChip
 003CCA60	003CD488	sdf/sdfMemory	c	smt3:names:14 of 25	sdf/sdfMemory
@@ -377,7 +377,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003D0C50	003D20D8	sdf/sdfDraw	c	smt3:names:29+smt3:map:5 of 40	sdf/sdfDraw
 003D2150	003D4360	sdf/sdfPrim	c	smt3:names:48 of 49	sdf/sdfPrim
 003D4450	003D6C58	sdf/sdfModel	c	smt3:names:46+smt3:map:5 of 57	sdf/sdfModel
-003D6C70	003D6CC0	code_003D6C70	asm	none	
+003D6C70	003D6CC0	code_003D6C70	c	none	
 003D6CC8	003D7E78	sdf/sdfMat	c	smt3:names:31+smt3:map:2 of 46	sdf/sdfMat
 003D7EE8	003DA068	sdf/sdfMotion	c	smt3:names:77 of 88	sdf/sdfMotion
 003DA098	003DAB10	sdf/sdfVu0	c	smt3:names:39 of 39	sdf/sdfVu0
@@ -403,7 +403,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003E4350	003E4490	sdf/sdfMisc	c	smt3:names:3 of 3+gap code_003E4490 (sdfDevResizeBufferedRequest)	sdf/sdfMisc
 003E4558	003E4908	sdf/sdfMath	c	smt3:names:8 of 8	sdf/sdfMath
 003E4980	003E5058	sdf/sdfQuat	c	smt3:names:13 of 14	sdf/sdfQuat
-003E50A0	003E5158	dds3Randomize_0036F310	asm	none	
+003E50A0	003E5158	dds3Randomize_0036F310	c	none	
 003E5190	003E52A8	sdf/sdfRand	c	smt3:names:3 of 3	sdf/sdfRand
 003E5388	003E6A60	sdf/sdfSound	c	smt3:names:32+smt3:map:14 of 60+gap code_003E5388 (sdfSndIopAlloc)	sdf/sdfSound
 003E6AF8	003E7808	code_r1_00370D68	c	none	

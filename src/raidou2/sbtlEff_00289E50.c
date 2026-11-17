@@ -1,0 +1,463 @@
+#include "common.h"
+#include "sbtlWork.h"
+#include "sBtlSM.h"
+#include "sdfChip.h"
+#include "sdk_libc.h"
+#include "code_002929C8.h"
+#include "code_00291C78.h"
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", OnDataLoadProc);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf75);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlFunc6);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData_Decode);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlInitLoadPlayerOnMemData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEndCheck_PlayerOnMemData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadPlayerOnMemData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlLoadPlayerOnMemDataSub);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", evtCommand_PMV_LOAD_END_WAIT);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteOnData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallColorSet4);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallColorSet5);
+
+SBTLEFF_LISTWORK *sbtlCreateEffList(void)
+{
+    SBTLEFF_LISTWORK *lwk = sdfChipAllocZeroDirect(sizeof(SBTLEFF_LISTWORK));
+
+    lwk->num = 0;
+    lwk->wk = NULL;
+    return lwk;
+}
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemAllocDirect3);
+
+INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlBtlLoadPlayerOnMemDataSubTable2);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetDmgEffScale);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetDmgEffShinad);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateEff);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemset9);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlCheckEffectDataSub);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlSetEffectDataSub);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlCheckDeleteEffectSub);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlListProcSub);
+
+s32 CheckEffectDataSingle(s32 type, s32 cmp)
+{
+    if (cmp < 2) {
+        if (type <= cmp) {
+            return 1;
+        }
+    } else if (type == cmp) {
+        return 1;
+    }
+    return 0;
+}
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckEffectData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckEffectData_SeOnly);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlGetSkilltbl16);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckEffectData_Core);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", SetDamageProc);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckEffectData_Core_sbtlEff);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallCheckEffectDataSingle);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", GetDataScale);
+
+INCLUDE_RODATA(const s32, "sbtlEff_00289E50", SetEffectPosTable);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", SetEffectPos);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectData_Num);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectSerialID2_Now);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffectData_SerialID2);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetDecAlpha_SerialID2);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffectData_SkillID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SPID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffectData_SkillIDType);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffectData_SkillIDTypeUnit);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlEff_DeleteEffectData_EffID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetStartTime_Damage);
+
+void Draw_sbtlEff(EFFID id, s32 *starttime, s32 *life)
+{
+    s32 table[58][2] = {
+        { 0, 0 }, { 0, 162 }, { 0, 162 }, { 0, 120 }, { 0, 240 }, { 0, 120 },
+        { 0, 160 }, { 0, 120 }, { 0, 40 }, { 0, 104 }, { 0, 162 }, { 0, 162 },
+        { 0, 300 }, { 0, 162 }, { 0, 120 }, { 0, 50 }, { 0, 60 }, { 0, 60 },
+        { 0, 120 }, { 0, 100 }, { 0, 40 }, { 0, 100 }, { 0, 60 }, { 0, 30 },
+        { 0, 120 }, { 0, 120 }, { 0, 60 }, { 0, 64 }, { 0, 50 }, { 0, 50 },
+        { 0, 90 }, { 0, 144 }, { 0, 120 }, { 0, 50 }, { 0, 60 }, { 0, 60 },
+        { 0, 30 }, { 4, 44 }, { 0, 120 }, { 0, 160 }, { 0, 160 }, { 0, 120 },
+        { 0, 160 }, { 0, 120 }, { 0, 120 }, { 0, 120 }, { 0, 120 }, { 0, 120 },
+        { 0, 120 }, { 0, 160 }, { 0, 162 }, { 0, 120 }, { 0, 160 }, { 0, 160 },
+        { 0, 160 }, { 0, 360 }, { 0, 160 }, { 0, 6 }
+    };
+
+    *starttime = table[id][0];
+    *life = table[id][1];
+}
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlListProc);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", effClassifyResourceMask);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlGetSkilltbl10);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf30);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlGetCutFlg);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectWork_ID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectStat_ID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID_Acter);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID_Summon);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID_SummonFR);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID_Return);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlFadeOut_BadStatusEffect);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetDecAlpha_SerialID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SerialID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SkillFlag);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SkillFlag_Acter);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SkillID_Acter);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDeleteAll);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDeleteAll_TimeStopSkill);
+
+INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlLeaf30Table);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckDeleteEffect);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckSABData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlCheckSABData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceReset_Tatari);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceResetDecAlpha);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlReleaseEff);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffList);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetNumOfEffect_SAB);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_SAB);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_SAB_Acter);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_ID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_WorkID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlInitEffectWork);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckLoadEnd_EffectWork);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateDelList);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckDelWork_Request);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchDelWork_Side);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateDelWork);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDelProc);
+
+s32 sbtlReleaseDelList(SBTLEFF_DELLISTWORK *lwk, u8 flg)
+{
+    SBTLEFF_DELWORK *dwk;
+    SBTLEFF_DELWORK *next;
+
+    if (lwk == NULL) {
+        return 0;
+    }
+    dwk = lwk->dwk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            dwk->gstat = SBTLEFF_DELST_END;
+        }
+        if (dwk->gstat == SBTLEFF_DELST_END) {
+            if (dwk->prev != NULL) {
+                dwk->prev->next = dwk->next;
+            }
+            if (dwk->next != NULL) {
+                dwk->next->prev = dwk->prev;
+            }
+            if (dwk->prev == NULL) {
+                lwk->dwk = dwk->next;
+                if (lwk->dwk != NULL) {
+                    lwk->dwk->prev = NULL;
+                }
+            }
+            next = dwk->next;
+            sdfMemFreeDirect(dwk->handle);
+            dwk = next;
+            lwk->num--;
+        } else {
+            dwk = dwk->next;
+        }
+    } while (dwk != NULL);
+    return 1;
+}
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteDelList);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteHaveSkill_EffectWork);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchEffectData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_EffectWork);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlForceDeleteEffectWorkIDSub2);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffectData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlLoadEffectDataIDMaskSub);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData_IDMask);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchEffectData2);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData_ID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetExeSkill);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchDelWorkSide);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckLoadEffectData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetSummonEffect_Nakama);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetReturnEffect_Nakama);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", LoadOnMemoryData);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckYukaDamageEffect);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallIsSceanStop2);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallPartsCreateFinish);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", LoadOnMemoryData_BED);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_Slip_G);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_Hanyou);
+
+INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlCallBtlGetSklVisualTblTable3);
+
+INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlCheckYukaDamageEffectTable);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID9);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID10);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID11);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_Hanyou_BED);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_NMLDAMAGE);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_DEADDAMAGE);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallLoadOnMemoryDataSBtlEff);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", effPartsColorSet);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_SUMMON);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_RETURN);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_SUMMON_E);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID22);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID23);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID24);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID25);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlAddHitEffSub);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlOutHitEff);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlAddHitEff);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDltHitEff);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf31);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallColorSet);
+
+SBTL_FIELD630_WORK *sbtlCallMemAllocDirect4(void)
+{
+    sdfMemHandle_t *handle = sdfMemAllocDirect(sizeof(SBTL_FIELD630_WORK));
+    SBTL_FIELD630_WORK *wk = sdfMemLock(handle);
+
+    memset(wk, 0, sizeof(SBTL_FIELD630_WORK));
+    wk->handle = handle;
+    wk->num = 0;
+    return wk;
+}
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl42);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemFreeDirect4);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetDevilSkillID);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl43);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf76);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl44);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", evtAllocateContext);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateSTP_Unit);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", CreateSTP);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlProcSBtlSTPSub);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", Proc_sbtlSTP);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", Draw_sbtlSTP);
+
+s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg) {
+    SBTL_STP_NODE *node;
+    SBTL_STP_NODE *next;
+
+    if (stp == NULL) {
+        return 1;
+    }
+    node = stp->head;
+    if (node == NULL || stp->enabled == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            node->mode = 3;
+        }
+        if (node->mode == 3) {
+            if (node->prev != NULL) {
+                node->prev->next = node->next;
+            }
+            if (node->next != NULL) {
+                node->next->prev = node->prev;
+            }
+            if (node->prev == NULL) {
+                stp->head = node->next;
+                if (stp->head != NULL) {
+                    stp->head->prev = NULL;
+                }
+            }
+            next = node->next;
+            sdfMemFreeDirect(node->handle);
+            node = next;
+            stp->enabled--;
+        } else {
+            node = node->next;
+        }
+    } while (node != NULL);
+    return 1;
+}
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteSTPList);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", Check_SupportAction);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl45);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl46);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemAllocDirect5);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemFreeDirect5);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl47);
+
+s32 sbtlFunc13(void)
+{
+    sbtlRefSbtl49();
+    return 1;
+}
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", Proc_sbtlPanel);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlResetMidashiAnim);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl48);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl49);
+
+s32 sbtlCallCommandFLDSETTAKARAOPEN(void)
+{
+    sbtlCallRefSbtl51();
+    return 1;
+}
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckSelectAnim);
+
+INCLUDE_RODATA(const s32, "sbtlEff_00289E50", Draw_sbtlSTPTable2);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetSelectAnim);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlResetSelectAnim);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlMainDraw);
+
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlMainDraw2);

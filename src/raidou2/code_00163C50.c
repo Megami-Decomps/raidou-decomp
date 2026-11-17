@@ -1,0 +1,260 @@
+#include "common.h"
+#include "mapData.h"
+#include "sdfMemory.h"
+
+INCLUDE_ASM(const s32, "code_00163C50", fldLeaf22);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldMapMapMap);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldHirukoYukaGo_Idx2_B);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointGet2D);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointFlagCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointFlagOn);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointDrawStart);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointDrawStart2);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointDrawEndChk);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapSIZE);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapNakamaHajiki1_PosSet);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEveHitMsk_Find);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEveHitMsk_Set);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEveHitMsk_SetPosCam);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapScreenReset);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapScreenCutReset);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapScreenChkIn);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapFunc9);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapLeaf2);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapRefDDS3GBWK4);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapRefDDS3GBWK5);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapFunc2);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapCallObjPos);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapFunc3);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldCallObjVisible);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldRefDDS3GBWK);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldCallAiboFoceSet3);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldEveHitTaskFldSub);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldFileLoadSub);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldCallObjPointGet);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldCallEncountTestFlag);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldClearObjectEntryHandles);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldCallSetPlayerTargetData);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldCallBitCheck2);
+
+INCLUDE_ASM(const s32, "code_00163C50", GetOverrideMapObj);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldLeaf);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldCallMemset2);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbModelFieldApo);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbLeaf);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbCallEffectDistortionBlurSetParam);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbCallObjDel);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbFreeDeadMoonTex);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbCallEffectDistortionBlurCreate);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbObjTaskSub);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbFunc2);
+
+INCLUDE_ASM(const s32, "code_00163C50", mefLeaf);
+
+INCLUDE_ASM(const s32, "code_00163C50", mefLeaf2);
+
+INCLUDE_ASM(const s32, "code_00163C50", mefMistFastCreate);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapLoadMistTexture);
+
+s32 mefMistTexOnDataCheck(void) {
+    if (pMapMoya == NULL) {
+        return 0;
+    }
+    return pMapMoya->texHandle != NULL;
+}
+
+INCLUDE_ASM(const s32, "code_00163C50", mapFileLoadSub);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapLeaf22);
+
+INCLUDE_ASM(const s32, "code_00163C50", pipeFileLoadSub);
+
+INCLUDE_ASM(const s32, "code_00163C50", pipeFileLoadSub2);
+
+void mefMistUpdate(void) {
+    mefMistSystem_t *mist = pMapMoya;
+
+    if (mist->fRun != 0) {
+        mefMistEmitParticle();
+        mefMistUpdateParticle();
+        mist->cnt++;
+    }
+}
+
+INCLUDE_ASM(const s32, "code_00163C50", pipeRefZoom);
+
+INCLUDE_ASM(const s32, "code_00163C50", mefMistDraw);
+
+INCLUDE_ASM(const s32, "code_00163C50", mefMistTexDestroy);
+
+void mefMistEmitParticle(void) {
+    mefMistSystem_t *mist = pMapMoya;
+    mefMistParticle_t *p;
+    s32 n = 1;
+    s32 i;
+
+    if (mist->num == 512) {
+        return;
+    }
+    if (mist->cnt % mist->frequency != 0) {
+        return;
+    }
+    p = mist->particle;
+    for (i = 0; i < 512; i++, p++) {
+        if (p->fExist == 0) {
+            n--;
+            fldCallGetRandFloatA(p);
+            if (n == 0) {
+                return;
+            }
+        }
+    }
+}
+
+void mefMistUpdateParticle(void) {
+    mefMistSystem_t *mist = pMapMoya;
+    mefMistParticle_t *p = mist->particle;
+    s32 i;
+
+    for (i = 511; i >= 0; i--, p++) {
+        if (p->fExist != 0) {
+            p->pos[0] += p->velocity[0];
+            p->pos[1] += p->velocity[1];
+            p->lifeCnt++;
+            if (p->lifeCnt >= p->deathCnt) {
+                p->fExist = 0;
+                mist->num--;
+            }
+        }
+    }
+}
+
+INCLUDE_ASM(const s32, "code_00163C50", mefFunc);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapCameraInitSub);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapLeaf3);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapAll);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_GENBA);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_GENBA_EndCheck_fld);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_INEN_fld);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_INEN_EndCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_TAKANE);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_REI_EndCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_HAKA);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_CHIKARA_EndCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_REI);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_DOKUSIN_EndCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_CHIKARA);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_IRO_EndCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_DOKUSIN);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_ZENI_EndCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_IRO);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_IRO_EndCheck_fld);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_ZENI);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_GENBA_EndCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_INEN);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_TAKUMI_EndCheck);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplLoad_LB_TAKUMI);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapCallCheckEnd);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapNakamaChikaraTaskSub);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbCallEffectReset);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbEffEplLoadLBGENBASub);
+
+INCLUDE_ASM(const s32, "code_00163C50", nbFreeEventPack);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapEffEplAllEnd);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapProcSequenceSub2);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapCallEffectGetState);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapIsFldKeyFreeSub);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldCallEffectDrawDds3Effect);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldLeaf2);
+
+INCLUDE_ASM(const s32, "code_00163C50", fldGetSelectedUnitStat);
+
+INCLUDE_ASM(const s32, "code_00163C50", mapLoadGenbaEpl);
+
+void workRelease(void) {
+    if (hWorkArea2 != NULL) {
+        sdfMemFreeDirect(hWorkArea2);
+        hWorkArea2 = NULL;
+        sdfDiscRequestSemaphore2 = 0;
+    }
+}
+
+INCLUDE_ASM(const s32, "code_00163C50", mapGenbaPosEffCreate);

@@ -2,6 +2,9 @@
 #include "sbtlWork.h"
 #include "mapData.h"
 #include "fldPanel.h"
+#include "dds3WorldBasic.h"
+#include "dds3SceneBasic.h"
+#include "sdfDelayedResrc.h"
 
 INCLUDE_ASM(const s32, "code_0026A9B0", sbtlRefSbtl3);
 
@@ -29,4 +32,20 @@ s32 sbtlLeaf54(dds3ProcessID_t *id) {
     return sbtlOnDataLoadInit();
 }
 
-INCLUDE_ASM(const s32, "code_0026A9B0", BasicSceneFree);
+s32 BasicSceneFree(void) {
+    dds3Basic_t *scene;
+    dds3SceneBasic_t *work;
+
+    scene = dds3GetActiveScene();
+    if (scene == NULL) {
+        return 0;
+    }
+    work = scene->workdata;
+    while (work->basictable[BASIC_TYPE_UNITOBJECT].firstbasic != NULL) {
+        dds3DeleteSceneBasicData(work->basictable[BASIC_TYPE_UNITOBJECT].firstbasic);
+    }
+    while (sdfDelayedResrcCheck()) {
+    }
+    dds3DeleteScene(scene);
+    return 1;
+}

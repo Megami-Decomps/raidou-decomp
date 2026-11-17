@@ -76,6 +76,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | field/fldFileResolver_00132080 | raidou1, raidou2 | [field/fldFileResolver_00132080.md](field/fldFileResolver_00132080.md) |
 | 2 | field/fldProcess | raidou1 | [field/fldProcess.md](field/fldProcess.md) |
 | 2 | kernel/dds3KernelDraw_0010A750 | raidou1, raidou2 | [kernel/dds3KernelDraw_0010A750.md](kernel/dds3KernelDraw_0010A750.md) |
+| 2 | sdf/sdfVu1 | raidou1, raidou2 | [sdf/sdfVu1.md](sdf/sdfVu1.md) |
 | 2 | sdk/libkernl/filestub | raidou1, raidou2 | [sdk/libkernl/filestub.md](sdk/libkernl/filestub.md) |
 | 1 | TitleMain | raidou1 | [TitleMain.md](TitleMain.md) |
 | 1 | basic/dds3DbgBasic | raidou1, raidou2 | [basic/dds3DbgBasic.md](basic/dds3DbgBasic.md) |
@@ -88,6 +89,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_001326C0 | raidou1 | [code_001326C0.md](code_001326C0.md) |
 | 1 | code_0013AAC8 | raidou1 | [code_0013AAC8.md](code_0013AAC8.md) |
 | 1 | code_00142A10 | raidou1 | [code_00142A10.md](code_00142A10.md) |
+| 1 | code_001431D0 | raidou2 | [code_001431D0.md](code_001431D0.md) |
 | 1 | code_00144130 | raidou1 | [code_00144130.md](code_00144130.md) |
 | 1 | code_00156778 | raidou1 | [code_00156778.md](code_00156778.md) |
 | 1 | code_00156EA8 | raidou1 | [code_00156EA8.md](code_00156EA8.md) |
@@ -155,6 +157,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
 | 1 | movie/mviManager | raidou1, raidou2 | [movie/mviManager.md](movie/mviManager.md) |
 | 1 | sbtlEff_00289E50 | raidou1 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
+| 1 | sdf/sdfCoreDraw | raidou1, raidou2 | [sdf/sdfCoreDraw.md](sdf/sdfCoreDraw.md) |
 | 1 | sdf/sdfDefaultMain | raidou1, raidou2 | [sdf/sdfDefaultMain.md](sdf/sdfDefaultMain.md) |
 | 1 | sdf/sdfDraw | raidou1, raidou2 | [sdf/sdfDraw.md](sdf/sdfDraw.md) |
 | 1 | sdf/sdfFileIO | raidou1, raidou2 | [sdf/sdfFileIO.md](sdf/sdfFileIO.md) |

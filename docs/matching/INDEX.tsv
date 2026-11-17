@@ -33,6 +33,7 @@ mapZoomSetGoal	code_0013CDE0	raidou1 0x13F4	1223 of 1249 words differ	docs/match
 mapUnitSetLight	code_00140960	raidou1 0x43C	154 of 271 words differ	docs/matching/code_00140960.md	3		
 mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; adding the fld.h prototype mapObjCheck alone, or splitting sdatUnitWork_t's padC0 into autost_cnt/autost_cnt2 (sdatUnit.h) alone, turns DIFF 3/50 into CONTEXT 5/50. A1-last-asm's six unused prototypes in code_r1_00128378.h leave the full unit at 3/50 but move the function compiled alone from 3/50 to 5/50 (DIFF to CONTEXT).	
 mapHamidasiCheck	code_00142A10	raidou1 0x210	24 of 132 words differ	docs/matching/code_00142A10.md	3	matched until B1-big's declaration edits to fld.h (six prototypes) and mapData.h; removing any one of the new fld.h prototypes, or reverting mapData.h, makes it match again, so it shifts with the count of declarations the unit includes, not with its own C. The K07-misc-kernel header declaration edits move the full unit from OK to DIFF 24/132.	
+fldBgZoomTest	code_001431D0	raidou2 0x2B4		docs/matching/code_001431D0.md	3		the Raidou 1 body (code_0013CDE0), with its three FAKEMATCH_ASM_LIVE(mode) after the mapZoomSetGoal calls that must stay jal.
 mapLeaf12	code_00143568	raidou1 0x50	2 of 20 words differ	docs/matching/code_00143568.md	3		
 mdlCallMemGetSize	code_00143568	raidou1 0x140	25 of 78 words differ	docs/matching/code_00143568.md	11		
 mdlCallMemGetInfo	code_00143568	raidou1 0x12C	22 of 73 words differ	docs/matching/code_00143568.md	19		
@@ -385,6 +386,7 @@ sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSu
 CalcBadStatus	sbtl_0029BFB8	raidou1 0x3B0	204 of 218 words differ	docs/matching/sbtl_0029BFB8.md	3		
 sbtlRefSbtl62	sbtl_0029BFB8	raidou1 0xF8	20 of 61 words differ	docs/matching/sbtl_0029BFB8.md	11		
 CalcBtlMagicStatus	sbtl_0029BFB8	raidou1 0x6E4	5 of 441 words differ	docs/matching/sbtl_0029BFB8.md	19		
+sdfCorePacketGen	sdf/sdfCoreDraw	raidou1 0x914, raidou2 0x914	527 of 581 words differ	docs/matching/sdf/sdfCoreDraw.md	3		
 sdfDefaultMain	sdf/sdfDefaultMain	raidou1 0x188, raidou2 0x188		docs/matching/sdf/sdfDefaultMain.md	3		inherited, alternatives not recorded.
 sdfGrStdDrawEnvPredraw	sdf/sdfDraw	raidou1 0x1B8, raidou2 0x1B8	25 of 110 words differ	docs/matching/sdf/sdfDraw.md	3		
 sdfFileCmdAnalyzeFileName	sdf/sdfFileIO	raidou1 0x168, raidou2 0x168	4 of 90 words differ	docs/matching/sdf/sdfFileIO.md	3		
@@ -399,6 +401,8 @@ sdfMovieQueueFrameSprite	sdf/sdfMovie	raidou1 0x274, raidou2 0x274	15 of 157 wor
 movieParseHeader	sdf/sdfMovie	raidou1 0x170, raidou2 0x170		docs/matching/sdf/sdfMovie.md	9		inherited, alternatives not recorded.
 movieWaitSema	sdf/sdfMovie	raidou1 0xD4, raidou2 0xD4		docs/matching/sdf/sdfMovie.md	15		inherited, alternatives not recorded.
 sdfTexSetPacket	sdf/sdfTex	raidou1 0x168, raidou2 0x168	75 of 90 words differ	docs/matching/sdf/sdfTex.md	3		
+corePktSkinPointsFirst	sdf/sdfVu1	raidou1 0x88, raidou2 0x88	34 of 34 words differ	docs/matching/sdf/sdfVu1.md	3		
+corePktSkinPointsAccum	sdf/sdfVu1	raidou1 0xC8, raidou2 0xC8	50 of 50 words differ	docs/matching/sdf/sdfVu1.md	10		
 _d2b	sdk/libc/mprec	raidou1 0x184, raidou2 0x184		docs/matching/sdk/libc/mprec.md	3		inherited, alternatives not recorded.
 _sceCd_ncmd_prechk	sdk/libcdvd/cdvd000	raidou1 0x170, raidou2 0x170		docs/matching/sdk/libcdvd/cdvd000.md	3		inherited, alternatives not recorded.
 _sceCd_scmd_prechk	sdk/libcdvd/cdvd000	raidou1 0x170, raidou2 0x170		docs/matching/sdk/libcdvd/cdvd000.md	9		inherited, alternatives not recorded.

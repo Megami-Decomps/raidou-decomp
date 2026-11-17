@@ -1338,9 +1338,27 @@ u32 evtCommand_MODEL_OFF(void)
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ON);
+u32 evtCommand_MODEL_ON(void)
+{
+    evtUnit_t *h;
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_OFF);
+    h = evtGetUnitHandle(scrGetIntPara(0));
+    if (h != NULL) {
+        h->owner->flags &= ~1;
+    }
+    return 1;
+}
+
+u32 evtCommand_MODEL_OFF(void)
+{
+    evtUnit_t *h;
+
+    h = evtGetUnitHandle(scrGetIntPara(0));
+    if (h != NULL) {
+        h->owner->flags |= 1;
+    }
+    return 1;
+}
 #endif
 
 u32 evtCommand_MODEL_LIGHT_ON(void) {
