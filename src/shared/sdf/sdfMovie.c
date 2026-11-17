@@ -56,7 +56,6 @@ s32 movieParseHeader(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *aMov, s32 aOp, void 
 void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *desc, const char *path);
 void movieCloseStream(sdfMovieCb_t *aMov);
 s32 sdfMovieIsFinished(sdfMovieCb_t *aMov);
-extern char sdfMovieIpsExt[4];
 
 extern u32 movieDrawMode;
 extern s32 sdfMovieDrawLeft;
@@ -741,4 +740,4 @@ INCLUDE_SDATA(const s32, "sdf/sdfMovie", sdfMovieDrawColor);
 
 INCLUDE_SDATA(const s32, "sdf/sdfMovie", DrawPrimitive2CoreData);
 
-char sdfMovieIpsExt[4] = ".ips";
+char sdfMovieIpsExt[] = ".ips";

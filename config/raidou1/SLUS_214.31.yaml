@@ -1288,12 +1288,11 @@ segments:
       - [0x370488, .sdata, sdf/sdfSound_00371BF0]
       - [0x3705AC, .sdata, sdf/sdfIpu]
       - [0x3705B0, .sdata, sdf/sdfMovie]
-      - { start: 0x3705D4, type: sbss, vram: 0x46F600, name: sbss }
-      - { start: 0x3705D4, type: bss, vram: 0x46FB00, name: bss }
+      - { start: 0x3705D5, type: sbss, vram: 0x46F600, name: sbss }
+      - { start: 0x3705D5, type: bss, vram: 0x46FB00, name: bss }
 
-  # Starts one byte inside .sdata: its size (0x44D5) is not a multiple of 4 and
-  # spimdisasm emits whole words, so the last byte comes from this blob. Then
-  # .sdata tail padding, .DVP.ovlytab/.ovlystrtab/.overlay.* (VU overlay tables
+  # Starts at the end of .sdata (size 0x44D5, the last byte is the NUL of
+  # sdfMovieIpsExt). Then .sdata tail padding, .DVP.ovlytab/.ovlystrtab/.overlay.* (VU overlay tables
   # and microcode copies), .shstrtab and the 28 section headers; none loaded.
-  - [0x3705D4, bin, elf_trailer]
+  - [0x3705D5, bin, elf_trailer]
   - [0x374E90]

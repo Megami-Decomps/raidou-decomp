@@ -1106,10 +1106,10 @@ segments:
       - [0x3E54A0, .sdata, sdf/sdfSound_00371BF0]
       - [0x3E55C4, .sdata, sdf/sdfIpu]
       - [0x3E55C8, .sdata, sdf/sdfMovie]
-      - { start: 0x3E55EC, type: sbss, vram: 0x4E4600, name: sbss }
-      - { start: 0x3E55EC, type: bss, vram: 0x4E4B80, name: bss }
+      - { start: 0x3E55ED, type: sbss, vram: 0x4E4600, name: sbss }
+      - { start: 0x3E55ED, type: bss, vram: 0x4E4B80, name: bss }
 
-  # Starts one byte inside .sdata (size 0x63ED); then .sdata tail padding, the
+  # Starts at the end of .sdata (size 0x63ED); then .sdata tail padding, the
   # VU overlay sections, .shstrtab and the 29 section headers; none loaded.
-  - [0x3E55EC, bin, elf_trailer]
+  - [0x3E55ED, bin, elf_trailer]
   - [0x3E9ED8]
