@@ -18395,7 +18395,7 @@
 0x004DEB40	mapCASHDATAData	data	tier=D	derived-sole	na	used by mapCASHDATA
 0x004DEB48	mapObjFloorAdd_CashData	data	tier=D	derived-sole	na	used by mapObjFloorAdd_Cash
 0x004DEB50	mapObjTaskData12	data	tier=D	derived-sole	na	used by mapObjTask
-0x004DEB54	mapBigClipChkFData	data	tier=D	derived-sole	na	used by mapBigClipChkF
+0x004DEB54	mapCallSetPlayerTargetDataData	data	tier=D	derived-sole	na	used by mapCallSetPlayerTargetData
 0x004DEB58	mapData98	data	tier=D	derived-shared	na	used by 2 functions: mapCallSetPlayerTargetData, mapProcSequenceSub4
 0x004DEB60	mapObjPointAdd2Data	data	tier=D	derived-sole	na	used by mapObjPointAdd2
 0x004DEB68	fldFreeMapDataData	data	tier=D	derived-dominant	na	used by fldFreeMapData (3 of 4 refs, 2 functions)

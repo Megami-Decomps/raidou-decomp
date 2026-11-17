@@ -26035,7 +26035,7 @@
 0x004DEB40	mapCASHDATAData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCASHDATA
 0x004DEB48	mapObjFloorAdd_CashData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjFloorAdd_Cash
 0x004DEB50	mapObjTaskData12	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask
-0x004DEB54	mapBigClipChkFData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapBigClipChkF
+0x004DEB54	mapCallSetPlayerTargetDataData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetPlayerTargetData
 0x004DEB58	mapData98	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallSetPlayerTargetData, mapProcSequenceSub4
 0x004DEB60	mapObjPointAdd2Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjPointAdd2
 0x004DEB68	fldFreeMapDataData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldFreeMapData (3 of 4 refs, 2 functions)
