@@ -74,6 +74,11 @@ in `tools/ida/` make it closer to the decomp's C:
 | `propose_protos.py TSV OUT.json` | prototype candidates for undrafted functions: HD signatures and matched shape neighbours, never the function's own definition |
 | `shared.py`, `land_sync.sh [--game r1\|r2]`, `sync/` | sync the shared IDBs to a tree (names, types, prototypes, globals) and apply prototype proposals; data and `changes.log` live in `~/.local/state/raidou-decomp-work/ida-pseudo` |
 
+ee-gcc truncates a decimal float literal toward zero, so the shortest
+round-to-nearest decimal (Hex-Rays' `0.1`) can give the float one ulp below.
+`tools/float_literal.py 0x3DCCCCCD` prints the literal that keeps the bits
+(`0.100000002f`).
+
 ## Landing a batch
 
 ```sh

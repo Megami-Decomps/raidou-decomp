@@ -6,6 +6,7 @@
 struct sprHandle_t;
 struct effHandle_t;
 struct sdfMemHandle_t;
+struct sdfMat_t;
 
 /* One looping field sound effect: kankyo (ambient) slots and moving-object slots. */
 typedef struct mapSoundSe_t {
@@ -62,6 +63,23 @@ extern f32 fldCallSetOtWork[33][33];
 extern mapSoundSe_t mapFileLoadSub8Work[8];
 extern mapSoundSe_t mapSoundKankyoSeSetWork[64];
 extern mapSeDelay_t datWork7[16];
+/* Scroll phases of the water and mist layers drawn by fldCallSetOt. */
+extern f32 fldCallSetOtData;
+extern f32 fldCallSetOtData2;
+extern f32 fldCallSetOtData3;
+extern f32 fldCallSetOtData4;
+extern f32 fldCallSetOtData5;
+extern f32 fldCallSetOtData6;
+extern f32 fldCallSetOtData7;
+extern f32 fldCallSetOtData8;
+extern f32 fldCallSetOtData9;
+extern f32 fldCallSetOtData10;
+extern f32 fldCallSetOtData11;
+extern f32 fldCallSetOtData12;
+extern f32 fldCallSetOtData13;
+extern f32 fldCallSetOtData14;
+extern f32 fldCallSetOtData15;
+extern f32 fldCallSetOtData16;
 
 void mapProcShutDownSub(void);
 s32 fldIsMapTitleActive(void);
@@ -77,6 +95,30 @@ void mapSeNakamaDelayTask(void);
 void mapCallMemset2(void);
 void mapIfDrawES(void);
 void mapCallEnableMode(s32 map, s32 floor, s32 cut);
+void mapCallSin2(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void mapCallSin3(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void mapCallSin4(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void mapCallSin5(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void mapCallSin6(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void mapCallSin7(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void mapCallSin8(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void mapCallSin9(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void mapCallSin10(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                  f32 v1);
+void fldCallSin4(s32 n, u32 color, struct sdfMat_t *mat, f32 phase, f32 p0, f32 p1, f32 p2, f32 p3, f32 u0, f32 v0, f32 u1,
+                 f32 v1);
+void fldCallSin5(void);
+void fldCallSin6(void);
+void fldCallSin7(void);
+void fldCallSetOt(s32 area, s32 floor, s32 cut);
 
 extern const char DecisionFeedInStrMapAll[];
 extern const char DecisionFeedInStrMapMeiSpr[];

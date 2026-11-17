@@ -64,6 +64,7 @@ jobs:
           python3 tools/test_land_batch.py
           python3 tools/test_draft_store.py
           python3 tools/test_version_guard.py
+          python3 tools/test_float_literal.py
           python3 tools/ida/test_stylefix.py
           python3 tools/ida/test_land_sync.py
           if git ls-files | grep -E '^orig/.+|\.(iso|elf|bin)$' | grep -v '^orig/\.gitkeep$'; then

@@ -767,7 +767,6 @@ INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData1);
 
 INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3Sub6);
 
-#ifdef VERSION_RAIDOU1
 s32 evtSetGameData2and3(evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s32 mode) {
     pmdCutInfo_t *cut;
     evtViewerObject_t *group;
@@ -1321,7 +1320,9 @@ s32 evtSetGameData2and3(evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s3
         evtLoadEventBgm(wdata->stageTable->MajorNum);
         while (!evtCheckEventBgmLoaded(wdata->stageTable->MajorNum)) {
         }
+#ifdef VERSION_RAIDOU1
         printf("smg file load :eventViewer\n");
+#endif
     }
     if (!evtMainMenuItemSub(pInfo)) {
         dds3ChangeBistaMode(1);
@@ -1334,9 +1335,6 @@ s32 evtSetGameData2and3(evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s3
     evtViewerDispatchFlagMode(pInfo);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_001C4B78", evtCallEventFadeOutAllBgm);
 INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtNpcSadaPBData);

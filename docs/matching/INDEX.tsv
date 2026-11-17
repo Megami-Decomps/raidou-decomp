@@ -50,6 +50,7 @@ mapSeNakamaDelayTask	code_0015D490	raidou1 0x74	10 of 29 words differ	docs/match
 mapSeWallHit	code_0015D490	raidou1 0x58	8 of 22 words differ	docs/matching/code_0015D490.md	19		
 mapIfDrawES	code_0015D490	raidou1 0x33C	55 of 207 words differ	docs/matching/code_0015D490.md	27		
 mapCallEnableMode	code_0015D490	raidou1 0x29C	78 of 165 words differ	docs/matching/code_0015D490.md	35		
+fldCallSetOt	code_0015D490	raidou1 0x4F90	5008 of 5042 words differ	docs/matching/code_0015D490.md	43		
 mapFunc	code_0016AD90	raidou1 0x178	20 of 94 words differ	docs/matching/code_0016AD90.md	3		
 mapCallSin11	code_0016AD90	raidou1 0xF8	44 of 58 words differ	docs/matching/code_0016AD90.md	11		
 mapNakamaWakeUp	code_0016CA30	raidou1 0x60	13 of 24 words differ	docs/matching/code_0016CA30.md	3		
