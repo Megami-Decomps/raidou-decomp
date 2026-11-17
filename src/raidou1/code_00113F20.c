@@ -13,11 +13,23 @@
 #include "dds3KernelMain.h"
 #include "scrTraceCode.h"
 
-INCLUDE_ASM(const s32, "code_00113F20", scrGetCodePointer);
+/* body: matched in smt3 @ 9401f79e: src/smt3/script/scrTraceCode.c:1666, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+s32 scrGetCodePointer(void)
+{
+    return nowpwork->CP;
+}
 
-INCLUDE_ASM(const s32, "code_00113F20", scrSetCodePointer);
+/* body: matched in smt3 @ 9401f79e: src/smt3/script/scrTraceCode.c:1671, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void scrSetCodePointer(s32 cp)
+{
+    nowpwork->CP = cp;
+}
 
-INCLUDE_ASM(const s32, "code_00113F20", scrGetScriptTimer);
+/* body: matched in smt3 @ 9401f79e: src/smt3/script/scrTraceCode.c:1676, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+s32 scrGetScriptTimer(void)
+{
+    return nowpwork->ScriptTimer;
+}
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/script/scrTraceCode.c:1681, found, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
 s32 scrGetCommandTimer(void)
@@ -37,4 +49,8 @@ scrProcessWork_s *scrGetScriptHandle(void)
     return nowpwork;
 }
 
-INCLUDE_ASM(const s32, "code_00113F20", scrGetData);
+/* body: matched in smt3 @ 9401f79e: src/smt3/script/scrTraceCode.c:1696, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+void *scrGetData(void)
+{
+    return nowpwork->data;
+}

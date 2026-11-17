@@ -107,7 +107,7 @@ typedef struct fileLoadMirror_t {
 
 #define FILE_MAIN_BLOB_SIZE 0x1E840
 
-u8 fileIsLoadedAndConditionTrue(s32 condition);
+u8 slGetPadTrig(s32 condition);
 s32 slChkWindowOpenDone(void);
 
 struct sdfMemHandle_t;
@@ -117,17 +117,17 @@ extern FileSelectionCallback D_00439024, D_00439028;
 /* Yes/no cursor input while the card request is idle. */
 static inline void filePollPromptChoice(void) {
     if (D_00437D20 == 0 && slChkWindowOpenDone() != 0) {
-        if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x27] < 0) != 0) {
+        if (slGetPadTrig(dds3PadButtonState[0x27] < 0) != 0) {
             if (D_00437D18 != 1) {
                 p2sdPlaySE(0, 0x7F, 0x3F);
             }
             D_00437D18 = 1;
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x26] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x26] < 0) != 0) {
             if (D_00437D18 != 0) {
                 p2sdPlaySE(0, 0x7F, 0x3F);
             }
             D_00437D18 = 0;
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x21] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x21] < 0) != 0) {
             if (D_00437D18 == 0 && (D_00437D1C == 1 || D_00437D1C == 3)) {
                 p2sdPlaySE(0x11, 0x7F, 0x3F);
             } else {
@@ -138,7 +138,7 @@ static inline void filePollPromptChoice(void) {
             } else {
                 D_00437D20 = 1;
             }
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x23] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x23] < 0) != 0) {
             p2sdPlaySE(0xA, 0x7F, 0x3F);
             D_00437D20 = 2;
         }

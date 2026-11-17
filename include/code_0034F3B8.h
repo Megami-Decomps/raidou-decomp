@@ -59,5 +59,6 @@ typedef struct cmpMemWork_t {
     struct sdfMemHandle_t *handle;
     s32 unk04;
 } cmpMemWork_t;
+void cmpStartProcessPanelEff(void);
 
 #endif

@@ -19,3 +19,10 @@ y = 306; if (m != 5 && m != 6) y = 258; folds to addiu/sltiu/movz; nested if (m 
 The draft's local initialized array of the 20 "Loading file N." strings emits its own rodata in the NON_MATCHING build, so that build's .rodata differs from retail at slQueryYesNoDrawTable (0x455298); the default build keeps INCLUDE_RODATA and matches.
 
 Related: control-flow.
+
+## slLoadProc_openFile (mc/slMain, raidou1 0xA4, raidou2 0xA4)
+
+Raidou 1: 1 of 41 words differ, first at +0x20.
+Raidou 2: 1 of 41 words differ, first at +0x20.
+
+1 words off: smt3 body (matched there, same 164B); beq where mine emits beql at +0x20 (delay ld s0 from the shared return); tried status!=PENDING nesting, void* buffer arg; setAutoSaveDisable is slVersionConvert_GetSize (renames.tsv); vectors do not reach, checked against the asm

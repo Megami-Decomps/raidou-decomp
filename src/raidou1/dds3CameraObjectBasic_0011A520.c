@@ -5,9 +5,23 @@
 #include "ps2asm.h"
 #include "dds3KernelDraw.h"
 
-INCLUDE_ASM(const s32, "dds3CameraObjectBasic_0011A520", dds3CameraObjectBasicGetMode);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3CameraObjectBasic.c:264, match, same function 1.00 (words 3/3, calls 1.00, shape 1.00) */
+u32 dds3CameraObjectBasicGetMode(dds3Basic_t *pBasic)
+{
+    dds3CameraObjectBasicWorkData_t *work = pBasic->workdata;
 
-INCLUDE_ASM(const s32, "dds3CameraObjectBasic_0011A520", dds3CameraObjectBasicAlterMode);
+    return work->mode;
+}
+
+/* body: matched in smt3 @ 9401f79eb: src/smt3/basic/dds3CameraObjectBasic.c:271, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void dds3CameraObjectBasicAlterMode(dds3Basic_t *basic, u32 mode)
+{
+    dds3CameraObjectBasicWorkData_t *work = basic->workdata;
+
+    if (work->mode != mode) {
+        work->mode = mode;
+    }
+}
 
 void dds3CameraObjectBasicSetTgtCam(dds3Basic_t *pBasic, const sdfVector4_t *tgtpos, const sdfVector4_t *campos) {
     dds3CameraObjectBasicGetCameraTM(pBasic, tgtpos);

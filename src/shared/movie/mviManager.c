@@ -17,6 +17,11 @@
 #include "mviManager.h"
 #include "dds3KernelCore.h"
 #include "sdfDraw.h"
+#include "dds3KernelDraw.h"
+#include "dds3PadManager.h"
+#include "itfMesManager.h"
+#include "scrCommand.h"
+#include "scrTraceCode.h"
 
 
 typedef struct
@@ -149,7 +154,30 @@ INCLUDE_ASM(const s32, "movie/mviManager", fldCommand_FLD_BGM_CONTINUE);
 
 INCLUDE_ASM(const s32, "movie/mviManager", titleFreeWork);
 
+/* NON_MATCHING: 41 of 42 words match.  */
+#ifdef NON_MATCHING
+s32 mnuUpdateMovieDrawShutdownCountdown(void) {
+    if (mnuUpdateMovieDrawShutdownCountdownData == 0 && scrRefDDS3GBWK3() == 1 && dds3Data[0] < 0) {
+        mnuUpdateMovieDrawShutdownCountdownData = 1;
+        dds3SetFilter2Para(0x44);
+        dds3SetFilter2RGBA(0x80000000);
+        dds3Filter2On(0x1E);
+        itfPanelReleaseHold();
+    }
+    if (mnuUpdateMovieDrawShutdownCountdownData > 0) {
+        if (mnuUpdateMovieDrawShutdownCountdownData == 0x1E) {
+            movieStop();
+            scrSetIntReturnValue(0);
+            return 1;
+        }
+        mnuUpdateMovieDrawShutdownCountdownData = mnuUpdateMovieDrawShutdownCountdownData + 1;
+    }
+    scrSetIntReturnValue(mviValidateMovieSub() == 0);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "movie/mviManager", mnuUpdateMovieDrawShutdownCountdown);
+#endif
 
 INCLUDE_ASM(const s32, "movie/mviManager", mviFunc);
 

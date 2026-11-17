@@ -21,6 +21,19 @@
 #include "ModeSelect.h"
 #include "code_00300578.h"
 #include "shpMessage.h"
+#include "code_00195698.h"
+#include "neko.h"
+#include "jmsMain.h"
+#include "rstInit.h"
+#include "code_00323280.h"
+#include "gohInit.h"
+#include "code_r1_0010DF68.h"
+#include "code_r1_002CD5A8.h"
+#include "dds3KernelCore.h"
+#include "fldCommand.h"
+#include "code_002D7950.h"
+#include "code_0034F3B8.h"
+#include "mviManager.h"
 
 s32 DIntr();
 s32 EIntr(void);
@@ -321,13 +334,19 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf28);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf29);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf30);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E038.c:1, match */
+void sysLeaf30(void) {
+    cmpProcessStart_cmpMain();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc22);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc23);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf31);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E090.c:1, match */
+void sysLeaf31(void) {
+    gohShopDebug();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc24);
 
@@ -339,7 +358,10 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallExitSky);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf32);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf33);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E130.c:1, match */
+dds3ProcessID_t *sysLeaf33(void) {
+    return ProcessStart_rstInit();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessEndRstInit);
 
@@ -359,25 +381,40 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf38);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf39);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf40);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E1B8.c:1, match */
+void sysLeaf40(void) {
+    mjnTestFontCalc();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc26);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc27);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf41);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E210.c:1, match */
+void sysLeaf41(void) {
+    InitMovieViewer();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallFinishMovieViewer);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf42);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf43);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E250.c:1, match */
+void sysLeaf43(void) {
+    fclLeaf12();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc28);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf44);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf);
+s32 sysLeaf(s32 restored, void *reqdata)
+{
+    if (reqdata == NULL) {
+        return getLmpMainProc(0);
+    }
+    return getLmpMainProc(*(s32 *)reqdata);
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitLmap);
 
@@ -391,25 +428,43 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckLmap);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf32);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E328.c:1, match */
+void datLeaf32(void) {
+    mphStart_itf();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown2);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf33);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf34);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E368.c:1, match */
+void datLeaf34(void) {
+    stfCtnTestProcess();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallInit);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf35);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf36);
+s32 datLeaf36(s32 restored, void *reqdata)
+{
+    if (reqdata == NULL) {
+        return fldCommand_SET_ALLPANEL(3);
+    }
+    return fldCommand_SET_ALLPANEL(*(s32 *)reqdata);
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc18);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc19);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf37);
+s32 datLeaf37(s32 restored, void *reqdata)
+{
+    if (reqdata == NULL) {
+        return fldCommand_SET_ALLPANEL(0);
+    }
+    return fldCommand_SET_ALLPANEL(*(s32 *)reqdata);
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc20);
 
@@ -423,7 +478,10 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf4);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf38);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E4C8.c:1, match */
+void datLeaf38(void) {
+    frTestFontInit();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitHanafudaTest);
 
@@ -437,11 +495,20 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc2);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc3);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", CallGomaden);
+s32 CallGomaden(s32 restored, void *reqdata)
+{
+    if (reqdata == NULL) {
+        return fldFacilityMistDraw(1);
+    }
+    return fldFacilityMistDraw(*(s32 *)reqdata);
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitGomaden);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf39);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E5B0.c:1, match */
+s32 datLeaf39(void) {
+    return gohCheckSequence();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datRefDDS3GBWK);
 
@@ -449,7 +516,10 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessEnd);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessCheck);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf40);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E628.c:1, match */
+void datLeaf40(void) {
+    cmpStartProcessPanelEff();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc22);
 
@@ -530,7 +600,14 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
 void datLeaf41(void) {
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", evtToggleDebugTimeGraphTask);
+void evtToggleDebugTimeGraphTask(s8 mode) {
+    if (mode == 1) {
+        evtToggleDebugTimeGraphTaskWork = dds3StartProcess("DebugTimeGrph", 0x2710, 1, 1, evtDrawGeneralHeapUsageGraph,
+                                                           (dds3ProcessFunc_t)datLeaf41, NULL);
+    } else if (mode == 0) {
+        dds3KillProcess(evtToggleDebugTimeGraphTaskWork, 0);
+    }
+}
 
 /* Render an allocation span as partial rows and complete heap-map rows. */
 void sdfDrawHeapSpanOverlay(sdfDrawTag_t *packetList, s32 x, s32 y,

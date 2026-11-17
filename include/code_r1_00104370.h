@@ -4,5 +4,6 @@
 #include "common.h"
 
 void dds3InitDrawEnvSub(s32 i);
+extern u8 dds3CallDLinkTexPacketData;
 
 #endif

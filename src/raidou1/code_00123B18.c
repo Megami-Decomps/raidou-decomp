@@ -6,4 +6,6 @@ u32 dds3NullDrawProc(void)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00123B18", dds3Leaf29);
+s32 dds3Leaf29(void) {
+    return -1;
+}

@@ -30,3 +30,10 @@ Raidou 1 and Raidou 2: 65 of 124 words differ, first at +0x58; emitted 496 bytes
 Loop register use and float scheduling differ; body from SMT3, no frame gating.
 
 Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
+
+## dds3InitRenderDrawEnv (kernel/dds3KernelDraw, raidou1 0x160, raidou2 0x160)
+
+Raidou 1: 3 of 88 words differ, first at +0x70.
+Raidou 2: 3 of 88 words differ, first at +0x70.
+
+3 words off: store order of the sh/sb/sw into dds3RenderTexId at +0x70..0x7C (h, pixelFormat, frameHandle[1]); h before buffH fixed the registers but reorders the stores; vectors do not reach, no vector file

@@ -7,4 +7,7 @@ void effDestroyEffectList(effList_t *list)
     sdfChipFreeDirect(list);
 }
 
-INCLUDE_ASM(const s32, "code_002C7EB0", mnuGetValueRecordOwner);
+u32 mnuGetValueRecordOwner(const effList_t *list)
+{
+    return list->mode;
+}

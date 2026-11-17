@@ -12,6 +12,7 @@
 #include "dds3WorldBasic.h"
 #include "dds3ObjectBase.h"
 #include "dds3MatterObjectBasic.h"
+#include "fldDraw.h"
 
 dds3Basic_t *dds3AddMatterObjectBasic(s32 serialID, f32 *pos, f32 *rot);
 void dds3DeleteMatterObjectBasic(dds3Basic_t *aPtr);
@@ -111,7 +112,59 @@ void dds3MatterObjectBasicDestructor(dds3Basic_t *aPtr) {
 
 INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", MainProcedure);
 
+/* NON_MATCHING: 9 of 123 words match.  */
+#ifdef NON_MATCHING
+extern dds3Basic_t *playerBasic;
+extern s32 effObjOpacityPassEnabled;
+
+s32 dds3MatterObjectBasicDrawProcedure(dds3Basic_t *basic)
+{
+    dds3MatterObjectBasicWorkData_t *work;
+    u32 alpmode;
+    s32 otIndex;
+    u32 color;
+    s32 result;
+
+    result = 1;
+    if (effObjOpacityPassEnabled) {
+        work = basic->workdata;
+        if (work->OtLinkIdx == -1) {
+            rsetOtOfs(44);
+            rsetTest(1, 5, 0x60, 1, 0, 0, 1, 2);
+            dds3ObjectBaseModelLinkOt(&ModelOt[0], basic);
+            rsetOtOfs(44);
+            rsetTest(1, 5, 0x80, 1, 0, 0, 1, 2);
+            return 1;
+        }
+        rsetOtOfs(42);
+        rsetTest(1, 5, 0x60, 1, 0, 0, 1, 2);
+        alpmode = work->alpmode;
+        if (alpmode < 5) {
+            if (alpmode >= 3) {
+                if (basic->color == 0x80808080) {
+                    dds3ObjectBaseModelLinkOt(&ModelOt[8 + work->OtLinkIdx], basic);
+                    goto link;
+                }
+                if (!dds3ObjectBaseCheckFlag(playerBasic, 1)) {
+                    dds3ObjectBaseModelLinkOt(&ModelOt[10], basic);
+                    goto link;
+                }
+                color = basic->color;
+                basic->color = 0x80808080;
+                dds3ObjectBaseModelLinkOt(&ModelOt[8 + work->OtLinkIdx], basic);
+                basic->color = color;
+            }
+        }
+link:
+        dds3ObjectBaseModelLinkOt(&ModelOt[work->OtLinkIdx], basic);
+        rsetOtOfs(42);
+        rsetTest(1, 5, 0x80, 1, 0, 0, 1, 2);
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicDrawProcedure);
+#endif
 
 INCLUDE_SDATA(const s32, "basic/dds3MatterObjectBasic", effObjOpacityPassEnabled);
 

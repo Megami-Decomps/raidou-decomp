@@ -81,7 +81,7 @@ void FldWnd_Start(sdfVector4_t *pos1, const sdfVector4_t *pos0);
 void ListCallProcEnd(struct tagLMAP_LIST_WORK *wk);
 s8 ListCheckProcEnd(struct tagLMAP_LIST_WORK *wk);
 s32 ListLinkSprite(struct sprHandle_t *a_hSpr);
-s32 ListMakeListStation(struct tagLMAP_LIST_WORK *wk);
+s32 ListMakeListStation(dds3ProcessID_t *PID);
 void LoadFile(void);
 s32 Lock_SetPointChr(struct tagLMAP_LOCK_WORK *lockwk, struct tagLMAP_CHR_WORK *chrwk, s32 lockFlg);
 void M_InitCamera(void);

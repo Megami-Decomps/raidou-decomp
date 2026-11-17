@@ -42,5 +42,6 @@ extern struct effHandle_t *fldTitleMiniTex5;
 /* nbLeaf71 is empty in retail. */
 void nbLeaf69(s32 a, s32 b);
 void nbLeaf71(s32 a, s32 b);
+void frTestFontInit(void);
 
 #endif

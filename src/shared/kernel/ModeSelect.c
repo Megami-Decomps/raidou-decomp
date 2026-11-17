@@ -10,6 +10,8 @@
 #include "dds3KernelCore.h"
 #include "sdk_libc.h"
 #include "mdlManager.h"
+#include "sdfMemory.h"
+#include "sdfTex.h"
 
 typedef struct evtUnitHandle_t
 {
@@ -397,7 +399,16 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", mjnCallSetTehai144);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", ApplyRon);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", mjnCallDevLoadFileEx);
+/* body: matched in raidou @ 88f0d54: src/raidou1/code_00323280.c:858, near, same function 0.89 (words 20/20, calls 0.67, shape 1.00) */
+sdfTexHandle_t *mjnCallDevLoadFileEx(const char *filename)
+{
+    u32 resource = 0;
+    sdfMemHandle_t *fileAllocation = sdfDevLoadFileEx(filename, &resource, 0);
+    sdfTexHandle_t *texture = sdfTexSet(EE_ADDR_AS(TMX_HEADER_t *, resource));
+
+    sdfMemFreeDirect(fileAllocation);
+    return texture;
+}
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", mjnModelLoadBuffStart);
 

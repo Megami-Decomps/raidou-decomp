@@ -52,7 +52,9 @@ s32 dds3LinkBoxZSub(void)
     return -1;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3Leaf20);
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelCore.c:814, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void dds3Leaf20(void) {
+}
 
 extern s32 dds3BasicMainProcess(dds3ProcessID_t *id);
 extern s32 dds3BasicDrawProcess(dds3ProcessID_t *id);
@@ -197,7 +199,7 @@ u32 dds3GetFrameID(void)
 }
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3PauseOn);
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelMain.c:189, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
 #else
 void dds3PauseOn(void);
 void dds3PauseOff(void);
@@ -212,46 +214,38 @@ extern u32 dds3DebugSign;
 extern char dds3FirstProcessName[8];
 extern char dds3DrawFirstProcessName[8];
 extern u8 dds3DrawProcessFlag;
-#endif
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3PauseOff);
-#else
+#endif
 void dds3PauseOn(void)
 {
     dds3PauseTime = 0;
     dds3PauseSign = 1;
     dds3SlowSign = 0;
 }
-#endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3Stop);
-#else
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelMain.c:196, match, same function 1.00 (words 4/4, calls 1.00, shape 1.00) */
+#endif
 void dds3PauseOff(void)
 {
     dds3PauseSign = 0;
     dds3PauseTime = 0;
     dds3SlowSign = 0;
 }
-#endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SlowOn);
-#else
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelMain.c:203, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+#endif
 void dds3Stop(u32 frame)
 {
     dds3PauseTime = SDF_FRAMES(frame);
     dds3PauseSign = 1;
     dds3SlowSign = 0;
 }
-#endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SlowOff);
-
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3ScreenCaptureOn);
-#else
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelMain.c:210, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
+#endif
 void dds3SlowOn(u32 aSlowTime, u32 slowcnt)
 {
     u32 runCount = dds3RunCount;
@@ -263,11 +257,10 @@ void dds3SlowOn(u32 aSlowTime, u32 slowcnt)
     dds3PauseSign = 0;
     dds3PauseTime = 0;
 }
-#endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3ScreenCaptureOff);
-#else
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelMain.c:222, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+#endif
 void dds3SlowOff(void)
 {
     dds3PauseSign = 0;
@@ -275,17 +268,21 @@ void dds3SlowOff(void)
     dds3PauseTime = 0;
     dds3SlowSign = 0;
 }
-#endif
 
 #ifdef VERSION_RAIDOU1
-/* body: matched in raidou @ 385e897: src/shared/kernel/dds3KernelMain.c:203, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-#else
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelMain.c:230, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+#endif
 void dds3ScreenCaptureOn(void) {
 }
 
+#ifdef VERSION_RAIDOU1
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelMain.c:233, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+#endif
 void dds3ScreenCaptureOff(void) {
 }
 
+#ifdef VERSION_RAIDOU1
+/* body: matched in raidou @ 385e897: src/shared/kernel/dds3KernelMain.c:203, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
 #endif
 void dds3SoftResetOn(void)
 {
@@ -404,13 +401,13 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3PauseSign);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3PauseTime);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", PauseSign);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowSign);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3Data25);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowTime);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowOnData);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowRunCount);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowOnData2);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowEndCount);
 
 #endif
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3DebugSign);

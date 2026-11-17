@@ -12,6 +12,14 @@ void dds3PathBasicPauseOff(dds3PathBasicControl_t *pControl)
     pControl->flag &= ~DDS3_PATHBASIC_FLAG_STOP;
 }
 
-INCLUDE_ASM(const s32, "dds3PathBasic_0011EA58", dds3PathBasicLoopOn);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3PathBasic.c:299, match, same function 1.00 (words 4/4, calls 1.00, shape 1.00) */
+void dds3PathBasicLoopOn(dds3PathBasicControl_t *pControl)
+{
+    pControl->flag |= DDS3_PATHBASIC_FLAG_LOOP;
+}
 
-INCLUDE_ASM(const s32, "dds3PathBasic_0011EA58", dds3PathBasicLoopOff);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3PathBasic.c:304, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+void dds3PathBasicLoopOff(dds3PathBasicControl_t *pControl)
+{
+    pControl->flag &= ~DDS3_PATHBASIC_FLAG_LOOP;
+}

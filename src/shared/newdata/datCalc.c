@@ -328,25 +328,23 @@ s32 datCheckMoney(s32 money)
     return 1;
 }
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "newdata/datCalc", datAddItem);
-#else
+#ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "newdata/datCalc", datCheckEventItem);
+
+INCLUDE_ASM(const s32, "newdata/datCalc", datCalcGetItemNum);
+
 #endif
+INCLUDE_ASM(const s32, "newdata/datCalc", datAddItem);
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "newdata/datCalc", datCheckItem);
 #else
-INCLUDE_ASM(const s32, "newdata/datCalc", datCalcGetItemNum);
+INCLUDE_ASM(const s32, "newdata/datCalc", datCallCalcGetItemNum2);
 #endif
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "newdata/datCalc", datGetItemMaxNum);
 #else
-INCLUDE_ASM(const s32, "newdata/datCalc", datCallCalcGetItemNum);
-
-INCLUDE_ASM(const s32, "newdata/datCalc", datCallCalcGetItemNum2);
-
 INCLUDE_ASM(const s32, "newdata/datCalc", datGetItemNum);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datGetItemNumEquipMinus_shpMain);

@@ -7,6 +7,9 @@
 #include "sdk_libc.h"
 #include "code_r1_002C8188.h"
 #include "code_00195698.h"
+#include "sdfDraw.h"
+#include "sdf2D.h"
+#include "sdfPacketBuff.h"
 
 INCLUDE_ASM(const s32, "code_00195698", MoneyShutdown);
 
@@ -22,9 +25,30 @@ void itfMoneyProcessStart(void) {
     wk->drawPID = dds3StartProcess(itfStrItfmoneyDraw, 0x2B07, 0, 0, MoneyDrawProcess, NULL, wk);
 }
 
-INCLUDE_ASM(const s32, "code_00195698", awdMenuStart);
+void awdMenuStart(void) {
+    struct tagITF_MONEY_WORK *wk;
 
-INCLUDE_ASM(const s32, "code_00195698", awdCallGetProcessStat);
+    if (g_mainPID2 != NULL && dds3ExistProcess(g_mainPID2)) {
+        wk = dds3GetProcessData(g_mainPID2);
+        if (!(wk->flags & 1)) {
+            wk->flags |= 1;
+            wk->step = 5;
+            wk->count = 0;
+        }
+    }
+}
+
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/00195800.c:1, match */
+s32 awdCallGetProcessStat(void) {
+    if (g_mainPID2 == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(g_mainPID2) == 3 || dds3GetProcessStat(g_mainPID2) == 0) {
+        g_mainPID2 = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00195698", awdMenuGetSelectID);
 
@@ -62,7 +86,16 @@ INCLUDE_ASM(const s32, "code_00195698", saveCallGetProcessData);
 
 INCLUDE_ASM(const s32, "code_00195698", saveCallGetProcessData2);
 
-INCLUDE_ASM(const s32, "code_00195698", ListMakeListStation);
+s32 ListMakeListStation(dds3ProcessID_t *PID) {
+    tagMAP_MENU_WORK *work = dds3GetProcessData(mapMenuProcessCheckData);
+
+    itfMenuLinkSprite(PID, work->hSpr);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_TITLE, 0, 0, 0, 0, 23, 24, NULL, ListMakeListStationData3);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_PANEL, 322, 71, 128, 23, 17, 4, NULL, ListMakeListStationData);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_SELECT, 322, 71, 128, 23, 17, 4, NULL, ListMakeListStationData2);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_SCROLL, 0, 0, 3, 163, 490, 84, NULL, ListMakeListStationData4);
+    return itfMenuSetImageColor(PID, ITFMENU_IMG_DAT_SCROLL, 200, 180, 80, 128);
+}
 
 INCLUDE_ASM(const s32, "code_00195698", savePointMenuCreateMenuPID);
 
@@ -128,7 +161,12 @@ INCLUDE_ASM(const s32, "code_00195698", nmeCalc);
 
 INCLUDE_ASM(const s32, "code_00195698", mapMenuGetSelectUNIQ);
 
-INCLUDE_ASM(const s32, "code_00195698", mapCallGetProcessData);
+s32 mapCallGetProcessData(void)
+{
+    tagMAP_MENU_WORK *wk = dds3GetProcessData(mapMenuProcessCheckData);
+
+    return wk->selectID;
+}
 
 void mapMenuRelease(tagMAP_MENU_WORK *wk) {
     if (wk->hSpr != NULL) {
@@ -174,7 +212,17 @@ void awdMenuProcessEnd(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00195698", mapMenuProcessCheck);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/00196C48.c:1, match */
+s32 mapMenuProcessCheck(void) {
+    if (mapMenuProcessCheckData == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(mapMenuProcessCheckData) == 3 || dds3GetProcessStat(mapMenuProcessCheckData) == 0) {
+        mapMenuProcessCheckData = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00195698", awdMenuMakeList);
 
@@ -192,7 +240,12 @@ INCLUDE_ASM(const s32, "code_00195698", awdCallGetProcessData);
 
 INCLUDE_ASM(const s32, "code_00195698", awdCallGetProcessData2);
 
-INCLUDE_ASM(const s32, "code_00195698", awdCallGetProcessData3);
+s32 awdCallGetProcessData3(void)
+{
+    awdMenu_t *wk = dds3GetProcessData(cmpCallGetProcessStatData);
+
+    return wk->selectID;
+}
 
 INCLUDE_ASM(const s32, "code_00195698", awdMenuRelease);
 
@@ -200,7 +253,18 @@ INCLUDE_ASM(const s32, "code_00195698", awdMenuShutdown);
 
 INCLUDE_ASM(const s32, "code_00195698", evtInitEventViewer);
 
-INCLUDE_ASM(const s32, "code_00195698", evtCallExistProcess);
+void evtCallExistProcess(void) {
+    awdMenu_t *wk;
+
+    if (cmpCallGetProcessStatData != NULL && dds3ExistProcess(cmpCallGetProcessStatData)) {
+        wk = dds3GetProcessData(cmpCallGetProcessStatData);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 6;
+            wk->count = 0;
+        }
+    }
+}
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001973A0.c:1, found */
 s32 cmpCallGetProcessStat(void) {
@@ -228,15 +292,37 @@ INCLUDE_ASM(const s32, "code_00195698", elvMenuCheckWait);
 
 INCLUDE_ASM(const s32, "code_00195698", elvMenuStart);
 
-INCLUDE_ASM(const s32, "code_00195698", elvMenuGetSelectID);
+s32 elvMenuGetSelectID(void)
+{
+    elvMenu_t *wk = dds3GetProcessData(elvCallGetProcessStatData);
+
+    return wk->selectID;
+}
 
 INCLUDE_ASM(const s32, "code_00195698", elvMenuRelease);
 
-INCLUDE_ASM(const s32, "code_00195698", elvMenuShutdown);
+void elvMenuShutdown(dds3ProcessID_t *PID) {
+    elvMenu_t *wk = dds3GetProcessData(PID);
+
+    elvMenuRelease(wk);
+    sdfMemFreeDirect(wk->hMem);
+    elvCallGetProcessStatData = NULL;
+}
 
 INCLUDE_ASM(const s32, "code_00195698", elvMenuProcessStart);
 
-INCLUDE_ASM(const s32, "code_00195698", elvCallExistProcess2);
+void elvCallExistProcess2(void) {
+    elvMenu_t *wk;
+
+    if (elvCallGetProcessStatData != NULL && dds3ExistProcess(elvCallGetProcessStatData)) {
+        wk = dds3GetProcessData(elvCallGetProcessStatData);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 2;
+            wk->count = 0;
+        }
+    }
+}
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001978C8.c:1, found */
 s32 elvCallGetProcessStat(void) {
@@ -264,7 +350,10 @@ void mphCallMemAllocDirect(void) {
 
 INCLUDE_ASM(const s32, "code_00195698", mphStartLoad);
 
-INCLUDE_ASM(const s32, "code_00195698", mphCommandBUSTUPLOADSub);
+void mphCommandBUSTUPLOADSub(s32 id)
+{
+    mphStartLoad(mphCommandBUSTUPLOADSubData[id]);
+}
 
 INCLUDE_ASM(const s32, "code_00195698", mphLoadFileProcess);
 
@@ -274,7 +363,10 @@ INCLUDE_ASM(const s32, "code_00195698", mphLeaf);
 
 INCLUDE_ASM(const s32, "code_00195698", mphEndDraw);
 
-INCLUDE_ASM(const s32, "code_00195698", mphEnd);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/00197BF0.c:1, match */
+void mphEnd(void) {
+    mphDestroy();
+}
 
 INCLUDE_ASM(const s32, "code_00195698", mphCallHandleFree);
 
@@ -312,7 +404,16 @@ INCLUDE_ASM(const s32, "code_00195698", mphCallGrAllocPacketBuff2);
 
 INCLUDE_ASM(const s32, "code_00195698", mphCallGrAllocPacketBuff3);
 
-INCLUDE_ASM(const s32, "code_00195698", mphCallGrAllocPacketBuff4);
+typedef struct { u8 unk00[0x20]; u64 value, registerCode; } mphGsState_t;
+
+void mphCallGrAllocPacketBuff4(sdfDrawTag_t *pdrawtag, s32 wms, s32 wmt, s32 min_u, s32 max_u, s32 min_v, s32 max_v) {
+    s32 packet = sdfGrAllocPacketBuff(0x30);
+    mphGsState_t *dst = EE_ADDR_AS(mphGsState_t *, sdf2DMakeStdPacket(packet, 0x30));
+
+    dst->value = ((u64)max_v << 34) | ((u64)min_v << 24) | (max_u << 14) | (min_u << 4) | (wmt << 2) | wms;
+    dst->registerCode = 8;
+    sdfDrawTagLink(pdrawtag, packet);
+}
 
 INCLUDE_ASM(const s32, "code_00195698", mphCallDGetPrimPacketSize);
 

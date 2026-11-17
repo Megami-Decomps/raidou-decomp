@@ -20,5 +20,6 @@ s32 ListDrawProcess(dds3ProcessID_t *PID);
 void ListProcessStart(dds3ProcessID_t *PID);
 s32 getLeaf(lmapLmpListWork_t *pWork);
 void getListProcessStartSub(lmapLmpListWork_t *pWork);
+void stfCtnTestProcess(void);
 
 #endif

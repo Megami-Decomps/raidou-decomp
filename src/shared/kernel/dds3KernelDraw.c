@@ -509,7 +509,41 @@ void dds3InitDrawEnv(void)
     eglInit();
 }
 
+/* NON_MATCHING: 85 of 88 words match.  */
+#ifdef NON_MATCHING
+extern sdfGrFrameSet_t dds3RenderTexId;
+extern sdfMatrix4_t dds3RenderViewportMatrix;
+extern sdf3DLight_t *dds3RenderLightParallel[4];
+extern sdfVector4_t dds3RenderAmbientColor;
+
+void dds3InitRenderDrawEnv(void) {
+    s32 i;
+
+    dds3RenderTexId.zbuffHandle = sdfGrFrameSet.zbuffHandle;
+    dds3RenderTexId.w = dds3RenderTexWidth;
+    dds3RenderTexId.h = dds3RenderTexHeight;
+    dds3RenderTexId.buffH = dds3RenderTexHeight;
+    dds3RenderTexId.zbuffFormat = 0x30;
+    dds3RenderTexId.frameHandle[0] = dds3RenderTexHandle;
+    dds3RenderTexId.pixelFormat = 0;
+    dds3RenderTexId.frameHandle[1] = NULL;
+    sdf3MakeScreenParam(&dds3RenderScreenParam);
+    i = 0;
+    do {
+        sdfDrawTagInit(&dds3DrawEnv[i].renderTag);
+        sdfGrSetDrawEnv(&dds3DrawEnv[i].renderEnv, &dds3RenderTexId, 0);
+        dds3DrawEnv[i].renderEnv.clear.clearColor = dds3RenderDrawEnv;
+        sdfDrawTagLink(&dds3DrawEnv[i].renderTag, EE_ADDR(&dds3DrawEnv[i].renderEnv));
+        sdf3DMakeViewportPacket(&dds3DrawEnv[i].renderViewport, &dds3RenderScreenParam, &dds3RenderViewportMatrix);
+        sdfDrawTagLink(&dds3DrawEnv[i].renderTag, EE_ADDR(&dds3DrawEnv[i].renderViewport));
+        sdf3DMakeLightParallelPacket(&dds3DrawEnv[i].renderLight, dds3RenderLightParallel, &dds3RenderAmbientColor);
+        sdfDrawTagLink(&dds3DrawEnv[i].renderTag, EE_ADDR(&dds3DrawEnv[i].renderLight));
+        i++;
+    } while (i != 2);
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitRenderDrawEnv);
+#endif
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefCameraTM);
 
@@ -760,7 +794,13 @@ void dds3FadeColorGet(dds3FadeColor_t **outColor) {
     *outColor = &fadergba;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeSet_2);
+/* body: matched in smt3 @ 9401f79eb: src/smt3/kernel/dds3KernelDraw.c:642, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+void dds3FadeSet_2(s8 r, s8 g, s8 b)
+{
+    fadergba[0] = r;
+    fadergba[1] = g;
+    fadergba[2] = b;
+}
 
 void dds3FadeModeSet(s32 mode)
 {
@@ -2191,7 +2231,25 @@ void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", nbPnl_rsetTest);
+/* body: matched in smt3 @ 9401f79e: src/smt3/newbattle/nbPanelProcess.c:615, adapt, same function 1.00 (words 69/69, calls 1.00, shape 1.00) */
+void nbPnl_rsetTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst)
+{
+    sdfDrawTag_t *list;
+    u64 *buff;
+    u64 *packet;
+    sdfGrOt_t *ot;
+
+    list = sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    buff = sdfGrAllocPacketBuff(0x30);
+    packet = sdf2DMakeStdPacket(buff, 0x30);
+    packet[4] = (ztst << 17) | 0x10000 | (datm << 15) | (date << 14) | (afail << 12) |
+                (aref << 4) | (atst << 1) | ate;
+    packet[5] = 0x48;
+    sdfDrawTagLink(list, buff);
+    ot = &sdfGrOtTable[egl_OT_Offset];
+    ot->regFunc(ot, list);
+}
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3KernelDraw.c:1853, near, same function 0.92 (words 77/65, calls 1.00, shape 0.92) */
 void eglLinkAlpha(s32 mode)
@@ -2272,9 +2330,33 @@ void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CallGrAllocPacketBuff3);
+void dds3CallGrAllocPacketBuff3(void)
+{
+    sdfDrawTag_t *tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfGrRefGifPacketHeader_t *buffer;
+    sdfGrOt_t *otp;
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CallGrAllocPacketBuff4);
+    sdfDrawTagInit(tag);
+    buffer = EE_ADDR_AS(sdfGrRefGifPacketHeader_t *, sdfGrAllocPacketBuff(0x40));
+    sdfGrSetFrameMaskRGB((const u8 *)&dds3DrawEnv[dds3GetFrameID()].stdEnv, buffer, 0);
+    sdfDrawTagLinkRefGif(tag, EE_ADDR(buffer));
+    otp = &sdfGrOtTable[egl_OT_Offset];
+    otp->regFunc(otp, tag);
+}
+
+void dds3CallGrAllocPacketBuff4(void)
+{
+    sdfDrawTag_t *tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfGrRefGifPacketHeader_t *buffer;
+    sdfGrOt_t *otp;
+
+    sdfDrawTagInit(tag);
+    buffer = EE_ADDR_AS(sdfGrRefGifPacketHeader_t *, sdfGrAllocPacketBuff(0x40));
+    sdfGrSetFrameMaskReset((const u8 *)&dds3DrawEnv[dds3GetFrameID()].stdEnv, buffer, 0);
+    sdfDrawTagLinkRefGif(tag, EE_ADDR(buffer));
+    otp = &sdfGrOtTable[egl_OT_Offset];
+    otp->regFunc(otp, tag);
+}
 
 void eglLinkSprite(s32 x, s32 y, s32 w, s32 h,
                    s32 u, s32 v, s32 uw, s32 vh,

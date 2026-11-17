@@ -12,5 +12,6 @@ saddr_t dds3AdminiStartSequence(dds3ProcessID_t *id);
 void dds3InitAdmini(void);
 s32 fclEncycFreeEntries(const char *name);
 s32 fclEncycAllocEntry(const char *name, dds3ProcessFunc_t update, dds3ProcessFunc_t destroy, void *userValue);
+s32 fclEncycFindFreeSlot(const char *name);
 
 #endif

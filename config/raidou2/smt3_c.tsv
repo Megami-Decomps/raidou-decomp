@@ -2191,7 +2191,7 @@ fileGetLoadSize	c
 fileGetMemHandle	c
 fileHandleFree	c
 fileInvalidateSlotGroup	c
-fileIsLoadedAndConditionTrue	c
+slGetPadTrig	c
 fileIsLoadedWithActiveFlow	c
 fileJobCopyCommandIntoPrimaryData	c
 fileJobCopyCommandIntoSecondaryData	c

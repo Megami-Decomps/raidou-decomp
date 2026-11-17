@@ -30,5 +30,6 @@ void gohFunc(void);
 extern const char cmpCalcProcName2[];
 extern const char campDrawProcName2[];
 extern const char campUpdateProcName2[];
+void gohShopDebug(void);
 
 #endif

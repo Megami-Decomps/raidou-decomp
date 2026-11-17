@@ -8,4 +8,6 @@ void dds3ParticleManagerInit(void)
     sdfRandomizeByTime(&ParRand);
 }
 
-INCLUDE_ASM(const s32, "code_001EA518", dds3ParticleManagerExit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:810, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void dds3ParticleManagerExit(void) {
+}

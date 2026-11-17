@@ -18,6 +18,7 @@
 #include "kernel_draw.h"
 #include "dds3KernelDraw.h"
 #include "sdf3D.h"
+#include "sdf2D.h"
 
 /*
  * Allocate a task and place it in scheduler queues. Returns NULL on allocation
@@ -281,7 +282,43 @@ void dds3DebugGraphSetEnabled(s8 enabled) {
     }
 }
 
+/* NON_MATCHING: 37 of 74 words match.  */
+#ifdef NON_MATCHING
+void dds3CallDLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *image) {
+    s32 height = image->height;
+    s32 width = image->width;
+    s32 drawWidth;
+    s32 drawHeight;
+    s32 prim;
+
+    sdf2DLinkTexPacket(packetList, image, 0);
+    drawWidth = width * 16;
+    drawHeight = height * 8;
+    if (width >= height) {
+        if (width > 256) {
+            drawWidth = 0x1000;
+            drawHeight = (height << 8) / width * 8;
+        }
+    } else if (height > 256) {
+        drawHeight = 0x800;
+        drawWidth = (width << 8) / height * 16;
+    }
+    if (height == 0x400) {
+        height--;
+    }
+    if (width == 0x400) {
+        width--;
+    }
+    prim = 0x40;
+    if (!dds3CallDLinkTexPacketData) {
+        prim = 0;
+    }
+    sdfPrimLinkSprite(packetList, 0x80808080, prim, 0x7180, 0x7A60, 0, 0, drawWidth + 0x7180, drawHeight + 0x7A60,
+                      width * 16, height * 16, 0x0FFFFF80, NULL);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00104370", dds3CallDLinkTexPacket);
+#endif
 
 /* Append the zero-based viewer page and final page index; an empty list prints -1. */
 void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList) {
@@ -372,7 +409,26 @@ s32 dds3SelectIncompleteResourceAtPageIndex(s32 requestedIndex) {
     return visitedIndex;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00104370", dds3Func13);
+/* body: matched in dds @ 18d1fa88f: src/dds1/game/code_00104290.c:257, near, same function 1.00 (words 59/59, calls 1.00, shape 1.00) */
+s32 dds3Func13(void) {
+    if (dds3PadBitTable[0x11] < 0) {
+        return 0;
+    }
+    if (dds3PadBitTable[0x14] & DDS3_PAD_REPEAT_BIT) {
+        dds3TextureViewerPageIndex -= 1;
+    } else if (dds3PadBitTable[0x15] & DDS3_PAD_REPEAT_BIT) {
+        dds3TextureViewerPageIndex += 1;
+    } else if ((dds3PadBitTable[0x18] & DDS3_PAD_REPEAT_BIT) || (dds3PadBitTable[0x19] & DDS3_PAD_REPEAT_BIT)) {
+        dds3TextureViewerPageIndex -= DDS3_VIEWER_FAST_PAGE_STEP;
+    } else if ((dds3PadBitTable[0x1A] & DDS3_PAD_REPEAT_BIT) || (dds3PadBitTable[0x1B] & DDS3_PAD_REPEAT_BIT)) {
+        dds3TextureViewerPageIndex += DDS3_VIEWER_FAST_PAGE_STEP;
+    }
+    dds3TextureViewerPageIndex = dds3SelectIncompleteResourceAtPageIndex(dds3TextureViewerPageIndex);
+    if (dds3PadBitTable[0x12] < 0) {
+        D_003BA890 ^= 1;
+    }
+    return 1;
+}
 
 void dds3DrawTextureViewerFrame(sdfGrOt_t *surface, sdfTexHandle_t *image) {
     sdfDrawTag_t *packetList;

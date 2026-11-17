@@ -12,6 +12,9 @@
 #include "sdfMat.h"
 #include "sdk_libc.h"
 #include "dds3KernelDraw_0010A750.h"
+#include "sdfDevCons.h"
+#include "sdfPrim.h"
+#include "dds3KernelDraw.h"
 
 /* One A+D register command with its standard DMA/GIF header. */
 typedef struct
@@ -400,7 +403,43 @@ void fldDrwZLoad(void)
     ot->regFunc(ot, list);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallGrAllocPacketBuff6);
+extern sdfMat_t *eglMaterial;
+
+void dds3CallGrAllocPacketBuff6(s32 x0, s32 y0, s32 z0,
+                         f32 x1, f32 y1, f32 z1,
+                         f32 x2, f32 y2, f32 z2,
+                         f32 col0, f32 col1, f32 col2) {
+    sdf3DPrimPolyParm_t desc;
+    sdfVector4_t vertices[3];
+    u32 colors[3];
+    sdfDrawTag_t *command;
+    sdfGrOt_t *descriptor;
+
+    command = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(command);
+    sdf3DPrimLinkMat(command, eglMaterial, 0);
+    memset(&desc, 0, 0x2C);
+    desc.color = 0x80808080;
+    desc.faceCount = 1;
+    desc.pointCount = 3;
+    desc.vertex = vertices;
+    desc.vertexColor = colors;
+    vertices[0].x = x1;
+    vertices[0].y = y1;
+    vertices[0].z = z1;
+    vertices[1].x = x2;
+    vertices[1].y = y2;
+    vertices[1].z = z2;
+    vertices[2].x = col0;
+    vertices[2].y = col1;
+    vertices[2].z = col2;
+    colors[0] = x0;
+    colors[1] = y0;
+    colors[2] = z0;
+    sdfDrawTagLink(command, EE_ADDR(sdf3DPrimMakePoly(&desc)));
+    descriptor = &sdfGrOtTable[egl_OT_Offset];
+    descriptor->regFunc(descriptor, command);
+}
 
 /* Preserve native vertex order 0,2,3,1; W components are not initialized. */
 void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 x3, f32 y3, f32 z3, u32 color0, u32 color1, u32 color2, u32 color3)
@@ -445,7 +484,47 @@ void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallGrAllocPacketBuff7);
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelDraw_0010A750.c:402, near, same function 0.96 (words 113/116, calls 0.92, shape 0.99) */
+void dds3CallGrAllocPacketBuff7(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 x3, f32 y3, f32 z3, u32 color0, u32 color1, u32 color2, u32 color3)
+{
+    sdf3DPrimPolyParm_t desc;
+    sdfVector4_t verts[4];
+    u32 colors[4];
+    u64 strip[2];
+    void *list;
+    sdfGrOt_t *surface;
+
+    list = (void *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    sdf3DPrimLinkMat(list, eglMaterial, 0);
+    memset(&desc, 0, sizeof(desc));
+    desc.color = 0x80808080;
+    desc.faceCount = 2;
+    desc.pointCount = 4;
+    desc.vertex = verts;
+    desc.vertexColor = colors;
+    desc.faceIndex = (u32 *)strip;
+    verts[0].x = x0;
+    verts[0].y = y0;
+    verts[0].z = z0;
+    verts[1].x = x2;
+    verts[1].y = y2;
+    verts[1].z = z2;
+    verts[2].x = x3;
+    verts[2].y = y3;
+    verts[2].z = z3;
+    verts[3].x = x1;
+    verts[3].y = y1;
+    verts[3].z = z1;
+    colors[0] = color0;
+    colors[1] = color2;
+    colors[2] = color3;
+    colors[3] = color1;
+    strip[0] = eglPolyStripWord[0];
+    sdfDrawTagLink(list, EE_ADDR(sdf3DPrimMakePoly(&desc)));
+    surface = &sdfGrOtTable[egl_OT_Offset];
+    ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
+}
 
 /* Preserve native vertex order 0,2,3,1; W components are not initialized. */
 void eglLinkTexPoly4(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32 y1, f32 z1, s32 color2, f32 x2, f32 y2, f32 z2, s32 color3, f32 x3, f32 y3, f32 z3, sdfTexHandle_t *texture, f32 u0, f32 v0, f32 u1, f32 v1)
@@ -504,7 +583,66 @@ void eglLinkTexPoly4(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32
     sdfMatFreeDelayed(asset);
 }
 
+/* NON_MATCHING: 131 of 137 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelDraw_0010A750.c:447, near, same function 0.97 (words 137/140, calls 0.95, shape 0.99) */
+void dds3CallMatNew(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32 y1, f32 z1, s32 color2, f32 x2, f32 y2, f32 z2, s32 color3, f32 x3, f32 y3, f32 z3, sdfTexHandle_t *texture, f32 u0, f32 v0, f32 u1, f32 v1)
+{
+    sdf3DPrimPolyParm_t desc;
+    sdfVector4_t verts[4];
+    u32 colors[4];
+    u64 strip[2];
+    sdfVector2_t uvs[4];
+    sdfMat_t *asset;
+    void *list;
+    sdfGrOt_t *surface;
+
+    asset = sdfMatNew();
+    sdfMatSetTex(asset, texture);
+    list = (void *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    sdf3DPrimLinkMat(list, asset, 0);
+    memset(&desc, 0, sizeof(desc));
+    desc.color = 0x80808080;
+    desc.faceCount = 2;
+    desc.pointCount = 4;
+    desc.vertex = verts;
+    desc.vertexColor = colors;
+    desc.faceIndex = (u32 *)strip;
+    desc.uv = uvs;
+    verts[0].x = x0;
+    verts[0].y = y0;
+    verts[0].z = z0;
+    verts[1].x = x2;
+    verts[1].y = y2;
+    verts[1].z = z2;
+    verts[2].x = x3;
+    verts[2].y = y3;
+    verts[2].z = z3;
+    verts[3].x = x1;
+    verts[3].y = y1;
+    verts[3].z = z1;
+    colors[0] = color0;
+    colors[1] = color2;
+    colors[2] = color3;
+    colors[3] = color1;
+    strip[0] = eglPolyStripWord[0];
+    uvs[0].x = u0;
+    uvs[0].y = v0;
+    uvs[1].x = u0;
+    uvs[1].y = v1;
+    uvs[2].x = u1;
+    uvs[2].y = v1;
+    uvs[3].x = u1;
+    uvs[3].y = v0;
+    sdfDrawTagLink(list, EE_ADDR(sdf3DPrimMakePoly(&desc)));
+    surface = &sdfGrOtTable[egl_OT_Offset];
+    ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
+    sdfMatFreeDelayed(asset);
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3CallMatNew);
+#endif
 
 sdfMat_t *dds3CallMatNew2(sdfTexHandle_t *tex)
 {
@@ -515,7 +653,10 @@ sdfMat_t *dds3CallMatNew2(sdfTexHandle_t *tex)
     return mat;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", dds3FileLoadSub);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010BAF0.c:1, match */
+void dds3FileLoadSub(struct sdfMat_t *file) {
+    sdfMatFreeDelayed(file);
+}
 
 /* NON_MATCHING: 115 of 130 words match.  */
 #ifdef NON_MATCHING
@@ -599,6 +740,19 @@ void eglLinkLine(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, u32 color0, u32
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", eglLinkPrint);
+void eglLinkPrint(s32 x, s32 y, s32 col, const char *str)
+{
+    sdfDevPrintCB_t printCB;
+    sdfDrawTag_t *list;
+    sdfPrimTransPacket_t *packet;
+
+    list = dds3CallGrAllocPacketBuff9();
+    packet = sdfGrAllocPacketBuff(0x40);
+    sdfPrimSetOpaquePacket(packet);
+    sdfDrawTagLink(list, packet);
+    sdfDevSetPrintCB(&printCB, x * 16 + 0x7000, y * 8 + 0x7900, 0x0FFFFF80, col);
+    sdfDrawTagLink(list, sdfDevPrintfEx(&printCB, str));
+    sdfDebugGrOt.regFunc(&sdfDebugGrOt, list);
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", eglLinkKanji);

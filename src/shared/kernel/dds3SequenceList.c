@@ -8,6 +8,7 @@
 #include "fld.h"
 #include "dds3SequenceList.h"
 #include "TitleMain.h"
+#include "rstInit.h"
 #include "dds3KernelMain.h"
 #include "code_r1_00128378.h"
 #include "fldProcess.h"
@@ -107,7 +108,11 @@ s32 CheckTitle(void)
     return TitleProcessCheck() == 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallLoad);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3SequenceList.c:170, near, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void CallLoad(void)
+{
+    fmProcTrigSequence(4);
+}
 
 s32 ExitLoad(void)
 {
@@ -124,7 +129,17 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckLoad);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallSave);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitSave);
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3SequenceList.c:112, near, same function 0.92 (words 16/16, calls 0.75, shape 1.00) */
+s32 ExitSave(void)
+{
+    fmShutDownFade();
+    fmShutDown();
+    if (fmShutDown2() != 0) {
+        mapRetuenFromSave();
+        return 0;
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckSave);
 
@@ -168,7 +183,21 @@ s32 CheckEndSave(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallEpSave);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitEpSave);
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3SequenceList.c:67, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+s32 ExitEpSave(void)
+{
+    s32 done;
+    s32 ret;
+
+    fmShutDownFade();
+    fmShutDown();
+    done = fmShutDown2();
+    ret = -1;
+    if (done != 0) {
+        ret = 0;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckEpSave);
 
@@ -200,17 +229,32 @@ s32 CheckField(void)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallFieldMcLoad);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010DB48.c:1, match */
+void CallFieldMcLoad(void) {
+    mapRetuenFromLoad();
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitFieldMcLoad);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckFieldMcLoad);
+/* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3SequenceList.c:198, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 CheckFieldMcLoad(void)
+{
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallNewBattle);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitNewBattle);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3SequenceList.c:277, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 ExitNewBattle(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckNewBattle);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3SequenceList.c:282, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 CheckNewBattle(void)
+{
+    return 0;
+}
 
 #ifdef VERSION_RAIDOU1
 void CallEvent(DDS3_ADMINI_CALL flg, s32 *data)
@@ -259,7 +303,11 @@ s32 CheckEvent(void)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallCamp);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3SequenceList.c:322, match, same function 1.00 (words 5/5, calls 1.00, shape 1.00) */
+void CallCamp(void)
+{
+    cmpProcessStart();
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitCamp);
 
@@ -271,7 +319,10 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallShowSceneModels);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3Func14);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3Leaf24);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010DD20.c:1, match */
+dds3ProcessID_t *dds3Leaf24(void) {
+    return ProcessStart_rstInit();
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallProcessEndRstInit);
 

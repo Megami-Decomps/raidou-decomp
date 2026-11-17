@@ -18,6 +18,30 @@ typedef struct tagMAP_MENU_WORK {
     s16 count;                   /* 0x0E */
     s32 selectID;                /* 0x10: -1 at start */
 } tagMAP_MENU_WORK;
+
+/* HD's awdMenu_t and elvMenu_t, with the sdfMemAllocDirect handle first as in tagMAP_MENU_WORK. */
+typedef struct awdMenu_t {
+    struct sdfMemHandle_t *hMem; /* 0x00 */
+    struct sprHandle_t *hSpr;    /* 0x04 */
+    dds3ProcessID_t *listPID;    /* 0x08 */
+    u8 flag;                     /* 0x0C */
+    u8 step;                     /* 0x0D */
+    s16 count;                   /* 0x0E */
+    s32 selectID;                /* 0x10 */
+    s32 selectMsg;               /* 0x14 */
+} awdMenu_t;
+
+typedef struct elvMenu_t {
+    struct sdfMemHandle_t *hMem; /* 0x00 */
+    struct sprHandle_t *hSpr;    /* 0x04 */
+    dds3ProcessID_t *listPID;    /* 0x08 */
+    u8 flag;                     /* 0x0C */
+    u8 step;                     /* 0x0D */
+    s16 count;                   /* 0x0E */
+    s32 selectID;                /* 0x10 */
+    s32 initID;                  /* 0x14 */
+    s32 top;                     /* 0x18 */
+} elvMenu_t;
 /* Bust-up morph work (HD mphWork_t); the 0x80.. fields line up with HD's alpha
  * through fileStat. mphSetAlpha/Ot/Z write them. */
 #define MPH_DEFAULT_OT 103

@@ -456,7 +456,28 @@ s32 sbtlCallBtlSearchPacData2(s32 major, s32 minor, s32 devilid, void *data, s32
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", DrawProc2);
+/* body: matched in raidou @ 88f0d54: src/raidou1/code_r1_0024B788.c:224, near, same function 1.00 (words 53/53, calls 1.00, shape 1.00) */
+s32 DrawProc2(s32 major, s32 minor, s32 devilid, void *data, s32 size)
+{
+    sdfMemHandle_t *handle;
+    void *buf;
+    s32 i;
+
+    i = sbtlSearchPacData(major, minor, devilid);
+    if (i == -1) {
+        return 1;
+    }
+    {
+        sbtlSearchPacData2(major, minor, devilid);
+        handle = sdfMemAllocDirect(size);
+        buf = sdfMemLock(handle);
+        sbtlData84->pac[i].file20.data = buf;
+        sbtlData84->pac[i].file20.handle = handle;
+        sbtlData84->pac[i].file20.size = size;
+        memcpy(buf, data, size);
+    }
+    return 1;
+}
 
 void sbtlPacData_Init(void)
 {
@@ -995,7 +1016,12 @@ void pbSetGameCamera0(void)
     SDF_VU0_COPYVECTOR(&pbWork, &aViewTarget);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", pbLeaf19);
+void pbLeaf19(void)
+{
+    SDF_VU0_COPYVECTOR(&aViewDown, &pbWork3);
+    SDF_VU0_COPYVECTOR(&aViewEye, &pbWork2);
+    SDF_VU0_COPYVECTOR(&aViewTarget, &pbWork);
+}
 
 s32 Init_sbtlScene(void) {
     dds3Basic_t *scene;

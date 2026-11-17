@@ -26,6 +26,7 @@ u8 *sdfModelAllocTmPacket(sdfModelNode_t *aNode);
 u32 sdfGetLodChunkValue(sdfModelRootNode_t *aRoot);
 void sdfModelCopyStat(sdfModelRootNode_t *aDstRoot, sdfModelRootNode_t *aSrcRoot);
 void sdfModelEvalTm(sdfModelRootNode_t *aRoot);
+void sdfModelEvalTm2(sdfModelRootNode_t *aRoot, s32 aFrameId);
 void sdfModelLinkOt_sdfModel(sdfGrOt_t **aOt, sdfModelRootNode_t *aRoot);
 void *sdfModelGetExtraChunk(sdfModelRootNode_t *aRoot, u32 aChunkId);
 s32 sdfModelGetNodeIndexByName(sdfModelRootNode_t *aRoot, const char *aName);

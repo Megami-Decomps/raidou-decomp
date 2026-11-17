@@ -2,7 +2,10 @@ function	unit	size	distance	page	line	fragile	fakematch
 evtLeaf31	TitleMain	raidou1 0x110	9 of 68 words differ	docs/matching/TitleMain.md	3		
 dds3AllocBasic	basic/dds3Basic	raidou1 0xD8, raidou2 0xD8	6 of 54 words differ	docs/matching/basic/dds3Basic.md	3		
 dds3SetPosPoseSet_dds3Basic	basic/dds3Basic	raidou1 0x2C, raidou2 0x2C	5 of 11 words differ	docs/matching/basic/dds3Basic.md	14		
+dds3DebugBasic	basic/dds3DbgBasic	raidou1 0x124, raidou2 0x124	32 of 74 words differ	docs/matching/basic/dds3DbgBasic.md	3		
+dds3MatterObjectBasicDrawProcedure	basic/dds3MatterObjectBasic	raidou1 0x1EC, raidou2 0x1EC	114 of 119 words differ	docs/matching/basic/dds3MatterObjectBasic.md	3		
 dds3CallMemset	basic/dds3ObjectBase	raidou1 0xE0, raidou2 0xE0	12 of 56 words differ	docs/matching/basic/dds3ObjectBase.md	3		
+dds3ObjectBaseMakeMatter	basic/dds3ObjectBase	raidou1 0xC4, raidou2 0xC4	14 of 49 words differ	docs/matching/basic/dds3ObjectBase.md	14		
 dds3SceneBasicSearchSerialID_Used	basic/dds3SceneBasic	raidou1 0xC0, raidou2 0xC0	33 of 48 words differ	docs/matching/basic/dds3SceneBasic.md	3		
 eglLinkBoxZ	code_00109A70	raidou1 0x370	2 of 220 words differ	docs/matching/code_00109A70.md	3		
 sbtlRefDDS3GBWK17	code_0010F2C0	raidou1 0xCC	0 of 51 words differ	docs/matching/code_0010F2C0.md	3		
@@ -29,7 +32,7 @@ mapBgSetScroll	code_0013CDE0	raidou1 0x1384	1085 of 1248 words differ	docs/match
 mapZoomSetGoal	code_0013CDE0	raidou1 0x13F4	1223 of 1249 words differ	docs/matching/code_0013CDE0.md	31		
 mapUnitSetLight	code_00140960	raidou1 0x43C	154 of 271 words differ	docs/matching/code_00140960.md	3		
 mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; adding the fld.h prototype mapObjCheck alone, or splitting sdatUnitWork_t's padC0 into autost_cnt/autost_cnt2 (sdatUnit.h) alone, turns DIFF 3/50 into CONTEXT 5/50. A1-last-asm's six unused prototypes in code_r1_00128378.h leave the full unit at 3/50 but move the function compiled alone from 3/50 to 5/50 (DIFF to CONTEXT).	
-mapHamidasiCheck	code_00142A10	raidou1 0x210	24 of 132 words differ	docs/matching/code_00142A10.md	3	matched until B1-big's declaration edits to fld.h (six prototypes) and mapData.h; removing any one of the new fld.h prototypes, or reverting mapData.h, makes it match again, so it shifts with the count of declarations the unit includes, not with its own C.	
+mapHamidasiCheck	code_00142A10	raidou1 0x210	24 of 132 words differ	docs/matching/code_00142A10.md	3	matched until B1-big's declaration edits to fld.h (six prototypes) and mapData.h; removing any one of the new fld.h prototypes, or reverting mapData.h, makes it match again, so it shifts with the count of declarations the unit includes, not with its own C. The K07-misc-kernel header declaration edits move the full unit from OK to DIFF 24/132.	
 mapLeaf12	code_00143568	raidou1 0x50	2 of 20 words differ	docs/matching/code_00143568.md	3		
 mdlCallMemGetSize	code_00143568	raidou1 0x140	25 of 78 words differ	docs/matching/code_00143568.md	11		
 mdlCallMemGetInfo	code_00143568	raidou1 0x12C	22 of 73 words differ	docs/matching/code_00143568.md	19		
@@ -116,6 +119,7 @@ cmpGetFlagCallDebug	code_00300578	raidou1 0x28	1 of 10 words differ	docs/matchin
 cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
 rstCallGetProcessData42	code_0034F3B8	raidou1 0x38		docs/matching/code_0034F3B8.md	3		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, the same form as fclCallGetProcessData. Tried: no read (tail j), an s32 return with no return statement (still j), a dds3ProcessFunc_t return (still j). Only a dead store or dummy use after the call remains, which is banned.
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
+dds3CallDLinkTexPacket	code_r1_00104370	raidou1 0x128, raidou2 0x128	37 of 73 words differ	docs/matching/code_r1_00104370.md	12		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		
 mapCheckDying	code_r1_00128378	raidou1 0xFC	30 of 63 words differ	docs/matching/code_r1_00128378.md	11		
 mapSKYBGEDIT	code_r1_0013B0F8	raidou1 0x1CE8	1608 of 1652 words differ	docs/matching/code_r1_0013B0F8.md	3		
@@ -172,7 +176,7 @@ sbtlSetMapFade_H	code_r1_0024B788	raidou1 0x170	74 of 90 words differ	docs/match
 sbtlCallMemset	code_r1_0024B788	raidou1 0x1BC	5 of 111 words differ	docs/matching/code_r1_0024B788.md	59		
 sbtlCallMemset2	code_r1_0024B788	raidou1 0x258	5 of 150 words differ	docs/matching/code_r1_0024B788.md	65		
 sbtlSceneLoad	code_r1_0024DE98	raidou1 0xD4	25 of 53 words differ	docs/matching/code_r1_0024DE98.md	3		
-sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	23 of 233 words differ	docs/matching/code_r1_0024EE78.md	3	the full-unit count moves with the declarations the unit includes (mapData.h, rstInit.h, sndAt3.h), 20 to 37 words with declaration edits alone. The B4-field-big header declaration edits moved it from DIFF 37/233 to CONTEXT 35/233.	
+sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	23 of 233 words differ	docs/matching/code_r1_0024EE78.md	3	the full-unit count moves with the declarations the unit includes (mapData.h, rstInit.h, sndAt3.h), 20 to 37 words with declaration edits alone. The B4-field-big header declaration edits moved it from DIFF 37/233 to CONTEXT 35/233. The K07-misc-kernel header declaration edits move it from CONTEXT 35/233 to DIFF 36/233.	
 CheckMapHit	code_r1_0024F220	raidou1 0x88	5 of 34 words differ	docs/matching/code_r1_0024F220.md	3	the full-unit count moves with header declarations alone; the GetPercentage prototype in sbtlWork.h took it from 5 to 9 of 34 words, and the SBTLUNIT_WORK and sdatUnitWork_t field splits (sBtlUnit.h, sdatUnit.h) take it from 5 to 9 again. The B4-field-big header declaration edits moved it from CONTEXT to DIFF 5/34.	
 sbtlCallBtlCheckEnshutuSummonUnit2	code_r1_0024F220	raidou1 0x218	0 of 134 words differ	docs/matching/code_r1_0024F220.md	13		
 sbtlCallBtlCreateUnit	code_r1_0024F220	raidou1 0x5A0	236 of 360 words differ	docs/matching/code_r1_0024F220.md	23		
@@ -189,7 +193,7 @@ sbtlRefSbtl5	code_r1_0024F220	raidou1 0x98	4 of 38 words differ	docs/matching/co
 sbtlRefSbtl8	code_r1_0024F220	raidou1 0x118	51 of 68 words differ	docs/matching/code_r1_0024F220.md	111		
 sbtlSetLight_Map	code_r1_0024F220	raidou1 0x234	39 of 142 words differ	docs/matching/code_r1_0024F220.md	119		
 sbtlSetMotion_sbtlUnit	code_r1_0024F220	raidou1 0x1EC	1 of 123 words differ	docs/matching/code_r1_0024F220.md	125		
-sbtlCheckMapHit_Data	code_r1_0024F220	raidou1 0x54	0 of 21 words differ	docs/matching/code_r1_0024F220.md	132	matches only with the current declaration order in itfMesManager.h and the other headers of code_r1_0024F220.c. The B4-field-big header declaration edits turn the full-unit match into CONTEXT 4/21; the K02-effect-data edits do the same.	
+sbtlCheckMapHit_Data	code_r1_0024F220	raidou1 0x54	0 of 21 words differ	docs/matching/code_r1_0024F220.md	132	matches only with the current declaration order in itfMesManager.h and the other headers of code_r1_0024F220.c. The B4-field-big header declaration edits turn the full-unit match into CONTEXT 4/21; the K02-effect-data edits do the same. The K07-misc-kernel header declaration edits turn the full-unit match into CONTEXT 2/21.	
 sbtlCallBtlGetDevilDataSBtlSub	code_r1_0024F220	raidou1 0xE0	35 of 55 words differ	docs/matching/code_r1_0024F220.md	140		
 nakamamodeCallGetActiveScene	code_r1_00259A88	raidou1 0x584	5 of 353 words differ	docs/matching/code_r1_00259A88.md	3		
 sbtlCallBtlCheckDamageTarget3	code_r1_00259A88	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_00259A88.md	13		
@@ -240,9 +244,10 @@ sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words 
 sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matching/code_r1_00295298.md	3		
 sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3	the -DNON_MATCHING code moves with the declarations the unit includes; adding three prototypes to fld.h (mapGetHit, mapGetAttr_DevilWall, mapHamidasiCheckSub) turned 380 of 404 differing words into a full-unit CONTEXT result; the R22 SBTL_* field and prototype edits in sbtlWork.h shift it again, with no matched function affected. The U03-battle edits to sbtlWork.h and the sBtl* headers take it from DIFF 380/404 to CONTEXT 381/406.	
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3		
-sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	3	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h. The K03-effect header declaration edits moved Raidou 2 from CONTEXT 37/288 to CONTEXT 46/288 (Raidou 1 41/288). The K02-effect-data header edits moved Raidou 1 to CONTEXT 43/288.	
+sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	3	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h. The K03-effect header declaration edits moved Raidou 2 from CONTEXT 37/288 to CONTEXT 46/288 (Raidou 1 41/288). The K02-effect-data header edits moved Raidou 1 to CONTEXT 43/288. The K07-misc-kernel header declaration edits move Raidou 2 from CONTEXT 37/288 to CONTEXT 46/288.	
 effDrawTextureSlot	code_r1_002CA3F0	raidou1 0x2CC, raidou2 0x2D4	2 of 179 words differ	docs/matching/code_r1_002CA3F0.md	3		
 cmpDrawBoxG	code_r1_002CAFD8	raidou1 0x190, raidou2 0x190	8 of 100 words differ	docs/matching/code_r1_002CAFD8.md	3		
+uiPrepareMenuBackgroundSurface	code_r1_002CD568	raidou1 0x40, raidou2 0x40		docs/matching/code_r1_002CD568.md	3		FAKEMATCH_ASM_READ(ot) after the last call blocks the sibcall where retail has jal and a full epilogue. Tried: the plain void call sequence (tail j); no other cause found. Header: cmpCallGrAllocPacketBuff2 declared in code_r1_002CAFD8.h.
 evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	docs/matching/code_r1_002F59D0.md	3		
 cmpDrawBackPattern	code_r1_00323138	raidou1 0x144, raidou2 0x144	9 of 81 words differ	docs/matching/code_r1_00323138.md	3		
 mnuScrollListToPreviousPage	code_r1_0034CE48	raidou1 0x164, raidou2 0x164	26 of 90 words differ	docs/matching/code_r1_0034CE48.md	3		
@@ -310,13 +315,22 @@ itfCallGrAllocPacketBuff2	interface/itfMesManager	raidou1 0x4D8, raidou2 0x4D8	1
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3		
 TestMsgMngD_Process	interface/itfTestMesManager_0018CC20	raidou1 0x9C, raidou2 0x9C	6 of 39 words differ	docs/matching/interface/itfTestMesManager_0018CC20.md	3		
 jmsChkCommonInput	jmsMisc	raidou1 0x2DC, raidou2 0x2DC	1 of 183 words differ	docs/matching/jmsMisc.md	3		
+dds3CallEncycFindFreeSlot	kernel/dds3AdminiProcess	raidou1 0x94, raidou2 0x94	7 of 37 words differ	docs/matching/kernel/dds3AdminiProcess.md	3		
+fclEncycAllocEntry	kernel/dds3AdminiProcess	raidou1 0xA8, raidou2 0xA8	11 of 42 words differ	docs/matching/kernel/dds3AdminiProcess.md	10		
+dds3CallEncycFindFreeSlot2	kernel/dds3AdminiProcess	raidou1 0xAC, raidou2 0xAC	11 of 43 words differ	docs/matching/kernel/dds3AdminiProcess.md	17		
+fclEncycFindFreeSlot	kernel/dds3AdminiProcess	raidou1 0x1C4, raidou2 0x1C4	2 of 113 words differ	docs/matching/kernel/dds3AdminiProcess.md	24		
+fclEncycFreeEntries	kernel/dds3AdminiProcess	raidou1 0x1E8, raidou2 0x1E8	2 of 122 words differ	docs/matching/kernel/dds3AdminiProcess.md	31		
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3		
 dds3DrawBista	kernel/dds3KernelDraw	raidou1 0x2AC	151 of 157 words differ	docs/matching/kernel/dds3KernelDraw.md	11		
 dds3RunQuake	kernel/dds3KernelDraw	raidou1 0x1F4, raidou2 0x1F4	65 of 124 words differ	docs/matching/kernel/dds3KernelDraw.md	26		
+dds3InitRenderDrawEnv	kernel/dds3KernelDraw	raidou1 0x160, raidou2 0x160	3 of 88 words differ	docs/matching/kernel/dds3KernelDraw.md	34		
 dds3CallGrAllocPacketBuff8	kernel/dds3KernelDraw_0010A750	raidou1 0x208, raidou2 0x208	15 of 130 words differ	docs/matching/kernel/dds3KernelDraw_0010A750.md	3		
+dds3CallMatNew	kernel/dds3KernelDraw_0010A750	raidou1 0x224, raidou2 0x224	6 of 137 words differ	docs/matching/kernel/dds3KernelDraw_0010A750.md	12		
 dds3DrawFirstProcess	kernel/dds3KernelProcess	raidou1 0x7C0	461 of 490 words differ	docs/matching/kernel/dds3KernelProcess.md	3		
 fmProcTrigSequence_slMain	mc/slMain	raidou1 0x300	68 of 190 words differ	docs/matching/mc/slMain.md	3		
 slQueryYesNoDraw	mc/slMain	raidou1 0x960	0 of 600 words differ	docs/matching/mc/slMain.md	11		
+slLoadProc_openFile	mc/slMain	raidou1 0xA4, raidou2 0xA4	1 of 41 words differ	docs/matching/mc/slMain.md	23		
+mnuUpdateMovieDrawShutdownCountdown	movie/mviManager	raidou1 0xA8, raidou2 0xA8	1 of 42 words differ	docs/matching/movie/mviManager.md	3		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		

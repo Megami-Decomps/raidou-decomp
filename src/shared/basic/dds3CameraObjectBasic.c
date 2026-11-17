@@ -118,7 +118,9 @@ s32 Mainprocuder(dds3Basic_t *basic)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3Leaf27);
+u32 dds3Leaf27(void) {
+    return 1;
+}
 
 /* Rotate the local vectors and cache their world-space look-at matrix. */
 void MakeCamera(dds3Basic_t *pBasic)

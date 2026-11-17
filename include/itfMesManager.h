@@ -246,5 +246,6 @@ u32 itfGetMessageType(s32 window, s32 entryIndex);
 sdfTexHandle_t *itfMesGetWindowTexture(void);
 /* Line colour DebugDrawWindowLine outlines a message window with. */
 extern itfColor_t DebugDrawWindowLineData;
+s32 itfPanelReleaseHold(void);
 
 #endif

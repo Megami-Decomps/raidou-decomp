@@ -3562,9 +3562,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001D5148	0x001EB558	fileMenuTaskIsAlive	no	yes	asm/raidou1/code_001D5118.s	asm/raidou2/code_001EB528.s	masked-hash-in-gap
 0x001D5150	0x001EB560	mnuFormatSaveSlotHeaderName	yes	yes	asm/raidou1/code_001D5118.s	asm/raidou2/code_001EB528.s	masked-hash-in-gap
 0x001D5180	0x001EB5E0	setCallMcGetSlotIndex	no	yes	asm/raidou1/code_001D5158.s	src/raidou2/code_001EB5E0.c	unique-reloc-hash
-0x001D51B8	0x001EB618	setAutoSaveDisable	no	no	asm/raidou1/code_001D5158.s	src/raidou2/code_001EB5E0.c	size
+0x001D51B8	0x001EB618	slVersionConvert_GetSize	no	no	asm/raidou1/code_001D5158.s	src/raidou2/code_001EB5E0.c	size
 0x001D51C0	0x001EB620	setCallMemcpy	no	no	asm/raidou1/code_001D5158.s	src/raidou2/code_001EB5E0.c	size
-0x001D5200	0x001EB660	fileIsLoadedAndConditionTrue	no	yes	asm/raidou1/code_001D5158.s	src/raidou2/code_001EB5E0.c	masked-hash-in-gap
+0x001D5200	0x001EB660	slGetPadTrig	no	yes	asm/raidou1/code_001D5158.s	src/raidou2/code_001EB5E0.c	masked-hash-in-gap
 0x001D5220	0x001EB680	fileIsLoadedWithActiveFlow	no	yes	asm/raidou1/code_001D5158.s	src/raidou2/code_001EB5E0.c	masked-hash-in-gap
 0x001D5240	0x001EB6A0	slKanjiDraw3	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D53A0	0x001EB8B8	slCallEnableMode2	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
@@ -3589,13 +3589,13 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001D63E0	0x001ECC80	slBootError	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D6420	0x001ECCC0	slBootError2	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D6460	0x001ECD00	slBootRetry_slMain	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
-0x001D64A0	0x001ECD40	slHardSelect2	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
+0x001D64A0	0x001ECD40	slTop	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D6520	0x001ECDC0	slExit	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D6548	0x001ECDE8	slCallSetInfo2	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	masked-hash-in-gap
 0x001D65A0	0x001ECE58	slExitToTitle	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	masked-hash-in-gap
 0x001D65F8	0x001ECEC0	slDefaultFileFlowProc1st	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	masked-hash-in-gap
 0x001D6610	0x001ECED8	fileRestartSlotScan	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
-0x001D6640	0x001ECF08	slCallMcGetSlotFlags	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
+0x001D6640	0x001ECF08	slFileSel	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D6708	0x001ECFD0	slCancel	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D6760	0x001ED028	slSaveProc1st	no	no	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-masked-hash
 0x001D67B0	0x001ED078	slCallSetInfo3	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	masked-hash-in-gap
@@ -4068,7 +4068,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001EAF90	0x00202288	dds3Particle_SmokeCreate	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
 0x001EB010	0x00202308	dds3Particle_SmokeDelete	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
 0x001EB038	0x00202330	dds3Particle_SmokeBuffInit	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
-0x001EB2E0	0x002025D8	dds3Particle_SphereSmokeDraw	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
+0x001EB2E0	0x002025D8	dds3Particle_SmokeDraw	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
 0x001EB548	0x00202840	dds3Particle_SparkAllBuffInit	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
 0x001EB590	0x00202888	dds3Particle_SparkSetScale	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
 0x001EB5E0	0x002028D8	dds3Particle_SparkCreate	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
@@ -4092,7 +4092,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001ECE78	0x00204170	dds3Particle_SphereSmokeCreate	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
 0x001ECEF8	0x002041F0	dds3Particle_SphereSmokeDelete	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
 0x001ECF20	0x00204218	dds3Particle_SphereSmokeBuffInit	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
-0x001ED228	0x00204520	dds3Particle_SmokeDraw	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
+0x001ED228	0x00204520	dds3Particle_SphereSmokeDraw	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
 0x001ED490	0x00204788	dds3Particle_SphereRingAllBuffInit	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001ED500	0x002047F8	dds3Particle_SphereRingSetScale	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001ED538	0x00204830	dds3Particle_SphereRingCreate	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap
@@ -4112,7 +4112,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001EE130	0x00205428	dds3Particle_SphereAtomBuffInit	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001EE480	0x00205778	dds3Particle_SphereAtomDraw	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001EE820	0x00205B18	dds3Particle_SpiralRandomize	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-masked-hash
-0x001EE838	0x00205B30	vecScale	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
+0x001EE838	0x00205B30	dds3Particle_SpiralRandomizeSetScale	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001EE860	0x00205B58	effCloneSingleParticleTemplate	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001EE8E0	0x00205BD8	parCallParticleBasicDelete	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	run-order-size
 0x001EE908	0x00205C00	effInitParticleRecord	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
@@ -4142,7 +4142,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001F0BA0	0x00207E98	dds3Particle_BlurSet	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001F0C18	0x00207F10	dds3Particle_BlurSetExp	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001F0CD0	0x00207FC8	dds3Particle_BlurDraw	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
-0x001F0DE0	0x002080D8	parLeaf2	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
+0x001F0DE0	0x002080D8	dds3Particle_BlurClearItem	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001F0DF8	0x002080F0	dds3Particle_TrackSetExp	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001F0FC8	0x002082C0	dds3Particle_Track2SetExp	no	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	unique-reloc-hash
 0x001F11A8	0x002084A0	ColorAnim	yes	yes	asm/raidou1/effect/parManager.s	asm/raidou2/effect/parManager.s	masked-hash-in-gap

@@ -2182,7 +2182,7 @@
 0x0017F3C0	frSetFontColor	inferred	SMT3HD name via SLUS_209.11 0x001C7BA8, shared-hash-in-run; map-agrees
 0x0017F418	frEnableMode	inferred	SMT3HD name via SLUS_209.11 0x001C7C00, reloc-identical; map-agrees
 0x0017F428	frDisableMode	inferred	SMT3HD name via SLUS_209.11 0x001C7C10, reloc-identical; map-agrees
-0x0017F440	frLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit interface/frFont; no named callee, caller or string
+0x0017F440	frSetFontDrawOT	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is gFontDrawOT = a0, the Raidou 2 and smt3 frSetFontDrawOT; slKanjiDrawH calls it to restore the OT; replaces frLeaf2
 0x0017F448	frEraseEffect	inferred	SMT3HD name via SLUS_209.11 0x001C7C30, byte-identical; map-agrees
 0x0017F4D0	frDrawEffect	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=SMT3/DDS1 frDrawEffect is the same body (prev-glyph fade gate, x jitter from drawCount); HD itf.h declares frDrawEffect(FontReq_t*, Text_t*, u8 AlphaDelay, u8 DrawSpeed); called per child from frDrawFontEx2 (SMT3 frDrawFontOt); replaces frCallCheckEnableMovieCancel
 0x0017F818	frDrawFont	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -3895,11 +3895,11 @@
 0x001D5118	slKillLoadProcess	inferred	SMT3HD name via SLUS_209.11 0x0029B780, reloc-identical; map-agrees
 0x001D5148	fileMenuTaskIsAlive	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028A180, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001D5150	mnuFormatSaveSlotHeaderName	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028A188, masked-words-identical (order map pair); dds-decomp: no provenance row
-0x001D5158	mcFormatSaveFilename	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028A190, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001D5158	mcMakeFileName	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same call shape in slLoadData/slChooseData bodies; smt3 name; replaces mcFormatSaveFilename
 0x001D5180	setCallMcGetSlotIndex	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001D5158, neighbour setAutoSaveDisable; calls sdfMcGetSlotIndex
-0x001D51B8	setAutoSaveDisable	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD fld.setAutoSaveDisable score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
+0x001D51B8	slVersionConvert_GetSize	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is return 0x7270 (sizeof dds3GlobalWork_t), smt3 slVersionConvert_GetSize; slLoadProc_openFile sizes the save buffer with it; HD name tier C p=0.71; replaces setAutoSaveDisable
 0x001D51C0	setCallMemcpy	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001D5158, neighbour setAutoSaveDisable; calls memcpy
-0x001D5200	fileIsLoadedAndConditionTrue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028A248, masked-words-identical (gap map pair); dds-decomp: descriptive
+0x001D5200	slGetPadTrig	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=asm is map != 0 && slProcShutDownFlg == 1, identical to smt3 slGetPadTrig; 0x1D5220 fileIsLoadedWithActiveFlow is slGetPadRep; replaces fileIsLoadedAndConditionTrue
 0x001D5220	fileIsLoadedWithActiveFlow	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028A268, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001D5240	slKanjiDraw3	hd	hd: Raidou HD slMain.slKanjiDraw3, score 11.4 band A
 0x001D52F8	slKanjiDrawH	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD slMain.slKanjiDrawH score 9.8 flag -: calls6 callee-index votes6 st1:cidx r1-only
@@ -3926,7 +3926,7 @@
 0x001D63E0	slBootError	inferred	SMT3HD name via SLUS_209.11 0x00153480, reloc-identical; map-agrees
 0x001D6420	slBootError2	inferred	SMT3HD name via SLUS_209.11 0x001534C0, reloc-identical; map-agrees
 0x001D6460	slBootRetry_slMain	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD slMain.slBootRetry score 4.5 flag -: calls1 gap4/23 st1:gap r1+r2
-0x001D64A0	slHardSelect2	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD slMain.slHardSelect2 score 0.5 flag -: calls1 gap4/168 st2:gap r1-disagree:0x1d6a10
+0x001D64A0	slTop	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=smt3 slErrorWaitToFileMc tails into slTop where Raidou retail uses 0x1D64A0; low confidence, address slot only; replaces slHardSelect2
 0x001D6520	slExit	inferred	SMT3HD name via SLUS_209.11 0x00153630, reloc-identical; map-agrees
 0x001D6548	slCallSetInfo2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
 0x001D6570	slExitToTitleSub	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=DDS descriptive name; body is SMT3 slExitToTitleSub without the checks (argument 0, dds3AdminiCallSequence(2, &argument, 4, 0)), called by slLeaf4 like slExitToTitleSub by slExitToTitle; replaces mcdEnterDefaultFileFlow
@@ -3934,7 +3934,7 @@
 0x001D65B8	slCallAdminiCallSequence	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls dds3AdminiCallSequence
 0x001D65F8	slDefaultFileFlowProc1st	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name was wrong: 0x1D65F8 tail-calls the default file flow entry and is the mode 4 process of the Raidou ending start, while SMT3 slLoadProc1st (mode 1) is 0x1D68E8; replaces slLoadProc1st
 0x001D6610	fileRestartSlotScan	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028B560, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001D6640	slCallMcGetSlotFlags	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls sdfMcGetSlotFlags
+0x001D6640	slFileSel	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=smt3 slErrorWaitToFileMc and slSaveProc_doNothing tail into slFileSel where Raidou retail uses 0x1D6640; low confidence, address slot only; replaces slCallMcGetSlotFlags
 0x001D6708	slCancel	hd	hd: Raidou HD slMain.slCancel, score 9.8 band B
 0x001D6760	slSaveProc1st	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 fmProcTrigSequence mode 0 proc_func_ans; Raidou mode 0 stores slMcSumIco, which precedes slLoadProc1st/slEndingProc1st/slBootProc1st as slSaveProc1st does in SMT3 (body grew: loads /mc/sum.ico); replaces slMcSumIco
 0x001D67B0	slCallSetInfo3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
@@ -4408,7 +4408,7 @@
 0x001EAF90	dds3Particle_SmokeCreate	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001EB010	dds3Particle_SmokeDelete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001EB038	dds3Particle_SmokeBuffInit	inferred	SMT3HD name via SLUS_209.11 0x0015E9A0, reloc-identical; map-agrees
-0x001EB2E0	dds3Particle_SphereSmokeDraw	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x160b90 sim 1.000 margin 0.00 pair
+0x001EB2E0	dds3Particle_SmokeDraw	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=swap through a temporary name; replaces dds3Particle_SmokeDraw_swap
 0x001EB548	dds3Particle_SparkAllBuffInit	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001EB590	dds3Particle_SparkSetScale	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001EB5E0	dds3Particle_SparkCreate	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -4432,7 +4432,7 @@
 0x001ECE78	dds3Particle_SphereSmokeCreate	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001ECEF8	dds3Particle_SphereSmokeDelete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001ECF20	dds3Particle_SphereSmokeBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00160888, reloc-identical; map-agrees
-0x001ED228	dds3Particle_SmokeDraw	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x160b90 sim 1.000 margin 0.00 pair
+0x001ED228	dds3Particle_SphereSmokeDraw	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body at 0x1ED228 calls dds3Particle_SphereSmokeBuffInit (0x1ECF20); swap partner of the row above; replaces dds3Particle_SmokeDraw
 0x001ED490	dds3Particle_SphereRingAllBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00160DF8, byte-identical; map-agrees
 0x001ED500	dds3Particle_SphereRingSetScale	inferred	SMT3HD name via SLUS_209.11 0x00160E68, byte-identical; map-agrees
 0x001ED538	dds3Particle_SphereRingCreate	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -4452,7 +4452,7 @@
 0x001EE130	dds3Particle_SphereAtomBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00161A98, reloc-identical; map-agrees
 0x001EE480	dds3Particle_SphereAtomDraw	inferred	SMT3HD name via SLUS_209.11 0x00161DE8, reloc-identical; map-agrees
 0x001EE820	dds3Particle_SpiralRandomize	inferred	SMT3HD name via SLUS_209.11 0x00162188, reloc-identical; map-agrees
-0x001EE838	vecScale	inferred	method=smt3-fuzzy-100-m-pair; p=1.00 (n=1842); tier=A; source=smt3; evidence=smt3 body 0x2a7098 sim 1.000 margin 1.00 pair
+0x001EE838	dds3Particle_SpiralRandomizeSetScale	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=slot 9 of dds3ParticleSetScaleTable, scales effTemplatePacketList_t head.scale; slot 9 of the AllBuffInit table is dds3Particle_SpiralRandomize; low confidence, name is by table position; the smt3 vecScale is a different function; replaces vecScale
 0x001EE860	effCloneSingleParticleTemplate	inferred	smt3-decomp C name via SLUS_209.11 0x001621C8, unique-masked-hash-c; map-silent
 0x001EE8E0	parCallParticleBasicDelete	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/parManager; calls dds3Particle_BasicDelete
 0x001EE908	effInitParticleRecord	inferred	smt3-decomp C name via SLUS_209.11 0x00162270, unique-masked-hash-c; map-silent
@@ -4482,7 +4482,7 @@
 0x001F0BA0	dds3Particle_BlurSet	inferred	smt3-decomp C name via SLUS_209.11 0x00164508, unique-masked-hash-c; map-silent
 0x001F0C18	dds3Particle_BlurSetExp	inferred	SMT3HD name via SLUS_209.11 0x00164580, byte-identical; map-agrees
 0x001F0CD0	dds3Particle_BlurDraw	inferred	SMT3HD name via SLUS_209.11 0x00164638, reloc-identical; map-agrees
-0x001F0DE0	parLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/parManager; no named callee, caller or string
+0x001F0DE0	dds3Particle_BlurClearItem	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is table->blurList[i].count = 0, the smt3 dds3Particle_BlurClearItem; parDispatchKindUpdate kind 1 calls it; tier D name; replaces parLeaf2
 0x001F0DF8	dds3Particle_TrackSetExp	inferred	SMT3HD name via SLUS_209.11 0x00164760, reloc-identical; map-agrees
 0x001F0FC8	dds3Particle_Track2SetExp	inferred	SMT3HD name via SLUS_209.11 0x00164930, reloc-identical; map-agrees
 0x001F11A8	ColorAnim	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD dds3Particle.ColorAnim score 4.0 flag -: next edge st1:edge r1+r2
@@ -21214,10 +21214,10 @@
 0x0046B109	dds3SoftResetDisableFlag	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B109); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0046B10C	dds3PauseSign	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R2 defines dds3PauseSign at the same sdata slot; R1 dds3KernelMain asm stores it exactly where the shared C writes dds3PauseSign; dds3KernelMain matches R1 once renamed (D/tmp/dds3KernelMain.promote.patch) (R1 0x0046B10C); replaces dds3KernelMainData
 0x0046B110	dds3PauseTime	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same as above, next word (R2 dds3PauseTime) (R1 0x0046B110); replaces dds3KernelMainData2
-0x0046B114	PauseSign	inferred	method=hd; p=0.37 (n=D_r1_0046B114); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
-0x0046B118	dds3Data25	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: dds3SlowOn, dds3SlowOff
-0x0046B11C	dds3SlowOnData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3SlowOn
-0x0046B120	dds3SlowOnData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3SlowOn
+0x0046B114	dds3SlowSign	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=dds3SlowOn stores 1 here and dds3PauseOn/PauseOff/Stop clear it, the smt3 dds3SlowSign order; label was a derived name; replaces PauseSign
+0x0046B118	dds3SlowTime	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=dds3SlowOn stores aSlowTime, dds3SlowOff stores 4: smt3 dds3SlowTime; replaces dds3Data25
+0x0046B11C	dds3SlowRunCount	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=dds3SlowOn stores dds3RunCount here: smt3 dds3SlowRunCount; replaces dds3SlowOnData
+0x0046B120	dds3SlowEndCount	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=dds3SlowOn stores slowcnt here: smt3 dds3SlowEndCount; replaces dds3SlowOnData2
 0x0046B124	dds3DebugSign	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B124); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3DrawDistRipOverError
 0x0046B128	dds3FrameRunTime	inferred	method=smt3-offset; p=na; tier=D; source=smt3; evidence=smt3-offset: between dds3DebugSign and dds3VblanksPerFrame, same span 0x8, same size
 0x0046B12A	dds3LastDrawFrameCount	inferred	method=smt3-offset; p=na; tier=D; source=smt3; evidence=smt3-offset: between dds3DebugSign and dds3VblanksPerFrame, same span 0x8, same size

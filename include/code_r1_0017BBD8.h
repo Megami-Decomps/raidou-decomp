@@ -151,5 +151,7 @@ void pbLeaf7(u32 job);
 void pbLeaf8(u32 job);
 void pbLeaf9(u32 job);
 void pbLeaf10(u32 job);
+extern struct effDebugMenu_t pbLeaf10Data;
+extern struct effDebugMenu_t pbLeaf10Data2;
 
 #endif

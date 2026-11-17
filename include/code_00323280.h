@@ -42,5 +42,6 @@ typedef struct fclJpcWork_t {
 } fclJpcWork_t;
 void fclCallExistProcess(void);
 void evtCallMemFreeDirect(void);
+void cmpProcessStart_cmpMain(void);
 
 #endif

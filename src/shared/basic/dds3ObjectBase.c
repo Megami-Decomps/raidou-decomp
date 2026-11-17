@@ -11,6 +11,7 @@
 #include "dds3LightObjectBasic.h"
 #include "dds3CameraObjectBasic.h"
 #include "dds3ObjectBase.h"
+#include "dds3ModelBasic.h"
 #include "dds3MoverBasic.h"
 #include "mdlManager.h"
 #include "sdfModel.h"
@@ -139,7 +140,11 @@ void *dds3ObjectBaseSetUserValue(dds3Basic_t *pObjectBasic, void *pUserValue)
     return previous;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseGetUserValue);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3ObjectBase.c:187, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+void *dds3ObjectBaseGetUserValue(dds3Basic_t *pObjectBasic)
+{
+    return dds3GetBaseControlWorkData(pObjectBasic)->pUserValue;
+}
 
 dds3Basic_t *dds3ObjectBaseSetControlBasic(dds3Basic_t *pObjectBasic, dds3Basic_t *pItemBasic)
 {
@@ -233,9 +238,71 @@ void dds3ObjectBaseMakeUnit(dds3Basic_t *pObjectBasic, MODELTYPE major, s32 mino
     }
 }
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeMatter);
+/* NON_MATCHING: 35 of 49 words match.  */
+#ifdef NON_MATCHING
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3ObjectBase.c:855, rework, same function 1.00 (words 49/49, calls 1.00, shape 1.00) */
+void dds3ObjectBaseMakeMatter(dds3Basic_t *pObjectBasic)
+{
+    sdfMotionCtrlr_t *motion;
+    sdfModelRootNode_t *model;
+    dds3Basic_t *modelBasic;
+    dds3ObjectBaseControlWorkData_t *control;
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMatterAnimeSpeed);
+    control = dds3GetBaseControlWorkData(pObjectBasic);
+    modelBasic = dds3ObjectBaseGetControlBasic(pObjectBasic, 3);
+    model = dds3ModelBasicMakeModel(modelBasic);
+    motion = dds3ModelBasicSetMotion(modelBasic, model);
+    dds3GetTMPoseSet(pObjectBasic);
+    SDF_VU0_STOREMATRIX(&model->tm);
+    sdfModelEvalTm2(model, 0);
+    sdfModelEvalTm2(model, 1);
+    control->pModel = model;
+    control->pMot = motion;
+    control->modelType = 1;
+    control->MotSpeed = 1.0f;
+    control->cam_len = 0.0f;
+    control->MotMode = 0;
+}
+#else
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeMatter);
+#endif
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3ObjectBase.c:879, match, same function 1.00 (words 45/45, calls 1.00, shape 1.00) */
+void dds3ObjectBaseMatterAnimeSpeed(dds3Basic_t *pObjectBasic, u32 mode)
+{
+    dds3ObjectBaseControlWorkData_t *control = dds3GetBaseControlWorkData(pObjectBasic);
+
+    switch (mode) {
+    case 0:
+        control->MotMode = 0;
+        control->MotSpeed = 1.0f;
+        break;
+    case 1:
+        control->MotMode = 1;
+        control->MotSpeed = 0.0f;
+        break;
+    case 2:
+        control->MotMode = 2;
+        control->MotSpeed = 0.0f;
+        break;
+    case 3:
+        control->MotMode = 3;
+        control->MotSpeed = 0.0f;
+        break;
+    case 4:
+        control->MotMode = 4;
+        control->MotSpeed = 1.0f;
+        break;
+    case 5:
+        control->MotMode = 5;
+        control->MotSpeed = 1.0f;
+        break;
+    case 6:
+        control->MotMode = 6;
+        control->MotSpeed = 0.0f;
+        break;
+    }
+}
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3ObjectBase.c:915, near, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
 s32 dds3ObjectBaseRegistArea(dds3Basic_t *pObjectBasic)

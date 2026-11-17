@@ -464,7 +464,39 @@ dds3Basic_t *dds3AddEffectObjectBasic(u32 serialID, const sdfVector4_t *aPos, co
     return obj;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddP2AEffect);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3EffectObjectBasic.c:509, near, same function 1.00 (words 53/53, calls 1.00, shape 1.00) */
+dds3Basic_t *AddP2AEffect(void *p2a, void *pos, s32 rot)
+{
+    sdfVector4_t vector;
+    dds3Basic_t *basic;
+    dds3EffectObjectBasicWorkData_t *work;
+    dds3ObjectBaseControlWorkData_t *control;
+    dds3Basic_t *area;
+
+    memset(&vector, 0, sizeof(vector));
+    basic = dds3AddEffectObjectBasic(dds3AllocObjectId(), pos, EE_ADDR_AS(void *, rot));
+    if (basic == NULL) {
+        return NULL;
+    }
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&vector);
+    dds3BillboardSetPosition(p2a, &vector);
+    work = basic->workdata;
+    work->handle = p2a;
+    work->stat = 0;
+    work->type = 2;
+    work->linkbasic = NULL;
+    work->linkindex = 0;
+    work->linkbasictype = 0;
+    control = dds3EffectObjectBasicGetControlWorkData(basic);
+    control->modelType = 2;
+    area = dds3AreaBasicGetFastArea();
+    if (area != NULL) {
+        control->pBasic[4] = area;
+        dds3AreaBasicRegistItem(area, basic);
+    }
+    return basic;
+}
 
 dds3Basic_t *dds3AddP2AEffectObjectBasic3(dds3Basic_t *ebasic, void *pos, saddr_t rot) {
     struct billHandle_t *bill;
@@ -492,7 +524,39 @@ void dds3EffectObjectBasicSetAnmeID(dds3Basic_t *basic, u32 animeID)
     dds3BillboardSetAnimNumber(((dds3EffectObjectBasicWorkData_t *)basic->workdata)->handle, animeID);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddTMXEffect);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3EffectObjectBasic.c:568, near, same function 1.00 (words 52/52, calls 1.00, shape 1.00) */
+dds3Basic_t *AddTMXEffect(void *tmx, void *pos, s32 rot)
+{
+    sdfVector4_t vector;
+    dds3Basic_t *basic;
+    dds3EffectObjectBasicWorkData_t *work;
+    dds3ObjectBaseControlWorkData_t *control;
+    dds3Basic_t *area;
+
+    memset(&vector, 0, sizeof(vector));
+    basic = dds3AddEffectObjectBasic(dds3AllocObjectId(), pos, EE_ADDR_AS(void *, rot));
+    if (basic == NULL) {
+        return NULL;
+    }
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&vector);
+    dds3BillboardSetPosition(tmx, &vector);
+    work = basic->workdata;
+    work->type = 3;
+    work->handle = tmx;
+    work->stat = 0;
+    work->linkbasic = NULL;
+    work->linkindex = 0;
+    work->linkbasictype = 0;
+    control = dds3EffectObjectBasicGetControlWorkData(basic);
+    control->modelType = 2;
+    area = dds3AreaBasicGetFastArea();
+    if (area != NULL) {
+        control->pBasic[4] = area;
+        dds3AreaBasicRegistItem(area, basic);
+    }
+    return basic;
+}
 
 dds3Basic_t *dds3AddTMXEffectObjectBasic3(dds3Basic_t *ebasic, void *pos, saddr_t rot) {
     struct billHandle_t *bill;
@@ -501,11 +565,50 @@ dds3Basic_t *dds3AddTMXEffectObjectBasic3(dds3Basic_t *ebasic, void *pos, saddr_
     return AddTMXEffect(bill, pos, rot);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddTMXEffectObjectBasic2);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3EffectObjectBasic.c:608, match, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+void dds3AddTMXEffectObjectBasic2(u32 effdata, void *pos, s32 rot)
+{
+    struct billHandle_t *bill;
+
+    bill = dds3BillboardCreate(0, effdata);
+    AddTMXEffect(bill, pos, rot);
+}
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", effObjCreateIndexedKindZero);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddD3PEffect);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3EffectObjectBasic.c:625, near, same function 1.00 (words 52/52, calls 1.00, shape 1.00) */
+dds3Basic_t *AddD3PEffect(void *eff, void *pos, void *rot)
+{
+    sdfVector4_t vector;
+    dds3Basic_t *basic;
+    dds3EffectObjectBasicWorkData_t *work;
+    dds3ObjectBaseControlWorkData_t *control;
+    dds3Basic_t *area;
+
+    memset(&vector, 0, sizeof(vector));
+    basic = dds3AddEffectObjectBasic(dds3AllocObjectId(), pos, rot);
+    if (basic == NULL) {
+        return NULL;
+    }
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&vector);
+    dds3EffectSetPosition(eff, &vector);
+    work = basic->workdata;
+    work->type = EFF_OBJ_STATE_BOUND_BILL;
+    work->handle = eff;
+    work->stat = 0;
+    work->linkbasic = NULL;
+    work->linkindex = 0;
+    work->linkbasictype = 0;
+    control = dds3EffectObjectBasicGetControlWorkData(basic);
+    control->modelType = 2;
+    area = dds3AreaBasicGetFastArea();
+    if (area != NULL) {
+        control->pBasic[4] = area;
+        dds3AreaBasicRegistItem(area, basic);
+    }
+    return basic;
+}
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicAddD3P2);
 
@@ -591,7 +694,38 @@ void dds3StartBEDEffectObjectBasic(dds3Basic_t *basic, u32 cutno) {
     data->cuth = effEveBEDCutCreate(data->handle, (u16)(cutno & EFF_OBJ_ENTRY_ID_MASK), data->para);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddESPEffect);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3EffectObjectBasic.c:750, near, same function 1.00 (words 50/50, calls 1.00, shape 1.00) */
+dds3Basic_t *AddESPEffect(const char *name, void *pos, void *rot, f32 r) {
+    dds3Basic_t *obj;
+    dds3EffectObjectBasicWorkData_t *data;
+    dds3ObjectBaseControlWorkData_t *objectHandle;
+    dds3Basic_t *worldNode;
+
+    obj = dds3AddEffectObjectBasic(dds3AllocObjectId(), pos, rot);
+    if (obj == NULL) {
+        return NULL;
+    }
+    data = obj->workdata;
+    data->type = EFF_OBJ_STATE_PARAMETERS_READY;
+    obj->poseset->scl.x = r;
+    obj->poseset->scl.y = r;
+    obj->poseset->scl.z = r;
+    data->stat = 0;
+    data->handle = NULL;
+    data->cuth = NULL;
+    data->linkbasic = NULL;
+    data->linkindex = 0;
+    data->linkbasictype = 0;
+    obj->name = name;
+    objectHandle = dds3EffectObjectBasicGetControlWorkData((dds3Basic_t *)obj);
+    objectHandle->modelType = 2;
+    worldNode = dds3AreaBasicGetFastArea();
+    if (worldNode != NULL) {
+        objectHandle->pBasic[4] = worldNode;
+        dds3AreaBasicRegistItem(worldNode, obj);
+    }
+    return obj;
+}
 
 dds3Basic_t *dds3AddESPEffectObjectBasic(const char *name, void *pos, void *rot, f32 r)
 {

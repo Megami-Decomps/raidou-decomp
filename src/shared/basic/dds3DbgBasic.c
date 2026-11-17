@@ -6,6 +6,14 @@
 #include "ps2asm.h"
 #include "sdfDraw.h"
 #include "sdfDevCons.h"
+#include "kernel_draw.h"
+#include "dds3PadManager.h"
+#include "evtDebug.h"
+#include "dds3KernelCore.h"
+#include "dds3SceneBasic.h"
+#include "dds3WorldBasic.h"
+#include "sdfPacketBuff.h"
+#include "dds3KernelMisc.h"
 
 extern s32 DispBaseData(dds3Basic_t *basic, s32 x, s32 y, sdfDrawTag_t *tag);
 extern char dds3BasicPosLabel[];
@@ -77,7 +85,46 @@ u32 DispObjectBaseData(dds3Basic_t *basic, s32 x, s32 y, sdfDrawTag_t *tag) {
     return 1;
 }
 
+/* NON_MATCHING: 41 of 73 words match.  */
+#ifdef NON_MATCHING
+dds3ProcessFunc_t dds3DebugBasic(dds3ProcessID_t *id) {
+    dds3Basic_t *basic;
+    sdfDrawTag_t *list;
+    sdfDrawTag_t *panel;
+    s32 width;
+    u32 kind;
+    s32 noScene;
+    dds3ProcessFunc_t result;
+
+    noScene = dds3GetActiveScene() == NULL;
+    result = (dds3ProcessFunc_t)-1;
+    if (!noScene) {
+        basic = dds3GetProcessData(id);
+        if (dds3SceneBasicExistBasic(dds3GetActiveScene(), basic) == 0) {
+            return evtSceneDispProcess;
+        }
+        list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+        sdfDrawTagInit(list);
+        width = DispBaseData(basic, 3, 10, list) + 11;
+        kind = basic->type >> 24;
+        if (kind < 0xA && kind >= 4) {
+            width += DispObjectBaseData(basic, 3, width, list);
+        }
+        panel = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+        sdfDrawTagInit(panel);
+        dds3ConsPanelTagLink(panel, 36, 114, 35, width - 9);
+        dds3Data10.regFunc(&dds3Data10, panel);
+        dds3Data10.regFunc(&dds3Data10, list);
+        if (dds3PadButtonState[0x31] >= 0) {
+            return NULL;
+        }
+        return evtSceneDispProcess;
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "basic/dds3DbgBasic", dds3DebugBasic);
+#endif
 char dds3BasicPosLabel[8] = "POS  :";
 
 char dds3BasicRotLabel[8] = "ROT  :";

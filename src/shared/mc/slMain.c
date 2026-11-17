@@ -26,6 +26,8 @@
 #include "itfMesManager.h"
 #include "EventBit.h"
 #include "dds3KernelCore.h"
+#include "code_r1_001D5158.h"
+#include "frFont.h"
 
 typedef struct fileRequest fileRequest_t;
 
@@ -255,7 +257,7 @@ typedef struct fileLoadObj_t {
 
 #define FILE_MAIN_BLOB_SIZE 0x33600
 
-u8 fileIsLoadedAndConditionTrue(s32 condition);
+u8 slGetPadTrig(s32 condition);
 void mcdCreateFontDrawHandle(s32 x, s32 y, u32 color, const char *text);
 
 static inline void fileDrawDialogLine(s32 line, const char *glyphSource) {
@@ -273,17 +275,17 @@ extern FileSelectionCallback D_003BD908, D_003BD90C;
 /* Yes/no cursor input while the card request is idle. */
 static inline void filePollPromptChoice(void) {
     if (D_003BC838 == 0 && slChkWindowOpenDone() != 0) {
-        if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x27] < 0) != 0) {
+        if (slGetPadTrig(dds3PadButtonState[0x27] < 0) != 0) {
             if (D_003BC830 != 1) {
                 p2sdPlaySE(0, 0x7F, 0x3F);
             }
             D_003BC830 = 1;
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x26] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x26] < 0) != 0) {
             if (D_003BC830 != 0) {
                 p2sdPlaySE(0, 0x7F, 0x3F);
             }
             D_003BC830 = 0;
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x21] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x21] < 0) != 0) {
             if (D_003BC830 == 0 && (D_003BC834 == 1 || D_003BC834 == 3)) {
                 p2sdPlaySE(0x11, 0x7F, 0x3F);
             } else {
@@ -294,7 +296,7 @@ static inline void filePollPromptChoice(void) {
             } else {
                 D_003BC838 = 1;
             }
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x23] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x23] < 0) != 0) {
             p2sdPlaySE(0xA, 0x7F, 0x3F);
             D_003BC838 = 2;
         }
@@ -396,12 +398,24 @@ typedef struct fileOrientedRingMotion_t {
 
 INCLUDE_ASM(const s32, "mc/slMain", slKanjiDraw3);
 
+#ifdef VERSION_RAIDOU1
+void slKanjiDrawH(s32 x, s32 y, u32 rgba, const char *moji) {
+    frEnableMode(1);
+    slKanjiDrawH_handle2 = frSetFontString((u8 *)moji, 0, 0, 0, NULL);
+    frSetFontColorNo(slKanjiDrawH_handle2, 3);
+    frDisableMode(1);
+    frSetFontSpace(slKanjiDrawH_handle2, -1);
+    frSetDrawPosition(slKanjiDrawH_handle2, x << 4, y << 3);
+    frDrawFontOt(slKanjiDrawH_handle2, 0, 0x6A);
+    frDestroyFontRequestAfter(slKanjiDrawH_handle2);
+    frSetFontDrawOT(0x68);
+}
+#else
 INCLUDE_ASM(const s32, "mc/slMain", slKanjiDrawH);
 
-#ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode);
-
 #endif
+
 INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode2);
 
 INCLUDE_ASM(const s32, "mc/slMain", slNextPageDraw);
@@ -672,7 +686,20 @@ saddr_t slHeadLoad(void) {
     return EE_ADDR_S(slHeadLoadProc_openFile);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slHeadLoadProc_openFile);
+saddr_t slHeadLoadProc_openFile(void) {
+    McPollResult status = sdfMcFuncOpen1(&slMcFd);
+
+    if (status == MC_POLL_PENDING) {
+        return 0;
+    }
+    if (status == MC_POLL_SUCCESS) {
+        slLoadFileFd = sdfMemAllocDirect(0x1270);
+        slLoadFileHandle = sdfMemLock(slLoadFileFd);
+        sdfMcFuncRead(slMcFd, slLoadFileHandle, 0x1270);
+        return EE_ADDR_S(slHeadLoadProc_readFile);
+    }
+    return slNoCard();
+}
 
 saddr_t slHeadLoadProc_readFile(void) {
     McPollResult status = sdfMcFuncRead1();
@@ -707,7 +734,13 @@ s32 slEndingUpd2(void) {
     return slQueryYesNo(&slSaveData, &slFileSel, 1);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slEndingExit);
+s32 slEndingExit(void) {
+    slSetInfo(0);
+    gslErrorCode = 0;
+    slQueryYesNoMsg = 8;
+    gslDrawFlagFile = 0;
+    return slCallMcRegetInfo((s32 (*)(void))&slDefaultFileFlowProc1st, &slEndingTop, 1);
+}
 
 saddr_t slBootTop(void) {
     slSetInfo(0);
@@ -715,7 +748,15 @@ saddr_t slBootTop(void) {
     return EE_ADDR_S(slBootProc_CheckCard);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slBootRetry);
+saddr_t slBootRetry(void) {
+    sdfMcRegetInfo(0);
+    gslCheckCardWait = SDF_FRAMES(60);
+    gSlNowCardCheck = 1;
+    slSetInfo(1);
+    gslDrawFlagBg = 1;
+    gslDrawFlagFile = 1;
+    return EE_ADDR_S(slBootProc_CheckCardR);
+}
 
 s32 slBootError(void) {
     gslDrawFlagBg = 1;
@@ -733,7 +774,7 @@ s32 slBootError2(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slBootRetry_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", slHardSelect2);
+INCLUDE_ASM(const s32, "mc/slMain", slTop);
 
 s32 slExit(void) {
     slSetInfo(0);
@@ -752,19 +793,32 @@ s32 slExitToTitleSub(void) {
     dds3AdminiCallSequence(2, mode, 4, 0);
     return 0;
 }
-
-s32 slExitToTitle(void) {
-    return slExitToTitleSub();
-}
 #else
 INCLUDE_ASM(const s32, "mc/slMain", slExitToTitleSub);
 
 INCLUDE_ASM(const s32, "mc/slMain", slExitToTitle);
 #endif
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallAdminiCallSequence);
+#ifdef VERSION_RAIDOU1
+s32 slExitToTitle(void) {
+    return slExitToTitleSub();
+}
 
-INCLUDE_ASM(const s32, "mc/slMain", slDefaultFileFlowProc1st);
+s32 slCallAdminiCallSequence(void) {
+    u32 v = 2;
+
+    slData3 = 1;
+    dds3AdminiCallSequence(2, &v, 4, 0);
+    return 0;
+}
+#else
+INCLUDE_ASM(const s32, "mc/slMain", slCallAdminiCallSequence);
+#endif
+
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001D65F8.c:1, match */
+dds3ProcessFunc_t slDefaultFileFlowProc1st(void) {
+    return slExitToTitleSub();
+}
 
 s32 fileRestartSlotScan(void) {
     fileClearAllSlotFlags();
@@ -774,7 +828,7 @@ s32 fileRestartSlotScan(void) {
     return fileResetSelection();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallMcGetSlotFlags);
+INCLUDE_ASM(const s32, "mc/slMain", slFileSel);
 
 INCLUDE_ASM(const s32, "mc/slMain", slCancel);
 
@@ -784,23 +838,41 @@ INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo3);
 
 INCLUDE_ASM(const s32, "mc/slMain", slRefSystem);
 
-INCLUDE_ASM(const s32, "mc/slMain", slLeaf5);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001D6808.c:1, match */
+void slLeaf5(void) {
+    slTop();
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slLeaf6);
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo4);
+s32 slCallSetInfo4(void) {
+    slSetInfo(0);
+    gslDrawFlagFile_slMain = 0;
+    slQueryYesNoMsg = 12;
+    return slCallMcRegetInfo(&slCallSetInfo5, &slLeaf7, 1);
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo5);
 
 INCLUDE_ASM(const s32, "mc/slMain", slLeaf7);
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo6);
+s32 slCallSetInfo6(void) {
+    slSetInfo(0);
+    gslErrorCode = 0;
+    slQueryYesNoMsg = 12;
+    gslDrawFlagFile = 0;
+    return slCallMcRegetInfo(&slCallSetInfo5, &slLeaf7, 1);
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slLoadProc1st);
 
 INCLUDE_ASM(const s32, "mc/slMain", slLeaf9);
 
-INCLUDE_ASM(const s32, "mc/slMain", slEndingProc1st);
+s32 slEndingProc1st(void) {
+    slBaseIconMemHandle = NULL;
+    baseIconFileHandle = EE_ADDR(fileLoad(slIconPath));
+    return slEndingTop();
+}
 
 s32 slBootProc1st(void) {
     sdfMcRegetInfo(0);
@@ -811,7 +883,12 @@ s32 slBootProc1st(void) {
     return slBootTop();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo7);
+saddr_t slCallSetInfo7(void) {
+    slSetInfo(0);
+    slCallPlaySE2Data = 0;
+    gslDrawFlagFile_slMain = 0;
+    return EE_ADDR_S(slCallPlaySE2);
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallPlaySE2);
 
@@ -866,7 +943,28 @@ INCLUDE_ASM(const s32, "mc/slMain", slBootProc_CheckCardR);
 
 INCLUDE_ASM(const s32, "mc/slMain", slErrorWaitMc);
 
-INCLUDE_ASM(const s32, "mc/slMain", slErrorWaitToFileMc);
+s32 slErrorWaitToFileMc(void) {
+    if (gslErrorKeyFlag == 0) {
+        if (slGetPadTrig(dds3PadButtonState[0x23] < 0) ||
+            slGetPadTrig(dds3PadButtonState[0x21] < 0)) {
+            p2sdPlaySE(0, 0x7F, 0x3F);
+            gslErrorKeyFlag = 1;
+        }
+    }
+    if (sdfMcFuncGetInfo1() != 0) {
+        if (gslErrorKeyFlag == 1) {
+            gslErrorCode = 0;
+            return slFileSel();
+        }
+        if (sdfMcGetFileInfoReady(mccb) != 1) {
+            gslErrorCode = 0;
+            gslDrawFlagFile = 0;
+            return slTop();
+        }
+        sdfMcRegetInfo(mccb);
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallPlaySE3);
 
@@ -886,11 +984,24 @@ INCLUDE_ASM(const s32, "mc/slMain", slLeaf10);
 
 INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyNoChkProc);
 
-INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKey);
+saddr_t slHitAnyKey(addr_t nextFunc) {
+    slHitAnyKeyNextFunc = nextFunc;
+    gslErrorKeyFlag = 0;
+    sdfMcRegetInfo(mccb);
+    return EE_ADDR_S(slHitAnyKeyProc);
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyProc);
 
-INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfo_B);
+/* body: matched in smt3 @ 9401f79e: src/smt3/mc/slMain.c:1818, near, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+saddr_t slChooseData_getCardInfo_B(void) {
+    u8 buf[0x50];
+
+    buf[0] = 0x2F;
+    mcMakeFileName(&buf[1], slChooseSaveIndex);
+    sdfMcFuncChdir(mccb, (const char *)buf);
+    return EE_ADDR_S(slChooseData_getCardInfo2);
+}
 
 saddr_t slChooseData_getCardInfo2(void) {
     McPollResult t = sdfMcFuncChdir1();
@@ -932,7 +1043,15 @@ INCLUDE_ASM(const s32, "mc/slMain", slCallMcClearCardStat);
 
 INCLUDE_ASM(const s32, "mc/slMain", slChooseData);
 
-INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfo);
+/* body: matched in smt3 @ 9401f79e: src/smt3/mc/slMain.c:1724, near, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+saddr_t slChooseData_getCardInfo(void) {
+    u8 buf[0x50];
+
+    buf[0] = 0x2F;
+    mcMakeFileName(&buf[1], slChooseSaveIndex);
+    sdfMcFuncChdir(mccb, (const char *)buf);
+    return EE_ADDR_S(slChooseData_getCardInfo2_B);
+}
 
 saddr_t slChooseData_getCardInfo2_B(void) {
     McPollResult t = sdfMcFuncChdir1();
@@ -976,7 +1095,31 @@ s32 slChooseData_getCardInfo3_B(void) {
     return slChooseData_getCardInfoNext_B();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfoNext_B);
+/* body: matched in smt3 @ 9401f79e: src/smt3/mc/slMain.c:1869, near, same function 1.00 (words 40/40, calls 1.00, shape 1.00) */
+s32 slChooseData_getCardInfoNext_B(void) {
+    s32 slot = slChooseSaveIndex;
+    s32 buttons = sdfMcGetSlotFlags(mccb, slot);
+
+    slot++;
+    if (buttons & SL_SLOT_FLAG_CAN_READ_SAVE) {
+        if (buttons & SL_SLOT_FLAG_DIRECTORY_READY) {
+            if (buttons & SL_SLOT_FLAG_DELETE_BEFORE_WRITE) {
+                slSetInfo(0);
+                gslDrawFlagFile = 0;
+                gslErrorCode = 0;
+                return slExitToTitle();
+            }
+        }
+    }
+    slChooseSaveIndex = slot;
+    if (slot == 10) {
+        slSetInfo(0);
+        gslDrawFlagFile = 0;
+        gslErrorCode = 0;
+        return slBootError2();
+    }
+    return slChooseData_getCardInfo();
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slChooseData_B);
 
@@ -1021,11 +1164,32 @@ saddr_t slSaveProc_Write_mkdir(void) {
     return EE_ADDR_S(slErrorWait);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallMcFuncChdir1);
+saddr_t slCallMcFuncChdir1(void) {
+    McPollResult t = sdfMcFuncChdir1();
+
+    if (t == MC_POLL_PENDING) {
+        return 0;
+    }
+    if (t == MC_POLL_SUCCESS) {
+        return slSaveData_deleteIconSys();
+    }
+    if (t == MC_POLL_ERROR) {
+        slSetInfo(0);
+        gslErrorCode = 4;
+        return EE_ADDR_S(slErrorWait);
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slLoadData_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_doNothing);
+s32 slSaveProc_doNothing(void) {
+    sdfMcSetSlotFlags(mccb, slFileSelError, SL_SLOT_FLAG_CAN_READ_SAVE);
+    sdfMcSetSlotFlags(mccb, slFileSelError, SL_SLOT_FLAG_DELETE_BEFORE_WRITE);
+    p2sdPlaySE(26, 127, 63);
+    slSetInfo(4);
+    return slHitAnyKey(EE_ADDR(slFileSel));
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slVersionConvert_Step1);
 
@@ -1144,9 +1308,53 @@ saddr_t slFormatStart(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slFormatCancel);
 
-INCLUDE_ASM(const s32, "mc/slMain", slLoadData);
+/* body: matched in smt3 @ 9401f79e: src/smt3/mc/slMain.c:2175, adapt, same function 0.94 (words 59/57, calls 0.89, shape 0.97) */
+saddr_t slLoadData(void) {
+    char path[0x50];
+    u32 ctx = mccb;
+    s32 slot = sdfMcGetSlotIndex(ctx);
+    u32 attr = sdfMcGetSlotFlags(ctx, slot);
+    u32 len;
 
+    slData5 = 1;
+    slSetInfo(3);
+    if ((attr & SL_SLOT_FLAG_CAN_READ_SAVE) == 0) {
+        return slFileSel();
+    }
+    setCallMcGetSlotIndex();
+    path[0] = '/';
+    mcMakeFileName(&path[1], slot);
+    len = strlen(&path[1]);
+    path[len + 1] = '/';
+    memcpy(&path[len + 2], &path[1], len);
+    path[len * 2 + 2] = 0;
+    sdfMcFuncOpen(ctx, path, 1);
+    return EE_ADDR(slLoadProc_openFile);
+}
+
+/* NON_MATCHING: 40 of 41 words match.  */
+#ifdef NON_MATCHING
+saddr_t slLoadProc_openFile(void) {
+    McPollResult status = sdfMcFuncOpen1(&slMcFd);
+    u32 size;
+
+    if (status == MC_POLL_PENDING) {
+        return 0;
+    }
+    size = slVersionConvert_GetSize();
+    slLoadFileFd = sdfMemAllocDirect(size);
+    slLoadFileHandle = sdfMemLock(slLoadFileFd);
+    if (status == MC_POLL_SUCCESS) {
+        sdfMcFuncRead(slMcFd, slLoadFileHandle, size);
+        return EE_ADDR_S(slLoadProc_readFile);
+    }
+    slSetInfo(0);
+    gslErrorCode = 3;
+    return EE_ADDR_S(slErrorWait);
+}
+#else
 INCLUDE_ASM(const s32, "mc/slMain", slLoadProc_openFile);
+#endif
 
 saddr_t slLoadProc_readFile(void) {
     McPollResult status = sdfMcFuncRead1();
@@ -1408,7 +1616,17 @@ INCLUDE_ASM(const s32, "mc/slMain", slRetuenFromLoadSub);
 
 INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProc);
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallMcRegetInfo);
+saddr_t slCallMcRegetInfo(s32 (*yesFunc)(void), s32 (*noFunc)(void), s32 yesNoDefault) {
+    slQueryYesFunc = yesFunc;
+    slQueryNoFunc = noFunc;
+    slQueryYesNoCursor = yesNoDefault;
+    slQueryYesNoKeyFlag = 0;
+    if (slQueryYesNoMsg != 4 && slQueryYesNoMsg != 8 && slQueryYesNoMsg != 10 && slQueryYesNoMsg != 11 &&
+        slQueryYesNoMsg != 12) {
+        sdfMcRegetInfo(mccb);
+    }
+    return EE_ADDR_S(slQueryYesNoProc);
+}
 
 #ifdef VERSION_RAIDOU1
 /* NON_MATCHING: 600 of 600 words match; its string table lands in this unit's .rodata, which then differs from retail. */

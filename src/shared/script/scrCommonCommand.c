@@ -10,6 +10,8 @@
 #include "dds3KernelCore.h"
 #include "dds3KernelDraw.h"
 #include "fldProcess.h"
+#include "scrScriptProcess.h"
+#include "datCalc.h"
 
 static inline f32 scrFabsf(f32 x)
 {
@@ -158,7 +160,16 @@ s32 scrCommandAdjustItemQuantity(void);
 s32 scrCommandAddPartyCurrency(void);
 s32 scrCommand_SCR_EXISTS(void);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_KEY);
+s32 scrCommand_KEY(void)
+{
+    if (scrGetCommandTimer() == 0) {
+        return 0;
+    }
+    if (dds3PadBitTable[3] < 0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCallGetIntPara4);
 
@@ -277,7 +288,17 @@ s32 bfWaitCbScreenFadeB(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", bfWaitCbScreenFadeA);
+/* body: matched in raidou @ 88f0d54: src/shared/script/scrCommonCommand.c:261, near, same function 1.00 (words 27/27, calls 1.00, shape 1.00) */
+s32 bfWaitCbScreenFadeA(void)
+{
+    if (scrGetCommandTimer() == 0) {
+        dds3ChangeBistaMode(BISTA_MODE_TALKEVENT);
+        dds3BistaOutEx(scrGetIntPara(0), scrGetIntPara(1));
+        mapWaitCbScreenFadeBSub(1);
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", trmUpdateSave);
 #ifdef VERSION_RAIDOU2
@@ -341,7 +362,26 @@ s32 scrCommand_SET_FOVY(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCR_RUN);
+s32 scrCommand_SCR_RUN(void)
+{
+    scrProcessWork_s *work;
+    s32 startProc;
+
+    startProc = scrGetIntPara(0);
+    work = scrGetScriptHandle();
+    if (work == NULL || work->ProcessID == NULL || startProc < 0)
+    {
+        return 1;
+    }
+    if (startProc < work->TypeTable->ItemCount)
+    {
+        scrSetIntReturnValue(EE_ADDR_S(scrRunScriptEx(work->ProcessID->priority + scrGetIntPara(1),
+                                            work->Header, work->TypeTable, work->ProcTable,
+                                            work->LabelTable, work->Code, work->MessageData,
+                                            work->StringData, startProc)));
+    }
+    return 1;
+}
 
 s32 scrCommand_SCR_KILL(void)
 {

@@ -116,5 +116,6 @@ ItfGridTextColorTableIndex itfGetGridTextColorTableIndex(const itfGridTextWidget
 void itfFormatGridValueEntryText(itfGridTextWidget_t *widget, itfGridTextListItem_t *entry, char *out);
 void fldLmapSubmitPositionedCommandPacket(s32 x, s32 y, s32 z, ItfGridTextColorTableIndex colorTableIndex,
                                           const char *command, s32 surfaceIndex);
+void fclLeaf12(void);
 
 #endif

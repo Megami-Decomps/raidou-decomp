@@ -7550,10 +7550,10 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046B109	0x004DE209	dds3SoftResetDisableFlag	.sdata	0x3	yes	code-ref
 0x0046B10C	0x004DE20C	dds3PauseSign	.sdata	0x4	yes	code-ref
 0x0046B110	0x004DE210	dds3PauseTime	.sdata	0x4	yes	code-ref
-0x0046B114	0x004DE214	PauseSign	.sdata	0x4	yes	code-ref
-0x0046B118	0x004DE218	dds3Data25	.sdata	0x4	yes	code-ref
-0x0046B11C	0x004DE21C	dds3SlowOnData	.sdata	0x4	yes	code-ref
-0x0046B120	0x004DE220	dds3SlowOnData2	.sdata	0x4	yes	code-ref
+0x0046B114	0x004DE214	dds3SlowSign	.sdata	0x4	yes	code-ref
+0x0046B118	0x004DE218	dds3SlowTime	.sdata	0x4	yes	code-ref
+0x0046B11C	0x004DE21C	dds3SlowRunCount	.sdata	0x4	yes	code-ref
+0x0046B120	0x004DE220	dds3SlowEndCount	.sdata	0x4	yes	code-ref
 0x0046B124	0x004DE224	dds3DebugSign	.sdata	0x4	yes	code-ref
 0x0046B128	0x004DE228	dds3FrameRunTime	.sdata	0x2	yes	code-ref
 0x0046B12A	0x004DE22A	dds3LastDrawFrameCount	.sdata	0x2	yes	run-order-size

@@ -2,6 +2,7 @@
 #define MVI_MANAGER_H
 
 #include "common.h"
+#include "kernel.h"
 #include "sdf_movie_types.h"
 
 typedef struct
@@ -21,8 +22,12 @@ extern s32 movieData;
 void movieStop(void);
 void moviePlay(s32 aNum);
 s32 mviValidateMovieSub(void);
+extern s32 mnuUpdateMovieDrawShutdownCountdownData;
 s32 mviDrawMessageSub(void);
 void movieViewerFree(void);
 void *dds3StartMovieManager(void);
+void movieViewerScanDir(void);
+s32 MovieViewerProc(dds3ProcessID_t *id);
+void InitMovieViewer(void);
 
 #endif

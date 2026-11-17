@@ -87,7 +87,7 @@ typedef struct fileLoadObj_t {
 
 #define FILE_MAIN_BLOB_SIZE 0x33600
 
-u8 fileIsLoadedAndConditionTrue(s32 condition);
+u8 slGetPadTrig(s32 condition);
 void mcdCreateFontDrawHandle(s32 x, s32 y, u32 color, const char *text);
 s32 slChkWindowOpenDone(void);
 
@@ -103,17 +103,17 @@ extern FileSelectionCallback D_003BD908, D_003BD90C;
 /* Yes/no cursor input while the card request is idle. */
 static inline void filePollPromptChoice(void) {
     if (D_003BC838 == 0 && slChkWindowOpenDone() != 0) {
-        if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x27] < 0) != 0) {
+        if (slGetPadTrig(dds3PadButtonState[0x27] < 0) != 0) {
             if (D_003BC830 != 1) {
                 p2sdPlaySE(0, 0x7F, 0x3F);
             }
             D_003BC830 = 1;
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x26] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x26] < 0) != 0) {
             if (D_003BC830 != 0) {
                 p2sdPlaySE(0, 0x7F, 0x3F);
             }
             D_003BC830 = 0;
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x21] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x21] < 0) != 0) {
             if (D_003BC830 == 0 && (D_003BC834 == 1 || D_003BC834 == 3)) {
                 p2sdPlaySE(0x11, 0x7F, 0x3F);
             } else {
@@ -124,7 +124,7 @@ static inline void filePollPromptChoice(void) {
             } else {
                 D_003BC838 = 1;
             }
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x23] < 0) != 0) {
+        } else if (slGetPadTrig(dds3PadButtonState[0x23] < 0) != 0) {
             p2sdPlaySE(0xA, 0x7F, 0x3F);
             D_003BC838 = 2;
         }

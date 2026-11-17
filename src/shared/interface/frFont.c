@@ -1438,7 +1438,7 @@ u8 frDisableMode(u8 Flag) {
 }
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "interface/frFont", frLeaf2);
+INCLUDE_ASM(const s32, "interface/frFont", frSetFontDrawOT);
 #else
 /* Replace the complete shared render-flag word used by subsequent drawing. */
 void frSetFontDrawOT(u32 OtType) {

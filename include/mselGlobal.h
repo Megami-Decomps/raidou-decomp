@@ -7,7 +7,7 @@
 typedef struct
 {
     /* 0x00 */ void *unk_00;
-    /* 0x04 */ sdfMemHandle_t *unk_04;
+    /* 0x04 */ sdfTexHandle_t *bgTex; /* mselDrawBackground sprite */
     /* 0x08 */ sdfMemHandle_t *unk_08;
     /* 0x0C */ union { GameFileInfo_t fileInfo; struct { u8 savedHeader[0x30]; s32 globalWord30; }; };
     /* 0x40 */ s32 unk_40;
@@ -34,6 +34,8 @@ typedef struct
     /* 0xAC */ u32 cur_alpha;
     /* 0xB0 */ u32 cur_alphacnt;
 } mselGlobalWork_t;
+
+extern mselGlobalWork_t *gGlobal;
 
 extern u32 mselNameNEFLASHData;
 

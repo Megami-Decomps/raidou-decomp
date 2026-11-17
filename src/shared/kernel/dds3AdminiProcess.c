@@ -294,7 +294,72 @@ void dds3InitAdmini(void)
     }
 }
 
+/* One initializer for the three slot kinds and for unregistering. */
+static inline void fclEncycSetEntry(s32 index, s32 kind, dds3ProcessFunc_t update, dds3ProcessFunc_t destroy,
+                                    void (*setState)(s32), void *userValue) {
+    fclEncycTable[index].kind = kind;
+    fclEncycTable[index].task = NULL;
+    fclEncycTable[index].update = update;
+    fclEncycTable[index].destroy = destroy;
+    fclEncycTable[index].setState = setState;
+    fclEncycTable[index].enabled = 0;
+    fclEncycTable[index].userValue = userValue;
+}
+
+/* NON_MATCHING: 111 of 113 words match.  */
+#ifdef NON_MATCHING
+s32 fclEncycFindFreeSlot(const char *name) {
+    s32 slotIndex;
+    s32 characterIndex;
+    s32 previous;
+
+    if (dds3SearchProcessName(dds3DebugOwnerProcessName) == NULL) {
+        return -1;
+    }
+    if (fclEncycFreeEntry(name) >= 0) {
+        return -1;
+    }
+    for (slotIndex = 0; slotIndex < 32; slotIndex++) {
+        if (fclEncycTable[slotIndex].kind == 0) {
+            break;
+        }
+    }
+    if (slotIndex == 32) {
+        return -1;
+    }
+    fclEncycTable[slotIndex].kind = 0;
+    characterIndex = 0;
+    while ((fclEncycTable[slotIndex].name[characterIndex] = name[characterIndex]) != '\0') {
+        if (characterIndex == 31) {
+            fclEncycTable[slotIndex].name[characterIndex] = '\0';
+            break;
+        }
+        characterIndex++;
+    }
+    fclEncycTable[slotIndex].task = NULL;
+    fclEncycTable[slotIndex].update = NULL;
+    fclEncycTable[slotIndex].destroy = NULL;
+    fclEncycTable[slotIndex].setState = NULL;
+    fclEncycTable[slotIndex].enabled = 0;
+    fclEncycTable[slotIndex].userValue = NULL;
+    fclEncycTable[slotIndex].previous = -1;
+    fclEncycTable[slotIndex].next = -1;
+    previous = fclEncycTail;
+    if (previous < 0) {
+        fclEncycHead = slotIndex;
+        fclEncycTail = slotIndex;
+        fclEncycFree = slotIndex;
+    } else {
+        fclEncycTail = slotIndex;
+        fclEncycTable[previous].next = slotIndex;
+        fclEncycTable[slotIndex].previous = previous;
+    }
+    fclEncycCount++;
+    return slotIndex;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycFindFreeSlot);
+#endif
 
 s32 fclEncycFreeEntry(const char *name)
 {
@@ -317,13 +382,90 @@ s32 fclEncycFreeEntry(const char *name)
     return -1;
 }
 
+/* NON_MATCHING: 120 of 122 words match.  */
+#ifdef NON_MATCHING
+s32 fclEncycFreeEntries(const char *name) {
+    s32 slotIndex;
+
+    if (dds3SearchProcessName(dds3DebugOwnerProcessName) == NULL) {
+        return 0;
+    }
+    slotIndex = fclEncycFreeEntry(name);
+    if (slotIndex < 0) {
+        return 0;
+    }
+    if (fclEncycTable[slotIndex].kind > 0) {
+        if (fclEncycTable[slotIndex].kind < 3) {
+            if (dds3ExistProcess(fclEncycTable[slotIndex].task) == 1) {
+                dds3KillProcess(fclEncycTable[fclEncycFree].task, 1);
+            }
+        }
+    }
+    fclEncycTable[slotIndex].name[0] = 0;
+    fclEncycSetEntry(slotIndex, 0, NULL, NULL, NULL, NULL);
+    if (fclEncycTable[slotIndex].previous < 0) {
+        fclEncycHead = fclEncycTable[slotIndex].next;
+    } else {
+        fclEncycTable[fclEncycTable[slotIndex].previous].next = fclEncycTable[slotIndex].next;
+    }
+    if (fclEncycTable[slotIndex].next < 0) {
+        fclEncycTail = fclEncycTable[slotIndex].previous;
+    } else {
+        fclEncycTable[fclEncycTable[slotIndex].next].previous = fclEncycTable[slotIndex].previous;
+    }
+    fclEncycTable[slotIndex].previous = -1;
+    fclEncycTable[slotIndex].next = -1;
+    if (fclEncycFree == slotIndex) {
+        fclEncycFree = fclEncycHead;
+    }
+    fclEncycCount--;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycFreeEntries);
+#endif
 
+/* NON_MATCHING: 30 of 37 words match.  */
+#ifdef NON_MATCHING
+s32 dds3CallEncycFindFreeSlot(const char *name, void (*setState)(s32)) {
+    s32 index = fclEncycFindFreeSlot(name);
+    if (index < 0) {
+        return 0;
+    }
+    fclEncycSetEntry(index, 3, NULL, NULL, setState, 0);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3CallEncycFindFreeSlot);
+#endif
 
+/* NON_MATCHING: 31 of 42 words match.  */
+#ifdef NON_MATCHING
+s32 fclEncycAllocEntry(const char *name, dds3ProcessFunc_t update, dds3ProcessFunc_t destroy, void *userValue) {
+    s32 index = fclEncycFindFreeSlot(name);
+    if (index < 0) {
+        return 0;
+    }
+    fclEncycSetEntry(index, 1, update, destroy, NULL, userValue);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycAllocEntry);
+#endif
 
+/* NON_MATCHING: 32 of 43 words match.  */
+#ifdef NON_MATCHING
+s32 dds3CallEncycFindFreeSlot2(const char *name, dds3ProcessFunc_t update, dds3ProcessFunc_t destroy, void *userValue) {
+    s32 index = fclEncycFindFreeSlot(name);
+    if (index < 0) {
+        return 0;
+    }
+    fclEncycSetEntry(index, 2, update, destroy, NULL, userValue);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3CallEncycFindFreeSlot2);
+#endif
 
 s32 CallDebug(s32 restored, void *reqdata);
 s32 ExitDebug(void);

@@ -14,6 +14,7 @@ sdfGrPacketHeader_t *effPkt2DAllocTriStrip(s32 num, s32 prim);
 extern sdfGrOt_t dds3UpdateCrossfadeData;
 extern sdfGrOt_t dds3Data9;
 extern sdfGrOt_t dds3UpdateCrossfadeData2;
+extern s8 dds3CrossfadeRunFlag;
 void dds3CrossfadeEnd(void);
 
 #endif

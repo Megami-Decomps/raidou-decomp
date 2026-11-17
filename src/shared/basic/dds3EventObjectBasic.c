@@ -7,13 +7,6 @@
 #include "dds3Basic.h"
 #include "dds3EventObjectBasic.h"
 
-/* The event constructor allocates a complete 16-byte payload. */
-typedef struct
-{
-    dds3ObjectBaseControlWorkData_t *pObjectBaseControlWorkData;
-    u8 unk04[12];
-} dds3EventObjectBasicWorkData_t;
-
 u32 EventObjectBasicConstructor(dds3Basic_t *pBasic);
 void EventObjectBasicDestructor(dds3Basic_t *pBasic);
 s32 EventObjectBasicMainProcuder(dds3Basic_t *pBasic);

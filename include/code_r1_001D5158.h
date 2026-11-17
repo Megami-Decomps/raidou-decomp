@@ -3,6 +3,9 @@
 
 #include "common.h"
 
-void setAutoSaveDisable(void);
+u32 slVersionConvert_GetSize(void);
+u8 slGetPadTrig(s32 map);
+void mcMakeFileName(char *path, s32 num);
+s32 setCallMcGetSlotIndex(void);
 
 #endif

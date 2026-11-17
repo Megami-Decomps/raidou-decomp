@@ -14,6 +14,10 @@
 #include "sdfDevCons.h"
 #include "dds3KernelCore.h"
 #include "sdfDraw.h"
+#include "dds3PadManager.h"
+#include "dds3KernelDraw.h"
+#include "sdfPrim.h"
+#include "kernel_draw.h"
 
 
 typedef struct
@@ -97,7 +101,11 @@ void MovieViewerDrawFrameInfo(void)
 
 INCLUDE_ASM(const s32, "movie/MovieViewer", MovieViewerProc);
 
-INCLUDE_ASM(const s32, "movie/MovieViewer", InitMovieViewer);
+void InitMovieViewer(void)
+{
+    movieViewerScanDir();
+    movieViewerWork.proc = dds3StartProcess(movieViewerProcName, 0x2B00, 1, 0, MovieViewerProc, NULL, NULL);
+}
 
 void FinishMovieViewer(void)
 {
@@ -143,7 +151,90 @@ void movieViewerDrawInfo(void)
  * the word above and the 8x8 block below. */
 const char movieViewerProcName[16] = "movieViewer";
 
-INCLUDE_ASM(const s32, "movie/MovieViewer", movieViewerDebugDraw);
+s32 movieViewerDebugDraw(void)
+{
+    sdfDrawTag_t *tag;
+    s32 step;
+    s32 i;
+    s32 x;
+    s32 y;
+    s32 col;
+
+    if (movieViewerDebugFlag.started == 0) {
+        movieViewerDebugFlag.started = 1;
+        movieViewerInitRegs();
+    }
+    if (dds3PadBitTable[0x13] != 0) {
+        movieViewerSetFlags();
+    } else if (dds3PadBitTable[0x12] != 0) {
+        movieViewerInitRegs();
+    } else if (dds3PadBitTable[0x15] & 2) {
+        movieViewerDebugFlag.cursor++;
+        if (movieViewerDebugFlag.cursor == 0x10) {
+            movieViewerDebugFlag.cursor = 0;
+        }
+    } else if (dds3PadBitTable[0x14] & 2) {
+        if (movieViewerDebugFlag.cursor != 0) {
+            movieViewerDebugFlag.cursor--;
+        } else {
+            movieViewerDebugFlag.cursor = 0xF;
+        }
+    } else {
+        step = 1 << ((~movieViewerDebugFlag.cursor & 7) * 4);
+        i = movieViewerDebugFlag.cursor >> 3;
+        if (dds3PadBitTable[0x17] & 2) {
+            if (i == 0) {
+                movieViewerDebugFlag.wordPending = 0;
+                movieViewerDebugFlag.regAddr += step;
+            } else {
+                movieViewerDebugFlag.blockPending = 0;
+                movieViewerDebugFlag.buffer += step;
+            }
+        }
+        if (dds3PadBitTable[0x16] & 2) {
+            if (i == 0) {
+                movieViewerDebugFlag.wordPending = 0;
+                movieViewerDebugFlag.regAddr -= step;
+            } else {
+                movieViewerDebugFlag.blockPending = 0;
+                movieViewerDebugFlag.buffer -= step;
+            }
+        }
+    }
+    movieViewerDrawInfo();
+    tag = dds3FontReqAllocDrawTag();
+    sdfDrawTagLink(tag, EE_ADDR(dds3PrimFrameRect(0x7150, 0x79A8, 0xFF007E, 0x1860, 0x3F0, 0x60000000,
+                                          0x40806020)));
+    sdfPrimLinkRect(tag, 0x80A03000, 0, (movieViewerDebugFlag.cursor & 7) * 0xC0 + 0x7180,
+                    (movieViewerDebugFlag.cursor >> 3) * 0xC0 + 0x79C0,
+                    (movieViewerDebugFlag.cursor & 7) * 0xC0 + 0x7240,
+                    (movieViewerDebugFlag.cursor >> 3) * 0xC0 + 0x7A20, 0xFF007F, 0);
+    sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(0x7180, 0x79C0, 0xFF0080, 0, movieViewerFmtWord,
+                                     movieViewerDebugFlag.regAddr)));
+    if (movieViewerDebugFlag.wordPending != 0) {
+        sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(0x7840, 0x79C0, 0xFF0080, 0, movieViewerFmtWord,
+                                         movieViewerDebugFlag.word)));
+    } else {
+        sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(0x7840, 0x79C0, 0xFF0080, 0, "********")));
+    }
+    step = 0;
+    y = 0x7A80;
+    for (i = 0; i != 8; i++, y += 0x60) {
+        sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(0x7180, y, 0xFF0080, 0, movieViewerFmtWord,
+                                         movieViewerDebugFlag.buffer + step)));
+        x = 0x7840;
+        for (col = 0; col != 8; col++, x += 0x240, step++) {
+            if (movieViewerDebugFlag.blockPending != 0) {
+                sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y, 0xFF0080, 0, movieViewerFmtByte,
+                                                 movieViewerDebugFlag.block[step])));
+            } else {
+                sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y, 0xFF0080, 0, movieViewerBlankByte)));
+            }
+        }
+    }
+    dds3Data10.regFunc(&dds3Data10, tag);
+    return 0;
+}
 INCLUDE_SDATA(const s32, "movie/MovieViewer", movieViewerFmtWord);
 
 INCLUDE_SDATA(const s32, "movie/MovieViewer", movieViewerFmtByte);

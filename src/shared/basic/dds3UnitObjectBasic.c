@@ -169,9 +169,47 @@ f32 dds3ShortestAngleDelta(f32 fromDegrees, f32 toDegrees) {
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicSetKubiTerget);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicSetKubiModori);
+void dds3UnitObjectBasicSetKubiModori(dds3Basic_t *object) {
+    effObjectData_t *data = object->workdata;
+    f32 angle;
+    f32 value;
+    f32 step;
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicKubiOn);
+    if (data->angleReturnDelayFrames > 0) {
+        data->angleReturnDelayFrames--;
+    } else {
+        angle = data->angle;
+        if (angle < 0.1f && -0.1f < angle) {
+            dds3ObjectBaseOffFlag(object, 0x2000);
+        } else {
+            value = dds3ShortestAngleDelta(angle, 0.0f);
+            step = 0.5f;
+            if ((0.0f <= value && value <= step) ||
+                (value <= 0.0f && -step <= value)) {
+                value = 0.0f;
+            } else {
+                if (value < 0.0f) {
+                    value = angle - step;
+                } else {
+                    value = angle + step;
+                }
+            }
+            data->angle = value;
+            data->word34 = 0;
+        }
+    }
+}
+
+void dds3UnitObjectBasicKubiOn(dds3Basic_t *pBasic, s32 posid)
+{
+    dds3UnitObjectBasicWorkData_t *work = pBasic->workdata;
+
+    dds3ObjectBaseOnFlag(pBasic, 0x2000);
+    if (work->kubiTargetID != posid) {
+        work->kubiTargetID = posid;
+        work->word20 = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicKubiOff);
 

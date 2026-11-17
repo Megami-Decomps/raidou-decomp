@@ -416,7 +416,31 @@ s32 dds3SceneBasicExistBasicFromType(dds3Basic_t *scene, s32 type, dds3Basic_t *
     return 0;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicExistBasic);
+/* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3SceneBasic.c:422, match, same function 1.00 (words 30/30, calls 1.00, shape 1.00) */
+s32 dds3SceneBasicExistBasic(dds3Basic_t *scene, dds3Basic_t *target)
+{
+    dds3SceneBasicTable_t *lists;
+    s32 type;
+
+    if (scene == NULL || target == NULL) {
+        return 0;
+    }
+    lists = ((dds3SceneBasic_t *)scene->workdata)->basictable;
+    for (type = 0; type < BASIC_TYPE_MAX; type++) {
+        dds3Basic_t *basic = lists[type].firstbasic;
+
+        if (basic == NULL) {
+            continue;
+        }
+        do {
+            if (basic == target) {
+                return 1;
+            }
+            basic = basic->next;
+        } while (basic != NULL);
+    }
+    return 0;
+}
 
 void dds3SetMapNo(dds3Basic_t *scene, u32 mapno)
 {

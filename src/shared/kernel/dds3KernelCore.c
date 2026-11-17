@@ -571,7 +571,33 @@ void DebugProcessTree(dds3ProcessID_t *ps, s32 level)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3PrintProcessTree);
+void dds3PrintProcessTree(void)
+{
+    dds3ProcessID_t *p;
+    s32 i;
+
+    for (i = 0; i < 0x40; i++) {
+        dds3ProcessTreeDepth[i] = ' ';
+    }
+    for (p = startinglistf; p != NULL; p = p->next) {
+        if (p->parent == NULL) {
+            dds3ProcessTreeDepth[0] = 0;
+            DebugProcessTree(p, 0);
+        }
+    }
+    for (p = runninglistf; p != NULL; p = p->next) {
+        if (p->parent == NULL) {
+            dds3ProcessTreeDepth[0] = 0;
+            DebugProcessTree(p, 0);
+        }
+    }
+    for (p = endinglistf; p != NULL; p = p->next) {
+        if (p->parent == NULL) {
+            dds3ProcessTreeDepth[0] = 0;
+            DebugProcessTree(p, 0);
+        }
+    }
+}
 
 s32 dds3ProcessMain(void)
 {

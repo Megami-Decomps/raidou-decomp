@@ -783,7 +783,10 @@ dds3Particle_Physics_t *dds3Particle_PhysicsCreate(s32 number) {
     return bufferTail;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parLeaf);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:834, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void parLeaf(dds3Particle_Physics_t *hPhysics) {
+    sdfMemFreeDirect(hPhysics->hMem);
+}
 
 /* Allocate drawing resources and reset the emitter's common runtime state. */
 /* The subrecord bitfield keeps native int-alias dependencies. */
@@ -898,7 +901,18 @@ void dds3Particle_SpiralSetScale(effTemplatePacketList_t *hData, float scale) {
     hData->tailValues[3] = hData->tailValues[3] * scale;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SpiralCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:953, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_SpiralCreate(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x180);
+    s32 tailBytes = 0x30;
+
+    memset(clone, 0, 0x180);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_SpiralAllBuffInit(clone);
+    return clone;
+}
 
 void dds3Particle_SpiralDelete(void *hData) {
     dds3Particle_BasicDelete(hData);
@@ -1030,11 +1044,44 @@ void dds3Particle_SpiralDraw(dds3Particle_Spiral_t3 *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SmokeAllBuffInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1096, match, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+void dds3Particle_SmokeAllBuffInit(effTemplatePacketList_t *hData) {
+    effectBufferRecord_t *packetCursor;
+    u32 packetIndex;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SmokeSetScale);
+    packetIndex = 0;
+    packetCursor = hData->head.buffer->pPhysics;
+    if (hData->head.particleCount != 0) {
+        do {
+            packetCursor->age = EFF_PACKET_INITIAL_TAG;
+            packetIndex = packetIndex + 1;
+            packetCursor = packetCursor + 1;
+        } while (packetIndex < hData->head.particleCount);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SmokeCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1112, match, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
+void dds3Particle_SmokeSetScale(effTemplatePacketList_t *hData, float scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+    hData->recordScale = hData->recordScale * scale;
+    hData->tailValues[0] = hData->tailValues[0] * scale;
+    hData->tailValues[2] = hData->tailValues[2] * scale;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1122, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_SmokeCreate(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x180);
+    s32 tailBytes = 0x30;
+
+    memset(clone, 0, 0x180);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_SmokeAllBuffInit(clone);
+    return clone;
+}
 
 void dds3Particle_SmokeDelete(void *hData) {
     dds3Particle_BasicDelete(hData);
@@ -1089,13 +1136,122 @@ void dds3Particle_SmokeBuffInit(dds3Particle_Smoke_t3 *pSmoke, u32 number) {
     dds3Particle_EffectReset(&pSmoke->head.sub, number);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSmokeDraw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1188, near, same function 0.95 (words 153/153, calls 0.86, shape 1.00) */
+void dds3Particle_SmokeDraw(dds3Particle_Smoke_t3 *hData) {
+    parSmokePacket_t *packet = (parSmokePacket_t *)hData->head.buffer->pPhysics;
+    u32 subeffectKind = hData->head.sub.type;
+    sdfVector4_t positionDelta;
+    f32 verticalScale;
+    f32 phaseStep;
+    f32 waveRate;
+    s32 completedCount;
+    s32 lifetimeFrames;
+    s32 packetCount;
+    s32 packetIndex;
+    u32 repeatEnabled;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkAllBuffInit);
+    dds3Particle_EffectInit(&hData->head.sub);
+    SDF_VU0_LOADMATRIX(hData->head.matrix);
+    phaseStep = SDF_FRAME_STEP(hData->phaseStepDegrees * (3.14159265f / 180.0f));
+    verticalScale = SDF_FRAME_DECAY(hData->verticalAccelerationPct / 100.0f + 1.0f);
+    lifetimeFrames = SDF_FRAMES(hData->head.lifetimeFrames);
+    packetCount = hData->head.particleCount;
+    repeatEnabled = hData->loop;
+    waveRate = SDF_FRAME_STEP(hData->waveGrowth);
+    completedCount = 0;
+    for (packetIndex = 0; packetIndex < packetCount; packetIndex++, packet++) {
+        s32 age = packet->age;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkSetScale);
+        if (age == EFF_PACKET_INITIAL_TAG) {
+            dds3Particle_SmokeBuffInit(hData, packetIndex);
+            age = packet->age;
+        }
+        if (age >= 0) {
+            f32 verticalStep;
+            f32 previousWaveValue;
+            f32 factor;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkCreate);
+            packet->color = dds3ParticleColorAnim(&hData->head.fade, packet->color, age);
+            packet->color = dds3ParticleColorBlend(packet->color, hData->head.colorMask);
+            if (subeffectKind != 0) {
+                SDF_VU0_LOADVECTOR_C(packet);
+            }
+            packet->waveAmplitude += waveRate;
+            verticalStep = packet->verticalVelocity;
+            packet->wavePhase += phaseStep;
+            factor = sdfSin(packet->wavePhase);
+            previousWaveValue = packet->previousWaveValue;
+            packet->previousWaveValue = factor;
+            factor = (factor - previousWaveValue) * packet->waveAmplitude;
+            positionDelta.x = packet->vel[0] * factor;
+            positionDelta.y = SDF_FRAME_STEP(verticalStep);
+            positionDelta.z = packet->vel[2] * factor;
+            SDF_VU0_LOADVECTOR(&positionDelta);
+            SDF_VU0_APPLYMATRIX();
+            SDF_VU0_STOREVECTOR(&positionDelta);
+            packet->pos[0] += positionDelta.x;
+            packet->pos[1] += positionDelta.y;
+            packet->pos[2] += positionDelta.z;
+            packet->verticalVelocity = verticalStep * verticalScale;
+            if (subeffectKind != 0) {
+                SDF_VU0_LOADVECTOR(packet);
+                dds3Particle_EffectSet(&hData->head.sub, packetIndex, packet->color, packet->billboardScale);
+            }
+        }
+        age++;
+        if (age >= lifetimeFrames) {
+            if (repeatEnabled) {
+                age = EFF_PACKET_INITIAL_TAG;
+            } else {
+                dds3Particle_EffectReset(&hData->head.sub, packetIndex);
+                completedCount++;
+                if (completedCount >= packetCount) {
+                    hData->head.active = 0;
+                }
+            }
+        }
+        packet->age = age;
+    }
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1266, match, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+void dds3Particle_SparkAllBuffInit(effTemplatePacketList_t *hData) {
+    effectBufferRecord_t *packetCursor;
+    u32 packetIndex;
+
+    packetIndex = 0;
+    packetCursor = hData->head.buffer->pPhysics;
+    if (hData->head.particleCount != 0) {
+        do {
+            packetCursor->age = EFF_PACKET_INITIAL_TAG;
+            packetIndex = packetIndex + 1;
+            packetCursor = packetCursor + 1;
+        } while (packetIndex < hData->head.particleCount);
+    }
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1282, match, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
+void dds3Particle_SparkSetScale(effTemplatePacketList_t *hData, float scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+    hData->tailValues[0] = hData->tailValues[0] * scale;
+    hData->tailValues[2] = hData->tailValues[2] * scale;
+    hData->tailValues[3] = hData->tailValues[3] * scale;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1292, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_SparkCreate(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x180);
+    s32 tailBytes = 0x30;
+
+    memset(clone, 0, 0x180);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_SparkAllBuffInit(clone);
+    return clone;
+}
 
 void dds3Particle_SparkDelete(void *hData) {
     dds3Particle_BasicDelete(hData);
@@ -1206,7 +1362,18 @@ void dds3Particle_RadiateSetScale(effTemplatePacketList_t *hData, float scale) {
     hData->tailValues[2] = hData->tailValues[2] * scale;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_RadiateCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1570, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_RadiateCreate(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x170);
+    s32 tailBytes = 0x20;
+
+    memset(clone, 0, 0x170);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_RadiateAllBuffInit(clone);
+    return clone;
+}
 
 void dds3Particle_RadiateDelete(void *hData) {
     dds3Particle_BasicDelete(hData);
@@ -1328,18 +1495,107 @@ void dds3Particle_RadiateDraw(dds3Particle_Radiate_t3 *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSpiralAllBuffInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1708, match, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+void dds3Particle_SphereSpiralAllBuffInit(effTemplatePacketList_t *hData) {
+    effectBufferRecord_t *packetCursor;
+    u32 packetIndex;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSpiral2SetScale);
+    packetIndex = 0;
+    packetCursor = hData->head.buffer->pPhysics;
+    if (hData->head.particleCount != 0) {
+        do {
+            packetCursor->age = EFF_PACKET_INITIAL_TAG;
+            packetIndex = packetIndex + 1;
+            packetCursor = packetCursor + 1;
+        } while (packetIndex < hData->head.particleCount);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSpiralCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:3161, match, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
+void dds3Particle_SphereSpiral2SetScale(effTemplatePacketList_t *hData, float scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+    hData->recordScale = hData->recordScale * scale;
+    hData->tailValues[1] = hData->tailValues[1] * scale;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1733, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_SphereSpiralCreate(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x170);
+    s32 tailBytes = 0x20;
+
+    memset(clone, 0, 0x170);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_SphereSpiralAllBuffInit(clone);
+    return clone;
+}
 
 void dds3Particle_SphereSpiralDelete(void *hData) {
     dds3Particle_BasicDelete(hData);
     sdfChipFreeDirect(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parCallGetRandA);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1751, rework, same function 1.00 (words 216/216, calls 1.00, shape 1.00) */
+void parCallGetRandA(dds3Particle_SphereSpiral_t3 *pSphereSpiral, u32 number) {
+    parSphereSpiralPacket_t *packet = (parSphereSpiralPacket_t *)pSphereSpiral->head.buffer->pPhysics;
+    sdfVector4_t directionVector;
+    f32 speed;
+    f32 jitter;
+    f32 velocityLength;
+
+    packet += number;
+    packet->color = 0;
+    packet->age = -SDF_FRAMES(dds3GetRandA(&ParRand) % (pSphereSpiral->spread + 1));
+    speed = pSphereSpiral->speed;
+    jitter = pSphereSpiral->jitterA;
+    directionVector.x = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+    directionVector.y = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+    directionVector.z = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+    SDF_VU0_LOADVECTOR(&directionVector);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&directionVector);
+    packet->vel[0] = speed * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) * directionVector.x;
+    packet->vel[1] = speed * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) * directionVector.y;
+    packet->vel[2] = speed * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) * directionVector.z;
+    SDF_VU0_LOADVECTOR(packet->vel);
+    SDF_VU0_GETLENGTH(velocityLength);
+    SDF_VU0_LOADMATRIX(pSphereSpiral->head.matrix);
+    SDF_VU0_LOADVECTOR(packet->vel);
+    SDF_VU0_APPLYMATRIX_XYZ();
+    SDF_VU0_STOREVECTOR_NOMEM(packet->vel);
+    packet->pos[0] = packet->vel[0] + pSphereSpiral->head.origin[0];
+    packet->pos[1] = packet->vel[1] + pSphereSpiral->head.origin[1];
+    packet->pos[2] = packet->vel[2] + pSphereSpiral->head.origin[2];
+    if (pSphereSpiral->mode == 1) {
+        directionVector.x = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+        directionVector.y = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+        directionVector.z = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+        SDF_VU0_LOADVECTOR(&directionVector);
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_STOREVECTOR(&directionVector);
+        packet->axisX = directionVector.x;
+        packet->axisY = directionVector.y;
+        packet->axisZ = directionVector.z;
+    } else {
+        packet->axisX = 0;
+        packet->axisY = -1.0f;
+        packet->axisZ = 0;
+    }
+    jitter = pSphereSpiral->jitterB;
+    packet->radiusStep = (pSphereSpiral->targetRadius * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) - velocityLength) / pSphereSpiral->head.lifetimeFrames;
+    jitter = pSphereSpiral->head.speedJitter;
+    packet->billboardScale = pSphereSpiral->head.scale[0] * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter));
+    jitter = pSphereSpiral->head.spinJitter;
+    if (jitter != 0) {
+        packet->spin = (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) * (3.14159265f * 2.0f);
+    } else {
+        packet->spin = 0;
+    }
+    dds3Particle_EffectReset(&pSphereSpiral->head.sub, number);
+}
 
 /* Adjust velocity length, rotate around the packet axis, and rebuild position. */
 void dds3Particle_SphereSpiralDraw(dds3Particle_SphereSpiral_t3 *hData) {
@@ -1423,11 +1679,44 @@ void dds3Particle_SphereSpiralDraw(dds3Particle_SphereSpiral_t3 *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSmokeAllBuffInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1892, match, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+void dds3Particle_SphereSmokeAllBuffInit(effTemplatePacketList_t *hData) {
+    effectBufferRecord_t *packetCursor;
+    u32 packetIndex;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSmokeSetScale);
+    packetIndex = 0;
+    packetCursor = hData->head.buffer->pPhysics;
+    if (hData->head.particleCount != 0) {
+        do {
+            packetCursor->age = EFF_PACKET_INITIAL_TAG;
+            packetIndex = packetIndex + 1;
+            packetCursor = packetCursor + 1;
+        } while (packetIndex < hData->head.particleCount);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSmokeCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1908, match, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
+void dds3Particle_SphereSmokeSetScale(effTemplatePacketList_t *hData, float scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+    hData->recordScale = hData->recordScale * scale;
+    hData->tailValues[0] = hData->tailValues[0] * scale;
+    hData->tailValues[2] = hData->tailValues[2] * scale;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1918, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_SphereSmokeCreate(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x180);
+    s32 tailBytes = 0x30;
+
+    memset(clone, 0, 0x180);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_SphereSmokeAllBuffInit(clone);
+    return clone;
+}
 
 void dds3Particle_SphereSmokeDelete(void *hData) {
     dds3Particle_BasicDelete(hData);
@@ -1484,7 +1773,83 @@ void dds3Particle_SphereSmokeBuffInit(dds3Particle_SphereSmoke_t3 *pSphereSmoke,
     dds3Particle_EffectReset(&pSphereSmoke->head.sub, number);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SmokeDraw);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1986, near, same function 0.95 (words 153/153, calls 0.86, shape 1.00) */
+void dds3Particle_SphereSmokeDraw(dds3Particle_SphereSmoke_t3 *hData) {
+    parSmokePacket_t *packet = (parSmokePacket_t *)hData->head.buffer->pPhysics;
+    u32 subeffectKind = hData->head.sub.type;
+    sdfVector4_t positionDelta;
+    f32 verticalScale;
+    f32 phaseStep;
+    f32 waveRate;
+    s32 completedCount;
+    s32 lifetimeFrames;
+    s32 packetCount;
+    s32 packetIndex;
+    u32 repeatEnabled;
+
+    dds3Particle_EffectInit(&hData->head.sub);
+    SDF_VU0_LOADMATRIX(hData->head.matrix);
+    phaseStep = SDF_FRAME_STEP(hData->phaseStepDegrees * (3.14159265f / 180.0f));
+    verticalScale = SDF_FRAME_DECAY(hData->verticalAccelerationPct / 100.0f + 1.0f);
+    lifetimeFrames = SDF_FRAMES(hData->head.lifetimeFrames);
+    packetCount = hData->head.particleCount;
+    repeatEnabled = hData->loop;
+    waveRate = SDF_FRAME_STEP(hData->waveGrowth);
+    completedCount = 0;
+    for (packetIndex = 0; packetIndex < packetCount; packetIndex++, packet++) {
+        s32 age = packet->age;
+
+        if (age == EFF_PACKET_INITIAL_TAG) {
+            dds3Particle_SphereSmokeBuffInit(hData, packetIndex);
+            age = packet->age;
+        }
+        if (age >= 0) {
+            f32 verticalStep;
+            f32 previousWaveValue;
+            f32 factor;
+
+            packet->color = dds3ParticleColorAnim(&hData->head.fade, packet->color, age);
+            packet->color = dds3ParticleColorBlend(packet->color, hData->head.colorMask);
+            if (subeffectKind != 0) {
+                SDF_VU0_LOADVECTOR_C(packet);
+            }
+            packet->waveAmplitude += waveRate;
+            verticalStep = packet->verticalVelocity;
+            packet->wavePhase += phaseStep;
+            factor = sdfSin(packet->wavePhase);
+            previousWaveValue = packet->previousWaveValue;
+            packet->previousWaveValue = factor;
+            factor = (factor - previousWaveValue) * packet->waveAmplitude;
+            positionDelta.x = packet->vel[0] * factor;
+            positionDelta.y = SDF_FRAME_STEP(verticalStep);
+            positionDelta.z = packet->vel[2] * factor;
+            SDF_VU0_LOADVECTOR(&positionDelta);
+            SDF_VU0_APPLYMATRIX();
+            SDF_VU0_STOREVECTOR(&positionDelta);
+            packet->pos[0] += positionDelta.x;
+            packet->pos[1] += positionDelta.y;
+            packet->pos[2] += positionDelta.z;
+            packet->verticalVelocity = verticalStep * verticalScale;
+            if (subeffectKind != 0) {
+                SDF_VU0_LOADVECTOR(packet);
+                dds3Particle_EffectSet(&hData->head.sub, packetIndex, packet->color, packet->billboardScale);
+            }
+        }
+        age++;
+        if (age >= lifetimeFrames) {
+            if (repeatEnabled) {
+                age = EFF_PACKET_INITIAL_TAG;
+            } else {
+                dds3Particle_EffectReset(&hData->head.sub, packetIndex);
+                completedCount++;
+                if (completedCount >= packetCount) {
+                    hData->head.active = 0;
+                }
+            }
+        }
+        packet->age = age;
+    }
+}
 
 /* Stagger native tags using this variant's second tail word as the group period. */
 void dds3Particle_SphereRingAllBuffInit(effTemplatePacketList_t *hData) {
@@ -1517,9 +1882,24 @@ void dds3Particle_SphereRingSetScale(effTemplatePacketList_t *hData, float scale
     hData->recordScale = hData->recordScale * scale;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereRingCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2095, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_SphereRingCreate(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x170);
+    s32 tailBytes = 0x20;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereRingDelete);
+    memset(clone, 0, 0x170);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_SphereRingAllBuffInit(clone);
+    return clone;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2107, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void dds3Particle_SphereRingDelete(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 /* Seed radius and ring direction, placing the packet at its rotated vertical offset. */
 void dds3Particle_SphereRingBuffInit(dds3Particle_SphereRing_t3 *pSphereRing, u32 number) {
@@ -1640,13 +2020,50 @@ void dds3Particle_SphereRingDraw(dds3Particle_SphereRing_t3 *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Spark2AllBuffInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2232, match, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+void dds3Particle_Spark2AllBuffInit(effTemplatePacketList_t *hData) {
+    effectBufferRecord_t *packetCursor;
+    u32 packetIndex;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Spark2SetScale);
+    packetIndex = 0;
+    packetCursor = hData->head.buffer->pPhysics;
+    if (hData->head.particleCount != 0) {
+        do {
+            packetCursor->age = EFF_PACKET_INITIAL_TAG;
+            packetIndex = packetIndex + 1;
+            packetCursor = packetCursor + 1;
+        } while (packetIndex < hData->head.particleCount);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Spark2Create);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2248, match, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
+void dds3Particle_Spark2SetScale(effTemplatePacketList_t *hData, float scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+    hData->tailValues[0] = hData->tailValues[0] * scale;
+    hData->tailValues[2] = hData->tailValues[2] * scale;
+    hData->tailValues[3] = hData->tailValues[3] * scale;
+}
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Spark2Delete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2258, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_Spark2Create(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x180);
+    s32 tailBytes = 0x30;
+
+    memset(clone, 0, 0x180);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_Spark2AllBuffInit(clone);
+    return clone;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2270, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void dds3Particle_Spark2Delete(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 /* Seed mode-zero cone position/velocity; every mode initializes age and subeffect. */
 void dds3Particle_Spark2BuffInit(dds3Particle_Spark2_t3 *pSpark2, s32 number) {
@@ -1785,9 +2202,24 @@ void dds3Particle_SphereAtomSetScale(effTemplatePacketList_t *hData, float scale
     hData->tailValues[1] = hData->tailValues[1] * scale;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereAtomCreate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2413, match, same function 1.00 (words 31/31, calls 1.00, shape 1.00) */
+effTemplatePacketList_t *dds3Particle_SphereAtomCreate(effTemplatePacketList_t *source) {
+    effTemplatePacketList_t *clone = sdfChipAllocDirect(0x170);
+    s32 tailBytes = 0x20;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereAtomDelete);
+    memset(clone, 0, 0x170);
+    memcpy(clone, source, source->head.templateSize);
+    memcpy((u8 *)clone + EFF_TEMPLATE_TAIL_OFFSET, (u8 *)source + source->head.templateSize, tailBytes);
+    dds3Particle_BasicCreate(clone);
+    dds3Particle_SphereAtomAllBuffInit(clone);
+    return clone;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2425, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void dds3Particle_SphereAtomDelete(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 /* vu0 routine: seed radial placement, normalized velocity and activation age. */
 void dds3Particle_SphereAtomBuffInit(effTemplatePacketList_t *pSphereAtom, s32 number) {
@@ -1984,7 +2416,11 @@ void dds3Particle_SpiralRandomize(effParticleOverlay_t *effect) {
     effInitParticleRecord(effect);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", vecScale);
+void dds3Particle_SpiralRandomizeSetScale(effTemplatePacketList_t *hData, f32 scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+}
 
 effEmitterHead_t *effCloneSingleParticleTemplate(effEmitterHead_t *source) {
     effEmitterHead_t *clone = sdfChipAllocDirect(0x150);
@@ -2000,7 +2436,11 @@ effEmitterHead_t *effCloneSingleParticleTemplate(effEmitterHead_t *source) {
     return clone;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parCallParticleBasicDelete);
+/* body: matched in raidou @ 88f0d54: src/shared/effect/parManager.c:903, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void parCallParticleBasicDelete(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 void effInitParticleRecord(effParticleOverlay_t *effect) {
     effParticleRecord_t *record = (effParticleRecord_t *)effect->buffer->pPhysics;
@@ -2044,9 +2484,31 @@ void dds3Particle_SpiralBlendColor(effParticleOverlay_t *effect) {
     record->color = dds3ParticleColorBlend(baseColor, effect->colorMask);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parTicleSparkOffsetCreateSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2693, match, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+void parTicleSparkOffsetCreateSub(effTemplatePacketList_t *hData) {
+    effectBufferRecord_t *packetCursor;
+    u32 packetIndex;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkOffsetSetScale);
+    packetIndex = 0;
+    packetCursor = hData->head.buffer->pPhysics;
+    if (hData->head.particleCount != 0) {
+        do {
+            packetCursor->age = EFF_PACKET_INITIAL_TAG;
+            packetIndex = packetIndex + 1;
+            packetCursor = packetCursor + 1;
+        } while (packetIndex < hData->head.particleCount);
+    }
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2709, match, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
+void dds3Particle_SparkOffsetSetScale(effTemplatePacketList_t *hData, float scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+    hData->tailValues[0] = hData->tailValues[0] * scale;
+    hData->tailValues[2] = hData->tailValues[2] * scale;
+    hData->tailValues[3] = hData->tailValues[3] * scale;
+}
 
 /* Clone the offset-gravity prefix/tail, allocate records, and initialize their native age tags. */
 effTemplatePacketList_t *dds3Particle_SparkOffsetCreate(effTemplatePacketList_t *source) {
@@ -2061,7 +2523,11 @@ effTemplatePacketList_t *dds3Particle_SparkOffsetCreate(effTemplatePacketList_t 
     return clone;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkOffsetDelete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2731, match, same function 1.00 (words 10/10, calls 1.00, shape 1.00) */
+void dds3Particle_SparkOffsetDelete(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkOffsetBuffInit);
 
@@ -2140,9 +2606,31 @@ void dds3Particle_SparkOffsetDraw(dds3Particle_SparkOffset_t3 *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parTicleSmokeOffsetCreateSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2966, match, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+void parTicleSmokeOffsetCreateSub(effTemplatePacketList_t *hData) {
+    effectBufferRecord_t *packetCursor;
+    u32 packetIndex;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SmokeOffsetSetScale);
+    packetIndex = 0;
+    packetCursor = hData->head.buffer->pPhysics;
+    if (hData->head.particleCount != 0) {
+        do {
+            packetCursor->age = EFF_PACKET_INITIAL_TAG;
+            packetIndex = packetIndex + 1;
+            packetCursor = packetCursor + 1;
+        } while (packetIndex < hData->head.particleCount);
+    }
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:2982, match, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
+void dds3Particle_SmokeOffsetSetScale(effTemplatePacketList_t *hData, float scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+    hData->recordScale = hData->recordScale * scale;
+    hData->tailValues[0] = hData->tailValues[0] * scale;
+    hData->tailValues[2] = hData->tailValues[2] * scale;
+}
 
 /* Clone the disc prefix/tail plus a separate 16-byte-per-packet auxiliary allocation. */
 effTemplatePacketList_t *dds3Particle_SmokeOffsetCreate(effTemplatePacketList_t *source) {
@@ -2297,9 +2785,30 @@ void dds3Particle_SmokeOffsetDraw(dds3Particle_SmokeOffset_t3 *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parTicleSphereSpiral2CreateSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:3145, match, same function 1.00 (words 17/17, calls 1.00, shape 1.00) */
+void parTicleSphereSpiral2CreateSub(effTemplatePacketList_t *hData) {
+    effectBufferRecord_t *packetCursor;
+    u32 packetIndex;
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSpiralSetScale);
+    packetIndex = 0;
+    packetCursor = hData->head.buffer->pPhysics;
+    if (hData->head.particleCount != 0) {
+        do {
+            packetCursor->age = EFF_PACKET_INITIAL_TAG;
+            packetIndex = packetIndex + 1;
+            packetCursor = packetCursor + 1;
+        } while (packetIndex < hData->head.particleCount);
+    }
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:1724, match, same function 1.00 (words 16/16, calls 1.00, shape 1.00) */
+void dds3Particle_SphereSpiralSetScale(effTemplatePacketList_t *hData, float scale) {
+    hData->head.scale[0] = hData->head.scale[0] * scale;
+    hData->head.scale[1] = hData->head.scale[1] * scale;
+    hData->head.scale[2] = hData->head.scale[2] * scale;
+    hData->recordScale = hData->recordScale * scale;
+    hData->tailValues[1] = hData->tailValues[1] * scale;
+}
 
 /* Allocate one 12-byte descriptor per packet and its attached 16-byte records. */
 effTemplatePacketList_t *dds3Particle_SphereSpiral2Create(effTemplatePacketList_t *source) {
@@ -2372,7 +2881,69 @@ void dds3Particle_SphereSpiral2Delete(dds3Particle_SphereSpiral2_t3 *hData) {
     sdfChipFreeDirect(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parCallGetRandA2);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:3244, rework, same function 1.00 (words 216/216, calls 1.00, shape 1.00) */
+void parCallGetRandA2(dds3Particle_SphereSpiral2_t3 *pSphereSpiral2, u32 number) {
+    parBurstPacket_t *packet = (parBurstPacket_t *)pSphereSpiral2->head.buffer->pPhysics;
+    sdfVector4_t direction;
+    f32 initialRadius;
+    f32 jitterFactor;
+    f32 initialRadiusLength;
+
+    packet += number;
+    packet->color = 0;
+    packet->age = -SDF_FRAMES(dds3GetRandA(&ParRand) % (pSphereSpiral2->spawnDelayFrames + 1));
+    initialRadius = pSphereSpiral2->initialRadius;
+    jitterFactor = pSphereSpiral2->initialRadiusJitter;
+    direction.x = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+    direction.y = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+    direction.z = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+    SDF_VU0_LOADVECTOR(&direction);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&direction);
+    /* Each component gets a separate jitter sample, not one shared radius draw. */
+    packet->radialOffset[0] = initialRadius * (dds3GetRandFloatA(dds3EffectBase) * jitterFactor + (1.0f - jitterFactor)) * direction.x;
+    packet->radialOffset[1] = initialRadius * (dds3GetRandFloatA(dds3EffectBase) * jitterFactor + (1.0f - jitterFactor)) * direction.y;
+    packet->radialOffset[2] = initialRadius * (dds3GetRandFloatA(dds3EffectBase) * jitterFactor + (1.0f - jitterFactor)) * direction.z;
+    SDF_VU0_LOADVECTOR(packet->radialOffset);
+    SDF_VU0_GETLENGTH(initialRadiusLength);
+    SDF_VU0_LOADMATRIX(pSphereSpiral2->head.rot);
+    SDF_VU0_LOADVECTOR(packet->radialOffset);
+    SDF_VU0_APPLYMATRIX_XYZ();
+    SDF_VU0_STOREVECTOR_NOMEM(packet->radialOffset);
+    packet->position[0] = packet->radialOffset[0] + pSphereSpiral2->head.origin[0];
+    packet->position[1] = packet->radialOffset[1] + pSphereSpiral2->head.origin[1];
+    packet->position[2] = packet->radialOffset[2] + pSphereSpiral2->head.origin[2];
+    if (pSphereSpiral2->axisMode == PAR_BURST_RANDOM_AXIS) {
+        direction.x = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+        direction.y = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+        direction.z = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f;
+        SDF_VU0_LOADVECTOR(&direction);
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_STOREVECTOR(&direction);
+        packet->rotationAxis[0] = direction.x;
+        packet->rotationAxis[1] = direction.y;
+        packet->rotationAxis[2] = direction.z;
+    } else {
+        packet->rotationAxis[0] = 0;
+        packet->rotationAxis[1] = -1.0f;
+        packet->rotationAxis[2] = 0;
+    }
+    jitterFactor = pSphereSpiral2->targetRadiusJitter;
+    packet->radiusStep = (pSphereSpiral2->targetRadius * (dds3GetRandFloatA(dds3EffectBase) * jitterFactor +
+                                    (1.0f - jitterFactor)) - initialRadiusLength) /
+                   pSphereSpiral2->head.lifetimeFrames;
+    jitterFactor = pSphereSpiral2->head.billboardScaleJitter;
+    packet->billboardScale = pSphereSpiral2->head.billboardScale * (dds3GetRandFloatA(dds3EffectBase) * jitterFactor +
+                                         (1.0f - jitterFactor));
+    jitterFactor = pSphereSpiral2->head.initialPhaseJitter;
+    if (jitterFactor != 0) {
+        packet->initialPhaseRadians = (dds3GetRandFloatA(dds3EffectBase) * jitterFactor + (1.0f - jitterFactor)) *
+                       (3.14159265f * 2.0f);
+    } else {
+        packet->initialPhaseRadians = 0;
+    }
+    dds3Particle_EffectReset(&pSphereSpiral2->head.kindState, number);
+}
 
 /* Grow each radial offset toward its target radius, spin it about the particle axis,
  * rebuild position from the origin, and feed the kind's point history. */
@@ -2626,7 +3197,10 @@ dds3Particle_BlurBuff_t *dds3Particle_BlurCreate(u32 number, u16 length, billHan
     return table;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parTicleBasicDeleteSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:3560, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void parTicleBasicDeleteSub(dds3Particle_BlurBuff_t *hBlur) {
+    sdfMemFreeDirect(hBlur->hMem);
+}
 
 void dds3Particle_BlurSet(dds3Particle_BlurBuff_t *table, s32 slotIndex, u32 color, f32 billboardScale) {
     dds3Particle_BlurBuffList_t *slot = &table->blurList[slotIndex];
@@ -2725,7 +3299,7 @@ void dds3Particle_BlurDraw(dds3Particle_BlurBuff_t *hBlur) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parLeaf2);
+INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_BlurClearItem);
 
 /* Rebuild one slot's two-vertex strip cells from its point history: each cell is
    the offset point +/- the cross product of the segment direction with the view axis,
@@ -2836,7 +3410,21 @@ void dds3Particle_Track2SetExp(dds3TrackPoly_t *hTrackPoly, s32 index, const f32
     dds3TrackPolyColorSet(hTrackPoly, index, abgr);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", ColorAnim);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:3782, match, same function 1.00 (words 32/32, calls 1.00, shape 1.00) */
+u32 ColorAnim(u32 color0, u32 color1) {
+    parColorWork_t work[3];
+    u32 unit = 0x3C000000;
+    u32 out;
+
+    work[0].word = color0;
+    MMI_RGBA_UNPACK(&work[0], unit);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    work[1].word = color1;
+    MMI_RGBA_UNPACK(&work[1], unit);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_dds3ColorFtoI(out, 128.0f);
+    return out;
+}
 
 /* Create through the selected dispatch entry and record its index; returns the
  * new instance, which dds3EffectCreate keeps. */
@@ -3018,7 +3606,10 @@ dds3Particle_Basic_t *dds3ParticleExpCopy(dds3Particle_Basic_t *source) {
     return particle;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleExpDelete);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:3986, match, same function 1.00 (words 14/14, calls 1.00, shape 1.00) */
+void dds3ParticleExpDelete(dds3Particle_Basic_t *hData) {
+    dds3ParticleFuncTable[hData->type].destroy(hData);
+}
 
 /* Apply queued updates, then draw live records and submit the kind's resource. */
 void dds3ParticleExpDraw(dds3Particle_Basic_t *hData) {
@@ -3108,7 +3699,10 @@ u16 dds3ParticleExpGetState(dds3Particle_Basic_t *hData) {
     return dds3ParticleGetState(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleExpSetPosition);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:4079, match, same function 1.00 (words 4/4, calls 1.00, shape 1.00) */
+void dds3ParticleExpSetPosition(void *hData, void *pPos) {
+    SDF_VU0_COPYVECTOR(hData, pPos);
+}
 
 void dds3ParticleExpSetRotateMatrix(dds3Particle_Basic_t *hData, void *pMatrix) {
     dds3ParticleSetRotateMatrix(hData, pMatrix);
@@ -3154,9 +3748,41 @@ void dds3Particle_EffectInit(dds3Particle_Effect_t *obj) {
     SDF_VU0_STOREVECTOR(parLook);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parDispatchKindInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:4130, match, same function 1.00 (words 37/37, calls 1.00, shape 1.00) */
+void parDispatchKindInit(dds3Particle_Effect_t *pEffect, s32 index, u32 abgr, f32 scale) {
+    switch ((u16)pEffect->type) {
+    case 1:
+        dds3Particle_BlurSet(pEffect->payload.history.table, index, abgr, scale);
+        return;
+    case 2:
+        dds3Particle_TrackSet(pEffect->payload.crossStrip.drawSystem, index, abgr);
+        return;
+    case 3:
+        dds3Particle_Track2Set(pEffect->payload.crossTriangle.drawSystem, index, abgr);
+        return;
+    case 4:
+        dds3Particle_Track3Set(pEffect->payload.trackPolygon.modelList, index, abgr);
+        break;
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/parManager", parDispatchKindUpdate);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/parManager.c:4147, match, same function 1.00 (words 37/37, calls 1.00, shape 1.00) */
+void parDispatchKindUpdate(dds3Particle_Effect_t *pEffect, s32 number) {
+    switch ((u16)pEffect->type) {
+    case 1:
+        dds3Particle_BlurClearItem(pEffect->payload.history.table, number);
+        return;
+    case 2:
+        dds3TrackPolyListInit(pEffect->payload.crossStrip.drawSystem, number);
+        return;
+    case 3:
+        dds3TrackPolyListInit(pEffect->payload.crossTriangle.drawSystem, number);
+        return;
+    case 4:
+        Eff_ModelTrackPolyListReset(pEffect->payload.trackPolygon.modelList, number);
+        break;
+    }
+}
 
 void dds3Particle_TrackSet(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr) {
     u128 axis[2];

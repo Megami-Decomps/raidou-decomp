@@ -108,6 +108,8 @@ typedef struct QWORD_ALIGNED
     sdfGrTagStdReg_t alpha2;
 } sdfGrDrawEnv_t;
 
+void sdfGrSetDrawEnv(sdfGrDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet, s32 aEvenOdd);
+
 /* sdf2DMakeTexPacket: one texture handle's three registers, read back out of
  * the handle by sdfTexGetTex1Reg, sdfTexGetTex0Reg and sdfTexGetClampReg. The
  * register addresses are taken from the caller's base, so the same packet

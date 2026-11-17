@@ -1361,7 +1361,10 @@ void dds3TrackPolyVC5Set_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abg
     }
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", polySpPolyRingCreateSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/polyManager.c:1366, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+void polySpPolyRingCreateSub(dds3TrackPoly_t *hTrackPoly, u16 mode) {
+    hTrackPoly->mode = mode;
+}
 
 void dds3TrackPolyVCSet(dds3TrackPoly_t *hTrackPoly, s32 type, u32 abgr_in, u32 abgr_out) {
     u16 id = hTrackPoly->type;
@@ -2469,7 +2472,10 @@ u16 dds3SpPolyGetState(dds3SpPoly_Basic_t *hData) {
     return hData->state;
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPolySetPosition);
+/* body: matched in smt3 @ 9401f79e: src/smt3/effect/polyManager.c:2472, match, same function 1.00 (words 4/4, calls 1.00, shape 1.00) */
+void dds3SpPolySetPosition(void *hData, void *pPos) {
+    SDF_VU0_COPYVECTOR(hData, pPos);
+}
 
 /* vu0 routine: compose the new rotation with the retained source matrix. */
 void dds3SpPolySetRotateMatrix(dds3SpPoly_Basic_t *hData, void *pMatrix) {

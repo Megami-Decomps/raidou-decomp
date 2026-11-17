@@ -314,7 +314,6 @@
 0x00124A40	sdatCalc_GetBadStatus	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sdat.sdatCalc_GetBadStatus, score 8.7 band B
 0x00124A98	datRefDDS3GBWK13	func	tier=D	derived-data	na	unit dat; references DDS3_GBWK
 0x00124B18	datRefDDS3GBWK14	func	tier=D	derived-data	na	unit dat; references DDS3_GBWK
-0x00124C38	datCallCalcGetItemNum	func	tier=D	derived-callee	na	unit newdata/datCalc; calls datCalcGetItemNum
 0x00124D80	datCallCalcGetItemNum2	func	tier=D	derived-callee	na	unit newdata/datCalc; calls datCalcGetItemNum
 0x00124E70	datRefTbldata	func	tier=D	derived-data	na	unit newdata/datCalc; references tbldata
 0x00125048	datPartyDamageMapSub	func	tier=D	derived-caller	na	unit newdata/datCalc; called by datPartyDamageMap
@@ -1825,7 +1824,6 @@
 0x001EB568	slBASLUSSmn	func	tier=D	derived-string	na	unit code_001EB528, neighbour slKillLoadProcess; string 'BASLUS-%05d-smn-%d'
 0x001EB5E0	setCallMcGetSlotIndex	func	tier=D	derived-callee	na	unit code_001D5158, neighbour setAutoSaveDisable; calls sdfMcGetSlotIndex
 0x001EB620	setCallMemcpy	func	tier=D	derived-callee	na	unit code_001D5158, neighbour setAutoSaveDisable; calls memcpy
-0x001EB660	fileIsLoadedAndConditionTrue	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0028A248, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001EB680	fileIsLoadedWithActiveFlow	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0028A268, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001EB800	slCallEnableMode	func	tier=D	derived-callee	na	unit mc/slMain; calls frEnableMode
 0x001EB8B8	slCallEnableMode2	func	tier=D	derived-callee	na	unit mc/slMain; calls frEnableMode
@@ -1836,7 +1834,6 @@
 0x001ECDE8	slCallSetInfo2	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
 0x001ECE70	slCallAdminiCallSequence	func	tier=D	derived-callee	na	unit mc/slMain; calls dds3AdminiCallSequence
 0x001ECED8	fileRestartSlotScan	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0028B560, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001ECF08	slCallMcGetSlotFlags	func	tier=D	derived-callee	na	unit mc/slMain; calls sdfMcGetSlotFlags
 0x001ED078	slCallSetInfo3	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
 0x001ED0A0	slRefSystem	func	tier=D	derived-data	na	unit mc/slMain; references saveloadSystem
 0x001ED0D0	slLeaf5	func	tier=D	derived-unit	na	unit mc/slMain; no named callee, caller or string
@@ -2041,7 +2038,6 @@
 0x00206F30	parTicleSphereSpiral2CreateSub	func	tier=D	derived-caller	na	unit effect/parManager; called by dds3Particle_SphereSpiral2Create
 0x00207150	parCallGetRandA2	func	tier=D	derived-callee	na	unit effect/parManager; calls dds3GetRandA
 0x00207E80	parTicleBasicDeleteSub	func	tier=D	derived-caller	na	unit effect/parManager; called by dds3Particle_BasicDelete
-0x002080D8	parLeaf2	func	tier=D	derived-unit	na	unit effect/parManager; no named callee, caller or string
 0x00208B10	dds3ParticleExpDelete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00208E98	dds3ParticleExpReset	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x00208EF0	dds3ParticleExpGetState	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -18085,9 +18081,6 @@
 0x004DE1F4	litFloat25	data	tier=D	derived-section	na	no code or data reference; unit lit4_pad, section .lit4, size 0x4
 0x004DE1F8	litFloat26	data	tier=D	derived-section	na	no code or data reference; unit lit4_pad, section .lit4, size 0x4
 0x004DE1FC	litFloat27	data	tier=D	derived-section	na	no code or data reference; unit lit4_pad, section .lit4, size 0x0
-0x004DE218	dds3Data25	data	tier=D	derived-shared	na	used by 2 functions: dds3SlowOn, dds3SlowOff
-0x004DE21C	dds3SlowOnData	data	tier=D	derived-sole	na	used by dds3SlowOn
-0x004DE220	dds3SlowOnData2	data	tier=D	derived-sole	na	used by dds3SlowOn
 0x004DE228	dds3FrameRunTime	data	tier=D	smt3-offset	na	smt3-offset: between dds3DebugSign and dds3VblanksPerFrame, same span 0x8, same size
 0x004DE22A	dds3LastDrawFrameCount	data	tier=D	smt3-offset	na	smt3-offset: between dds3DebugSign and dds3VblanksPerFrame, same span 0x8, same size
 0x004DE22E	dds3CallEventSubData	data	tier=D	derived-sole	na	used by dds3CallEventSub
@@ -23287,6 +23280,7 @@
 0x00123938	datGetDevilExp	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD dat.datGetDevilExp score 3.0 flag I: calls2 calls-of-match votes2 st2:call r1-disagree:0x120570
 0x001246F0	datGetSword4Param	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD dat.datGetSword4Param score 4.5 flag I: calls2 calls-of-match votes2 st2:call r1-disagree:0x121018
 0x00124A58	cmpExSubMenuAnimFunc	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpMain.cmpExSubMenuAnimFunc score 4.0 flag I: calls1 calls-of-match st2:call r2-only
+0x00124C38	datAddItem	func	tier=C	derived-derived-role	na	prm_ITEM_PLUS calls it in both games where Raidou 1 calls datAddItem (HD tier B, r2-disagree:0x124c38); tier D derived name; replaces datCallCalcGetItemNum
 0x00124EC8	datCheckMag	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD dat.datCheckMag score 5.0 flag I: next gap3/2 st1:gap r1+r2
 0x00125498	datDebtFromGouto	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD dat.datDebtFromGouto score 4.8 flag I: calls1 prev calls-of-match votes2 st2:call r1-disagree:0x121b88
 0x00125568	datOmoideSkillHaveSkill	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD dat.datOmoideSkillHaveSkill score 4.0 flag I: calls1 calls-of-match-uniq st2:call r2-only
@@ -23549,15 +23543,17 @@
 0x001E8A10	movieNoMemoryAlloc	func	tier=C	hd-both	0.71 (n=206)	Raidou HD movie.movieNoMemoryAlloc score 4.0 flag I: next edge st1:edge r1+r2
 0x001E8D58	movieViewerScanDir	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x22b978 sim 0.614 margin 0.27 pair
 0x001E92A0	MovieViewerProc	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x22bda8 sim 0.607 margin 0.34 single
-0x001EB618	setAutoSaveDisable	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.setAutoSaveDisable score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
+0x001EB618	slVersionConvert_GetSize	func	tier=C	derived-derived-role	na	same function as Raidou 1 (returns the save size); replaces setAutoSaveDisable
+0x001EB660	slGetPadTrig	func	tier=C	derived-derived-role	na	pair of the Raidou 1 function at 0x1EB660; replaces fileIsLoadedAndConditionTrue
 0x001EB950	slNextPageDraw	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001D5438 (r1_r2_pairs, unique-masked-hash): SMT3 slDrawInfo calls slNextPageDraw after the done messages (cases 4, 6, 13); Raidou calls 0x1D5438 in the same cases; replaces slCallSin2
 0x001EB9D8	slMcAccessDraw	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001D54C0 (r1_r2_pairs, unique-masked-hash): SMT3 slDrawInfo calls slMcAccessDraw after the saving/formatting messages; Raidou calls 0x1D54C0 after the checking/saving/loading/formatting messages (no printf: void, no arguments); replaces effDebugPrintf
 0x001EBB90	slDrawError	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x152850 sim 0.695 margin 0.37 single
 0x001ECC08	slBootTop	func	tier=C	derived-derived-role	na	smt3_symbols.txt maps slBootTop to this address; replaces slCallSetInfo
 0x001ECD00	slBootRetry_slMain	func	tier=C	hd-both	0.71 (n=206)	Raidou HD slMain.slBootRetry score 4.5 flag -: calls1 gap4/23 st1:gap r1+r2
-0x001ECD40	slHardSelect2	func	tier=C	hd-d	0.53 (n=98)	Raidou HD slMain.slHardSelect2 score 0.5 flag -: calls1 gap4/168 st2:gap r1-disagree:0x1d6a10
+0x001ECD40	slTop	func	tier=C	derived-derived-role	na	smt3 slErrorWaitToFileMc tails into slTop where Raidou retail uses 0x1D64A0; low confidence, address slot only; replaces slHardSelect2
 0x001ECE10	slExitToTitleSub	func	tier=C	derived-derived-role	na	fuzzy p=0.33 name; 0x1ECE10 stores argument 0 like SMT3 slExitToTitleSub (slExitToTitle2 stores 2) and is called by slLeaf4; replaces slExitToTitle2
 0x001ECEC0	slDefaultFileFlowProc1st	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x1D65F8; tail-calls slExitToTitle2; replaces slLoadProc1st
+0x001ECF08	slFileSel	func	tier=C	derived-derived-role	na	smt3 slErrorWaitToFileMc and slSaveProc_doNothing tail into slFileSel where Raidou retail uses 0x1D6640; low confidence, address slot only; replaces slCallMcGetSlotFlags
 0x001ED1B0	slLoadProc1st	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001D68E8 (r1_r2_pairs, masked-hash-in-gap): SMT3 fmProcTrigSequence mode 1 sets proc_func_ans = slLoadProc1st; Raidou mode 1 sets slLeaf8 (0x18 bytes, SMT3 0x14), same order as SMT3 slSaveProc1st/slLoadProc1st/slEndingProc1st/slBootProc1st; replaces slLeaf8
 0x001ED1E0	slEndingProc1st	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x153908 sim 1.000 margin 0.00 pair
 0x001ED570	slBootProc_CheckCard	func	tier=C	derived-derived-role	na	smt3 slBootTop (smt3_symbols: raidou slCallSetInfo) returns slBootProc_CheckCard and smt3 slBootRetry returns slBootProc_CheckCardR; Raidou slCallSetInfo returns the first (0x1D6CA8/0x1ED570) and slBootRetry the second; the fuzzy tie pair is swapped; replaces slBootProcSwapTmp
@@ -23583,10 +23579,12 @@
 0x00201190	sdfDevLoadTexList	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x2c3820 sim 1.000 margin 0.00 pair
 0x00201448	nbGetUnitFromAction	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x28d178 sim 1.000 margin 0.00 pair
 0x00201478	effBTLPartGetTargetPartyPositionPtr	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x28d178 sim 1.000 margin 0.00 pair
-0x002025D8	dds3Particle_SphereSmokeDraw	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x160b90 sim 1.000 margin 0.00 pair
+0x002025D8	dds3Particle_SmokeDraw	func	tier=C	derived-derived-role	na	swap through a temporary name; replaces dds3Particle_SmokeDraw_swap
 0x00203A20	dds3Particle_SphereSpiral2SetScale	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1635e8 sim 1.000 margin 0.00 pair
-0x00204520	dds3Particle_SmokeDraw	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x160b90 sim 1.000 margin 0.00 pair
+0x00204520	dds3Particle_SphereSmokeDraw	func	tier=C	derived-derived-role	na	same swap as Raidou 1 (0x204520); replaces dds3Particle_SmokeDraw
+0x00205B30	dds3Particle_SpiralRandomizeSetScale	func	tier=C	derived-derived-role	na	pair at 0x00205B30; replaces vecScale
 0x00206F78	dds3Particle_SphereSpiralSetScale	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1635e8 sim 1.000 margin 0.00 pair
+0x002080D8	dds3Particle_BlurClearItem	func	tier=C	derived-derived-role	na	same function in Raidou 2 (0x2080D8); replaces parLeaf2
 0x002084A0	ColorAnim	func	tier=C	hd-both	0.71 (n=206)	Raidou HD dds3Particle.ColorAnim score 4.0 flag -: next edge st1:edge r1+r2
 0x00208FE8	parDispatchKindInit	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x15aed8 sim 1.000 margin 0.00 pair
 0x00209080	parDispatchKindUpdate	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x15aed8 sim 1.000 margin 0.00 pair
@@ -24329,7 +24327,10 @@
 0x004DE034	dds3ScreenParam2	data	tier=C	smt3-ref	0.88 (n=D_r1_0046AFB0)	smt3-ref/loose: nfun=2, other=0, sim=0.90325, games=2, size=False, sec=False, fn=cmpSetStatusModelParam; dds3ScreenParam is another symbol
 0x004DE20C	dds3PauseSign	data	tier=C	derived-derived-role	na	R2 defines dds3PauseSign at the same sdata slot; R1 dds3KernelMain asm stores it exactly where the shared C writes dds3PauseSign; dds3KernelMain matches R1 once renamed (D/tmp/dds3KernelMain.promote.patch) (R1 0x0046B10C); replaces dds3KernelMainData
 0x004DE210	dds3PauseTime	data	tier=C	derived-derived-role	na	same as above, next word (R2 dds3PauseTime) (R1 0x0046B110); replaces dds3KernelMainData2
-0x004DE214	PauseSign	data	tier=C	hd	0.37 (n=D_r1_0046B114)	hd/medium: conf=medium, agree=2, using=2
+0x004DE214	dds3SlowSign	data	tier=C	derived-derived-role	na	same stores as Raidou 1 (0x4DE214); replaces PauseSign
+0x004DE218	dds3SlowTime	data	tier=C	derived-derived-role	na	same as Raidou 1 (0x4DE218); replaces dds3Data25
+0x004DE21C	dds3SlowRunCount	data	tier=C	derived-derived-role	na	same as Raidou 1 (0x4DE21C); replaces dds3SlowOnData
+0x004DE220	dds3SlowEndCount	data	tier=C	derived-derived-role	na	same as Raidou 1 (0x4DE220); replaces dds3SlowOnData2
 0x004DE3E2	evtSelectionStateActive	data	tier=C	dds-ref	0.59 (n=D_r1_0046B2DA)	dds-ref/loose: nfun=6, other=0, sim=1.0, games=2, size=False, sec=True, fn=evtSelStateCreate
 0x004DE410	evtConsoleFontResourceChain	data	tier=C	dds-ref	0.59 (n=D_r1_0046B308)	dds-ref/loose: nfun=4, other=2, sim=1.0, games=2, size=True, sec=True, fn=evtEnsureFontResourceChain
 0x004DE430	evtGeneralHeapPercentFormat	data	tier=C	dds-ref	0.59 (n=D_r1_0046B328)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtDrawGeneralHeapUsageGraph

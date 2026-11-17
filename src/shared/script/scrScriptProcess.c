@@ -85,7 +85,9 @@ void scrStartScriptByName(s32 priority, char *name, s32 messageHandle)
     scrStartScriptProcess(priority, scrLoadScriptFile(name, messageHandle));
 }
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrRegistScript3);
+scrProcessWork_s *scrRegistScript3(char *name) {
+    return scrLoadScriptFile(name, 0);
+}
 
 dds3ProcessID_t *scrStartScript2(s32 priority, void *scrdata, s32 startproc)
 {

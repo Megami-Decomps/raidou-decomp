@@ -14,6 +14,7 @@ s32 dds3CheckPoseSetFlag(dds3PoseSet_t *pPoseSet, u32 flag);
 s32 dds3ComparePosPoseSet2(dds3PoseSet_t *left, dds3PoseSet_t *right);
 void dds3DeleteBasic(dds3Basic_t *basic);
 void dds3FreePoseSet(dds3Basic_t *basic);
+void dds3GetTMPoseSet(dds3Basic_t *pBasic);
 void dds3GetPosPoseSet(dds3Basic_t *pBasic);
 void dds3GetPosPoseSetMCR(dds3Basic_t *basic, const sdfVector4_t *offset);
 void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r);

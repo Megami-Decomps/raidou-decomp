@@ -80,7 +80,27 @@ void SelectSub(s32 *pbase, s32 *pm, s32 list, s32 win, s32 pad, s32 pluskey, s32
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMisc", dds3SelectMenu);
+/* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3KernelMisc.c:81, near, same function 1.00 (words 55/55, calls 1.00, shape 1.00) */
+s32 dds3SelectMenu(s32 pad, s32 listsx, s32 listsy, s32 winsx, s32 winsy, s32 *basex, s32 *basey, s32 *x, s32 *y) {
+    SelectSub(basey, y, listsy, winsy, pad, 7, 6);
+    SelectSub(basex, x, listsx, winsx, pad, 5, 4);
+    if (pad == 0) {
+        if (dds3PadButtonState[3] < 0) {
+            return 1;
+        }
+        if (dds3PadButtonState[1] < 0) {
+            return -1;
+        }
+    } else {
+        if (dds3PadButtonState[0x13] < 0) {
+            return 1;
+        }
+        if (dds3PadButtonState[0x11] < 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
 
 void dds3ConsPanelTagLink(sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy) {
     s32 columnSpan = 0xC0, rowSpan = 0x60;
