@@ -329,9 +329,6 @@ typedef struct mnuOffsets_t {
 
 extern const mnuOffsets_t D_0042AF90;
 void mnuDrawIconPair(s32 x, s32 y, s32 z, s32 w, mnuIconState_t *state, s32 surface);
-extern void mnuDrawIconPanelFade();
-extern void mnuDrawIconRow6();
-extern void mnuDrawIconPair();
 void mnuDrawIconPanel(s32 x, s32 y, s32 depth, s32 fade, mnuIconState_t *panel, s32 selectionMode, s32 drawArg);
 void mnuDrawIconState(u32 x, u32 y, u32 depth, u32 fade, mnuIconState_t *panel, u32 selectionMode, u32 drawArg);
 void mnuDrawIconPanelFullFade(u32 x, u32 y, u32 depth, mnuIconState_t *panel, s32 drawArg);

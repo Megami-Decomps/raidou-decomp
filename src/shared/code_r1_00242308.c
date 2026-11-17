@@ -156,8 +156,8 @@ extern u32 effData12[];
  * The final word is the copied payload size, not another callback.
  * Factories retain this unit's existing address-word interface. */
 typedef struct effResourceOps_t {
-    void (*initialize)();      /* 0x00 */
-    u32 (*createResource)();    /* 0x04 */
+    void (*initialize)(void *); /* 0x00 */
+    u32 (*createResource)(void *source, void *secondary, u32 param); /* 0x04 */
     void (*destroyResource)(); /* 0x08 */
     u32 (*cloneResource)(void *); /* 0x0C */
     void (*update)();          /* 0x10 */
@@ -603,7 +603,7 @@ extern void effResetFileResourceManager(void);
 void effSetBattleOffset(void *src);
 void effComputeBattleCameraPositionVU(effPartsListPose_t *effect);
 void effMultiplyQuatWithFlag(effPartsListPose_t *effect);
-void effApplyBattleCameraToObject();
+void effApplyBattleCameraToObject(void *object);
 u32 effCreateBattleCameraJob(u8 *request);
 fileJobPayload_t *effLoadFileJobPayload(effFileJobRequest_t *request, const char *path);
 void effInvokeFileJobWithBattleCamera(u32 job);
@@ -669,7 +669,7 @@ u32 effFinalizeQueuedFile(void);
 extern fileJob_t *fileDuplicateAndAppendJob(plistHandle_t *, fileJobPayload_t *);
 extern fileJob_t *fileQueueFindById(plistHandle_t *, u32);
 u32 effCloneSelectedFileJob(void);
-extern u32 effSelectLinkedFileState();
+u32 effSelectLinkedFileState(void);
 u32 effFlagFileQueueActive(void);
 
 typedef struct effBlock90_t {
@@ -1316,7 +1316,7 @@ u32 effCreateBattleCameraJob(u8 *request) {
         fileJobSetPrimaryData(effQueuedFileHandle, outputBuffer, ((effFileJobRequest_t *)request)->size, ((effFileJobRequest_t *)request)->transferMode);
     }
     job = (u32)Create_effParts(effQueuedFileHandle);
-    effApplyBattleCameraToObject(job);
+    effApplyBattleCameraToObject(EE_ADDR_AS(void *, job));
     return job;
 }
 
@@ -1702,7 +1702,8 @@ u32 effCloneSelectedFileJob(void) {
 
 u32 effFlagFileQueueActive(void) {
     effPartsListExitRequested = 1;
-    effSelectLinkedFileState(0);
+    /* Retail passes an argument the function does not take. */
+    ((u32 (*)(s32))effSelectLinkedFileState)(0);
     return 0;
 }
 
@@ -3275,7 +3276,7 @@ effResourceOps_t effRuntimeResourceOperations[14] = {
     { NULL, NULL, sbtlCallBtlSetLightMap, NULL, sbtlLeaf49, NULL, 0x28 },
     { NULL, NULL, sbtlCallSetUnitColorRGB, NULL, sbtlCallSetUnitColorRGB2, NULL, 0x14 },
     { NULL, NULL, effResetDefaultColorTables, NULL, sbtlLeaf50, NULL, 0x10 },
-    { effLeaf376, effLeaf377, effDestroyCopiedEffectPayload, effLeaf378, effLeaf379, NULL, 0xC },
+    { (void (*)(void *))effLeaf376, effLeaf377, effDestroyCopiedEffectPayload, effLeaf378, effLeaf379, NULL, 0xC },
     { NULL, NULL, NULL, NULL, effLeaf380, NULL, 0x8 },
     { NULL, NULL, NULL, NULL, effLeaf381, NULL, 0x4 },
     { NULL, NULL, effLeaf382, NULL, effLeaf383, NULL, 0xC },

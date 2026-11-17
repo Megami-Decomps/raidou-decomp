@@ -1571,8 +1571,8 @@ struct effKindWork_t;
  * zero-argument notifications retain the original unprototyped callback ABI. */
 typedef struct effKindDesc_t {
     void *(*create)(void *); // 0x00
-    void (*destroy)();       // 0x04: release the created handle
-    void (*update)();        // 0x08: advance work through its kind callback
+    void (*destroy)(void *); // 0x04: release the created handle
+    void (*update)(struct effKindWork_t *); // 0x08: advance work through its kind callback
     void (*initialize)(struct effKindWork_t *, sdfTexHandle_t *); // 0x0C
     u32 payloadSize;         // 0x10: bytes copied after the work header
 } effKindDesc_t; // 0x14
@@ -1621,7 +1621,7 @@ typedef char effFadeHeaderWorkSizeCheck[(sizeof(effFadeHeaderWork_t) == 0x10) ? 
 effFadeHeaderWork_t *effDuplicateSmallHeader(const void *source);
 effFadeHeaderWork_t *effCreateSmallHeaderFromFile(void *work);
 effFadeHeaderWork_t *effCloneSmallHeaderFromWork(effFadeHeaderWork_t *work);
-effFadeVectorWork_t *effCreateFadeVectorWork();
+effFadeVectorWork_t *effCreateFadeVectorWork(const effLensFlareParams_t *params);
 effFadeVectorWork_t *effCreateFadeVectorFromFile(void *work);
 void effFreeFadeVectorWork(effFadeVectorWork_t *work);
 effFadeVectorWork_t *effCloneFadeVectorWork(effFadeVectorWork_t *work);
@@ -2182,7 +2182,6 @@ u32 effRetainScalyTextureReference(void);
 void effReleaseScalyTextureReference(s32 unused);
 
 /* Allocate position/UV/color rows and a draw handle using count and repeat. */
-u8 *effAllocateTexturedStripWork();
 u32 effCreateTexturedStripWithSharedTexture(u32 count, u32 repeat);
 u32 effAllocateStripFromWorkAndRetainTexture(u8 *work);
 
@@ -5510,7 +5509,7 @@ effClassWork_t *effAllocateActiveInstanceWork(u16 kind, void *source) {
 
 effClassWork_t *effCreateResourceInstanceA(u16 kind, void *source, u32 option) {
     effClassWork_t *effect = effAllocateActiveInstanceWork(kind, source);
-    effect->resource = (void *)effActiveInstanceOperations[kind].createResource(source, option);
+    effect->resource = (void *)((u32 (*)(void *, u32))effActiveInstanceOperations[kind].createResource)(source, option);
     effActiveInstanceOperations[kind].initialize(effect);
     return effect;
 }
@@ -9877,7 +9876,7 @@ effClassWork_t *effAllocateBlock(u16 kind, void *source) {
 
 effClassWork_t *effCreateResourceInstanceB(u16 kind, void *source, u32 option) {
     effClassWork_t *effect = effAllocateBlock(kind, source);
-    effect->resource = (void *)effBlockResourceOperations[kind].createResource(source, option);
+    effect->resource = (void *)((u32 (*)(void *, u32))effBlockResourceOperations[kind].createResource)(source, option);
     effBlockResourceOperations[kind].initialize(effect);
     return effect;
 }
@@ -10618,7 +10617,7 @@ effClassWork_t *effAllocateBlockWithModel(u16 kind, void *source) {
 
 effClassWork_t *effCreateResourceInstanceC(u16 kind, void *source) {
     effClassWork_t *effect = effAllocateBlockWithModel(kind, source);
-    effect->resource = (void *)effModelBlockOperations[kind].createResource(source);
+    effect->resource = (void *)((u32 (*)(void *))effModelBlockOperations[kind].createResource)(source);
     effModelBlockOperations[kind].initialize(effect);
     return effect;
 }
@@ -11605,15 +11604,15 @@ effKindDesc_t effData5[6] = {
     { NULL, NULL, NULL, NULL, 0x0 },
     { NULL, NULL, effUpdateFadeBlendA, NULL, 0xE8 },
     { effCreateFadeBlendWorkFromOutput, effReleaseFadeBlendWork, effUpdateProjectedBlurFadeRectangle, effUpdateTarget, 0xEC },
-    { effCreateFixedSlotBlurWorkFromFadeOutput, effReleaseFixedSlotBlurWork, effUpdateFadeMapA, effTextureReferenceRelease, 0xEC },
-    { effCreateVariableSlotBlurWorkFromFadeOutput, effReleaseVariableSlotBlurWork, effUpdateFadeMapB, effReplaceKindLinkedTarget, 0xEC },
+    { effCreateFixedSlotBlurWorkFromFadeOutput, (void (*)(void *))effReleaseFixedSlotBlurWork, effUpdateFadeMapA, effTextureReferenceRelease, 0xEC },
+    { effCreateVariableSlotBlurWorkFromFadeOutput, (void (*)(void *))effReleaseVariableSlotBlurWork, effUpdateFadeMapB, effReplaceKindLinkedTarget, 0xEC },
     { NULL, NULL, effUpdateFadeBlendB, NULL, 0xE8 },
 };
 
 effKindDesc_t effData6[3] = {
     { NULL, NULL, NULL, NULL, 0x0 },
     { NULL, NULL, effUpdateFadeBlendC, NULL, 0xD8 },
-    { effCreateFadeColorWorkFromOutput, effReleaseFadeColorWork, effUpdateProjectedFadeColor, effReplaceLinkedKindWorkTarget, 0xE4 },
+    { effCreateFadeColorWorkFromOutput, (void (*)(void *))effReleaseFadeColorWork, effUpdateProjectedFadeColor, effReplaceLinkedKindWorkTarget, 0xE4 },
 };
 #endif
 

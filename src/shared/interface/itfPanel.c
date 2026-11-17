@@ -145,8 +145,8 @@ extern u8 itfPanelLeftFadeStripColorIndex[8];
 
 #define ITF_PANEL_STATE_PACKET_BYTES 0x40
 
-extern void (*CreateVertexTable[])();
-extern void (*CreateColorTable[])();
+extern void (*CreateVertexTable[])(u32 *work);
+extern void (*CreateColorTable[])(u32 *work);
 
 static inline void SetVec4(u32 *vec, u32 red, u32 green, u32 blue, u32 alpha) {
     vec[0] = red;
@@ -264,7 +264,7 @@ void itfPnlSetPosition(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z
 /* Add independent corner/render-value deltas, then notify with the updated
  * corners as well as context. */
 void itfPnlSetPositionOffset(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z) {
-    void (*handler)() = CreateVertexTable[handle->kind];
+    void (*handler)(u32 *, s32, s32, s32, s32) = (void (*)(u32 *, s32, s32, s32, s32))CreateVertexTable[handle->kind];
 
     handle->left += x0;
     handle->top += y0;

@@ -100,7 +100,7 @@ void sdfPacNewBlock(sdfPacDecodeCb_t *cb)
     u32 packetBytes;
     u32 headerBytes;
     u32 payloadBytes;
-    s32 (*callback)();
+    s32 (*callback)(sdfPacDecodeCb_t *, s32, sdfPacStdBlockHeader_t *, u32);
     s32 result;
 
     alignmentOffset = cb->srcTotal & 0x3F;
@@ -116,7 +116,8 @@ void sdfPacNewBlock(sdfPacDecodeCb_t *cb)
     headerBytes = (packet->flags & SDF_PAC_EXTRA_MASK) + 0x10;
     payloadBytes = packetBytes - headerBytes;
     cb->rest = payloadBytes;
-    callback = (s32 (*)())cb->callback;
+    /* Data blocks also get the payload size, which sdfPacCallbackFunc does not declare. */
+    callback = (s32 (*)(sdfPacDecodeCb_t *, s32, sdfPacStdBlockHeader_t *, u32))cb->callback;
     result = callback(cb, 0, packet, payloadBytes);
     if (result == 1) {
         sdfPacMarkPhaseFinished(cb);

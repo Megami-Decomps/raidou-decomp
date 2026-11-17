@@ -108,7 +108,7 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-extern s32 DIntr();
+extern s32 DIntr(void);
 
 #include "sdk_libkernl.h"
 
@@ -345,7 +345,7 @@ void sdfFileCmdAllocHandle(sdfFileCmdHandle_t *state) {
     s32 interrupts;
     s32 wake = 0;
     sdfFileCmdHandle_t *last;
-    interrupts = DIntr(state);
+    interrupts = DIntr();
     worker = &sdfFileDeviceCB[state->device];
     if (worker->thId < 0) {
         sdfFileCmdStartThread(state->device);

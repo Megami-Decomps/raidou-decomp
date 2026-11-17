@@ -184,8 +184,6 @@ void corePktEmitBase(sdfCorePacketCb_t *cb);
 void corePktEmitAllPasses(sdfCorePacketCb_t *cb);
 void corePktOpenAndEmit(sdfCorePacketCb_t *cb);
 void corePktLerpUVChain(sdfCorePacketPointBuff_tag *node);
-void corePktEmitTexTris();
-void corePktEmitTris();
 void corePktEmitMultiTexPass(sdfCorePacketCb_t *cb);
 u64 *corePktClosePacket(sdfCorePacketCb_t *cb);
 

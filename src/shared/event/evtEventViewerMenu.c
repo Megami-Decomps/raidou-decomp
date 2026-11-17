@@ -102,8 +102,8 @@ typedef char evtPad_size_must_be_0x40[(sizeof(evtPad_t) == 0x40) ? 1 : -1];
 
 struct sndMixer_t;
 
-typedef s32 (*EvtMenuHeaderFn)();
-typedef void (*EvtMenuRowFn)();
+typedef s32 (*EvtMenuHeaderFn)(sdfDrawTag_t *list, s32 x, s32 y, evtViewerInfo_t *ctx);
+typedef void (*EvtMenuRowFn)(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
 
 /* Draw a framed debug menu: the optional header returns how many rows it used, the row callback fills the rest,
  * and blinking scroll markers appear above/below when entries precede `first` or follow the last drawn one. */
@@ -136,7 +136,6 @@ typedef struct EvtSelectionCache {
 extern EvtSelectionCache *evtCallGetProcessData19Data;
 
 void evtViewerDrawPendingNodeRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
-extern void evtViewerDrawPendingNodeRow();
 s32 mnuDrawInfoWindowB(s32 x, s32 y, evtViewerInfo_t *work);
 s32 mnuDrawCutFlagLabel(sdfDrawTag_t *target, s32 x, s32 y);
 s32 mnuDrawMotionChangeLabel(sdfDrawTag_t *target, s32 x, s32 y);
@@ -321,7 +320,7 @@ s32 evtFloatChangeMenu(s32 x, s32 y, evtViewerInfo_t *ctx) {
     sdfDrawTag_t *list = dds3FontReqAllocDrawTag();
     f32 step;
 
-    evtDrawMenuFrame(list, x, y, 22, 9, 0, 1, ctx, evtFloatChangeHead, evtFloatChangeItem);
+    evtDrawMenuFrame(list, x, y, 22, 9, 0, 1, ctx, (EvtMenuHeaderFn)evtFloatChangeHead, evtFloatChangeItem);
     sdfDebugGrOt.regFunc(&sdfDebugGrOt, list);
     if (ctx->nowmenu != 8) {
         return 0;
@@ -384,7 +383,7 @@ s32 evtIntChangeMenu(s32 x, s32 y, evtViewerInfo_t *ctx) {
     sdfDrawTag_t *list = dds3FontReqAllocDrawTag();
     s32 step;
 
-    evtDrawMenuFrame(list, x, y, 22, 9, 0, 1, ctx, evtIntChangeHead, evtIntChangeItem);
+    evtDrawMenuFrame(list, x, y, 22, 9, 0, 1, ctx, (EvtMenuHeaderFn)evtIntChangeHead, (EvtMenuRowFn)evtIntChangeItem);
     sdfDebugGrOt.regFunc(&sdfDebugGrOt, list);
     if (ctx->nowmenu != 7) {
         return 0;
@@ -1075,7 +1074,7 @@ s32 evtCallMenuDisp3(s32 x, s32 y, evtViewerInfo_t *ctx) {
     s32 delta;
 
     list = dds3FontReqAllocDrawTag();
-    evtDrawMenuFrame(list, x, y, 0x18, 0xA, 0, 1, ctx, mnuDrawCutFlagLabel, evtCMPVALUE);
+    evtDrawMenuFrame(list, x, y, 0x18, 0xA, 0, 1, ctx, (EvtMenuHeaderFn)mnuDrawCutFlagLabel, (EvtMenuRowFn)evtCMPVALUE);
     sdfDebugGrOt.regFunc(&sdfDebugGrOt, list);
     if (ctx->nowmenu != 0xE) {
         return 0;

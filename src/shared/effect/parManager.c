@@ -716,7 +716,7 @@ void dds3Particle_EffectReset(dds3Particle_Effect_t *pEffect, s32 number);
 void dds3Particle_TrackSet(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr);
 void dds3Particle_Track2Set(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr);
 void dds3Particle_Track3Set(effMTPolyListHandle_t *hTrackPoly, s32 i, u32 abgr);
-u32 dds3Particle_TrackPolyGetRecTiming();
+u32 dds3Particle_TrackPolyGetRecTiming(u32 recordCount);
 billHandle_t *dds3BillboardGeneral(s32 number);
 void dds3BillboardSetScale(billHandle_t *hBillboard, float x, float y);
 void dds3TrackPolySetMode(dds3TrackPoly_t *hTrackPoly, u16 mode);

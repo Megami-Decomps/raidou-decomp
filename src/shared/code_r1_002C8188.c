@@ -180,7 +180,7 @@ void effInsertSlotRecord(void *owner, effOwnerRecord_t *list, effSlotOwner_t *wo
 s32 effRemoveSlotRecord(effOwnerRecord_t *list, effSlotOwner_t *work, s32 slotIndex);
 
 /* Release all sixteen buckets; retain the original traversal that reads next after releasing a record. */
-void effReleaseRecordBuckets();
+void effReleaseRecordBuckets(effOwnerRecord_t *list);
 u32 effDispatchRecordBuckets(u32 refresh, effOwnerRecord_t *list, s32 drawOption);
 u32 effDestroyOwnerRecordList(u32 list);
 u32 effConvertParamValue(u32 *kind, void *out, void *in, void *toFloat);

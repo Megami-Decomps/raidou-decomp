@@ -374,7 +374,8 @@ struct mnuList_t {
     s32 count;
     s32 windowOffset;
     s32 rowStep;        /* 0x28: constructor argument scaled by eight */
-    s32 (*drawCallback)(); /* 0x2C: native callers supply list-specific arguments; a zero result stops the row loop. */
+    /* 0x2C: a zero result stops the row loop. */
+    s32 (*drawCallback)(s32 x, s32 y, s32 depth, struct mnuList_t *list, struct mnuListNode_t *node, s32 drawArg);
     /* 0x30 is generic list user data: a countdown pointer, a buffer or
      * staff draw context. */
     void *context;

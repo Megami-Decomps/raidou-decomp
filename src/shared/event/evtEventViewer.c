@@ -229,7 +229,7 @@ u32 evtViewCmdCancelSelection(u32 unused0, u32 unused1, evtViewerInfo_t *viewer)
 u32 evtViewerClearPendingNodeAndPushHistory(u32 unused0, u32 unused1, evtViewerInfo_t *viewer);
 dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task);
 extern dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task);
-void evtViewerRelease();
+s32 evtViewerRelease(evtViewerInfo_t *pInfo);
 void evtEventViewerDestroyActive(dds3ProcessID_t *task);
 extern void mnuCampInitFontResource(evtViewerInfo_t *viewer);
 void evtEventViewerDestroyTask(void);

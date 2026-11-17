@@ -157,9 +157,9 @@ void dds3EffectDraw(effHandle_t *pData);
 dds3Basic_t *AddP2AEffect(void *p2a, void *pos, s32 rot);
 extern billHandle_t *dds3BillboardFileLoad(s32 kind, const char *path);
 dds3Basic_t *AddTMXEffect(void *tmx, void *pos, s32 rot);
-dds3Basic_t *AddBEDEffect();
+dds3Basic_t *AddBEDEffect(void *data, void *pos, void *rot);
 dds3ObjectBaseControlWorkData_t *dds3EffectObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
-dds3Basic_t *AddMG12Effect();
+dds3Basic_t *AddMG12Effect(s32 type, void *data);
 extern s32 sdfModelGetMarkPosMatrix(sdfModelRootNode_t *aRoot, s32 aId);
 void FreeEffectData(dds3EffectObjectBasicWorkData_t *work);
 s32 dds3EffectObjectBasicConstructor(dds3Basic_t *aPtr);
@@ -746,7 +746,7 @@ void *dds3AddMG12EffectObjectBasic(s32 type, void *file) {
 
     resolvedId = 0;
     resourceHandle = sdfDevLoadFileEx(file, &resolvedId, 0);
-    created = AddMG12Effect(type, resolvedId);
+    created = AddMG12Effect(type, EE_ADDR_AS(void *, resolvedId));
     sdfMemFreeDirect(resourceHandle);
     return created;
 }
