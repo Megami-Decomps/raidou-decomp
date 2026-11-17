@@ -90,7 +90,7 @@ s32 sdfSndStopAll(s32 which);
 s32 sdfSndInitSynth(sdfSndWorkArea_t *work);
 s32 sdfSndQuitSynth(void);
 s32 sdfSndFindSlotById(s32 idPacked);
-s32 sdfSndBgmPlay(sdfSndBgmReq_t *req);
+void sdfSndBgmPlay(sdfSndBgmReq_t *req);
 s32 sdfSndSaveResumePoint(s32 slot);
 sdfSndResume_t *sdfSndFindResumePoint(s32 id);
 s32 sdfSndBgmResume(sdfSndBgmReq_t *req);
@@ -202,6 +202,7 @@ s32 sdfAdpcmFadeOut(s32 step)
     }
 }
 
+/* FUNC sdfAdpcmStop */
 s32 sdfAdpcmStop(void)
 {
     u32 voices;
@@ -541,6 +542,7 @@ streamEnd:
         }
     }
 }
+/* ENDF sdfAdpcmStreamInit */
 #else
 INCLUDE_ASM("SDFSDMAN", sdfAdpcmStreamInit);
 #endif
