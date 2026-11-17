@@ -28,8 +28,12 @@ The other rewrites take the encoding from retail, so they are byte-exact; the
 cost is that those instructions carry no relocation, which is irrelevant for a
 matching (non-shiftable) build.
 
+The build writes one file per split folder: each IN.s becomes an assembler
+macro `__ia_<name>` with a `.L__ia_<name>` symbol marking it defined, and
+INCLUDE_ASM includes the folder file once per unit and expands the macro.
+
     python tools/eeas_compat.py IN.s OUT.s
-    python tools/eeas_compat.py --prefix DIR IN.s...   # each IN.s to DIR/IN.s
+    python tools/eeas_compat.py --folder OUT.s IN.s...
 """
 from __future__ import annotations
 
@@ -172,37 +176,51 @@ def version_of(src: Path) -> str | None:
     return next((p for p in src.resolve().parts if p in known_versions()), None)
 
 
-def convert_files(pairs: list[tuple[Path, Path]]) -> None:
-    """Convert each (source, destination), reusing one Pool per version."""
-    pools: dict[str | None, Pool | None] = {}
-    for src, dst in pairs:
-        version = version_of(src)
-        if version not in pools:
-            pools[version] = Pool(version) if version else None
-        pool = pools[version]
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        text = convert(src.read_text(), pool)
-        if pool:
-            text = realign_rodata(text, pool, unit_rodata_start(version, src))
-        dst.write_text(text)
+def convert_file(src: Path, pools: dict) -> str:
+    """src in ee-as syntax, reusing one Pool per version."""
+    version = version_of(src)
+    if version not in pools:
+        pools[version] = Pool(version) if version else None
+    pool = pools[version]
+    text = convert(src.read_text(), pool)
+    if pool:
+        text = realign_rodata(text, pool, unit_rodata_start(version, src))
+    return text
+
+
+MACRO = re.compile(r"^\.macro __ia_(\w+)\n(.*?)^\.endm$", re.M | re.S)
+
+
+def write_folder(out: Path, sources: list[Path]) -> None:
+    """One macro per source file, named after its stem."""
+    pools: dict = {}
+    parts = []
+    for src in sorted(sources):
+        name = src.stem
+        parts.append(f".equ .L__ia_{name}, 1\n.macro __ia_{name}\n{convert_file(src, pools).rstrip()}\n.endm\n")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("".join(parts))
+
+
+def read_folder(path: Path) -> dict[str, str]:
+    """Name -> converted text of each macro in a folder file."""
+    return {m.group(1): m.group(2) for m in MACRO.finditer(path.read_text())} if path.exists() else {}
 
 
 def main() -> None:
-    # @file names a response file of more arguments: a large unit's file list
+    # @file names a response file of more arguments: a large folder's file list
     # exceeds the shell's command length limit.
     args = [arg for raw in sys.argv[1:]
             for arg in (Path(raw[1:]).read_text().split() if raw.startswith("@") else [raw])]
-    # One process per translation unit: the retail ELF and the yaml are read
-    # once for all of a unit's asm files instead of once per file.
-    if args and args[0] == "--prefix":
+    if args and args[0] == "--folder":
         if len(args) < 3:
             raise SystemExit(__doc__)
-        prefix = Path(args[1])
-        convert_files([(Path(name), prefix / name) for name in args[2:]])
+        write_folder(Path(args[1]), [Path(name) for name in args[2:]])
         return
     if len(args) != 2:
         raise SystemExit(__doc__)
-    convert_files([(Path(args[0]), Path(args[1]))])
+    Path(args[1]).parent.mkdir(parents=True, exist_ok=True)
+    Path(args[1]).write_text(convert_file(Path(args[0]), {}))
 
 
 if __name__ == "__main__":

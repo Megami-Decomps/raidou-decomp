@@ -188,7 +188,7 @@ def strip_other_code(s: str, fn: str) -> str:
             if re.fullmatch(r"\s*\.end\s+" + re.escape(skip), line):
                 skip = None
             continue
-        m = re.search(r'\.include\s+"build/eeasm/asm/[^"]*/nonmatchings/[^"]*/([^/"]+)\.s"', line)
+        m = re.fullmatch(r'\s*__ia_(\w+)\s*', line)
         if m and m.group(1) != fn and not m.group(1).startswith(("jtbl_", "D_")):
             continue
         out.append(line)

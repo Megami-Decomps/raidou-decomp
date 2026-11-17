@@ -624,12 +624,12 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
 
     n.rule("as", f"{AS} {AS_FLAGS} -o $out $in", description="as $in")
     n.rule("bin", f"{OBJCOPY} -I binary -O elf32-littlemips -B mips:5900 $in $out", description="bin $in")
-    n.rule("eeasm", f"{sys.executable} tools/eeas_compat.py --prefix build/eeasm @$rspfile",
-           description="ee-as compat $unit", rspfile="$rspfile", rspfile_content="$in")
+    n.rule("eeasm", f"{sys.executable} tools/eeas_compat.py --folder $out @$rspfile",
+           description="ee-as compat $out", rspfile="$out.rsp", rspfile_content="$in")
     n.rule("vuas", f"{sys.executable} tools/vuas.py $in -o $out", description="vuas $in")
     n.rule(
         "cc",
-        f"cpp -MM -MG -MF $out.d -MT $out -nostdinc {INCLUDES} $cdefs $in && "
+        f"$asmcheck cpp -MM -MG -MF $out.d -MT $out -nostdinc {INCLUDES} $cdefs $in && "
         f"{prefix}$cc1 $ccdefines {INCLUDES} $cdefs $ccflags $cflags $in -o $out.s && "
         f"{prefix}$ccas $ccasflags -o $out $out.s && "
         f"{sys.executable} tools/production_report.py record-object $in $out",
@@ -652,6 +652,8 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
 
     units: dict[str, list[dict]] = {}
     defaults = []
+    # One ee-as file per split folder, whichever units include from it.
+    eeasm_built: set[str] = set()
     # include_rodata.py/include_sdata.py split a shared TU the versions place
     # differently into per-game files, which moves its object: split again.
     for attempt in range(3):
@@ -681,14 +683,16 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
             else:
                 text = (ROOT / src).read_text(errors="replace")
                 nonmatchings = Path("asm") / version / "nonmatchings"
-                asm_files = list(dict.fromkeys(
-                    str(nonmatchings / folder / f"{name}.s")
-                    for _, folder, name in include_directives(text, context=str(src), version=version)
-                ))
-                eeasm = [f"build/eeasm/{asm}" for asm in asm_files]
-                if asm_files:
-                    n.build(eeasm, "eeasm", asm_files, implicit=["tools/eeas_compat.py"],
-                            variables={"unit": str(src), "rspfile": f"build/{version}/{src.stem}.eeasm.rsp"})
+                folders = list(dict.fromkeys(
+                    folder for _, folder, _ in include_directives(text, context=str(src), version=version)))
+                eeasm = [f"build/eeasm/{nonmatchings / folder}.s" for folder in folders]
+                for folder, out in zip(folders, eeasm):
+                    if out in eeasm_built:
+                        continue
+                    eeasm_built.add(out)
+                    n.build(out, "eeasm", sorted(str(p.relative_to(ROOT)) for p in
+                                                 (ROOT / nonmatchings / folder).glob("*.s")),
+                            implicit=["tools/eeas_compat.py"])
                 cdefs = f"'-DASM_ROOT=\"build/eeasm/{nonmatchings}/\"' -DVERSION_{version.upper()}"
                 unit = unit_name(src)
                 flags = unit_cflags(version).get(unit, "")
@@ -700,19 +704,16 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
                 configs = [f"config/{version}/cflags.txt", f"config/{version}/compilers.txt",
                            f"config/{version}/asflags.txt"]
                 # Instruction-emitting inline asm in the unit fails before it compiles.
-                asmcheck = Path("build") / version / "asmcheck" / src.with_suffix(".stamp")
-                n.build(str(asmcheck), "asmcheck", str(src),
-                        implicit=["tools/check_inline_asm.py", "config/inline_asm_allow.txt"])
+                asmcheck = f"{sys.executable} tools/check_inline_asm.py $in &&"
                 n.build(str(obj), "cc", str(src),
-                        implicit=eeasm + [str(asmcheck), "include/macro.inc", *configs,
-                                          "tools/production_report.py"],
+                        implicit=eeasm + ["include/macro.inc", *configs, "tools/production_report.py",
+                                          "tools/check_inline_asm.py", "config/inline_asm_allow.txt"],
                         implicit_outputs=[str(obj) + ".s", str(obj) + ".proof.json"],
-                        variables={"cdefs": cdefs, "cflags": flags, **tools})
+                        variables={"cdefs": cdefs, "cflags": flags, "asmcheck": asmcheck, **tools})
                 # objdiff base: the same unit without its INCLUDE_ASM fallbacks, so only C counts.
                 base = Path("build") / version / "base" / src.with_suffix(".o")
                 n.build(str(base), "cc", str(src),
-                        implicit=[str(asmcheck), *configs, "include/macro.inc",
-                                  "tools/production_report.py"],
+                        implicit=[*configs, "include/macro.inc", "tools/production_report.py"],
                         implicit_outputs=[str(base) + ".s", str(base) + ".proof.json"],
                         variables={"cdefs": f"{cdefs} -DSKIP_ASM", "cflags": flags, **tools})
                 # objdiff target: splat's full disassembly of this C unit, assembled as-is.

@@ -155,8 +155,11 @@ class StripOtherCodeTests(unittest.TestCase):
 other:
 \tjr\t$31
 \t.end other
-\t.include "build/eeasm/asm/raidou1/nonmatchings/code_001001D8/func_00100200.s"
-\t.include "build/eeasm/asm/raidou1/nonmatchings/code_001001D8/jtbl_00200000.s"
+\t.ifndef .L__ia_func_00100200
+\t.include "build/eeasm/asm/raidou1/nonmatchings/code_001001D8.s"
+\t.endif
+\t__ia_func_00100200
+\t__ia_jtbl_00200000
 \t.ent target
 target:
 \tjr\t$31
@@ -168,9 +171,9 @@ target:
         self.assertIn(".ent target", out)
         self.assertIn(".extern g_flag, 4", out)
         self.assertNotIn("other", out)
-        self.assertNotIn("func_00100200.s", out)
+        self.assertNotIn("\t__ia_func_00100200\n", out)
         # Jump tables and data the function itself needs are still included.
-        self.assertIn("jtbl_00200000.s", out)
+        self.assertIn("__ia_jtbl_00200000", out)
 
 
 class DumpGamesTests(unittest.TestCase):

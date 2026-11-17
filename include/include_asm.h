@@ -9,8 +9,10 @@
  * included body.
  *
  * ee-as cannot read spimdisasm's syntax directly, so configure.py rewrites each
- * body into build/eeasm/ (tools/eeas_compat.py); ASM_ROOT is that tree for the
- * version being compiled (e.g. "build/eeasm/asm/raidou1/nonmatchings/").
+ * split folder into one file under build/eeasm/ (tools/eeas_compat.py), with
+ * each body as a macro `__ia_<name>`; ASM_ROOT is that tree for the version
+ * being compiled (e.g. "build/eeasm/asm/raidou1/nonmatchings/"). The first use
+ * of a folder in a unit includes its file, later uses only expand the macro.
  *
  * M2CTX/PERMUTER (context and permuter builds) and SKIP_ASM (objdiff progress
  * objects: an asm fallback must not count as matched code) drop the asm.
@@ -49,24 +51,32 @@
 #error "ASM_ROOT must be defined by the build (see configure.py)"
 #endif
 
+/* Include FOLDER's file unless an earlier use did, then expand the body of
+ * NAME (a string, so a name that is also a macro is not expanded). */
+#define ASM_BODY(FOLDER, NAME)                         \
+    "\t.ifndef .L__ia_" NAME "\n"                      \
+    "\t.include \"" ASM_ROOT FOLDER ".s\"\n"           \
+    "\t.endif\n"                                       \
+    "\t__ia_" NAME "\n"
+
 #define INCLUDE_ASM(TYPE, FOLDER, NAME)                        \
     __asm__(".pushsection .text\n"                             \
             "\t.set noat\n"                                    \
             "\t.set noreorder\n"                               \
-            "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
+            ASM_BODY(FOLDER, #NAME)                            \
             "\t.set reorder\n"                                 \
             "\t.set at\n"                                      \
             ".popsection\n")
 
 #define INCLUDE_RODATA(TYPE, FOLDER, NAME)                     \
     __asm__(".pushsection .rodata\n"                           \
-            "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
+            ASM_BODY(FOLDER, #NAME)                            \
             ".popsection\n")
 
 /* Small data not yet defined in C (tools/include_sdata.py places these). */
 #define INCLUDE_SDATA(TYPE, FOLDER, NAME)                      \
     __asm__(".pushsection .sdata\n"                            \
-            "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
+            ASM_BODY(FOLDER, #NAME)                            \
             ".popsection\n")
 
 /* N zero bytes of alignment padding ee-gcc put between two small-data objects

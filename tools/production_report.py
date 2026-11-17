@@ -387,8 +387,7 @@ class Production:
             if retail_address is None or size <= 0 or size % 4:
                 raise ValueError(f"{name}:{target}: invalid retail span")
             report_spans.append((retail_address - start, size, target))
-        included = set(re.findall(r'^\s*\.include "build/eeasm/asm/' + self.version +
-                                 r'/nonmatchings/[^"\n]+/([^/"\n]+)\.s"\s*$', assembly, re.M))
+        included = set(re.findall(r'^\s*__ia_(\w+)\s*$', assembly, re.M))
         if c_emitted - production.keys():
             raise ValueError(f"{name}: compiler functions absent from production object")
         if (set(production) - c_emitted) - included or included & c_emitted:

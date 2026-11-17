@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from retail_elf import RETAIL, ROOT, VERSIONS, load_segments, off_to_va, va_to_off  # noqa: E402
 from symbol_aliases import load_symbol_aliases  # noqa: E402
 from version_guard import view  # noqa: E402
+from eeas_compat import read_folder  # noqa: E402
 from resolved_code import (  # noqa: E402
     hi_lo_addend,
     instruction_shape_matches,
@@ -1371,14 +1372,14 @@ def main():
         return nxt - end
 
     included = set(re.findall(r'^INCLUDE_(?:ASM|RODATA)\([^,]+,\s*"[^"]+",\s*(\w+)\);', source_text, re.M))
-    eeasm_dir = ROOT / "build" / "eeasm" / "asm" / version / "nonmatchings" / unit_name
+    eeasm = read_folder(ROOT / "build" / "eeasm" / "asm" / version / "nonmatchings" / f"{unit_name}.s")
 
     def realigned(addr):
         """The retail item at addr is an included asm blob that eeas_compat
         16-aligns (`.align 4`), so the object supplies the padding before it."""
         names = [f"D_{addr:08X}", f"jtbl_{addr:08X}"] + [re.escape(n) for n, a in syms.items() if a == addr]
         pat = re.compile(rf"^\.align 4\n(?:.*\n){{0,3}}dlabel (?:{'|'.join(names)})\b", re.M)
-        return any(pat.search(p.read_text()) for p in (eeasm_dir / f"{n}.s" for n in included) if p.exists())
+        return any(pat.search(eeasm[n]) for n in included if n in eeasm)
 
     def object_supplies_gap(table_off, retail_addr, size):
         """The object's next item after the table sits at the same distance as
