@@ -52,6 +52,7 @@ jobs:
         run: |
           python3 -m compileall -q configure.py diff_settings.py tools
           python3 tools/check_config.py
+          python3 tools/check_layout.py
           python3 tools/check_nonmatching.py
           python3 tools/check_irx_nonmatching.py
           python3 tools/tests/test_check_irx_nonmatching.py
@@ -69,6 +70,7 @@ jobs:
           python3 tools/tests/test_float_literal.py
           python3 tools/tests/test_stylefix.py
           python3 tools/tests/test_land_sync.py
+          python3 tools/tests/test_check_layout.py
           if git ls-files | grep -E '^orig/.+|\.(iso|elf|bin)$' | grep -v '^orig/\.gitkeep$'; then
             echo "retail data is tracked" >&2
             exit 1

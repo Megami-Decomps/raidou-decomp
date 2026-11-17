@@ -204,6 +204,21 @@ python3 tools/check_irx_nonmatching.py   # the IOP modules' drafts
 A passing `check_unit.py` is not the proof; `ninja` is. After a header change,
 run `ninja`: any unit that includes it can change.
 
+## Where things go
+
+- `src/`, `include/`: the C and headers; `src/shared/` for units both games build.
+- `config/`: splat configs, symbol tables and the tables tools keep in step.
+- `docs/`: these pages; `docs/matching/` is written by `tools/batch/land_batch.py`.
+- `tools/`: build steps, gate checks and the matching workflow. Library modules and
+  scripts sit at the top, `tools/batch/` lands batches, `tools/ida/` talks to the
+  IDBs, and every test is `tools/tests/test_<tool>.py`.
+- `local/` (ignored by git): one-off scripts, notes and experiments. A script that ran
+  once, or that only you run, stays there.
+
+`tools/check_layout.py` (in CI) refuses a tracked file outside this layout and a script
+in `tools/` that nothing names and no test covers. A new top-level entry or directory
+needs an entry in its `LAYOUT`.
+
 ## Matching levers found here
 
 Shapes found while matching Raidou functions, in the format of
