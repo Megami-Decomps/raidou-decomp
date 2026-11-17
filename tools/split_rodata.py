@@ -67,7 +67,7 @@ def owners(version, section="rodata"):
     addrs, starts = [a for a, _ in syms], [t[0] for t in text]
     owner = [None] * len(syms)
     for path in asm.rglob("*.s"):
-        if path.relative_to(asm).parts[0] in ("data", "nonmatchings", "matchings"):
+        if path.relative_to(asm).parts[0] in ("data", "nonmatchings"):
             continue
         for m in REF.finditer(path.read_text()):
             pc = int(m.group(1), 16)

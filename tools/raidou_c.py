@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from check_unit import drop_nonmatching  # noqa: E402
 from retail_elf import VERSIONS  # noqa: E402
-from units import SHARED, SRC, shared_sources, unit_sources  # noqa: E402
+from units import SHARED, SRC, function_rodata, rodata_blocks, shared_sources, unit_sources  # noqa: E402
 
 OUT = ROOT / "build" / "raidou_c"
 # Read only: the smt3-port checkout follows smt3-decomp upstream.
@@ -66,17 +66,26 @@ RELOC = re.compile(r"%(hi|lo|gp_rel)\(([^)]+)\)")
 SYMROW = re.compile(r"^\s*(\w+)\s*=\s*0x([0-9A-Fa-f]+)\s*;(.*)$")
 
 
-def parse_asm(path):
+def parse_asm(text):
     """glabel name -> (address, masked words, slots); a slot is (kind, operand text)."""
     out, name, address, words, slots = {}, None, None, [], []
-    for line in path.read_text(errors="replace").splitlines():
+    ended = False
+    for line in text.splitlines():
         label = GLABEL.match(line)
         if label:
             if name and words:
                 out[name] = (address, words, slots)
-            name, address, words, slots = label.group(1), None, [], []
+            name, address, words, slots, ended = label.group(1), None, [], [], False
+            continue
+        if line.startswith("endlabel"):
+            ended = True
             continue
         insn = INSN.match(line)
+        if insn is None and ended and name:
+            # The padding after endlabel belongs to the function; a unit file goes on with other code or data.
+            if words:
+                out[name] = (address, words, slots)
+            name = None
         if not insn or name is None:
             continue
         if address is None:
@@ -185,7 +194,7 @@ def split_bodies(root, game):
     out = {}
     for sub in ("matchings", "nonmatchings"):
         for path in (root / "asm" / game / sub).rglob("*.s"):
-            for _, (addr, words, slots) in parse_asm(path).items():
+            for _, (addr, words, slots) in parse_asm(path.read_text(errors="replace")).items():
                 if addr is not None:
                     out.setdefault(addr, (words, slots))
     return out
@@ -274,13 +283,33 @@ def name_sources(version):
     return out
 
 
+FUNCTION_BLOCK = re.compile(r"^glabel (\w+)\n.*?^endlabel \1\n(?:[ \t]*/\*[^\n]*\n)*", re.M | re.S)
+
+
+@functools.cache
+def unit_functions(version, unit):
+    """Function -> its text in the unit's full disassembly, asm/<v>/<unit>.s, with its padding."""
+    path = ROOT / "asm" / version / f"{unit}.s"
+    text = path.read_text(errors="replace") if path.exists() else ""
+    return {m.group(1): m.group(0) for m in FUNCTION_BLOCK.finditer(text)}
+
+
+@functools.cache
+def migrated_rodata(version, unit):
+    """Function -> the rodata blocks splat migrated into it, in order."""
+    blocks = rodata_blocks(version, unit)
+    return {fn: "".join(blocks[s] for s in syms if s in blocks)
+            for fn, syms in function_rodata(version).get(unit, ()) if fn}
+
+
 def function_asm(version, unit, fn):
-    """Split assembly of one function; splat moves it to matchings/ once the unit has C."""
-    for sub in ("nonmatchings", "matchings"):
-        path = ROOT / "asm" / version / sub / unit / f"{fn}.s"
-        if path.exists():
-            return path
-    return None
+    """Assembly text of one function: its split file while it is asm, else its migrated
+    rodata and its block of the unit's full disassembly (C functions get no file)."""
+    path = ROOT / "asm" / version / "nonmatchings" / unit / f"{fn}.s"
+    if path.exists():
+        return path.read_text(errors="replace")
+    body = unit_functions(version, unit).get(fn)
+    return None if body is None else migrated_rodata(version, unit).get(fn, "") + body
 
 
 def raidou_asm_functions(version):
@@ -1616,9 +1645,9 @@ R_26, R_HI16, R_LO16, R_GPREL16, R_LITERAL = 4, 5, 6, 7, 8
 
 
 def owned_data(asm, known):
-    """Addresses of the data labels in a function's asm file (data only it uses)."""
+    """Addresses of the data labels in a function's asm text (data only it uses)."""
     out = set()
-    for kind, name in re.findall(r"^(dlabel|jlabel) (\S+)", asm.read_text(), re.M):
+    for kind, name in re.findall(r"^(dlabel|jlabel) (\S+)", asm, re.M):
         if m := re.fullmatch(r"(?:D|jtbl)_([0-9A-F]{8})", name):
             out.add(int(m.group(1), 16))
         elif name in known:

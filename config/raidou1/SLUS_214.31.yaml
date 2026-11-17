@@ -31,7 +31,6 @@ options:
   asm_inc_header: ""
   generate_asm_macros_files: False
   find_file_boundaries: True
-  disassemble_all: True
   make_full_disasm_for_code: True
   disasm_unknown: True
   create_undefined_funcs_auto: True

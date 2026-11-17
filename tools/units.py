@@ -5,6 +5,7 @@ each version; a TU that differs has a file per game, src/<version>/<unit>.c. The
 per-game file wins when both exist.
 """
 import json
+import re
 from pathlib import Path
 
 try:
@@ -16,6 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 VERSIONS = json.loads((ROOT / "config" / "versions.json").read_text())
 SRC = ROOT / "src"
 SHARED = SRC / "shared"
+SYMBOL_BLOCK = re.compile(r"(?:\.align \d+\n)?nonmatching (\w+).*?enddlabel \1\n", re.S)
 
 
 def shared_sources():
@@ -87,3 +89,21 @@ def carried_data(version):
             if line and not line.startswith("#") and len(row) >= 5 and row[4] == "c":
                 out[row[0]] = int(row[1], 16)
     return out
+
+
+def function_rodata(version):
+    """Unit -> [(function, rodata symbols splat migrated into it)], in address order, from
+    asm/<v>/function_rodata.tsv (tools/splat_split.py). Unmigrated rodata has function ""."""
+    out = {}
+    path = ROOT / "asm" / version / "function_rodata.tsv"
+    for line in path.read_text().splitlines() if path.exists() else ():
+        unit, func, syms = line.split("\t")
+        out.setdefault(unit, []).append((func, syms.split()))
+    return out
+
+
+def rodata_blocks(version, unit):
+    """Rodata symbol -> its block (`nonmatching` to `enddlabel`) in asm/<v>/data/<unit>.rodata.s."""
+    path = ROOT / "asm" / version / "data" / f"{unit}.rodata.s"
+    text = path.read_text() if path.exists() else ""
+    return {m.group(1): m.group(0) for m in SYMBOL_BLOCK.finditer(text)}

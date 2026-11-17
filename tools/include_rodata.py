@@ -13,26 +13,27 @@ function's asm file, and each C function brings what the compiler emits for it
 (jump tables). Two kinds of rodata have no such home:
 
 - rodata of functions that are already C but whose C does not yet produce it
-  (strings and constants still referenced as extern D_ symbols); splat leaves it
-  in asm/<v>/matchings/<unit>/<func>.s. It goes directly before that function.
+  (strings and constants still referenced as extern D_ symbols); splat migrated
+  it to that function (asm/<v>/function_rodata.tsv). It goes before the function.
   Once the C writes the literal itself (the D_ symbol no longer appears in the
   function), the compiler emits it and no line is needed.
 - rodata several functions share, or that only .data tables point at; splat
-  writes it to asm/<v>/nonmatchings/<unit>/<sym>.s. It goes where its address
+  migrated it nowhere. It goes where its address
   falls: before the first function whose rodata comes after it, or at the end.
 - named rodata defined by the C unit (including aligned vectors) stays at its
   definition. The compiler provides that symbol even if an asm function still
   references it, so no INCLUDE_RODATA may duplicate it.
 
-The first two kinds get per-symbol files in asm/<v>/nonmatchings/<unit>/ and an
-INCLUDE_RODATA line. Placement is recomputed on every run.
+The first two kinds get per-symbol files in asm/<v>/nonmatchings/<unit>/, cut from
+asm/<v>/data/<unit>.rodata.s, and an INCLUDE_RODATA line. Placement is recomputed
+on every run.
 """
 import bisect
 import re
 import sys
 from pathlib import Path
 
-from units import carried_data, read_unit, unit_sources, write_unit
+from units import carried_data, function_rodata, read_unit, rodata_blocks, unit_sources, write_unit
 
 from include_sdata import DATA_DEF
 
@@ -41,12 +42,14 @@ INCLUDE = re.compile(r'^INCLUDE_(?:ASM|RODATA)\([^,]+,\s*"[^"]+",\s*(\w+)\);$', 
 INCLUDE_ASM = re.compile(r'^INCLUDE_ASM\([^,]+,\s*"[^"]+",\s*(\w+)\);$', re.M)
 DEF = re.compile(r"^[A-Za-z_][\w \t\*]*?\b(\w+)\s*\([^;{]*\)\s*\{?[ \t]*$", re.M)
 LABEL = re.compile(r"^dlabel (\w+)\n\s*/\* [0-9A-F]+ ([0-9A-F]{8})", re.M)
-SYMBOL_BLOCK = re.compile(r"(?:\.align \d+\n)?nonmatching (\w+).*?enddlabel \1\n", re.S)
+JTBL_ALIGN = re.compile(r"^\.align 3\n(?=nonmatching jtbl_)", re.M)
 
 
-def rodata_part(path):
-    text = path.read_text() if path.exists() else ""
-    return text.split(".section .text", 1)[0] if text.startswith(".section .rodata") else ""
+def write_rodata_file(path, block):
+    """A per-symbol rodata file as splat writes it (a jump table starts 16-aligned,
+    as tools/resolve_jtbl_targets.py makes splat's)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(".section .rodata\n\n" + JTBL_ALIGN.sub(".align 4\n", block))
 
 
 def place(version):
@@ -55,10 +58,10 @@ def place(version):
         r"^(\w+) = 0x([0-9A-Fa-f]+);", (ROOT / "config" / version / "smt3_symbols.txt").read_text(), re.M)}
     carried = carried_data(version)
     aliases.update(carried)
+    migration = function_rodata(version)
     for unit, c in unit_sources(version).items():
         nonmatchings = ROOT / "asm" / version / "nonmatchings" / unit
-        matchings = ROOT / "asm" / version / "matchings" / unit
-        if not nonmatchings.is_dir() and not matchings.is_dir():
+        if unit not in migration:
             # Nothing of the unit was split (its lines are left over from a split).
             text = read_unit(version, c)
             stripped = re.sub(r'^INCLUDE_RODATA\([^,]+,\s*"[^"]+",\s*(\w+)\);\n\n?', "", text, flags=re.M)
@@ -71,12 +74,15 @@ def place(version):
         labels = dict(LABEL.findall(full.read_text())) if full.exists() else {}
         owned = set(labels)
         unit_rodata = set(owned)
+        blocks = rodata_blocks(version, unit)
+        text = read_unit(version, c)
+        asm_funcs = set(INCLUDE_ASM.findall(text))
+        migrated = {f: syms for f, syms in migration[unit] if f}
+        unmigrated = [s for f, syms in migration[unit] if not f for s in syms]
         # Symbols splat migrated into an asm function's own file come with its
         # INCLUDE_ASM and must not be included again.
-        for f in nonmatchings.glob("*.s"):
-            if "glabel " in f.read_text():
-                owned -= {n for n, _ in LABEL.findall(rodata_part(f))}
-        text = read_unit(version, c)
+        for f in asm_funcs & migrated.keys():
+            owned -= set(migrated[f])
         # Placed from scratch every time: once a function compiles its own
         # literal, the lines around it must move with it.
         text = re.sub(r'^INCLUDE_RODATA\([^,]+,\s*"[^"]+",\s*(\w+)\);\n\n?', "", text, flags=re.M)
@@ -194,13 +200,16 @@ def place(version):
         for sym, pos in defined_at.items():
             anchors.append((int(labels[sym], 16), pos, None, False))
         for m in INCLUDE_ASM.finditer(text):
-            for _, addr in LABEL.findall(rodata_part(nonmatchings / f"{m.group(1)}.s")):
-                anchors.append((int(addr, 16), m.start(), None, False))
+            for sym in migrated.get(m.group(1), ()):
+                if sym in labels:
+                    anchors.append((int(labels[sym], 16), m.start(), None, False))
         for m in DEF.finditer(text):
-            rodata = rodata_part(matchings / f"{m.group(1)}.s")
-            for block in SYMBOL_BLOCK.finditer(rodata):
-                sym = block.group(1)
-                addr = int(LABEL.search(block.group(0)).group(2), 16)
+            if m.group(1) in asm_funcs:
+                continue
+            for sym in migrated.get(m.group(1), ()):
+                if sym not in blocks:
+                    continue
+                addr = int(LABEL.search(blocks[sym]).group(2), 16)
                 if sym in defined_at:
                     continue  # the named C definition is the address anchor
                 if sym.startswith("jtbl_") or sym in compiled:
@@ -209,14 +218,19 @@ def place(version):
                 out = nonmatchings / f"{sym}.s"
                 if not out.exists():
                     # A unit whose functions are all C still includes the rodata they name.
-                    nonmatchings.mkdir(parents=True, exist_ok=True)
-                    out.write_text(".section .rodata\n\n" + block.group(0))
+                    write_rodata_file(out, blocks[sym])
                 # Placed by address like any other included symbol: a function may
                 # use rodata the compiler emitted after later functions.
                 anchors.append((addr, None, sym, sym not in have))
         for sym, pos in compiled_at.items():
             if not any(a[2] == sym for a in anchors):
                 anchors.append((int(labels[sym], 16), pos, None, False))
+        # splat writes a file for unmigrated rodata only once a line includes it.
+        anchored = {a[2] for a in anchors}
+        for sym in unmigrated:
+            out = nonmatchings / f"{sym}.s"
+            if sym in owned and sym not in anchored and sym in blocks and not out.exists():
+                write_rodata_file(out, blocks[sym])
         for s in sorted(s for s in nonmatchings.glob("*.s") if "glabel " not in s.read_text()):
             align_file(s)
             m = LABEL.search(s.read_text())

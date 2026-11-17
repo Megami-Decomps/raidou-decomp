@@ -78,7 +78,7 @@ def verified(version, sides):
     out = []
     rows = rc.raidou_asm_functions(version)
     for path in sorted((ROOT / "asm" / version).glob("code_*.s")):  # gaps: asm units without C
-        rows += [(None, path.stem, fn, *body) for fn, body in rc.parse_asm(path).items()]
+        rows += [(None, path.stem, fn, *body) for fn, body in rc.parse_asm(path.read_text(errors="replace")).items()]
     for src, unit, fn, addr, words, slots in rows:
         good = []
         for game, ea, method in partners.get(addr, ()):
