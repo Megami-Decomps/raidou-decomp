@@ -777,7 +777,68 @@ s32 sdfSndInitSpu2(void)
     sdfSndBgmSwitchMidi = -1;
 }
 
+#ifdef NON_MATCHING
+/* 16 instructions short: gcc merges the two SelectMidi calls and their
+ * failure blocks, which retail keeps apart. */
+/* Load a sequence into a MIDI slot, point its callbacks back here and park
+ * it at the requested location. */
+s32 sdfSndMidiSelect(s32 slot, s32 seq, s32 bank, void *data, s32 loc)
+{
+    sceMidiSlot_t *ms;
+    s32 i;
+    s32 code;
+    s32 state;
+
+    intrman_CpuSuspendIntr(&state);
+    sdfSndMidiWork.tbl->seq[slot].data = data;
+    sdfSndHsynLoad(bank, slot);
+    if (modmidi_sceMidi_Load(&sdfSndMidiWork, slot) != 0) {
+        intrman_CpuResumeIntr(state);
+        stdio_printf(aSdfsnddrvScemi);
+        code = 17;
+        goto fail;
+    }
+    ms = &sdfSndMidiSlotWork[slot];
+    ms->cbB = sdfSndMidiCbIgnore1;
+    ms->msgCb = sdfSndMidiCbMessage;
+    ms->cbBArg = slot;
+    ms->msgCbArg = slot;
+    ms->cbC = sdfSndMidiCbIgnore2;
+    ms->cbCArg = slot;
+    ms->slotMask = 1 << slot;
+    for (i = 15; i >= 0; i--) {
+        ms->chanMask[i] = 1 << slot;
+    }
+    if (seq < 0) {
+        if (modmidi_sceMidi_SelectMidi(&sdfSndMidiWork, slot, 0) != 0) {
+            intrman_CpuResumeIntr(state);
+            stdio_printf(aSdfsnddrvReq08, sdfSndSelectId);
+            stdio_printf(aSdfsnddrvScemi_0);
+            code = 7;
+            goto fail;
+        }
+    } else if (modmidi_sceMidi_SelectMidi(&sdfSndMidiWork, slot, seq) != 0) {
+        intrman_CpuResumeIntr(state);
+        stdio_printf(aSdfsnddrvReq08, sdfSndSelectId);
+        stdio_printf(aSdfsnddrvScemi_0);
+        code = 7;
+        goto fail;
+    }
+    if (modmidi_sceMidi_MidiSetLocation(&sdfSndMidiWork, slot, loc) == 0) {
+        intrman_CpuResumeIntr(state);
+        return 0;
+    }
+    intrman_CpuResumeIntr(state);
+    stdio_printf(aSdfsnddrvReq08, sdfSndSelectId);
+    stdio_printf(aSdfsnddrvScemi_1);
+    code = 8;
+fail:
+    sdfSndPostError(code);
+    return 1;
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndMidiSelect);
+#endif
 
 /* Stop every slot (0), the BGM slots (1) or the SE slots (2) and cancel a
  * pending BGM switch. */
@@ -949,7 +1010,101 @@ s32 sdfSndUnlockAllBanks(void)
     }
 }
 
+#ifdef NON_MATCHING
+/* Same instructions; gcc rotates id, bank and the sequence number through
+ * $17-$19. */
+/* Start a sequence in one of the three BGM slots. A volume of 0x100 means
+ * fade in from silence, anything over 127 plays at full. */
+s32 sdfSndBgmPlay(sdfSndBgmReq_t *req)
+{
+    s32 id;
+    s32 bank;
+    s32 seq;
+    s32 slot;
+    s32 vol;
+    s32 ret;
+    s32 i;
+    s32 state;
+
+    id = req->id;
+    bank = sdfSndFindSlotById(req->id);
+    if ((u32)(bank - 1) < 2) {
+        sdfSndBankAltSlot = bank;
+    }
+    for (i = 0; i < 16; i++) {
+        if (sdfSndSlots[i].id == id) {
+            if (sdfSndSlots[i].volStep < 0) {
+                sdfSndSlots[i].volStep = 32;
+            }
+            return;
+        }
+    }
+    if (sdfSndIsSlotMuted(id) != 0) {
+        return;
+    }
+    seq = (u16)req->id;
+    if (bank < 0) {
+        sdfSndPostError(18);
+        return;
+    }
+    slot = sdfSndAllocBgmSlot();
+    if (slot < 0) {
+        return -1;
+    }
+    sdfSndBgmSwitchReq = 0;
+    sdfSndBgmSwitchSlot = -1;
+    sdfSndBgmSwitchMidi = -1;
+    intrman_CpuSuspendIntr(&state);
+    if ((sdfSndMidiWork.tbl->seq[slot].slot->flags & 2) != 0) {
+        if (modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, slot, 0) != 0) {
+            intrman_CpuResumeIntr(state);
+            stdio_printf(aSdfsnddrvScemi_3);
+            return;
+        }
+    }
+    sdfSndSelectId = id;
+    if (sdfSndMidiSelect(slot, seq, bank, sdfSndWorkArea->progData[bank].ptr,
+                         req->location) != 0) {
+        intrman_CpuResumeIntr(state);
+        return;
+    }
+    ret = modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, slot, 1);
+    sdfSndPutMsg(slot);
+    if (ret != 0) {
+        intrman_CpuResumeIntr(state);
+        stdio_printf(aSdfsnddrvPlayS);
+        sdfSndPostError(12);
+        return;
+    }
+    sdfSndSlots[slot].volStep = 0;
+    sdfSndSlots[slot].fadeIn = 0;
+    sdfSndSlots[slot].is3d = 0;
+    sdfSndSlots[slot].id = id;
+    sdfSndSlots[slot].group = bank;
+    sdfSndSlots[slot].unk34[0] = 0;
+    sdfSndSlots[slot].serial = sdfSndSlotSerialNext++;
+    vol = req->vol;
+    if (vol < 0) {
+        vol = 0;
+    } else if (vol >= 128) {
+        if ((vol & 0x100) != 0) {
+            sdfSndSlots[slot].volStep = 64;
+            vol = 0;
+        } else {
+            vol = 127;
+        }
+    }
+    sdfSndSlots[slot].vol = vol << 8;
+    sdfSndApplyVolume(id, slot, vol);
+    intrman_CpuResumeIntr(state);
+    if (ret != 0) {
+        stdio_printf(aSdfsnddrvScemi_4);
+        sdfSndPostError(13);
+    }
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndBgmPlay);
+#endif
 
 /* Stop every playing slot with the requested id and clear its state. */
 s32 sdfSndBgmStop(s32 *req)
