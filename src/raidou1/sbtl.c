@@ -92,6 +92,9 @@ s32 sbtlLeaf103(dds3ProcessID_t *id) {
 
 s32 sbtlLeaf87(dds3ProcessID_t *id)
 {
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBitCheck5);

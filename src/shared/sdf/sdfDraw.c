@@ -478,6 +478,9 @@ s32 sdfGrOtNormalCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData) {
     if (aFunc == 1) {
         sdfGrOtFuncLinkToHead(aOt, aData);
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 void sdfGrOtInit(sdfGrOt_t *aOt, s32 aNumOt) {

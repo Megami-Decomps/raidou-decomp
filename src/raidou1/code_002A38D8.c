@@ -2940,6 +2940,9 @@ s32 sbtlDrawProcess(dds3ProcessID_t *PID)
     }
     sdfMemFreeDirect(menu->hMem);
     ProcessCheckData = NULL;
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 s32 sbtlCallGetProcessData53(dds3ProcessID_t *id) {

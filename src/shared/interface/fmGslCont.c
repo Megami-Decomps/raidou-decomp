@@ -117,4 +117,7 @@ s32 fmRetFontMem(FontMem_t *pFontArea) {
     gFGC.unit_nums += 1;
     anchor->next = pFontArea;
     nextNode->prev = pFontArea;
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }

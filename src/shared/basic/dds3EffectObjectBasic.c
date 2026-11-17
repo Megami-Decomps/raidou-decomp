@@ -20,6 +20,9 @@
 #include "effMagatuhi.h"
 #include "effEvent.h"
 #include "dds3AreaBasic.h"
+#include "dds3WorldBasic.h"
+#include "sdfQuat.h"
+#include "sdfVu0.h"
 
 typedef struct
 {
@@ -802,6 +805,9 @@ s32 dds3EffectObjectPresetMG12(dds3Basic_t *eff) {
             break;
         }
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 /* Missing parameter sources leave their existing position and radius intact. */

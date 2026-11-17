@@ -29,6 +29,9 @@ s32 fclCallGetProcessData(dds3ProcessID_t *PID) {
     fclLeaf6(wk);
     sdfMemFreeDirect(wk->hMem);
     FAKEMATCH_ASM_READ(wk);
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 INCLUDE_ASM(const s32, "fclDrawBack", fclProcessStart);

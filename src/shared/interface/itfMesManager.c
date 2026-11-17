@@ -3148,6 +3148,9 @@ s32 itfCallGrAllocPacketBuff(instanceMes_tag *pinst) {
     itfMiscDrawAlphaPrim(tag, 0, 0);
     otp = &sdfGrOtTable[pinst->otindex];
     otp->regFunc(otp, tag);
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 #else
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff);

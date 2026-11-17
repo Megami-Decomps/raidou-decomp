@@ -88,6 +88,9 @@ s32 fldNakamaMotReset3(void) {
             NakamaMotion(motion, 0, 15.0f);
         }
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 s32 fldAiboMotReset(void) {
@@ -97,6 +100,9 @@ s32 fldAiboMotReset(void) {
             mdlSmoothLoopMotion(aiboModel, 0, 2, 15.0f, 15.0f);
         }
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 INCLUDE_ASM(const s32, "code_00139330", fldPlayerForceRotStart);

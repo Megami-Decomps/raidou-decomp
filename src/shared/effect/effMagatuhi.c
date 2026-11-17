@@ -1895,6 +1895,9 @@ s32 effMagaRandomize(effMagatuhiCallback_t *hEffect) {
             break;
         }
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 /* Allocate the dispatch owner before calling the selected payload constructor. */

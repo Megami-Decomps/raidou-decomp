@@ -416,6 +416,9 @@ s32 sbtlCallGetSmallFontFRQ2(s32 x, s32 y, s32 z, itfGridTextWidget_t *widget, s
         frDrawFontOt(font, 1, ot);
         return frDestroyFontRequestAfter(font);
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 /* NON_MATCHING: 86 of 93 words match. register choice of flags temp and the two function-pointer constants after itfCreateGridTextWidget, same as sbtlRefDDS3GBWK15 (retail v1/a2/v0). Logic as retail. */
@@ -521,6 +524,9 @@ s32 sbtlCallGetSmallFontFRQ22(s32 x, s32 y, s32 z, itfGridTextWidget_t *widget, 
         frDrawFontOt(font, 1, ot);
         return frDestroyFontRequestAfter(font);
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 void sbtlLeaf47(itfGridTextWidget_t *widget, itfGridTextListItem_t *item, char *buf, s32 size) {
@@ -867,6 +873,9 @@ s32 nbCallGetSmallFontFRQ2(s32 x, s32 y, s32 z, itfGridTextWidget_t *widget, s32
         frDrawFontOt(font, 1, ot);
         return frDestroyFontRequestAfter(font);
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 void nbRefDDS3GBWK(itfGridTextWidget_t *widget, itfGridTextListItem_t *item, char *buf, s32 size) {

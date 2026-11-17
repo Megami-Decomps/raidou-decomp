@@ -643,6 +643,9 @@ s32 MenuShutdown(dds3ProcessID_t *PID) {
     }
     sdfMemFreeDirect(wk->hMem);
     FAKEMATCH_ASM_READ(wk);
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 dds3ProcessID_t *itfMenuProcessStart(void)

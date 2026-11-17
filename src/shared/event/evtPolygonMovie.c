@@ -664,6 +664,9 @@ s32 evtStopMover(dds3Basic_t *mover, s32 sw, s32 baseframe, s32 nowframe) {
             dds3PathBasicPauseOff(clip);
         }
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 void evtMoverFrameSet(dds3Basic_t *mover, s32 sw, s32 baseframe, s32 nowframe, s32 offset) {

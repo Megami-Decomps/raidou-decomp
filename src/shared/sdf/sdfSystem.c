@@ -171,6 +171,9 @@ s32 sdfFreeAuto(void *allocation)
             sdfMemFreePtrDirect(allocation);
         }
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 s32 sdfFreeAutoDelayed(void *allocation)
@@ -182,6 +185,9 @@ s32 sdfFreeAutoDelayed(void *allocation)
             sdfMemFreeDelayedDirect(sdfMemGetHandleByPtr(allocation));
         }
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 s32 sdfFreeMemorySlotFromEitherHeap(void **slot)
@@ -196,6 +202,9 @@ s32 sdfFreeMemorySlotFromEitherHeap(void **slot)
             sdfMemFreePtrDirect(allocation);
         }
     }
+#ifdef FIX_BUGS
+    return 0;
+#endif
 }
 
 void FatalError(const char *format, ...) {
