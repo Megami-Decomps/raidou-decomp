@@ -42,10 +42,18 @@ typedef char titleAudioStreamState_size[(sizeof(titleAudioStreamState_t) == 0x30
 typedef struct sndBgmEntry_t {
     u8 format;
     s16 repeatFrame;
+#ifdef VERSION_RAIDOU1
     char name[12];
+#else
+    char *name;
+#endif
 } sndBgmEntry_t;
 
+#ifdef VERSION_RAIDOU1
 typedef char sndBgmEntry_size[(sizeof(sndBgmEntry_t) == 0x10) ? 1 : -1];
+#else
+typedef char sndBgmEntry_size[(sizeof(sndBgmEntry_t) == 0x8) ? 1 : -1];
+#endif
 
 /* Shared title-audio stream operations, implemented by each title. */
 void mnuQueueTitleSoundStreamEntry(s32 soundEntryIndex);
