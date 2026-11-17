@@ -131,6 +131,10 @@ retail's behavior, including its bugs, and declare every callee before first use
 `python3 tools/check_nonmatching.py` compiles every unit with a draft under
 `NON_MATCHING` and `SKIP_ASM`, once per version that builds it, with implicit
 declarations as errors. It checks that the draft compiles and nothing else.
+`python3 tools/nm_behaviour.py [--func NAME]` compares what each draft does with
+retail, ignoring register choice and order: callees, memory accesses, constants,
+shifts, floats and branch count. A row it prints is a behaviour difference to fix
+or explain.
 
 Each draft also gets an entry in `docs/matching/<unit>.md`, headed
 `## <function> (<unit>, <game> <size>)` with one size per game that builds it:
