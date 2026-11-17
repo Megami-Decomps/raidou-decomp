@@ -2514,18 +2514,16 @@ frFontHandle_t *MessageRequestEx2(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32
     return frAnalyzeMessage(&args);
 }
 
-#ifdef NON_MATCHING
-/* 7 of 15 words differ (first at +0x20) */
 frFontHandle_t *MessageRequestNS(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1, s32 channel2, s32 channel3, u8 *encodedText, frFontHandle_t *unusedPrevious) {
     s8 savedSpacing = gMessageSpaceX;
-    frFontHandle_t *chain = MessageRequestEx2(x, y, depth, channel0 & 0xFF, channel1 & 0xFF, channel2 & 0xFF, channel3 & 0xFF, encodedText, NULL);
+    frFontHandle_t *chain;
+
+    gMessageSpaceX = 0;
+    chain = MessageRequestEx2(x, y, depth, channel0 & 0xFF, channel1 & 0xFF, channel2 & 0xFF, channel3 & 0xFF, encodedText, NULL);
 
     gMessageSpaceX = savedSpacing;
     return chain;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", MessageRequestNS);
-#endif
 
 frFontHandle_t *frCallMessageRequestEx2(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32 Tp, s32 Spd, u8 *pMsg,
     frFontHandle_t *pFRQ, s32 Line) {
@@ -2624,18 +2622,16 @@ frFontHandle_t *MessageRequestEx2(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32
     return frAnalyzeMessage(&args);
 }
 
-#ifdef NON_MATCHING
-/* 7 of 15 words differ (first at +0x20) */
 frFontHandle_t *MessageRequestNS(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1, s32 channel2, s32 channel3, u8 *encodedText, frFontHandle_t *unusedPrevious) {
     s8 savedSpacing = gMessageSpaceX;
-    frFontHandle_t *chain = MessageRequestEx2(x, y, depth, channel0 & 0xFF, channel1 & 0xFF, channel2 & 0xFF, channel3 & 0xFF, encodedText, NULL);
+    frFontHandle_t *chain;
+
+    gMessageSpaceX = 0;
+    chain = MessageRequestEx2(x, y, depth, channel0 & 0xFF, channel1 & 0xFF, channel2 & 0xFF, channel3 & 0xFF, encodedText, NULL);
 
     gMessageSpaceX = savedSpacing;
     return chain;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", MessageRequestNS);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", frCallMessageRequestEx2);
 
