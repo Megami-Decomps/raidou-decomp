@@ -131,6 +131,11 @@ jobs:
         if: steps.orig.outputs.available == 'true'
         run: ninja
 
+      # Needs the retail executable, so it runs here rather than with the tool tests.
+      - name: Check check_unit relocations
+        if: steps.orig.outputs.available == 'true'
+        run: python3 tools/test_check_unit.py
+
       - name: Source coverage
         if: steps.orig.outputs.available == 'true'
         run: python3 tools/progress.py

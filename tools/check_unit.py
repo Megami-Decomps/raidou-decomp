@@ -7,8 +7,9 @@ Compiles the unit with -DSKIP_ASM (only real C) through tools/cc.sh into a temp 
 so any number of these can run at once. For each function the object defines, the
 bytes are compared with the retail ELF at the symbol's address. Words with a
 relocation are compared by resolved target when the symbol has a known address
-(func_/D_XXXXXXXX, config/<v>/symbol_addrs.txt); relocations against local
-sections (.rodata/.data of this unit) are masked. `ninja` remains the final proof.
+(func_/D_XXXXXXXX, config/<v>/symbol_addrs.txt or smt3_symbols.txt); relocations
+against local sections (.rodata/.data of this unit) are masked. `ninja` remains
+the final proof.
 Exit status 0 only if every compiled function matches and any requested --func
 name is emitted by the SKIP_ASM compile.
 """
@@ -19,6 +20,7 @@ import struct
 import subprocess
 import sys
 import tempfile
+from collections import ChainMap
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -46,6 +48,15 @@ def symbols(version):
     # Splat's linker script supplies this absolute ABI symbol, not a C/BSS object.
     out = {"_gp": int(VERSIONS[version]["gp"], 16)}
     for line in (ROOT / "config" / version / "symbol_addrs.txt").read_text().splitlines():
+        if m := ROW.match(line):
+            out.setdefault(m.group(1), int(m.group(2), 16))
+    return out
+
+
+def smt3_symbols(version):
+    """SMT3 names that carried C links at Raidou addresses; symbol_addrs wins a clash, as at link."""
+    out = {}
+    for line in (ROOT / "config" / version / "smt3_symbols.txt").read_text().splitlines():
         if m := ROW.match(line):
             out.setdefault(m.group(1), int(m.group(2), 16))
     return out
@@ -886,6 +897,8 @@ def main():
     syms = symbols(version)
     aliases = load_symbol_aliases(ROOT, version)
     syms.update({alias.name: alias.address for alias in aliases})
+    # Relocation targets resolve as the link does. Name lookups by address keep to syms.
+    link_syms = ChainMap(syms, smt3_symbols(version))
     sys.path.insert(0, str(ROOT / "tools"))
     from eeas_compat import lit4_range
     lit4_lo, lit4_hi = lit4_range((ROOT / RETAIL[version]).read_bytes())
@@ -1041,7 +1054,7 @@ def main():
                     section_symbols(full_objdump, ".data"),
                     relocations(full)[".data"],
                     [(off, size, name) for name, (off, size) in fsyms.items()],
-                    syms, section_bases)
+                    link_syms, section_bases)
                 data_context.extend(f".data {problem}" for problem in initialized_problems)
             if sdata_symbols and sdata_range:
                 full_sdata = {
@@ -1056,7 +1069,7 @@ def main():
                 section_bases = {".sdata": sdata_origin} if sdata_origin is not None else {}
                 full_bytes, full_problems = relocate_sdata_item(
                     fdata[fsd_off:fsd_off + fsd_size], 0, fsd_relocs, full_funcs,
-                    syms, section_bases)
+                    link_syms, section_bases)
                 sdata_span_matches = (
                     fsd_size <= end - start and not full_problems
                     and full_bytes == retail[start:start + fsd_size]
@@ -1097,7 +1110,7 @@ def main():
                         off = actual[0]
                         item = fdata[fsd_off + off:fsd_off + off + size]
                         linked, problems = relocate_sdata_item(
-                            item, off, fsd_relocs, full_funcs, syms, section_bases)
+                            item, off, fsd_relocs, full_funcs, link_syms, section_bases)
                         if off + size > fsd_size or problems or linked != retail[retail_off:retail_off + size]:
                             data_context.append(
                                 f"{name}: full-unit .sdata bytes/relocations differ from retail"
@@ -1234,7 +1247,7 @@ def main():
                 continue
             rtype, sym = relocations_at
             base = sym.split("+")[0]
-            target = address(base, syms)
+            target = address(base, link_syms)
             if not instruction_shape_matches(mine, want, rtype):
                 diffs.append((i, mine, want, f"{rtype} {sym}"))
                 continue
@@ -1426,7 +1439,7 @@ def main():
             continue
         end = next(s for s in starts if s > table_off)
         code_pointers = rodata_code_pointers(
-            rodata, table_off, end, rodata_relocs, funcs_by_off, syms, func_starts)
+            rodata, table_off, end, rodata_relocs, funcs_by_off, link_syms, func_starts)
         if not code_pointers:
             item = rodata[table_off:end]
             # Words the linker fills in (a table of pointers to strings or
@@ -1523,7 +1536,7 @@ def main():
             else trim_sdata_item(item, off, sdata_relocs)
         theirs = retail[va_to_off(segs, retail_addr):][:len(item)]
         linked_item, relocation_problems = relocate_sdata_item(
-            item, off, sdata_relocs, funcs, syms,
+            item, off, sdata_relocs, funcs, link_syms,
             {".sdata": off_to_va(segs, sdata_range[0])}
             if sdata_range and off_to_va(segs, sdata_range[0]) is not None else None)
         if relocation_problems:
@@ -1640,11 +1653,11 @@ def main():
     for old in sorted(set(re.findall(r"\bfunc_[0-9A-F]{8}\b", unit_view)) & renamed.keys()):
         bad += 1
         print(f"STALE {old}: symbol_addrs names it {renamed[old]}; use that name")
-    # A symbol the C references but nothing defines (symbol_addrs, the
+    # A symbol the C references but nothing defines (symbol_addrs, smt3_symbols, the
     # undefined_*_auto lists, a splat label, or C in this game's tree) links only
     # against a stale build tree. Real names count too: a mistyped or other-game
     # name compiles and matches (relocations are compared by address) yet fails the link.
-    known = set(syms) | set(re.findall(r"^\s*(?:PROVIDE\s*\(\s*)?(\w+)\s*=", "".join(
+    known = set(link_syms) | set(re.findall(r"^\s*(?:PROVIDE\s*\(\s*)?(\w+)\s*=", "".join(
         p.read_text() for p in (ROOT / "config" / version).glob("undefined_*_auto.txt")), re.M))
     wanted = undefined - known
     if wanted:
