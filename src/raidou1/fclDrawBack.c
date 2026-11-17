@@ -98,7 +98,7 @@ void fldGbInit_System(s32 mode) {
     fldGlobalBase.noInpPlCnt = 0;
     fldGlobalBase.previousFloor = -1;
     fldGlobalBase.resourceArea = -1;
-    fldGlobalBase.word28 = 0;
+    fldGlobalBase.float28 = 0.0f;
     fldGlobalBase.word2C = 0;
     fldGlobalBase.lastMoveLeng = 0.0f;
     fldGlobalBase.aiboRunStop = 0;

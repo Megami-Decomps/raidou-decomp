@@ -8,7 +8,7 @@
 #include "sdfRand.h"
 
 void fldAiboCashLoad_Block(void);
-void fldCtnGetSub(dds3Basic_t *pBasic);
+s32 fldCtnGetSub(s32 modelId);
 s32 fldPlayerALoadEndCheck(void);
 void fldPlayerALoadStart(void);
 void fldRegistUnitPad(void);

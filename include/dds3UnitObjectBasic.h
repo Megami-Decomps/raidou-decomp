@@ -33,5 +33,7 @@ void dds3UnitObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx);
 struct evtUnit_t *dds3GetUnitHandleObjectBasic(dds3Basic_t *b);
 void dds3UnitObjectBasicSetKubiTerget(dds3Basic_t *pBasic, const sdfVector4_t *aTgt);
 void dds3UnitObjectBasicSetKubiModori(dds3Basic_t *pBasic);
+void dds3UnitObjectBasicKubiOn(dds3Basic_t *pBasic, s32 posid);
+void dds3UnitObjectBasicKubiOff(dds3Basic_t *pBasic);
 
 #endif

@@ -60,9 +60,15 @@ typedef struct ctnCitizen_t {
     f32 angle;
     f32 oldX;
     f32 oldY;
-    s32 newModelID;
-    s32 NgCount;
 } ctnCitizen_t;
+typedef char ctnCitizenSizeCheck[sizeof(ctnCitizen_t) == 0xF0 ? 1 : -1];
+
+typedef struct ctnWork_t {
+    u8 unk0[0x3A0];
+    ctnCitizen_t citizen[256]; /* 0x3A0 */
+} ctnWork_t;
+
+extern ctnWork_t *Work_ctn;
 
 typedef struct ctnObject_t {
     f32 center[2];

@@ -257,7 +257,7 @@ char *mapScriptGet_Pos(f32 x, f32 y, f32 z, f32 r, s32 *attr, f32 *objx, f32 *ob
 INCLUDE_ASM(const s32, "code_00148310", mapScriptGet_Pos);
 #endif
 
-s32 mapCallSetPlayerTargetData(f32 x, f32 z) {
+s32 mapCallSetPlayerTargetData(f32 x, f32 z, f32 r) {
     s32 ix;
     s32 iz;
     s32 i;
@@ -282,7 +282,7 @@ s32 mapCallSetPlayerTargetData(f32 x, f32 z) {
 
 /* NON_MATCHING: 64 of 67 words match.  */
 #ifdef NON_MATCHING
-s32 mapCallSetPlayerTargetData2(f32 x, f32 z) {
+s32 mapCallSetPlayerTargetData2(s32 *attr, f32 x, f32 z, f32 r) {
     s32 ix;
     s32 iz;
     s32 i;

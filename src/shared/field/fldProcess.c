@@ -40,6 +40,11 @@
 #include "code_00195698.h"
 #include "cmpItem.h"
 #include "fldDraw.h"
+#include "fldDbg.h"
+#include "sbattle.h"
+#include "mdlManager.h"
+#include "fclCombineInit.h"
+#include "fpu.h"
 
 
 
@@ -1058,9 +1063,9 @@ s32 ProcSequence(dds3ProcessID_t *id)
     case 0x25:
         if (fldGlobalBase.word2A8 < 19) {
             if (!fldGlobalBase.mskIndex && fldGlobalBase.word35C) {
-                mapIgnite(fldGlobalBase.word294, fldGlobalBase.word298, fldGlobalBase.word29C, fldGlobalBase.word2A0, fldGlobalBase.word2A4);
+                mapIgnite(fldGlobalBase.word294, fldGlobalBase.word298, fldGlobalBase.word29C, fldGlobalBase.word2A0, fldGlobalBase.word2A4, fldGlobalBase.word2A8);
             } else {
-                mapIfDrawActionMaster(fldGlobalBase.word294, fldGlobalBase.word298, fldGlobalBase.word29C, fldGlobalBase.word2A0, fldGlobalBase.word2A4);
+                mapIfDrawActionMaster(fldGlobalBase.word294, fldGlobalBase.word298, fldGlobalBase.word29C, fldGlobalBase.word2A0, fldGlobalBase.word2A4, fldGlobalBase.word2A8);
             }
             fldGlobalBase.word2A8++;
         } else {
@@ -1670,7 +1675,561 @@ INCLUDE_ASM(const s32, "field/fldProcess", fldHardSelect1Sub);
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask);
 
 #ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 42 of 1333 words match.  */
+#ifdef NON_MATCHING
+s32 fldSaveLabel(void) {
+    s32 attr;
+    f32 objx;
+    f32 objy;
+    f32 objz;
+    s32 type;
+    f32 x2;
+    f32 y2;
+    char *label;
+    s32 kind;
+    s32 num;
+    s32 idx;
+    s32 id;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+    f32 dist;
+    dds3PoseSet_t *poseset;
+
+    attr = 0;
+    if (!fldEncountTestFlag(0x40)) {
+        return 0;
+    }
+    fldGlobalBase.word138 = 24;
+    fldGlobalBase.mskIndex = 0;
+
+    if (fldDbg.eveHitOn) {
+        label = mapScriptGet_Pos(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ, fldGlobalBase.floatC4,
+                                 &attr, &objx, &objy, &objz, &type);
+        if (label != NULL) {
+            kind = (u8)attr;
+            num = 1;
+            if (kind != 0 && !(kind == 15 && fldGlobalBase.nakamaMode) && !(kind == 16 && !fldGlobalBase.nakamaMode) &&
+                kind != 17 && kind != 18) {
+                fldPoint3To2(&x2, &y2, objx, objy - 100.0f, objz);
+                fldGlobalBase.word298 = kind;
+                fldGlobalBase.word294 = fldGlobalBase.nakamaMode;
+                fldGlobalBase.word2A4 = 0;
+                fldGlobalBase.word2A8 = 0;
+                fldGlobalBase.word29C = (s32)(x2 - 1792.0f);
+                fldGlobalBase.word2A0 = (s32)((y2 - 1936.0f) * 2.0f) - 12;
+                if (!strcmp("save_label", label) || !strcmp("itembox_label", label) || !strcmp("heal_label", label) ||
+                    !strcmp("cheal_label", label)) {
+                    num = 1;
+                    mapCallPreCalcStrWidth(fldGlobalBase.nakamaMode, kind, fldGlobalBase.word29C, fldGlobalBase.word2A0);
+                } else if (!fldGlobalBase.mskIndex && fldDbg.sousaAllMSKOn) {
+                    mapIgnite(fldGlobalBase.word294, fldGlobalBase.word298, fldGlobalBase.word29C, fldGlobalBase.word2A0,
+                              fldGlobalBase.word2A4, fldGlobalBase.word2A8);
+                    num = mapIfDrawActionNum(NULL);
+                } else {
+                    fldGlobalBase.word138 =
+                        mapIfDrawActionMaster(fldGlobalBase.word294, fldGlobalBase.word298, fldGlobalBase.word29C,
+                                              fldGlobalBase.word2A0, fldGlobalBase.word2A4, fldGlobalBase.word2A8);
+                    num = mapIfDrawActionNum(NULL);
+                }
+            }
+
+            if (!strcmp("save_label", label)) {
+                if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+                    mapNakamaStockOnCheck();
+                    p2sdPlaySE(0, 127, 63);
+                    fldReleaseUnitPad();
+                    if (!fldGlobalBase.nakamaMode) {
+                        fldPlayerMotReset3();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), label);
+                    } else {
+                        fldPlayerMotReset();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_hajiki2_label");
+                    }
+                }
+                return 0;
+            }
+
+            if (scrSearchScriptName(label)) {
+                return 0;
+            }
+
+            if (kind == 0 || (kind == 15 && fldGlobalBase.nakamaMode) || (kind == 16 && !fldGlobalBase.nakamaMode) ||
+                kind == 17 || kind == 18) {
+                fldReleaseUnitPad();
+                mapNakamaStockOnCheck();
+                if (fldGlobalBase.nakamaMode) {
+                    if ((fldGlobalBase.word148 & 0xF000) == 0x1000) {
+                        fldPlayerMotReset();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), ProcSequenceStrBunriHajikiLabel);
+                        fldAutoMapSeqFlags.stage = 63;
+                        return 0;
+                    }
+                    if (fldGlobalBase.word148 == 0x2000) {
+                        fldPlayerMotReset();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrBunriHajiki3Label);
+                        return 0;
+                    }
+                }
+                mdlSetMotionSpeed(2);
+                fldPlayerMotReset3();
+                fldNakamaMotReset3();
+                fldAiboMotReset();
+                dds3SceneBasicStartScript(dds3GetActiveScene(), label);
+                return 0;
+            }
+
+            if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+                fldReleaseUnitPad();
+                fldGlobalBase.word138 = 24;
+                mapNakamaStockOnCheck();
+                if (fldGlobalBase.nakamaMode) {
+                    if ((fldGlobalBase.word148 & 0xF000) == 0x1000) {
+                        fldPlayerMotReset();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), ProcSequenceStrBunriHajikiLabel);
+                        fldAutoMapSeqFlags.stage = 63;
+                        return 0;
+                    }
+                    if (fldGlobalBase.word148 == 0x2000) {
+                        fldPlayerMotReset();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrBunriHajiki3Label);
+                        return 0;
+                    }
+                    if (kind == 2 && fldGlobalBase.word14C) {
+                        fldPlayerMotReset();
+                        switch (fldGlobalBase.word150) {
+                        case 106:
+                            dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_reigai_4_label");
+                            return 0;
+                        case 147:
+                        case 163:
+                        case 218:
+                            dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_reigai_3_label");
+                            return 0;
+                        case 181:
+                        case 201:
+                        case 268:
+                        case 269:
+                            dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_reigai_5_label");
+                            return 0;
+                        case 223:
+                        case 224:
+                        case 225:
+                        case 226:
+                        case 227:
+                        case 228:
+                        case 229:
+                        case 230:
+                        case 231:
+                        case 232:
+                        case 233:
+                        case 234:
+                        case 235:
+                        case 236:
+                        case 237:
+                        case 238:
+                        case 239:
+                        case 240:
+                        case 241:
+                        case 242:
+                        case 257:
+                        case 263:
+                        case 264:
+                            dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_reigai_1_label");
+                            return 0;
+                        case 265:
+                            dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_reigai_2_label");
+                            return 0;
+                        default:
+                            dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_talk_label");
+                            return 0;
+                        }
+                    }
+                }
+                fldAutoMapSeqFlags.stage = 37;
+                fldGlobalBase.word2A4 = 0;
+                fldGlobalBase.word2A8 = 0;
+                strcpy(fldGlobalBase.scriptName, label);
+                if (kind != 5 && kind != 9 && kind != 10) {
+                    p2sdPlaySE(0, 127, 63);
+                }
+                if (type == 1) {
+                    fldPlayerForceRotStart(objx, objz);
+                }
+                if (fldGlobalBase.word158) {
+                    mapObjNpcKuseStop(fldGlobalBase.word158);
+                }
+                return 0;
+            }
+
+            if (dds3PadButtonState[0x21] < 0 && !fldGlobalBase.noInpPlCnt && num == 2) {
+                if (fldGlobalBase.nakamaMode) {
+                    if ((fldGlobalBase.word148 & 0xF000) == 0x1000) {
+                        fldPlayerMotReset();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), ProcSequenceStrBunriHajikiLabel);
+                        fldAutoMapSeqFlags.stage = 63;
+                        return 0;
+                    }
+                    if (fldGlobalBase.word148 == 0x2000) {
+                        fldPlayerMotReset();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrBunriHajiki3Label);
+                        return 0;
+                    }
+                }
+                if (DDS3_GBWK->mapSummonID > 0) {
+                    if (fldGlobalBase.word138 < 0 || (fldGlobalBase.word138 >= 7 && fldGlobalBase.word138 != 16) ||
+                        (id = datCallGetStockDevilID(DDS3_GBWK->mapSummonID)) == -1 ||
+                        sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[id]) != 11) {
+                        mapNakamaSkil_SetBit();
+                        fldAutoMapSeqFlags.stage = 37;
+                        fldReleaseUnitPad();
+                        fldGlobalBase.word2A4 = 1;
+                        fldGlobalBase.word2A8 = 0;
+                        strcpy(fldGlobalBase.scriptName, label);
+                        if (kind != 5 && kind != 9 && kind != 10) {
+                            p2sdPlaySE(0, 127, 63);
+                        }
+                        fldGlobalBase.float13C = objx;
+                        fldGlobalBase.float140 = objy;
+                        fldGlobalBase.float144 = objz;
+                        if (fldGlobalBase.word158) {
+                            mapObjNpcKuseStop(fldGlobalBase.word158);
+                        }
+                        switch (fldGlobalBase.word138) {
+                        case 0:
+                            if (mapEveHitMsk_Set() == 1) {
+                                fldData14 = 0;
+                                fldAutoMapSeqFlags.stage = 47;
+                            } else {
+                                mapCallNakamaWakeUp4();
+                                fldAutoMapSeqFlags.stage = 46;
+                            }
+                            return 0;
+                        case 1:
+                            if (mapEveHitMsk_Set() == 1) {
+                                fldData14 = 0;
+                                fldAutoMapSeqFlags.stage = 49;
+                            } else {
+                                mapNakamaJoinStart();
+                                fldAutoMapSeqFlags.stage = 48;
+                            }
+                            return 0;
+                        case 4:
+                            if (mapEveHitMsk_Set() == 1) {
+                                fldData14 = 0;
+                                fldAutoMapSeqFlags.stage = 51;
+                            } else {
+                                mapCallNakamaWakeUp5();
+                                fldAutoMapSeqFlags.stage = 50;
+                            }
+                            return 0;
+                        case 5:
+                            if (mapEveHitMsk_Set() == 1) {
+                                fldData14 = 0;
+                                fldAutoMapSeqFlags.stage = 53;
+                            } else {
+                                mapCallNakamaWakeUp6();
+                                fldAutoMapSeqFlags.stage = 52;
+                            }
+                            return 0;
+                        case 8:
+                            if (mapEveHitMsk_Set() == 1) {
+                                fldData14 = 0;
+                                fldAutoMapSeqFlags.stage = 57;
+                            } else {
+                                fldCallNakamaWakeUp2();
+                                fldAutoMapSeqFlags.stage = 56;
+                            }
+                            return 0;
+                        case 9:
+                            if (mapEveHitMsk_Set() == 1) {
+                                fldData14 = 0;
+                                fldAutoMapSeqFlags.stage = 59;
+                            } else {
+                                fldFastTravelStart();
+                                fldAutoMapSeqFlags.stage = 58;
+                            }
+                            return 0;
+                        case 16:
+                            if (mapEveHitMsk_Set() == 1) {
+                                fldData14 = 0;
+                                fldAutoMapSeqFlags.stage = 55;
+                            } else {
+                                fldCallNakamaWakeUp();
+                                fldAutoMapSeqFlags.stage = 54;
+                            }
+                            return 0;
+                        case 2:
+                        case 3:
+                        case 6:
+                        case 7:
+                        case 10:
+                        case 11:
+                        case 12:
+                        case 13:
+                        case 14:
+                        case 15:
+                            return 0;
+                        }
+                    } else {
+                        fldReleaseUnitPad();
+                        fldPlayerMotReset3();
+                        dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrBadMafuHajikiLabel);
+                        fldPlayerPosRot();
+                    }
+                }
+            }
+            return 0;
+        }
+
+        if (fldDbg.eveHitOn && !fldGlobalBase.nakamaMode &&
+            mapCallSetPlayerTargetData2(&attr, fldGlobalBase.focusX, fldGlobalBase.focusZ, fldGlobalBase.floatC4) != -1) {
+            fldPoint3To2(&x2, &y2, fldGlobalBase.focusX, fldGlobalBase.focusY - 100.0f, fldGlobalBase.focusZ);
+            fldGlobalBase.word298 = 1;
+            fldGlobalBase.word294 = fldGlobalBase.nakamaMode;
+            fldGlobalBase.word2A4 = 0;
+            fldGlobalBase.word2A8 = 0;
+            fldGlobalBase.word29C = (s32)(x2 - 1792.0f);
+            fldGlobalBase.word2A0 = (s32)((y2 - 1936.0f) * 2.0f) - 12;
+            mapCallPreCalcStrWidth2(fldGlobalBase.nakamaMode, 1, fldGlobalBase.word29C, fldGlobalBase.word2A0);
+            if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+                mapNakamaStockOnCheck();
+                fldReleaseUnitPad();
+                fldPlayerMotReset3();
+                dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrMwallDevilonlyLabel);
+            }
+            return 0;
+        }
+    }
+
+    idx = mapWarpGet_Pos(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ, &attr, &objx, &objy, &objz);
+    if (idx >= 0 && fldEncountTestFlag(0x40)) {
+        kind = (u8)attr;
+        if (kind == 18) {
+            mapNakamaStockOnCheck();
+            fldGlobalBase.word2AC = idx;
+            fldReleaseUnitPad();
+            fldPlayerMotReset();
+            dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrMap13WarpLabel);
+            return 0;
+        }
+        if (kind == 17) {
+            mapNakamaStockOnCheck();
+            fldGlobalBase.word2AC = idx;
+            fldReleaseUnitPad();
+            fldPlayerMotReset();
+            dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrRunwarpLabel);
+            return 0;
+        }
+        if (kind == 0 || (kind == 15 && fldGlobalBase.nakamaMode) || (kind == 16 && !fldGlobalBase.nakamaMode)) {
+            mapNakamaStockOnCheck();
+            if (!mapWarpChk_Idx(idx)) {
+                return mapCallTitleStartFld(idx);
+            }
+            fldAutoMapSeqFlags.stage = 32;
+            if (fldGlobalBase.amSBlock == 31) {
+                fldHirukoYukaGo_Idx(idx);
+                fldAutoMapSeqFlags.stage = 30;
+            } else {
+                fldBgZoomTest(3);
+                fldGlobalBase.bgZoomSet = 1;
+                dds3FadeOut(0, 0, 0, 30);
+                if (fldGlobalBase.nowDoorSe > 0) {
+                    p2sdPlaySE_Vol(fldGlobalBase.nowDoorSe, 127);
+                }
+                ProcSequenceData3 = 30;
+            }
+            fldPlayerMotReset();
+            fldReleaseUnitPad();
+            ProcSequenceData2 = idx;
+            return 0;
+        }
+    }
+
+    if (fldGlobalBase.nakamaMode && fldGlobalBase.amSBlock != 12 && fldGlobalBase.amSBlock == fldGlobalBase.word190 &&
+        fldGlobalBase.nameU == fldGlobalBase.word194) {
+        dx = fldGlobalBase.focusX - fldGlobalBase.float184;
+        dy = fldGlobalBase.focusY - fldGlobalBase.float188;
+        dz = fldGlobalBase.focusZ - fldGlobalBase.float18C;
+        dist = fsqrtf(dx * dx + dy * dy + dz * dz);
+        if (dist > 30.0f && dist < 150.0f &&
+            !mapHitAidaCalc(fldGlobalBase.focusX, fldGlobalBase.focusZ, fldGlobalBase.float184, fldGlobalBase.float18C)) {
+            fldPoint3To2(&x2, &y2, fldGlobalBase.float184, fldGlobalBase.float188 - 100.0f, fldGlobalBase.float18C);
+            mapCallPreCalcStrWidth2(fldGlobalBase.nakamaMode, 13, (s32)(x2 - 1792.0f),
+                                    (s32)((y2 - 1936.0f) * 2.0f) - 12);
+            if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+                fldReleaseUnitPad();
+                evtBitOff(2993);
+                fldGlobalBase.nakamaMode = 0;
+                fldAutoMapSeqFlags.stage = 29;
+                mapNakamaSkil_ClearBit();
+            }
+            return 0;
+        }
+    }
+
+    if (fldDbg.eveHitOn) {
+        idx = mapCallSetPlayerTargetData(fldGlobalBase.focusX, fldGlobalBase.focusZ, fldGlobalBase.floatC4);
+        if (idx != -1) {
+            fldPoint3To2(&x2, &y2, fldGlobalBase.focusX, fldGlobalBase.focusY - 100.0f, fldGlobalBase.focusZ);
+            fldGlobalBase.word298 = 12;
+            fldGlobalBase.word294 = fldGlobalBase.nakamaMode;
+            fldGlobalBase.word2A4 = 0;
+            fldGlobalBase.word2A8 = 0;
+            fldGlobalBase.word29C = (s32)(x2 - 1792.0f);
+            fldGlobalBase.word2A0 = (s32)((y2 - 1936.0f) * 2.0f) - 12;
+            mapCallPreCalcStrWidth2(fldGlobalBase.nakamaMode, 12, fldGlobalBase.word29C, fldGlobalBase.word2A0);
+            if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+                fldReleaseUnitPad();
+                mapNakamaStockOnCheck();
+                fldAutoMapSeqFlags.stage = 36;
+                fldGlobalBase.word2BC = 0;
+                p2sdPlaySE(0, 127, 63);
+                fldGlobalBase.rndEncX = fldGlobalBase.focusX;
+                fldGlobalBase.rndEncY = fldGlobalBase.focusY;
+                fldGlobalBase.rndEncZ = fldGlobalBase.focusZ;
+                fldGlobalBase.float20C = fldGlobalBase.focusX;
+                fldGlobalBase.float210 = fldGlobalBase.focusY;
+                fldGlobalBase.float214 = fldGlobalBase.focusZ;
+                poseset = playerBasic->poseset;
+                fldGlobalBase.rndEncFieldID = fldGlobalBase.amSBlock;
+                fldGlobalBase.rndEncFloorID = fldGlobalBase.nameU;
+                fldGlobalBase.rndEncMode = 1;
+                fldGlobalBase.rndEncNo = idx;
+                ProcSequenceData.pos.x = poseset->pos.x;
+                ProcSequenceData.pos.y = poseset->pos.y;
+                ProcSequenceData.pos.z = poseset->pos.z;
+                ProcSequenceData.pos.w = poseset->pos.w;
+                ProcSequenceData.rot.x = poseset->rot.x;
+                ProcSequenceData.rot.y = poseset->rot.y;
+                ProcSequenceData.rot.z = poseset->rot.z;
+                ProcSequenceData.rot.w = poseset->rot.w;
+                ProcSequenceData.offset_x = 0.0f;
+                ProcSequenceData.offset_z = 0.0f;
+                ProcSequenceData.encountno = idx;
+                ProcSequenceData.type = 1;
+                if (fldGlobalBase.nakamaMode) {
+                    ProcSequenceData.mode = 3;
+                    ProcSequenceData.stock_id = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
+                } else {
+                    ProcSequenceData.stock_id = -1;
+                    ProcSequenceData.mode = 0;
+                    if (fldGlobalBase.wordE0 == 2 || fldGlobalBase.wordE0 == 3) {
+                        ProcSequenceData.mode = 2;
+                    }
+                }
+                if (!fldGlobalBase.nakamaMode) {
+                    playerModel->first->speed = 0.5f;
+                    mdlSmoothLoopMotion(playerModel, 0, 20, 4.0f, 4.0f);
+                }
+            }
+            return 0;
+        }
+    }
+
+    idx = mapWarpGet_Pos(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ, &attr, &objx, &objy, &objz);
+    if (idx < 0 || !fldEncountTestFlag(0x40)) {
+        return 0;
+    }
+    kind = (u8)attr;
+    if (kind == 4) {
+        fldPoint3To2(&x2, &y2, fldGlobalBase.focusX, fldGlobalBase.focusY - 100.0f, fldGlobalBase.focusZ);
+        mapCallPreCalcStrWidth(fldGlobalBase.nakamaMode, 4, (s32)(x2 - 1792.0f), (s32)((y2 - 1936.0f) * 2.0f) - 12);
+    } else {
+        if (kind == 0 || (kind == 15 && fldGlobalBase.nakamaMode) || (kind == 16 && !fldGlobalBase.nakamaMode) ||
+            kind == 17 || kind == 18) {
+            return 0;
+        }
+        fldPoint3To2(&x2, &y2, objx, objy - 100.0f, objz);
+        mapCallPreCalcStrWidth(fldGlobalBase.nakamaMode, kind, (s32)(x2 - 1792.0f), (s32)((y2 - 1936.0f) * 2.0f) - 12);
+    }
+
+    if (fldGlobalBase.nakamaMode &&
+        (kind == 3 || kind == 4 || kind == 6 || kind == 9 || kind == 10 || kind == 14 || kind == 19 || kind == 20) &&
+        dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+        fldReleaseUnitPad();
+        mapNakamaStockOnCheck();
+        fldPlayerMotReset();
+        dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_hajiki2_label");
+        return 0;
+    }
+
+    if (kind == 9) {
+        mapNakamaStockOnCheck();
+        if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+            fldPlayerMotReset();
+            fldGlobalBase.word2AC = idx;
+            fldReleaseUnitPad();
+            dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrHasigoLabel);
+        }
+        return 0;
+    }
+    if (kind == 10) {
+        mapNakamaStockOnCheck();
+        if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+            fldGlobalBase.word2AC = idx;
+            fldReleaseUnitPad();
+            if (!fldGlobalBase.nakamaMode) {
+                playerModel->first->speed = 0.5f;
+                mdlSmoothLoopMotion(playerModel, 0, 23, 8.0f, 30.0f);
+            }
+            dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrHasigoLabel);
+        }
+        return 0;
+    }
+    if (kind == 4) {
+        mapNakamaStockOnCheck();
+        if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+            fldGlobalBase.word2AC = idx;
+            fldReleaseUnitPad();
+            fldPlayerMotReset();
+            dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrDexitwarpLabel);
+        }
+        return 0;
+    }
+    if (kind == 14) {
+        mapNakamaStockOnCheck();
+        if (dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) {
+            fldPlayerMotReset();
+            fldGlobalBase.word2AC = idx;
+            fldReleaseUnitPad();
+            dds3SceneBasicStartScript(dds3GetActiveScene(), fldStrElvLabel);
+        }
+        return 0;
+    }
+    if ((dds3PadButtonState[0x23] < 0 && !fldGlobalBase.noInpPlCnt) || kind == 0 ||
+        (kind == 15 && fldGlobalBase.nakamaMode) || (kind == 16 && !fldGlobalBase.nakamaMode) || kind == 17 ||
+        kind == 18) {
+        mapNakamaStockOnCheck();
+        if (!mapWarpChk_Idx(idx)) {
+            fldReleaseUnitPad();
+            fldPlayerMotReset();
+            return mapCallTitleStartFld(idx);
+        }
+        fldAutoMapSeqFlags.stage = 32;
+        if (fldGlobalBase.amSBlock == 31) {
+            fldHirukoYukaGo_Idx(idx);
+            fldAutoMapSeqFlags.stage = 30;
+        } else {
+            fldBgZoomTest(3);
+            fldGlobalBase.bgZoomSet = 1;
+            dds3FadeOut(0, 0, 0, 30);
+            p2sdPlaySE_Vol(fldGlobalBase.nowDoorSe, 127);
+            ProcSequenceData3 = 30;
+            if (!fldGlobalBase.nakamaMode && !(fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 2)) {
+                playerModel->first->speed = 0.5f;
+                mdlSmoothLoopMotion(playerModel, 0, 7, 4.0f, 4.0f);
+            }
+        }
+        fldPlayerMotReset();
+        fldReleaseUnitPad();
+        ProcSequenceData2 = idx;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "field/fldProcess", fldSaveLabel);
+#endif
 #else
 INCLUDE_RODATA(const s32, "field/fldProcess", mapCallMapTable2);
 #endif

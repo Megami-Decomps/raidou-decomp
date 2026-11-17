@@ -363,7 +363,7 @@ void fldBgTexClear(void) {
     fldGlobalBase.hitMatterIndex = 0;
     mapZoomSetGoalData9 = 1.0f;
     mapZoomSetGoalData10 = 1.0f;
-    mapData74 = 0;
+    mapData74 = 0.0f;
     mapBgSetScrollData4 = 0;
     mapData75 = 1.0f;
     mapData76 = 1.0f;

@@ -31,9 +31,13 @@ s32 sndSeStatus(void);
 void mapAiboInit(void);
 void mapSummonDvInit(void);
 void NakamaMotion(s32 hisMotion, s32 upMotion, f32 speed);
+void fldCallNakamaMotion3DSE(s32 hisMotion, s32 upMotion);
 void PlayerMotionSe2(s32 se, f32 x, f32 z);
-void PlayerCalc_Nml_fld(void);
+s32 PlayerCalc_Nml_fld(void);
 extern s32 map_player_move_mode;
+/* PlayerCalc_Nml_fld: last screen direction and the camera angle taken for it. */
+extern f32 fldCallEncountTestFlagData2;
+extern s32 fldCallEncountTestFlagData3;
 void fldSetUnitSub3(s32 motion, f32 speed);
 void fldLeaf18(s32 hisMotion, s32 upMotion, f32 hokan);
 void fldLeaf19(s32 hisMotion, s32 upMotion, f32 hokan);

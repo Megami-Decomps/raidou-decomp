@@ -20,7 +20,7 @@ Raidou 1: 4 of 122 words differ in the full unit, first at +0xFC; it matches whe
 
 Two load pairs swap (+0xFC/+0x104 and +0x1C4/+0x1CC). Raidou 2 keeps its INCLUDE_ASM.
 
-Fragile: renaming the fldProcess.h prototype mapCalcFXY to mapDebugLightSet, with no other change, turned a full-unit match into 4 differing words.
+Fragile: renaming the fldProcess.h prototype mapCalcFXY to mapDebugLightSet, with no other change, turned a full-unit match into 4 differing words. The B4-field-big header declaration edits make the full unit match again; it stays NON_MATCHING.
 
 ## ValidateAt3Bgm (event/evtEventViewer, raidou1 0x19C, raidou2 0x19C)
 

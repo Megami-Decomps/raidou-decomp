@@ -29,6 +29,8 @@
 #include "newdata.h"
 #include "fld.h"
 #include "fldProcess.h"
+#include "fldDraw.h"
+#include "dds3KernelMain.h"
 #include "mapData.h"
 #include "mapLbWork.h"
 #include "mdlManager.h"
@@ -123,7 +125,534 @@ void fldBgZoomTest(s32 mode) {
 
 INCLUDE_ASM(const s32, "code_0013CDE0", fldBgZoomTest2);
 
+/* NON_MATCHING: 54 of 1277 words match.  */
+#ifdef NON_MATCHING
+void mapZoomSetGoal(f32 x, f32 y, f32 z, f32 zoom, s32 time) {
+    f32 px;
+    f32 py;
+    f32 gx;
+    f32 gy;
+    f32 ftime;
+    f32 cx;
+    f32 cy;
+    f32 tx;
+    f32 ty;
+    f32 w;
+    f32 half;
+    f32 lo;
+    f32 hi;
+    f32 edge;
+    f32 cex;
+    f32 cox;
+    f32 ex;
+    f32 ox;
+    f32 ey;
+    f32 oy;
+    s32 zoomIn;
+
+    ftime = time;
+    if (fldGlobalBase.camId == 1) {
+        mapZoomSetGoalData = mapData59;
+        mapZoomSetGoalData9 = Zoom;
+        mapData73 = Zoom;
+        mapZoomSetGoalData10 = zoom;
+        mapZoomSetGoalData2 = mapZoomSetGoalData4;
+        mapZoomSetGoalData3 = mapZoomSetGoalData5;
+        mapBgSetScrollData4 = time;
+        mapZoomSetGoalData6 = x;
+        mapZoomSetGoalData7 = y;
+        mapData74 = (mapZoomSetGoalData10 - mapData73) / ftime;
+        mapZoomSetGoalData8 = z;
+        map_fldPoint3To2O2(mapData59, mapZoomSetGoalData4, mapZoomSetGoalData5, &px, &py);
+        mapZoomSetGoalData27 = (px - 2048.0f) / mapData73 + -mapData95 / mapData73;
+        mapData87 = mapZoomSetGoalData27;
+        mapZoomSetGoalData28 = (py - 2048.0f) / mapData73 * 2.0f;
+        mapData88 = mapZoomSetGoalData28;
+        map_fldPoint3To2O2(x, y, z, &px, &py);
+        tx = (px - 2048.0f) / mapData73 + -mapData95 / mapData73;
+        ty = (py - 2048.0f) / mapData73 * 2.0f;
+
+        cx = mapZoomSetGoalData27;
+        w = mapData73 * 1024.0f;
+        half = -(w * 0.5f);
+        edge = half - (cx * mapData73 - 256.0f);
+        if (edge > 0.0f) {
+            cx += edge / mapData73;
+            edge = half - (cx * mapData73 - 256.0f);
+        }
+        if (edge + w < 512.0f) {
+            cx -= (512.0f - (edge + w)) / mapData73;
+        }
+        mapData87 = cx;
+        mapZoomSetGoalData27 = cx;
+        mapBgSetScrollData9 = mapData93;
+        mapZoomSetGoalData31 = mapData93;
+        mapBgSetScrollData13 = mapData95;
+        mapZoomSetGoalData33 = mapData95;
+
+        w = mapZoomSetGoalData10 * 1024.0f;
+        half = -(w * 0.5f);
+        ox = -(tx * mapZoomSetGoalData10);
+        ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        if (ex > 0.0f) {
+            tx += ex / mapZoomSetGoalData10;
+            ox = -(tx * mapZoomSetGoalData10);
+            ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        }
+        if (ex + w < 512.0f) {
+            tx -= (512.0f - (ex + w)) / mapZoomSetGoalData10;
+            ox = -(tx * mapZoomSetGoalData10);
+            ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        }
+        mapZoomSetGoalData29 = tx;
+        mapData89 = ex;
+        mapData91 = ox;
+
+        cy = mapZoomSetGoalData28;
+        w = mapData73 * 448.0f;
+        half = -(w * 0.5f);
+        edge = half - (cy * mapData73 - 224.0f);
+        if (edge > 0.0f) {
+            cy += edge / mapData73;
+            edge = half - (cy * mapData73 - 224.0f);
+        }
+        if (edge + w < 448.0f) {
+            cy -= (448.0f - (edge + w)) / mapData73;
+        }
+        mapData88 = cy;
+        mapZoomSetGoalData28 = cy;
+        mapBgSetScrollData10 = mapData94;
+        mapZoomSetGoalData32 = mapData94;
+        mapBgSetScrollData14 = mapData96;
+        mapZoomSetGoalData34 = mapData96;
+
+        w = mapZoomSetGoalData10 * 448.0f;
+        half = -(w * 0.5f);
+        oy = -(ty * mapZoomSetGoalData10) * 0.5f;
+        ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        if (ey > 0.0f) {
+            ty += ey / mapZoomSetGoalData10;
+            oy = -(ty * mapZoomSetGoalData10) * 0.5f;
+            ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        }
+        if (ey + w < 448.0f) {
+            ty -= (448.0f - (ey + w)) / mapZoomSetGoalData10;
+            oy = -(ty * mapZoomSetGoalData10) * 0.5f;
+            ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        }
+        mapData90 = ey;
+        mapZoomSetGoalData30 = ty;
+        mapData92 = oy;
+
+        mapBgSetScrollData7 = (tx - cx) / ftime;
+        mapBgSetScrollData8 = (ty - cy) / ftime;
+        mapBgSetScrollData11 = (ex - mapData93) / ftime;
+        mapBgSetScrollData12 = (ey - mapData94) / ftime;
+        mapBgSetScrollData15 = (ox - mapData95) / ftime;
+        mapBgSetScrollData16 = (oy - mapData96) / ftime;
+    } else if (fldGlobalBase.camId == 2) {
+        mapBgSetScrollData4 = time;
+        mapZoomSetGoalData9 = Zoom;
+        mapData73 = Zoom;
+        mapZoomSetGoalData10 = zoom;
+        mapZoomSetGoalData = mapData59;
+        mapZoomSetGoalData2 = mapZoomSetGoalData4;
+        mapZoomSetGoalData3 = mapZoomSetGoalData5;
+        mapZoomSetGoalData6 = x;
+        mapZoomSetGoalData7 = y;
+        mapZoomSetGoalData8 = z;
+        mapData74 = (mapZoomSetGoalData10 - mapData73) / ftime;
+        if (Zoom < 1.01f && zoom >= 1.01f) {
+            mapZoomSetGoalData35 = mapBgSetScrollData6;
+        }
+        map_fldPoint3To2O2(mapData59, mapZoomSetGoalData4, mapZoomSetGoalData5, &px, &py);
+        mapZoomSetGoalData28 =
+            (py - 2048.0f) * 2.0f / mapData73 + mapData96 * -2.0f / mapData73 + mapData73 * 32.0f;
+        mapData88 = mapZoomSetGoalData28;
+        mapZoomSetGoalData27 = (px - 2048.0f) / mapData73 + -mapData95 / mapData73;
+        mapData87 = mapZoomSetGoalData27;
+        map_fldPoint3To2O2(x, y, z, &px, &py);
+        mapZoomSetGoalData29 = (px - 2048.0f) / mapData73 + -mapData95 / mapData73;
+        if (zoom < 1.01f) {
+            mapZoomSetGoalData30 = mapZoomSetGoalData35;
+        } else {
+            mapZoomSetGoalData30 = (py - 2048.0f) * 2.0f + mapData96 * -2.0f + mapData73 * 96.0f / mapData73;
+        }
+
+        cx = mapZoomSetGoalData27;
+        w = mapData73 * 512.0f;
+        half = -(w * 0.5f);
+        cox = -(cx * mapData73);
+        cex = half - (cx * mapData73 - 256.0f);
+        if (cex > 0.0f) {
+            cx += cex / mapData73;
+            cox = -(cx * mapData73);
+            cex = half - (cx * mapData73 - 256.0f);
+        }
+        if (cex + w < 512.0f) {
+            cx -= (512.0f - (cex + w)) / mapData73;
+            cox = -(cx * mapData73);
+            cex = half - (cx * mapData73 - 256.0f);
+        }
+        mapData87 = cx;
+        mapZoomSetGoalData27 = cx;
+        mapBgSetScrollData9 = cex;
+        mapZoomSetGoalData31 = cex;
+        mapBgSetScrollData13 = cox;
+        mapZoomSetGoalData33 = cox;
+
+        tx = mapZoomSetGoalData29;
+        w = mapZoomSetGoalData10 * 512.0f;
+        half = -(w * 0.5f);
+        ox = -(tx * mapZoomSetGoalData10);
+        ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        if (ex > 0.0f) {
+            tx += ex / mapZoomSetGoalData10;
+            ox = -(tx * mapZoomSetGoalData10);
+            ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        }
+        if (ex + w < 512.0f) {
+            tx -= (512.0f - (ex + w)) / mapZoomSetGoalData10;
+            ox = -(tx * mapZoomSetGoalData10);
+            ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        }
+        mapZoomSetGoalData29 = tx;
+        mapData89 = ex;
+        mapData91 = ox;
+
+        cy = mapZoomSetGoalData28;
+        w = mapData73 * 896.0f;
+        half = -(w * 0.5f);
+        lo = mapData73 * -64.0f;
+        edge = half - (cy * mapData73 - 224.0f);
+        if (lo < edge) {
+            cy -= (lo - edge) / mapData73;
+            edge = half - (cy * mapData73 - 224.0f);
+        }
+        if (edge + w < 448.0f) {
+            cy -= (448.0f - (edge + w)) / mapData73;
+        }
+        mapData88 = cy;
+        mapZoomSetGoalData28 = cy;
+        mapBgSetScrollData10 = mapData94;
+        mapZoomSetGoalData32 = mapData94;
+        mapBgSetScrollData14 = mapData96;
+        mapZoomSetGoalData34 = mapData96;
+
+        ty = mapZoomSetGoalData30;
+        w = mapZoomSetGoalData10 * 896.0f;
+        half = -(w * 0.5f);
+        lo = mapZoomSetGoalData10 * -64.0f;
+        oy = -(ty * mapZoomSetGoalData10) * 0.5f + mapZoomSetGoalData10 * 32.0f;
+        ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        if (lo < ey) {
+            ty -= (lo - ey) / mapZoomSetGoalData10;
+            oy = -(ty * mapZoomSetGoalData10) * 0.5f + mapZoomSetGoalData10 * 32.0f;
+            ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        }
+        if (ey + w < 448.0f) {
+            ty -= (448.0f - (ey + w)) / mapZoomSetGoalData10;
+            oy = -(ty * mapZoomSetGoalData10) * 0.5f + mapZoomSetGoalData10 * 32.0f;
+            ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        }
+        mapData90 = ey;
+        mapZoomSetGoalData30 = ty;
+        mapData92 = oy;
+
+        mapBgSetScrollData7 = (tx - cx) / ftime;
+        mapBgSetScrollData8 = (ty - cy) / ftime;
+        mapBgSetScrollData11 = (ex - cex) / ftime;
+        mapBgSetScrollData12 = (ey - mapData94) / ftime;
+        mapBgSetScrollData15 = (ox - cox) / ftime;
+        mapBgSetScrollData16 = (oy - mapData96) / ftime;
+    } else if (fldGlobalBase.camId == 3) {
+        mapBgSetScrollData4 = time;
+        mapZoomSetGoalData9 = Zoom;
+        mapData73 = Zoom;
+        mapZoomSetGoalData10 = zoom;
+        mapZoomSetGoalData = mapData59;
+        mapZoomSetGoalData2 = mapZoomSetGoalData4;
+        mapZoomSetGoalData3 = mapZoomSetGoalData5;
+        mapZoomSetGoalData6 = x;
+        mapZoomSetGoalData7 = y;
+        mapZoomSetGoalData8 = z;
+        mapData74 = (mapZoomSetGoalData10 - mapData73) / ftime;
+        if (Zoom < 1.01f && zoom >= 1.01f) {
+            mapZoomSetGoalData35 = mapBgSetScrollData6;
+        }
+        map_fldPoint3To2O2(mapData59, mapZoomSetGoalData4, mapZoomSetGoalData5, &px, &py);
+        mapZoomSetGoalData28 =
+            (py - 2048.0f) * 2.0f / mapData73 + mapData96 * -2.0f / mapData73 + mapData73 * 32.0f;
+        mapData88 = mapZoomSetGoalData28;
+        mapZoomSetGoalData27 = (px - 2048.0f) / mapData73 + -mapData95 / mapData73;
+        mapData87 = mapZoomSetGoalData27;
+        map_fldPoint3To2O2(x, y, z, &px, &py);
+        mapZoomSetGoalData29 = (px - 2048.0f) / mapData73 + -mapData95 / mapData73;
+        if (zoom < 1.01f) {
+            mapZoomSetGoalData30 = mapZoomSetGoalData35;
+        } else {
+            mapZoomSetGoalData30 = (py - 2048.0f) * 2.0f + mapData96 * -2.0f + mapData73 * 96.0f / mapData73;
+        }
+
+        cx = mapZoomSetGoalData27;
+        w = mapData73 * 1024.0f;
+        half = -(w * 0.5f);
+        edge = half - (cx * mapData73 - 256.0f);
+        if (edge > 0.0f) {
+            cx += edge / mapData73;
+            edge = half - (cx * mapData73 - 256.0f);
+        }
+        if (edge + w < 512.0f) {
+            cx -= (512.0f - (edge + w)) / mapData73;
+        }
+        mapData87 = cx;
+        mapZoomSetGoalData27 = cx;
+        mapBgSetScrollData9 = mapData93;
+        mapZoomSetGoalData31 = mapData93;
+        mapBgSetScrollData13 = mapData95;
+        mapZoomSetGoalData33 = mapData95;
+
+        tx = mapZoomSetGoalData29;
+        w = mapZoomSetGoalData10 * 1024.0f;
+        half = -(w * 0.5f);
+        ox = -(tx * mapZoomSetGoalData10);
+        ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        if (ex > 0.0f) {
+            tx += ex / mapZoomSetGoalData10;
+            ox = -(tx * mapZoomSetGoalData10);
+            ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        }
+        if (ex + w < 512.0f) {
+            tx -= (512.0f - (ex + w)) / mapZoomSetGoalData10;
+            ox = -(tx * mapZoomSetGoalData10);
+            ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        }
+        mapZoomSetGoalData29 = tx;
+        mapData89 = ex;
+        mapData91 = ox;
+
+        cy = mapZoomSetGoalData28;
+        w = mapData73 * 896.0f;
+        half = -(w * 0.5f);
+        lo = mapData73 * -64.0f;
+        edge = half - (cy * mapData73 - 224.0f);
+        if (lo < edge) {
+            cy -= (lo - edge) / mapData73;
+            edge = half - (cy * mapData73 - 224.0f);
+        }
+        if (edge + w < 448.0f) {
+            cy -= (448.0f - (edge + w)) / mapData73;
+        }
+        mapData88 = cy;
+        mapZoomSetGoalData28 = cy;
+        mapBgSetScrollData10 = mapData94;
+        mapZoomSetGoalData32 = mapData94;
+        mapBgSetScrollData14 = mapData96;
+        mapZoomSetGoalData34 = mapData96;
+
+        ty = mapZoomSetGoalData30;
+        w = mapZoomSetGoalData10 * 896.0f;
+        half = -(w * 0.5f);
+        lo = mapZoomSetGoalData10 * -64.0f;
+        oy = -(ty * mapZoomSetGoalData10) * 0.5f + mapZoomSetGoalData10 * 32.0f;
+        ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        if (lo < ey) {
+            ty -= (lo - ey) / mapZoomSetGoalData10;
+            oy = -(ty * mapZoomSetGoalData10) * 0.5f + mapZoomSetGoalData10 * 32.0f;
+            ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        }
+        if (ey + w < 448.0f) {
+            ty -= (448.0f - (ey + w)) / mapZoomSetGoalData10;
+            oy = -(ty * mapZoomSetGoalData10) * 0.5f + mapZoomSetGoalData10 * 32.0f;
+            ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        }
+        mapData90 = ey;
+        mapZoomSetGoalData30 = ty;
+        mapData92 = oy;
+
+        mapBgSetScrollData7 = (tx - cx) / ftime;
+        mapBgSetScrollData8 = (ty - cy) / ftime;
+        mapBgSetScrollData11 = (ex - mapData93) / ftime;
+        mapBgSetScrollData12 = (ey - mapData94) / ftime;
+        mapBgSetScrollData15 = (ox - mapData95) / ftime;
+        mapBgSetScrollData16 = (oy - mapData96) / ftime;
+    } else {
+        map_fldPoint3To2O(x, y, z, &gx, &gy);
+        if (zoom > 0.999f && zoom < 1.001f &&
+            (time == 0 || (zoom - Zoom > -0.001f && zoom - Zoom < 0.001f))) {
+            mapZoomClear();
+            return;
+        }
+        if (zoom < Zoom) {
+            lo = 256.0f / Zoom;
+            hi = 512.0f - lo;
+            if (hi < gx) {
+                gx = hi;
+            }
+            if (gx < lo) {
+                gx = lo;
+            }
+            lo = 224.0f / Zoom;
+            hi = 448.0f - lo;
+            if (hi < gy) {
+                gy = hi;
+            }
+            if (gy < lo) {
+                gy = lo;
+            }
+            zoomIn = FALSE;
+        } else {
+            zoomIn = TRUE;
+        }
+        mapData78 = 1;
+        mapZoomSetGoalData11 = mapZoomSetGoalData21;
+        mapZoomSetGoalData12 = mapZoomSetGoalData22;
+        mapZoomSetGoalData13 = mapZoomSetGoalData23;
+        mapZoomSetGoalData14 = mapZoomSetGoalData24;
+        mapZoomSetGoalData15 = mapZoomSetGoalData25;
+        mapZoomClearData = (zoom - Zoom) / ftime;
+        mapZoomSetGoalData16 = mapZoomSetGoalData26;
+        mapData75 = Zoom;
+        mapData76 = zoom;
+        mapData77 = time;
+        if (!zoomIn) {
+            lo = 256.0f / zoom;
+            hi = 512.0f - lo;
+            if (hi < gx) {
+                gx = hi;
+            }
+            if (gx < lo) {
+                gx = lo;
+            }
+            lo = 224.0f / zoom;
+            hi = 448.0f - lo;
+            if (hi < gy) {
+                gy = hi;
+            }
+            if (gy < lo) {
+                gy = lo;
+            }
+            mapZoomSetGoalData17 = gx * zoom - 256.0f;
+            mapZoomSetGoalData18 = gy * zoom - 224.0f;
+            mapZoomSetGoalData19 = -(gx * zoom - zoom * 256.0f);
+            mapZoomSetGoalData20 = -((gy * zoom - zoom * 224.0f) * 0.5f);
+        } else {
+            mapZoomSetGoalData19 = 256.0f - gx;
+            mapZoomSetGoalData17 = gx * zoom - gx;
+            mapZoomSetGoalData18 = gy * zoom - gy;
+            mapZoomSetGoalData20 = (224.0f - gy) * 0.5f;
+        }
+        mapData73 = Zoom;
+        mapData79 = zoom * 512.0f;
+        mapData74 = (zoom - Zoom) / ftime;
+        mapData80 = zoom * 448.0f;
+        mapZoomSetGoalData22 = mapZoomSetGoalData12;
+        mapZoomSetGoalData24 = mapZoomSetGoalData14;
+        mapZoomSetGoalData21 = mapZoomSetGoalData11;
+        mapZoomSetGoalData23 = mapZoomSetGoalData13;
+        mapData83 = (zoom * 512.0f - mapZoomSetGoalData13) / ftime;
+        mapZoomSetGoalData25 = mapZoomSetGoalData15;
+        mapZoomSetGoalData26 = mapZoomSetGoalData16;
+        mapZoomSetGoalData9 = Zoom;
+        mapZoomSetGoalData10 = zoom;
+        mapBgSetScrollData4 = time;
+        mapData84 = (zoom * 448.0f - mapZoomSetGoalData14) / ftime;
+        mapData85 = (mapZoomSetGoalData19 - mapZoomSetGoalData15) / ftime;
+        mapData86 = (mapZoomSetGoalData20 - mapZoomSetGoalData16) / ftime;
+        mapData81 = (mapZoomSetGoalData17 - mapZoomSetGoalData11) / ftime;
+        mapData82 = (mapZoomSetGoalData18 - mapZoomSetGoalData12) / ftime;
+        map_fldPoint3To2O3(mapData59, mapZoomSetGoalData4, mapZoomSetGoalData5, &px, &py);
+        mapZoomSetGoalData27 = px;
+        mapData87 = px;
+        mapZoomSetGoalData28 = py * 2.0f;
+        mapData88 = py * 2.0f;
+        map_fldPoint3To2O3(x, y, z, &px, &py);
+        tx = px;
+        ty = py * 2.0f;
+
+        cx = mapZoomSetGoalData27;
+        w = mapData73 * 512.0f;
+        half = -(w * 0.5f);
+        edge = half - (cx * mapData73 - 256.0f);
+        if (edge > 0.0f) {
+            cx += edge / mapData73;
+            edge = half - (cx * mapData73 - 256.0f);
+        }
+        if (edge + w < 512.0f) {
+            cx -= (512.0f - (edge + w)) / mapData73;
+        }
+        mapData87 = cx;
+        mapZoomSetGoalData27 = cx;
+        mapBgSetScrollData9 = mapData93;
+        mapZoomSetGoalData31 = mapData93;
+        mapBgSetScrollData13 = mapData95;
+        mapZoomSetGoalData33 = mapData95;
+
+        w = mapZoomSetGoalData10 * 512.0f;
+        half = -(w * 0.5f);
+        ox = -(tx * mapZoomSetGoalData10);
+        ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        if (ex > 0.0f) {
+            tx += ex / mapZoomSetGoalData10;
+            ox = -(tx * mapZoomSetGoalData10);
+            ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        }
+        if (ex + w < 512.0f) {
+            tx -= (512.0f - (ex + w)) / mapZoomSetGoalData10;
+            ox = -(tx * mapZoomSetGoalData10);
+            ex = half - (tx * mapZoomSetGoalData10 - 256.0f);
+        }
+        mapZoomSetGoalData29 = tx;
+        mapData89 = ex;
+        mapData91 = ox;
+
+        cy = mapZoomSetGoalData28;
+        w = mapData73 * 448.0f;
+        half = -(w * 0.5f);
+        edge = half - (cy * mapData73 - 224.0f);
+        if (edge > 0.0f) {
+            cy += edge / mapData73;
+            edge = half - (cy * mapData73 - 224.0f);
+        }
+        if (edge + w < 448.0f) {
+            cy -= (448.0f - (edge + w)) / mapData73;
+        }
+        mapData88 = cy;
+        mapZoomSetGoalData28 = cy;
+        mapBgSetScrollData10 = mapData94;
+        mapZoomSetGoalData32 = mapData94;
+        mapBgSetScrollData14 = mapData96;
+        mapZoomSetGoalData34 = mapData96;
+
+        w = mapZoomSetGoalData10 * 448.0f;
+        half = -(w * 0.5f);
+        oy = -(ty * mapZoomSetGoalData10) * 0.5f;
+        ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        if (ey > 0.0f) {
+            ty += ey / mapZoomSetGoalData10;
+            oy = -(ty * mapZoomSetGoalData10) * 0.5f;
+            ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        }
+        if (ey + w < 448.0f) {
+            ty -= (448.0f - (ey + w)) / mapZoomSetGoalData10;
+            oy = -(ty * mapZoomSetGoalData10) * 0.5f;
+            ey = half - (ty * mapZoomSetGoalData10 - 224.0f);
+        }
+        mapData90 = ey;
+        mapZoomSetGoalData30 = ty;
+        mapData92 = oy;
+
+        mapBgSetScrollData7 = (tx - cx) / ftime;
+        mapBgSetScrollData8 = (ty - cy) / ftime;
+        mapBgSetScrollData11 = (ex - mapData93) / ftime;
+        mapBgSetScrollData12 = (ey - mapData94) / ftime;
+        mapBgSetScrollData15 = (ox - mapData95) / ftime;
+        mapBgSetScrollData16 = (oy - mapData96) / ftime;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_0013CDE0", mapZoomSetGoal);
+#endif
 
 void mapZoomClear(void) {
     mapData75 = 1.0f;
@@ -159,7 +688,7 @@ void mapZoomClear(void) {
     mapData73 = 1.0f;
     mapZoomSetGoalData9 = 1.0f;
     mapZoomSetGoalData10 = 1.0f;
-    mapData74 = 0;
+    mapData74 = 0.0f;
     mapBgSetScrollData4 = 0;
     tzoom_event = 0;
     mapZoomSetGoalData = mapData59 = mapZoomSetGoalData6 = mapZoomClearData;
@@ -269,7 +798,519 @@ void setCngCameraDir(void) {
     mapBgSetScrollData20 = 1;
 }
 
+/* NON_MATCHING: 164 of 1249 words match.  */
+#ifdef NON_MATCHING
+void mapBgSetScroll(f32 x, f32 y, f32 z, s32 mode) {
+    f32 x2;
+    f32 y2;
+    f32 t;
+    s32 cam;
+    f32 zoom;
+    f32 w;
+    f32 half;
+    f32 edge;
+    f32 d;
+    f32 lo;
+    f32 hi;
+    f32 oldX;
+    f32 oldY;
+    f32 sx;
+    f32 sy;
+    f32 ox;
+    f32 oy;
+
+    bg_scroll_last_x = x;
+    mapData71 = y;
+    mapData72 = z;
+    if (dds3BgSetScrollSub()) {
+        return;
+    }
+    if (tzoom_event) {
+        t = (f32)tzoom_event_cnt / (f32)tzoom_event_time;
+        z = mapZoomSetGoalData5 = mapZoomSetGoalData3 * t + mapZoomSetGoalData8 * (1.0f - t);
+        x = mapData59 = mapZoomSetGoalData * t + mapZoomSetGoalData6 * (1.0f - t);
+        y = mapZoomSetGoalData4 = mapZoomSetGoalData2 * t + mapZoomSetGoalData7 * (1.0f - t);
+        if (tzoom_event_cnt > 0) {
+            tzoom_event_cnt--;
+        } else {
+            tzoom_event_cnt = 0;
+        }
+    }
+    if (fscroll_mode == 1) {
+        t = (f32)mapBgSetScrollData3 / (f32)mapData61;
+        z = mapData67 = mapData64 * t + mapData70 * (1.0f - t);
+        x = mapData65 = mapData62 * t + mapData68 * (1.0f - t);
+        y = mapData66 = mapData63 * t + mapData69 * (1.0f - t);
+        if (mapBgSetScrollData3 > 0) {
+            mapBgSetScrollData3--;
+        } else {
+            mapBgSetScrollData3 = 0;
+        }
+    }
+    if (fscroll_mode == 2) {
+        t = (f32)mapBgSetScrollData3 / (f32)mapData61;
+        z = mapData67 = mapData64 * t + z * (1.0f - t);
+        x = mapData65 = mapData62 * t + x * (1.0f - t);
+        y = mapData66 = mapData63 * t + y * (1.0f - t);
+        if (mapBgSetScrollData3 > 0) {
+            mapBgSetScrollData3--;
+        } else {
+            mapBgSetScrollData3 = 0;
+            fscroll_mode = 0;
+        }
+    }
+    if (!mapWork4 && !fldDbg.spriteTint) {
+        return;
+    }
+    mapData59 = x;
+    mapZoomSetGoalData4 = y;
+    mapZoomSetGoalData5 = z;
+    mapCutSet_From_IdxData = x;
+    mapCutSet_From_IdxData2 = y;
+    mapCutSet_From_IdxData3 = z;
+
+    switch (fldDbg.camOn) {
+    case 0:
+        cam = fldGlobalBase.camId;
+        break;
+    case 2:
+        cam = 1;
+        break;
+    case 3:
+        cam = 2;
+        break;
+    case 4:
+        cam = 3;
+        break;
+    case 1:
+    default:
+        cam = 0;
+        break;
+    }
+
+    switch (cam) {
+    case 0:
+        dds3ScreenParam.height = 448.0f;
+        sdf3DScreenAdjust = 1;
+        sdf3DScreenAdjustScaleY = 1.0f;
+        mapSKYBGEDITData = 0.0f;
+        mapBgSetScrollData18 = 0;
+        sdf3DScreenAdjustScaleX = 1.0f;
+        oldX = mapData87;
+        oldY = mapData88;
+        if (mapBgSetScrollData4 > 0) {
+            zoom = mapData73 += mapData74;
+            sx = mapBgSetScrollData9 += mapBgSetScrollData11;
+            sy = mapBgSetScrollData10 += mapBgSetScrollData12;
+            ox = mapBgSetScrollData13 += mapBgSetScrollData15;
+            mapBgSetScrollData4--;
+            oy = mapBgSetScrollData14 += mapBgSetScrollData16;
+            mapData87 += mapBgSetScrollData7;
+            mapData88 += mapBgSetScrollData8;
+        } else {
+            zoom = mapZoomSetGoalData10;
+            sx = mapData89;
+            sy = mapData90;
+            ox = mapData91;
+            oy = mapData92;
+            mapData87 = mapZoomSetGoalData29;
+            mapData88 = mapZoomSetGoalData30;
+            mapData73 = zoom;
+            mapBgSetScrollData4 = 0;
+            mapBgSetScrollData9 = sx;
+            mapBgSetScrollData10 = sy;
+            mapBgSetScrollData13 = ox;
+            mapBgSetScrollData14 = oy;
+            if (tzoom_event && zoom < 1.001f) {
+                tzoom_event = 0;
+            }
+        }
+        if (zoom < 0.501f) {
+            mapBgSetScrollData5 = 0.0f;
+        } else {
+            mapBgSetScrollData5 = oldX;
+        }
+        if (zoom < 1.001f) {
+            mapBgSetScrollData6 = 0.0f;
+        } else {
+            mapBgSetScrollData6 = oldY;
+        }
+        mapBgSetScrollData17 = sx;
+        mapData94 = sy;
+        sdf3DScreenAdjustOffsetX = ox;
+        sdf3DScreenAdjustOffsetY = oy;
+        Zoom = zoom;
+        sdf3DScreenAdjustScaleX *= zoom;
+        sdf3DScreenAdjustScaleY *= zoom;
+        mapData93 = sx;
+        mapData95 = ox;
+        mapData96 = oy;
+        mapBgSetScrollData19 = sx;
+        break;
+
+    case 1:
+        if (mapBgSetScrollData4 > 0) {
+            mapData73 += mapData74;
+            mapBgSetScrollData4--;
+            mapData87 += mapBgSetScrollData7;
+            mapData88 += mapBgSetScrollData8;
+            mapBgSetScrollData9 += mapBgSetScrollData11;
+            mapBgSetScrollData10 += mapBgSetScrollData12;
+            mapBgSetScrollData13 += mapBgSetScrollData15;
+            mapBgSetScrollData14 += mapBgSetScrollData16;
+        } else {
+            mapData87 = mapZoomSetGoalData29;
+            mapData88 = mapZoomSetGoalData30;
+            mapBgSetScrollData9 = mapData89;
+            mapBgSetScrollData10 = mapData90;
+            mapBgSetScrollData13 = mapData91;
+            mapBgSetScrollData14 = mapData92;
+            mapData73 = mapZoomSetGoalData10;
+            mapBgSetScrollData4 = 0;
+            if (tzoom_event && mapZoomSetGoalData10 < 1.001f) {
+                tzoom_event = 0;
+            }
+        }
+        map_fldPoint3To2O2(x, y, z, &x2, &y2);
+        if (mapData73 >= 1.001f) {
+            mapBgSetScrollData5 = mapData87;
+            mapBgSetScrollData6 = mapData88;
+        } else if (!mapBgSetScrollData20) {
+            d = x2 - 2048.0f;
+            if (d < -32.0f) {
+                mapBgSetScrollData5 += (d + 32.0f) / 2.0f;
+            } else if (d > 32.0f) {
+                mapBgSetScrollData5 += (d - 32.0f) / 2.0f;
+            }
+            d = (y2 - 2048.0f) + (y2 - 2048.0f);
+            if (d < -32.0f) {
+                mapBgSetScrollData6 += (d + 32.0f) / 2.0f;
+            } else if (d > 32.0f) {
+                mapBgSetScrollData6 += (d - 32.0f) / 2.0f;
+            }
+        } else {
+            d = x2 - 2048.0f;
+            if (d < -32.0f) {
+                mapBgSetScrollData5 += d + 32.0f;
+            } else if (d > 32.0f) {
+                mapBgSetScrollData5 += d - 32.0f;
+            }
+            d = (y2 - 2048.0f) + (y2 - 2048.0f);
+            if (d < -32.0f) {
+                mapBgSetScrollData6 += d + 32.0f;
+            } else if (d > 32.0f) {
+                mapBgSetScrollData6 += d - 32.0f;
+            }
+        }
+        dds3ScreenParam.height = 448.0f;
+        sdf3DScreenAdjust = 1;
+        sdf3DScreenAdjustScaleY = 2.0f;
+        mapBgSetScrollData20 = 0;
+        mapSKYBGEDITData = 0.0f;
+        mapBgSetScrollData18 = 0;
+        sdf3DScreenAdjustScaleX = 2.0f;
+        if (mapData73 < 0.501f) {
+            mapBgSetScrollData5 = 0.0f;
+        }
+        if (mapData73 < 1.001f) {
+            mapBgSetScrollData6 = 0.0f;
+            w = mapData73 * 1024.0f;
+            half = -(w * 0.5f);
+            edge = half - (mapBgSetScrollData5 * mapData73 - 256.0f);
+            if (mapData73 <= 0.5f) {
+                mapData93 = edge;
+                mapData95 = -(mapBgSetScrollData5 * mapData73);
+            } else {
+                lo = 0.0f;
+                if (edge + w < 512.0f) {
+                    lo = 512.0f - (edge + w);
+                }
+                hi = 0.0f;
+                if (edge > 0.0f) {
+                    hi = edge;
+                }
+                mapBgSetScrollData5 = (mapBgSetScrollData5 - lo / mapData73) + hi / mapData73;
+                mapData95 = -(mapBgSetScrollData5 * mapData73);
+                mapData93 = half - (mapBgSetScrollData5 * mapData73 - 256.0f);
+            }
+            w = mapData73 * 448.0f;
+            half = -(w * 0.5f);
+            edge = half - (mapBgSetScrollData6 * mapData73 - 224.0f);
+            if (mapData73 <= 1.0f) {
+                mapData94 = edge;
+                mapData96 = -(mapBgSetScrollData6 * mapData73) * 0.5f;
+            } else {
+                lo = 0.0f;
+                if (edge + w < 448.0f) {
+                    lo = 448.0f - (edge + w);
+                }
+                hi = 0.0f;
+                if (edge > 0.0f) {
+                    hi = edge;
+                }
+                mapBgSetScrollData6 = (mapBgSetScrollData6 - lo / mapData73) + hi / mapData73;
+                mapData94 = half - (mapBgSetScrollData6 * mapData73 - 224.0f);
+                mapData96 = -(mapBgSetScrollData6 * mapData73) * 0.5f;
+            }
+        } else {
+            mapData93 = mapBgSetScrollData9;
+            mapData95 = mapBgSetScrollData13;
+            mapData94 = mapBgSetScrollData10;
+            mapData96 = mapBgSetScrollData14;
+        }
+        mapBgSetScrollData17 = mapData93;
+        sdf3DScreenAdjustOffsetX = mapData95;
+        sdf3DScreenAdjustOffsetY = mapData96;
+        sdf3DScreenAdjustScaleX *= mapData73;
+        sdf3DScreenAdjustScaleY *= mapData73;
+        Zoom = mapData73;
+        mapBgSetScrollData19 = mapData93;
+        break;
+
+    case 2:
+        if (mapBgSetScrollData4 > 0) {
+            mapData73 += mapData74;
+            mapBgSetScrollData4--;
+            mapData87 += mapBgSetScrollData7;
+            mapData88 += mapBgSetScrollData8;
+            mapBgSetScrollData9 += mapBgSetScrollData11;
+            mapBgSetScrollData10 += mapBgSetScrollData12;
+            mapBgSetScrollData13 += mapBgSetScrollData15;
+            mapBgSetScrollData14 += mapBgSetScrollData16;
+        } else {
+            mapData87 = mapZoomSetGoalData29;
+            mapData88 = mapZoomSetGoalData30;
+            mapBgSetScrollData9 = mapData89;
+            mapBgSetScrollData10 = mapData90;
+            mapBgSetScrollData13 = mapData91;
+            mapBgSetScrollData14 = mapData92;
+            mapData73 = mapZoomSetGoalData10;
+            mapBgSetScrollData4 = 0;
+            if (tzoom_event && mapZoomSetGoalData10 < 1.001f) {
+                tzoom_event = 0;
+            }
+        }
+        mapBgSetScrollData19 = 0.0f;
+        mapBgSetScrollData17 = 0;
+        fldPoint3To2(&x2, &y2, x, y, z);
+        zoom = mapData73;
+        if (zoom < 1.001f) {
+            if (!mapBgSetScrollData20) {
+                d = x2 - 2048.0f;
+                if (d < -32.0f) {
+                    mapBgSetScrollData5 += (d + 32.0f) / 2.0f;
+                } else if (d > 32.0f) {
+                    mapBgSetScrollData5 += (d - 32.0f) / 2.0f;
+                }
+                d = (y2 - 2048.0f) + (y2 - 2048.0f);
+                if (d < -32.0f) {
+                    mapBgSetScrollData6 += (d + 32.0f) / 2.0f;
+                } else if (d > 32.0f) {
+                    mapBgSetScrollData6 += (d - 32.0f) / 2.0f;
+                }
+            } else {
+                d = x2 - 2048.0f;
+                if (d < -32.0f) {
+                    mapBgSetScrollData5 += d + 32.0f;
+                } else if (d > 32.0f) {
+                    mapBgSetScrollData5 += d - 32.0f;
+                }
+                d = (y2 - 2048.0f) + (y2 - 2048.0f);
+                if (d < -32.0f) {
+                    mapBgSetScrollData6 += d + 32.0f;
+                } else if (d > 32.0f) {
+                    mapBgSetScrollData6 += d - 32.0f;
+                }
+            }
+        }
+        mapBgSetScrollData20 = 0;
+        if (mapData73 < 1.001f) {
+            w = mapData73 * 512.0f;
+            half = -(w * 0.5f);
+            edge = half - (mapBgSetScrollData5 * mapData73 - 256.0f);
+            if (mapData73 <= 0.5f) {
+                mapData93 = edge;
+                mapData95 = -(mapBgSetScrollData5 * mapData73);
+            } else {
+                lo = 0.0f;
+                if (edge + w < 512.0f) {
+                    lo = 512.0f - (edge + w);
+                }
+                hi = 0.0f;
+                if (edge > 0.0f) {
+                    hi = edge;
+                }
+                mapBgSetScrollData5 = (mapBgSetScrollData5 - lo / mapData73) + hi / mapData73;
+                mapData95 = -(mapBgSetScrollData5 * mapData73);
+                mapData93 = half - (mapBgSetScrollData5 * mapData73 - 256.0f);
+            }
+            half = -(mapData73 * 896.0f * 0.5f);
+            edge = half - (mapBgSetScrollData6 * mapData73 - 224.0f);
+            if (mapData73 <= 0.5f) {
+                mapData94 = edge;
+                mapData96 = -(mapBgSetScrollData6 * mapData73) * 0.5f + mapData73 * 32.0f;
+            } else {
+                lo = 0.0f;
+                if (edge + mapData73 * 896.0f < 448.0f) {
+                    lo = 448.0f - (edge + mapData73 * 896.0f);
+                }
+                hi = 0.0f;
+                if (mapData73 * -64.0f < edge) {
+                    hi = mapData73 * -64.0f - edge;
+                }
+                mapBgSetScrollData6 = (mapBgSetScrollData6 - lo / mapData73) - hi / mapData73;
+                mapData94 = half - (mapBgSetScrollData6 * mapData73 - 224.0f);
+                mapData96 = -(mapBgSetScrollData6 * mapData73) * 0.5f + mapData73 * 32.0f;
+            }
+        } else {
+            mapData93 = mapBgSetScrollData9;
+            mapData95 = mapBgSetScrollData13;
+            mapData94 = mapBgSetScrollData10;
+            mapData96 = mapBgSetScrollData14;
+        }
+        mapBgSetScrollData17 = mapData93;
+        dds3ScreenParam.height = 512.0f;
+        sdf3DScreenAdjust = 1;
+        sdf3DScreenAdjustOffsetX = mapData95;
+        sdf3DScreenAdjustOffsetY = mapData96;
+        sdf3DScreenAdjustScaleY = mapData73 + mapData73;
+        Zoom = zoom;
+        mapBgSetScrollData19 = mapData93;
+        mapSKYBGEDITData = 0.0f;
+        mapBgSetScrollData18 = 0;
+        sdf3DScreenAdjustScaleX = mapData73 + mapData73;
+        break;
+
+    case 3:
+        if (mapBgSetScrollData4 > 0) {
+            mapData73 += mapData74;
+            mapBgSetScrollData4--;
+            mapData87 += mapBgSetScrollData7;
+            mapData88 += mapBgSetScrollData8;
+            mapBgSetScrollData9 += mapBgSetScrollData11;
+            mapBgSetScrollData10 += mapBgSetScrollData12;
+            mapBgSetScrollData13 += mapBgSetScrollData15;
+            mapBgSetScrollData14 += mapBgSetScrollData16;
+        } else {
+            mapData87 = mapZoomSetGoalData29;
+            mapData88 = mapZoomSetGoalData30;
+            mapBgSetScrollData9 = mapData89;
+            mapBgSetScrollData10 = mapData90;
+            mapBgSetScrollData13 = mapData91;
+            mapBgSetScrollData14 = mapData92;
+            mapData73 = mapZoomSetGoalData10;
+            mapBgSetScrollData4 = 0;
+            if (tzoom_event && mapZoomSetGoalData10 < 1.001f) {
+                tzoom_event = 0;
+            }
+        }
+        mapBgSetScrollData19 = 0.0f;
+        mapBgSetScrollData17 = 0;
+        fldPoint3To2(&x2, &y2, x, y, z);
+        zoom = mapData73;
+        if (zoom >= 1.001f) {
+            mapBgSetScrollData5 = mapData87;
+            mapBgSetScrollData6 = mapData88;
+        } else if (!mapBgSetScrollData20) {
+            d = x2 - 2048.0f;
+            if (d < -32.0f) {
+                mapBgSetScrollData5 += (d + 32.0f) / 2.0f;
+            } else if (d > 32.0f) {
+                mapBgSetScrollData5 += (d - 32.0f) / 2.0f;
+            }
+            d = (y2 - 2048.0f) + (y2 - 2048.0f);
+            if (d < -32.0f) {
+                mapBgSetScrollData6 += (d + 32.0f) / 2.0f;
+            } else if (d > 32.0f) {
+                mapBgSetScrollData6 += (d - 32.0f) / 2.0f;
+            }
+        } else {
+            d = x2 - 2048.0f;
+            if (d < -32.0f) {
+                mapBgSetScrollData5 += d + 32.0f;
+            } else if (d > 32.0f) {
+                mapBgSetScrollData5 += d - 32.0f;
+            }
+            d = (y2 - 2048.0f) + (y2 - 2048.0f);
+            if (d < -32.0f) {
+                mapBgSetScrollData6 += d + 32.0f;
+            } else if (d > 32.0f) {
+                mapBgSetScrollData6 += d - 32.0f;
+            }
+        }
+        mapBgSetScrollData20 = 0;
+        if (mapData73 < 1.001f) {
+            w = mapData73 * 1024.0f;
+            half = -(w * 0.5f);
+            edge = half - (mapBgSetScrollData5 * mapData73 - 256.0f);
+            if (mapData73 <= 0.5f) {
+                mapData93 = edge;
+                mapData95 = -(mapBgSetScrollData5 * mapData73);
+            } else {
+                lo = 0.0f;
+                if (edge + w < 512.0f) {
+                    lo = 512.0f - (edge + w);
+                }
+                hi = 0.0f;
+                if (edge > 0.0f) {
+                    hi = edge;
+                }
+                mapBgSetScrollData5 = (mapBgSetScrollData5 - lo / mapData73) + hi / mapData73;
+                mapData95 = -(mapBgSetScrollData5 * mapData73);
+                mapData93 = half - (mapBgSetScrollData5 * mapData73 - 256.0f);
+            }
+            half = -(mapData73 * 896.0f * 0.5f);
+            edge = half - (mapBgSetScrollData6 * mapData73 - 224.0f);
+            if (mapData73 <= 0.5f) {
+                mapData94 = edge;
+                mapData96 = -(mapBgSetScrollData6 * mapData73) * 0.5f + mapData73 * 32.0f;
+            } else {
+                lo = 0.0f;
+                if (edge + mapData73 * 896.0f < 448.0f) {
+                    lo = 448.0f - (edge + mapData73 * 896.0f);
+                }
+                hi = 0.0f;
+                if (mapData73 * -64.0f < edge) {
+                    hi = mapData73 * -64.0f - edge;
+                }
+                mapBgSetScrollData6 = (mapBgSetScrollData6 - lo / mapData73) - hi / mapData73;
+                mapData94 = half - (mapBgSetScrollData6 * mapData73 - 224.0f);
+                mapData96 = -(mapBgSetScrollData6 * mapData73) * 0.5f + mapData73 * 32.0f;
+            }
+        } else {
+            mapData93 = mapBgSetScrollData9;
+            mapData95 = mapBgSetScrollData13;
+            mapData94 = mapBgSetScrollData10;
+            mapData96 = mapBgSetScrollData14;
+        }
+        mapBgSetScrollData17 = mapData93;
+        dds3ScreenParam.height = 512.0f;
+        sdf3DScreenAdjust = 1;
+        sdf3DScreenAdjustOffsetX = mapData95;
+        sdf3DScreenAdjustOffsetY = mapData96;
+        sdf3DScreenAdjustScaleY = mapData73 + mapData73;
+        Zoom = zoom;
+        mapBgSetScrollData19 = mapData93;
+        mapSKYBGEDITData = 0.0f;
+        mapBgSetScrollData18 = 0;
+        sdf3DScreenAdjustScaleX = mapData73 + mapData73;
+        break;
+    }
+
+    mapSKYBGEDITData2 = 0.0f;
+    if (QuakeFrame) {
+        sdf3DScreenAdjust = 1;
+        sdf3DScreenAdjustOffsetX += gMapScrollReset[0];
+        mapSKYBGEDITData3 = gMapScrollReset[1] + mapSKYBGEDITData2;
+        mapSKYBGEDITData2 = gMapScrollReset[0] + mapSKYBGEDITData2;
+        sdf3DScreenAdjustOffsetY += gMapScrollReset[1] * 0.5f;
+    } else {
+        mapSKYBGEDITData3 = mapSKYBGEDITData2;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_0013CDE0", mapBgSetScroll);
+#endif
 
 INCLUDE_ASM(const s32, "code_0013CDE0", mapLeaf11);
 

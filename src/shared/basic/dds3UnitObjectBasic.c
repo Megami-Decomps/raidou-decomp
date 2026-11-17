@@ -171,9 +171,9 @@ INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicSetKubiTe
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicSetKubiModori);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3ClaimSoundSlot);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicKubiOn);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3CtnGetSub);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicKubiOff);
 
 #ifdef VERSION_RAIDOU1
 s32 effObjInitializeFollowModelData(dds3Basic_t *object) {

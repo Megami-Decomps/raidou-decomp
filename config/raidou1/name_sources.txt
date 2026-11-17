@@ -791,8 +791,8 @@
 0x0011A748	dds3ShortestAngleDelta	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00113110, masked-words-identical (callee map pair); dds-decomp: no provenance row
 0x0011A818	dds3UnitObjectBasicSetKubiTerget	hd-inferred	hd: Raidou HD dds3UnitObjectBasic.dds3UnitObjectBasicSetKubiTerget, score 9.6 band B
 0x0011A970	dds3UnitObjectBasicSetKubiModori	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD dds3UnitObjectBasic.dds3UnitObjectBasicSetKubiModori score 7.0 flag I: calls1 prev calls-of-match st1:call r1+r2
-0x0011AA70	dds3ClaimSoundSlot	inferred	method=dds-fuzzy-70-tie-pair; p=0.38 (n=8); tier=C; source=dds; evidence=dds body 0x31b2e0 sim 0.714 margin 0.01 pair
-0x0011AAB8	dds3CtnGetSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit basic/dds3UnitObjectBasic; called by mapCtnGet
+0x0011AA70	dds3UnitObjectBasicKubiOn	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapCtnGet calls dds3UnitObjectBasicKubiOn(basic, ppos serial) at the same site (distance < 1000); replaces dds3ClaimSoundSlot
+0x0011AAB8	dds3UnitObjectBasicKubiOff	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapCtnGet calls dds3UnitObjectBasicKubiOff(basic) in the far and debug-flag arms; replaces dds3CtnGetSub
 0x0011AAD8	effObjInitializeFollowModelData	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00113490, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011AB80	dds3UnitObjectBasicDestructor	inferred	SMT3HD name via SLUS_209.11 0x00112BB0, reloc-identical; map-agrees
 0x0011ABF8	dds3UnitObjectBasicMainProcedure	inferred	method=smt3-fuzzy-70-m-single; p=0.83 (n=60); tier=B; source=smt3; evidence=smt3 body 0x112c28 sim 0.804 margin 0.54 single
@@ -2022,7 +2022,7 @@
 0x00177FB8	mapCallCtnMdlLoad	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapCtnSync; calls mapCtnMdlLoad
 0x00178068	mapCtnSync	hd	hd: Raidou HD fld.mapCtnSync, score 10.0 band A
 0x00178248	mapCtnFree	hd	hd: Raidou HD fld.mapCtnFree, score 5.1 band C, hd-consensus: calls1 callers-of-match-uniq st1:call r1+r2; 10/10 fold runs agree, fold scores 7.6,5.1,5.1,5.1,5.1,5.1,5.1,7.6,5.1,5.1
-0x00178298	mapCallMemset3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapCtnFree; calls memset
+0x00178298	mapCtnCamInChk	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapCtnCamInChk: called with the player/focus position and with each citizen position in mapCtnGet; returns the camera-in test; replaces mapCallMemset3
 0x001783F0	mapNakamaSummonTaskSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapCtnGet; called by mapNakamaSummonTask
 0x001783F8	mapCtnGet	hd	hd: Raidou HD fld.mapCtnGet, score 13.2 band A
 0x00179528	mapCtnViewOff	hd	hd: Raidou HD fld.mapCtnViewOff, score 9.5 band B
@@ -21939,8 +21939,8 @@
 0x0046BF0C	fldCallSetOt5Data2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldCallSetOt5 (2 of 4 refs, 3 functions)
 0x0046BF10	fldEncDrawName	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046BF10); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=encInitProcess
 0x0046BF18	mapCtnFreeData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnFree (2 of 4 refs, 3 functions)
-0x0046BF1C	mdl_fadeflag	inferred	method=hd; p=0.37 (n=D_r1_0046BF1C); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
-0x0046BF20	mapCtnGetData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnGet (4 of 8 refs, 4 functions)
+0x0046BF1C	ctn_ofs_fx	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD ctn_ofs_fx: added to citizen x*100 in mapCtnGet; replaces mdl_fadeflag
+0x0046BF20	ctn_ofs_fz	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD ctn_ofs_fz: added to citizen y*-100 in mapCtnGet; replaces mapCtnGetData
 0x0046BF24	mapData149	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: mapCtnAndMdlLinkOn, mapCtnGetSub, mapCtnAndMdlLinkOff
 0x0046BF28	ctn_floor	hd	hd: Raidou HD fld.ctn_floor, 3 of 3 functions agree, high confidence
 0x0046BF2C	mapCtnLoadFlag	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapCtnFree tests it first and clears it last; replaces mapData150
@@ -21954,7 +21954,7 @@
 0x0046BF48	sbtlCheckModelDataLoadEndData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckModelDataLoadEnd
 0x0046BF4C	mapData152	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: mapCallBtlCheckModelDataLoadEnd, mapCtnMdlLoad, mapCallCtnMdlLoad
 0x0046BF50	mapCallCtnMdlLoadData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallCtnMdlLoad (3 of 5 refs, 3 functions)
-0x0046BF54	mapCtnGetData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnGet (2 of 3 refs, 2 functions)
+0x0046BF54	gMapCtnRaidoLook	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD gMapCtnRaidoLook gates the KubiOn/KubiOff look block; replaces mapCtnGetData2
 0x0046BF58	mapCtnGetData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCtnGet
 0x0046BF60	fldHojiNameKey	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046BF60); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldCommand_GetHojiID
 0x0046BF68	nbCallGetIntParaData5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by nbCallGetIntPara
@@ -24482,16 +24482,16 @@
 0x004B4C41	bssWork41	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x30D
 0x004B4F4E	bssWork42	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x42
 0x004B4F90	mapWork14	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 8 functions: mapCtnMdlTypeRand, mapCtnAndMdlLinkOn, mapCtnGetSub
-0x004B5030	mapCtnGetWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnGet (6 of 14 refs, 5 functions)
+0x004B5030	ctn_linkflag2	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD ctn_linkflag2[256]: tested per citizen in both loops (low confidence on 2 vs plain); replaces mapCtnGetWork
 0x004B5241	bssWork43	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x1EF
-0x004B5430	mapWork15	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCtnAndMdlLinkOff2, mapCtnGet
+0x004B5430	ctn_linkflag2_type	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD ctn_linkflag2_type[256]: compared with the pass index in loop 1; replaces mapWork15
 0x004B5441	bssWork44	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x10C
 0x004B554D	bssWork45	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x2E3
 0x004B5830	mapWork16	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCtnAndMdlLinkOff2, mapCtnGet
 0x004B5C30	mapCtnMdlLoadWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnMdlLoad (21 of 25 refs, 3 functions)
-0x004B5CD0	mapCtnGetWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCtnGet
-0x004B5D70	mapCtnGetWork3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCtnGet
-0x004B5E10	mapWork17	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapCtnLoad, mapCallLoadDataIDFloor, mapCtnGet
+0x004B5CD0	mdl_leng	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mdl_leng[40]: camera distance per linked model, sorted; replaces mapCtnGetWork2
+0x004B5D70	mdl_ctnidx	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mdl_ctnidx[40]: citizen index per linked model, -1 cleared; replaces mapCtnGetWork3
+0x004B5E10	ctn_neko_status	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD ctn_neko_status[5]: per-cat state in the neko loop; replaces mapWork17
 0x004B5E28	mapCtnMdlLoadWork2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnMdlLoad (11 of 18 refs, 3 functions)
 0x004B5E2C	mapCallBtlCheckModelDataLoadEndWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallBtlCheckModelDataLoadEnd
 0x004B5E30	mapCallBtlCheckModelDataLoadEndWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallBtlCheckModelDataLoadEnd

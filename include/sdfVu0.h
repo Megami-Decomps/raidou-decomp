@@ -5,6 +5,7 @@
 #include "sdf_types.h"
 
 void DiagMatrix(void);
+void InversMatrix(void);
 void LoadIdentity(void);
 void LookAtMatrix(const void *aTarget, const void *aEye, const void *aDown);
 void MultMatrixNoArg(void);

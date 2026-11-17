@@ -756,8 +756,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0011A748	0x0011D1B0	dds3ShortestAngleDelta	yes	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	masked-hash-in-gap
 0x0011A818	0x0011D280	dds3UnitObjectBasicSetKubiTerget	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011A970	0x0011D3D8	dds3UnitObjectBasicSetKubiModori	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
-0x0011AA70	0x0011D4D8	dds3ClaimSoundSlot	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
-0x0011AAB8	0x0011D520	dds3CtnGetSub	yes	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
+0x0011AA70	0x0011D4D8	dds3UnitObjectBasicKubiOn	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
+0x0011AAB8	0x0011D520	dds3UnitObjectBasicKubiOff	yes	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011AB80	0x0011D610	dds3UnitObjectBasicDestructor	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011AED0	0x0011DAD0	dds3UnitObjectBasicDrawProcedure	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
 0x0011B3E0	0x0011DFE0	dds3UnitObjectBasicEL_LinkFree	no	yes	asm/raidou1/basic/dds3UnitObjectBasic.s	asm/raidou2/basic/dds3UnitObjectBasic.s	unique-reloc-hash
@@ -1807,7 +1807,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00177FB8	0x0018AA38	mapCallCtnMdlLoad	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
 0x00178068	0x0018AAE8	mapCtnSync	no	no	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-masked-hash
 0x00178248	0x0018ACC8	mapCtnFree	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
-0x00178298	0x0018AD18	mapCallMemset3	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
+0x00178298	0x0018AD18	mapCtnCamInChk	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
 0x001783F0	0x0018AE70	mapNakamaSummonTaskSub	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	masked-hash-in-gap
 0x001783F8	0x0018AE78	mapCtnGet	no	no	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	run-order-near
 0x00179528	0x0018BFF0	mapCtnViewOff	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash

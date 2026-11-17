@@ -163,7 +163,7 @@ typedef struct fldAreaWork_t
     s32 word1C;                 /* 0x01C */
     s32 word20;                 /* 0x020 */
     s32 word24;                 /* 0x024 */
-    s32 word28;                 /* 0x028 */
+    f32 float28;                /* 0x028: degrees, wrapped to [0, 360) by PlayerCalc_Nml_fld */
     s32 word2C;                 /* 0x02C */
     struct sdfTexHandle_t *word30; /* 0x030: bg texture, released by mapBgFree2 */
     s32 cutIdx;                 /* 0x034: index into the fldWork6 cut table */

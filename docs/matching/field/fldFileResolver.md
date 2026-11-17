@@ -17,7 +17,7 @@ Raidou 1: 246 of 618 words differ, first at +0x8C.
 
 Raidou 1: 246 of 618 words differ with the same size and flow; retail schedules the y update first in the position blocks, where the x, y, z source order (which matched in mapSummonDvTask) does not. Two else-if arms with identical bodies are cross-jumped into one unless the second assigns speed before mode. Raidou 2's body differs, so Raidou 2 keeps the asm. Vector checked (menu).
 
-Fragile: the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618.
+Fragile: the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618. The B4-field-big header declaration edits (11 headers, no change to the unit) moved it again, DIFF 323/618 to CONTEXT 12/618.
 
 Related: scheduling of the position update.
 
@@ -27,6 +27,14 @@ Raidou 1: 8 of 593 words differ, first at +0x444.
 
 Raidou 1: 8 of 593 words differ, one temp register (f0 vs f8) in the spd_max clamp arm. A separate follow flag from the per-branch mode keeps the mode=0 stores; rot declared before axis puts axis at sp+16; the extern sdfVector4_t table copied at its declaration gives the prologue ldl/ldr copy. Raidou 2's body differs, so Raidou 2 keeps the asm. Vector checked (menu).
 
-Fragile: the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit (reverting any one leaves 6, all three gives 8).
+Fragile: the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit.
 
 Related: register choice in the spd_max clamp.
+
+## PlayerCalc_Nml_fld (field/fldFileResolver, raidou1 0xB74)
+
+Raidou 1: 404 of 731 words differ, first at +0xC; emitted 2924 bytes, native 2932 bytes.
+
+Control flow, calls and stores follow the asm. Raidou 2's body is 953 words and differs, so Raidou 2 keeps the asm. Vector checked (ingame rows reach the hitOn path).
+
+Related: register allocation: s5/s6 swap (&axis vs dyingMotion); nakamaMode ? word174 : 5.0 is if-converted where retail branches (if/else and ternary both tried); retail computes the dirAngle[dir] address before mapGetScreenDir; analog FP register choice.

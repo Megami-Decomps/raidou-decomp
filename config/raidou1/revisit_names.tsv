@@ -240,7 +240,6 @@
 0x0011A598	dds3CameraObjectBasicFourceCalc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3CameraObjectBasic.dds3CameraObjectBasicFourceCalc, score 10.95 band A
 0x0011A748	dds3ShortestAngleDelta	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00113110, masked-words-identical (callee map pair); dds-decomp: no provenance row
 0x0011A818	dds3UnitObjectBasicSetKubiTerget	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3UnitObjectBasic.dds3UnitObjectBasicSetKubiTerget, score 9.6 band B
-0x0011AAB8	dds3CtnGetSub	func	tier=D	derived-caller	na	unit basic/dds3UnitObjectBasic; called by mapCtnGet
 0x0011AAD8	effObjInitializeFollowModelData	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00113490, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011B778	dds3Leaf28	func	tier=D	derived-unit	na	unit basic/dds3MatterObjectBasic; no named callee, caller or string
 0x0011BC50	dds3RefreshStoredVec3	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001143B0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -739,7 +738,6 @@
 0x00177BA0	mapCtnGetSub	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapCtnAndMdlLinkOn; called by mapCtnGet
 0x00177E98	mapCallLoadDataIDFloor	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapCtnLoad; calls ctnLoadDataIDFloor
 0x00177FB8	mapCallCtnMdlLoad	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapCtnSync; calls mapCtnMdlLoad
-0x00178298	mapCallMemset3	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapCtnFree; calls memset
 0x001783F0	mapNakamaSummonTaskSub	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapCtnGet; called by mapNakamaSummonTask
 0x001795E8	mapCallSetIntReturnValue	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapCtnGetObjNum; calls scrSetIntReturnValue
 0x00179608	mapCallSetIntReturnValue2	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapCtnGetObjNum; calls scrSetIntReturnValue
@@ -14820,7 +14818,6 @@
 0x0046BF08	fldCallSetOt5Data	data	tier=D	derived-dominant	na	used by fldCallSetOt5 (4 of 7 refs, 4 functions)
 0x0046BF0C	fldCallSetOt5Data2	data	tier=D	derived-dominant	na	used by fldCallSetOt5 (2 of 4 refs, 3 functions)
 0x0046BF18	mapCtnFreeData	data	tier=D	derived-dominant	na	used by mapCtnFree (2 of 4 refs, 3 functions)
-0x0046BF20	mapCtnGetData	data	tier=D	derived-dominant	na	used by mapCtnGet (4 of 8 refs, 4 functions)
 0x0046BF24	mapData149	data	tier=D	derived-shared	na	used by 7 functions: mapCtnAndMdlLinkOn, mapCtnGetSub, mapCtnAndMdlLinkOff
 0x0046BF30	mapCtnSyncData	data	tier=D	derived-dominant	na	used by mapCtnSync (2 of 3 refs, 2 functions)
 0x0046BF34	mapCtnSyncData2	data	tier=D	derived-dominant	na	used by mapCtnSync (2 of 3 refs, 2 functions)
@@ -14831,7 +14828,6 @@
 0x0046BF48	sbtlCheckModelDataLoadEndData2	data	tier=D	derived-sole	na	used by sbtlCheckModelDataLoadEnd
 0x0046BF4C	mapData152	data	tier=D	derived-shared	na	used by 5 functions: mapCallBtlCheckModelDataLoadEnd, mapCtnMdlLoad, mapCallCtnMdlLoad
 0x0046BF50	mapCallCtnMdlLoadData	data	tier=D	derived-dominant	na	used by mapCallCtnMdlLoad (3 of 5 refs, 3 functions)
-0x0046BF54	mapCtnGetData2	data	tier=D	derived-dominant	na	used by mapCtnGet (2 of 3 refs, 2 functions)
 0x0046BF58	mapCtnGetData3	data	tier=D	derived-sole	na	used by mapCtnGet
 0x0046BF68	nbCallGetIntParaData5	data	tier=D	derived-sole	na	used by nbCallGetIntPara
 0x0046BF6C	nbDevilInfoEncidData8	data	tier=D	derived-sole	na	used by nbDevilInfoEncid
@@ -16667,16 +16663,11 @@
 0x004B4C41	bssWork41	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x30D
 0x004B4F4E	bssWork42	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x42
 0x004B4F90	mapWork14	data	tier=D	derived-shared	na	used by 8 functions: mapCtnMdlTypeRand, mapCtnAndMdlLinkOn, mapCtnGetSub
-0x004B5030	mapCtnGetWork	data	tier=D	derived-dominant	na	used by mapCtnGet (6 of 14 refs, 5 functions)
 0x004B5241	bssWork43	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x1EF
-0x004B5430	mapWork15	data	tier=D	derived-shared	na	used by 2 functions: mapCtnAndMdlLinkOff2, mapCtnGet
 0x004B5441	bssWork44	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x10C
 0x004B554D	bssWork45	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x2E3
 0x004B5830	mapWork16	data	tier=D	derived-shared	na	used by 2 functions: mapCtnAndMdlLinkOff2, mapCtnGet
 0x004B5C30	mapCtnMdlLoadWork	data	tier=D	derived-dominant	na	used by mapCtnMdlLoad (21 of 25 refs, 3 functions)
-0x004B5CD0	mapCtnGetWork2	data	tier=D	derived-sole	na	used by mapCtnGet
-0x004B5D70	mapCtnGetWork3	data	tier=D	derived-sole	na	used by mapCtnGet
-0x004B5E10	mapWork17	data	tier=D	derived-shared	na	used by 3 functions: mapCtnLoad, mapCallLoadDataIDFloor, mapCtnGet
 0x004B5E28	mapCtnMdlLoadWork2	data	tier=D	derived-dominant	na	used by mapCtnMdlLoad (11 of 18 refs, 3 functions)
 0x004B5E2C	mapCallBtlCheckModelDataLoadEndWork	data	tier=D	derived-sole	na	used by mapCallBtlCheckModelDataLoadEnd
 0x004B5E30	mapCallBtlCheckModelDataLoadEndWork2	data	tier=D	derived-sole	na	used by mapCallBtlCheckModelDataLoadEnd
@@ -18202,7 +18193,6 @@
 0x00115780	scrCommandResetDrawEffects	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x10ed68 sim 1.000 margin 0.31 pair
 0x00115950	prm_MAKA_CHECK	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x10d030 sim 1.000 margin 0.00 pair
 0x00115A50	TakumiGetTarget	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD scrCommand.TakumiGetTarget score 4.8 flag -: calls2 calls-of-match votes2 st1:call r2-disagree:0x1180c8
-0x0011AA70	dds3ClaimSoundSlot	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x31b2e0 sim 0.714 margin 0.01 pair
 0x0011C6F0	effObjCreateIndexedKindZero	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x114e48 sim 1.000 margin 0.00 pair
 0x0011C738	AddD3PEffect	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x114478 sim 1.000 margin 0.00 pair
 0x0011F3D0	datGetStockDevilID	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD dat.datGetStockDevilID score 4.5 flag I: calls2 calls-of-match votes3 st1:call r2-disagree:0x1225c0
@@ -19167,7 +19157,6 @@
 0x0046BCE4	fldDrwZBuf2	data	tier=C	smt3-ref	0.80 (n=None)	smt3-ref/close: nfun=1, other=0, sim=0.9167, games=1, size=True, sec=True, fn=mapProcShutDownSub; fldDrwZBuf is another symbol
 0x0046BD54	effQueuedResourceNameRecord4	data	tier=C	dds-ref	0.59 (n=D_r1_0046BD54)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldCallTexFreeDelayed; effQueuedResourceNameRecord is another symbol
 0x0046BDAC	fscroll_s_x	data	tier=C	hd	0.37 (n=D_r1_0046BDAC)	hd/medium: conf=medium, agree=2, using=3
-0x0046BF1C	mdl_fadeflag	data	tier=C	hd	0.37 (n=D_r1_0046BF1C)	hd/medium: conf=medium, agree=2, using=2
 0x0046BF38	mapCtnColor	data	tier=C	hd	0.37 (n=D_r1_0046BF38)	hd/medium: conf=medium, agree=2, using=3
 0x0046C1EC	sdfFileSeekWork2	data	tier=C	smt3-ref	0.80 (n=D_r1_0046C1EC)	smt3-ref/close: nfun=2, other=0, sim=0.8, games=2, size=True, sec=False, fn=mjnDeleteScene; sdfFileSeekWork is another symbol
 0x0046C1F0	itfFontTestScriptTask	data	tier=C	dds-ref	0.59 (n=D_r1_0046C1F0)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=mjnCallGetProcessStat
@@ -19284,6 +19273,8 @@
 0x00117DF8	sceneconstructor	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x10ed40 sim 0.917 margin 0.54 pair
 0x00117EB8	scenedestructor	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x10ee08 sim 0.902 margin 0.48 pair
 0x00118510	dds3SceneBasicLoadScriptFile	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD dds3SceneBasic.dds3SceneBasicLoadScriptFile score 6.7 flag R: calls1 prev~ next gap1/1 st1:gap r1+r2
+0x0011AA70	dds3UnitObjectBasicKubiOn	func	tier=B	hd-role	na	HD mapCtnGet calls dds3UnitObjectBasicKubiOn(basic, ppos serial) at the same site (distance < 1000); replaces dds3ClaimSoundSlot
+0x0011AAB8	dds3UnitObjectBasicKubiOff	func	tier=B	hd-role	na	HD mapCtnGet calls dds3UnitObjectBasicKubiOff(basic) in the far and debug-flag arms; replaces dds3CtnGetSub
 0x0011ABF8	dds3UnitObjectBasicMainProcedure	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x112c28 sim 0.804 margin 0.54 single
 0x0011AED0	dds3UnitObjectBasicDrawProcedure	func	tier=B	smt3-role	na	SMT3 dds3UnitObjectBasicDrawProcedure: same memset/flag 1/work->ot LinkOt/0x400,0x1000/mark 0 shadow structure; replaces dds3CallMemset2
 0x0011EB50	dds3GlobalWorkInit	func	tier=B	smt3-role	na	SMT3; replaces datGlobalWorkInit
@@ -19360,6 +19351,7 @@
 0x00173DE8	fldFreeRunMapData	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x11bc10 sim 0.929 margin 0.93 pair
 0x00175A50	mapRiberaMaClearMsg	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapRiberaMaClearMsg score 6.5 flag -: calls1 prev gap8/10 st1:gap r1+r2
 0x001779D8	mapCtnAndMdlLinkOn	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapCtnAndMdlLinkOn score 6.1 flag -: calls1 prev gap6/8 st1:gap r1+r2
+0x00178298	mapCtnCamInChk	func	tier=B	hd-role	na	HD mapCtnCamInChk: called with the player/focus position and with each citizen position in mapCtnGet; returns the camera-in test; replaces mapCallMemset3
 0x00179668	fldCommand_PAD_ENABLE	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x158258 sim 0.824 margin 0.21 pair
 0x0017A958	evtCommand_TEX_SWAP	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1e8af8 sim 0.808 margin 0.25 pair
 0x0017E230	frFlushGsFontTable	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1c6e50 sim 0.828 margin 0.63 pair
@@ -19793,7 +19785,10 @@
 0x0046BEE8	gencStageInnAlp	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE8)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x0046BEEC	encDrawState	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEEC)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x0046BEF0	gencOn	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEF0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
+0x0046BF1C	ctn_ofs_fx	data	tier=B	hd-role	na	HD ctn_ofs_fx: added to citizen x*100 in mapCtnGet; replaces mdl_fadeflag
+0x0046BF20	ctn_ofs_fz	data	tier=B	hd-role	na	HD ctn_ofs_fz: added to citizen y*-100 in mapCtnGet; replaces mapCtnGetData
 0x0046BF2C	mapCtnLoadFlag	data	tier=B	hd-role	na	HD mapCtnFree tests it first and clears it last; replaces mapData150
+0x0046BF54	gMapCtnRaidoLook	data	tier=B	hd-role	na	HD gMapCtnRaidoLook gates the KubiOn/KubiOff look block; replaces mapCtnGetData2
 0x0046C1A4	gMessageRequestResult	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C1A4)	smt3-ref/close: nfun=2, other=0, sim=0.86905, games=2, size=True, sec=True, fn=frCallEnableMode
 0x0046C1A8	gMessageSpaceX	data	tier=B	smt3-ref	0.88 (n=D_r1_0046C1A8)	smt3-ref/loose: nfun=6, other=0, sim=0.9032, games=2, size=False, sec=True, fn=frFontAppendIndexedTextToGlyphChain
 0x0046C1C8	frSetFontString_style	data	tier=B	smt3-role	na	SMT3 name: frSetFontString's current style byte (sb style when >= 0, indexes gFT.entries); replaces frSetFontStringData
@@ -19898,6 +19893,11 @@
 0x004B1928	npc_delcash	data	tier=B	hd-role	na	HD mapNpcTblRefreshSub fills it with {npc index, obj index}, count npc_delcash_cnt; replaces mapWork6
 0x004B19A8	npc_addcash	data	tier=B	hd-role	na	HD mapNpcTblRefreshSub fills it with {npc, point, flor, model}, count npc_addcash_cnt; replaces mapNpcTblRefresh_WaitWork
 0x004B4B60	encBlurParam	data	tier=B	smt3-ref	0.80 (n=D_r1_004B4B60)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
+0x004B5030	ctn_linkflag2	data	tier=B	hd-role	na	HD ctn_linkflag2[256]: tested per citizen in both loops (low confidence on 2 vs plain); replaces mapCtnGetWork
+0x004B5430	ctn_linkflag2_type	data	tier=B	hd-role	na	HD ctn_linkflag2_type[256]: compared with the pass index in loop 1; replaces mapWork15
+0x004B5CD0	mdl_leng	data	tier=B	hd-role	na	HD mdl_leng[40]: camera distance per linked model, sorted; replaces mapCtnGetWork2
+0x004B5D70	mdl_ctnidx	data	tier=B	hd-role	na	HD mdl_ctnidx[40]: citizen index per linked model, -1 cleared; replaces mapCtnGetWork3
+0x004B5E10	ctn_neko_status	data	tier=B	hd-role	na	HD ctn_neko_status[5]: per-cat state in the neko loop; replaces mapWork17
 0x004B5EE0	pbDebugPanel2Pos	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EE0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel2
 0x004B5EF0	pbDebugPanel3X	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel3
 0x004B71F0	evtViewerLightParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 10 interpolates the scene light into it, same use; replaces RunFrame2Work
