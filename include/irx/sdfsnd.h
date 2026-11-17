@@ -298,9 +298,10 @@ extern u32 sdfSndBankFlagTbl[SDF_SND_KINDS + 1];
 extern s32 sdfSndBank1Loaded;
 extern s32 sdfSndBank3Loaded;
 extern u8 sdfSndBankAltSlot;
-#ifndef VERSION_RAIDOU2
 extern u8 sdfSndDevilAreaNext;
 extern u8 sdfSndSkillAreaNext;
+#ifdef VERSION_RAIDOU2
+extern u8 sdfSndNakamaAreaNext;
 #endif
 extern u32 sdfSndSlotSerialNext;
 extern s32 sdfSndResumeIdx;

@@ -109,6 +109,9 @@ s32 sdfSndSePlayPositional(s32 id, s32 angle, s32 dist, s32 radius);
 s32 sdfSndSetListener(sdfSndListenerReq_t *req);
 s32 sdfSndSePlay3d(sdfSndSe3dReq_t *req);
 s32 sdfSndIsBankLoaded(s32 kind);
+s32 sdfSndFindSkillArea(s32 area, s32 *kindOut, s32 *modeOut);
+s32 sdfSndFindDevilArea(s32 area, s32 *kindOut, s32 *modeOut);
+s32 sdfSndFindNakamaArea(s32 area, s32 *kindOut, s32 *modeOut);
 s32 sdfSndLoadSmg(const char *path, s32 mode);
 void sdfSndSmgLoadThread(void *arg);
 s32 sdfSndSetBankAddr(s32 kind, u32 waveSize);
@@ -1008,12 +1011,121 @@ INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvPlayS);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScemi_4);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvScehs_0);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvSeSta);
-INCLUDE_RODATA("SDFSDMAN", jtbl_00006300);
-INCLUDE_ASM("SDFSDMAN", func_00002A20);
+/* The bank kind a skill sound area loads into, if nothing has it locked. */
+s32 sdfSndFindSkillArea(s32 area, s32 *kindOut, s32 *modeOut)
+{
+    s32 kind;
+    s32 mode;
 
-INCLUDE_ASM("SDFSDMAN", func_00002B28);
+    kind = 0;
+    mode = 0;
+    switch (area) {
+    case 0:
+        kind = 8;
+        break;
+    case 1:
+        kind = 9;
+        break;
+    case 2:
+        kind = 10;
+        break;
+    case 3:
+        kind = 11;
+        break;
+    case 4:
+        kind = 12;
+        break;
+    case 5:
+        kind = 13;
+        break;
+    case 6:
+        kind = 14;
+        mode = 1;
+        break;
+    case 7:
+        kind = 15;
+        mode = 1;
+        break;
+    case 8:
+        kind = 16;
+        mode = 1;
+        break;
+    case 9:
+        kind = 17;
+        mode = 1;
+        break;
+    case 10:
+        kind = 18;
+        mode = 1;
+        break;
+    case 11:
+        kind = 19;
+        mode = 1;
+        break;
+    case 12:
+        kind = 20;
+        mode = 2;
+        break;
+    case 13:
+        kind = 21;
+        mode = 2;
+        break;
+    case 14:
+        kind = 22;
+        mode = 2;
+        break;
+    case 15:
+        kind = 23;
+        mode = 2;
+        break;
+    case 16:
+        kind = 24;
+        mode = 2;
+        break;
+    case 17:
+        kind = 25;
+        mode = 2;
+        break;
+    }
+    if (sdfSndWorkArea->stat[kind].lock == 0) {
+        *kindOut = kind;
+        *modeOut = mode;
+        return 1;
+    }
+    return 0;
+}
 
-INCLUDE_ASM("SDFSDMAN", func_00002B68);
+s32 sdfSndFindDevilArea(s32 area, s32 *kindOut, s32 *modeOut)
+{
+    s32 kind;
+
+    kind = 6;
+    if (area == 0) {
+        kind = 5;
+    }
+    if (sdfSndWorkArea->stat[kind].lock == 0) {
+        *kindOut = kind;
+        *modeOut = 0;
+        return 1;
+    }
+    return 0;
+}
+
+s32 sdfSndFindNakamaArea(s32 area, s32 *kindOut, s32 *modeOut)
+{
+    s32 kind;
+
+    kind = 7;
+    if (area == 0) {
+        kind = 4;
+    }
+    if (sdfSndWorkArea->stat[kind].lock == 0) {
+        *kindOut = kind;
+        *modeOut = 0;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvFileR);
 INCLUDE_RODATA("SDFSDMAN", aSdfsnddrvMidi0);
