@@ -226,8 +226,6 @@ struct SBTL_MODELBIND_LIST *effAllocateModelBindings(void) {
 
 INCLUDE_ASM(const s32, "code_002929C8", sbtlCallMemAllocDirect6);
 
-/* NON_MATCHING: 20 of 84 words match.  */
-#ifdef NON_MATCHING
 s32 Proc_sbtlEXP(struct SBTL_MODELBIND_LIST *lwk) {
     SBTL_MODELBIND *wk;
 
@@ -235,23 +233,22 @@ s32 Proc_sbtlEXP(struct SBTL_MODELBIND_LIST *lwk) {
         return 0;
     }
     wk = lwk->top;
-    if (wk == NULL) {
+    if (wk == NULL || lwk->num == 0) {
         return 0;
     }
-    if (lwk->num != 0) {
-        if (wk_sbtl->flg & 0x40) {
-            return 0;
-        }
+    if (wk_sbtl->flg & 0x40) {
+        return 0;
+    }
     while (wk != NULL) {
         if (wk->status == 1) {
             if (wk->flg & 1) {
                 wk_sbtl->field644 += wk->para;
-                wk_sbtl->field644 = (wk_sbtl->field644 <= 0) ? 0 : (wk_sbtl->field644 > 999999) ? 999999 : wk_sbtl->field644;
+                wk_sbtl->field644 = wk_sbtl->field644 > 0 ? (wk_sbtl->field644 < 1000000 ? wk_sbtl->field644 : 999999) : 0;
                 sbtlCallBtlSearchUnitID26(wk);
             }
             if (wk->flg & 2) {
                 wk_sbtl->field644 -= wk->para;
-                wk_sbtl->field644 = (wk_sbtl->field644 <= 0) ? 0 : (wk_sbtl->field644 > 999999) ? 999999 : wk_sbtl->field644;
+                wk_sbtl->field644 = wk_sbtl->field644 > 0 ? (wk_sbtl->field644 < 1000000 ? wk_sbtl->field644 : 999999) : 0;
                 sbtlCallBtlSearchUnitID26(wk);
             }
             wk->status = 2;
@@ -259,15 +256,8 @@ s32 Proc_sbtlEXP(struct SBTL_MODELBIND_LIST *lwk) {
         wk = wk->next;
     }
     return 1;
-    }
-    return 0;
 }
-#else
-INCLUDE_ASM(const s32, "code_002929C8", Proc_sbtlEXP);
-#endif
 
-/* NON_MATCHING: 14 of 56 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *stp, u8 flg) {
     struct SBTL_MODELBIND *node;
     struct SBTL_MODELBIND *next;
@@ -277,10 +267,7 @@ s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *stp, u8 flg) {
         return 0;
     }
     node = stp->top;
-    if (node == NULL) {
-        return 0;
-    }
-    if (stp->num == 0) {
+    if (node == NULL || stp->num == 0) {
         return 0;
     }
     do {
@@ -310,9 +297,6 @@ s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *stp, u8 flg) {
     } while (node != NULL);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002929C8", sbtlCallMemFreeDirect6);
-#endif
 
 INCLUDE_ASM(const s32, "code_002929C8", sbtlBattleEnd);
 

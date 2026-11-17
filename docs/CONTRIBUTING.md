@@ -100,7 +100,8 @@ shared units and [docs/smt3-names.md](smt3-names.md) covers names carried over
 from smt3-decomp. smt3-decomp has C for many of the same functions; copy the body,
 drop `static`, and adapt types.
 [smt3-decomp's matching levers](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/matching-levers.md)
-list what to try when a function is close.
+list what to try when a function is close, and [docs/levers.md](levers.md) adds
+the ones found here.
 [docs/matching/](matching/README.md) records what was already tried on each
 draft here; grep its `INDEX.tsv` for the function first.
 

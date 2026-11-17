@@ -10,9 +10,23 @@
 #include "sdfVu0.h"
 #include "ps2asm.h"
 
-INCLUDE_ASM(const s32, "code_0016AD90", fldLeaf25);
+void fldLeaf25(void) {
+    if (am_floor == fldData36) {
+        if (!fldGlobalBase.nakamaMode) {
+            am_top_x = mapCallSetOt2Data7 - 32.0f;
+            am_top_z = mapCallSetOt2Data8 - 28.0f;
+        } else {
+            am_top_x = fldData34 - 32.0f;
+            am_top_z = fldData35 - 28.0f;
+        }
+    } else if (mapCallSetOt2Data9 != 0.0f && am_floor == mapCallSetOt2Data10) {
+        am_top_x = mapCallSetOt2Data7 - 32.0f;
+        am_top_z = mapCallSetOt2Data8 - 28.0f;
+    }
+}
 
-/* NON_MATCHING: 74 of 94 words match.  */
+
+/* NON_MATCHING: x words match.  */
 #ifdef NON_MATCHING
 void mapFunc(void) {
     s32 down;
@@ -50,19 +64,19 @@ void mapFunc(void) {
         am_floor = up;
         fldLeaf25();
     }
-    dx = 0;
     dz = 0;
+    dx = 0;
     if (dds3PadButtonState[0x24]) {
         dx = -1;
+    }
+    if (dds3PadButtonState[0x25]) {
+        dx = 1;
     }
     if (dds3PadButtonState[0x26]) {
         dz = -1;
     }
     if (dds3PadButtonState[0x27]) {
         dz = 1;
-    }
-    if (dds3PadButtonState[0x25]) {
-        dx = 1;
     }
     mapAutoMapCalcPosLimit(dx, dz);
 }

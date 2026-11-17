@@ -17,7 +17,7 @@
 #include "sbtlSub_0027ED08.h"
 #include "code_r1_002CA3F0.h"
 
-/* NON_MATCHING: 36 of 126 words match. Stack frame 80 vs 96 and unrolled colour loop scheduling; table copied from rodata like retail. */
+/* NON_MATCHING: 3 of 91 words match. Stack frame 80 vs 96 and unrolled colour loop scheduling; table copied from rodata like retail. */
 #ifdef NON_MATCHING
 s32 Draw_sbtlSTP(SBTL_STP *stp)
 {
@@ -33,13 +33,7 @@ s32 Draw_sbtlSTP(SBTL_STP *stp)
         return 0;
     }
     node = stp->head;
-    if (node == NULL || stp->enabled == 0) {
-        return 0;
-    }
-    if (wk_sbtl->panel == NULL || wk_sbtl->panel->resources == NULL) {
-        return 0;
-    }
-    if ((wk_sbtl->flg2 & 0x40) != 0) {
+    if (node == NULL || stp->enabled == 0 || wk_sbtl->panel == NULL || wk_sbtl->panel->resources == NULL || (wk_sbtl->flg2 & 0x40) != 0) {
         return 0;
     }
     for (; node != NULL; node = node->next) {

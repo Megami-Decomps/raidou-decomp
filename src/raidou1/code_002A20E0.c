@@ -71,8 +71,6 @@ s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlSearchDvltk);
 
-/* NON_MATCHING: 40 of 69 words match.  */
-#ifdef NON_MATCHING
 s32 Draw_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
 {
     SBTLDVLTK_WORK *dwk;
@@ -85,10 +83,7 @@ s32 Draw_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
         return 0;
     }
     dwk = lwk->dwk;
-    if (dwk == NULL) {
-        return 0;
-    }
-    if (lwk->num == 0) {
+    if (dwk == NULL || lwk->num == 0) {
         return 0;
     }
     if (sbtlData104 == NULL && !dds3BgSetScrollSub()) {
@@ -118,12 +113,7 @@ s32 Draw_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
     }
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A20E0", Draw_sbtlDvltk);
-#endif
 
-/* NON_MATCHING: 29 of 56 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlReleaseDvltk_List(SBTLDVLTK_LISTWORK *stp, u8 flg)
 {
     SBTLDVLTK_WORK *node;
@@ -133,10 +123,7 @@ s32 sbtlReleaseDvltk_List(SBTLDVLTK_LISTWORK *stp, u8 flg)
         return 0;
     }
     node = stp->dwk;
-    if (node == NULL) {
-        return 0;
-    }
-    if (stp->num == 0) {
+    if (node == NULL || stp->num == 0) {
         return 0;
     }
     do {
@@ -152,8 +139,8 @@ s32 sbtlReleaseDvltk_List(SBTLDVLTK_LISTWORK *stp, u8 flg)
             }
             if (node->prev == NULL) {
                 stp->dwk = node->next;
-                if (node->next != NULL) {
-                    node->next->prev = NULL;
+                if (stp->dwk != NULL) {
+                    stp->dwk->prev = NULL;
                 }
             }
             next = node->next;
@@ -166,9 +153,6 @@ s32 sbtlReleaseDvltk_List(SBTLDVLTK_LISTWORK *stp, u8 flg)
     } while (node != NULL);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A20E0", sbtlReleaseDvltk_List);
-#endif
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlDeleteDvltkList);
 

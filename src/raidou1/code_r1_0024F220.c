@@ -411,7 +411,7 @@ u32 sbtlCallGetRandIntA4(struct SBTLUNIT_WORK *wk)
     return (wk->se.footwk.prevSMGID - base + n) % 4 + 0x10006;
 }
 
-/* NON_MATCHING: 34 of 60 words match. Branch layout: retail joins every result in one register and tests the SE count with separate signed compares; vector checked (menu): only sedataNum 1 covered. */
+/* NON_MATCHING: 51 of 60 words match. Branch layout: retail joins every result in one register and tests the SE count with separate signed compares; vector checked (menu): only sedataNum 1 covered. */
 #ifdef NON_MATCHING
 u32 sbtlCallGetRandIntA5(SBTLSOUND_FOOTWORK *fwk, s32 devilID)
 {
@@ -419,30 +419,31 @@ u32 sbtlCallGetRandIntA5(SBTLSOUND_FOOTWORK *fwk, s32 devilID)
     DVLFOOTSE_WORK *foot;
     s32 num;
     u32 n;
+    u32 ret;
 
     base = sbtlPlayMotionSENowSub2(devilID, -1);
     foot = sbtlDevilFootSEProcSub(devilID);
+    ret = 0;
     if (foot->flg & 2) {
         if (fwk->prevSMGID == 0) {
-            return base + dds3GetRandIntA(NULL, foot->sedataNum);
+            ret = base + dds3GetRandIntA(NULL, foot->sedataNum);
+        } else {
+            num = foot->sedataNum;
+            if (num == 1) {
+                return base;
+            }
+            if (num == 0) {
+                return 0;
+            }
+            if (num < 5) {
+                n = dds3GetRandIntA(NULL, num - 1) + 1;
+                ret = (fwk->prevSMGID - base + n) % foot->sedataNum + base;
+            }
         }
-        num = foot->sedataNum;
-        if (num == 1) {
-            return base;
-        }
-        if (num == 0) {
-            return 0;
-        }
-        if (num < 5) {
-            n = dds3GetRandIntA(NULL, num - 1) + 1;
-            return (fwk->prevSMGID - base + n) % foot->sedataNum + base;
-        }
-        return 0;
+    } else if (foot->flg & 4) {
+        ret = base + fwk->played;
     }
-    if (foot->flg & 4) {
-        return base + fwk->played;
-    }
-    return 0;
+    return ret;
 }
 #else
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallGetRandIntA5);
@@ -1257,36 +1258,34 @@ void UnitMV(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos)
     }
 }
 
-/* NON_MATCHING: 22 of 162 words match. Retail tests the 0x10 flag with bnel around an unconditional jump to the return-0 exit and sets the return 1 in bnel delay slots (branch-likely class); devil ID if-chain and rot source pick line up; aligned diff is 15 lines (five words shorter than retail); vector checked (menu). */
-#ifdef NON_MATCHING
 s32 sbtlCallMemset5(struct SBTLUNIT_WORK *wk) {
     sdfVector4_t ofs = { 0.0f, 0.0f, 0.0f, 0.0f };
     sdfVector4_t rot;
     SBTLUNIT_FLG flg;
     f32 angle;
 
-    flg = wk->flg;
-    if ((wk_sbtl->flg & 0x40) && !(flg & 0x10)) {
+    if ((wk_sbtl->flg & 0x40) && !(wk->flg & 0x10)) {
         return 0;
     }
+    flg = wk->flg;
     if (wk->unit.devilId == 259) {
-            wk->pos.x = 50.0f;
-            wk->pos.y = 600.0f;
-            wk->pos.z = -150.0f;
-            wk->pos.w = 1.0f;
+        wk->pos.x = 50.0f;
+        wk->pos.y = 600.0f;
+        wk->pos.z = -150.0f;
+        wk->pos.w = 1.0f;
     } else if (wk->unit.devilId == 258) {
-            wk->pos.y = 50.0f;
-            wk->pos.z = -50.0f;
-            wk->rot.w = 1.0f;
-            wk->pos.x = 50.0f;
-            wk->pos.w = 1.0f;
-            wk->rot.x = 0.0f;
-            wk->rot.y = 0.0f;
-            wk->rot.z = 0.0f;
+        wk->pos.x = 50.0f;
+        wk->pos.y = 50.0f;
+        wk->pos.z = -50.0f;
+        wk->pos.w = 1.0f;
+        wk->rot.x = 0.0f;
+        wk->rot.y = 0.0f;
+        wk->rot.z = 0.0f;
+        wk->rot.w = 1.0f;
     } else if (wk->unit.devilId == 260) {
-            wk->pos.y = 600.0f;
-            wk->pos.z = 2000.0f;
-            wk->pos.x = 0.0f;
+        wk->pos.y = 600.0f;
+        wk->pos.z = 2000.0f;
+        wk->pos.x = 0.0f;
     }
     if (flg & 0x80000) {
         wk->model->flags = (wk->model->flags | 0x20) & ~0x40;
@@ -1312,25 +1311,20 @@ s32 sbtlCallMemset5(struct SBTLUNIT_WORK *wk) {
     SDF_VU0_STOREVECTOR(&wk->pos);
     angle = wk->field424;
     if (angle != 0.0f) {
-        FromRotation(-angle * 0.017453292f);
+        FromRotation(-angle * 0.017453293f);
         SDF_VU0_COPYVECTOR_A_TO_B();
         SDF_VU0_LOADVECTOR(&wk->rot);
         Mult();
         SDF_VU0_STOREVECTOR(&wk->rot);
     }
-    if (wk->vstatus & 0x2000) {
-        return 1;
+    if (!(wk->vstatus & 0x2000)) {
+        dds3SetPosPoseSet_dds3Basic(wk->pBasic, &wk->pos);
+        if (!(wk->vstatus & 8)) {
+            dds3SetRotPoseSet(wk->pBasic, &wk->rot);
+        }
     }
-    dds3SetPosPoseSet_dds3Basic(wk->pBasic, &wk->pos);
-    if (wk->vstatus & 8) {
-        return 1;
-    }
-    dds3SetRotPoseSet(wk->pBasic, &wk->rot);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallMemset5);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCheckMotionNo);
 

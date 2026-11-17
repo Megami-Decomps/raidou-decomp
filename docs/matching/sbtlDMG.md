@@ -28,11 +28,13 @@ Batch notes: 71 vs 70 words: retail tests field414 bits with andi+sltu/sltiu whe
 
 ## sbtlHitCProc_Idou (sbtlDMG, raidou1 0xA7C)
 
-Raidou 1: 617 of 651 words differ, first at +0x3C; emitted 2604 bytes, native 2684 bytes.
+Raidou 1: 614 of 651 words differ, first at +0x3C; emitted 2604 bytes, native 2684 bytes.
 
 The draft is 20 words shorter: retail calls sbtlResetHitPos_XYZ twice, once with the effect and once with NULL, where this passes the pointer; scheduling differs throughout.
 
 Batch notes: Draft from decoded asm control flow (decode.txt), 651 vs 671 words: retail splits ResetHitPos_XYZ into ewk/NULL calls; 32 menu call records all take the empty-list return (lwk->wk NULL), every other path checked against the asm.
+
+N3 guard sweep: the adjacent same-value guards merged into one || guard, a few words closer; the residual is elsewhere.
 
 Related: [smt3 levers: duplicated tails and cross-jumping](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/cross-jumping.md), [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
 
@@ -51,14 +53,6 @@ a1 and a2 swap (match flag and wk_sbtl). Retail has a dead field414 & 2 test, re
 N2: declaring match and exist first is the same 12; match = 1 with the inverted test is worse.
 
 Related: [smt3 levers: cross-block locals with swapped registers](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/cross-block-locals.md).
-
-## sbtlReleaseHitC_List (sbtlDMG, raidou1 0x158)
-
-Raidou 1: 69 of 84 words differ, first at +0x2C; emitted 336 bytes, native 344 bytes.
-
-Retail loads num into v0 and sets an explicit return 0 after it (two more words); the rest shifts.
-
-Batch notes: 84 vs 86 words: retail loads num into v0 and sets an explicit return 0 after it (2 extra words), everything after shifts; body otherwise lines up (cmp shows only that hunk). Menu call records (32, rows scenario) all take the empty-list exit (ret 0); unlink/free path checked against asm.
 
 ## sbtlSetHitPos (sbtlDMG, raidou1 0x4B4)
 

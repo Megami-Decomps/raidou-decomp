@@ -574,7 +574,7 @@ INCLUDE_ASM(const s32, "code_r1_0024B788", pbRefSbtl);
 
 INCLUDE_ASM(const s32, "code_r1_0024B788", pbProcSequenceSub);
 
-/* NON_MATCHING: 165 of 247 words match. Endcnt clamp and early-return layout differ; vector checked (32 rows, all ret 1, only early-return and endcnt=0 paths covered). */
+/* NON_MATCHING: 162 of 243 words match. Endcnt clamp and early-return layout differ; vector checked (32 rows, all ret 1, only early-return and endcnt=0 paths covered). */
 #ifdef NON_MATCHING
 s32 pbCallBtlCheckLoadFlg(void)
 {
@@ -656,10 +656,7 @@ s32 pbCallBtlCheckLoadFlg(void)
         sbtlSetEndBadStatus();
     }
     if (wk_sbtl->endcnt < 180) {
-        if (!sbtlCallBtlSearchEffectSABActer(wk)) {
-            return 1;
-        }
-        if (wk->field3DE <= 0) {
+        if (!sbtlCallBtlSearchEffectSABActer(wk) || wk->field3DE <= 0) {
             return 1;
         }
     }

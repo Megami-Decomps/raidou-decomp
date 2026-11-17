@@ -864,7 +864,7 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlClearHitC);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlResetIdouPara);
 
-/* NON_MATCHING: 54 of 671 words match. The draft is 20 words shorter: retail calls sbtlResetHitPos_XYZ twice, once with the effect and once with NULL, where this passes the pointer; scheduling differs throughout. */
+/* NON_MATCHING: 37 of 651 words match. The draft is 20 words shorter: retail calls sbtlResetHitPos_XYZ twice, once with the effect and once with NULL, where this passes the pointer; scheduling differs throughout. */
 #ifdef NON_MATCHING
 s32 sbtlHitCProc_Idou(struct SBTLDMG_HITLISTWORK *lwk) {
     sdfVector4_t mpos;
@@ -888,10 +888,7 @@ s32 sbtlHitCProc_Idou(struct SBTLDMG_HITLISTWORK *lwk) {
         return 0;
     }
     hwk = lwk->wk;
-    if (hwk == NULL) {
-        return 0;
-    }
-    if (lwk->num == 0) {
+    if (hwk == NULL || lwk->num == 0) {
         return 0;
     }
     do {
@@ -1367,21 +1364,15 @@ s32 sbtlDrawAttachEPL(struct SBTLDMG_HITLISTWORK *lwk) {
     return 1;
 }
 
-/* NON_MATCHING: 17 of 86 words match. Retail loads num into v0 and sets an explicit return 0 after it (two more words); the rest shifts. */
-#ifdef NON_MATCHING
 s32 sbtlReleaseHitC_List(struct SBTLDMG_HITLISTWORK *lwk, u8 flg) {
     struct SBTLDMG_HITWORK *hwk;
     struct SBTLDMG_HITWORK *next;
-    s32 ret;
 
     if (wk_sbtl->hitList == NULL) {
         return 0;
     }
     hwk = lwk->wk;
-    if (hwk == NULL) {
-        return 0;
-    }
-    if (lwk->num == 0) {
+    if (hwk == NULL || lwk->num == 0) {
         return 0;
     }
     do {
@@ -1425,13 +1416,9 @@ s32 sbtlReleaseHitC_List(struct SBTLDMG_HITLISTWORK *lwk, u8 flg) {
         } else {
             hwk = hwk->next;
         }
-        ret = 1;
     } while (hwk != NULL);
-    return ret;
+    return 1;
 }
-#else
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlReleaseHitC_List);
-#endif
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlDeleteHitList);
 

@@ -412,7 +412,7 @@ INCLUDE_ASM(const s32, "dat", datLeaf44);
 INCLUDE_ASM(const s32, "dat", CheckJidouSkillPrio);
 
 #ifdef VERSION_RAIDOU1
-/* NON_MATCHING: 18 of 81 words match. Branch layout: retail tests prio == 1 first but lays the prio == 2 block inline and returns 0 through bnel. */
+/* NON_MATCHING: 21 of 78 words match. Branch layout: retail tests prio == 1 first but lays the prio == 2 block inline and returns 0 through bnel. */
 #ifdef NON_MATCHING
 s32 datCheckSkillEnable(sdatUnitWork_t *unit, SKLID skill) {
     s32 prio;
@@ -422,33 +422,33 @@ s32 datCheckSkillEnable(sdatUnitWork_t *unit, SKLID skill) {
         return 0;
     }
     prio = datCheckJidouSkillPrioSub(skill);
-    if (prio != 1) {
-        if (prio == 2) {
-            if (unit->flag & 8) {
+    switch (prio) {
+    case 2:
+        if (unit->flag & 8) {
+            return 1;
+        }
+        if (unit->level < gohData7[unit->devilId].level + 1) {
+            return 0;
+        }
+        unit->flag |= 8;
+        return 1;
+    case 1:
+        ret = CheckJidouSkillPrio(unit, skill);
+        if (ret == 1) {
+            if (unit->flag & 0x10) {
+                return ret;
+            }
+        } else if (ret == 2) {
+            if (unit->flag & 0x20) {
                 return 1;
             }
-            if (unit->level < gohData7[unit->devilId].level + 1) {
-                return 0;
-            }
-            unit->flag |= 8;
-            return 1;
         }
+        if (unit->level < gohData7[unit->devilId].level + 2) {
+            return 0;
+        }
+        unit->flag |= 0x30;
         return 1;
     }
-    ret = CheckJidouSkillPrio(unit, skill);
-    if (ret == 1) {
-        if (unit->flag & 0x10) {
-            return ret;
-        }
-    } else if (ret == 2) {
-        if (unit->flag & 0x20) {
-            return 1;
-        }
-    }
-    if (unit->level < gohData7[unit->devilId].level + 2) {
-        return 0;
-    }
-    unit->flag |= 0x30;
     return 1;
 }
 #else

@@ -1569,7 +1569,7 @@ s32 Validate1stAt3Bgm(evtViewerInfo_t *pInfo) {
 INCLUDE_ASM(const s32, "event/evtEventViewer", Validate1stAt3Bgm);
 #endif
 
-/* NON_MATCHING: 27 of 72 words match.  */
+/* NON_MATCHING: 34 of 72 words match.  */
 #ifdef NON_MATCHING
 void OutFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
     s32 fade;
@@ -1588,13 +1588,13 @@ void OutFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 
         if (frame->param.sb[8] == 0) {
             fade = frame->index;
         }
-        if (pInfo->nowframe < frame->frame || pInfo->nowframe >= (end = frame->frame + length + fade)) {
-            DelEffectTable_evtEventViewer(frame->param.sb[0], pInfo);
-            frame->param.sb[0] = -1;
-        } else {
+        if (pInfo->nowframe >= frame->frame && pInfo->nowframe < (end = frame->frame + length + fade)) {
             work = pInfo->effectBasic[frame->param.sb[0]]->workdata;
             effSetEffectColorSubSub(work->handle, ((s32)(128.0f / fade * (end - pInfo->nowframe)) << 24) | 0x808080);
+            return;
         }
+        DelEffectTable_evtEventViewer(frame->param.sb[0], pInfo);
+        frame->param.sb[0] = -1;
         break;
     case 18:
         DelBED(frame);
@@ -3817,10 +3817,11 @@ void evtIgnoreAtracPlay(dds3ProcessID_t *id) {
     }
 }
 
-/* NON_MATCHING: 2 of 44 words match.  */
+/* NON_MATCHING: 21 of 43 words match.  */
 #ifdef NON_MATCHING
 void oldEventSceneUnload(evtPolygonMovieWork_t *wdata) {
     s32 offset;
+    s32 size;
     u8 *data;
     pmdHeader_t *cut;
 
@@ -3831,13 +3832,14 @@ void oldEventSceneUnload(evtPolygonMovieWork_t *wdata) {
         if (data == NULL) {
             break;
         }
-        if (wdata->pm2Size == 0) {
+        size = wdata->pm2Size;
+        if (size == 0) {
             break;
         }
         cut = (pmdHeader_t *)(data + offset);
         offset += cut->FileSize;
         wdata->pm2Cuts[wdata->pm2CutCount++] = cut;
-    } while (offset < wdata->pm2Size);
+    } while (offset < size);
     offset = 0;
     data = wdata->pm3Data;
     wdata->pm3CutCount = 0;
@@ -3845,13 +3847,14 @@ void oldEventSceneUnload(evtPolygonMovieWork_t *wdata) {
         if (data == NULL) {
             break;
         }
-        if (wdata->pm3Size == 0) {
+        size = wdata->pm3Size;
+        if (size == 0) {
             break;
         }
         cut = (pmdHeader_t *)(data + offset);
         offset += cut->FileSize;
         wdata->pm3Cuts[wdata->pm3CutCount++] = cut;
-    } while (offset < wdata->pm3Size);
+    } while (offset < size);
 }
 #else
 INCLUDE_ASM(const s32, "event/evtEventViewer", oldEventSceneUnload);

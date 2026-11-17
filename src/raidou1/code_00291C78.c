@@ -7,8 +7,6 @@
 #include "code_002929C8.h"
 #include "code_00291C78.h"
 
-/* NON_MATCHING: 13 of 56 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg) {
     SBTL_STP_NODE *node;
     SBTL_STP_NODE *next;
@@ -17,10 +15,7 @@ s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg) {
         return 1;
     }
     node = stp->head;
-    if (node == NULL) {
-        return 0;
-    }
-    if (stp->enabled == 0) {
+    if (node == NULL || stp->enabled == 0) {
         return 0;
     }
     do {
@@ -50,9 +45,6 @@ s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg) {
     } while (node != NULL);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_00291C78", sbtlReleaseSTP_List);
-#endif
 
 INCLUDE_ASM(const s32, "code_00291C78", sbtlDeleteSTPList);
 

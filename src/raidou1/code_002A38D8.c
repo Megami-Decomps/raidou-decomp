@@ -173,53 +173,45 @@ s32 sbtlRefSbtl60(SBTLEXP_LISTWORK *lwk) {
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf124);
 
-/* NON_MATCHING: 29 of 56 words match. Retail returns 0 on an empty count through its own block; one extra word shifts the rest. */
-#ifdef NON_MATCHING
 s32 sbtlReleaseEXP_List(SBTLEXP_LISTWORK *lwk, u8 flg)
 {
-    s32 ret = 0;
     SBTLEXP_WORK *dwk;
     SBTLEXP_WORK *next;
 
-    if (lwk != NULL) {
-        dwk = lwk->ewk;
-        if (dwk != NULL) {
-            if (lwk->num == 0) {
-                return 0;
-            }
-            do {
-                if (flg) {
-                    dwk->status = SBTLEXP_ST_END;
-                }
-                if (dwk->status == SBTLEXP_ST_END) {
-                    if (dwk->prev != NULL) {
-                        dwk->prev->next = dwk->next;
-                    }
-                    if (dwk->next != NULL) {
-                        dwk->next->prev = dwk->prev;
-                    }
-                    if (dwk->prev == NULL) {
-                        lwk->ewk = dwk->next;
-                        if (dwk->next != NULL) {
-                            dwk->next->prev = NULL;
-                        }
-                    }
-                    next = dwk->next;
-                    sdfMemFreeDirect(dwk->handle);
-                    dwk = next;
-                    lwk->num--;
-                } else {
-                    dwk = dwk->next;
-                }
-                ret = 1;
-            } while (dwk != NULL);
-        }
+    if (lwk == NULL) {
+        return 0;
     }
-    return ret;
+    dwk = lwk->ewk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            dwk->status = SBTLEXP_ST_END;
+        }
+        if (dwk->status == SBTLEXP_ST_END) {
+            if (dwk->prev != NULL) {
+                dwk->prev->next = dwk->next;
+            }
+            if (dwk->next != NULL) {
+                dwk->next->prev = dwk->prev;
+            }
+            if (dwk->prev == NULL) {
+                lwk->ewk = dwk->next;
+                if (lwk->ewk != NULL) {
+                    lwk->ewk->prev = NULL;
+                }
+            }
+            next = dwk->next;
+            sdfMemFreeDirect(dwk->handle);
+            dwk = next;
+            lwk->num--;
+        } else {
+            dwk = dwk->next;
+        }
+    } while (dwk != NULL);
+    return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlReleaseEXP_List);
-#endif
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDeleteEXPList);
 
@@ -456,21 +448,15 @@ void SetVar_sbtlSM(SBTLSM_WORK *dwk)
 INCLUDE_ASM(const s32, "code_002A38D8", SetVar_sbtlSM);
 #endif
 
-/* NON_MATCHING: 13 of 73 words match. Retail returns 0 on an empty count through its own block, which shifts the rest. */
-#ifdef NON_MATCHING
 s32 sbtlCallDeleteMessage(SBTLSM_LISTWORK *lwk)
 {
     SBTLSM_WORK *dwk;
-    s32 n;
 
     if (lwk == NULL) {
         return 0;
     }
     dwk = lwk->dwk;
-    if (dwk == NULL) {
-        return 0;
-    }
-    if (lwk->num == 0) {
+    if (dwk == NULL || lwk->num == 0) {
         return 0;
     }
     if ((wk_sbtl->flg & 0x8000000) && dwk->mode != 71) {
@@ -482,36 +468,21 @@ s32 sbtlCallDeleteMessage(SBTLSM_LISTWORK *lwk)
     switch (dwk->gstat) {
     case SBTLSM_ST_INIT:
         dwk->alpha += 12;
-        n = dwk->alpha;
-        if (n <= 0) {
-            n = 0;
-        } else if (n > 128) {
-            n = 128;
-        }
-        dwk->alpha = n;
-        if (n >= 128) {
+        dwk->alpha = dwk->alpha > 0 ? (dwk->alpha < 129 ? dwk->alpha : 128) : 0;
+        if (dwk->alpha >= 128) {
             dwk->gstat = SBTLSM_ST_PROC;
         }
         break;
     case SBTLSM_ST_PROC:
         dwk->counter++;
-        n = dwk->counter;
-        if (n <= 0) {
-            n = 0;
-        } else if (n > dwk->cmpcounter) {
-            n = dwk->cmpcounter;
-        }
-        dwk->counter = n;
-        if (n >= dwk->cmpcounter) {
+        dwk->counter = dwk->counter > 0 ? (dwk->counter < dwk->cmpcounter ? dwk->counter : dwk->cmpcounter) : 0;
+        if (dwk->counter >= dwk->cmpcounter) {
             DeleteMessage(lwk, dwk);
         }
         break;
     }
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallDeleteMessage);
-#endif
 
 /* NON_MATCHING: 57 of 61 words match. The num guard takes beql where retail has beq; 1 word (that beql) once SetVar_sbtlSM is C in the unit. */
 #ifdef NON_MATCHING
@@ -547,53 +518,45 @@ s32 sbtlCallSetVarSBtlSM(SBTLSM_LISTWORK *lwk)
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallSetVarSBtlSM);
 #endif
 
-/* NON_MATCHING: 29 of 56 words match. Retail returns 0 on an empty count through its own block; one extra word shifts the rest. */
-#ifdef NON_MATCHING
 s32 sbtlReleaseSM_List(SBTLSM_LISTWORK *lwk, u8 flg)
 {
-    s32 ret = 0;
     SBTLSM_WORK *dwk;
     SBTLSM_WORK *next;
 
-    if (lwk != NULL) {
-        dwk = lwk->dwk;
-        if (dwk != NULL) {
-            if (lwk->num == 0) {
-                return 0;
-            }
-            do {
-                if (flg) {
-                    dwk->gstat = SBTLSM_ST_END;
-                }
-                if (dwk->gstat == SBTLSM_ST_END) {
-                    if (dwk->prev != NULL) {
-                        dwk->prev->next = dwk->next;
-                    }
-                    if (dwk->next != NULL) {
-                        dwk->next->prev = dwk->prev;
-                    }
-                    if (dwk->prev == NULL) {
-                        lwk->dwk = dwk->next;
-                        if (dwk->next != NULL) {
-                            dwk->next->prev = NULL;
-                        }
-                    }
-                    next = dwk->next;
-                    sdfMemFreeDirect(dwk->handle);
-                    dwk = next;
-                    lwk->num--;
-                } else {
-                    dwk = dwk->next;
-                }
-                ret = 1;
-            } while (dwk != NULL);
-        }
+    if (lwk == NULL) {
+        return 0;
     }
-    return ret;
+    dwk = lwk->dwk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            dwk->gstat = SBTLSM_ST_END;
+        }
+        if (dwk->gstat == SBTLSM_ST_END) {
+            if (dwk->prev != NULL) {
+                dwk->prev->next = dwk->next;
+            }
+            if (dwk->next != NULL) {
+                dwk->next->prev = dwk->prev;
+            }
+            if (dwk->prev == NULL) {
+                lwk->dwk = dwk->next;
+                if (lwk->dwk != NULL) {
+                    lwk->dwk->prev = NULL;
+                }
+            }
+            next = dwk->next;
+            sdfMemFreeDirect(dwk->handle);
+            dwk = next;
+            lwk->num--;
+        } else {
+            dwk = dwk->next;
+        }
+    } while (dwk != NULL);
+    return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlReleaseSM_List);
-#endif
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDeleteSMList);
 
@@ -2547,12 +2510,9 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf113);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlEnableSceneGroupAdvancementSub);
 
-/* NON_MATCHING: 4 of 29 words match. Store schedule differs: retail stores Init_sbtlDrawData2 last and shares one -1 register. */
-#ifdef NON_MATCHING
 void Init_sbtlDraw(void)
 {
     sbtlCallMoverInit();
-    sbtlData123 = -1;
     sbtlData121 = 1;
     sbtlRefSbtl57Data = 0;
     sbtlRefSbtl61Data = -1;
@@ -2572,10 +2532,8 @@ void Init_sbtlDraw(void)
     Init_sbtlDrawData = -1;
     sbtlData122 = -1;
     Init_sbtlDrawData2 = -1;
+    sbtlData123 = -1;
 }
-#else
-INCLUDE_ASM(const s32, "code_002A38D8", Init_sbtlDraw);
-#endif
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlInitDevil);
 

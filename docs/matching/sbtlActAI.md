@@ -28,14 +28,6 @@ wk->model->field inside a loop with a call: gcse puts the wk->model reload after
 
 Related: regalloc.
 
-## sbtlCallBtlCreateSideList2 (sbtlActAI, raidou1 0xE0)
-
-Raidou 1: 53 of 54 words differ, first at +0x4; emitted 216 bytes, native 224 bytes.
-
-body: store C1080 00270818.c; body matches except retail copies r to v0 and sets a1=1 before the cvt in the prologue, shifting every word by one; tried r passed directly (53 of 55) and f32 radius = r local (53 of 54, kept); vector checked (menu: a1=200, ret 0/1)
-
-Related: prologue.
-
 ## sbtlUseTableDataProc (sbtlActAI, raidou1 0x170)
 
 Raidou 1: 79 of 90 words differ, first at +0x4; emitted 360 bytes, native 368 bytes.

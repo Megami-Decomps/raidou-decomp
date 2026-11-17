@@ -948,7 +948,7 @@ void Draw_sbtlEff(EFFID id, s32 *starttime, s32 *life)
     *life = table[id][1];
 }
 
-/* NON_MATCHING: 21 of 94 words match. The counter clamp registers and the scheduling of the table address differ. */
+/* NON_MATCHING: 26 of 92 words match. The counter clamp registers and the scheduling of the table address differ. */
 #ifdef NON_MATCHING
 s32 sbtlCallPadVibeFadeUpdate(SBTLEFF_LISTWORK *lwk)
 {
@@ -962,10 +962,7 @@ s32 sbtlCallPadVibeFadeUpdate(SBTLEFF_LISTWORK *lwk)
     if (lwk != NULL) {
         effPadVibeFadeUpdate();
     }
-    if (ewk == NULL) {
-        return 0;
-    }
-    if (lwk->num == 0) {
+    if (ewk == NULL || lwk->num == 0) {
         return 0;
     }
     do {
@@ -1125,7 +1122,7 @@ INCLUDE_ASM(const s32, "code_0028A320", sbtlForceReset);
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlForceResetDecAlpha);
 
-/* NON_MATCHING: 49 of 128 words match. s6/s7 swap and the reload order in the unlink; 3 words long. */
+/* NON_MATCHING: 50 of 128 words match. s6/s7 swap and the reload order in the unlink; 3 words long. */
 #ifdef NON_MATCHING
 s32 sbtlReleaseEff(SBTLEFF_LISTWORK *lwk, u8 flg)
 {
@@ -1142,10 +1139,7 @@ s32 sbtlReleaseEff(SBTLEFF_LISTWORK *lwk, u8 flg)
     }
     ewk = lwk->wk;
     found = 0;
-    if (ewk == NULL) {
-        return 1;
-    }
-    if (lwk->num == 0) {
+    if (ewk == NULL || lwk->num == 0) {
         return 1;
     }
     do {
@@ -1265,82 +1259,75 @@ INCLUDE_ASM(const s32, "code_0028A320", sbtlSearchDelWork_Side);
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlCreateDelWork);
 
-/* NON_MATCHING: 20 of 58 words match. Register allocation in the list walk and the order of the state tests differ; same calls and stores. */
-#ifdef NON_MATCHING
 s32 sbtlDelProc(SBTLEFF_DELLISTWORK *lwk)
 {
     SBTLEFF_DELWORK *dwk;
-    s32 ret = 0;
 
-    if (lwk != NULL && (dwk = lwk->dwk) != NULL) {
-        if (lwk->num == 0) {
-            return 0;
-        }
-        do {
-            if (dwk->gstat == SBTLEFF_DELST_PROC) {
-                if (!sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_KOUKA)
-                    && !sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_HUKA)
-                    && !sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_HUKA2)) {
-                    sbtlForceDelete_EffectWork_ID(dwk->sklid, 1);
-                    dwk->gstat = SBTLEFF_DELST_EXIT;
-                }
-            } else if (dwk->gstat == SBTLEFF_DELST_EXIT) {
-                dwk->gstat = SBTLEFF_DELST_END;
-            }
-            dwk = dwk->next;
-        } while (dwk != NULL);
-        ret = 1;
+    if (lwk == NULL) {
+        return 0;
     }
-    return ret;
+    dwk = lwk->dwk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    while (dwk != NULL) {
+        switch (dwk->gstat) {
+        case SBTLEFF_DELST_PROC:
+            if (!sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_KOUKA)
+                && !sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_HUKA)
+                && !sbtlSearchEffect_SAB(wk_sbtl->effList, dwk->sklid, SBTLEFF_BEDTYPE_HUKA2)) {
+                sbtlForceDelete_EffectWork_ID(dwk->sklid, 1);
+                dwk->gstat = SBTLEFF_DELST_EXIT;
+            }
+            break;
+        case SBTLEFF_DELST_EXIT:
+            dwk->gstat = SBTLEFF_DELST_END;
+            break;
+        }
+        dwk = dwk->next;
+    }
+    return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_0028A320", sbtlDelProc);
-#endif
 
-/* NON_MATCHING: 29 of 56 words match. Register allocation in the unlink and the num decrement differ; same stores. */
-#ifdef NON_MATCHING
 s32 sbtlReleaseDelList(SBTLEFF_DELLISTWORK *lwk, u8 flg)
 {
     SBTLEFF_DELWORK *dwk;
     SBTLEFF_DELWORK *next;
-    s32 ret = 0;
 
-    if (lwk != NULL && (dwk = lwk->dwk) != NULL) {
-        if (lwk->num == 0) {
-            return 0;
-        }
-        do {
-            if (flg) {
-                dwk->gstat = SBTLEFF_DELST_END;
-            }
-            if (dwk->gstat == SBTLEFF_DELST_END) {
-                if (dwk->prev != NULL) {
-                    dwk->prev->next = dwk->next;
-                }
-                if (dwk->next != NULL) {
-                    dwk->next->prev = dwk->prev;
-                }
-                if (dwk->prev == NULL) {
-                    lwk->dwk = dwk->next;
-                    if (dwk->next != NULL) {
-                        dwk->next->prev = NULL;
-                    }
-                }
-                next = dwk->next;
-                sdfMemFreeDirect(dwk->handle);
-                dwk = next;
-                lwk->num--;
-            } else {
-                dwk = dwk->next;
-            }
-            ret = 1;
-        } while (dwk != NULL);
+    if (lwk == NULL) {
+        return 0;
     }
-    return ret;
+    dwk = lwk->dwk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    do {
+        if (flg) {
+            dwk->gstat = SBTLEFF_DELST_END;
+        }
+        if (dwk->gstat == SBTLEFF_DELST_END) {
+            if (dwk->prev != NULL) {
+                dwk->prev->next = dwk->next;
+            }
+            if (dwk->next != NULL) {
+                dwk->next->prev = dwk->prev;
+            }
+            if (dwk->prev == NULL) {
+                lwk->dwk = dwk->next;
+                if (lwk->dwk != NULL) {
+                    lwk->dwk->prev = NULL;
+                }
+            }
+            next = dwk->next;
+            sdfMemFreeDirect(dwk->handle);
+            dwk = next;
+            lwk->num--;
+        } else {
+            dwk = dwk->next;
+        }
+    } while (dwk != NULL);
+    return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_0028A320", sbtlReleaseDelList);
-#endif
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlDeleteDelList);
 

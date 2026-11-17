@@ -638,37 +638,22 @@ s32 GetAnlogKeyToVecAndDir(struct SBTLUNIT_WORK *wk, u32 key, s32 type)
     return ok != 0;
 }
 
-/* NON_MATCHING: 1 of 58 words match. Same tests in retail order; cc1 hoists the shared return 1 into v0 at entry (branch-likely class), which shifts every register by one, vector checked (32 rows, only the button-state early return). */
-#ifdef NON_MATCHING
 s32 sbtlCallBtlGetBadStatus2(struct SBTLUNIT_WORK *wk)
 {
-    s16 mode;
     BST bst;
 
-    if (dds3PadButtonState[42] >= 0) {
-        return 1;
-    }
-    mode = wk_sbtl->mode;
-    if (mode == 7) {
-        return 1;
-    }
-    if (mode == 8) {
-        return 1;
-    }
-    if (mode == 16) {
-        return 1;
-    }
-    if (wk_sbtl->flg & 0x40000000) {
-        return 1;
-    }
-    if (wk_sbtl->battleMode == 1 || mode == 15) {
+    if (dds3PadButtonState[42] >= 0 || wk_sbtl->mode == 7 || wk_sbtl->mode == 8 || wk_sbtl->mode == 16
+        || (wk_sbtl->flg & 0x40000000) || wk_sbtl->battleMode == 1 || wk_sbtl->mode == 15) {
         return 1;
     }
     bst = sbtlGetBadStatus(&wk->unit);
     if (bst == BST_BOUDO || bst == BST_MAHUU) {
         return 0;
     }
-    if (wk_sbtl->mode == 14 || (wk->model->flags & 0x4000)) {
+    if (wk_sbtl->mode == 14) {
+        return 0;
+    }
+    if (wk->model->flags & 0x4000) {
         return 0;
     }
     if (!sbtlLeaf63(wk)) {
@@ -679,9 +664,6 @@ s32 sbtlCallBtlGetBadStatus2(struct SBTLUNIT_WORK *wk)
     sbtlSetNSTOP();
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlGetBadStatus2);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlSetNSTOP);
 
@@ -912,7 +894,7 @@ s32 CheckStop_BadStatus(struct SBTLUNIT_WORK *wk)
     return ret;
 }
 
-/* NON_MATCHING: 11 of 36 words match. 5 aligned lines: the three status tests fill their delay slots from the fallthrough where retail copies the return-0 from the target (branch-likely class), vector checked (32 rows). */
+/* NON_MATCHING: x words match. 5 aligned lines: the three status tests fill their delay slots from the fallthrough where retail copies the return-0 from the target (branch-likely class), vector checked (32 rows). */
 #ifdef NON_MATCHING
 s32 sbtlCallBtlGetBadStatus3(struct SBTLUNIT_WORK *wk)
 {
@@ -922,7 +904,13 @@ s32 sbtlCallBtlGetBadStatus3(struct SBTLUNIT_WORK *wk)
         return 1;
     }
     status = wk->status;
-    if (status == 34 || status == 42 || status == 10) {
+    if (status == 34) {
+        return 0;
+    }
+    if (status == 42) {
+        return 0;
+    }
+    if (status == 10) {
         return 0;
     }
     switch (sbtlGetBadStatus(&wk->unit)) {
@@ -1526,12 +1514,11 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlCheckDamageTarget3);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID6);
 
-/* NON_MATCHING: 7 of 53 words match. Same tests in retail order; retail sets return 0 in each delay slot and keeps mode == 16 as its own block (branch-likely class). sbtlEscapeGauge gets (s16) of the f32 count as retail truncates and sign-extends, vector checked (32 rows, flg test path). */
+/* NON_MATCHING: x words match. Same tests in retail order; retail sets return 0 in each delay slot and keeps mode == 16 as its own block (branch-likely class). sbtlEscapeGauge gets (s16) of the f32 count as retail truncates and sign-extends, vector checked (32 rows, flg test path). */
 #ifdef NON_MATCHING
 s32 sbtlCallBtlSearchUnitID7(s32 x, s32 y)
 {
     struct SBTLUNIT_WORK *unit;
-    s16 mode;
 
     if (wk_sbtl == NULL) {
         return 0;
@@ -1540,26 +1527,10 @@ s32 sbtlCallBtlSearchUnitID7(s32 x, s32 y)
         return 0;
     }
     unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
-    if (unit == NULL) {
+    if (unit == NULL || unit->status == 34 || wk_sbtl->mode == 7 || wk_sbtl->mode == 8 || wk_sbtl->mode == 16) {
         return 0;
     }
-    if (unit->status == 34) {
-        return 0;
-    }
-    mode = wk_sbtl->mode;
-    if (mode == 7) {
-        return 0;
-    }
-    if (mode == 8) {
-        return 0;
-    }
-    if (mode == 16) {
-        return 0;
-    }
-    if (mode == 11) {
-        return 0;
-    }
-    if (wk_sbtl->flg & 8) {
+    if (wk_sbtl->mode == 11 || (wk_sbtl->flg & 8)) {
         return 0;
     }
     sbtlEscapeGauge((s16)wk_sbtl->field510, wk_sbtl->field50C);
@@ -2098,13 +2069,7 @@ s32 sbtlCallMemset12(struct SBTLUNIT_WORK *wk)
     BST bst;
 
     memset(&zero, 0, sizeof(zero));
-    if (!(wk_sbtl->flg & 0x10000)) {
-        return 0;
-    }
-    if (!(wk->flg & 4)) {
-        return 0;
-    }
-    if (wk->model->flags & 0x1000) {
+    if (!(wk_sbtl->flg & 0x10000) || !(wk->flg & 4) || (wk->model->flags & 0x1000)) {
         return 0;
     }
     switch (wk->aiwk->stat) {
@@ -2238,39 +2203,14 @@ s32 sbtlSetAIMode(struct SBTLUNIT_WORK *wk)
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlLeaf4);
 
-/* NON_MATCHING: 6 of 39 words match. Same tests in retail order; cc1 hoists the shared return 0 into v0 where retail sets it in each delay slot (branch-likely class). Retail does not tail-call CheckAIScript, so CheckAIScript returns s8 (HD bool), vector checked (32 rows: model mode 9 and the CheckAIScript path). */
-#ifdef NON_MATCHING
 s32 sbtlProcScript(struct SBTLUNIT_WORK *wk)
 {
-    u32 status;
-
-    if (wk == NULL) {
-        return 0;
-    }
-    status = wk->status;
-    if (status == 10 && !(wk->aiwk->scrflag & 0x120000)) {
-        return 0;
-    }
-    if (status == 11) {
-        return 0;
-    }
-    if (status == 14) {
-        return 0;
-    }
-    if (wk->model->mode == 9) {
-        return 0;
-    }
-    if (status == 30) {
-        return 0;
-    }
-    if (wk->mode < 5) {
+    if (wk == NULL || (wk->status == 10 && !(wk->aiwk->scrflag & 0x120000)) || wk->status == 11
+        || wk->status == 14 || wk->model->mode == 9 || wk->status == 30 || wk->mode < 5) {
         return 0;
     }
     return CheckAIScript(wk);
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlProcScript);
-#endif
 
 s32 sbtlCreateAIScript(void)
 {

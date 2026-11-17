@@ -42,10 +42,12 @@ Related: [smt3 levers: control flow](https://github.com/Megami-Decomps/smt3-deco
 
 ## OutFrame1 (event/evtEventViewer, raidou1 0x120, raidou2 0x120)
 
-Raidou 1: 45 of 72 words differ, first at +0x20; emitted 304 bytes, native 288 bytes.
-Raidou 2: 45 of 72 words differ, first at +0x20; emitted 304 bytes, native 288 bytes.
+Raidou 1: 38 of 72 words differ, first at +0x40; emitted 288 bytes, native 288 bytes.
+Raidou 2: 38 of 72 words differ, first at +0x40; emitted 288 bytes, native 288 bytes.
 
 Raidou adds the fade (index unless sb[8]) alpha via effSetEffectColorSubSub and case 33; retail loads the slot twice (lb for the test, lbu then sll/sra at uses) and puts the shared Del block before the color tail; tried s8/u8 slot, ||, nested ifs, cross-jumped double Del. vectors do not reach (opening has types 2,4,6,10,19,36 only), checked against the asm
+N3: the positive range test with an early return after the colour tail call takes 45 to 38; the Del block still sits after the colour block.
+
 
 ## RunFrame2 (event/evtEventViewer, raidou1 0xC44, raidou2 0xC44)
 
@@ -72,9 +74,11 @@ register choice for the movie-frame result (retail reuses v0) and branch-likely 
 
 ## oldEventSceneUnload (event/evtEventViewer, raidou1 0xAC, raidou2 0xAC)
 
-Raidou 1: 42 of 44 words differ, first at +0x4; emitted 188 bytes, native 172 bytes.
-Raidou 2: 42 of 44 words differ, first at +0x4; emitted 188 bytes, native 172 bytes.
+Raidou 1: 22 of 43 words differ, first at +0x0; emitted 172 bytes, native 172 bytes.
+Raidou 2: 22 of 43 words differ, first at +0x0; emitted 172 bytes, native 172 bytes.
 
 retail keeps a register copy of the data pointer and re-tests it at the loop top each iteration (no jump threading); mine hoists or threads the null test. Tried do/while with local, while(&&) with break, for-loop, memory test. vector checked (opening: one PM2 and one PM3 cut stored, same as the draft). Name is a poor HD hit (HD body is a Unity scene unload)
+
+N3: the size read into a local before its zero test takes 42 to 22 (retail compares against the size loaded at the loop top); left is the per-pass data copy into t2 and no &count giv.
 
 Related: [smt3 levers: control flow](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/control-flow.md).

@@ -231,17 +231,16 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf66);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckCharmTarget);
 
-/* NON_MATCHING: 3 of 56 words match.  */
-#ifdef NON_MATCHING
 s32 sbtlCallBtlCreateSideList2(struct SBTLUNIT_WORK *wk, s32 r, s32 idx)
 {
     struct SBTLUNIT_LISTWORK *list;
     struct SBTLUNIT_WORK *unit;
     s32 i;
     s32 hit;
-    f32 radius = r;
+    f32 radius;
 
     list = sbtlCreateSideList(wk->field414, 1);
+    radius = r;
     for (i = 0; i < list->count; i++) {
         unit = list->pUnitL[i].pUnit;
         if (sbtlCheckCrossCircle(&wk->pos, radius, &unit->pos, unit->model->field11C)) {
@@ -253,9 +252,6 @@ s32 sbtlCallBtlCreateSideList2(struct SBTLUNIT_WORK *wk, s32 r, s32 idx)
     sbtlDeleteUnitList(list);
     return hit;
 }
-#else
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCreateSideList2);
-#endif
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlCheckCharmTarget2);
 
