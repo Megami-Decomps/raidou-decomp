@@ -101,9 +101,18 @@ INCLUDE_ASM(const s32, "code_001AD4E8", sndFunc);
 
 INCLUDE_ASM(const s32, "code_001AD4E8", sndCallProcTrigSequenceSlMain);
 
+/* A script command: retail tail-calls scrSetIntReturnValue and returns the
+ * v0 it leaves, the non-null nowpwork, which CodeFunc_Comm reads as done. */
+#ifdef FIX_BUGS
+s32 sndCallCheckLastSkipStat(void) {
+    scrSetIntReturnValue(evtCheckLastSkipStat());
+    return 1;
+}
+#else
 void sndCallCheckLastSkipStat(void) {
     scrSetIntReturnValue(evtCheckLastSkipStat());
 }
+#endif
 
 void evtMoonTakaraCntReset(void) {
     DDS3_GBWK->takaraCnt = dds3GetRandIntA(NULL, 5) + 6;

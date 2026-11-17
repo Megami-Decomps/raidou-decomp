@@ -30,7 +30,7 @@ s32 sbtlGetDamage_P_LUCK(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *w
 s32 sbtlGetDamage_P_STR(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl, s32 itemid);
 s32 sbtlGetDamage_P_TEC(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl, s32 itemid);
 s32 sbtlGetDamage_P_VIT(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl, s32 itemid);
-void sbtlKudaHuuinCheck(void);
+s32 sbtlKudaHuuinCheck(void);
 s32 sbtlRefSbtl63(SKLID sklid);
 s32 sbtlCheckAisyo_Old(u32 attr);
 u32 sbtlSEquationno03Sub(struct SBTL_AISYO_TBL *aisyo, u32 attr);

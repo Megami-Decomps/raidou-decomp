@@ -130,7 +130,7 @@ void KutiFunction(void);
 u32 evtCallGetActiveScene5(void);
 s32 evtFldProcSequence(void);
 void evtLipsExecFunction(s32 unit_uniqid, s32 motion_no);
-void titleCallNameEntry(void);
+s32 titleCallNameEntry(void);
 
 void evtLipsStopFunction_evtCommand(s32 motionNo);
 

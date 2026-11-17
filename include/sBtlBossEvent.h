@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-void PosReSet(void);
+s32 PosReSet(void);
 
 #endif
