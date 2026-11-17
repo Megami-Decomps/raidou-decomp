@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import io
 import json
+import struct
 import sys
 from pathlib import Path
 
@@ -56,6 +57,35 @@ def already_extracted(version: str) -> bool:
     return True
 
 
+SECTOR = 2048
+
+
+def read_archive_file(cd, iso: Path, path: str) -> bytes:
+    """A file inside DDS3.IMG, found through the DDS3.DDT tree of 12-byte entries
+    (name offset, location, size), the root first; a negative size is a directory
+    of that many entries at that DDT offset."""
+    buf = io.BytesIO()
+    cd.get_file_from_iso_fp(buf, iso_path="/DDS3.DDT;1")
+    ddt = buf.getvalue()
+    _name, location, size = struct.unpack_from("<IIi", ddt, 0)
+    for part in (p for p in path.split("/") if p):
+        if size >= 0:
+            raise SystemExit(f"DDS3.DDT: {path}: {part!r} follows a file")
+        for k in range(-size):
+            name_off, loc, sz = struct.unpack_from("<IIi", ddt, location + k * 12)
+            if ddt[name_off:ddt.index(b"\0", name_off)].decode("ascii") == part:
+                location, size = loc, sz
+                break
+        else:
+            raise SystemExit(f"DDS3.DDT: {path}: {part!r} not found")
+    if size < 0:
+        raise SystemExit(f"DDS3.DDT: {path} is a directory")
+    lsn = cd.get_record(iso_path="/DDS3.IMG;1").extent_location() + location
+    with iso.open("rb") as f:
+        f.seek(lsn * SECTOR)
+        return f.read(size)
+
+
 def missing_irx(version: str) -> list[dict]:
     """The version's IRX modules (config/<v>/irx) not yet in orig/<v>/irx."""
     sys.path.insert(0, str(ROOT / "tools"))
@@ -88,13 +118,18 @@ def extract(version: str, iso: Path, elf_too: bool = True) -> None:
             cd.get_file_from_iso_fp(buf, iso_path=f"/{name};1")
             (out_dir / name).write_bytes(buf.getvalue())
         for cfg in missing_irx(version):
-            buf = io.BytesIO()
-            cd.get_file_from_iso_fp(buf, iso_path=f"{cfg['disc']};1")
+            if "archive" in cfg:
+                where = f"DDS3.IMG:{cfg['archive']}"
+                data = read_archive_file(cd, iso, cfg["archive"])
+            else:
+                where = cfg["disc"]
+                buf = io.BytesIO()
+                cd.get_file_from_iso_fp(buf, iso_path=f"{cfg['disc']};1")
+                data = buf.getvalue()
             target = ROOT / cfg["paths"]["target"]
             target.parent.mkdir(parents=True, exist_ok=True)
-            data = buf.getvalue()
             if hashlib.sha1(data).hexdigest() != cfg["sha1"]:
-                raise SystemExit(f"{cfg['key']}: {cfg['disc']} SHA-1 != expected {cfg['sha1']}")
+                raise SystemExit(f"{cfg['key']}: {where} SHA-1 != expected {cfg['sha1']}")
             target.write_bytes(data)
             print(f"{cfg['key']}: {cfg['paths']['target']} OK")
     finally:
