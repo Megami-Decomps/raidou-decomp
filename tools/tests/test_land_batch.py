@@ -253,6 +253,59 @@ class RenamedRowTests(unittest.TestCase):
         self.assertEqual(run.notes, ["u.c: old: 0 INCLUDE_ASM lines"])
 
 
+class BothGamesTests(unittest.TestCase):
+    """One batch holds a function's Raidou 1 and Raidou 2 rows; the Raidou 2 row is NAME@raidou2."""
+
+    def load(self, root: pathlib.Path, rows: str) -> batch_files.Batch:
+        (root / "batches.tsv").write_text("batch\tname\taddr\twords\tunit\tshared\n" + rows)
+        return batch_files.load(root, root / "batches.tsv", "R")
+
+    def test_rows_results_and_drafts_per_game(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "results.tsv").write_text("name\twords\tresult\nf\t4\tmatch\nf@raidou2\t4\tnonmatch 1 words\n"
+                                              "g\t2\tmatch\ng@raidou2\t2\tmatch\n")
+            (root / "f.c").write_text("void f(void) {}\n")
+            (root / "g.c").write_text("void g(void) {}\n")
+            (root / "g@raidou2.c").write_text("void g(void) { 2; }\n")
+            b = self.load(root, "R\tf\t0\t4\tsrc/raidou2/u\tR2\nR\tf\t0\t4\tsrc/raidou1/u\tR1\n"
+                                "R\tg\t0\t2\tsrc/raidou1/u\tR1\nR\tg\t0\t2\tsrc/raidou2/u\tR2\n")
+            self.assertEqual(sorted(b.rows), ["f", "f@raidou2", "g", "g@raidou2"])
+            self.assertEqual([b.rows[k].name for k in ("f@raidou2", "g@raidou2")], ["f", "g"])
+            self.assertEqual((b.rows["f"].version, b.rows["f@raidou2"].version), ("raidou1", "raidou2"))
+            self.assertEqual((b.rows["f"].result, b.rows["f@raidou2"].result), ("match", "nonmatch 1 words"))
+            self.assertEqual(b.final("f"), "void f(void) {}\n")
+            self.assertEqual(unit_text.unwrap(b.final("f@raidou2")), "void f(void) {}\n")
+            self.assertIn('INCLUDE_ASM(const s32, "u", f);', b.final("f@raidou2"))
+            self.assertEqual(b.final("g@raidou2"), "void g(void) { 2; }\n")
+
+    def test_two_rows_of_one_game_are_refused(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(SystemExit):
+                self.load(pathlib.Path(tmp), "R\tf\t0\t4\tsrc/raidou1/u\tR1\nR\tf\t0\t4\tsrc/raidou1/v\tR1\n")
+
+    def test_splice_puts_each_game_row_in_its_unit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "results.tsv").write_text("name\twords\tresult\nf\t4\tmatch\nf@raidou2\t4\tmatch\n")
+            (root / "f.c").write_text("void f(void) {}\n")
+            (root / "f@raidou2.c").write_text("void f(void) { 2; }\n")
+            for game in ("raidou1", "raidou2"):
+                (root / "src" / game).mkdir(parents=True)
+                (root / "src" / game / "u.c").write_text(f"{ASM}\n")
+            run = land_batch.Run.__new__(land_batch.Run)
+            run.tree, run.base, run.store = root, "", None
+            run.batch = self.load(root, "R\tf\t0\t4\tsrc/raidou1/u\tR1\nR\tf\t0\t4\tsrc/raidou2/u\tR2\n")
+            run.maps = {g: {} for g in ("raidou1", "raidou2")}
+            run.draft_names = {}
+            run.notes, run.lines = [], []
+            run.say = run.lines.append
+            run.work = root
+            run.splice()
+            self.assertEqual(((root / "src/raidou1/u.c").read_text(), (root / "src/raidou2/u.c").read_text(), run.notes),
+                             ("void f(void) {}\n", "void f(void) { 2; }\n", []))
+
+
 class LateR1onlyTests(unittest.TestCase):
     def test_a_spliced_function_named_in_r1only_later_is_guarded(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

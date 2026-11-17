@@ -11,6 +11,10 @@ The directory name is the batch id. Its rows come from a `batches.tsv` (by
 default two levels up: `<dir>/../../batches.tsv`) with the columns `batch`,
 `name`, `addr`, `words`, `unit`, where `unit` is `src/<folder>/<unit>` for an
 existing C unit or `asm/<game>/<unit>` for a gap unit that becomes C.
+A function drafted for both games has two rows, one per game's unit; the
+Raidou 2 row's key is `NAME@raidou2` in `results.tsv`, `final/`, `docs.json`
+and `comments.json`, and `NAME@raidou2.c` falls back to `NAME.c` when both
+games take the same C.
 
 | File | Contents |
 |---|---|

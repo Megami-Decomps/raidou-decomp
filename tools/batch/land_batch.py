@@ -79,12 +79,13 @@ class Run:
         return bool({row.name, self.current(row.name), self.current(row.name, "raidou2")} & self.batch.r1only)
 
     def finals(self) -> dict[str, str]:
-        """Row name -> final draft, with the function's own name as renamed (drafts may predate renames.tsv)."""
+        """Row key -> final draft, with the function's own name as renamed (drafts may predate renames.tsv)."""
         out = {}
-        for name in self.batch.rows:
-            names = self.draft_names or ({name: self.current(name)} if self.current(name) != name else {})
-            if (text := self.batch.final(name, names)) is not None:
-                out[name] = text
+        for key, row in self.batch.rows.items():
+            new = self.current(row.name, row.version)
+            names = self.draft_names or ({row.name: new} if new != row.name else {})
+            if (text := self.batch.final(key, names)) is not None:
+                out[key] = text
         return out
 
     # steps
@@ -248,7 +249,7 @@ class Run:
         self.say(f"renames: {len(self.batch.renames)} rows, {len(self.batch.drop)} labels dropped")
         if self.py("tools/revisit_names.py"):
             self.note("revisit_names.py failed")
-        for fn in self.batch.rows:
+        for fn in dict.fromkeys(r.name for r in self.batch.rows.values()):
             for game in ("raidou1", "raidou2"):
                 sources = (self.tree / "config" / game / "name_sources.txt").read_text()
                 for m in re.finditer(r"^0x[0-9A-F]+\t(\w+)\t.*derived-sole.*evidence=used by %s$" % re.escape(fn),
@@ -323,7 +324,7 @@ class Run:
         finals = self.finals()
         by_source: dict[str, list[batch_files.Row]] = {}
         for row in self.batch.rows.values():
-            if row.name in finals:
+            if row.key in finals:
                 by_source.setdefault(row.source, []).append(row)
         for source, rows in sorted(by_source.items()):
             path = self.tree / source
@@ -332,7 +333,7 @@ class Run:
                 continue
             text = path.read_text()
             for row in rows:
-                text = self.splice_row(source, text, row, finals[row.name])
+                text = self.splice_row(source, text, row, finals[row.key])
             path.write_text(text)
             self.say(f"splice: {source}: {len(rows)} functions")
         missing = sorted(set(self.batch.rows) - set(finals))
@@ -368,11 +369,11 @@ class Run:
         for name in sorted(self.batch.r1only - known):
             self.note(f"r1only: {name} is not a row of the batch")
         for row in self.batch.rows.values():
-            if not (self.is_r1only(row) and row.name in finals and row.source.startswith("src/shared/")):
+            if not (self.is_r1only(row) and row.key in finals and row.source.startswith("src/shared/")):
                 continue
             path = self.tree / row.source
             text = path.read_text() if path.exists() else ""
-            bodies = [b.rstrip("\n") for b in (finals[row.name], unit_text.unwrap(finals[row.name])) if b]
+            bodies = [b.rstrip("\n") for b in (finals[row.key], unit_text.unwrap(finals[row.key])) if b]
             at = next((text.find(b) for b in bodies if b in text), -1)
             if at < 0:
                 if not unit_text.asm_line(self.current(row.name)).search(text):
@@ -392,7 +393,8 @@ class Run:
         pre = self.batch.dir / "units" / f"{row.unit}.pre"
         if not pre.exists():
             self.note(f"{row.unit}: no units/{row.unit}.pre, wrote #include \"common.h\" only")
-        by_name = {self.current(n, row.game): f for n, f in finals.items()}
+        by_name = {self.current(r.name, row.game): finals[r.key] for r in self.batch.rows.values()
+                   if r.key in finals and r.source == row.source}
         text = unit_text.gap_unit(pre.read_text() if pre.exists() else '#include "common.h"\n', row.unit, names,
                                   by_name)
         (self.tree / row.source).parent.mkdir(parents=True, exist_ok=True)
@@ -432,7 +434,7 @@ class Run:
         """Report rows spliced as plain C that are not OK in a game that builds them."""
         for game, summary in summaries.items():
             for row in self.batch.rows.values():
-                if row.source != source or row.name not in finals or unit_text.unwrap(finals[row.name]) is not None:
+                if row.source != source or row.key not in finals or unit_text.unwrap(finals[row.key]) is not None:
                     continue
                 if game != "raidou1" and self.is_r1only(row):
                     continue
@@ -446,17 +448,17 @@ class Run:
         """A NON_MATCHING draft that matches and leaves no other function of its unit worse becomes plain C."""
         finals = self.finals()
         games = header_includers.unit_paths(self.tree)
-        for source in sorted({r.source for r in self.batch.rows.values() if r.name in finals}):
+        for source in sorted({r.source for r in self.batch.rows.values() if r.key in finals}):
             unit_games = games.get(Path(source), [])
             base = self.check_games(source, unit_games)
             self.check_matches(source, {g: s for g, (_, s) in base.items()}, finals)
             text = (self.tree / source).read_text()
             for row in self.batch.rows.values():
-                if row.source != source or row.name not in finals:
+                if row.source != source or row.key not in finals:
                     continue
-                if (body := unit_text.unwrap(finals[row.name])) is None:
+                if (body := unit_text.unwrap(finals[row.key])) is None:
                     continue
-                final = finals[row.name].rstrip("\n")
+                final = finals[row.key].rstrip("\n")
                 if final not in text:
                     continue
                 trial = text.replace(final, body.rstrip("\n"), 1)
@@ -471,7 +473,7 @@ class Run:
                 worse = [w for w in worse if f": {name} " not in w]
                 if matches and all(m == "OK" for m in matches) and not worse:
                     text = trial
-                    self.promoted.add(row.name)
+                    self.promoted.add(row.key)
                     self.say(f"promote: {row.name} matches in {source}")
                 elif matches and all(m == "OK" for m in matches):
                     self.say(f"promote: {row.name} matches alone but not in {source}: {'; '.join(worse)[:300]}")
@@ -520,24 +522,26 @@ class Run:
         finals = self.finals()
         drafted = {n for n in finals if n not in self.promoted and unit_text.unwrap(finals[n]) is not None}
         pages: dict[str, list[str]] = {}
-        for name in finals:
-            row = self.batch.rows[name]
-            games = self.draft_games(row, finals[name])
-            fn = self.current(name, row.version)
+        for key in finals:
+            row = self.batch.rows[key]
+            games = self.draft_games(row, finals[key])
+            fn = self.current(row.name, row.version)
             removed, kept = matching_docs.drop_entries(self.tree, row.unit, fn, games)
             for line in removed:
                 self.say(f"docs: dropped {line}")
             for line in kept:
                 self.note(f"docs: {line}; not rewritten, merge the new entry by hand")
-        for name in sorted(finals, key=list(self.batch.rows).index):
-            row = self.batch.rows[name]
-            matched = name not in drafted
-            if name not in self.batch.docs:
+        for key in sorted(finals, key=list(self.batch.rows).index):
+            row = self.batch.rows[key]
+            name = row.name
+            matched = key not in drafted
+            doc = self.batch.docs.get(key, self.batch.docs.get(name))
+            if doc is None:
                 if not matched:
-                    self.note(f"docs: {name} is NON_MATCHING and has no docs.json entry")
+                    self.note(f"docs: {key} is NON_MATCHING and has no docs.json entry")
                 continue
-            unit, text, lever = (self.batch.docs[name] + [""] * 3)[:3]
-            games = self.draft_games(row, finals[name])
+            unit, text, lever = (doc + [""] * 3)[:3]
+            games = self.draft_games(row, finals[key])
             fn = self.current(name, row.version)
             measured = [matching_docs.measure(self.tree, row.source, g, fn) for g in games]
             # The page is the unit with its folder (event/evtMoon), as docs_index.py files it.
@@ -575,7 +579,8 @@ class Run:
         (self.work / "after.json").write_text(json.dumps(after, indent=1, sort_keys=True) + "\n")
         worse, better = header_includers.compare(before, after)
         worse, fragile = header_includers.split_fragile(worse, docs_index.fragile_names())
-        batch = set(self.batch.rows) | {self.current(n, g) for n in self.batch.rows for g in self.maps}
+        names = {r.name for r in self.batch.rows.values()}
+        batch = names | {self.current(n, g) for n in names for g in self.maps}
         for line in better:
             self.say(f"regress: better {line}")
         for line in fragile:
@@ -623,7 +628,7 @@ class Run:
             return
         finals = self.finals()
         landed = {e.addr for e in self.store_entries()
-                  if any(r.name in finals and (r.name == e.name or self.current(r.name) == e.name
+                  if any(r.key in finals and (r.name == e.name or self.current(r.name) == e.name
                                                or r.addr.upper() == f"{e.addr:08X}") for r in self.batch.rows.values())}
         done = draft_store.retire(self.store, "raidou1", sorted(landed), self.batch.id)
         self.say(f"retire: {len(done)} draft store entries landed" + (f": {' '.join(e.name for e in done)}" if done else ""))
