@@ -65,8 +65,9 @@ def main() -> int:
     if len(sys.argv) > 1:
         todo = [Path(a).resolve() for a in sys.argv[1:]]
     else:
+        # src/irx is IOP code, checked by tools/check_irx_nonmatching.py.
         todo = [p for p in sorted((ROOT / "src").rglob("*.c"))
-                if GUARD.search(p.read_text())]
+                if p.relative_to(ROOT / "src").parts[0] != "irx" and GUARD.search(p.read_text())]
     if not todo:
         print("no NON_MATCHING drafts")
         return 0

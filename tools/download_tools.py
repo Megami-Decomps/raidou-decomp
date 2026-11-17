@@ -28,8 +28,8 @@ TOOLS = ROOT / "tools"
 COMPILER_URL = "https://github.com/decompme/compilers/releases/download/compilers/{name}{ext}"
 COMPILER_EXTS = (".tar.xz", ".tar.gz")
 # The compilers smt3-decomp matches with: ee-gcc 2.96 for the game code, 2.9 for
-# the Sony EE libraries.
-DEFAULT_COMPILERS = ["ee-gcc2.96", "ee-gcc2.9-991111-01"]
+# the Sony EE libraries; iop-gcc 2.8.1 for the IRX modules (docs/irx-modules.md).
+DEFAULT_COMPILERS = ["ee-gcc2.96", "ee-gcc2.9-991111-01", "iop-gcc2.8.1"]
 BINUTILS_URL = ("https://github.com/decompals/binutils-mips-ps2-decompals/releases/download/"
                 "v0.10/binutils-mips-ps2-decompals-linux-x86-64.tar.gz")
 OBJDIFF_URL = "https://github.com/encounter/objdiff/releases/download/v3.8.1/objdiff-cli-linux-x86_64"

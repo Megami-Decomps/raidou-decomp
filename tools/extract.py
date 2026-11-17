@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract the retail ELF from a disc image you own into orig/<version>/.
+"""Extract the retail ELF and IRX modules from a disc image you own into orig/<version>/.
 
     python tools/extract.py [--iso path/to.iso raidou1]
 """
@@ -56,7 +56,23 @@ def already_extracted(version: str) -> bool:
     return True
 
 
-def extract(version: str, iso: Path) -> Path:
+def missing_irx(version: str) -> list[dict]:
+    """The version's IRX modules (config/<v>/irx) not yet in orig/<v>/irx."""
+    sys.path.insert(0, str(ROOT / "tools"))
+    import irx_config
+
+    out = []
+    for key in irx_config.modules(version):
+        cfg = irx_config.load(key)
+        target = irx_config.path(cfg, "target")
+        if not target.is_file():
+            out.append(cfg)
+        elif sha1(target) != cfg["sha1"]:
+            raise SystemExit(f"{key}: {cfg['paths']['target']} SHA-1 != expected {cfg['sha1']}; remove it to re-extract")
+    return out
+
+
+def extract(version: str, iso: Path, elf_too: bool = True) -> None:
     import pycdlib
 
     info = VERSIONS[version]
@@ -67,12 +83,24 @@ def extract(version: str, iso: Path) -> Path:
     cd = pycdlib.PyCdlib()
     cd.open(str(iso))
     try:
-        for name in (serial, "SYSTEM.CNF"):
+        for name in (serial, "SYSTEM.CNF") if elf_too else ():
             buf = io.BytesIO()
             cd.get_file_from_iso_fp(buf, iso_path=f"/{name};1")
             (out_dir / name).write_bytes(buf.getvalue())
+        for cfg in missing_irx(version):
+            buf = io.BytesIO()
+            cd.get_file_from_iso_fp(buf, iso_path=f"{cfg['disc']};1")
+            target = ROOT / cfg["paths"]["target"]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            data = buf.getvalue()
+            if hashlib.sha1(data).hexdigest() != cfg["sha1"]:
+                raise SystemExit(f"{cfg['key']}: {cfg['disc']} SHA-1 != expected {cfg['sha1']}")
+            target.write_bytes(data)
+            print(f"{cfg['key']}: {cfg['paths']['target']} OK")
     finally:
         cd.close()
+    if not elf_too:
+        return
 
     elf = out_dir / serial
     digest = sha1(elf)
@@ -80,7 +108,6 @@ def extract(version: str, iso: Path) -> Path:
         elf.unlink()
         raise SystemExit(f"{version}: {serial} SHA-1 {digest} != expected {info['elf_sha1']}; wrong or modified disc")
     print(f"{version}: {elf.relative_to(ROOT)} OK ({digest})")
-    return elf
 
 
 def main() -> None:
@@ -98,20 +125,23 @@ def main() -> None:
     if args.iso:
         if len(args.versions) != 1:
             ap.error("--iso needs exactly one version")
-        if args.force or not already_extracted(args.versions[0]):
-            extract(args.versions[0], args.iso)
+        version = args.versions[0]
+        have = not args.force and already_extracted(version)
+        if not have or missing_irx(version):
+            extract(version, args.iso, elf_too=not have)
         return
 
     missing = []
     for version in args.versions or VERSIONS:
-        if not args.force and already_extracted(version):
+        have = not args.force and already_extracted(version)
+        if have and not missing_irx(version):
             continue
         iso = find_iso(VERSIONS[version]["iso_glob"])
         if iso is None:
             print(f"{version}: no ISO matching {VERSIONS[version]['iso_glob']!r}; skipped", file=sys.stderr)
             missing.append(version)
             continue
-        extract(version, iso)
+        extract(version, iso, elf_too=not have)
     if missing:
         raise SystemExit(f"no disc image for {', '.join(missing)}; pass --iso")
 

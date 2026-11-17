@@ -760,6 +760,11 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
         (ROOT / "config" / version / "checksum.sha1").write_text(f"{VERSIONS[version]['elf_sha1']}  {image}\n")
         n.newline()
 
+    # The IOP modules each game ships (tools/irx_build.py, docs/irx-modules.md).
+    from tools import irx_build
+    irx_targets, irx_inputs = irx_build.write(n, versions, prefix)
+    defaults += irx_targets
+
     write_objdiff_reports(n, units)
 
     configure_inputs = ["configure.py", "tools/symbol_aliases.py", "config/versions.json"] + [
@@ -777,6 +782,7 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
         alias_metadata = ROOT / "config" / version / "symbol_aliases.json"
         if alias_metadata.exists():
             configure_inputs.append(str(alias_metadata.relative_to(ROOT)))
+    configure_inputs += irx_inputs
     write_configure_build(n, configure_inputs, sys.argv[1:])
     n.default(defaults)
     n.close()
