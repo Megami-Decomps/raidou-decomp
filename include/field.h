@@ -333,18 +333,7 @@ typedef struct fldAreaWork_t
     s32 word310;                /* 0x310 */
     s32 word314;                /* 0x314 */
     s32 word318;                /* 0x318 */
-    u8 unk31C[4];
-    s32 word320;                /* 0x320 */
-    u8 unk324[8];
-    s32 word32C;                /* 0x32C */
-    u8 unk330[4];
-    s32 word334;                /* 0x334 */
-    s32 bgDrawOn;               /* 0x338: mapBgDrawOnOff (HD fldDbg->BgDrawOn) */
-    s32 word33C;                /* 0x33C */
-    u8 unk340[4];
-    s32 word344;                /* 0x344 */
-    u8 unk348[0x14];
-    s32 word35C;                /* 0x35C */
+    u8 unk31C[4];               /* fldDbg follows at 0x320 */
 #else
     s32 word100;                /* 0x100 */
     s32 btlReturnMap;           /* 0x104: Raidou 1 has it at 0x110 */

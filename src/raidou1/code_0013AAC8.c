@@ -113,7 +113,7 @@ INCLUDE_ASM(const s32, "code_0013AAC8", mapCallSetOt5);
 
 void mapBgDrawOnOff(s32 on)
 {
-    fldGlobalBase.bgDrawOn = on;
+    fldDbg.bgDrawOn = on;
 }
 
 void mapDrawSBtlSceneSub(void)

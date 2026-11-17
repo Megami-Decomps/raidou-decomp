@@ -15,6 +15,7 @@
 #include "dds3UnitObjectBasic.h"
 #include "sdfMotion.h"
 #include "field.h"
+#include "fldDbg.h"
 #include "sbattle.h"
 #include "sbtlDebugStr.h"
 
@@ -616,7 +617,7 @@ s32 mapFileLoad(s32 mapid)
     }
     if (evtWorkScriptContextReturnValue < 44)
     {
-        fldGlobalBase.word32C = 0;
+        fldDbg.hitViewOn = 0;
         switch (evtWorkScriptContextReturnValue)
         {
         case 1:

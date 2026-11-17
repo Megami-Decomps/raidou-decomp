@@ -560,7 +560,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if ((fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && mapBadMafuHajiki()) {
             goto bad_mafu;
         }
-        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.noInpPlCnt) {
+        if (!fldDbg.camOn && fldEncountTestFlag(0x40) && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.noInpPlCnt) {
             goto menu_key;
         }
     e_encounter_key:
@@ -578,7 +578,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 10);
         mapDebugLightSet(fldGlobalBase.wordF8);
         fldGlobalBase.encountState = mapProcSequenceSub5(fldGlobalBase.focusX, fldGlobalBase.focusZ);
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         mapProcSequenceSub11();
@@ -609,7 +609,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             ProcMskSub_B();
             return 0;
         }
-        if (!fldGlobalBase.word334 && fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.noInpPlCnt) {
+        if (!fldDbg.camOn && fldEncountTestFlag(0x40) && fldGlobalBase.amSBlock != 12 && (fldGlobalBase.amSBlock != 3 || fldGlobalBase.nameU != 2) && dds3PadButtonState[0x20] < 0 && !fldGlobalBase.noInpPlCnt) {
         menu_key:
             fldAutoMapSeqFlags.stage = 21;
             fldReleaseUnitPad();
@@ -632,7 +632,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         fldGlobalBase.wordF8 = mapGetLight(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 10);
         fldGlobalBase.encountState = mapProcSequenceSub5(fldGlobalBase.focusX, fldGlobalBase.focusZ);
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         mapProcSequenceSub11();
@@ -687,7 +687,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapAM_MaskSetCurrent(fldGlobalBase.amSBlock, fldGlobalBase.nameU);
         mapAM_MaskOpen_ID(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.word78);
     map_tail:
-        if (fldGlobalBase.word344) {
+        if (fldDbg.ctnOn) {
             mapCtnGet();
         } else {
             mapCtnViewOff();
@@ -866,7 +866,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mafuResult = mapBadMafuHajiki();
         if (!mapNakamaBranchTask() && !mafuResult) {
             fldAutoMapSeqFlags.stage = 15;
-            fldGlobalBase.word320 = 0;
+            fldDbg.menuOn = 0;
             fldRegistUnitPad();
             ProcMskSub_B();
             return 0;
@@ -892,7 +892,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
                 ProcSequenceData3 = 2;
                 fldAutoMapSeqFlags.stage = 32;
             }
-        } else if (fldGlobalBase.word33C) {
+        } else if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         goto proc_msk_b;
@@ -902,7 +902,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             fldRegistUnitPad();
             fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         goto proc_msk_b;
@@ -1062,7 +1062,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         return -1;
     case 0x25:
         if (fldGlobalBase.word2A8 < 19) {
-            if (!fldGlobalBase.mskIndex && fldGlobalBase.word35C) {
+            if (!fldGlobalBase.mskIndex && fldDbg.sousaAllMSKOn) {
                 mapIgnite(fldGlobalBase.word294, fldGlobalBase.word298, fldGlobalBase.word29C, fldGlobalBase.word2A0, fldGlobalBase.word2A4, fldGlobalBase.word2A8);
             } else {
                 mapIfDrawActionMaster(fldGlobalBase.word294, fldGlobalBase.word298, fldGlobalBase.word29C, fldGlobalBase.word2A0, fldGlobalBase.word2A4, fldGlobalBase.word2A8);
@@ -1126,7 +1126,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (mapNakamaSummonTask() || mafuResult) {
             goto proc_msk_b;
         }
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         fldRegistUnitPad();
@@ -1137,7 +1137,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (mapNakamaReturnTask() || mafuResult) {
             goto proc_msk_b;
         }
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         fldRegistUnitPad();
@@ -1149,7 +1149,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             goto proc_msk_b;
         }
         fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         fldRegistUnitPad();
@@ -1167,7 +1167,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             goto proc_msk_b;
         }
         fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         fldRegistUnitPad();
@@ -1177,7 +1177,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             goto proc_msk_b;
         }
         fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         fldRegistUnitPad();
@@ -1285,7 +1285,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             goto proc_msk_b;
         }
         fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         fldRegistUnitPad();
@@ -1295,7 +1295,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             goto proc_msk_b;
         }
         fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         fldRegistUnitPad();
@@ -1305,7 +1305,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             goto proc_msk_b;
         }
         fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
-        if (fldGlobalBase.word33C) {
+        if (fldDbg.bgCngOn) {
             mapCallSetPlayerTargetData4();
         }
         fldRegistUnitPad();
@@ -1381,11 +1381,11 @@ s32 ProcSequence(dds3ProcessID_t *id)
             mapCutSetCam(cameraBasic, 0);
         }
     }
-    if (fldGlobalBase.word32C > 0) {
-        if (fldGlobalBase.word32C < 3) {
+    if (fldDbg.hitViewOn > 0) {
+        if (fldDbg.hitViewOn < 3) {
             mapProcSequenceSub6();
             mapCallSetOt7();
-        } else if (fldGlobalBase.word32C == 3) {
+        } else if (fldDbg.hitViewOn == 3) {
             mapProcSequenceSub7();
         }
     }

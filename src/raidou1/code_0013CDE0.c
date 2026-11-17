@@ -859,7 +859,7 @@ void mapBgSetScroll(f32 x, f32 y, f32 z, s32 mode) {
             fscroll_mode = 0;
         }
     }
-    if (!mapWork4 && !fldDbg.spriteTint) {
+    if (!mapWork4 && !fldDbg.hitViewOn) {
         return;
     }
     mapData59 = x;

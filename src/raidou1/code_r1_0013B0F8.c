@@ -64,7 +64,7 @@ void mapSKYBGEDIT(void) {
     u32 color;
     s32 i;
 
-    if (fldDbg.skyEnable == 0) {
+    if (fldDbg.bgDrawOn == 0) {
         return;
     }
     camId = fldGlobalBase.camId;
@@ -85,11 +85,11 @@ void mapSKYBGEDIT(void) {
         scale = mapData33[fldGlobalBase.cutIdx].skyScale;
         pivot = mapData33[fldGlobalBase.cutIdx].skyOffset;
         if (dds3SearchProcessName(mapStrSkyBgEdit) == NULL) {
-            fldDbg.skyOffset = pivot;
-            fldDbg.skyScale = scale;
+            fldDbg.skyBgY = pivot;
+            fldDbg.skyBgSize = scale;
         } else {
-            pivot = fldDbg.skyOffset;
-            scale = fldDbg.skyScale;
+            pivot = fldDbg.skyBgY;
+            scale = fldDbg.skyBgSize;
         }
 
         wrap = fldGlobalBase.float2B8 + fldGlobalBase.float2B4;
@@ -265,7 +265,7 @@ void mapSKYBGEDIT(void) {
     }
 
     if (fldJmsQuestMapLoad_fldData != NULL && fldData22 == 0) {
-        u32 boxColor = fldDbg.spriteTint != 0 ? 0x2080F080 : SKY_GRAY;
+        u32 boxColor = fldDbg.hitViewOn != 0 ? 0x2080F080 : SKY_GRAY;
 
         eglSetOt(18);
         eglLinkAlpha(0);

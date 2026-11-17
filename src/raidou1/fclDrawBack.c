@@ -213,7 +213,7 @@ void fldGbInit_System(s32 mode) {
     fldGlobalBase.word2DC = 0;
     fldGlobalBase.word2E0 = 0;
     fldGlobalBase.word2E4 = 0;
-    fldDbg.skyScale = 1.0f;
+    fldDbg.skyBgSize = 1.0f;
     fldGlobalBase.word2EC = 0;
     fldGlobalBase.word2E8 = 0;
     fldGlobalBase.word2F4 = 0;
@@ -230,8 +230,8 @@ void fldGbInit_System(s32 mode) {
     fldDbg.hitOn = 1;
     fldGlobalBase.word318 = 0;
     fldDbg.infoOn = 0;
-    fldDbg.spriteTint = 0;
-    fldDbg.skyEnable = 1;
+    fldDbg.hitViewOn = 0;
+    fldDbg.bgDrawOn = 1;
     fldDbg.camOn = 0;
     fldDbg.skyCngOn = 1;
     fldDbg.bgCngOn = 1;
@@ -244,7 +244,7 @@ void fldGbInit_System(s32 mode) {
     fldDbg.sousaAllMSKOn = 1;
     fldDbg.tmyDrawType = 0;
     fldDbg.zoomTestOn = 0;
-    fldDbg.skyOffset = 0.0f;
+    fldDbg.skyBgY = 0.0f;
     fldDbg.moonSpeed = 0;
     if (mode == 0) {
         DDS3_GBWK->unk2C70 = 0;
