@@ -160,7 +160,7 @@ u32 *sdf3DPrimMakePoly(sdf3DPrimPolyWords_t *aParm) {
     bytes = (headerWords + stripWords + wordsPerVertex * count) * 4;
     bytes = (bytes + 15) & ~15;
     allocator = aParm->allocator;
-    if (allocator == NULL) allocator = sdfGrAllocPacketBuff;
+    if (allocator == NULL) allocator = (void *(*)(s32))sdfGrAllocPacketBuff;
     packet = allocator(bytes);
     *(u64 *)packet = (u64)(u16)((bytes >> 4) - 1) | 0x20000000ULL;
     packet[2] = 0x6102C000;

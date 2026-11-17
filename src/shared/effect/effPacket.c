@@ -223,7 +223,7 @@ void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm) {
     allocationSize = (allocationSize + 15) & ~15;
     allocate = (void *(*)(s32))aParm->allocator;
     if (allocate == NULL) {
-        allocate = sdfGrAllocPacketBuff;
+        allocate = (void *(*)(s32))sdfGrAllocPacketBuff;
     }
     packet = allocate(allocationSize);
 

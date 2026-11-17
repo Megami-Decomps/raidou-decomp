@@ -799,7 +799,7 @@ INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrStdDrawEnvPredraw);
 void sdfGrSetStdDrawEnv(sdfGrStdDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet) {
     sdfGrSetRegsPacketHeader(&aEnv->header, SDF_TEXTURE_SCENE_PAYLOAD_QWORDS);
     aEnv->view = aFrameSet;
-    aEnv->link.predrawFunc = sdfGrStdDrawEnvPredraw;
+    aEnv->link.predrawFunc = (SdfPacketPatchCallback)sdfGrStdDrawEnvPredraw;
     sdfGrSetClearPacket(&aEnv->clear, aFrameSet->width, aFrameSet->height, aFrameSet->bufferFormat, aFrameSet->auxiliaryFormat);
     aEnv->test1.data = SDF_GS_SCENE_TEST;
     aEnv->test1.reg = SDF_GS_TEST_1;

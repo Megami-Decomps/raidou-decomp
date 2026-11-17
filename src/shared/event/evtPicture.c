@@ -283,7 +283,7 @@ dds3ProcessID_t *evtStartPictureProcess(u32 priority, void *texpath)
     evtPictureProcessData_t *work = InitPictureProcessData();
 
     work->tex = texpath;
-    return dds3StartProcess(evtPictureProcName, priority, 1, 1, evtPictureProcess1, evtPictureShutdown, work);
+    return dds3StartProcess(evtPictureProcName, priority, 1, 1, evtPictureProcess1, (dds3ProcessFunc_t)evtPictureShutdown, work);
 }
 
 void LoadTexCallback(fileRequest_t *file, evtPictureProcessData_t *data)

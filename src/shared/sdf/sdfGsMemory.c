@@ -294,7 +294,7 @@ void sdfGsMemInit(void)
     slice->addr = 0;
     gsMemHandleLinkHead = slice;
     gsMemHandleLinkTail = slice;
-    sdfDelayedResrcInitCB(&gsMemDelayedResrcCB, sdfGsMemFree);
+    sdfDelayedResrcInitCB(&gsMemDelayedResrcCB, (sdfDelayedResrcFreeFunc)sdfGsMemFree);
 }
 
 sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat)

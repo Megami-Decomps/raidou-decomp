@@ -4328,7 +4328,7 @@ void mapInit(void) {
     pInfo = sdfMemLock(block);
     memset(pInfo, 0, 0x2568);
     pInfo->block = block;
-    id = dds3StartProcess(evtViewerTaskName, 0x3EB, 1, 1, evtCallGetProcessData10, evtEventViewerDestroyActive, pInfo);
+    id = dds3StartProcess(evtViewerTaskName, 0x3EB, 1, 1, evtCallGetProcessData10, (dds3ProcessFunc_t)evtEventViewerDestroyActive, pInfo);
     dds3LinkProcess(id, evtInitSky());
     evtEventViewerInitCampFontResource(pInfo);
 }

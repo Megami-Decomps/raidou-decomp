@@ -73,7 +73,7 @@ extern s8 dds3PadButtonState[];
 
 /* One step of the save and load state machine, which this unit holds as an
  * address and calls through a cast. */
-typedef s32 (*slProcFunc_t)(void);
+typedef s32 (*slProcFunc_t)(dds3ProcessID_t *);
 extern u32 slHitAnyKeyNextFunc;
 saddr_t slChooseData_getCardInfo2(void);
 extern const char slIconSysName[];

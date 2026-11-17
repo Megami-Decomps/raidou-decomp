@@ -789,7 +789,7 @@ void sdfPrimLinkFrameMovePacket(sdfDrawTag_t *aDrawTag, sdfPreDrawTag_t *aPreDra
     }
     packet = EE_ADDR_AS(sdfPrimFrameMovePacket_t *, aAllocator(0x70));
     packet->worker.option0 = aFrameSw;
-    packet->worker.predrawFunc = sdfPrimFrameMovePredraw;
+    packet->worker.predrawFunc = (SdfPacketPatchCallback)sdfPrimFrameMovePredraw;
     drawPacket = &packet->packet;
 
     sdfPrimSetBitBltPacket(

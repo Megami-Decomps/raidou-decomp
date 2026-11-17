@@ -1072,7 +1072,7 @@ void mnuSortItems(mnuList_t *menu, s32 keyIndex, s32 ascending) {
     if (ascending != 0) {
         keyIndex += MNU_SORT_KEY_COUNT;
     }
-    qsort(items, nodeCount, MNU_LIST_POINTER_BYTES, comparators[keyIndex]);
+    qsort(items, nodeCount, MNU_LIST_POINTER_BYTES, (s32 (*)(const void *, const void *))comparators[keyIndex]);
     mnuLinkItemList(items, nodeCount);
     mnuRebuildListFirstFromCursor(menu);
     mnuRebuildListLastFromCursor(menu);

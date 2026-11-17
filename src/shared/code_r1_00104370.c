@@ -276,7 +276,7 @@ void dds3DebugGraphTaskDestroy(void) {
 /* Only mode 1 creates and mode 0 destroys the timing graph; other modes do nothing. */
 void dds3DebugGraphSetEnabled(s8 enabled) {
     if (enabled == 1) {
-        dds3DebugGraphTask = dds3StartProcess("DebugTimeGrph", 0x2710, 1, 1, dds3DebugGraphUpdate, dds3DebugGraphTaskDestroy, NULL);
+        dds3DebugGraphTask = dds3StartProcess("DebugTimeGrph", 0x2710, 1, 1, dds3DebugGraphUpdate, (dds3ProcessFunc_t)dds3DebugGraphTaskDestroy, NULL);
     } else if (enabled == 0) {
         dds3KillProcess(dds3DebugGraphTask, 0);
     }
