@@ -29952,7 +29952,7 @@
 0x0050F7E0	mapObjTaskWork8	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask
 0x0050F7F0	mapObjTaskWork9	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask
 0x0050F800	mapObjTaskWork10	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask
-0x0050FA10	fldWork8	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: fldJmsQuestMapLoad_fld, fldMapMapBg, fldCallSetOt3
+0x0050FA10	fldData5	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=fldCallSetOt3 reads it where raidou1 reads fldData5
 0x0050FBA0	evtStageTestState2	inferred	method=dds-ref; p=0.59 (n=D_r1_00476710); tier=C; source=dds; evidence=dds-ref/loose: nfun=2, other=0, sim=0.9677, games=2, size=False, sec=True, fn=fldCallMemFreeDelayedDirect4; evtStageTestState is another symbol
 0x0050FBA4	mapWork4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapBgSetScroll, mapSKYBGEDIT
 0x0050FE38	fldWork6	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldAllTblPacLoad, mapCutGetCam

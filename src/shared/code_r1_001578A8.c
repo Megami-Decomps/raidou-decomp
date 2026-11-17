@@ -23,7 +23,7 @@ void fldCallSetOt3(u32 color, f32 ox, f32 oy) {
     }
     eglSetOt(0x2D);
     eglLinkAlpha(0);
-    if (fldGlobalBase.amSBlock == 9 && fldGlobalBase.floor == 0 && fldGlobalBase.cutIdx == 3) {
+    if (fldGlobalBase.amSBlock == 9 && fldGlobalBase.nameU == 0 && fldGlobalBase.cutIdx == 3) {
         eglLinkTest(1, 5, 0xD, 0, 0, 0, 1, 3);
     } else {
         eglLinkTest(1, 5, 2, 0, 0, 0, 1, 3);

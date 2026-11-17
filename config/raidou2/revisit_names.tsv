@@ -21567,7 +21567,6 @@
 0x0050F7E0	mapObjTaskWork8	data	tier=D	derived-sole	na	used by mapObjTask
 0x0050F7F0	mapObjTaskWork9	data	tier=D	derived-sole	na	used by mapObjTask
 0x0050F800	mapObjTaskWork10	data	tier=D	derived-sole	na	used by mapObjTask
-0x0050FA10	fldWork8	data	tier=D	derived-shared	na	used by 3 functions: fldJmsQuestMapLoad_fld, fldMapMapBg, fldCallSetOt3
 0x0050FBA4	mapWork4	data	tier=D	derived-shared	na	used by 2 functions: mapBgSetScroll, mapSKYBGEDIT
 0x0050FE38	fldWork6	data	tier=D	derived-shared	na	used by 2 functions: fldAllTblPacLoad, mapCutGetCam
 0x0050FF9B	nbFunc6Table2Entry6	data	tier=D	derived-table	na	pointed to by nbFunc6Table2Entry
@@ -24495,6 +24494,7 @@
 0x004EA2C0	map_aibo_buff	data	tier=C	derived-derived-role	na	same slot in R2, shared fldFileResolver code; replaces mapWork
 0x004EA8C0	map_aibo_pos	data	tier=C	derived-derived-role	na	same slot in R2, shared fldFileResolver code; replaces mapAiboTaskWork
 0x004EA8D0	map_summondv_buff	data	tier=C	derived-derived-role	na	same slot in R2, shared fldFileResolver code; replaces mapWork2
+0x0050FA10	fldData5	data	tier=C	raidou1-code	na	fldCallSetOt3 reads it where raidou1 reads fldData5
 0x0050FBA0	evtStageTestState2	data	tier=C	dds-ref	0.59 (n=D_r1_00476710)	dds-ref/loose: nfun=2, other=0, sim=0.9677, games=2, size=False, sec=True, fn=fldCallMemFreeDelayedDirect4; evtStageTestState is another symbol
 0x0053ECB8	mapData34	data	tier=C	raidou1-code	na	same object as raidou1 mapData34, used by the same three functions
 0x00544700	mdl_linkflag	data	tier=C	hd	0.37 (n=D_r1_004B4B90)	hd/medium: conf=medium, agree=3, using=4
