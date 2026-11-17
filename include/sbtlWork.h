@@ -155,10 +155,16 @@ typedef struct SBTL_WORK {
     SBTL_PANEL *panel;
     u8 pad9C0[0x4];
     struct SBTL_FIELD630_WORK *field630;
-    u8 pad9C8[0x1C];
+    u8 pad9C8[0x10];
+    s32 field9D8; /* Proc_sbtlEXP adds a bind's para, clamped to 0..999999 */
+    u8 pad9DC[0x8];
     struct scrProcessWork_s *hAIScript;
     u8 pad9E8[0x4];
     struct SBTLUNIT_WORK *scrUnit;
+    u8 pad9F0[0xC4C - 0x9F0];
+    s32 midiSkillCount;
+    u8 pad_C50[0x42CA - 0xC50];
+    s8 field42CA; /* Proc skips the pause checks when nonzero */
 } SBTL_WORK;
 #else
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
@@ -414,6 +420,15 @@ typedef struct SBTLITEM_WORK {
     s8 per;
 } SBTLITEM_WORK;
 
+#ifdef VERSION_RAIDOU2
+/* Devil table entry returned by sbtlIfDrawActionSub (0x94 bytes). Partial raidou2 layout. */
+typedef struct SBTL_DEVIL_DATA {
+    u32 flag;
+    u8 pad04[0x94 - 0x4];
+} SBTL_DEVIL_DATA;
+
+SIZE_CHECK(SBTL_DEVIL_DATASizeCheck, SBTL_DEVIL_DATA, 0x94);
+#else
 /* Devil table entry returned by sbtlGetDevilData_sbtlSub. */
 typedef struct SBTL_DEVIL_DATA {
     u32 flag;
@@ -444,6 +459,7 @@ typedef struct SBTL_DEVIL_DATA {
 } SBTL_DEVIL_DATA;
 
 typedef char SBTL_DEVIL_DATASizeCheck[sizeof(SBTL_DEVIL_DATA) == 0x70 ? 1 : -1];
+#endif
 
 
 /* Battle start parameters, copied to main_data by sbtlSbattle. */
@@ -475,6 +491,13 @@ f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type);
 s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 flg);
 s32 sbtlCallBtlGetSkilltbl8(struct SBTLUNIT_WORK *wk, u32 flg);
 
+#ifdef VERSION_RAIDOU2
+/* One generator entry of a stage. Partial raidou2 layout: HD's s8 groupID, the rest unread so far. */
+typedef struct SB_ENCOUNT1 {
+    u8 pad00[4];
+    s8 groupID;
+} SB_ENCOUNT1;
+#else
 /* One generator entry of a stage (HD SB_ENCOUNT1, PS2 layout). */
 typedef struct SB_ENCOUNT1 {
     s32 type;       /* 0x00: 2-5 start a generator */
@@ -485,6 +508,7 @@ typedef struct SB_ENCOUNT1 {
     s16 zan_num;    /* 0x0C: copied to SB_GENERATOR_WORK.zan_cnt */
     s16 groupID2;
 } SB_ENCOUNT1;
+#endif
 
 /* One battle stage's row (0x100 bytes) in the table sbtlData100 points at, indexed by SBTL_WORK.stageNo. */
 typedef struct SBTL_STAGE_DATA {
@@ -689,6 +713,12 @@ typedef struct SBTL_PACDATA {
     SBTL_PACDATA_HITLIST hit;
     SBTL_PACDATA_KEY key;
 } SBTL_PACDATA;
+
+#ifdef VERSION_RAIDOU1
+SIZE_CHECK(SBTL_PACDATASizeCheck, SBTL_PACDATA, 0x90);
+#else
+SIZE_CHECK(SBTL_PACDATASizeCheck, SBTL_PACDATA, 0x80);
+#endif
 
 #define SBTL_PACDATA_NUM 16
 

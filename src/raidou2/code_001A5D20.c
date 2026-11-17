@@ -153,6 +153,8 @@ INCLUDE_ASM(const s32, "code_001A5D20", MenuPlayDecideSE);
 
 INCLUDE_ASM(const s32, "code_001A5D20", MenuPlayCancelSE);
 
+INCLUDE_RODATA(const s32, "code_001A5D20", MenuProcessTable);
+
 INCLUDE_ASM(const s32, "code_001A5D20", MenuProcess);
 
 INCLUDE_ASM(const s32, "code_001A5D20", cmpCallDrawFont);
@@ -181,7 +183,20 @@ INCLUDE_ASM(const s32, "code_001A5D20", MenuRelease);
 
 INCLUDE_ASM(const s32, "code_001A5D20", MenuShutdown);
 
-INCLUDE_ASM(const s32, "code_001A5D20", itfMenuProcessStart);
+dds3ProcessID_t *itfMenuProcessStart(void)
+{
+    struct sdfMemHandle_t *hMem = sdfMemAllocDirect(sizeof(Menu_t));
+    Menu_t *wk = sdfMemGetPtr(hMem);
+    dds3ProcessID_t *PID;
+
+    memset(wk, 0, sizeof(Menu_t));
+    wk->hMem = hMem;
+    PID = dds3StartProcess("itfmenu_main", 1022, 0, 0, MenuProcess, MenuShutdown, wk);
+    wk->drawPID = dds3StartProcess("itfmenu_draw", 11029, 0, 0, MenuDrawProcess, NULL, wk);
+    MenuInit_itf(wk);
+    wk->lflag |= 2;
+    return PID;
+}
 
 void itfMenuProcessEnd(dds3ProcessID_t *PID)
 {
@@ -269,6 +284,8 @@ INCLUDE_ASM(const s32, "code_001A5D20", itfCallGetProcessData9);
 INCLUDE_ASM(const s32, "code_001A5D20", itfLeaf25);
 
 INCLUDE_ASM(const s32, "code_001A5D20", DvlMsgShutdown);
+
+INCLUDE_RODATA(const s32, "code_001A5D20", itfCallSetOt4Table);
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfDvlMsgProcessStart);
 
@@ -371,7 +388,42 @@ s32 MoneyProcess(dds3ProcessID_t *PID)
 
 INCLUDE_ASM(const s32, "code_001A5D20", MoneyDrawPanel);
 
-INCLUDE_ASM(const s32, "code_001A5D20", MoneyDrawProcess);
+s32 MoneyDrawProcess(dds3ProcessID_t *id)
+{
+    struct tagITF_MONEY_WORK *wk;
+    frFontHandle_t *font;
+    f32 scale;
+    s32 offX;
+    s32 alpha;
+    char buf[16];
+
+    wk = dds3GetProcessData(id);
+    if (!(wk->flags & 0x80)) {
+        return 0;
+    }
+    scale = (f32)wk->count * 1.5707963f / 10.0f;
+    if (wk->step == 1) {
+        offX = 32 - (s32)(sdfSin(scale) * 32.0f);
+        alpha = (wk->count << 7) / 10;
+    } else {
+        offX = 0;
+        if (wk->step == 4) {
+            offX = (s32)(sdfSin(scale) * 32.0f);
+            alpha = ((10 - wk->count) << 7) / 10;
+        } else {
+            alpha = 128;
+        }
+    }
+    MoneyDrawPanel(offX, 0, alpha);
+    font = frwGetSmallFontFRQ2((offX + 318) << 4, 2264, 0, ((u32)(alpha << 7) >> 7) | 0xA09DC300, MoneyDrawProcessData[0], 0);
+    frSetFontColorNo(font, 3);
+    frDrawFontOt(font, 1, 107);
+    frDestroyFontRequestAfter(font);
+    scale = (f32)alpha * 0.0078125f;
+    sprintf(buf, MoneyDrawProcessData2, wk->money);
+    itfDrawFont(ITF_DM_STYLE_SNUM, offX + 379, 286, 0, 0, 0, 0xA09DC380, scale, 107, buf);
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_001A5D20", MoneyShutdown);
 

@@ -302,7 +302,14 @@ s32 datGetStockDevilID(s32 index) {
 #else
 INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK10);
 
-INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK11);
+s32 datRefDDS3GBWK11(s32 index) {
+    sdatUnitWork_t *stock = &DDS3_GBWK->playerData.stock[index];
+
+    if (stock->flag & 1) {
+        return stock->devilId;
+    }
+    return 0;
+}
 #endif
 
 #ifdef VERSION_RAIDOU1

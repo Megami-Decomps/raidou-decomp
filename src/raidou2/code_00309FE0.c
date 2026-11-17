@@ -38,6 +38,16 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlTIMEUP2);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl13);
 
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlRefSbtl20Table);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlRefSbtl20Table2);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", SetLightChgTable);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrTimeupH);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl14Table);
+
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl14);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallMemset14);
@@ -77,6 +87,52 @@ INCLUDE_ASM(const s32, "code_00309FE0", cmpCallBtlGetNakama);
 INCLUDE_ASM(const s32, "code_00309FE0", cmpGetModelScale);
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData2);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwaDvlkaiwa);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa2);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa3);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa4);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa5);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa6);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa7);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa8);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa9);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa10);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa11);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa12);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa13);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa14);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa15);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa16);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa17);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrBattleDvlkaiwa18);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", cmpStrBribeThem);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", cmpStrKeepQuiet);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", cmpStrDoNothing);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", cmpStrUseBothDemons);
 
 INCLUDE_ASM(const s32, "code_00309FE0", DeadTextLogGet);
 
@@ -165,6 +221,8 @@ INCLUDE_ASM(const s32, "code_00309FE0", nbCallGetProcessData6);
 INCLUDE_ASM(const s32, "code_00309FE0", nbCallGetProcessData7);
 
 INCLUDE_ASM(const s32, "code_00309FE0", nbCallGetProcessData8);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", nbCallGetProcessData8Table);
 
 INCLUDE_ASM(const s32, "code_00309FE0", fldTALKYoukyuuRecovery);
 
@@ -492,7 +550,9 @@ s32 sbtlCallGetProcessStat(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", btlLoadBossEventTable);
+void btlLoadBossEventTable(void) {
+    sdfDevLoadFileEx("/battle/sb_bossevtbl.dat", &sbtlCheckData, &btlLoadBossEventTableData);
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlLeaf41);
 
@@ -552,6 +612,16 @@ INCLUDE_ASM(const s32, "code_00309FE0", ResetBtlParam);
 INCLUDE_ASM(const s32, "code_00309FE0", SkillChkUseUnit);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl15);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlCallSetOtTable);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlCallBtlDat4Table);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", DrawSkillListDataStrChangeDemon);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", DrawSkillListDataStrOneShot);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", DrawSkillListDataStrAutoRepeat);
 
 INCLUDE_ASM(const s32, "code_00309FE0", FuncDecideTgt);
 
@@ -623,3 +693,8 @@ INCLUDE_ASM(const s32, "code_00309FE0", DrawRepeatIconEx);
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlGetActionUnit);
 
 INCLUDE_ASM(const s32, "code_00309FE0", GetTargetUnit_sbtlCmndMenuNew);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrCmndMenu);
+
+INCLUDE_RODATA(const s32, "code_00309FE0", sbtlStrCmndMenuDraw);
+

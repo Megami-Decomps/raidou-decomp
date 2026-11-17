@@ -616,14 +616,20 @@ extern u32 mapFileLoadData;
 extern s32 mapData18;
 extern fldMapFlagRec_t mapData7[64];
 
-#ifdef VERSION_RAIDOU1
 /* Map script table: the script of (map, floor) when both event bits agree.
- * kind 0 sets initScript, otherwise startScript. */
+ * kind 0 sets initScript, otherwise startScript. 0x30 bytes per entry in raidou1, 0x2C in raidou2. */
 typedef struct mapCallBitCheckData_t {
+#ifdef VERSION_RAIDOU1
     s16 map;
     s16 floor;
     s16 kind;
     s16 once;
+#else
+    s8 map;
+    s8 floor;
+    s8 kind;
+    s8 once;
+#endif
     u16 bit;
     u16 bitOn;
     u16 bit2;
@@ -631,7 +637,14 @@ typedef struct mapCallBitCheckData_t {
     char name[32];
 } mapCallBitCheckData_t;
 
-extern mapCallBitCheckData_t mapCallBitCheckData[96];
+#ifdef VERSION_RAIDOU1
+#define MAPCALLBITCHECK_NUM 96
+#else
+#define MAPCALLBITCHECK_NUM 128
+#endif
+extern mapCallBitCheckData_t mapCallBitCheckData[MAPCALLBITCHECK_NUM];
+
+#ifdef VERSION_RAIDOU1
 
 /* The other MAPALL.TBL tables, loaded by fldAllTblLoad. */
 /* Place names shown on the map screen, one per map, floor and cut. */

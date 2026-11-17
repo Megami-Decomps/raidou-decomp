@@ -189,7 +189,45 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemAllocDirect10);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallSprintf8);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", Proc);
+s32 Proc(SBTLSM_LISTWORK *lwk)
+{
+    SBTLSM_WORK *dwk;
+
+    if (lwk == NULL) {
+        return 0;
+    }
+    dwk = lwk->dwk;
+    if (dwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    if (wk_sbtl->field42CA == 0) {
+        if ((wk_sbtl->flg & 0x8000000) && dwk->mode != 71) {
+            return 0;
+        }
+        if (wk_sbtl->flg2 & 0xA) {
+            return 0;
+        }
+    }
+    switch (dwk->gstat) {
+    case SBTLSM_ST_INIT:
+        dwk->alpha += 12;
+        dwk->alpha = dwk->alpha > 0 ? (dwk->alpha < 129 ? dwk->alpha : 128) : 0;
+        if (dwk->alpha >= 128) {
+            dwk->gstat = SBTLSM_ST_PROC;
+        }
+        break;
+    case SBTLSM_ST_PROC:
+        if (lwk->bLock == 0) {
+            dwk->counter++;
+        }
+        dwk->counter = dwk->counter > 0 ? (dwk->counter < dwk->cmpcounter ? dwk->counter : dwk->cmpcounter) : 0;
+        if (dwk->counter >= dwk->cmpcounter) {
+            DeleteMessage(lwk, dwk);
+        }
+        break;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", Draw_sbtlSM);
 

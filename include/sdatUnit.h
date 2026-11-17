@@ -35,7 +35,7 @@ typedef struct SBTL_AISYO_TBL {
 
 extern SBTL_AISYO_TBL *aisyo_tbldata;
 
-/* A unit's work: the player and each stock devil, and embedded in SBTLUNIT_WORK. */
+/* A unit's work: the player and each stock devil, and embedded in SBTLUNIT_WORK. The raidou2 tail is partial. */
 typedef struct sdatUnitWork_t {
     /* 0x00 */ u32 flag;
     /* 0x04 */ s8 raceId;
@@ -55,6 +55,12 @@ typedef struct sdatUnitWork_t {
     /* 0x48 */ sdatItemParaWork_t pitem;
     /* 0x60 */ sdatParaWork_t pbtl;
     /* 0x78 */ sdatParaWork_t huuma;
+#ifdef VERSION_RAIDOU2
+    /* 0x90 */ s32 haveskill[16];
+    /* 0xD0 */ u8 padD0[0xF8 - 0xD0];
+    /* 0xF8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
+    /* 0xFC */ u8 padFC[0x178 - 0xFC];
+#else
     /* 0x90 */ s32 haveskill[10];
     /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
     /* 0xBC */ s16 badst_cnt;  /* turns left on the current bad status */
@@ -66,13 +72,36 @@ typedef struct sdatUnitWork_t {
     /* 0xCC */ s16 itemst_cnt;
     /* 0xCE */ s16 itemst_cnt2;
     /* 0xD0 */ SBTL_AISYO_TBL aisyo;
+#endif
 } sdatUnitWork_t;
+
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(sdatUnitWorkSizeCheck, sdatUnitWork_t, 0x178);
+#else
+SIZE_CHECK(sdatUnitWorkSizeCheck, sdatUnitWork_t, 0x110);
+#endif
 
 typedef sdatUnitWork_t datPartyDevil_t;
 
 #define SDAT_STOCK_NUM 12
 #define SDAT_ITEM_NUM 160
 
+#ifdef VERSION_RAIDOU2
+/* Player data at DDS3_GBWK+0x1FA0. Partial raidou2 layout: it ends at the last stock devil, the rest is unread. */
+typedef struct SBTL_PLAYER_DATA {
+    /* 0x000 */ sdfVector4_t vec[2];
+    /* 0x020 */ s32 mag;
+    /* 0x024 */ s32 val24;
+    /* 0x028 */ s32 maka;
+    /* 0x02C */ s32 val2C;
+    /* 0x030 */ u8 pad30[4];
+    /* 0x034 */ sdatUnitWork_t unit;
+    /* 0x1AC */ u8 pad1AC[0x540 - 0x1AC];
+    /* 0x540 */ sdatUnitWork_t stock[SDAT_STOCK_NUM];
+} SBTL_PLAYER_DATA;
+
+SIZE_CHECK(SBTL_PLAYER_DATASizeCheck, SBTL_PLAYER_DATA, 0x16E0);
+#else
 /* Player data, 0xFA0 bytes at DDS3_GBWK+0x1CA0. Only the fields used so far are named. */
 typedef struct SBTL_PLAYER_DATA {
     /* 0x000 */ sdfVector4_t vec[2];
@@ -97,5 +126,6 @@ typedef struct SBTL_PLAYER_DATA {
     /* 0xF9C */ s8 partyNum;
     /* 0xF9D */ u8 padF9D[3];
 } SBTL_PLAYER_DATA;
+#endif
 
 #endif

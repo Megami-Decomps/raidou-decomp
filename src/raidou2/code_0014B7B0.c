@@ -11,6 +11,8 @@
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallSetOt6);
 
+/* NON_MATCHING: 74 of 87 words match. Fragile: the enums.h, field.h and mapData.h declaration sets move the posx/posz spill order. */
+#ifdef NON_MATCHING
 s32 mapHitCalc(s32 mode, f32 posx, f32 posz, f32 r, f32 *getx, f32 *getz) {
     f32 tmpx;
     f32 tmpz;
@@ -47,6 +49,9 @@ s32 mapHitCalc(s32 mode, f32 posx, f32 posz, f32 r, f32 *getx, f32 *getz) {
     }
     return hit;
 }
+#else
+INCLUDE_ASM(const s32, "code_0014B7B0", mapHitCalc);
+#endif
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapHitAidaCalc);
 

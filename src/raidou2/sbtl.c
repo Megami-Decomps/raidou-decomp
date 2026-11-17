@@ -9,6 +9,7 @@
 #include "sdfMemory.h"
 #include "sbattle.h"
 #include "fld.h"
+#include "sBtlUnit.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
@@ -25,6 +26,12 @@ INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl68);
 INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl62);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallFptodp3);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrWs);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlSbtlCameraprocTable2);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlSbtlCameraprocTable3);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlSbtlCameraproc);
 
@@ -107,6 +114,14 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallMemset30);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallMemset33);
 
+INCLUDE_RODATA(const s32, "sbtl", SetParaTable);
+
+INCLUDE_RODATA(const s32, "sbtl", SetParaTable2);
+
+INCLUDE_RODATA(const s32, "sbtl", SetParaTable3);
+
+INCLUDE_RODATA(const s32, "sbtl", jtbl_004C6860);
+
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckDamageTargetUseItem);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetCutFlg);
@@ -165,7 +180,15 @@ s32 sbtlCheckAutoSkill(sdatUnitWork_t *unit, s32 flg) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_Enemy);
+s32 sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk) {
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        wk->unit.haveskill[i] = wk->haveskill[i];
+    }
+    CalcAisyo(wk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", CalcAisyo);
 
@@ -191,6 +214,8 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_TargetDamage);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_Action);
 
+INCLUDE_RODATA(const s32, "sbtl", sbtlCallGetPercentageTable);
+
 INCLUDE_ASM(const s32, "sbtl", CalcAutoSkill);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetDropMoney);
@@ -210,6 +235,22 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckMagCost);
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost2);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBDmgupH100);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrMDmgupH100);
+
+INCLUDE_RODATA(const s32, "sbtl", CalcAutoSkillStrBMDmgupH100);
+
+INCLUDE_RODATA(const s32, "sbtl", CalcAutoSkillStrZDmgupH100);
+
+INCLUDE_RODATA(const s32, "sbtl", CalcAutoSkillStrZDmgdowNorBsDowNorJsDown);
+
+INCLUDE_RODATA(const s32, "sbtl", CalcAutoSkillStrRecupH100);
+
+INCLUDE_RODATA(const s32, "sbtl", jtbl_004C6C00);
+
+INCLUDE_RODATA(const s32, "sbtl", LimitRange_2Table);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost_SkillID);
 
@@ -265,7 +306,20 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlChkHaveMemSkl2);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_Return);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetBadStatus);
+/* body: matched in raidou @ 780f3f57: src/raidou1/sbtl_0029BFB8.c:324, found, same function 1.00 (words 18/18, calls 1.00, shape 1.00) */
+BST sbtlGetBadStatus(sdatUnitWork_t *unit)
+{
+    s32 i;
+
+    if (unit->badStatus != 0) {
+        for (i = BST_KANASHIB; i < BST_RAND0; i++) {
+            if ((unit->badStatus >> i) & 1) {
+                return i;
+            }
+        }
+    }
+    return BST_BOYCOTT;
+}
 
 INCLUDE_ASM(const s32, "sbtl", CalcBadStatus);
 
@@ -273,7 +327,16 @@ INCLUDE_ASM(const s32, "sbtl", sbtlResetBadStatus_GB);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlResetBadStatus);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlCheckBadStatusWeakNumberSub);
+INCLUDE_RODATA(const s32, "sbtl", CalcBadStatusTable3);
+
+INCLUDE_RODATA(const s32, "sbtl", CalcBadStatusTable4);
+
+s32 sbtlBtlCheckBadStatusWeakNumberSub(BST id)
+{
+    s32 table[21] = { 2, 3, 4, 5, 0, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 1, 7, 7, 7 };
+
+    return table[id];
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus);
 
@@ -282,6 +345,8 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_sbtlCalc);
 INCLUDE_ASM(const s32, "sbtl", sbtlResetUnit);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf107);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlLeaf107Table);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallSetClutColor);
 
@@ -310,6 +375,10 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_Hit);
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl21);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlKudaDmg);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlKudaDmgTable);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrZKeisaNorKeisanShimuA100);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlFullMoonDmg);
 
@@ -359,6 +428,10 @@ INCLUDE_ASM(const s32, "sbtl", sbtlGetDamage_ParaUP);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf115);
 
+INCLUDE_RODATA(const s32, "sbtl", sbtlBtlGetDamageGBSubTable);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlGetPlayerTec_ParaUpTable);
+
 INCLUDE_ASM(const s32, "sbtl", sbtlITEMRECUP);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlITEMRECUP2);
@@ -397,6 +470,372 @@ SBTLDVLTK_LISTWORK *sbtlCallChipAllocZeroDirect(void)
 }
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf101);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes013);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes012);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes011);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes010);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes00F);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes00E);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes00D);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes00C);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes00B);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes00A);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes009);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes008);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes007);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes006);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes005);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes004);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes003);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes002);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes001);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrBattleDvltkDvltkmes000);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0CaTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C9Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C8Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C7Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C6Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C5Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C4Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C3Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C2Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C1Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0C0Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0BbTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0BaTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0B9Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0B8Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0B7Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0B6Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0B5Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0B4Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0AfTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0AeTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0AdTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0AcTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0A7Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0A6Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0A5Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0A4Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0A3Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon0A2Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon09ETmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon09DTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon09CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon09BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon09ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon099Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon098Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon097Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon096Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon095Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon094Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon093Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon092Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon091Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon090Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon08FTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon08ETmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon08DTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon08CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon08BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon08ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon089Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon088Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon087Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon082Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon081Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon080Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon07FTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon07ETmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon07DTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon07CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon07BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon07ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon079Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon078Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon077Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon076Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon075Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon074Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon073Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon072Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon071Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon070Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon06BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon06ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon069Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon068Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon067Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon066Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon065Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon064Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon063Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon062Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon061Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon060Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon05FTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon05ETmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon05DTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon05CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon05BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon05ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon059Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon058Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon057Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon056Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon051Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon050Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon04FTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon04ETmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon04DTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon04CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon04BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon04ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon049Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon048Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon047Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon046Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon045Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon044Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon043Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon042Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon041Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon03CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon03BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon03ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon039Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon038Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon037Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon036Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon035Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon034Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon033Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon032Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon031Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon030Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon02FTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon02ETmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon02DTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon02CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon027Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon026Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon025Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon024Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon023Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon022Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon021Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon020Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon01FTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon01ETmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon01DTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon01CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon01BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon01ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon019Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon018Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon017Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon016Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon011Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon010Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon00FTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon00ETmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon00DTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon00CTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon00BTmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon00ATmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon009Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon008Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon007Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon006Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon005Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon004Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon003Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon002Tmx);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon001Tmx);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCreateWork);
 
@@ -480,6 +919,10 @@ INCLUDE_ASM(const s32, "sbtl", sbtlExt_DrawProcess);
 INCLUDE_ASM(const s32, "sbtl", sbtlExt_Free);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlExt_ShutDown);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlLeaf99Table);
+
+INCLUDE_RODATA(const s32, "sbtl", sbtlDrawTextTable);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlExt_CreateBuffer);
 

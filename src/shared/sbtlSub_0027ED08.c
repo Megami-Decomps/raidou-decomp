@@ -489,9 +489,6 @@ INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetSkillMenu);
 SBTL_DEVIL_DATA *sbtlGetDevilData_sbtlSub(s32 id) {
     return &gohData7[id];
 }
-#else
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlIfDrawActionSub);
-#endif
 
 s32 sbtlCheckVerticalArea(const sdfVector4_t *pos0, const sdfVector4_t *rot, const sdfVector4_t *pos1, f32 area) {
     sdfVector4_t vertexA;
@@ -571,6 +568,91 @@ f32 sbtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f3
     SDF_VU0_ADDVECTOR();
     return projection;
 }
+#else
+SBTL_DEVIL_DATA *sbtlIfDrawActionSub(s32 id)
+{
+    return &gohData7[id];
+}
+
+s32 sbtlCheckVerticalArea(const sdfVector4_t *pos0, const sdfVector4_t *rot, const sdfVector4_t *pos1, f32 area) {
+    sdfVector4_t vertexA;
+    sdfVector4_t vertexB;
+    sdfVector4_t dir;
+
+    memset(&dir, 0, sizeof(dir));
+    dir.z = -1.0f;
+    SDF_VU0_LOADVECTOR(pos0);
+    SDF_VU0_STOREVECTOR(&vertexA);
+    SDF_VU0_LOADVECTOR(rot);
+    ToMatrix();
+    SDF_VU0_LOADVECTOR(&dir);
+    SDF_VU0_APPLYMATRIX();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SCALEVECTOR(1.0f);
+    SDF_VU0_LOADVECTOR_B(pos0);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR_NOMEM(&vertexB);
+    vertexA.y = 0.0f;
+    vertexB.y = 0.0f;
+    if (sbtlGetVerticalLength(&vertexA.x, &vertexB.x, &pos1->x) <= area && sbtlCheckInner(&vertexA, &vertexB, pos1, 0.0f)) {
+        return 1;
+    }
+    return 0;
+}
+
+/* vu0 routine: vf10.xyz = normalize(e x (e x f)),
+ * e = vertexB - vertexA, f = vertexC - vertexA.
+ * The double cross lies in the triangle plane, despite the legacy normal name. */
+void sbtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+    SDF_VU0_LOADVECTOR(vertexB);
+    SDF_VU0_LOADVECTOR_B(vertexA);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR_B(vertexC);
+    SDF_VU0_LOADVECTOR_BARRIER(vertexA);
+    SDF_VU0_SUBVECTOR_B_A();
+    SDF_VU0_COPYVECTOR_C_TO_A();
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_COPYVECTOR_C_TO_A();
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+}
+
+/* Dot the normalized double-cross direction with vertexA - vertexC. */
+f32 sbtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+    f32 direction[4];
+    f32 projection;
+    sbtlGetVerticalVector(vertexA, vertexB, vertexC);
+    VU0_STORE_VF($vf10, direction);
+    VU0_LOAD_VF($vf10, vertexA);
+    VU0_LOAD_VF($vf11, vertexC);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    VU0_LOAD_VF($vf10, direction);
+        SDF_VU0_INNERPRODUCT(projection);
+    return projection;
+}
+
+/* vu0 routine: vf10 = vertexC + direction * dot(direction, vertexA - vertexC).
+ * Direction is the normalized in-plane double cross, not a triangle normal. */
+f32 sbtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+    f32 direction[4];
+    f32 projection;
+    sbtlGetVerticalVector(vertexA, vertexB, vertexC);
+    SDF_VU0_STOREVECTOR(direction);
+    SDF_VU0_LOADVECTOR(vertexA);
+    SDF_VU0_LOADVECTOR_B(vertexC);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(direction);
+    SDF_VU0_INNERPRODUCT(projection);
+    VU0_SCALAR_OP(projection, "vmulx.xyzw vf10, vf10, vf2x");
+    SDF_VU0_LOADVECTOR_B(vertexC);
+    SDF_VU0_ADDVECTOR();
+    return projection;
+}
+#endif
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlInitOutInPara);

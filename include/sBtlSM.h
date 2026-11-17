@@ -32,7 +32,8 @@ SIZE_CHECK(sbtlSmWorkSizeCheck, SBTLSM_WORK, 0xBC);
 typedef struct SBTLSM_LISTWORK {
     s32 num;
 #ifdef VERSION_RAIDOU2
-    s32 bLock; /* HD SBTLSM_LISTWORK.bLock */
+    s8 bLock; /* HD SBTLSM_LISTWORK.bLock; a nonzero lock holds the message counter */
+    u8 pad05[3];
 #endif
     SBTLSM_WORK *dwk;
 } SBTLSM_LISTWORK;

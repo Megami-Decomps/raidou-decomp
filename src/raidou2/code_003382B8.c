@@ -501,7 +501,7 @@ s32 Start_lmap(s8 aFieldNo) {
     return 1;
 }
 
-s32 objLeaf(s8 flag) {
+s32 getLeaf3(s8 flag) {
     if (DDS3_GBWK2 == NULL) {
         return 0;
     }

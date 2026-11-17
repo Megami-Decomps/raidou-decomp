@@ -9,6 +9,7 @@
 #include "sBtlSound.h"
 #include "sbtlSub.h"
 #include "dds3KernelCore.h"
+#include "sBtlSkill.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
@@ -199,7 +200,52 @@ INCLUDE_ASM(const s32, "code_0026B0A8", GetR1CombSklSmg);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", GetSkillSE);
 
+/* NON_MATCHING: 61 of 69 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlLoadSkillSE(struct SBTLEFF_PACLIST *ewk)
+{
+    s32 skillID;
+    struct SBTLSKILLP_TBL *tbl;
+    u32 se;
+    u32 flg;
+
+    skillID = ewk->skillID;
+    tbl = sbtlGetSkilltbl(skillID);
+    flg = tbl->flg;
+    if ((s32)flg < 0) {
+        return 1;
+    }
+    if (skillID == 287) {
+        return 1;
+    }
+    if (tbl->flg2 & 0x10) {
+        return 1;
+    }
+    if (skillID == 674) {
+        return 1;
+    }
+    if (flg & 0x100) {
+        return 1;
+    }
+    se = GetSkillSE(skillID, -1);
+    switch (p2sdLoadCheckMidi(se)) {
+    case 0:
+        if (wk_sbtl->midiSkillCount != 17 || (tbl->type & 0x1000) || (tbl->type & 0xFFF) == 8 || (tbl->s_type & 4)) {
+            p2sdLoadSMGFile(se);
+        }
+        return 0;
+    case 1:
+        ewk->SMGID = se;
+        sbtlBtlLoadSkillSESub(se);
+        return 1;
+    case 2:
+        break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLoadSkillSE);
+#endif
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBstse);
 

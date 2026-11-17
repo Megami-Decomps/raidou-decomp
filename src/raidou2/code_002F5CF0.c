@@ -157,7 +157,14 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlCallEndSub);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCheckEnableTalk);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSetMenuImage);
+void sbtlSetMenuImage(dds3ProcessID_t *PID) {
+    itfMenuLinkSprite(PID, wk_sbtl->panel->hPanelSpr3);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_TITLE, 0, 0, 0, 0, 23, 24, NULL, sbtlSetMenuImageData3);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_PANEL, 322, 160, 128, 23, 17, 3, NULL, sbtlSetMenuImageData);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_SELECT, 322, 160, 128, 23, 17, 3, NULL, sbtlSetMenuImageData2);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_SCROLL, 322, 160, 3, 164, 172, 11, NULL, sbtlSetMenuImageData4);
+    itfMenuSetImageColor(PID, ITFMENU_IMG_DAT_SCROLL, 200, 180, 80, 128);
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlInitMenuPID);
 

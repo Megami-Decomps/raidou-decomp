@@ -62,6 +62,10 @@ u32 sbtlGetBossSE(struct SBTLUNIT_WORK *wk, s32 motionID);
 s32 sbtlLoadSkillSE(struct SBTLEFF_PACLIST *ewk);
 void sbtlRefSbtl7(void);
 u32 sbtlCallBtlGetSkilltbl(s32 skillID, s32 type);
+#ifdef VERSION_RAIDOU2
+/* raidou1 names this function sbtlCallBtlGetSkilltbl. */
+u32 GetSkillSE(s32 skillID, s32 type);
+#endif
 void sbtlCheckBossSE(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetBadStatus(struct SBTLUNIT_WORK *wk);
 void sbtlPlay3DSE_BaseVol(u32 no, const sdfVector4_t *pos, s32 flg);

@@ -353,7 +353,55 @@ void mapCallBitCheck(void) {
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskChk_ID);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapCallBitCheck);
+/* body: matched in raidou @ 780f3f57: src/shared/code_r1_00128378.c:287, found, same function 0.96 (words 107/108, calls 1.00, shape 0.88) */
+void mapCallBitCheck(void) {
+    s32 i;
+
+    fldGlobalBase.initScript = NULL;
+    fldGlobalBase.startScript = NULL;
+    for (i = 0; i < MAPCALLBITCHECK_NUM; i++) {
+        if (mapCallBitCheckData[i].map != fldGlobalBase.amSBlock) {
+            continue;
+        }
+        if (mapCallBitCheckData[i].floor != fldGlobalBase.nameU) {
+            continue;
+        }
+        if (mapCallBitCheckData[i].bit != 0) {
+            if (mapCallBitCheckData[i].bitOn == 0) {
+                if (evtBitCheck(mapCallBitCheckData[i].bit)) {
+                    continue;
+                }
+            } else if (!evtBitCheck(mapCallBitCheckData[i].bit)) {
+                continue;
+            }
+        }
+        if (mapCallBitCheckData[i].bit2 != 0) {
+            if (mapCallBitCheckData[i].bit2On == 0) {
+                if (evtBitCheck(mapCallBitCheckData[i].bit2)) {
+                    continue;
+                }
+            } else if (!evtBitCheck(mapCallBitCheckData[i].bit2)) {
+                continue;
+            }
+        }
+        if (mapCallBitCheckData[i].kind == 0) {
+            if (fldGlobalBase.initScript != NULL) {
+                continue;
+            }
+            fldGlobalBase.initScript = mapCallBitCheckData[i].name;
+        } else {
+            if (fldGlobalBase.startScript != NULL) {
+                continue;
+            }
+            fldGlobalBase.startScript = mapCallBitCheckData[i].name;
+            if (mapCallBitCheckData[i].once == 0) {
+                fldGlobalBase.word2D4 = 1;
+            } else {
+                fldGlobalBase.word2D4 = 0;
+            }
+        }
+    }
+}
 #endif
 
 void mapRndEncParamSet(void) {
@@ -590,7 +638,33 @@ INCLUDE_ASM(const s32, "code_r1_00128378", sbtlTitleNewGameStartSub);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fclCombineDraw);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fclMapAllShadow);
+/* body: matched in raidou @ 780f3f57: src/shared/code_r1_00128378.c:491, found, same function 0.94 (words 51/49, calls 0.89, shape 0.98) */
+void fclMapAllShadow(void) {
+    sdfMemHandle_t *file;
+    TMX_HEADER_t *tmx;
+
+    tmx = NULL;
+    fldDrawInit();
+    mapCutFileLoad();
+    fldCallFptodp();
+    fldGlobalBase.word30 = 0;
+    fldGlobalBase.texture2B0 = NULL;
+    fldGlobalBase.texSlot[0].texture = NULL;
+    fldGlobalBase.texSlot[0].file = NULL;
+    sdfRandomize(&fldRandomBuf, 123456);
+    fldCallMemset4();
+    fldAllTblPacLoad();
+    fldAllTblLoad();
+    file = sdfDevLoadFileEx("/map/all/shadow01.tmx", (u32 *)&tmx, NULL);
+    fldGlobalBase.texture220 = sdfTexSet(tmx);
+    sdfMemFreeDelayedDirect(file);
+    fldData9 = dds3CallMatNew2(fldGlobalBase.texture220);
+    mapEffEplInit();
+#ifdef VERSION_RAIDOU2
+    nbCameraInit();
+#endif
+    mefMistFastCreate();
+}
 #endif
 
 void mapCutFileLoad(void) {

@@ -280,7 +280,8 @@ struct SBTLUNIT_WORK {
     u16 mode;
     u8 pad1E6[0x2];
     sdatUnitWork_t unit;
-    u8 pad1E8[0x3F4 - 0x1E8 - sizeof(sdatUnitWork_t)];
+    s32 haveskill[16]; /* copied to unit.haveskill by sbtlCheckAutoSkill_Enemy */
+    u8 pad3A0[0x3F4 - 0x3A0];
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
     u8 pad3F4[0x4BC - 0x3F4 - sizeof(sdatParaWork_t)];
     s32 major;
@@ -328,7 +329,9 @@ struct SBTLUNIT_WORK {
     s16 field498;
     u8 pad5C6[0x6E];
     SBTL_PACDATA_HITLIST hitwk;
-    u8 pad688[0x16C]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
+    u8 pad688[0x6F4 - 0x688];
+    s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
+    u8 pad6F5[0x7F4 - 0x6F5]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */

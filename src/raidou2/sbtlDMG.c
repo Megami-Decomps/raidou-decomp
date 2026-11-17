@@ -77,7 +77,29 @@ SBTLDMG_HITLISTWORK *sbtlCreateHitList(void) {
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlLoadAttackHitData_Decode);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlSearchAttackHitData_Copy);
+s32 sbtlSearchAttackHitData_Copy(struct SBTLUNIT_WORK *wk) {
+    sdfMemHandle_t *handle;
+    SBTL_HIT_PACDATA *pwk;
+    s32 index;
+    s32 i;
+
+    index = sbtlSearchPacData(wk->major, wk->minor, wk->unit.devilId);
+    if (index >= 0) {
+    wk->hitwk.num = sbtlData84->pac[index].hit.num;
+    for (i = 0; i < wk->hitwk.num; i++) {
+        handle = sdfMemAllocDirect(sizeof(SBTL_HIT_PACDATA));
+        pwk = sdfMemLock(handle);
+        wk->hitwk.pwk[i] = pwk;
+        pwk->handle = handle;
+        pwk->entry = sbtlData84->pac[index].hit.pwk[i]->entry;
+        wk->hitwk.pwk[i]->handle08 = NULL;
+        wk->hitwk.pwk[i]->handle10 = NULL;
+    }
+    wk->hitwk.status |= 1;
+    return 1;
+    }
+    return 0;
+}
 
 s32 sbtlLoadAttackHitData_pData(s32 index, void *pData) {
     while (sbtlLoadAttackHitData(&sbtlWork2, 0, pData) == 0) {
@@ -286,7 +308,57 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallColorSet2);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallColorSet3);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlDrawAttachEPL);
+s32 sbtlDrawAttachEPL(struct SBTLDMG_HITLISTWORK *lwk) {
+    struct SBTLDMG_HITWORK *hwk;
+    f32 cnt;
+    f32 t;
+
+    if (wk_sbtl->hitList == NULL) {
+        return 0;
+    }
+    hwk = lwk->wk;
+    if (hwk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    do {
+        if (!IsSceanStop() || (hwk->flg & 0x80)) {
+            if (hwk->flg & 0x2000) {
+                hwk->EPL_counter += 1.0f;
+                cnt = hwk->EPL_counter <= 0.0f ? 0.0f : (hwk->EPL_counter >= 32767.0f ? 32767.0f : hwk->EPL_counter);
+                hwk->EPL_counter = cnt;
+                if (hwk->st == 1) {
+                    if (!(hwk->EPL_st_time <= cnt)) {
+                        hwk = hwk->next;
+                        continue;
+                    }
+                    if (!(cnt <= hwk->EPL_st_time + hwk->EPL_life) && hwk->EPL_life != 0.0f) {
+                        hwk = hwk->next;
+                        continue;
+                    }
+                    t = cnt - hwk->EPL_st_time;
+                    if (t >= 0.0f && t <= hwk->EPL_fin_time) {
+                        hwk->EPL_alpha += hwk->EPL_in_alpha;
+                        if (hwk->EPL_alpha >= 80.0f) {
+                            hwk->EPL_alpha = 80.0f;
+                        }
+                    }
+                    if (hwk->EPL_life != 0.0f && hwk->EPL_life - hwk->EPL_fout_time <= hwk->EPL_counter) {
+                        hwk->EPL_alpha -= hwk->EPL_out_alpha;
+                        if (hwk->EPL_alpha <= 0.0f) {
+                            hwk->EPL_alpha = 0.0f;
+                        }
+                    }
+                    ColorSet(hwk->hPartsList, ((s32)hwk->EPL_alpha << 24) | 0x808080);
+                    effPartsRotateSet(hwk->hPartsList, (const f32 *)&hwk->rot);
+                    effPartsPositionSet(hwk->hPartsList, (const f32 *)&hwk->pos);
+                    effPartsDraw(hwk->hPartsList);
+                }
+            }
+        }
+        hwk = hwk->next;
+    } while (hwk != NULL);
+    return 1;
+}
 
 s32 sbtlReleaseHitC_List(struct SBTLDMG_HITLISTWORK *lwk, u8 flg) {
     struct SBTLDMG_HITWORK *hwk;

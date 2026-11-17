@@ -137,11 +137,23 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemset9);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlCheckEffectDataSub);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlSetEffectDataSub);
+EFFPDATA_WORK *sbtlBtlSetEffectDataSub(s32 id, s32 no)
+{
+    if (sbtlData83->effpac[id].status & EFFPAC_ST_LOADEND) {
+        return &sbtlData83->effpac[id].pwk[no]->wk;
+    }
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlCheckDeleteEffectSub);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlListProcSub);
+s32 sbtlBtlListProcSub(SBTLEFF_WORK *wk)
+{
+    if (wk->BEDsklid != 0 && (sbtlData83->effpac[wk->workID].status & EFFPAC_ST_LOADEND)) {
+        return 1;
+    }
+    return 0;
+}
 
 s32 CheckEffectDataSingle(s32 type, s32 cmp)
 {
@@ -306,7 +318,34 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SerialID);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SkillFlag);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SkillFlag_Acter);
+s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg)
+{
+    SBTLEFF_LISTWORK *lwk;
+    SBTLEFF_WORK *ewk;
+    s32 ret = 0;
+
+    if (wk_sbtl != NULL && (lwk = wk_sbtl->effList) != NULL) {
+        if (wk->field6F4 != 0) {
+            return 0;
+        }
+        ewk = lwk->wk;
+        if (lwk->num != 0 && ewk != NULL) {
+            do {
+                if ((sbtlGetSkilltbl(ewk->BEDsklid)->flg & flg) && ewk->acterID == wk->field1A0) {
+                    if ((u32)(ewk->st - SBTLEFF_ST_INIT) < 2) {
+                        ewk->flg |= SBTLEFF_FLG_FORCERESET;
+                    } else {
+                        ewk->st = SBTLEFF_ST_EXIT;
+                        ewk->alpha = 0;
+                    }
+                }
+                ewk = ewk->next;
+            } while (ewk != NULL);
+        }
+        ret = 1;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SkillID_Acter);
 
@@ -443,9 +482,29 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_EffectWork);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlForceDeleteEffectWorkIDSub2);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffectData);
+s32 sbtlSearchEffectData(SKLID skillid)
+{
+    s32 i;
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlLoadEffectDataIDMaskSub);
+    for (i = 0; i < SBTLEFF_PACLIST_MAX; i++) {
+        if (sbtlData83->effpac[i].skillID == skillid) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+s32 sbtlBtlLoadEffectDataIDMaskSub(SKLID skillid)
+{
+    s32 i;
+
+    for (i = 0; i < SBTLEFF_PACLIST_MAX; i++) {
+        if ((u16)(sbtlData83->effpac[i].skillID + 1) < 2) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData_IDMask);
 
@@ -473,7 +532,48 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallIsSceanStop2);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallPartsCreateFinish);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", LoadOnMemoryData_BED);
+void LoadOnMemoryData_BED(SBTLEFF_WORK *wk, struct SBTLUNIT_WORK *wklock, u16 no)
+{
+    SBTLDMG_HITWORK *hit;
+    u32 flg = wk->flg;
+
+    if (!(flg & SBTLEFF_FLG_LOADEND)) {
+        wk->counter = 0;
+        wk->flg = flg | SBTLEFF_FLG_LOADEND;
+        flg = wk->flg;
+    }
+    if (!(flg & SBTLEFF_FLG_FORCERESET) && (no == 0 || (wklock != NULL && wklock->status == no))) {
+        if (wk->starttime > wk->counter) {
+            return;
+        }
+        if (flg & SBTLEFF_FLG_NONEFF) {
+            wk->dwk.hPartsList = NULL;
+        } else {
+            if (sbtlData83->effpac[wk->workID].status & EFFPAC_ST_DECODE) {
+                wk->dwk.hPartsList = effPartsCreateFinish(sbtlData83->effpac[wk->workID].pwk[wk->effectid]->hPartsList);
+            } else {
+                wk->dwk.hPartsList = Create_effPartsList(sbtlData83->effpac[wk->workID].pwk[wk->effectid]->pData);
+            }
+            effPartsRotateSet(wk->dwk.hPartsList, (const f32 *)&wk->rot);
+            effPartsScaleSet(wk->dwk.hPartsList, wk->scale);
+            if (wk->flg & SBTLEFF_FLG_LOCKHIT) {
+                hit = sbtlSearchHit_SerialID(wk_sbtl->hitList, wk->hitserialID);
+                if (hit != NULL) {
+                    SDF_VU0_LOADVECTOR(&hit->pos);
+                    SDF_VU0_STOREVECTOR(&wk->pos);
+                    effPartsPositionSet(wk->dwk.hPartsList, (const f32 *)&wk->pos);
+                }
+            } else {
+                effPartsPositionSet(wk->dwk.hPartsList, (const f32 *)&wk->pos);
+            }
+        }
+        wk->st = SBTLEFF_ST_PROC;
+        wk->cmpcounter = wk->life;
+        wk->counter = 0;
+        return;
+    }
+    wk->st = SBTLEFF_ST_EXIT;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_Slip_G);
 

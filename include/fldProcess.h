@@ -118,6 +118,11 @@ s32 ProcRandomEncountCheck_fld(void);
 s32 p2sdCallBitCheck(s32 map, s32 floor);
 void nbSetEncountMode(s32 mode);
 void nbProcSequenceSub(s32 arg);
+#ifdef VERSION_RAIDOU2
+void nbCameraInit(void);
+void itfGeneralMenuFreeSpriteHnd(void);
+void UnloadRequest(s32 mode);
+#endif
 void mnuQueueTitleSoundStreamEntry(s32 id);
 void mapTitleStart_fld(s32 a, s32 b, s32 c, s32 d);
 s32 mapSoundSmgLoadChk_fld(void);

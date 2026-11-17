@@ -155,7 +155,37 @@ struct SBTL_MODELBIND_LIST *effAllocateModelBindings(void) {
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallMemAllocDirect6);
 
-INCLUDE_ASM(const s32, "code_002C5D78", Proc_sbtlEXP);
+s32 Proc_sbtlEXP(struct SBTL_MODELBIND_LIST *lwk) {
+    SBTL_MODELBIND *wk;
+
+    if (lwk == NULL) {
+        return 0;
+    }
+    wk = lwk->top;
+    if (wk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    if (IsSceanStop()) {
+        return 0;
+    }
+    while (wk != NULL) {
+        if (wk->status == 1) {
+            if (wk->flg & 1) {
+                wk_sbtl->field9D8 += wk->para;
+                wk_sbtl->field9D8 = wk_sbtl->field9D8 > 0 ? (wk_sbtl->field9D8 < 1000000 ? wk_sbtl->field9D8 : 999999) : 0;
+                sbtlCallBtlSearchUnitID26(wk);
+            }
+            if (wk->flg & 2) {
+                wk_sbtl->field9D8 -= wk->para;
+                wk_sbtl->field9D8 = wk_sbtl->field9D8 > 0 ? (wk_sbtl->field9D8 < 1000000 ? wk_sbtl->field9D8 : 999999) : 0;
+                sbtlCallBtlSearchUnitID26(wk);
+            }
+            wk->status = 2;
+        }
+        wk = wk->next;
+    }
+    return 1;
+}
 
 s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *stp, u8 flg) {
     struct SBTL_MODELBIND *node;
@@ -384,7 +414,17 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetGeneratorData);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGeneratorD_On);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckGeneratorGroupID);
+s32 sbtlCheckGeneratorGroupID(s32 group)
+{
+    s32 i;
+
+    for (i = 0; i < 13; i++) {
+        if (sb_gen_work[i].use != 0 && sb_gen_work[i].penc->groupID == group && sb_gen_work[i].zan_cnt > 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckGeneratorGroupID2);
 

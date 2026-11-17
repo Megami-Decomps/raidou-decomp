@@ -693,11 +693,22 @@ typedef enum BST {
     BST_KANSEN = 15,
     BST_HUUIN = 16,
     BST_DEAD = 17,
+#ifdef VERSION_RAIDOU2
+    /* Two raidou2 entries between DEAD and RAND0; their names are not recovered. */
+    BST_UNK18 = 18,
+    BST_UNK19 = 19,
+    BST_RAND0 = 20,
+    BST_BOYCOTT = 21,
+    BST_MAIGO = 22,
+    BST_MAX = 23,
+    BST_NONE = 24,
+#else
     BST_RAND0 = 18,
     BST_BOYCOTT = 19,
     BST_MAIGO = 20,
     BST_MAX = 21,
     BST_NONE = 22,
+#endif
     BST_MASK = 0xfffff000
 } BST;
 

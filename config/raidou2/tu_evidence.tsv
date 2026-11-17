@@ -83,7 +83,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0012AAE8	0012AAE8	pb/pbGame	c	smt3:names:1 of 1	pb/pbGame
 0012AB08	0012B4D0	fclDrawBack	c	none	
 0012B9C8	0012B9C8	code_0012B9C8	c	dds:1 of 1	
-0012BA90	0012BA90	code_0012BA90	asm	none	
+0012BA90	0012BA90	code_0012BA90	c	none	
 0012BAC8	0012C1A8	field/fldPlayer	c	smt3:names:2+smt3:map:1 of 4	field/fldPlayer
 0012C370	0012C370	code_0012C370	asm	none	
 0012C440	0012C498	field/fldCamera	c	smt3:names:1+smt3:map:1 of 2	field/fldCamera

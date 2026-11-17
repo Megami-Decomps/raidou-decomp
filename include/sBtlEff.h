@@ -148,7 +148,7 @@ typedef struct SBTLEFF_WORK {
     u8 pad111[0x114 - 0x111];
     SBTLEFF_DATAWORK dwk;
 #ifdef VERSION_RAIDOU2
-    u8 pad124[0x128 - 0x124];
+    u8 pad124[0x128 - 0x124]; /* one of HD's pHitEff and sklid */
 #endif
     struct SBTLEFF_WORK *prev;
     struct SBTLEFF_WORK *next;
@@ -239,7 +239,12 @@ s32 sbtlSetDecAlpha_SerialID(struct SBTLEFF_LISTWORK *lwk, s32 serialID, s32 alp
 s32 sbtlSetDecAlpha_SerialID2(struct SBTLEFF_LISTWORK *lwk, s32 serialID2, s32 alpha);
 s32 CheckEffectDataSingle(s32 type, s32 cmp);
 s32 sbtlLeaf7(s32 id);
+#ifdef VERSION_RAIDOU2
+/* raidou2 returns the pack effect's wk. */
+EFFPDATA_WORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
+#else
 SBTLEFF_PACDATAWORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
+#endif
 EFFPDATA_WORK *sbtlGetDmgEffScale(s32 id, s32 no);
 s32 sbtlBtlCheckDeleteEffectSub(struct SBTLEFF_WORK *wk);
 s32 sbtlBtlLoadEffectDataIDMaskSub(SKLID skillid);

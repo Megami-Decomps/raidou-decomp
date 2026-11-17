@@ -231,7 +231,7 @@ void mefMistUpdateParticle(void) {
     }
 }
 
-void mefFunc(void)
+void mapEffEplInit(void)
 {
     s32 i;
 

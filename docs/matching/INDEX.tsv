@@ -48,6 +48,7 @@ mapNpcTblRefresh	code_0014B660	raidou1 0x408	144 of 258 words differ	docs/matchi
 mapNpcTblRefresh_Wait	code_0014B660	raidou1 0x35C	121 of 216 words differ	docs/matching/code_0014B660.md	19		
 mapMapObjectRefresh	code_0014B660	raidou1 0x6C0	4 of 432 words differ	docs/matching/code_0014B660.md	27		
 sbtlCheckEndEscape	code_0014B7B0	raidou2 0x1C	3 of 5 words differ	docs/matching/code_0014B7B0.md	3		
+mapHitCalc	code_0014B7B0	raidou2 0x15C	13 of 87 words differ	docs/matching/code_0014B7B0.md	11	the R2 enum BST entries in enums.h, the fldAreaWork_t renames in field.h or the per-game mapCallBitCheckData_t in mapData.h, each alone, turn OK into DIFF 13/87; the function's own types do not change.	
 mapMapSetEnc	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	3		
 mapMapSetForm	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	11		
 mapGetHit	code_00153438	raidou1 0x60	4 of 24 words differ	docs/matching/code_00153438.md	19		
@@ -65,6 +66,7 @@ mapIfDrawES	code_0015D490	raidou1 0x33C	55 of 207 words differ	docs/matching/cod
 mapCallEnableMode	code_0015D490	raidou1 0x29C	78 of 165 words differ	docs/matching/code_0015D490.md	31		
 fldCallSetOt	code_0015D490	raidou1 0x4F90	5008 of 5042 words differ	docs/matching/code_0015D490.md	39		
 mefMistFastCreate	code_00163C50	raidou2 0x160	3 of 88 words differ	docs/matching/code_00163C50.md	3		
+mapBadEffDrawTask_fld	code_00169A40	raidou2 0x198	7 of 102 words differ	docs/matching/code_00169A40.md	3		
 mapFunc	code_0016AD90	raidou1 0x178	2 of 94 words differ	docs/matching/code_0016AD90.md	3		
 mapCallSin11	code_0016AD90	raidou1 0xF8	44 of 58 words differ	docs/matching/code_0016AD90.md	13		
 mapNakamaWakeUp	code_0016CA30	raidou1 0x60	7 of 24 words differ	docs/matching/code_0016CA30.md	3		
@@ -86,6 +88,8 @@ evtMoonTeisatuCntReset	code_001AD4E8	raidou1 0x10	4 of 4 words differ	docs/match
 sbtlRefSbtl31	code_0024DF70	raidou1 0x94	34 of 35 words differ	docs/matching/code_0024DF70.md	3		
 sbtlRefSbtl3	code_0024DF70	raidou1 0x2C	6 of 11 words differ	docs/matching/code_0024DF70.md	11		
 sbtlRefSbtl2	code_0024DF70	raidou1 0x88	29 of 33 words differ	docs/matching/code_0024DF70.md	17		
+sbtlCallBtlSearchPacData	code_00261DF0	raidou2 0x1F8	2 of 126 words differ	docs/matching/code_00261DF0.md	3		
+sbtlLoadSkillSE	code_0026B0A8	raidou2 0x114	8 of 69 words differ	docs/matching/code_0026B0A8.md	3		
 sbtlCreateEnemyList	code_002743E0	raidou2 0xB8	1 of 46 words differ	docs/matching/code_002743E0.md	3		
 sbtlCreateSideList	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	11		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		

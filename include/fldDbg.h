@@ -25,6 +25,7 @@ typedef struct fldDbg_t {
     s32 moonSpeed;      /* 0x44 */
     f32 skyBgSize;      /* 0x48: copy of mapFilter_t.skyScale while SKY BG EDIT runs */
     f32 skyBgY;         /* 0x4C */
+    s32 word50;         /* 0x50: raidou2 only, cleared by fldNewGameStartSub */
 } fldDbg_t;
 
 extern fldDbg_t fldDbg;

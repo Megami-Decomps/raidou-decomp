@@ -98,6 +98,9 @@ s32 datGetStockDevilNums(void);
 void datCreateDevilUnitEx(s32 devilId, s32 skillMode, struct sdatUnitWork_t *unit);
 s32 datCallCreateDevilUnitEx(u32 itemId, s32 nums);
 s32 datCallGetStockDevilID2(u32 id);
+#ifdef VERSION_RAIDOU2
+s32 datGetStockDevilIndex(u32 id);
+#endif
 s32 datCheckSameDevil(u32 id);
 s32 datAllReleaseScriptSub(void);
 

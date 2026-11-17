@@ -1544,7 +1544,44 @@ void fldProcShutDown(void)
     fldFreeMapData();
 }
 #else
-INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
+/* body: matched in raidou @ 780f3f57: src/shared/field/fldProcess.c:1495, found, same function 0.90 (words 84/94, calls 0.86, shape 0.94) */
+void fldProcShutDown(void)
+{
+    if (fldProcShutDownData == 0) {
+        return;
+    }
+    fldProcShutDownData = 0;
+    itfGeneralMenuFreeSpriteHnd();
+    awdMenuProcessEnd();
+    if (!gMapRndEncLoad_Mode) {
+        mdlCallMemFreeDirect();
+    }
+    nbProcSequenceSub(43);
+    nbSetEncountMode(0);
+    fldDrwZFree();
+    dds3BistaClear();
+    dds3FilterClear();
+    UnloadRequest(0);
+    mapProcShutDownSub();
+    evtDisableMoonDraw();
+    fldAutoMapSeqSetFlag(1);
+    fldAutoMapSeqSetFlag(2);
+    dds3KillProcessName(fldStrFldProcSequence, 1);
+    dds3KillProcessName(fldProcDrawName, 1);
+    scrAllReleaseScript();
+    if (fldAutoMapSeqFlags.stage != 29 && fldGlobalBase.word1D8 && !fldGlobalBase.word1D4) {
+        sndBgmFadeOut();
+    }
+    fldGlobalBase.word248 = 0;
+    mapSeWallHit(0);
+    mapCallPlaySEVolLoop();
+    mapCallPlaySEVolLoop2();
+    mapEffEplAllEnd();
+    mapBadEffDrawTask();
+    mapZoomClear();
+    fldBgTexClear();
+    fldFreeMapData();
+}
 #endif
 
 s32 fldCallDelayedResrcCheck(void) {

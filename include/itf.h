@@ -296,6 +296,7 @@ void MoneyDrawPanel(s32 a_offX, s32 a_offY, u8 a_alpha);
 s32 MoneyDrawProcess(dds3ProcessID_t *PID);
 extern char MoneyDrawProcessDataEntry[];
 extern char *MoneyDrawProcessData[];
+extern char MoneyDrawProcessData2[]; /* "%7d" */
 s32 MoneyProcess(dds3ProcessID_t *PID);
 void itfMoneyProcessSub(struct tagITF_MONEY_WORK *wk);
 void MoneyShutdown(dds3ProcessID_t *PID);

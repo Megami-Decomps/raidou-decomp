@@ -8,6 +8,8 @@
 #include "fldNme.h"
 #include "dds3KernelCore.h"
 #include "dds3KernelMain.h"
+#include "dds3PadManager.h"
+#include "sdfSound.h"
 
 void mselCallEffectDelete(void) {
     if (fldTitleMiniTex3 != NULL) {

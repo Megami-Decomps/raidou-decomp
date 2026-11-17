@@ -8,10 +8,63 @@
 #include "mapData.h"
 #include "motion.h"
 #include "sdfSound.h"
+#include "dat.h"
+#include "sdfModel.h"
+#include "mdlManager.h"
+#include "ps2asm.h"
+#include "effManager.h"
 
 INCLUDE_ASM(const s32, "code_00169A40", mapLeaf4);
 
+/* NON_MATCHING: 95 of 102 words match.  */
+#ifdef NON_MATCHING
+void mapBadEffDrawTask_fld(void) {
+    sdfVector4_t pos = { 0.0f, 0.0f, 0.0f, 1.0f };
+    mdlObj_t *summonMdl;
+    mdlObj_t *playerMdl;
+    dds3Basic_t *player;
+    dds3Basic_t *summon;
+    s32 bad;
+    s32 id;
+
+    if (mapData121 != 0) {
+        return;
+    }
+    if (fldGlobalBase.nakamaMode == 0) {
+        playerMdl = playerModel;
+        summonMdl = summonDvModel;
+        player = playerBasic;
+    } else {
+        playerMdl = raidoModel;
+        summonMdl = summonDvModel;
+        player = raidoBasic;
+    }
+    summon = summonDvBasic;
+    if (eMapBadEff_R != NULL && mapData118 == 0) {
+        bad = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.unit);
+        if (bad == 6 && !dds3ObjectBaseCheckFlag(player, 1)) {
+            sdfModelGetMarkPos_sdfModel(playerMdl->inner, 2);
+            SDF_VU0_STOREVECTOR(&pos);
+            dds3EffectSetPosition(eMapBadEff_R, &pos);
+            dds3EffectDraw_dds3Effect(eMapBadEff_R);
+        }
+    }
+    if (eMapBadEff_N != NULL && mapData120 == 0) {
+        id = datGetStockDevilIndex(DDS3_GBWK->mapSummonID);
+        if (id != -1) {
+            bad = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[id]);
+            if (bad == 6 && !dds3ObjectBaseCheckFlag(summon, 1) && (mdlGetColor(summonMdl) & 0xFF000000)) {
+                sdfModelGetMarkPos_sdfModel(summonMdl->inner, 2);
+                SDF_VU0_STOREVECTOR(&pos);
+                dds3EffectSetPosition(eMapBadEff_N, &pos);
+                dds3EffectDraw_dds3Effect(eMapBadEff_N);
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00169A40", mapBadEffDrawTask_fld);
+#endif
 
 INCLUDE_ASM(const s32, "code_00169A40", mapEffMskMaruDraw);
 

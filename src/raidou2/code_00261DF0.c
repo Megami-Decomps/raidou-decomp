@@ -5,6 +5,7 @@
 #include "dds3KernelCore.h"
 #include "newdata.h"
 #include "sBtlUnit.h"
+#include "sdfMemory.h"
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlRaidouKatana);
 
@@ -85,15 +86,113 @@ s32 sbtlSearchPacData(s32 major, s32 minor, s32 devilid)
     return -2;
 }
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlSearchPacData2);
+s32 sbtlSearchPacData2(s32 major, s32 minor, s32 devilid)
+{
+    s32 i;
 
+    i = sbtlSearchPacData(major, minor, devilid);
+    if (i == -1) {
+        return 1;
+    }
+    sbtlData84->pac[i].key.major = major;
+    sbtlData84->pac[i].key.minor = minor;
+    sbtlData84->pac[i].key.devilid = devilid;
+    return 1;
+}
+
+/* NON_MATCHING: 124 of 126 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlSearchPacData(s32 major, s32 minor, s32 devilid, SBTL_HIT_PACFILE *file, s32 size)
+{
+    SBTLSKILLHIT_TBL *entry;
+    SBTL_HIT_PACDATA *pwk;
+    sdfMemHandle_t *handle;
+    s32 i;
+    s32 j;
+
+    i = sbtlSearchPacData(major, minor, devilid);
+    if (i == -1) {
+        return 1;
+    }
+    entry = file->entry;
+    sbtlSearchPacData2(major, minor, devilid);
+    sbtlData84->pac[i].hit.num = file->num;
+    for (j = 0; j < sbtlData84->pac[i].hit.num; j++) {
+        handle = sdfMemAllocDirect(sizeof(SBTL_HIT_PACDATA));
+        pwk = sdfMemLock(handle);
+        pwk->handle = handle;
+        sbtlData84->pac[i].hit.pwk[j] = pwk;
+        pwk->entry = *entry;
+        sbtlData84->pac[i].hit.pwk[j]->handle08 = NULL;
+        sbtlData84->pac[i].hit.pwk[j]->handle10 = NULL;
+        entry++;
+    }
+    sbtlData84->pac[i].hit.status |= 1;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlCallBtlSearchPacData);
+#endif
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlSetPacData_MHT);
+s32 sbtlSetPacData_MHT(s32 major, s32 minor, s32 devilid, void *data, s32 size)
+{
+    sdfMemHandle_t *handle;
+    void *buf;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_00261DF0", DrawProc2);
+    i = sbtlSearchPacData(major, minor, devilid);
+    if (i == -1) {
+        return 1;
+    }
+    {
+        sbtlSearchPacData2(major, minor, devilid);
+        handle = sdfMemAllocDirect(size);
+        buf = sdfMemLock(handle);
+        sbtlData84->pac[i].mht.data = buf;
+        sbtlData84->pac[i].mht.handle = handle;
+        sbtlData84->pac[i].mht.size = size;
+        memcpy(buf, data, size);
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlCallMemset);
+s32 DrawProc2(s32 major, s32 minor, s32 devilid, void *data, s32 size)
+{
+    sdfMemHandle_t *handle;
+    void *buf;
+    s32 i;
+
+    i = sbtlSearchPacData(major, minor, devilid);
+    if (i == -1) {
+        return 1;
+    }
+    {
+        sbtlSearchPacData2(major, minor, devilid);
+        handle = sdfMemAllocDirect(size);
+        buf = sdfMemLock(handle);
+        sbtlData84->pac[i].file20.data = buf;
+        sbtlData84->pac[i].file20.handle = handle;
+        sbtlData84->pac[i].file20.size = size;
+        memcpy(buf, data, size);
+    }
+    return 1;
+}
+
+void sbtlCallMemset(void)
+{
+    SBTL_PACDATA *pac;
+    s32 i;
+
+    memset(sbtlData84, 0, sizeof(sbtlData84->pac));
+    pac = sbtlData84->pac;
+    for (i = SBTL_PACDATA_NUM - 1; i >= 0; i--) {
+        pac->mht.handle = NULL;
+        pac->mht.data = NULL;
+        pac->file20.handle = NULL;
+        pac->file20.data = NULL;
+        pac++;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlPacData_Free);
 

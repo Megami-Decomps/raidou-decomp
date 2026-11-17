@@ -55,8 +55,13 @@ struct SBTLSKILLP_TBL {
     u16 equipID;
     s16 hitbk_cnt;
     f32 hitbk_rate;
+#ifdef VERSION_RAIDOU2
+    u32 flg2; /* partial: the entry is larger than raidou1's */
+#endif
 };
+#ifdef VERSION_RAIDOU1
 SIZE_CHECK(sbtlSkillTblSizeCheck, struct SBTLSKILLP_TBL, 0x34);
+#endif
 
 extern struct SBTLSKILLP_TBL *sbtlCallBtlDrawRedGgData;
 extern SBTLSKLVISUAL_TBL *sbtlGetSklVisualTblData;

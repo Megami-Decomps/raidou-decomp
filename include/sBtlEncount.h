@@ -23,10 +23,15 @@ typedef struct datRndEncTbl_t {
     datRndEncRitu_t ritu[8];
 } datRndEncTbl_t;
 
-/* One encounter generator; HD packs zan_cnt with type_d_sommon_flg, the PS2 reads it as a word. */
+/* One encounter generator; HD packs zan_cnt with type_d_sommon_flg, as raidou2 does; raidou1 reads it as a word. */
 typedef struct SB_GENERATOR_WORK {
     s32 use;
+#ifdef VERSION_RAIDOU2
+    s16 zan_cnt;
+    s16 type_d_sommon_flg;
+#else
     s32 zan_cnt;
+#endif
     s32 wait;
     struct SB_ENCOUNT1 *penc;
 } SB_GENERATOR_WORK;

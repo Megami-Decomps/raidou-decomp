@@ -403,8 +403,8 @@ typedef struct fldAreaWork_t
     s32 word204;                /* 0x204 */
     s32 word208;                /* 0x208 */
     s32 word20C;                /* 0x20C */
-    s32 word210;                /* 0x210 */
-    s32 word214;                /* 0x214 */
+    s32 word1D4;                /* 0x210: raidou1 0x1D4 */
+    s32 word1D8;                /* 0x214: raidou1 0x1D8 */
     s32 word218;                /* 0x218 */
     s32 word21C;                /* 0x21C */
     s32 word220;                /* 0x220 */
@@ -417,19 +417,19 @@ typedef struct fldAreaWork_t
     f32 rndEncX;                /* 0x23C */
     f32 rndEncY;                /* 0x240 */
     f32 rndEncZ;                /* 0x244 */
-    s32 word248;                /* 0x248 */
+    u8 unk248[4];
     f32 float24C;               /* 0x24C */
     f32 float250;               /* 0x250 */
     f32 float254;               /* 0x254 */
     f32 float258;               /* 0x258 */
     s32 word25C;                /* 0x25C */
     s32 word260;                /* 0x260 */
-    s32 word264;                /* 0x264 */
+    struct sdfTexHandle_t *texture220; /* 0x264 */
     fldTexSlot_t texSlot[3];    /* 0x268 */
     u8 unk280[0x4];
-    s32 word284;                /* 0x284 */
+    s32 word240;                /* 0x284: raidou1 0x240 */
     s32 automapMaskCurrentIdx;  /* 0x288 */
-    s32 word28C;                /* 0x28C */
+    s32 word248;                /* 0x28C: raidou1 0x248 */
     s32 word290;                /* 0x290 */
     s32 ifDrawOn;               /* 0x294 */
     u8 bytes298[0x10];          /* 0x298: two unaligned 8-byte copies */
@@ -449,10 +449,10 @@ typedef struct fldAreaWork_t
     s32 word300;                /* 0x300 */
     s32 word304;                /* 0x304 */
     s32 word308;                /* 0x308 */
-    s32 word30C;                /* 0x30C */
-    s32 word310;                /* 0x310 */
+    char *initScript;           /* 0x30C: set by mapCallBitCheck */
+    char *startScript;          /* 0x310 */
     s32 word314;                /* 0x314 */
-    s32 word318;                /* 0x318 */
+    s32 word2D4;                /* 0x318: raidou1 0x2D4 */
     s32 word31C;                /* 0x31C */
     s32 word320;                /* 0x320 */
     s32 word324;                /* 0x324 */
