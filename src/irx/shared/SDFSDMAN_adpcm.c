@@ -195,9 +195,25 @@ s32 sdfAdpcmFadeTick(void)
     return sdfAdpcmStop();
 }
 
-INCLUDE_ASM("SDFSDMAN", sdfAdpcmFadeOut);
+s32 sdfAdpcmFadeOut(s32 step)
+{
+    if (sdfAdpcm.playing) {
+        sdfAdpcm.fadeStep = step;
+    }
+}
 
-INCLUDE_ASM("SDFSDMAN", sdfAdpcmStop);
+s32 sdfAdpcmStop(void)
+{
+    u32 voices;
+
+    sdfAdpcm.playing = 0;
+    voices = (1 << sdfAdpcm.voiceL) | (1 << sdfAdpcm.voiceR);
+    libsd_sceSdSetCoreAttr((s8)(sdfAdpcm.coreId | 4), 0);
+    libsd_sceSdSetParam(0xF80, 0);
+    libsd_sceSdSetParam(0x1080, 0);
+    libsd_sceSdSetSwitch((s8)sdfAdpcm.coreId | 0x1600, voices);
+    return thsemap_SignalSema(sdfAdpcmIntrSema);
+}
 
 #ifdef NON_MATCHING
 /* 1 instruction short of the retail code. */
@@ -256,13 +272,278 @@ s32 sdfAdpcmSpu2IntrHandler(void *arg)
     return 0;
 }
 
+#ifdef NON_MATCHING
+/* 4 instructions longer than the retail code. */
+/* Read the next 512 bytes of the stream from the EE and write the ADPCM
+ * block flags: 6 on the first block, 2 while it runs, 3 on the last. */
+s32 sdfAdpcmFillBuffer(s32 blocking)
+{
+    u32 reply[4];
+    u8 *buf;
+    u8 *left;
+    u8 *right;
+    s32 i;
+    s32 count;
+    s32 next;
+
+    sdfAdpcm.intrState = 0;
+    if (sdfAdpcm.playing == 0) {
+        return sdfAdpcm.playing;
+    }
+    if (sdfAdpcm.bytesLeft == 0) {
+        return sdfAdpcmStop();
+    }
+    buf = (u8 *)(sdfAdpcm.iopBuf + ((s8)sdfAdpcm.fillIdx << 9));
+    do {
+        if (sdfAdpcm.onMemory) {
+            sdfSndCallEeRpc(0, buf, 512, 7, reply);
+        } else {
+            sdfSndCallEeRpc(0, buf, 512, 1, reply);
+        }
+    } while (blocking && (reply[0] & 0x80000000) != 0);
+
+    if (sdfAdpcm.fadeState == 1) {
+        if ((reply[0] & 0x80000000) != 0) {
+            sdfAdpcm.fadeState = 2;
+            sdfAdpcmSetVolume(0);
+        }
+    } else if (sdfAdpcm.fadeState == 2) {
+        if ((reply[0] & 0x80000000) == 0) {
+            sdfAdpcm.fadeState = 1;
+            sdfAdpcmSetVolume(sdfAdpcm.volume);
+        }
+    }
+
+    left = buf + 1;
+    right = buf + 257;
+    if (sdfAdpcm.fillBlk != 0) {
+        i = 0;
+    } else {
+        left = buf + 17;
+        right = buf + 273;
+        i = 1;
+        buf[1] = 6;
+        buf[257] = 6;
+    }
+    count = 31;
+    if (sdfAdpcm.stereo) {
+        count = 15;
+    }
+    for (; i < count; i++) {
+        *right = 2;
+        *left = 2;
+        left += 16;
+        right += 16;
+    }
+    if (sdfAdpcm.fillBlk == 2) {
+        *right = 3;
+        *left = 3;
+    } else {
+        *right = 2;
+        *left = 2;
+    }
+    if ((reply[0] & 0x80000000) == 0 && sdfAdpcm.bytesLeft != 0) {
+        if (sdfAdpcm.bytesLeft >= 0x201) {
+            sdfAdpcm.bytesLeft -= 512;
+        } else {
+            sdfAdpcm.bytesLeft = 0;
+        }
+    }
+    next = sdfAdpcm.fillBlk + 1;
+    sdfAdpcm.fillIdx = (sdfAdpcm.fillIdx + 1) & 1;
+    sdfAdpcm.fillBlk = next % 3;
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfAdpcmFillBuffer);
+#endif
 
-INCLUDE_ASM("SDFSDMAN", sdfAdpcmSetVolume);
+s32 sdfAdpcmSetVolume(s32 vol)
+{
+    s32 entry;
+    s32 entryR;
 
-INCLUDE_ASM("SDFSDMAN", sdfAdpcmStreamPlay);
+    vol = vol << 7;
+    if ((vol & 0x80) != 0) {
+        vol |= 0xFF;
+    }
+    entry = 2 * sdfAdpcm.voiceL + (s8)sdfAdpcm.coreId;
+    entryR = 2 * sdfAdpcm.voiceR + (s8)sdfAdpcm.coreId;
+    libsd_sceSdSetParam(entry, vol);
+    libsd_sceSdSetParam(entry | 0x100, 0);
+    libsd_sceSdSetParam(entryR, 0);
+    libsd_sceSdSetParam(entryR | 0x100, vol);
+}
 
+s32 sdfAdpcmStreamPlay(const char *path, s32 vol, s8 onMemory)
+{
+    if (sdfAdpcm.playing) {
+        stdio_printf(aSdfadpcmAdpcmN);
+    } else {
+        sdfAdpcm.volume = vol;
+        sdfAdpcm.fadeStep = 0;
+        sdfAdpcm.onMemory = onMemory;
+        thsemap_SignalSema(sdfAdpcmPlaySema);
+    }
+}
+
+#ifdef NON_MATCHING
+/* 8 instructions longer than the retail code. */
+/* The stream player thread: wait for a play request, read the APCM header,
+ * set the two voices up and keep the double buffer fed until the end. A mono
+ * stream plays the same buffer on both voices. */
+void sdfAdpcmStreamInit(void *arg)
+{
+    u32 reply[4];
+    u16 vol;
+    u16 entry;
+    u32 voices;
+    u32 sw;
+    u32 i;
+
+    sdfAdpcmPlaySemaParam.initial = 0;
+    sdfAdpcmPlaySemaParam.max = 1;
+    sdfAdpcmPlaySemaParam.option = 0;
+    sdfAdpcmPlaySema = thsemap_CreateSema(&sdfAdpcmPlaySemaParam);
+    if (sdfAdpcmPlaySema <= 0) {
+        stdio_printf(aSdfadpcmCreate);
+        thbase_ExitThread();
+    }
+    sdfAdpcmIntrSemaParam.initial = 0;
+    sdfAdpcmIntrSemaParam.max = 1;
+    sdfAdpcmIntrSemaParam.option = 0;
+    sdfAdpcmIntrSema = thsemap_CreateSema(&sdfAdpcmIntrSemaParam);
+    if (sdfAdpcmIntrSema <= 0) {
+        stdio_printf(aSdfadpcmCreate);
+        thbase_ExitThread();
+    }
+
+    while (1) {
+        thsemap_WaitSema(sdfAdpcmPlaySema);
+        if (sdfAdpcm.onMemory) {
+            sdfSndCallEeRpc(0, NULL, 0, 6, NULL);
+        } else {
+            sdfSndCallEeRpc(0, NULL, 0, 0, reply);
+            if (reply[0] == 0) {
+                stdio_printf(aSdfadpcmAdpcmF);
+                sdfSndPostError(1);
+                continue;
+            }
+        }
+        if (sdfAdpcm.onMemory) {
+            sdfSndCallEeRpc(0, &sdfAdpcmHeader, 16, 7, reply);
+        } else {
+            sdfSndCallEeRpc(0, &sdfAdpcmHeader, 16, 1, reply);
+        }
+        if (sdfAdpcmHeader.type != 11 || sdfAdpcmHeader.magic != 0x4D435041) {
+            for (i = 0; i < 0x10; i++) {
+                stdio_printf(a02xh, ((u8 *)&sdfAdpcmHeader)[i]);
+            }
+            stdio_printf(aSdfadpcmOnMemo, reply[0]);
+            sdfSndPostError(2);
+            goto streamEnd;
+        }
+        if (sdfAdpcm.onMemory) {
+            sdfSndCallEeRpc(0, &sdfAdpcmHeader.sampleLen, 16, 7, reply);
+        } else {
+            sdfSndCallEeRpc(0, &sdfAdpcmHeader.sampleLen, 16, 1, reply);
+        }
+        sdfAdpcm.stereo = sdfAdpcmHeader.stereo;
+        sdfAdpcm.totalBytes = 2 * sdfAdpcmHeader.sampleLen;
+        sdfAdpcm.bytesLeft = 2 * sdfAdpcmHeader.sampleLen;
+        vol = sdfAdpcm.volume << 7;
+        if ((vol & 0x80) != 0) {
+            vol |= 0xFF;
+        }
+        sdfAdpcm.playing = 1;
+        sdfAdpcm.coreId = 0;
+        libsd_sceSdSetCoreAttr(4, 0);
+        sdfAdpcm.core = 0;
+        sdfSndWorkArea->banks[SDF_SND_KINDS].size = 512;
+        sdfAdpcm.iopBuf = (u32)sdfSndWorkArea->banks[SDF_SND_KINDS].data;
+        sdfAdpcm.spuAddr = 0x1E0000;
+        sdfAdpcm.xferIdx = 0;
+        sdfAdpcm.xferBlk = 0;
+        sdfAdpcm.fillBlk = 0;
+        sdfAdpcm.fillIdx = 0;
+        sdfAdpcm.voiceL = 0;
+        sdfAdpcm.voiceR = 1;
+        sdfAdpcm.pitch = sdfAdpcmPitchTbl[sdfAdpcmHeader.freq];
+        libsd_sceSdSetSwitch((s8)sdfAdpcm.coreId | 0x1600,
+                             libsd_sceSdGetSwitch((s8)sdfAdpcm.coreId | 0x1500) & 3);
+        sdfAdpcm.fadeState = 0;
+        sdfAdpcmFillBuffer(1);
+        sdfAdpcmUploadBlock();
+        sdfAdpcmFillBuffer(1);
+        sdfAdpcmUploadBlock();
+        sdfAdpcmFillBuffer(1);
+        sdfAdpcmUploadBlock();
+        sdfAdpcmFillBuffer(1);
+        if (sdfAdpcm.stereo) {
+            entry = (2 * sdfAdpcm.voiceL) | (s8)sdfAdpcm.coreId;
+            libsd_sceSdSetParam(entry, vol);
+            libsd_sceSdSetParam(entry | 0x100, 0);
+            libsd_sceSdSetParam(entry | 0x200, sdfAdpcm.pitch);
+            libsd_sceSdSetParam(entry | 0x300, 0xF);
+            libsd_sceSdSetParam(entry | 0x400, 3);
+            libsd_sceSdSetAddr(entry | 0x2040, 0x1E0000);
+            entry = (2 * sdfAdpcm.voiceR) | (s8)sdfAdpcm.coreId;
+            libsd_sceSdSetParam(entry, 0);
+            libsd_sceSdSetParam(entry | 0x100, vol);
+            libsd_sceSdSetParam(entry | 0x200, sdfAdpcm.pitch);
+            libsd_sceSdSetParam(entry | 0x300, 0xF);
+            libsd_sceSdSetParam(entry | 0x400, 3);
+            libsd_sceSdSetAddr(entry | 0x2040, 0x1E0300);
+        } else {
+            entry = (2 * sdfAdpcm.voiceL) | (s8)sdfAdpcm.coreId;
+            libsd_sceSdSetParam(entry, vol);
+            libsd_sceSdSetParam(entry | 0x100, 0);
+            libsd_sceSdSetParam(entry | 0x200, sdfAdpcm.pitch);
+            libsd_sceSdSetParam(entry | 0x300, 0xF);
+            libsd_sceSdSetParam(entry | 0x400, 3);
+            libsd_sceSdSetAddr(entry | 0x2040, 0x1E0000);
+            entry = (2 * sdfAdpcm.voiceR) | (s8)sdfAdpcm.coreId;
+            libsd_sceSdSetParam(entry, 0);
+            libsd_sceSdSetParam(entry | 0x100, vol);
+            libsd_sceSdSetParam(entry | 0x200, sdfAdpcm.pitch);
+            libsd_sceSdSetParam(entry | 0x300, 0xF);
+            libsd_sceSdSetParam(entry | 0x400, 3);
+            libsd_sceSdSetAddr(entry | 0x2040, 0x1E0000);
+        }
+        sdfAdpcm.fadeState = 1;
+        libsd_sceSdSetSpu2IntrHandler(sdfAdpcmSpu2IntrHandler, NULL);
+        libsd_sceSdSetCoreAttr((s8)(sdfAdpcm.coreId | 4), 1);
+        voices = (1 << sdfAdpcm.voiceL) | (1 << sdfAdpcm.voiceR);
+        libsd_sceSdSetSwitch((s8)sdfAdpcm.coreId | 0x1500, voices);
+        if (sdfAdpcmHeader.reverb) {
+            sw = libsd_sceSdGetSwitch((s8)sdfAdpcm.coreId | 0x1900) | voices;
+        } else {
+            sw = (voices ^ 0xFFFFFF) & libsd_sceSdGetSwitch((s8)sdfAdpcm.coreId | 0x1900);
+        }
+        libsd_sceSdSetSwitch((s8)sdfAdpcm.coreId | 0x1900, sw);
+        libsd_sceSdSetSwitch((s8)sdfAdpcm.coreId | 0x1B00, sw);
+        do {
+            thsemap_WaitSema(sdfAdpcmIntrSema);
+            libsd_sceSdSetCoreAttr((s8)(sdfAdpcm.coreId | 4), 1);
+            if (sdfAdpcm.playing == 0) {
+                break;
+            }
+            libsd_sceSdSetCoreAttr((s8)(sdfAdpcm.coreId | 4), 0);
+            sdfAdpcmUploadBlock();
+            libsd_sceSdSetCoreAttr((s8)(sdfAdpcm.coreId | 4), 1);
+            sdfAdpcmFillBuffer(0);
+        } while (sdfAdpcm.playing);
+
+streamEnd:
+        if (sdfAdpcm.onMemory) {
+            sdfSndCallEeRpc(0, NULL, 0, 8, NULL);
+        } else {
+            sdfSndCallEeRpc(0, NULL, 0, 2, NULL);
+        }
+    }
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfAdpcmStreamInit);
+#endif
 
 ALIGN_TEXT(4);
 IRX_IMPORT_TABLE(libsd, 1, 5);

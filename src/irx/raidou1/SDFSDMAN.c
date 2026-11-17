@@ -137,7 +137,57 @@ s32 sdfAdpcmSetVolume(s32 vol);
 s32 sdfAdpcmStreamPlay(const char *path, s32 vol, s8 onMemory);
 void sdfAdpcmStreamInit(void *arg);
 
-INCLUDE_ASM("SDFSDMAN", sdfSdManInit);
+s32 sdfSdManInit(void)
+{
+    iop_thread_t rpc;
+    iop_thread_t smg;
+    iop_thread_t adpcm;
+    s32 tid;
+    s32 ret;
+
+    if (sifman_SifSetIOPrcvaddr() == 0) {
+        sifman_SifSIF2Init();
+    }
+    sifcmd_SifInitRpc(0);
+
+    rpc.thread = sdfSndDrvRpcInit;
+    rpc.attr = 0;
+    rpc.priority = 40;
+    rpc.stacksize = 2048;
+    rpc.option = 0;
+    tid = thbase_CreateThread(&rpc);
+    if (tid <= 0) {
+        goto fail;
+    }
+    thbase_StartThread(tid, NULL);
+
+    smg.thread = sdfSndSmgLoadThread;
+    smg.attr = 0;
+    smg.priority = 41;
+    smg.stacksize = 2048;
+    smg.option = 0;
+    tid = thbase_CreateThread(&smg);
+    if (tid <= 0) {
+        goto fail;
+    }
+    thbase_StartThread(tid, NULL);
+
+    adpcm.thread = sdfAdpcmStreamInit;
+    adpcm.attr = 0;
+    adpcm.priority = 42;
+    adpcm.stacksize = 2048;
+    adpcm.option = 0;
+    tid = thbase_CreateThread(&adpcm);
+    if (tid <= 0) {
+fail:
+        stdio_printf(aSdfsdmanIFThre);
+        ret = 1;
+    } else {
+        thbase_StartThread(tid, NULL);
+        ret = 0;
+    }
+    return ret;
+}
 
 /* Newton's method; the caller wants the distance between two points. */
 s32 sdfSndIsqrt(s32 v)
@@ -434,7 +484,31 @@ INCLUDE_ASM("SDFSDMAN", sdfSndBgmPlay);
 
 INCLUDE_ASM("SDFSDMAN", sdfSndBgmStop);
 
-INCLUDE_ASM("SDFSDMAN", sdfSndHsynLoad);
+/* Hand the synthesiser the wave data for a bank. */
+s32 sdfSndHsynLoad(s32 bank, s32 slot)
+{
+    sceHSynSlot_t *hs;
+    s32 state;
+
+    hs = &sdfSndHsynSlotWork[slot];
+    hs->unk00 = 0;
+    hs->unk04 = 0;
+    hs->unk08 = 0;
+    hs->unk0C = 0;
+    hs->unk10 = 0;
+    hs->unk02 = 0;
+    hs->unk03 = 0;
+    intrman_CpuSuspendIntr(&state);
+    if (modhsyn_sceHSyn_Load(&sdfSndHsynWork, slot, sdfSndWorkArea->banks[bank].spuAddr,
+                             sdfSndWorkArea->banks[bank].data, 0) != 0 ||
+        modhsyn_sceHSyn_Load(&sdfSndHsynWork, slot, sdfSndWorkArea->banks[bank].spuAddr,
+                             sdfSndWorkArea->banks[bank].data, 1) != 0) {
+        intrman_CpuResumeIntr(state);
+        return stdio_printf(aSdfsnddrvScehs_0);
+    }
+    modhsyn_e15(&sdfSndHsynLoadParam);
+    return intrman_CpuResumeIntr(state);
+}
 
 INCLUDE_ASM("SDFSDMAN", sdfSndSePlay);
 
@@ -467,7 +541,73 @@ s32 sdfSndDistanceAtten(s32 dist, s32 radius)
 INCLUDE_ASM("SDFSDMAN", sdfSndDistanceAtten);
 #endif
 
+#ifdef NON_MATCHING
+/* Matches instruction for instruction, but gcc chooses different
+ * registers. */
+/* Re-pan and re-attenuate a positional sound after the listener moved. */
+s32 sdfSndUpdate3dVoice(s32 slot)
+{
+    s32 dx;
+    s32 dz;
+    s32 dist;
+    s32 angle;
+    s32 sign;
+    s32 level;
+    s32 pan;
+    s32 vol;
+    s32 state;
+
+    if (sdfSndSlots[slot].is3d == 0) {
+        return sdfSndSlots[slot].is3d;
+    }
+    dx = sdfSndSlots[slot].posX - sdfSndListenerX;
+    dz = sdfSndSlots[slot].posZ - sdfSndListenerZ;
+    dist = sdfSndIsqrt(dx * dx +
+                       (sdfSndSlots[slot].posY - sdfSndListenerY) *
+                       (sdfSndSlots[slot].posY - sdfSndListenerY) + dz * dz);
+    angle = (sdfSndAtan2Deg(-dx, dz) - sdfSndListenerAngle) % 360;
+    if (angle >= 181) {
+        angle -= 360;
+    }
+    if (angle < -180) {
+        angle += 360;
+    }
+    sign = 1;
+    if (angle < 0) {
+        sign = -1;
+        angle = -angle;
+    }
+    level = 100;
+    if (angle >= 45) {
+        if (angle >= 91) {
+            pan = 63 - (180 - angle) * 70 * sign / 100;
+            level = 75 - ((angle - 90) >> 2);
+        } else {
+            level = 100 - (angle - 45) / 2;
+            pan = 63 - angle * 70 * sign / 100;
+        }
+    } else {
+        pan = 63 - angle * 70 * sign / 100;
+    }
+    if (dist < 11) {
+        pan = ((pan - 63) >> 1) + 63;
+    } else {
+        level = level * sdfSndDistanceAtten(dist, sdfSndSlots[slot].radius) / 100;
+    }
+    vol = 127 * level / 100;
+    if (vol >= 127) {
+        vol = 127;
+    }
+    sdfSndSlots[slot].vol = vol << 8;
+    sdfSndSlots[slot].volStep = 0;
+    sdfSndApplyVolume(sdfSndSlots[slot].id, slot, vol);
+    intrman_CpuSuspendIntr(&state);
+    modmsin_sceMSIn_PutMsg(&sdfSndMidiWork, slot, ((pan & 0x7F) << 16) | 0xAB0);
+    return intrman_CpuResumeIntr(state);
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndUpdate3dVoice);
+#endif
 
 #ifdef NON_MATCHING
 /* 4 instructions short of the retail code. */
@@ -554,7 +694,34 @@ s32 sdfSndSetListener(sdfSndListenerReq_t *req)
 INCLUDE_ASM("SDFSDMAN", sdfSndSetListener);
 #endif
 
+#ifdef NON_MATCHING
+/* 1 instruction longer than the retail code. */
+/* Play a sound effect at a point in the world. */
+s32 sdfSndSePlay3d(sdfSndSe3dReq_t *req)
+{
+    s32 dx;
+    s32 dz;
+    s32 dist;
+    s32 angle;
+    s32 slot;
+
+    dx = req->x - sdfSndListenerX;
+    dz = req->z - sdfSndListenerZ;
+    dist = sdfSndIsqrt(dx * dx + (req->y - sdfSndListenerY) * (req->y - sdfSndListenerY) +
+                       dz * dz);
+    angle = sdfSndAtan2Deg(-dx, dz);
+    slot = sdfSndSePlayPositional(req->id, angle - sdfSndListenerAngle, dist, req->radius);
+    if (slot >= 0) {
+        sdfSndSlots[slot].is3d = 1;
+        sdfSndSlots[slot].posX = req->x;
+        sdfSndSlots[slot].posY = req->y;
+        sdfSndSlots[slot].posZ = req->z;
+        sdfSndSlots[slot].radius = req->radius;
+    }
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndSePlay3d);
+#endif
 
 INCLUDE_ASM("SDFSDMAN", sdfSndIsBankLoaded);
 
@@ -594,7 +761,19 @@ INCLUDE_ASM("SDFSDMAN", sdfSndUnloadBank);
 
 INCLUDE_ASM("SDFSDMAN", p2sdIrxSpuIopMap);
 
-INCLUDE_ASM("SDFSDMAN", sdfSndFadeOutById);
+s32 sdfSndFadeOutById(s32 *req)
+{
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        if (sdfSndSlots[i].id == *req &&
+            (sdfSndMidiWork.tbl->seq[i].slot->flags & 2) != 0) {
+            sdfSndSlots[i].volStep = -32;
+            sdfSndSlots[i].fadeIn = 0;
+            sdfSndSlots[i].unk34[0] = 0;
+        }
+    }
+}
 
 /* ENDF sdfSndFadeOutById */
 /* FUNC sdfSndRequestBgmSwitch */
@@ -608,15 +787,137 @@ s32 sdfSndRequestBgmSwitch(s32 midi)
     return 1;
 }
 
-INCLUDE_ASM("SDFSDMAN", sdfSndAllocBgmSlot);
+/* An idle one of the three sequence slots, else the one playing the oldest
+ * sound. The slot used last time is skipped so a restart is audible. */
+s32 sdfSndAllocBgmSlot(void)
+{
+    s32 i;
+    s32 slot;
+    u32 serial;
+    s32 state;
 
+    slot = -1;
+    serial = -1;
+    for (i = 0; i < 3; i++) {
+        if ((sdfSndMidiWork.tbl->seq[i].slot->flags & 2) == 0 && i != sdfSndLastBgmSlot &&
+            serial >= sdfSndSlots[i].serial) {
+            serial = sdfSndSlots[i].serial;
+            slot = i;
+        }
+    }
+    if (slot >= 0) {
+        sdfSndLastBgmSlot = slot;
+        return slot;
+    }
+    serial = -1;
+    slot = -1;
+    for (i = 0; i < 3; i++) {
+        if (sdfSndSlots[i].serial < serial && i != sdfSndLastBgmSlot &&
+            sdfSndSlots[i].is3d == 0) {
+            serial = sdfSndSlots[i].serial;
+            slot = i;
+        }
+    }
+    if (slot < 0) {
+        return -1;
+    }
+    intrman_CpuSuspendIntr(&state);
+    modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, slot, 0);
+    intrman_CpuResumeIntr(state);
+    sdfSndLastBgmSlot = slot;
+    return slot;
+}
+
+#ifdef NON_MATCHING
+/* 2 instructions short of the retail code. */
+s32 sdfSndAllocSeSlot(void)
+{
+    s32 i;
+    s32 slot;
+    u32 serial;
+    s32 state;
+
+    for (i = 3; i < 16; i++) {
+        if ((sdfSndMidiWork.tbl->seq[i].slot->flags & 2) == 0 && i != sdfSndLastSeSlot) {
+            sdfSndLastSeSlot = i;
+            return i;
+        }
+    }
+    serial = -1;
+    slot = -1;
+    for (i = 3; i < 16; i++) {
+        if (sdfSndSlots[i].serial < serial && i != sdfSndLastSeSlot &&
+            sdfSndSlots[i].is3d == 0) {
+            serial = sdfSndSlots[i].serial;
+            slot = i;
+        }
+    }
+    if (slot < 0) {
+        return -1;
+    }
+    intrman_CpuSuspendIntr(&state);
+    modmidi_sceMidi_MidiPlaySwitch(&sdfSndMidiWork, slot, 0);
+    intrman_CpuResumeIntr(state);
+    sdfSndLastSeSlot = slot;
+    return slot;
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndAllocSeSlot);
+#endif
 
+#ifdef NON_MATCHING
+/* 1 instruction short of the retail code. */
+/* The EE sends 0..15; the driver keeps it in eighths with the odd steps
+ * rounded up to the next full one. */
+s32 sdfSndSetSeqVolume(s32 vol)
+{
+    s32 v;
+    s32 i;
+
+    v = 8 * vol;
+    if ((vol & 1) != 0) {
+        v |= 7;
+    }
+    sdfSndSeqVolume = v;
+    for (i = 0; i < 3; i++) {
+        if ((sdfSndMidiWork.tbl->seq[i].slot->flags & 2) != 0) {
+            sdfSndApplyVolume(sdfSndSlots[i].id, i, sdfSndSeqVolume);
+        }
+    }
+}
+#else
 INCLUDE_ASM("SDFSDMAN", sdfSndSetSeqVolume);
+#endif
 
-INCLUDE_ASM("SDFSDMAN", sdfSndFadeOutAll);
+s32 sdfSndFadeOutAll(void)
+{
+    s32 i;
 
-INCLUDE_ASM("SDFSDMAN", sdfSndFadeInAll);
+    for (i = 0; i < 3; i++) {
+        if (sdfSndSlots[i].id >= 0 &&
+            (sdfSndMidiWork.tbl->seq[i].slot->flags & 2) != 0 &&
+            sdfSndSlots[i].volStep >= 0) {
+            sdfSndSlots[i].volStep = -64;
+            sdfSndSlots[i].fadeIn = 1;
+            sdfSndSlots[i].unk34[0] = 1;
+        }
+    }
+}
+
+s32 sdfSndFadeInAll(void)
+{
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        if (sdfSndSlots[i].id >= 0 &&
+            (sdfSndMidiWork.tbl->seq[i].slot->flags & 2) != 0 &&
+            sdfSndSlots[i].unk34[0] == 1) {
+            sdfSndSlots[i].volStep = 64;
+            sdfSndSlots[i].fadeIn = 0;
+            sdfSndSlots[i].unk34[0] = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("SDFSDMAN", func_00003EB8);
 
