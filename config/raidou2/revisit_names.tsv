@@ -18684,8 +18684,6 @@
 0x004DF03C	mapData145	data	tier=D	derived-shared	na	used by 9 functions: mapNakamaSpotTask_fld, mapNakamaHakaTask, mapNakamaReiTask
 0x004DF040	mapNakamaMinAlpDownData	data	tier=D	derived-dominant	na	used by mapNakamaMinAlpDown (2 of 3 refs, 2 functions)
 0x004DF044	mapNakamaTaskData7	data	tier=D	derived-dominant	na	used by mapNakamaTask (5 of 8 refs, 3 functions)
-0x004DF048	mapNakamaTaskData8	data	tier=D	derived-dominant	na	used by mapNakamaTask (5 of 7 refs, 2 functions)
-0x004DF04C	mapData146	data	tier=D	derived-shared	na	used by 3 functions: mapNakamaTask, mapNakamaWakeUp, mapNakamaMinAlpDown
 0x004DF050	fclModelDevilLbData3	data	tier=D	derived-sole	na	used by fclModelDevilLb
 0x004DF054	fclModelDevilLbData4	data	tier=D	derived-sole	na	used by fclModelDevilLb
 0x004DF058	fclModelDevilLbData5	data	tier=D	derived-sole	na	used by fclModelDevilLb
@@ -18767,7 +18765,6 @@
 0x004DF1A8	mapCtnFreeData	data	tier=D	derived-dominant	na	used by mapCtnFree (2 of 4 refs, 3 functions)
 0x004DF1B0	mapCtnGetData	data	tier=D	derived-dominant	na	used by mapCtnGet (4 of 8 refs, 4 functions)
 0x004DF1B4	mapData149	data	tier=D	derived-shared	na	used by 7 functions: mapCtnAndMdlLinkOn, mapCtnGetSub, mapCtnAndMdlLinkOff
-0x004DF1BC	mapData150	data	tier=D	derived-shared	na	used by 6 functions: mapCallCtnMdlLoad, mapCtnFree, mapCtnLoad
 0x004DF1C0	mapCtnSyncData	data	tier=D	derived-dominant	na	used by mapCtnSync (2 of 3 refs, 2 functions)
 0x004DF1C4	mapCtnSyncData2	data	tier=D	derived-dominant	na	used by mapCtnSync (2 of 3 refs, 2 functions)
 0x004DF1CB	mapCtnColorFadeTaskData	data	tier=D	derived-sole	na	used by mapCtnColorFadeTask
@@ -25252,11 +25249,14 @@
 0x004DEC9C	hMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapData119
 0x004DECA4	eMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapCallMemset2Data
 0x004DECA8	eMapBadEff_N_BADID	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapBadEffLoadData4
+0x004DF048	s_MapNakamaColorCnt	data	tier=B	hd-role	na	HD mapNakamaWakeUp compares and stores mode in it; replaces mapNakamaTaskData8
+0x004DF04C	s_MapNakamaColorNow	data	tier=B	hd-role	na	HD mapNakamaWakeUp sets it 0 or 128 and builds the summon model color from it; replaces mapData146
 0x004DF170	hPartialMultiBlur	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
 0x004DF174	gencMode	data	tier=B	smt3-ref	0.88 (n=D_r1_0046BEE4)	smt3-ref/loose: nfun=2, other=2, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x004DF178	gencStageInnAlp	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE8)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x004DF17C	encDrawState	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEEC)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x004DF180	gencOn	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEF0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
+0x004DF1BC	mapCtnLoadFlag	data	tier=B	hd-role	na	HD mapCtnFree tests it first and clears it last; replaces mapData150
 0x004DF45C	gMessageRequestResult	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C1A4)	smt3-ref/close: nfun=2, other=0, sim=0.86905, games=2, size=True, sec=True, fn=frCallEnableMode
 0x004DF460	gMessageSpaceX	data	tier=B	smt3-ref	0.88 (n=D_r1_0046C1A8)	smt3-ref/loose: nfun=6, other=0, sim=0.9032, games=2, size=False, sec=True, fn=frFontAppendIndexedTextToGlyphChain
 0x004DF4A0	frWrapEmptyString	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C1E8)	smt3-ref/close: nfun=6, other=0, sim=0.9905, games=2, size=True, sec=True, fn=frwGetSmallNumFontFRQ

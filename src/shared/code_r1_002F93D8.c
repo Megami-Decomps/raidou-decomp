@@ -21,7 +21,16 @@ void M_InitScene_mjn(void)
     dds3AddAreaBasic(dds3AllocObjectId(), "nme_area");
 }
 
-INCLUDE_ASM(const s32, "code_r1_002F93D8", mselCallGetControlScene);
+/* body: matched in raidou @ 7789853: src/shared/event/evtStage.c:194, match, same function 1.00 (words 13/13, calls 1.00, shape 1.00) */
+void mselCallGetControlScene(void)
+{
+    dds3Basic_t *node;
+
+    node = (dds3Basic_t *)dds3GetControlScene();
+    if (node != 0) {
+        dds3DeleteScene(node);
+    }
+}
 
 void mselNmeCamera(void)
 {

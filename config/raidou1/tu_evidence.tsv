@@ -47,7 +47,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00118D30	00119028	basic/dds3MoverBasic	c	smt3:names:6 of 8	basic/dds3MoverBasic
 00119060	00119088	code_00119060	c	none	
 001190E8	00119D88	basic/dds3ObjectBase	c	smt3:names:21+smt3:map:2+dds:1 of 26	basic/dds3ObjectBase
-00119E30	00119E78	code_00119E30	asm	none	
+00119E30	00119E78	code_00119E30	c	none	
 00119E98	0011A428	basic/dds3CameraObjectBasic	c	smt3:names:8+smt3:map:3+dds:1 of 17	basic/dds3CameraObjectBasic
 0011A520	0011A640	dds3CameraObjectBasic_0011A520	c	none	
 0011A650	0011B428	basic/dds3UnitObjectBasic	c	smt3:names:4+smt3:map:1 of 16	basic/dds3UnitObjectBasic
@@ -89,7 +89,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0012AF78	0012AF78	field/fldMain	c	smt3:map:1 of 1	field/fldMain
 0012B070	0012B080	code_0012B070	c	none	
 0012B668	0012B668	field/fldTest	c	smt3:names:1 of 1	field/fldTest
-0012B6A0	0012CA90	code_0012B6A0	asm	none	
+0012B6A0	0012CA90	code_0012B6A0	c	none	
 0012CA98	00131718	field/fldProcess	c	smt3:names:1 literal-cores:1 of 24	field/fldProcess
 001318F8	00131900	code_001318F8	asm	none	
 00131908	00131908	newbattle/nbStageProcess	c	smt3:map:1 of 1	newbattle/nbStageProcess
@@ -151,7 +151,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0016B498	0016B650	code_r1_0016B498	c	none	
 0016C2F8	0016C3B0	code_0016C2F8	asm	none	
 0016C450	0016C450	code_r1_0016C450	c	none	
-0016CA30	0016D368	code_0016CA30	asm	none	
+0016CA30	0016D368	code_0016CA30	c	none	
 0016D3B0	00173CD8	facility/fclCombineInit	c	smt3:map:1 of 43	facility/fclCombineInit
 00173D20	00174668	code_00173D20	c	none	
 00174698	00174758	field/fldEnc	c	smt3:map:2 of 2	field/fldEnc
@@ -161,9 +161,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 00175180	00175180	code_r1_00175180	c	none	
 00175348	00175820	code_00175348	asm	none	
 00175858	00175858	code_r1_00175858	c	none	
-00175908	00179748	code_00175908	asm	none	
+00175908	00179748	code_00175908	c	none	
 00179788	00179788	field/fldCommand	c	smt3:names:1 of 1	field/fldCommand
-00179808	0017AA80	code_00179808	asm	none	
+00179808	0017AA80	code_00179808	c	none	
 0017AB10	0017ADA8	interface/itfTestMesManager_0017AB10	c	smt3:names:2+smt3:map:1 of 3 part	interface/itfTestMesManager
 0017B308	0017B970	interface/itfTestMesManager	c	smt3:names:4+smt3:map:1 of 5	interface/itfTestMesManager
 0017BAE8	0017BB90	code_0017BAE8	asm	none	
@@ -299,7 +299,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0024B510	0024B510	code_r1_0024B510	c	none	
 0024B788	0024DE38	code_r1_0024B788	c	none	
 0024DE98	0024DE98	code_r1_0024DE98	c	none	
-0024DF70	0024E6B8	code_0024DF70	asm	none	
+0024DF70	0024E6B8	code_0024DF70	c	none	
 0024E730	0024E730	code_r1_0024E730	c	none	
 0024E848	0024E848	code_0024E848	asm	none	
 0024EE78	0024EE78	code_r1_0024EE78	c	none	

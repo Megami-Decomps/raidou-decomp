@@ -26288,8 +26288,8 @@
 0x004DF03C	mapData145	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 9 functions: mapNakamaSpotTask_fld, mapNakamaHakaTask, mapNakamaReiTask
 0x004DF040	mapNakamaMinAlpDownData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapNakamaMinAlpDown (2 of 3 refs, 2 functions)
 0x004DF044	mapNakamaTaskData7	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapNakamaTask (5 of 8 refs, 3 functions)
-0x004DF048	mapNakamaTaskData8	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapNakamaTask (5 of 7 refs, 2 functions)
-0x004DF04C	mapData146	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapNakamaTask, mapNakamaWakeUp, mapNakamaMinAlpDown
+0x004DF048	s_MapNakamaColorCnt	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapNakamaWakeUp compares and stores mode in it; replaces mapNakamaTaskData8
+0x004DF04C	s_MapNakamaColorNow	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapNakamaWakeUp sets it 0 or 128 and builds the summon model color from it; replaces mapData146
 0x004DF050	fclModelDevilLbData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fclModelDevilLb
 0x004DF054	fclModelDevilLbData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fclModelDevilLb
 0x004DF058	fclModelDevilLbData5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fclModelDevilLb
@@ -26379,7 +26379,7 @@
 0x004DF1B0	mapCtnGetData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnGet (4 of 8 refs, 4 functions)
 0x004DF1B4	mapData149	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: mapCtnAndMdlLinkOn, mapCtnGetSub, mapCtnAndMdlLinkOff
 0x004DF1B8	ctn_floor	hd	hd: Raidou HD fld.ctn_floor, 3 of 3 functions agree, high confidence
-0x004DF1BC	mapData150	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: mapCallCtnMdlLoad, mapCtnFree, mapCtnLoad
+0x004DF1BC	mapCtnLoadFlag	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapCtnFree tests it first and clears it last; replaces mapData150
 0x004DF1C0	mapCtnSyncData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnSync (2 of 3 refs, 2 functions)
 0x004DF1C4	mapCtnSyncData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCtnSync (2 of 3 refs, 2 functions)
 0x004DF1C8	mapCtnColor	inferred	method=hd; p=0.37 (n=D_r1_0046BF38); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=3

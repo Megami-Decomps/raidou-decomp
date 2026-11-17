@@ -8164,8 +8164,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046BE04	0x004DF03C	mapData145	.sdata	0x4	yes	code-ref
 0x0046BE08	0x004DF040	mapNakamaMinAlpDownData	.sdata	0x4	yes	code-ref
 0x0046BE0C	0x004DF044	mapNakamaTaskData7	.sdata	0x4	yes	code-ref
-0x0046BE10	0x004DF048	mapNakamaTaskData8	.sdata	0x4	yes	code-ref
-0x0046BE14	0x004DF04C	mapData146	.sdata	0x4	yes	code-ref
+0x0046BE10	0x004DF048	s_MapNakamaColorCnt	.sdata	0x4	yes	code-ref
+0x0046BE14	0x004DF04C	s_MapNakamaColorNow	.sdata	0x4	yes	code-ref
 0x0046BE98	0x004DF0E8	mapNakamaSpotTaskData3	.sdata	0x4	yes	code-ref
 0x0046BE9C	0x004DF0EC	mapNakamaSpotTaskData4	.sdata	0x4	yes	code-ref
 0x0046BEA0	0x004DF0F0	mapNakamaSpotTaskData5	.sdata	0x4	yes	code-ref
@@ -8196,7 +8196,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046BF20	0x004DF1B0	mapCtnGetData	.sdata	0x4	yes	code-ref
 0x0046BF24	0x004DF1B4	mapData149	.sdata	0x4	yes	code-ref
 0x0046BF28	0x004DF1B8	ctn_floor	.sdata	0x4	yes	code-ref
-0x0046BF2C	0x004DF1BC	mapData150	.sdata	0x4	yes	code-ref
+0x0046BF2C	0x004DF1BC	mapCtnLoadFlag	.sdata	0x4	yes	code-ref
 0x0046BF30	0x004DF1C0	mapCtnSyncData	.sdata	0x4	yes	code-ref
 0x0046BF34	0x004DF1C4	mapCtnSyncData2	.sdata	0x4	yes	code-ref
 0x0046BF38	0x004DF1C8	mapCtnColor	.sdata	0x3	yes	code-ref

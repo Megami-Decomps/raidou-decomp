@@ -45,11 +45,21 @@ struct scrProcessWork_s;
 
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
 typedef struct SBTL_WORK {
-    u8 pad000[0x150];
+    u8 pad000[0x80];
+    sdf3DLight_t light[3]; /* copy of the parallel lights, made by sbtlRefSbtl31 */
+    sdfVector4_t ambient;
     s32 mapNo[2];
     u8 pad158[4];
     u32 startFlg; /* 8: map fade running, 0x10: second map fade running */
-    u8 pad160[0x198 - 0x160];
+    s32 zoomlockID;
+    s8 zoomlockflg;
+    f32 zoom_x;
+    f32 zoom_y;
+    f32 zoom_z;
+    s32 zoom_time;
+    f32 zoom_bairitu;
+    s32 zoomlocktime;
+    u8 pad180[0x198 - 0x180];
     fileRequest_t *panelPack;
     s32 panelPackPos;
     s32 panelPackLen;
@@ -58,7 +68,7 @@ typedef struct SBTL_WORK {
     dds3ProcessID_t *process;
     s32 syscnt;
     s32 endcnt;
-    u8 pad1B8[4];
+    s32 scrollID;
     s16 equipSword;
     s16 equipGun;
     s32 equipBullet;
@@ -95,7 +105,9 @@ typedef struct SBTL_WORK {
     s16 useitem_stock; /* stock slot the item is used on, -1 for none */
     u8 pad236[0x238 - 0x236];
     s32 equipBulletBk;
-    u8 pad23C[0x2CC - 0x23C];
+    u8 pad23C[0x298 - 0x23C];
+    s32 tgt_csr; /* target cursor: unit ID under the cursor */
+    u8 pad29C[0x2CC - 0x29C];
     struct SBTLUNIT_LISTWORK *list2CC;
     u8 pad2D0[4];
     struct SBTLUNIT_LISTWORK *list2D4;
@@ -456,8 +468,12 @@ extern s32 sbtlSceneLoadData;
 extern s32 sbtlSceneLoadData2;
 extern s32 sbtlSceneLoadData3;
 extern s32 sbtlData86;
+extern f32 sbtlData87;
+extern f32 sbtlData88;
+extern f32 sbtlData89;
 extern s32 sbtlData90;
 extern s32 sbtlData91;
+extern s32 loadstep;
 extern f32 sbtlData92;
 extern sdfVector4_t sbtlCallMemset4Data2;
 extern sdfVector4_t sbtlCallMemset4Data3;
@@ -537,6 +553,12 @@ extern sdfVector4_t pbWork2;
 extern sdfVector4_t pbWork3;
 
 s32 DataLoadProc(dds3ProcessID_t *id);
+s32 sbtlCallMemset4(s32 fld, s32 area);
+void sbtlSetZoomLock(struct SBTLUNIT_WORK *unit, f32 zoom);
+s32 sbtlCheckZoom(void);
+s32 sbtlSetLoadPanelData(void);
+s32 sbtlCallCheckEnd(void);
+void sbtlCallBitCheck(s32 stageNo);
 s32 DrawProc(dds3ProcessID_t *id);
 s32 RestartBattle(void);
 s32 sbtlSbattle4(void);
@@ -568,7 +590,7 @@ s32 OnDataLoadProc(dds3ProcessID_t *id);
 void sbtlLeaf75(dds3ProcessID_t *id);
 s32 sbtlLeaf54(dds3ProcessID_t *id);
 void sbtlRefSbtl18(struct SBTLUNIT_WORK *wk, s32 mode);
-void sbtlRefSbtl31(void);
+s32 sbtlRefSbtl31(void);
 void sbtlResetRndEncCount(void);
 void sbtlRndEncTopPriorityMap(s32 *mapOut, s32 *floorOut);
 s32 sbtlSbattle(SBTL_START_DATA *start, s8 flag);
@@ -582,7 +604,7 @@ s32 sbtlCheckItemMember_Dead(s32 stockID);
 s32 sbtlSbattle5(dds3ProcessID_t *id);
 s32 sbtlSbattle6(dds3ProcessID_t *id);
 void sbtlSbtlCameraproc(void);
-void sbtlSetScrollID(s32 id);
+s32 sbtlSetScrollID(s32 id);
 struct SBTLUNIT_WORK *sbtlSetSummon(s32 side, s32 devilId, s32 arg);
 SBTL_UNIT_SUB *sbtlSetUnitSub(s32 a, s32 id, s32 b);
 void sbtlStopVibe(void);

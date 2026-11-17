@@ -273,7 +273,8 @@ start	last_func	unit	kind	evidence	smt3_unit
 0023E1D0	00259408	code_r1_00226EC8	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 002595A8	002595E0	effect/effPCPBoss_00242290	c	smt3:map:2 of 2 part	effect/effPCPBoss
 00259620	00261D68	code_r1_00242308	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
-00261DF0	0026AF18	code_00261DF0	asm	none	
+00261DF0	0026A868	code_00261DF0	asm	none	
+0026A9B0	0026AF18	code_0026A9B0	c	none	
 0026AF90	0026AF90	code_r1_0024E730	c	none	
 0026B0A8	0027A170	code_0026B0A8	asm	none	
 0027A1D0	0027A1D0	code_0027A1D0	c	dds:1 of 1	

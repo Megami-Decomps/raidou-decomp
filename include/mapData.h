@@ -484,6 +484,9 @@ typedef struct MAP_SAKA4_t
 } MAP_SAKA4_t;
 
 extern MAP_OBJ_t mapObjTaskData2[128];
+extern f32 mapCtnFreeData;
+extern s32 mapData149;
+extern s32 mapCtnLoadFlag;
 extern MAP_GRIDEVEHIT_t mapScriptGet_PosData2[128];
 extern MAP_GRIDHIT_t mapData23[128];
 extern MAP_GRIDWARPHIT_t mapData24[80];
@@ -844,6 +847,7 @@ void mapFileLoadSub9(s32 a0, f32 a1);
 void mapFileLoadSub10(s32 a0);
 s32 mdlCallMemGetSize(sdfMemHandle_t *handle, s32 major, s32 minor);
 void mdlCallMemGetSize2(void);
+void mdlCallMemFreeDirect(void);
 struct sdfMat_t *dds3CallMatNew2(struct sdfTexHandle_t *tex);
 void pipeFileLoadSub(s32 a0);
 void pipeFileLoadSub2(s32 a0);

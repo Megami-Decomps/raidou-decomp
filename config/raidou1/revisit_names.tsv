@@ -14802,8 +14802,6 @@
 0x0046BE04	mapData145	data	tier=D	derived-shared	na	used by 9 functions: mapNakamaSpotTask_fld, mapNakamaHakaTask, mapNakamaReiTask
 0x0046BE08	mapNakamaMinAlpDownData	data	tier=D	derived-dominant	na	used by mapNakamaMinAlpDown (2 of 3 refs, 2 functions)
 0x0046BE0C	mapNakamaTaskData7	data	tier=D	derived-dominant	na	used by mapNakamaTask (5 of 8 refs, 3 functions)
-0x0046BE10	mapNakamaTaskData8	data	tier=D	derived-dominant	na	used by mapNakamaTask (5 of 7 refs, 2 functions)
-0x0046BE14	mapData146	data	tier=D	derived-shared	na	used by 3 functions: mapNakamaTask, mapNakamaWakeUp, mapNakamaMinAlpDown
 0x0046BE18	mapNakamaSummonTaskData6	data	tier=D	derived-sole	na	used by mapNakamaSummonTask
 0x0046BE1C	mapNakamaSummonTaskData7	data	tier=D	derived-sole	na	used by mapNakamaSummonTask
 0x0046BE20	mapNakamaSummonTaskData8	data	tier=D	derived-sole	na	used by mapNakamaSummonTask
@@ -14864,7 +14862,6 @@
 0x0046BF18	mapCtnFreeData	data	tier=D	derived-dominant	na	used by mapCtnFree (2 of 4 refs, 3 functions)
 0x0046BF20	mapCtnGetData	data	tier=D	derived-dominant	na	used by mapCtnGet (4 of 8 refs, 4 functions)
 0x0046BF24	mapData149	data	tier=D	derived-shared	na	used by 7 functions: mapCtnAndMdlLinkOn, mapCtnGetSub, mapCtnAndMdlLinkOff
-0x0046BF2C	mapData150	data	tier=D	derived-shared	na	used by 6 functions: mapCallCtnMdlLoad, mapCtnFree, mapCtnLoad
 0x0046BF30	mapCtnSyncData	data	tier=D	derived-dominant	na	used by mapCtnSync (2 of 3 refs, 2 functions)
 0x0046BF34	mapCtnSyncData2	data	tier=D	derived-dominant	na	used by mapCtnSync (2 of 3 refs, 2 functions)
 0x0046BF3B	mapCtnColorFadeTaskData	data	tier=D	derived-sole	na	used by mapCtnColorFadeTask
@@ -15648,7 +15645,6 @@
 0x0046DAAC	sbtlSceneLoadData	data	tier=D	derived-dominant	na	used by sbtlSceneLoad (2 of 3 refs, 2 functions)
 0x0046DAB0	sbtlSceneLoadData2	data	tier=D	derived-dominant	na	used by sbtlSceneLoad (3 of 4 refs, 2 functions)
 0x0046DAB4	sbtlSceneLoadData3	data	tier=D	derived-dominant	na	used by sbtlSceneLoad (2 of 3 refs, 2 functions)
-0x0046DAB8	DataLoadProcData	data	tier=D	derived-sole	na	used by DataLoadProc
 0x0046DABC	sbtlData92	data	tier=D	derived-shared	na	used by 2 functions: sbtlCallMemset4, sbtlCallMemset7
 0x0046DAC0	sbtlDevilFootSEProcSubData	data	tier=D	derived-sole	na	used by sbtlDevilFootSEProcSub
 0x0046DAC8	sbtlENMYData	data	tier=D	derived-sole	na	used by sbtlENMY
@@ -19799,11 +19795,14 @@
 0x0046BB5C	hMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapData119
 0x0046BB64	eMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapCallMemset2Data
 0x0046BB68	eMapBadEff_N_BADID	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapBadEffLoadData4
+0x0046BE10	s_MapNakamaColorCnt	data	tier=B	hd-role	na	HD mapNakamaWakeUp compares and stores mode in it; replaces mapNakamaTaskData8
+0x0046BE14	s_MapNakamaColorNow	data	tier=B	hd-role	na	HD mapNakamaWakeUp sets it 0 or 128 and builds the summon model color from it; replaces mapData146
 0x0046BEE0	hPartialMultiBlur	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
 0x0046BEE4	gencMode	data	tier=B	smt3-ref	0.88 (n=D_r1_0046BEE4)	smt3-ref/loose: nfun=2, other=2, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x0046BEE8	gencStageInnAlp	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE8)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x0046BEEC	encDrawState	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEEC)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x0046BEF0	gencOn	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEF0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
+0x0046BF2C	mapCtnLoadFlag	data	tier=B	hd-role	na	HD mapCtnFree tests it first and clears it last; replaces mapData150
 0x0046C1A4	gMessageRequestResult	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C1A4)	smt3-ref/close: nfun=2, other=0, sim=0.86905, games=2, size=True, sec=True, fn=frCallEnableMode
 0x0046C1A8	gMessageSpaceX	data	tier=B	smt3-ref	0.88 (n=D_r1_0046C1A8)	smt3-ref/loose: nfun=6, other=0, sim=0.9032, games=2, size=False, sec=True, fn=frFontAppendIndexedTextToGlyphChain
 0x0046C1C8	frSetFontString_style	data	tier=B	smt3-role	na	SMT3 name: frSetFontString's current style byte (sb style when >= 0, indexes gFT.entries); replaces frSetFontStringData
@@ -19856,6 +19855,7 @@
 0x0046D178	effPadVibeRemain	data	tier=B	smt3-role	na	SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effResetSlotsData2
 0x0046D180	effPadVibePower	data	tier=B	smt3-ref	0.80 (n=D_r1_0046D180)	smt3-ref/close: nfun=2, other=0, sim=0.7596, games=2, size=True, sec=True, fn=effPadVibeFadeUpdate
 0x0046D188	effPadVibeFadeIn	data	tier=B	smt3-role	na	SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effData37
+0x0046DAB8	loadstep	data	tier=B	hd-role	na	HD DataLoadProc switches on loadstep; replaces DataLoadProcData
 0x0046DD0C	sb_gen_d_flag	data	tier=B	hd-role	na	HD sBtlClearGeneratorWork zeroes sb_gen_d_flag after the loop; only code_00298540 uses it; replaces gFldSe3DNum
 0x0046DD10	datRndEncBase	data	tier=B	hd-role	na	HD sBtlGetRndEncMax reads datRndEncBase at this site; replaces nbGetEncountMaxData
 0x0046DD14	encmax	data	tier=B	hd-role	na	HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2

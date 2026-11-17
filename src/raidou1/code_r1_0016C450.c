@@ -20,14 +20,14 @@ extern s32 mapNakamaTaskData4;
 extern s32 mapNakamaTaskData5;
 extern u32 mapNakamaTaskData6;
 extern s32 mapNakamaTaskData7;
-extern s32 mapNakamaTaskData8;
+extern s32 s_MapNakamaColorCnt;
 extern s32 mapNakamaMinAlpDownData;
 extern s32 mapData140;
 extern s32 mapData141;
 extern s32 mapData142;
 extern u32 mapData143;
 extern u32 mapData144;
-extern s32 mapData146;
+extern s32 s_MapNakamaColorNow;
 extern f32 mapNakamaTaskFloat;
 extern f32 mapNakamaTaskFloat2;
 extern f32 map_summondv_rot;
@@ -162,24 +162,24 @@ void mapNakamaTask(void) {
             }
         }
     }
-    if (mapNakamaTaskData8 != 0 && summonDvBasic != NULL && fldGlobalBase.nakamaMode == 0) {
-        if (mapNakamaTaskData8 == 1) {
+    if (s_MapNakamaColorCnt != 0 && summonDvBasic != NULL && fldGlobalBase.nakamaMode == 0) {
+        if (s_MapNakamaColorCnt == 1) {
             pose = summonDvBasic->poseset;
             if (fldPointDistance(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ, pose->pos.x, pose->pos.y, pose->pos.z) > 100.0f) {
-                mapNakamaTaskData8 = 2;
+                s_MapNakamaColorCnt = 2;
             }
         }
-        if (mapNakamaTaskData8 == 2) {
-            a = mapData146 + 8;
+        if (s_MapNakamaColorCnt == 2) {
+            a = s_MapNakamaColorNow + 8;
             if (a < 129) {
-                mapData146 = a;
+                s_MapNakamaColorNow = a;
             } else {
                 a = 128;
-                mapNakamaTaskData8 = 0;
-                mapData146 = 128;
+                s_MapNakamaColorCnt = 0;
+                s_MapNakamaColorNow = 128;
             }
         } else {
-            a = mapData146;
+            a = s_MapNakamaColorNow;
         }
         changed = 1;
         color = GRAY(a);

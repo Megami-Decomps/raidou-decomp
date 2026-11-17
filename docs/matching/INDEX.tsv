@@ -6,6 +6,7 @@ dds3CallMemset	basic/dds3ObjectBase	raidou1 0xE0, raidou2 0xE0	12 of 56 words di
 dds3SceneBasicSearchSerialID_Used	basic/dds3SceneBasic	raidou1 0xC0, raidou2 0xC0	33 of 48 words differ	docs/matching/basic/dds3SceneBasic.md	3		
 dds3SceneBasicStartScript	basic/dds3SceneBasic	raidou1 0x84, raidou2 0x84	12 of 34 words differ	docs/matching/basic/dds3SceneBasic.md	12		
 eglLinkBoxZ	code_00109A70	raidou1 0x370	6 of 220 words differ	docs/matching/code_00109A70.md	3		
+ProcMskSub_B	code_0012B6A0	raidou1 0x2DC	8 of 183 words differ	docs/matching/code_0012B6A0.md	3		
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3		
 fldCallTexListFree	code_001326C0	raidou1 0x188	1 of 98 words differ	docs/matching/code_001326C0.md	3		
 fldProcSequenceSub3	code_00139330	raidou1 0x48	9 of 16 words differ	docs/matching/code_00139330.md	3		
@@ -44,9 +45,11 @@ mapSeNakamaDelayTask	code_0015D490	raidou1 0x74	10 of 29 words differ	docs/match
 mapSeWallHit	code_0015D490	raidou1 0x58	8 of 22 words differ	docs/matching/code_0015D490.md	19		
 mapIfDrawES	code_0015D490	raidou1 0x33C	55 of 207 words differ	docs/matching/code_0015D490.md	27		
 mapCallEnableMode	code_0015D490	raidou1 0x29C	78 of 165 words differ	docs/matching/code_0015D490.md	35		
+mapNakamaWakeUp	code_0016CA30	raidou1 0x60	13 of 24 words differ	docs/matching/code_0016CA30.md	3		
 encCallPrimAllocDrawTag2	code_00173D20	raidou1 0x1F0	41 of 124 words differ	docs/matching/code_00173D20.md	3		
 mapFunc11	code_00174790	raidou1 0x68	16 of 24 words differ	docs/matching/code_00174790.md	3		
 mapNpcPathMake_Rot	code_00174790	raidou1 0x118	20 of 70 words differ	docs/matching/code_00174790.md	11		
+nbCallGetIntPara9	code_00179808	raidou1 0xB0	3 of 44 words differ	docs/matching/code_00179808.md	3		
 cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3		
 cmbRefDDS3GBWK	code_00181858	raidou1 0xD0	7 of 52 words differ	docs/matching/code_00181858.md	11		
 _MenuSetMenu	code_0018CE10	raidou1 0x5C	18 of 24 words differ	docs/matching/code_0018CE10.md	3		
@@ -56,6 +59,7 @@ itfMenuSetImageColorSub	code_00190668	raidou1 0x4C	1 of 19 words differ	docs/mat
 MenuDrawProcess	code_00190668	raidou1 0x32C	181 of 203 words differ	docs/matching/code_00190668.md	19		
 itfMenuProcessCheck	code_00190668	raidou1 0x50	1 of 20 words differ	docs/matching/code_00190668.md	27		
 evtMoonTeisatuCntReset	code_001AD4E8	raidou1 0x10	4 of 4 words differ	docs/matching/code_001AD4E8.md	3		
+sbtlRefSbtl31	code_0024DF70	raidou1 0x94	34 of 35 words differ	docs/matching/code_0024DF70.md	3		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
