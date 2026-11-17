@@ -7164,7 +7164,7 @@ void effSubmitIndexedRenderPacket(u32 index) {
 
 /* NON_MATCHING: 182 of 359 words match. Retail inlines the 0x98 and 0xA0 byte param copies as alignment-tested ldl/ldr loops, memcpy here; end-frame math follows IDA. Needs effQuadParams_t.sizeScale renamed to u32 sizeDuration. */
 #ifdef NON_MATCHING
-extern sdf3DPrimPolyParm_t PartsCreateWork;
+extern sdf3DPrimPolyParm_t RenderWork;
 extern u32 PartsCreateData[];
 extern u32 PartsCreateData2[];
 
@@ -7220,12 +7220,12 @@ ptexHandle_t *PartsCreate(fileJobPayload_t *payload)
     ptex->hCTexList = NULL;
     ptex->assetHandle = sdfMatNew();
     sdfMatSetConstant(ptex->assetHandle, 1.0f);
-    memset(&PartsCreateWork, 0, 0x2C);
-    PartsCreateWork.pointCount = 4;
-    PartsCreateWork.attr = 0x4000;
-    PartsCreateWork.faceIndex = PartsCreateData;
-    PartsCreateWork.vertexColor = PartsCreateData2;
-    PartsCreateWork.faceCount = 2;
+    memset(&RenderWork, 0, 0x2C);
+    RenderWork.pointCount = 4;
+    RenderWork.attr = 0x4000;
+    RenderWork.faceIndex = PartsCreateData;
+    RenderWork.vertexColor = PartsCreateData2;
+    RenderWork.faceCount = 2;
     if (payload == NULL) {
         return ptex;
     }
