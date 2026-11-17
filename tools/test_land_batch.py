@@ -256,6 +256,22 @@ class RodataTests(unittest.TestCase):
         self.assertIsNone(p)
         self.assertIn("inside its range", note)
 
+    def test_a_jump_table_moves_the_start_to_a_16_byte_label(self) -> None:
+        labels = [(0x447288, "s1"), (0x4472A0, "s2"), (0x4472C0, "jtbl_004472C0"), (0x4472E8, "s3")]
+        users = {n: {"u"} for _, n in labels}
+        p, note = segments.plan("r", "rodata", labels, users, "u")
+        self.assertEqual((p.start, p.left, note), (0x4472A0, ["s1"], ""))
+        p, _ = segments.plan("r", "rodata", labels[:2] + labels[3:], users, "u")
+        self.assertEqual((p.start, p.left), (0x447288, []))
+        p, _ = segments.plan("r", "lit4", labels, users, "u")
+        self.assertEqual(p.start, 0x447288)
+
+    def test_no_aligned_label_is_left_for_a_decision(self) -> None:
+        labels = [(0x444A58, "s"), (0x444A68, "jtbl_00444A68")]
+        p, note = segments.plan("r", "rodata", labels, {n: {"u"} for _, n in labels}, "u")
+        self.assertIsNone(p)
+        self.assertIn("section alignment", note)
+
     def test_apply_splits_the_chunk_at_rom_offsets(self) -> None:
         yaml = ("  - name: main\n    start: 0x1000\n    vram: 0x100000\n    subsegments:\n"
                 "      - [0x345680, rodata, rodata_00444680]\n      - [0x3456A0, .rodata, k]\n")

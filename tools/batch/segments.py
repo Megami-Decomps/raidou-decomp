@@ -1,6 +1,6 @@
 """Splat config edits for units that become C: subsegment kind, tu_evidence kind, and .rodata/.lit4 ownership."""
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 SUBSEG = re.compile(r"^(\s*- \[)(0x[0-9A-Fa-f]+), (\.?\w+), ([\w/]+)\](.*)$")
@@ -61,11 +61,13 @@ class Plan:
     chunk: str
     start: int  # vram of the unit's first label
     rest: int | None  # vram where the chunk resumes after the unit, or None
+    left: list[str] = field(default_factory=list)  # the unit's leading labels kept in the chunk for alignment
 
 
 def plan(chunk: str, kind: str, labels: list[tuple[int, str]], users: dict[str, set[str]],
          unit: str) -> tuple[Plan | None, str]:
-    """Decide the unit's share of one chunk: the labels from its first to its last, none used elsewhere."""
+    """Decide the unit's share of one chunk: the labels from its first to its last, none used elsewhere, starting at
+    the first one its section alignment allows."""
     mine = [i for i, (_, n) in enumerate(labels) if unit in users.get(n, ())]
     if not mine:
         return None, ""
@@ -78,7 +80,33 @@ def plan(chunk: str, kind: str, labels: list[tuple[int, str]], users: dict[str, 
     if between:
         return None, f"{unit}: {kind} {chunk}: other units' labels {', '.join(between)} lie inside its range"
     rest = labels[hi + 1][0] if hi + 1 < len(labels) else None
-    return Plan(unit, kind, chunk, labels[lo][0], rest), ""
+    first = aligned_start(kind, labels, lo, hi)
+    if first is None:
+        return None, f"{unit}: {kind} {chunk}: no start from 0x{labels[lo][0]:08X} on fits its section alignment"
+    left = [n for _, n in labels[lo:first]]
+    return Plan(unit, kind, chunk, labels[first][0], rest, left), ""
+
+
+def label_align(name: str, addr: int) -> int:
+    """The alignment a label gets once the unit owns it: 16 for a jump table, which ee-gcc always starts with
+    .align 4, else what its address allows up to 8 (as tools/include_rodata.py aligns included files)."""
+    if name.startswith("jtbl_"):
+        return 16
+    return next(a for a in (8, 4, 2, 1) if addr % a == 0)
+
+
+def aligned_start(kind: str, labels: list[tuple[int, str]], lo: int, hi: int) -> int | None:
+    """Index of the first label from lo on where the unit's .rodata can start. The object's section is aligned to
+    its most aligned label, so a start off that alignment moves the whole section; the labels before the returned
+    index stay in the chunk."""
+    if kind != "rodata":
+        return lo
+    if any(a % label_align(n, a) for a, n in labels[lo:hi + 1]):
+        return None
+    for i in range(lo, hi + 1):
+        if labels[i][0] % max(label_align(n, a) for a, n in labels[i:hi + 1]) == 0:
+            return i
+    return None
 
 
 def plan_unit(tree: Path, game: str, unit: str) -> tuple[list[Plan], list[str]]:

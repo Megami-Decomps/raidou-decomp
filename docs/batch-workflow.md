@@ -111,7 +111,9 @@ in order (skip any with `--skip step,...`):
    functions in address order, its subsegment and tu_evidence row become `c`,
    and it takes the `.rodata` and `.lit4` labels that only its asm uses, when
    they form one run in one unowned chunk; several new units can split one
-   chunk, in any order. Anything else (a label another unit
+   chunk, in any order. The `.rodata` starts at the first of those labels that
+   the section's alignment allows (16 bytes when it holds a jump table, else 8);
+   labels before it stay in the chunk. Anything else (a label another unit
    uses, labels in several chunks) is reported for a hand decision. The run
    stops (refused) when a unit's `.c` gained, against the base, a draft store
    entry's declaration, a function prototype for a function the unit does not

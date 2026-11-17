@@ -406,7 +406,8 @@ class Run:
                 self.note(str(e))
                 continue
             rest = f", {p.kind} resumes at 0x{p.rest:08X}" if p.rest is not None else ""
-            self.say(f"segments: {row.unit} owns {p.kind} of {p.chunk} from 0x{p.start:08X}{rest}")
+            left = f", {', '.join(p.left)} left in the chunk for alignment" if p.left else ""
+            self.say(f"segments: {row.unit} owns {p.kind} of {p.chunk} from 0x{p.start:08X}{rest}{left}")
         for n in notes:
             self.note(n)
         drafted = sum(n in by_name for n in names)
