@@ -204,6 +204,19 @@ class DraftGamesTests(unittest.TestCase):
             self.assertEqual(self.run_in(tmp, "void f(void) {}\n", "R2"), ["raidou1", "raidou2"])
 
 
+class AppliedRenameTests(unittest.TestCase):
+    def test_hash_rows_are_mapped_but_not_applied(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            d = pathlib.Path(tmp) / "batches" / "B"
+            d.mkdir(parents=True)
+            (d.parent.parent / "batches.tsv").write_text("B\tnew\t00100000\t4\tsrc/raidou1/u\n")
+            (d / "renames.tsv").write_text("# raidou1\told\tnew\tHD name\n# a comment\nraidou1\tx\ty\tHD\n")
+            b = batch_files.load(d)
+        self.assertEqual(b.applied, [("raidou1", "old", "new", "HD name")])
+        self.assertEqual(b.renames, [("raidou1", "x", "y", "HD")])
+        self.assertEqual(renames.name_map(b.applied + b.renames, "raidou1"), {"old": "new", "x": "y"})
+
+
 class RenamedRowTests(unittest.TestCase):
     def run_with(self, rows) -> land_batch.Run:
         run = land_batch.Run.__new__(land_batch.Run)

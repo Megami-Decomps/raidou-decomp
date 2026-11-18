@@ -60,6 +60,8 @@ class Batch:
     rows: dict[str, Row]
     r1only: set[str] = field(default_factory=set)
     renames: list[tuple[str, str, str, str]] = field(default_factory=list)
+    # "# game old new reason" rows: renames already applied to the tree by hand, only mapped
+    applied: list[tuple[str, str, str, str]] = field(default_factory=list)
     drop: list[tuple[str, str]] = field(default_factory=list)
     docs: dict[str, list[str]] = field(default_factory=dict)
     comments: dict[str, str] = field(default_factory=dict)
@@ -88,6 +90,18 @@ class Batch:
             return []
         return [l.rstrip("\n").split("\t") for l in path.read_text().splitlines()
                 if l.strip() and not l.startswith("#")]
+
+
+def applied_renames(path: Path) -> list[tuple[str, str, str, str]]:
+    """The "# game old new reason" rows of a renames table."""
+    if not path.exists():
+        return []
+    rows = []
+    for line in path.read_text().splitlines():
+        r = line.lstrip("#").strip().split("\t") if line.startswith("#") else []
+        if len(r) >= 3 and r[0] in ("raidou1", "raidou2"):
+            rows.append(tuple((r + [""])[:4]))
+    return rows
 
 
 def load(dir: Path, batches: Path | None = None, batch_id: str | None = None,
@@ -131,6 +145,7 @@ def load(dir: Path, batches: Path | None = None, batch_id: str | None = None,
                     if l.strip() and not l.startswith("#")}
     for name in renames:
         b.renames += [tuple(r[:4]) for r in b.tsv(name)]
+        b.applied += applied_renames(dir / name)
     b.drop = [tuple(r[:2]) for r in b.tsv("drop_symbols.tsv")]
     for name in ("docs", "comments"):
         if (dir / f"{name}.json").exists():

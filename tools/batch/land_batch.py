@@ -45,7 +45,7 @@ class Run:
         self.clean_gate = args.clean_gate
         self.cache = Path(args.cache).resolve() if args.cache else None
         self.python = str(self.tree / ".venv/bin/python")
-        self.maps = {g: renames.name_map(self.batch.renames, g) for g in ("raidou1", "raidou2")}
+        self.maps = {g: renames.name_map(self.batch.applied + self.batch.renames, g) for g in ("raidou1", "raidou2")}
         self.draft_names = self.maps["raidou1"] if args.rename_drafts else {}
         self.notes: list[str] = []
         self.promoted: set[str] = set()
@@ -242,7 +242,7 @@ class Run:
             self.say(f"renames: added {game} {old} -> {new}, a name both games share")
         if added:
             self.batch.renames = rows
-            self.maps = {g: renames.name_map(rows, g) for g in ("raidou1", "raidou2")}
+            self.maps = {g: renames.name_map(self.batch.applied + rows, g) for g in ("raidou1", "raidou2")}
             self.draft_names = self.maps["raidou1"] if self.draft_names else {}
         renames.apply(self.tree, self.batch.renames)
         renames.drop(self.tree, self.batch.drop)
