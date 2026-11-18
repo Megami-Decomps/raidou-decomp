@@ -3,7 +3,7 @@ evtLeaf31	TitleMain	raidou1 0x110	9 of 68 words differ	docs/matching/TitleMain.m
 dds3AllocBasic	basic/dds3Basic	raidou1 0xD8, raidou2 0xD8	6 of 54 words differ	docs/matching/basic/dds3Basic.md	3		
 dds3SetPosPoseSet_dds3Basic	basic/dds3Basic	raidou1 0x2C, raidou2 0x2C	5 of 11 words differ	docs/matching/basic/dds3Basic.md	14		
 dds3DebugBasic	basic/dds3DbgBasic	raidou1 0x124, raidou2 0x124	32 of 74 words differ	docs/matching/basic/dds3DbgBasic.md	3		
-dds3MatterObjectBasicDrawProcedure	basic/dds3MatterObjectBasic	raidou1 0x1EC, raidou2 0x1EC	114 of 119 words differ	docs/matching/basic/dds3MatterObjectBasic.md	3		
+dds3MatterObjectBasicDrawProcedure	basic/dds3MatterObjectBasic	raidou1 0x1EC, raidou2 0x1EC	94 of 123 words differ	docs/matching/basic/dds3MatterObjectBasic.md	3		
 dds3CallMemset	basic/dds3ObjectBase	raidou1 0xE0, raidou2 0xE0	12 of 56 words differ	docs/matching/basic/dds3ObjectBase.md	3		
 dds3ObjectBaseMakeMatter	basic/dds3ObjectBase	raidou1 0xC4, raidou2 0xC4	14 of 49 words differ	docs/matching/basic/dds3ObjectBase.md	14		
 dds3SceneBasicSearchSerialID_Used	basic/dds3SceneBasic	raidou1 0xC0, raidou2 0xC0	33 of 48 words differ	docs/matching/basic/dds3SceneBasic.md	3		

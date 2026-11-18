@@ -4,6 +4,8 @@
 #include "common.h"
 #include "basic.h"
 
+extern s32 effObjOpacityPassEnabled;
+
 u32 dds3MatterObjectBasicGetAlpMode(const dds3Basic_t *aPtr);
 void dds3MatterObjectBasicSetAlpMode(dds3Basic_t *aPtr, u32 alpmode);
 

@@ -23,7 +23,11 @@ void cmpDrawBackPattern(tagCMP_MAP_WORK *wk)
 
             p += 2;
             i++;
+#ifdef VERSION_RAIDOU1
             itfDrawMiscSpriteList(x, y, 0, 255, sprite, 103, cmpDrawBackPatternData);
+#else
+            itfDrawMiscSpriteList(x, y, 0, 255, sprite, 104, cmpDrawBackPatternData);
+#endif
         } while (i < 9);
     }
 }

@@ -1673,13 +1673,13 @@ s32 evtCallConsPanelTagLinkZ(evtViewerInfo_t *runtime) {
     markerColor = 0x80808080;
     node = evtGetSelectFrameInfo(runtime);
     component = runtime->curveComponent;
-    sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7780, 0x82C0, 0xFEFFFF, 0, " P"));
+    sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7780, 0x82C0, 0xFEFFFF, 0, "P:"));
     sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7780, 0x82C0, 0xFEFFFF, 0, "  %d", component));
     offset = component * 2;
-    sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7780, 0x8320, 0xFEFFFF, 0, " X"));
+    sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7780, 0x8320, 0xFEFFFF, 0, "X:"));
     selectedPoint = component + 1;
     sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7780, 0x8320, 0xFEFFFF, 0, "  %d", node->p08.sb[offset + 4]));
-    sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7C00, 0x8320, 0xFEFFFF, 0, " Y"));
+    sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7C00, 0x8320, 0xFEFFFF, 0, "Y:"));
     sdfDrawTagLink(list, (u32)sdfDevPrintf(0x7C00, 0x8320, 0xFEFFFF, 0, "  %d", node->p08.sb[offset + 5]));
     x[0] = 0;
     y[0] = 0;

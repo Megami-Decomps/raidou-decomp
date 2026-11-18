@@ -2052,16 +2052,6 @@ s32 sbtlSetDamageProc(struct SBTLDMG_HITWORK *hwk, u32 attr)
     return (hwk->area & 0x400) ? 1 : ret;
 }
 
-INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable);
-
-INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable2);
-
-INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable3);
-
-INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable4);
-
-INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageStrFfffff);
-
 #ifdef NON_MATCHING
 /* 569 of 721 words differ; 144 bytes short. Retail retests flg & 1 on each
  * path and its register allocation differs from the start. Behavior is the
@@ -2303,6 +2293,16 @@ vice:
     return damage;
 }
 #else
+INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable);
+
+INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable2);
+
+INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable3);
+
+INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable4);
+
+INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageStrFfffff);
+
 INCLUDE_ASM(const s32, "sbtlDMG", GetDamage);
 #endif
 
