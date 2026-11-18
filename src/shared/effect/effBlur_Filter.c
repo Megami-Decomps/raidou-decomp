@@ -465,7 +465,53 @@ void effBlurDrawFramebufferQuad(const dds3Effect_Blur_t *source) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectFilter);
+/* Links the blend state and a quad of one colour between two corners. */
+void dds3EffectFilter(dds3Effect_Filter_t *source) {
+    sdfDrawTag_t *list;
+    u64 *blendPacket;
+    u64 *drawPacket;
+    u64 color;
+    u32 topLeft;
+    u32 bottomLeft;
+    u32 topRight;
+    u32 bottomRight;
+    s32 x[4];
+    s32 y[4];
+
+    list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(list);
+    blendPacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+    blendPacket[0] = 3;
+    blendPacket[1] = 0x5000000310000000ULL;
+    blendPacket[2] = 0x1000000000008002ULL;
+    blendPacket[3] = 0xE;
+    blendPacket[4] = 0x31001;
+    blendPacket[5] = 0x47;
+    blendPacket[6] = source->blend;
+    blendPacket[7] = 0x42;
+    sdfDrawTagLink(list, EE_ADDR(blendPacket));
+
+    drawPacket = EE_ADDR_AS(u64 *, effPkt2DAllocF4(0));
+    color = source->abgr | 0x3F80000000000000ULL;
+    x[0] = (source->xy[0][0] << 4) + 0x7000;
+    x[1] = (source->xy[1][0] << 4) + 0x7000;
+    y[0] = (source->xy[0][1] << 3) + 0x7900;
+    y[1] = (source->xy[1][1] << 3) + 0x7900;
+    topLeft = (u16)x[0] | ((u32)(u16)y[0] << 16);
+    bottomLeft = (u16)x[0] | ((u32)(u16)y[1] << 16);
+    topRight = (u16)x[1] | ((u32)(u16)y[0] << 16);
+    bottomRight = (u16)x[1] | ((u32)(u16)y[1] << 16);
+    drawPacket[5] = color;
+    drawPacket[7] = color;
+    drawPacket[9] = color;
+    drawPacket[11] = color;
+    drawPacket[6] = 0xFF000000000000ULL | topLeft;
+    drawPacket[8] = 0xFF000000000000ULL | bottomLeft;
+    drawPacket[10] = 0xFF000000000000ULL | topRight;
+    drawPacket[12] = 0xFF000000000000ULL | bottomRight;
+    sdfDrawTagLink(list, EE_ADDR(drawPacket));
+    dds3Data9.regFunc(&dds3Data9, list);
+}
 
 void effResourceQuadDraw(effResourceRectDrawParams_t *params, sdfTexHandle_t *resource, u8 gsCoordinates) {
     sdfDrawTag_t *list;

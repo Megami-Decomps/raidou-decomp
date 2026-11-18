@@ -3687,7 +3687,7 @@ void effPCPFilterExpDraw(effPCPFilterExp_tag *hData) {
         }
         hData->param.Filter.rgba = effMagaCylinderCalcColor(
             effColorBlend(hData->abgr & 0xFFFFFF, hData->abgr, alpha), hData->abgr_base);
-        dds3EffectFilter(&hData->param.Filter);
+        dds3EffectFilter((dds3Effect_Filter_t *)&hData->param.Filter);
         hData->frame++;
     }
 }
