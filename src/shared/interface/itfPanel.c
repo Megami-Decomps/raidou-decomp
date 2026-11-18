@@ -22,6 +22,18 @@ typedef struct itfPanelFrameInset_t {
 extern s32 itfCallMiscDrawRectanglePrimData[9][4];
 extern itfPanelFrameInset_t itfCallMiscDrawRectanglePrimData2;
 
+typedef struct itfPanelFrameColors_t {
+    itfColor_t colors[5];
+} itfPanelFrameColors_t;
+
+typedef struct itfPanelQuadIndex_t {
+    u8 index[4];
+} itfPanelQuadIndex_t;
+
+extern itfPanelFrameColors_t itfCallMiscDrawRectanglePrimTable;
+extern itfPanelQuadIndex_t itfCallMiscDrawRectanglePrimData3;
+extern itfPanelQuadIndex_t itfCallMiscDrawRectanglePrimData4;
+
 /* UV rectangles of a 3x2 sprite panel: top row left, middle, right, then the bottom row. */
 typedef struct itfPanelSpriteUv_t {
     s32 uv[6][4];
@@ -639,29 +651,25 @@ void DrawLeftFade(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfMiscDrawAlphaPrim(pdrawtag, 0, 0);
 }
 
+/* NON_MATCHING: the register use differs from retail. */
 #ifdef NON_MATCHING
-/* Draft, 320 words against retail's 366: the colour table is a local initializer here, retail copies
- * it from itfCallMiscDrawRectanglePrimTable (rodata) with a block-move loop, and the register use differs. */
 /* Draw a nine-patch frame: a filled background rectangle, then four corners, four edges and the centre. */
 void itfCallMiscDrawRectanglePrim(itfpanel_t *panel, sdfDrawTag_t *tag) {
-    itfColor_t colors[5] = {
-        {{0x80, 0x80, 0x80, 0x80}},
-        {{0x0A, 0x0A, 0x0A, 0x5A}},
-        {{0x14, 0x14, 0x14, 0x3C}},
-        {{0x1E, 0x1E, 0x23, 0x50}},
-        {{0x00, 0x00, 0x00, 0x78}},
-    };
-    u8 vertexIndex[4] = {0, 1, 2, 3};
-    u8 colorIndex[4] = {1, 2, 3, 4};
+    itfPanelFrameColors_t frame = itfCallMiscDrawRectanglePrimTable;
+    itfPanelQuadIndex_t vertexIndex = itfCallMiscDrawRectanglePrimData3;
+    itfPanelQuadIndex_t colorIndex = itfCallMiscDrawRectanglePrimData4;
+    itfColor_t *colors = frame.colors;
     sdfIVector2_t vertices[4];
     s32 rect[4];
     itfPanelFrameData_t *data = (itfPanelFrameData_t *)panel->pwork;
     s32 left, top, right, bottom;
     s32 width, height;
+    s32 frameAlpha;
     s32 i;
 
     for (i = 1; i < 5; i++) {
-        colors[i].components[3] = colors[i].components[3] * panel->alpha / 128;
+        frameAlpha = colors[i].components[3];
+        colors[i].components[3] = frameAlpha * panel->alpha / 128;
     }
     left = panel->left;
     top = panel->top;
@@ -675,7 +683,7 @@ void itfCallMiscDrawRectanglePrim(itfpanel_t *panel, sdfDrawTag_t *tag) {
     vertices[2].y = bottom - 80;
     vertices[3].x = left + 128;
     vertices[3].y = bottom - 80;
-    itfMiscDrawRectanglePrim(vertices, colors, vertexIndex, colorIndex, panel->z, tag);
+    itfMiscDrawRectanglePrim(vertices, colors, vertexIndex.index, colorIndex.index, panel->z, tag);
 
     width = right - left - itfCallMiscDrawRectanglePrimData2.left - itfCallMiscDrawRectanglePrimData2.right;
     height = bottom - top - itfCallMiscDrawRectanglePrimData2.top - itfCallMiscDrawRectanglePrimData2.bottom;

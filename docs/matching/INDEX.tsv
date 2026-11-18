@@ -358,7 +358,7 @@ itfCallGrAllocPacketBuff2	interface/itfMesManager	raidou1 0x4D8, raidou2 0x4D8	1
 InitializeMessage	interface/itfMesManager	raidou2 0x4C	11 of 19 words differ	docs/matching/interface/itfMesManager.md	68		
 DrawMsgMng_Process	interface/itfMesManager	raidou2 0x70	12 of 28 words differ	docs/matching/interface/itfMesManager.md	76		
 CalcMessage	interface/itfMesManager	raidou1 0x28C, raidou2 0x31C	118 of 159 words differ	docs/matching/interface/itfMesManager.md	84		
-itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3		
+itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	320 of 323 words differ	docs/matching/interface/itfPanel.md	3		
 TestMsgMngD_Process	interface/itfTestMesManager_0018CC20	raidou1 0x9C, raidou2 0x9C	6 of 39 words differ	docs/matching/interface/itfTestMesManager_0018CC20.md	3		
 jmsChkCommonInput	jmsMisc	raidou1 0x2DC, raidou2 0x2DC	1 of 183 words differ	docs/matching/jmsMisc.md	3		
 dds3CallEncycFindFreeSlot	kernel/dds3AdminiProcess	raidou1 0x94, raidou2 0x94	7 of 37 words differ	docs/matching/kernel/dds3AdminiProcess.md	3		
