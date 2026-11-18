@@ -255,3 +255,93 @@ Block layout: retail keeps the frame-over block inline and puts the lost-target 
 Raidou 2: 44 of 58 words differ, first at +0x24; emitted 240 bytes, native 232 bytes.
 
 Same C and the same block layout difference as Raidou 1.
+
+## sbtlDeletePlayer (sbtlActAI, raidou1 0x178)
+
+Raidou 1: 25 of 94 words differ, first at +0x8.
+
+Register allocation: retail keeps wk in s0 and the i<12 loop test in s1; the draft swaps them. Nested ifs and while forms of the loop leave the swap.
+
+## sbtlAAIProc_Skl_SMV (sbtlActAI, raidou1 0x218)
+
+Raidou 1: 0 of 134 words differ.
+
+Delay slot: retail fills the sbtlCheckCost beq with daddu a0,s0, the draft with addiu v0,15. Inverting the if costs 22 words.
+
+## sbtlAAIProc_N_Comb_E (sbtlActAI, raidou1 0x300)
+
+Raidou 1: 17 of 192 words differ, first at +0x1C.
+
+Scheduling in the unit != NULL block: retail loads skl->area before the order_sklidbk load and skillid store.
+
+## sbtlAAIProc_Skl_S (sbtlActAI, raidou1 0x364)
+
+Raidou 1: 33 of 217 words differ, first at +0x148.
+
+&vertexC is CSE'd into a2 where retail recomputes sp+48 for the call.
+
+## sbtlGetEscapePoint (sbtlActAI, raidou1 0x1F4)
+
+Raidou 1: 75 of 125 words differ, first at +0x4.
+
+Register allocation: retail copies area into s0 before converting it and reuses the model pointer from the rotate block in the check.
+
+## sbtlGetMovePos_MapHit_2 (sbtlActAI, raidou1 0x260)
+
+Raidou 1: 4 of 152 words differ, first at +0x1F4.
+
+Reload registers: retail reloads the spilled flg into a2 and pos into a3, the draft into v0 and a1. Nested ifs for the break test do not move them.
+
+## sbtlGetMovePos_MapHit_2 (sbtlActAI, raidou2 0x260)
+
+Raidou 2: 4 of 152 words differ, first at +0x1F4.
+
+Same C and the same difference as Raidou 1.
+
+## sbtlAAIInit_N_Escape (sbtlActAI, raidou1 0x2CC)
+
+Raidou 1: 17 of 179 words differ, first at +0x38.
+
+Scheduling: retail stores mode before loading flags and fills the sbtlCallMemset11 delay slot differently; mfc1 register in the rotate scale.
+
+## sbtlAAIProc_N_Escape (sbtlActAI, raidou1 0x2F0)
+
+Raidou 1: 104 of 185 words differ, first at +0x74; emitted 740 bytes, native 752 bytes.
+
+&front is CSE'd into s1 where retail recomputes sp+16 for the store; case 14 delay slot and one nop shift the rest.
+
+## sbtlAAIProc_N_Escape (sbtlActAI, raidou2 0x2F0)
+
+Raidou 2: 104 of 185 words differ, first at +0x74; emitted 740 bytes, native 752 bytes.
+
+Same C and the same difference as Raidou 1.
+
+## sbtlSetGroupAction (sbtlActAI, raidou1 0x300)
+
+Raidou 1: 163 of 192 words differ, first at +0x8; emitted 772 bytes, native 768 bytes.
+
+Retail is one word shorter. Register allocation differs (retail keeps i in s5 and targetid in s4 and never saves s8). Retail tests the three set=0 checks as an else-if chain with branches; the draft's separate ifs compile to movn, and the else-if chain makes the draft longer than retail.
+
+## sbtlSetGroupAction (sbtlActAI, raidou2 0x300)
+
+Raidou 2: 163 of 192 words differ, first at +0x8; emitted 772 bytes, native 768 bytes.
+
+Same C and the same difference as Raidou 1.
+
+## sbtlAAIInit_N_Kaihi (sbtlActAI, raidou1 0x1C8)
+
+Raidou 1: 92 of 114 words differ, first at +0x8; emitted 464 bytes, native 456 bytes.
+
+&wk->pos is CSE'd into s2 across sbtlGetVerticalLength_Point where retail recomputes s0+64; the extra saved register shifts the rest.
+
+## sbtlAAIProc_N_Kaihi (sbtlActAI, raidou1 0x3E8)
+
+Raidou 1: 41 of 250 words differ, first at +0x110.
+
+&front is CSE'd into s1 where retail recomputes sp+16 for the store; aiwk and backmode registers swapped.
+
+## sbtlAAIProc_N_Kaihi (sbtlActAI, raidou2 0x3E8)
+
+Raidou 2: 41 of 250 words differ, first at +0x110.
+
+Same C and the same difference as Raidou 1.

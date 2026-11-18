@@ -16,6 +16,9 @@
 #include "code_r1_0027CBE8.h"
 #include "sBtlSM.h"
 #include "sBtlPlayer.h"
+#include "sdfQuat.h"
+#include "sbtlSub_0027ED08.h"
+#include "sdfVu0.h"
 
 INCLUDE_ASM(const s32, "sbtlActAI", datLeaf81);
 
@@ -1197,7 +1200,30 @@ s32 sbtlEAIProc_Escape(struct SBTLUNIT_WORK *wk) {
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_Summonw);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIProc_BtlAI);
+s32 sbtlEAIProc_BtlAI(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *pUnit;
+    s32 i = 0;
+    s32 actMax = wk->actMax;
+
+    while (i < wk_sbtl->unitList->number) {
+        pUnit = wk_sbtl->unitList->pUnitL[i++].pUnit;
+        if (pUnit != NULL && sbtlCheckDamageTarget(pUnit) && (pUnit->field414 & 1) &&
+            sbtlCheckCrossCircle(&wk->pos, wk->model->field130, &pUnit->pos, pUnit->model->field11C)) {
+            actMax = wk->actMax >> 4;
+            break;
+        }
+    }
+    if (wk->actCounter >= actMax) {
+        wk->actCounter = 0;
+        if (!sbtlCheckScriptData(wk->unit.devilId)) {
+            wk->aiwk->stat = 1;
+        }
+    } else {
+        wk->actCounter++;
+        wk->actCounter = (wk->actCounter <= 0) ? 0 : (wk->actCounter < actMax) ? wk->actCounter : actMax;
+    }
+    return 1;
+}
 
 s32 sbtlSetSearchEnemyMode(struct SBTLUNIT_WORK *wk, s32 targetid) {
     wk->model->field118 = 1;
@@ -1206,7 +1232,86 @@ s32 sbtlSetSearchEnemyMode(struct SBTLUNIT_WORK *wk, s32 targetid) {
     return 1;
 }
 
+/* NON_MATCHING: 29 of 192 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSetGroupAction(struct SBTLUNIT_WORK *wk, s32 targetid, u32 mode, s8 flg) {
+    u16 tbl[11] = {
+        SBTL_ACTAIMODE_WAIT,  SBTL_ACTAIMODE_WAIT,  SBTL_ACTAIMODE_MOVEF,  SBTL_ACTAIMODE_GUARD,
+        SBTL_ACTAIMODE_CTACT, SBTL_ACTAIMODE_SEARCH, SBTL_ACTAIMODE_CHASE, SBTL_ACTAIMODE_ESCAPE,
+        SBTL_ACTAIMODE_RESMNR, SBTL_ACTAIMODE_SUMMON, SBTL_ACTAIMODE_SUMMONW,
+    };
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_MODEL *model;
+    s32 i;
+    s32 set;
+
+    if (wk->field414 & 1) {
+        return 1;
+    }
+    if (!(wk->field414 & 7)) {
+        return 1;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit == NULL || unit->field1A0 == wk->field1A0 || !sbtlCheckExist(unit)) {
+            continue;
+        }
+        model = unit->model;
+        set = 0;
+        if ((model->flags & 0x100) && wk->model->field0FC == model->field0FC) {
+            set = ((wk->field414 ^ unit->field414) & 7) == 0;
+        }
+        if (flg == 1 && ((wk->field414 ^ unit->field414) & 7) == 0) {
+            set = 1;
+        }
+        if (wk->field1A0 == model->field0FC) {
+            set = 1;
+        }
+        if (sbtlCheckScriptData(unit->unit.devilId)) {
+            set = 0;
+        }
+        if (unit->flg & 0x800) {
+            set = 0;
+        }
+        if (!(unit->field414 & 7)) {
+            set = 0;
+        }
+        if (set == 1) {
+            if (mode < 12) {
+                sbtlSetNormalAction(unit, tbl[mode], 0, -1, 0);
+            } else if (unit->model->mode >= 12 && unit->model->mode <= 14) {
+                unit->model->field104 = targetid;
+            } else {
+                model = unit->model;
+                model->stat = 1;
+                model->field104 = targetid;
+                model->mode = mode;
+                model->flags = (model->flags | 0x44) & ~0x23B;
+            }
+        }
+    }
+    if (sbtlCheckScriptData(wk->unit.devilId)) {
+        return 0;
+    }
+    if (wk->flg & 0x800) {
+        return 0;
+    }
+    model = wk->model;
+    if (model->mode < 12 && mode < 12) {
+        sbtlSetNormalAction(wk, tbl[mode], 0, -1, 0);
+    } else if (model->mode >= 12 && model->mode <= 14) {
+        model->field104 = targetid;
+    } else {
+        model->field104 = targetid;
+        model->mode = mode;
+        model->stat = 1;
+        model->flags = (model->flags | 0x44) & ~0x23B;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetGroupAction);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetNoMP);
 
@@ -1263,7 +1368,50 @@ s32 sbtlCheckHITCheck_Char(struct SBTLUNIT_WORK *wk) {
     return ret;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlPrivAreaCheck);
+s32 sbtlPrivAreaCheck(struct SBTLUNIT_WORK *wk, s32 flg) {
+    sdfVector4_t pos;
+    struct SBTLUNIT_WORK *pUnit;
+    s32 ret;
+    f32 deg;
+    s32 i;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        pUnit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (pUnit == NULL || pUnit->field1A0 == wk->field1A0) {
+            continue;
+        }
+        if (!sbtlBtlMVSupportSub(wk, pUnit) || !sbtlCheckHITCheck_Char(wk) || !sbtlCheckHITCheck_Char(pUnit)) {
+            continue;
+        }
+        if (!sbtlCheckExist2_sbtlUnit(pUnit) || sbtlBtlMVSupportSub2(wk, pUnit)) {
+            continue;
+        }
+        if ((wk->flg & 1) || (pUnit->flg & 1) || (wk->vstatus & 0x200) || (pUnit->vstatus & 0x200) || flg != 1) {
+            continue;
+        }
+        if (sbtlCheckCrossCircle(&wk->pos, wk->model->field11C, &pUnit->pos, pUnit->model->field11C)) {
+            ret = sbtlSetPushPos(wk, wk->model->field11C, pUnit, pUnit->model->field11C,
+                                 sbtlFree(pUnit->pos.x, pUnit->pos.z));
+            /* sbtlSetPushPos leaves the pushed position in vf10 */
+            SDF_VU0_STOREVECTOR(&pUnit->pos);
+            pUnit->mv_spd.z = 0.0f;
+            if (!ret) {
+                deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, &pUnit->pos, 1.0f);
+                if (!sbtlGetMovePos_MapHit_2(wk, pUnit, &pos, wk->model->field11C + pUnit->model->field11C + 2.0f, deg,
+                                             1) &&
+                    !sbtlGetMovePos_MapHit_2(wk, pUnit, &pos,
+                                             wk->model->field11C + pUnit->model->field11C + pUnit->model->field11C, deg,
+                                             1)) {
+                    SDF_VU0_LOADVECTOR(&pUnit->pos);
+                    SDF_VU0_STOREVECTOR(&pos);
+                }
+                SDF_VU0_LOADVECTOR(&pos);
+                SDF_VU0_STOREVECTOR(&pUnit->pos);
+            }
+        }
+    }
+    return 1;
+}
 
 s32 sbtlCheckSearchEnemy(struct SBTLUNIT_WORK *wk, s32 *targetid, s8 mode) {
     struct SBTLUNIT_WORK *unit;
@@ -1320,11 +1468,84 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetNWarpPoint);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckCrossUnit_HIT);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetMovePos_MapHit);
+s32 sbtlGetMovePos_MapHit(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, sdfVector4_t *pos, f32 dis, f32 deg,
+                          s32 flg) {
+    sdfVector4_t ppos;
+    sdfVector4_t dir;
+    sdfMatrix4_t mtx;
+    s32 i;
+
+    memset(&dir, 0, sizeof(dir));
+    dir.z = -1.0f;
+    sbtlGetRotateDeg(&wk->rot, deg);
+    ToMatrix();
+    SDF_VU0_STOREMATRIX(&mtx);
+    for (i = 0; i < 12; i++) {
+        SDF_VU0_LOADMATRIX(&mtx);
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_SCALEVECTOR_V0(dis);
+        SDF_VU0_LOADVECTOR_B(&wk->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&ppos);
+        if (sbtlCheckMapHit(&wk->pos, &ppos, dis) && (flg != 1 || sbtlCheckCrossUnit_HIT(wklock, &ppos))) {
+            break;
+        }
+        sbtlGetRotateDeg(&wk->rot, deg + (i + 1) * 30);
+        ToMatrix();
+        SDF_VU0_STOREMATRIX(&mtx);
+    }
+    if (i < 12) {
+        SDF_VU0_LOADVECTOR(&ppos);
+        SDF_VU0_STOREVECTOR(pos);
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetMovePos_MapHit_Nakama);
 
+/* NON_MATCHING: 148 of 152 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetMovePos_MapHit_2(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, sdfVector4_t *pos, f32 dis, f32 deg,
+                            s32 flg) {
+    sdfVector4_t ppos;
+    sdfVector4_t dir = {0.0f, 0.0f, -1.0f, 0.0f};
+    sdfMatrix4_t mtx;
+    f32 degtbl[24] = {
+        15.0f,  -15.0f,  30.0f,  -30.0f,  45.0f,  -45.0f,  60.0f,  -60.0f,  75.0f,  -75.0f,  90.0f,  -90.0f,
+        105.0f, -105.0f, 120.0f, -120.0f, 135.0f, -135.0f, 150.0f, -150.0f, 165.0f, -165.0f, 180.0f, 180.0f,
+    };
+    s32 i;
+
+    sbtlGetRotateDeg(&wk->rot, deg);
+    ToMatrix();
+    SDF_VU0_STOREMATRIX(&mtx);
+    for (i = 0; i < 24; i++) {
+        SDF_VU0_LOADMATRIX(&mtx);
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_SCALEVECTOR_V0(dis);
+        SDF_VU0_LOADVECTOR_B(&wk->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&ppos);
+        if (sbtlCheckMapHit(&wk->pos, &ppos, dis) && (flg != 1 || sbtlCheckCrossUnit_HIT(wklock, &ppos))) {
+            break;
+        }
+        sbtlGetRotateDeg(&wk->rot, deg + degtbl[i]);
+        ToMatrix();
+        SDF_VU0_STOREMATRIX(&mtx);
+    }
+    if (i < 24) {
+        SDF_VU0_LOADVECTOR(&ppos);
+        SDF_VU0_STOREVECTOR(pos);
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlGetMovePos_MapHit_2);
+#endif
 
 s32 sbtlCheckMapHit(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis) {
     return sbtlCheckMapHit_Cross(pos0, ppos, dis);
@@ -1332,11 +1553,11 @@ s32 sbtlCheckMapHit(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis)
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc);
 
-s32 sbtlAAIInit_Free(struct SBTLUNIT_WORK *wk) {
+s32 sbtlAAIInit_None(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_Free_sbtlActAI);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_Free);
 
 void sbtlBtlAAIInitSklSSub(struct SBTLUNIT_WORK *wk) {
     wk->model->stat = 2;
@@ -1373,7 +1594,41 @@ s32 sbtlAAIInit_N_Sabato(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_GardeT);
+s32 sbtlAAIInit_N_GardeT(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t vec;
+    struct SBTLUNIT_MODEL *model;
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLDMG_HITWORK *hit;
+
+    wk->model->field100 = -1;
+    wk->model->mode = 2;
+    wk->model->flags = (wk->model->flags | 0x14) & ~0x20B;
+    SDF_VU0_LOADVECTOR(&wk->max_mvspd);
+    SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+    wk->model->mode = 14;
+    wk->model->frame = 0;
+    wk->model->cmpframe = 0;
+    unit = sbtlGetWarpUnit_ID(wk);
+    sbtlSetWalk(wk, wk->model->field120 + unit->model->field11C);
+    model = wk->model;
+    model->stat = 2;
+    hit = sbtlSearchHit_SerialID(wk_sbtl->hitList, model->h_serialID);
+    if (hit != NULL) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        SDF_VU0_LOADVECTOR(&hit->pos);
+        SDF_VU0_STOREVECTOR(&vec);
+        vec.y = 0.0f;
+        SDF_VU0_LOADVECTOR(&vec);
+        SDF_VU0_LOADVECTOR_B(&unit->pos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_SCALEVECTOR(unit->model->field120 + wk->model->field120);
+        SDF_VU0_LOADVECTOR_B(&unit->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&wk->model->vec00);
+    }
+    return 1;
+}
 
 /* NON_MATCHING: 6 of 42 words match.  */
 #ifdef NON_MATCHING
@@ -1402,9 +1657,9 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSearchUnitID7);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSearchUnitID8);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf27);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Return);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlGetSkilltbl5);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_Attack);
 
 /* NON_MATCHING: 39 of 41 words match.  */
 #ifdef NON_MATCHING
@@ -1580,17 +1835,17 @@ struct SBTLUNIT_WORK *sbtlGetWarpUnit_ID(struct SBTLUNIT_WORK *wk) {
     return unit;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSetMotion);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlSetWalk);
 
 s32 sbtlBtlAAIProcNKaihiSub(struct SBTLUNIT_WORK *wk) {
     return 0;
 }
 
-s32 sbtlAAIProc_Free(struct SBTLUNIT_WORK *wk) {
+s32 sbtlAAIProc_None(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Free_sbtlActAI);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Free);
 
 s32 sbtlAAIProc_N_Wait(struct SBTLUNIT_WORK *wk) {
     struct SBTLUNIT_MODEL *model;
@@ -1627,7 +1882,7 @@ s32 sbtlAAIProc_N_Renkei(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallBtlSetMapFadeH);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Comb_E);
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Comb_R);
 
@@ -1640,17 +1895,260 @@ s32 sbtlAAIProc_N_Return(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Escape);
+/* NON_MATCHING: 83 of 187 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlAAIProc_N_Escape(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t mypos;
+    sdfVector4_t front;
+    sdfVector4_t rot;
+    sdfVector4_t zero;
+    sdfVector4_t back;
+    sdfVector4_t dir;
+    struct SBTLUNIT_MODEL *model;
 
+    memset(&zero, 0, sizeof(zero));
+    memset(&back, 0, sizeof(back));
+    memset(&dir, 0, sizeof(dir));
+    dir.z = -1.0f;
+    if ((wk->flg & 0x840000) == 0x840000) {
+        return 0;
+    }
+    SDF_VU0_LOADVECTOR(&wk->mv_spdbk);
+    SDF_VU0_STOREVECTOR(&wk->mv_spd);
+    model = wk->model;
+    model->frame++;
+    model->frame = (model->frame <= 0) ? 0 : (model->frame > 0x7FFF) ? 0x7FFF : model->frame;
+    if (model->cmpframe != 0 && model->frame >= model->cmpframe) {
+        sbtlResetAAI(wk);
+        sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+        wk->model->flags &= ~0x10;
+        wk->actCounter = wk->actMax;
+        return 1;
+    }
+    switch (model->mode) {
+    case 14:
+        if (sbtlCheckCrossCircle(&wk->pos, model->field11C, &model->vec00, 30.0f)) {
+            wk->model->mode = 2;
+            sbtlGetRotateDeg(&wk->rot, 180.0f);
+            SDF_VU0_STOREVECTOR(&rot);
+            back.z = -wk->model->field11C;
+            SDF_VU0_LOADVECTOR_B(&back);
+            SDF_VU0_LOADVECTOR(&rot);
+            ToMatrix();
+            SDF_VU0_APPLYMATRIX_B();
+            SDF_VU0_LOADVECTOR(&wk->pos);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(&wk->model->vec00);
+        }
+        break;
+    case 2:
+        SDF_VU0_LOADVECTOR(&zero);
+        SDF_VU0_STOREVECTOR(&wk->mv_spd);
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&mypos);
+        SDF_VU0_LOADVECTOR(&wk->rot);
+        ToMatrix();
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_SCALEVECTOR(wk->model->field11C);
+        SDF_VU0_LOADVECTOR_B(&mypos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&front);
+        mypos.y = 0.0f;
+        front.y = 0.0f;
+        if (sbtlGetVerticalLength(&mypos.x, &front.x, &wk->model->vec00.x) <= wk->model->field11C * 0.29999999f &&
+            sbtlCheckInner(&mypos, &front, &wk->model->vec00, 0.0f)) {
+            sbtlResetAAI(wk);
+            sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+            wk->model->flags &= ~0x10;
+            wk->actCounter = wk->actMax;
+        }
+        break;
+    }
+    return 1;
+}
+#else
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Escape);
+#endif
+
+/* NON_MATCHING: 209 of 250 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlAAIProc_N_Kaihi(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t mypos;
+    sdfVector4_t front;
+    sdfVector4_t rot;
+    sdfVector4_t zero;
+    sdfVector4_t back;
+    sdfVector4_t dir;
+    struct SBTLUNIT_MODEL *model;
+    struct SBTLAI_WORK *aiwk;
+    s32 hit;
+
+    memset(&zero, 0, sizeof(zero));
+    memset(&back, 0, sizeof(back));
+    memset(&dir, 0, sizeof(dir));
+    dir.z = -1.0f;
+    wk->actCounter++;
+    wk->actCounter = (wk->actCounter <= 0) ? 0 : (wk->actCounter < wk->actMax) ? wk->actCounter : wk->actMax;
+    if ((wk->flg & 0x840000) == 0x840000) {
+        return 0;
+    }
+    SDF_VU0_LOADVECTOR(&wk->mv_spdbk);
+    SDF_VU0_STOREVECTOR(&wk->mv_spd);
+    model = wk->model;
+    model->frame++;
+    model->frame = (model->frame <= 0) ? 0 : (model->frame > 0x7FFF) ? 0x7FFF : model->frame;
+    if ((model->cmpframe != 0 && model->frame >= model->cmpframe) || wk->actCounter >= wk->actMax) {
+        aiwk = wk->aiwk;
+        if (aiwk->backmode != 0) {
+            aiwk->stat = 2;
+            aiwk->mode = aiwk->backmode;
+            aiwk->backmode = 0;
+            model->stat = 1;
+            return 1;
+        }
+        sbtlResetAAI(wk);
+        wk->aiwk->actcnt = (wk->aiwk->actcnt <= 0) ? 0 : (wk->aiwk->actcnt > 0x7FFF) ? 0x7FFF : wk->aiwk->actcnt;
+        sbtlSetMotion_sbtlUnit(wk, 0, 4, 0, 0);
+        wk->model->flags &= ~0x10;
+        return 1;
+    }
+    switch (model->mode) {
+    case 14:
+        hit = 0;
+        if (sbtlCheckCrossCircle(&wk->pos, model->field11C, &model->vec00, 30.0f) || sbtlBtlAAIProcNKaihiSub(wk)) {
+            hit = 1;
+        }
+        if (hit == 1) {
+            wk->model->mode = 2;
+            sbtlGetRotateDeg(&wk->rot, 180.0f);
+            SDF_VU0_STOREVECTOR(&rot);
+            back.z = -wk->model->field11C;
+            SDF_VU0_LOADVECTOR_B(&back);
+            SDF_VU0_LOADVECTOR(&rot);
+            ToMatrix();
+            SDF_VU0_APPLYMATRIX_B();
+            SDF_VU0_LOADVECTOR(&wk->pos);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(&wk->model->vec00);
+        }
+        break;
+    case 2:
+        SDF_VU0_LOADVECTOR(&zero);
+        SDF_VU0_STOREVECTOR(&wk->mv_spd);
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&mypos);
+        SDF_VU0_LOADVECTOR(&wk->rot);
+        ToMatrix();
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_SCALEVECTOR_V0(wk->model->field11C);
+        SDF_VU0_LOADVECTOR_B(&mypos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&front);
+        mypos.y = 0.0f;
+        front.y = 0.0f;
+        if (sbtlGetVerticalLength(&mypos.x, &front.x, &wk->model->vec00.x) <= wk->model->field11C * 0.29999999f &&
+            sbtlCheckInner(&mypos, &front, &wk->model->vec00, 0.0f)) {
+            aiwk = wk->aiwk;
+            if (aiwk->backmode != 0) {
+                aiwk->stat = 2;
+                aiwk->mode = aiwk->backmode;
+                aiwk->backmode = 0;
+                wk->model->stat = 1;
+                return 1;
+            } else {
+                sbtlResetAAI(wk);
+                wk->aiwk->mode = 12;
+                sbtlSetMotion_sbtlUnit(wk, 0, 4, 0, 0);
+                wk->model->flags &= ~0x10;
+            }
+        }
+        break;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Kaihi);
+#endif
+
+s32 sbtlAAIProc_N_GardeT(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_MODEL *model;
+
+    if ((wk->flg & 0x840000) == 0x840000) {
+        return 0;
+    }
+    SDF_VU0_LOADVECTOR(&wk->mv_spdbk);
+    SDF_VU0_STOREVECTOR(&wk->mv_spd);
+    model = wk->model;
+    model->frame++;
+    model->frame = (model->frame <= 0) ? 0 : (model->frame > 0x7FFF) ? 0x7FFF : model->frame;
+    if (model->cmpframe != 0 && model->frame >= model->cmpframe) {
+        sbtlResetAAI(wk);
+        wk->aiwk->actcnt = (wk->aiwk->actcnt <= 0) ? 0 : (wk->aiwk->actcnt > 0x7FFF) ? 0x7FFF : wk->aiwk->actcnt;
+        sbtlSetMotion_sbtlUnit(wk, 0, 4, 0, 0);
+        return 1;
+    }
+    if (model->mode == 14 && sbtlCheckCrossCircle(&wk->pos, model->field11C, &model->vec00, 10.0f)) {
+        sbtlResetAAI(wk);
+        wk->aiwk->actcnt = (wk->aiwk->actcnt <= 0) ? 0 : (wk->aiwk->actcnt > 0x7FFF) ? 0x7FFF : wk->aiwk->actcnt;
+        sbtlSetMotion_sbtlUnit(wk, 0, 4, 0, 0);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Attack);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Attack_sbtlActAI);
-
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_BAttack);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_TurnMV);
+s32 sbtlAAIProc_TurnMV(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t zero;
+    struct SBTLUNIT_MODEL *model;
+    f32 x;
+    f32 z;
+
+    memset(&zero, 0, sizeof(zero));
+    model = wk->model;
+    model->frame++;
+    model->frame = (model->frame <= 0) ? 0 : (model->frame > 0x7FFF) ? 0x7FFF : model->frame;
+    SDF_VU0_LOADVECTOR(&wk->mv_spdbk);
+    SDF_VU0_STOREVECTOR(&wk->mv_spd);
+    switch (model->mode) {
+    case 14:
+        if (sbtlSetMotion(wk, SBTLUNIT_MOTION_WALK)) {
+            wk->model->frame = 0;
+            if (sbtlCheckVerticalArea(&wk->pos, &wk->rot, &wk->model->vec00, 200.0f)) {
+                SDF_VU0_LOADVECTOR(&wk->max_mvspd);
+                SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+                sbtlSetMotion_sbtlUnit(wk, 5, 4, 0, 0);
+                wk->model->frame = 0;
+                wk->model->flags = (wk->model->flags | 0x14) & ~0x20B;
+            }
+        } else if (sbtlCheckCrossCircle(&wk->pos, wk->model->field11C, &wk->model->vec00, 2.0f)) {
+            wk->model->vec00.x = x = main_data.val20 + 0.0f;
+            wk->model->vec00.z = z = main_data.val24 + 400.0f;
+            wk->model->vec00.y = sbtlFree(x, z) + 0.0f;
+            SDF_VU0_LOADVECTOR(&zero);
+            SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
+            wk->model->cmpframe = 10800;
+            wk->model->frame = 0;
+            wk->model->mode = 15;
+            sbtlSetMotion_sbtlUnit(wk, 18, 4, 0, 0);
+        }
+        break;
+    case 15:
+        if (sbtlCheckVerticalArea(&wk->pos, &wk->rot, &model->vec00, 200.0f)) {
+            sbtlResetAAI(wk);
+            wk->aiwk->actcnt++;
+            wk->aiwk->actcnt = (wk->aiwk->actcnt <= 0) ? 0 : (wk->aiwk->actcnt > 0x7FFF) ? 0x7FFF : wk->aiwk->actcnt;
+            wk->skillid = SKLID_NONE;
+        }
+        break;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Skl_S);
 
@@ -1692,7 +2190,7 @@ s32 sbtlAAIProc_N_GuardH(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-s32 Proc_sbtlAction(struct SBTLUNIT_WORK *wk) {
+s32 sbtlAAIProc_SAttack(struct SBTLUNIT_WORK *wk) {
     sbtlResetAAI(wk);
     return 1;
 }

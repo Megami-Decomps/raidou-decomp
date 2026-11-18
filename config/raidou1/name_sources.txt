@@ -7002,8 +7002,8 @@
 0x00275640	sbtlGetMovePos_MapHit_2	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_2, score 7.3 band B
 0x002758A0	sbtlCheckMapHit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlCheckMapHit(pos0, ppos, dis); callers GetSenkaiPointSub, sbtlGetMovePos_MapHit, sbtlAAIInit_N_Escape pass two vectors and a float; body forwards to sbtlCheckMapHit_Cross; replaces sbtlAAIInit_None
 0x002758C0	sbtlBtlProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlProc
-0x00275948	sbtlAAIInit_Free	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_Free, score 8.0 band B, hd-ab: calls1 next~ callers-of-match-uniq votes2 st1:call r1+r2
-0x00275950	sbtlCallBtlGetWarpUnitID	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlGetWarpUnit_ID
+0x00275948	sbtlAAIInit_None	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI.sBtlAAIInit_None (AAI Init table); same function in both games; replaces sbtlAAIInit_Free
+0x00275950	sbtlAAIInit_Free	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlActAI.sBtlAAIInit_Free (AAI Init table, HD body); replaces sbtlCallBtlGetWarpUnitID
 0x002759F8	sbtlBtlAAIInitSklSSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlAAIInit_Skl_S
 0x00275A18	sbtlAAIInit_N_Escape	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_N_Escape, score 7.4 band B
 0x00275CE8	sbtlAAIInit_N_Kaihi	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_N_Kaihi, score 9.9 band B
@@ -7026,8 +7026,8 @@
 0x00276998	sbtlGetWarpUnit_ID	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetWarpUnit_ID, score 7.15 band B
 0x00276A00	sbtlSetWalk	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlActAI.sBtlSetWalk score 6.4 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x29c738
 0x00276A78	sbtlBtlAAIProcNKaihiSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlAAIProc_N_Kaihi
-0x00276A80	sbtlAAIProc_Free	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIProc_Free, score 9.0 band B
-0x00276A88	sbtlCallBtlResetAAI	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlResetAAI
+0x00276A80	sbtlAAIProc_None	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI.sBtlAAIProc_None (AAI Proc table); same function in both games; replaces sbtlAAIProc_Free
+0x00276A88	sbtlAAIProc_Free	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI.sBtlAAIProc_Free (AAI Proc table); replaces sbtlCallBtlResetAAI
 0x00276C90	sbtlAAIProc_N_Wait	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc_N_Wait score 11.3 flag I: calls2 prev gap=exact st1:gap r1+r2
 0x00276D50	sbtlAAIProc_N_Sabato	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc_N_Sabato score 10.3 flag I: prev next gap=exact st1:gap r1+r2
 0x00276D98	sbtlAAIProc_N_Renkei	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc_N_Renkei score 11.5 flag I: calls3 gap=exact votes3 st1:gap r1+r2
@@ -7036,16 +7036,16 @@
 0x002771F0	sbtlAAIProc_N_Return	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc_N_Return score 10.9 flag I: calls3 callers-of-match-uniq votes2 st1:call r1+r2
 0x00277248	sbtlAAIProc_N_Escape	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIProc_N_Escape, score 10.3 band A
 0x00277538	sbtlAAIProc_N_Kaihi	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIProc_N_Kaihi, score 10.3 band A
-0x00277920	sbtlAAIProc_Attack	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIProc_Attack, score 7.0 band B
+0x00277920	sbtlAAIProc_N_GardeT	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI.sBtlAAIProc_N_GardeT (AAI Proc table); same function in both games; replaces sbtlAAIProc_Attack
 0x00277A90	sbtlCallMemset14	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls memset
-0x00277E98	sbtlCallBtlResetAAI2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlResetAAI
+0x00277E98	sbtlAAIProc_BAttack	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI.sBtlAAIProc_BAttack (AAI Proc table); replaces sbtlCallBtlResetAAI2
 0x00278040	sbtlAAIProc_TurnMV	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIProc_TurnMV, score 9.8 band B
 0x00278258	sbtlAAIProc_Skl_S	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIProc_Skl_S, score 10.0 band A
 0x002785C0	sbtlAAIProc_Skl_SMV	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc_Skl_SMV score 9.8 flag I: calls5 prev callers-of-match votes3 st2:call r1-disagree:0x277a90
 0x002787D8	sbtlAAIProc_Skl_SRT	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIProc_Skl_SRT, score 9.5 band B
 0x00278CC8	sbtlAAIProc_SUMMON	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc_SUMMON score 9.5 flag I: calls2 callee-index votes2 st1:cidx r1+r2
 0x00278DD0	sbtlAAIProc_N_GuardH	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc_N_GuardH score 9.8 flag I: calls1 prev callers-of-match st1:call r1+r2
-0x00278E68	Proc_sbtlAction	hd	hd: Raidou HD sBtlAction.Proc, score 14.65 band A
+0x00278E68	sbtlAAIProc_SAttack	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI.sBtlAAIProc_SAttack (sBtlResetAAI and return 1); same function in both games; replaces Proc_sbtlAction
 0x00278E88	Proc	hd	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD sBtlAction.Proc score 6.5 flag -: calls1 str2 ustr votes2 st1:str r2-disagree:0x2a0570
 0x0027BD88	sbtlCheckNextAction	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlAction.sBtlCheckNextAction (R2 0x2A5768, tier A, r1-disagree:0x27bd88); same function; replaces sbtlCallBtlSearchEffectSABActer
 0x0027BE18	sbtlRefSbtl22	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlActAI; references wk_sbtl

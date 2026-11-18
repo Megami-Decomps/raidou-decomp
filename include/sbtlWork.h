@@ -515,6 +515,10 @@ void sbtlCallBtlGetPlayerData2(void);
 void sbtlCallBtlGetPlayerData6(s32 num);
 s32 sbtlCallBtlGetMotionVisualData(struct SBTLUNIT_WORK *wk, s32 motionID, s32 bframe, s32 aframe, s8 flg);
 f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type);
+void sbtlResetCombine(void);
+#ifndef VERSION_RAIDOU2 /* Raidou 2's sbtlCallMemset is other code */
+s32 sbtlCallMemset(struct SBTLUNIT_WORK *wk, s32 index);
+#endif
 s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg);
 
 #ifdef VERSION_RAIDOU2

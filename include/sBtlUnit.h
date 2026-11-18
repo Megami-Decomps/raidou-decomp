@@ -45,9 +45,14 @@ typedef struct SBTLUNIT_MODEL {
     f32 field120;
     f32 field124;
     f32 field128;
-    u8 pad158[0x28];
+    f32 field12C;
+    f32 field130;
+    u8 pad160[0x170 - 0x160];
+    s32 kaihiID; /* unit the N_Kaihi AI dodges (HD kaihiID) */
+    u8 pad174[0x180 - 0x174];
     s8 nonempflg;
-    u8 pad181[0x3];
+    u8 pad181;
+    s16 h_serialID;
     s8 dataflg;
     u8 pad185[0x3];
     s32 datamode;
@@ -92,12 +97,15 @@ typedef struct SBTLUNIT_MODEL {
     f32 field130;
     u8 pad134[0x140 - 0x134];
     s16 field140;
-    u8 pad142[0x164 - 0x142];
+    u8 pad142[0x144 - 0x142];
+    s32 kaihiID; /* unit the N_Kaihi AI dodges (HD kaihiID) */
+    u8 pad148[0x164 - 0x148];
     f32 hitbk_cnt;
     f32 hitbk_cmpcnt;
     f32 hitbk_rate;
     s8 nonempflg;
-    u8 pad171[0x174 - 0x171];
+    u8 pad171;
+    s16 h_serialID;
     s8 dataflg;
     u8 pad175[0x3];
     s32 datamode;

@@ -3346,8 +3346,6 @@
 0x00275490	sbtlGetMovePos_MapHit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit, score 10.3 band A
 0x00275640	sbtlGetMovePos_MapHit_2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_2, score 7.3 band B
 0x002758C0	sbtlBtlProcSub	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlProc
-0x00275948	sbtlAAIInit_Free	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIInit_Free, score 8.0 band B, hd-ab: calls1 next~ callers-of-match-uniq votes2 st1:call r1+r2
-0x00275950	sbtlCallBtlGetWarpUnitID	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlGetWarpUnit_ID
 0x002759F8	sbtlBtlAAIInitSklSSub	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlAAIInit_Skl_S
 0x00275A18	sbtlAAIInit_N_Escape	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIInit_N_Escape, score 7.4 band B
 0x00275CE8	sbtlAAIInit_N_Kaihi	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIInit_N_Kaihi, score 9.9 band B
@@ -3360,14 +3358,10 @@
 0x00276900	sbtlResetAAI	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlResetAAI, score 11.8 band A
 0x00276998	sbtlGetWarpUnit_ID	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlGetWarpUnit_ID, score 7.15 band B
 0x00276A78	sbtlBtlAAIProcNKaihiSub	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlAAIProc_N_Kaihi
-0x00276A80	sbtlAAIProc_Free	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_Free, score 9.0 band B
-0x00276A88	sbtlCallBtlResetAAI	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlResetAAI
 0x00277148	sbtlCallBtlSearchUnitID13	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlSearchUnit_ID
 0x00277248	sbtlAAIProc_N_Escape	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_N_Escape, score 10.3 band A
 0x00277538	sbtlAAIProc_N_Kaihi	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_N_Kaihi, score 10.3 band A
-0x00277920	sbtlAAIProc_Attack	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_Attack, score 7.0 band B
 0x00277A90	sbtlCallMemset14	func	tier=D	derived-callee	na	unit sbtlActAI; calls memset
-0x00277E98	sbtlCallBtlResetAAI2	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlResetAAI
 0x00278040	sbtlAAIProc_TurnMV	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_TurnMV, score 9.8 band B
 0x00278258	sbtlAAIProc_Skl_S	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_Skl_S, score 10.0 band A
 0x002787D8	sbtlAAIProc_Skl_SRT	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_Skl_SRT, score 9.5 band B
@@ -19436,7 +19430,13 @@
 0x00274700	PosOut	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlActAI.PosOut score 6.5 flag -: calls1 prev gap5/9 st1:gap r1+r2
 0x002751D8	sbtlGetEscapePoint	func	tier=B	hd-role	na	HD sBtlGetEscapePoint (sBtlActAI.c:4499) is what sBtlSetAIData case 15 calls with (wk, wklock, &actaiwk->ppos, area); R2 0x29A578 is sbtlGetEscapePoint; R1 0x2751D8 sits beside GetSenkaiPointSub as in R2; replaces sbtlCallMemset13
 0x002753D0	sbtlCheckCrossUnit_HIT	func	tier=B	hd-role	na	HD sBtlActAI.sBtlCheckCrossUnit_HIT (R2 0x29ADD0, tier A, r1-disagree:0x2753d0); R2 keeps sbtlCallBtlCreateSideListSBtlUnit3 on an unrelated HP check; replaces sbtlCallBtlCreateSideListSBtlUnit3
+0x00275948	sbtlAAIInit_None	func	tier=B	hd-role	na	HD sBtlActAI.sBtlAAIInit_None (AAI Init table); same function in both games; replaces sbtlAAIInit_Free
 0x00276A00	sbtlSetWalk	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlActAI.sBtlSetWalk score 6.4 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x29c738
+0x00276A80	sbtlAAIProc_None	func	tier=B	hd-role	na	HD sBtlActAI.sBtlAAIProc_None (AAI Proc table); same function in both games; replaces sbtlAAIProc_Free
+0x00276A88	sbtlAAIProc_Free	func	tier=B	hd-role	na	HD sBtlActAI.sBtlAAIProc_Free (AAI Proc table); replaces sbtlCallBtlResetAAI
+0x00277920	sbtlAAIProc_N_GardeT	func	tier=B	hd-role	na	HD sBtlActAI.sBtlAAIProc_N_GardeT (AAI Proc table); same function in both games; replaces sbtlAAIProc_Attack
+0x00277E98	sbtlAAIProc_BAttack	func	tier=B	hd-role	na	HD sBtlActAI.sBtlAAIProc_BAttack (AAI Proc table); replaces sbtlCallBtlResetAAI2
+0x00278E68	sbtlAAIProc_SAttack	func	tier=B	hd-role	na	HD sBtlActAI.sBtlAAIProc_SAttack (sBtlResetAAI and return 1); same function in both games; replaces Proc_sbtlAction
 0x0027BD88	sbtlCheckNextAction	func	tier=B	hd-role	na	HD sBtlAction.sBtlCheckNextAction (R2 0x2A5768, tier A, r1-disagree:0x27bd88); same function; replaces sbtlCallBtlSearchEffectSABActer
 0x0027C728	sbtlSetAction	func	tier=B	hd-role	na	HD sBtlAction.sBtlSetAction (R2 0x2A6C80, tier A); same function, r1-disagree:0x27c728; replaces sbtlCallBtlEndAction
 0x0027CD48	sbtlSetVibeFadeIn	func	tier=B	hd-role	na	HD sBtlSub.c sBtlSetVibeFadeIn (0x1fc9f00): vibe_startf/frame/power then vibe_type = 1, returns 1; replaces sbtlRefSbtl40

@@ -14,13 +14,16 @@ typedef struct SBTLAI_WORK {
     struct sdfMemHandle_t *handle;
     s16 stat;
     u16 mode;
-    u8 pad008[0x5C];
+    u16 backmode;
+    u8 pad00A[0x64 - 0xA];
     s32 syscnt_stop;
     s32 field4C;
     s8 scr_actcheckflg;
     u8 pad06D[0x3];
     u32 scrflag;
-    u8 pad074[0xA4];
+    u8 pad074[0xC0 - 0x74];
+    s32 actcnt;
+    u8 pad0C4[0x118 - 0xC4];
 } SBTLAI_WORK;
 #else
 /* AI state of a unit, 0x90 bytes, made by Create_sbtlAI. */

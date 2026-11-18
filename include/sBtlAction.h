@@ -6,7 +6,7 @@
 struct SBTLUNIT_WORK;
 struct sdatUnitWork_t;
 
-s32 Proc_sbtlAction(struct SBTLUNIT_WORK *wk);
+s32 sbtlAAIProc_SAttack(struct SBTLUNIT_WORK *wk);
 void sbtlHuumaParamUp(struct sdatUnitWork_t *unit);
 
 #endif
