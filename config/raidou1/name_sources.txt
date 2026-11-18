@@ -7194,7 +7194,7 @@
 0x00287988	sbtlCallBtlSearchUnitID15	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlSearchUnit_ID
 0x00288000	sbtlCallMemset15	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls memset
 0x00288160	sbtlCallMemset16	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls memset
-0x002883A0	sbtlCallBtlGetUnitHelperPos	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlGetUnitHelperPos
+0x002883A0	sbtlSetStoneDeadDamageProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetStoneDeadDamageProc; R2 has it under that name; replaces sbtlCallBtlGetUnitHelperPos
 0x00288510	sbtlSetDeadWeak	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetDeadWeak score 5.5 flag I: calls2 calls-of-match votes2 st1:call r1-only
 0x002885B0	sbtlSetDeadDamageProc	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetDeadDamageProc score 7.0 flag I: calls4 callers-of-match votes2 st1:call r2-disagree:0x2b8f48
 0x00288830	sbtlSetMukouDamage	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetMukouDamage score 5.8 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2b92b0
@@ -7207,7 +7207,7 @@
 0x00289420	sbtlCallBtlGetAutoSkillID	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlGetAutoSkill_ID
 0x00289528	sbtlSetDeadDamage	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetDeadDamage score 8.0 flag I: calls10 callers-of-match votes7 st1:call r1-only
 0x00289880	sbtlCallBtlSetDamage	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlSetDamage
-0x00289B50	sbtlCallBtlSetMotionSBtlUnit5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlSetMotion_sbtlUnit
+0x00289B50	sbtlSetSpecialDamage_DamageOnly	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetSpecialDamage_DamageOnly; R2 has it under that name; replaces sbtlCallBtlSetMotionSBtlUnit5
 0x00289CA0	btlLoadSbPack	inferred	string: pacLoad("/battle/SB_PACK4.LB"), copies each resource to tail memory
 0x00289E08	sbtlOnDataLoadInit	hd-inferred	hd: Raidou HD sBtlEff.sBtlOnDataLoadInit, score 7.3 band B
 0x00289E50	OnDataLoadProc	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sBtlEff.OnDataLoadProc score 2.2 flag -: calls1 callers-of-match st1:call r1-only

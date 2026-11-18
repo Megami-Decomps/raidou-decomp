@@ -34,6 +34,8 @@
 #include "sdf2D.h"
 #include "sdfPrim.h"
 #include "frFont.h"
+#include "sBtlSkill.h"
+#include "sBtlUnit.h"
 
 enum {
     BTL_RESOURCE_DESCRIPTOR_BYTES = 0x48,
@@ -638,7 +640,37 @@ void sbtlDrawBSTName(s32 x, s32 y, s32 z, u32 rgba, s32 id)
     frDestroyFontRequestAfter(font);
 }
 
+/* NON_MATCHING: 55 of 71 words match. Register allocation: ok and the haveskill pointer swap s0 and s1. */
+#ifdef NON_MATCHING
+void sbtlGetSkillMenu(struct SBTLUNIT_WORK *wk, u16 typeflg)
+{
+    s32 i;
+    s32 n;
+    s32 ok;
+
+    n = 0;
+    memset(wk_sbtl->stock_useskill, 0, sizeof(wk_sbtl->stock_useskill));
+    for (i = 0; i < 10; i++) {
+        if (wk->haveskill[i] != 0 && wk->haveskill[i] != SKLID_OFS_PROGRAM) {
+            ok = 0;
+            if (typeflg == 0 || !(sbtlGetSkilltbl(wk->haveskill[i])->type & typeflg)) {
+                ok = 1;
+            }
+            if (ok == 1) {
+                wk_sbtl->stock_useskill[n++] = wk->haveskill[i];
+            }
+        }
+    }
+    wk_sbtl->stock_useskill_num = 0;
+    for (i = 0; i < 10; i++) {
+        if (wk_sbtl->stock_useskill[i] != 0) {
+            wk_sbtl->stock_useskill_num++;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetSkillMenu);
+#endif
 
 #ifdef VERSION_RAIDOU1
 SBTL_DEVIL_DATA *sbtlGetDevilData_sbtlSub(s32 id) {

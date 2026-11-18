@@ -281,7 +281,7 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
             }
             sbtlCallBtlSearchUnitID14(wk, wk->slippara, 0, 1);
             if (wk->flg & 0x40000000) {
-                sbtlCallBtlSetMotionSBtlUnit5(wk);
+                sbtlSetSpecialDamage_DamageOnly(wk);
                 return 0;
             }
             if (wk->unit.now.hp == 0) {
@@ -306,7 +306,7 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
             wk->unit.now.hp = hp <= 0 ? 0 : (hp < wk->unit.now.maxhp ? hp : wk->unit.now.maxhp);
             sbtlCallBtlSearchUnitID14(wk, wk->tdanpara, 0, 2);
             if (wk->flg & 0x40000000) {
-                sbtlCallBtlSetMotionSBtlUnit5(wk);
+                sbtlSetSpecialDamage_DamageOnly(wk);
                 return 0;
             }
             if (wk->unit.now.hp == 0) {

@@ -13,6 +13,8 @@
 #include "sBtlSkill.h"
 #include "sBtlAI.h"
 #include "ps2asm.h"
+#include "dds3KernelDraw.h"
+#include "sBtlPlayer.h"
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCalcInOutPara);
 
@@ -636,9 +638,78 @@ s32 sbtlDeleteHitList(struct SBTLDMG_HITLISTWORK *wk)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCreateTargetList_Normal);
+struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Normal(struct SBTLUNIT_WORK *wk, SKLID skillid)
+{
+    struct SBTLUNIT_LISTWORK *lwk;
+    struct SBTLSKILLP_TBL *ptbl;
+    struct SBTLUNIT_WORK *unit;
+    SBTLUNIT_SIDE side;
+    s32 i;
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCheckTargetList_csr);
+    i = 0;
+    ptbl = sbtlGetSkilltbl(skillid);
+    side = sbtlGetSide(wk, ptbl->area, wk->field414, NULL);
+    lwk = sbtlCreateUnitList(48);
+    for (; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit == NULL) {
+            continue;
+        }
+        if (!(side & unit->field414 & 0x3F)) {
+            continue;
+        }
+        if (!sbtlCheckDamageTarget_Skilltbl(wk, unit, ptbl, skillid, 0)) {
+            continue;
+        }
+        if (ptbl->area & 0x1000) {
+            if (unit->field1A0 != wk->field1A0 && (!(unit->flg & 0x800) || wk->field1A0 != unit->field492)) {
+                sbtlEntryUnitList(lwk, unit);
+            }
+        } else if (!(unit->vstatus & 0x10000)) {
+            sbtlEntryUnitList(lwk, unit);
+        }
+    }
+    return lwk;
+}
+
+s32 sbtlCheckTargetList_csr(struct SBTLUNIT_WORK *wk, SKLID skillid)
+{
+    struct SBTLUNIT_LISTWORK *lwk;
+    struct SBTLSKILLP_TBL *ptbl;
+    struct SBTLUNIT_WORK *unit;
+    SBTLUNIT_SIDE side;
+    s32 i;
+
+    i = 0;
+    ptbl = sbtlGetSkilltbl(skillid);
+    side = sbtlGetSide(wk, ptbl->area, wk->field414, NULL);
+    lwk = sbtlCreateUnitList(48);
+    for (; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit == NULL) {
+            continue;
+        }
+        if (!(side & unit->field414 & 0x3F)) {
+            continue;
+        }
+        if (!sbtlCheckDamageTarget_Skilltbl(wk, unit, ptbl, skillid, 1)) {
+            continue;
+        }
+        if (ptbl->area & 0x1000) {
+            if (unit->field1A0 != wk->field1A0 && (!(unit->flg & 0x800) || wk->field1A0 != unit->field492)) {
+                sbtlEntryUnitList(lwk, unit);
+            }
+        } else if (!(unit->vstatus & 0x10000)) {
+            sbtlEntryUnitList(lwk, unit);
+        }
+    }
+    if (lwk->count == 0) {
+        sbtlDeleteUnitList(lwk);
+        return 0;
+    }
+    sbtlDeleteUnitList(lwk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCreateTargetList_csr);
 
@@ -864,7 +935,39 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlGetHitUnit_Muki);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetHitback);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetStoneDeadDamageProc);
+s32 sbtlSetStoneDeadDamageProc(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, struct SBTLDMG_HITWORK *hwk, s32 damage, u32 attr)
+{
+    s32 time;
+
+    sbtlSetStoneDeadDamage(wk, damage);
+    time = sbtlGetStartTime_Damage();
+    if (hwk->acterID == wk_sbtl->targetUnitID && wk_sbtl->mode != 4 && wk_sbtl->mode != 6) {
+        sbtlSetHitStop(sbtlBtlSetDamageProcSBtlDMGSub(hwk->skillid), 3);
+    }
+    if (hwk->workID == 288) {
+        hwk->skillid = hwk->workID;
+    }
+    if (!(wklock->field414 & 7)) {
+        return 1;
+    }
+    if (hwk->BEDtype == 2) {
+        wk_sbtl->huka2hwk = hwk;
+        sbtlCheckEffectData(wklock, hwk->skillid, 5, 0, hwk->acterside, hwk->serialID2, time);
+        return 1;
+    }
+    switch (hwk->type & 0xFFF) {
+    case 1:
+    case 2:
+    case 4:
+    case 12:
+    case 13:
+    case 14:
+        wk_sbtl->huka2hwk = hwk;
+        sbtlCheckEffectData(wklock, hwk->skillid, 2, 0, hwk->acterside, hwk->serialID2, time);
+        break;
+    }
+    return 1;
+}
 
 void sbtlSetDeadWeak(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *ptbl, u32 attr)
 {
@@ -885,7 +988,22 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlGetStartTimeDamage);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetAbsorbDamage);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlGuardHit);
+void sbtlGuardHit(struct SBTLUNIT_WORK *wk, s32 damage)
+{
+    if (wk_sbtl->battleMode != 3 && wk->field1A0 == wk_sbtl->targetUnitID && !(wk->flg2 & 0x20)) {
+        sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+        sbtlSetAction(wk, 1, 0);
+    }
+    sbtlCreateAnim_Unit(wk, NULL, damage, 0, 0);
+    if ((wk->field414 & 0x80) || ((wk->field414 & 1) && wk_sbtl->battleMode == 3)) {
+        sbtlSetVibe(SBTLPLAYER_VTYPE_ONLYD);
+    }
+    if ((wk->field414 & 0x80) || ((wk->field414 & 1) && wk_sbtl->battleMode == 3)) {
+        if (!sbtlResetJump()) {
+            dds3SetQuake(20, 40);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlCreateAnimUnit2);
 
@@ -893,7 +1011,7 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallMemset8);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlKOUCYOKUACT);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlSetWeakBit2);
+INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetStoneDeadDamage);
 
 INCLUDE_ASM(const s32, "sbtlDMG", CheckAutoSkill);
 

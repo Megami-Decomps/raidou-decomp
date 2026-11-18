@@ -408,7 +408,8 @@ struct SBTLUNIT_WORK {
     s16 tdancounter;
     s16 tdancmpcnt;
     s16 tdanhitcnt;
-    u8 pad394[0x4];
+    s16 tdanhelper;
+    u8 pad396[0x2];
     s32 tdanpara;
     s16 autoreccnt;
     u8 pad39E[0x2];
@@ -493,7 +494,7 @@ struct SBTLUNIT_WORK {
     u8 pad496[0x2];
     s16 field498;
     s16 hitsliphelper;
-    u8 pad49C[0x4];
+    s32 huttobiID;
     s16 field4A0;
     s16 field4A2;
     s32 damage_serialID;

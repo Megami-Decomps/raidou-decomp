@@ -81,3 +81,21 @@ Branch folding: gcc turns both acterID compares into xor/sltiu; retail keeps bne
 Raidou 1: 569 of 721 words differ, first at +0x4; emitted 2884 bytes, native 3028 bytes.
 
 Retail retests `tbl->flg & 1` on every path into the buff and vice blocks and keeps the attacker in a callee-saved register across both lookups; the draft folds the repeated tests, so it is 36 words short and allocates differently from the prologue. nm_behaviour.py agrees apart from one reload of autost_cnt and the folded branches.
+
+## sbtlSetSpecialDamage_DamageOnly (sbtlDMG, raidou1 0x14C)
+
+Raidou 1: 66 of 80 words differ, first at +0x20; emitted 320 bytes, native 332 bytes.
+
+Scheduling and block order: retail sets the scrStep 0 call's arguments before the scrStep test and places the shared hp/motion_setno/scrStep store before the default branch. Else-if chains, a switch, a nested default test and per-branch stores keep the arguments after the branch.
+
+## sbtlCheckDamageTarget_Skilltbl (sbtlDMG, raidou1 0x170)
+
+Raidou 1: 34 of 82 words differ, first at +0x34; emitted 328 bytes, native 368 bytes.
+
+Branch folding: retail keeps the flg == 0 path's checks as separate branches with their own return 0 and return 1; gcc either cross-jumps that path into the shared CheckLiveTarget/case 9 tail or folds its last test into sltiu. Early returns, nested ifs, a ternary and an ok local for the shared tail were tried.
+
+## sbtlUnsetKaraburi (sbtlDMG, raidou1 0x11C)
+
+Raidou 1: 39 of 68 words differ, first at +0x60; emitted 272 bytes, native 284 bytes.
+
+Block order: retail tests skillid < SKLID_ATK and == SKLID_ATK with both bodies (the UnsetKaraburiSub call and the devilId switch) out of line and the fall-through returning. Nested if/else, else-if chains in both orders, early returns (one word over) and a combined range test do not give it.

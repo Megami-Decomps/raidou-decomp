@@ -242,7 +242,56 @@ s32 sbtlGetRotateDegX(const sdfVector4_t *rot, f32 deg) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlCheckCrossBox);
+s32 sbtlCheckCrossBox(const sdfVector4_t *vector1, f32 r1, u8 side, const sdfVector4_t *vector2, f32 width, f32 height)
+{
+    sdfVector4_t pos;
+    sdfVector4_t box;
+    sdfVector4_t top;
+    s32 hit;
+    f32 len;
+
+    SDF_VU0_LOADVECTOR(vector1);
+    SDF_VU0_STOREVECTOR(&pos);
+    SDF_VU0_LOADVECTOR(vector2);
+    SDF_VU0_STOREVECTOR(&box);
+    SDF_VU0_STOREVECTOR(&top);
+    hit = 0;
+    top.y -= height;
+    if (box.y >= pos.y && sbtlCheckCrossCircle(&pos, r1, &top, width)) {
+        if (top.y - width <= pos.y) {
+            hit = 1;
+        } else if (sbtlCheckCrossCircle(&pos, r1, &box, width)) {
+            hit = 2;
+        }
+    } else if (sbtlCheckCrossCircle(&pos, r1, &box, width) && pos.y == box.y) {
+        hit = 2;
+    }
+    switch (hit) {
+    case 1:
+        pos.y = 0.0f;
+        box.y = 0.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_LOADVECTOR_B(&box);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_GETLENGTH(len);
+        if (len < width + r1 * 0.5f) {
+            return 0;
+        }
+        break;
+    case 2:
+        pos.y = 0.0f;
+        box.y = 0.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_LOADVECTOR_B(&box);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_GETLENGTH(len);
+        if (len < width + r1) {
+            return 1;
+        }
+        break;
+    }
+    return 3;
+}
 
 s32 sbtlCheckCrossCircle(const sdfVector4_t *vector1, f32 r1, const sdfVector4_t *vector2, f32 r2) {
     f32 len;
@@ -304,7 +353,46 @@ s32 sbtlCheckCrossCircle_Rot(const sdfVector4_t *vector1, const sdfVector4_t *ro
 INCLUDE_ASM(const s32, "sbtlSub", sbtlCheckCrossCircle_Rot);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlCheckCrossCylinder_Circle);
+s32 sbtlCheckCrossCylinder_Circle(const sdfVector4_t *pos1, const sdfVector4_t *rot1, struct SBTLDMG_CYLINDERWORK *wk, const sdfVector4_t *pos2, f32 area)
+{
+    sdfVector4_t vertexA;
+    sdfVector4_t vertexB;
+    sdfVector4_t vertexC;
+    sdfVector4_t ofs;
+    sdfMatrix4_t mat;
+    sdfMatrix4_t *pmat;
+    sdfVector4_t *pB;
+
+    memset(&ofs, 0, sizeof(ofs));
+    ofs.y = -1.0f;
+    SDF_VU0_LOADVECTOR(pos1);
+    SDF_VU0_STOREVECTOR(&vertexA);
+    SDF_VU0_LOADVECTOR(pos2);
+    SDF_VU0_STOREVECTOR(&vertexC);
+    SDF_VU0_LOADVECTOR(rot1);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SetRotateMatrixX(wk->xrad * 0.0174532925f);
+    pmat = &mat;
+    SDF_VU0_STOREMATRIX_RWADDR(pmat);
+    sbtlGetQuatFromMatrix(&mat);
+    Mult();
+    ToMatrix();
+    SDF_VU0_LOADVECTOR(&ofs);
+    SDF_VU0_APPLYMATRIX();
+    SDF_VU0_SCALEVECTOR(wk->height);
+    SDF_VU0_LOADVECTOR_B(&vertexA);
+    SDF_VU0_ADDVECTOR();
+    pB = &vertexB;
+    SDF_VU0_STOREVECTOR_RWADDR(pB);
+    if (sbtlGetVerticalLength(&vertexA.x, &vertexB.x, &vertexC.x) <= area) {
+        if (sbtlCheckInner(&vertexA, &vertexB, &vertexC, 0.0f) || sbtlCheckCrossCircle(&vertexA, area - wk->area_r, &vertexC, 1.0f)) {
+            if (sbtlCheckInner(&vertexB, &vertexA, &vertexC, 0.0f) || sbtlCheckCrossCircle(&vertexB, area - wk->area_r, &vertexC, 1.0f)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 f32 sbtlGetChorikiDeg(const sdfVector4_t *pos, const sdfVector4_t *rot, const sdfVector4_t *target, f32 per) {
     sdfVector4_t p0;

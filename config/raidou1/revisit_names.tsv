@@ -3470,13 +3470,11 @@
 0x00287988	sbtlCallBtlSearchUnitID15	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSearchUnit_ID
 0x00288000	sbtlCallMemset15	func	tier=D	derived-callee	na	unit sbtlDMG; calls memset
 0x00288160	sbtlCallMemset16	func	tier=D	derived-callee	na	unit sbtlDMG; calls memset
-0x002883A0	sbtlCallBtlGetUnitHelperPos	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlGetUnitHelperPos
 0x002888C8	sbtlCallGetDamage	func	tier=D	derived-callee	na	unit sbtlDMG; calls GetDamage
 0x002889B8	sbtlCallBtlSetMotionSBtlUnit3	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetMotion_sbtlUnit
 0x00288AD8	sbtlCallBtlSetMotionSBtlUnit4	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetMotion_sbtlUnit
 0x00289420	sbtlCallBtlGetAutoSkillID	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlGetAutoSkill_ID
 0x00289880	sbtlCallBtlSetDamage	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetDamage
-0x00289B50	sbtlCallBtlSetMotionSBtlUnit5	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetMotion_sbtlUnit
 0x00289E08	sbtlOnDataLoadInit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEff.sBtlOnDataLoadInit, score 7.3 band B
 0x00289EF8	sbtlLeaf75	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x00289F00	sbtlFunc	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
@@ -19469,11 +19467,13 @@
 0x00284640	sbtlCheckGround_sbtlDMG	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlCheckGround score 6.9 flag I: calls4 callers-of-match votes5 st1:call r2-disagree:0x2b1ff8
 0x002855C0	sbtlCheckHitArea_sbtlDMG	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlCheckHitArea score 6.3 flag I: calls3 callers-of-match votes3 st1:call r2-disagree:0x2b2fe8
 0x00287670	sbtlSetDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetDamage score 6.2 flag I: calls3 callers-of-match votes2 st1:call r1-only
+0x002883A0	sbtlSetStoneDeadDamageProc	func	tier=B	hd-role	na	HD sBtlSetStoneDeadDamageProc; R2 has it under that name; replaces sbtlCallBtlGetUnitHelperPos
 0x00288510	sbtlSetDeadWeak	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetDeadWeak score 5.5 flag I: calls2 calls-of-match votes2 st1:call r1-only
 0x00288830	sbtlSetMukouDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetMukouDamage score 5.8 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2b92b0
 0x00288C20	sbtlSetHuttobiDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetHuttobiDamage score 6.2 flag I: calls3 callee-index votes2 st1:cidx r1-only
 0x00288DF0	sbtlSetDyingDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetDyingDamage score 5.5 flag I: calls5 callers-of-match votes4 st1:call r2-disagree:0x2b98e8
 0x00289198	sbtlSetStoneDeadDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetStoneDeadDamage score 6.4 flag I: calls5 callers-of-match votes5 st1:call r2-disagree:0x2b9d18
+0x00289B50	sbtlSetSpecialDamage_DamageOnly	func	tier=B	hd-role	na	HD sBtlSetSpecialDamage_DamageOnly; R2 has it under that name; replaces sbtlCallBtlSetMotionSBtlUnit5
 0x0028AB40	sbtlGetDmgEffScale	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlEff.sBtlGetDmgEffScale score 2.8 flag I: prev~ next gap1/2 st2:gap r2-only
 0x0028AC58	sbtlCheckEffectData	func	tier=B	hd-role	na	HD sBtlEff.sBtlCheckEffectData (R2 tier A): same function as R2 sbtlCheckEffectData (part 3 drafts, same call sites); replaces sbtlCallBtlSearchEffectData
 0x0028BA80	sbtlSetEffectData	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlEff.sBtlSetEffectData score 6.9 flag I: calls4 callers-of-match votes4 st1:call r2-disagree:0x2bd890

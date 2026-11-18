@@ -134,7 +134,10 @@ typedef struct SBTL_WORK {
     sdfMemHandle_t *evtloadHandle;
     fileRequest_t *evtloadFile; /* /battle/event/sb_btlevent.bf */
     u8 *evtloadpData;
-    u8 pad48C[0x114];
+    u8 pad48C[0x518 - 0x48C];
+    SKLID stock_useskill[10];
+    u16 stock_useskill_num;
+    u8 pad542[0x5A0 - 0x542];
     struct SBTLUNIT_LISTWORK *list2D4;
     u8 pad5A4[0x148];
     SBTLVIBE_WORK vibe[2];
@@ -148,7 +151,8 @@ typedef struct SBTL_WORK {
     struct SBTLEFF_LISTWORK *effList;
     u8 pad744[0x14];
     struct SBTLSM_LISTWORK *sysmsgList;
-    u8 pad75C[0x8];
+    u8 pad75C[0x4];
+    struct SBTLDMG_HITWORK *huka2hwk; /* hit whose attacker data later hits copy (HD name) */
     s32 field424;
     u8 pad768[0x8];
     s16 mode;
@@ -245,7 +249,10 @@ typedef struct SBTL_WORK {
     s16 useitem_stock; /* stock slot the item is used on, -1 for none */
     u8 pad236[0x238 - 0x236];
     s32 equipBulletBk;
-    u8 pad23C[0x298 - 0x23C];
+    u8 pad23C[0x26C - 0x23C];
+    SKLID stock_useskill[10]; /* skills the menu lists, from sbtlGetSkillMenu */
+    u16 stock_useskill_num;
+    u8 pad296[0x298 - 0x296];
     s32 tgt_csr; /* target cursor: unit ID under the cursor */
     u8 pad29C[0x2CC - 0x29C];
     struct SBTLUNIT_LISTWORK *list2CC;
@@ -908,6 +915,7 @@ s32 sbtlCallSetOt(void);
 s32 sbtlCallSin2(void);
 s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk);
 s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
+s32 sbtlSetHitStop(s32 sttime, s32 cmpcnt);
 struct SBTLUNIT_WORK *sbtlRefSbtl38(void);
 f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */
 s32 sbtlCheckLoadFlg(void);

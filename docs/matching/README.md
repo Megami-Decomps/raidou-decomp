@@ -20,10 +20,10 @@ menu scenarios); an entry says which paths they covered.
 | 43 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
 | 36 | sbtlActAI | raidou1, raidou2 | [sbtlActAI.md](sbtlActAI.md) |
 | 13 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
+| 13 | sbtlDMG | raidou1, raidou2 | [sbtlDMG.md](sbtlDMG.md) |
 | 11 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 11 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
 | 10 | interface/itfMesManager | raidou1, raidou2 | [interface/itfMesManager.md](interface/itfMesManager.md) |
-| 10 | sbtlDMG | raidou1, raidou2 | [sbtlDMG.md](sbtlDMG.md) |
 | 9 | code_0010F2C0 | raidou1 | [code_0010F2C0.md](code_0010F2C0.md) |
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
 | 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
@@ -165,6 +165,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
 | 1 | movie/mviManager | raidou1, raidou2 | [movie/mviManager.md](movie/mviManager.md) |
 | 1 | sbtlEff_00289E50 | raidou1 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
+| 1 | sbtlSub_0027ED08 | raidou1, raidou2 | [sbtlSub_0027ED08.md](sbtlSub_0027ED08.md) |
 | 1 | sdf/sdfCoreDraw | raidou1, raidou2 | [sdf/sdfCoreDraw.md](sdf/sdfCoreDraw.md) |
 | 1 | sdf/sdfDefaultMain | raidou1, raidou2 | [sdf/sdfDefaultMain.md](sdf/sdfDefaultMain.md) |
 | 1 | sdf/sdfFileIO | raidou1, raidou2 | [sdf/sdfFileIO.md](sdf/sdfFileIO.md) |

@@ -419,10 +419,14 @@ sbtlSetHitPos	sbtlDMG	raidou1 0x4B4	293 of 302 words differ	docs/matching/sbtlDM
 sbtlDamageProc	sbtlDMG	raidou1 0xD8	42 of 51 words differ	docs/matching/sbtlDMG.md	67		
 sbtlDamageProc	sbtlDMG	raidou2 0xD8	42 of 51 words differ	docs/matching/sbtlDMG.md	73		
 GetDamage	sbtlDMG	raidou1 0xBD4	569 of 721 words differ	docs/matching/sbtlDMG.md	79		
+sbtlSetSpecialDamage_DamageOnly	sbtlDMG	raidou1 0x14C	66 of 80 words differ	docs/matching/sbtlDMG.md	85		
+sbtlCheckDamageTarget_Skilltbl	sbtlDMG	raidou1 0x170	34 of 82 words differ	docs/matching/sbtlDMG.md	91		
+sbtlUnsetKaraburi	sbtlDMG	raidou1 0x11C	39 of 68 words differ	docs/matching/sbtlDMG.md	97		
 sbtlFunc	sbtlEff_00289E50	raidou1 0x144	58 of 79 words differ	docs/matching/sbtlEff_00289E50.md	3		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		
 sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSub.md	19		
+sbtlGetSkillMenu	sbtlSub_0027ED08	raidou1 0x11C, raidou2 0x11C	16 of 71 words differ	docs/matching/sbtlSub_0027ED08.md	3		
 CalcBadStatus	sbtl_0029BFB8	raidou1 0x3B0	204 of 218 words differ	docs/matching/sbtl_0029BFB8.md	3		
 sbtlRefSbtl62	sbtl_0029BFB8	raidou1 0xF8	20 of 61 words differ	docs/matching/sbtl_0029BFB8.md	11		
 CalcBtlMagicStatus	sbtl_0029BFB8	raidou1 0x6E4	5 of 441 words differ	docs/matching/sbtl_0029BFB8.md	19		
