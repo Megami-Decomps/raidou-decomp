@@ -203,6 +203,12 @@ class DraftGamesTests(unittest.TestCase):
             self.assertEqual(self.run_in(tmp, text, "R1"), ["raidou1"])
             self.assertEqual(self.run_in(tmp, "void f(void) {}\n", "R2"), ["raidou1", "raidou2"])
 
+    def test_a_gap_row_is_measured_for_its_own_game(self) -> None:
+        run = land_batch.Run.__new__(land_batch.Run)
+        for game in ("raidou1", "raidou2"):
+            row = batch_files.Row("f", f"asm/{game}/code_00100000")
+            self.assertEqual(run.draft_games(row, "void f(void) {}\n"), [game])
+
 
 class AppliedRenameTests(unittest.TestCase):
     def test_hash_rows_are_mapped_but_not_applied(self) -> None:

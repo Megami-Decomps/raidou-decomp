@@ -502,7 +502,9 @@ class Run:
     def draft_games(self, row: batch_files.Row, final: str) -> list[str]:
         """The games that compile the spliced draft: a shared unit's guards decide, so a Raidou 2 draft in a
         Raidou 2 block is measured for Raidou 2 only."""
-        if row.gap or self.is_r1only(row) or row.source.startswith("src/raidou1/"):
+        if row.gap:
+            return [row.game]
+        if self.is_r1only(row) or row.source.startswith("src/raidou1/"):
             return ["raidou1"]
         if row.source.startswith("src/raidou2/"):
             return ["raidou2"]
