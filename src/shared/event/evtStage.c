@@ -138,7 +138,7 @@ s32 evtSetRegistUnit_evt(s32 major, s32 minor) {
 #else
 INCLUDE_ASM(const s32, "event/evtStage", itfCriLipSyncManagerOff);
 
-INCLUDE_ASM(const s32, "event/evtStage", evtCallMemset);
+INCLUDE_ASM(const s32, "event/evtStage", evtSetRegistUnit_evt);
 #endif
 
 #ifdef VERSION_RAIDOU1

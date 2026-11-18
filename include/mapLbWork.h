@@ -39,7 +39,7 @@ typedef struct mapLbIndex_t {
 
 typedef struct mapLbSection_t {
     u32 ofs[100];
-    u32 count[100];
+    s32 count[100];
 } mapLbSection_t;
 
 extern sdfMemHandle_t *fldJmsQuestMapLoad_fldData;

@@ -1376,7 +1376,6 @@
 0x001B6CC0	mdlBgColorEye	func	tier=D	derived-string	na	unit code_0019D3A8, neighbour mdlLoadViewerConfig; string 'bg-color=%06x\neye-position=%f,%f,%f\ntarget-position=%f,%f,%f\nfovy=%f\nfog=%d,%f,%d,%f,%06x\nbg-tex=%d\nlight=%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n'
 0x001B6F88	mdlInitializeViewerTasksAndResources	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.74 0x0021E1C8, score 0.94, tools/xgame/fuzzy_apply.py
 0x001B7130	mdlFreeViewResources	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0021E360, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001B89E8	evtCallMemset	func	tier=D	derived-callee	na	unit event/evtStage_001B88F8; calls memset
 0x001B8CB0	evtLeaf3	func	tier=D	derived-unit	na	unit event/evtStage; no named callee, caller or string
 0x001B8CC0	evtGetDefaultPosBustUp	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtGetDefaultPosBustUp, score 8.0 band B
 0x001B8E18	evtLoadUnitBustUp	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evt.evtLoadUnitBustUp, score 11.0 band A
@@ -21579,17 +21578,6 @@
 0x00535251	sdf3DPrimDefaultFaceIndexEntry7	data	tier=D	derived-table	na	pointed to by sdf3DPrimDefaultFaceIndex
 0x00535543	bssWork173	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x413D
 0x00539680	sbtlStr1200SEntry	data	tier=D	derived-table	na	pointed to by sbtlStr1200S
-0x0053F518	mapMapSetAreaWork	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 16 refs, 7 functions)
-0x0053F618	mapMapSetAreaWork2	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053F718	mapMapSetAreaWork3	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x0053F818	mapMapSetAreaWork4	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053F918	mapMapSetAreaWork5	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x0053FA18	mapMapSetAreaWork6	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053FB18	mapMapSetAreaWork7	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x0053FC18	mapMapSetAreaWork8	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x0053FD18	mapMapSetAreaWork9	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053FE18	mapMapSetAreaWork10	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053FF18	mapMapSetAreaWork11	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
 0x0053FFFF	jmsData7Entry12	data	tier=D	derived-table	na	pointed to by jmsData7Entry
 0x00540000	sndInitDataEntry10	data	tier=D	derived-table	na	pointed to by sndInitData
 0x00540001	mdlGetNumOfMinorDataEntry75	data	tier=D	derived-table	na	pointed to by mdlGetNumOfMinorDataEntry
@@ -21598,15 +21586,10 @@
 0x00540006	mdlGetNumOfMinorDataEntry78	data	tier=D	derived-table	na	pointed to by mdlGetNumOfMinorDataEntry2
 0x00540007	mdlGetNumOfMinorDataEntry79	data	tier=D	derived-table	na	pointed to by mdlGetNumOfMinorDataEntry5
 0x0054000C	jmsData7Entry13	data	tier=D	derived-table	na	pointed to by jmsData7Entry
-0x00540018	mapMapSetAreaWork12	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
 0x00540046	bssWork174	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0xD
 0x00540053	bssWork175	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0xC5
-0x00540118	mapMapSetAreaWork13	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
 0x00540218	mapFileLoadWork	data	tier=D	derived-sole	na	used by mapFileLoad
-0x00540318	mapMapSetAreaWork14	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x00540418	mapMapSetAreaWork15	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
 0x00540518	mapFileLoadWork2	data	tier=D	derived-sole	na	used by mapFileLoad
-0x00540618	mapMapSetAreaWork16	data	tier=D	derived-dominant	na	used by mapMapSetArea (4 of 6 refs, 2 functions)
 0x00540958	fldWork9	data	tier=D	derived-shared	na	used by 2 functions: fldCallMemset2, nbCallEffectDistortionBlurSetParam
 0x005409C0	fldCallSinWork	data	tier=D	derived-sole	na	used by fldCallSin
 0x00540C00	mapEffEplStartWork	data	tier=D	derived-dominant	na	used by mapEffEplStart (4 of 34 refs, 16 functions)
@@ -23435,6 +23418,7 @@
 0x001B0220	mdlLink_NoDraw	func	tier=C	derived-derived-role	na	only caller dds3ObjectBaseModelLinkOt passes (model, pModelOt) where HD dds3ObjectBase.c calls mdlLink_NoDraw(pModel, pModelOt); HD LinkMotion is a static one-argument helper inlined into it; name free in both games (R1 0x0019A6A8, R2 0x001B0220); replaces LinkMotion
 0x001B6528	mapTrainCheckStartPos	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapTrainCheckStartPos score 2.5 flag -: calls1 callers-of-match st2:call r2-only
 0x001B89B0	itfCriLipSyncManagerOff	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD itf.itfCriLipSyncManagerOff score 3.3 flag I: arity2>1 calls2 calls-of-match votes2 st2:call r2-only
+0x001B89E8	evtSetRegistUnit_evt	func	tier=C	raidou1-code	na	same code as R1 evtSetRegistUnit_evt with the radius moved into a helper; R1 HD match lists r2-disagree:0x1b89e8
 0x001BB480	GetBaseLightRGB2	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.GetBaseLightRGB2 score 4.4 flag -: next gap2/1 st1:gap r1+r2
 0x001BDC38	evtGetCustomSLight_SoftenAndBias	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evt.evtGetCustomSLight_SoftenAndBias score 5.5 flag I: calls1 calls-of-match st1:call r1+r2
 0x001BE280	evtCommand_MODEL_SHADOW_ON2	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e4e30 sim 1.000 margin 0.00 pair
@@ -24477,6 +24461,22 @@
 0x0053F4B8	mdlData6	data	tier=C	derived-derived-role	na	sdfMemHandle cache table freed by mdlCallMemFreeDirect, as R1 mapLeaf12 mdlData6; replaces mdlWork2
 0x0053F4D8	mdlData7	data	tier=C	derived-derived-role	na	same, R1 mdlData7; replaces mdlWork3
 0x0053F4F8	mdlData8	data	tier=C	derived-derived-role	na	same, R1 mdlData8; replaces mdlWork4
+0x0053F518	mapMapSetAreaData	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053F618	mapMapSetAreaData2	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053F718	mapMapSetAreaData3	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053F818	mapMapSetAreaData4	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053F918	mapMapSetAreaData5	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FA18	mapMapSetAreaData6	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FB18	mapMapSetAreaData7	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FC18	mapMapSetAreaData8	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FD18	mapMapSetAreaData9	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FE18	mapMapSetAreaData10	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FF18	mapMapSetAreaData11	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x00540018	mapMapSetAreaData12	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x00540118	mapMapSetAreaData13	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x00540318	mapMapSetAreaData14	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x00540418	mapMapSetAreaData15	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
+0x00540618	mapMapSetAreaData16	data	tier=C	raidou1-code	na	same slot in the mapMapSetArea reference order of both games; R1 name
 0x00544700	mdl_linkflag	data	tier=C	hd	0.37 (n=D_r1_004B4B90)	hd/medium: conf=medium, agree=3, using=4
 0x005463FC	pinst	data	tier=C	dds-ref	0.59 (n=D_r1_004B67EC)	dds-ref/exact: nfun=62, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfMesMngMessage
 0x005468F0	mdlViewerState	data	tier=C	dds-ref	0.59 (n=D_r1_004B6CE0)	dds-ref/exact: nfun=64, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlLoadViewerResourceAndResetCursors

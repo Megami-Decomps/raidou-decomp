@@ -3241,7 +3241,7 @@
 0x001B8448	dds3BitEditorProcess	inferred	twin-of-raidou1-0x001A2960, run-order-near
 0x001B88F8	evtSetTestCamera	inferred	SMT3HD name via SLUS_209.11 0x001E13C8, reloc-identical; map-agrees
 0x001B89B0	itfCriLipSyncManagerOff	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD itf.itfCriLipSyncManagerOff score 3.3 flag I: arity2>1 calls2 calls-of-match votes2 st2:call r2-only
-0x001B89E8	evtCallMemset	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtStage_001B88F8; calls memset
+0x001B89E8	evtSetRegistUnit_evt	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same code as R1 evtSetRegistUnit_evt with the radius moved into a helper; R1 HD match lists r2-disagree:0x1b89e8
 0x001B8AF0	evtLoadUnit	inferred	method=smt3-fuzzy-70-m-single; p=0.83 (n=60); tier=B; source=smt3; evidence=smt3 body 0x1e1568 sim 0.728 margin 0.11 single
 0x001B8C88	evtLoadBustupData	inferred	string: sdfDevLoadFileEx("/event/eveBustup.dat"); between evtLoadUnit and evtSetUnitPos
 0x001B8CB0	evtLeaf3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit event/evtStage; no named callee, caller or string
@@ -30027,17 +30027,17 @@
 0x0053F4B8	mdlData6	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=sdfMemHandle cache table freed by mdlCallMemFreeDirect, as R1 mapLeaf12 mdlData6; replaces mdlWork2
 0x0053F4D8	mdlData7	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same, R1 mdlData7; replaces mdlWork3
 0x0053F4F8	mdlData8	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same, R1 mdlData8; replaces mdlWork4
-0x0053F518	mapMapSetAreaWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 16 refs, 7 functions)
-0x0053F618	mapMapSetAreaWork2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053F718	mapMapSetAreaWork3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x0053F818	mapMapSetAreaWork4	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053F918	mapMapSetAreaWork5	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x0053FA18	mapMapSetAreaWork6	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053FB18	mapMapSetAreaWork7	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x0053FC18	mapMapSetAreaWork8	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x0053FD18	mapMapSetAreaWork9	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053FE18	mapMapSetAreaWork10	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 8 refs, 3 functions)
-0x0053FF18	mapMapSetAreaWork11	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
+0x0053F518	mapMapSetAreaData	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053F618	mapMapSetAreaData2	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053F718	mapMapSetAreaData3	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053F818	mapMapSetAreaData4	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053F918	mapMapSetAreaData5	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FA18	mapMapSetAreaData6	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FB18	mapMapSetAreaData7	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FC18	mapMapSetAreaData8	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FD18	mapMapSetAreaData9	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FE18	mapMapSetAreaData10	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x0053FF18	mapMapSetAreaData11	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
 0x0053FFFF	jmsData7Entry12	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7Entry
 0x00540000	sndInitDataEntry10	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sndInitData
 0x00540001	mdlGetNumOfMinorDataEntry75	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mdlGetNumOfMinorDataEntry
@@ -30046,15 +30046,15 @@
 0x00540006	mdlGetNumOfMinorDataEntry78	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mdlGetNumOfMinorDataEntry2
 0x00540007	mdlGetNumOfMinorDataEntry79	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by mdlGetNumOfMinorDataEntry5
 0x0054000C	jmsData7Entry13	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7Entry
-0x00540018	mapMapSetAreaWork12	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
+0x00540018	mapMapSetAreaData12	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
 0x00540046	bssWork174	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0xD
 0x00540053	bssWork175	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0xC5
-0x00540118	mapMapSetAreaWork13	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
+0x00540118	mapMapSetAreaData13	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
 0x00540218	mapFileLoadWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapFileLoad
-0x00540318	mapMapSetAreaWork14	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x00540418	mapMapSetAreaWork15	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
+0x00540318	mapMapSetAreaData14	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
+0x00540418	mapMapSetAreaData15	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
 0x00540518	mapFileLoadWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapFileLoad
-0x00540618	mapMapSetAreaWork16	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
+0x00540618	mapMapSetAreaData16	inferred	method=raidou1-code; p=na; tier=C; source=raidou1; evidence=same slot in the mapMapSetArea reference order of both games; R1 name
 0x00540718	npc_delcash	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapNpcTblRefreshSub fills it with {npc index, obj index}, count npc_delcash_cnt; replaces mapWork6
 0x005407D8	npc_addcash	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapNpcTblRefreshSub fills it with {npc, point, flor, model}, count npc_addcash_cnt; replaces mapNpcTblRefresh_WaitWork
 0x00540958	fldWork9	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldCallMemset2, nbCallEffectDistortionBlurSetParam

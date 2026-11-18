@@ -21,7 +21,11 @@ void fldCallSetOt3(u32 color, f32 ox, f32 oy) {
     if (evtStageTestState2.handle == NULL || fldJmsQuestMapLoad_fldData == NULL || fldCallSetOt3Data == NULL || fldData22 != 0) {
         return;
     }
+#ifdef VERSION_RAIDOU1
     eglSetOt(0x2D);
+#else
+    eglSetOt(0x2E);
+#endif
     eglLinkAlpha(0);
     if (fldGlobalBase.amSBlock == 9 && fldGlobalBase.nameU == 0 && fldGlobalBase.cutIdx == 3) {
         eglLinkTest(1, 5, 0xD, 0, 0, 0, 1, 3);
