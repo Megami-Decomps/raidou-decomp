@@ -21,6 +21,7 @@
 #include "code_r1_00104370.h"
 #include "sdfDevCons.h"
 #include "sdfGraph.h"
+#include "sdfAspect.h"
 
 sdf3DLight_t mdlData3 = {{1.0f, 1.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.5f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}};
 sdf3DLight_t mdlData4 = {{0.0f, 0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}};
@@ -1022,8 +1023,8 @@ void dds3CallGetFrameID(void)
         top = 0x7900;
         bottom = 0x8700;
         if (dds3Data29 == 0 && dds3BistaCheck()) {
-            top = 0x7900 + (dds3DrawBistaData2 - dds3ChangeBistaModeData) * 8;
-            bottom = 0x8700 + (dds3Data32 - dds3Data33) * 8;
+            top = 0x7900 + (s32)SDF_ASPECT_VIEW_Y(dds3DrawBistaData2 - dds3ChangeBistaModeData) * 8;
+            bottom = 0x7900 + (s32)SDF_ASPECT_VIEW_Y(448 + dds3Data32 - dds3Data33) * 8;
         }
         color = 0x3F80000000000000 | (u64)(s32)((u32)alpha << 24) | ((u64)fadergba[2] << 16) | ((u64)fadergba[1] << 8) | fadergba[0];
         dds3FadePacket[frameId].sprite[0].reg = 1;
@@ -1252,8 +1253,10 @@ void dds3DrawBista(void)
             eglSetOt(97);
             eglLinkAlpha(0);
             eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 1);
-            evtSubmitDefaultDepthGradientRect(0, -2 - top, 512, dds3DrawBistaData2 + 2, color, color, color, color);
-            evtSubmitDefaultDepthGradientRect(0, bottom - dds3Data33 + 448, 512, dds3Data33 + 2, color, color, color, color);
+            evtSubmitDefaultDepthGradientRect(0, (s32)SDF_ASPECT_VIEW_Y(-2 - top), 512,
+                                              (s32)SDF_ASPECT_VIEW_SIZE(dds3DrawBistaData2 + 2), color, color, color, color);
+            evtSubmitDefaultDepthGradientRect(0, (s32)SDF_ASPECT_VIEW_Y(bottom - dds3Data33 + 448), 512,
+                                              (s32)SDF_ASPECT_VIEW_SIZE(dds3Data33 + 2), color, color, color, color);
         }
         if (dds3DrawBistaData == 2) {
             shade = (55 * (dds3DrawBistaData2 - top) / dds3DrawBistaData2) << 24;
