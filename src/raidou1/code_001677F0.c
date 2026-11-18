@@ -16,8 +16,18 @@
 #include "dds3SceneBasic.h"
 #include "code_0015D490.h"
 #include "frFont.h"
+#include "sdfAspect.h"
 
-INCLUDE_ASM(const s32, "code_001677F0", mapIfDrawActionMasterSub);
+/* Keeps the action prompt at x on screen: 22 from the left edge, w + 24 from the right. */
+void mapIfDrawActionMasterSub(s32 *x, s32 *y, s32 w)
+{
+    if (*x < SDF_ASPECT_LEFT + 22) {
+        *x = SDF_ASPECT_LEFT + 22;
+    }
+    if (*x > SDF_ASPECT_RIGHT - 24 - w) {
+        *x = SDF_ASPECT_RIGHT - 24 - w;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001677F0", mapCallSetOt9);
 
