@@ -62,6 +62,7 @@
 #include "EventBit.h"
 #include "fldProcess.h"
 #include "sdfMath.h"
+#include "sdfDifficulty.h"
 
 /* NON_MATCHING: 68 of 192 words match.  */
 #ifdef NON_MATCHING
@@ -3402,7 +3403,7 @@ s32 sbtlItem_CheckSetItem(struct SBTLITEM_WORK *item, const sdfVector4_t *pos) {
                 chance = (s16)(chance * 1.5f);
             }
         }
-        if (chance >= percent + 1) {
+        if (SDF_DIFFICULTY_DROP_CHANCE(chance) >= percent + 1) {
             if (per > 0.0f) {
                 sbtlSetDropItem(item->itemid, item->para, chance);
             }

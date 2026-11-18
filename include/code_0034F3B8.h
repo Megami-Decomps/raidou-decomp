@@ -5,9 +5,17 @@
 #include "kernel.h"
 #include "code_r1_001CC1D0.h"
 
-/* Reward record copied by rstSetReward; fields not placed yet. */
+/* A battle's rewards, built by sbtlCallBtlSearchUnitID30 from the battle's
+ * drop work and copied by rstSetReward. Each count is clamped by the builder. */
 typedef struct rstWork_t {
-    u32 unk00[45];
+    s32 money;          /* 0..99999 */
+    s32 item[8][2];     /* item id and count */
+    s32 unk44;
+    s32 exp;            /* Raidou's, 0..99999 */
+    s32 stockExp[12];   /* the summoned stock demon's, 0..99999 */
+    s32 stockUnk7C[12]; /* the summoned stock demon's, 0..100 */
+    s32 mag;            /* 0..9999 */
+    s32 summonIndex;    /* the stock slot summoned, or -1 */
 } rstWork_t;
 
 extern rstWork_t rstWork;

@@ -11,6 +11,7 @@
 #include "dds3CameraObjectBasic.h"
 #include "dds3ObjectBase.h"
 #include "sbtlWork.h"
+#include "sdfDifficulty.h"
 #include "sBtlUnit.h"
 #include "sBtlEff.h"
 #include "sBtlSound.h"
@@ -285,7 +286,7 @@ s32 sbtlRndEncCalc(s32 id, f32 length)
         } else {
             add = dds3GetRandIntA(NULL, 3) + 2;
         }
-        DDS3_GBWK->encountcnt += add;
+        DDS3_GBWK->encountcnt += SDF_DIFFICULTY_ENCOUNTER_STEP(add);
     }
     if (DDS3_GBWK->encountcnt > 65000) {
         DDS3_GBWK->encountcnt = 65000;

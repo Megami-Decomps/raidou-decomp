@@ -15,6 +15,7 @@
 #include "sdk_libc.h"
 #include "code_r1_001CC1D0.h"
 #include "sdfChip.h"
+#include "sdfDifficulty.h"
 
 INCLUDE_ASM(const s32, "code_0034F3B8", jmsCallGetProcessData2);
 
@@ -196,6 +197,7 @@ INCLUDE_ASM(const s32, "code_0034F3B8", rstResultLoadWaitProcess);
 void rstSetReward(const rstWork_t *pReward) {
     if (pReward != NULL) {
         rstWork = *pReward;
+        SDF_DIFFICULTY_REWARD(&rstWork);
         rstData4 |= 1;
     }
 }
