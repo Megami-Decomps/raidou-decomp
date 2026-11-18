@@ -99,6 +99,8 @@ typedef struct itfSprList_t {
 } itfSprList_t;
 
 typedef s32 (*itfMenuFunc_t)(void);
+/* A row's draw function: its id, its panel's position, then z, color and alpha. */
+typedef void (*itfMenuDrawFunc_t)(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha);
 
 typedef struct MenuImgDat_t {
     struct sprHandle_t *hSpr;
@@ -364,6 +366,10 @@ s32 MenuDrawProcess(dds3ProcessID_t *PID);
 void cmpSklTypeSet(dds3ProcessID_t *PID);
 s32 itfMenuSetRootMenu(dds3ProcessID_t *PID, s32 a_id, char *a_str, itfMenuFunc_t a_func);
 s8 itfMenuSetMenu(dds3ProcessID_t *PID, s32 a_id, s32 a_parentId, char *a_str, itfMenuFunc_t a_func);
+void itfMenuSetMenuTitle(dds3ProcessID_t *PID, char *a_str);
+void itfMenuSetDrawFunc(dds3ProcessID_t *PID, s32 a_id, itfMenuDrawFunc_t a_func);
+void itfMenuSetCancelSE(dds3ProcessID_t *PID, s32 a_id, s32 a_se);
+void itfCallGetProcessData(dds3ProcessID_t *PID, s32 a_id);
 void itfGeneralMenuCreatePIDSub(dds3ProcessID_t *PID, s32 a_type);
 void itfGeneralMenuCreatePIDSub2(dds3ProcessID_t *PID, s32 a_type);
 void itfMenuSetOt(dds3ProcessID_t *PID);

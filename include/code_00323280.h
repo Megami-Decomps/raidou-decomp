@@ -15,6 +15,15 @@ struct tagCMP_MAP_WORK;
 void DrawTop(struct tagCMP_MAP_WORK *wk);
 void Release_cmpMap(struct tagCMP_MAP_WORK *wk);
 void cmpRelease(struct tagCMP_WORK *wk);
+void cmpCallMenuSetMenuTitle(struct tagCMP_WORK *wk);
+void cmpMenuMaskSet(struct tagCMP_WORK *wk);
+s32 cmpCallMenuGetSelectID2(void);
+void cmpDrawMenuFunc(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha);
+/* The subscreen's title and row texts, then its title, panel and cursor sprites. */
+extern char *cmpCallMenuSetMenuTitleData[];
+extern itfSprList_t cmpCallMenuSetMenuTitleData2[];
+extern itfSprList_t cmpCallMenuSetMenuTitleData3[];
+extern itfSprList_t cmpCallMenuSetMenuTitleData4[];
 void Shutdown_cmpMap(dds3ProcessID_t *id);
 extern dds3ProcessID_t *effBTLFieldColorProcess;
 extern CMP_MODE cmpCallFuncData;

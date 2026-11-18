@@ -8,10 +8,12 @@
 struct tagCMP_WORK {
     struct sdfMemHandle_t *hMem; /* 0x00 */
     dds3ProcessID_t *drawPID;    /* 0x04 */
-    u8 unk08[0xC];
+    dds3ProcessID_t *menuPID;    /* 0x08: the subscreen's itf menu */
+    u8 unk0C[8];
     u8 step;                     /* 0x14 */
     u8 flag;                     /* 0x15: bit 0 ends the process */
-    u8 unk16[6];
+    s8 unk16;                    /* 0x16 */
+    u8 unk17[5];
     s32 markID;                  /* 0x1C */
     s32 count;                   /* 0x20 */
 };

@@ -18,6 +18,7 @@
 #include "dds3WorldBasic.h"
 #include "dds3AreaBasic.h"
 #include "dds3Basic.h"
+#include "sdfCampMenu.h"
 
 void DrawTop(struct tagCMP_MAP_WORK *wk) {
     struct sprHandle_t *spr;
@@ -144,7 +145,66 @@ INCLUDE_ASM(const s32, "code_00323280", cmpProcess);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpMenuMaskSet);
 
-INCLUDE_ASM(const s32, "code_00323280", cmpCallMenuSetMenuTitle);
+void cmpCallMenuSetMenuTitle(struct tagCMP_WORK *wk) {
+    dds3ProcessID_t *pid;
+    s32 last = 1;
+    itfMenuFunc_t func = cmpCallMenuGetSelectID2;
+
+    pid = wk->menuPID;
+
+    itfMenuSetMenuTitle(pid, cmpCallMenuSetMenuTitleData[0]);
+    itfMenuSetMenu(pid, 0xF001, -1, cmpCallMenuSetMenuTitleData[1], func);
+    itfMenuSetMenu(pid, 2, -1, cmpCallMenuSetMenuTitleData[2], NULL);
+    itfMenuSetMenu(pid, 1, -1, cmpCallMenuSetMenuTitleData[3], NULL);
+    itfMenuSetMenu(pid, 0x10001, -1, cmpCallMenuSetMenuTitleData[4], func);
+    itfMenuSetMenu(pid, 8, -1, cmpCallMenuSetMenuTitleData[5], func);
+    itfMenuSetMenu(pid, 0x10, -1, cmpCallMenuSetMenuTitleData[6], NULL);
+    itfMenuSetMenu(pid, 0x20, -1, cmpCallMenuSetMenuTitleData[7], func);
+    itfMenuSetDrawFunc(pid, 0xF001, cmpDrawMenuFunc);
+    itfMenuSetMenu(pid, 0xF002, 2, cmpCallMenuSetMenuTitleData[8], func);
+    itfMenuSetMenu(pid, 0x10002, 2, cmpCallMenuSetMenuTitleData[9], func);
+    itfMenuSetMenu(pid, 0x30002, 2, cmpCallMenuSetMenuTitleData[11], func);
+    itfMenuSetDrawFunc(pid, 0xF002, cmpDrawMenuFunc);
+    itfMenuSetMenu(pid, 0x40001, 1, cmpCallMenuSetMenuTitleData[12], func);
+    itfMenuSetMenu(pid, 0x30001, 1, cmpCallMenuSetMenuTitleData[13], func);
+    itfMenuSetMenu(pid, 0x20001, 1, cmpCallMenuSetMenuTitleData[14], func);
+    itfMenuSetDrawFunc(pid, 0x40001, cmpDrawMenuFunc);
+    itfMenuSetMenu(pid, 0xF010, 0x10, cmpCallMenuSetMenuTitleData[15], func);
+    itfMenuSetMenu(pid, 0x10010, 0x10, cmpCallMenuSetMenuTitleData[16], func);
+    itfMenuSetDrawFunc(pid, 0xF010, cmpDrawMenuFunc);
+    itfMenuSetDrawFunc(pid, 0x10010, cmpDrawMenuFunc);
+    itfMenuSetFlagMenu(pid, 0x10001, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+    itfMenuSetFlagMenu(pid, 0x40001, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+    itfMenuSetFlagMenu(pid, 0x30001, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+    itfMenuSetFlagMenu(pid, 0x20001, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+    itfMenuSetFlagMenu(pid, 0x10001, ITFMENU_CB_GF_PREV_TITLE_TXT, 1);
+    itfMenuSetFlagMenu(pid, 0x40001, ITFMENU_CB_GF_PREV_TITLE_TXT, 1);
+    itfMenuSetFlagMenu(pid, 0x30001, ITFMENU_CB_GF_PREV_TITLE_TXT, 1);
+    itfMenuSetFlagMenu(pid, 0x20001, ITFMENU_CB_GF_PREV_TITLE_TXT, 1);
+    itfMenuSetFlagMenu(pid, 0xF010, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+    itfMenuSetFlagMenu(pid, 0x10010, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+    itfMenuSetFlagMenu(pid, 0xF010, ITFMENU_CB_GF_PREV_TITLE_TXT, 1);
+    itfMenuSetFlagMenu(pid, 0x10010, ITFMENU_CB_GF_PREV_TITLE_TXT, 1);
+    itfMenuSetCancelSE(pid, 0xF001, -2);
+    itfMenuSetCancelSE(pid, 2, -2);
+    itfMenuSetCancelSE(pid, 1, -2);
+    itfMenuSetCancelSE(pid, 0x10001, -2);
+    itfMenuSetCancelSE(pid, 8, -2);
+    itfMenuSetCancelSE(pid, 0x10, -2);
+    itfMenuSetCancelSE(pid, 0x20, -2);
+    SDF_CAMP_MENU_ROWS(pid);
+    cmpMenuMaskSet(wk);
+    itfMenuSetSpriteData(pid, ITFMENU_IMG_DAT_TITLE, 0, 0, 0, 0, 23, 24, NULL, cmpCallMenuSetMenuTitleData4);
+    itfMenuSetSpriteData(pid, ITFMENU_IMG_DAT_PANEL, 28, 65, 128, 23, 14, 1, NULL, cmpCallMenuSetMenuTitleData2);
+    itfMenuSetSpriteData(pid, ITFMENU_IMG_DAT_SELECT, 28, 65, 128, 23, 14, 1, NULL, cmpCallMenuSetMenuTitleData3);
+    itfMenuSetFlag(pid, 0x10, 0);
+    itfGeneralMenuCreatePIDSub(pid, 1);
+    itfGeneralMenuCreatePIDSub2(pid, 1);
+    if (wk->unk16 == last) {
+        itfCallGetProcessData(pid, 0x20);
+    }
+    itfMenuStart(pid);
+}
 
 INCLUDE_ASM(const s32, "code_00323280", TitleChange);
 
