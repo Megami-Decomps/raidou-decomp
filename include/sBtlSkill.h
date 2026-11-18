@@ -60,7 +60,7 @@ struct SBTLSKILLP_TBL {
 #endif
 };
 #ifdef VERSION_RAIDOU1
-SIZE_CHECK(sbtlSkillTblSizeCheck, struct SBTLSKILLP_TBL, 0x34);
+SIZE_CHECK(sbtlSkillpTblSizeCheck, struct SBTLSKILLP_TBL, 0x34);
 #endif
 
 extern struct SBTLSKILLP_TBL *sbtlCallBtlDrawRedGgData;
