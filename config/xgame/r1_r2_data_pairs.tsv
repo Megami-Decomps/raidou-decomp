@@ -1588,8 +1588,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0041B1C8	0x00479F78	sbtlRefSbtl51Data7	.data	0x15B8	no	code-ref
 0x0041C7C8	0x0047B580	sbtlCallBtlGetMotionVisualData3Data2Entry2	.data	0x20	yes	unique-contents
 0x0041C7E8	0x0047B5A0	sbtlCallBtlGetMotionVisualData3Data2Entry3	.data	0x80	yes	unique-contents
-0x0041C880	0x0047B700	sbtlData15	.data	0x10	yes	code-ref
-0x0041C890	0x0047B710	sbtlData16	.data	0x10	yes	code-ref
+0x0041C880	0x0047B700	sb_enc_ex_pos	.data	0x10	yes	code-ref
+0x0041C890	0x0047B710	sb_enc_ex_rot	.data	0x10	yes	code-ref
 0x0041C8A0	0x0047B720	tbldatacnt	.data	0x10	yes	code-ref
 0x0041C8B0	0x0047B730	pathdata	.data	0xA0	yes	code-ref
 0x0041C950	0x0047B7D0	sbtlBtlSetNextPathDataSubDataEntry	.data	0x18	yes	data-word

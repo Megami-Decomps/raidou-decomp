@@ -12,13 +12,26 @@
 
 struct sprHandle_t;
 
-/* Battle reward work, cleared by sbtlInitDropWork. The R1 layout differs from HD's and is not read yet. */
+#define DROPITEM_NUM 12
+#define DROPEITEM_NUM 4
+
+/* Battle reward work, cleared by sbtlInitDropWork. An R1 drop slot is id, num, per; R2 adds a fourth word. */
 typedef struct SBTLDROP_WORK {
+    s32 setflg;
+    s32 exp;
+    s32 nakama_exp;
+    s32 mag;
+    s32 chuusei;
+    s32 tlev;
+    s32 get_chuusei;
+    s32 num;
+    s32 gold;
 #ifdef VERSION_RAIDOU2
-    u8 pad00[0xF4];
+    s32 item[DROPITEM_NUM][4];
 #else
-    u8 pad00[0xC4];
+    s32 item[DROPITEM_NUM][3];
 #endif
+    s32 eventitem[DROPEITEM_NUM];
 } SBTLDROP_WORK;
 
 /* HD SBTLCAMERA_WORK, the head of SBTL_WORK; the PS2 layout starts at targetpos. */
@@ -113,7 +126,10 @@ struct scrProcessWork_s;
 #ifdef VERSION_RAIDOU2
 /* Partial raidou2 layout of the battle main work: only the fields read so far are named, the rest is padding. */
 typedef struct SBTL_WORK {
-    u8 pad000[0x400];
+    u8 pad000[0x180];
+    SBTLCAMERA_WORK camera;
+    SBTLCAMERA_WORK camerabk;
+    u8 pad2E0[0x400 - 0x2E0];
     fileRequest_t *panelPack;
     u32 panelPackPos;
     s32 panelPackLen;
@@ -149,7 +165,11 @@ typedef struct SBTL_WORK {
     struct SBTLDMG_HITLISTWORK *hitList;
     u8 pad73C[0x4];
     struct SBTLEFF_LISTWORK *effList;
-    u8 pad744[0x14];
+    struct SBTLUNIT_LISTWORK *field404; /* HD friend_List */
+    struct SBTLUNIT_LISTWORK *field408; /* HD other_List */
+    struct SBTLUNIT_LISTWORK *field40C;
+    struct SBTLITEM_LISTWORK *itemList;
+    struct SBTLITEM_LISTWORK *bulletList;
     struct SBTLSM_LISTWORK *sysmsgList;
     u8 pad75C[0x4];
     struct SBTLDMG_HITWORK *huka2hwk; /* hit whose attacker data later hits copy (HD name) */
@@ -186,9 +206,7 @@ typedef struct SBTL_WORK {
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
 typedef struct SBTL_WORK {
     SBTLCAMERA_WORK camera;
-    u8 pad040[0x70 - 0x40];
-    s32 field070; /* cleared by sbtlSbtlCameraproc */
-    u8 pad074[0x80 - 0x74];
+    SBTLCAMERA_WORK camerabk;
     sdf3DLight_t light[3]; /* copy of the parallel lights, made by sbtlRefSbtl31 */
     sdfVector4_t ambient;
     s32 mapNo[2];
@@ -268,7 +286,7 @@ typedef struct SBTL_WORK {
     u8 field34C[SDAT_STOCK_NUM];
     u8 field358[SDAT_STOCK_NUM];
     s32 stockUnitID[SDAT_STOCK_NUM];
-    u8 pad394[0x398 - 0x394];
+    u32 kuishibBit; /* HD kuishibBit, one bit per stock slot (sbtlCheckBit) */
     s32 stackID[2]; /* stock slots of the summoned demons (HD stack_id) */
     u8 pad3A0[0x3A4 - 0x3A0];
     s32 unitPadID;
@@ -439,6 +457,10 @@ typedef char SBTL_WORKSizeCheck[sizeof(SBTL_WORK) == 0x87C ? 1 : -1];
 #endif
 
 extern SBTL_WORK *wk_sbtl;
+extern sdfVector4_t sbtlCallSetPosPoseSetDds3BasicData;  /* camera up vector (0, 1, 0, 0) */
+extern sdfVector4_t sbtlCallSetPosPoseSetDds3BasicData2; /* camera rotation (0, 0, 0, 1) */
+extern sdfVector4_t sbtlCallSetPosPoseSetDds3Basic2Data;
+extern sdfVector4_t sbtlCallSetPosPoseSetDds3Basic2Data2;
 
 /* A devil's item drop slot. */
 typedef struct SBTLITEM_WORK {
@@ -807,6 +829,7 @@ s32 RestartBattle(void);
 s32 CheckStopBattle(void);
 s32 sbtlCallBtlGetScrollID(void);
 void pbSetGameCamera0(void);
+void pbLeaf19(void);
 s32 sbtlCallBtlDeleteOnData(void);
 s32 sbtlCallBtlGetPlayerData(void);
 s32 sbtlCallBtlSearchEffectData2(s32 id, u16 flg, void *pData);
@@ -817,6 +840,8 @@ void sbtlCallMemset3(s32 battleMode, s32 stageNo);
 s32 sbtlBtlLoadHuumaMesDataSub(s32 huumaMesNo);
 s32 sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallCameraObjectBasicGetFovy(SBTLCAMERA_WORK *wk, struct dds3Basic_t *cm);
+s32 sbtlCallSetPosPoseSetDds3Basic(SBTLCAMERA_WORK *wk);
+s32 sbtlCallSetPosPoseSetDds3Basic2(SBTLCAMERA_WORK *wk);
 s32 sbtlCheckScriptData(s32 devilId);
 s32 sbtlCheckTutorialBattle(void);
 #ifdef VERSION_RAIDOU2
@@ -879,15 +904,15 @@ s32 sbtlProcSBtlSTPSub(struct SBTLUNIT_WORK *wk);
 s32 Proc_sbtlSTP(SBTL_STP *stp);
 s32 Draw_sbtlSTP(SBTL_STP *stp);
 s32 btlLoadSbPack(void);
-void campFreeStatusModel(void);
+void sbtlCheckBattleLose(void);
 struct SBTL_MODELBIND_LIST *effAllocateModelBindings(void);
 void effStopEffectStop(void);
 SBTL_STP *evtAllocateContext(void);
 s32 pbCallBtlCheckLoadFlg(void);
 void sbtlAllInit(void);
 s32 sbtlBattleSBPACK(void);
-s32 sbtlCallStartRain(void);
-s32 sbtlBattleEventSb(void);
+s32 sbtlEvent_CheckRain(void);
+s32 sbtlEvent_LoadEventScript(void);
 void sbtlBattleStart(SBTL_STAGE_DATA *stage);
 void sbtlSupport_BattleStop(s32 motionFlag, s32 effectFlag, s32 SEFlag);
 s32 sbtlCheckStockPara(sdatUnitWork_t *unit);
@@ -896,8 +921,8 @@ s32 sbtlSetAutoSkill_GB(sdatUnitWork_t *unit);
 s32 sbtlGetStockPoint(void);
 s32 sbtlBtlNakamaSetUpSub(sdatUnitWork_t *unit);
 void sbtlCallBtlCheckEnshutuSummonUnit(void);
-s32 sbtlCallBtlCheckGeneratorGroupID(void);
-void sbtlCallBtlCheckTutorialBattle2(void);
+s32 sbtlCheckGenerator_ND(void);
+void sbtlCheckBattleWin(void);
 s32 sbtlSetAction(struct SBTLUNIT_WORK *wk, u32 action, s32 flg);
 s32 sbtlSetMotionHit(struct SBTLUNIT_WORK *wk, s32 motionno, SKLID skillid);
 void sbtlCallBtlGetItemtbl(void);

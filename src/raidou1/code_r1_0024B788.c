@@ -928,7 +928,7 @@ s32 pbCallBtlCheckLoadFlg(void)
                 wk_sbtl->flg |= 8;
                 sbtlInitDropWork();
                 sbtlSetEndData();
-                campFreeStatusModel();
+                sbtlCheckBattleLose();
                 if (wk_sbtl->battleMode == 3) {
                     pbData = 1;
                 }
@@ -946,7 +946,7 @@ s32 pbCallBtlCheckLoadFlg(void)
     }
     if (wk->status == 40 || wk->status == 10 || wk_sbtl->mode == 7 || wk_sbtl->mode == 8
         || wk_sbtl->mode == 16 || wk_sbtl->field424 != 0
-        || (sbtlChkBossEventStart_EnemySummonWait() && sbtlCallBtlCheckGeneratorGroupID())) {
+        || (sbtlChkBossEventStart_EnemySummonWait() && sbtlCheckGenerator_ND())) {
         wk_sbtl->endcnt = 0;
         return 1;
     }
@@ -998,7 +998,7 @@ s32 pbCallBtlCheckLoadFlg(void)
     if (sbtlCheckUnit_Exec()) {
         wk_sbtl->endcnt = 0;
         wk_sbtl->flg |= 8;
-        sbtlCallBtlCheckTutorialBattle2();
+        sbtlCheckBattleWin();
         sbtlCallBtlSearchUnitID32();
         sbtlCallBtlSearchUnitID33();
         sbtlSetEndData();

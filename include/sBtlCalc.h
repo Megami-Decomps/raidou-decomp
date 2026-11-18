@@ -12,7 +12,7 @@ struct sdatUnitWork_t;
 struct SBTL_AISYO_TBL;
 
 s32 CalcAisyo(struct SBTLUNIT_WORK *wk);
-s32 sbtlCallBtlGetSkilltbl19(struct SBTLUNIT_WORK *wk, SKLID id);
+s32 sbtlSetAutoSkill_ID(struct SBTLUNIT_WORK *wk, SKLID id);
 SKLID sbtlGetAutoSkill_ID(struct sdatUnitWork_t *unit, s32 id);
 s32 sbtlCheckBadStatus(struct SBTLUNIT_WORK *wk);
 void sbtlCheckBadStatus_Weak(struct SBTLUNIT_WORK *wk, SKLID sklid, struct SBTLSKILLP_TBL *ptbl, s32 acterID);
@@ -45,7 +45,7 @@ s32 sbtlGetDamage_P_STR(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk
 s32 sbtlGetDamage_P_TEC(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl, s32 itemid);
 s32 sbtlGetDamage_P_VIT(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl, s32 itemid);
 s32 sbtlKudaHuuinCheck(void);
-s32 sbtlRefSbtl63(SKLID sklid);
+void sbtlDecItem(s32 index, s32 itemid);
 s32 sbtlCheckAisyo_Old(u32 attr);
 u32 sbtlSEquationno03Sub(struct SBTL_AISYO_TBL *aisyo, u32 attr);
 s32 sbtlResetBadStatus(struct SBTLUNIT_WORK *wk, BSTF flg);
@@ -55,5 +55,10 @@ s32 sbtlResetBadStatus_GB(struct sdatUnitWork_t *unit, BSTF flg);
 s32 sbtlSetBadStatus_No(struct SBTLUNIT_WORK *wk, SKLID sklid, BST badstno, s32 flg, s32 acterID);
 s32 sbtlSetItem(struct SBTLUNIT_WORK *wk);
 s32 sbtlDeleteHitHelper(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheckItemCost_GBWK(s32 itemid, s32 flg);
+void sbtlDecItem_GBWK(s32 itemid);
+s32 sbtlCheckItemCount(struct sdatUnitWork_t *unit);
+void sbtlBtlCheckItemCountSub(struct sdatUnitWork_t *unit);
+s32 sbtlLeaf123(struct sdatUnitWork_t *unit);
 
 #endif

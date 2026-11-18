@@ -107,7 +107,19 @@ SBTLITEM_TBL *sbtlGetItemtbl(s32 id)
     return &tbldata[id];
 }
 
-INCLUDE_ASM(const s32, "code_002999C0", sbtlSetDropItem);
+s32 sbtlSetDropItem(s32 itemid, s32 num, s16 per) {
+    s32 i;
+
+    for (i = 0; i < DROPITEM_NUM; i++) {
+        if (wk_sbtl->drop.item[i][0] == itemid || wk_sbtl->drop.item[i][0] == 0) {
+            wk_sbtl->drop.item[i][2] = per;
+            wk_sbtl->drop.item[i][0] = itemid;
+            wk_sbtl->drop.item[i][1] += num;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 SBTLITEM_LISTWORK *sbtlCreateItemList(void)
 {

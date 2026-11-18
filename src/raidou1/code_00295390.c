@@ -14,16 +14,25 @@
 #include "sBtlEncount.h"
 #include "dds3Randomize.h"
 #include "code_00295390.h"
+#include "motion.h"
+#include "AW_XAtkPad.h"
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlCallBtlCheckTutorialBattle2);
+INCLUDE_ASM(const s32, "code_00295390", sbtlCheckBattleWin);
 
-INCLUDE_ASM(const s32, "code_00295390", campFreeStatusModel);
+void sbtlCheckBattleLose(void) {
+    if (sbtlCheckTutorialBattle()) {
+        evtBitOff(2096);
+        evtBitOn(2097);
+        evtBitOff(2098);
+        evtBitOff(2099);
+    }
+}
 
 s32 sbtlCheckTutorialBattle(void) {
     return evtBitCheck(2100) != 0;
 }
 
-s32 sbtlCallStartRain(void) {
+s32 sbtlEvent_CheckRain(void) {
     s32 ret = 1;
 
     if (wk_sbtl->stageNo == 26) {
@@ -43,7 +52,7 @@ s32 sbtlCallStartRain(void) {
     return ret;
 }
 
-s32 sbtlBattleEventSb(void) {
+s32 sbtlEvent_LoadEventScript(void) {
     if (wk_sbtl->flg & 0x10000000) {
         return 1;
     }
@@ -68,9 +77,22 @@ s32 sbtlBattleEventSb(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlFreeUIScene);
+s32 sbtlEvent_DeleteEventScript(void) {
+    s32 ret = 1;
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlCallMemset20);
+    if (wk_sbtl->flg & 0x10000000) {
+        if (wk_sbtl->evtloadHandle != NULL) {
+            sdfMemFreeDirect(wk_sbtl->evtloadHandle);
+            wk_sbtl->evtloadHandle = NULL;
+            wk_sbtl->evtloadst = 0;
+        }
+    } else {
+        ret = wk_sbtl->evtloadst == 0;
+    }
+    return ret;
+}
+
+INCLUDE_ASM(const s32, "code_00295390", sbtlEvent_SetCharacterProc);
 
 INCLUDE_ASM(const s32, "code_00295390", sbtlGetEventMes);
 
@@ -78,7 +100,7 @@ INCLUDE_RODATA(const s32, "code_00295390", sbtlCallMemset20Table);
 
 INCLUDE_RODATA(const s32, "code_00295390", sbtlGetEventMesTable);
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlCallInitMessage);
+INCLUDE_ASM(const s32, "code_00295390", sbtlEvent_NegoProc);
 
 INCLUDE_ASM(const s32, "code_00295390", sbtlMessageProc);
 
@@ -105,7 +127,28 @@ INCLUDE_ASM(const s32, "code_00295390", sbtlLoadHuuma_MesData);
 
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_07);
 
+/* NON_MATCHING: 17 of 34 words match.  */
+#ifdef NON_MATCHING
+s32 EventProcTbl_06(void) {
+    wk_sbtl->eventcounter++;
+    if (wk_sbtl->eventcounter <= 0) {
+        wk_sbtl->eventcounter = 0;
+    } else if (wk_sbtl->eventcounter > 10000) {
+        wk_sbtl->eventcounter = 10000;
+    }
+    if (wk_sbtl->eventcounter < 90) {
+        return 0;
+    }
+    wk_sbtl->eventcounter = 0;
+    wk_sbtl->eventgstat = 0;
+    RestartBattle();
+    wk_sbtl->flg &= ~0x400;
+    sbtlResetNSTOP();
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_06);
+#endif
 
 INCLUDE_RODATA(const s32, "code_00295390", EventProcTbl_00Table);
 
@@ -197,7 +240,23 @@ SBTL_UNIT_SUB *sbtlGetMotionVisualData(s32 a, s32 id, s32 b) {
     return &sbtlData98[id].mwk[b];
 }
 
+/* NON_MATCHING: 30 of 35 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCheckMotionTiming(struct SBTLUNIT_WORK *wk) {
+    s32 ret;
+
+    if (sbtlGetMotionVisualData(wk->major, wk->minor, wk->next_motionno)->flags & 2) {
+        return 0;
+    }
+    ret = sbtlCallBtlGetMotionVisualData2(wk, wk->motionID);
+    if (ret || wk->motionID == 1 || wk->motionID == 14 || !(wk->hModel->first->frame >= 10.0f)) {
+        return 1;
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_00295390", sbtlCheckMotionTiming);
+#endif
 
 f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type) {
     f32 frame = 0.0f;
@@ -288,7 +347,7 @@ INCLUDE_ASM(const s32, "code_00295390", sbtlCallBtlCheckDamageTarget8);
 
 INCLUDE_ASM(const s32, "code_00295390", sbtlGetPointData);
 
-INCLUDE_ASM(const s32, "code_00295390", SetEncountData_Sub);
+INCLUDE_ASM(const s32, "code_00295390", sbtlSetExPos);
 
 /* NON_MATCHING: 106 of 175 words match.  */
 #ifdef NON_MATCHING

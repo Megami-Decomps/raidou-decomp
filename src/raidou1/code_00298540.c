@@ -81,7 +81,12 @@ struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub2(s32 devilId, s32 point, s32 arg)
     return SetEncountData_Sub_sbtlEncount(devilId, point, arg, 2);
 }
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlSetEncountData4);
+struct SBTLUNIT_WORK *sbtlSetEncountData4(s32 devil, s32 point, u32 addst) {
+    struct SBTLUNIT_WORK *wk = SetEncountData_Sub_sbtlEncount(devil, point, addst, 1);
+
+    wk->aiwk->scrflag |= 0x800000;
+    return wk;
+}
 
 INCLUDE_ASM(const s32, "code_00298540", Choice1);
 
@@ -148,11 +153,45 @@ s32 sbtlCheckGeneratorGroupID(s32 group)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlCallBtlCheckGeneratorGroupID);
+s32 sbtlCheckGenerator_ND(void) {
+    SB_GENERATOR_WORK *gen = sb_gen_work;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlCheckGenerator_D);
+    for (i = 0; i < 13; i++, gen++) {
+        if (gen->use && gen->penc->type - 2 < 3U && sbtlCheckGeneratorGroupID(gen->penc->groupID)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlChkBossEventStart_EnemySummonWait);
+s32 sbtlCheckGenerator_D(void) {
+    SB_GENERATOR_WORK *gen = sb_gen_work;
+    struct SB_ENCOUNT1 *enc;
+    s32 i;
+
+    for (i = 0; i < 13; i++, gen++) {
+        if (gen->use) {
+            enc = gen->penc;
+            if (enc->type == 5 && sbtlCheckGeneratorGroupID(enc->groupID) && wk_sbtl->field424 < enc->disp_max) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+s32 sbtlChkBossEventStart_EnemySummonWait(void) {
+    SB_GENERATOR_WORK *gen = sb_gen_work;
+    s32 i;
+
+    for (i = 0; i < 13; i++, gen++) {
+        if (gen->use && gen->zan_cnt > 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 s32 sbtlCallBtlGetNumUnitGroupID(void)
 {

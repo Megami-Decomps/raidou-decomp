@@ -151,7 +151,7 @@ s32 sbtlSetSkillData_AI(struct SBTLUNIT_WORK *wk, SKLID skillid);
 
 struct SBTLEFF_LISTWORK;
 s32 CalcBadStatus(struct SBTLUNIT_WORK *wk);
-struct SBTLUNIT_WORK *SetEncountData_Sub(f32 *pos, f32 *rot);
+struct SBTLUNIT_WORK *sbtlSetExPos(f32 *pos, f32 *rot);
 s32 sbtlCallBtlSearchUnitID4(s32 no, s32 flg);
 s32 sbtlCallMemset12(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallMemset5(struct SBTLUNIT_WORK *wk);

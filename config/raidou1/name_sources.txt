@@ -7391,15 +7391,15 @@
 0x00294F30	sbtlLeaf82	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
 0x00294F38	sbtlCallBtlCheckTutorialBattle	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlCheckTutorialBattle
 0x00295298	sbtlInitTutorial	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlEvent.sBtlInitTutorial score 5.5 flag I: calls2 next callers-of-match votes2 st1:call r2-disagree:0x2c8658
-0x00295390	sbtlCallBtlCheckTutorialBattle2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlCheckTutorialBattle
-0x00295578	campFreeStatusModel	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x23b0f8 sim 0.675 margin 0.68 pair
+0x00295390	sbtlCheckBattleWin	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlCheckBattleWin, before sBtlCheckBattleLose; R2 sbtlCheckBattleWin; replaces sbtlCallBtlCheckTutorialBattle2
+0x00295578	sbtlCheckBattleLose	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlCheckBattleLose: tutorial battle sets evt bits 2096-2099, between sBtlCheckBattleWin and sBtlCheckTutorialBattle; replaces campFreeStatusModel
 0x002955C8	sbtlCheckTutorialBattle	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlEvent.sBtlCheckTutorialBattle score 9.1 flag I: calls4 calls-of-match votes2 st2:call r2-only
-0x002955E8	sbtlCallStartRain	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls evtStartRain
-0x00295658	sbtlBattleEventSb	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; string '/battle/event/sb_btlevent.bf'
-0x00295730	sbtlFreeUIScene	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sBtlScene.sBtlFreeUIScene score 2.3 flag I: calls1 calls-of-match st1:call r1-only
-0x00295798	sbtlCallMemset20	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls memset
+0x002955E8	sbtlEvent_CheckRain	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlEvent_CheckRain, after sBtlCheckTutorialBattle; replaces sbtlCallStartRain
+0x00295658	sbtlEvent_LoadEventScript	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlEvent_LoadEventScript: loads sb_btlevent.bf; replaces sbtlBattleEventSb
+0x00295730	sbtlEvent_DeleteEventScript	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlEvent_DeleteEventScript: frees evtloadHandle, after sBtlEvent_LoadEventScript; replaces sbtlFreeUIScene
+0x00295798	sbtlEvent_SetCharacterProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlEvent_SetCharacterProc(negoid), between DeleteEventScript and sBtlGetEventMes; replaces sbtlCallMemset20
 0x00295910	sbtlGetEventMes	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlEvent.sBtlGetEventMes score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
-0x00295978	sbtlCallInitMessage	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls fclInitMessage
+0x00295978	sbtlEvent_NegoProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlEvent_NegoProc(adr, no), between sBtlGetEventMes and sBtlMessageProc; replaces sbtlCallInitMessage
 0x00295B50	sbtlMessageProc	hd-inferred	hd: Raidou HD sBtlEvent.sBtlMessageProc, score 9.55 band B
 0x00295CD8	sbtlRefSbtl29	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x00295D28	EventProcTbl_00	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlEvent.EventProcTbl_00 score 8.5 flag -: calls2 callers-of-match votes4 st1:call r1+r2
@@ -7429,7 +7429,7 @@
 0x00297670	sbtlCalcAnim_DmgNumPos	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlCalcAnim_DmgNumPos score 7.1 flag I: calls2 callers-of-match votes2 st1:call r1+r2
 0x002978F8	sbtlCallBtlCheckDamageTarget8	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlCheckDamageTarget
 0x00297AE0	sbtlGetPointData	hd-inferred	hd: Raidou HD sBtlEncount.sBtlGetPointData, score 11.8 band A
-0x00297BD8	SetEncountData_Sub	hd	hd: Raidou HD sBtlEncount.SetEncountData_Sub, score 8.45 band B
+0x00297BD8	sbtlSetExPos	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEncount.sBtlSetExPos(pos, rot), after sBtlGetPointData; replaces SetEncountData_Sub
 0x00297C30	sbtlCallBitCheck	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls evtBitCheck
 0x00297EF0	SetEncountData_Sub_sbtlEncount	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEncount.SetEncountData_Sub (R2 name, same callee in sbtlAddAWXAtkPadSub and sbtlSetEncountData); replaces sbtlCallMemset21
 0x00298540	sbtlSetEncountData	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlEncount.sBtlSetEncountData score 9.2 flag I: calls3 prev~ calls-of-match votes2 st1:call r1+r2
@@ -7442,7 +7442,7 @@
 0x00298A90	sbtlCallBtlClearGeneratorWork	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlClearGeneratorWork
 0x00298B60	sbtlGeneratorD_On	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sBtlEncount.sBtlGeneratorD_On score 3.2 flag I: calls1 next gap1/2 st2:gap r2-only
 0x00298B70	sbtlCheckGeneratorGroupID	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD sBtlEncount.sBtlCheckGeneratorGroupID score 6.5 flag I: calls2 calls-of-match-uniq votes3 st2:call r2-only
-0x00298BC8	sbtlCallBtlCheckGeneratorGroupID	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlCheckGeneratorGroupID
+0x00298BC8	sbtlCheckGenerator_ND	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEncount.sBtlCheckGenerator_ND: generators of type 2-4 whose group is still alive, between GroupID and _D; R2 sbtlCheckGenerator_ND; replaces sbtlCallBtlCheckGeneratorGroupID
 0x00298C50	sbtlCheckGenerator_D	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEncount.sBtlCheckGenerator_D (R2 0x2CC1E0, tier A); takes no argument, loops over sb_gen_work; replaces datBossRashChk
 0x00298CE8	sbtlChkBossEventStart_EnemySummonWait	hd-inferred	method=hd-d-single-raidou1; p=0.71 (n=403); tier=C; source=hd; evidence=Raidou HD sBtlMain.sBtlChkBossEventStart_EnemySummonWait score 2.0 flag I: calls1 calls-of-match st1:call r1-only
 0x00298D30	sbtlCallBtlGetNumUnitGroupID	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetNumUnit_GroupID
@@ -7479,8 +7479,8 @@
 0x0029A3E0	sbtlLeaf103	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x0029A3E8	sbtlLeaf87	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x0029A3F0	sbtlCallBitCheck5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls evtBitCheck
-0x0029A430	sbtlRefDDS3GBWK21	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references DDS3_GBWK
-0x0029A478	CalcItem_Battle	hd	hd: Raidou HD sBtlCalc.CalcItem_Battle, score 8.25 band B
+0x0029A430	sbtlCheckItemCost_GBWK	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlCheckItemCost_GBWK(itemid, flg): item count > 0, and uses one when flg; replaces sbtlRefDDS3GBWK21
+0x0029A478	sbtlCheckItemCost	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlCheckItemCost(itemid, flg): battle item list count > 0, uses one when flg; after sBtlCheckItemCost_GBWK; replaces CalcItem_Battle
 0x0029A500	sbtlSetWeakBit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlSetWeakBit; R2 sbtlSetWeakBit is the same body with R2 constants; replaces sbtlRefDDS3GBWK20
 0x0029A620	sbtlCheckItemMember_Dead	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckItemMember_Dead score 7.4 flag I: calls4 callers-of-match votes3 st1:call r2-disagree:0x2d3f98
 0x0029A7A0	sbtlCallBtlSearchUnitID35	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlSearchUnit_ID
@@ -7497,7 +7497,7 @@
 0x0029B358	CalcAisyo	hd	hd: Raidou HD sBtlCalc.CalcAisyo, score 7.9 band B
 0x0029B3C8	sbtlSetAutoSkill_GB	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlSetAutoSkill_GB score 5.9 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2d4ff0
 0x0029B478	sbtlSetAutoSkill_GBID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlSetAutoSkill_GBID, called by sBtlSetAutoSkill_GB per auto skill; replaces sbtlBtlSetAutoSkillGBSub
-0x0029B538	sbtlCallBtlGetSkilltbl19	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetSkilltbl
+0x0029B538	sbtlSetAutoSkill_ID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlSetAutoSkill_ID(wk, sklid): attr 0x10000 auto skill sets status 0x20000000 unless kuishibBit holds the stock slot; replaces sbtlCallBtlGetSkilltbl19
 0x0029B5C0	sbtlResetAutoSkill	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlResetAutoSkill, clears pbtl and the auto skill counters; replaces sbtlBtlSetAutoSkillGBSub2
 0x0029B5E0	sbtlGetAutoSkillPara	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlGetAutoSkillPara, called by sBtlSetAutoSkill_GB with &autost_cnt, &autost_cnt2; R2 keeps sbtlCallBtlGetSkilltbl21 on other code; replaces sbtlCallBtlGetSkilltbl21
 0x0029B6B0	sbtlGetAutoSkill_ID	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetAutoSkill_ID score 7.4 flag I: calls5 calls-of-match votes2 st1:call r2-disagree:0x2d5560
@@ -7520,8 +7520,8 @@
 0x0029C1F0	sbtlRefSbtl64	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
 0x0029C238	sbtlDecHP	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlDecHP score 7.8 flag I: calls1 prev gap2/5 votes2 st1:gap r1+r2
 0x0029C248	sbtlDecMP	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlCalc.sBtlDecMP score 5.0 flag I: prev gap1/4 st1:gap r1+r2
-0x0029C258	sbtlRefDDS3GBWK22	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references DDS3_GBWK
-0x0029C288	sbtlRefSbtl63	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
+0x0029C258	sbtlDecItem_GBWK	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlDecItem_GBWK(itemid), called by sBtlCheckItemCost_GBWK; replaces sbtlRefDDS3GBWK22
+0x0029C288	sbtlDecItem	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlDecItem(index, itemid): decrements itemList->data[index].num; replaces sbtlRefSbtl63
 0x0029C2B0	sbtlCallBtlGetPlayerData7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetPlayerData
 0x0029C2F0	sbtlCallBtlGetPlayerData6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetPlayerData
 0x0029C360	sbtlCallBtlGetPlayerData3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetPlayerData
@@ -13854,8 +13854,8 @@
 0x0041C7C8	sbtlCallBtlGetMotionVisualData3Data2Entry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCallBtlGetMotionVisualData3Data2
 0x0041C7E8	sbtlCallBtlGetMotionVisualData3Data2Entry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCallBtlGetMotionVisualData3Data2
 0x0041C868	sbtlCallBtlGetMotionVisualData3Data2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlGetMotionVisualData3
-0x0041C880	sbtlData15	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlGetPointData, SetEncountData_Sub, sbtlCallMemset21
-0x0041C890	sbtlData16	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlGetPointData, SetEncountData_Sub, sbtlCallMemset21
+0x0041C880	sb_enc_ex_pos	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEncount sb_enc_ex_pos, written by sBtlSetExPos; replaces sbtlData15
+0x0041C890	sb_enc_ex_rot	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEncount sb_enc_ex_rot, written by sBtlSetExPos; replaces sbtlData16
 0x0041C8A0	tbldatacnt	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD enemypath tbldatacnt, read by sBtlGetPathDataCount; replaces sbtlLeaf83Data
 0x0041C8B0	pathdata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD enemypath pathdata, read by sBtlGetPathData; replaces sbtlBtlSetNextPathDataSub2Data
 0x0041C950	sbtlBtlSetNextPathDataSubDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlBtlSetNextPathDataSubData

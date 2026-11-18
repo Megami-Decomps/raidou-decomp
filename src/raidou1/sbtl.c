@@ -14,6 +14,12 @@
 #include "sdatUnit.h"
 #include "sbtlDMG.h"
 #include "EventBit.h"
+#include "newdata.h"
+#include "dds3WorldBasic.h"
+#include "dds3SceneBasic.h"
+#include "dds3obj.h"
+#include "sBtlItem.h"
+#include "sBtlPlayer.h"
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
 s32 sbtlLeaf125(void) {
@@ -29,7 +35,7 @@ void sbtlSbtlCameraproc(void) {
     SBTLCAMERA_WORK *cam;
 
     wk_sbtl->camera.cm = NULL;
-    wk_sbtl->field070 = 0;
+    wk_sbtl->camerabk.cm = NULL;
     pid = dds3StartProcess("sbtl_cameraproc", 0x40A, 1, 1, sbtlLeaf103, sbtlLeaf87, NULL);
     target.x += main_data.val20;
     target.z += main_data.val24;
@@ -55,9 +61,34 @@ void sbtlSbtlCameraproc(void) {
     dds3LinkProcess(wk_sbtl->process, pid);
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallSetGameCamera0);
+s32 sbtlCallSetGameCamera0(void) {
+    struct dds3Basic_t *cm;
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallGetActiveScene4);
+    wk_sbtl->flg |= 0x400000;
+    pbSetGameCamera0();
+    cm = dds3GetActiveCameraSceneBasic(dds3GetActiveScene());
+    if (cm == NULL) {
+        return 0;
+    }
+    sbtlCallCameraObjectBasicGetFovy(&wk_sbtl->camerabk, cm);
+    sbtlCallSetPosPoseSetDds3Basic2(&wk_sbtl->camera);
+    return 1;
+}
+
+s32 sbtlCallGetActiveScene4(void) {
+    dds3CameraObjectBasicWorkData_t *work;
+
+    wk_sbtl->flg &= ~0x400000;
+    pbLeaf19();
+    if (dds3GetActiveCameraSceneBasic(dds3GetActiveScene()) == NULL) {
+        return 0;
+    }
+    dds3SetActiveCameraSceneBasic(dds3GetActiveScene(), wk_sbtl->camerabk.cm);
+    work = wk_sbtl->camerabk.cm->workdata;
+    dds3CameraObjectBasicSetFovy(wk_sbtl->camerabk.cm, wk_sbtl->camerabk.fovy);
+    work->flag |= 1;
+    return 1;
+}
 
 s32 sbtlRefSbtl65(void) {
     if (wk_sbtl->flg & 0x400000) {
@@ -66,7 +97,25 @@ s32 sbtlRefSbtl65(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallSetPosPoseSetDds3Basic);
+s32 sbtlCallSetPosPoseSetDds3Basic(SBTLCAMERA_WORK *wk) {
+    dds3CameraObjectBasicWorkData_t *work = wk->cm->workdata;
+    sdfVector4_t pos;
+
+    SDF_VU0_LOADVECTOR(&wk->direction);
+    SDF_VU0_STOREVECTOR(&work->eyeVector);
+    SDF_VU0_SCALEVECTOR(-wk->distance);
+    SDF_VU0_LOADVECTOR_B(&wk->targetpos);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR_B(&work->targetPos);
+    SDF_VU0_STOREVECTOR(&pos);
+    dds3SetPosPoseSet_dds3Basic(wk->cm, &pos);
+    dds3SetRotPoseSet(wk->cm, &sbtlCallSetPosPoseSetDds3BasicData2);
+    SDF_VU0_LOADVECTOR(&sbtlCallSetPosPoseSetDds3BasicData);
+    SDF_VU0_STOREVECTOR(&work->vertical);
+    dds3CameraObjectBasicSetFovy(wk->cm, wk->fovy);
+    work->flag |= 1;
+    return 1;
+}
 
 s32 sbtlCallCameraObjectBasicGetFovy(SBTLCAMERA_WORK *wk, dds3Basic_t *cm) {
     dds3CameraObjectBasicWorkData_t *work;
@@ -91,7 +140,27 @@ s32 sbtlCallCameraObjectBasicGetFovy(SBTLCAMERA_WORK *wk, dds3Basic_t *cm) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallSetPosPoseSetDds3Basic2);
+s32 sbtlCallSetPosPoseSetDds3Basic2(SBTLCAMERA_WORK *wk) {
+    dds3CameraObjectBasicWorkData_t *work = wk->cm->workdata;
+    sdfVector4_t pos;
+
+    SDF_VU0_LOADVECTOR(&wk->direction);
+    SDF_VU0_STOREVECTOR(&work->eyeVector);
+    SDF_VU0_SCALEVECTOR(-wk->distance);
+    SDF_VU0_LOADVECTOR_B(&wk->targetpos);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR_B(&work->targetPos);
+    SDF_VU0_STOREVECTOR(&pos);
+    dds3SetPosPoseSet_dds3Basic(wk->cm, &pos);
+    dds3SetRotPoseSet(wk->cm, &sbtlCallSetPosPoseSetDds3Basic2Data2);
+    SDF_VU0_LOADVECTOR(&sbtlCallSetPosPoseSetDds3Basic2Data);
+    SDF_VU0_STOREVECTOR(&work->vertical);
+    dds3CameraObjectBasicSetFovy(wk->cm, wk->fovy);
+    work = wk->cm->workdata;
+    work->flag |= 1;
+    dds3SetActiveCameraSceneBasic(dds3GetActiveScene(), wk->cm);
+    return 1;
+}
 
 s32 sbtlLeaf103(dds3ProcessID_t *id) {
     return 0;
@@ -111,9 +180,36 @@ s32 sbtlCallBitCheck5(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefDDS3GBWK21);
+s32 sbtlCheckItemCost_GBWK(s32 itemid, s32 flg) {
+    SBTL_PLAYER_DATA *pd = &DDS3_GBWK->playerData;
 
-INCLUDE_ASM(const s32, "sbtl", CalcItem_Battle);
+    if (pd->item[itemid] <= 0) {
+        return 0;
+    }
+    if (!flg) {
+        return 1;
+    }
+    sbtlDecItem_GBWK(itemid);
+    return 1;
+}
+
+s32 sbtlCheckItemCost(s32 itemid, s32 flg) {
+    s32 i;
+
+    for (i = 0; i < wk_sbtl->itemList->num; i++) {
+        if (wk_sbtl->itemList->data[i].itemid == itemid) {
+            if (wk_sbtl->itemList->data[i].num <= 0) {
+                return 0;
+            }
+            if (!flg) {
+                return 1;
+            }
+            sbtlDecItem(i, itemid);
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlSetWeakBit);
 
@@ -131,7 +227,13 @@ void sbtlResetItemFlg(sdatUnitWork_t *unit) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckDrink);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckItemCount);
+s32 sbtlCheckItemCount(sdatUnitWork_t *unit) {
+    unit->itemst_cnt2 = 0;
+    unit->itemst_cnt = 0;
+    unit->itemstatus &= 0x3FFFFCF0;
+    sbtlBtlCheckItemCountSub(unit);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Atk);
 
@@ -160,11 +262,11 @@ s32 CalcAisyo(struct SBTLUNIT_WORK *wk) {
 
     id = sbtlGetAutoSkill_ID(unit, 0);
     if (id != 0) {
-        sbtlCallBtlGetSkilltbl19(wk, id);
+        sbtlSetAutoSkill_ID(wk, id);
     }
     id = sbtlGetAutoSkill_ID(unit, 1);
     if (id != 0) {
-        sbtlCallBtlGetSkilltbl19(wk, id);
+        sbtlSetAutoSkill_ID(wk, id);
     }
     return 1;
 }
@@ -203,7 +305,14 @@ s32 sbtlSetAutoSkill_GBID(sdatUnitWork_t *unit, s32 id) {
 INCLUDE_ASM(const s32, "sbtl", sbtlSetAutoSkill_GBID);
 #endif
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl19);
+s32 sbtlSetAutoSkill_ID(struct SBTLUNIT_WORK *wk, SKLID sklid) {
+    if ((sbtlGetSkilltbl(sklid)->attr & 0xFFFFF000) == 0x10000) {
+        if (!((wk->field414 & 1) && !(wk->field414 & 0x80) && sbtlCheckBit(&wk_sbtl->kuishibBit, wk_sbtl->summonIndex[0]))) {
+            wk->flg |= 0x20000000;
+        }
+    }
+    return 1;
+}
 
 s32 sbtlResetAutoSkill(sdatUnitWork_t *unit) {
     unit->koufunst = 0;
@@ -263,7 +372,16 @@ SKLID sbtlGetAutoSkill_ID(sdatUnitWork_t *unit, s32 id) {
 }
 
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf123);
+s32 sbtlLeaf123(sdatUnitWork_t *unit) {
+    s32 i;
+
+    for (i = 0; i < 18; i++) {
+        if (unit->koufunst & (0x1000 << i)) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 s32 sbtlCheckAutoSkill_ActerDamage_ID(SKLID sklid) {
     u32 attr = sbtlGetSkilltbl(sklid)->attr & 0xFFFFF000;
@@ -346,7 +464,20 @@ s32 sbtlCheckMoon(u16 moon) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetMagCost);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckUseSkill);
+s32 sbtlCheckUseSkill(struct SBTLUNIT_WORK *wk, SKLID sklid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(sklid);
+    s32 ret = sbtlCheckCost(wk, 0);
+
+    if (ret != 0) {
+        if ((tbl->type & 0xFFF) == 3) {
+            if (sbtlGetBadStatus(&wk->unit) == BST_MOUDOKU) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+    return ret;
+}
 
 s32 sbtlCheckMagCost_GB(sdatUnitWork_t *player, sdatUnitWork_t *unit, s32 devilid, s8 flg) {
     sbtlGetMagCost(player, unit, devilid);

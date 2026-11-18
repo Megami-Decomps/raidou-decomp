@@ -112,6 +112,8 @@ sbtlCallMemset18	code_0028EB80	raidou1 0x894	514 of 514 words differ	docs/matchi
 sbtlRefSbtl27	code_00291C78	raidou1 0x7C	23 of 29 words differ	docs/matching/code_00291C78.md	3		
 sbtlCallCheckEnd	code_002929C8	raidou1 0x25C	7 of 151 words differ	docs/matching/code_002929C8.md	3		
 sbtlCallBitCheck	code_00295390	raidou1 0x2BC	69 of 175 words differ	docs/matching/code_00295390.md	3		
+EventProcTbl_06	code_00295390	raidou1 0x88	17 of 34 words differ	docs/matching/code_00295390.md	11		
+sbtlCheckMotionTiming	code_00295390	raidou1 0x8C	5 of 35 words differ	docs/matching/code_00295390.md	19		
 sbtlRndEncCalc	code_00298540	raidou1 0x204	78 of 130 words differ	docs/matching/code_00298540.md	3		
 sbtlEntryItemList	code_002999C0	raidou1 0x128	59 of 71 words differ	docs/matching/code_002999C0.md	3		
 sbtlEntryItemList_Type	code_002999C0	raidou1 0x11C	54 of 68 words differ	docs/matching/code_002999C0.md	11		

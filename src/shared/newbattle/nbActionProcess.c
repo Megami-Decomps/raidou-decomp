@@ -1,4 +1,13 @@
 #include "common.h"
-#include "nbActionProcess.h"
+#include "sBtlItem.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
 
-INCLUDE_ASM(const s32, "newbattle/nbActionProcess", sbtlDeleteItemList);
+s32 sbtlDeleteItemList(SBTLITEM_LISTWORK *lwk) {
+    if (lwk->handle != NULL) {
+        sdfMemFreeDirect(lwk->handle);
+        lwk->handle = NULL;
+    }
+    sdfChipFreeDirect(lwk);
+    return 1;
+}

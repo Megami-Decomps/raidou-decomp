@@ -99,9 +99,9 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlDecHP);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlDecMP);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlRefDDS3GBWK22);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlDecItem_GBWK);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlRefSbtl63);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlDecItem);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlGetPlayerData7);
 

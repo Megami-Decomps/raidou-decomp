@@ -14,6 +14,7 @@
 #include "newdata.h"
 #include "sdfChip.h"
 #include "sBtlPath.h"
+#include "sBtlAI.h"
 
 s32 sbtlCheckLoadFlg(void) {
     u32 load;
@@ -240,13 +241,20 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlCheckTutorialBattle);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckBattleWin);
 
-INCLUDE_ASM(const s32, "code_002C5D78", campFreeStatusModel);
+void sbtlCheckBattleLose(void) {
+    if (sbtlCheckTutorialBattle()) {
+        evtBitOff(2096);
+        evtBitOn(2097);
+        evtBitOff(2098);
+        evtBitOff(2099);
+    }
+}
 
 s32 sbtlCheckTutorialBattle(void) {
     return evtBitCheck(2100) != 0;
 }
 
-s32 sbtlCallStartRain(void) {
+s32 sbtlEvent_CheckRain(void) {
     s32 ret = 1;
 
     if (wk_sbtl->stageNo == 26) {
@@ -270,7 +278,7 @@ INCLUDE_RODATA(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID26Table);
 
 INCLUDE_RODATA(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID26Table2);
 
-s32 sbtlBattleEventSb(void) {
+s32 sbtlEvent_LoadEventScript(void) {
     if (wk_sbtl->flg & 0x10000000) {
         return 1;
     }
@@ -295,7 +303,20 @@ s32 sbtlBattleEventSb(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlFreeUIScene);
+s32 sbtlEvent_DeleteEventScript(void) {
+    s32 ret = 1;
+
+    if (wk_sbtl->flg & 0x10000000) {
+        if (wk_sbtl->evtloadHandle != NULL) {
+            sdfMemFreeDirect(wk_sbtl->evtloadHandle);
+            wk_sbtl->evtloadHandle = NULL;
+            wk_sbtl->evtloadst = 0;
+        }
+    } else {
+        ret = wk_sbtl->evtloadst == 0;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf32);
 
@@ -378,7 +399,7 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlCheckDamageTarget8);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetPointData);
 
-INCLUDE_ASM(const s32, "code_002C5D78", SetEncountData_Sub);
+INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetExPos);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetEncountPacData);
 
@@ -396,7 +417,12 @@ struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub(s32 devilId, s32 point, s32 arg)
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlAddAWXAtkPadSub2);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetEncountData4);
+struct SBTLUNIT_WORK *sbtlSetEncountData4(s32 devil, s32 point, u32 addst) {
+    struct SBTLUNIT_WORK *wk = SetEncountData_Sub_sbtlEncount(devil, point, addst, 1);
+
+    wk->aiwk->scrflag |= 0x800000;
+    return wk;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf34);
 

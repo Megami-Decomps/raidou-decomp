@@ -61,7 +61,9 @@ typedef struct sdatUnitWork_t {
     /* 0xF8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
     /* 0xFC */ u8 padFC[0x104 - 0xFC];
     /* 0x104 */ u32 itemstatus;
-    /* 0x108 */ u8 pad108[0x178 - 0x108];
+    /* 0x108 */ s16 itemst_cnt;
+    /* 0x10A */ s16 itemst_cnt2;
+    /* 0x10C */ u8 pad10C[0x178 - 0x10C];
 #else
     /* 0x90 */ s32 haveskill[10];
     /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
@@ -98,7 +100,9 @@ typedef struct SBTL_PLAYER_DATA {
     /* 0x02C */ s32 val2C;
     /* 0x030 */ u8 pad30[4];
     /* 0x034 */ sdatUnitWork_t unit;
-    /* 0x1AC */ u8 pad1AC[0x540 - 0x1AC];
+    /* 0x1AC */ u8 pad1AC[0x200 - 0x1AC];
+    /* 0x200 */ s16 item[SDAT_ITEM_NUM]; /* stock per item id; R2's item count is not established */
+    /* 0x340 */ u8 pad340[0x540 - 0x340];
     /* 0x540 */ sdatUnitWork_t stock[SDAT_STOCK_NUM];
 } SBTL_PLAYER_DATA;
 

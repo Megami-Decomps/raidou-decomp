@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-s32 sbtlFreeUIScene(void);
+s32 sbtlEvent_DeleteEventScript(void);
 
 #endif

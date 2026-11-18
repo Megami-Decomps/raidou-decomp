@@ -57,10 +57,10 @@
 s32 OnDataLoadProc(dds3ProcessID_t *id) {
     s32 i;
 
-    if (!sbtlCallStartRain()) {
+    if (!sbtlEvent_CheckRain()) {
         return 0;
     }
-    if (!sbtlBattleEventSb()) {
+    if (!sbtlEvent_LoadEventScript()) {
         return 0;
     }
     for (i = 0; i < 44; i++) {
