@@ -2,6 +2,7 @@
 #include "dds3KernelDraw.h"
 #include "field.h"
 #include "mapLbWork.h"
+#include "sdfAspect.h"
 
 /* NON_MATCHING: 5 of 262 words match. Same instruction count, scheduling and register allocation differ. */
 #ifdef NON_MATCHING
@@ -36,7 +37,7 @@ void fldCallSetOt3(u32 color, f32 ox, f32 oy) {
     for (row = 0; row < evtStageTestState2.head->h; row++) {
         x = ox;
         for (col = 0; col < evtStageTestState2.head->w; col++, entryIdx++) {
-            if (x + cell < 0.0f || x > 512.0f || y + cell < 0.0f || y > 448.0f) {
+            if (x + cell < SDF_ASPECT_LEFT || x > SDF_ASPECT_RIGHT || y + cell < 0.0f || y > 448.0f) {
                 x += cell;
                 continue;
             }

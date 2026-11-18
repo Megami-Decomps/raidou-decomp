@@ -45,6 +45,7 @@
 #include "dds3KernelDraw.h"
 #include "dds3KernelDraw_0010A750.h"
 #include "dds3KernelMain.h"
+#include "sdfAspect.h"
 
 INCLUDE_ASM(const s32, "code_00156EA8", fldLOADTMY);
 
@@ -123,13 +124,13 @@ void fldCallLinkAlpha(u32 color, f32 x, f32 y) {
         if (fldData22 == 3) {
             eglLinkAlpha(0);
         }
-        evtSubmitDefaultDepthGradientRect(0, 0, 512, 448, 0x80000000, 0x80000000, 0x80000000, 0x80000000);
+        evtSubmitDefaultDepthGradientRect(SDF_ASPECT_LEFT, 0, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, 448, 0x80000000, 0x80000000, 0x80000000, 0x80000000);
         idx = 0;
         cy = y;
         for (row = 0; row < evtStageTestState2.sub->h; row++) {
             cx = x;
             for (col = 0; col < evtStageTestState2.sub->w; col++, idx++) {
-                if (!(cx + size < 0.0f || cx > 512.0f || cy + size < 0.0f || cy > 448.0f) && evtStageTestState2.cell[idx] != NULL) {
+                if (!(cx + size < SDF_ASPECT_LEFT || cx > SDF_ASPECT_RIGHT || cy + size < 0.0f || cy > 448.0f) && evtStageTestState2.cell[idx] != NULL) {
                     if (first) {
                         first = 0;
                         fldCallGrAllocPacketBuff4(evtStageTestState2.cell[idx]);
@@ -144,7 +145,7 @@ void fldCallLinkAlpha(u32 color, f32 x, f32 y) {
         }
         eglLinkAlpha(9);
         if (fldData22 == 3) {
-            evtSubmitDefaultDepthGradientRect(0, 0, 512, 448, 0x80808080, 0x80808080, 0x80808080, 0x80808080);
+            evtSubmitDefaultDepthGradientRect(SDF_ASPECT_LEFT, 0, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, 448, 0x80808080, 0x80808080, 0x80808080, 0x80808080);
         }
     }
     if (fldData22 == 3) {
@@ -153,7 +154,7 @@ void fldCallLinkAlpha(u32 color, f32 x, f32 y) {
     if (fldData22 == 2) {
         eglLinkAlpha(0);
         eglLinkTest(1, 0, 0, 1, 0, 0, 1, 1);
-        evtSubmitDefaultDepthGradientRect(0, 0, 512, 448, 0x80000000, 0x80000000, 0x80000000, 0x80000000);
+        evtSubmitDefaultDepthGradientRect(SDF_ASPECT_LEFT, 0, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, 448, 0x80000000, 0x80000000, 0x80000000, 0x80000000);
         eglLinkAlpha(1);
         eglLinkTest(1, 0, 0, 1, 0, 0, 1, 1);
         first = 1;
@@ -162,7 +163,7 @@ void fldCallLinkAlpha(u32 color, f32 x, f32 y) {
         for (row = 0; row < evtStageTestState2.head->h; row++) {
             cx = x;
             for (col = 0; col < evtStageTestState2.head->w; col++, idx++) {
-                if (!(cx + size < 0.0f || cx > 512.0f || cy + size < 0.0f || cy > 448.0f)) {
+                if (!(cx + size < SDF_ASPECT_LEFT || cx > SDF_ASPECT_RIGHT || cy + size < 0.0f || cy > 448.0f)) {
                     if (first) {
                         first = 0;
                         fldCallGrAllocPacketBuff2(evtStageTestState2.entry[idx]);
@@ -177,7 +178,7 @@ void fldCallLinkAlpha(u32 color, f32 x, f32 y) {
         }
         eglLinkTest(1, 0, 0, 3, 0, 0, 1, 1);
         eglLinkAlpha(9);
-        evtSubmitDefaultDepthGradientRect(0, 0, 512, 448, 0x80808080, 0x80808080, 0x80808080, 0x80808080);
+        evtSubmitDefaultDepthGradientRect(SDF_ASPECT_LEFT, 0, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, 448, 0x80808080, 0x80808080, 0x80808080, 0x80808080);
         return;
     }
     {
@@ -190,7 +191,7 @@ void fldCallLinkAlpha(u32 color, f32 x, f32 y) {
         for (row = 0; row < evtStageTestState2.head->h; row++) {
             cx = x;
             for (col = 0; col < evtStageTestState2.head->w; col++, idx++) {
-                if (!(cx + size < 0.0f || cx > 512.0f || cy + size < 0.0f || cy > 448.0f)) {
+                if (!(cx + size < SDF_ASPECT_LEFT || cx > SDF_ASPECT_RIGHT || cy + size < 0.0f || cy > 448.0f)) {
                     if (first) {
                         first = 0;
                         fldCallGrAllocPacketBuff2(evtStageTestState2.entry[idx]);

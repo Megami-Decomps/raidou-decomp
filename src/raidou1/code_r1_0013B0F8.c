@@ -10,6 +10,7 @@
 #include "mapLbWork.h"
 #include "mapData.h"
 #include "dds3KernelMain.h"
+#include "sdfAspect.h"
 
 extern const char mapStrSkyBgEdit[];
 extern f32 mapData93;
@@ -130,7 +131,7 @@ void mapSKYBGEDIT(void) {
     eglSetOt(18);
     eglLinkAlpha(1);
     eglLinkTest(1, 0, 128, 2, 0, 0, 1, 1);
-    eglLinkBoxZ(0, 0, 512, 448, 0, 0, 0, 0, 0);
+    eglLinkBoxZ(SDF_ASPECT_LEFT, 0, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, 448, 0, 0, 0, 0, 0);
     if (mapWork4 == 0) {
         return;
     }
@@ -170,18 +171,19 @@ void mapSKYBGEDIT(void) {
     }
 
     zero = 0.0f;
-    if (zero < mapData93 + mapSKYBGEDITData2) {
-        SKY_BAR(zero, zero, mapData93 + mapSKYBGEDITData2, 448.0f);
+    if (SDF_ASPECT_LEFT < mapData93 + mapSKYBGEDITData2) {
+        SKY_BAR(SDF_ASPECT_LEFT, zero, mapData93 + mapSKYBGEDITData2 - SDF_ASPECT_LEFT, 448.0f);
     }
-    if (mapData93 + mapSKYBGEDITData2 + sizeX < 512.0f) {
-        SKY_BAR(mapData93 + mapSKYBGEDITData2 + sizeX, zero, 512.0f - (mapData93 + mapSKYBGEDITData2 + sizeX), 448.0f);
+    if (mapData93 + mapSKYBGEDITData2 + sizeX < SDF_ASPECT_RIGHT) {
+        SKY_BAR(mapData93 + mapSKYBGEDITData2 + sizeX, zero,
+                SDF_ASPECT_RIGHT - (mapData93 + mapSKYBGEDITData2 + sizeX), 448.0f);
     }
     if (zero < (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3) {
-        SKY_BAR(zero, zero, 512.0f, (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3);
+        SKY_BAR(SDF_ASPECT_LEFT, zero, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3);
     }
     if ((mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3 + sizeY < 448.0f) {
-        SKY_BAR(zero, (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3 + sizeY, 512.0f,
-                448.0f - ((mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3 + sizeY));
+        SKY_BAR(SDF_ASPECT_LEFT, (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3 + sizeY,
+                SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, 448.0f - ((mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3 + sizeY));
     }
     eglLinkAlpha(0);
 
