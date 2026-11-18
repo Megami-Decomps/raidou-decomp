@@ -132,7 +132,8 @@ struct instanceMes_tag {
     Speaker_tag speaker;
     message_tag message;
 #ifdef VERSION_RAIDOU2
-    u8 unk48[4];
+    s16 pageTurned; /* 1 on the frame CalcMessage turns the page */
+    u8 unk4A[2];
 #endif
     select_tag select;
     window_tag window;

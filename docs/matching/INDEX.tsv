@@ -346,14 +346,14 @@ frFontAppendIndexedTextToGlyphChain	interface/frFont	raidou1 0x170, raidou2 0x17
 frAnalyzeMessage	interface/frFont	raidou2 0x238	86 of 140 words differ	docs/matching/interface/frFont.md	57		
 itfMesMngRequestSelect_itf	interface/itfMesManager	raidou1 0x118, raidou2 0x118	2 of 70 words differ	docs/matching/interface/itfMesManager.md	3		
 CalcWindow	interface/itfMesManager	raidou1 0x1F0, raidou2 0x1F0	50 of 123 words differ	docs/matching/interface/itfMesManager.md	12		
-CalcMessage	interface/itfMesManager	raidou1 0x28C, raidou2 0x31C	118 of 159 words differ	docs/matching/interface/itfMesManager.md	21		
-CalcSelect	interface/itfMesManager	raidou1 0x2EC, raidou2 0x2EC	2 of 187 words differ	docs/matching/interface/itfMesManager.md	30		
-itfCalcMesFlowItfSub	interface/itfMesManager	raidou1 0x320, raidou2 0x320	155 of 200 words differ	docs/matching/interface/itfMesManager.md	39		
-itfFunc2	interface/itfMesManager	raidou1 0x1EC, raidou2 0x1EC	67 of 123 words differ	docs/matching/interface/itfMesManager.md	50		
-itfCallGrAllocPacketBuff	interface/itfMesManager	raidou1 0x448, raidou2 0x448	209 of 274 words differ	docs/matching/interface/itfMesManager.md	59		
-itfCallGrAllocPacketBuff2	interface/itfMesManager	raidou1 0x4D8, raidou2 0x4D8	145 of 310 words differ	docs/matching/interface/itfMesManager.md	68		
-InitializeMessage	interface/itfMesManager	raidou2 0x4C	11 of 19 words differ	docs/matching/interface/itfMesManager.md	77		
-DrawMsgMng_Process	interface/itfMesManager	raidou2 0x70	12 of 28 words differ	docs/matching/interface/itfMesManager.md	85		
+CalcSelect	interface/itfMesManager	raidou1 0x2EC, raidou2 0x2EC	2 of 187 words differ	docs/matching/interface/itfMesManager.md	21		
+itfCalcMesFlowItfSub	interface/itfMesManager	raidou1 0x320, raidou2 0x320	155 of 200 words differ	docs/matching/interface/itfMesManager.md	30		
+itfFunc2	interface/itfMesManager	raidou1 0x1EC, raidou2 0x1EC	67 of 123 words differ	docs/matching/interface/itfMesManager.md	41		
+itfCallGrAllocPacketBuff	interface/itfMesManager	raidou1 0x448, raidou2 0x448	209 of 274 words differ	docs/matching/interface/itfMesManager.md	50		
+itfCallGrAllocPacketBuff2	interface/itfMesManager	raidou1 0x4D8, raidou2 0x4D8	145 of 310 words differ	docs/matching/interface/itfMesManager.md	59		
+InitializeMessage	interface/itfMesManager	raidou2 0x4C	11 of 19 words differ	docs/matching/interface/itfMesManager.md	68		
+DrawMsgMng_Process	interface/itfMesManager	raidou2 0x70	12 of 28 words differ	docs/matching/interface/itfMesManager.md	76		
+CalcMessage	interface/itfMesManager	raidou1 0x28C, raidou2 0x31C	118 of 159 words differ	docs/matching/interface/itfMesManager.md	84		
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3		
 TestMsgMngD_Process	interface/itfTestMesManager_0018CC20	raidou1 0x9C, raidou2 0x9C	6 of 39 words differ	docs/matching/interface/itfTestMesManager_0018CC20.md	3		
 jmsChkCommonInput	jmsMisc	raidou1 0x2DC, raidou2 0x2DC	1 of 183 words differ	docs/matching/jmsMisc.md	3		

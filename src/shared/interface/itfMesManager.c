@@ -3366,15 +3366,22 @@ void itfCalcMessageSub(instanceMes_tag *pinst) {
 void CalcMessage(instanceMes_tag *pinst) {
     message_tag *mes = &pinst->message;
     u32 flags;
+#ifdef VERSION_RAIDOU2
+    s32 wait;
+#endif
 
     if (mes->phase != 1) {
         return;
     }
+#ifdef VERSION_RAIDOU2
+    pinst->pageTurned = 0;
+#endif
     flags = pinst->stat;
     if ((flags & 7) == 4) {
         if (pinst->curctr[0].ctr_key < 100) {
             pinst->curctr[0].ctr_key++;
         }
+#ifdef VERSION_RAIDOU1
         if (pinst->curctr[0].lf_wait < 14) {
             pinst->curctr[0].lf_wait++;
         }
@@ -3382,6 +3389,21 @@ void CalcMessage(instanceMes_tag *pinst) {
             mes->phase = -1;
             return;
         }
+#else
+        wait = (mes->textInterfaceMask & 0x10) ? 60 : 8;
+        if ((mes->textInterfaceMask & 0x10) && pinst->curctr[0].lf_wait == 1) {
+            p2sdPlaySE(27, 0x7F, 0x3F);
+            flags = pinst->stat;
+        }
+        if (pinst->curctr[0].lf_wait < wait + 3) {
+            pinst->curctr[0].lf_wait++;
+        }
+        if (flags & 0x800000) {
+            mes->phase = -1;
+            return;
+        }
+#endif
+#ifdef VERSION_RAIDOU1
         if (pinst->curctr[0].lf_wait < 8) {
             return;
         }
@@ -3402,10 +3424,42 @@ void CalcMessage(instanceMes_tag *pinst) {
             return;
         }
         pinst->curctr[0].lf_after_wait++;
+#else
+        if (pinst->curctr[0].lf_wait < wait) {
+            return;
+        }
+        if ((flags & 0x100000) == 0) {
+            itfCalcMessageSub(pinst);
+        }
+        if (pinst->curctr[0].lf_after_wait == 0 && mes->textInterfaceMask != 0) {
+            if ((dds3PadButtonState.primaryCancel >= 0 && dds3PadButtonState.confirm >= 0)
+                || pinst->curctr[0].lf_wait < wait + 3) {
+                if (dds3PadButtonState.primaryTriangle == 0 || pinst->curctr[0].ctr_key < 5 || (itfData3 & 1)) {
+                    return;
+                }
+            }
+            if (mes->textInterfaceMask != 0) {
+                p2sdPlaySE(9, 0x7F, 0x3F);
+            }
+            pinst->curctr[0].lf_after_wait = 1;
+            return;
+        }
+        pinst->curctr[0].lf_after_wait++;
+#endif
+#ifdef VERSION_RAIDOU1
         if (pinst->curctr[0].lf_after_wait < 6 && mes->textInterfaceMask != 0) {
             return;
         }
         InitializeCurCtr(&pinst->curctr[0], 0);
+#else
+        if (pinst->curctr[0].lf_after_wait < 1 && mes->textInterfaceMask != 0) {
+            return;
+        }
+        InitializeCurCtr(&pinst->curctr[0], 0);
+#endif
+#ifdef VERSION_RAIDOU2
+        pinst->pageTurned = 1;
+#endif
         mes->page++;
         if (mes->page >= mes->maxpage) {
             mes->phase = -1;
@@ -3420,7 +3474,13 @@ void CalcMessage(instanceMes_tag *pinst) {
         pinst->stat = (pinst->stat & ~7) | 3;
     } else {
         if (pinst->curctr[0].cut_wait < 8) {
+#ifdef VERSION_RAIDOU1
             pinst->curctr[0].cut_wait++;
+#else
+            if (mes->pfontPrev == NULL) {
+                pinst->curctr[0].cut_wait++;
+            }
+#endif
             if (pinst->curctr[0].cut_wait < 8) {
                 return;
             }

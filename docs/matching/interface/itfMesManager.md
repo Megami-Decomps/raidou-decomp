@@ -18,15 +18,6 @@ SMT3 CalcWindow body (smt3 itfMesManager.c:2096) with Raidou fields; the differe
 
 Related: unknown.
 
-## CalcMessage (interface/itfMesManager, raidou1 0x28C, raidou2 0x31C)
-
-Raidou 1: 118 of 159 words differ, first at +0x20; emitted 636 bytes, native 652 bytes.
-Raidou 2: 155 of 159 words differ, first at +0x0; emitted 636 bytes, native 796 bytes.
-
-Retail places the lf_after_wait != 0 increment path before the input-wait path (bnel at +0xA8) and tests the pad bytes in a different order (cancel or confirm, then lf_wait >= 14, else triangle, ctr_key >= 5, itfData3 & 1). The draft keeps the input-wait path first; 118 of 159 words differ. Checked against retail call records (ingame, counter path) and the asm.
-
-Related: [smt3 levers: callee visibility and branch-likely](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/callee-visibility.md).
-
 ## CalcSelect (interface/itfMesManager, raidou1 0x2EC, raidou2 0x2EC)
 
 Raidou 1: 2 of 187 words differ, first at +0x64.
@@ -89,3 +80,10 @@ Raidou 2: 12 of 28 words differ, first at +0x18.
 retail beq where cc1 emits beql and no loop alignment: ee-gcc 2.96 picks beq after a call only when the callee (DrawMesFlow) is C earlier in the same unit, shown with a stub definition; R1 matches with the same body. R2 DrawMesFlow is still INCLUDE_ASM, so this matches once it is C; behaviour equal (nm_behaviour clean)
 
 Related: beq vs beql after a call to a callee not yet C in the unit.
+
+## CalcMessage (interface/itfMesManager, raidou1 0x28C, raidou2 0x31C)
+
+Raidou 1: 118 of 159 words differ, first at +0x20; emitted 636 bytes, native 652 bytes.
+Raidou 2: 180 of 187 words differ, first at +0x10; emitted 748 bytes, native 796 bytes.
+
+Retail places the lf_after_wait != 0 increment path before the input-wait path (bnel at +0xA8) and tests the pad bytes in a different order. Raidou 2 differs in behaviour: a voiced message (textInterfaceMask & 0x10) waits 60 frames per line feed instead of 8 and plays SE 27 at lf_wait 1, the page turns one frame after the press instead of six, cut_wait only advances with no previous text font, and pageTurned is 1 on the frame the page turns.
