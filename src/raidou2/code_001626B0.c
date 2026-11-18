@@ -24,7 +24,18 @@ void fldCallGrAllocPacketBuff3(u8 *image) {
 
 INCLUDE_ASM(const s32, "code_001626B0", fldCallGrAllocPacketBuff4);
 
-INCLUDE_ASM(const s32, "code_001626B0", fldCallGrAllocPacketBuff5);
+void fldCallGrAllocPacketBuff5(u8 *image) {
+    sdfDrawTag_t *tag;
+    sdfGrOt_t *ot;
+
+    if (fldTitleMiniWork2 != NULL && image != NULL) {
+        tag = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+        sdfDrawTagInit(tag);
+        sdfLinkLoadImage(tag, fldTitleMiniWork2->pixelGsHandle, 0, 0, 128, 128, (saddr_t)(image + 0x80), 0);
+        ot = &sdfGrOtTable[egl_OT_Offset];
+        ot->regFunc(ot, tag);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001626B0", fldJmsQuestMapLoad_fld);
 

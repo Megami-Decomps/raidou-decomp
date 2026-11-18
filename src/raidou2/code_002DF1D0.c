@@ -9,7 +9,10 @@
 #include "sBtlDraw.h"
 #include "sBtlUnit.h"
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckMsgMemType);
+s32 sbtlCheckMsgMemType(void)
+{
+    return 1;
+}
 
 SBTLEXP_LISTWORK *InitTarSelProcessData(void)
 {

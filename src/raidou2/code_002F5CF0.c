@@ -8,6 +8,7 @@
 #include "code_r1_001CC1D0.h"
 #include "sdfMemory.h"
 #include "sdk_libc.h"
+#include "sBtlPlayer.h"
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf7);
 
@@ -244,7 +245,21 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlFuncDecideItem_sbtlMenu);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlDrawProcessSub);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawProcess);
+s32 sbtlDrawProcess(dds3ProcessID_t *PID)
+{
+    sBtlMenu_t *menu = dds3GetProcessData(PID);
+
+    sbtlBtlDrawProcessSub(menu);
+    if (dds3ExistProcess(menu->drawPID)) {
+        dds3KillProcess(menu->drawPID, 0);
+        menu->drawPID = NULL;
+    }
+    sdfMemFreeDirect(menu->hMem);
+    ProcessCheckData = NULL;
+#ifdef FIX_BUGS
+    return 0;
+#endif
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawProcess_sbtlMenu);
 
@@ -406,7 +421,10 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallGetSmallFontFRQ3);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlNumFont);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawRedGg);
+void sbtlDrawRedGg(s32 a_x, s32 a_y, u8 a_alphaRate, s32 a_sprNo, DDS3_OT a_ot)
+{
+    itfIconDrawSprite(a_x, a_y, 0, a_alphaRate, a_sprNo, a_ot);
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallCheckDying);
 

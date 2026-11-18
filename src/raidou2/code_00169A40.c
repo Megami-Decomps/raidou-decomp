@@ -13,6 +13,8 @@
 #include "mdlManager.h"
 #include "ps2asm.h"
 #include "effManager.h"
+#include "dds3KernelCore.h"
+#include "sdfTex.h"
 
 INCLUDE_ASM(const s32, "code_00169A40", mapLeaf4);
 
@@ -162,7 +164,9 @@ void fldCallGetRandFloatA(mefMistParticle_t *particle) {
     mist->num++;
 }
 
-INCLUDE_ASM(const s32, "code_00169A40", fldIsMapTitleActive);
+s32 fldIsMapTitleActive(void) {
+    return dds3SearchProcessName(fldTitleTaskName) != 0;
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", fldCallLinkSprite);
 
@@ -179,13 +183,33 @@ INCLUDE_ASM(const s32, "code_00169A40", mapProcSequenceSub9);
 
 INCLUDE_ASM(const s32, "code_00169A40", fldCallSetOt4);
 
-INCLUDE_ASM(const s32, "code_00169A40", fldReleaseTitleTextures);
+void fldReleaseTitleTextures(dds3ProcessID_t *task) {
+    if (mapCallLinkSpriteData != NULL) {
+        sdfTexFreeDelayed(mapCallLinkSpriteData);
+        mapCallLinkSpriteData = NULL;
+    }
+    if (fldData30 != NULL) {
+        sdfTexFreeDelayed(fldData30);
+        fldData30 = NULL;
+    }
+    fldCallSetOt4Data = 0;
+    fldCallSetOt4Data3 = 0;
+    fldCallSetOt4Data2 = 99;
+    fldData31 = 0;
+    fldCallSetOt4Data4 = 0;
+}
 
-INCLUDE_ASM(const s32, "code_00169A40", mapTitleStart);
+void mapTitleStart(struct sdfMat_t *file) {
+    fldReleaseTitleTextures(file);
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapMnameTmx);
 
-INCLUDE_ASM(const s32, "code_00169A40", fldDestroyTitleTask);
+void fldDestroyTitleTask(void) {
+    if (fldIsMapTitleActive() != 0) {
+        dds3KillProcessName(fldTitleTaskName, 1);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", fldProcSequenceSub6);
 

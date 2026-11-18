@@ -75,7 +75,13 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlResetSummon_E);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCallBtlCheckDamageTarget);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlResetAction_Flag);
+void sbtlResetAction_Flag(struct SBTLUNIT_WORK *wk)
+{
+    if (wk_sbtl->battleMode != 3 && ((wk->field414 & 0x80) || (wk->field414 & 1))) {
+        wk->model->flags &= ~0x4000;
+        wk->flg &= ~0x4000;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", ResetAction);
 
@@ -154,9 +160,30 @@ INCLUDE_ASM(const s32, "code_002743E0", AllDeleteEnemy);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCheckUnit_Exec_R);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlCheckUnit_Exec);
+s32 sbtlCheckUnit_Exec(void)
+{
+    struct SBTLUNIT_LISTWORK *lwk = wk_sbtl->unitList;
+    struct SBTLUNIT_WORK *wk;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlModelDataLoad);
+    if (lwk == NULL) {
+        return 1;
+    }
+    for (i = 0; i < lwk->number; i++) {
+        wk = lwk->pUnitL[i].pUnit;
+        if (wk != NULL && (u16)(wk->mode - 1) < 2) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+s32 sbtlModelDataLoad(dds3ProcessID_t *id)
+{
+#ifdef FIX_BUGS
+    return 0;
+#endif
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlModelLbBattle);
 
@@ -184,7 +211,13 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlCallMemset3);
 
 INCLUDE_ASM(const s32, "code_002743E0", MotinProc);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlReleaseUnitList_ID);
+s32 sbtlReleaseUnitList_ID(struct SBTLUNIT_LISTWORK *lwk, s32 id)
+{
+    lwk->pUnitL[id].ID = 0;
+    lwk->pUnitL[id].pUnit = NULL;
+    lwk->count--;
+    return lwk->pUnitL[id].ID;
+}
 
 u32 UnitRegist(MODELTYPE major, s32 minor)
 {

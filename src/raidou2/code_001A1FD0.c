@@ -4,8 +4,22 @@
 #include "code_r1_002C8188.h"
 #include "dds3KernelCore.h"
 #include "sdfChip.h"
+#include "dds3KernelDraw_0010A750.h"
+#include "ps2asm.h"
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverInit);
+s32 itfMoverInit(itfMover_t *mv)
+{
+    if (mv == NULL) {
+        return 0;
+    }
+    mv->cb_cnt = 0;
+    mv->cb_num = 0;
+    mv->cnt = 0;
+    mv->flag = 0;
+    mv->total_cnt = 0;
+    mv->total_frm = 0;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverSetData);
 
@@ -96,7 +110,54 @@ INCLUDE_ASM(const s32, "code_001A1FD0", itfCallSetOt3);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallDrawBoxLine);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfDrawFanBezierPt3);
+void itfDrawFanBezierPt3(f32 x0, f32 y0, f32 x1, f32 y1, f32 x2, f32 y2, f32 vx, f32 vy, u32 rgba0, u32 rgba1, u32 rgba2, u32 ot)
+{
+    u32 col[3];
+    u32 base[4];
+    s32 diff[4];
+    f32 px;
+    f32 py;
+    s32 cx;
+    s32 cy;
+    s32 lx;
+    s32 ly;
+    s32 nx;
+    s32 ny;
+    u32 n;
+    u32 i;
+    f32 t;
+
+    n = itfGetDivBezierPt3(x1, y1, x2, y2, vx, vy, 0.1f);
+    cx = x0;
+    cy = y0;
+    col[0] = rgba0;
+    col[1] = rgba1;
+    col[2] = rgba2;
+    base[0] = rgba1 >> 24;
+    base[1] = (rgba1 & 0xFF0000) >> 16;
+    base[2] = (rgba1 & 0xFF00) >> 8;
+    base[3] = rgba1 & 0xFF;
+    diff[0] = (rgba2 >> 24) - base[0];
+    diff[1] = ((rgba2 & 0xFF0000) >> 16) - base[1];
+    diff[2] = ((rgba2 & 0xFF00) >> 8) - base[2];
+    diff[3] = (rgba2 & 0xFF) - base[3];
+    lx = x1;
+    ly = y1;
+    for (i = 0; i < n; i++) {
+        t = (f32)(i + 1) / (f32)n;
+        itfGetRatePosBezierPt3(&px, &py, x1, y1, x2, y2, vx, vy, t);
+        nx = px;
+        ny = py;
+        col[2] = (base[0] + (s32)(diff[0] * t)) << 24;
+        col[2] |= (base[1] + (s32)(diff[1] * t)) << 16;
+        col[2] |= (base[2] + (s32)(diff[2] * t)) << 8;
+        col[2] |= base[3] + (s32)(diff[3] * t);
+        eglLinkTri(cx, cy, lx, ly, nx, ny, col[0], col[1], col[2]);
+        col[1] = col[2];
+        lx = nx;
+        ly = ny;
+    }
+}
 
 s32 itfCalcSpriteWidthSub(f32 a_value, s32 a_shift)
 {
@@ -151,11 +212,71 @@ void itfCalcSpriteWidth(struct sprHandle_t *a_hSpr, s32 a_sprNo, s32 a_num, s32 
     a_hSpr->workEntries[a_sprNo].parameters[2] = w - width;
 }
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfGetRatePosBezierPt3);
+void itfGetRatePosBezierPt3(f32 *px, f32 *py, f32 x0, f32 y0, f32 x1, f32 y1, f32 vx, f32 vy, f32 rate)
+{
+    f32 r;
+    f32 u;
+    f32 a;
+    f32 b;
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfGetVectorPosBezierPt3);
+    if (rate < 0.0f) {
+        r = 0.0f;
+    } else if (rate > 1.0f) {
+        r = 1.0f;
+    } else {
+        r = rate;
+    }
+    u = 1.0f - r;
+    a = u * u;
+    b = (u + u) * r;
+    *px = a * x0 + b * vx + r * r * x1;
+    *py = a * y0 + b * vy + r * r * y1;
+}
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfGetDivBezierPt3);
+void itfGetVectorPosBezierPt3(f32 *px, f32 *py, f32 x0, f32 y0, f32 x1, f32 y1, f32 rx, f32 ry, f32 rate)
+{
+    f32 r;
+    f32 u;
+    f32 a;
+    f32 b;
+
+    if (rate < 0.0f) {
+        r = 0.0f;
+    } else if (rate > 1.0f) {
+        r = 1.0f;
+    } else {
+        r = rate;
+    }
+    u = 1.0f - r;
+    a = u * u;
+    b = (u + u) * r;
+    *px = (rx - a * x0 - r * r * x1) / b;
+    *py = (ry - a * y0 - r * r * y1) / b;
+}
+
+u32 itfGetDivBezierPt3(f32 x0, f32 y0, f32 x1, f32 y1, f32 vx, f32 vy, f32 divLength)
+{
+    f32 px;
+    f32 py;
+    f32 rate;
+    f32 dx;
+    f32 dy;
+    u32 n;
+
+    if (divLength <= 0.0f) {
+        return 0;
+    }
+    rate = 1.0f;
+    n = 1;
+    do {
+        rate *= 0.5f;
+        itfGetRatePosBezierPt3(&px, &py, x0, y0, x1, y1, vx, vy, rate);
+        n++;
+        dx = px - x0;
+        dy = py - y0;
+    } while (!(sdfSqrt(dx * dx + dy * dy) <= divLength));
+    return n;
+}
 
 s32 itfCallMemFreeDelayedDirect(void)
 {
@@ -193,7 +314,10 @@ s32 itfCallLoadIconSprite(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfIconDrawSprite);
+void itfIconDrawSprite(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, s32 a_sprNo, DDS3_OT a_otNo)
+{
+    itfDrawMiscSpriteAlpha(a_x, a_y, a_z, a_alphaRate, itfData6, a_sprNo, a_otNo);
+}
 
 void itfIconDrawBadStatus(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, u32 a_bstNo, DDS3_OT a_otNo)
 {

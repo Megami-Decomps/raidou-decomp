@@ -58,13 +58,19 @@ void dds3FilterSetAlpha(s32 alp) {
     gFilterAlpha = alp;
 }
 
-INCLUDE_ASM(const s32, "dds3KernelDraw_0010BEE0", dds3FilterGetAlpha);
+s32 dds3FilterGetAlpha(void)
+{
+    return gFilterAlpha;
+}
 
 void dds3FilterSetAlphaOfs(s32 alp) {
     gFilterFilterAlpOfs = alp;
 }
 
-INCLUDE_ASM(const s32, "dds3KernelDraw_0010BEE0", dds3FilterGetAlphaOfs);
+s32 dds3FilterGetAlphaOfs(void)
+{
+    return gFilterFilterAlpOfs;
+}
 
 void dds3ProcSequenceSub(u32 ot)
 {

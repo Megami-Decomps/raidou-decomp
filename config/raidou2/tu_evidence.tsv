@@ -53,7 +53,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0011C900	0011CE90	basic/dds3CameraObjectBasic	c	smt3:names:8+smt3:map:3+dds:1 of 17	basic/dds3CameraObjectBasic
 0011CF88	0011D0A8	dds3CameraObjectBasic_0011A520	c	none	
 0011D0B8	0011E028	basic/dds3UnitObjectBasic	c	smt3:names:4+smt3:map:1 of 17	basic/dds3UnitObjectBasic
-0011E210	0011E210	code_0011E210	asm	none	
+0011E210	0011E210	code_0011E210	c	none	
 0011E220	0011E660	basic/dds3MatterObjectBasic	c	smt3:names:4+smt3:map:2 of 12	basic/dds3MatterObjectBasic
 0011E850	0011E850	code_0011E850	asm	none	
 0011E878	001201B0	basic/dds3EffectObjectBasic	c	smt3:names:29+smt3:map:6+dds:1 of 42	basic/dds3EffectObjectBasic
@@ -61,14 +61,14 @@ start	last_func	unit	kind	evidence	smt3_unit
 001202C0	001203A0	basic/dds3EventObjectBasic	c	smt3:names:4 of 4	basic/dds3EventObjectBasic
 00120418	00120418	code_00120418	asm	none	
 00120428	001209E8	basic/dds3LightObjectBasic	c	smt3:names:10 of 14	basic/dds3LightObjectBasic
-00120A28	00120A28	code_00120A28	asm	none	
+00120A28	00120A28	code_00120A28	c	none	
 00120A40	00120B78	basic/dds3ModelBasic	c	smt3:names:4 of 4	basic/dds3ModelBasic
 00120BD8	00120BD8	basic/dds3EventBasic	c	smt3:names:1 of 1	basic/dds3EventBasic
 00120C28	00120C28	code_00120C28	asm	none	
 00120C30	00121638	basic/dds3PathBasic	c	smt3:names:10 of 13	basic/dds3PathBasic
 00121658	00121690	dds3PathBasic_0011EA58	c	none	
 001216A8	001216A8	basic/dds3PointBasic	c	smt3:names:1 of 1	basic/dds3PointBasic
-001216F8	00121700	code_001216F8	asm	none	
+001216F8	00121700	code_001216F8	c	none	
 00121708	00124B18	dat	c	dds:4+smt3:map:2 literal-cores:1 of 114 clipped	kernel/dds3GlobalWork
 00124B28	00126858	newdata/datCalc	c	dds:6+smt3:names:2+smt3:map:1 of 94	newdata/datCalc
 00126AD0	00126B00	code_00126AD0	asm	none	
@@ -129,7 +129,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00176AE8	00176AE8	field/fldSnow	c	smt3:names:1 of 1	field/fldSnow
 00176B00	0017A110	code_00176B00	asm	none	
 0017A210	0017A210	code_r1_0016A738	c	none	
-0017A2B0	0017ADC0	code_0017A2B0	asm	none	
+0017A2B0	0017ADC0	code_0017A2B0	c	none	
 0017AFE0	0017AFE0	code_r1_0016B3A0	c	none	
 0017B0D8	0017D868	code_0017B0D8	c	none	
 0017D8B0	00185908	facility/fclCombineInit	c	smt3:map:3 literal-cores:1 of 53	facility/fclCombineInit
@@ -333,7 +333,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00364878	00364878	code_r1_00300530	c	dds:1 of 1	
 003648C0	0038AA18	code_003648C0	c	none	
 0038AC38	0038AC38	code_r1_00323138	c	none	
-0038AD80	003936F8	code_0038AD80	asm	none	
+0038AD80	003936F8	code_0038AD80	c	none	
 00393708	00393708	basic/dds3ModelRangeBasic	c	smt3:map:1 of 1	basic/dds3ModelRangeBasic
 00393758	0039B858	code_00393758	asm	none	
 0039B8A8	0039B8A8	code_r1_00336E58	c	dds:1 of 1	
@@ -347,9 +347,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 003ADCF8	003ADCF8	newbattle/nbKoukaProcess	c	smt3:names:1 of 1	newbattle/nbKoukaProcess
 003ADD28	003B37F0	code_003ADD28	asm	none	
 003B3890	003B3890	code_003B3890	c	dds:1 of 1	
-003B38B0	003B77E8	code_003B38B0	asm	none	
+003B38B0	003B77E8	code_003B38B0	c	none	
 003B7818	003B7818	code_003B7818	c	dds:1 of 1	
-003B7840	003B8318	code_003B7840	asm	none	
+003B7840	003B8318	code_003B7840	c	none	
 003B8358	003B8358	code_r1_00349B58	c	dds:1 of 1	
 003B8380	003BB778	code_003B8380	asm	none	
 003BB7C0	003BBC90	jmsMisc	c	dds:7 of 11	

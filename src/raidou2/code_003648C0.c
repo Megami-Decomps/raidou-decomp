@@ -2,6 +2,12 @@
 #include "sdfMemory.h"
 #include "cmpFile.h"
 #include "dat.h"
+#include "cmpModel.h"
+#include "dds3KernelCore.h"
+#include "code_00300578.h"
+#include "dds3KernelDraw.h"
+#include "dds3KernelDraw_0010A750.h"
+#include "code_r1_002CAFD8.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -433,7 +439,9 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpGetFlagScreenShot);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetupCmpModelSub);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpInitCmpModelSub);
+void cmpInitCmpModelSub(void) {
+    cmpInitCore2();
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetLight);
 
@@ -625,9 +633,13 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpSeqRankUp);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallEndCmpModel);
 
-INCLUDE_ASM(const s32, "code_003648C0", CallProcEnd_cmpStatus);
+void CallProcEnd_cmpStatus(void) {
+}
 
-INCLUDE_ASM(const s32, "code_003648C0", Process_cmpStatus);
+s32 Process_cmpStatus(void)
+{
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetProcessData11);
 
@@ -793,7 +805,16 @@ INCLUDE_ASM(const s32, "code_003648C0", ProcessStart_cmpStatus);
 
 INCLUDE_ASM(const s32, "code_003648C0", ProcessEnd_cmpStatus);
 
-INCLUDE_ASM(const s32, "code_003648C0", ProcessCheck_cmpStatus);
+s32 ProcessCheck_cmpStatus(void) {
+    if (g_mainPID == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(g_mainPID) == 3 || dds3GetProcessStat(g_mainPID) == 0) {
+        g_mainPID = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpLeaf8);
 
@@ -1057,7 +1078,8 @@ void cmpLoadScript(void) {
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpFreeScript);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpStart);
+void cmpStart(void) {
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", End_cmpItem);
 
@@ -1151,9 +1173,58 @@ INCLUDE_ASM(const s32, "code_003648C0", Update_cmpKeyword);
 
 INCLUDE_ASM(const s32, "code_003648C0", Process_cmpMap);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallSetOt2);
+void cmpCallSetOt2(s32 x, s32 y, s32 frame) {
+    u32 color[4];
+    s32 px;
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpDrawBack);
+    eglSetOt(44);
+    eglLinkTest(0, 0, 0, 0, 0, 0, 1, 2);
+    eglLinkAlpha(0);
+    color[0] = 0x80182328;
+    color[1] = 0x80282A37;
+    color[2] = 0x80282A37;
+    color[3] = 0x80182328;
+    if (frame < 70) {
+        px = x + (s32)((f32)frame * 108.0f / 70.0f);
+        eglLinkBoxZ(px - 108, y, 108, 173, 0, color[1], color[0], color[3], color[2]);
+        eglLinkBoxZ(px, y, 108, 173, 0, color[0], color[1], color[2], color[3]);
+        eglLinkBoxZ(px + 108, y, 108, 173, 0, color[1], color[0], color[3], color[2]);
+    } else {
+        px = x + (s32)((f32)(frame - 70) * 108.0f / 70.0f);
+        eglLinkBoxZ(px - 108, y, 108, 173, 0, color[0], color[1], color[2], color[3]);
+        eglLinkBoxZ(px, y, 108, 173, 0, color[1], color[0], color[3], color[2]);
+        eglLinkBoxZ(px + 108, y, 108, 173, 0, color[0], color[1], color[2], color[3]);
+    }
+}
+
+void cmpDrawBack(tagCMP_MAP_WORK *wk) {
+    if (cmpGetSpriteHnd(CMP_SPR_MAP) == NULL) {
+        return;
+    }
+    eglSetOt(44);
+    eglLinkTest(1, 2, 128, 0, 0, 0, 1, 1);
+    eglLinkAlpha(0);
+    eglLinkBoxZ(0, 0, 512, 58, 4095, 0, 0, 0, 0);
+    eglLinkBoxZ(0, 405, 512, 43, 4095, 0, 0, 0, 0);
+    eglLinkBoxZ(0, 58, 22, 347, 4095, 0, 0, 0, 0);
+    cmpCallSetOt2(-39, 4, cmpDrawBackData);
+    cmpCallSetOt2(311, -53, cmpDrawBackData);
+    cmpCallSetOt2(222, 284, cmpDrawBackData);
+    cmpDrawBackData++;
+    if (cmpDrawBackData >= 141) {
+        cmpDrawBackData = 0;
+    }
+    eglSetOt(44);
+    eglLinkTest(1, 2, 128, 0, 0, 0, 1, 1);
+    eglLinkAlpha(0);
+    itfDrawGridWithResolvedSlot(-624, 32, 4095, 96, cmpGetSpriteHnd(CMP_SPR_MAP), 0, 44);
+    itfDrawGridWithResolvedSlot(4976, -424, 4095, 96, cmpGetSpriteHnd(CMP_SPR_MAP), 32, 44);
+    itfDrawGridWithResolvedSlot(3552, 2272, 4095, 96, cmpGetSpriteHnd(CMP_SPR_MAP), 0, 44);
+    eglSetOt(44);
+    eglLinkTest(1, 0, 128, 1, 0, 0, 1, 2);
+    eglLinkAlpha(0);
+    itfDrawGridWithResolvedSlot(320, 448, 0, 96, cmpGetSpriteHnd(CMP_SPR_MAP), 1, 44);
+}
 
 INCLUDE_RODATA(const s32, "code_003648C0", cmpStrCampScriptCmpUseScrBf);
 

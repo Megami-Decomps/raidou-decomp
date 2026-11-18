@@ -22,7 +22,16 @@ INCLUDE_ASM(const s32, "fclDrawBack", fclProcessStart);
 
 INCLUDE_ASM(const s32, "fclDrawBack", fclProcessEnd);
 
-INCLUDE_ASM(const s32, "fclDrawBack", dds3DestroyCallbackNodeAfterLastNotification);
+s32 dds3DestroyCallbackNodeAfterLastNotification(dds3ProcessID_t *PID)
+{
+    if (PID == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(PID) == 3 || dds3GetProcessStat(PID) == 0) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "fclDrawBack", fclCallSetOt);
 

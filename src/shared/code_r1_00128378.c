@@ -931,7 +931,9 @@ INCLUDE_ASM(const s32, "code_r1_00128378", fldNakamaCashLoad_RndEncRetStart);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldNakamaCashLoad_EndCheck);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldSetUnitSub);
+s32 fldSetUnitSub(void) {
+    return fldData11 != NULL;
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldCallMemFreeDelayedDirect3);
 

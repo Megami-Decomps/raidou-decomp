@@ -14,6 +14,12 @@
 #include "fldProcess.h"
 #include "sbtlWork.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
+#include "dds3KernelDraw.h"
+#include "evtSky.h"
+#include "dds3AdminiProcess.h"
+#include "cmpMain.h"
+#include "jmsInit.h"
 
 extern s32 ProcessCheck_rstInit(void);
 
@@ -24,11 +30,6 @@ extern void titleStart(u32 mode);
 extern void InitOoyTest(void);
 extern void fldCallElvReset2(s32 eventNo);
 
-#include "sdk_libc.h"
-#include "dds3KernelDraw.h"
-#include "evtSky.h"
-#include "dds3AdminiProcess.h"
-#include "cmpMain.h"
 
 
 extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);
@@ -131,7 +132,13 @@ s32 ExitLoad(void)
     return -1;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckLoad);
+s32 CheckLoad(void)
+{
+    s32 operationResult;
+
+    operationResult = fmProcessChk_slMain();
+    return operationResult == 0;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallSave);
 
@@ -349,9 +356,19 @@ s32 CheckBattleFieldTest(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallJimusyo);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitJimusyo);
+s32 ExitJimusyo(void)
+{
+    jmsProcessEnd();
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckJimusyo);
+s32 CheckJimusyo(void)
+{
+    s32 operationResult;
+
+    operationResult = jmsProcessCheck();
+    return operationResult == 0;
+}
 
 void CallNewBattleTest(DDS3_ADMINI_CALL flg, SBTL_START_DATA *start)
 {

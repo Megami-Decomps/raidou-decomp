@@ -5,6 +5,9 @@
 #include "TitleMain.h"
 #include "jmsMisc.h"
 #include "sdk_libc.h"
+#include "dds3KernelCore.h"
+#include "code_0034F3B8.h"
+#include "gohMain.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
@@ -72,7 +75,16 @@ INCLUDE_ASM(const s32, "code_003BF2E0", jmsMenuMain);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsMenuProcessEnd);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", ProcessCheck_jmsMenu);
+s32 ProcessCheck_jmsMenu(void) {
+    if (inputpanel_id == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(inputpanel_id) == 3 || dds3GetProcessStat(inputpanel_id) == 0) {
+        inputpanel_id = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsDisableSelect);
 
@@ -304,7 +316,9 @@ INCLUDE_ASM(const s32, "code_003BF2E0", ProcessStart_rstInit);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", ProcessEnd_rstInit);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", ProcessCheck_rstInit);
+s32 ProcessCheck_rstInit(void) {
+    return dds3SearchProcessName(cmpCalcProcName) != 0;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultStartWaitProcess);
 
@@ -340,9 +354,16 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcProcess_rstResult);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstDrawProcess);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData37);
+dds3ProcessFunc_t rstCallGetProcessData37(dds3ProcessID_t *PID) {
+    gohData_t *work = dds3GetProcessData(PID);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstLeaf14);
+    return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
+}
+
+s32 rstLeaf14(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", ReleaseFontList);
 
@@ -350,27 +371,52 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstEndCalcProcess);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstEndDrawProcess);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstEndUpdateProcess);
+dds3ProcessFunc_t rstEndUpdateProcess(dds3ProcessID_t *PID) {
+    gohData_t *work = dds3GetProcessData(PID);
+
+    return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstBtlEndWaitInit);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstLeaf15);
+s32 rstLeaf15(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstBtlEndWaitCalcProcess);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstBtlEndWaitDrawProcess);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData38);
+dds3ProcessFunc_t rstCallGetProcessData38(dds3ProcessID_t *PID) {
+    gohData_t *work = dds3GetProcessData(PID);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstLeaf16);
+    return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
+}
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstLeaf17);
+s32 rstLeaf16(void)
+{
+    return 1;
+}
+
+s32 rstLeaf17(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData39);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData40);
+dds3ProcessFunc_t rstCallGetProcessData40(dds3ProcessID_t *PID) {
+    jmsSeqWork_t *work = dds3GetProcessData(PID);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData41);
+    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
+}
+
+dds3ProcessFunc_t rstCallGetProcessData41(dds3ProcessID_t *PID) {
+    gohData_t *work = dds3GetProcessData(PID);
+
+    return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultCyuuseiGaugeSub);
 
@@ -471,7 +517,16 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstCmpItemGrowthStart);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstProcessEnd);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessStat);
+s32 rstCallGetProcessStat(void) {
+    if (g_mainPID3 == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(g_mainPID3) == 3 || dds3GetProcessStat(g_mainPID3) == 0) {
+        g_mainPID3 = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 void rstCloseStreamSub(void) {
 }

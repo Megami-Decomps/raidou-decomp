@@ -10,6 +10,7 @@
 #include "sbtlSub.h"
 #include "dds3KernelCore.h"
 #include "sBtlSkill.h"
+#include "sndAt3.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
@@ -85,7 +86,9 @@ s32 sbtlBtlForceDeleteEffectWorkIDSub(s32 arg) {
     return sdfCallSndSendCmd2(arg);
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf57);
+s32 sbtlLeaf57(void) {
+    return sdfBtlReLoadMapSBtlSceneSub();
+}
 
 void sbtlPlaySE(u32 frame)
 {
@@ -108,7 +111,28 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlay3DSE_BaseVol);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", DevilFootSEProc);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", NakamaMotion3DSE);
+s32 NakamaMotion3DSE(struct SBTLSOUND_FOOTWORK *fwk, s32 devilID, f32 frame)
+{
+    DVLFOOTSE_WORK *foot = sbtlDevilFootSEProcSub(devilID);
+    f32 prev;
+    u32 se;
+    s32 i;
+
+    prev = fwk->prevFrame;
+    fwk->prevFrame = frame;
+    if (frame < prev) {
+        fwk->played = 0;
+    }
+    for (i = 0; i < foot->frameNum; i++) {
+        if (i >= fwk->played && foot->frame[i] <= frame) {
+            se = sbtlCallGetRandIntA5(fwk, devilID);
+            fwk->played = i + 1;
+            fwk->prevSMGID = se;
+            return se;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayViceSE);
 
@@ -184,7 +208,9 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallGetRandIntA5);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlaySpecialSE);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf58);
+void sbtlLeaf58(u32 seid) {
+    p2sdStopSe(seid);
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", Proc_sbtlSound);
 
@@ -263,7 +289,11 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayDeadVoice);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRefSbtl7);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallEffectShutdown3);
+void sbtlCallEffectShutdown3(s32 mode)
+{
+    nbEffectShutdown();
+    p2sdStopAllSe();
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallGetSkillSE);
 
@@ -289,7 +319,38 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetEndBadStatus);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetEndData);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", Exit_sbtlUnit);
+s32 Exit_sbtlUnit(void)
+{
+    struct SBTLUNIT_LISTWORK *lwk = wk_sbtl->unitList;
+    struct SBTLUNIT_WORK *wk;
+    s32 busy;
+    s32 num;
+    s32 i;
+
+    if (lwk == NULL) {
+        return 1;
+    }
+    num = lwk->number;
+    busy = 0;
+    for (i = 0; i < num; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL) {
+            if ((u16)(wk->mode - 1) >= 2) {
+                sbtlDeleteUnit(wk);
+            } else {
+                busy = 1;
+            }
+        }
+    }
+    if (busy == 1) {
+        return 0;
+    }
+    if (wk_sbtl->unitList != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->unitList);
+        wk_sbtl->unitList = NULL;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallBtlGetPlayerData2);
 
@@ -392,19 +453,45 @@ s32 sbtlSearchReturn_Unit(struct SBTLUNIT_WORK *wk)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDeleteUnit);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRefSbtl33);
+s32 sbtlRefSbtl33(struct SBTLUNIT_WORK *wk)
+{
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && wk->field1A0 != unit->field1A0 && unit->major == wk->major && unit->minor == wk->minor &&
+            unit->unit.devilId == wk->unit.devilId) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallSin);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlUseItemProcSBtlPlayerSub);
+s32 sbtlUseItemProcSBtlPlayerSub(void)
+{
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlUseItemProcSBtlPlayerSub2);
+s32 sbtlUseItemProcSBtlPlayerSub2(void)
+{
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf5);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlResetColorSub);
+s32 sbtlResetColorSub(void)
+{
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBtlFadeOutBadStatusEffectSub);
+void sbtlBtlFadeOutBadStatusEffectSub(struct SBTLUNIT_WORK *wk)
+{
+    wk->chgcolor = 0;
+    wk->color = 0x80808080;
+}
 
 void sbtlLeaf59(struct SBTLUNIT_WORK *wk, u32 color)
 {
@@ -413,7 +500,16 @@ void sbtlLeaf59(struct SBTLUNIT_WORK *wk, u32 color)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf60);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlChangeModelColor);
+s32 sbtlChangeModelColor(struct SBTLUNIT_WORK *wk)
+{
+    u32 color = wk->chgcolor;
+
+    if (color != 0) {
+        wk->color = color;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlResetMutekiColor);
 
@@ -572,9 +668,37 @@ struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_MASK(u8 side, u32 mask, u32 mask_
     return lwk;
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateTargetList_AI);
+struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_AI(u8 side)
+{
+    struct SBTLUNIT_LISTWORK *lwk;
+    struct SBTLUNIT_WORK *wk;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateTargetList);
+    lwk = sbtlCreateUnitList(48);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL && (wk->field414 & 0x3F) == side && wk->status != 35 && sbtlCheckLiveTarget_NotHitDmg(wk) != 0) {
+            sbtlEntryUnitList(lwk, wk);
+        }
+    }
+    return lwk;
+}
+
+struct SBTLUNIT_LISTWORK *sbtlCreateTargetList(u8 side)
+{
+    struct SBTLUNIT_LISTWORK *lwk;
+    struct SBTLUNIT_WORK *wk;
+    s32 i;
+
+    lwk = sbtlCreateUnitList(48);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL && (wk->field414 & 0x3F) == side && wk->status != 35 && sbtlCheckDamageTarget(wk) != 0) {
+            sbtlEntryUnitList(lwk, wk);
+        }
+    }
+    return lwk;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateTargetList_DeadOn);
 
@@ -586,7 +710,26 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateTargetList_Analyze);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateTargetList_Group);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateTargetList_PForward);
+struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_PForward(u8 side)
+{
+    struct SBTLUNIT_LISTWORK *lwk;
+    struct SBTLUNIT_WORK *wk;
+    struct SBTLUNIT_WORK *target;
+    s32 i;
+
+    lwk = sbtlCreateUnitList(48);
+    target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL && (wk->field414 & 0x3F) == side && wk->status != 35 && sbtlCheckDamageTarget(wk) != 0
+            && target != NULL) {
+            if (sbtlCheckCrossCircle_Rot(&target->pos, &target->rot, 1000.0f, &wk->pos, wk->model->field11C, 0.099999995f)) {
+                sbtlEntryUnitList(lwk, wk);
+            }
+        }
+    }
+    return lwk;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlUpdateMiusinai);
 

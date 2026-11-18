@@ -71,7 +71,12 @@ void fldSetPlayerTargetData(s32 *ix, s32 *iz, f32 x, f32 z) {
 
 INCLUDE_ASM(const s32, "code_0015D870", fldGetNowCutID);
 
-INCLUDE_ASM(const s32, "code_0015D870", fldProcSequenceSub4);
+void fldProcSequenceSub4(f32 x, f32 z, f32 *outX, f32 *outZ) {
+    f32 dz = -(z - mapData104) / 100.0f;
+
+    *outX = (x - mapData103) / 100.0f;
+    *outZ = dz;
+}
 
 INCLUDE_ASM(const s32, "code_0015D870", fldProcSequenceSub5);
 

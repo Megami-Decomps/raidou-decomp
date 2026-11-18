@@ -349,7 +349,27 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlFadeOut_BadStatusEffect);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetDecAlpha_SerialID);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SerialID);
+s32 sbtlForceDelete_SerialID(SBTLEFF_LISTWORK *lwk, s32 serialID)
+{
+    SBTLEFF_WORK *wk = lwk->wk;
+
+    if (lwk->num == 0 || wk == NULL) {
+        return 0;
+    }
+    do {
+        if (wk->hitserialID == serialID && sbtlCheckDeleteEffect(wk)) {
+            if ((u32)(wk->st - SBTLEFF_ST_INIT) < 2) {
+                wk->flg |= SBTLEFF_FLG_SESTOP;
+                wk->flg |= SBTLEFF_FLG_FORCERESET;
+            } else {
+                wk->st = SBTLEFF_ST_END;
+                wk->flg |= SBTLEFF_FLG_SESTOP;
+            }
+        }
+        wk = wk->next;
+    } while (wk != NULL);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SkillFlag);
 
@@ -404,7 +424,22 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlReleaseEff);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffList);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetNumOfEffect_SAB);
+s32 sbtlGetNumOfEffect_SAB(SBTLEFF_LISTWORK *lwk, s32 BEDtype, u8 side)
+{
+    s32 num = 0;
+    SBTLEFF_WORK *wk = lwk->wk;
+
+    if (lwk->num == 0 || wk == NULL) {
+        return 0;
+    }
+    do {
+        if (CheckEffectDataSingle(wk->BEDtype, BEDtype) && (wk->BEDacterside & side)) {
+            num++;
+        }
+        wk = wk->next;
+    } while (wk != NULL);
+    return num;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_SAB);
 
@@ -547,7 +582,15 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchEffectData2);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData_ID);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetExeSkill);
+s32 sbtlGetExeSkill(SKLID sklid)
+{
+    s32 no = sbtlGetSklVisualTbl(sklid)->SABno;
+
+    if (no == 0) {
+        no = -1;
+    }
+    return no;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchDelWorkSide);
 
@@ -679,7 +722,11 @@ s32 sbtlRefSbtl42(SBTL_FIELD630_WORK *wk)
     return wk->num > 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemFreeDirect4);
+s32 sbtlCallMemFreeDirect4(SBTL_FIELD630_WORK *wk)
+{
+    sdfMemFreeDirect(wk->handle);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetDevilSkillID);
 
@@ -702,7 +749,15 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateSTP_Unit);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", CreateSTP);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlProcSBtlSTPSub);
+s32 sbtlProcSBtlSTPSub(struct SBTLUNIT_WORK *wk)
+{
+    s32 status = wk->status;
+
+    if (status != 11 && status != 14 && wk->model->mode != 9 && wk->mode >= 5) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", Proc_sbtlSTP);
 

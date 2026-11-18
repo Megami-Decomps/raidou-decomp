@@ -11,6 +11,7 @@
 #include "sbtlActAI.h"
 #include "itfMesManager.h"
 #include "sbtlSub.h"
+#include "sBtlSkill.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -58,7 +59,14 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetATKEffect);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetCombine);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlLeaf63);
+s32 sbtlLeaf63(struct SBTLUNIT_WORK *wk) {
+    u32 status = wk->status;
+
+    if (status >= 7 && (status < 11 || status == 34)) {
+        return 0;
+    }
+    return 1;
+}
 
 s32 sbtlNormalProcNakamaSub(struct SBTLUNIT_WORK *wk)
 {
@@ -69,7 +77,17 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSummonKey);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetNSTOP);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetNSTOP);
+void sbtlResetNSTOP(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && unit->hModel != NULL) {
+            unit->vstatus &= ~0x8000000;
+        }
+    }
+}
 
 INCLUDE_RODATA(const s32, "code_0027A1E8", sbtlSetVibeTable);
 
@@ -185,7 +203,9 @@ s32 sbtlCheckBit(u32 *bits, s32 bit)
     return (*bits >> bit) & 1;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetBit);
+void sbtlSetBit(u32 *bits, s32 no) {
+    *bits |= 1 << no;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetBit);
 
@@ -250,7 +270,11 @@ INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_05);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_06);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_07);
+s32 SEquationno_07(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    s32 type = sbtlGetSkilltbl(skillid)->type & 0x2000;
+
+    return type != 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_08);
 
@@ -260,11 +284,23 @@ INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0a);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0b);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0c);
+s32 SEquationno_0c(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    s32 result = 0;
+    s32 type = sbtlGetSkilltbl(skillid)->type & 0xFFF;
+
+    if (type == 3 || type == 5) {
+        result = wk->unit.now.str > wk->unit.now.tec;
+    }
+    return result;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0d);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0e);
+s32 SEquationno_0e(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    s32 type = sbtlGetSkilltbl(skillid)->type & 0x1000;
+
+    return type != 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0f);
 
@@ -272,7 +308,9 @@ INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_10);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_11);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_12);
+s32 SEquationno_12(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    return sbtlCheckCost_SkillID(wk, skillid, 0);
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_13);
 
@@ -316,7 +354,28 @@ INCLUDE_ASM(const s32, "code_0027A1E8", SetNextTarget_sbtlEquat);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", CheckEnemyTarget);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetTargetUnit);
+s32 sbtlGetTargetUnit(struct SBTLUNIT_WORK *wk) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(wk->skillid);
+    u32 flg;
+
+    if (CheckBSTTarget(wk, tbl)) {
+        return 1;
+    }
+    flg = tbl->flg;
+    if (flg & 1) {
+        return TEquationno_01(wk);
+    }
+    if (flg & 4) {
+        if (flg & 0x10000) {
+            return TEquationno_0d(wk);
+        }
+        return TEquationno_0c(wk);
+    }
+    if (flg & 0x200) {
+        return TEquationno_0e(wk);
+    }
+    return TEquationno_01(wk);
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", CheckBSTTarget);
 
@@ -395,9 +454,48 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallMemset5);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", CheckActionEquation);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetAIMode);
+s32 sbtlSetAIMode(struct SBTLUNIT_WORK *wk)
+{
+    struct SBTLSKILLP_TBL *skill = sbtlGetSkilltbl(wk->skillid);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckActionEquationSub);
+    if (wk->skillid == 288 || wk->skillid == 0) {
+        wk->aiwk->mode = 0;
+        return 1;
+    }
+    switch (skill->type & 0xFFF) {
+    case 1:
+    case 4:
+    case 12:
+    case 13:
+        wk->aiwk->mode = 1;
+        wk->aiwk->scrflag |= 0x10000;
+        break;
+    case 2:
+    case 3:
+    case 5:
+    case 9:
+    case 10:
+    case 11:
+    case 14:
+    case 15:
+    case 16:
+        wk->aiwk->mode = 8;
+        wk->aiwk->scrflag |= 0x10000;
+        break;
+    case 6:
+    case 7:
+    case 8:
+    default:
+        wk->aiwk->mode = 0;
+        break;
+    }
+    return 1;
+}
+
+s32 sbtlCheckActionEquationSub(void)
+{
+    return 0;
+}
 
 s32 sbtlProcScript(struct SBTLUNIT_WORK *wk)
 {

@@ -10,7 +10,9 @@ INCLUDE_ASM(const s32, "code_00163C50", fldLeaf22);
 
 INCLUDE_ASM(const s32, "code_00163C50", fldMapMapMap);
 
-INCLUDE_ASM(const s32, "code_00163C50", fldHirukoYukaGo_Idx2_B);
+void fldHirukoYukaGo_Idx2_B(s32 id) {
+    mapSKYBGEDITData5 = id;
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", mapSpotPointGet2D);
 

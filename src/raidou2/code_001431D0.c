@@ -192,7 +192,8 @@ INCLUDE_RODATA(const s32, "code_001431D0", map_fldPoint3To2O3Table);
 
 INCLUDE_ASM(const s32, "code_001431D0", mapBgSetScroll);
 
-INCLUDE_ASM(const s32, "code_001431D0", mapLeaf11);
+void mapLeaf11(void) {
+}
 
 void mapBgFree2(void) {
     fldCallMemFreeDelayedDirect4();

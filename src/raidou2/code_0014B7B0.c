@@ -218,7 +218,9 @@ INCLUDE_RODATA(const s32, "code_0014B7B0", mapObjFloorAdd_CashTable2);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjFloorAdd_Cash);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapAddHukidashi);
+s32 mapAddHukidashi(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s) {
+    return mapObjFloorAdd_Cash(-1, uniq, major, minor, motion, cut_bit, cash, x, y, z, r, s);
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapLeaf13);
 
@@ -263,9 +265,28 @@ INCLUDE_ASM(const s32, "code_0014B7B0", nbStartEventPacks);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjColor);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapFileLoadSub3);
+void mapFileLoadSub3(s16 uniq, s32 spcial) {
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjNpcKuse);
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].spcial = spcial;
+            return;
+        }
+    }
+}
+
+void mapObjNpcKuse(s16 uniq, s32 wait) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].npc_kuse_wait = wait;
+            mapObjTaskData2[i].npc_kuse_time = 0;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjNpcKuseStop);
 
@@ -284,15 +305,42 @@ void mapObjNpcKuseScriptStop(s32 SerialID) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjHitSize);
+void mapObjHitSize(s16 uniq, f32 size) {
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjFloor);
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].hitsize = size;
+            return;
+        }
+    }
+}
+
+void mapObjFloor(s16 uniq, s32 floor) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].floor = floor;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjMask);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapLeaf15);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjNoClip);
+void mapObjNoClip(s16 uniq) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].noclip = 1;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallUnitObjectBasicSetOt);
 
@@ -322,7 +370,16 @@ INCLUDE_ASM(const s32, "code_0014B7B0", mapObjMotionPauseOffAll);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjGetFloorBasic);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjGetBasic);
+dds3Basic_t *mapObjGetBasic(s16 uniq) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].use == 1 && mapObjTaskData2[i].basic != NULL && mapObjTaskData2[i].uniq == uniq) {
+            return mapObjTaskData2[i].basic;
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjGetModelMinID);
 
@@ -334,7 +391,18 @@ INCLUDE_RODATA(const s32, "code_0014B7B0", mapObjTaskTable2);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjTask);
 
-INCLUDE_ASM(const s32, "code_0014B7B0", mapObjEveHitSet);
+void mapObjEveHitSet(s16 uniq, s32 act, char *scr_name) {
+    s32 i;
+
+    for (i = 0; i < 128; i++) {
+        if (mapObjTaskData2[i].uniq == uniq) {
+            mapObjTaskData2[i].act = act;
+            mapObjTaskData2[i].evehitdir = 1;
+            strcpy(mapObjTaskData2[i].scr_name, scr_name);
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapObjEveHitSet2);
 

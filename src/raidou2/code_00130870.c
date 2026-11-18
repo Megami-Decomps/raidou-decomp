@@ -6,6 +6,7 @@
 #include "ps2asm.h"
 #include "mapData.h"
 #include "fld.h"
+#include "sndAt3.h"
 
 INCLUDE_ASM(const s32, "code_00130870", fldCallElvReset);
 
@@ -33,7 +34,11 @@ s32 mapExitFieldSub(void) {
 
 INCLUDE_ASM(const s32, "code_00130870", sbtlReLoadFldScene);
 
-INCLUDE_ASM(const s32, "code_00130870", sbtlRefMapRndEncLoadMode);
+void sbtlRefMapRndEncLoadMode(void) {
+    if (gMapRndEncLoad_Mode != 0) {
+        sndBgmLoadId_XF(ProcSequenceData5);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00130870", mapRndEncReturn_BgmLoadEndCheck);
 
