@@ -76,6 +76,14 @@ extern u32 cmpLoadModelTablesData;
 extern u32 datData6;
 extern u32 datCallGetStockDevilIDData;
 #ifdef VERSION_RAIDOU2
+/* Sword table entry (0x4C bytes); datData20 points at the loaded table. */
+typedef struct {
+    s32 field0;
+    s32 kind; /* row of sbtlData140 */
+    u8 pad8[0x44];
+} datSword_t;
+
+extern datSword_t *datData20;
 extern const char cmpStrGohmadenGohDevilParamDat[];
 extern const char cmpStrGohmadenGohSameDevilsDat[];
 #endif

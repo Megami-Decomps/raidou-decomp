@@ -20,8 +20,10 @@ typedef struct cmpStatusWork_t {
     u8 unk16[0x13D4 - 0x16];
 } cmpStatusWork_t;
 void Release_cmpStatus(cmpStatusWork_t *wk);
+#ifdef VERSION_RAIDOU1
 s32 cmpCallGetProcessData2(dds3ProcessID_t *id);
 s32 cmpCallGetProcessData3(dds3ProcessID_t *id);
+#endif
 void cmpCallInitCmpModel(cmpStatusWork_t *wk);
 void cmpCallEndCmpModel(cmpStatusWork_t *wk);
 void Shutdown_cmpStatus(dds3ProcessID_t *id);

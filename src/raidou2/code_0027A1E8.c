@@ -12,6 +12,7 @@
 #include "itfMesManager.h"
 #include "sbtlSub.h"
 #include "sBtlSkill.h"
+#include "code_0027A1E8.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -35,7 +36,16 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSummon_LoadExecOk);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetNakamaUnit);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCancelSystemSub);
+s32 sbtlCancelSystemSub(s32 id) {
+    s32 i;
+
+    for (i = 0; sbtlCancelSystemSubData[i] != 0; i++) {
+        if (sbtlCancelSystemSubData[i] == id) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetPChara2);
 
@@ -172,7 +182,18 @@ INCLUDE_ASM(const s32, "code_0027A1E8", slCallSetFirstAtkGun);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", slCallSetFirstAtkCore);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlEscapeCheck);
+s32 sbtlEscapeCheck(void) {
+    SBTL_WORK *wk = wk_sbtl;
+    SBTL_STAGE_DATA *stage = &sbtlData100[wk->stageNo];
+
+    if (stage->flags & 0x10) {
+        return 2;
+    }
+    if (wk->flg & 0x400000) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl11);
 

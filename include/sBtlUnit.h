@@ -355,7 +355,9 @@ struct SBTLUNIT_WORK {
     s16 field4A2;
     u8 pad5D0[0x634 - 0x5D0];
     SBTL_PACDATA_HITLIST hitwk;
-    u8 pad688[0x6F4 - 0x688];
+    u8 pad688[0x6E9 - 0x688];
+    u8 field6E9; /* set by trmSetProcessTerm */
+    u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
     u8 pad6F5[0x7F4 - 0x6F5]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };

@@ -124,6 +124,17 @@ struct SBTLEFF_WORK;
 struct scrProcessWork_s;
 
 #ifdef VERSION_RAIDOU2
+/* Battle text entry (0x80 bytes) in SBTL_WORK's textPool; type 0 is free. */
+typedef struct sbtlSummonText_t {
+    u8 pad00[0x30];
+    s32 type;
+    u8 pad34[0x6C - 0x34];
+    struct sbtlSummonText_t *prev;
+    struct sbtlSummonText_t *next;
+    s32 field74;
+    u8 pad78[0x8];
+} sbtlSummonText_t;
+
 /* Partial raidou2 layout of the battle main work: only the fields read so far are named, the rest is padding. */
 typedef struct SBTL_WORK {
     u8 pad000[0x180];
@@ -150,7 +161,9 @@ typedef struct SBTL_WORK {
     sdfMemHandle_t *evtloadHandle;
     fileRequest_t *evtloadFile; /* /battle/event/sb_btlevent.bf */
     u8 *evtloadpData;
-    u8 pad48C[0x518 - 0x48C];
+    u8 pad48C[0x494 - 0x48C];
+    s16 field494; /* battle talk message step */
+    u8 pad496[0x518 - 0x496];
     SKLID stock_useskill[10];
     u16 stock_useskill_num;
     u8 pad542[0x5A0 - 0x542];
@@ -182,7 +195,9 @@ typedef struct SBTL_WORK {
     s16 field440;
     u8 pad782[0x1A];
     s32 hgunNum;
-    u8 pad7A0[0xE0];
+    u8 pad7A0[0x98];
+    s32 field838; /* unit ID of the battle talk partner */
+    u8 pad83C[0x44];
     SBTLDROP_WORK drop;
     u8 pad880[0x9BC - 0x880 - sizeof(SBTLDROP_WORK)];
     SBTL_PANEL *panel;
@@ -199,8 +214,26 @@ typedef struct SBTL_WORK {
     s32 field678;
     u8 padA10[0xC4C - 0xA10];
     s32 midiSkillCount;
-    u8 pad_C50[0x42CA - 0xC50];
+    u8 pad_C50[0xE84 - 0xC50];
+    s32 fieldE84; /* sbtlDat's index into datData20 */
+    u8 padE88[0x4];
+    s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */
+    u8 padE8D[0xEE0 - 0xE8D];
+    struct sbtlSummonText_t textPool[100];
+    struct sbtlSummonText_t *textList;
+    struct sbtlSummonText_t *textCursor; /* sbtlRefSbtl30 searches for a free entry from here */
+    u8 pad40E8[0x42A8 - 0x40E8];
+    s16 field42A8;
+    u8 pad42AA[0x4];
+    s16 field42AE;
+    u8 pad42B0[0x42CA - 0x42B0];
     s8 field42CA; /* Proc skips the pause checks when nonzero */
+    u8 pad42CB[0x2];
+    s8 timeState; /* time limit battle: 1 counting, 2 result */
+    u8 field42CE;
+    u8 pad42CF;
+    s32 timeLimit;
+    s32 timeMode;
 } SBTL_WORK;
 #else
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
@@ -548,6 +581,7 @@ s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg);
 typedef struct SB_ENCOUNT1 {
     u8 pad00[4];
     s8 groupID;
+    u8 pad05[3];
 } SB_ENCOUNT1;
 #else
 /* One generator entry of a stage (HD SB_ENCOUNT1, PS2 layout). */
@@ -938,7 +972,9 @@ s32 sbtlCallBtlSearchUnitID7(s32 x, s32 y);
 struct SBTLDVLTK_LISTWORK *sbtlCallChipAllocZeroDirect(void);
 s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *lwk, u8 flg);
 s32 sbtlCallPadVibeFadeUpdate(struct SBTLEFF_LISTWORK *lwk);
+#ifdef VERSION_RAIDOU1
 s32 sbtlCallSetOt(void);
+#endif
 s32 sbtlCallSin2(void);
 s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk);
 s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
@@ -984,8 +1020,10 @@ void sbtlBeginSetsumaSub(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallHirukoYukaGoIdx2B(u32 color);
 void *sbtlCallGetProcessData43(void);
 void sbtlSummonMenuFuncOpen00Sub(u32 no);
+#ifdef VERSION_RAIDOU1
 s32 sbtlRefSbtl27(void);
 s32 sbtlRefSbtl29(void);
+#endif
 void sbtlRefSbtl4(void);
 void sbtlRefSbtl45(void);
 void sbtlInitTutorial(void);
