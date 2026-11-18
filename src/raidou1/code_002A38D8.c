@@ -3604,7 +3604,22 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallBtlAnalyzeBack3);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallBtlAnalyzeBackEx);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlNakamaCursor);
+void sbtlNakamaCursor(sdfVector4_t *pos) {
+    SBTL_PANEL *panel = wk_sbtl->panel;
+    struct sprHandle_t *hSpr;
+    SBTLPROJECTEDSCREEN_POINT point;
+
+    if (panel == NULL) {
+        return;
+    }
+    hSpr = panel->hPanelSpr4;
+    if (hSpr == NULL) {
+        return;
+    }
+    VU0_LOAD_VF(vf10, pos);
+    btlProjectForwardPositionToScreen(&point);
+    itfDrawMiscSpriteAlpha(point.x, point.y, 0, 255, hSpr, 2, 0x66);
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlRefSbtl57);
 
