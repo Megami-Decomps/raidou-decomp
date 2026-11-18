@@ -61,6 +61,8 @@ void mapSKYBGEDIT(void) {
     f32 offX = 0.0f;
     f32 offY = 0.0f;
     f32 zero;
+    f32 left;
+    f32 top;
     s32 camId;
     u32 color;
     s32 i;
@@ -114,12 +116,14 @@ void mapSKYBGEDIT(void) {
         eglSetOt(18);
         eglLinkAlpha(4);
         eglLinkTest(1, 0, 128, 1, 0, 0, 1, 1);
-        eglCallDLinkTexPacket2(Zoom * 0.0f + mapSKYBGEDITData2, posY + pivot * Zoom + mapSKYBGEDITData3,
-                               Zoom * 256.0f, scale * 255.0f * Zoom, uA, 1.0f, 256.0f / scale, 254.0f,
+        eglCallDLinkTexPacket2(SDF_ASPECT_VIEW_X(Zoom * 0.0f + mapSKYBGEDITData2),
+                               SDF_ASPECT_VIEW_Y(posY + pivot * Zoom + mapSKYBGEDITData3),
+                               SDF_ASPECT_VIEW_SIZE(Zoom * 256.0f), SDF_ASPECT_VIEW_SIZE(scale * 255.0f * Zoom), uA, 1.0f, 256.0f / scale, 254.0f,
                                mapSKYBGEDITData5, mapSKYBGEDITData5, mapSKYBGEDITData5, mapSKYBGEDITData5,
                                fldGlobalBase.texture2B0);
-        eglCallDLinkTexPacket2(Zoom * 256.0f + mapSKYBGEDITData2, posY + pivot * Zoom + mapSKYBGEDITData3,
-                               Zoom * 256.0f, scale * 255.0f * Zoom, uB, 1.0f, 256.0f / scale, 254.0f,
+        eglCallDLinkTexPacket2(SDF_ASPECT_VIEW_X(Zoom * 256.0f + mapSKYBGEDITData2),
+                               SDF_ASPECT_VIEW_Y(posY + pivot * Zoom + mapSKYBGEDITData3),
+                               SDF_ASPECT_VIEW_SIZE(Zoom * 256.0f), SDF_ASPECT_VIEW_SIZE(scale * 255.0f * Zoom), uB, 1.0f, 256.0f / scale, 254.0f,
                                mapSKYBGEDITData5, mapSKYBGEDITData5, mapSKYBGEDITData5, mapSKYBGEDITData5,
                                fldGlobalBase.texture2B0);
     }
@@ -139,9 +143,11 @@ void mapSKYBGEDIT(void) {
     eglLinkTest(1, 0, 128, 3, 0, 0, 1, 1);
     color = mapSKYBGEDITData5;
     KernelDebug(camId);
+    left = SDF_ASPECT_VIEW_X(mapData93 + mapSKYBGEDITData2);
+    top = SDF_ASPECT_VIEW_Y((mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3);
 
     if (camId >= 0 && camId < 4) {
-        f32 zoomX = Zoom;
+        f32 zoomX = SDF_ASPECT_VIEW_SIZE(Zoom);
 
         switch (camId) {
         case 0:
@@ -165,25 +171,23 @@ void mapSKYBGEDIT(void) {
         offX = -(mapData93 + mapSKYBGEDITData2);
         eglLinkAlpha(4);
         eglLinkTest(1, 0, 128, 1, 0, 0, 1, 1);
-        fldCallLinkAlpha(color, mapData93 + mapSKYBGEDITData2, (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3);
+        fldCallLinkAlpha(color, left, top);
         eglLinkAlpha(0);
-        fldCallSetOt3(color, mapData93 + mapSKYBGEDITData2, (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3);
+        fldCallSetOt3(color, left, top);
     }
 
     zero = 0.0f;
-    if (SDF_ASPECT_LEFT < mapData93 + mapSKYBGEDITData2) {
-        SKY_BAR(SDF_ASPECT_LEFT, zero, mapData93 + mapSKYBGEDITData2 - SDF_ASPECT_LEFT, 448.0f);
+    if (SDF_ASPECT_LEFT < left) {
+        SKY_BAR(SDF_ASPECT_LEFT, zero, left - SDF_ASPECT_LEFT, 448.0f);
     }
-    if (mapData93 + mapSKYBGEDITData2 + sizeX < SDF_ASPECT_RIGHT) {
-        SKY_BAR(mapData93 + mapSKYBGEDITData2 + sizeX, zero,
-                SDF_ASPECT_RIGHT - (mapData93 + mapSKYBGEDITData2 + sizeX), 448.0f);
+    if (left + sizeX < SDF_ASPECT_RIGHT) {
+        SKY_BAR(left + sizeX, zero, SDF_ASPECT_RIGHT - (left + sizeX), 448.0f);
     }
-    if (zero < (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3) {
-        SKY_BAR(SDF_ASPECT_LEFT, zero, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3);
+    if (zero < top) {
+        SKY_BAR(SDF_ASPECT_LEFT, zero, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, top);
     }
-    if ((mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3 + sizeY < 448.0f) {
-        SKY_BAR(SDF_ASPECT_LEFT, (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3 + sizeY,
-                SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, 448.0f - ((mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3 + sizeY));
+    if (top + sizeY < 448.0f) {
+        SKY_BAR(SDF_ASPECT_LEFT, top + sizeY, SDF_ASPECT_RIGHT - SDF_ASPECT_LEFT, 448.0f - (top + sizeY));
     }
     eglLinkAlpha(0);
 
@@ -290,6 +294,9 @@ void mapSKYBGEDIT(void) {
                 gx = mapData93 + mapSKYBGEDITData2;
                 gy = (mapData94 + mapSKYBGEDITData) + mapSKYBGEDITData3;
             }
+            gx = SDF_ASPECT_VIEW_X(gx);
+            gy = SDF_ASPECT_VIEW_Y(gy);
+            zoom = SDF_ASPECT_VIEW_SIZE(zoom);
             if (fldGlobalBase.camId == 0) {
                 switch (dds3LinkBoxZSub()) {
                 case 0:
@@ -343,11 +350,12 @@ void mapSKYBGEDIT(void) {
             x3 = sp->pos[6] * zoom;
             y3 = sp->pos[7] * zoom;
             if (camId == 3) {
-                f32 baseY = mapData94 + mapSKYBGEDITData;
+                f32 baseX = SDF_ASPECT_VIEW_X(mapData93);
+                f32 baseY = SDF_ASPECT_VIEW_Y(mapData94 + mapSKYBGEDITData);
 
-                eglLinkBox((s32)(mapData93 + (s32)x0), (s32)(baseY + (s32)y0), (s32)(mapData93 + (s32)x1),
-                           (s32)(baseY + (s32)y1), (s32)(mapData93 + (s32)x2), (s32)(baseY + (s32)y2),
-                           (s32)(mapData93 + (s32)x3), (s32)(baseY + (s32)y3), sp->tex, boxColor, boxColor,
+                eglLinkBox((s32)(baseX + (s32)x0), (s32)(baseY + (s32)y0), (s32)(baseX + (s32)x1),
+                           (s32)(baseY + (s32)y1), (s32)(baseX + (s32)x2), (s32)(baseY + (s32)y2),
+                           (s32)(baseX + (s32)x3), (s32)(baseY + (s32)y3), sp->tex, boxColor, boxColor,
                            boxColor, boxColor);
                 continue;
             }

@@ -97,7 +97,7 @@ void map_fldPoint3To2O2(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2) {
     SDF_VU0_PERSVECTOR();
     SDF_VU0_LOADVECTOR_B(&scale);
     SDF_VU0_MULVECTOR();
-    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.trans);
+    SDF_VU0_LOADVECTOR_B(SDF_ASPECT_VIEW_TRANS(&dds3ScreenParam.trans));
     SDF_VU0_ADDVECTOR();
     SDF_VU0_STOREVECTOR(&screen);
     *x2 = screen.x;
@@ -1325,6 +1325,7 @@ void mapBgSetScroll(f32 x, f32 y, f32 z, s32 mode) {
     } else {
         mapSKYBGEDITData3 = mapSKYBGEDITData2;
     }
+    SDF_ASPECT_VIEW_UPDATE(mapData93, Zoom * ((cam & 1) ? 1024.0f : 512.0f));
 }
 #else
 INCLUDE_ASM(const s32, "code_0013CDE0", mapBgSetScroll);

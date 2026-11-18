@@ -37,4 +37,29 @@
 #define SDF_ASPECT_PICTURE_RIGHT(w) 512.0f
 #endif
 
+/* The field view's crop. A host may scale the field picture and the 3D scene
+ * together about the screen's centre, so a picture narrower than its screen
+ * fills it. VIEW_UPDATE gives it the picture's left x and drawn width once a
+ * frame; VIEW_X, VIEW_Y and VIEW_SIZE place the picture's 2D, VIEW_CAMERA
+ * scales the field camera, and VIEW_TRANS gives the scroll the camera's
+ * offset as it was before the crop. */
+#ifndef SDF_ASPECT_VIEW_UPDATE
+#define SDF_ASPECT_VIEW_UPDATE(left, width)
+#endif
+#ifndef SDF_ASPECT_VIEW_X
+#define SDF_ASPECT_VIEW_X(x) (x)
+#endif
+#ifndef SDF_ASPECT_VIEW_Y
+#define SDF_ASPECT_VIEW_Y(y) (y)
+#endif
+#ifndef SDF_ASPECT_VIEW_SIZE
+#define SDF_ASPECT_VIEW_SIZE(size) (size)
+#endif
+#ifndef SDF_ASPECT_VIEW_CAMERA
+#define SDF_ASPECT_VIEW_CAMERA(camera)
+#endif
+#ifndef SDF_ASPECT_VIEW_TRANS
+#define SDF_ASPECT_VIEW_TRANS(trans) (trans)
+#endif
+
 #endif

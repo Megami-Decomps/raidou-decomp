@@ -8,6 +8,7 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "sdk_libm.h"
+#include "sdfAspect.h"
 #include "sdfVu0.h"
 #include "sdfDraw.h"
 #include "sdfMat.h"
@@ -298,6 +299,7 @@ void sdf3MakeScreenParam(sdf3DScreenParam_t *camera)
         camera->scale[1] *= sdf3DScreenAdjustScaleY;
         camera->trans[0] += sdf3DScreenAdjustOffsetX;
         camera->trans[1] += sdf3DScreenAdjustOffsetY;
+        SDF_ASPECT_VIEW_CAMERA(camera);
     }
 }
 

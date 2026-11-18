@@ -71,7 +71,7 @@ void fldCallLinkAlpha(u32 color, f32 x, f32 y) {
     if (evtStageTestState2.handle == NULL) {
         return;
     }
-    size = Zoom * 126.0f;
+    size = SDF_ASPECT_VIEW_SIZE(Zoom * 126.0f);
     if (fldGlobalBase.camId == 0) {
         switch (dds3LinkBoxZSub()) {
         case 0:

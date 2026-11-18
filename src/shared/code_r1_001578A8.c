@@ -7,8 +7,8 @@
 /* NON_MATCHING: 5 of 262 words match. Same instruction count, scheduling and register allocation differ. */
 #ifdef NON_MATCHING
 void fldCallSetOt3(u32 color, f32 ox, f32 oy) {
-    f32 scale = 1.0f;
-    f32 cell = Zoom * 126.0f;
+    f32 scale = SDF_ASPECT_VIEW_SIZE(1.0f);
+    f32 cell = SDF_ASPECT_VIEW_SIZE(Zoom * 126.0f);
     f32 x;
     f32 y;
     s32 first = 1;
