@@ -25,9 +25,9 @@ menu scenarios); an entry says which paths they covered.
 | 10 | interface/itfMesManager | raidou1, raidou2 | [interface/itfMesManager.md](interface/itfMesManager.md) |
 | 9 | code_0010F2C0 | raidou1 | [code_0010F2C0.md](code_0010F2C0.md) |
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
+| 9 | sbtlDMG | raidou1, raidou2 | [sbtlDMG.md](sbtlDMG.md) |
 | 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
-| 7 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
 | 6 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |

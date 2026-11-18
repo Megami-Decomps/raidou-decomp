@@ -7662,7 +7662,7 @@
 0x002B8918	sbtlGetHitUnit_Muki	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlGetHitUnit_Muki score 8.3 flag I: calls4 callers-of-match votes2 st2:call r2-only
 0x002B8AB8	sbtlSetHitback	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetHitback score 8.5 flag I: calls5 calls-of-match votes2 st2:call r2-only
 0x002B8D48	sbtlSetStoneDeadDamageProc	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetStoneDeadDamageProc score 5.5 flag I: calls3 callers-of-match votes4 st2:call r1-disagree:0x2883a0
-0x002B8E90	sbtlCallBtlSetWeakBit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlSetWeakBit
+0x002B8E90	sbtlSetDeadWeak	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlSetDeadWeak; body is R1 sbtlSetDeadWeak with a leading sbtlSetWeakBit call; replaces sbtlCallBtlSetWeakBit
 0x002B8F48	sbtlCallBtlGetSkilltbl9	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlGetSkilltbl
 0x002B9208	sbtlSetInvalidDamage	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetInvalidDamage score 8.3 flag I: calls3 callers-of-match votes4 st2:call r2-only
 0x002B92B0	sbtlCallBtlGetStartTimeDamage	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlGetStartTime_Damage

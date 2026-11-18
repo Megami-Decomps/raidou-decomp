@@ -40,15 +40,21 @@ typedef struct SBTLSM_LISTWORK {
 
 #ifdef VERSION_RAIDOU2
 #define SBTL_SKILL_NAME_SIZE 29
+#define SBTL_LEAF74_NAME_SIZE 25
 #else
 #define SBTL_SKILL_NAME_SIZE 21
+#define SBTL_LEAF74_NAME_SIZE 21
 #endif
 
 /* Name tables: race names (17 bytes), devil names (21 bytes), skill names. */
 extern char (*sbtlData94)[17];
 extern char (*g_itemNo)[21];
 extern char (*sbtlData95)[SBTL_SKILL_NAME_SIZE];
-extern char (*cmpSetupData4)[21];
+extern char (*cmpSetupData4)[SBTL_LEAF74_NAME_SIZE];
+extern char (*sbtlGetAisyoHelpFontData)[9];
+#ifdef VERSION_RAIDOU2
+extern char (*nbData24)[17];
+#endif
 
 s32 sbtlCallDeleteMessage(SBTLSM_LISTWORK *lwk);
 s32 sbtlCallSetVarSBtlSM(SBTLSM_LISTWORK *lwk);

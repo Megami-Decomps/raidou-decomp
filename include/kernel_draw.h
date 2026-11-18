@@ -60,6 +60,7 @@ extern sdfVector4_t dds3LightObjectAmbient;
 extern sdf3DFogParam_t dds3FogState;
 extern sdfMatrix4_t aProjMatrix;
 extern sdfMatrix4_t sdfViewMatrix;
+extern sdfMatrix4_t CameraTM;
 extern sdfMatrix4_t sdfProjectionMatrix;
 
 /* Native frame renderer ordering table: map size 0xE40, stride 0x20. */

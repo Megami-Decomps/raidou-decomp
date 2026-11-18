@@ -166,7 +166,8 @@ typedef struct SBTL_WORK {
     struct SBTL_FIELD630_WORK *field630;
     u8 pad9C8[0x10];
     s32 field9D8; /* Proc_sbtlEXP adds a bind's para, clamped to 0..999999 */
-    u8 pad9DC[0x8];
+    struct SBTL_STP *stp;
+    u8 pad9E0[0x4];
     struct scrProcessWork_s *hAIScript;
     u8 pad9E8[0x4];
     struct SBTLUNIT_WORK *scrUnit;
@@ -831,6 +832,7 @@ s32 sbtlGetDamage_GB(sdatUnitWork_t *acter, sdatUnitWork_t *unit, SKLID sklid);
 s32 sbtlCallBtlGetItemtbl3(sdatUnitWork_t *unit, s32 itemID);
 s32 sbtlCallBtlSearchUnitID35(s32 stockID);
 s32 sbtlCheckItemMember_Dead(s32 stockID);
+void sbtlSetWeakBit(s32 devilId);
 s32 sbtlSbattle5(dds3ProcessID_t *id);
 s32 sbtlSbattle6(dds3ProcessID_t *id);
 void sbtlSbtlCameraproc(void);
@@ -950,6 +952,7 @@ void sbtlGetPlayerTec_ParaUp(sdatUnitWork_t *unit, sdatParaWork_t *para);
 s32 sbtlReleaseDelList(struct SBTLEFF_DELLISTWORK *lwk, u8 flg);
 s32 sbtlReleaseDvltk_List(struct SBTLDVLTK_LISTWORK *lwk, u8 flg);
 s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg);
+s32 sbtlCreateSTP_Unit(SBTL_STP *stp, struct SBTLUNIT_WORK *wk, s16 id, s32 time);
 #ifdef VERSION_RAIDOU1
 s32 sbtlSbattle2(s32 flg);
 #endif

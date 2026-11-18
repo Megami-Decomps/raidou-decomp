@@ -33,6 +33,7 @@
 #include "sdfDraw.h"
 #include "sdf2D.h"
 #include "sdfPrim.h"
+#include "frFont.h"
 
 enum {
     BTL_RESOURCE_DESCRIPTOR_BYTES = 0x48,
@@ -414,74 +415,228 @@ s32 sbtlCallGrAllocPacketBuff(s32 x0, s32 y0, s32 x1, s32 y1,
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetLargePara);
+s32 sbtlGetLargePara(s16 *adr, s32 max)
+{
+    s32 large = 0;
+    s32 ret = 0;
+    s32 i;
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaAdd);
+    for (i = 0; i < max; i++) {
+        s32 para = *adr++;
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaAdd_16);
+        if (para > 0 && para >= large) {
+            large = para;
+            ret = i;
+        }
+    }
+    return ret;
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaAdd_8);
+void sbtlParaAdd(s32 *para, s32 add, s32 max, s32 reset)
+{
+    *para += add;
+    if (*para > max) {
+        *para = reset;
+    }
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaDec);
+void sbtlParaAdd_16(s16 *para, s16 add, s16 max, s16 reset)
+{
+    *para += add;
+    if (*para > max) {
+        *para = reset;
+    }
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaDec_16);
+void sbtlParaAdd_8(s8 *para, s8 add, s8 max, s8 reset)
+{
+    *para += add;
+    if (*para > max) {
+        *para = reset;
+    }
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaDec_8);
+void sbtlParaDec(s32 *para, s32 dec, s32 max)
+{
+    s32 val = *para - dec;
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetBezier);
+    if (val < 0) {
+        val = max;
+    }
+    *para = val;
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFont);
+void sbtlParaDec_16(s16 *para, s16 dec, s16 max)
+{
+    *para -= dec;
+    if (*para < 0) {
+        *para = max;
+    }
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallBtlGetMeireiFont);
+void sbtlParaDec_8(s8 *para, s8 dec, s8 max)
+{
+    *para -= dec;
+    if (*para < 0) {
+        *para = max;
+    }
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDrawFontEx2);
+f32 sbtlGetBezier(f32 x0, f32 x1, f32 x2, f32 x3, f32 bt)
+{
+    return x0 * (1.0f - bt) * (1.0f - bt) * (1.0f - bt)
+        + x1 * 3.0f * bt * (1.0f - bt) * (1.0f - bt)
+        + x2 * 3.0f * bt * bt * (1.0f - bt)
+        + x3 * bt * bt * bt;
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallGetSmallNumFontFRQ);
+char *sbtlGetMeireiFont(s32 id)
+{
+    return sbtlGetMeireiFontData[id];
+}
+
+void sbtlCallBtlGetMeireiFont(s32 x, s32 y, s32 z, u32 rgba, s32 id)
+{
+    frFontHandle_t *font = frLinkKanjiSub(x * 16, y * 8, z, rgba, sbtlGetMeireiFont(id), NULL);
+
+    frDrawFontOt(font, 1, SBTL_FONT_OT);
+    frDestroyFontRequestAfter(font);
+}
+
+void sbtlCallDrawFontEx2(s32 x, s32 y, s32 z, u32 rgba, const char *text)
+{
+    frFontHandle_t *font = frLinkKanjiSub(x * 16, y * 8, z, rgba, text, NULL);
+
+    frDrawFontOt(font, 1, SBTL_FONT_OT);
+    frDestroyFontRequestAfter(font);
+}
+
+void sbtlCallGetSmallNumFontFRQ(s32 x, s32 y, s32 z, u32 rgba, u8 *text)
+{
+    frFontHandle_t *font = frwGetSmallNumFontFRQ(x * 16, y * 8, z, rgba, text, NULL);
+
+    frDrawFontOt(font, 1, SBTL_FONT_OT);
+    frDestroyFontRequestAfter(font);
+}
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetWajutsuNameFont);
+char *sbtlGetWajutsuNameFont(s32 id)
+{
+    return sbtlData94[id];
+}
 #else
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlLeaf29);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallBtlGetWajutsuNameFont);
+void sbtlCallBtlGetWajutsuNameFont(s32 x, s32 y, s32 z, u32 rgba, s32 id)
+{
+#ifdef VERSION_RAIDOU1
+    char *text = sbtlGetWajutsuNameFont(id);
+#else
+    char *text = sbtlLeaf29(id);
+#endif
+    frFontHandle_t *font = frwGetSmallFontFRQ2(x * 16, y * 8, z, rgba, text, NULL);
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlLeaf73);
+    frDrawFontEx(font, 1);
+    frDestroyFontRequestAfter(font);
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallGetSmallFontFRQ23);
+char *sbtlLeaf73(s32 id)
+{
+    return sbtlLeaf73Data[id];
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sdatDevilName);
+void sbtlCallGetSmallFontFRQ23(s32 x, s32 y, s32 z, u32 rgba, s32 id)
+{
+    frFontHandle_t *font = frwGetSmallFontFRQ2(x * 16, y * 8, z, rgba, sbtlLeaf73(id), NULL);
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDevilName);
+    frDrawFontEx(font, 1);
+    frDestroyFontRequestAfter(font);
+}
+
+const char *sdatDevilName(s32 id)
+{
+    return g_itemNo[id];
+}
+
+void sbtlCallDevilName(s32 x, s32 y, s32 z, u32 rgba, s32 id)
+{
+    frFontHandle_t *font = frwGetSmallFontFRQ2(x * 16, y * 8, z, rgba, sdatDevilName(id), NULL);
+
+    frDrawFontEx(font, 1);
+    frDestroyFontRequestAfter(font);
+}
 
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfter);
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", slKanjiDrawN);
+void slKanjiDrawN(s32 x, s32 y, s32 z, u32 rgba, s32 id)
+{
+    frFontHandle_t *font = frLinkKanjiSub(x * 16, y * 8, z, rgba, sbtlCallDestroyFontRequestAfterData[id], NULL);
+
+    frDrawFontEx(font, 1);
+    frDestroyFontRequestAfter(font);
+}
 
 char *sbtlGetSkillNameFont(SKLID skillid)
 {
     return sbtlData95[skillid];
 }
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawSkillName);
+void sbtlDrawSkillName(s32 x, s32 y, s32 z, u32 rgba, SKLID id)
+{
+    frFontHandle_t *font = frwGetSmallFontFRQ2(x * 16, y * 8, z, rgba, sbtlGetSkillNameFont(id), NULL);
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlLeaf74);
+    frDrawFontEx(font, 1);
+    frDestroyFontRequestAfter(font);
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallGetSmallFontFRQ24);
+char *sbtlLeaf74(s32 id)
+{
+    return cmpSetupData4[id];
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetAisyoHelpFont);
+void sbtlCallGetSmallFontFRQ24(s32 x, s32 y, s32 z, u32 rgba, s32 id)
+{
+    frFontHandle_t *font = frwGetSmallFontFRQ2(x * 16, y * 8, z, rgba, sbtlLeaf74(id), NULL);
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawAisyoName);
+    frDrawFontEx(font, 1);
+    frDestroyFontRequestAfter(font);
+}
+
+char *sbtlGetAisyoHelpFont(s32 id)
+{
+    return sbtlGetAisyoHelpFontData[id];
+}
+
+void sbtlDrawAisyoName(s32 x, s32 y, s32 z, u32 rgba, s32 id)
+{
+    frFontHandle_t *font = frwGetSmallFontFRQ2(x * 16, y * 8, z, rgba, sbtlGetAisyoHelpFont(id), NULL);
+
+    frDrawFontEx(font, 1);
+    frDestroyFontRequestAfter(font);
+}
 
 #ifdef VERSION_RAIDOU2
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetWajutsuNameFont);
+char *sbtlGetWajutsuNameFont(s32 id)
+{
+    return nbData24[id];
+}
 
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetPlayerRankNameFont);
 
 #endif
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFont);
+char *sbtlGetBSTNameFont(s32 id)
+{
+    return sbtlGetBSTNameFontData[id];
+}
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawBSTName);
+void sbtlDrawBSTName(s32 x, s32 y, s32 z, u32 rgba, s32 id)
+{
+    frFontHandle_t *font = frwGetSmallFontFRQ2(x * 16, y * 8, z, rgba, sbtlGetBSTNameFont(id), NULL);
+
+    frDrawFontEx(font, 1);
+    frDestroyFontRequestAfter(font);
+}
 
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetSkillMenu);
 

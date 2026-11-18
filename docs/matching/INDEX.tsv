@@ -228,10 +228,10 @@ ChangeTarget_BSHelper	code_r1_0024F220	raidou1 0x228	15 of 138 words differ	docs
 sbtlEntryStockData	code_r1_0024F220	raidou1 0x24C	83 of 147 words differ	docs/matching/code_r1_0024F220.md	254		
 sbtlCallBtlSearchUnitID20	code_r1_0024F220	raidou1 0x258	7 of 150 words differ	docs/matching/code_r1_0024F220.md	260		
 sbtlCallBtlSearchUnitID4	code_r1_0024F220	raidou1 0x27C	33 of 159 words differ	docs/matching/code_r1_0024F220.md	266		
-sbtlReLoadMap_sbtlScene	code_r1_0024F220	raidou1 0x300	32 of 192 words differ	docs/matching/code_r1_0024F220.md	272		
-sbtlGetDevilData	code_r1_0024F220	raidou1 0x360	50 of 215 words differ	docs/matching/code_r1_0024F220.md	280		
-sbtlCallSin	code_r1_0024F220	raidou1 0x390	200 of 210 words differ	docs/matching/code_r1_0024F220.md	286		
-sbtlSetEndData	code_r1_0024F220	raidou1 0x3B4	19 of 237 words differ	docs/matching/code_r1_0024F220.md	292		
+sbtlReLoadMap_sbtlScene	code_r1_0024F220	raidou1 0x300	32 of 192 words differ	docs/matching/code_r1_0024F220.md	272	the full-unit count moves with SBTLUNIT_WORK and SBTL_WORK declarations; the U06-battle header edits (sBtlUnit.h field494/field4A2, sbtlWork.h stp) take it from DIFF 15/192 to CONTEXT 29/192.	
+sbtlGetDevilData	code_r1_0024F220	raidou1 0x360	50 of 215 words differ	docs/matching/code_r1_0024F220.md	282		
+sbtlCallSin	code_r1_0024F220	raidou1 0x390	200 of 210 words differ	docs/matching/code_r1_0024F220.md	288		
+sbtlSetEndData	code_r1_0024F220	raidou1 0x3B4	19 of 237 words differ	docs/matching/code_r1_0024F220.md	294		
 nakamamodeCallGetActiveScene	code_r1_00259A88	raidou1 0x584	5 of 353 words differ	docs/matching/code_r1_00259A88.md	3		
 sbtlCallBtlCheckDamageTarget3	code_r1_00259A88	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_00259A88.md	13		
 sbtlCallBtlGetBadStatus3	code_r1_00259A88	raidou1 0x90	20 of 36 words differ	docs/matching/code_r1_00259A88.md	21		
@@ -407,6 +407,8 @@ sbtlHitCProc_Idou	sbtlDMG	raidou1 0xA7C	614 of 651 words differ	docs/matching/sb
 sbtlLoadAttackHitData	sbtlDMG	raidou1 0x3E4	84 of 245 words differ	docs/matching/sbtlDMG.md	41		
 sbtlLoadAttackHitData_Decode	sbtlDMG	raidou1 0x12C	12 of 75 words differ	docs/matching/sbtlDMG.md	47		
 sbtlSetHitPos	sbtlDMG	raidou1 0x4B4	293 of 302 words differ	docs/matching/sbtlDMG.md	57		
+sbtlDamageProc	sbtlDMG	raidou1 0xD8	42 of 51 words differ	docs/matching/sbtlDMG.md	67		
+sbtlDamageProc	sbtlDMG	raidou2 0xD8	42 of 51 words differ	docs/matching/sbtlDMG.md	73		
 sbtlFunc	sbtlEff_00289E50	raidou1 0x144	58 of 79 words differ	docs/matching/sbtlEff_00289E50.md	3		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		

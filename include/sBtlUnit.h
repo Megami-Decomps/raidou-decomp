@@ -248,6 +248,7 @@ s32 sbtlReleaseUnitList_ID(struct SBTLUNIT_LISTWORK *lwk, s32 id);
 s32 sbtlResetSummon_E(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_WORK *sbtlSearchUnit_GroupID(struct SBTLUNIT_LISTWORK *lwk, s32 serialID);
 struct SBTLUNIT_WORK *sbtlSearchUnit_ID(struct SBTLUNIT_LISTWORK *lwk, s32 ID);
+s32 ChangeTarget_BSHelper(void);
 s32 sbtlSearchUnit_Nakama(struct SBTLUNIT_WORK *wk);
 s32 sbtlSetAIMode(struct SBTLUNIT_WORK *wk);
 s32 sbtlEntryStockData(s32 devilid);
@@ -333,9 +334,12 @@ struct SBTLUNIT_WORK {
     s16 actMax;
     u8 pad5BC[0x2];
     s16 field492; /* compared with a hit's actID when flg & 0x800 */
-    u8 pad5C0[0x4];
+    s16 field494;
+    u8 pad5C2[0x2];
     s16 field498;
-    u8 pad5C6[0x6E];
+    u8 pad5C6[0x8];
+    s16 field4A2;
+    u8 pad5D0[0x634 - 0x5D0];
     SBTL_PACDATA_HITLIST hitwk;
     u8 pad688[0x6F4 - 0x688];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */

@@ -214,7 +214,7 @@ typedef struct SBTLDMG_HITWORK {
     f32 EPL_alpha;
     f32 EPL_in_alpha;
     f32 EPL_out_alpha;
-    u8 pad1EC[4];
+    u32 abgr; /* HD SBTLDMG_HITWORK.abgr */
     struct mdlObj_t *hModel;
     struct dds3Basic_t *pBasic;
     struct evtUnit_t *hEveUnit;
@@ -230,6 +230,29 @@ typedef struct SBTLDMG_HITWORK {
     struct SBTLDMG_HITWORK *next;
 } SBTLDMG_HITWORK;
 
+/* Skill hit parameters (HD sBtlDMG SBTLSKILL_TBL). */
+typedef struct SBTLSKILL_TBL {
+    u16 type;
+    u16 area;
+    s32 mp;
+    s32 mag;
+    s32 starttime;
+    s32 lifetime;
+    s32 loopcnt;
+    s32 looptime;
+    s8 targetflg;
+    u16 area_type;
+    u32 flg;
+    f32 dis;
+    f32 area_r;
+    f32 rad;
+    f32 rad_area;
+    u32 attr_flg;
+    f32 hitbk_cnt;
+    f32 hitbk_rate;
+} SBTLSKILL_TBL;
+SIZE_CHECK(sbtlSkillTblSizeCheck, SBTLSKILL_TBL, 0x40);
+
 /* Damage number animation. */
 typedef struct SBTLDMG_ANIMWORK {
     sdfVector4_t pos;
@@ -239,7 +262,7 @@ typedef struct SBTLDMG_ANIMWORK {
     u32 rgba;
     s32 counter;
     s32 dmg;
-    u8 pad24[4];
+    s32 dmg_anm;
     s16 time;
     s16 cmptime;
 } SBTLDMG_ANIMWORK;
@@ -267,15 +290,18 @@ void sbtlAnalyzeAisyo(struct SBTLUNIT_WORK *wk, s32 mode, sdfVector4_t *pos);
 SBTLDMG_LISTWORK *sbtlAnimListProc(void);
 s32 sbtlCHitFunc_ATTACK(struct SBTLUNIT_WORK *wk, struct SBTLEFF_WORK *ewk, struct SBTLDMG_HITWORK *twk, struct SBTLSKILL_TBL *tbl);
 s32 sbtlCalcVibe(void);
-s32 sbtlCheckALLSkill(struct SBTLDMG_HITWORK *hwk, struct SBTLUNIT_WORK *wklock);
+struct SBTLUNIT_WORK *sbtlCheckALLSkill(struct SBTLUNIT_WORK *wk, s32 mode);
+s32 sbtlCallColorSet3(void);
 s32 sbtlCheckDamageTarget_Skilltbl(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *ptbl, SKLID skillid, s32 flg);
 s32 sbtlCheckHitArea(struct SBTLDMG_HITWORK *wk, SKLID skillid);
 s32 sbtlCheckPlayerDead(void);
 s32 sbtlCheckActDamage(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
-s32 sbtlSetMukouDamage(struct SBTLUNIT_WORK *wk, s32 flg);
+void sbtlSetMukouDamage(struct SBTLUNIT_WORK *wk, s32 flg);
+s32 sbtlGetStartTime_Damage(void);
 s32 sbtlCallMemset16(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 flg);
 void sbtlCallBtlSetMotionSBtlUnit4(struct SBTLUNIT_WORK *wk, s32 damage);
 s32 sbtlCallBtlSearchUnitID14(struct SBTLUNIT_WORK *wk, s32 damage, s16 a2, s32 a3);
+s32 GetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 acterID, struct SBTLDMG_HITWORK *hwk, s32 attr);
 s32 sbtlSetDeadDamage(struct SBTLUNIT_WORK *wk, s32 flg);
 void sbtlCallBtlSetMotionSBtlUnit5(struct SBTLUNIT_WORK *wk);
 s32 CheckDamageTarget(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, SKLID skillid);
@@ -290,7 +316,7 @@ s32 sbtlCreateHitC_New_sbtlDMG(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_
 SBTLDMG_HITLISTWORK *sbtlCreateHitList(void);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Normal(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 sbtlCreateTargetList_csr(struct SBTLUNIT_WORK *wk, SKLID skillid);
-void sbtlDeleteAnimList(s32 devilid);
+s32 sbtlDeleteAnimList(SBTLDMG_LISTWORK *lwk);
 s32 sbtlDeleteHitList(struct SBTLDMG_HITLISTWORK *wk);
 s32 sbtlDrawAttachEPL(struct SBTLDMG_HITLISTWORK *lwk);
 s32 sbtlGetHit_OnlyEndPos(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, struct SBTLEFF_WORK *ewk, struct SBTLSKILLHIT_TBL *hittbl, struct SBTLSKILLHIT_POSWORK *pwk_st, struct SBTLSKILLHIT_POSWORK *pwk, sdfVector4_t *pos, u16 tbltype);
@@ -306,6 +332,8 @@ s32 sbtlLoadAttackHitData_Decode(struct SBTLUNIT_WORK *wk);
 s32 sbtlLoadAttackHitData_pData(s32 index, void *pData);
 s32 sbtlBtlLoadAttackHitDataDecodeSub(struct SBTLUNIT_WORK *wk, s32 id);
 s32 sbtlRegistAnimList(SBTLDMG_LISTWORK *lwk, s32 id);
+s32 sbtlReleaseAnim_ID(SBTLDMG_LISTWORK *lwk, SBTLDMG_ANIMWORK *wk);
+s32 sbtlSetDamageProc(struct SBTLDMG_HITWORK *hwk, u32 attr);
 void sbtlCallSprintf8(const sdfVector4_t *pos, s32 dmg, u32 rgba);
 s32 sbtlReleaseHitC_List(struct SBTLDMG_HITLISTWORK *lwk, u8 flg);
 s32 sbtlResetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, struct SBTLEFF_WORK *ewk, struct SBTLSKILLHIT_POSWORK *pwk, sdfVector4_t *pos, sdfVector4_t *rot, u16 tbltype);

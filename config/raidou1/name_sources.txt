@@ -7481,7 +7481,7 @@
 0x0029A3F0	sbtlCallBitCheck5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls evtBitCheck
 0x0029A430	sbtlRefDDS3GBWK21	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references DDS3_GBWK
 0x0029A478	CalcItem_Battle	hd	hd: Raidou HD sBtlCalc.CalcItem_Battle, score 8.25 band B
-0x0029A500	sbtlRefDDS3GBWK20	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references DDS3_GBWK
+0x0029A500	sbtlSetWeakBit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlSetWeakBit; R2 sbtlSetWeakBit is the same body with R2 constants; replaces sbtlRefDDS3GBWK20
 0x0029A620	sbtlCheckItemMember_Dead	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckItemMember_Dead score 7.4 flag I: calls4 callers-of-match votes3 st1:call r2-disagree:0x2d3f98
 0x0029A7A0	sbtlCallBtlSearchUnitID35	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlSearchUnit_ID
 0x0029A988	sbtlCallBtlGetItemtbl3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetItemtbl
@@ -17468,7 +17468,6 @@
 0x00458C88	sbtlGetRadian_XTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetRadian_X
 0x00458C98	sbtlCheckPos_RightTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckPos_Right
 0x00458CA8	sbtlCallDestroyFontRequestAfterTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter
-0x00458CD0	sbtlCallMemAllocDirectTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallMemAllocDirect
 0x00458CE8	sbtlStrBattleMdlhitP03XMht	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by sbtlLoadAttackHitData; string "/battle/mdlhit/P%03X.MHT"
 0x00458D08	sbtlStrBattleMdlhit03XMht	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by sbtlLoadAttackHitData; string "/battle/mdlhit/%03X.MHT"
 0x00458D20	sbtlCreateHitC_New_sbtlDMGTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCreateHitC_New_sbtlDMG

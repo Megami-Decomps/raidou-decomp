@@ -103,7 +103,7 @@ INCLUDE_ASM(const s32, "sbtl", sbtlRefDDS3GBWK21);
 
 INCLUDE_ASM(const s32, "sbtl", CalcItem_Battle);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefDDS3GBWK20);
+INCLUDE_ASM(const s32, "sbtl", sbtlSetWeakBit);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckItemMember_Dead);
 

@@ -3811,7 +3811,6 @@
 0x002B5C40	sbtlSetDamageProc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDMG.sBtlSetDamageProc, score 9.45 band B
 0x002B6870	sbtlMAGWAZAMagNot	func	tier=D	derived-string	na	unit sbtlDMG; string 'MAGWAZA!! mag not...\n'
 0x002B7A80	sbtlCallBtlGetSkilltbl8	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlGetSkilltbl
-0x002B8E90	sbtlCallBtlSetWeakBit	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetWeakBit
 0x002B8F48	sbtlCallBtlGetSkilltbl9	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlGetSkilltbl
 0x002B92B0	sbtlCallBtlGetStartTimeDamage	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlGetStartTime_Damage
 0x002B9580	sbtlCallBtlCreateAnimUnit2	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlCreateAnim_Unit

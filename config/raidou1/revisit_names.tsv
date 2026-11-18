@@ -3621,7 +3621,6 @@
 0x0029A3E8	sbtlLeaf87	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x0029A3F0	sbtlCallBitCheck5	func	tier=D	derived-callee	na	unit sbtl; calls evtBitCheck
 0x0029A430	sbtlRefDDS3GBWK21	func	tier=D	derived-data	na	unit sbtl; references DDS3_GBWK
-0x0029A500	sbtlRefDDS3GBWK20	func	tier=D	derived-data	na	unit sbtl; references DDS3_GBWK
 0x0029A7A0	sbtlCallBtlSearchUnitID35	func	tier=D	derived-callee	na	unit sbtl; calls sbtlSearchUnit_ID
 0x0029A988	sbtlCallBtlGetItemtbl3	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetItemtbl
 0x0029ACE0	sbtlCallBtlGetItemtbl2	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetItemtbl
@@ -10600,7 +10599,6 @@
 0x00458C88	sbtlGetRadian_XTable	data	tier=D	derived-sole	na	used by sbtlGetRadian_X
 0x00458C98	sbtlCheckPos_RightTable	data	tier=D	derived-sole	na	used by sbtlCheckPos_Right
 0x00458CA8	sbtlCallDestroyFontRequestAfterTable	data	tier=D	derived-sole	na	used by sbtlCallDestroyFontRequestAfter
-0x00458CD0	sbtlCallMemAllocDirectTable	data	tier=D	derived-sole	na	used by sbtlCallMemAllocDirect
 0x00458CE8	sbtlStrBattleMdlhitP03XMht	data	tier=D	derived-string	na	used by sbtlLoadAttackHitData; string "/battle/mdlhit/P%03X.MHT"
 0x00458D08	sbtlStrBattleMdlhit03XMht	data	tier=D	derived-string	na	used by sbtlLoadAttackHitData; string "/battle/mdlhit/%03X.MHT"
 0x00458D20	sbtlCreateHitC_New_sbtlDMGTable	data	tier=D	derived-sole	na	used by sbtlCreateHitC_New_sbtlDMG

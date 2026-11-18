@@ -6,6 +6,9 @@
 #include "fpu.h"
 #include "dds3PadManager.h"
 #include "sdfQuat.h"
+#include "sdfMath.h"
+#include "sdfVu0.h"
+#include "kernel_draw.h"
 #include "sBtlUnit.h"
 #include "event.h"
 #include "sdfModel.h"
@@ -171,9 +174,32 @@ void sbtlGetQuatFromMatrix(const sdfMatrix4_t *mat) {
     Normalize();
 }
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlQuatFromVector);
+void sbtlQuatFromVector(sdfVector4_t *qt, f32 x, f32 y, f32 z, f32 rad)
+{
+    sdfVector4_t axis;
+    f32 s;
+    f32 c;
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetUnitDeg);
+    axis.x = x;
+    axis.y = y;
+    axis.z = z;
+    axis.w = 1.0f;
+    s = fsqrtf((1.0f - sdfCos(rad)) * 0.5f);
+    c = fsqrtf((sdfCos(rad) + 1.0f) * 0.5f);
+    SDF_VU0_LOADVECTOR(&axis);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&axis);
+    qt->w = c;
+    qt->x = axis.x * s;
+    qt->y = axis.y * s;
+    qt->z = axis.z * s;
+}
+
+f32 sbtlGetUnitDeg(const sdfVector4_t *rot)
+{
+    SDF_VU0_LOADVECTOR(rot);
+    return EulerAngleAxisY() * 57.29577637f;
+}
 
 void sbtlAddUnitDeg(struct SBTLUNIT_WORK *wk, f32 deg) {
     wk->angleY += deg;
@@ -198,7 +224,11 @@ s32 sbtlGetRotateDeg(const sdfVector4_t *rot, f32 deg) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlSetRotateDeg);
+void sbtlSetRotateDeg(struct SBTLUNIT_WORK *wk)
+{
+    SDF_VU0_LOADVECTOR(&wk->rot);
+    wk->angleY = -EulerAngleAxisY() * 57.29577637f;
+}
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/sbtlSub.c:190, match, same function 1.00 (words 28/28, calls 1.00, shape 1.00) */
 s32 sbtlGetRotateDegX(const sdfVector4_t *rot, f32 deg) {
@@ -422,11 +452,56 @@ s32 sbtlCheckPos_Right(const sdfVector4_t *t1, const sdfVector4_t *rot, const sd
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetQuat);
+s32 sbtlGetQuat(const sdfVector4_t *t1, const sdfVector4_t *t2)
+{
+    sdfVector4_t q;
+    sdfVector4_t dir;
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetNextPos);
+    memset(&q, 0, sizeof(q));
+    q.w = 1.0f;
+    SDF_VU0_LOADVECTOR(t2);
+    SDF_VU0_LOADVECTOR_B(t1);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&dir);
+    if (dir.x != 0.0f || dir.z != 0.0f) {
+        FromEuler(0.0f, sdfAtan2(dir.x, dir.z), 0.0f);
+        return 1;
+    }
+    SDF_VU0_LOADVECTOR(&q);
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetPosforDistance);
+s32 sbtlGetNextPos(struct SBTLUNIT_WORK *wk)
+{
+    sdfVector4_t ofs;
+
+    memset(&ofs, 0, sizeof(ofs));
+    ofs.x = -wk->mv_spd.x;
+    ofs.z = -wk->mv_spd.z;
+    SDF_VU0_LOADVECTOR_B(&ofs);
+    SDF_VU0_LOADVECTOR(&wk->rot);
+    ToMatrix();
+    SDF_VU0_APPLYMATRIX_B();
+    SDF_VU0_LOADVECTOR(&wk->pos);
+    SDF_VU0_ADDVECTOR();
+    return 1;
+}
+
+s32 sbtlGetPosforDistance(struct SBTLUNIT_WORK *wk, f32 distance)
+{
+    sdfVector4_t ofs;
+
+    memset(&ofs, 0, sizeof(ofs));
+    ofs.z = -distance;
+    SDF_VU0_LOADVECTOR_B(&ofs);
+    SDF_VU0_LOADVECTOR(&wk->rot);
+    ToMatrix();
+    SDF_VU0_APPLYMATRIX_B();
+    SDF_VU0_LOADVECTOR(&wk->pos);
+    SDF_VU0_ADDVECTOR();
+    return 1;
+}
 
 /* NON_MATCHING: 78 of 130 words match.  */
 #ifdef NON_MATCHING
@@ -610,4 +685,30 @@ s32 sbtlSetPullPos(struct SBTLUNIT_WORK *wk1, f32 r1, struct SBTLUNIT_WORK *wk2,
 INCLUDE_ASM(const s32, "sbtlSub", sbtlSetPullPos);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlCheckWorldtoScreen);
+s32 sbtlCheckWorldtoScreen(const sdfVector4_t *pos)
+{
+    f32 len;
+    f32 dot;
+    s32 ret;
+
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_LOADVECTOR_B(&aViewEye);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_GETLENGTH(len);
+    if (len > 16.0) {
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_LOADMATRIX(&CameraTM);
+        SDF_VU0_COPYMATRIX_A_TO_B();
+        ReverseMatrix();
+        SDF_VU0_GET_ROW2();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_INNERPRODUCT(dot);
+        ret = 0;
+        if (!(dot <= 0.5f)) {
+            ret = 1;
+        }
+        return ret;
+    }
+    return 0;
+}
