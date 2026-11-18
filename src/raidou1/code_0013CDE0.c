@@ -47,6 +47,7 @@
 #include "effManager.h"
 #include "dds3KernelDraw.h"
 #include "sdfVu0.h"
+#include "sdfAspect.h"
 
 void mapBgSetScrollReset(void) {
     dds3ScreenParam.height = 448.0f;
@@ -1039,12 +1040,12 @@ void mapBgSetScroll(f32 x, f32 y, f32 z, s32 mode) {
                 mapData95 = -(mapBgSetScrollData5 * mapData73);
             } else {
                 lo = 0.0f;
-                if (edge + w < 512.0f) {
-                    lo = 512.0f - (edge + w);
+                if (edge + w < SDF_ASPECT_PICTURE_RIGHT(w)) {
+                    lo = SDF_ASPECT_PICTURE_RIGHT(w) - (edge + w);
                 }
                 hi = 0.0f;
-                if (edge > 0.0f) {
-                    hi = edge;
+                if (edge > SDF_ASPECT_PICTURE_LEFT(w)) {
+                    hi = edge - SDF_ASPECT_PICTURE_LEFT(w);
                 }
                 mapBgSetScrollData5 = (mapBgSetScrollData5 - lo / mapData73) + hi / mapData73;
                 mapData95 = -(mapBgSetScrollData5 * mapData73);
@@ -1150,12 +1151,12 @@ void mapBgSetScroll(f32 x, f32 y, f32 z, s32 mode) {
                 mapData95 = -(mapBgSetScrollData5 * mapData73);
             } else {
                 lo = 0.0f;
-                if (edge + w < 512.0f) {
-                    lo = 512.0f - (edge + w);
+                if (edge + w < SDF_ASPECT_PICTURE_RIGHT(w)) {
+                    lo = SDF_ASPECT_PICTURE_RIGHT(w) - (edge + w);
                 }
                 hi = 0.0f;
-                if (edge > 0.0f) {
-                    hi = edge;
+                if (edge > SDF_ASPECT_PICTURE_LEFT(w)) {
+                    hi = edge - SDF_ASPECT_PICTURE_LEFT(w);
                 }
                 mapBgSetScrollData5 = (mapBgSetScrollData5 - lo / mapData73) + hi / mapData73;
                 mapData95 = -(mapBgSetScrollData5 * mapData73);
@@ -1265,12 +1266,12 @@ void mapBgSetScroll(f32 x, f32 y, f32 z, s32 mode) {
                 mapData95 = -(mapBgSetScrollData5 * mapData73);
             } else {
                 lo = 0.0f;
-                if (edge + w < 512.0f) {
-                    lo = 512.0f - (edge + w);
+                if (edge + w < SDF_ASPECT_PICTURE_RIGHT(w)) {
+                    lo = SDF_ASPECT_PICTURE_RIGHT(w) - (edge + w);
                 }
                 hi = 0.0f;
-                if (edge > 0.0f) {
-                    hi = edge;
+                if (edge > SDF_ASPECT_PICTURE_LEFT(w)) {
+                    hi = edge - SDF_ASPECT_PICTURE_LEFT(w);
                 }
                 mapBgSetScrollData5 = (mapBgSetScrollData5 - lo / mapData73) + hi / mapData73;
                 mapData95 = -(mapBgSetScrollData5 * mapData73);

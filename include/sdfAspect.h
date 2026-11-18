@@ -28,4 +28,13 @@
 #define SDF_ASPECT_RIGHT 512
 #endif
 
+/* The x a scrolled field picture of width w must reach on the left and on the
+ * right: its scroll is clamped so the picture covers [left, right]. */
+#ifndef SDF_ASPECT_PICTURE_LEFT
+#define SDF_ASPECT_PICTURE_LEFT(w) 0.0f
+#endif
+#ifndef SDF_ASPECT_PICTURE_RIGHT
+#define SDF_ASPECT_PICTURE_RIGHT(w) 512.0f
+#endif
+
 #endif
