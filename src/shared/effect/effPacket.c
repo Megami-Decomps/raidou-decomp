@@ -22,7 +22,6 @@ extern u32 effPktDefaultFaceIndex[];
 
 #include "sdk_libc.h"
 
-u64 *effPkt2DAllocF4(u32 prim);
 void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
 
 /* The render draw env's clear sprite, 0x1800 into each 0x1BE0 draw bank: both
