@@ -196,6 +196,58 @@ def merge(views):
     return text
 
 
+def _cuts(lines):
+    """Line indices with no #if and no brace open before them: where a text can be split
+    into pieces that each have their own views."""
+    out, depth, braces = [0], 0, 0
+    for i, line in enumerate(lines):
+        m = DIRECTIVE.match(line)
+        if m:
+            depth += {"if": 1, "ifdef": 1, "ifndef": 1, "endif": -1}.get(m.group(1), 0)
+        else:
+            for ch in LITERAL.sub("", line):
+                braces += {"{": 1, "}": -1}.get(ch, 0)
+        if depth == 0 and braces == 0:
+            out.append(i + 1)
+    return out
+
+
+def update(text, version, new):
+    """text with the version's view replaced by new. Only the top-level region holding the
+    change is merged again; the rest of text stays as it is laid out."""
+    other = next(v for v in VERSIONS if v != version)
+    lines = text.splitlines(keepends=True)
+    kept = [i for i, (_, k) in enumerate(lines_for(text, version)) if k]
+    old = [lines[i] for i in kept]
+    want = new.splitlines(keepends=True)
+    if want and not want[-1].endswith("\n"):
+        want[-1] += "\n"
+    first = 0
+    while first < min(len(old), len(want)) and old[first] == want[first]:
+        first += 1
+    last = 0
+    while last < min(len(old), len(want)) - first and old[-1 - last] == want[-1 - last]:
+        last += 1
+    t1 = kept[first] if first < len(old) else len(lines)
+    t2 = kept[len(old) - last - 1] + 1 if len(old) - last > first else t1
+    t1 = min(t1, kept[first - 1] + 1 if first else 0)
+    cuts = _cuts(lines)
+    p1 = max(c for c in cuts if c <= t1)
+    p2 = min((c for c in cuts if c >= t2), default=len(lines))
+    pre, post = "".join(lines[:p1]), "".join(lines[p2:])
+    whole = merge({version: new, other: view(text, other)})
+    # The whole-file merge keeps every layout it made itself; use it unless it moves text outside the change.
+    if whole.startswith(pre) and whole.endswith(post) and len(whole) >= len(pre) + len(post):
+        return whole
+    head = sum(1 for i in kept if i < p1)
+    tail = sum(1 for i in kept if i >= p2)
+    views = {version: "".join(want[head:len(want) - tail]), other: view("".join(lines[p1:p2]), other)}
+    out = pre + (merge(views) if any(views.values()) else "") + post
+    if view(out, version) != "".join(want) or view(out, other) != view(text, other):
+        return whole
+    return out
+
+
 def check(text):
     """Every VERSION_ conditional in text is one view() can evaluate (ValueError if not)."""
     for v in VERSIONS:

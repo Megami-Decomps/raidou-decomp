@@ -3,9 +3,10 @@
 
     python3 tools/include_rodata.py [raidou1]
 
-Run it through configure.py, or at least follow it with include_sdata.py: on its
-own it leaves 52 units with their sdata block mid-move, which looks like 52
-spurious edits. The pair is idempotent and the tree is committed in its output.
+This also runs include_sdata.py's placement, and each unit is written once with
+the result of both: rodata placement alone leaves sdata blocks mid-move, and a
+shared unit re-merged from that view can change its VERSION_ guard layout. The
+pair is idempotent and the tree is committed in its output.
 
 With per-unit .rodata (tools/split_rodata.py) a unit's rodata is emitted in
 source order: each INCLUDE_ASM brings the rodata splat migrated into that
@@ -33,9 +34,10 @@ import re
 import sys
 from pathlib import Path
 
-from units import carried_data, function_rodata, read_unit, rodata_blocks, unit_sources, write_unit
+from units import carried_data, deferred, function_rodata, read_unit, rodata_blocks, unit_sources, write_unit
 
 from include_sdata import DATA_DEF
+from include_sdata import place as place_sdata
 
 ROOT = Path(__file__).resolve().parent.parent
 INCLUDE = re.compile(r'^INCLUDE_(?:ASM|RODATA)\([^,]+,\s*"[^"]+",\s*(\w+)\);$', re.M)
@@ -322,4 +324,6 @@ def function_text(text, start):
 
 if __name__ == "__main__":
     for v in sys.argv[1:] or ["raidou1"]:
-        place(v)
+        with deferred():
+            place(v)
+            place_sdata(v)

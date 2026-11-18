@@ -6,12 +6,13 @@ per-game file wins when both exist.
 """
 import json
 import re
+from contextlib import contextmanager
 from pathlib import Path
 
 try:
-    from version_guard import merge, view
+    from version_guard import update, view
 except ImportError:
-    from tools.version_guard import merge, view
+    from tools.version_guard import update, view
 
 ROOT = Path(__file__).resolve().parent.parent
 VERSIONS = json.loads((ROOT / "config" / "versions.json").read_text())
@@ -60,23 +61,49 @@ def is_shared(path):
     return rel.parts[0] == "shared"
 
 
+# (version, path) -> view held by deferred() until its block ends; None when not deferring.
+_held = None
+
+
+@contextmanager
+def deferred():
+    """Hold write_unit's views in memory and write each unit once, with its final view,
+    when the block ends. Nothing is written if the block raises."""
+    global _held
+    if _held is not None:
+        raise RuntimeError(f"{__name__}.deferred: already active")
+    _held = {}
+    try:
+        yield
+        held = _held
+    finally:
+        _held = None
+    for (version, path), text in held.items():
+        write_unit(version, path, text)
+
+
 def read_unit(version, path):
     """The text a version compiles from a unit's source, without its VERSION_ guards."""
-    return view(Path(path).read_text(), version)
+    path = Path(path)
+    if _held is not None and (version, path) in _held:
+        return _held[version, path]
+    return view(path.read_text(), version)
 
 
 def write_unit(version, path, text):
     """Write a version's view of a unit. A shared TU keeps the other version's view and
     puts the lines that differ under VERSION_ guards."""
     path = Path(path)
+    if _held is not None:
+        _held[version, path] = text
+        return
     current = path.read_text()
     if text == view(current, version):
         return
     if not is_shared(path):
         path.write_text(text)
         return
-    views = {v: text if v == version else view(current, v) for v in VERSIONS}
-    path.write_text(merge(views))
+    path.write_text(update(current, version, text))
 
 
 def carried_data(version):

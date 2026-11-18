@@ -2,6 +2,7 @@
 """Tests for tools/version_guard.py: per-game views of #ifdef VERSION_<GAME> and the merge back."""
 import sys
 import unittest
+import unittest.mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -134,6 +135,21 @@ class WriteUnitTest(unittest.TestCase):
         units.write_unit(R1, path, "x;\nz;\n")
         self.assertEqual(path.read_text(), "x;\nz;\n")
 
+    def test_edit_keeps_layout_outside_its_function(self):
+        # A whole-file diff of the views would align b() differently once c() changes.
+        text = "s32 a(void) {\n    return 0;\n}\n\n" + g.merge({
+            R1: "s32 b(void) {\n    x;\n}\n\ns32 c(void) {\n    y;\n    return 1;\n}\n",
+            R2: "s32 c(void) {\n    y;\n    return 1;\n}\n",
+        })
+        path = self.unit("shared", text)
+        r2 = g.view(text, R2).replace("    y;\n", "    if (y) {\n        z;\n    }\n")
+        units.write_unit(R2, path, r2)
+        out = path.read_text()
+        self.assertEqual(g.view(out, R2), r2)
+        self.assertEqual(g.view(out, R1), g.view(text, R1))
+        self.assertTrue(out.startswith(text[:text.index("s32 c(void)")]))
+        self.assertEqual(units.read_unit(R2, path), r2)
+
     def test_unchanged_view_is_not_written(self):
         path = self.unit("shared", GUARDED)
         units.write_unit(R1, path, g.view(GUARDED, R1))
@@ -143,6 +159,46 @@ class WriteUnitTest(unittest.TestCase):
         path = self.unit(R1, "x;\n")
         units.write_unit(R1, path, "y;\n")
         self.assertEqual(path.read_text(), "y;\n")
+
+    def count_writes(self):
+        writes = []
+        real = Path.write_text
+        def record(path, text, *args, **kwargs):
+            writes.append(path)
+            return real(path, text, *args, **kwargs)
+        patcher = unittest.mock.patch.object(Path, "write_text", record)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        return writes
+
+    def test_deferred_writes_final_view_once(self):
+        path = self.unit("shared", "x;\ny;\n")
+        writes = self.count_writes()
+        with units.deferred():
+            units.write_unit(R2, path, "x;\nw;\n")
+            self.assertEqual(units.read_unit(R2, path), "x;\nw;\n")
+            self.assertEqual(path.read_text(), "x;\ny;\n")
+            units.write_unit(R2, path, units.read_unit(R2, path).replace("w;", "z;"))
+        self.assertEqual(writes, [path])
+        self.assertEqual(path.read_text(), "x;\n#ifdef VERSION_RAIDOU1\ny;\n#else\nz;\n#endif\n")
+
+    def test_deferred_unchanged_final_view_is_not_written(self):
+        path = self.unit("shared", GUARDED)
+        writes = self.count_writes()
+        with units.deferred():
+            units.write_unit(R1, path, "changed;\n")
+            units.write_unit(R1, path, g.view(GUARDED, R1))
+        self.assertEqual(writes, [])
+        self.assertEqual(path.read_text(), GUARDED)
+
+    def test_deferred_writes_nothing_on_error(self):
+        path = self.unit("shared", "x;\n")
+        with self.assertRaises(KeyError):
+            with units.deferred():
+                units.write_unit(R1, path, "y;\n")
+                raise KeyError
+        self.assertEqual(path.read_text(), "x;\n")
+        self.assertEqual(units.read_unit(R1, path), "x;\n")
 
 
 class IncludeDirectivesTest(unittest.TestCase):
