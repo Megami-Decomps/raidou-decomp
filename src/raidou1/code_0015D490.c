@@ -1464,9 +1464,31 @@ s32 fldIsMapTitleActive(void) {
     return dds3SearchProcessName(fldTitleTaskName) != 0;
 }
 
-INCLUDE_ASM(const s32, "code_0015D490", fldCallLinkSprite);
+/* The area title's name, faded with the band behind it at 110/128 of the band's alpha. */
+void fldCallLinkSprite(u32 color) {
+    s32 alpha = color >> 24;
 
-INCLUDE_ASM(const s32, "code_0015D490", mapCallLinkSprite);
+    if (fldData30 != NULL) {
+        color = (color & 0xFFFFFF) | ((alpha * 110 / 128) << 24);
+        eglLinkSprite(128, 96, 256, 256, 0, 0, 256, 256, color, color, color, color, fldData30);
+    }
+}
+
+/* The area title's band across the screen: top edge, middle and bottom edge, each in four columns. */
+void mapCallLinkSprite(u32 color) {
+    eglLinkSprite(-20, 89, 24, 61, 2, 2, 1, 61, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(0, 150, 4, 149, 2, 62, 1, 1, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(4, 89, 252, 61, 2, 2, 252, 61, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(4, 150, 252, 149, 2, 62, 252, 1, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(256, 89, 252, 61, 2, 65, 252, 61, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(256, 150, 252, 149, 2, 125, 252, 1, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(508, 89, 24, 61, 253, 65, 1, 61, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(508, 150, 4, 149, 253, 125, 1, 1, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(-20, 299, 24, 61, 254, 126, -1, -61, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(4, 299, 252, 61, 254, 126, -252, -61, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(256, 299, 252, 61, 254, 63, -252, -61, color, color, color, color, mapCallLinkSpriteData);
+    eglLinkSprite(508, 299, 24, 61, 3, 63, -1, -61, color, color, color, color, mapCallLinkSpriteData);
+}
 
 void mapTitleSkip(void) {
     if (fldCallSetOt4Data2 == 2) {

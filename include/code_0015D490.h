@@ -62,6 +62,8 @@ extern s32 fldCallSetOt4Data4;
 extern s32 fldData31;
 extern struct sdfTexHandle_t *mapCallLinkSpriteData;
 extern struct sdfTexHandle_t *fldData30;
+void fldCallLinkSprite(u32 color);
+void mapCallLinkSprite(u32 color);
 extern s32 p2sdSoundSmgLoadChkSubData[];
 extern s16 p2sdCallBitCheckData[];
 extern struct sprHandle_t *fldDrwZBuf2;
