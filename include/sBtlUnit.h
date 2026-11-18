@@ -35,13 +35,17 @@ typedef struct SBTLUNIT_MODEL {
     u8 pad120[0x8];
     s32 frame;
     s32 cmpframe;
-    u8 pad130[0x14];
-    s8 field118;
+    s32 target_frame;
+    s32 mahaskl_waitframe;
+    u8 pad138[0xC];
+    u8 field118;
     u8 pad145;
     u16 stat;
     f32 field11C;
     f32 field120;
-    u8 pad150[0x30];
+    f32 field124;
+    f32 field128;
+    u8 pad158[0x28];
     s8 nonempflg;
     u8 pad181[0x3];
     s8 dataflg;
@@ -77,7 +81,7 @@ typedef struct SBTLUNIT_MODEL {
     s32 field10C;
     s32 frame;
     s32 cmpframe;
-    s8 field118;
+    u8 field118;
     u8 pad119;
     u16 stat;
     f32 field11C;
@@ -275,7 +279,7 @@ extern s32 sbtlBtlCheckMotionNoSubData[][56];
 struct SBTLUNIT_WORK {
     u8 pad000[0x40];
     sdfVector4_t mv_spd;
-    u8 pad050[0x10];
+    sdfVector4_t max_mvspd;
     sdfVector4_t mv_spdbk;
     sdfVector4_t pos;
     sdfVector4_t rot;
@@ -292,7 +296,9 @@ struct SBTLUNIT_WORK {
     s32 haveskill[16]; /* copied to unit.haveskill by sbtlCheckAutoSkill_Enemy */
     u8 pad3A0[0x3F4 - 0x3A0];
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
-    u8 pad3F4[0x4BC - 0x3F4 - sizeof(sdatParaWork_t)];
+    u8 pad40C[0x4AC - 0x40C];
+    u32 field4AC;
+    u8 pad4B0[0x4BC - 0x4B0];
     s32 major;
     s32 minor;
     s32 motionno;
@@ -532,6 +538,8 @@ typedef struct SBTLUNIT_LISTWORK {
 void sbtlCallSync(void);
 void KaihiInit_Sub(struct SBTLUNIT_WORK *wk, s32 mode);
 void sbtlKaihiInit(struct SBTLUNIT_WORK *wk);
+u32 sbtlCheckKajaAnyEx(struct SBTLUNIT_WORK *wk, s32 *count);
+s32 sbtlCheckEnableUseKaja(struct SBTLUNIT_WORK *wk, SKLID skillid);
 #endif
 
 #endif

@@ -598,7 +598,7 @@ s32 sbtlCallDeleteAll(struct SBTLUNIT_WORK *wk)
                 wk_sbtl->field754 = type;
             }
             if (wk_sbtl->field75C & 2) {
-                if (sbtlCallBtlSearchEffectSABActer(wk)) {
+                if (sbtlCheckNextAction(wk)) {
                     wk_sbtl->field750 = type;
                     return 1;
                 }
@@ -1377,7 +1377,7 @@ s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
         }
         break;
     case 3:
-        if (sbtlCallBtlSearchEffectSABActer(wk)) {
+        if (sbtlCheckNextAction(wk)) {
             wk_sbtl->mode = 1;
             wk_sbtl->gstat[0] = 0;
             wk_sbtl->gstat[1] = 0;
@@ -1924,7 +1924,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
                 wk_sbtl->field488++;
             }
         }
-        if (sbtlCallBtlSearchEffectSABActer(wk)) {
+        if (sbtlCheckNextAction(wk)) {
             if (sbtlCallBtlGetPlayerData3() <= 0 && wk_sbtl->field488 < 2) {
                 sbtlCreateSM(wk_sbtl->sysmsgList, wk, 3, 0);
             }
@@ -1935,7 +1935,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
         break;
     case 4:
         if (type == -1) {
-            if (sbtlCallBtlSearchEffectSABActer(wk)) {
+            if (sbtlCheckNextAction(wk)) {
                 wk_sbtl->mode = 1;
                 wk_sbtl->gstat[0] = 0;
                 wk_sbtl->gstat[1] = 0;
@@ -2626,7 +2626,7 @@ s32 sbtlCallBtlResetCharge2(struct SBTLUNIT_WORK *wk) {
         break;
     case 3:
         FakeRndHit(wk, wk_sbtl->field494);
-        if (sbtlCallBtlSearchEffectSABActer(wk)) {
+        if (sbtlCheckNextAction(wk)) {
             wk->flg2 &= ~0x20;
             wk_sbtl->mode = 1;
             wk_sbtl->gstat[0] = 0;
@@ -2637,7 +2637,7 @@ s32 sbtlCallBtlResetCharge2(struct SBTLUNIT_WORK *wk) {
         }
         break;
     case 4:
-        if (sbtlCallBtlSearchEffectSABActer(wk)) {
+        if (sbtlCheckNextAction(wk)) {
             wk_sbtl->mode = 1;
             wk_sbtl->gstat[0] = 0;
             wk_sbtl->gstat[1] = 0;

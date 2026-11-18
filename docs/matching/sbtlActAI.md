@@ -207,3 +207,51 @@ Retail applies ori 4, and ~0x21B, ori 0x160 and and ~0x80 in that order with mod
 Raidou 2: 13 of 35 words differ, first at +0x20.
 
 The Raidou 1 C; the same flag operation order and model register difference.
+
+## sbtlCheckCrossUnit_HIT (sbtlActAI, raidou1 0xC0)
+
+Raidou 1: 1 of 48 words differ, first at +0x98.
+
+The last compare: retail ends with sltiu on (i < count), the draft with xori. !, == 0, ^ 1, a ternary and u8, s8 or s16 results all give xori.
+
+## sbtlAAIInit_N_Comb_R (sbtlActAI, raidou1 0xDC)
+
+Raidou 1: 51 of 56 words differ, first at +0xC; emitted 224 bytes, native 220 bytes.
+
+Register allocation: the draft keeps the constant 2 for mode and stat in s2 across the three calls, as sbtlAAIInit_N_Renkei does; retail loads it again.
+
+## sbtlAAIInit_N_Renkei (sbtlActAI, raidou1 0xA8)
+
+Raidou 1: 37 of 42 words differ, first at +0xC; emitted 172 bytes, native 168 bytes.
+
+Register allocation: the draft keeps the constant 2 for mode and stat in s2 across the three calls, with a larger frame; retail loads it again. Same as sbtlAAIInit_N_Renkei_sbtlActAI. A model local, a rot local or no local do not change it.
+
+## sbtlAAIInit_N_Renkei (sbtlActAI, raidou2 0xA8)
+
+Raidou 2: 36 of 42 words differ, first at +0x18; emitted 172 bytes, native 168 bytes.
+
+Raidou 2 does not clear model->frame; otherwise the Raidou 1 difference, the constant 2 kept in s2 across the calls.
+
+## sbtlAAIInit_N_GuardH (sbtlActAI, raidou1 0xAC)
+
+Raidou 1: 4 of 43 words differ, first at +0x30.
+
+Scheduling: the draft loads 90 into v1 before the mode store, retail reuses v0 after it. Every order of vec.w, mode, frame and cmpframe, with or without a model local, keeps it.
+
+## sbtlAAIInit_N_GuardH (sbtlActAI, raidou2 0xAC)
+
+Raidou 2: 4 of 43 words differ, first at +0x30.
+
+Same C and the same difference as Raidou 1: 90 in v1 where retail reuses v0.
+
+## sbtlEAIProc_Ctact (sbtlActAI, raidou1 0xE8)
+
+Raidou 1: 44 of 58 words differ, first at +0x24; emitted 240 bytes, native 232 bytes.
+
+Block layout: retail keeps the frame-over block inline and puts the lost-target block last, storing stat then mode; the found block's stat 1 sits in v1 apart from the return value. Early returns, nested ifs, a goto and a ret variable do not reproduce it.
+
+## sbtlEAIProc_Ctact (sbtlActAI, raidou2 0xE8)
+
+Raidou 2: 44 of 58 words differ, first at +0x24; emitted 240 bytes, native 232 bytes.
+
+Same C and the same block layout difference as Raidou 1.

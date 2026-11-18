@@ -171,7 +171,9 @@ typedef struct SBTL_WORK {
     struct scrProcessWork_s *hAIScript;
     u8 pad9E8[0x4];
     struct SBTLUNIT_WORK *scrUnit;
-    u8 pad9F0[0xC4C - 0x9F0];
+    u8 pad9F0[0xA0C - 0x9F0];
+    s32 field678;
+    u8 padA10[0xC4C - 0xA10];
     s32 midiSkillCount;
     u8 pad_C50[0x42CA - 0xC50];
     s8 field42CA; /* Proc skips the pause checks when nonzero */
@@ -883,7 +885,7 @@ s32 sbtlSetMotionHit(struct SBTLUNIT_WORK *wk, s32 motionno, SKLID skillid);
 void sbtlCallBtlGetItemtbl(void);
 s32 sbtlCallBtlGetNumUnitGroupID(void);
 s32 sbtlCallBtlMapInit(void);
-s32 sbtlCallBtlSearchEffectSABActer(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheckNextAction(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlSearchPacData(s32 major, s32 minor, s32 devilid, SBTL_HIT_PACFILE *file, s32 size);
 s32 sbtlCallBtlSearchPacData2(s32 major, s32 minor, s32 devilid, void *data, s32 size);
 s32 DrawProc2(s32 major, s32 minor, s32 devilid, void *data, s32 size);

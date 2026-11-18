@@ -17,6 +17,13 @@ struct SBTLUNIT_WORK;
 #define ACTAIFLGMASK ACTAIFLGMASK_R1
 #endif
 
+/* Skill IDs the AI's skill-bit checks scan (SBTLUNIT_MODEL useskl and chkskl). */
+#ifdef VERSION_RAIDOU2
+#define SBTL_AI_SKILL_MAX 1280
+#else
+#define SBTL_AI_SKILL_MAX 512
+#endif
+
 /* One action choice: percent weight, packed skill code and packed target code. */
 typedef struct AIACT_TBL {
     s16 per;
@@ -55,6 +62,7 @@ extern s32 (*CheckFuncTbl[])(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx);
 
 s32 sbtlCheckStatus_Move(struct SBTLUNIT_WORK *wk);
 s32 sbtlBtlCheckEquationProcSub(s16 code);
+u8 sbtlCallBtlGetBadStatus6(struct SBTLUNIT_WORK *wk, u8 flg);
 s32 sbtlCheckMapHit(const sdfVector4_t *pos0, const sdfVector4_t *ppos, f32 dis);
 void sbtlSetAIWkStat(struct SBTLUNIT_WORK *wk);
 s32 SetUnitHitApproach(struct SBTLUNIT_WORK *wk);
@@ -64,6 +72,12 @@ s32 sbtlBtlUseTableDataProcSub(s32 type);
 s32 sbtlBtlMVSupportSub(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
 void sbtlSetUseSkill(struct SBTLUNIT_WORK *wk, SKLID skillid);
 void SetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
+void sbtlResetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
+void sbtlLeaf65(struct SBTLUNIT_WORK *wk, SKLID sklid);
+s32 sbtlCallBtlSetChkskl2(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx);
+s32 sbtlCallBtlSetChkskl3(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx);
+s32 sbtlCallBtlSetUseskl(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx);
+s32 sbtlCallBtlSetUseskl2(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx);
 void SetAction_ProgramSkill(struct SBTLUNIT_WORK *wk, SKLID skillID);
 void sbtlSetWalk(struct SBTLUNIT_WORK *wk, f32 length);
 void sbtlBS_MUNAKA_Init_Imad_Restart(struct SBTLUNIT_WORK *wk);

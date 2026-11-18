@@ -400,6 +400,14 @@ sbtlAAIInit_BAttack	sbtlActAI	raidou1 0xA4	2 of 41 words differ	docs/matching/sb
 sbtlAAIInit_BAttack	sbtlActAI	raidou2 0xA4	2 of 41 words differ	docs/matching/sbtlActAI.md	193		
 sbtlAAIInit_SUMMON	sbtlActAI	raidou1 0x8C	13 of 35 words differ	docs/matching/sbtlActAI.md	199		
 sbtlAAIInit_SUMMON	sbtlActAI	raidou2 0x8C	13 of 35 words differ	docs/matching/sbtlActAI.md	205		
+sbtlCheckCrossUnit_HIT	sbtlActAI	raidou1 0xC0	1 of 48 words differ	docs/matching/sbtlActAI.md	211		
+sbtlAAIInit_N_Comb_R	sbtlActAI	raidou1 0xDC	51 of 56 words differ	docs/matching/sbtlActAI.md	217		
+sbtlAAIInit_N_Renkei	sbtlActAI	raidou1 0xA8	37 of 42 words differ	docs/matching/sbtlActAI.md	223		
+sbtlAAIInit_N_Renkei	sbtlActAI	raidou2 0xA8	36 of 42 words differ	docs/matching/sbtlActAI.md	229		
+sbtlAAIInit_N_GuardH	sbtlActAI	raidou1 0xAC	4 of 43 words differ	docs/matching/sbtlActAI.md	235		
+sbtlAAIInit_N_GuardH	sbtlActAI	raidou2 0xAC	4 of 43 words differ	docs/matching/sbtlActAI.md	241		
+sbtlEAIProc_Ctact	sbtlActAI	raidou1 0xE8	44 of 58 words differ	docs/matching/sbtlActAI.md	247		
+sbtlEAIProc_Ctact	sbtlActAI	raidou2 0xE8	44 of 58 words differ	docs/matching/sbtlActAI.md	253		
 sbtlCheckHitArea_sbtlDMG	sbtlDMG	raidou1 0x270	71 of 154 words differ	docs/matching/sbtlDMG.md	3		
 sbtlCreateHitC_New_sbtlDMG	sbtlDMG	raidou1 0x884	294 of 545 words differ	docs/matching/sbtlDMG.md	11		
 sbtlGetSide	sbtlDMG	raidou1 0x114	53 of 70 words differ	docs/matching/sbtlDMG.md	21		

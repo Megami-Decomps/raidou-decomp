@@ -7360,7 +7360,7 @@
 0x00295DF8	sbtlGetUseTable_Target	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetUseTable_Target, score 7.2 band B
 0x00295E18	sbtlLeaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
 0x00295E28	sbtlCallBtlSearchUnitID5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlSearchUnit_ID
-0x00295FA0	sbtlCallBtlCreateSideListSBtlUnit3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCreateSideList_sbtlUnit
+0x00295FA0	AICHK_HPP	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI AICHK_HPP (0x1db5d90): HP percentage check of the side list, GetRand 90/40/20 by kaifuku_skl_cnt; replaces sbtlCallBtlCreateSideListSBtlUnit3
 0x00296120	sbtlLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
 0x00296130	sbtlLeaf26	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
 0x00296168	sbtlRefSbtl14	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlActAI; references wk_sbtl

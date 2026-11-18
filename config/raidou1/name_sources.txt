@@ -6997,7 +6997,7 @@
 0x00274C38	sbtlSetNormalAction	hd-inferred	hd: Raidou HD sBtlActAI.sBtlSetNormalAction, score 8.15 band B, hd-ab: calls3 callers-of-match votes3 st1:call r1+r2
 0x00274F90	GetSenkaiPointSub	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.GetSenkaiPointSub score 8.8 flag -: calls3 callers-of-match votes4 st1:call r1+r2
 0x002751D8	sbtlGetEscapePoint	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetEscapePoint (sBtlActAI.c:4499) is what sBtlSetAIData case 15 calls with (wk, wklock, &actaiwk->ppos, area); R2 0x29A578 is sbtlGetEscapePoint; R1 0x2751D8 sits beside GetSenkaiPointSub as in R2; replaces sbtlCallMemset13
-0x002753D0	sbtlCallBtlCreateSideListSBtlUnit3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCreateSideList_sbtlUnit
+0x002753D0	sbtlCheckCrossUnit_HIT	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI.sBtlCheckCrossUnit_HIT (R2 0x29ADD0, tier A, r1-disagree:0x2753d0); R2 keeps sbtlCallBtlCreateSideListSBtlUnit3 on an unrelated HP check; replaces sbtlCallBtlCreateSideListSBtlUnit3
 0x00275490	sbtlGetMovePos_MapHit	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit, score 10.3 band A
 0x00275640	sbtlGetMovePos_MapHit_2	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_2, score 7.3 band B
 0x002758A0	sbtlCheckMapHit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlCheckMapHit(pos0, ppos, dis); callers GetSenkaiPointSub, sbtlGetMovePos_MapHit, sbtlAAIInit_N_Escape pass two vectors and a float; body forwards to sbtlCheckMapHit_Cross; replaces sbtlAAIInit_None
@@ -7047,7 +7047,7 @@
 0x00278DD0	sbtlAAIProc_N_GuardH	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlAAIProc_N_GuardH score 9.8 flag I: calls1 prev callers-of-match st1:call r1+r2
 0x00278E68	Proc_sbtlAction	hd	hd: Raidou HD sBtlAction.Proc, score 14.65 band A
 0x00278E88	Proc	hd	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD sBtlAction.Proc score 6.5 flag -: calls1 str2 ustr votes2 st1:str r2-disagree:0x2a0570
-0x0027BD88	sbtlCallBtlSearchEffectSABActer	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlSearchEffect_SAB_Acter
+0x0027BD88	sbtlCheckNextAction	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlAction.sBtlCheckNextAction (R2 0x2A5768, tier A, r1-disagree:0x27bd88); same function; replaces sbtlCallBtlSearchEffectSABActer
 0x0027BE18	sbtlRefSbtl22	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlActAI; references wk_sbtl
 0x0027BE50	sbtlSetMotionHit	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlAction.sBtlSetMotionHit score 7.8 flag I: calls4 callers-of-match votes4 st1:call r2-disagree:0x2a58f0
 0x0027BF40	sbtlSetUseSkill	hd-inferred	hd: Raidou HD sBtlAction.sBtlSetUseSkill, score 8.05 band B

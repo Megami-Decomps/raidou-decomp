@@ -3343,7 +3343,6 @@
 0x00274BB0	sbtlLeaf71	func	tier=D	derived-unit	na	unit sbtlActAI; no named callee, caller or string
 0x00274BB8	sbtlLeaf72	func	tier=D	derived-unit	na	unit sbtlActAI; no named callee, caller or string
 0x00274C38	sbtlSetNormalAction	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlSetNormalAction, score 8.15 band B, hd-ab: calls3 callers-of-match votes3 st1:call r1+r2
-0x002753D0	sbtlCallBtlCreateSideListSBtlUnit3	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCreateSideList_sbtlUnit
 0x00275490	sbtlGetMovePos_MapHit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit, score 10.3 band A
 0x00275640	sbtlGetMovePos_MapHit_2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_2, score 7.3 band B
 0x002758C0	sbtlBtlProcSub	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlProc
@@ -3372,7 +3371,6 @@
 0x00278040	sbtlAAIProc_TurnMV	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_TurnMV, score 9.8 band B
 0x00278258	sbtlAAIProc_Skl_S	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_Skl_S, score 10.0 band A
 0x002787D8	sbtlAAIProc_Skl_SRT	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_Skl_SRT, score 9.5 band B
-0x0027BD88	sbtlCallBtlSearchEffectSABActer	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlSearchEffect_SAB_Acter
 0x0027BE18	sbtlRefSbtl22	func	tier=D	derived-data	na	unit sbtlActAI; references wk_sbtl
 0x0027BF40	sbtlSetUseSkill	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlAction.sBtlSetUseSkill, score 8.05 band B
 0x0027C888	sbtlCallBtlDeleteHitHelper	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlDeleteHitHelper
@@ -19458,7 +19456,9 @@
 0x002730C0	sbtlEAIInit_BtlWait	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlActAI.sBtlEAIInit_BtlWait score 6.3 flag I: prev gap3/15 st1:gap r1+r2
 0x00274700	PosOut	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlActAI.PosOut score 6.5 flag -: calls1 prev gap5/9 st1:gap r1+r2
 0x002751D8	sbtlGetEscapePoint	func	tier=B	hd-role	na	HD sBtlGetEscapePoint (sBtlActAI.c:4499) is what sBtlSetAIData case 15 calls with (wk, wklock, &actaiwk->ppos, area); R2 0x29A578 is sbtlGetEscapePoint; R1 0x2751D8 sits beside GetSenkaiPointSub as in R2; replaces sbtlCallMemset13
+0x002753D0	sbtlCheckCrossUnit_HIT	func	tier=B	hd-role	na	HD sBtlActAI.sBtlCheckCrossUnit_HIT (R2 0x29ADD0, tier A, r1-disagree:0x2753d0); R2 keeps sbtlCallBtlCreateSideListSBtlUnit3 on an unrelated HP check; replaces sbtlCallBtlCreateSideListSBtlUnit3
 0x00276A00	sbtlSetWalk	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlActAI.sBtlSetWalk score 6.4 flag I: calls4 calls-of-match votes4 st1:call r2-disagree:0x29c738
+0x0027BD88	sbtlCheckNextAction	func	tier=B	hd-role	na	HD sBtlAction.sBtlCheckNextAction (R2 0x2A5768, tier A, r1-disagree:0x27bd88); same function; replaces sbtlCallBtlSearchEffectSABActer
 0x0027C728	sbtlSetAction	func	tier=B	hd-role	na	HD sBtlAction.sBtlSetAction (R2 0x2A6C80, tier A); same function, r1-disagree:0x27c728; replaces sbtlCallBtlEndAction
 0x0027CD48	sbtlSetVibeFadeIn	func	tier=B	hd-role	na	HD sBtlSub.c sBtlSetVibeFadeIn (0x1fc9f00): vibe_startf/frame/power then vibe_type = 1, returns 1; replaces sbtlRefSbtl40
 0x0027CD90	sbtlSetVibeFadeOut	func	tier=B	hd-role	na	HD sBtlSub.c sBtlSetVibeFadeOut (0x1fc9fd0): same with vibe_type = 0; replaces sbtlRefSbtl41

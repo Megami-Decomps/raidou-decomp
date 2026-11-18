@@ -988,7 +988,7 @@ s32 pbCallBtlCheckLoadFlg(void)
         sbtlSetEndBadStatus();
     }
     if (wk_sbtl->endcnt < 180) {
-        if (!sbtlCallBtlSearchEffectSABActer(wk) || wk->field3DE <= 0) {
+        if (!sbtlCheckNextAction(wk) || wk->field3DE <= 0) {
             return 1;
         }
     }
