@@ -3599,9 +3599,6 @@
 0x00298BC8	sbtlCallBtlCheckGeneratorGroupID	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlCheckGeneratorGroupID
 0x00298D30	sbtlCallBtlGetNumUnitGroupID	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetNumUnit_GroupID
 0x00299750	sbtlSetNextPathData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlPath.sBtlSetNextPathData, score 8.3 band B, hd-ab: calls2 callers-of-match votes2 st1:call r1+r2
-0x00299900	sbtlLeaf83	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
-0x00299920	sbtlBtlSetNextPathDataSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlSetNextPathData
-0x00299950	sbtlBtlSetNextPathDataSub2	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlSetNextPathData
 0x00299970	sbtlFunc2	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x002999C0	sbtlCallFreeAuto	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sdfFreeAuto
 0x00299A80	sbtlCallFileOpen	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sdfFileOpen
@@ -3620,19 +3617,9 @@
 0x0029A7A0	sbtlCallBtlSearchUnitID35	func	tier=D	derived-callee	na	unit sbtl; calls sbtlSearchUnit_ID
 0x0029A988	sbtlCallBtlGetItemtbl3	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetItemtbl
 0x0029ACE0	sbtlCallBtlGetItemtbl2	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetItemtbl
-0x0029B478	sbtlBtlSetAutoSkillGBSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlSetAutoSkill_GB
 0x0029B538	sbtlCallBtlGetSkilltbl19	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetSkilltbl
-0x0029B5C0	sbtlBtlSetAutoSkillGBSub2	func	tier=D	derived-caller	na	unit sbtl; called by sbtlSetAutoSkill_GB
-0x0029B5E0	sbtlCallBtlGetSkilltbl21	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetSkilltbl
 0x0029B798	sbtlLeaf123	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x0029B7D8	sbtlCallBtlGetSkilltbl23	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetSkilltbl
-0x0029B848	sbtlCallBtlGetSkilltbl18	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetSkilltbl
-0x0029B890	sbtlLeaf110	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x0029B8B0	sbtlGetDamageSub	func	tier=D	derived-caller	na	unit sbtl; called by GetDamage
 0x0029B958	sbtlCallBtlGetSkilltbl24	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetSkilltbl
-0x0029BCF8	sbtlCallBtlGetDevilDataSBtlSub5	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetDevilData_sbtlSub
-0x0029BE78	sbtlCheckCost	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlCheckCost, score 7.3 band B
-0x0029BE98	sbtlCallBtlSearchUnitID34	func	tier=D	derived-callee	na	unit sbtl; calls sbtlSearchUnit_ID
 0x0029C1F0	sbtlRefSbtl64	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x0029C258	sbtlRefDDS3GBWK22	func	tier=D	derived-data	na	unit sbtl; references DDS3_GBWK
 0x0029C288	sbtlRefSbtl63	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
@@ -7297,12 +7284,9 @@
 0x0041C868	sbtlCallBtlGetMotionVisualData3Data2	data	tier=D	derived-sole	na	used by sbtlCallBtlGetMotionVisualData3
 0x0041C880	sbtlData15	data	tier=D	derived-shared	na	used by 3 functions: sbtlGetPointData, SetEncountData_Sub, sbtlCallMemset21
 0x0041C890	sbtlData16	data	tier=D	derived-shared	na	used by 3 functions: sbtlGetPointData, SetEncountData_Sub, sbtlCallMemset21
-0x0041C8A0	sbtlLeaf83Data	data	tier=D	derived-sole	na	used by sbtlLeaf83
-0x0041C8B0	sbtlBtlSetNextPathDataSub2Data	data	tier=D	derived-sole	na	used by sbtlBtlSetNextPathDataSub2
 0x0041C950	sbtlBtlSetNextPathDataSubDataEntry	data	tier=D	derived-table	na	pointed to by sbtlBtlSetNextPathDataSubData
 0x0041C968	sbtlBtlSetNextPathDataSubDataEntry2	data	tier=D	derived-table	na	pointed to by sbtlBtlSetNextPathDataSubData
 0x0041C9E0	sbtlBtlSetNextPathDataSubDataEntry3	data	tier=D	derived-table	na	pointed to by sbtlBtlSetNextPathDataSubData
-0x0041CA30	sbtlBtlSetNextPathDataSubData	data	tier=D	derived-sole	na	used by sbtlBtlSetNextPathDataSub
 0x0041CA40	sbtlFunc2Data	data	tier=D	derived-sole	na	used by sbtlFunc2
 0x0041D010	sbtlCallSetPosPoseSetDds3BasicData	data	tier=D	derived-sole	na	used by sbtlCallSetPosPoseSetDds3Basic
 0x0041D020	sbtlCallSetPosPoseSetDds3BasicData2	data	tier=D	derived-sole	na	used by sbtlCallSetPosPoseSetDds3Basic
@@ -15600,8 +15584,6 @@
 0x0046DCF8	sbtlData100	data	tier=D	derived-shared	na	used by 21 functions: sbtlCallBitCheck, rstCallBitCheck, sbtlCallMemset4
 0x0046DCFC	sbtlData101	data	tier=D	derived-shared	na	used by 5 functions: pbCallBtlGetRndEncJoken, sbtlGetRndEncJoken, nbGetEncountMax
 0x0046DD00	sbtlCallBitCheckData	data	tier=D	derived-sole	na	used by sbtlCallBitCheck
-0x0046DD04	sbtlData102	data	tier=D	derived-shared	na	used by 2 functions: sbtlRndEncCalc, sbtlRndEncTopPriorityMap
-0x0046DD08	sbtlData103	data	tier=D	derived-shared	na	used by 2 functions: sbtlRndEncCalc, sbtlRndEncTopPriorityMap
 0x0046DD24	sbtlData104	data	tier=D	derived-shared	na	used by 13 functions: sbtlDrawText, sbtlExt_MesReqEx, sbtlCallMemAllocDirect10
 0x0046DD2C	sbtlData105	data	tier=D	derived-shared	na	used by 5 functions: sbtlExt_CreateBuffer, sbtlExt_ShutDown, sbtlExt_FreeBuffer
 0x0046DD30	sbtlExt_CreateBufferData	data	tier=D	derived-dominant	na	used by sbtlExt_CreateBuffer (3 of 5 refs, 3 functions)
@@ -18594,7 +18576,6 @@
 0x002994A0	sbtlGetDevilInfo	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlEncount.sBtlGetDevilInfo score 4.5 flag I: calls1 prev callers-of-match votes2 st1:call r2-disagree:0x2cd478
 0x00299E80	sbtlDeleteItemList	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlItem.sBtlDeleteItemList score 2.3 flag I: calls1 prev edge st1:edge r1-only
 0x0029BE08	sbtlCheckUseSkill	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlCalc.sBtlCheckUseSkill score 6.6 flag I: calls2 prev callee-index votes2 st2:cidx r2-only
-0x0029BF50	sdfRemoveTaskItem	func	tier=C	dds-fuzzy-60-m-single	0.56 (n=1)	dds body 0x2cb358 sim 0.600 margin 0.17 single
 0x0029C248	sbtlDecMP	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlCalc.sBtlDecMP score 5.0 flag I: prev gap1/4 st1:gap r1+r2
 0x0029C3A0	sbtlCheckAttrFlg	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlCalc.sBtlCheckAttrFlg score 5.0 flag I: prev gap3/3 st1:gap r1+r2
 0x0029C3C8	sbtlCheckAisyo_Old	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlCalc.sBtlCheckAisyo_Old score 2.1 flag I: prev gap2/2 st1:gap r1-only
@@ -19488,7 +19469,22 @@
 0x00297170	sbtlGetMotionVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
 0x00297EF0	SetEncountData_Sub_sbtlEncount	func	tier=B	hd-role	na	HD sBtlEncount.SetEncountData_Sub (R2 name, same callee in sbtlAddAWXAtkPadSub and sbtlSetEncountData); replaces sbtlCallMemset21
 0x00298C50	sbtlCheckGenerator_D	func	tier=B	hd-role	na	HD sBtlEncount.sBtlCheckGenerator_D (R2 0x2CC1E0, tier A); takes no argument, loops over sb_gen_work; replaces datBossRashChk
+0x00299900	sbtlGetPathDataCount	func	tier=B	hd-role	na	HD sBtlPath.sBtlGetPathDataCount, reads tbldatacnt[id]; replaces sbtlLeaf83
+0x00299920	sbtlGetPathACTData	func	tier=B	hd-role	na	HD sBtlPath.sBtlGetPathACTData, returns &data[id][no]; replaces sbtlBtlSetNextPathDataSub
+0x00299950	sbtlGetPathData	func	tier=B	hd-role	na	HD sBtlPath.sBtlGetPathData, returns &pathdata[id]; replaces sbtlBtlSetNextPathDataSub2
 0x0029B3C8	sbtlSetAutoSkill_GB	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlSetAutoSkill_GB score 5.9 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2d4ff0
+0x0029B478	sbtlSetAutoSkill_GBID	func	tier=B	hd-role	na	HD sBtlCalc.sBtlSetAutoSkill_GBID, called by sBtlSetAutoSkill_GB per auto skill; replaces sbtlBtlSetAutoSkillGBSub
+0x0029B5C0	sbtlResetAutoSkill	func	tier=B	hd-role	na	HD sBtlCalc.sBtlResetAutoSkill, clears pbtl and the auto skill counters; replaces sbtlBtlSetAutoSkillGBSub2
+0x0029B5E0	sbtlGetAutoSkillPara	func	tier=B	hd-role	na	HD sBtlCalc.sBtlGetAutoSkillPara, called by sBtlSetAutoSkill_GB with &autost_cnt, &autost_cnt2; R2 keeps sbtlCallBtlGetSkilltbl21 on other code; replaces sbtlCallBtlGetSkilltbl21
+0x0029B7D8	sbtlCheckAutoSkill_ActerDamage_ID	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckAutoSkill_ActerDamage_ID, same attr tests; R2 keeps the old name on other code; replaces sbtlCallBtlGetSkilltbl23
+0x0029B848	sbtlCheckAutoSkill_TargetDamage_ID	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckAutoSkill_TargetDamage_ID, same attr tests; replaces sbtlCallBtlGetSkilltbl18
+0x0029B890	sbtlCheckAutoSkill_ActerDamage	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckAutoSkill_ActerDamage, auto skill number range test; R2 keeps the old name on other code; replaces sbtlLeaf110
+0x0029B8B0	sbtlCheckAutoSkill_TargetDamage	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckAutoSkill_TargetDamage, autono 3 or 17 (HD 4 or 18); replaces sbtlGetDamageSub
+0x0029BC98	sbtlCheckMoon	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckMoon(moon), evtBitCheck of a nine-entry u16 table, between sBtlGetDropMoney and sBtlGetSkillCost; replaces sbtlCheckEvtBit_Table
+0x0029BCF8	sbtlGetMagCost	func	tier=B	hd-role	na	HD sBtlCalc.sBtlGetMagCost(player, unit, devilid), R2 sbtlGetMagCost; replaces sbtlCallBtlGetDevilDataSBtlSub5
+0x0029BE78	sbtlCheckMagCost_GB	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckMagCost_GB, between sBtlCheckUseSkill and sBtlCheckMagCost; forwards to sBtlGetMagCost; replaces sbtlCheckCost
+0x0029BE98	sbtlCheckMagCost	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckMagCost(unit, devilid, flg), R2 sbtlCheckMagCost; replaces sbtlCallBtlSearchUnitID34
+0x0029BF50	sbtlCheckCost	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckCost(wk, flg), calls sBtlCheckCost_SkillID with wk->skillid; replaces sdfRemoveTaskItem
 0x0029BFB8	sbtlCheckCost_SkillID	func	tier=B	hd-role	na	HD SEquationno_12 returns sBtlCheckCost_SkillID(wk, skillid, 0), the call at the same place in Raidou SEquationno_12; replaces sbtlCallBtlGetSkilltbl22
 0x0029C608	sbtlCheckKuishibari	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlCheckKuishibari score 6.1 flag I: calls4 callee-index votes3 st1:cidx r2-disagree:0x2d68b8
 0x0029EE00	sbtlGetDamage_GB	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlGetDamage_GB score 6.0 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2d9ad8
@@ -19642,6 +19638,9 @@
 0x0041A4D8	AAIProc_Func	data	tier=B	hd-role	na	HD sBtlActAI AAIProc_Func; called when model stat is 2, indexed by model mode; replaces sbtlCallBtlCheckEquationData2
 0x0041A518	EAIInit_Func	data	tier=B	hd-role	na	HD sBtlActAI EAIInit_Func; called when model stat is 1 (init) indexed by AI mode; replaces sbtlBtlProcSubData
 0x0041A570	EAIProc_Func	data	tier=B	hd-role	na	HD EAIProc_Func; called when model stat is 2 (proc); replaces sbtlBtlProcSubData2
+0x0041C8A0	tbldatacnt	data	tier=B	hd-role	na	HD enemypath tbldatacnt, read by sBtlGetPathDataCount; replaces sbtlLeaf83Data
+0x0041C8B0	pathdata	data	tier=B	hd-role	na	HD enemypath pathdata, read by sBtlGetPathData; replaces sbtlBtlSetNextPathDataSub2Data
+0x0041CA30	data	data	tier=B	hd-role	na	HD enemypath data, read by sBtlGetPathACTData; replaces sbtlBtlSetNextPathDataSubData
 0x00435410	cmpStatusModelPos	data	tier=B	smt3-ref	0.80 (n=D_r1_00435410)	smt3-ref/close: nfun=2, other=0, sim=0.90325, games=2, size=True, sec=True, fn=cmpSetStatusModelParam
 0x00435420	cmpStatusModelBasePos	data	tier=B	smt3-ref	0.80 (n=D_r1_00435420)	smt3-ref/close: nfun=2, other=0, sim=0.90325, games=2, size=True, sec=True, fn=cmpSetStatusModelParam
 0x0043F2F8	sdfIpuRgbModeBits	data	tier=B	smt3-ref	0.88 (n=D_r1_0043F2F8)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfIpuDecode
@@ -19797,6 +19796,8 @@
 0x0046DCE8	sbtlmotionmv_tbldata	data	tier=B	hd-role	na	HD sBtlGetMotionMoveData: major nonzero table; replaces sbtlBtlGetMotionMoveSubData
 0x0046DCF0	sbtleff_cylindertbl_p	data	tier=B	derived-role	na	HD: player table (major zero); replaces sbtlGetEffCylinderDataData2
 0x0046DCF4	sbtlmotionmove_tbldata_player	data	tier=B	derived-role	na	HD: major zero table; replaces sbtlBtlGetMotionMoveSubData2
+0x0046DD04	g_rndenc1_map	data	tier=B	hd-role	na	HD sBtlEncount g_rndenc1_map, read by sBtlRndEncTopPriorityMap; replaces sbtlData102
+0x0046DD08	g_rndenc1_floor	data	tier=B	hd-role	na	HD sBtlEncount g_rndenc1_floor, read by sBtlRndEncTopPriorityMap; replaces sbtlData103
 0x0046DD0C	sb_gen_d_flag	data	tier=B	hd-role	na	HD sBtlClearGeneratorWork zeroes sb_gen_d_flag after the loop; only code_00298540 uses it; replaces gFldSe3DNum
 0x0046DD10	datRndEncBase	data	tier=B	hd-role	na	HD sBtlGetRndEncMax reads datRndEncBase at this site; replaces nbGetEncountMaxData
 0x0046DD14	encmax	data	tier=B	hd-role	na	HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2

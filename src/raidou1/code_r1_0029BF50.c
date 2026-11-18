@@ -1,8 +1,9 @@
 #include "common.h"
 #include "sBtlUnit.h"
 #include "sBtlSkill.h"
+#include "sBtlCalc.h"
 
-s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 arg)
+s32 sbtlCheckCost(struct SBTLUNIT_WORK *wk, s32 arg)
 {
     struct SBTLSKILLP_TBL *tbl;
 

@@ -39,6 +39,7 @@
 #include "sbtlActAI.h"
 #include "evtUnitManager.h"
 #include "dds3UnitObjectBasic.h"
+#include "sBtlPath.h"
 #include "sdk_libc.h"
 #include "fpu.h"
 #include "ps2asm.h"
@@ -63,7 +64,11 @@
 #include "sBtlVisual.h"
 #include "sbtlWork.h"
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlSetEncountData);
+/* body: matched in raidou @ 9c5e6e0: src/raidou2/code_002C5D78.c:386, match, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+struct SBTLUNIT_WORK *sbtlSetEncountData(s32 devil, s32 posid, s32 groupID)
+{
+    return SetEncountData_Sub_sbtlEncount(devil, posid, groupID, 0);
+}
 
 struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub(s32 devilId, s32 point, s32 arg)
 {
@@ -127,7 +132,9 @@ s32 sbtlCallBtlClearGeneratorWork(s32 stageNo)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlGeneratorD_On);
+void sbtlGeneratorD_On(void) {
+    sb_gen_d_flag = 1;
+}
 
 s32 sbtlCheckGeneratorGroupID(s32 group)
 {
@@ -308,8 +315,8 @@ s32 sbtlRndEncCalc(s32 id, f32 length)
                 sbtlResetRndEncCount();
                 return 0;
             }
-            sbtlData102 = ritu->field04;
-            sbtlData103 = ritu->type;
+            g_rndenc1_map = ritu->field04;
+            g_rndenc1_floor = ritu->type;
             encmax = 0;
             return encountId;
         }
@@ -329,14 +336,23 @@ void sbtlResetRndEncCount(void)
     encmax = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlRndEncTopPriorityMap);
+void sbtlRndEncTopPriorityMap(s32 *map, s32 *floor) {
+    *map = g_rndenc1_map;
+    *floor = g_rndenc1_floor;
+}
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlGetDevilInfo);
 
 INCLUDE_ASM(const s32, "code_00298540", sbtlSetNextPathData);
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlLeaf83);
+s16 sbtlGetPathDataCount(s16 id) {
+    return tbldatacnt[id];
+}
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlBtlSetNextPathDataSub);
+SBTLENMY_ACTDATA *sbtlGetPathACTData(s16 id, s16 no) {
+    return &data[id][no];
+}
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlBtlSetNextPathDataSub2);
+SBTLENMY_PATHDATA *sbtlGetPathData(s16 id) {
+    return &pathdata[id];
+}

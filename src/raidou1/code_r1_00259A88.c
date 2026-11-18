@@ -1374,7 +1374,7 @@ s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
             wk_sbtl->field484 = 3;
             wk_sbtl->field48C = 0;
             sbtlCheckMHTData(wk, wk->skillid);
-            sdfRemoveTaskItem(wk, 1);
+            sbtlCheckCost(wk, 1);
         }
         break;
     case 3:
@@ -1903,7 +1903,7 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
             wk_sbtl->field494 = 0;
             wk_sbtl->field48C = 0;
             sbtlCheckMHTData(wk, wk->skillid);
-            sdfRemoveTaskItem(wk, 1);
+            sbtlCheckCost(wk, 1);
         }
         break;
     case 2:
@@ -2216,9 +2216,9 @@ f32 sbtlCallBtlSearchUnitID6(f32 rate) {
     if (wk_sbtl->field344 > 0) {
         unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
         if (unit != NULL && CheckLiveTarget(unit)) {
-            if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&unit->unit, 0), &unit->unit.autost_cnt, &unit->unit.autost_cnt2) == 5) {
+            if (sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&unit->unit, 0), &unit->unit.autost_cnt, &unit->unit.autost_cnt2) == 5) {
                 rate = (f32)unit->unit.autost_cnt2 / 100.0f;
-            } else if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&unit->unit, 1), &unit->unit.autost_cnt, &unit->unit.autost_cnt2) == 5) {
+            } else if (sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&unit->unit, 1), &unit->unit.autost_cnt, &unit->unit.autost_cnt2) == 5) {
                 rate = (f32)unit->unit.autost_cnt2 / 100.0f;
             }
         }
@@ -2302,12 +2302,12 @@ s32 CheckHuuma_Moon(struct SBTLUNIT_WORK *wk) {
     ret = 1;
     if (unit != NULL) {
         if (sbtlGetDevilData_sbtlSub(unit->unit.devilId)->field0E == 7) {
-            if (!sbtlCheckEvtBit_Table(8)) {
+            if (!sbtlCheckMoon(8)) {
                 ret = 0;
                 sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMAMISS_GIKEI, SKLID_NONE);
                 wk_sbtl->field4CE = 42;
             }
-        } else if (sbtlCheckEvtBit_Table(8)) {
+        } else if (sbtlCheckMoon(8)) {
             ret = 0;
             sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMAFULLMOON, SKLID_NONE);
             wk_sbtl->field4CE = 39;
@@ -2826,7 +2826,7 @@ s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 flg, s8 usePos, 
     }
     mag = 0;
     if (wk_sbtl->battleMode != 3) {
-        mag = sbtlCallBtlGetDevilDataSBtlSub5(&wk->unit, &unit->unit, unit->unit.devilId);
+        mag = sbtlGetMagCost(&wk->unit, &unit->unit, unit->unit.devilId);
     }
     sbtlRefSbtl64(mag);
     sbtlCheckBattlePara(unit);
@@ -3624,10 +3624,10 @@ s32 SEquationno_0c(struct SBTLUNIT_WORK *wk, s16 skillid) {
 s32 SEquationno_0d(struct SBTLUNIT_WORK *wk, s16 skillid) {
     struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
 
-    if (SetNextTarget(wk, tbl, sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2))) {
+    if (SetNextTarget(wk, tbl, sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2))) {
         return 1;
     }
-    if (SetNextTarget(wk, tbl, sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2))) {
+    if (SetNextTarget(wk, tbl, sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2))) {
         return 1;
     }
     if ((wk->field358 & 0x1000000) && (tbl->type & 0xFFF) == 1) {

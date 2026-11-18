@@ -9,7 +9,7 @@ struct SBTLUNIT_WORK;
 typedef struct datRndEncRitu_t {
     u16 encountid;
     u16 ritu;
-    s16 field04; /* HD has s8 map, s8 floor here; Raidou reads one halfword into sbtlData102 */
+    s16 field04; /* HD has s8 map, s8 floor here; Raidou reads one halfword into g_rndenc1_map */
     s16 type;
 } datRndEncRitu_t;
 
@@ -43,8 +43,8 @@ extern s32 pbCallBtlGetRndEncJokenData;
 extern s32 datRndEncBase;
 extern s32 encmax;
 /* The encounter sbtlRndEncCalc picked: its datRndEncRitu_t field04 and type. */
-extern s32 sbtlData102;
-extern s32 sbtlData103;
+extern s32 g_rndenc1_map;
+extern s32 g_rndenc1_floor;
 
 struct SBTLUNIT_WORK *SetEncountData_Sub_sbtlEncount(s32 devilId, s32 point, s32 arg, s32 mode);
 struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub(s32 devilId, s32 point, s32 arg);

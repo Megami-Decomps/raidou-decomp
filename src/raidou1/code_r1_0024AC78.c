@@ -51,7 +51,7 @@ s32 sbtlCallBtlGetPlayerData(void)
     if ((wk_sbtl->battleMode == 0 || wk_sbtl->battleMode == 2) && wk_sbtl->summonIndex[0] >= 0
         && wk_sbtl->stockNum > 0) {
         if (sbtlBtlNakamaSetUpSub(&player->stock[wk_sbtl->summonIndex[0]])) {
-            ret = sbtlCallBtlSearchUnitID34(&player->stock[wk_sbtl->summonIndex[0]],
+            ret = sbtlCheckMagCost(&player->stock[wk_sbtl->summonIndex[0]],
                                             player->stock[wk_sbtl->summonIndex[0]].devilId, 0) != 0;
         }
     }

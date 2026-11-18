@@ -692,7 +692,7 @@ s32 sbtlCallCheckLiveTarget2(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx) {
 }
 
 s32 sbtlGetBgmID(s32 encountid, u16 bit) {
-    return sbtlCheckEvtBit_Table(bit) != 0;
+    return sbtlCheckMoon(bit) != 0;
 }
 
 s32 sbtlCallBtlCreateSideList4(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx) {
@@ -2815,7 +2815,7 @@ s32 sbtlCallMemset14(struct SBTLUNIT_WORK *wk) {
         if (hit == 1) {
             SDF_VU0_LOADVECTOR(&zero);
             SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
-            if (sdfRemoveTaskItem(wk, 1)) {
+            if (sbtlCheckCost(wk, 1)) {
                 wk->model->flags = (wk->model->flags | 4) & ~0x21B;
                 wk->model->cmpframe = 0;
                 wk->model->frame = 0;

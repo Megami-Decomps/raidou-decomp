@@ -12,6 +12,8 @@
 #include "sBtlSkill.h"
 #include "dat.h"
 #include "sdatUnit.h"
+#include "sbtlDMG.h"
+#include "EventBit.h"
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
 s32 sbtlLeaf125(void) {
@@ -57,7 +59,12 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallSetGameCamera0);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallGetActiveScene4);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl65);
+s32 sbtlRefSbtl65(void) {
+    if (wk_sbtl->flg & 0x400000) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallSetPosPoseSetDds3Basic);
 
@@ -97,7 +104,12 @@ s32 sbtlLeaf87(dds3ProcessID_t *id)
 #endif
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBitCheck5);
+s32 sbtlCallBitCheck5(void) {
+    if (evtBitCheck(161) && !evtBitCheck(163)) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRefDDS3GBWK21);
 
@@ -113,7 +125,9 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetItemtbl3);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetItemtbl2);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlResetItemFlg);
+void sbtlResetItemFlg(sdatUnitWork_t *unit) {
+    unit->itemstatus &= ~0x410;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckDrink);
 
@@ -125,7 +139,10 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Magic);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Rec);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill);
+/* body: matched in raidou @ 9c5e6e0: src/raidou2/sbtl.c:202, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
+s32 sbtlCheckAutoSkill(sdatUnitWork_t *unit, s32 flg) {
+    return 0;
+}
 
 s32 sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk) {
     s32 i;
@@ -152,15 +169,52 @@ s32 CalcAisyo(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlSetAutoSkill_GB);
+s32 sbtlSetAutoSkill_GB(sdatUnitWork_t *unit) {
+    s32 id;
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlSetAutoSkillGBSub);
+    sbtlResetAutoSkill(unit);
+    id = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(unit, 0), &unit->autost_cnt, &unit->autost_cnt2);
+    if (id != -1) {
+        sbtlSetAutoSkill_GBID(unit, id);
+    }
+    id = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(unit, 1), &unit->autost_cnt, &unit->autost_cnt2);
+    if (id != -1) {
+        sbtlSetAutoSkill_GBID(unit, id);
+    }
+    return 1;
+}
+
+/* NON_MATCHING: 32 of 48 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSetAutoSkill_GBID(sdatUnitWork_t *unit, s32 id) {
+    if (id != -1) {
+        switch (id) {
+            case 10:
+                unit->pbtl.maxhp = unit->pbtl.maxhp + unit->backup.maxhp * (unit->autost_cnt2 / 100.0f);
+                break;
+            case 11:
+                unit->pbtl.maxmp = unit->pbtl.maxmp + unit->backup.maxmp * (unit->autost_cnt2 / 100.0f);
+                break;
+        }
+    }
+    return 1;
+}
+#else
+INCLUDE_ASM(const s32, "sbtl", sbtlSetAutoSkill_GBID);
+#endif
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl19);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlSetAutoSkillGBSub2);
+s32 sbtlResetAutoSkill(sdatUnitWork_t *unit) {
+    unit->koufunst = 0;
+    unit->autost_cnt = 0;
+    unit->autost_cnt2 = 0;
+    unit->pbtl.maxhp = 0;
+    unit->pbtl.maxmp = 0;
+    return 1;
+}
 
-s32 sbtlCallBtlGetSkilltbl21(SKLID id, s16 *badst, s16 *power) {
+s32 sbtlGetAutoSkillPara(SKLID id, s16 *badst, s16 *power) {
     struct SBTLSKILLP_TBL *tbl;
     u32 attr;
     s32 i;
@@ -211,13 +265,44 @@ SKLID sbtlGetAutoSkill_ID(sdatUnitWork_t *unit, s32 id) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf123);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl23);
+s32 sbtlCheckAutoSkill_ActerDamage_ID(SKLID sklid) {
+    u32 attr = sbtlGetSkilltbl(sklid)->attr & 0xFFFFF000;
+    s32 result = 0;
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl18);
+    switch (attr) {
+        case 0x1000000:
+        case 0x2000000:
+        case 0x4000000:
+        case 0x8000000:
+            result = 1;
+    }
+    return result;
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf110);
+s32 sbtlCheckAutoSkill_TargetDamage_ID(SKLID sklid) {
+    u32 attr = sbtlGetSkilltbl(sklid)->attr & 0xFFFFF000;
+    s32 result = 0;
 
-s32 sbtlGetDamageSub(s32 type)
+    if (attr == 0x8000 || attr == 0x20000000) {
+        result = 1;
+    }
+    return result;
+}
+
+s32 sbtlCheckAutoSkill_ActerDamage(s32 autono) {
+    s32 result = 0;
+
+    if (autono < 16) {
+        if (autono < 12) {
+            result = 0;
+        } else {
+            result = 1;
+        }
+    }
+    return result;
+}
+
+s32 sbtlCheckAutoSkill_TargetDamage(s32 type)
 {
     s32 result = 0;
 
@@ -227,21 +312,46 @@ s32 sbtlGetDamageSub(s32 type)
     return result;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_Action);
+s32 sbtlCheckAutoSkill_Action(struct SBTLUNIT_WORK *wk, SBTLDMG_HITWORK *hwk, s32 attr) {
+    BST bst;
+
+    if (attr != 0 && !(attr & 0x8000)) {
+        return 0;
+    }
+    if (hwk->attr_flg & 0x100) {
+        return 0;
+    }
+    bst = sbtlGetBadStatus(&wk->unit);
+    if (bst == BST_STONE || bst == BST_BOUDO || bst == BST_MAHUU || bst == BST_MOUDOKU || bst == BST_SLEEP
+        || bst == BST_BOYCOTT || bst == BST_RAND0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl24);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetDropMoney);
+s32 sbtlGetDropMoney(sdatUnitWork_t *unit, s32 gold) {
+    if ((unit->itemstatus & 0x100) != 0) {
+        gold += gold / 5;
+    }
+    return gold;
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckEvtBit_Table);
+s32 sbtlCheckMoon(u16 moon) {
+    u16 tbl[9] = {0xBC0, 0xBC1, 0xBC2, 0xBC3, 0xBC4, 0xBC5, 0xBC6, 0xBC7, 0xBC8};
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetDevilDataSBtlSub5);
+    return evtBitCheck(tbl[moon]) != 0;
+}
+
+INCLUDE_ASM(const s32, "sbtl", sbtlGetMagCost);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckUseSkill);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost);
+s32 sbtlCheckMagCost_GB(sdatUnitWork_t *player, sdatUnitWork_t *unit, s32 devilid, s8 flg) {
+    sbtlGetMagCost(player, unit, devilid);
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlSearchUnitID34);
-
-INCLUDE_RODATA(const s32, "sbtl", LimitRange_2Table);
+INCLUDE_ASM(const s32, "sbtl", sbtlCheckMagCost);
 

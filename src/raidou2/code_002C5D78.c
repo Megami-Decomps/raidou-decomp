@@ -13,6 +13,7 @@
 #include "sBtlEncount.h"
 #include "newdata.h"
 #include "sdfChip.h"
+#include "sBtlPath.h"
 
 s32 sbtlCheckLoadFlg(void) {
     u32 load;
@@ -412,7 +413,9 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlInitSBtlSub);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetGeneratorData);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGeneratorD_On);
+void sbtlGeneratorD_On(void) {
+    sb_gen_d_flag = 1;
+}
 
 s32 sbtlCheckGeneratorGroupID(s32 group)
 {
@@ -462,7 +465,10 @@ void sbtlResetRndEncCount(void)
     encmax = 0;
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlRndEncTopPriorityMap);
+void sbtlRndEncTopPriorityMap(s32 *map, s32 *floor) {
+    *map = g_rndenc1_map;
+    *floor = g_rndenc1_floor;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallGetRandIntA2);
 
@@ -474,11 +480,17 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallGetRandIntA3);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetNextPathData);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf83);
+s16 sbtlGetPathDataCount(s16 id) {
+    return tbldatacnt[id];
+}
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlBtlSetNextPathDataSub);
+SBTLENMY_ACTDATA *sbtlGetPathACTData(s16 id, s16 no) {
+    return &data[id][no];
+}
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlBtlSetNextPathDataSub2);
+SBTLENMY_PATHDATA *sbtlGetPathData(s16 id) {
+    return &pathdata[id];
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlInitEffect);
 

@@ -12,6 +12,8 @@
 #include "sBtlUnit.h"
 #include "ps2asm.h"
 #include "dds3CameraObjectBasic.h"
+#include "sBtlSkill.h"
+#include "EventBit.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
@@ -187,7 +189,9 @@ INCLUDE_ASM(const s32, "sbtl", CalcItem);
 
 INCLUDE_ASM(const s32, "sbtl", CalcItem_Battle_sbtlCalc);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlResetItemFlg);
+void sbtlResetItemFlg(sdatUnitWork_t *unit) {
+    unit->itemstatus &= ~0x410;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckDrink);
 
@@ -235,29 +239,33 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_ActerDamage);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_TargetDamage);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_Action);
+s32 sbtlCheckAutoSkill_Action(struct SBTLUNIT_WORK *wk, SBTLDMG_HITWORK *hwk, s32 attr) {
+    BST bst;
+
+    if (attr != 0 && !(attr & 0x8000)) {
+        return 0;
+    }
+    if (hwk->attr_flg & 0x100) {
+        return 0;
+    }
+    bst = sbtlGetBadStatus(&wk->unit);
+    if (bst == BST_STONE || bst == BST_BOUDO || bst == BST_MAHUU || bst == BST_MOUDOKU || bst == BST_SLEEP
+        || bst == BST_BOYCOTT || bst == BST_RAND0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_RODATA(const s32, "sbtl", sbtlCallGetPercentageTable);
 
 INCLUDE_ASM(const s32, "sbtl", CalcAutoSkill);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetDropMoney);
-
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckEvtBit_Table);
-
-INCLUDE_ASM(const s32, "sbtl", sbtlGetSkillCost);
-
-INCLUDE_ASM(const s32, "sbtl", sbtlGetMagCost);
-
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckUseSkill);
-
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf90);
-
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckMagCost);
-
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost2);
-
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost);
+s32 sbtlGetDropMoney(sdatUnitWork_t *unit, s32 gold) {
+    if ((unit->itemstatus & 0x100) != 0) {
+        gold += gold / 5;
+    }
+    return gold;
+}
 
 INCLUDE_RODATA(const s32, "sbtl", sbtlStrBDmgupH100);
 
@@ -273,7 +281,27 @@ INCLUDE_RODATA(const s32, "sbtl", CalcAutoSkillStrRecupH100);
 
 INCLUDE_RODATA(const s32, "sbtl", jtbl_004C6C00);
 
-INCLUDE_RODATA(const s32, "sbtl", LimitRange_2Table);
+s32 sbtlCheckMoon(u16 moon) {
+    u16 tbl[9] = {0xBC0, 0xBC1, 0xBC2, 0xBC3, 0xBC4, 0xBC5, 0xBC6, 0xBC7, 0xBC8};
+
+    return evtBitCheck(tbl[moon]) != 0;
+}
+
+INCLUDE_ASM(const s32, "sbtl", sbtlGetSkillCost);
+
+INCLUDE_ASM(const s32, "sbtl", sbtlGetMagCost);
+
+INCLUDE_ASM(const s32, "sbtl", sbtlCheckUseSkill);
+
+s32 sbtlCheckMagCost_GB(sdatUnitWork_t *player, sdatUnitWork_t *unit, s32 devilid, s8 flg) {
+    return 1;
+}
+
+INCLUDE_ASM(const s32, "sbtl", sbtlCheckMagCost);
+
+INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost2);
+
+INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost_SkillID);
 

@@ -2456,14 +2456,14 @@ vice:
         /* wk's counter auto skill hits the attacker back. */
         unit = sbtlSearchUnit_ID(wk_sbtl->unitList, acterID);
         if (unit != NULL && sbtlCheckDamageTarget(unit) && wk->unit.now.hp - damage >= 2 && !sbtlRefSbtl68(unit)) {
-            counter = sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2);
+            counter = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2);
             if (counter != 3) {
-                counter = sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2);
+                counter = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2);
             }
-            if (sbtlGetDamageSub(counter) && counter == 3) {
+            if (sbtlCheckAutoSkill_TargetDamage(counter) && counter == 3) {
                 bst = sbtlGetBadStatus(&wk->unit);
                 if ((bst == BST_STONE || bst == BST_MOUDOKU || bst == BST_SLEEP || bst == BST_RAND0 || bst == BST_BOYCOTT) &&
-                    (s16)GetPercentage() < 80 && sbtlCheckAutoSkill_Action(wk, (struct SBTLUNIT_WORK *)hwk, attr) && !charmHit) {
+                    (s16)GetPercentage() < 80 && sbtlCheckAutoSkill_Action(wk, hwk, attr) && !charmHit) {
                     counterDamage = sbtlCallBtlGetSkilltbl24(&unit->unit, counter, damage, skillid, wk->unit.autost_cnt, wk->unit.autost_cnt2);
                     if (counterDamage <= 0) {
                         counterDamage = 1;
@@ -2731,8 +2731,8 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetStoneDeadDamage);
 
 s32 sbtlCallBtlGetAutoSkillID(struct SBTLUNIT_WORK *wk)
 {
-    if (!sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2) ||
-        !sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2)) {
+    if (!sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2) ||
+        !sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2)) {
         if ((s16)GetPercentage() < 80) {
             if (wk->field414 & 2) {
                 sbtlSetUseSkill_sbtlActAI(wk, SKLID_OFS_AUTO, 0);

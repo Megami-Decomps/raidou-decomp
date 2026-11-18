@@ -515,7 +515,6 @@ void sbtlCallBtlGetPlayerData2(void);
 void sbtlCallBtlGetPlayerData6(s32 num);
 s32 sbtlCallBtlGetMotionVisualData(struct SBTLUNIT_WORK *wk, s32 motionID, s32 bframe, s32 aframe, s8 flg);
 f32 sbtlCallBtlGetMotionVisualData4(struct SBTLUNIT_WORK *wk, s32 type);
-s32 sdfRemoveTaskItem(struct SBTLUNIT_WORK *wk, s32 flg);
 s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg);
 
 #ifdef VERSION_RAIDOU2
@@ -906,7 +905,6 @@ s32 sbtlCallBtlSearchPacData2(s32 major, s32 minor, s32 devilid, void *data, s32
 s32 DrawProc2(s32 major, s32 minor, s32 devilid, void *data, s32 size);
 s32 sbtlCallBtlSearchUnitID32(void);
 s32 sbtlCallBtlSearchUnitID33(void);
-s32 sbtlCallBtlSearchUnitID34(sdatUnitWork_t *unit, s32 devilId, s8 flg);
 s32 sbtlCallBtlSearchUnitID7(s32 x, s32 y);
 struct SBTLDVLTK_LISTWORK *sbtlCallChipAllocZeroDirect(void);
 s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *lwk, u8 flg);
@@ -951,7 +949,6 @@ s32 sbtlCallBtlSearchUnitID9(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallMemset9(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *target, f32 frame);
 extern s32 (*sbtlCallBtlSearchUnitID8Data[])(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_WORK *sbtlCallMemset7(s32 a, s32 motionId, s32 stock, s8 flg);
-s32 sbtlCallBtlGetDevilDataSBtlSub5(sdatUnitWork_t *summoner, sdatUnitWork_t *unit, s32 devilId);
 void FakeRndHit(struct SBTLUNIT_WORK *wk, s32 pow);
 s32 sbtlCallBtlSearchUnitID12(void);
 void sbtlBeginSetsumaSub(struct SBTLUNIT_WORK *wk);

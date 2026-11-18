@@ -174,8 +174,8 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
     s32 hp;
 
     unit = &wk->unit;
-    if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2) == 2
-        || sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2) == 2) {
+    if (sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2) == 2
+        || sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2) == 2) {
         if (++wk->autoreccnt >= wk->unit.autost_cnt2) {
             wk->autoreccnt = 0;
             heal = wk->unit.now.maxhp * 0.03f;
@@ -551,10 +551,10 @@ s32 sbtlCallBtlGetSkilltbl17(s32 *resist, s32 luck, struct sdatUnitWork_t *unit,
     tbl = sbtlGetSkilltbl(skill);
     chance = (f32)tbl->percentage / hundred * (f32)(luck * 2 + 100) / (f32)(tgtLuck * 2 + 100) * (f32)(resist[idx] & 0xFFF);
     if (unit != NULL) {
-        if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(unit, 0), &unit->autost_cnt, &unit->autost_cnt2) == 16) {
+        if (sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(unit, 0), &unit->autost_cnt, &unit->autost_cnt2) == 16) {
             chance *= (f32)unit->autost_cnt2 / hundred;
         }
-        if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(unit, 1), &unit->autost_cnt, &unit->autost_cnt2) == 16) {
+        if (sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(unit, 1), &unit->autost_cnt, &unit->autost_cnt2) == 16) {
             chance *= (f32)unit->autost_cnt2 / hundred;
         }
     }

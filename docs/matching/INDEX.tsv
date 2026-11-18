@@ -374,6 +374,7 @@ fmProcTrigSequence_slMain	mc/slMain	raidou1 0x300	68 of 190 words differ	docs/ma
 slQueryYesNoDraw	mc/slMain	raidou1 0x960	0 of 600 words differ	docs/matching/mc/slMain.md	11		
 slLoadProc_openFile	mc/slMain	raidou1 0xA4, raidou2 0xA4	1 of 41 words differ	docs/matching/mc/slMain.md	23		
 mnuUpdateMovieDrawShutdownCountdown	movie/mviManager	raidou1 0xA8, raidou2 0xA8	1 of 42 words differ	docs/matching/movie/mviManager.md	3		
+sbtlSetAutoSkill_GBID	sbtl	raidou1 0xC0	16 of 48 words differ	docs/matching/sbtl.md	3		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		

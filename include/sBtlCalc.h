@@ -5,6 +5,7 @@
 #include "enums.h"
 
 struct SBTLCALC_DMGWORK;
+struct SBTLDMG_HITWORK;
 struct SBTLSKILLP_TBL;
 struct SBTLUNIT_WORK;
 struct sdatUnitWork_t;
@@ -17,13 +18,23 @@ s32 sbtlCheckBadStatus(struct SBTLUNIT_WORK *wk);
 void sbtlCheckBadStatus_Weak(struct SBTLUNIT_WORK *wk, SKLID sklid, struct SBTLSKILLP_TBL *ptbl, s32 acterID);
 void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckCost(struct SBTLUNIT_WORK *wk, s32 flg);
+s32 sbtlGetMagCost(struct sdatUnitWork_t *player, struct sdatUnitWork_t *unit, s32 devilid);
+s32 sbtlCheckMagCost_GB(struct sdatUnitWork_t *player, struct sdatUnitWork_t *unit, s32 devilid, s8 flg);
+s32 sbtlCheckMagCost(struct sdatUnitWork_t *unit, s32 devilid, s8 flg);
 BST sbtlGetBadStatus(struct sdatUnitWork_t *unit);
 /* HP (isMp 0) or MP gain to add to unit, cut so it stops at the maximum. */
 s32 LimitRange(struct sdatUnitWork_t *unit, s32 value, s32 isMp);
 s32 sbtlCallLimitRange(struct SBTLUNIT_WORK *wk, s32 value);
-s32 sbtlCheckEvtBit_Table(s32 idx);
+s32 sbtlCheckMoon(u16 moon);
+s32 sbtlResetAutoSkill(struct sdatUnitWork_t *unit);
+s32 sbtlSetAutoSkill_GBID(struct sdatUnitWork_t *unit, s32 id);
+s32 sbtlCheckAutoSkill_ActerDamage_ID(SKLID sklid);
+s32 sbtlCheckAutoSkill_TargetDamage_ID(SKLID sklid);
+s32 sbtlCheckAutoSkill_ActerDamage(s32 autono);
+s32 sbtlCheckAutoSkill_TargetDamage(s32 autono);
+s32 sbtlCheckAutoSkill_Action(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, s32 attr);
 s32 sbtlCheckKuishibari(struct SBTLUNIT_WORK *wk, s32 damage);
-s32 sbtlCallBtlGetSkilltbl21(SKLID id, s16 *badst, s16 *power);
+s32 sbtlGetAutoSkillPara(SKLID id, s16 *badst, s16 *power);
 s32 sbtlBtlCheckBadStatusWeakSub(SKLID skill);
 s32 sbtlCallBtlGetSkilltbl17(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx);
 s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk);

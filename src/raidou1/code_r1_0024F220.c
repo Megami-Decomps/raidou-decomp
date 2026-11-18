@@ -1453,9 +1453,9 @@ s32 sbtlSetEndData(void) {
     if (wk_sbtl->field344 > 0) {
         helper = sbtlRefSbtl();
         if (helper) {
-            skill = sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&helper->unit, 0), &helper->unit.autost_cnt, &helper->unit.autost_cnt2);
+            skill = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&helper->unit, 0), &helper->unit.autost_cnt, &helper->unit.autost_cnt2);
             if (skill != 1) {
-                skill = sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&helper->unit, 1), &helper->unit.autost_cnt, &helper->unit.autost_cnt2);
+                skill = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&helper->unit, 1), &helper->unit.autost_cnt, &helper->unit.autost_cnt2);
             }
             if (skill == 1) {
                 if (wk_sbtl->battleMode == 3
@@ -3386,9 +3386,9 @@ s32 sbtlItem_CheckSetItem(struct SBTLITEM_WORK *item, const sdfVector4_t *pos) {
         if (wk_sbtl->field344 > 0) {
             stock = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
             if (stock && sbtlCheckDamageTarget(stock)) {
-                autoskill = sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&stock->unit, 0), &stock->unit.autost_cnt, &stock->unit.autost_cnt2);
+                autoskill = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&stock->unit, 0), &stock->unit.autost_cnt, &stock->unit.autost_cnt2);
                 if (autoskill != 7) {
-                    autoskill = sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&stock->unit, 1), &stock->unit.autost_cnt, &stock->unit.autost_cnt2);
+                    autoskill = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&stock->unit, 1), &stock->unit.autost_cnt, &stock->unit.autost_cnt2);
                 }
             }
         }

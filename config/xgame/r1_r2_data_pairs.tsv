@@ -1590,12 +1590,12 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0041C7E8	0x0047B5A0	sbtlCallBtlGetMotionVisualData3Data2Entry3	.data	0x80	yes	unique-contents
 0x0041C880	0x0047B700	sbtlData15	.data	0x10	yes	code-ref
 0x0041C890	0x0047B710	sbtlData16	.data	0x10	yes	code-ref
-0x0041C8A0	0x0047B720	sbtlLeaf83Data	.data	0x10	yes	code-ref
-0x0041C8B0	0x0047B730	sbtlBtlSetNextPathDataSub2Data	.data	0xA0	yes	code-ref
+0x0041C8A0	0x0047B720	tbldatacnt	.data	0x10	yes	code-ref
+0x0041C8B0	0x0047B730	pathdata	.data	0xA0	yes	code-ref
 0x0041C950	0x0047B7D0	sbtlBtlSetNextPathDataSubDataEntry	.data	0x18	yes	data-word
 0x0041C968	0x0047B7E8	sbtlBtlSetNextPathDataSubDataEntry2	.data	0x78	yes	data-word
 0x0041C9E0	0x0047B860	sbtlBtlSetNextPathDataSubDataEntry3	.data	0x50	yes	data-word
-0x0041CA30	0x0047B8B0	sbtlBtlSetNextPathDataSubData	.data	0x10	no	code-ref
+0x0041CA30	0x0047B8B0	data	.data	0x10	no	code-ref
 0x0041D030	0x0047FB60	sbtlCallSetPosPoseSetDds3Basic2Data	.data	0x10	yes	code-ref
 0x0041D040	0x0047FB70	sbtlCallSetPosPoseSetDds3Basic2Data2	.data	0x10	yes	code-ref
 0x0041D050	0x0047FF80	sbtlData17	.data	0x50	no	code-ref
@@ -9227,8 +9227,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046DCF8	0x004E25F8	sbtlData100	.sdata	0x4	yes	run-order-size
 0x0046DCFC	0x004E25FC	sbtlData101	.sdata	0x4	yes	run-order-size
 0x0046DD00	0x004E2600	sbtlCallBitCheckData	.sdata	0x4	yes	run-order-size
-0x0046DD04	0x004E2604	sbtlData102	.sdata	0x4	yes	code-ref
-0x0046DD08	0x004E2608	sbtlData103	.sdata	0x4	yes	code-ref
+0x0046DD04	0x004E2604	g_rndenc1_map	.sdata	0x4	yes	code-ref
+0x0046DD08	0x004E2608	g_rndenc1_floor	.sdata	0x4	yes	code-ref
 0x0046DD0C	0x004E2610	sb_gen_d_flag	.sdata	0x4	yes	code-ref
 0x0046DD10	0x004E2614	datRndEncBase	.sdata	0x4	yes	run-order-size
 0x0046DD14	0x004E2618	encmax	.sdata	0x4	yes	code-ref

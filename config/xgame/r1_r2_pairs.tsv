@@ -6755,9 +6755,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00299470	0x002CD448	sbtlResetRndEncCount	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	masked-hash-in-gap
 0x00299488	0x002CD460	sbtlRndEncTopPriorityMap	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x00299750	0x002CD9C0	sbtlSetNextPathData	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
-0x00299900	0x002CDB70	sbtlLeaf83	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
-0x00299920	0x002CDB90	sbtlBtlSetNextPathDataSub	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
-0x00299950	0x002CDBC0	sbtlBtlSetNextPathDataSub2	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
+0x00299900	0x002CDB70	sbtlGetPathDataCount	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
+0x00299920	0x002CDB90	sbtlGetPathACTData	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
+0x00299950	0x002CDBC0	sbtlGetPathData	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x002999C0	0x002CDCC8	sbtlCallFreeAuto	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x00299A80	0x002CDD88	sbtlCallFileOpen	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x00299B58	0x002CDE60	sbtlGetItemtbl	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
@@ -6784,9 +6784,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0029B358	0x002D4F80	CalcAisyo	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	size
 0x0029B8D8	0x002D57E0	sbtlCheckAutoSkill_Action	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
 0x0029BC68	0x002D5D00	sbtlGetDropMoney	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
-0x0029BC98	0x002D5D30	sbtlCheckEvtBit_Table	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
+0x0029BC98	0x002D5D30	sbtlCheckMoon	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x0029BE08	0x002D5E30	sbtlCheckUseSkill	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
-0x0029BE78	0x002D5F88	sbtlCheckCost	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	size
+0x0029BE78	0x002D5EA0	sbtlCheckMagCost_GB	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	same-name
 0x0029C1A8	0x002D6278	sbtlDecVice	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
 0x0029C238	0x002D63D0	sbtlDecHP	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	masked-hash-in-gap
 0x0029C248	0x002D63E0	sbtlDecMP	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	masked-hash-in-gap

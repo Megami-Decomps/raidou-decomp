@@ -165,6 +165,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | jmsMisc | raidou1, raidou2 | [jmsMisc.md](jmsMisc.md) |
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
 | 1 | movie/mviManager | raidou1, raidou2 | [movie/mviManager.md](movie/mviManager.md) |
+| 1 | sbtl | raidou1 | [sbtl.md](sbtl.md) |
 | 1 | sbtlEff_00289E50 | raidou1 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
 | 1 | sbtlSub_0027ED08 | raidou1, raidou2 | [sbtlSub_0027ED08.md](sbtlSub_0027ED08.md) |
 | 1 | sdf/sdfCoreDraw | raidou1, raidou2 | [sdf/sdfCoreDraw.md](sdf/sdfCoreDraw.md) |

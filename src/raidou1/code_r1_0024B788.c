@@ -736,7 +736,7 @@ s32 sbtlNakamaSetUp(void)
         }
         if ((wk_sbtl->battleMode == 0 || wk_sbtl->battleMode == 2) && wk_sbtl->summonIndex[0] >= 0
             && wk_sbtl->stockNum > 0 && sbtlBtlNakamaSetUpSub(&player->stock[wk_sbtl->summonIndex[0]])) {
-            if (sbtlCallBtlSearchUnitID34(&player->stock[wk_sbtl->summonIndex[0]],
+            if (sbtlCheckMagCost(&player->stock[wk_sbtl->summonIndex[0]],
                                           player->stock[wk_sbtl->summonIndex[0]].devilId, 0)) {
                 set = 1;
                 sbtlSetSummon_Unit(wk, wk_sbtl->summonIndex[0], 0, 0, 0, 2);

@@ -814,7 +814,7 @@ s32 sbtlCallCheckLiveTarget2(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx) {
 }
 
 s32 sbtlGetBgmID(s32 encountid, u16 bit) {
-    return sbtlCheckEvtBit_Table(bit) != 0;
+    return sbtlCheckMoon(bit) != 0;
 }
 
 s32 sbtlCallBtlCreateSideList4(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx) {
