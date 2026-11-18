@@ -187,7 +187,14 @@ s32 scrCommand_BIT_ON(void)
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BIT_ON);
+s32 scrCommand_BIT_ON(void)
+{
+    s32 no = scrGetIntPara(0);
+
+    evtBitOn(no);
+    datDebugPrintf("GameFlag No 0x%x ON: \n", no);
+    return 1;
+}
 #endif
 
 #ifdef VERSION_RAIDOU1

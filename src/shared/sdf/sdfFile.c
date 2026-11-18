@@ -277,7 +277,21 @@ s32 sdfFileCheckExist(char *aFilename) {
     return fd >= 0;
 }
 #else
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileCheckExist);
+s32 sdfFileCheckExist(char *aFilename) {
+    char *resolved = sdfFileMakeFilename(aFilename);
+    s32 fd;
+    s32 exist;
+
+    if (*resolved == '/') {
+        exist = sdfCdImageCheckExist(resolved);
+        sdfChipFreeDirect(resolved);
+        return exist;
+    }
+    fd = sceOpen(resolved, 1);
+    sceClose(fd);
+    sdfChipFreeDirect(resolved);
+    return fd >= 0;
+}
 #endif
 
 void sdfFileClose(void *aHandle)

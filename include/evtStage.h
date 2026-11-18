@@ -5,6 +5,7 @@
 #include "basic.h"
 #include "libsdf.h"
 
+void evtLoadBustupData(void);
 s32 evtCheckPathStat(dds3Basic_t *obj);
 void evtEffectLoopControl(dds3Basic_t *eff, s32 sw);
 void evtFreeAllUnit(void);
@@ -35,6 +36,8 @@ s32 evtPathLinkAndMake(dds3Basic_t *path, dds3Basic_t *obj);
 #ifdef VERSION_RAIDOU2
 extern u32 evtGetDefaultPosBustUpWork;
 extern u32 evtLoadBustupDataWork;
+extern const char evtStrEvent0303Scr03Bf[];
+extern const char evtStartEventData[];
 #endif
 
 #endif

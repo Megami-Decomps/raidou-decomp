@@ -801,7 +801,20 @@ s32 slExitToTitleSub(void) {
     return 0;
 }
 #else
-INCLUDE_ASM(const s32, "mc/slMain", slExitToTitleSub);
+s32 slExitToTitleSub(void)
+{
+    u32 mode[4];
+
+    mode[0] = 0;
+    if (slNewCycleData99 == 1) {
+        return -1;
+    }
+    if (slNewCycleData99 == 2) {
+        return -1;
+    }
+    dds3AdminiCallSequence(2, mode, 4, 0);
+    return 0;
+}
 #endif
 
 s32 slExitToTitle(void) {
@@ -817,7 +830,20 @@ s32 slCallAdminiCallSequence(void) {
     return 0;
 }
 #else
-INCLUDE_ASM(const s32, "mc/slMain", slCallAdminiCallSequence);
+s32 slCallAdminiCallSequence(void)
+{
+    u32 v = 2;
+
+    slData3 = 1;
+    if (slNewCycleData99 == 1) {
+        return -1;
+    }
+    if (slNewCycleData99 == 2) {
+        return -1;
+    }
+    dds3AdminiCallSequence(2, &v, 4, 0);
+    return 0;
+}
 #endif
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001D65F8.c:1, match */

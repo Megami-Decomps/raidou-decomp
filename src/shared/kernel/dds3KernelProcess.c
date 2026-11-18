@@ -19,6 +19,7 @@
 #include "sdf2D.h"
 #include "sdfGraph.h"
 #include "sdf_packet_list.h"
+#include "dds3ObjectBase.h"
 
 
 extern dds3Basic_t *dds3TheWorld;
@@ -431,7 +432,16 @@ s32 dds3BasicDrawProcess(dds3ProcessID_t *id) {
     return 0;
 }
 #else
-INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", dds3BasicDrawProcess);
+s32 dds3BasicDrawProcess(dds3ProcessID_t *id)
+{
+    if (dds3Data48) {
+        dds3ObjectBaseModelLinkOtSvs();
+        dds3CallSetOt2();
+    }
+    dds3Data48 = 0;
+    dds3CallBasicDrawProc(dds3TheWorld);
+    return 0;
+}
 #endif
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelProcess", dds3ClosedDrawTag);

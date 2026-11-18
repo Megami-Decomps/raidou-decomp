@@ -23,6 +23,7 @@ void Release_cmpStatus(cmpStatusWork_t *wk);
 s32 cmpCallGetProcessData2(dds3ProcessID_t *id);
 s32 cmpCallGetProcessData3(dds3ProcessID_t *id);
 void cmpCallInitCmpModel(cmpStatusWork_t *wk);
+void cmpCallEndCmpModel(cmpStatusWork_t *wk);
 void Shutdown_cmpStatus(dds3ProcessID_t *id);
 
 extern s32 nbData8;

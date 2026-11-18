@@ -8,10 +8,42 @@
 #include "code_00195698.h"
 #include "code_0016AD90.h"
 #include "sdfVu0.h"
+#include "code_003648C0.h"
+#include "sdfMemory.h"
 
-INCLUDE_ASM(const s32, "code_0017A2B0", fldCallFindSceneEntryData);
+void fldCallFindSceneEntryData(f32 x, f32 z, f32 x2, f32 z2, s32 scene, s32 id, s32 rot) {
+    am_map = scene;
+    mapCallSetOt2Data7 = x;
+    mapCallSetOt2Data8 = z;
+    fldData34 = x2;
+    fldData35 = z2;
+    mapCallSetOt2Data9 = rot;
+    am_floor = id;
+    fldData36 = am_floor = fldFindSceneEntryData(id);
+    mapCallSetOt2Data10 = fldFindSceneEntryData(fldGlobalBase.word1CC);
+    draw_flags = 0;
+    mapFunc5();
+}
 
-INCLUDE_ASM(const s32, "code_0017A2B0", fldMapAllAmap);
+void fldMapAllAmap(void) {
+    sdfMemHandle_t *file;
+    u32 tex;
+
+    am_floor = fldData36;
+    tex = 0;
+    if (!fldGlobalBase.nakamaMode) {
+        am_top_x = mapCallSetOt2Data7 - 32.0f;
+        am_top_z = mapCallSetOt2Data8 - 28.0f;
+    } else {
+        am_top_x = fldData34 - 32.0f;
+        am_top_z = fldData35 - 28.0f;
+    }
+    mapAutoMapCalcPosLimit(0, 0);
+    file = sdfDevLoadFileEx("/map/all/amap.tmx", &tex, NULL);
+    effQueuedResourceNameRecord4 = sdfTexSet(EE_ADDR_AS(TMX_HEADER_t *, tex));
+    sdfMemFreeDelayedDirect(file);
+    mapFunc10();
+}
 
 void fldCallTexFreeDelayed(void) {
     if (effQueuedResourceNameRecord4 != NULL) {

@@ -97,9 +97,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 00132520	00136438	field/fldProcess	c	smt3:names:1 literal-cores:1 of 25	field/fldProcess
 00138560	00138A58	code_00138560	asm	none	
 00138A60	00138A60	newbattle/nbStageProcess	c	smt3:map:1 of 1	newbattle/nbStageProcess
-00138DE8	00138DE8	code_00138DE8	asm	none	
+00138DE8	00138DE8	code_00138DE8	c	none	
 001391D8	00139730	field/fldFileResolver_00132080	c	smt3:map:3+smt3:names:1+dds:1 of 19 part	field/fldFileResolver
-00139818	001399A0	code_00139818	asm	none	
+00139818	001399A0	code_00139818	c	none	
 001399A8	0013CD00	field/fldDraw	c	smt3:names:24+smt3:map:9 of 47; nbSetEncountMode run included: its .sdata sits inside fldDraw's	field/fldDraw
 0013CD60	00141698	field/fldFileResolver	c	dds:6 of 56	field/fldFileResolver
 001416C0	001430B8	code_001416C0	c	none	
@@ -127,7 +127,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00169A20	00169A20	code_r1_0015D470	c	dds:1 of 1	
 00169A40	00176AE0	code_00169A40	c	none	
 00176AE8	00176AE8	field/fldSnow	c	smt3:names:1 of 1	field/fldSnow
-00176B00	0017A110	code_00176B00	asm	none	
+00176B00	0017A110	code_00176B00	c	none	
 0017A210	0017A210	code_r1_0016A738	c	none	
 0017A2B0	0017ADC0	code_0017A2B0	c	none	
 0017AFE0	0017AFE0	code_r1_0016B3A0	c	none	
@@ -214,7 +214,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001E9B00	001EAD48	file/fileManager	c	smt3:names:28 of 35	file/fileManager
 001EADE0	001EADE0	code_r1_001D49D0	c	none	
 001EAE30	001EB4D0	mc/mcManager	c	smt3:names:15+smt3:map:2 of 30	mc/mcManager
-001EB528	001EB568	code_001EB528	asm	none	
+001EB528	001EB568	code_001EB528	c	none	
 001EB5E0	001EB680	code_r1_001D5158	c	dds:4 of 5 part	
 001EB6A0	001F21F8	mc/slMain	c	smt3:map:35+smt3:names:28 literal-cores:3 of 116	mc/slMain
 001F2B80	001F2B88	code_001F2B80	c	none	

@@ -57,5 +57,6 @@ void evtProcessEnd(void);
 s32 evtProcessStart(dds3ProcessID_t *ParentPID, DDS3_PRIORITY Priority);
 s32 evtRequest(u32 UID, s32 ReqFrame);
 void evtTexFree(void);
+extern dds3ProcessID_t *evtStartRainData2;
 
 #endif

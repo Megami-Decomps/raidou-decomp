@@ -3,6 +3,7 @@
 #include "evtPicture.h"
 #include "evt.h"
 #include "dds3KernelCore.h"
+#include "evtTmxPreLoad.h"
 
 INCLUDE_ASM(const s32, "code_001E37C0", evtCallGrAllocPacketBuff2);
 
@@ -34,7 +35,14 @@ INCLUDE_ASM(const s32, "code_001E37C0", evtCallGetProcessData27);
 
 INCLUDE_ASM(const s32, "code_001E37C0", evtStartRain);
 
-INCLUDE_ASM(const s32, "code_001E37C0", evtCallGetProcessData28);
+void evtCallGetProcessData28(void) {
+    evtTmxPreLoad_t *pData;
+
+    if (evtStartRainData2 != NULL) {
+        pData = dds3GetProcessData(evtStartRainData2);
+        pData->flags |= 2;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001E37C0", evtCallGetProcessData29);
 

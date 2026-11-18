@@ -7,6 +7,7 @@
 #include "fileManager.h"
 #include "sdfRand.h"
 
+void fldCallCtnFree(void);
 void fldAiboCashLoad_Block(void);
 s32 fldCtnGetSub(s32 modelId);
 s32 fldPlayerALoadEndCheck(void);

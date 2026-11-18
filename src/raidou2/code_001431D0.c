@@ -228,7 +228,17 @@ void mapAutomapFldClr(s32 field) {
 
 INCLUDE_ASM(const s32, "code_001431D0", fldSpecificSceneOnVisible);
 
-INCLUDE_ASM(const s32, "code_001431D0", mapCutSetTblID);
+void mapCutSetTblID(s32 cut)
+{
+    if (fldGlobalBase.word21C == 1) {
+        if (cut == 27 || cut == 33) {
+            fldGlobalBase.cutIdx = 33;
+            return;
+        }
+        fldGlobalBase.word21C = 0;
+    }
+    fldGlobalBase.cutIdx = fldSpecificSceneOnVisible(cut);
+}
 
 INCLUDE_ASM(const s32, "code_001431D0", mapCallSpecificSceneOnVisible);
 

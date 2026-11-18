@@ -20,6 +20,9 @@
 #include "sbtlWork.h"
 #include "sBtlSkill.h"
 #include "sBtlCalc.h"
+#include "gohMain.h"
+#include "evtStage.h"
+#include "sBtlCmndMenuNew.h"
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -149,7 +152,21 @@ void UserInit(void) {
     sbtlLoadOnMemMsg();
 }
 #else
-INCLUDE_ASM(const s32, "dat", UserInit);
+void UserInit(void)
+{
+    dds3GlobalWorkClearFlags();
+    evtInitGlobalWork();
+    datInitPlayer();
+    fclCallNewGameInit(0);
+    datLoadLvUpTables();
+    datLoadGohmadenTable();
+    sbtlLoadOnMemMsg();
+    evtLoadBustupData();
+    cmpLoadModelTables();
+    btlLoadKaiwaData();
+    btlLoadBossEventTable();
+    gohCallMemset2();
+}
 #endif
 
 void datGlobalWorkDestroySub(void) {

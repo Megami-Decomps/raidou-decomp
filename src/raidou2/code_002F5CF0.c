@@ -563,7 +563,12 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallExistProcess2);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallGetProcessStat2);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", fldReleaseTitleMiniTexture);
+void fldReleaseTitleMiniTexture(void) {
+    if (effQueuedResourceNameRecord7 != NULL) {
+        sbtlDeleteUnitList(effQueuedResourceNameRecord7);
+        effQueuedResourceNameRecord7 = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallFileOpen2);
 

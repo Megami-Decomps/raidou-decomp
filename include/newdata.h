@@ -262,7 +262,7 @@ typedef struct
     /* 0x4930 */ u16 unk4930;
     /* 0x4932 */ u16 unk4932;
     /* 0x4934 */ u8 unk4934[0x4];
-    /* 0x4938 */ u8 mesLog[0x1580]; /* message log, cleared by NewGameInit (HD MesLogData_t.mesLog) */
+    /* 0x4938 */ u8 automapmask[172][32]; /* cleared by NewGameInit */
     /* 0x5EB8 */ u8 unk5EB8[0x8];
     /* 0x5EC0 */ u32 unk5EC0;
     /* 0x5EC4 */ u32 unk5EC4;

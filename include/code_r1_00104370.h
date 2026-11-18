@@ -5,5 +5,6 @@
 
 void dds3InitDrawEnvSub(s32 i);
 extern u8 dds3CallDLinkTexPacketData;
+extern s8 dds3Data48;
 
 #endif

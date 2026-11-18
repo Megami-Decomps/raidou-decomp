@@ -31,6 +31,7 @@
 #include "mdlManager.h"
 #include "datCalc.h"
 #include "dat.h"
+#include "code_00163C50.h"
 
 /* Cursor advancement returns whether cursorIndex refers to a linked entry. */
 typedef u32 Dds3BasicArrayCursorResult;
@@ -178,7 +179,7 @@ void mapAM_MaskClear(void) {
 #else
 void NewGameInit(void)
 {
-    memset(DDS3_GBWK->mesLog, 0, sizeof(DDS3_GBWK->mesLog));
+    memset(DDS3_GBWK->automapmask, 0, sizeof(DDS3_GBWK->automapmask));
 }
 #endif
 
@@ -239,7 +240,16 @@ void mapAM_MaskSetCurrent(s32 map, s32 floor) {
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskSetCurrent);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", mapAM_MaskOpen_ID);
+void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 id) {
+    s32 idx;
+
+    if (map < 41 && fldGlobalBase.automapMaskCurrentIdx != -1) {
+        idx = fldGlobalBase.automapMaskCurrentIdx;
+        if (idx < 172) {
+            DDS3_GBWK->automapmask[idx][id / 8] |= 1 << (id - (id / 8) * 8);
+        }
+    }
+}
 #endif
 
 #ifdef VERSION_RAIDOU1
@@ -995,7 +1005,14 @@ s32 fldLoadMapResourceSub2(void)
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldCallCtnFree);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", fldAllShutDown);
+void fldAllShutDown(void)
+{
+    fldCallCtnFree();
+    evtFreeStage();
+    fldProcShutDown();
+    nbFreeDeadMoonTex();
+    nbFunc2();
+}
 #endif
 
 void fldRegistUnitPad(void) {

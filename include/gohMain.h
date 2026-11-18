@@ -26,6 +26,7 @@ typedef struct gohStatWork_t {
     s32 unk20330;
 } gohStatWork_t;
 
+void gohCallMemset2(void);
 s32 MahjanInit(dds3ProcessID_t *PID);
 dds3ProcessFunc_t MahjanUpdateProcess(dds3ProcessID_t *PID);
 s32 evtBDispatchSyncD2(struct gohData_t *pData);

@@ -493,6 +493,7 @@ extern fldAreaWork_t fldGlobalBase;
 extern sdfVector4_t ProcRandomEncountCheck_fldData2; /* player position at the last encounter check */
 
 s32 mapCheckDying(s32 mode);
+s32 mapCallProcessCheck(s32 mode);
 
 typedef struct {
     s32 type;

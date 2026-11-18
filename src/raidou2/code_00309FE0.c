@@ -5,6 +5,7 @@
 #include "sdk_libc.h"
 #include "dds3KernelCore.h"
 #include "sbtlWork.h"
+#include "itf.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 

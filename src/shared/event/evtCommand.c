@@ -2173,7 +2173,21 @@ s32 evtCommand_EFFECT_PATH_WAIT(void)
 #ifdef VERSION_RAIDOU1
 u32 evtCommand_SEARCH_ID(void)
 #else
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_SEARCH_ID);
+u32 evtCommand_SEARCH_ID(void)
+{
+    void *scene;
+    dds3Basic_t *basic;
+
+    scene = dds3GetControlScene();
+    basic = dds3SceneBasicSearchName(scene, scrGetStrPara(0));
+    if (basic == NULL) {
+        datDebugPrintf(evtMsgIdNotFoundWarn, scrGetStrPara(0));
+        scrSetIntReturnValue(0);
+    } else {
+        scrSetIntReturnValue(basic->serialID);
+    }
+    return 1;
+}
 
 s32 evtCommand_RTRN_TITLE(void)
 #endif
@@ -2341,6 +2355,10 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_FIELD3);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallBgTexClear);
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgIdNotFoundWarn);
+
+#endif
 s32 evtCommand_FIELD_BE(void)
 {
     s32 event;

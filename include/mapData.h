@@ -706,6 +706,17 @@ extern u8 mapData9[1024];
 extern u8 mapData10[1024];
 extern u8 mapData11[1024];
 #endif
+
+#ifdef VERSION_RAIDOU2
+typedef struct FloorName_t {
+    s8 fieldID;
+    s8 floorID;
+    char name[36];
+} FloorName_t;
+
+extern FloorName_t mapData2[232];
+#endif
+
 extern s8 mapData5[48][64];
 /* Event hit mask row, 20 bytes (HD MskEveHitTbl_t plus padding). */
 typedef struct MskEveHitTbl_t {
@@ -1011,6 +1022,7 @@ void fldCallEffectDrawDds3Effect(MAP_EPL_EFF_WORK_t *work);
 #endif
 void mapEffEplAllDrawTask(void);
 void mapCutSetTblID(s32 cut);
+s32 fldSpecificSceneOnVisible(s32 cut);
 
 void mapEveHitMsk_Find(s32 evehitid);
 u32 mapNpcTableGetMSK(s32 npc_idx);

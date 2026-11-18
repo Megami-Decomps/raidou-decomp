@@ -131,7 +131,18 @@ INCLUDE_ASM(const s32, "code_0015D870", fldRefMapAreaNow);
 
 INCLUDE_ASM(const s32, "code_0015D870", mapRefMapAreaNow);
 
-INCLUDE_ASM(const s32, "code_0015D870", mapGetCut_FXY);
+s32 mapGetCut_FXY(f32 x, f32 z) {
+    s32 ix;
+    s32 iz;
+    s32 cut;
+
+    fldSetPlayerTargetData(&ix, &iz, x, z);
+    cut = pMapColmNow[pMapAreaNow->w * iz + ix].cut & 0x7F;
+    if (fldGlobalBase.word21C == 1 && cut == 27) {
+        cut = 33;
+    }
+    return fldSpecificSceneOnVisible(cut);
+}
 
 s32 mapProcSequenceSub5(f32 x, f32 z) {
     s32 i;

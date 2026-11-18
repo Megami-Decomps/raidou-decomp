@@ -10,6 +10,7 @@
 #include "gohMain.h"
 #include "code_003BF2E0.h"
 #include "cmpMain.h"
+#include "itf.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 

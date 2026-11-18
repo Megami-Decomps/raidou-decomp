@@ -11,6 +11,12 @@
 #include "code_003648C0.h"
 #include "cmpMain.h"
 #include "code_0038AD80.h"
+#include "dds3PadManager.h"
+#include "fldProcess.h"
+#include "sdfSound.h"
+#include "sdk_libc.h"
+#include "mapData.h"
+#include "code_r1_002C8188.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -322,7 +328,19 @@ INCLUDE_ASM(const s32, "code_003648C0", evtCreateLinkSub);
 
 INCLUDE_ASM(const s32, "code_003648C0", evtFunc18);
 
-INCLUDE_ASM(const s32, "code_003648C0", evtFunc19);
+s32 evtFunc19(CMP_SPR a_no)
+{
+    s32 mot;
+
+    if (a_no >= CMP_SPR_NUM) {
+        return 0;
+    }
+    mot = evtData9[a_no];
+    if (mot < 0) {
+        return 0;
+    }
+    return evtFunc18(mot);
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", evtCallGetSpriteHnd);
 
@@ -336,7 +354,27 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpFreeSpriteMem);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpLoadSpriteMem);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpFreeSpriteHnd);
+s32 cmpFreeSpriteHnd(CMP_SPR a_no) {
+    struct sprHandle_t **set = &evtWork6[a_no];
+    s32 *count;
+
+    if (a_no >= CMP_SPR_NUM) {
+        return 0;
+    }
+    if (*set == NULL) {
+        cmpWork8[a_no] = 0;
+        return 0;
+    }
+    count = &cmpWork8[a_no];
+    if (--*count > 0) {
+        return 0;
+    }
+    effDestroyResourceSlotSet(*set);
+    *count = 0;
+    *set = NULL;
+    evtFunc19(a_no);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetupCmpItemSub);
 
@@ -346,9 +384,25 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpFreeSpriteToMem);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpFreeSpriteToGS);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpLoadSpriteHnd);
+struct sdfMemHandle_t *cmpLoadSpriteHnd(CMP_SPR a_no)
+{
+    struct sdfMemHandle_t *handle = NULL;
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpGetSpriteHnd);
+    if (a_no < CMP_SPR_NUM) {
+        handle = cmpWork3[a_no];
+    }
+    return handle;
+}
+
+struct sprHandle_t *cmpGetSpriteHnd(CMP_SPR a_no)
+{
+    struct sprHandle_t *hSpr = NULL;
+
+    if (a_no < CMP_SPR_NUM) {
+        hSpr = evtWork6[a_no];
+    }
+    return hSpr;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpFirstInitSub);
 
@@ -804,7 +858,18 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetProcessData15);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallInitCmpModel);
 
-INCLUDE_ASM(const s32, "code_003648C0", Shutdown_cmpStatus);
+void Shutdown_cmpStatus(dds3ProcessID_t *id)
+{
+    cmpStatusWork_t *wk = dds3GetProcessData(id);
+
+    cmpCallEndCmpModel(wk);
+    if (dds3ExistProcess(wk->drawPID)) {
+        dds3KillProcess(wk->drawPID, 0);
+        wk->drawPID = NULL;
+    }
+    sdfMemFreeDirect(wk->hMem);
+    g_mainPID = NULL;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", ProcessStart_cmpStatus);
 
@@ -1016,7 +1081,10 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateSkillListHd);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpChkSkillSelectHd);
 
-INCLUDE_ASM(const s32, "code_003648C0", CmpOnMenu);
+void CmpOnMenu(u32 a_menu)
+{
+    CmpOnMenuData[a_menu >> 16]();
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpChangeChkTabPageSub);
 

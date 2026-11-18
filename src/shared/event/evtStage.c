@@ -308,16 +308,19 @@ s32 evtLoadArea_FromMemory(s32 fld, s32 area, saddr_t pF1, saddr_t pF2,
     return 1;
 }
 
+#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "event/evtStage", evtAreaPathFormat);
 
-#ifdef VERSION_RAIDOU1
+#endif
 void evtStartEvent(s32 no) {
+#ifdef VERSION_RAIDOU1
     sprintf(evtStageScriptPath, "/event/e%03d/e%03d/scr/e%03d.bf", no - no % 10, no, no);
+#else
+    sprintf(evtStageScriptPath, evtStrEvent0303Scr03Bf, no - no % 10, no, no);
+    printf(evtStartEventData, evtStageScriptPath);
+#endif
     scrStartScriptByName(0x3EB, evtStageScriptPath, 0);
 }
-#else
-INCLUDE_ASM(const s32, "event/evtStage", evtStartEvent);
-#endif
 
 void evtKillFieldScript(void)
 {
@@ -490,6 +493,12 @@ s32 evtStageAnimeControl(s32 type, s32 mode) {
     }
     return 1;
 }
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "event/evtStage", evtAreaPathFormat);
+
+INCLUDE_RODATA(const s32, "event/evtStage", evtStrEvent0303Scr03Bf);
+
+#endif
 #ifdef VERSION_RAIDOU2
 const char evtKillFieldScriptFormat[0x20] = "kill field script -> [%s]\n";
 #endif

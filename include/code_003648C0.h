@@ -8,5 +8,7 @@
 struct tagCMP_WORK;
 extern struct mdlObj_t *cmpDrawStatusModel_cmpModelData;
 s32 cmpMenuFilter(struct tagCMP_WORK *wk);
+void mapFunc5(void);
+void mapFunc6(void);
 
 #endif

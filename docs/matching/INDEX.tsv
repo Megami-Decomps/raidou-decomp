@@ -21,9 +21,11 @@ fldSetUnit	code_0012A2E0	raidou1 0x7FC	1 of 511 words differ	docs/matching/code_
 ProcMskSub_B	code_0012B6A0	raidou1 0x2DC	8 of 183 words differ	docs/matching/code_0012B6A0.md	3		
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3		
 fldCallTexListFree	code_001326C0	raidou1 0x188	1 of 98 words differ	docs/matching/code_001326C0.md	3		
+fldMakeResouceBasicFL2	code_00138DE8	raidou2 0x3F0	131 of 246 words differ	docs/matching/code_00138DE8.md	3		
 fldCallFptodp	code_00139330	raidou1 0xC8	43 of 46 words differ	docs/matching/code_00139330.md	3		
 mapBigClipChkF	code_00139330	raidou1 0x138	34 of 78 words differ	docs/matching/code_00139330.md	11		
 fldBgTexClear	code_00139330	raidou1 0x8C	8 of 35 words differ	docs/matching/code_00139330.md	19		
+fldCallTexListFree	code_00139818	raidou2 0x188	1 of 98 words differ	docs/matching/code_00139818.md	3		
 mapGetScreenDir	code_0013AAC8	raidou1 0x390	156 of 224 words differ	docs/matching/code_0013AAC8.md	3		
 mapBgFScrollOn	code_0013CDE0	raidou1 0x80	22 of 32 words differ	docs/matching/code_0013CDE0.md	3		
 fldBgZoomTest	code_0013CDE0	raidou1 0x2B4		docs/matching/code_0013CDE0.md	11		three FAKEMATCH_ASM_LIVE(mode) after the mapZoomSetGoal calls that must stay jal. Without them the function is 14 words off; the same result with C dead stores matches but is not allowed.
@@ -66,6 +68,7 @@ mapSeNakamaDelayTask	code_0015D490	raidou1 0x74	10 of 29 words differ	docs/match
 mapIfDrawES	code_0015D490	raidou1 0x33C	55 of 207 words differ	docs/matching/code_0015D490.md	23		
 mapCallEnableMode	code_0015D490	raidou1 0x29C	78 of 165 words differ	docs/matching/code_0015D490.md	31		
 fldCallSetOt	code_0015D490	raidou1 0x4F90	5008 of 5042 words differ	docs/matching/code_0015D490.md	39		
+fldCallGrAllocPacketBuff4	code_001626B0	raidou2 0x160	5 of 88 words differ	docs/matching/code_001626B0.md	3		
 mefMistFastCreate	code_00163C50	raidou2 0x160	3 of 88 words differ	docs/matching/code_00163C50.md	3		
 mapIfDrawActionMaster	code_001677F0	raidou1 0x4A8	271 of 284 words differ	docs/matching/code_001677F0.md	3		
 mapBadEffDrawTask_fld	code_00169A40	raidou2 0x198	7 of 102 words differ	docs/matching/code_00169A40.md	3		
@@ -333,6 +336,7 @@ mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words d
 mapAiboTask	field/fldFileResolver	raidou1 0x9A8	54 of 618 words differ	docs/matching/field/fldFileResolver.md	14	the -DNON_MATCHING full-unit result moves with the declarations the unit includes; giving the mdlManager.h prototype mdlLink_NoDraw its second parameter (sdfModelOt_t *aModelOt or void *) alone turns CONTEXT 319/618 into DIFF 323/618. The B4-field-big header declaration edits (11 headers, no change to the unit) moved it again, DIFF 323/618 to CONTEXT 12/618, and the K03-effect header declaration edits from CONTEXT 54/618 to CONTEXT 319/616.	
 mapSummonDvTask	field/fldFileResolver	raidou1 0x944	6 of 593 words differ	docs/matching/field/fldFileResolver.md	24	the full-unit count moves with header declarations alone; the Slerp (sdfQuat.h), mdlFreeBlur (mdlManager.h) and SBTL_WORK scrWarp (sbtlWork.h) edits take it from 8 to 6 of 593 words with no change to the unit, and the fclCombineInit.h, dds3PadManager.h and mapData.h includes added for PlayerCalc_Nml_fld moved it again (8 to 80, then 6 after later fld.h and mapLbWork.h declarations). The same batch's final header set leaves it at 8 of 593 (DIFF) in the full unit. The U03-battle sbtlWork.h and sBtl* header edits move it from CONTEXT 88/593 to CONTEXT 140/593. U02-battle's declarations (prototypes in 13 headers plus the SBTLUNIT_WORK and sdatUnitWork_t field splits) take it from 6 to 90 of 593; no single header restores it (restoring sbtlWork.h alone gives 469, sBtlSound.h alone 80).	
 PlayerCalc_Nml_fld	field/fldFileResolver	raidou1 0xB74	404 of 731 words differ	docs/matching/field/fldFileResolver.md	34		
+mapAiboGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	42		
 fldLoadFile	field/fldFileResolver_00132080	raidou1 0x70, raidou2 0x70	2 of 28 words differ	docs/matching/field/fldFileResolver_00132080.md	3		
 fldLoadFile_FromMemory	field/fldFileResolver_00132080	raidou1 0xE8, raidou2 0xE8	8 of 58 words differ	docs/matching/field/fldFileResolver_00132080.md	14		
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3	the -DNON_MATCHING count moves with the declarations fldProcess.c includes; retyping the model globals in fldProcess.h (pointer type only, passed to mdlMotionPause) moved it from 2565 to 2571 words.	

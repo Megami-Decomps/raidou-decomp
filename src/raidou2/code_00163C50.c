@@ -311,7 +311,10 @@ INCLUDE_ASM(const s32, "code_00163C50", mapNakamaChikaraTaskSub);
 
 INCLUDE_ASM(const s32, "code_00163C50", nbCallEffectReset);
 
-INCLUDE_ASM(const s32, "code_00163C50", mapEffEplEnd);
+void mapEffEplEnd(s32 id)
+{
+    nbFreeEventPack(&mapEffEplStartWork[id]);
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", nbFreeEventPack);
 

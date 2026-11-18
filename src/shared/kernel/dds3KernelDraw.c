@@ -870,7 +870,24 @@ void dds3FadeOut(s32 r, s32 g, s32 b, s32 frame)
     dds3DrawFlag = (dds3DrawFlag & ~1) | 2;
 }
 #else
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeIn);
+void dds3FadeIn(s32 r, s32 g, s32 b, s32 frame)
+{
+    fadergba[0] = r;
+    fadergba[1] = g;
+    fadergba[2] = b;
+    fadergba[3] = -128;
+    if (frame == 0) {
+        fadergba[3] = 0;
+        fadenow = 0;
+        fademax = 0;
+        dds3FadeClear();
+    } else {
+        fademax = SDF_FRAMES(frame);
+        fadenow = SDF_FRAMES(frame);
+        dds3DrawFlag = (dds3DrawFlag | 1) & ~2;
+    }
+    FadeTypeSet(DDS3_FADETYPE_FADEIN);
+}
 #endif
 
 #ifdef VERSION_RAIDOU1
@@ -889,11 +906,42 @@ void dds3FadeOut2(s32 frame)
     }
 }
 #else
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeIn2);
+void dds3FadeIn2(s32 frame)
+{
+    fadergba[3] = -128;
+    if (frame == 0) {
+        fadergba[3] = 0;
+        dds3DrawFlag &= ~3;
+        fadenow = 0;
+        fademax = 0;
+    } else {
+        fademax = SDF_FRAMES(frame);
+        fadenow = SDF_FRAMES(frame);
+        dds3DrawFlag = (dds3DrawFlag | 1) & ~2;
+    }
+    FadeTypeSet(DDS3_FADETYPE_FADEIN);
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefDrawFlag);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeOut);
+void dds3FadeOut(s32 r, s32 g, s32 b, s32 frame)
+{
+    fadergba[0] = r;
+    fadergba[1] = g;
+    fadergba[2] = b;
+    fadergba[3] = 0;
+    if (frame == 0) {
+        fadenow = 0;
+        fademax = 0;
+        fadergba[3] = -128;
+        dds3DrawFlag &= ~3;
+    } else {
+        fademax = SDF_FRAMES(frame);
+        fadenow = 0;
+        dds3DrawFlag = (dds3DrawFlag & ~1) | 2;
+    }
+    FadeTypeSet(DDS3_FADETYPE_FADEOUT);
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefDrawFlag2);
 #endif

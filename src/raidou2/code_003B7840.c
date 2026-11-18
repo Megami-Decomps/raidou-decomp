@@ -41,7 +41,14 @@ INCLUDE_ASM(const s32, "code_003B7840", jmsScrControl);
 
 INCLUDE_ASM(const s32, "code_003B7840", jmsRootWaitCalcProcess);
 
-INCLUDE_ASM(const s32, "code_003B7840", TalkDrawProcess);
+dds3ProcessFunc_t TalkDrawProcess(dds3ProcessID_t *PID)
+{
+    gohData_t *work = dds3GetProcessData(PID);
+
+    jmsCallSetOt(work);
+    DrawModel_M(work, -1);
+    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
+}
 
 dds3ProcessFunc_t TalkUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);

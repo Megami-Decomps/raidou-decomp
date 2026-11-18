@@ -320,6 +320,7 @@ dds3ProcessID_t *itfCountProcessStartMoney(s32 a_num);
 s32 itfCountSetData(dds3ProcessID_t *PID, s32 *a_pDat, ITF_COUNT_TYPE a_type);
 s32 itfCountSetMax(dds3ProcessID_t *PID, s32 *a_pDat, s32 a_max);
 s32 itfCountSetMin(dds3ProcessID_t *PID, s32 *a_pDat, s32 a_min);
+void itfCallSetOt6(DDS3_OT a_otNo);
 void itfDrawMiscSprite(s32 a_x, s32 a_y, s32 a_z, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo);
 void itfDrawMiscSpriteAlpha(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo);
 void itfDrawMiscSpriteList(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, DDS3_OT a_otNo, itfSprList_t *a_list);

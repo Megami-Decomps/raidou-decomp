@@ -39,6 +39,10 @@ s32 fldAiboMotReset(void);
 struct dds3ProcessID_t;
 s32 BgProcSequence(struct dds3ProcessID_t *id);
 s32 fldProcSequence2(struct dds3ProcessID_t *id);
+extern s32 mapBgDrawOnOffData;
+void nbRefDDS3GBWK2(void);
+void nbRefDDS3GBWK3(void);
+void nbCallSetOt(void);
 void fldBgTaskInit(void);
 extern const char BgProcSequenceStrFldProcSequence[];
 extern const char fldStrBgProcSequence[];
@@ -263,6 +267,7 @@ void scrClearProcessGlobals(void);
 extern s32 gSubFloorID;
 
 void fldGbInit_System(s32 mode);
+void fclCallNewGameInit(s32 mode);
 void fldAllTblLoad(void);
 void fldAllTblPacLoad(void);
 /* ALLTBL.LB resources 1 and 2: a table of unknown layout and the cut table. */

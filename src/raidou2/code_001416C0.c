@@ -13,7 +13,21 @@
 #include "dds3KernelCore.h"
 #include "mdlManager.h"
 
-INCLUDE_ASM(const s32, "code_001416C0", fldPlayerMotReset);
+void fldPlayerMotReset(void) {
+    s16 motion = playerModel->current.h.motionIndex;
+
+    if (fldGlobalBase.nakamaMode == 0) {
+        if (fldGlobalBase.word1A8 != 0) {
+            fldLeaf18(motion, 0, 10.0f);
+        } else if (mapCallProcessCheck(0) != 0) {
+            fldLeaf18(motion, 2, 10.0f);
+        } else {
+            fldLeaf18(motion, 0, 10.0f);
+        }
+    } else {
+        NakamaMotion(motion, mapCallProcessCheck(1) != 0 ? 2 : 0, 10.0f);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001416C0", fldPlayerMotReset2);
 

@@ -8,6 +8,8 @@
 #include "sdk_libc.h"
 #include "sBtlUnit.h"
 #include "sbtlWork.h"
+#include "sBtlItem.h"
+#include "ps2asm.h"
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlRefSbtl8);
 

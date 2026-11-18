@@ -481,7 +481,18 @@ void mapAiboFoceSet3(f32 x, f32 y, f32 z) {
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAdd);
 
+/* NON_MATCHING: 2 of 16 words match.  */
+#ifdef NON_MATCHING
+void mapAiboGet(f32 *x, f32 *y, f32 *z) {
+    f32 *pos = map_aibo_buff[map_aibo_buff_read_idx];
+
+    *x = pos[0];
+    *y = pos[1];
+    *z = pos[2];
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboGet);
+#endif
 
 #ifdef VERSION_RAIDOU1
 /* NON_MATCHING: 564 of 618 words match.  */

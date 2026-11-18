@@ -28,6 +28,7 @@ extern s32 slData5;
 extern s32 slData2;
 extern s32 slNewCycleData2[];
 extern s32 slData3;
+extern s32 slNewCycleData99;
 extern s32 gSlExitMode;
 extern s32 gSlSaveMode;
 extern s32 gSlFileErroeFlg;

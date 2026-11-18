@@ -7,10 +7,12 @@
 struct dds3Basic_t;
 
 u8 dds3ObjectBaseCheckFlag(dds3Basic_t *pObjectBasic, u32 flag);
+void dds3CallSetOt2(void);
 void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
 void dds3ObjectBaseFreeModelHandle(dds3Basic_t *pObjectBasic);
 dds3Basic_t *dds3ObjectBaseGetControlBasic(dds3Basic_t *pObjectBasic, s32 itemType);
 dds3PathBasicControl_t *dds3ObjectBaseGetPathControl(dds3Basic_t *pObjectBasic);
+void dds3ObjectBaseModelLinkOtSvs(void);
 void dds3ObjectBaseMatterAnimeSpeed(struct dds3Basic_t *pObjectBasic, u32 mode);
 void dds3ObjectBaseOffFlag(dds3Basic_t *pObjectBasic, s32 flag);
 void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 mask);

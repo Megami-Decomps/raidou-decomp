@@ -6,6 +6,8 @@
 #include "sdfChip.h"
 #include "dds3KernelDraw_0010A750.h"
 #include "ps2asm.h"
+#include "code_r1_002CAFD8.h"
+#include "code_r1_002CA3F0.h"
 
 s32 itfMoverInit(itfMover_t *mv)
 {
@@ -35,9 +37,16 @@ INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverGetRatio);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallSetOt6);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfDrawMiscSprite);
+void itfDrawMiscSprite(s32 a_x, s32 a_y, s32 a_z, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo) {
+    itfCallSetOt6(a_otNo);
+    itfDrawGridWithResolvedSlot(a_x * 16, a_y * 8, a_z, 0x60, a_hSpr, a_sprNo, a_otNo);
+}
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfDrawMiscSpriteAlpha);
+void itfDrawMiscSpriteAlpha(s32 a_x, s32 a_y, s32 a_z, u32 a_alphaRate, struct sprHandle_t *a_hSpr, s32 a_sprNo, DDS3_OT a_otNo)
+{
+    itfCallSetOt6(a_otNo);
+    effDrawSpriteWithCornerFade(a_x * 16, a_y * 8, a_z, a_alphaRate, 96, a_hSpr, a_sprNo, a_otNo);
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallLinkAlpha);
 
@@ -469,7 +478,12 @@ INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetFlagMenuSub);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetFlagMenu);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuGetFlag);
+s32 itfMenuGetFlag(dds3ProcessID_t *PID, u32 a_bit)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    return (wk->gflag & a_bit) != 0;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuGetFlagMenu);
 

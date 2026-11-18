@@ -9,6 +9,7 @@
 #include "sdfMath.h"
 #include "itf.h"
 #include "frFont.h"
+#include "scr.h"
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuChkSetMenu);
 
@@ -76,7 +77,17 @@ s32 itfMenuSetSpriteData(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, s32 a_bas
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuSetSpriteData);
 #endif
 
-INCLUDE_ASM(const s32, "code_001A5D20", itfMenuSetImageColorSub);
+s8 itfMenuSetImageColorSub(Menu_t *wk, ITFMENU_IMG_DAT a_type, u8 a_R, u8 a_G, u8 a_B, u8 a_A)
+{
+    MenuImgDat_t *img;
+
+    if ((u32)a_type >= ITFMENU_IMG_DAT_MAX) {
+        return 0;
+    }
+    img = &wk->imgDat[a_type];
+    img->color = (a_A << 24) + (a_B << 16) + (a_G << 8) + a_R;
+    return 1;
+}
 
 s32 itfMenuSetImageColor(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, u8 a_R, u8 a_G, u8 a_B, u8 a_A)
 {
@@ -91,7 +102,16 @@ INCLUDE_ASM(const s32, "code_001A5D20", evtPictureSetPri);
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMoverSetMenu);
 
-INCLUDE_ASM(const s32, "code_001A5D20", itfCallGetProcessData7);
+s32 itfCallGetProcessData7(dds3ProcessID_t *PID, u32 a_no, s32 a_val)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    if (a_no >= ITFMENU_IMG_DAT_MAX) {
+        return 0;
+    }
+    wk->imgDat[a_no].strSpace = a_val;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuSetStringWidth);
 

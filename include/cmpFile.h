@@ -19,9 +19,16 @@ typedef struct tagCMP_MAP_WORK {
 } tagCMP_MAP_WORK;
 
 /* Camp sprite packs: the loaded file, its slot set, and the motion each one links (-1 for none). */
+#ifdef VERSION_RAIDOU1
 extern struct sdfMemHandle_t *cmpWork3[4];
 extern struct sprHandle_t *evtWork6[4];
 extern s32 evtData9[4];
+#else
+extern struct sdfMemHandle_t *cmpWork3[CMP_SPR_NUM];
+extern struct sprHandle_t *evtWork6[CMP_SPR_NUM];
+extern s32 evtData9[CMP_SPR_NUM];
+extern s32 cmpWork8[CMP_SPR_NUM]; /* load count of each pack */
+#endif
 extern s32 (*cmpLinkMotFunc[2])(void);
 extern void *cmpFreeScriptData;
 extern u32 effScalyTextureHandle2;

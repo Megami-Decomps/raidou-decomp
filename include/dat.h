@@ -81,6 +81,8 @@ extern const char cmpStrGohmadenGohSameDevilsDat[];
 #endif
 
 void datLoadLvUpTables(void);
+void datInitPlayer(void);
+void datLoadGohmadenTable(void);
 #ifdef VERSION_RAIDOU2
 void datRefDDS3GBWK19(void);
 #endif

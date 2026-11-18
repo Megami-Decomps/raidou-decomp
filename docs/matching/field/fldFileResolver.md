@@ -38,3 +38,12 @@ Raidou 1: 404 of 731 words differ, first at +0xC; emitted 2924 bytes, native 293
 Control flow, calls and stores follow the asm. Raidou 2's body is 953 words and differs, so Raidou 2 keeps the asm. Vector checked (ingame rows reach the hitOn path).
 
 Related: register allocation: s5/s6 swap (&axis vs dyingMotion); nakamaMode ? word174 : 5.0 is if-converted where retail branches (if/else and ternary both tried); retail computes the dirAngle[dir] address before mapGetScreenDir; analog FP register choice.
+
+## mapAiboGet (field/fldFileResolver, raidou1 0x40, raidou2 0x40)
+
+Raidou 1: 14 of 14 words differ, first at +0x0; emitted 56 bytes, native 64 bytes.
+Raidou 2: 14 of 14 words differ, first at +0x0; emitted 56 bytes, native 64 bytes.
+
+The mapSummonDvGet body over map_aibo_buff. Retail copies the row pointer through a3, t0 and v0 and adds the base last, as an inlined getter would; the direct index adds the base first, as in mapSummonDvGet. Behaviour checked with nm_behaviour in both games and a Raidou 2 vector sweep.
+
+Related: [smt3 levers: scalar spill slots](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scalar-spills.md).

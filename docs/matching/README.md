@@ -32,6 +32,7 @@ menu scenarios); an entry says which paths they covered.
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 5 | code_0015D490 | raidou1 | [code_0015D490.md](code_0015D490.md) |
+| 5 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
 | 5 | kernel/dds3AdminiProcess | raidou1, raidou2 | [kernel/dds3AdminiProcess.md](kernel/dds3AdminiProcess.md) |
 | 5 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 5 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
@@ -40,7 +41,6 @@ menu scenarios); an entry says which paths they covered.
 | 4 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 4 | event/evtEventViewerMenu | raidou1, raidou2 | [event/evtEventViewerMenu.md](event/evtEventViewerMenu.md) |
 | 4 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
-| 4 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
 | 4 | sbtl_0029BFB8 | raidou1 | [sbtl_0029BFB8.md](sbtl_0029BFB8.md) |
 | 3 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
@@ -92,11 +92,14 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_0012B6A0 | raidou1 | [code_0012B6A0.md](code_0012B6A0.md) |
 | 1 | code_00131C90 | raidou1 | [code_00131C90.md](code_00131C90.md) |
 | 1 | code_001326C0 | raidou1 | [code_001326C0.md](code_001326C0.md) |
+| 1 | code_00138DE8 | raidou2 | [code_00138DE8.md](code_00138DE8.md) |
+| 1 | code_00139818 | raidou2 | [code_00139818.md](code_00139818.md) |
 | 1 | code_0013AAC8 | raidou1 | [code_0013AAC8.md](code_0013AAC8.md) |
 | 1 | code_00142A10 | raidou1 | [code_00142A10.md](code_00142A10.md) |
 | 1 | code_00144130 | raidou1 | [code_00144130.md](code_00144130.md) |
 | 1 | code_00156778 | raidou1 | [code_00156778.md](code_00156778.md) |
 | 1 | code_00156EA8 | raidou1 | [code_00156EA8.md](code_00156EA8.md) |
+| 1 | code_001626B0 | raidou2 | [code_001626B0.md](code_001626B0.md) |
 | 1 | code_00163C50 | raidou2 | [code_00163C50.md](code_00163C50.md) |
 | 1 | code_001677F0 | raidou1 | [code_001677F0.md](code_001677F0.md) |
 | 1 | code_00169A40 | raidou2 | [code_00169A40.md](code_00169A40.md) |

@@ -376,7 +376,18 @@ INCLUDE_ASM(const s32, "code_00169A40", datNakamaMotionSub);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapSeNakamaDelayTask);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapSeWallHit);
+void mapSeWallHit(s32 hit)
+{
+    if (mapSeWallHitData == 1 && hit == 0) {
+        mapSeWallHitData = 0;
+    } else if (mapSeWallHitData == 0 && hit == 1) {
+        /* The loop keeps ee-gcc from making the call a sibling call, as in Raidou 1. */
+        do {
+            mapSeWallHitData = 1;
+            p2sdPlaySE(0x10024, 127, 63);
+        } while (0);
+    }
+}
 
 void mapTakaraOpen(void) {
     takara_openanm_objid = -1;
