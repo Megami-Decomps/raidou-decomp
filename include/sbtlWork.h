@@ -329,7 +329,15 @@ typedef struct SBTL_WORK {
     s16 field4BA;
     s16 field4BC;
     s16 field4BE;
-    u8 pad4C0[0x4CE - 0x4C0];
+    /* Capture (huuma) contest, set up by sbtlCallMemset10: field4BA is the
+     * gauge, captured at 0 and missed at field4B8 - 1. */
+    s16 field4C0; /* frames since the demon's last push */
+    s16 field4C2; /* frames between the demon's pushes */
+    s16 field4C4; /* the demon's push, added to the gauge */
+    s16 field4C6; /* presses since the player's last push */
+    s16 field4C8; /* presses per push */
+    s16 field4CA; /* the player's push, taken from the gauge */
+    s16 field4CC; /* MAG each press costs */
     s16 field4CE;
     s16 huumamagnone;
     u8 pad4D2[2];

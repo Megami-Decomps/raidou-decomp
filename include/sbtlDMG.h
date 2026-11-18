@@ -16,6 +16,7 @@ struct SBTLSKILLP_TBL;
 struct SBTLSKILL_TBL;
 struct SBTLUNIT_LISTWORK;
 struct SBTLUNIT_WORK;
+struct SBTLEXP_LISTWORK;
 struct mdlObj_t;
 struct sdfMemHandle_t;
 
@@ -302,6 +303,12 @@ s32 sbtlCallMemset16(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 
 void sbtlCallBtlSetMotionSBtlUnit4(struct SBTLUNIT_WORK *wk, s32 damage);
 s32 sbtlCallBtlSearchUnitID14(struct SBTLUNIT_WORK *wk, s32 damage, s16 a2, s32 a3);
 s32 GetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 acterID, struct SBTLDMG_HITWORK *hwk, s32 attr);
+s32 sbtlCallBtlGetPlayerData4(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, SKLID skillid, s32 attr);
+s32 sbtlRefSbtl68(struct SBTLUNIT_WORK *wk);
+s32 sbtlGetDamageSub(s32 type);
+s32 sbtlGetDamageSub2(struct SBTLUNIT_WORK *wk, s32 skillid);
+s32 sbtlCheckAutoSkill_Action(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK *wk, SKLID sklid);
+s32 sbtlSetRirituNakamaHD(struct SBTLEXP_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, s32 id, s32 time, u32 bstf);
 s32 sbtlSetDeadDamage(struct SBTLUNIT_WORK *wk, s32 flg);
 void sbtlCallBtlSetMotionSBtlUnit5(struct SBTLUNIT_WORK *wk);
 s32 CheckDamageTarget(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, SKLID skillid);

@@ -381,9 +381,12 @@ struct SBTLUNIT_WORK {
     u8 pad32C[0x330 - 0x32C];
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
     s8 field348;
-    u8 pad349[0x358 - 0x349];
+    u8 pad349[0x34C - 0x349];
+    u32 field34C; /* buff bits: 0x1000000, 0x2000000 raise damage dealt, 0x4000000 lowers damage taken */
+    f32 field350; /* percent for field34C */
+    u8 pad354[0x358 - 0x354];
     u32 field358;
-    s32 field35C;
+    f32 field35C; /* percent for field358 */
     s16 field360;
     s16 field362;
     s16 rejyenecounter;
@@ -442,7 +445,7 @@ struct SBTLUNIT_WORK {
     s32 minor_d;
     s32 field400;
     s16 field404;
-    u8 pad406[0x2];
+    s16 field406;
     struct dds3Basic_t *pBasic_d;
     struct evtUnit_t *hEveUnit_d;
     struct mdlObj_t *hModel_d;

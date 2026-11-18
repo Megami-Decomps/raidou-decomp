@@ -15,6 +15,7 @@
 #include "sBtlPlayer.h"
 #include "sBtlSM.h"
 #include "sbtlSub.h"
+#include "sdfDifficulty.h"
 
 u8 sbtlCheckCost_SkillID(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg)
 {
@@ -520,7 +521,49 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlBtlCheckBadStatusWeakSub);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCheckBadStatus_WeakNumber);
 
+#ifdef NON_MATCHING
+/* 89 of 119 words differ: retail branches past an inline return 0 after
+ * sbtlBtlCheckBadStatusWeakSub where this reuses its zero, and orders the
+ * float products differently. Behavior is the same. */
+/* Whether the status bst from skill lands on a unit with resistance table
+ * resist: the skill's percentage, by the luck ratio and the resistance, against
+ * a roll. luck is the attacker's, tgtLuck the target's. */
+s32 sbtlCallBtlGetSkilltbl17(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx) {
+    struct SBTLSKILLP_TBL *tbl;
+    f32 chance;
+    f32 hundred;
+
+    if (resist[idx] & 0x23000) {
+        return 0;
+    }
+    if (bst < BST_STONE) {
+        if (resist[idx] & 0x4000) {
+            return 1;
+        }
+        if (!sbtlBtlCheckBadStatusWeakSub(skill)) {
+            return 0;
+        }
+    }
+    if (bst == BST_GUN) {
+        return 1;
+    }
+    hundred = 100.0f;
+    tbl = sbtlGetSkilltbl(skill);
+    chance = (f32)tbl->percentage / hundred * (f32)(luck * 2 + 100) / (f32)(tgtLuck * 2 + 100) * (f32)(resist[idx] & 0xFFF);
+    if (unit != NULL) {
+        if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(unit, 0), &unit->autost_cnt, &unit->autost_cnt2) == 16) {
+            chance *= (f32)unit->autost_cnt2 / hundred;
+        }
+        if (sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(unit, 1), &unit->autost_cnt, &unit->autost_cnt2) == 16) {
+            chance *= (f32)unit->autost_cnt2 / hundred;
+        }
+    }
+    chance = SDF_DIFFICULTY_STATUS_CHANCE(chance, bst);
+    return (s16)GetPercentage() < (s16)chance;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlGetSkilltbl17);
+#endif
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_GB);
 

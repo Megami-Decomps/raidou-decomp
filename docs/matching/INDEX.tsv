@@ -417,6 +417,7 @@ sbtlLoadAttackHitData_Decode	sbtlDMG	raidou1 0x12C	12 of 75 words differ	docs/ma
 sbtlSetHitPos	sbtlDMG	raidou1 0x4B4	293 of 302 words differ	docs/matching/sbtlDMG.md	57		
 sbtlDamageProc	sbtlDMG	raidou1 0xD8	42 of 51 words differ	docs/matching/sbtlDMG.md	67		
 sbtlDamageProc	sbtlDMG	raidou2 0xD8	42 of 51 words differ	docs/matching/sbtlDMG.md	73		
+GetDamage	sbtlDMG	raidou1 0xBD4	569 of 721 words differ	docs/matching/sbtlDMG.md	79		
 sbtlFunc	sbtlEff_00289E50	raidou1 0x144	58 of 79 words differ	docs/matching/sbtlEff_00289E50.md	3		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		
@@ -424,6 +425,7 @@ sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSu
 CalcBadStatus	sbtl_0029BFB8	raidou1 0x3B0	204 of 218 words differ	docs/matching/sbtl_0029BFB8.md	3		
 sbtlRefSbtl62	sbtl_0029BFB8	raidou1 0xF8	20 of 61 words differ	docs/matching/sbtl_0029BFB8.md	11		
 CalcBtlMagicStatus	sbtl_0029BFB8	raidou1 0x6E4	5 of 441 words differ	docs/matching/sbtl_0029BFB8.md	19		
+sbtlCallBtlGetSkilltbl17	sbtl_0029BFB8	raidou1 0x1EC	89 of 119 words differ	docs/matching/sbtl_0029BFB8.md	27		
 sdfCorePacketGen	sdf/sdfCoreDraw	raidou1 0x914, raidou2 0x914	527 of 581 words differ	docs/matching/sdf/sdfCoreDraw.md	3		
 sdfDefaultMain	sdf/sdfDefaultMain	raidou1 0x188, raidou2 0x188		docs/matching/sdf/sdfDefaultMain.md	3		inherited, alternatives not recorded.
 sdfGrStdDrawEnvPredraw	sdf/sdfDraw	raidou1 0x1B8, raidou2 0x1B8	25 of 110 words differ	docs/matching/sdf/sdfDraw.md	3		

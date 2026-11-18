@@ -19,6 +19,8 @@
 #include "sdfMemory.h"
 #include "sdfChip.h"
 #include "mdlManager.h"
+#include "sbtlplayertbl.h"
+#include "sdfDifficulty.h"
 #include "sdfModel.h"
 #include "code_r1_0021CE60.h"
 #include "sdfDelayedResrc.h"
@@ -2060,7 +2062,249 @@ INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageTable4);
 
 INCLUDE_RODATA(const s32, "sbtlDMG", GetDamageStrFfffff);
 
+#ifdef NON_MATCHING
+/* 569 of 721 words differ; 144 bytes short. Retail retests flg & 1 on each
+ * path and its register allocation differs from the start. Behavior is the
+ * same. */
+/* An attacker or target with field414 bit 0 that is not a stock demon (bit
+ * 0x80) outside battle mode 3; in mode 3 bit 0 alone. */
+static s32 IsViceUnit(struct SBTLUNIT_WORK *wk) {
+    if (wk_sbtl->battleMode == 3) {
+        return wk->field414 & 1;
+    }
+    return (wk->field414 & 1) && !(wk->field414 & 0x80);
+}
+
+/* The damage skillid from unit acterID does to wk, after status, buff and
+ * vice modifiers, capped to the skill's maximum and 999, or -1 for a miss.
+ * Applies wk's counter auto skill to the attacker on the way. */
+s32 GetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 acterID, struct SBTLDMG_HITWORK *hwk, s32 attr) {
+    struct SBTLSKILLP_TBL *tbl;
+    struct SBTLUNIT_WORK *acter;
+    struct SBTLUNIT_WORK *unit;
+    s32 damage;
+    s32 roll;
+    s32 type;
+    s32 counter;
+    s32 counterDamage;
+    s32 hp;
+    s32 charmHit;
+    s32 guarded;
+    BST bst;
+
+    damage = 0;
+    acter = NULL;
+    tbl = sbtlGetSkilltbl(skillid);
+    charmHit = 0;
+    guarded = 0;
+    if (tbl->type & 0xFFF) {
+        acter = sbtlSearchUnit_ID(wk_sbtl->unitList, acterID);
+        if (acter != NULL) {
+            damage = sbtlCallBtlGetPlayerData4(acter, wk, hwk, skillid, attr);
+        }
+    }
+
+    /* A confused target dodges or takes double. */
+    if ((wk->unit.badStatus & BSTF_PANIC) && (tbl->attr & 1) && (tbl->flg & 1)) {
+        roll = (s16)GetPercentage();
+        if (wk->field414 & 2) {
+            damage = roll < (s16)((f32)(10 - wk->unit.now.luck) * 0.7 + 25.0) ? -1 : damage * 2;
+        } else {
+            damage = roll < (s16)(((f32)(10 - wk->unit.now.luck) * 0.7 + 25.0) * 0.5) ? -1 : damage * 2;
+        }
+    }
+
+    if (acter != NULL && sbtlGetBadStatus(&acter->unit) == BST_SLEEP && (tbl->type & 0xFFF)) {
+        type = tbl->type & 0xFFF;
+        if (type < 3 || (type < 15 && type >= 12)) {
+            if ((tbl->flg & 1) && damage != -1 && !(tbl->flg & 0x200000)) {
+                damage = (f32)damage * 1.5f;
+            }
+        }
+    }
+    if (wk != NULL && sbtlGetBadStatus(&wk->unit) == BST_SLEEP) {
+        if ((tbl->flg & 1) && damage != -1 && !(tbl->flg & 0x200000)) {
+            damage *= 2;
+        }
+    }
+
+    if ((wk->unit.badStatus & BSTF_CHARM) && damage != -1) {
+        if (tbl->attr & 1) {
+            damage = (f32)damage * 1.5f;
+            charmHit = 1;
+            sbtlCreateSTP_Unit(wk_sbtl->stp, wk, SKLID_AGIDAIN, 0);
+            sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, skillid, acterID, 2);
+            wk->field406 = charmHit;
+        } else if (!(tbl->flg & 1)) {
+            goto vice;
+        }
+        /* A hit may wake a charmed target. */
+        roll = (s16)GetPercentage();
+        if (wk->field414 & 2) {
+            if (roll < (s16)((80.0 - (f32)(13 - wk->unit.now.luck) * 0.7) * 0.80999999999999995)) {
+                sbtlResetBadStatus(wk, BSTF_CHARM);
+            }
+        } else {
+            if (roll < (s16)(80.0 - (f32)(13 - wk->unit.now.luck) * 0.7)) {
+                sbtlResetBadStatus(wk, BSTF_CHARM);
+            }
+        }
+    } else if (wk->status == 9 && (wk->flg2 & 0x10) && (tbl->attr & 1)) {
+        if (!(tbl->flg & 1)) {
+            goto vice;
+        }
+        if (damage != -1) {
+            damage = (damage * 3) >> 1;
+            sbtlCreateSTP_Unit(wk_sbtl->stp, wk, SKLID_AGIDAIN, 0);
+            charmHit = 1;
+            sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, skillid, acterID, 2);
+            wk->field406 = charmHit;
+            if (wk->unit.devilId == 0x123) {
+                damage *= 4;
+            } else if (wk->unit.devilId == 0x91) {
+                damage *= 7;
+            } else if (wk->unit.devilId == 0x104) {
+                damage *= 6;
+            }
+        }
+    }
+
+    if ((tbl->flg & 1) && damage != -1) {
+        type = tbl->type & 0xFFF;
+        if (acter != NULL) {
+            switch (type) {
+            case 1:
+            case 2:
+            case 12:
+            case 13:
+            case 14:
+                if (acter->field358 & 0x1000000) {
+                    damage += (s32)((f32)damage * (acter->field35C / 100.0f));
+                }
+                if (acter->field34C & 0x1000000) {
+                    damage += (s32)((f32)damage * (acter->field350 / 100.0f));
+                }
+                break;
+            case 3:
+            case 5:
+            case 15:
+                if ((acter->field34C & 0x2000000) && !(tbl->flg & 0x200000)) {
+                    damage += (s32)((f32)damage * (acter->field350 / 100.0f));
+                }
+                break;
+            }
+        }
+        if (wk->field34C & 0x4000000) {
+            damage -= (s32)((f32)damage * (wk->field350 / 100.0f));
+        }
+        switch (type) {
+        case 1:
+        case 2:
+        case 12:
+        case 13:
+        case 14:
+            if (wk->field358 & 0x4000000) {
+                damage -= (s32)((f32)damage * (wk->field35C / 100.0f));
+            }
+            break;
+        case 3:
+        case 5:
+        case 15:
+            if (wk->field358 & 0x2000000) {
+                damage -= (s32)((f32)damage * (wk->field35C / 100.0f));
+            }
+            break;
+        }
+    }
+
+vice:
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, acterID);
+    if (unit != NULL && CheckLiveTarget(unit) && IsViceUnit(unit) && sbtlGetViceLevel(unit->unit.vice) >= 2) {
+        if ((tbl->flg & 1) && damage != -1) {
+            damage = (f32)damage * 1.19999993f;
+        }
+    }
+    if (IsViceUnit(wk) && sbtlGetViceLevel(wk->unit.vice) >= 2) {
+        if ((tbl->flg & 1) && damage != -1) {
+            damage = (f32)damage * 0.79999996f;
+        }
+    }
+    if ((tbl->flg & 1) && damage != -1 && attr != 0x2000 && (wk->flg & 0x100) && !(hwk->attr_flg & 0x300)) {
+        guarded = 1;
+        damage = (f32)damage * 0.099999995f;
+    }
+
+    if (damage < 0) {
+        damage = -1;
+    } else if (damage >= tbl->max_damage) {
+        damage = tbl->max_damage;
+    }
+    if (tbl->flg & 1) {
+        if (damage == 0) {
+            damage = 1;
+        }
+        if (damage >= 999) {
+            damage = 999;
+        }
+        damage = SDF_DIFFICULTY_DAMAGE(wk, damage);
+
+        /* wk's counter auto skill hits the attacker back. */
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, acterID);
+        if (unit != NULL && sbtlCheckDamageTarget(unit) && wk->unit.now.hp - damage >= 2 && !sbtlRefSbtl68(unit)) {
+            counter = sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2);
+            if (counter != 3) {
+                counter = sbtlCallBtlGetSkilltbl21(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2);
+            }
+            if (sbtlGetDamageSub(counter) && counter == 3) {
+                bst = sbtlGetBadStatus(&wk->unit);
+                if ((bst == BST_STONE || bst == BST_MOUDOKU || bst == BST_SLEEP || bst == BST_RAND0 || bst == BST_BOYCOTT) &&
+                    (s16)GetPercentage() < 80 && sbtlCheckAutoSkill_Action(wk, (struct SBTLUNIT_WORK *)hwk, attr) && !charmHit) {
+                    counterDamage = sbtlCallBtlGetSkilltbl24(&unit->unit, counter, damage, skillid, wk->unit.autost_cnt, wk->unit.autost_cnt2);
+                    if (counterDamage <= 0) {
+                        counterDamage = 1;
+                    }
+                    if (sbtlGetDamageSub2(wk, 0xF3)) {
+                        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_SAKAURAMI, 0xF3);
+                    } else {
+                        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_GYAKUGIRE, 0xF4);
+                    }
+                    counterDamage = sbtlCheckKuishibari(unit, counterDamage);
+                    hp = unit->unit.now.hp - counterDamage;
+                    unit->unit.now.hp = hp;
+                    if (hp <= 0) {
+                        unit->unit.now.hp = 0;
+                    } else if (hp >= unit->unit.now.maxhp) {
+                        unit->unit.now.hp = unit->unit.now.maxhp;
+                    } else {
+                        unit->unit.now.hp = hp;
+                    }
+                    sbtlCallBtlGetSklVisualTbl(unit, 0x95, 1, 0, 0);
+                    sbtlCallBtlSearchUnitID14(unit, counterDamage, 0, 0);
+                    if (unit->flg & 0x40000000) {
+                        sbtlCallBtlSetMotionSBtlUnit5(unit);
+                    } else if (unit->unit.now.hp <= 0) {
+                        sbtlSetDeadDamage(unit, 0);
+                    }
+                }
+            }
+        }
+        if ((tbl->flg & 1) && attr != 0x2000) {
+            damage = sbtlCheckKuishibari(wk, damage);
+        }
+    }
+
+    if (!(tbl->flg & 4) && !guarded && attr != 0x2000) {
+        if (charmHit) {
+            sbtlPlayDamageSE(&wk->pos, 3);
+        } else if (!((wk->unit.devilId == 0x107 || wk->unit.devilId == 0x12E) && wk->status == 7)) {
+            sbtlPlayDamageSE(&wk->pos, 2);
+        }
+    }
+    return damage;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlDMG", GetDamage);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetDamage);
 

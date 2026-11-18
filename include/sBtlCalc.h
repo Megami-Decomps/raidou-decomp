@@ -24,6 +24,8 @@ s32 sbtlCallLimitRange(struct SBTLUNIT_WORK *wk, s32 value);
 s32 sbtlCheckEvtBit_Table(s32 idx);
 s32 sbtlCheckKuishibari(struct SBTLUNIT_WORK *wk, s32 damage);
 s32 sbtlCallBtlGetSkilltbl21(SKLID id, s16 *badst, s16 *power);
+s32 sbtlBtlCheckBadStatusWeakSub(SKLID skill);
+s32 sbtlCallBtlGetSkilltbl17(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx);
 s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallSetClutColor(struct SBTLUNIT_WORK *wk, BST bst);
 s32 sbtlGetDamage_CHUUSEI(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl);

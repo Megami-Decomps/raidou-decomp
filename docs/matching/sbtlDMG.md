@@ -75,3 +75,9 @@ Branch folding: gcc turns both acterID compares into xor/sltiu; retail keeps bne
 Raidou 2: 42 of 51 words differ, first at +0x20; emitted 204 bytes, native 216 bytes.
 
 Branch folding: gcc turns both acterID compares into xor/sltiu; retail keeps bnel and beq branches with separate return 0 and return 1. Comparing id == hwk->acterID gives retail's register allocation (wk in s0); an id local declared first does not.
+
+## GetDamage (sbtlDMG, raidou1 0xBD4)
+
+Raidou 1: 569 of 721 words differ, first at +0x4; emitted 2884 bytes, native 3028 bytes.
+
+Retail retests `tbl->flg & 1` on every path into the buff and vice blocks and keeps the attacker in a callee-saved register across both lookups; the draft folds the repeated tests, so it is 36 words short and allocates differently from the prologue. nm_behaviour.py agrees apart from one reload of autost_cnt and the folded branches.

@@ -28,6 +28,7 @@
 #include "dds3Randomize.h"
 #include "sdfSound.h"
 #include "sbtlSub.h"
+#include "sdfDifficulty.h"
 #include "sbtlSub_0027ED08.h"
 #include "sdfQuat.h"
 #include "sBtlSkill.h"
@@ -984,7 +985,7 @@ s32 nakamamodeCallGetActiveScene(dds3PoseSet_t *pose, dds3Basic_t *basic)
         ret = sbtlCallBtlSearchUnitID8(wk);
         break;
     case 14:
-        ret = sbtlCallMemset10(wk);
+        ret = SDF_DIFFICULTY_CAPTURE_STEP(sbtlCallMemset10, wk);
         break;
     }
     if (sbtlNormalProcNakamaSub(wk) || ret == 3) {
