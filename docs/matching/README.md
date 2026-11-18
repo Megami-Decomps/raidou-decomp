@@ -98,6 +98,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_00156778 | raidou1 | [code_00156778.md](code_00156778.md) |
 | 1 | code_00156EA8 | raidou1 | [code_00156EA8.md](code_00156EA8.md) |
 | 1 | code_00163C50 | raidou2 | [code_00163C50.md](code_00163C50.md) |
+| 1 | code_001677F0 | raidou1 | [code_001677F0.md](code_001677F0.md) |
 | 1 | code_00169A40 | raidou2 | [code_00169A40.md](code_00169A40.md) |
 | 1 | code_0016CA30 | raidou1 | [code_0016CA30.md](code_0016CA30.md) |
 | 1 | code_00173D20 | raidou1 | [code_00173D20.md](code_00173D20.md) |

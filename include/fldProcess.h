@@ -150,6 +150,14 @@ s32 mapNakamaBranchTask(void);
 void mapIgnite(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 s32 mapIfDrawActionMaster(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 s32 mapIfDrawActionNum(s32 *out);
+extern char *mapData38[];      /* action names */
+extern char mapData39[][24];   /* choice names */
+void mapIfDrawActionMasterSub(s32 *x, s32 *y, s32 w);
+void mapCallSetOt9(s32 x, s32 y, s32 w);
+void mapCallSetOt10(s32 x, s32 y, s32 w, s32 e, s32 f);
+void mapCallSetOt11(s32 x, s32 y, s32 w, s32 e, s32 f);
+s32 mapRefDDS3GBWK6(s32 id);
+void mapIfDrawActionWin2(s32 x, s32 y, u32 color, const char *str);
 void mapCallPreCalcStrWidth(s32 nakama, s32 kind, s32 x, s32 y);
 void mapCallPreCalcStrWidth2(s32 nakama, s32 kind, s32 x, s32 y);
 char *mapScriptGet_Pos(f32 x, f32 y, f32 z, f32 r, s32 *attr, f32 *objx, f32 *objy, f32 *objz, s32 *type);

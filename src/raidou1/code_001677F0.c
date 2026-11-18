@@ -14,6 +14,8 @@
 #include "itf.h"
 #include "dds3WorldBasic.h"
 #include "dds3SceneBasic.h"
+#include "code_0015D490.h"
+#include "frFont.h"
 
 INCLUDE_ASM(const s32, "code_001677F0", mapIfDrawActionMasterSub);
 
@@ -29,7 +31,86 @@ INCLUDE_ASM(const s32, "code_001677F0", mapIfDrawActionNum);
 
 INCLUDE_ASM(const s32, "code_001677F0", mapRefDDS3GBWK6);
 
+#ifdef NON_MATCHING
+/* The field action prompt: a window at a projected point, clamped to the
+ * screen, with the action's name and, for several actions, the choice's name. */
+s32 mapIfDrawActionMaster(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f)
+{
+    s32 v[3];
+    u32 color;
+    u32 shade;
+    s32 id;
+    s32 w;
+    s32 w2;
+
+    color = mapData132 | 0xA09DC300;
+    shade = mapData132 | 0x4D4B4B00;
+    v[0] = 24;
+    v[1] = c;
+    v[2] = d;
+    if (mapIfDrawActionNum(v) >= 2) {
+        id = mapRefDDS3GBWK6(b);
+        if (id == -1) {
+            id = b + 32;
+        }
+        w = frPreCalcStrWidth(mapData38[a ? id : b], 1, 1) + 5;
+        w2 = frPreCalcStrWidth(mapData39[v[0]], 1, 1) + 5;
+        if (w < w2) {
+            w = w2;
+        }
+        v[1] -= w / 2;
+        mapCallSetOt10(v[1], v[2], w, e, f);
+        mapIfDrawActionMasterSub(&v[1], &v[2], w);
+        if (f > 0) {
+            if (e == 0) {
+                mapIfDrawActionWin2(v[1] + 10, v[2] + 2, color, mapData38[a ? id : b]);
+            } else {
+                mapIfDrawActionWin2(v[1] + 10, v[2] + 24, color, mapData39[v[0]]);
+            }
+        } else {
+            if (a == 0) {
+                mapIfDrawActionWin2(v[1] + 10, v[2] + 2, color, mapData38[b]);
+            } else {
+                mapIfDrawActionWin2(v[1] + 10, v[2] + 2, color, mapData38[id]);
+            }
+            mapIfDrawActionWin2(v[1] + 10, v[2] + 24, color, mapData39[v[0]]);
+        }
+    } else if (a == 0) {
+        w = frPreCalcStrWidth(mapData38[b], 1, 1) + 5;
+        v[1] -= w / 2;
+        if (fldGlobalBase.mskIndex) {
+            mapCallSetOt11(v[1], v[2], w, e, f);
+        } else {
+            mapCallSetOt9(v[1], v[2], w);
+        }
+        mapIfDrawActionMasterSub(&v[1], &v[2], w);
+        mapIfDrawActionWin2(v[1] + 10, v[2] + 2, color, mapData38[b]);
+        if (fldGlobalBase.mskIndex && (f == 0 || e == 1)) {
+            mapIfDrawActionWin2(v[1] + (w + 38) / 2 - 26, v[2] + 24, 0x4D4B4B4D, mapData38[86]);
+        }
+    } else {
+        id = mapRefDDS3GBWK6(b);
+        if (id == -1) {
+            id = b + 32;
+        }
+        w = frPreCalcStrWidth(mapData38[id], 1, 1) + 5;
+        v[1] -= w / 2;
+        if (fldGlobalBase.mskIndex) {
+            mapCallSetOt11(v[1], v[2], w, e, f);
+        } else {
+            mapCallSetOt9(v[1], v[2], w);
+        }
+        mapIfDrawActionMasterSub(&v[1], &v[2], w);
+        mapIfDrawActionWin2(v[1] + 10, v[2] + 2, color, mapData38[id]);
+        if (fldGlobalBase.mskIndex && (f == 0 || e == 1)) {
+            mapIfDrawActionWin2(v[1] + (w + 38) / 2 - 26, v[2] + 24, shade, mapData38[86]);
+        }
+    }
+    return v[0];
+}
+#else
 INCLUDE_ASM(const s32, "code_001677F0", mapIfDrawActionMaster);
+#endif
 
 INCLUDE_ASM(const s32, "code_001677F0", mapIgnite);
 

@@ -67,6 +67,7 @@ mapIfDrawES	code_0015D490	raidou1 0x33C	55 of 207 words differ	docs/matching/cod
 mapCallEnableMode	code_0015D490	raidou1 0x29C	78 of 165 words differ	docs/matching/code_0015D490.md	31		
 fldCallSetOt	code_0015D490	raidou1 0x4F90	5008 of 5042 words differ	docs/matching/code_0015D490.md	39		
 mefMistFastCreate	code_00163C50	raidou2 0x160	3 of 88 words differ	docs/matching/code_00163C50.md	3		
+mapIfDrawActionMaster	code_001677F0	raidou1 0x4A8	271 of 284 words differ	docs/matching/code_001677F0.md	3		
 mapBadEffDrawTask_fld	code_00169A40	raidou2 0x198	7 of 102 words differ	docs/matching/code_00169A40.md	3		
 mapFunc	code_0016AD90	raidou1 0x178	2 of 94 words differ	docs/matching/code_0016AD90.md	3		
 mapCallSin11	code_0016AD90	raidou1 0xF8	44 of 58 words differ	docs/matching/code_0016AD90.md	13		
