@@ -29,6 +29,13 @@ void cmpCallGetSpriteHnd9(s32 a_sprNo, s32 a_x, s32 a_y, s32 a_alphaRate);
 void cmpCallProcEnd(struct tagCMP_WORK *wk);
 u8 cmpCheckProcEnd(struct tagCMP_WORK *wk);
 void cmpDrawKeyHelp(struct tagCMP_WORK *wk, u8 a_alphaRate1, u8 a_alphaRate2);
+void cmpDrawProcess(struct tagCMP_WORK *wk, u8 a_alphaRate);
+void cmpCallGetSpriteHnd7(struct tagCMP_WORK *wk, u8 a_alphaRate);
+void cmpCallGetSpriteHnd8(struct tagCMP_WORK *wk, u8 a_alphaRate);
+void cmpCallDrawKeyHelp2(struct tagCMP_WORK *wk, u8 a_alphaRate);
+/* The control type of the subscreen menu's last selection with one. */
+extern ITFMENU_CTRL_TYPE cmpCallGetProcessData6Data;
+s32 cmpCallGetProcessData6(dds3ProcessID_t *PID);
 void cmpFunc8(s32 a_x, s32 a_y, s32 a_alphaRate);
 CMP_MODE cmpGetEndMode(void);
 s32 cmpGetMarkID(void);

@@ -19,6 +19,7 @@
 #include "dds3AreaBasic.h"
 #include "dds3Basic.h"
 #include "sdfCampMenu.h"
+#include "dds3KernelDraw.h"
 
 void DrawTop(struct tagCMP_MAP_WORK *wk) {
     struct sprHandle_t *spr;
@@ -288,7 +289,56 @@ INCLUDE_ASM(const s32, "code_00323280", CmpStatusDraw);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpDrawProcess);
 
+/* NON_MATCHING: 103 of 107 words match. The flag reload takes $3 for $2, and the 0x10 test is beq for beql. */
+#ifdef NON_MATCHING
+/* The subscreen's draw process: the screen, then the panels and key help for the selected row. */
+s32 cmpCallGetProcessData6(dds3ProcessID_t *PID) {
+    struct tagCMP_WORK *wk = dds3GetProcessData(PID);
+    ITFMENU_CTRL_TYPE ctrl;
+    s32 id;
+    u8 root;
+    u8 alpha;
+    u8 alpha2;
+
+    if (!(wk->flag & 8)) {
+        return 0;
+    }
+    eglSetOt(0x66);
+    eglLinkTest(1, 0, 0x80, 1, 0, 0, 1, 2);
+    eglLinkAlpha(0);
+    if (wk->flag & 0x20) {
+        cmpDrawProcess(wk, 0xFF);
+    }
+    if (!itfMenuProcessCheck(wk->menuPID)) {
+        return 0;
+    }
+    ctrl = itfMenuGetCtrlType(wk->menuPID);
+    if (ctrl != 0) {
+        cmpCallGetProcessData6Data = ctrl;
+    }
+    id = itfMenuGetSelectID(wk->menuPID);
+    root = GetSelectRootID(wk->menuPID, 1);
+    alpha = root;
+    if (cmpCallGetProcessData6Data != 5 && ((id & 2) || ((id & 1) && id != 0x10001) || (id & 0x10))) {
+        alpha = 0xFF;
+    }
+    cmpCallGetSpriteHnd7(wk, alpha);
+    alpha2 = alpha;
+    if (id == 0x10002 && (cmpCallGetProcessData6Data == 1 || cmpCallGetProcessData6Data == 4)) {
+        alpha2 = root;
+    }
+    cmpCallGetSpriteHnd8(wk, alpha2);
+    cmpCallDrawKeyHelp2(wk, alpha);
+    alpha2 = alpha;
+    if (id == 0x30002 && (cmpCallGetProcessData6Data == 1 || cmpCallGetProcessData6Data == 4)) {
+        alpha2 = root;
+    }
+    cmpDrawKeyHelp(wk, alpha2, alpha);
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00323280", cmpCallGetProcessData6);
+#endif
 
 CMP_MODE cmpGetEndMode(void)
 {

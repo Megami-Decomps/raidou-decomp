@@ -66,6 +66,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_002743E0 | raidou2 | [code_002743E0.md](code_002743E0.md) |
 | 2 | code_002999C0 | raidou1 | [code_002999C0.md](code_002999C0.md) |
 | 2 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
+| 2 | code_00323280 | raidou1 | [code_00323280.md](code_00323280.md) |
 | 2 | code_r1_00104370 | raidou1, raidou2 | [code_r1_00104370.md](code_r1_00104370.md) |
 | 2 | code_r1_00128378 | raidou1 | [code_r1_00128378.md](code_r1_00128378.md) |
 | 2 | code_r1_00142038 | raidou1, raidou2 | [code_r1_00142038.md](code_r1_00142038.md) |
@@ -110,7 +111,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
 | 1 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
 | 1 | code_002D7950 | raidou1 | [code_002D7950.md](code_002D7950.md) |
-| 1 | code_00323280 | raidou1 | [code_00323280.md](code_00323280.md) |
 | 1 | code_0034F3B8 | raidou1 | [code_0034F3B8.md](code_0034F3B8.md) |
 | 1 | code_r1_0013B0F8 | raidou1 | [code_r1_0013B0F8.md](code_r1_0013B0F8.md) |
 | 1 | code_r1_001403E0 | raidou1, raidou2 | [code_r1_001403E0.md](code_r1_001403E0.md) |
