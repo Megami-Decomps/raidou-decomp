@@ -10,6 +10,7 @@
 #include "sdfDraw.h"
 #include "sdf2D.h"
 #include "sdfPacketBuff.h"
+#include "sdfMenuAnchor.h"
 
 INCLUDE_ASM(const s32, "code_00195698", MoneyShutdown);
 
@@ -128,6 +129,7 @@ s32 nmeCallGetProcessData(dds3ProcessID_t *id) {
             if (wk->flag & 0x10) {
                 wk->flag &= ~0x10;
                 wk->menuPID = savePointMenuCreateMenuPID();
+                SDF_MENU_SET_ANCHOR(wk->menuPID, SDF_MENU_ANCHOR_RIGHT);
                 savePointMenuChkEnableDecide(wk);
                 itfMenuStart(wk->menuPID);
                 wk->selectID = -1;

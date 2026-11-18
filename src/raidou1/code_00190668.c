@@ -10,6 +10,7 @@
 #include "datCalc.h"
 #include "dds3PadManager.h"
 #include "code_r1_002C8188.h"
+#include "sdfMenuAnchor.h"
 
 s32 itfMenuChkSetMenu(dds3ProcessID_t *PID) {
     Menu_t *wk = dds3GetProcessData(PID);
@@ -551,6 +552,7 @@ s32 MenuDrawProcess(dds3ProcessID_t *PID)
     if (!(wk->gflag & 1)) {
         return 0;
     }
+    SDF_MENU_DRAW_BEGIN(wk);
     g_ot = wk->ot;
     eglSetOt(wk->ot);
     eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 2);
@@ -624,6 +626,7 @@ s32 MenuDrawProcess(dds3ProcessID_t *PID)
     eglSetOt(0x67);
     eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 2);
     eglLinkAlpha(0);
+    SDF_MENU_DRAW_END(wk);
     return 0;
 }
 #else
