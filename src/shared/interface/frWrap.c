@@ -295,11 +295,11 @@ frFontHandle_t *frLinkKanjiSub(s32 x, s32 y, s32 depth, u32 colors, const char *
     return frCallGetFontEx(x, y, depth, 20, 20, colors, text, previousGlyph);
 }
 
-frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, frFontHandle_t *pFRQ)
+frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, const void *font, frFontHandle_t *pFRQ)
 {
     u8 buf[0x400];
     frFontHandle_t *request;
-    u8 *src = font;
+    const u8 *src = font;
     s32 len = strlen(font);
     s32 i = 0;
 
