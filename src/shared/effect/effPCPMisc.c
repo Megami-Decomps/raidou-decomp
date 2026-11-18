@@ -1246,6 +1246,7 @@ struct effPCPBufuIce_tag {
     u32 color;
     effPartHandle_t *handle0;
     effPartHandle_t *handle1;
+    u8 pad68[8]; /* the u128 matrix aligns the struct to 16 */
 };
 
 typedef struct effPCPMakka_tag {

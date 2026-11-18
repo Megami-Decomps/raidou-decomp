@@ -185,6 +185,7 @@ typedef struct mdlViewState_t {
     mdlObj_t *resources[MDL_VIEWER_RESOURCE_SLOTS]; /* 0x90 */
     sdfDrawTag_t *packetList; /* 0xC0: drawing packet destination */
     s8 unkC4;
+    u8 padC5[0xD0 - 0xC5]; /* the u128 slots align the struct to 16 */
 } mdlViewState_t;
 
 extern mdlViewState_t mdlViewerState;
