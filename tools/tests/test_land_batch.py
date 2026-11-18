@@ -279,6 +279,18 @@ class BothGamesTests(unittest.TestCase):
             self.assertIn('INCLUDE_ASM(const s32, "u", f);', b.final("f@raidou2"))
             self.assertEqual(b.final("g@raidou2"), "void g(void) { 2; }\n")
 
+    def test_rows_with_a_commit_are_skipped(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "results.tsv").write_text("name\twords\tresult\tminutes\tcommit\n"
+                                              "f\t4\tmatch\t0\tabc123\ng\t2\tmatch\t0\t\n")
+            b = self.load(root, "R\tf\t0\t4\tsrc/raidou1/u\tR1\nR\tg\t0\t2\tsrc/raidou1/u\tR1\n"
+                                "R\th\t0\t3\tsrc/raidou1/u\tR1\n")
+            self.assertEqual(sorted(b.rows), ["g", "h"])
+            self.assertEqual(b.rows["g"].result, "match")
+            (root / "results.tsv").write_text("name\twords\tresult\tminutes\tcommit\nf\t4\tmatch\t0\tabc123\n")
+            self.assertEqual(sorted(self.load(root, "R\tf\t0\t4\tsrc/raidou1/u\tR1\n").rows), [])
+
     def test_two_rows_of_one_game_are_refused(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(SystemExit):

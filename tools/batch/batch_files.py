@@ -117,9 +117,15 @@ def load(dir: Path, batches: Path | None = None, batch_id: str | None = None,
     if not rows:
         raise SystemExit(f"land_batch: no rows for {batch_id} in {batches}")
     b = Batch(dir, batch_id, rows)
-    for r in b.tsv("results.tsv")[1:]:
-        if r[0] in rows:
-            rows[r[0]].words, rows[r[0]].result = int(r[1]), r[2]
+    results = b.tsv("results.tsv")
+    commit = results[0].index("commit") if results and "commit" in results[0] else None
+    for r in results[1:]:
+        if r[0] not in rows:
+            continue
+        if commit is not None and commit < len(r) and r[commit]:
+            del rows[r[0]]  # landed by an earlier part of the batch
+            continue
+        rows[r[0]].words, rows[r[0]].result = int(r[1]), r[2]
     if (dir / "r1only.txt").exists():
         b.r1only = {l.split()[0] for l in (dir / "r1only.txt").read_text().splitlines()
                     if l.strip() and not l.startswith("#")}
