@@ -395,7 +395,6 @@ typedef struct fileOrientedRingMotion_t {
 
 INCLUDE_ASM(const s32, "mc/slMain", slKanjiDraw3);
 
-#ifdef VERSION_RAIDOU1
 void slKanjiDrawH(s32 x, s32 y, u32 rgba, const char *moji) {
     frEnableMode(1);
     slKanjiDrawH_handle2 = frSetFontString((u8 *)moji, 0, 0, 0, NULL);
@@ -403,12 +402,19 @@ void slKanjiDrawH(s32 x, s32 y, u32 rgba, const char *moji) {
     frDisableMode(1);
     frSetFontSpace(slKanjiDrawH_handle2, -1);
     frSetDrawPosition(slKanjiDrawH_handle2, x << 4, y << 3);
+#ifdef VERSION_RAIDOU1
     frDrawFontOt(slKanjiDrawH_handle2, 0, 0x6A);
-    frDestroyFontRequestAfter(slKanjiDrawH_handle2);
-    frSetFontDrawOT(0x68);
-}
 #else
-INCLUDE_ASM(const s32, "mc/slMain", slKanjiDrawH);
+    frDrawFontOt(slKanjiDrawH_handle2, 0, 0x6B);
+#endif
+    frDestroyFontRequestAfter(slKanjiDrawH_handle2);
+#ifdef VERSION_RAIDOU1
+    frSetFontDrawOT(0x68);
+#else
+    frSetFontDrawOT(0x69);
+#endif
+}
+#ifdef VERSION_RAIDOU2
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode);
 #endif
@@ -868,7 +874,9 @@ dds3ProcessFunc_t slLoadProc1st(void)
     return EE_ADDR_AS(dds3ProcessFunc_t, slTop());
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slLeaf9);
+s32 slLeaf9(void) {
+    return slTop();
+}
 
 s32 slEndingProc1st(void) {
     slBaseIconMemHandle = NULL;
@@ -1630,7 +1638,9 @@ s32 fmProcessChk_slMain(void) {
     return dds3SearchProcessName(slCalcName) != 0;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slRetuenFromLoadSub);
+s32 slRetuenFromLoadSub(void) {
+    return slData3;
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProc);
 

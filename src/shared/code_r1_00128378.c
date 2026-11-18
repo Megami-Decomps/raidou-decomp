@@ -670,7 +670,9 @@ INCLUDE_ASM(const s32, "code_r1_00128378", sdfMcPollMkdir);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", sdfLoadMapFromMemorySub);
 
-INCLUDE_ASM(const s32, "code_r1_00128378", sbtlRefDDS3GBWK);
+void sbtlRefDDS3GBWK(void) {
+    DDS3_GBWK->unk48FC = 0;
+}
 
 void sbtlCountClear(void)
 {
@@ -986,7 +988,10 @@ void fldAllShutDown(void) {
     fldProcShutDown();
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00128378", fldLoadMapResourceSub2);
+s32 fldLoadMapResourceSub2(void)
+{
+    return mapCallLoadCheckMidi() != 0;
+}
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldCallCtnFree);
 

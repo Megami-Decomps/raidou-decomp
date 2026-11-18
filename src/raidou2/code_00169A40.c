@@ -211,7 +211,9 @@ void fldDestroyTitleTask(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00169A40", fldProcSequenceSub6);
+void fldProcSequenceSub6(s32 mode) {
+    fldData31 = mode;
+}
 
 void fldSe_Init(void) {
     s32 i;

@@ -1453,7 +1453,9 @@ void frSetFontDrawOT(u32 OtType) {
     gFontDrawOT = OtType;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", frBtlEnemyDataSub);
+u32 frBtlEnemyDataSub(void) {
+    return gFontDrawOT;
+}
 #endif
 
 /* Step only second-option-2 children: decrease the low byte by eight, clamp at

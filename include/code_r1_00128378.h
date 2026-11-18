@@ -73,5 +73,6 @@ extern s32 fldNakamaCashLoad_EndCheckData;
 #ifdef VERSION_RAIDOU2
 void sbtlCountClear(void);
 #endif
+s32 mapCallLoadCheckMidi(void);
 
 #endif

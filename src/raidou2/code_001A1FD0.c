@@ -332,7 +332,9 @@ INCLUDE_ASM(const s32, "code_001A1FD0", itfIconDrawBullet);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfLeaf19);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfDrawBtnIconSub);
+struct sprHandle_t *itfDrawBtnIconSub(void) {
+    return itfData6;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfLeaf20);
 

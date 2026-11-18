@@ -8,6 +8,8 @@
 #include "dds3KernelCore.h"
 #include "code_0034F3B8.h"
 #include "gohMain.h"
+#include "code_003BF2E0.h"
+#include "cmpMain.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
@@ -57,7 +59,12 @@ INCLUDE_ASM(const s32, "code_003BF2E0", cmpMenuShutdown2);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData33);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", cmpGetMarkID);
+s32 cmpGetMarkID(void)
+{
+    struct tagCMP_WORK *wk = dds3GetProcessData(inputpanel_id);
+
+    return wk->markID;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData34);
 
@@ -100,7 +107,9 @@ INCLUDE_ASM(const s32, "code_003BF2E0", jmsCheckMovePrev);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsGetCursorPosID);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsLeaf9);
+s32 jmsLeaf9(void) {
+    return jmsLeaf11Data;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsLeaf10);
 
@@ -326,9 +335,13 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstResultLoadWaitProcess);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstSetReward);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstSetEncountDlcID);
+void rstSetEncountDlcID(s32 EncountNo) {
+    rstCallBitCheckWork = EncountNo;
+}
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstGetGlobalEncountNo);
+s32 rstGetGlobalEncountNo(void) {
+    return rstCallBitCheckWork;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstSetFlag);
 
@@ -352,7 +365,12 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetGlobalEncountNo);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcProcess_rstResult);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstDrawProcess);
+dds3ProcessFunc_t rstDrawProcess(dds3ProcessID_t *PID) {
+    gohData_t *work = dds3GetProcessData(PID);
+
+    rstCallGetStockDevilNums(work);
+    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
+}
 
 dds3ProcessFunc_t rstCallGetProcessData37(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
@@ -369,7 +387,12 @@ INCLUDE_ASM(const s32, "code_003BF2E0", ReleaseFontList);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstEndCalcProcess);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstEndDrawProcess);
+dds3ProcessFunc_t rstEndDrawProcess(dds3ProcessID_t *PID) {
+    gohData_t *work = dds3GetProcessData(PID);
+
+    rstCallGetStockDevilNums(work);
+    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
+}
 
 dds3ProcessFunc_t rstEndUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
@@ -386,7 +409,12 @@ s32 rstLeaf15(void)
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstBtlEndWaitCalcProcess);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstBtlEndWaitDrawProcess);
+dds3ProcessFunc_t rstBtlEndWaitDrawProcess(dds3ProcessID_t *PID) {
+    gohData_t *work = dds3GetProcessData(PID);
+
+    rstCallGetStockDevilNums(work);
+    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
+}
 
 dds3ProcessFunc_t rstCallGetProcessData38(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);

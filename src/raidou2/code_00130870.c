@@ -32,7 +32,9 @@ s32 mapExitFieldSub(void) {
     return ProcSequenceData4;
 }
 
-INCLUDE_ASM(const s32, "code_00130870", sbtlReLoadFldScene);
+s32 sbtlReLoadFldScene(void) {
+    return gMapRndEncLoad_Mode;
+}
 
 void sbtlRefMapRndEncLoadMode(void) {
     if (gMapRndEncLoad_Mode != 0) {

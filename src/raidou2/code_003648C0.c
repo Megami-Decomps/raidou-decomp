@@ -8,6 +8,9 @@
 #include "dds3KernelDraw.h"
 #include "dds3KernelDraw_0010A750.h"
 #include "code_r1_002CAFD8.h"
+#include "code_003648C0.h"
+#include "cmpMain.h"
+#include "code_0038AD80.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -435,7 +438,9 @@ void cmpLoadModelTables(void)
     sdfDevLoadFileEx(cmpStrGohmadenGohSameDevilsDat, &datData6, &datCallGetStockDevilIDData);
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpGetFlagScreenShot);
+s32 cmpGetFlagScreenShot(void) {
+    return cmpDrawStatusModel_cmpModelData != NULL;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetupCmpModelSub);
 
@@ -920,7 +925,10 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpMenuFilterUnit);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpMenuFilter);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockPID);
+s32 cmpCallGetStockPID(void)
+{
+    return cmpMenuFilter(cmpGetStockPID());
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockPID2);
 

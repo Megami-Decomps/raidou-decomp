@@ -9,6 +9,7 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "sBtlPlayer.h"
+#include "code_002F5CF0.h"
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf7);
 
@@ -243,7 +244,8 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlChkCallEnd);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlFuncDecideItem_sbtlMenu);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlDrawProcessSub);
+s32 sbtlBtlDrawProcessSub(struct sBtlMenu_t *menu) {
+}
 
 s32 sbtlDrawProcess(dds3ProcessID_t *PID)
 {
@@ -480,7 +482,10 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSetFontDrawOT);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlTargetCursor);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlResetTargetCursor);
+void sbtlResetTargetCursor(void) {
+    sbtlRefSbtl57Data = 0;
+    sbtlTargetCursorData6 = 1;
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", NewLogSave);
 

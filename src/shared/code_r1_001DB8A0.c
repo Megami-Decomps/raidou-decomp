@@ -342,7 +342,9 @@ void fileResetLoadContextSlide(void) {
 
 INCLUDE_ASM(const s32, "code_r1_001DB8A0", cfgLeaf2);
 
-INCLUDE_ASM(const s32, "code_r1_001DB8A0", cfgRetuenFromLoadSub);
+s32 cfgRetuenFromLoadSub(void) {
+    return cfgData != 0;
+}
 
 void cfgCopyFlagGblToBak(void) {
     cfgWork = DDS3_GBWK->configFlag;

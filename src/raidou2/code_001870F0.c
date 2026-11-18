@@ -8,7 +8,9 @@ INCLUDE_ASM(const s32, "code_001870F0", mapCallPrimAllocDrawTag);
 
 INCLUDE_ASM(const s32, "code_001870F0", mapCallPrimAllocDrawTag2);
 
-INCLUDE_ASM(const s32, "code_001870F0", mapLeaf27);
+s32 mapLeaf27(void) {
+    return mapData148;
+}
 
 void mapProcSequenceSub12(s32 arg) {
     mapData147 = arg;
@@ -31,7 +33,9 @@ s32 mapFunc11(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_001870F0", mapLeaf28);
+void mapLeaf28(void) {
+    mapData148 = 0;
+}
 
 INCLUDE_ASM(const s32, "code_001870F0", mapBtlEndWaitInitSub);
 

@@ -5,6 +5,7 @@
 #include "EventBit.h"
 #include "fld.h"
 #include "effBlur_Filter.h"
+#include "code_00163C50.h"
 
 INCLUDE_ASM(const s32, "code_00163C50", fldLeaf22);
 
@@ -104,7 +105,9 @@ INCLUDE_ASM(const s32, "code_00163C50", fldCallBitCheck2);
 
 INCLUDE_ASM(const s32, "code_00163C50", GetOverrideMapObj);
 
-INCLUDE_ASM(const s32, "code_00163C50", fldLeaf);
+void fldLeaf(s32 serialID) {
+    fldData47 = serialID;
+}
 
 INCLUDE_ASM(const s32, "code_00163C50", fldCallMemset2);
 

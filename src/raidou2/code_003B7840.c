@@ -1,6 +1,8 @@
 #include "common.h"
 #include "dds3KernelCore.h"
 #include "gohMain.h"
+#include "code_003B7840.h"
+#include "scrTraceCode.h"
 
 INCLUDE_ASM(const s32, "code_003B7840", jmsCallGetIntPara);
 
@@ -24,7 +26,10 @@ INCLUDE_ASM(const s32, "code_003B7840", jmsScrCmd_JMS_EXIT);
 
 INCLUDE_ASM(const s32, "code_003B7840", jmsScrCmd_JMS_SET_MODE);
 
-INCLUDE_ASM(const s32, "code_003B7840", jmsCallAnimFunc2);
+s32 jmsCallAnimFunc2(void) {
+    scrSetIntReturnValue(jmsAnimFunc());
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003B7840", jmsCallGetStrPara);
 

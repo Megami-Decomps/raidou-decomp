@@ -441,7 +441,9 @@ INCLUDE_ASM(const s32, "dat", datAddSkill);
 
 INCLUDE_ASM(const s32, "dat", datCreateDevilUnitEx);
 
-INCLUDE_ASM(const s32, "dat", datCreateDevilUnit);
+void datCreateDevilUnit(s32 devilId, struct sdatUnitWork_t *unit) {
+    datCreateDevilUnitEx(devilId, 0, unit);
+}
 
 INCLUDE_ASM(const s32, "dat", datAddCheckDevilUnit);
 

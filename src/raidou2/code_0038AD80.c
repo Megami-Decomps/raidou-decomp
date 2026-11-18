@@ -4,10 +4,28 @@
 #include "fldProcess.h"
 #include "cmpFile.h"
 #include "code_00323280.h"
+#include "code_0038AD80.h"
+#include "cmpMain.h"
+#include "code_00300578.h"
+#include "code_r1_00323138.h"
+#include "cmpMap.h"
+#include "sdk_libc.h"
+#include "code_0016A7D8.h"
 
 INCLUDE_ASM(const s32, "code_0038AD80", DrawTop);
 
-INCLUDE_ASM(const s32, "code_0038AD80", DrawProcess);
+s32 DrawProcess(dds3ProcessID_t *PID) {
+    tagCMP_MAP_WORK *wk = dds3GetProcessData(PID);
+
+    if (!(wk->flag & 8)) {
+        return 0;
+    }
+    cmpDrawBack(wk);
+    cmpDrawBackPattern(wk);
+    mapAutoMapDraw3();
+    DrawTop(wk);
+    return 0;
+}
 
 void Release_cmpMap(tagCMP_MAP_WORK *wk) {
     fldCallTexFreeDelayed();
@@ -32,7 +50,25 @@ void Shutdown_cmpMap(dds3ProcessID_t *id) {
     g_mainPID_cmpMap = NULL;
 }
 
-INCLUDE_ASM(const s32, "code_0038AD80", ProcessStart_cmpMap);
+void ProcessStart_cmpMap(void) {
+    sdfMemHandle_t *handle = sdfMemAllocDirect(sizeof(tagCMP_MAP_WORK));
+    tagCMP_MAP_WORK *wk = sdfMemGetPtr(handle);
+
+    memset(wk, 0, sizeof(tagCMP_MAP_WORK));
+    wk->handle = handle;
+    g_mainPID_cmpMap = dds3StartProcess(ProcessStart_cmpMapStrCampAutomapMain, 1007, 0, 0, Process_cmpMap,
+                                        (dds3ProcessFunc_t)Shutdown_cmpMap, wk);
+    wk->drawPID = dds3StartProcess(ProcessStart_cmpMapStrCampAutomapDraw, 11012, 0, 0, DrawProcess, NULL, wk);
+    if (cmpGetSpriteHnd(CMP_SPR_MAP) == NULL) {
+        if (cmpLoadSpriteHnd(CMP_SPR_MAP) == NULL) {
+            cmpLoadSpriteMem(CMP_SPR_MAP);
+            wk->flag |= 2;
+        }
+        cmpSetupCmpItemSub(CMP_SPR_MAP);
+        wk->flag |= 4;
+    }
+    fldMapAllAmap();
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", ProcessEnd_cmpMap);
 
@@ -51,20 +87,26 @@ s32 ProcessCheck_cmpMap(void) {
     return 0;
 }
 
-void cmpRefMainPIDCmpMain(void) {
-    dds3GetProcessData(g_mainPID_cmpMain);
+struct tagCMP_WORK *cmpRefMainPIDCmpMain(void) {
+    return dds3GetProcessData(g_mainPID_cmpMain);
 }
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpFunc7);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpPartyDrawFuncSub);
+dds3ProcessID_t *cmpPartyDrawFuncSub(void)
+{
+    return cmpRefMainPIDCmpMain()->partyPID;
+}
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpGetCharPID);
+dds3ProcessID_t *cmpGetCharPID(void)
+{
+    return cmpRefMainPIDCmpMain()->charPID;
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpGetsubMenuPID);
 
-void cmpGetStockPID(void) {
-    dds3GetProcessData(g_mainPID_cmpMain);
+struct tagCMP_WORK *cmpGetStockPID(void) {
+    return dds3GetProcessData(g_mainPID_cmpMain);
 }
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpUpdateSkillHDCmpKudaSub);
@@ -152,13 +194,21 @@ CMP_MODE cmpGetEndMode(void)
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpSetMarkID);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetProcessData26);
+s32 cmpCallGetProcessData26(void)
+{
+    struct tagCMP_WORK *wk = dds3GetProcessData(g_mainPID_cmpMain);
+
+    return wk->count;
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallProcEnd);
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCheckProcEnd);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpRelease);
+void cmpRelease(struct tagCMP_WORK *wk) {
+    End_cmpItem();
+    cmpFreeSpriteToGS();
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpProcessStartEx);
 
