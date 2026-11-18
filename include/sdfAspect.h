@@ -18,8 +18,8 @@
     } while (0)
 #endif
 
-/* The 2D screen's left and right edge in x, for the field background's tile
- * culling and the fills that must cover the whole screen. A host defines
+/* The 2D screen's left and right edge in x, for culling by the screen's edges
+ * (field picture tiles, citizens) and fills that must cover it. A host defines
  * them as its own edges, an int each. */
 #ifndef SDF_ASPECT_LEFT
 #define SDF_ASPECT_LEFT 0

@@ -22,6 +22,7 @@
 #include "dds3KernelDraw.h"
 #include "mapLbWork.h"
 #include "fldDbg.h"
+#include "sdfAspect.h"
 
 INCLUDE_ASM(const s32, "code_00175908", mapDrinkClearMsg);
 
@@ -208,7 +209,8 @@ void mapCtnGet(void) {
                 continue;
             }
             fldPoint3To2(&x2, &y2, x, y - 100.0f, z);
-            if (!(2048.0f - Zoom * 256.0f - Zoom * 32.0f < x2 && x2 < Zoom * 256.0f + 2048.0f + Zoom * 32.0f &&
+            if (!(2048.0f - Zoom * 256.0f - Zoom * 32.0f + SDF_ASPECT_LEFT < x2 &&
+                  x2 < Zoom * 256.0f + 2048.0f + Zoom * 32.0f + (SDF_ASPECT_RIGHT - 512) &&
                   2048.0f - Zoom * 112.0f - Zoom * 16.0f < y2 && y2 < Zoom * 112.0f + 2048.0f + Zoom * 16.0f)) {
                 continue;
             }
@@ -293,7 +295,8 @@ void mapCtnGet(void) {
             continue;
         }
         fldPoint3To2(&x2, &y2, x, y - 100.0f, z);
-        if (2048.0f - Zoom * 256.0f - Zoom * 32.0f < x2 && x2 < Zoom * 256.0f + 2048.0f + Zoom * 32.0f &&
+        if (2048.0f - Zoom * 256.0f - Zoom * 32.0f + SDF_ASPECT_LEFT < x2 &&
+            x2 < Zoom * 256.0f + 2048.0f + Zoom * 32.0f + (SDF_ASPECT_RIGHT - 512) &&
             2048.0f - Zoom * 112.0f - Zoom * 16.0f < y2 && y2 < Zoom * 112.0f + 2048.0f + Zoom * 16.0f) {
             linked = 0;
             if (bustNum * 6 + fldGlobalBase.word2DC + fldGlobalBase.word2E4 + fldGlobalBase.word2E0 * 3 +
