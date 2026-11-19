@@ -97,3 +97,27 @@ Raidou 2: 6 of 87 words differ, first at +0x84.
 It matched until the R2-C3 header declarations; the body is unchanged, so it is kept NON_MATCHING and no declaration is moved to protect it. The difference is the two stack slots the full unit loads into v0/v1 and the register added to them, swapped.
 
 Fragile: the full-unit result moves with declarations in headers the unit includes. The R2-C3 part 3 edits to sBtlEff.h, sbtlDMG.h and sbtlWork.h turn the -DNON_MATCHING full unit from OK into CONTEXT 6/87 (reverting any one of them alone restores it), and the part 4 edits do the same to the default build.
+
+## cmpCallGetProcessData33 (code_003BF2E0, raidou2 0x1E0)
+
+Raidou 2: 9 of 120 words differ, first at +0x6C.
+
+Three guards after calls (dds3ExistProcess, itfMenuGetFlag, alpha) branch to the epilogue skipping the $2 = 0 that retail sets in each beql slot; the default arm's movn operands are swapped. Tried: early returns, nested ifs, goto to a trailing return 0, ternary and if/else defaults.
+
+## cmpCallBitCheck10 (code_003BF2E0, raidou2 0x148)
+
+Raidou 2: 23 of 81 words differ, first at +0xC0; emitted 324 bytes, native 328 bytes.
+
+Loop entry: retail keeps -1 in a saved register and loads the table entry at the loop top; this draft peels the first load into each of the four entry paths. Tried a while over *p++, a for(;;) with break and an indexed walk. 58 of 81 words. nm_behaviour reports only the peeled load (one memx load and one branch moved); the walk and its calls are the same.
+
+## rstResultLevelUpAnim (code_003BF2E0, raidou2 0x1D0)
+
+Raidou 2: 12 of 116 words differ, first at +0x10.
+
+Twelve words: the key table's address and pSpr swap $22 and $23 (every use of either). Tried: for and do/while loops, key/table declaration order (34 words), three spellings of the step select.
+
+## cmpLoadLocalizeText (code_003BF2E0, raidou2 0x1C4)
+
+Raidou 2: 8 of 113 words differ, first at +0xA8.
+
+Eight words: the store of evtCallCheckRankUpData2 against the count local, and the rstData10/evtCallCheckRankUpData stores in the second loop, are scheduled in a different order. First draft; not tuned.

@@ -10,7 +10,7 @@ s32 fldCallSetFontColor(f32 arg);
 void cmpCallDrawSprList(s32 mode, s32 kind, dds3ProcessID_t *target, u32 flag, s32 type);
 void *sysLeaf50(s32 arg);
 /* Process data of the cmpStatus process (g_mainPID). */
-typedef struct cmpStatusWork_t {
+typedef struct tagCMP_STATUS_WORK {
     struct sdfMemHandle_t *hMem; /* 0x00 */
     dds3ProcessID_t *drawPID;    /* 0x04 */
     s32 flags;                   /* 0x08: bit 0 ends the process; sign bit read by cmpGetFlagCallDebug */
@@ -19,18 +19,26 @@ typedef struct cmpStatusWork_t {
     s32 step;                    /* 0x0C */
     u8 unk10[4];
     s32 step2;                   /* 0x14 */
-    u8 unk18[0xC];
+    u8 unk18[8];
+    s32 type;                    /* 0x20: CMP_STATUS_TYPE */
     s16 count;                   /* 0x24 */
     u8 unk26[2];
     s32 unk28;
     s32 unk2C;
-    u8 unk30[0x2E00 - 0x30];
+    u8 unk30[0xC];
+    s32 flags2;                  /* 0x3C: bit 1 refreshes the luck values once */
+    u8 unk40[0x2A];
+    s16 luck;                    /* 0x6A: playerData.unit.now.luck */
+    u8 unk6C[0x16];
+    s16 luckBackup;              /* 0x82: playerData.unit.backup.luck */
+    u8 unk84[0x2E00 - 0x84];
     s32 unk2E00;
     u8 unk2E04[0x2ECC - 0x2E04];
     s32 unk2ECC;
     u8 unk2ED0[0x2F1C - 0x2ED0];
     cmpSummnerRankMng_t rankMng;   /* 0x2F1C */
-    u8 unk310C[0x314D - 0x310C];
+    u8 unk310C[0x314C - 0x310C];
+    s8 luckSet;                  /* 0x314C */
     u8 unk314D;
     u8 unk314E[2];
 #else

@@ -199,6 +199,7 @@ def place(version):
         owned -= defined_at.keys()
         have = set(INCLUDE.findall(text))
         anchors = []   # (address, position in text or None, symbol, needs a line)
+        c_owned = set()   # floating rodata of C functions, needed whichever way an asm function builds
         for sym, pos in defined_at.items():
             anchors.append((int(labels[sym], 16), pos, None, False))
         for m in INCLUDE_ASM.finditer(text):
@@ -224,6 +225,7 @@ def place(version):
                 # Placed by address like any other included symbol: a function may
                 # use rodata the compiler emitted after later functions.
                 anchors.append((addr, None, sym, sym not in have))
+                c_owned.add(sym)
         for sym, pos in compiled_at.items():
             if not any(a[2] == sym for a in anchors):
                 anchors.append((int(labels[sym], 16), pos, None, False))
@@ -243,7 +245,8 @@ def place(version):
         following = len(text)
         placed = []
         for addr, pos, sym, needed in reversed(anchors):
-            pos = following if pos is None else pos
+            if pos is None:
+                pos = asm_start(text, following) if sym in c_owned else following
             following = pos
             placed.append((pos, addr, sym, needed))
         positions = [pos for pos, *_ in sorted(placed, key=lambda p: p[1])]
@@ -310,6 +313,18 @@ def data_chunk_labels(version):
             m for path in (ROOT / "asm" / version / "data").glob("data_*.data.s")
             for m in re.findall(r"^\s*dlabel (\w+)", path.read_text(), re.M)}
     return _DATA_CHUNK_LABELS[version]
+
+
+def asm_start(text, pos):
+    """`pos`, or the head of the NON_MATCHING block whose #else line it follows."""
+    before = text[:pos]
+    if not before.endswith("#else\n"):
+        return pos
+    start = before.rfind("\n#ifdef NON_MATCHING\n") + 1
+    if start == 0:
+        return pos
+    comment = before.rfind("\n", 0, start - 1) + 1
+    return comment if before.startswith("/* NON_MATCHING", comment) else start
 
 
 def function_text(text, start):

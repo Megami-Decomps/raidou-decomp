@@ -84,5 +84,6 @@ extern const char fldStrModelField000Lb[];
 extern const char fldStrModelFieldNakedLb2[];
 #endif
 s32 mapCallLoadCheckMidi(void);
+void mapSetSceneParam_BattleReturn(s32 map, s32 floor, s32 playerpos, char *name);
 
 #endif

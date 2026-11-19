@@ -259,7 +259,7 @@ typedef struct
     /* 0x1F98 */ u32 unk1F98;
     /* 0x1F9C */ s32 mapSummonID;
     /* 0x1FA0 */ SBTL_PLAYER_DATA playerData;
-    /* 0x3680 */ u8 unk3680[0xBC2];
+    /* 0x4240 */ u8 unk4240[2];
     /* 0x4242 */ s16 unk4242;
     /* 0x4244 */ s16 unk4244;
     /* 0x4246 */ u8 unk4246;

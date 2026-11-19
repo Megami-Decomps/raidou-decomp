@@ -97,7 +97,8 @@ typedef sdatUnitWork_t datPartyDevil_t;
 #define SDAT_ITEM_NUM 160
 
 #ifdef VERSION_RAIDOU2
-/* Player data at DDS3_GBWK+0x1FA0. Partial raidou2 layout: it ends at the last stock devil, the rest is unread. */
+/* Player data at DDS3_GBWK+0x1FA0, 0x2950 bytes (datInitPlayer). Partial raidou2 layout: it ends at the last of the
+   20 stock devils, the rest is still in dds3GlobalWork_t. */
 typedef struct SBTL_PLAYER_DATA {
     /* 0x000 */ sdfVector4_t vec[2];
     /* 0x020 */ s32 mag;
@@ -114,10 +115,10 @@ typedef struct SBTL_PLAYER_DATA {
     /* 0x1C0 */ u8 pad1C0[0x200 - 0x1C0];
     /* 0x200 */ s16 item[SDAT_ITEM_NUM]; /* stock per item id; R2's item count is not established */
     /* 0x340 */ u8 pad340[0x540 - 0x340];
-    /* 0x540 */ sdatUnitWork_t stock[SDAT_STOCK_NUM];
+    /* 0x540 */ sdatUnitWork_t stock[20];
 } SBTL_PLAYER_DATA;
 
-SIZE_CHECK(SBTL_PLAYER_DATASizeCheck, SBTL_PLAYER_DATA, 0x16E0);
+SIZE_CHECK(SBTL_PLAYER_DATASizeCheck, SBTL_PLAYER_DATA, 0x22A0);
 #else
 /* Player data, 0xFA0 bytes at DDS3_GBWK+0x1CA0. Only the fields used so far are named. */
 typedef struct SBTL_PLAYER_DATA {

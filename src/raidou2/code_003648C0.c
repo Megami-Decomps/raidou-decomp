@@ -51,6 +51,16 @@ INCLUDE_ASM(const s32, "code_003648C0", titleTestRelease);
 
 INCLUDE_ASM(const s32, "code_003648C0", titleTestDeleteWorld);
 
+INCLUDE_RODATA(const s32, "code_003648C0", titleSeffViewAreaTable);
+
+INCLUDE_RODATA(const s32, "code_003648C0", titleSeffViewAreaTable2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", titleSeffViewAreaTable3);
+
+INCLUDE_RODATA(const s32, "code_003648C0", titleSeffViewAreaTable4);
+
+INCLUDE_RODATA(const s32, "code_003648C0", titleSeffViewAreaTable5);
+
 INCLUDE_ASM(const s32, "code_003648C0", titleSeffViewArea);
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc7);
@@ -84,6 +94,16 @@ INCLUDE_ASM(const s32, "code_003648C0", sbtlCallMemset24);
 INCLUDE_ASM(const s32, "code_003648C0", sbtlCallLinkTest);
 
 INCLUDE_ASM(const s32, "code_003648C0", sbtlCallFptodp2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlCallInversMatrixTable);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlCallInversMatrix2Table);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlCallInversMatrix3Table);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlCallInversMatrix4Table);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlStr72727272);
 
 INCLUDE_ASM(const s32, "code_003648C0", sbtlSeffActCam);
 
@@ -136,6 +156,16 @@ INCLUDE_ASM(const s32, "code_003648C0", nbLeaf65);
 INCLUDE_ASM(const s32, "code_003648C0", nbRefCameraTM);
 
 INCLUDE_ASM(const s32, "code_003648C0", nbCallMemset3);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlCallDebugDrawWireModelTable);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlCallGrAllocPacketBuff5Table);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlCallMemset26Table);
+
+INCLUDE_RODATA(const s32, "code_003648C0", sbtlCallMemset26Table2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", nbCallMemset3Table);
 
 INCLUDE_ASM(const s32, "code_003648C0", nbFunc40);
 
@@ -473,7 +503,55 @@ s32 cmpSetupCmpItemSub(CMP_SPR a_no) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpLoadSpriteToMem);
+INCLUDE_RODATA(const s32, "code_003648C0", fldStrJimusyoJimushoSpr);
+
+INCLUDE_RODATA(const s32, "code_003648C0", fldStrCampTizuSpr);
+
+INCLUDE_RODATA(const s32, "code_003648C0", fldStrCampJoutaiSpr);
+
+INCLUDE_RODATA(const s32, "code_003648C0", fldStrCampTdnSpr);
+
+INCLUDE_RODATA(const s32, "code_003648C0", fldStrCampSubSpr);
+
+s32 cmpLoadSpriteToMem(void) {
+    s32 i = 0;
+    s32 ret = 1;
+    fileRequest_t *pac = pacLoad("/camp/CAMPPACK.LB");
+    sdfPacDecodeResrc_t *resrc;
+
+    pacSync(pac);
+    for (resrc = pac->pac.resrcHead; resrc != NULL; resrc = resrc->next, i++) {
+        if ((u32)i >= CMP_SPR_NUM) {
+            ret = 0;
+            sdfMemFreeDirect(resrc->resrc);
+        } else {
+            switch (i) {
+            case 0:
+                evtWork6[i] = NULL;
+                cmpWork3[i] = resrc->resrc;
+                break;
+            case 1:
+                evtWork6[i] = NULL;
+                cmpWork3[i] = resrc->resrc;
+                break;
+            case 2:
+                evtWork6[i] = NULL;
+                cmpWork3[i] = resrc->resrc;
+                break;
+            case 3:
+                evtWork6[i] = NULL;
+                cmpWork3[i] = resrc->resrc;
+                break;
+            case 4:
+                evtWork6[i] = NULL;
+                cmpWork3[i] = resrc->resrc;
+                break;
+            }
+        }
+    }
+    pacFileHandleFree_(pac);
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpFreeSpriteToMem);
 
@@ -630,6 +708,8 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpFunc5);
 INCLUDE_ASM(const s32, "code_003648C0", cmpLeaf43);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpFunc6);
+
+INCLUDE_RODATA(const s32, "code_003648C0", datStrErrorItfMenuLinkSprite);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCampTestMomiji);
 
@@ -990,6 +1070,30 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpLvUpSeqFadeInStepUpdate);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallWaitLoadModel);
 
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrGohmadenGohDevilParamDat);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrGohmadenGohSameDevilsDat);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpSetLightTable);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpSetLightTable2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrL);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpDefaultFogColor);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrCampBad01Epl);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrCampBad04Epl);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpSetModelScaleTable);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpCampEFFTESTable);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrCampEffTesEpl);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpTable);
+
 INCLUDE_ASM(const s32, "code_003648C0", cmpSequence);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpMemSetSeqStatusStepUpdate);
@@ -1028,15 +1132,79 @@ void cmpCallEndCmpModel(cmpStatusWork_t *wk) {
     }
 }
 
-void CallProcEnd_cmpStatus(void) {
+void CallProcEnd_cmpStatus(cmpStatusWork_t *wk) {
 }
 
-s32 Process_cmpStatus(void)
+s32 Process_cmpStatus(cmpStatusWork_t *wk)
 {
     return 0;
 }
 
+/* NON_MATCHING: 114 of 115 words match.  */
+#ifdef NON_MATCHING
+s32 cmpCallGetProcessData11(dds3ProcessID_t *id)
+{
+    cmpStatusWork_t *wk = dds3GetProcessData(id);
+
+    if (wk->type != CMP_STATUS_TYPE_COMB_SWD_DSP && (wk->flags2 & 2) && !wk->luckSet) {
+        datCalcLuckParam();
+        wk->luck = DDS3_GBWK->playerData.unit.now.luck;
+        wk->luckBackup = DDS3_GBWK->playerData.unit.backup.luck;
+        wk->luckSet = 1;
+    }
+    if (wk->step2 != 3) {
+        if (wk->flags & 0x20) {
+            cmpUpdatemodel(wk);
+        }
+        switch (wk->step2) {
+        case 0:
+            cmpSequence(wk);
+            break;
+        case 1:
+            cmpSTATUSSTEP(wk);
+            break;
+        case 2:
+            cmpSeqRankUp(wk);
+            break;
+        case 4:
+            cmpMemSetSeqStatusStepUpdate(wk);
+            break;
+        case 5:
+            cmpSeqGoodby(wk);
+            break;
+        }
+        return 0;
+    }
+    switch (wk->step) {
+    case 0:
+        CallProcEnd_cmpStatus(wk);
+        wk->step = 1;
+    case 1:
+        if (Process_cmpStatus(wk)) {
+            return 0;
+        }
+        wk->count = 0;
+        wk->step++;
+        break;
+    case 2:
+        if (wk->count == 0) {
+            wk->flags &= ~0x100;
+        }
+        if (wk->count >= 2) {
+            wk->step = 3;
+            wk->count = 0;
+        } else {
+            wk->count++;
+        }
+        break;
+    case 3:
+        return -1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetProcessData11);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallDrawFont2);
 
@@ -1706,6 +1874,14 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockDevilNums2);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockDevilNums3);
 
+INCLUDE_RODATA(const s32, "code_003648C0", cmpCallSprintfTable);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpDrawParamTable);
+
+INCLUDE_RODATA(const s32, "code_003648C0", ProcessStart_cmpStatusStrCampStatusMain);
+
+INCLUDE_RODATA(const s32, "code_003648C0", ProcessStart_cmpStatusStrCampStatusDraw);
+
 INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateSkillHD_cmpKuda);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetCsrSelSkl);
@@ -1786,6 +1962,8 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpChangeChkTabPageSub2);
 INCLUDE_ASM(const s32, "code_003648C0", cmpSequenceSub);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpStartBirthDevilStatusSub);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpChkEnableUseUnitTable);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpChkEnableUseUnit);
 
@@ -2040,6 +2218,136 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpMenuCallProcEnd);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpMenuCheckProcEnd);
 
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrCampScriptCmpUseScrBf);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrReserve8);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrReserve7);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrReserve6);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrReserve5);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrReserve4);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrReserve3);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrReserve2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrReserve1);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrSecretArt);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrScripture);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrApollyon);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrKillings);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrIshigami);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrKingAbaddon);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrLuckLocusts);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrMarriageRitual);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTsukigata);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTheMissing);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTheTruthOfTheSecretArt);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhatIsTheSecretArt);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTruthOfTheAncient);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTruthOfTheAncient2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhatIsTheScripture);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrApollyonHabit);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhatIsApollyon);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrQuestionsOfTheKillings);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrAboutTheKillings);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTheEarthquakes);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhoIsIshigami);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrSplitBetweenTheMushibito);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrSakibitoLegend);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTruthOfTento3);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTentoRevealedPt2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTentoRevealed);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhoIsTento);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrAbaddonAndTheCapital);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhoIsKingAbaddonPt2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrAbaddonMystery);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhoIsKingAbaddon);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrLuckLocustsAndAbaddon);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrNestOfTheLuckLocust);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhatAreLuckLocusts);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTruthOfTheRitualOf);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrRitualRevealed);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhatIsTheRitual);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTruthOfTheChildrenSong);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrMysteryOfTheSongPt2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrMysteryOfTheSong);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhatIsTheSong);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhoAreTheTsukigata);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrShinadoMessage);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrMysteryOfShinado);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhoIsShinado);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrSpiritedAway);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrAkaneRevealed);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrAkaneMysteryPt2);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrAkaneMystery);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTatsumiMystery);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrTatsumiRumor);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhoIsTatsumi);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrDahnAndLouisCyphre);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrDahnRevealed);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrDahnMystery);
+
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrWhoIsDahn);
+
 INCLUDE_ASM(const s32, "code_003648C0", cmpMenuProcess);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpMenuCheckWait);
@@ -2116,6 +2424,4 @@ void cmpDrawBack(tagCMP_MAP_WORK *wk) {
     eglLinkAlpha(0);
     itfDrawGridWithResolvedSlot(320, 448, 0, 96, cmpGetSpriteHnd(CMP_SPR_MAP), 1, 44);
 }
-
-INCLUDE_RODATA(const s32, "code_003648C0", cmpStrCampScriptCmpUseScrBf);
 

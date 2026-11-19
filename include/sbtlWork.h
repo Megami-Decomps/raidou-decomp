@@ -858,8 +858,12 @@ typedef struct SBTL_STAGE_DATA {
     u16 flags;      /* 0x04: 0x20 stops units at battle start */
     s16 bgmId;      /* 0x06 */
     u8 pad08[8];
-    s16 unk10;      /* 0x10: 0 and 2 reload the map after the result screen */
-    u8 pad12[0x1E];
+    s16 endtype;    /* 0x10: 0 and 2 reload the map after the result screen */
+    s16 end_eveno;  /* 0x12: sequence after the battle when endtype is 1 */
+    s8 end_map;     /* 0x14 */
+    s8 end_floor;   /* 0x15 */
+    s16 end_playerpos; /* 0x16 */
+    char end_scrip[0x18]; /* 0x18 */
     SB_ENCOUNT1 enc1[13]; /* 0x30 */
 } SBTL_STAGE_DATA;
 
@@ -1279,6 +1283,9 @@ s32 sbtlCheckStockPara(sdatUnitWork_t *unit);
 s32 sbtlCheckAutoSkill(sdatUnitWork_t *unit, s32 flg);
 s32 sbtlSetAutoSkill_GB(sdatUnitWork_t *unit);
 s32 sbtlGetStockPoint(void);
+#ifdef VERSION_RAIDOU2
+s32 sbtlChkHaveMemSkl(sdatUnitWork_t *unit, SKLID id);
+#endif
 s32 sbtlBtlNakamaSetUpSub(sdatUnitWork_t *unit);
 void sbtlCallBtlCheckEnshutuSummonUnit(void);
 s32 sbtlCheckGenerator_ND(void);

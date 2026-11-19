@@ -30,6 +30,8 @@
 #include "dds3AdminiProcess.h"
 #include "mapData.h"
 #include "code_r1_002CA3F0.h"
+#include "fclDrawBack.h"
+#include "dds3Randomize.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
@@ -203,7 +205,88 @@ void jmsMenuShutdown(dds3ProcessID_t *PID) {
     datDebugPrintf(cmpStrJmsMenuShutdownEnd);
 }
 
+INCLUDE_RODATA(const s32, "code_003BF2E0", cmpStrJmsMenuShutdownStart);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", cmpStrJmsMenuShutdownEnd);
+
+/* NON_MATCHING: 111 of 120 words match.  */
+#ifdef NON_MATCHING
+s32 cmpCallGetProcessData33(dds3ProcessID_t *PID)
+{
+    jmsInputPanelWork_t *work = dds3GetProcessData(PID);
+    u8 backAlpha;
+    u8 backAlpha2;
+    u8 alpha;
+    s32 help;
+    s32 id;
+
+    if (!(work->flags & 4)) {
+        return 0;
+    }
+    backAlpha = GetSelectRootID(work->menuPID, 0);
+    backAlpha2 = work->unk38;
+    if (backAlpha < 0xFF && backAlpha2 == 0xFF) {
+        backAlpha = 0xFF;
+    }
+    fclBackSprite(0, backAlpha, backAlpha2, work->hSpr);
+    if (!dds3ExistProcess(work->menuPID)) {
+        return 0;
+    }
+    if (!itfMenuGetFlag(work->menuPID, 8)) {
+        return 0;
+    }
+    if (itfMenuGetWaitType(work->menuPID)) {
+        return 0;
+    }
+    alpha = GetSelectRootID(work->menuPID, 1);
+    if (!alpha) {
+        return 0;
+    }
+    id = itfMenuGetSelectID(work->menuPID);
+    switch (id) {
+    case 1:
+        help = 25;
+        break;
+    case 2:
+        help = 26;
+        break;
+    case 3:
+        help = 27;
+        break;
+    case 5:
+        help = 28;
+        break;
+    case 4:
+        help = 29;
+        break;
+    case 6:
+        help = 30;
+        break;
+    case 7:
+        help = 33;
+        break;
+    case 8:
+        help = 31;
+        break;
+    default:
+        help = -1;
+        if (id >= 136) {
+            help = 32;
+        }
+        break;
+    }
+    if (help >= 0) {
+        itfDrawMiscSpriteAlpha(0, 379, 0, alpha, work->hSpr, 99, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(-10, 381, 0, alpha, work->hSpr, 101, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(332, 381, 0, alpha, work->hSpr, 102, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(16, 385, 0, alpha, work->hSpr, 100, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        fclCommandHelp(help, alpha);
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData33);
+#endif
 
 s32 cmpGetMarkID(void)
 {
@@ -260,6 +343,10 @@ void jmsMenuMain(void) {
     work->unk2C = 0;
 }
 
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrJmsMenuMain);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrJmsMenuDraw);
+
 /* NON_MATCHING: 10 of 26 words match.  */
 #ifdef NON_MATCHING
 void jmsMenuProcessEnd(void) {
@@ -271,7 +358,7 @@ void jmsMenuProcessEnd(void) {
             work->flags |= 1;
             work->step = 1;
             work->count = 0;
-            datDebugPrintf(jmsStrJmsMenuProcessEndAccept);
+            datDebugPrintf(" jmsMenuProcessEnd() accept\n");
         }
     }
 }
@@ -345,10 +432,10 @@ s32 jmsJimusyoJmsQuest(void) {
     jmsWork_t *wk = jmsLeaf9();
     jmsVtblEntry_t *entry = &wk->vtbl[2];
 
-    entry->func((u8 *)wk + entry->delta, jmsStrJimusyoJmsQuestTbl);
+    entry->func((u8 *)wk + entry->delta, "/jimusyo/jmsQuest.tbl");
     wk = jmsLeaf9();
     entry = &wk->vtbl[4];
-    return entry->func((u8 *)wk + entry->delta, jmsStrJimusyoJmsQuestStrBmd) != 0;
+    return entry->func((u8 *)wk + entry->delta, "/jimusyo/jmsQuestStr.bmd") != 0;
 }
 #else
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsJimusyoJmsQuest);
@@ -545,7 +632,43 @@ INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallBitCheck9);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpLeaf24);
 
+/* NON_MATCHING: 59 of 82 words match.  */
+#ifdef NON_MATCHING
+void cmpCallBitCheck10(jmsWork_t *wk) {
+    s32 table[6] = { 49, 58, 68, 78, 80, -1 };
+    s32 *p;
+    s32 count;
+    s32 i;
+
+    count = 0;
+    for (i = 0x1F81; i < 0x1FE5; i++) {
+        if (evtBitCheck(i)) {
+            count++;
+        }
+    }
+    wk->gbwk->unk0C = count;
+    count = 0;
+    for (i = 0; i < 100; i++) {
+        if (evtBitCheck(i + 0x1F81) || evtBitCheck(i + 0xB01)) {
+            count++;
+        }
+    }
+    if (count >= 99) {
+        evtBitOn(0x1DFF);
+        if (wk->gbwk->unk0C > 0 && !evtBitCheck(0x1FE4)) {
+            evtBitOn(0x1D71);
+        }
+    }
+    for (p = table; *p != -1; p++) {
+        if (!evtBitCheck(*p + 0xB00)) {
+            return;
+        }
+    }
+    evtBitOn(0x1DFE);
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallBitCheck10);
+#endif
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpLeaf25);
 
@@ -672,9 +795,108 @@ void rstDestroyBG(rstBG_t *bg) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstEndNext);
+INCLUDE_RODATA(const s32, "code_003BF2E0", dpdivStr10CmQuestRes);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstDevilGiftCalc);
+INCLUDE_RODATA(const s32, "code_003BF2E0", dpdivStr14CmQuestResImpl);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrMap01Ep10Scene01);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrMap01Ep09Scene0101);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrChapter7);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrChapter6);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrChapter5);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrChapter4);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrChapter3);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrChapter2);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrChapter1);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrPrologue);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", cmpStrStorySelectDebugProc);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrResult);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrRsHaikeiSpr);
+
+void rstEndNext(rstInitWork_t *pData)
+{
+    s32 seq;
+
+    if (!(pData->flags & 1)) {
+        return;
+    }
+    if (evtBitCheck(0x360) && sbtlData100[rstCallBitCheckWork].endtype < 3 && sbtlData100[rstCallBitCheckWork].endtype > 0) {
+        sndBgmFadeOut();
+        seq = 501;
+        dds3AdminiCallSequence(9, &seq, 4, 0);
+        scrAllReleaseScript();
+        return;
+    }
+    if (pData->flags & 0x100000) {
+        sbtlCheckEndEscape();
+        mapSetSceneParam_BattleReturn(13, 0, 10, "akarana_exreturn");
+        return;
+    }
+    switch (sbtlData100[rstCallBitCheckWork].endtype) {
+    case 0:
+        mapReturnFromRndEncBattle(sbtlData100[rstCallBitCheckWork].end_scrip);
+        break;
+    case 1:
+        sbtlCheckEndEscape();
+        seq = sbtlData100[rstCallBitCheckWork].end_eveno;
+        dds3AdminiCallSequence(9, &seq, 4, 0);
+        scrAllReleaseScript();
+        break;
+    case 2:
+        sbtlCheckEndEscape();
+        mapSetSceneParam_BattleReturn(sbtlData100[rstCallBitCheckWork].end_map, sbtlData100[rstCallBitCheckWork].end_floor,
+                                      sbtlData100[rstCallBitCheckWork].end_playerpos, sbtlData100[rstCallBitCheckWork].end_scrip);
+        break;
+    }
+}
+
+void rstDevilGiftCalc(rstInitWork_t *pData)
+{
+    sdatUnitWork_t *old = pData->player2.stock;
+    s32 i;
+    s32 j;
+    s32 end;
+    s32 rate;
+
+    for (i = 0; i < datGetStockDevilNums(); i++) {
+        if (DDS3_GBWK->playerData.stock[i].devilId == 0 || DDS3_GBWK->playerData.stock[i].level >= old[i].level) {
+            continue;
+        }
+        j = DDS3_GBWK->playerData.stock[i].devilId * 3;
+        for (end = j + 3; j < end; j++) {
+            if (DDS3_GBWK->playerData.stock[i].level < sdatLvUpDevilGiftTbl[j].Level) {
+                continue;
+            }
+            rate = sdatLvUpDevilGiftTbl[j].Rate;
+            if ((s32)(dds3GetRandA(NULL) % 100) >= rate) {
+                continue;
+            }
+            if (sdatLvUpDevilGiftTbl[j].NumMax == 0) {
+                continue;
+            }
+            pData->gift[i].item = sdatLvUpDevilGiftTbl[j].ItemID;
+            pData->gift[i].nums = dds3GetRandA(NULL) % sdatLvUpDevilGiftTbl[j].NumMax + 1;
+            if (sbtlChkHaveMemSkl(&DDS3_GBWK->playerData.stock[i], AUTO_GIFT2KAI)) {
+                pData->gift[i].nums *= 2;
+            } else if (sbtlChkHaveMemSkl(&DDS3_GBWK->playerData.stock[i], AUTO_GIFT3KAI)) {
+                pData->gift[i].nums *= 3;
+            }
+            break;
+        }
+    }
+}
 
 s32 rstCalcRankUp(rstInitWork_t *pData)
 {
@@ -960,7 +1182,7 @@ s32 rstCallGetGlobalEncountNo(rstInitWork_t *work) {
     s16 type;
 
     if (!(work->flags & 0x20000) && (work->flags & 1)) {
-        type = sbtlData100[rstGetGlobalEncountNo()].unk10;
+        type = sbtlData100[rstGetGlobalEncountNo()].endtype;
         if (type == 0 || type == 2) {
             return rstLoadMapResource(rstCalcProcess(work));
         }
@@ -970,6 +1192,24 @@ s32 rstCallGetGlobalEncountNo(rstInitWork_t *work) {
 #else
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetGlobalEncountNo);
 #endif
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstCalcRankUpTable);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", campDrawProcName);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", campUpdateProcName);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", cmpCalcProcName);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrResultSpr);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrSeqResultLvupWait);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrSeqResultBtlendWait);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrSeqResultEnd);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrSeqResult);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcProcess_rstResult);
 
@@ -1118,7 +1358,7 @@ dds3ProcessFunc_t rstCallGetProcessData39(dds3ProcessID_t *PID) {
             return NULL;
         }
         dds3FadeIn(0, 0, 0, 0);
-        if (sbtlData100[rstGetGlobalEncountNo()].unk10 != 1) {
+        if (sbtlData100[rstGetGlobalEncountNo()].endtype != 1) {
             return (dds3ProcessFunc_t)-1;
         }
         if (work->fadeCount == 0) {
@@ -1257,13 +1497,51 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstResultExpGauge);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultAddLevelUpAnimQue);
 
+/* NON_MATCHING: 104 of 116 words match.  */
+#ifdef NON_MATCHING
+void rstResultLevelUpAnim(s32 X, s32 Y, s32 AlphaRate, s32 Type, s32 *pQue, sprHandle_t *pSpr)
+{
+    sdfIVector2_t pos;
+    f32 scale[2] = { 1.0f, 1.0f };
+    titleKey_t key[3] = { { 0, 128 }, { 20, 70 }, { 45, 0 } };
+    rstPositionTable_t table[3] = { { 0, { 0, 0 } }, { 20, { 0, -10 } }, { 45, { 0, -20 } } };
+    s32 i;
+    s32 frame;
+    s32 alpha;
+    s32 step;
+
+    step = Type == 0 ? 17 : 23;
+    for (i = 7; i >= 0; i--, pQue++) {
+        if (*pQue) {
+            frame = 45 - *pQue;
+            alpha = rstCalcAlphaRate(frame, key, 3) * AlphaRate / 256;
+            rstCalcPosition(frame, table, 3, &pos);
+            rstResultLevelUpAnimSub(X + pos.x * 16, Y + pos.y * 8, scale, alpha, 1, step, pSpr, 105);
+            (*pQue)--;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultLevelUpAnim);
+#endif
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallBlendColor2);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultAddCyuuseiMaxAnimQue);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultCyuuseiMaxAnim);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstCallCalcAlphaRateTable);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultLevelUpAnimTable);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultLevelUpAnimTable2);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultCyuuseiMaxAnimTable);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultCyuuseiMaxAnimTable2);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultCyuuseiMaxAnimTable3);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultPlayerLevel);
 
@@ -1276,6 +1554,8 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetStockDevilNums);
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetRand);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstLeaf9);
+
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultNakamaLevelTable);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallPlaySE);
 
@@ -1307,7 +1587,54 @@ INCLUDE_ASM(const s32, "code_003BF2E0", evtCheckPolygonMovieRun);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", evtBgnNum);
 
+/* NON_MATCHING: 105 of 113 words match.  */
+#ifdef NON_MATCHING
+s32 cmpLoadLocalizeText(void)
+{
+    s32 count;
+    s32 i;
+
+    rstData8 = &DDS3_GBWK->playerData;
+    rstData9 = rstGetPlayerUnit();
+    evtCallCheckRankUpData2 = 0;
+    evtCallCheckRankUpData3 = 0;
+    for (i = 0; i < 20; i++) {
+        evtCallCheckRankUpWork[i] = 0;
+        rstWork2[i] = 0;
+        rstOmoideGaIppaiWork4[i] = SKLID_INIT;
+        rstOmoideGaIppaiWork5[i] = SKLID_INIT;
+    }
+    count = 0;
+    count = rstData9->unit.level - rstData8->unit.level;
+    evtCallCheckRankUpData2 = count;
+    if (rstCheckRankUp() >= 0) {
+        evtCallCheckRankUpData3 = 1;
+        count++;
+    }
+    for (i = 0; i < 20; i++) {
+        rstOmoideGaIppaiWork9[i][0] = 0;
+        rstOmoideGaIppaiWork9[i][1] = 0;
+        evtCallCheckRankUpData = &rstData8->stock[i];
+        rstData10 = &rstData9->stock[i];
+        evtBgnNum(i, &count);
+        if (!(evtCallCheckRankUpData->flag & 1)) {
+            continue;
+        }
+        if (!(rstData10->flag & 1)) {
+            continue;
+        }
+        if (rstData10->chuusei >= 100 && evtCallCheckRankUpData->chuusei < 100) {
+            rstWork2[i] = 1;
+            count++;
+        }
+        rstGetGiftItem(i);
+        rstGetGiftItemNums(i);
+    }
+    return count > 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpLoadLocalizeText);
+#endif
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstInit);
 
@@ -1357,7 +1684,95 @@ s32 rstCallGetProcessStat(void) {
 void rstCloseStreamSub(void) {
 }
 
-INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrResult);
+INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrResultGrowth);
 
-INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrRsHaikeiSpr);
+INCLUDE_SDATA(const s32, "code_003BF2E0", inputpanel_id);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", SetCommand_jmsMenuData4Entry);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", SetCommand_jmsMenuData4Entry2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", _gp2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData50);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry3);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry4);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData35Entry);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData51);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", jmsLeaf11Data);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData52);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData53);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", ProcessStart_rstInitData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData4);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstLoadMapResourceData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstLoadMapResourceData2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData5);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData6);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData14);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallCalcAlphaRateData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultGetExpCyuuseiData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData15);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultExpGaugeData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultLevelUpAnimData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor2Data3);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultPlayerLevelData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor4Data);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor3Data4);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor4Data2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor4Data3);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor4Data4);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallPlaySEData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallPlaySEData2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", g_mainPID3);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData8);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData9);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", evtCallCheckRankUpData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData10);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", evtCallCheckRankUpData2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", evtCallCheckRankUpData3);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData11);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData12);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallStartLevelUp2Data);
 

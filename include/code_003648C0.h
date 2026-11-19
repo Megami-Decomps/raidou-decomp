@@ -87,4 +87,11 @@ extern u16 cmpCallMakeCateChkWork[];
 extern s32 cmpCallMakeCateChkData; /* entries in cmpCallMakeCateChkWork */
 extern struct itfSprList_t cmpDrawFuncData[];
 
+struct tagCMP_STATUS_WORK;
+void cmpSequence(struct tagCMP_STATUS_WORK *wk);
+void cmpSTATUSSTEP(struct tagCMP_STATUS_WORK *wk);
+void cmpMemSetSeqStatusStepUpdate(struct tagCMP_STATUS_WORK *wk);
+void cmpSeqGoodby(struct tagCMP_STATUS_WORK *wk);
+s32 Process_cmpStatus(struct tagCMP_STATUS_WORK *wk);
+
 #endif

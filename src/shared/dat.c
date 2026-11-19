@@ -485,7 +485,7 @@ INCLUDE_ASM(const s32, "dat", datDelDevil);
 #endif
 
 void datLoadLvUpTables(void) {
-    sdfDevLoadFileEx("/data/sdatLvUpDevilGift.dat", &sdatLvUpDevilGiftTbl, &sdatLvUpDevilGiftSize);
+    sdfDevLoadFileEx("/data/sdatLvUpDevilGift.dat", (u32 *)&sdatLvUpDevilGiftTbl, &sdatLvUpDevilGiftSize);
     sdfDevLoadFileEx("/data/sdatLvUpDevilParamUp.dat", (u32 *)&sdatLvUpDevilParamUp, &sdatLvUpDevilParamUpSize);
     sdfDevLoadFileEx("/data/sdatLvUpPlayerParamUp.dat", &sdatLvUpPlayerParamUp, &sdatLvUpPlayerParamUpSize);
     sdfDevLoadFileEx("/data/sdatLvUpPlayerRankUp.dat", (u32 *)&sdatLvUpPlayerRankUp, &sdatLvUpPlayerRankUpSize);

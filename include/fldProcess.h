@@ -284,6 +284,7 @@ extern char *mapCallLastLabel;
 void fldBgZoomTest(s32 mode);
 void fldPlayerMotReset(void);
 void mapSetSceneParam(struct fldSceneParam_t *param, s32 field, s32 floor, s32 point);
+void mapReturnFromRndEncBattle(char *name);
 void scrAllReleaseScript(void);
 s32 fldCallDelayedResrcCheck(void);
 void fldExitEventSub(void);

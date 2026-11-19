@@ -25,6 +25,15 @@ extern struct itfSprList_t SetCommand_jmsMenuData5;
 extern struct itfSprList_t SetCommand_jmsMenuData6;
 extern dds3ProcessID_t *g_mainPID3;
 
+/* A key of the position curves rstCalcPosition interpolates (HD rstPositionTable_t). */
+typedef struct rstPositionTable_t {
+    s32 frame;
+    sdfIVector2_t pos;
+} rstPositionTable_t;
+void rstCalcPosition(s32 frame, const rstPositionTable_t *table, s32 count, sdfIVector2_t *pos);
+void rstResultLevelUpAnimSub(s32 a_x, s32 a_y, f32 *a_scale, u32 a_blend, s32 a_table, s32 a_step, struct sprHandle_t *a_hSpr,
+                             s32 a_layer);
+
 /* Partial layouts of process work read through dds3GetProcessData. */
 typedef struct jmsInputPanelWork_t {
     struct sdfMemHandle_t *hMem;
@@ -38,7 +47,9 @@ typedef struct jmsInputPanelWork_t {
     s32 unk1C;
     u8 unk20[0xC];
     s32 unk2C;
-    u8 unk30[0xC];
+    u8 unk30[8];
+    u8 unk38; /* 0x38: second fclBackSprite alpha */
+    u8 unk39[3];
 #else
     u8 unk0C[4];
     u8 step;

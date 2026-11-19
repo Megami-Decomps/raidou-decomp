@@ -205,6 +205,7 @@ cmpCallMenuGetFlag	code_003648C0	raidou2 0x100	1 of 64 words differ	docs/matchin
 cmpMakeCateChk	code_003648C0	raidou2 0xD0	26 of 52 words differ	docs/matching/code_003648C0.md	63		
 cmpCallGetStockDevilNums	code_003648C0	raidou2 0x170	2 of 92 words differ	docs/matching/code_003648C0.md	69		
 cmpChangeChkTabPage	code_003648C0	raidou2 0x194	50 of 99 words differ	docs/matching/code_003648C0.md	75		
+cmpCallGetProcessData11	code_003648C0	raidou2 0x1CC	1 of 115 words differ	docs/matching/code_003648C0.md	81		
 CheckFlagTGS	code_003BF2E0	raidou2 0x48	9 of 17 words differ	docs/matching/code_003BF2E0.md	3		
 SetFlagMenu	code_003BF2E0	raidou2 0x98	14 of 38 words differ	docs/matching/code_003BF2E0.md	9		
 SetRootMenu	code_003BF2E0	raidou2 0x94	15 of 38 words differ	docs/matching/code_003BF2E0.md	15		
@@ -221,6 +222,10 @@ jmsFunc17	code_003BF2E0	raidou2 0x5C	12 of 23 words differ	docs/matching/code_00
 rstPreCalcUnit	code_003BF2E0	raidou2 0x158	2 of 86 words differ	docs/matching/code_003BF2E0.md	81		
 rstResultLevelUpAnimSub	code_003BF2E0	raidou2 0x14C	2 of 83 words differ	docs/matching/code_003BF2E0.md	87		
 rstResultGetExpCyuuseiSub	code_003BF2E0	raidou2 0x15C	6 of 87 words differ	docs/matching/code_003BF2E0.md	93	the full-unit result moves with declarations in headers the unit includes. The R2-C3 part 3 edits to sBtlEff.h, sbtlDMG.h and sbtlWork.h turn the -DNON_MATCHING full unit from OK into CONTEXT 6/87 (reverting any one of them alone restores it), and the part 4 edits do the same to the default build.	
+cmpCallGetProcessData33	code_003BF2E0	raidou2 0x1E0	9 of 120 words differ	docs/matching/code_003BF2E0.md	101		
+cmpCallBitCheck10	code_003BF2E0	raidou2 0x148	23 of 81 words differ	docs/matching/code_003BF2E0.md	107		
+rstResultLevelUpAnim	code_003BF2E0	raidou2 0x1D0	12 of 116 words differ	docs/matching/code_003BF2E0.md	113		
+cmpLoadLocalizeText	code_003BF2E0	raidou2 0x1C4	8 of 113 words differ	docs/matching/code_003BF2E0.md	119		
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
 dds3CallDLinkTexPacket	code_r1_00104370	raidou1 0x128, raidou2 0x128	37 of 73 words differ	docs/matching/code_r1_00104370.md	12		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		

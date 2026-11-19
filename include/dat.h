@@ -41,7 +41,9 @@ extern SBTLADJUSTMENT_RECORD *datBattleAdjustmentRecords;
 struct sdatUnitWork_t;
 struct SBTL_PLAYER_DATA;
 
-void CallProcEnd_cmpStatus(void);
+struct tagCMP_STATUS_WORK;
+void CallProcEnd_cmpStatus(struct tagCMP_STATUS_WORK *wk);
+void datCalcLuckParam(void);
 s32 dds3GlobalWorkMainProc(dds3ProcessID_t *id);
 void UserInit(void);
 s32 datAddDevil(void);
@@ -71,7 +73,15 @@ void datAddStock(s32 nums);
 s32 datCreateDevilUnitExSub(s32 devilId);
 void datLeaf(s32 arg0, s32 arg1, s32 arg2);
 
-extern u32 sdatLvUpDevilGiftTbl;
+/* One gift a devil can bring at a level: three per devil id, indexed devilId * 3 (HD sdatLvUpDevilGift_t). */
+typedef struct sdatLvUpDevilGift_t {
+    u16 ItemID;
+    u8 Rate;
+    u16 Level;
+    u8 NumMax;
+} sdatLvUpDevilGift_t;
+
+extern sdatLvUpDevilGift_t *sdatLvUpDevilGiftTbl;
 extern u32 sdatLvUpDevilGiftSize;
 typedef struct sdatLvUpDevilParamUp_t {
     u8 Param[4];
