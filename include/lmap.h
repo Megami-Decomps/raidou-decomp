@@ -77,7 +77,7 @@ dds3ProcessID_t *EffWave_Start(void);
 void FldWnd_CallStart(struct tagLMAP_FLDWND_WORK *wk);
 dds3ProcessFunc_t FldWnd_DrawProcess(dds3ProcessID_t *PID);
 void FldWnd_DrawThumbnail(struct tagLMAP_FLDWND_WORK *wk);
-void FldWnd_LinkSprite(struct sprHandle_t *a_hSpr);
+s32 FldWnd_LinkSprite(dds3ProcessID_t *PID);
 dds3ProcessFunc_t FldWnd_Process(dds3ProcessID_t *PID);
 s32 EffGrid_Main(dds3ProcessID_t *PID);
 void lmapLMAPPAC(struct tagLMAP_FLDWND_WORK *wk);
