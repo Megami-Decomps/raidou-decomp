@@ -102,7 +102,7 @@ INCLUDE_ASM(const s32, "code_00195698", savePointMenuCreateMenuPID);
 
 INCLUDE_ASM(const s32, "code_00195698", savePointMenuChkEnableDecide);
 
-void saveLeaf(tagMAP_MENU_WORK *wk) {
+void savePointMenuCallProcEnd(tagMAP_MENU_WORK *wk) {
     itfMenuProcessEnd(wk->menuPID);
 }
 
@@ -144,7 +144,7 @@ s32 nmeCallGetProcessData(dds3ProcessID_t *id) {
             break;
         case 2:
             if (wk->count == 0) {
-                saveLeaf(wk);
+                savePointMenuCallProcEnd(wk);
             }
             if (saveCallMenuProcessCheck2(wk) == 0) {
                 wk->count = 0;

@@ -7,8 +7,8 @@
 extern u8 mapData44[];
 
 void fclCombineInitWork(void);
-void mapLeaf25(void);
-f32 mapLeaf26(s32 summonId);
+void mapNakamaTakumi_VUSE(void);
+f32 mapNakamaMoveSpeed(s32 summonId);
 s32 mapNakamaGankTask(void);
 s32 mapNakamaSpotTask(void);
 void mapNakamaStockOnCheck(void);

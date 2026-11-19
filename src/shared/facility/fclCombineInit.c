@@ -88,7 +88,7 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotBstwait);
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "facility/fclCombineInit", mapLeaf3);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_Mot4);
 #else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotWait);
 
@@ -98,7 +98,7 @@ void fclCombineInitWork(void) {
     sndNakamaJoinTaskSub(14, 127);
 }
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", mapLeaf25);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_VUSE);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_FLUSH);
 
@@ -377,7 +377,7 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", mapCallEffectGetState3);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvSummonEnd);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", mapLeaf26);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaMoveSpeed);
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclLeaf);

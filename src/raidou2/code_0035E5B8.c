@@ -636,7 +636,7 @@ INCLUDE_ASM(const s32, "code_0035E5B8", ScrCmd_GET_DREAM_COMPARE);
 
 INCLUDE_ASM(const s32, "code_0035E5B8", nmeStart);
 
-INCLUDE_ASM(const s32, "code_0035E5B8", nmeLeaf);
+INCLUDE_ASM(const s32, "code_0035E5B8", nmeFinish);
 
 INCLUDE_ASM(const s32, "code_0035E5B8", nmeCallMemGetPtr);
 

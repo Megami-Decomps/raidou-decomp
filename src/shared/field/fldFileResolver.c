@@ -1290,7 +1290,7 @@ s32 PlayerCalc_Nml_fld(void) {
         speed = 7.0f;
         motion = 1;
         if (fldGlobalBase.nakamaMode != 0) {
-            speed = mapLeaf26(DDS3_GBWK->mapSummonID);
+            speed = mapNakamaMoveSpeed(DDS3_GBWK->mapSummonID);
         }
         diff = R360_LR(fldGlobalBase.floatC0, angle);
         if (diff < 0.0f) {

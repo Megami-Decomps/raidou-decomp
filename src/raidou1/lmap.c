@@ -199,7 +199,7 @@ INCLUDE_ASM(const s32, "lmap", EffGrid_Shutdown);
 
 INCLUDE_ASM(const s32, "lmap", EffGrid_Start);
 
-INCLUDE_ASM(const s32, "lmap", lmapLeaf14);
+INCLUDE_ASM(const s32, "lmap", EffGrid_ReleaseDraw);
 
 INCLUDE_ASM(const s32, "lmap", lmapCallExistProcess3);
 

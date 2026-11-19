@@ -188,7 +188,7 @@ INCLUDE_ASM(const s32, "code_003382B8", DrawOya3D);
 
 INCLUDE_ASM(const s32, "code_003382B8", DrawHai3DExCalc);
 
-INCLUDE_ASM(const s32, "code_003382B8", pipeLeaf);
+INCLUDE_ASM(const s32, "code_003382B8", DrawHai3DCalc);
 
 INCLUDE_ASM(const s32, "code_003382B8", DrawHai3DIndex);
 

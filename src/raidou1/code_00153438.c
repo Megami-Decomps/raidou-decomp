@@ -180,7 +180,7 @@ void PositioningGuardSystem(s32 ix, s32 iy, f32 *x, f32 *z) {
 
 INCLUDE_ASM(const s32, "code_00153438", fldWallObjTaskSub);
 
-INCLUDE_ASM(const s32, "code_00153438", mapLeaf21);
+INCLUDE_ASM(const s32, "code_00153438", mapCalcFXZ2);
 
 INCLUDE_ASM(const s32, "code_00153438", mapFileLoadSub6);
 

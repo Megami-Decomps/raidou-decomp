@@ -82,7 +82,7 @@ dds3ProcessFunc_t slSaveProc1st(void);
 dds3ProcessFunc_t slSaveWriteEnd_baseIcon_slMain(void);
 dds3ProcessFunc_t slLoadProc1st(void);
 s32 slLoadProc1stBgm(void);
-s32 slLeaf7(void);
+s32 slNextEpProc1st2(void);
 s32 slCallSetInfo5(void);
 saddr_t slCallMcRegetInfo(s32 (*yesFunc)(void), s32 (*noFunc)(void), s32 yesNoDefault);
 s32 slEndingProc1st(void);

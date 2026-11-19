@@ -495,7 +495,7 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlUnitChngDraw);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDrawUnitChangeList);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf114);
+INCLUDE_ASM(const s32, "code_002DF1D0", sBtlDebug_GetDebugMenuFont);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallDestroyFontRequestAfter2);
 

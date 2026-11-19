@@ -591,7 +591,7 @@ INCLUDE_ASM(const s32, "code_001A5D20", mapCallGetStockDevilNums);
 
 INCLUDE_ASM(const s32, "code_001A5D20", mapMenuChkEnableDecide);
 
-void saveLeaf(tagMAP_MENU_WORK *wk) {
+void savePointMenuCallProcEnd(tagMAP_MENU_WORK *wk) {
     itfMenuProcessEnd(wk->menuPID);
 }
 

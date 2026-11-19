@@ -28,7 +28,7 @@
 #include "sdfModel.h"
 #include "sdfTex.h"
 
-INCLUDE_ASM(const s32, "code_0015D490", mapLeaf);
+INCLUDE_ASM(const s32, "code_0015D490", mapBadEffOffCng);
 
 void mapCallMemset2(void) {
     sdfVector4_t pos = { 0.0f, 0.0f, 0.0f, 1.0f };

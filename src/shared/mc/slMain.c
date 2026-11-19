@@ -870,29 +870,29 @@ INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo3);
 INCLUDE_ASM(const s32, "mc/slMain", slRefSystem);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001D6808.c:1, match */
-void slLeaf5(void) {
+void slSaveProcEp1st2(void) {
     slTop();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slLeaf6);
+INCLUDE_ASM(const s32, "mc/slMain", slSaveProcEp1st3);
 
 s32 slCallSetInfo4(void) {
     slSetInfo(0);
     gslDrawFlagFile = 0;
     slQueryYesNoMsg = 12;
-    return slCallMcRegetInfo(&slCallSetInfo5, &slLeaf7, 1);
+    return slCallMcRegetInfo(&slCallSetInfo5, &slNextEpProc1st2, 1);
 }
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo5);
 
-INCLUDE_ASM(const s32, "mc/slMain", slLeaf7);
+INCLUDE_ASM(const s32, "mc/slMain", slNextEpProc1st2);
 
 s32 slCallSetInfo6(void) {
     slSetInfo(0);
     gslErrorCode = 0;
     slQueryYesNoMsg = 12;
     gslDrawFlagFile = 0;
-    return slCallMcRegetInfo(&slCallSetInfo5, &slLeaf7, 1);
+    return slCallMcRegetInfo(&slCallSetInfo5, &slNextEpProc1st2, 1);
 }
 
 dds3ProcessFunc_t slLoadProc1st(void)

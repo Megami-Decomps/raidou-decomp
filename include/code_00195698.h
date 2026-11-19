@@ -30,7 +30,7 @@ s32 cmpCallGetProcessStat(void);
 void evtCallExistProcess(void);
 s32 elvCallGetProcessStat(void);
 void savePointMenuChkEnableDecide(struct tagMAP_MENU_WORK *wk);
-void saveLeaf(struct tagMAP_MENU_WORK *wk);
+void savePointMenuCallProcEnd(struct tagMAP_MENU_WORK *wk);
 s32 saveCallMenuProcessCheck2(struct tagMAP_MENU_WORK *wk);
 void mphStartLoad(const char *filename);
 void mphStart_itf(void);
