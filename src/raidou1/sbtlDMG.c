@@ -75,7 +75,7 @@ SBTLDMG_LISTWORK *sbtlAnimListProc(void) {
     return lwk;
 }
 
-s32 sbtlCallBtlSearchUnitID14(struct SBTLUNIT_WORK *wk, s32 damage, s16 time, s32 mode)
+s32 sbtlCreateAnim_Unit(struct SBTLUNIT_WORK *wk, s32 damage, s16 time, s32 mode)
 {
     s32 found = 0;
     sdfVector4_t pos;
@@ -1878,15 +1878,15 @@ s32 sbtlCheckActDamage(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock) {
     hwk.hitbk_rate = ptbl->hitbk_rate;
     if (target->flg & 0x100) {
         sbtlSetMukouDamage(target, 0);
-        sbtlCallMemset16(target, &hwk, 0x1000);
+        sbtlSetHitback(target, &hwk, 0x1000);
         return 1;
     }
     hp = target->unit.now.hp - damage;
     target->unit.now.hp = hp;
     target->unit.now.hp = hp <= 0 ? 0 : (hp < target->unit.now.maxhp ? hp : target->unit.now.maxhp);
     sbtlCallBtlSetMotionSBtlUnit4(target, damage);
-    sbtlCallMemset16(target, &hwk, 0);
-    sbtlCallBtlSearchUnitID14(target, damage, 0, 0);
+    sbtlSetHitback(target, &hwk, 0);
+    sbtlCreateAnim_Unit(target, damage, 0, 0);
     sbtlCheckYukaDamageEffect(target, hwk.skillid, hwk.type, 0, 0);
     return 1;
 }
@@ -2936,7 +2936,7 @@ vice:
                         unit->unit.now.hp = hp;
                     }
                     sbtlCheckYukaDamageEffect(unit, 0x95, 1, 0, 0);
-                    sbtlCallBtlSearchUnitID14(unit, counterDamage, 0, 0);
+                    sbtlCreateAnim_Unit(unit, counterDamage, 0, 0);
                     if (unit->flg & 0x40000000) {
                         sbtlSetSpecialDamage_DamageOnly(unit);
                     } else if (unit->unit.now.hp <= 0) {
@@ -2999,7 +2999,7 @@ u16 sbtlSetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 damage) {
                 wk->unit.now.hp = wk->unit.now.hp <= 0                  ? 0
                                   : wk->unit.now.hp < wk->unit.now.maxhp ? wk->unit.now.hp
                                                                         : wk->unit.now.maxhp;
-                sbtlCallBtlSearchUnitID14(wk, damage, 0, 3);
+                sbtlCreateAnim_Unit(wk, damage, 0, 3);
             }
             if (skl->flg & 0xC000) {
                 damage = LimitRange(&wk->unit, damage, 1);
@@ -3007,7 +3007,7 @@ u16 sbtlSetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 damage) {
                 wk->unit.now.mp = wk->unit.now.mp <= 0                  ? 0
                                   : wk->unit.now.mp < wk->unit.now.maxmp ? wk->unit.now.mp
                                                                         : wk->unit.now.maxmp;
-                sbtlCallBtlSearchUnitID14(wk, damage, 0, 4);
+                sbtlCreateAnim_Unit(wk, damage, 0, 4);
             }
         }
         if (skl->flg & 0x1E0000) {
@@ -3095,7 +3095,7 @@ s32 sbtlCallMemset15(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk)
     return 1;
 }
 
-s32 sbtlCallMemset16(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 flg)
+s32 sbtlSetHitback(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 flg)
 {
     sdfVector4_t tpos;
     sdfVector4_t pos;
@@ -3299,7 +3299,7 @@ void sbtlCallGetDamage(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk)
     wk->unit.now.hp = wk->unit.now.hp <= 0                  ? 0
                       : wk->unit.now.hp < wk->unit.now.maxhp ? wk->unit.now.hp
                                                             : wk->unit.now.maxhp;
-    sbtlCallBtlSearchUnitID14(wk, damage, 0, 3);
+    sbtlCreateAnim_Unit(wk, damage, 0, 3);
     starttime = sbtlGetStartTime_Damage();
     sbtlCreateEff(wk_sbtl->effList, wk, EFFID_KYUSHU, starttime, &wk->pos.x, 0x80808080, 0);
 }
@@ -3310,7 +3310,7 @@ void sbtlCallBtlSetMotionSBtlUnit3(struct SBTLUNIT_WORK *wk, s32 damage)
         sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
         sbtlSetAction(wk, 1, 0);
     }
-    sbtlCallBtlSearchUnitID14(wk, damage, 0, 0);
+    sbtlCreateAnim_Unit(wk, damage, 0, 0);
     if ((wk->field414 & 0x80) || ((wk->field414 & 1) && wk_sbtl->battleMode == 3)) {
         sbtlSetVibe(SBTLPLAYER_VTYPE_ONLYD);
     }
@@ -3325,7 +3325,7 @@ void sbtlCallBtlSetMotionSBtlUnit4(struct SBTLUNIT_WORK *wk, s32 damage)
 {
     sbtlSetMotion_sbtlUnit(wk, 1, 0, 0, 0);
     sbtlSetAction(wk, 7, 0);
-    sbtlCallBtlSearchUnitID14(wk, damage, 0, 0);
+    sbtlCreateAnim_Unit(wk, damage, 0, 0);
     sbtlClearHitC(wk_sbtl->hitList, wk);
     sbtlForceReset(wk_sbtl->effList, wk);
     wk->model->flags &= ~0x20;
@@ -3360,7 +3360,7 @@ void sbtlSetHuttobiDamage(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk,
     sbtlClearHitC(wk_sbtl->hitList, wk);
     sbtlForceReset(wk_sbtl->effList, wk);
     wk->huttobiID = hwk->acterID;
-    sbtlCallBtlSearchUnitID14(wk, damage, 0, 0);
+    sbtlCreateAnim_Unit(wk, damage, 0, 0);
     wk->flg |= 0x20;
     wk->field474 = 0;
     wk->vstatus |= 0x80;
@@ -3432,7 +3432,7 @@ void sbtlSetDyingDamage(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 damage, u32 a
             sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 0);
         }
     }
-    sbtlCallBtlSearchUnitID14(wk, damage, 0, 0);
+    sbtlCreateAnim_Unit(wk, damage, 0, 0);
     sbtlClearHitC(wk_sbtl->hitList, wk);
     sbtlForceReset(wk_sbtl->effList, wk);
     wk->model->flags &= ~0x20;
@@ -3556,7 +3556,7 @@ s32 sbtlSetDeadDamage(struct SBTLUNIT_WORK *wk, s32 damage) {
     if (wk->flg & 0x20000) {
         wk->GroupID = -1;
     }
-    sbtlCallBtlSearchUnitID14(wk, damage, 0, 0);
+    sbtlCreateAnim_Unit(wk, damage, 0, 0);
     sbtlClearHitC(wk_sbtl->hitList, wk);
     sbtlForceReset(wk_sbtl->effList, wk);
     if (!(wk->aiwk->scrflag & 0x20000) && wk->status != 40 && !(wk->flg & 0x100000)) {
@@ -3586,8 +3586,8 @@ void sbtlSetSpecialDamage(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk,
     }
     sbtlSetDamage(wk, skillid, damage);
     sttime = sbtlGetStartTime_Damage();
-    sbtlCallBtlSearchUnitID14(wk, damage, 0, 0);
-    sbtlCallMemset16(wk, hwk, 0);
+    sbtlCreateAnim_Unit(wk, damage, 0, 0);
+    sbtlSetHitback(wk, hwk, 0);
     if (hwk->BEDtype == 2) {
         wk_sbtl->huka2hwk = hwk;
         sbtlCheckEffectData(wk, hwk->skillid, 5, 0, hwk->acterside, hwk->serialID2, sttime);

@@ -305,10 +305,10 @@ s32 sbtlCheckActDamage(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
 void sbtlSetMukouDamage(struct SBTLUNIT_WORK *wk, s32 flg);
 u16 sbtlSetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 damage);
 s32 sbtlGetStartTime_Damage(void);
-s32 sbtlCallMemset16(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 flg);
+s32 sbtlSetHitback(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 attr);
 void sbtlCallBtlSetMotionSBtlUnit4(struct SBTLUNIT_WORK *wk, s32 damage);
 #ifdef VERSION_RAIDOU1
-s32 sbtlCallBtlSearchUnitID14(struct SBTLUNIT_WORK *wk, s32 damage, s16 time, s32 mode);
+s32 sbtlCreateAnim_Unit(struct SBTLUNIT_WORK *wk, s32 damage, s16 time, s32 mode);
 #else
 s32 sbtlCreateAnim_Unit(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *atk_wk, s32 damage, s16 time, s32 mode);
 #endif

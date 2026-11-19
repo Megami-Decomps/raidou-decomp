@@ -228,7 +228,7 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
             wk->unit.now.hp = hp;
             wk->unit.now.hp = hp <= 0 ? 0 : (hp < wk->unit.now.maxhp ? hp : wk->unit.now.maxhp);
             if (value > 0) {
-                sbtlCallBtlSearchUnitID14(wk, value, 0, 3);
+                sbtlCreateAnim_Unit(wk, value, 0, 3);
                 if (!(wk->flg & 0x1000) || (eff = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->rejyenehelper)) == NULL) {
                     eff = wk;
                 }
@@ -280,7 +280,7 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
             if (tbl->attr & 0x20) {
                 sbtlCreateEff(wk_sbtl->effList, eff, EFFID_SLIPZAN, 0, &eff->pos.x, 0x80808080, 0);
             }
-            sbtlCallBtlSearchUnitID14(wk, wk->slippara, 0, 1);
+            sbtlCreateAnim_Unit(wk, wk->slippara, 0, 1);
             if (wk->flg & 0x40000000) {
                 sbtlSetSpecialDamage_DamageOnly(wk);
                 return 0;
@@ -305,7 +305,7 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
             hp = wk->unit.now.hp - sbtlCheckKuishibari(wk, wk->tdanpara);
             wk->unit.now.hp = hp;
             wk->unit.now.hp = hp <= 0 ? 0 : (hp < wk->unit.now.maxhp ? hp : wk->unit.now.maxhp);
-            sbtlCallBtlSearchUnitID14(wk, wk->tdanpara, 0, 2);
+            sbtlCreateAnim_Unit(wk, wk->tdanpara, 0, 2);
             if (wk->flg & 0x40000000) {
                 sbtlSetSpecialDamage_DamageOnly(wk);
                 return 0;
@@ -409,7 +409,7 @@ s32 CalcBadStatus(struct SBTLUNIT_WORK *wk)
             if (wk->unit.now.hp <= 0) {
                 wk->unit.now.hp = 1;
             }
-            sbtlCallBtlSearchUnitID14(wk, dmg, 0, 0);
+            sbtlCreateAnim_Unit(wk, dmg, 0, 0);
             break;
         case 7:
             if (sbtlRefSbtl68(wk)) {
@@ -444,7 +444,7 @@ s32 CalcBadStatus(struct SBTLUNIT_WORK *wk)
             } else {
                 wk->unit.now.hp = hp;
             }
-            sbtlCallBtlSearchUnitID14(wk, dmg, 0, 3);
+            sbtlCreateAnim_Unit(wk, dmg, 0, 3);
             rate = wk->unit.now.maxmp * 0.01;
             dmg = rate;
             dmg = LimitRange(unit, (dmg > 0) ? dmg : 1, 1);
@@ -456,7 +456,7 @@ s32 CalcBadStatus(struct SBTLUNIT_WORK *wk)
             } else {
                 wk->unit.now.mp = hp;
             }
-            sbtlCallBtlSearchUnitID14(wk, dmg, 12, 4);
+            sbtlCreateAnim_Unit(wk, dmg, 12, 4);
             break;
         case 13:
             cnt = ++wk->unit.badst_cnt2;

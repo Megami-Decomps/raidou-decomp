@@ -7127,7 +7127,7 @@
 0x0027FCB8	sbtlGetVerticalLength	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetVerticalLength, score 8.8 band B; replaces btlTriangleNormalDotEdge: dds-decomp DDS1 name via SLUS_209.74 0x001F79A0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0027FD18	sbtlGetVerticalLength_Point	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetVerticalLength_Point, score 9.4 band B, hd-ab: calls2 prev~ calls-of-match-uniq votes3 st1:call r1+r2; replaces btlProjectOnPlaneVU: dds-decomp DDS1 name via SLUS_209.74 0x001F7A70, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0027FD88	sbtlAnimListProc	hd-inferred	hd: Raidou HD sBtlDMG.sBtlAnimListProc, score 7.0 band B
-0x0027FE00	sbtlCallBtlSearchUnitID14	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlSearchUnit_ID
+0x0027FE00	sbtlCreateAnim_Unit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCreateAnim_Unit; R2 has it under that name with an attacker argument; replaces sbtlCallBtlSearchUnitID14
 0x0027FFC0	sbtlCallMemAllocDirect	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sdfMemAllocDirect
 0x002800C8	sbtlRegistAnimList	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlRegistAnimList score 3.9 flag I: prev gap=exact st2:gap r1-disagree:0x280120
 0x00280120	sbtlReleaseAnim_ID	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlReleaseAnim_ID score 5.6 flag I: next gap=exact st2:gap r2-only
@@ -7193,7 +7193,7 @@
 0x00287670	sbtlSetDamage	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetDamage score 6.2 flag I: calls3 callers-of-match votes2 st1:call r1-only
 0x00287988	sbtlCallBtlSearchUnitID15	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlSearchUnit_ID
 0x00288000	sbtlCallMemset15	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls memset
-0x00288160	sbtlCallMemset16	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls memset
+0x00288160	sbtlSetHitback	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetHitback; R2 has it under that name; replaces sbtlCallMemset16
 0x002883A0	sbtlSetStoneDeadDamageProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetStoneDeadDamageProc; R2 has it under that name; replaces sbtlCallBtlGetUnitHelperPos
 0x00288510	sbtlSetDeadWeak	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetDeadWeak score 5.5 flag I: calls2 calls-of-match votes2 st1:call r1-only
 0x002885B0	sbtlSetDeadDamageProc	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetDeadDamageProc score 7.0 flag I: calls4 callers-of-match votes2 st1:call r2-disagree:0x2b8f48

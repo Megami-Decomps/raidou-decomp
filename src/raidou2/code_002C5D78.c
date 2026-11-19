@@ -338,7 +338,7 @@ INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_02);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID13);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID14);
+INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_04);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallMemset10);
 

@@ -7897,7 +7897,7 @@
 0x002C8E18	EventProcTbl_01	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlEvent.EventProcTbl_01 score 8.2 flag -: calls2 callers-of-match votes2 st1:call r1+r2
 0x002C8F90	EventProcTbl_02	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlEvent.EventProcTbl_02 score 8.3 flag -: calls3 next callers-of-match votes4 st1:call r1-only
 0x002C9090	sbtlCallBtlSearchUnitID13	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
-0x002C9238	sbtlCallBtlSearchUnitID14	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
+0x002C9238	EventProcTbl_04	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is R1 EventProcTbl_04; R2 EventProcTbl_03 and _05 sit on either side; replaces sbtlCallBtlSearchUnitID14
 0x002C9388	sbtlCallMemset10	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls memset
 0x002C94E0	sbtlLoadHuuma_MesData	hd-inferred	hd: Raidou HD sBtlEvent.sBtlLoadHuuma_MesData, score 8.2 band B
 0x002C95F8	EventProcTbl_07	hd	hd: Raidou HD sBtlEvent.EventProcTbl_07, score 6.5 band C, hd-consensus: calls2 callers-of-match votes3 st2:call r2-only; 10/10 fold runs agree, fold scores 8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,6.5,8.5

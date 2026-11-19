@@ -3417,7 +3417,6 @@
 0x0027FCB8	sbtlGetVerticalLength	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetVerticalLength, score 8.8 band B; replaces btlTriangleNormalDotEdge: dds-decomp DDS1 name via SLUS_209.74 0x001F79A0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0027FD18	sbtlGetVerticalLength_Point	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetVerticalLength_Point, score 9.4 band B, hd-ab: calls2 prev~ calls-of-match-uniq votes3 st1:call r1+r2; replaces btlProjectOnPlaneVU: dds-decomp DDS1 name via SLUS_209.74 0x001F7A70, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0027FD88	sbtlAnimListProc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDMG.sBtlAnimListProc, score 7.0 band B
-0x0027FE00	sbtlCallBtlSearchUnitID14	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSearchUnit_ID
 0x0027FFC0	sbtlCallMemAllocDirect	func	tier=D	derived-callee	na	unit sbtlDMG; calls sdfMemAllocDirect
 0x002801E8	sbtlCallSin2	func	tier=D	derived-callee	na	unit sbtlDMG; calls sdfSin
 0x002803F8	sbtlRefSbtl23	func	tier=D	derived-data	na	unit sbtlDMG; references wk_sbtl
@@ -3462,7 +3461,6 @@
 0x00286A40	sbtlSetDamageProc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDMG.sBtlSetDamageProc, score 9.45 band B
 0x00287988	sbtlCallBtlSearchUnitID15	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSearchUnit_ID
 0x00288000	sbtlCallMemset15	func	tier=D	derived-callee	na	unit sbtlDMG; calls memset
-0x00288160	sbtlCallMemset16	func	tier=D	derived-callee	na	unit sbtlDMG; calls memset
 0x002888C8	sbtlCallGetDamage	func	tier=D	derived-callee	na	unit sbtlDMG; calls GetDamage
 0x002889B8	sbtlCallBtlSetMotionSBtlUnit3	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetMotion_sbtlUnit
 0x00288AD8	sbtlCallBtlSetMotionSBtlUnit4	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetMotion_sbtlUnit
@@ -19423,11 +19421,13 @@
 0x0027EC00	sbtlCheckWorldtoScreen	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlSub.sBtlCheckWorldtoScreen score 6.2 flag I: prev next gap=exact st2:gap r2-only
 0x0027F748	slKanjiDrawN	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x151de8 sim 0.775 margin 0.12 pair
 0x0027FB28	sbtlGetDevilData_sbtlSub	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlSub.sBtlGetDevilData score 5.8 flag I: calls4 calls-of-match votes3 st1:call r2-disagree:0x2ac610
+0x0027FE00	sbtlCreateAnim_Unit	func	tier=B	hd-role	na	HD sBtlCreateAnim_Unit; R2 has it under that name with an attacker argument; replaces sbtlCallBtlSearchUnitID14
 0x00280D60	sbtlDeleteAttackHitData	func	tier=B	hd-role	na	HD sBtlDeleteAttackHitData; replaces sbtlCreateHitC_New
 0x00280E38	sbtlCreateHitC_New	func	tier=B	hd-role	na	HD sBtlCreateHitC_New (same 10 args); replaces sbtlCreateHitC_New_sbtlDMG
 0x00284640	sbtlCheckGround_sbtlDMG	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlCheckGround score 6.9 flag I: calls4 callers-of-match votes5 st1:call r2-disagree:0x2b1ff8
 0x002855C0	sbtlCheckHitArea_sbtlDMG	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlCheckHitArea score 6.3 flag I: calls3 callers-of-match votes3 st1:call r2-disagree:0x2b2fe8
 0x00287670	sbtlSetDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetDamage score 6.2 flag I: calls3 callers-of-match votes2 st1:call r1-only
+0x00288160	sbtlSetHitback	func	tier=B	hd-role	na	HD sBtlSetHitback; R2 has it under that name; replaces sbtlCallMemset16
 0x002883A0	sbtlSetStoneDeadDamageProc	func	tier=B	hd-role	na	HD sBtlSetStoneDeadDamageProc; R2 has it under that name; replaces sbtlCallBtlGetUnitHelperPos
 0x00288510	sbtlSetDeadWeak	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetDeadWeak score 5.5 flag I: calls2 calls-of-match votes2 st1:call r1-only
 0x00288830	sbtlSetMukouDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetMukouDamage score 5.8 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2b92b0

@@ -3905,7 +3905,6 @@
 0x002C8B48	sbtlEventProcTbl00Sub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by EventProcTbl_00
 0x002C8B50	sbtlMessageProc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEvent.sBtlMessageProc, score 9.55 band B
 0x002C9090	sbtlCallBtlSearchUnitID13	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
-0x002C9238	sbtlCallBtlSearchUnitID14	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
 0x002C9388	sbtlCallMemset10	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls memset
 0x002C94E0	sbtlLoadHuuma_MesData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEvent.sBtlLoadHuuma_MesData, score 8.2 band B
 0x002C9AD8	sbtlLeaf33	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
