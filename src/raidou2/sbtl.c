@@ -486,7 +486,7 @@ s32 sbtlBtlCheckBadStatusWeakNumberSub(BST id)
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_sbtlCalc);
+INCLUDE_ASM(const s32, "sbtl", sbtlCallCheckBadStatus);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlResetUnit);
 
@@ -1016,7 +1016,7 @@ INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon001Tmx);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCreateWork);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetNakama6);
+INCLUDE_ASM(const s32, "sbtl", sbtlCreateDvltk_Priority);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCreateDvltk);
 

@@ -12,6 +12,12 @@
 #include "sbtlSub.h"
 #include "sBtlSkill.h"
 #include "sBtlAI.h"
+#include "sbtlActAI.h"
+#include "sBtlDvltk.h"
+#include "code_r1_0010DF68.h"
+#include "sBtlEff.h"
+#include "newdata.h"
+#include "dds3ObjectBase.h"
 #include "ps2asm.h"
 #include "dds3KernelDraw.h"
 #include "sBtlPlayer.h"
@@ -155,7 +161,7 @@ s32 sbtlInitLoadAttackHitData_pData(void) {
 
 s32 sbtlForceDelete_AttackHitData(void)
 {
-    sbtlCreateHitC_New(&sbtlWork2);
+    sbtlDeleteAttackHitData(&sbtlWork2);
     return 1;
 }
 
@@ -175,7 +181,7 @@ INCLUDE_RODATA(const s32, "sbtlDMG", CreateAnimTable);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlLoadAttackHitData);
 
-s32 sbtlCreateHitC_New(struct SBTLUNIT_WORK *wk)
+s32 sbtlDeleteAttackHitData(struct SBTLUNIT_WORK *wk)
 {
     s32 i;
     u16 status = wk->hitwk.status;
@@ -308,7 +314,77 @@ INCLUDE_RODATA(const s32, "sbtlDMG", sbtlSetHitEndPosTable);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetHitEndPos);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallMemAllocDirect2);
+s32 sbtlCallMemAllocDirect2(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk, struct SBTLEFF_WORK *ewk, s32 actID, s32 starttime, s32 life, SKLID skillid, struct SBTLSKILL_TBL *tbl)
+{
+    struct sdfMemHandle_t *handle;
+    SBTLDMG_HITWORK *twk;
+    SBTLDMG_HITWORK *hwk;
+    struct SBTLUNIT_WORK *unit;
+
+    handle = sdfMemAllocDirect(sizeof(SBTLDMG_HITWORK));
+    twk = sdfMemLock(handle);
+    memset(twk, 0, sizeof(SBTLDMG_HITWORK));
+    twk->handle = handle;
+    twk->hitbk_cnt = tbl->hitbk_cnt;
+    twk->acterID = wk->field1A0;
+    twk->hitbk_rate = tbl->hitbk_rate;
+    twk->starttime = starttime;
+    twk->actID = actID;
+    twk->skillid = skillid;
+    twk->targetflg = tbl->targetflg;
+    twk->hittype = 0;
+    twk->hitlwk = NULL;
+    if (ewk != NULL) {
+        twk->workID = ewk->workID;
+    } else {
+        twk->workID = 0;
+    }
+    twk->lwk = NULL;
+    twk->life = life;
+    twk->prev = NULL;
+    twk->next = NULL;
+    twk->hModel = NULL;
+    twk->hEveUnit = NULL;
+    twk->pBasic = NULL;
+    twk->hPartsList = NULL;
+    if (skillid == 285) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, actID);
+        if (unit == NULL) {
+            unit = wk;
+        }
+    } else {
+        unit = wk;
+    }
+    SDF_VU0_LOADVECTOR(&unit->rot);
+    SDF_VU0_STOREVECTOR(&twk->rot);
+    hwk = lwk->wk;
+    if (hwk == NULL) {
+        lwk->wk = twk;
+        lwk->num = 1;
+    } else {
+        while (hwk->next != NULL) {
+            hwk = hwk->next;
+        }
+        hwk->next = twk;
+        twk->prev = hwk;
+        lwk->num++;
+    }
+    twk->type = tbl->type;
+    twk->skillflg = tbl->flg;
+    twk->area = tbl->area;
+    twk->rad = tbl->rad;
+    twk->atype = tbl->area_type;
+    twk->rad_area = tbl->rad_area;
+    twk->attr_flg = tbl->attr_flg;
+    twk->acterside = unit->field414;
+    if (skillid == 149) {
+        sbtlCHitFunc_ATTACK(wk, ewk, twk, tbl);
+    }
+    twk->st = 1;
+    twk->serialID = lwk->serialID;
+    lwk->serialID++;
+    return lwk->num - 1;
+}
 
 SBTLDMG_HITWORK *sbtlSearchHit_SerialID(SBTLDMG_HITLISTWORK *lwk, s32 serialID)
 {
@@ -927,13 +1003,90 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetReflectDamage);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlMAGWAZAMagNot);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlGetSkilltbl8);
+INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetDamage);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetDamageProc_sbtlDMG);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlGetHitUnit_Muki);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetHitback);
+s32 sbtlSetHitback(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 attr)
+{
+    sdfVector4_t tpos;
+    sdfVector4_t pos;
+    sdfVector4_t *ppos = &pos;
+    struct SBTLUNIT_WORK *acter;
+    u16 type;
+    struct SBTLUNIT_MODEL *model;
+    f32 rate;
+
+    memset(ppos, 0, sizeof(pos));
+    pos.w = 1.0f;
+    if (!(wk->field414 & 7)) {
+        return 0;
+    }
+    if ((wk->field414 & 0x80) && (wk->flg2 & 0x400)) {
+        return 0;
+    }
+    if (attr & 0x3000) {
+        return 0;
+    }
+    if (wk->field6C4 & 0x40) {
+        return 0;
+    }
+    if (sbtlGetBadStatus(&wk->unit) == BST_SLEEP) {
+        return 0;
+    }
+    model = wk->model;
+    model->hitbk_cnt = 0.0f;
+    wk->vstatus |= 0x800;
+    model->hitbk_cmpcnt = 1.0f / hwk->hitbk_cnt;
+    rate = hwk->hitbk_rate;
+    model->hitbk_rate = rate;
+    if (attr & 0x400000) {
+        model->hitbk_rate = rate * 0.5f;
+    }
+    type = hwk->type & 0xFFF;
+    if ((type == 2 || type == 14) && (hwk->area & 0x10)) {
+        acter = sbtlSearchUnit_ID(wk_sbtl->unitList, hwk->acterID);
+        if (acter != NULL && sbtlCheckDamageTarget(acter)) {
+            SDF_VU0_LOADVECTOR(&acter->pos);
+            SDF_VU0_STOREVECTOR(ppos);
+        } else {
+            pos.x = hwk->pos.x;
+            pos.y = hwk->pos.y;
+            pos.z = hwk->pos.z;
+        }
+        SDF_VU0_LOADVECTOR(ppos);
+        SDF_VU0_SETVECTOR_Y(0.0f);
+        SDF_VU0_STOREVECTOR(&tpos);
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_SETVECTOR_Y(0.0f);
+        SDF_VU0_LOADVECTOR_B(&tpos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_STOREVECTOR(&wk->model->hitbk_dir);
+        return 1;
+    }
+    if (hwk->skillid == 287) {
+        pos.x = hwk->pos.x;
+        pos.y = hwk->pos.y;
+        pos.z = hwk->pos.z;
+    } else {
+        pos.x = hwk->acterpos[0];
+        pos.y = hwk->acterpos[1];
+        pos.z = hwk->acterpos[2];
+    }
+    SDF_VU0_LOADVECTOR(ppos);
+    SDF_VU0_SETVECTOR_Y(0.0f);
+    SDF_VU0_STOREVECTOR(&tpos);
+    SDF_VU0_LOADVECTOR(&wk->pos);
+    SDF_VU0_SETVECTOR_Y(0.0f);
+    SDF_VU0_LOADVECTOR_B(&tpos);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&model->hitbk_dir);
+    return 1;
+}
 
 s32 sbtlSetStoneDeadDamageProc(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, struct SBTLDMG_HITWORK *hwk, s32 damage, u32 attr)
 {
@@ -980,7 +1133,67 @@ void sbtlSetDeadWeak(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *ptbl, u32 
     }
 }
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlGetSkilltbl9);
+s32 sbtlSetDeadDamageProc(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, struct SBTLDMG_HITWORK *hwk, s32 damage, u32 attr)
+{
+    sdfVector4_t head;
+    struct SBTLSKILLP_TBL *ptbl;
+    struct SBTLUNIT_WORK *acter;
+    s32 ret;
+    s32 bst;
+    s32 time;
+    s32 type;
+
+    ptbl = sbtlGetSkilltbl(hwk->skillid);
+    acter = sbtlSearchUnit_ID(wk_sbtl->unitList, hwk->acterID);
+    if ((attr & 0x4000) || wk->status == 9) {
+        if (wk->status != 9) {
+            sbtlGetUnitHelperPos(wk, SBTLUNIT_MARK_HEAD);
+            SDF_VU0_STOREVECTOR(&head);
+        } else {
+            sbtlCreateDvltk_Priority(wk_sbtl->dvltkList, wk, SBTLDVLTK_MODE_S_SUCCESS2);
+        }
+    }
+    sbtlSetDeadWeak(wk, ptbl, attr);
+    bst = sbtlCallCheckBadStatus(acter, wk, hwk->skillid, 1);
+    if (bst >= 0 && (bst < 4 || bst == 5)) {
+        if (wk->status != 9 && (wk->field414 & 2) && !(wk->flg2 & 0x10)) {
+            wk->flg2 |= 0x10;
+            wk->aiwk->scrflag |= 0x400000;
+            sbtlSetWeakBit(wk->unit.devilId);
+            sbtlCreateSTP_Unit(wk_sbtl->stp, wk, SKLID_OFS_KAEN, ptbl->attrtime);
+        }
+    }
+    ret = sbtlSetDeadDamage(wk, damage);
+    time = sbtlGetStartTime_Damage();
+    if (hwk->acterID == wk_sbtl->targetUnitID) {
+        sbtlSetHitStop(time + 9, 20);
+        if (!sbtlResetJump()) {
+            dds3SetQuake(30, 40);
+        }
+        sbtlLeaf110(wk->pos.x, wk->pos.y, wk->pos.z);
+    }
+    if (hwk->workID == 288) {
+        hwk->skillid = SKLID_OFS_PROGRAM;
+    }
+    if (!(wklock->field414 & 7)) {
+        return ret;
+    }
+    if (hwk->BEDtype == 2) {
+        wk_sbtl->huka2hwk = hwk;
+        sbtlCheckEffectData(wklock, hwk->skillid, 5, 0, hwk->acterside, hwk->serialID2, time);
+    } else {
+        sbtlCheckYukaDamageEffect(wklock, hwk->skillid, hwk->type, time + 1, 1);
+        type = hwk->type & 0xFFF;
+        switch (type) {
+        case 1 ... 5:
+        case 9 ... 15:
+            wk_sbtl->huka2hwk = hwk;
+            sbtlCheckEffectData(wklock, hwk->skillid, 2, 0, hwk->acterside, hwk->serialID2, time);
+            break;
+        }
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetInvalidDamage);
 
@@ -1009,17 +1222,337 @@ INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlCreateAnimUnit2);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallMemset8);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlKOUCYOKUACT);
+/* NON_MATCHING: 38 of 268 words match. gcc swaps the wk and time registers and folds the devilId 455..456 test into one unsigned compare. */
+#ifdef NON_MATCHING
+void sbtlSetDyingDamage(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 damage, u32 attr, s32 acterID) {
+    struct SBTLSKILLP_TBL *skl;
+    s32 time;
+    s32 base;
+    SKLID id;
+    s16 para[2];
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetStoneDeadDamage);
+    skl = sbtlGetSkilltbl(sklid);
+    time = skl->attrtime;
+    if (wk->field414 & 2) {
+        time = time * 3 >> 1;
+        id = sbtlChkHaveMemSklParty(30);
+        if (id) {
+            sbtlGetAutoSkillPara(id, &para[0], &para[1]);
+            base = time;
+            time = (f32)time * ((f32)para[1] / 100.0f);
+            datDebugPrintf("J_KOUCYOKU[ACT] %d * [H]%d/100 -> %d\n", base, para[1], time);
+        }
+    }
+    if (wk->field414 & 2) {
+        if (wk->status != 9) {
+            if (wk->unit.devilId >= 457 || wk->unit.devilId < 455) {
+                sbtlSetMotion_sbtlUnit(wk, 1, 0, 0, 0);
+            }
+            sbtlSetAction(wk, 9, time);
+            if (attr & 0x4000) {
+                wk->flg2 |= 0x10;
+                wk->aiwk->scrflag |= 0x400000;
+                sbtlCreateSTP_Unit(wk_sbtl->stp, wk, SKLID_OFS_KAEN, time);
+                sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 1);
+                sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 7);
+            }
+        } else {
+            sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 5);
+            sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 0);
+        }
+    } else if (!(wk->field414 & 0x80)) {
+        if (wk->status != 9) {
+            sbtlSetMotion_sbtlUnit(wk, 1, 0, 0, 0);
+            sbtlSetAction(wk, 9, time);
+            if (attr & 0x4000) {
+                wk->flg2 |= 0x10;
+                sbtlCreateSTP_Unit(wk_sbtl->stp, wk, SKLID_OFS_KAEN, time);
+                sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 1);
+                sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 7);
+            }
+        } else {
+            sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 5);
+            sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 0);
+        }
+        if ((wk->field414 & 1) && wk_sbtl->battleMode == 3) {
+            sbtlSetVibe(SBTLPLAYER_VTYPE_DOWN);
+            if (!sbtlResetJump()) {
+                dds3SetQuake(25, 65);
+            }
+        }
+    } else {
+        if (time) {
+            sbtlSetMotion_sbtlUnit(wk, 1, 0, 0, 0);
+            if (wk->status != 9) {
+                sbtlSetAction(wk, 9, time);
+            }
+            sbtlSetVibe(SBTLPLAYER_VTYPE_DOWN);
+            if (!sbtlResetJump()) {
+                dds3SetQuake(25, 65);
+            }
+            sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 5);
+            sbtlSetRirituNakamaHD(wk_sbtl->expList, wk, sklid, acterID, 0);
+        }
+    }
+    sbtlCreateAnim_Unit(wk, NULL, damage, 0, 0);
+    sbtlClearHitC(wk_sbtl->hitList, wk);
+    sbtlForceReset(wk_sbtl->effList, wk);
+    wk->model->flags &= ~0x20;
+    wk->flg |= 0x20;
+    wk->field474 = 0;
+    wk->vstatus |= 0x80;
+}
+#else
+INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetDyingDamage);
+#endif
+
+void sbtlSetStoneDeadDamage(struct SBTLUNIT_WORK *wk, s32 damage)
+{
+    s32 mag;
+
+    sbtlDeath(wk);
+    sbtlSetWeakBit(wk->unit.devilId);
+    sbtlGetStartTime_Damage();
+    if (wk->field414 & 0x80) {
+        sbtlSetMotion_sbtlUnit(wk, 13, 0, 0, 0);
+        sbtlSetAction(wk, 0x22, 0);
+        if (wk_sbtl->battleMode == 3) {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_DEAD_N, SKLID_NONE);
+        } else if (sbtlCheckTutorialBattle()) {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_T_DEAD_P, SKLID_NONE);
+        } else {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_DEAD_P, SKLID_NONE);
+        }
+        sbtlSetVibe(SBTLPLAYER_VTYPE_STONEDEAD);
+        if (!sbtlResetJump()) {
+            dds3SetQuake(25, 65);
+        }
+    } else {
+        sbtlSetMotion_sbtlUnit(wk, 13, 0, 0, 0);
+        sbtlSetAction(wk, 0xA, 0);
+        if ((wk->field414 & 1) && wk_sbtl->battleMode == 3) {
+            sbtlSetVibe(SBTLPLAYER_VTYPE_STONEDEAD);
+            if (!sbtlResetJump()) {
+                dds3SetQuake(25, 65);
+            }
+        }
+    }
+    wk->unit.now.hp = 0;
+    wk->action_flg = 0;
+    sbtlSetFade(wk, SBTLUNIT_VST_FADEOUT, 0, 0, 128);
+    wk->color = 0;
+    sbtlCreateEff(wk_sbtl->effList, wk, EFFID_STONEDEAD, 0, &wk->pos.x, 0x80808080, 0);
+    if ((wk->field414 & 1) && !(wk->field414 & 0x80)) {
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_DEAD_N, SKLID_NONE);
+    }
+    sbtlClearHitC(wk_sbtl->hitList, wk);
+    sbtlForceReset(wk_sbtl->effList, wk);
+    wk->flg |= 0x21;
+    wk->vstatus |= 0x80;
+    wk->flg2 |= 0x100;
+    wk->field474 = 0;
+    wk->action_flg = 0;
+    sbtlCheckBadStatus(wk);
+    sbtlSetBadStatus_No(wk, SKLID_NONE, BST_KANSEN, 0, -1);
+    dds3ObjectBaseOffFlag(wk->pBasic, 1024);
+    sbtlCreateDvltk_Priority(wk_sbtl->dvltkList, wk, SBTLDVLTK_MODE_DEAD);
+    sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
+    if (wk->field414 & 2) {
+        sbtlRefDDS3GBWK6(wk->unit.devilId, sbtlGetDevilHuumaItem(wk->unit.devilId) + 1);
+        gohFunc6(wk->unit.devilId);
+        gohKarteRegistDevilBtl(&wk->unit, &DDS3_GBWK->unk7110, 1, 0);
+        datSetKillDevil(wk);
+        if ((wk->field414 & 2) && !(wk->flg & 0x100000) && sbtlGetPChara()) {
+            mag = wk->unit.level >> 2;
+            if (mag == 0) {
+                mag = 1;
+            }
+            sbtlSetAddMag_Setsuma(wk, mag);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "sbtlDMG", CheckAutoSkill);
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlIsEnemyLastOne);
 
-INCLUDE_ASM(const s32, "sbtlDMG", sbtlCallBtlSetWeakBit3);
+s32 sbtlSetDeadDamage(struct SBTLUNIT_WORK *wk, s32 damage) {
+    s32 ret = 1;
+    s32 addmag = 0;
+    s32 found4;
+    s32 found6;
+    s32 mag;
 
+    sbtlSetWeakBit(wk->unit.devilId);
+    sbtlDeath(wk);
+    sbtlGetStartTime_Damage();
+    if (wk->field414 & 0x80) {
+        sbtlSetMotion_sbtlUnit(wk, 13, 0, 0, 0);
+        sbtlSetAction(wk, 34, 0);
+        if (wk_sbtl->battleMode == 3) {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_DEAD_N, SKLID_NONE);
+        } else if (sbtlCheckTutorialBattle()) {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_T_DEAD_P, SKLID_NONE);
+        } else {
+            sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_DEAD_P, SKLID_NONE);
+        }
+        sbtlSetVibe(SBTLPLAYER_VTYPE_DEAD);
+        if (!sbtlResetJump()) {
+            dds3SetQuake(25, 65);
+        }
+    } else if (wk->field414 & 1) {
+        sbtlSetMotion_sbtlUnit(wk, 13, 0, 0, 0);
+        sbtlSetAction(wk, 10, 0);
+        ret = CheckAutoSkill(wk);
+        if ((wk->field414 & 1) && wk_sbtl->battleMode == 3) {
+            sbtlSetVibe(SBTLPLAYER_VTYPE_DEAD);
+            if (!sbtlResetJump()) {
+                dds3SetQuake(25, 65);
+            }
+        }
+    } else {
+        found4 = sbtlCheck(wk, 4, 0);
+        found6 = sbtlCheck(wk, 6, 0);
+        if (found4 >= 0) {
+            wk->field6C0 = 1;
+        } else if (found6 >= 0) {
+            wk->field6C0 = 2;
+        } else if (wk->aiwk->scrflag & 0x20000) {
+            sbtlSetAction(wk, 10, 0);
+            wk->action_flg = 0;
+            wk->framecnt = 0;
+            wk->field5A4 = 0;
+        } else {
+            sbtlSetMotion_sbtlUnit(wk, 13, 4, 0, 0);
+            wk->action_flg = 0;
+            sbtlSetAction(wk, 10, 0);
+            ret = CheckAutoSkill(wk);
+            if (wk->field414 & 2) {
+                if (wk->flg & 0x100000) {
+                    addmag = sbtlCheckDeadEventMag(wk);
+                } else {
+                    addmag = 1;
+                }
+            }
+        }
+    }
+    if ((wk->field414 & 1) && !(wk->field414 & 0x80) && wk->status != 40 && wk->skillid != SKLID_OFS_AUTO) {
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_DEAD_N, SKLID_NONE);
+    }
+    if (wk->flg & 0x20000) {
+        wk->GroupID = -1;
+    }
+    sbtlCreateAnim_Unit(wk, NULL, damage, 0, 0);
+    sbtlClearHitC(wk_sbtl->hitList, wk);
+    sbtlForceReset(wk_sbtl->effList, wk);
+    if (!(wk->aiwk->scrflag & 0x20000) && wk->status != 40 && !(wk->flg & 0x100000)) {
+        wk->flg |= 1;
+    }
+    wk->flg |= 0x20;
+    wk->field474 = 0;
+    wk->vstatus |= 0x80;
+    wk->action_flg = 0;
+    sbtlCheckBadStatus(wk);
+    sbtlSetBadStatus_No(wk, SKLID_NONE, BST_KANSEN, 0, -1);
+    wk->unit.now.hp = 0;
+    dds3ObjectBaseOffFlag(wk->pBasic, 1024);
+    sbtlCreateDvltk_Priority(wk_sbtl->dvltkList, wk, SBTLDVLTK_MODE_DEAD);
+    sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
+    if (wk->field414 & 2) {
+        sbtlRefDDS3GBWK6(wk->unit.devilId, sbtlGetDevilHuumaItem(wk->unit.devilId) + 1);
+        gohFunc6(wk->unit.devilId);
+        gohKarteRegistDevilBtl(&wk->unit, &DDS3_GBWK->unk7110, 1, 0);
+        datSetKillDevil(wk);
+    }
+    if (addmag && sbtlGetPChara()) {
+        mag = wk->unit.level / 5;
+        if (mag <= 0) {
+            mag = 1;
+        }
+        sbtlSetAddMag_Setsuma(wk, mag);
+    }
+    return ret;
+}
+
+/* NON_MATCHING: 151 of 206 words match. Retail fills the field414 & 2 branch delay slot with the wk_sbtl load; gcc schedules the skillid copy there. */
+#ifdef NON_MATCHING
+void sbtlSetSpecialDamage(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, SKLID skillid, s32 damage) {
+    s32 sttime;
+    s32 type;
+
+    if (wk->unit.devilId != 631 && wk->unit.devilId != 672) {
+        return;
+    }
+    if (wk->status == 7) {
+        return;
+    }
+    if ((wk->field414 & 2) && (wk_sbtl->status3 & 0x4000)) {
+        wk = sbtlSearchUnit_ID(wk_sbtl->unitList, hwk->acterID);
+        if (wk == NULL) {
+            return;
+        }
+    }
+    if ((wk->field414 & 2) && (wk_sbtl->status3 & 0x4000000)) {
+        damage /= 2;
+    }
+    sbtlSetDamage(wk, skillid, damage);
+    sttime = sbtlGetStartTime_Damage();
+    sbtlCreateAnim_Unit(wk, NULL, damage, 0, 0);
+    sbtlSetHitback(wk, hwk, 0);
+    if (hwk->BEDtype == 2) {
+        wk_sbtl->huka2hwk = hwk;
+        sbtlCheckEffectData(wk, hwk->skillid, 5, 0, hwk->acterside, hwk->serialID2, sttime);
+    } else {
+        sbtlEffSetTarget(wk->field1A0);
+        if (wk->field406 == 1) {
+            wk->field406 = 0;
+            sbtlCheckYukaDamageEffect(wk, hwk->skillid, hwk->type, sttime + 1, 1);
+        } else {
+            sbtlCheckYukaDamageEffect(wk, hwk->skillid, hwk->type, sttime + 1, 0);
+        }
+        type = hwk->type & 0xFFF;
+        switch (type) {
+        case 1 ... 5:
+        case 9 ... 15:
+            wk_sbtl->huka2hwk = hwk;
+            sbtlCheckEffectData(wk, hwk->skillid, 2, 0, hwk->acterside, hwk->serialID2, sttime);
+            break;
+        }
+    }
+    if (!sbtlIsDeadBgn(wk)) {
+        return;
+    }
+    sbtlClearHitC(wk_sbtl->hitList, wk);
+    sbtlForceReset(wk_sbtl->effList, wk);
+    sbtlResetAAI(wk);
+    wk->model->dataflg = 0;
+    sbtlSetAIWkStat(wk);
+    wk->aiwk->mode = 0;
+    ResetAction(wk, 0);
+    sbtlSetAction(wk, 7, 0);
+    if (wk->aiwk->scrStep == 0) {
+        sbtlSetMotion_sbtlUnit(wk, 1, 4, 0, 0);
+        wk->motion_setno = 10;
+        wk->unit.now.hp = wk->unit.now.maxhp;
+        wk->aiwk->scrStep = 1;
+    } else if (wk->aiwk->scrStep == 1) {
+        sbtlSetMotion_sbtlUnit(wk, 1, 4, 0, 0);
+        wk->motion_setno = 11;
+        wk->unit.now.hp = wk->unit.now.maxhp;
+        wk->aiwk->scrStep = 2;
+    } else {
+        sbtlSetMotion_sbtlUnit(wk, 13, 4, 0, 0);
+        wk->flg |= 0x4000;
+        wk->aiwk->scrStep = 3;
+    }
+    wk->model->flags &= ~0x20;
+    wk->field474 = 0;
+    wk->flg |= 0x20;
+    wk->vstatus |= 0x80;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetSpecialDamage);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlDMG", sbtlSetSpecialDamage_DamageOnly);
 

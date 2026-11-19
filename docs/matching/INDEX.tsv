@@ -101,7 +101,7 @@ SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/c
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
 sbtlCallBtlSearchEffectData2	code_0028A320	raidou1 0x104	60 of 65 words differ	docs/matching/code_0028A320.md	33		
-sbtlCallMemset17	code_0028A320	raidou1 0x3EC	21 of 251 words differ	docs/matching/code_0028A320.md	41		
+sbtlCreateEff	code_0028A320	raidou1 0x3EC	21 of 251 words differ	docs/matching/code_0028A320.md	41		
 sbtlCallPadVibeFadeUpdate	code_0028A320	raidou1 0x178	66 of 92 words differ	docs/matching/code_0028A320.md	51		
 sbtlLoadEffectData_IDMask	code_0028A320	raidou1 0xF8	54 of 62 words differ	docs/matching/code_0028A320.md	63		
 sbtlReleaseEff	code_0028A320	raidou1 0x200	78 of 128 words differ	docs/matching/code_0028A320.md	71		
@@ -438,7 +438,7 @@ sbtlAAIInit_N_Kaihi	sbtlActAI	raidou1 0x1C8	92 of 114 words differ	docs/matching
 sbtlAAIProc_N_Kaihi	sbtlActAI	raidou1 0x3E8	41 of 250 words differ	docs/matching/sbtlActAI.md	337		
 sbtlAAIProc_N_Kaihi	sbtlActAI	raidou2 0x3E8	41 of 250 words differ	docs/matching/sbtlActAI.md	343		
 sbtlCheckHitArea_sbtlDMG	sbtlDMG	raidou1 0x270	71 of 154 words differ	docs/matching/sbtlDMG.md	3		
-sbtlCreateHitC_New_sbtlDMG	sbtlDMG	raidou1 0x884	294 of 545 words differ	docs/matching/sbtlDMG.md	11		
+sbtlCreateHitC_New	sbtlDMG	raidou1 0x884	294 of 545 words differ	docs/matching/sbtlDMG.md	11		
 sbtlGetSide	sbtlDMG	raidou1 0x114	53 of 70 words differ	docs/matching/sbtlDMG.md	21		
 sbtlHitCProc_Idou	sbtlDMG	raidou1 0xA7C	614 of 651 words differ	docs/matching/sbtlDMG.md	29		
 sbtlLoadAttackHitData	sbtlDMG	raidou1 0x3E4	84 of 245 words differ	docs/matching/sbtlDMG.md	41		
@@ -450,6 +450,14 @@ GetDamage	sbtlDMG	raidou1 0xBD4	569 of 721 words differ	docs/matching/sbtlDMG.md
 sbtlSetSpecialDamage_DamageOnly	sbtlDMG	raidou1 0x14C	66 of 80 words differ	docs/matching/sbtlDMG.md	85		
 sbtlCheckDamageTarget_Skilltbl	sbtlDMG	raidou1 0x170	34 of 82 words differ	docs/matching/sbtlDMG.md	91		
 sbtlUnsetKaraburi	sbtlDMG	raidou1 0x11C	39 of 68 words differ	docs/matching/sbtlDMG.md	97		
+sbtlCreateHitC_None	sbtlDMG	raidou1 0x20C	4 of 131 words differ	docs/matching/sbtlDMG.md	103		
+sbtlCheckGround_sbtlDMG	sbtlDMG	raidou1 0x24C	7 of 147 words differ	docs/matching/sbtlDMG.md	109		
+sbtlSetApos12	sbtlDMG	raidou1 0x26C	100 of 154 words differ	docs/matching/sbtlDMG.md	115		
+sbtlCreateTargetList_csr	sbtlDMG	raidou1 0x2B8	71 of 174 words differ	docs/matching/sbtlDMG.md	121		
+sbtlSetDamage	sbtlDMG	raidou1 0x318	169 of 194 words differ	docs/matching/sbtlDMG.md	127		
+sbtlGetHit_OnlyEndPos	sbtlDMG	raidou1 0x468	39 of 281 words differ	docs/matching/sbtlDMG.md	133		
+sbtlSetSpecialDamage	sbtlDMG	raidou2 0x338	55 of 206 words differ	docs/matching/sbtlDMG.md	139		
+sbtlSetDyingDamage	sbtlDMG	raidou2 0x430	231 of 264 words differ	docs/matching/sbtlDMG.md	145		
 sbtlFunc	sbtlEff_00289E50	raidou1 0x144	58 of 79 words differ	docs/matching/sbtlEff_00289E50.md	3		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		

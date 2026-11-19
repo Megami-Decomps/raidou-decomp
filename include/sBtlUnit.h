@@ -22,7 +22,9 @@ struct effRefObj_t;
 /* Partial raidou2 layout: only the fields read so far are named, the rest is padding. */
 typedef struct SBTLUNIT_MODEL {
     sdfVector4_t vec00;
-    u8 pad010[0x80];
+    u8 pad010[0x30];
+    sdfVector4_t hitbk_dir;
+    u8 pad050[0x40];
     sdfVector4_t scrPos3;
     u8 pad0A0[0x68];
     struct sdfMemHandle_t *handle;
@@ -49,7 +51,9 @@ typedef struct SBTLUNIT_MODEL {
     f32 field130;
     u8 pad160[0x170 - 0x160];
     s32 kaihiID; /* unit the N_Kaihi AI dodges (HD kaihiID) */
-    u8 pad174[0x180 - 0x174];
+    f32 hitbk_cnt;
+    f32 hitbk_cmpcnt;
+    f32 hitbk_rate;
     s8 nonempflg;
     u8 pad181;
     s16 h_serialID;
@@ -227,7 +231,7 @@ s32 sbtlSetLight_Map(struct SBTLUNIT_WORK *wk, s32 frame, s32 flg);
 void sbtlGetRotate(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos);
 struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index);
 s32 sbtlCallBtlGetSkilltbl10(struct SBTLUNIT_WORK *wk);
-s32 sbtlCallBtlGetSklVisualTbl(struct SBTLUNIT_WORK *wk, SKLID skillid, u16 type, s32 a3, s8 a4);
+s32 sbtlCheckYukaDamageEffect(struct SBTLUNIT_WORK *wk, SKLID skillid, u16 type, s32 a3, s8 a4);
 s32 sbtlCallBtlGetDevilDataSBtlSub4(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlLoadAttackHitData(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetMotionVisualData2(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
@@ -250,7 +254,7 @@ s32 sbtlGetNumUnit_GroupID2(struct SBTLUNIT_LISTWORK *lwk, s32 serialID, s32 flg
 s32 sbtlRefSbtl33(struct SBTLUNIT_WORK *wk);
 s32 sbtlLeaf61(struct SBTLUNIT_WORK *wk);
 s32 sbtlBtlSetEndDataSub(struct SBTLUNIT_WORK *wk, s32 stockID);
-s32 sbtlCreateHitC_New(struct SBTLUNIT_WORK *wk);
+s32 sbtlDeleteAttackHitData(struct SBTLUNIT_WORK *wk);
 void sbtlCallMemFreeDirect2(struct SBTLUNIT_WORK *wk);
 s32 sbtlRefSbtl19(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlCreateDelWork(struct SBTLUNIT_WORK *wk);
@@ -312,7 +316,8 @@ struct SBTLUNIT_WORK {
     s32 motionno;
     s32 motionID;
     f32 m_rate;
-    u8 pad4D0[0x4];
+    u8 pad4D0[0x2];
+    s16 motion_setno;
     s16 fade_sttime;
     s16 fadecnt;
     s32 fadepara;
@@ -327,7 +332,9 @@ struct SBTLUNIT_WORK {
     struct mdlObj_t *hModel;
     s8 gstat;
     s8 changeflg;
-    u8 pad516[0x1A];
+    u8 pad516[0xC];
+    s16 field406;
+    u8 pad524[0xC];
     u8 field414;
     u8 pad531[0x3];
     u32 flg;
@@ -339,9 +346,16 @@ struct SBTLUNIT_WORK {
     s16 degcnt;
     u8 pad552[0x2];
     u32 status;
-    u8 pad558[0x14];
+    s32 framecnt;
+    u8 pad55C[0x10];
     SKLID skillid;
-    u8 pad570[0x40];
+    u8 pad570[0x15];
+    s8 action_flg;
+    u8 pad586[0xA];
+    s32 field474;
+    u8 pad594[0x10];
+    s32 field5A4;
+    u8 pad5A8[0x8];
     struct SBTLUNIT_MODEL *model;
     struct SBTLAI_WORK *aiwk;
     s16 actCounter;
@@ -355,7 +369,10 @@ struct SBTLUNIT_WORK {
     s16 field4A2;
     u8 pad5D0[0x634 - 0x5D0];
     SBTL_PACDATA_HITLIST hitwk;
-    u8 pad688[0x6E9 - 0x688];
+    u8 pad688[0x6C0 - 0x688];
+    s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */
+    u32 field6C4; /* bit 0x40 blocks hitback */
+    u8 pad6C8[0x6E9 - 0x6C8];
     u8 field6E9; /* set by trmSetProcessTerm */
     u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
@@ -547,6 +564,11 @@ typedef struct SBTLUNIT_LISTWORK {
     struct sdfMemHandle_t *handle;
     SBTLUNIT_LISTWK *pUnitL;
 } SBTLUNIT_LISTWORK;
+
+void sbtlDeath(struct SBTLUNIT_WORK *wk);
+#ifndef VERSION_RAIDOU2
+void sbtlDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 damage);
+#endif
 
 #ifdef VERSION_RAIDOU2
 void sbtlCallSync(void);

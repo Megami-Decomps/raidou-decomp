@@ -4718,9 +4718,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x00458C58	0x004C1198	sbtlGetRotateDegXTable	.rodata	0x10	yes	code-ref
 0x00458C68	0x004C11A8	sbtlGetChorikiDegTable	.rodata	0x10	yes	code-ref
 0x00458C78	0x004C11B8	sbtlGetChorikiDegTable2	.rodata	0x10	yes	code-ref
-0x00458C88	0x004C11C8	sbtlGetRadian_XTable	.rodata	0x10	yes	code-ref
 0x00458C98	0x004C11D8	sbtlCheckPos_RightTable	.rodata	0x10	yes	code-ref
-0x00458CA8	0x004C11E8	sbtlCallDestroyFontRequestAfterTable	.rodata	0x28	no	code-ref
 0x00458CE8	0x004C1278	sbtlStrBattleMdlhitP03XMht	.rodata	0x20	yes	unique-contents
 0x00458D08	0x004C1298	sbtlStrBattleMdlhit03XMht	.rodata	0x18	yes	unique-contents
 0x00458D30	0x004C12C0	sbtlSetApos12Table	.rodata	0x10	yes	code-ref

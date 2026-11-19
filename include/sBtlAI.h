@@ -21,7 +21,9 @@ typedef struct SBTLAI_WORK {
     s8 scr_actcheckflg;
     u8 pad06D[0x3];
     u32 scrflag;
-    u8 pad074[0xC0 - 0x74];
+    u8 pad074[0x84 - 0x74];
+    s32 scrStep;
+    u8 pad088[0xC0 - 0x88];
     s32 actcnt;
     u8 pad0C4[0x118 - 0xC4];
 } SBTLAI_WORK;

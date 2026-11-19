@@ -19,6 +19,7 @@ struct SBTLUNIT_WORK;
 struct SBTLEXP_LISTWORK;
 struct mdlObj_t;
 struct sdfMemHandle_t;
+struct sdatUnitWork_t;
 
 /* Hit position rule (HD names). */
 typedef struct SBTLSKILLHIT_POSWORK {
@@ -298,6 +299,7 @@ s32 sbtlCheckHitArea(struct SBTLDMG_HITWORK *wk, SKLID skillid);
 s32 sbtlCheckPlayerDead(void);
 s32 sbtlCheckActDamage(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
 void sbtlSetMukouDamage(struct SBTLUNIT_WORK *wk, s32 flg);
+u16 sbtlSetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 damage);
 s32 sbtlGetStartTime_Damage(void);
 s32 sbtlCallMemset16(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, u32 flg);
 void sbtlCallBtlSetMotionSBtlUnit4(struct SBTLUNIT_WORK *wk, s32 damage);
@@ -309,6 +311,21 @@ s32 sbtlCreateAnim_Unit(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *atk_wk, 
 s32 GetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 acterID, struct SBTLDMG_HITWORK *hwk, s32 attr);
 s32 sbtlCallBtlGetPlayerData4(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, SKLID skillid, s32 attr);
 s32 sbtlRefSbtl68(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallCheckBadStatus(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK *wk, SKLID skillid, s32 flg);
+s32 CheckAutoSkill(struct SBTLUNIT_WORK *wk);
+#ifdef VERSION_RAIDOU2
+void datSetKillDevil(struct SBTLUNIT_WORK *wk);
+void sbtlSetAddMag_Setsuma(struct SBTLUNIT_WORK *wk, s32 mag);
+u16 sbtlGetDevilHuumaItem(s32 devilId);
+void sbtlRefDDS3GBWK6(s32 devilId, s32 num);
+s32 sbtlGetPChara(void);
+s32 sbtlIsDeadBgn(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheck(struct SBTLUNIT_WORK *wk, s32 type, s32 flg);
+s32 sbtlCheckDeadEventMag(struct SBTLUNIT_WORK *wk);
+SKLID sbtlChkHaveMemSklParty(SKLID id);
+void gohFunc6(s32 devilId);
+void gohKarteRegistDevilBtl(struct sdatUnitWork_t *unit, u32 *karte, s32 a2, s32 a3);
+#endif
 s32 sbtlGetDamageSub2(struct SBTLUNIT_WORK *wk, s32 skillid);
 s32 sbtlSetRirituNakamaHD(struct SBTLEXP_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, s32 id, s32 time, u32 bstf);
 s32 sbtlSetDeadDamage(struct SBTLUNIT_WORK *wk, s32 flg);
@@ -327,7 +344,7 @@ s32 sbtlCheckHitArea_sbtlDMG(struct SBTLDMG_HITWORK *hwk, struct SBTLUNIT_WORK *
 s32 sbtlCheckTargetList_csr(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 sbtlClearHitC(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk);
 s32 sbtlCreateHitC_None(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *acter, struct SBTLDMG_HITWORK *twk, SKLID skillid, struct SBTLSKILLP_TBL *tbl, const sdfVector4_t *pos, s32 serialID2);
-s32 sbtlCreateHitC_New_sbtlDMG(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk, struct SBTLEFF_WORK *ewk, s32 acterID, SKLID skillid, struct SBTLSKILLP_TBL *tbl, struct SBTLSKILLHIT_TBL *hittbl, struct SBTL_HIT_PACDATA *pwk, u16 acterside, s32 serialID2);
+s32 sbtlCreateHitC_New(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk, struct SBTLEFF_WORK *ewk, s32 acterID, SKLID skillid, struct SBTLSKILLP_TBL *tbl, struct SBTLSKILLHIT_TBL *hittbl, struct SBTL_HIT_PACDATA *pwk, u16 acterside, s32 serialID2);
 SBTLDMG_HITLISTWORK *sbtlCreateHitList(void);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Normal(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 sbtlCreateTargetList_csr(struct SBTLUNIT_WORK *wk, SKLID skillid);

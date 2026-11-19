@@ -36,7 +36,7 @@ extern char *sbtlCallDestroyFontRequestAfterData[];
 
 BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(SBTLPROJECTEDSCREEN_POINT *outPoint);
 
-void sbtlCallDestroyFontRequestAfter(struct SBTLUNIT_WORK *wk, s32 x, s32 y, s32 z, u32 rgba, s32 id);
+void sbtlCallDestroyFontRequestAfter(s32 x, s32 y, s32 depth, u32 colors, s32 num, s8 mode);
 void sbtlCallDevilName(s32 x, s32 y, s32 z, u32 rgba, s32 id);
 void sbtlCallGetSmallFontFRQ23(s32 x, s32 y, s32 z, u32 rgba, s32 id);
 s32 sbtlCheckVerticalArea(const sdfVector4_t *pos0, const sdfVector4_t *rot, const sdfVector4_t *pos1, f32 area);

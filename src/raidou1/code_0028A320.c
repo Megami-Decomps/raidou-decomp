@@ -152,7 +152,7 @@ SBTLEFF_WORK *sbtlCallMemAllocDirect3(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WOR
 
 /* NON_MATCHING: 230 of 251 words match. Register allocation in the defpos cases differs; same calls and stores. */
 #ifdef NON_MATCHING
-SBTLEFF_WORK *sbtlCallMemset17(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, EFFID effectid, s32 starttime, const f32 *defpos,
+SBTLEFF_WORK *sbtlCreateEff(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, EFFID effectid, s32 starttime, const f32 *defpos,
                                u32 rgba, s8 flg)
 {
     sdfVector4_t a;
@@ -309,7 +309,7 @@ SBTLEFF_WORK *sbtlCallMemset17(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, 
     return ewk;
 }
 #else
-INCLUDE_ASM(const s32, "code_0028A320", sbtlCallMemset17);
+INCLUDE_ASM(const s32, "code_0028A320", sbtlCreateEff);
 #endif
 
 s32 sbtlLeaf7(s32 id)
@@ -701,7 +701,7 @@ void sbtlSetEffectData(SBTLEFF_WORK *ewk, struct SBTLUNIT_WORK *wk, SKLID sklid,
             hit = pac->hit;
             i = pac->hitnum;
             do {
-                ewk->hitserialID = sbtlCreateHitC_New_sbtlDMG(wk_sbtl->hitList, wk, ewk, wk->field1A0, sklid, tbl, &(*hit)->entry,
+                ewk->hitserialID = sbtlCreateHitC_New(wk_sbtl->hitList, wk, ewk, wk->field1A0, sklid, tbl, &(*hit)->entry,
                                                               *hit, acterside, serialID2);
                 hit++;
             } while (--i != 0);

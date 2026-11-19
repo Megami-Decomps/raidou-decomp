@@ -8,7 +8,7 @@ The hittype tests and the return 0/1 tails are ordered differently (retail tests
 
 Batch notes: 154 vs 156 words: hittype switch order and return-0/1 tails differ (retail tests ==1, <2, ==0, ==2 and sets v0 per tail). Logic walked against asm for all three hittypes. Menu call records (3, rows scenario): hittype 0, flg&0x800 clear (GetCylinderData path), ret 0; hittype 1/2 and the 0x800 path checked against asm only.
 
-## sbtlCreateHitC_New_sbtlDMG (sbtlDMG, raidou1 0x884)
+## sbtlCreateHitC_New (sbtlDMG, raidou1 0x884)
 
 Raidou 1: 294 of 545 words differ, first at +0x4.
 
@@ -99,3 +99,51 @@ Branch folding: retail keeps the flg == 0 path's checks as separate branches wit
 Raidou 1: 39 of 68 words differ, first at +0x60; emitted 272 bytes, native 284 bytes.
 
 Block order: retail tests skillid < SKLID_ATK and == SKLID_ATK with both bodies (the UnsetKaraburiSub call and the devilId switch) out of line and the fall-through returning. Nested if/else, else-if chains in both orders, early returns (one word over) and a combined range test do not give it.
+
+## sbtlCreateHitC_None (sbtlDMG, raidou1 0x20C)
+
+Raidou 1: 4 of 131 words differ, first at +0x44.
+
+Scheduling at the start: retail stores skillid between the acterID and actID stores; gcc hoists the skillid store above the first acter load. Tried: three orders of the three stores.
+
+## sbtlCheckGround_sbtlDMG (sbtlDMG, raidou1 0x24C)
+
+Raidou 1: 7 of 147 words differ, first at +0x1D4.
+
+Block order at the end: retail stores st after the chousin effect calls and then reaches a shared return-0 block that the other branch's flg & 2 test jumps back to. gcc fills the branch delay slot with the store and puts that block last. Tried: inverted test, explicit returns in each branch, a negated flg test, swapping the branches.
+
+## sbtlSetApos12 (sbtlDMG, raidou1 0x26C)
+
+Raidou 1: 100 of 154 words differ, first at +0xD8; emitted 616 bytes, native 620 bytes.
+
+Retail recomputes the address of dir into v1 for the load right after storing dir, and the scale temporaries land in a3, t2 and t3; gcc reuses the store's v0 and puts every temporary in v0/v1. Everything else matches. Tried: a barrier load of dir, a different store operand.
+
+## sbtlCreateTargetList_csr (sbtlDMG, raidou1 0x2B8)
+
+Raidou 1: 71 of 174 words differ, first at +0x4.
+
+Register allocation: retail gives i s2 and lets wk and best share s3, and keeps the constants 0x8800 and 6 inside the selection loop; gcc swaps those registers and hoists both constants into s8 and s5. Tried: local declaration orders, a release in each branch, an early continue for the non-6 case.
+
+## sbtlSetDamage (sbtlDMG, raidou1 0x318)
+
+Raidou 1: 169 of 194 words differ, first at +0x60; emitted 776 bytes, native 792 bytes.
+
+Retail reloads skl->flg after the s_type & 8 test on both paths and cross-jumps the final sbtlCheckBattlePara call into the flg & 0x40 path; gcc keeps a copy of flg from the first test, which shifts registers and block order from the first branch on. Tried: an s_type & 8 early return, the hp and mp clamps as the CLAMP ternary, separate 0x40 and 0x80 tests.
+
+## sbtlGetHit_OnlyEndPos (sbtlDMG, raidou1 0x468)
+
+Raidou 1: 39 of 281 words differ, first at +0x198; emitted 1124 bytes, native 1128 bytes.
+
+Retail picks the found unit in the iti 2 search with movn and keeps &unit->rot in s2 across the set == 1 block, where gcc branches with bnel and recomputes it; the final scale also loads visual[0] and the zero into swapped float registers. Tried: the found unit as a ternary, the stock pick as a ternary, the iti 1/4/5/8 case moved last, the ewk->pos copy without a memory clobber, the scale operands swapped.
+
+## sbtlSetSpecialDamage (sbtlDMG, raidou2 0x338)
+
+Raidou 2: 55 of 206 words differ, first at +0x58.
+
+Retail fills the delay slot of the first field414 & 2 test with the wk_sbtl load and leaves a nop later; gcc puts the skillid copy for sbtlSetDamage there, which shifts every word after it by one. Tried: nested ifs for both field414 tests, the search folded into the condition, swapped locals, the halving inside the first test.
+
+## sbtlSetDyingDamage (sbtlDMG, raidou2 0x430)
+
+Raidou 2: 231 of 264 words differ, first at +0xC; emitted 1056 bytes, native 1072 bytes.
+
+gcc swaps the saved registers of wk and the attack time (retail keeps wk in s1, time in s0) and folds the devilId 455..456 test into one unsigned compare where retail tests < 457 and < 455 separately; retail also schedules the time * 3 >> 1 into the delay slots around sbtlChkHaveMemSklParty. Tried: the party check before the multiply, time declared first, the range test as a negated >= 455.

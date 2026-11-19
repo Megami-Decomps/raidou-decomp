@@ -347,7 +347,7 @@ s32 sbtlCallBtlResetCharge(struct SBTLUNIT_WORK *wk, s32 type)
         break;
     case 4:
         if (wk_sbtl->battleMode != 1) {
-            sbtlCallMemset17(wk_sbtl->effList, wk, 38, 0, &wk->pos.x, 0x80808080, 0);
+            sbtlCreateEff(wk_sbtl->effList, wk, 38, 0, &wk->pos.x, 0x80808080, 0);
             sbtlResetAction(wk);
             sbtlSetAction(wk, 1, 0);
             sbtlResetCharge(wk);
@@ -1670,7 +1670,7 @@ s32 sbtlCallGetAnlogKey(struct SBTLUNIT_WORK *wk, s32 input)
     }
     switch (input) {
     case 1:
-        sbtlCallMemset17(wk_sbtl->effList, wk, 38, 0, &wk->pos.x, 0x80808080, 0);
+        sbtlCreateEff(wk_sbtl->effList, wk, 38, 0, &wk->pos.x, 0x80808080, 0);
         break;
     case 0:
         if (wk_sbtl->field498 == 0 && (sbtlNormalProcNakamaSub(wk) || wk->status == 15)) {
@@ -3146,7 +3146,7 @@ s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk)
                     sbtlForceDelete_ID_Acter(wk_sbtl->effList, devil, EFFID_RENKEIOR);
                     sbtlClearHitC(wk_sbtl->hitList, devil);
                     sbtlForceReset(wk_sbtl->effList, devil);
-                    sbtlCallMemset17(wk_sbtl->effList, devil, 3, 0, &devil->pos.x, 0x80808080, 0);
+                    sbtlCreateEff(wk_sbtl->effList, devil, 3, 0, &devil->pos.x, 0x80808080, 0);
                     devil->actCounter = devil->actMax;
                     if (devil->bst_effserialID2 != -1) {
                         sbtlDeleteEffectData_SerialID2(wk_sbtl->effList, devil->bst_effserialID2);
@@ -3158,7 +3158,7 @@ s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk)
                     }
                     if (devil->field370 > 0 && !(devil->flg & 0x1000)) {
                         sbtlForceDelete_ID_Acter(wk_sbtl->effList, devil, EFFID_RENKEIOR);
-                        sbtlCallMemset17(wk_sbtl->effList, devil, 55, 0, &devil->pos.x, 0x80808080, 0);
+                        sbtlCreateEff(wk_sbtl->effList, devil, 55, 0, &devil->pos.x, 0x80808080, 0);
                     }
                 }
             }

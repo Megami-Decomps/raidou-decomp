@@ -547,7 +547,7 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSetHITNONE);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlEncountInit);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlBattleSummonEffectSub);
+INCLUDE_ASM(const s32, "code_0027A1E8", sbtlDeath);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", Delete_sbtlScript);
 

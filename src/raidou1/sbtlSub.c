@@ -461,7 +461,84 @@ f32 sbtlGetChorikiDeg(const sdfVector4_t *pos, const sdfVector4_t *rot, const sd
     return rdeg;
 }
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetRadian_X);
+s32 sbtlGetRadian_X(const sdfVector4_t *t1, const sdfVector4_t *rot, const sdfVector4_t *rot2, const sdfVector4_t *t2, f32 per) {
+    sdfVector4_t p0;
+    sdfVector4_t p1;
+    sdfVector4_t dir;
+    sdfVector4_t front;
+    sdfVector4_t quat;
+    sdfVector4_t axis = { 1.0f, 0.0f, 0.0f, 1.0f };
+    sdfVector4_t ofs;
+    sdfVector4_t ident;
+    f32 deg;
+    f32 dot;
+    f32 side;
+
+    memset(&ofs, 0, sizeof(ofs));
+    ofs.z = -1.0f;
+    memset(&ident, 0, sizeof(ident));
+    ident.w = 1.0f;
+    SDF_VU0_LOADVECTOR(t1);
+    SDF_VU0_STOREVECTOR(&p0);
+    SDF_VU0_LOADVECTOR(t2);
+    SDF_VU0_STOREVECTOR(&p1);
+    p0.x = 0.0f;
+    p1.x = 0.0f;
+    SDF_VU0_LOADVECTOR_B(&ofs);
+    SDF_VU0_LOADVECTOR(rot2);
+    ToMatrix();
+    SDF_VU0_APPLYMATRIX_B();
+    SDF_VU0_LOADVECTOR(rot);
+    ToMatrix();
+    SDF_VU0_APPLYMATRIX_B();
+    SDF_VU0_LOADVECTOR(&p0);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_LOADVECTOR_B(&p0);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&front);
+    SDF_VU0_LOADVECTOR_B(&p0);
+    SDF_VU0_LOADVECTOR(&p1);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&dir);
+    SDF_VU0_LOADVECTOR(&front);
+    SDF_VU0_LOADVECTOR_B(&dir);
+    SDF_VU0_INNERPRODUCT(dot);
+    if (dot > 1.0f || dot < -1.0f) {
+        SDF_VU0_LOADVECTOR(&ident);
+        return 0;
+    }
+    deg = acosf(dot);
+    SDF_VU0_LOADVECTOR(&axis);
+    FromRotation(-1.5707959f);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(rot2);
+    Mult();
+    SDF_VU0_LOADVECTOR_B(&ofs);
+    ToMatrix();
+    SDF_VU0_APPLYMATRIX_B();
+    SDF_VU0_LOADVECTOR(rot);
+    ToMatrix();
+    SDF_VU0_APPLYMATRIX_B();
+    SDF_VU0_LOADVECTOR(&p0);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_LOADVECTOR_B(&p0);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_LOADVECTOR_B(&dir);
+    SDF_VU0_INNERPRODUCT(side);
+    if (side < 0.0f) {
+        deg = -deg;
+    }
+    SDF_VU0_LOADVECTOR(&axis);
+    FromRotation(-(deg * per));
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(rot);
+    Mult();
+    SDF_VU0_STOREVECTOR(&quat);
+    return 1;
+}
 
 s32 sbtlCheckInner(const sdfVector4_t *pos0, const sdfVector4_t *pos1, const sdfVector4_t *pos2, f32 rad) {
     sdfVector4_t v1;
@@ -486,8 +563,6 @@ s32 sbtlCheckInner(const sdfVector4_t *pos0, const sdfVector4_t *pos1, const sdf
     }
     return 0;
 }
-
-INCLUDE_RODATA(const s32, "sbtlSub", sbtlGetRadian_XTable);
 
 s32 sbtlCheckPos_Right(const sdfVector4_t *t1, const sdfVector4_t *rot, const sdfVector4_t *t2) {
     sdfVector4_t pos1;

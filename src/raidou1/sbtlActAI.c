@@ -4609,7 +4609,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             pos.y = 600.0f;
             pos.z = 2000.0f;
             pos.x = 0.0f;
-            sbtlCallMemset17(wk_sbtl->effList, unit, EFFID_SUMMON_ED, 0, &pos.x, 0x80808080, 0);
+            sbtlCreateEff(wk_sbtl->effList, unit, EFFID_SUMMON_ED, 0, &pos.x, 0x80808080, 0);
             wk_sbtl->scrFlag |= 0x20000;
         } else if (devil != 0) {
             SDF_VU0_LOADVECTOR(&wk->pos);
@@ -5106,7 +5106,7 @@ s32 sbtlSetMotionHit(struct SBTLUNIT_WORK *wk, s32 motionno, SKLID skillid) {
         if (wk->hitwk.pwk[i]->entry.motionno == motionno) {
             tbl = sbtlGetSkilltbl(skillid);
             pdata = wk->hitwk.pwk[i];
-            sbtlCreateHitC_New_sbtlDMG(wk_sbtl->hitList, wk, NULL, wk->field1A0, wk->skillid, tbl, &pdata->entry, pdata,
+            sbtlCreateHitC_New(wk_sbtl->hitList, wk, NULL, wk->field1A0, wk->skillid, tbl, &pdata->entry, pdata,
                                        wk->field414, -1);
             hit = 1;
         }

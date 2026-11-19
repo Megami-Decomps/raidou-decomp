@@ -149,7 +149,8 @@ typedef struct SBTL_WORK {
     u8 pad42C[0x10];
     u32 flg;
     u32 flg2;
-    u8 pad444[0x10];
+    u32 status3;
+    u8 pad448[0xC];
     s32 targetUnitID;
     u16 hitMdlNo; /* next mdl resource number for hit models (type 7) */
     s16 battleMode;
@@ -203,7 +204,9 @@ typedef struct SBTL_WORK {
     SBTL_PANEL *panel;
     u8 pad9C0[0x4];
     struct SBTL_FIELD630_WORK *field630;
-    u8 pad9C8[0x10];
+    struct SBTLDVLTK_LISTWORK *dvltkList;
+    struct SBTLEXP_LISTWORK *expList;
+    u8 pad9D0[0x8];
     s32 field9D8; /* Proc_sbtlEXP adds a bind's para, clamped to 0..999999 */
     struct SBTL_STP *stp;
     u8 pad9E0[0x4];
@@ -868,7 +871,7 @@ s32 sbtlCallBtlDeleteOnData(void);
 s32 sbtlCallBtlGetPlayerData(void);
 s32 sbtlCallBtlSearchEffectData2(s32 id, u16 flg, void *pData);
 s32 sbtlBtlLoadPlayerOnMemDataSub(s32 index, void *pData);
-struct SBTLEFF_WORK *sbtlCallMemset17(struct SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, EFFID effectid, s32 starttime,
+struct SBTLEFF_WORK *sbtlCreateEff(struct SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, EFFID effectid, s32 starttime,
                                       const f32 *defpos, u32 rgba, s8 flg);
 void sbtlCallMemset3(s32 battleMode, s32 stageNo);
 s32 sbtlBtlLoadHuumaMesDataSub(s32 huumaMesNo);
@@ -979,6 +982,9 @@ s32 sbtlCallSin2(void);
 s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk);
 s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
 s32 sbtlSetHitStop(s32 sttime, s32 cmpcnt);
+#ifdef VERSION_RAIDOU2
+void sbtlLeaf110(f32 x, f32 y, f32 z);
+#endif
 struct SBTLUNIT_WORK *sbtlRefSbtl38(void);
 f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */
 s32 sbtlCheckLoadFlg(void);

@@ -158,7 +158,7 @@ global the SMT3 code reads that Raidou passes as an argument), `rework` lacks
 several declarations or struct members and is a reference only. `python3 tools/find_similar.py --for NAME [--body]` ranks
 matched functions of both Raidou games, SMT3 and DDS 1/2 by retail instruction
 shape: the other game's copy, numbered wrappers such as
-`sbtlCallBtlGetSkilltbl8`/`10`/`16`, and same-shape functions elsewhere. Read
+`sbtlSetDamage`/`10`/`16`, and same-shape functions elsewhere. Read
 its `sub` count, the instructions the template does not supply, not the ratio.
 Both tools read only the shape index under
 `~/.local/state/raidou-decomp-work/similar/`: build it once with

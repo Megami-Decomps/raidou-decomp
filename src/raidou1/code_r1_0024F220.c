@@ -1851,7 +1851,7 @@ s32 sbtlCallDeleteSceneBasicData(struct SBTLUNIT_WORK *wk) {
         wk->flg2 &= ~1;
     }
     if (wk->hitwk.status & 1) {
-        sbtlCreateHitC_New(wk);
+        sbtlDeleteAttackHitData(wk);
         wk->hitwk.status &= ~1;
         wk->hitwk.gstat = 0;
     }
@@ -1936,7 +1936,7 @@ s32 sbtlDeleteUnit(struct SBTLUNIT_WORK *wk) {
         wk->msgData = NULL;
     }
     if (wk->hitwk.status & 1) {
-        sbtlCreateHitC_New(wk);
+        sbtlDeleteAttackHitData(wk);
     }
     sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
     sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
@@ -3723,12 +3723,12 @@ s32 sbtlCallBtlSearchUnitID4(s32 index, s32 flg) {
         sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
         sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
         if (wk->flg2 & 0x100) {
-            sbtlCallMemset17(wk_sbtl->effList, wk, EFFID_RETURN_D, 0, &wk->pos.x, 0, 0);
+            sbtlCreateEff(wk_sbtl->effList, wk, EFFID_RETURN_D, 0, &wk->pos.x, 0, 0);
             wk->color = 0;
         } else if (flg) {
-            sbtlCallMemset17(wk_sbtl->effList, wk, EFFID_RETURN_D, 0, &wk->pos.x, 0x80808080, 0);
+            sbtlCreateEff(wk_sbtl->effList, wk, EFFID_RETURN_D, 0, &wk->pos.x, 0x80808080, 0);
         } else {
-            sbtlCallMemset17(wk_sbtl->effList, wk, EFFID_RETURN, 0, &wk->pos.x, 0x80808080, 0);
+            sbtlCreateEff(wk_sbtl->effList, wk, EFFID_RETURN, 0, &wk->pos.x, 0x80808080, 0);
         }
         wk->flg |= 0x4000;
         if (kansen == 1 || flg == 1) {
@@ -3753,7 +3753,7 @@ s32 sbtlResetSummon_E(struct SBTLUNIT_WORK *wk)
     wk->model->mode = 9;
     wk->model->stat = 1;
     wk->status = 0;
-    sbtlCallMemset17(wk_sbtl->effList, wk, EFFID_SUMMON_E, 0, &wk->pos.x, 0x80808080, 0);
+    sbtlCreateEff(wk_sbtl->effList, wk, EFFID_SUMMON_E, 0, &wk->pos.x, 0x80808080, 0);
     return 1;
 }
 #else
@@ -3763,7 +3763,7 @@ INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlResetSummon_E);
 s32 sbtlCallBtlCheckDamageTarget(struct SBTLUNIT_WORK *wk)
 {
     if (wk != NULL && sbtlCheckDamageTarget(wk) != 0) {
-        sbtlCallMemset17(wk_sbtl->effList, wk, EFFID_RETURNE, 0, &wk->pos.x, 0x80808080, 0);
+        sbtlCreateEff(wk_sbtl->effList, wk, EFFID_RETURNE, 0, &wk->pos.x, 0x80808080, 0);
         sbtlClearHitC(wk_sbtl->hitList, wk);
         sbtlForceReset(wk_sbtl->effList, wk);
         wk->status = 0;

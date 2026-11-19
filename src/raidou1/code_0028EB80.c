@@ -290,7 +290,7 @@ INCLUDE_ASM(const s32, "code_0028EB80", sbtlRefSbtl25);
 
 INCLUDE_ASM(const s32, "code_0028EB80", LoadOnMemoryData);
 
-INCLUDE_ASM(const s32, "code_0028EB80", sbtlCallBtlGetSklVisualTbl);
+INCLUDE_ASM(const s32, "code_0028EB80", sbtlCheckYukaDamageEffect);
 
 s32 sbtlRefSbtl26(SBTLEFF_WORK *wk)
 {

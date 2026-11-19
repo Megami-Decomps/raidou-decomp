@@ -569,7 +569,45 @@ void sbtlCallDevilName(s32 x, s32 y, s32 z, u32 rgba, s32 id)
     frDestroyFontRequestAfter(font);
 }
 
-INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfter);
+void sbtlCallDestroyFontRequestAfter(s32 x, s32 y, s32 depth, u32 colors, s32 num, s8 mode)
+{
+    s32 digit[8];
+    s32 div[8] = { 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1 };
+    frFontHandle_t *font;
+    s32 started;
+    s32 i;
+
+    started = 0;
+    for (i = 0; i < 8; i++) {
+        if (num / div[i] == 0) {
+            if (started) {
+                digit[i] = 0;
+            } else {
+                digit[i] = 11;
+            }
+        } else {
+            digit[i] = num / div[i];
+            started = 1;
+        }
+        num %= div[i];
+    }
+    switch (mode) {
+    case 0:
+        for (i = 0; i < 8; i++) {
+            font = frLinkKanjiSub(x * 16 + i * 192, y * 8, depth, colors, sbtlCallDestroyFontRequestAfterData[digit[i]], NULL);
+            frDrawFontEx(font, 1);
+            frDestroyFontRequestAfter(font);
+        }
+        break;
+    case 1:
+        for (i = 0; i < 2; i++) {
+            font = frLinkKanjiSub(x * 16 + i * 192, y * 8, depth, colors, sbtlCallDestroyFontRequestAfterData[digit[i + 6]], NULL);
+            frDrawFontEx(font, 1);
+            frDestroyFontRequestAfter(font);
+        }
+        break;
+    }
+}
 
 void slKanjiDrawN(s32 x, s32 y, s32 z, u32 rgba, s32 id)
 {
@@ -849,8 +887,6 @@ INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCalcOutInPara);
 INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlInitInOutPara);
 
 #endif
-INCLUDE_RODATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterTable);
-
 INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetAisyoHelpFontData);
 
 #ifdef VERSION_RAIDOU1

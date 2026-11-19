@@ -7143,8 +7143,8 @@
 0x00280840	sbtlForceDelete_AttackHitData	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlDMG.sBtlForceDelete_AttackHitData score 5.6 flag I: calls2 prev gap2/3 st2:gap r2-only
 0x00280868	sbtlBtlLoadAttackHitDataDecodeSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlDMG; called by sbtlLoadAttackHitData_Decode
 0x00280978	sbtlLoadAttackHitData	hd-inferred	hd: Raidou HD sBtlDMG.sBtlLoadAttackHitData, score 7.1 band B; replaces btlLoadModelHit: string: loads /battle/mdlhit/%03X.MHT (or P%03X.MHT) via fileLoad and copies it
-0x00280D60	sbtlCreateHitC_New	hd-inferred	hd: Raidou HD sBtlDMG.sBtlCreateHitC_New, score 8.95 band B
-0x00280E38	sbtlCreateHitC_New_sbtlDMG	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlCreateHitC_New score 6.4 flag I: calls5 callers-of-match votes4 st1:call r2-disagree:0x2ae498
+0x00280D60	sbtlDeleteAttackHitData	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDeleteAttackHitData; replaces sbtlCreateHitC_New
+0x00280E38	sbtlCreateHitC_New	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCreateHitC_New (same 10 args); replaces sbtlCreateHitC_New_sbtlDMG
 0x002816C0	sbtlCreateHitC_None	hd-inferred	hd: Raidou HD sBtlDMG.sBtlCreateHitC_None, score 10.3 band A
 0x002818D0	sbtlAddSerialID2	hd-inferred	hd: Raidou HD sBtlDMG.sBtlAddSerialID2, score 9.7 band B
 0x002818F8	sbtlSetApos12	hd-inferred	hd: Raidou HD sBtlDMG.sBtlSetApos12, score 9.05 band B
@@ -7204,9 +7204,9 @@
 0x00288C20	sbtlSetHuttobiDamage	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetHuttobiDamage score 6.2 flag I: calls3 callee-index votes2 st1:cidx r1-only
 0x00288DF0	sbtlSetDyingDamage	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetDyingDamage score 5.5 flag I: calls5 callers-of-match votes4 st1:call r2-disagree:0x2b98e8
 0x00289198	sbtlSetStoneDeadDamage	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetStoneDeadDamage score 6.4 flag I: calls5 callers-of-match votes5 st1:call r2-disagree:0x2b9d18
-0x00289420	sbtlCallBtlGetAutoSkillID	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlGetAutoSkill_ID
+0x00289420	CheckAutoSkill	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD CheckAutoSkill; R2 already uses the name; replaces sbtlCallBtlGetAutoSkillID
 0x00289528	sbtlSetDeadDamage	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlSetDeadDamage score 8.0 flag I: calls10 callers-of-match votes7 st1:call r1-only
-0x00289880	sbtlCallBtlSetDamage	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlDMG; calls sbtlSetDamage
+0x00289880	sbtlSetSpecialDamage	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetSpecialDamage; R2 already uses the name; replaces sbtlCallBtlSetDamage
 0x00289B50	sbtlSetSpecialDamage_DamageOnly	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetSpecialDamage_DamageOnly; R2 has it under that name; replaces sbtlCallBtlSetMotionSBtlUnit5
 0x00289CA0	btlLoadSbPack	inferred	string: pacLoad("/battle/SB_PACK4.LB"), copies each resource to tail memory
 0x00289E08	sbtlOnDataLoadInit	hd-inferred	hd: Raidou HD sBtlEff.sBtlOnDataLoadInit, score 7.3 band B
@@ -7224,7 +7224,7 @@
 0x0028A508	sbtlCallColorSet5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls ColorSet
 0x0028A590	sbtlCreateEffList	hd-inferred	method=hd-vote; p=0.95 (n=66); tier=A; source=hd; evidence=Raidou HD sBtlEff.sBtlCreateEffList score 6.5 flag I: calls1 prev~ gap3/4 votes2 st1:gap r1+r2
 0x0028A5B8	sbtlCallMemAllocDirect3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemAllocDirect
-0x0028A710	sbtlCallMemset17	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls memset
+0x0028A710	sbtlCreateEff	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCreateEff; R2 already uses the name; replaces sbtlCallMemset17
 0x0028AB00	sbtlLeaf7	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
 0x0028AB40	sbtlGetDmgEffScale	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD sBtlEff.sBtlGetDmgEffScale score 2.8 flag I: prev~ next gap1/2 st2:gap r2-only
 0x0028AB90	sbtlBtlSetEffectDataSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by sbtlSetEffectData
@@ -7297,7 +7297,7 @@
 0x0028F5F8	sbtlRefSbtl24	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x0028F6C0	sbtlRefSbtl25	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x0028F710	LoadOnMemoryData	hd	hd: Raidou HD sBtlEff.LoadOnMemoryData, score 8.0 band B
-0x0028F738	sbtlCallBtlGetSklVisualTbl	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetSklVisualTbl
+0x0028F738	sbtlCheckYukaDamageEffect	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCheckYukaDamageEffect; R2 already uses the name; replaces sbtlCallBtlGetSklVisualTbl
 0x0028FA08	sbtlRefSbtl26	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x0028FA20	LoadOnMemoryData_sbtlEff	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlEff.LoadOnMemoryData score 7.8 flag -: calls5 calls-of-match votes6 st1:call r2-disagree:0x2c23a8
 0x0028FBB0	LoadOnMemoryData_BED	hd	hd: Raidou HD sBtlEff.LoadOnMemoryData_BED, score 10.3 band A
@@ -17465,9 +17465,7 @@
 0x00458C58	sbtlGetRotateDegXTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetRotateDegX
 0x00458C68	sbtlGetChorikiDegTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetChorikiDeg
 0x00458C78	sbtlGetChorikiDegTable2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetChorikiDeg
-0x00458C88	sbtlGetRadian_XTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetRadian_X
 0x00458C98	sbtlCheckPos_RightTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckPos_Right
-0x00458CA8	sbtlCallDestroyFontRequestAfterTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter
 0x00458CE8	sbtlStrBattleMdlhitP03XMht	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by sbtlLoadAttackHitData; string "/battle/mdlhit/P%03X.MHT"
 0x00458D08	sbtlStrBattleMdlhit03XMht	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by sbtlLoadAttackHitData; string "/battle/mdlhit/%03X.MHT"
 0x00458D20	sbtlCreateHitC_New_sbtlDMGTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCreateHitC_New_sbtlDMG

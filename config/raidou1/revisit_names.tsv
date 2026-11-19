@@ -3424,7 +3424,6 @@
 0x00280498	sbtlLeaf6	func	tier=D	derived-unit	na	unit sbtlDMG; no named callee, caller or string
 0x00280868	sbtlBtlLoadAttackHitDataDecodeSub	func	tier=D	derived-caller	na	unit sbtlDMG; called by sbtlLoadAttackHitData_Decode
 0x00280978	sbtlLoadAttackHitData	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDMG.sBtlLoadAttackHitData, score 7.1 band B; replaces btlLoadModelHit: string: loads /battle/mdlhit/%03X.MHT (or P%03X.MHT) via fileLoad and copies it
-0x00280D60	sbtlCreateHitC_New	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDMG.sBtlCreateHitC_New, score 8.95 band B
 0x002816C0	sbtlCreateHitC_None	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDMG.sBtlCreateHitC_None, score 10.3 band A
 0x002818D0	sbtlAddSerialID2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDMG.sBtlAddSerialID2, score 9.7 band B
 0x002818F8	sbtlSetApos12	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDMG.sBtlSetApos12, score 9.05 band B
@@ -3467,8 +3466,6 @@
 0x002888C8	sbtlCallGetDamage	func	tier=D	derived-callee	na	unit sbtlDMG; calls GetDamage
 0x002889B8	sbtlCallBtlSetMotionSBtlUnit3	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetMotion_sbtlUnit
 0x00288AD8	sbtlCallBtlSetMotionSBtlUnit4	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetMotion_sbtlUnit
-0x00289420	sbtlCallBtlGetAutoSkillID	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlGetAutoSkill_ID
-0x00289880	sbtlCallBtlSetDamage	func	tier=D	derived-callee	na	unit sbtlDMG; calls sbtlSetDamage
 0x00289E08	sbtlOnDataLoadInit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEff.sBtlOnDataLoadInit, score 7.3 band B
 0x00289EF8	sbtlLeaf75	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x00289F00	sbtlFunc	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
@@ -3479,7 +3476,6 @@
 0x0028A468	sbtlCallColorSet4	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls ColorSet
 0x0028A508	sbtlCallColorSet5	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls ColorSet
 0x0028A5B8	sbtlCallMemAllocDirect3	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sdfMemAllocDirect
-0x0028A710	sbtlCallMemset17	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls memset
 0x0028AB00	sbtlLeaf7	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x0028AB90	sbtlBtlSetEffectDataSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlSetEffectData
 0x0028ABD8	sbtlBtlCheckDeleteEffectSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlCheckDeleteEffect
@@ -3523,7 +3519,6 @@
 0x0028ED60	sbtlCallMemset18	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls memset
 0x0028F5F8	sbtlRefSbtl24	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x0028F6C0	sbtlRefSbtl25	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
-0x0028F738	sbtlCallBtlGetSklVisualTbl	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetSklVisualTbl
 0x0028FA08	sbtlRefSbtl26	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x002905D8	sbtlCallLoadOnMemoryDataSBtlEff	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls LoadOnMemoryData_sbtlEff
 0x002906B0	effPartsColorSet	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD effPartsList.effPartsColorSet, score 8.8 band B
@@ -10558,9 +10553,7 @@
 0x00458C58	sbtlGetRotateDegXTable	data	tier=D	derived-sole	na	used by sbtlGetRotateDegX
 0x00458C68	sbtlGetChorikiDegTable	data	tier=D	derived-sole	na	used by sbtlGetChorikiDeg
 0x00458C78	sbtlGetChorikiDegTable2	data	tier=D	derived-sole	na	used by sbtlGetChorikiDeg
-0x00458C88	sbtlGetRadian_XTable	data	tier=D	derived-sole	na	used by sbtlGetRadian_X
 0x00458C98	sbtlCheckPos_RightTable	data	tier=D	derived-sole	na	used by sbtlCheckPos_Right
-0x00458CA8	sbtlCallDestroyFontRequestAfterTable	data	tier=D	derived-sole	na	used by sbtlCallDestroyFontRequestAfter
 0x00458CE8	sbtlStrBattleMdlhitP03XMht	data	tier=D	derived-string	na	used by sbtlLoadAttackHitData; string "/battle/mdlhit/P%03X.MHT"
 0x00458D08	sbtlStrBattleMdlhit03XMht	data	tier=D	derived-string	na	used by sbtlLoadAttackHitData; string "/battle/mdlhit/%03X.MHT"
 0x00458D20	sbtlCreateHitC_New_sbtlDMGTable	data	tier=D	derived-sole	na	used by sbtlCreateHitC_New_sbtlDMG
@@ -19430,7 +19423,8 @@
 0x0027EC00	sbtlCheckWorldtoScreen	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlSub.sBtlCheckWorldtoScreen score 6.2 flag I: prev next gap=exact st2:gap r2-only
 0x0027F748	slKanjiDrawN	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x151de8 sim 0.775 margin 0.12 pair
 0x0027FB28	sbtlGetDevilData_sbtlSub	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlSub.sBtlGetDevilData score 5.8 flag I: calls4 calls-of-match votes3 st1:call r2-disagree:0x2ac610
-0x00280E38	sbtlCreateHitC_New_sbtlDMG	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlCreateHitC_New score 6.4 flag I: calls5 callers-of-match votes4 st1:call r2-disagree:0x2ae498
+0x00280D60	sbtlDeleteAttackHitData	func	tier=B	hd-role	na	HD sBtlDeleteAttackHitData; replaces sbtlCreateHitC_New
+0x00280E38	sbtlCreateHitC_New	func	tier=B	hd-role	na	HD sBtlCreateHitC_New (same 10 args); replaces sbtlCreateHitC_New_sbtlDMG
 0x00284640	sbtlCheckGround_sbtlDMG	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlCheckGround score 6.9 flag I: calls4 callers-of-match votes5 st1:call r2-disagree:0x2b1ff8
 0x002855C0	sbtlCheckHitArea_sbtlDMG	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlCheckHitArea score 6.3 flag I: calls3 callers-of-match votes3 st1:call r2-disagree:0x2b2fe8
 0x00287670	sbtlSetDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetDamage score 6.2 flag I: calls3 callers-of-match votes2 st1:call r1-only
@@ -19440,7 +19434,10 @@
 0x00288C20	sbtlSetHuttobiDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetHuttobiDamage score 6.2 flag I: calls3 callee-index votes2 st1:cidx r1-only
 0x00288DF0	sbtlSetDyingDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetDyingDamage score 5.5 flag I: calls5 callers-of-match votes4 st1:call r2-disagree:0x2b98e8
 0x00289198	sbtlSetStoneDeadDamage	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlDMG.sBtlSetStoneDeadDamage score 6.4 flag I: calls5 callers-of-match votes5 st1:call r2-disagree:0x2b9d18
+0x00289420	CheckAutoSkill	func	tier=B	hd-role	na	HD CheckAutoSkill; R2 already uses the name; replaces sbtlCallBtlGetAutoSkillID
+0x00289880	sbtlSetSpecialDamage	func	tier=B	hd-role	na	HD sBtlSetSpecialDamage; R2 already uses the name; replaces sbtlCallBtlSetDamage
 0x00289B50	sbtlSetSpecialDamage_DamageOnly	func	tier=B	hd-role	na	HD sBtlSetSpecialDamage_DamageOnly; R2 has it under that name; replaces sbtlCallBtlSetMotionSBtlUnit5
+0x0028A710	sbtlCreateEff	func	tier=B	hd-role	na	HD sBtlCreateEff; R2 already uses the name; replaces sbtlCallMemset17
 0x0028AB40	sbtlGetDmgEffScale	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlEff.sBtlGetDmgEffScale score 2.8 flag I: prev~ next gap1/2 st2:gap r2-only
 0x0028AC58	sbtlCheckEffectData	func	tier=B	hd-role	na	HD sBtlEff.sBtlCheckEffectData (R2 tier A): same function as R2 sbtlCheckEffectData (part 3 drafts, same call sites); replaces sbtlCallBtlSearchEffectData
 0x0028BA80	sbtlSetEffectData	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlEff.sBtlSetEffectData score 6.9 flag I: calls4 callers-of-match votes4 st1:call r2-disagree:0x2bd890
@@ -19448,6 +19445,7 @@
 0x0028DEF8	sbtlReleaseDelList	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlEff.sBtlReleaseDelList score 6.3 flag I: calls1 calls-of-match st1:call r1+r2
 0x0028E160	sbtlForceDelete_EffectWork_ID	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlEff.sBtlForceDelete_EffectWork_ID score 6.0 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2c0aa8
 0x0028EB80	sbtlLoadEffectData_Nakama	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlEff.sBtlLoadEffectData_Nakama score 5.8 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2c13e0
+0x0028F738	sbtlCheckYukaDamageEffect	func	tier=B	hd-role	na	HD sBtlCheckYukaDamageEffect; R2 already uses the name; replaces sbtlCallBtlGetSklVisualTbl
 0x002936F0	sbtlSummonMenuProc	func	tier=B	hd-role	na	HD sBtlPlayer.c sBtlSummonMenuProc (0x1f6c4a0): switch on menutype 1..7 over SummonMenuFunc0..6[sgstat[0]](wk, mode); its tables hold SummonMenuFunc_Open00/_50/_40 here; replaces sbtlRefSbtl51
 0x00295390	sbtlCheckBattleWin	func	tier=B	hd-role	na	HD sBtlEvent.sBtlCheckBattleWin, before sBtlCheckBattleLose; R2 sbtlCheckBattleWin; replaces sbtlCallBtlCheckTutorialBattle2
 0x00295578	sbtlCheckBattleLose	func	tier=B	hd-role	na	HD sBtlEvent.sBtlCheckBattleLose: tutorial battle sets evt bits 2096-2099, between sBtlCheckBattleWin and sBtlCheckTutorialBattle; replaces campFreeStatusModel

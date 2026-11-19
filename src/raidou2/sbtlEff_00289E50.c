@@ -414,7 +414,7 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckDeleteEffect);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckSABData);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlCheckSABData);
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceReset);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceReset_Tatari);
 

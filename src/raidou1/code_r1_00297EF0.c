@@ -160,11 +160,11 @@ struct SBTLUNIT_WORK *SetEncountData_Sub_sbtlEncount(s32 devilId, s32 point, s32
     sbtlRefSbtl18(unit, mode);
     if (mode != 2) {
         if (mode == 1) {
-            sbtlCallMemset17(wk_sbtl->effList, unit, 14, 0, &unit->pos.x, 0x80808080, 0);
+            sbtlCreateEff(wk_sbtl->effList, unit, 14, 0, &unit->pos.x, 0x80808080, 0);
         } else if (unit->flg & 0x100000) {
-            sbtlCallMemset17(wk_sbtl->effList, unit, 5, 0, &unit->pos.x, 0x80808080, 0);
+            sbtlCreateEff(wk_sbtl->effList, unit, 5, 0, &unit->pos.x, 0x80808080, 0);
         } else {
-            sbtlCallMemset17(wk_sbtl->effList, unit, 51, 0, &unit->pos.x, 0x80808080, 0);
+            sbtlCreateEff(wk_sbtl->effList, unit, 51, 0, &unit->pos.x, 0x80808080, 0);
         }
     }
     return unit;

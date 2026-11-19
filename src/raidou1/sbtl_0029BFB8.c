@@ -232,7 +232,7 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
                 if (!(wk->flg & 0x1000) || (eff = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->rejyenehelper)) == NULL) {
                     eff = wk;
                 }
-                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_AUTOREC, 0, &eff->pos.x, 0x80808080, 0);
+                sbtlCreateEff(wk_sbtl->effList, eff, EFFID_AUTOREC, 0, &eff->pos.x, 0x80808080, 0);
             }
         }
     }
@@ -269,16 +269,16 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
                 eff = wk;
             }
             if (tbl->attr & 4) {
-                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_SLIPKAEN, 0, &eff->pos.x, 0x80808080, 0);
+                sbtlCreateEff(wk_sbtl->effList, eff, EFFID_SLIPKAEN, 0, &eff->pos.x, 0x80808080, 0);
             }
             if (tbl->attr & 8) {
-                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_SLIPICE, 0, &eff->pos.x, 0x80808080, 0);
+                sbtlCreateEff(wk_sbtl->effList, eff, EFFID_SLIPICE, 0, &eff->pos.x, 0x80808080, 0);
             }
             if (tbl->attr & 0x10) {
-                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_SLIPTHUNDER, 0, &eff->pos.x, 0x80808080, 0);
+                sbtlCreateEff(wk_sbtl->effList, eff, EFFID_SLIPTHUNDER, 0, &eff->pos.x, 0x80808080, 0);
             }
             if (tbl->attr & 0x20) {
-                sbtlCallMemset17(wk_sbtl->effList, eff, EFFID_SLIPZAN, 0, &eff->pos.x, 0x80808080, 0);
+                sbtlCreateEff(wk_sbtl->effList, eff, EFFID_SLIPZAN, 0, &eff->pos.x, 0x80808080, 0);
             }
             sbtlCallBtlSearchUnitID14(wk, wk->slippara, 0, 1);
             if (wk->flg & 0x40000000) {

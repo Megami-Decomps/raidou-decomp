@@ -6538,7 +6538,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00280840	0x002ADE60	sbtlForceDelete_AttackHitData	no	yes	asm/raidou1/sbtlDMG.s	asm/raidou2/sbtlDMG.s	masked-hash-in-gap
 0x00280868	0x002ADE88	sbtlBtlLoadAttackHitDataDecodeSub	no	no	asm/raidou1/sbtlDMG.s	asm/raidou2/sbtlDMG.s	unique-masked-hash
 0x00280978	0x002ADF98	sbtlLoadAttackHitData	no	no	asm/raidou1/sbtlDMG.s	asm/raidou2/sbtlDMG.s	run-order-near
-0x00280D60	0x002AE368	sbtlCreateHitC_New	no	no	asm/raidou1/sbtlDMG.s	asm/raidou2/sbtlDMG.s	unique-masked-hash
+0x00280D60	0x002AE368	sbtlDeleteAttackHitData	no	no	asm/raidou1/sbtlDMG.s	asm/raidou2/sbtlDMG.s	unique-masked-hash
 0x002816C0	0x002AEDD0	sbtlCreateHitC_None	no	no	asm/raidou1/sbtlDMG.s	asm/raidou2/sbtlDMG.s	unique-masked-hash
 0x002818D0	0x002AEFE0	sbtlAddSerialID2	no	no	asm/raidou1/sbtlDMG.s	asm/raidou2/sbtlDMG.s	unique-masked-hash
 0x002818F8	0x002AF008	sbtlSetApos12	no	yes	asm/raidou1/sbtlDMG.s	asm/raidou2/sbtlDMG.s	unique-reloc-hash
