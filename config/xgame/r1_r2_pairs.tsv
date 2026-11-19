@@ -4229,15 +4229,15 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001F5B70	0x0020CE68	dds3MagatuhiParDelete	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	unique-reloc-hash
 0x001F5BB8	0x0020CEB0	effMagaSCSetAreaSub	yes	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
 0x001F5BC0	0x0020CEB8	effMagaCylinderRandomizeSub	yes	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
-0x001F5BC8	0x0020CEC0	effLeaf43	yes	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
+0x001F5BC8	0x0020CEC0	dds3MagatuhiParReset	yes	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
 0x001F5BD0	0x0020CEC8	dds3MagatuhiParIsActive	yes	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
-0x001F5BD8	0x0020CED0	dds3MagatuhiParSetRotateMatrix	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
-0x001F5C18	0x0020CF10	effLeaf44	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
-0x001F5C58	0x0020CF50	effLeaf45	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
+0x001F5BD8	0x0020CED0	dds3MagatuhiParSetPosition	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
+0x001F5C18	0x0020CF10	dds3MagatuhiParSetRotateMatrix	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
+0x001F5C58	0x0020CF50	dds3MagatuhiParSetRGBA	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	masked-hash-in-gap
 0x001F5C98	0x0020CF90	dds3MagatuhiParSetByType	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	unique-reloc-hash
 0x001F5CF0	0x0020CFE8	effGetSubSlot	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	unique-reloc-hash
 0x001F5D50	0x0020D048	dds3MagatuhiParCopy	no	yes	asm/raidou1/effect/effMagatuhi.s	asm/raidou2/effect/effMagatuhi.s	unique-reloc-hash
-0x001F5DA0	0x0020D098	dds3Leaf37	yes	yes	asm/raidou1/code_001F5DA0.s	asm/raidou2/code_0020D098.s	masked-hash-in-gap
+0x001F5DA0	0x0020D098	dds3MagatuhiParSetScale	yes	yes	asm/raidou1/code_001F5DA0.s	asm/raidou2/code_0020D098.s	masked-hash-in-gap
 0x001F5DA8	0x0020D0A0	dds3AdminSubmitEmptyModeRequest	no	yes	src/raidou1/code_001F5DA8.c	src/raidou2/code_0020D0A0.c	masked-hash-in-gap
 0x001F5DD0	0x0020D0C8	dds3AllocSplineHandle	no	yes	asm/raidou1/effect/effSpline.s	asm/raidou2/effect/effSpline.s	unique-reloc-hash
 0x001F5EE8	0x0020D1E0	dds3FreeSplineHandle	no	yes	asm/raidou1/effect/effSpline.s	asm/raidou2/effect/effSpline.s	unique-reloc-hash
@@ -4423,7 +4423,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001FC1F0	0x002134E8	effPCPZiodin01Copy	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FC228	0x00213520	effPCPZiodin01Draw	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FC318	0x00213610	effPCPZiodin01SetPosition	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
-0x001FC328	0x00213620	effLeaf80	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
+0x001FC328	0x00213620	effPCPZiodin01SetScale	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FC330	0x00213628	effPCPZiodin01SetColor	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FC338	0x00213630	effPCPZiodin04Init	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FC5D8	0x002138D0	effPCPZiodin02Create	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
@@ -4431,7 +4431,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001FC668	0x00213960	effPCPZiodin02Copy	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FC6A0	0x00213998	effPCPZiodin02Draw	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FC790	0x00213A88	effPCPZiodin02SetPosition	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
-0x001FC7A0	0x00213A98	effLeaf83	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
+0x001FC7A0	0x00213A98	effPCPZiodin02SetScale	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FC7A8	0x00213AA0	effPCPZiodin02SetColor	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FC7B0	0x00213AA8	effPCPShockWave02Init	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FCA70	0x00213D68	effPCPZiodin03Create	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
@@ -4439,7 +4439,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001FCB00	0x00213DF8	effPCPZiodin03Copy	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FCB38	0x00213E30	effPCPZiodin03Draw	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FCC28	0x00213F20	effPCPZiodin03SetPosition	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
-0x001FCC38	0x00213F30	effLeaf86	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
+0x001FCC38	0x00213F30	effPCPZiodin03SetScale	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FCC40	0x00213F38	effPCPZiodin03SetColor	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FCC48	0x00213F40	effPCPZiodin02Init	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FCEE8	0x002141E0	effPCPZiodin04Create	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
@@ -4471,7 +4471,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001FD840	0x00214B38	effPCPShockWave01Copy	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FD878	0x00214B70	effPCPShockWave01Draw	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	unique-reloc-hash
 0x001FD9D0	0x00214CC8	effPCPShockWave01SetPosition	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
-0x001FD9E0	0x00214CD8	effLeaf98	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
+0x001FD9E0	0x00214CD8	effPCPShockWave01SetScale	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FD9E8	0x00214CE0	effPCPShockWave01SetColor	yes	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	run-order-size
 0x001FD9F0	0x00214CE8	effPCPZiodin03Init	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
 0x001FDCB0	0x00214FA8	effPCPShockWave02Create	no	yes	asm/raidou1/effect/effPCPMisc.s	asm/raidou2/effect/effPCPMisc.s	masked-hash-in-gap
@@ -7772,7 +7772,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002F9668	0x0035D668	mselCallMInitSceneMjn	no	yes	asm/raidou1/code_002F8B88.s	asm/raidou2/TitleMain.s	masked-hash-in-gap
 0x002F9690	0x0035D690	fldFunc19	no	yes	asm/raidou1/code_002F8B88.s	asm/raidou2/TitleMain.s	masked-hash-in-gap
 0x002F96B0	0x0035D6B0	Start_nmeMain	no	yes	asm/raidou1/code_002F8B88.s	asm/raidou2/TitleMain.s	masked-hash-in-gap
-0x002FA2E8	0x0035E3B0	fldLeaf28	no	yes	asm/raidou1/code_002F8B88.s	asm/raidou2/TitleMain.s	masked-hash-in-gap
+0x002FA2E8	0x0035E3B0	Finish_nmeMain	no	yes	asm/raidou1/code_002F8B88.s	asm/raidou2/TitleMain.s	masked-hash-in-gap
 0x002FA300	0x0035E3C8	fldCallMemGetPtr5	no	no	asm/raidou1/code_002F8B88.s	asm/raidou2/TitleMain.s	size
 0x002FA3A0	0x0035E468	fldCallMemGetPtr6	no	yes	asm/raidou1/code_002F8B88.s	asm/raidou2/TitleMain.s	unique-reloc-hash
 0x002FA480	0x0035E548	fldFontNameEnt	no	yes	asm/raidou1/code_002F8B88.s	asm/raidou2/TitleMain.s	unique-reloc-hash

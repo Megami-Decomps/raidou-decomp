@@ -9,5 +9,5 @@
 #include "parManager.h"
 
 /* body: matched in raidou @ 88f0d54: src/shared/kernel/dds3KernelCore.c:814, found, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-void dds3Leaf37(void) {
+void dds3MagatuhiParSetScale(void) {
 }

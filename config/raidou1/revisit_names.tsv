@@ -1632,11 +1632,7 @@
 0x001F57C8	effMagaSmokeSetRotateMatrix	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001F5BB8	effMagaSCSetAreaSub	func	tier=D	derived-caller	na	unit effect/effMagatuhi; called by effMagaSCSetArea
 0x001F5BC0	effMagaCylinderRandomizeSub	func	tier=D	derived-caller	na	unit effect/effMagatuhi; called by effMagaCylinderRandomize
-0x001F5BC8	effLeaf43	func	tier=D	derived-unit	na	unit effect/effMagatuhi; no named callee, caller or string
 0x001F5BD0	dds3MagatuhiParIsActive	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001F5C18	effLeaf44	func	tier=D	derived-unit	na	unit effect/effMagatuhi; no named callee, caller or string
-0x001F5C58	effLeaf45	func	tier=D	derived-unit	na	unit effect/effMagatuhi; no named callee, caller or string
-0x001F5DA0	dds3Leaf37	func	tier=D	derived-unit	na	unit code_001F5DA0, nearest named function dds3MagatuhiParCopy; no named callee, caller or string
 0x001F5DA8	dds3AdminSubmitEmptyModeRequest	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00162948, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001F6238	effLeaf46	func	tier=D	derived-unit	na	unit effect/effSpline; no named callee, caller or string
 0x001F6248	effLeaf47	func	tier=D	derived-unit	na	unit effect/effSpline; no named callee, caller or string
@@ -1699,17 +1695,14 @@
 0x001FC198	effPCPZiodin01Delete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC1F0	effPCPZiodin01Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC228	effPCPZiodin01Draw	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001FC328	effLeaf80	func	tier=D	derived-unit	na	unit effect/effPCPMisc; no named callee, caller or string
 0x001FC5D8	effPCPZiodin02Create	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC610	effPCPZiodin02Delete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC668	effPCPZiodin02Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC6A0	effPCPZiodin02Draw	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001FC7A0	effLeaf83	func	tier=D	derived-unit	na	unit effect/effPCPMisc; no named callee, caller or string
 0x001FCA70	effPCPZiodin03Create	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FCAA8	effPCPZiodin03Delete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FCB00	effPCPZiodin03Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FCB38	effPCPZiodin03Draw	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001FCC38	effLeaf86	func	tier=D	derived-unit	na	unit effect/effPCPMisc; no named callee, caller or string
 0x001FCEE8	effPCPZiodin04Create	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FCF20	effPCPZiodin04Delete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FCF78	effPCPZiodin04Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -1723,7 +1716,6 @@
 0x001FD7A0	effPCPShockWave01Init	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FD7D8	effPCPShockWave01Create	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FD840	effPCPShockWave01Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001FD9E0	effLeaf98	func	tier=D	derived-unit	na	unit effect/effPCPMisc; no named callee, caller or string
 0x001FDCB0	effPCPShockWave02Create	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FDCE8	effPCPShockWave02Delete	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FDD40	effPCPShockWave02Copy	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -3917,7 +3909,6 @@
 0x002F96C8	fldNmeProcess	func	tier=D	derived-string	na	unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; string 'nmeProcess'
 0x002F97C0	fldCallMemGetPtr	func	tier=D	derived-callee	na	unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; calls sdfMemGetPtr
 0x002FA1E8	fldCallMemGetPtr2	func	tier=D	derived-callee	na	unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; calls sdfMemGetPtr
-0x002FA2E8	fldLeaf28	func	tier=D	derived-unit	na	unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; no named callee, caller or string
 0x002FA300	fldCallMemGetPtr5	func	tier=D	derived-callee	na	unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; calls sdfMemGetPtr
 0x002FA3A0	fldCallMemGetPtr6	func	tier=D	derived-callee	na	unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; calls sdfMemGetPtr
 0x002FA480	fldFontNameEnt	func	tier=D	derived-string	na	unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; string '/font/name_ent.fnt'
@@ -17826,7 +17817,6 @@
 0x001F1CF0	parDispatchKindInit	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x15aed8 sim 1.000 margin 0.00 pair
 0x001F1D88	parDispatchKindUpdate	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x15aed8 sim 1.000 margin 0.00 pair
 0x001F2178	effBTLSys_Nego_Stone_Delete	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x173bb0 sim 1.000 margin 0.00 pair
-0x001F5BD8	dds3MagatuhiParSetRotateMatrix	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1a8d60 sim 1.000 margin 0.00 pair
 0x001F5CF0	effGetSubSlot	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x18ccf0 sim 1.000 margin 0.28 pair
 0x001F68F0	effBTLSys_Nego_Kyusyu_Delete2	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x173bb0 sim 1.000 margin 0.00 pair
 0x001F6BB0	effTrackPolySetIndexedColor	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x188538 sim 1.000 margin 0.00 pair
@@ -18191,6 +18181,7 @@
 0x002F7568	TitleInit	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD TitleMain.TitleInit score 4.1 flag I: calls1 next calls-of-match votes2 st1:call r2-disagree:0x35d160
 0x002F8C50	CameraNormalPosSet	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD TutorialScript.CameraNormalPosSet score 2.6 flag -: calls1 callers-of-match st1:call r1-only
 0x002F91C8	mselInit	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x22a458 sim 1.000 margin 0.00 single
+0x002FA2E8	Finish_nmeMain	func	tier=C	derived-derived-role	na	Raidou HD nmeMain.Finish(proc): dds3KillProcess(proc, 0); fldNmeProcess is HD nmeMain.Start (nmeProcess/nmeDrawProcess, 11015) and fldCallMemGetPtr5 its Release, as in HD; replaces fldLeaf28
 0x002FA5D0	fldNakamaCashLoad_Decode	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.fldNakamaCashLoad_Decode score 2.0 flag I: calls1 callers-of-match st1:call r1-only
 0x002FAA28	SetSelect	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x284d50 sim 0.636 margin 0.20 pair
 0x002FC198	fclSetSpriteNormal	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x214680 sim 0.636 margin 0.26 pair
@@ -19035,9 +19026,15 @@
 0x001E6258	Eve_PartialMultiFilterON	func	tier=B	smt3-role	na	SMT3 name; pairs with Eve_PartialMultiFilterOFF at +0x10; DrawEffect calls it under drawmfilter; replaces effBlurUpdateSub11
 0x001EA090	effBTLPartCalcScale	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16e638 sim 0.700 margin 0.18 pair
 0x001EA230	effBTLPartGetWorldPositionPtr	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16edc8 sim 0.860 margin 0.40 pair
+0x001F5BC8	dds3MagatuhiParReset	func	tier=B	smt3-role	na	SMT3 HD effMagatuhi.dds3MagatuhiParReset: empty in SMT3 HD and here; slot 3 of the Magatuhi par function table, right before GetState (dds3MagatuhiParIsActive, returns 1 as in HD); replaces effLeaf43
+0x001F5BD8	dds3MagatuhiParSetPosition	func	tier=B	smt3-role	na	SMT3 HD effMagatuhi.dds3MagatuhiParSetPosition: slot 5 of the Magatuhi par function table (Create, Draw, Delete, Reset, GetState, SetPosition, SetRotateMatrix, SetRGBA, SetLoop, GetLoop, Copy, SetScale, the SpPoly table order); calls the per-type handler with the position; replaces dds3MagatuhiParSetRotateMatrix
+0x001F5C18	dds3MagatuhiParSetRotateMatrix	func	tier=B	smt3-role	na	SMT3 HD effMagatuhi.dds3MagatuhiParSetRotateMatrix(hData, pMatrix): slot 6 of the Magatuhi par function table, calls the per-type handler with the matrix; after SetPosition as in HD; replaces effLeaf44
+0x001F5C58	dds3MagatuhiParSetRGBA	func	tier=B	smt3-role	na	SMT3 HD effMagatuhi.dds3MagatuhiParSetRGBA(hData, abgr): slot 7 of the Magatuhi par function table, calls the per-type handler with the u32 colour; after SetRotateMatrix as in HD; replaces effLeaf45
+0x001F5DA0	dds3MagatuhiParSetScale	func	tier=B	smt3-role	na	SMT3 HD effMagatuhi.dds3MagatuhiParSetScale: empty in SMT3 HD and here; last slot (11) of the Magatuhi par function table, right after dds3MagatuhiParCopy as in HD; replaces dds3Leaf37
 0x001F8278	dds3EffectBlurDrawFrameMaskReset	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a1e90 sim 0.841 margin 0.15 pair
 0x001F9980	effBlurGetBlurValid	func	tier=B	hd-role	na	HD effBlur_Filter.effBlurGetBlurValid returns EFF_BLURVAL; 0x1F9980 returns the gp float dds3Data46, called by effUpdateBlur; replaces dds3BlurBuildSamplingQuadSub
 0x001F9988	effBlurSetBlurValid	func	tier=B	hd-role	na	HD effBlur_Filter.effBlurSetBlurValid stores EFF_BLURVAL; 0x1F9988 stores f12 to dds3Data46, called by effUpdateBlur; replaces dds3Leaf38
+0x001FD9E0	effPCPShockWave01SetScale	func	tier=B	smt3-role	na	SMT3 HD effPCPMisc.effPCPShockWave01SetScale: between effPCPShockWave01SetPosition and SetColor as in HD; stores the f32 scale at 0x10 before the colour at 0x14; replaces effLeaf98
 0x0021BA78	effGetFlags	func	tier=B	hd-role	na	HD effStat.effGetFlags returns flags_stat; 0x21BA78 returns 0x46D0C0; HD effSRAnimation is an effBehavior function; replaces effSRAnimation
 0x0021BC00	Process_effStat	func	tier=B	hd-role	na	HD effStat.Process (the eff_stat process function Init passes to dds3StartProcess) calls effUpdateBlur then effUpdate; Init_effStat passes 0x21BC00; replaces effCallFadeInBlur
 0x0021C0C8	effRegist	func	tier=B	hd-role	na	HD effQuake.effRegist: first request without flag 1, set flags = 1, return it; replaces effLeaf345

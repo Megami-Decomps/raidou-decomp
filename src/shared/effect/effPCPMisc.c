@@ -2737,7 +2737,7 @@ void effPCPZiodin01Draw(effPCPZiodin01_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf80);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin01SetScale);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin01SetColor);
 
@@ -2829,7 +2829,7 @@ void effPCPZiodin02Draw(effPCPZiodin01_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin02SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf83);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin02SetScale);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin02SetColor);
 
@@ -2924,7 +2924,7 @@ void effPCPZiodin03Draw(effPCPZiodin01_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin03SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf86);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin03SetScale);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin03SetColor);
 
@@ -3203,7 +3203,7 @@ void effPCPShockWave01Draw(effPCPShockWave01_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf98);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave01SetScale);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave01SetColor);
 

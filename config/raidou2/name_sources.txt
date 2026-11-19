@@ -4842,15 +4842,15 @@
 0x0020CE68	dds3MagatuhiParDelete	inferred	SMT3HD name via SLUS_209.11 0x001A8C78, reloc-identical; map-agrees
 0x0020CEB0	effMagaSCSetAreaSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effMagatuhi; called by effMagaSCSetArea
 0x0020CEB8	effMagaCylinderRandomizeSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effMagatuhi; called by effMagaCylinderRandomize
-0x0020CEC0	effLeaf43	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effMagatuhi; no named callee, caller or string
+0x0020CEC0	dds3MagatuhiParReset	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 HD effMagatuhi.dds3MagatuhiParReset: empty in SMT3 HD and here; slot 3 of the Magatuhi par function table, right before GetState (dds3MagatuhiParIsActive, returns 1 as in HD); replaces effLeaf43
 0x0020CEC8	dds3MagatuhiParIsActive	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x0020CED0	dds3MagatuhiParSetRotateMatrix	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1a8d60 sim 1.000 margin 0.00 pair
-0x0020CF10	effLeaf44	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effMagatuhi; no named callee, caller or string
-0x0020CF50	effLeaf45	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effMagatuhi; no named callee, caller or string
+0x0020CED0	dds3MagatuhiParSetPosition	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 HD effMagatuhi.dds3MagatuhiParSetPosition: slot 5 of the Magatuhi par function table (Create, Draw, Delete, Reset, GetState, SetPosition, SetRotateMatrix, SetRGBA, SetLoop, GetLoop, Copy, SetScale, the SpPoly table order); calls the per-type handler with the position; replaces dds3MagatuhiParSetRotateMatrix
+0x0020CF10	dds3MagatuhiParSetRotateMatrix	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 HD effMagatuhi.dds3MagatuhiParSetRotateMatrix(hData, pMatrix): slot 6 of the Magatuhi par function table, calls the per-type handler with the matrix; after SetPosition as in HD; replaces effLeaf44
+0x0020CF50	dds3MagatuhiParSetRGBA	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 HD effMagatuhi.dds3MagatuhiParSetRGBA(hData, abgr): slot 7 of the Magatuhi par function table, calls the per-type handler with the u32 colour; after SetRotateMatrix as in HD; replaces effLeaf45
 0x0020CF90	dds3MagatuhiParSetByType	inferred	SMT3HD name via SLUS_209.11 0x001A8DA0, reloc-identical; map-agrees
 0x0020CFE8	effGetSubSlot	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x18ccf0 sim 1.000 margin 0.28 pair
 0x0020D048	dds3MagatuhiParCopy	inferred	SMT3HD name via SLUS_209.11 0x001A8E58, reloc-identical; map-agrees
-0x0020D098	dds3Leaf37	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001F5DA0, nearest named function dds3MagatuhiParCopy; no named callee, caller or string
+0x0020D098	dds3MagatuhiParSetScale	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 HD effMagatuhi.dds3MagatuhiParSetScale: empty in SMT3 HD and here; last slot (11) of the Magatuhi par function table, right after dds3MagatuhiParCopy as in HD; replaces dds3Leaf37
 0x0020D0A0	dds3AdminSubmitEmptyModeRequest	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00162948, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0020D0C8	dds3AllocSplineHandle	inferred	SMT3HD name via SLUS_209.11 0x001B0858, reloc-identical; map-agrees
 0x0020D1E0	dds3FreeSplineHandle	inferred	SMT3HD name via SLUS_209.11 0x001B0970, reloc-identical; map-agrees
@@ -5036,7 +5036,7 @@
 0x002134E8	effPCPZiodin01Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213520	effPCPZiodin01Draw	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213610	effPCPZiodin01SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin01SetPosition: fills slot 4 of the effPCPZiodin01Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf79
-0x00213620	effLeaf80	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213620	effPCPZiodin01SetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 HD effPCPMisc.effPCPZiodin01SetScale: between effPCPZiodin01SetPosition and SetColor as in HD (Init Create Delete Copy Draw SetPosition SetScale SetColor); stores the f32 scale, same body as the other effPCP*SetScale; replaces effLeaf80
 0x00213628	effPCPZiodin01SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin01SetColor: fills slot 7 of the effPCPZiodin01Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf81
 0x00213630	effPCPZiodin04Init	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x18cab0 sim 1.000 margin 0.00 pair
 0x002138D0	effPCPZiodin02Create	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -5044,7 +5044,7 @@
 0x00213960	effPCPZiodin02Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213998	effPCPZiodin02Draw	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213A88	effPCPZiodin02SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin02SetPosition: fills slot 4 of the effPCPZiodin02Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf82
-0x00213A98	effLeaf83	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213A98	effPCPZiodin02SetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 HD effPCPMisc.effPCPZiodin02SetScale: between effPCPZiodin02SetPosition and SetColor as in HD; stores the f32 scale, same body as effPCPHama02SetScale; replaces effLeaf83
 0x00213AA0	effPCPZiodin02SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin02SetColor: fills slot 7 of the effPCPZiodin02Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf84
 0x00213AA8	effPCPShockWave02Init	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x18d858 sim 1.000 margin 0.00 pair
 0x00213D68	effPCPZiodin03Create	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -5052,7 +5052,7 @@
 0x00213DF8	effPCPZiodin03Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213E30	effPCPZiodin03Draw	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213F20	effPCPZiodin03SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin03SetPosition: fills slot 4 of the effPCPZiodin03Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf85
-0x00213F30	effLeaf86	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213F30	effPCPZiodin03SetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 HD effPCPMisc.effPCPZiodin03SetScale: between effPCPZiodin03SetPosition and SetColor as in HD; stores the f32 scale, same body as effPCPHama02SetScale; replaces effLeaf86
 0x00213F38	effPCPZiodin03SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin03SetColor: fills slot 7 of the effPCPZiodin03Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf87
 0x00213F40	effPCPZiodin02Init	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x18cab0 sim 1.000 margin 0.00 pair
 0x002141E0	effPCPZiodin04Create	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -5084,7 +5084,7 @@
 0x00214B38	effPCPShockWave01Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00214B70	effPCPShockWave01Draw	inferred	SMT3HD name via SLUS_209.11 0x0018D6E0, reloc-identical; map-agrees
 0x00214CC8	effPCPShockWave01SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPShockWave01SetPosition: fills slot 4 of the effPCPShockWave01Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf97
-0x00214CD8	effLeaf98	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00214CD8	effPCPShockWave01SetScale	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 HD effPCPMisc.effPCPShockWave01SetScale: between effPCPShockWave01SetPosition and SetColor as in HD; stores the f32 scale at 0x10 before the colour at 0x14; replaces effLeaf98
 0x00214CE0	effPCPShockWave01SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPShockWave01SetColor: fills slot 7 of the effPCPShockWave01Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf99
 0x00214CE8	effPCPZiodin03Init	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x18d858 sim 1.000 margin 0.00 pair
 0x00214FA8	effPCPShockWave02Create	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -9746,7 +9746,7 @@
 0x0035D6C8	fldNmeProcess	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour fldNakamaCashLoad_Decode; string 'nmeProcess'
 0x0035D7C8	fldCallMemGetPtr	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour fldNakamaCashLoad_Decode; calls sdfMemGetPtr
 0x0035E250	fldCallMemGetPtr2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour fldNakamaCashLoad_Decode; calls sdfMemGetPtr
-0x0035E3B0	fldLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; no named callee, caller or string
+0x0035E3B0	Finish_nmeMain	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD nmeMain.Finish(proc): dds3KillProcess(proc, 0); fldNmeProcess is HD nmeMain.Start (nmeProcess/nmeDrawProcess, 11015) and fldCallMemGetPtr5 its Release, as in HD; replaces fldLeaf28
 0x0035E3C8	fldCallMemGetPtr5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; calls sdfMemGetPtr
 0x0035E468	fldCallMemGetPtr6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; calls sdfMemGetPtr
 0x0035E548	fldFontNameEnt	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_002F8B88, neighbour fldNakamaCashLoad_Decode; string '/font/name_ent.fnt'

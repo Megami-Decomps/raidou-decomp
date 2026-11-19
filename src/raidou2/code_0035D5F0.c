@@ -104,7 +104,7 @@ s32 fldCallMemGetPtr2(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0035D5F0", fldLeaf28);
+INCLUDE_ASM(const s32, "code_0035D5F0", Finish_nmeMain);
 
 void fldCallMemGetPtr5(dds3ProcessID_t *id) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);

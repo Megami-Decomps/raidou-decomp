@@ -459,8 +459,7 @@ void *dds3MagatuhiGetHandle(dds3MagatuhiPar_tag *hMagaPar);
 u32 dds3MagatuhiGetType(dds3MagatuhiPar_tag *hMagaPar);
 u32 dds3MagatuhiParIsActive(void);
 
-/* Node set-matrix slot: invoke optional subtype callback B; preserve the one-formal surface. */
-void dds3MagatuhiParSetRotateMatrix(dds3MagatuhiPar_tag *work, void *pMatrix);
+void dds3MagatuhiParSetPosition(dds3MagatuhiPar_tag *work, void *pPos);
 void dds3MagatuhiParSetByType(dds3MagatuhiPar_tag *work, s32 slotValue);
 dds3MagatuhiPar_tag *dds3MagatuhiParCopy(dds3MagatuhiPar_tag *work);
 extern u32 effDebugStopTimer, effDebugRunTimer;
@@ -1929,14 +1928,14 @@ u32 effMagaCylinderRandomizeSub(dds3MagatuhiPar_tag *work) {
     return work->type;
 }
 
-void effLeaf43(void) {
+void dds3MagatuhiParReset(void) {
 }
 
 u32 dds3MagatuhiParIsActive(void) {
     return 1;
 }
 
-void dds3MagatuhiParSetRotateMatrix(dds3MagatuhiPar_tag *work, void *pPos) {
+void dds3MagatuhiParSetPosition(dds3MagatuhiPar_tag *work, void *pPos) {
     void (*handler)(void *, void *) = dds3MagatuhiSetRGBATable[work->type].handler;
 
     if (handler != NULL) {
@@ -1944,7 +1943,7 @@ void dds3MagatuhiParSetRotateMatrix(dds3MagatuhiPar_tag *work, void *pPos) {
     }
 }
 
-void effLeaf44(dds3MagatuhiPar_tag *work, void *pMatrix) {
+void dds3MagatuhiParSetRotateMatrix(dds3MagatuhiPar_tag *work, void *pMatrix) {
     void (*handler)(void *, void *) = dds3MagatuhiSetRGBATable3[work->type].handler;
 
     if (handler != NULL) {
@@ -1952,7 +1951,7 @@ void effLeaf44(dds3MagatuhiPar_tag *work, void *pMatrix) {
     }
 }
 
-void effLeaf45(dds3MagatuhiPar_tag *work, u32 abgr) {
+void dds3MagatuhiParSetRGBA(dds3MagatuhiPar_tag *work, u32 abgr) {
     void (*handler)(void *, u32) = dds3MagatuhiSetRGBATable2[work->type].handler;
 
     if (handler != NULL) {
