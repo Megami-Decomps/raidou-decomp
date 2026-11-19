@@ -15,7 +15,7 @@ s32 gohEnd2Init(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohEndCalcProcess(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohEndDrawProcess(dds3ProcessID_t *PID);
 dds3ProcessFunc_t gohEndUpdateProcess(dds3ProcessID_t *PID);
-dds3ProcessFunc_t gohEquipSwordCalcProcess(dds3ProcessID_t *PID);
+dds3ProcessFunc_t gohEnd2DrawProcess(dds3ProcessID_t *PID);
 s32 Direction2Init(void);
 void gohModelFree(struct gohData_t *pData);
 void gohModelLightSet(char *pUnitPbName, struct dds3ModelHandle_t *Model);

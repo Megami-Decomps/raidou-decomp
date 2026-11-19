@@ -10028,8 +10028,8 @@
 0x003472D8	gohEnd2Init	hd-inferred	hd: Raidou HD gohDirection.gohEnd2Init, score 7.55 band B
 0x00347310	gohEnd2Destroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD gohDirection.gohEnd2Destroy: Destroy slot of the End2 row (Init gohEnd2Init); empty as HD; replaces gohEnd2CalcProcess
 0x00347318	gohEnd2CalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD gohDirection.gohEnd2CalcProcess: Calc slot of the End2 row; body gohBgmPlay, ModelLoad, p2sdLoadCheckMidi, evtChgSeq as HD; replaces gohEnd2CalcProcess_gohDirection
-0x00347430	gohEquipSwordCalcProcess	hd-inferred	hd: Raidou HD gohDirection.gohEquipSwordCalcProcess, score 7.05 band B
-0x00347468	gohCallGetProcessData48	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour gohEquipSwordCalcProcess; calls dds3GetProcessData
+0x00347430	gohEnd2DrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou1 jmsSeqUnit row matched to raidou2 SEQ_DIRECTION_END2 by gohEnd2Init/Destroy, DrawProcess slot; masked-identical to raidou2 gohEnd2DrawProcess (pair row fixed from 0x3AC610); replaces gohEquipSwordCalcProcess
+0x00347468	gohEnd2UpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou1 jmsSeqUnit row matched to raidou2 SEQ_DIRECTION_END2 by gohEnd2Init/Destroy, UpdateProcess slot; masked-identical to raidou2 gohEnd2UpdateProcess (pair row fixed from 0x3AC8A0); replaces gohCallGetProcessData48
 0x003474A0	fldCallGetProcessData10	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour fldPlayerSvsOff; calls dds3GetProcessData
 0x003474E0	fldPlayerSvsOff	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x134ea0 sim 0.750 margin 0.19 pair
 0x00347538	gohChkEnableSelect	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD gohMenu.gohChkEnableSelect score 3.8 flag I: calls2 calls-of-match st1:call r1-only

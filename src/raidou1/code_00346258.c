@@ -100,13 +100,13 @@ INCLUDE_ASM(const s32, "code_00346258", gohEnd2Destroy);
 
 INCLUDE_ASM(const s32, "code_00346258", gohEnd2CalcProcess);
 
-dds3ProcessFunc_t gohEquipSwordCalcProcess(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohEnd2DrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohCallGetProcessData48(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohEnd2UpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);

@@ -4851,8 +4851,6 @@
 0x00347268	gohEndDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEndDrawProcess, score 7.45 band B
 0x003472A0	gohEndUpdateProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEndUpdateProcess, score 12.45 band A
 0x003472D8	gohEnd2Init	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEnd2Init, score 7.55 band B
-0x00347430	gohEquipSwordCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEquipSwordCalcProcess, score 7.05 band B
-0x00347468	gohCallGetProcessData48	func	tier=D	derived-callee	na	unit code_00346258, neighbour gohEquipSwordCalcProcess; calls dds3GetProcessData
 0x003474A0	fldCallGetProcessData10	func	tier=D	derived-callee	na	unit code_00346258, neighbour fldPlayerSvsOff; calls dds3GetProcessData
 0x00347540	gohCallBitCheck4	func	tier=D	derived-callee	na	unit code_00346258, neighbour gohChkEnableSelect; calls evtBitCheck
 0x00347580	gohSetCommandSub	func	tier=D	derived-caller	na	unit code_00346258, neighbour gohChkEnableSelect; called by gohSetCommand
@@ -18471,6 +18469,8 @@
 0x00346870	gohDrawProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohDirection.gohDrawProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
 0x003468A8	gohUpdateProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohDirection.gohUpdateProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
 0x00346910	Direction2Destroy	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohDirection.Direction2Destroy score 2.0 flag -: next gap6/4 st2:gap r2-only
+0x00347430	gohEnd2DrawProcess	func	tier=C	derived-derived-role	na	raidou1 jmsSeqUnit row matched to raidou2 SEQ_DIRECTION_END2 by gohEnd2Init/Destroy, DrawProcess slot; masked-identical to raidou2 gohEnd2DrawProcess (pair row fixed from 0x3AC610); replaces gohEquipSwordCalcProcess
+0x00347468	gohEnd2UpdateProcess	func	tier=C	derived-derived-role	na	raidou1 jmsSeqUnit row matched to raidou2 SEQ_DIRECTION_END2 by gohEnd2Init/Destroy, UpdateProcess slot; masked-identical to raidou2 gohEnd2UpdateProcess (pair row fixed from 0x3AC8A0); replaces gohCallGetProcessData48
 0x00347538	gohChkEnableSelect	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohMenu.gohChkEnableSelect score 3.8 flag I: calls2 calls-of-match st1:call r1-only
 0x00348C58	jmsAddTalkMenu	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD jmsInit.jmsAddTalkMenu score 4.3 flag I: calls2 prev gap4/3 st1:gap r2-disagree:0x3b6cd0
 0x00348D90	jmsLoad2ndProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsInit.jmsLoad2ndProcess score 6.9 flag I: calls4 callers-of-match votes5 st1:call r2-disagree:0x3b6e30

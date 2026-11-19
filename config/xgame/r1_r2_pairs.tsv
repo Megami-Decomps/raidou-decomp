@@ -8618,8 +8618,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x003472A0	0x003ABEA8	gohEndUpdateProcess	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	masked-hash-in-gap
 0x003472D8	0x003ABEE0	gohEnd2Init	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	unique-reloc-hash
 0x00347310	0x003ABF18	gohEnd2Destroy	yes	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	masked-hash-in-gap
-0x00347430	0x003AC610	gohEquipSwordCalcProcess	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	masked-hash-in-gap
-0x00347468	0x003AC8A0	gohCallGetProcessData48	no	no	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	masked-hash-in-gap
+0x00347430	0x003AC060	gohEnd2DrawProcess	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	masked-hash-in-gap
+0x00347468	0x003AC098	gohEnd2UpdateProcess	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	masked-hash-in-gap
 0x003474A0	0x003AC920	fldCallGetProcessData10	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	unique-reloc-hash
 0x003474E0	0x003AC960	fldPlayerSvsOff	no	no	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	masked-hash-in-gap
 0x00347538	0x003AC9B8	gohChkEnableSelect	yes	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003AACD0.s	masked-hash-in-gap
