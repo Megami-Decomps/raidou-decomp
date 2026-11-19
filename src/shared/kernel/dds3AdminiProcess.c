@@ -515,7 +515,7 @@ s32 CheckStaff(void);
 s32 CallConfig(s32 restored, void *reqdata);
 s32 ExitConfig(void);
 s32 CheckConfig(void);
-s32 datLeaf2(s32 restored, void *reqdata);
+s32 CallMahjon(s32 restored, void *reqdata);
 s32 ExitMahjon(void);
 s32 CheckMahjon(void);
 s32 CallJimusyo(s32 restored, void *reqdata);
@@ -572,33 +572,33 @@ s32 CheckMorph(void);
 s32 CallCtnTest(s32 restored, void *reqdata);
 s32 ExitCtnTest(void);
 s32 CheckCtnTest(void);
-s32 sysLeaf(s32 restored, void *reqdata);
+s32 CallLmap(s32 restored, void *reqdata);
 s32 ExitLmap(void);
-s32 datLeaf(void);
+s32 CheckLmap(void);
 s32 CallNameEntryTest(s32 restored, void *reqdata);
 s32 ExitNameEntryTest(void);
 s32 CheckNameEntryTest(void);
-s32 datLeaf3(s32 restored, void *reqdata);
-s32 datFunc(void);
-s32 datLeaf4(void);
+s32 CallSEffect(s32 restored, void *reqdata);
+s32 ExitSEffect(void);
+s32 CheckSEffect(void);
 s32 CallWater(s32 restored, void *reqdata);
 s32 ExitWater(void);
 s32 CheckWater(void);
-s32 datLeaf5(s32 restored, void *reqdata);
-s32 datFunc2(void);
-s32 datFunc3(void);
+s32 CallHanafudaTest(s32 restored, void *reqdata);
+s32 ExitHanafudaTest(void);
+s32 CheckHanafudaTest(void);
 s32 CallGomaden(s32 restored, void *reqdata);
 s32 ExitGomaden(void);
 s32 CheckGomaden(void);
-s32 datRefDDS3GBWK(s32 restored, void *reqdata);
+s32 CallJimusyoTest(s32 restored, void *reqdata);
 s32 ExitJimusyoTest(void);
 s32 CheckJimusyoTest(void);
 s32 CallStorySelect(s32 restored, void *reqdata);
 s32 ExitStorySelect(void);
 s32 CheckStorySelect(void);
-s32 datLeaf6(s32 restored, void *reqdata);
+s32 CallDitectiveBook(s32 restored, void *reqdata);
 s32 ExitDitectiveBook(void);
-s32 datLeaf7(void);
+s32 CheckDitectiveBook(void);
 s32 dds3CallExitSky(void);
 s32 evtCallTestProcess3(s32 restored, void *reqdata);
 s32 evtCallTestProcess32(s32 restored, void *reqdata);
@@ -620,7 +620,7 @@ dds3AdminiList_t dds3AdminiList[44] = {
     { CallNewBattle, ExitNewBattle, CheckNewBattle },
     { CallStaff, ExitStaff, CheckStaff },
     { CallConfig, ExitConfig, CheckConfig },
-    { datLeaf2, ExitMahjon, CheckMahjon },
+    { CallMahjon, ExitMahjon, CheckMahjon },
     { CallJimusyo, ExitJimusyo, CheckJimusyo },
     { CallNameEntry, ExitNameEntry, CheckNameEntry },
     { CallNewBattleTest, ExitNewBattleTest, CheckNewBattleTest },
@@ -639,15 +639,15 @@ dds3AdminiList_t dds3AdminiList[44] = {
     { CallSprMotEditTest, ExitSprMotEditTest, CheckSprMotEditTest },
     { CallMorph, ExitMorph, CheckMorph },
     { CallCtnTest, ExitCtnTest, CheckCtnTest },
-    { sysLeaf, ExitLmap, datLeaf },
+    { CallLmap, ExitLmap, CheckLmap },
     { CallNameEntryTest, ExitNameEntryTest, CheckNameEntryTest },
-    { datLeaf3, datFunc, datLeaf4 },
+    { CallSEffect, ExitSEffect, CheckSEffect },
     { CallWater, ExitWater, CheckWater },
-    { datLeaf5, datFunc2, datFunc3 },
+    { CallHanafudaTest, ExitHanafudaTest, CheckHanafudaTest },
     { CallGomaden, ExitGomaden, CheckGomaden },
-    { datRefDDS3GBWK, ExitJimusyoTest, CheckJimusyoTest },
+    { CallJimusyoTest, ExitJimusyoTest, CheckJimusyoTest },
     { CallStorySelect, ExitStorySelect, CheckStorySelect },
-    { datLeaf6, ExitDitectiveBook, datLeaf7 },
+    { CallDitectiveBook, ExitDitectiveBook, CheckDitectiveBook },
 };
 
 char dds3AdminiProcessName[8] = "Admini";
@@ -704,7 +704,7 @@ dds3AdminiList_t dds3AdminiList[42] = {
     { CallNameEntryTest, ExitNameEntryTest, CheckNameEntryTest },
     { CallWater, ExitWater, CheckWater },
     { CallGomaden, ExitGomaden, CheckGomaden },
-    { datRefDDS3GBWK, ExitJimusyoTest, CheckJimusyoTest },
+    { CallJimusyoTest, ExitJimusyoTest, CheckJimusyoTest },
     { CallStorySelect, ExitStorySelect, CheckStorySelect },
     { NULL, NULL, NULL },
 };

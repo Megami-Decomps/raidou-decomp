@@ -193,7 +193,7 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitGomaden);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckGomaden);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datRefDDS3GBWK);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallJimusyoTest);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitJimusyoTest);
 
@@ -408,7 +408,7 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitSprMotEditTest);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckSprMotEditTest);
 
-s32 sysLeaf(s32 restored, void *reqdata)
+s32 CallLmap(s32 restored, void *reqdata)
 {
     if (reqdata == NULL) {
         return getLmpMainProc(0);
@@ -418,9 +418,9 @@ s32 sysLeaf(s32 restored, void *reqdata)
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitLmap);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckLmap);
 
-s32 datLeaf2(void) {
+s32 CallMahjon(void) {
     return Start_mjn();
 }
 
@@ -470,13 +470,13 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitNameEntry);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckNameEntry);
 
-void datLeaf3(void) {
+void CallSEffect(void) {
     titleFunc7();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitSEffect);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf4);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckSEffect);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E4C8.c:1, match */
 void CallWater(void) {
@@ -487,13 +487,13 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitWater);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckWater);
 
-void datLeaf5(void) {
+void CallHanafudaTest(void) {
     fclLeaf();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc2);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitHanafudaTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc3);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckHanafudaTest);
 
 s32 CallGomaden(s32 restored, void *reqdata)
 {
@@ -510,7 +510,7 @@ s32 CheckGomaden(void) {
     return gohCheckSequence();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datRefDDS3GBWK);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallJimusyoTest);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitJimusyoTest);
 
@@ -525,11 +525,11 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitStorySelect);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckStorySelect);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf6);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallDitectiveBook);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitDitectiveBook);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf7);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckDitectiveBook);
 #endif
 
 u32 evtEnsureFontResourceChain(void) {

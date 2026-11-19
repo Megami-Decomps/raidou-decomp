@@ -246,7 +246,7 @@ s32 rstEndInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0034F3B8", rstLeaf4);
+INCLUDE_ASM(const s32, "code_0034F3B8", rstEndDestroy);
 
 INCLUDE_ASM(const s32, "code_0034F3B8", rstEndCalcProcess);
 

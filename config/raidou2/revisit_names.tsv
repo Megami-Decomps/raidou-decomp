@@ -81,7 +81,6 @@
 0x0010EB50	sysLeaf31	func	tier=D	derived-unit	na	unit code_0010DF68, no named neighbour; no named callee, caller or string
 0x0010EDC8	evtCallTestProcess3	func	tier=D	derived-callee	na	unit code_0010EA00, neighbour evtInitializeSelectionScreen; calls TestProcess3
 0x0010EE00	evtCallTestProcess32	func	tier=D	derived-callee	na	unit code_0010EA00, neighbour evtInitializeSelectionScreen; calls TestProcess3
-0x0010F068	datRefDDS3GBWK	func	tier=D	derived-data	na	unit code_0010EA00, nearest named function datDebugPrintf; references DDS3_GBWK
 0x0010F130	evtEnsureFontResourceChain	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0010AB90, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0010F180	evtDestroyFontResourceChain	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0010ABE0, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0010F1B0	datDebugPrintf	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0010AC10, masked-words-identical (strict map pair); dds-decomp: SMT3HD name
@@ -22868,6 +22867,7 @@
 0x0010F000	CallGomaden	func	tier=C	hd-d	0.53 (n=98)	Raidou HD dds3SequenceList.CallGomaden score 2.8 flag -: next gap26/17 st2:gap r2-only
 0x0010F030	ExitGomaden	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD dds3SequenceList.ExitGomaden score 4.0 flag -: calls1 callers-of-match-uniq st2:call r2-only
 0x0010F050	CheckGomaden	func	tier=C	derived-derived-role	na	Raidou HD dds3SequenceList.c CheckGomaden: dds3AdminiList slot 40 is DDS3_ADMINI_LIST_GOMADEN (HD kernel.h enum, same 44 slots), Check member; calls gohCheckSequence; replaces datLeaf39
+0x0010F068	CallJimusyoTest	func	tier=C	derived-derived-role	na	Raidou HD dds3SequenceList.c CallJimusyoTest: raidou2 dds3AdminiList row { datRefDDS3GBWK, ExitJimusyoTest, CheckJimusyoTest }, Call member; replaces datRefDDS3GBWK
 0x0010F098	ExitJimusyoTest	func	tier=C	derived-derived-role	na	Raidou HD dds3SequenceList.c ExitJimusyoTest: dds3AdminiList slot 41 is DDS3_ADMINI_LIST_JIMUSYO_TEST (HD kernel.h enum, same 44 slots), Exit member; calls jmsDebugProcessEnd; replaces datCallDebugProcessEnd
 0x0010F0B8	CheckJimusyoTest	func	tier=C	derived-derived-role	na	Raidou HD dds3SequenceList.c CheckJimusyoTest: dds3AdminiList slot 41 is DDS3_ADMINI_LIST_JIMUSYO_TEST (HD kernel.h enum, same 44 slots), Check member; calls jmsDebugProcessCheck; replaces datCallDebugProcessCheck
 0x0010F0D8	CallStorySelect	func	tier=C	derived-derived-role	na	Raidou HD dds3SequenceList.c CallStorySelect: dds3AdminiList slot 42 is DDS3_ADMINI_LIST_SSELECT (HD kernel.h enum, same 44 slots), Call member; calls cmpStartProcessPanelEff; replaces datLeaf40

@@ -828,7 +828,7 @@ s32 sbtlNakamaSetUp(void)
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlNakamaSetUp);
 #endif
 
-INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlLeaf);
+INCLUDE_ASM(const s32, "code_r1_0024B788", Shutdown_sbtl);
 
 s32 DrawProc(dds3ProcessID_t *id)
 {

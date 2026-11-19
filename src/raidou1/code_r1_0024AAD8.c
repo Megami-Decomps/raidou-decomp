@@ -27,7 +27,7 @@ s32 sbtlSbattle(SBTL_START_DATA *start, s8 flag)
         rstSetFlag(0x20000);
     }
     sbtlCallMemset3(start->val30, start->val28);
-    process = dds3StartProcess(sbtlData85, 1015, 0, 0, sbtlSbattle5, sbtlLeaf, NULL);
+    process = dds3StartProcess(sbtlData85, 1015, 0, 0, sbtlSbattle5, Shutdown_sbtl, NULL);
     wk_sbtl->process = process;
     dds3LinkProcess(process, dds3StartProcess("sbattle_draw", 11020, 0, 0, DrawProc, NULL, NULL));
     dds3LinkProcess(process, dds3StartProcess("sbattle_draw2", 11021, 0, 0, sbtlSbattle6, NULL, NULL));

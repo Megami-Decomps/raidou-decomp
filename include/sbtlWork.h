@@ -1286,7 +1286,7 @@ s32 sbtlLeaf62(struct SBTLUNIT_WORK *wk, s32 mode);
 s32 sbtlGetScrollID(void);
 struct SBTLUNIT_WORK *sbtlRefSbtl(void);
 void sbtlInitDropWork(void);
-s32 sbtlLeaf(dds3ProcessID_t *id);
+s32 Shutdown_sbtl(dds3ProcessID_t *id);
 s32 OnDataLoadProc(dds3ProcessID_t *id);
 void OnDataLoadShutdown(dds3ProcessID_t *id);
 s32 DataLoadShutdown(dds3ProcessID_t *id);
