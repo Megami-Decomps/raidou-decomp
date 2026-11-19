@@ -214,7 +214,13 @@ typedef struct SBTL_WORK {
     s16 field440;
     u8 pad782[0x1A];
     s32 hgunNum;
-    u8 pad7A0[0x5C];
+    u8 pad7A0[0x7C8 - 0x7A0];
+    s32 field7C8;
+    s32 field7CC;
+    s32 field7D0;
+    s32 field7D4;
+    s32 field7D8;
+    u8 pad7DC[0x7FC - 0x7DC];
     s32 field7FC;
     s32 field800;
     u8 pad804[0x8];
@@ -224,7 +230,9 @@ typedef struct SBTL_WORK {
     s32 field838; /* unit ID of the battle talk partner */
     u8 pad83C[0x880 - 0x83C];
     SBTLDROP_WORK drop;
-    u8 pad880[0x9BC - 0x880 - sizeof(SBTLDROP_WORK)];
+    u8 pad974[0x9A8 - 0x880 - sizeof(SBTLDROP_WORK)];
+    s32 field614;
+    u8 pad9AC[0x9BC - 0x9AC];
     SBTL_PANEL *panel;
     u8 pad9C0[0x4];
     struct SBTL_FIELD630_WORK *field630;
@@ -245,7 +253,9 @@ typedef struct SBTL_WORK {
     u8 field878;
     u8 field879;
     u8 field87A;
-    u8 padC57[0xE84 - 0xC57];
+    u8 padC57[0xC90 - 0xC57];
+    struct SBTLUNIT_WORK *pNakama1;
+    u8 pad_C94[0xE84 - 0xC94];
     s32 fieldE84; /* sbtlDat's index into datData20 */
     u8 padE88[0x4];
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */

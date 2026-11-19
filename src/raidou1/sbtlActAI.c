@@ -2620,7 +2620,7 @@ s32 sbtlAAIInit_N_Escape(struct SBTLUNIT_WORK *wk) {
     SDF_VU0_STOREVECTOR(&wk->mv_spdbk);
     wk->model->frame = 0;
     sbtlSetWalk(wk, sbtlGetWarpUnit_ID(wk)->model->field11C);
-    id = sbtlCallMemset11(wk, &wk->rot, 3, 4000.0f, -1.0f, -1.0f);
+    id = sbtlGetNearTarget_Random(wk, &wk->rot, 4000.0f, -1.0f, -1.0f, 3);
     if (id == -1) {
         sbtlResetAAI(wk);
         sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
@@ -2784,7 +2784,7 @@ s32 sbtlAAIInit_N_GardeT(struct SBTLUNIT_WORK *wk) {
 
 /* NON_MATCHING: 4 of 41 words match.  */
 #ifdef NON_MATCHING
-s32 sbtlAAIInit_N_Renkei_sbtlActAI(struct SBTLUNIT_WORK *wk) {
+s32 sbtlAAIInit_N_Renkei(struct SBTLUNIT_WORK *wk) {
     struct SBTLUNIT_MODEL *model = wk->model;
     sdfVector4_t *rot = &wk->rot;
     struct SBTLUNIT_WORK *unit;
@@ -2801,12 +2801,12 @@ s32 sbtlAAIInit_N_Renkei_sbtlActAI(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Renkei_sbtlActAI);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Renkei);
 #endif
 
 /* NON_MATCHING: 5 of 42 words match.  */
 #ifdef NON_MATCHING
-s32 sbtlAAIInit_N_Renkei(struct SBTLUNIT_WORK *wk) {
+s32 sbtlAAIInit_N_Comb_E(struct SBTLUNIT_WORK *wk) {
     sdfVector4_t *rot = &wk->rot;
     struct SBTLUNIT_WORK *unit;
     struct SBTLUNIT_MODEL *model;
@@ -2825,7 +2825,7 @@ s32 sbtlAAIInit_N_Renkei(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Renkei);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIInit_N_Comb_E);
 #endif
 
 /* NON_MATCHING: 4 of 55 words match.  */
@@ -3242,7 +3242,7 @@ s32 sbtlAAIProc_N_Comb_E(struct SBTLUNIT_WORK *wk) {
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_N_Comb_E);
 #endif
 
-s32 sbtlCallBtlSearchUnitID13(struct SBTLUNIT_WORK *wk) {
+s32 sbtlAAIProc_N_Comb_R(struct SBTLUNIT_WORK *wk) {
     if (sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID)->model->flags & 0x4000) {
         return 0;
     }
@@ -3471,7 +3471,7 @@ s32 sbtlAAIProc_N_GardeT(struct SBTLUNIT_WORK *wk) {
 
 /* NON_MATCHING: 133 of 258 words match.  */
 #ifdef NON_MATCHING
-s32 sbtlCallMemset14(struct SBTLUNIT_WORK *wk) {
+s32 sbtlAAIProc_Attack(struct SBTLUNIT_WORK *wk) {
     sdfVector4_t zero;
     sdfVector4_t pos0;
     sdfVector4_t pos1;
@@ -3583,7 +3583,7 @@ s32 sbtlCallMemset14(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlCallMemset14);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlAAIProc_Attack);
 #endif
 
 s32 sbtlAAIProc_BAttack(struct SBTLUNIT_WORK *wk) {

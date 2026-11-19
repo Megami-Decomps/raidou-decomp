@@ -27,7 +27,11 @@ typedef struct SBTLAI_WORK {
     s32 scrStep;
     u8 pad088[0xC0 - 0x88];
     s32 actcnt;
-    u8 pad0C4[0x118 - 0xC4];
+    u8 pad0C4[0xE0 - 0xC4];
+    SKLID dfltOdrSkl;
+    u8 pad0E4[0xF8 - 0xE4];
+    s32 atkCnt;
+    u8 pad0FC[0x118 - 0xFC];
 } SBTLAI_WORK;
 #else
 /* AI state of a unit, 0x90 bytes, made by Create_sbtlAI. */

@@ -86,7 +86,7 @@ retail loop entered by a jump to a bottom test holding the calls = while (i < 2 
 
 Related: loop-shape.
 
-## sbtlCallMemset14 (sbtlActAI, raidou1 0x408)
+## sbtlAAIProc_Attack (sbtlActAI, raidou1 0x408)
 
 Raidou 1: 125 of 256 words differ, first at +0xA8; emitted 1024 bytes, native 1032 bytes.
 
@@ -142,7 +142,7 @@ Raidou 1: 3 of 35 words differ, first at +0x14.
 
 Register allocation: retail reads wk->flg into v0 after sbtlRefSbtl19, the draft into v1, because sbtlRefSbtl19's s32 return keeps v0 live. Declaring the callee void would free it but needs a header change.
 
-## sbtlAAIInit_N_Renkei_sbtlActAI (sbtlActAI, raidou1 0xA4)
+## sbtlAAIInit_N_Renkei (sbtlActAI, raidou1 0xA4)
 
 Raidou 1: 37 of 42 words differ, first at +0xC; emitted 168 bytes, native 164 bytes.
 
@@ -218,13 +218,13 @@ The last compare: retail ends with sltiu on (i < count), the draft with xori. !,
 
 Raidou 1: 51 of 56 words differ, first at +0xC; emitted 224 bytes, native 220 bytes.
 
-Register allocation: the draft keeps the constant 2 for mode and stat in s2 across the three calls, as sbtlAAIInit_N_Renkei does; retail loads it again.
+Register allocation: the draft keeps the constant 2 for mode and stat in s2 across the three calls, as sbtlAAIInit_N_Comb_E does; retail loads it again.
 
-## sbtlAAIInit_N_Renkei (sbtlActAI, raidou1 0xA8)
+## sbtlAAIInit_N_Comb_E (sbtlActAI, raidou1 0xA8)
 
 Raidou 1: 37 of 42 words differ, first at +0xC; emitted 172 bytes, native 168 bytes.
 
-Register allocation: the draft keeps the constant 2 for mode and stat in s2 across the three calls, with a larger frame; retail loads it again. Same as sbtlAAIInit_N_Renkei_sbtlActAI. A model local, a rot local or no local do not change it.
+Register allocation: the draft keeps the constant 2 for mode and stat in s2 across the three calls, with a larger frame; retail loads it again. Same as sbtlAAIInit_N_Renkei. A model local, a rot local or no local do not change it.
 
 ## sbtlAAIInit_N_Renkei (sbtlActAI, raidou2 0xA8)
 
@@ -302,7 +302,7 @@ Same C and the same difference as Raidou 1.
 
 Raidou 1: 17 of 179 words differ, first at +0x38.
 
-Scheduling: retail stores mode before loading flags and fills the sbtlCallMemset11 delay slot differently; mfc1 register in the rotate scale.
+Scheduling: retail stores mode before loading flags and fills the sbtlGetNearTarget_Random delay slot differently; mfc1 register in the rotate scale.
 
 ## sbtlAAIProc_N_Escape (sbtlActAI, raidou1 0x2F0)
 
@@ -345,3 +345,45 @@ Raidou 1: 41 of 250 words differ, first at +0x110.
 Raidou 2: 41 of 250 words differ, first at +0x110.
 
 Same C and the same difference as Raidou 1.
+
+## sbtlGetEscapePoint (sbtlActAI, raidou2 0x290)
+
+Raidou 2: 83 of 164 words differ, first at +0x4.
+
+R1 C (R1 is non-matching, 75 words); the same register allocation difference from the prologue on.
+
+## sbtlAAIInit_N_Escape (sbtlActAI, raidou2 0x2CC)
+
+Raidou 2: 15 of 179 words differ, first at +0x38.
+
+R1 C with sbtlGetNearTarget_Random; the same constant scheduling difference as R1.
+
+## sbtlAAIProc_BAttack (sbtlActAI, raidou2 0x218)
+
+Raidou 2: 4 of 134 words differ, first at +0x11C.
+
+Register allocation in the targetID != -1 skip check: retail loads model into v0 and -1 into a0, the draft uses v1 and a1; a nested if, operand order and a model local do not move it.
+
+## sbtlAAIInit_N_Kaihi (sbtlActAI, raidou2 0x1C8)
+
+Raidou 2: 92 of 114 words differ, first at +0x8; emitted 464 bytes, native 456 bytes.
+
+R1 C unchanged; the same differences as R1, 8 bytes longer than retail.
+
+## sbtlAAIProc_Skl_SMV (sbtlActAI, raidou2 0x27C)
+
+Raidou 2: 68 of 160 words differ, first at +0x94; emitted 644 bytes, native 636 bytes.
+
+R1 C plus the R2 skip check; the same targetID != -1 register difference as sbtlAAIProc_BAttack leaves two extra nops, and every later branch offset moves.
+
+## sbtlAAIProc_Skl_S (sbtlActAI, raidou2 0x3E8)
+
+Raidou 2: 151 of 250 words differ, first at +0xE0.
+
+R1 C plus the R2 skip check; R1's flag register difference (s2/s3 swap, bnel/bc1tl layout) plus the targetID != -1 difference shift the rest.
+
+## sbtlAAIProc_N_Comb_E (sbtlActAI, raidou2 0x37C)
+
+Raidou 2: 13 of 223 words differ, first at +0xD8.
+
+Scheduling in the combine branch: retail reads skl->area before order_sklidbk and sets model->flags |= 0x4000 with a1 for the model; the draft loads them in source order.

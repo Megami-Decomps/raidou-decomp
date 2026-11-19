@@ -6430,7 +6430,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00275EB0	0x0029BB80	sbtlAAIInit_N_Wait	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00275F58	0x0029BC28	sbtlAAIInit_N_Sabato	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	run-order-near
 0x00275FC0	0x0029BC90	sbtlAAIInit_N_GardeT	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
-0x002761A8	0x0029BDD0	sbtlAAIInit_N_Renkei	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	size
+0x00276100	0x0029BDD0	sbtlAAIInit_N_Renkei	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	run-order-near
+0x002761A8	0x0029BE78	sbtlAAIInit_N_Comb_E	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	run-order-near
 0x00276480	0x0029C1A0	sbtlAAIInit_BAttack	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00276528	0x0029C248	sbtlAAIInit_Skl_S	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	run-order-near
 0x00276608	0x0029C340	sbtlAAIInit_SUMMON	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash

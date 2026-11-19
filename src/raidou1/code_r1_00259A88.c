@@ -1353,9 +1353,9 @@ s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode) {
         if ((sbtlGetSkilltbl(wk->skillid)->area & 0x4000) != 0) {
             wk->model->field104 = wk->field1A0;
         } else {
-            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 4, 150.0f, 0.6f, 0.1f);
+            wk->model->field104 = sbtlGetNearTarget_Random(wk, &wk->rot, 150.0f, 0.6f, 0.1f, 4);
             if (wk->model->field104 != -1
-                || (wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 3, 1800.0f, 0.6f, 0.1f), wk->model->field104 != -1)) {
+                || (wk->model->field104 = sbtlGetNearTarget_Random(wk, &wk->rot, 1800.0f, 0.6f, 0.1f, 3), wk->model->field104 != -1)) {
                 target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
                 if (target != NULL) {
                     deg = sbtlGetChorikiDeg(&wk->pos, &wk->rot, &target->pos, 1.0f);
@@ -1846,15 +1846,15 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallMemset9);
 #endif
 
 s32 NormalProc(struct SBTLUNIT_WORK *wk) {
-    s32 id = sbtlCallMemset11(wk, &wk->rot, 3, 300.0f, 0.59999997f, 0.099999995f);
+    s32 id = sbtlGetNearTarget_Random(wk, &wk->rot, 300.0f, 0.59999997f, 0.099999995f, 3);
     s32 id2;
 
     wk->model->field104 = id;
     if (id == -1) {
-        id2 = sbtlCallMemset11(wk, &wk->rot, 3, 1600.0f, 0.59999997f, 0.099999995f);
+        id2 = sbtlGetNearTarget_Random(wk, &wk->rot, 1600.0f, 0.59999997f, 0.099999995f, 3);
         wk->model->field104 = id2;
         if (id2 == -1) {
-            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 3, 3000.0f, -1.0f, -1.0f);
+            wk->model->field104 = sbtlGetNearTarget_Random(wk, &wk->rot, 3000.0f, -1.0f, -1.0f, 3);
         }
     }
     return wk->model->field104;
@@ -1880,9 +1880,9 @@ s32 sbtlPlayerRKaitenInit(struct SBTLUNIT_WORK *wk, s16 *mode)
         sbtlSetUseSkill_sbtlActAI(wk, item->sklid, 0);
         sbtlSetAction(wk, 12, 0);
         wk_sbtl->field484++;
-        wk->model->field104 = sbtlCallMemset11(wk, rot, 2, 300.0f, 0.6f, 0.1f);
+        wk->model->field104 = sbtlGetNearTarget_Random(wk, rot, 300.0f, 0.6f, 0.1f, 2);
         if (wk->model->field104 == -1) {
-            wk->model->field104 = sbtlCallMemset11(wk, rot, 3, 1600.0f, 0.6f, 0.1f);
+            wk->model->field104 = sbtlGetNearTarget_Random(wk, rot, 1600.0f, 0.6f, 0.1f, 3);
             if (wk->model->field104 == -1) {
                 break;
             }
@@ -2540,7 +2540,7 @@ s32 sbtlCallBtlSearchUnitID8(struct SBTLUNIT_WORK *wk) {
             break;
         case 3:
             wk_sbtl->field498 = 0;
-            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 0, 1600.0f, 0.75f, 0.1f);
+            wk->model->field104 = sbtlGetNearTarget_Random(wk, &wk->rot, 1600.0f, 0.75f, 0.1f, 0);
             wk_sbtl->field4B0 = 1;
             wk_sbtl->field4A4++;
             sbtlSetAction(wk, 12, 0);
@@ -2678,7 +2678,7 @@ s32 sbtlCallBtlSearchUnitID9(struct SBTLUNIT_WORK *wk) {
                     && (unit->field414 & 2) != 0 && sbtlCheckDamageTarget(unit)) {
                     id = unit->field1A0;
                 } else {
-                    id = sbtlCallMemset11(wk, &wk->rot, 0, 1600.0f, 0.75f, 0.1f);
+                    id = sbtlGetNearTarget_Random(wk, &wk->rot, 1600.0f, 0.75f, 0.1f, 0);
                 }
                 wk->model->field104 = id;
                 if (wk->model->field104 != -1) {
@@ -2833,7 +2833,7 @@ s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 flg, s8 usePos, 
     return 1;
 }
 
-/* NON_MATCHING: 18 of 83 words match. retail has one sbtlCallMemset11 call with type, range and width chosen in two arms (flg 0: 200.0f, 0.4f. Logic as retail. */
+/* NON_MATCHING: 18 of 83 words match. retail has one sbtlGetNearTarget_Random call with type, range and width chosen in two arms (flg 0: 200.0f, 0.4f. Logic as retail. */
 #ifdef NON_MATCHING
 s32 sbtlCallBtlSearchUnitID11(struct SBTLUNIT_WORK *wk, s32 flg) {
     struct SBTLUNIT_WORK *unit;
@@ -2841,9 +2841,9 @@ s32 sbtlCallBtlSearchUnitID11(struct SBTLUNIT_WORK *wk, s32 flg) {
 
     if (wk->model->field104 == -1) {
         if (flg == 0) {
-            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 0, 200.0f, 0.39999998f, 1.0f);
+            wk->model->field104 = sbtlGetNearTarget_Random(wk, &wk->rot, 200.0f, 0.39999998f, 1.0f, 0);
         } else if (flg == 1) {
-            wk->model->field104 = sbtlCallMemset11(wk, &wk->rot, 3, 400.0f, 0.78f, 1.0f);
+            wk->model->field104 = sbtlGetNearTarget_Random(wk, &wk->rot, 400.0f, 0.78f, 1.0f, 3);
         }
         if (wk->model->field104 == -1) {
             return 1;
@@ -2873,7 +2873,7 @@ INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallBtlSearchUnitID11);
 
 /* NON_MATCHING: 159 of 238 words match. Only FP registers differ: cc1 hoists the 1.0f out of the target loop, retail loads it per pass; type is s8 (retail sign-extends it); para is s16[48] with a 48-byte memset (retail frame); SBTL_WORK.field40C is the temporary SBTLUNIT_LISTWORK *, SBTLUNIT_WORK.field4A2 s16; unit gains sbtlSub_0027ED08.h; vector checked (16 rows, types 2 and 3 reach sbtlCheckVerticalArea and sbtlCheckCrossCircle_Rot respectively, return -1). */
 #ifdef NON_MATCHING
-s32 sbtlCallMemset11(struct SBTLUNIT_WORK *wk, const sdfVector4_t *rot, s8 type, f32 range, f32 width, f32 width2)
+s32 sbtlGetNearTarget_Random(struct SBTLUNIT_WORK *wk, const sdfVector4_t *rot, f32 range, f32 width, f32 width2, s8 type)
 {
     sdfVector4_t pos;
     sdfVector4_t tpos;
@@ -2975,7 +2975,7 @@ s32 sbtlCallMemset11(struct SBTLUNIT_WORK *wk, const sdfVector4_t *rot, s8 type,
     return id;
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCallMemset11);
+INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlGetNearTarget_Random);
 #endif
 
 /* NON_MATCHING: 6 of 55 words match. retail branches bgtz over an unconditional b with li v0,-1 in its delay slot and sinks li s3,-1 into that bgtz delay slot. Logic as retail. */

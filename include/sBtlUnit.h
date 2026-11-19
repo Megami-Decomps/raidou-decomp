@@ -176,7 +176,7 @@ s32 sbtlCallBtlGetBadStatus5(struct SBTLUNIT_WORK *wk);
 s32 sbtlRefSbtl16(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_LISTWORK *sbtlCallBtlCreateUnitList(u8 side);
 void sbtlCallBtlCreateUnitList2(struct SBTLUNIT_WORK *wk);
-s32 sbtlCallMemset11(struct SBTLUNIT_WORK *wk, const sdfVector4_t *rot, s8 type, f32 range, f32 width, f32 width2);
+s32 sbtlGetNearTarget_Random(struct SBTLUNIT_WORK *wk, const sdfVector4_t *rot, f32 area_r, f32 rad0, f32 rad1, s8 flg);
 s32 sbtlCheckArea(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos);
 void UnitMV(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos);
 s32 sbtlCallBtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
@@ -357,7 +357,9 @@ struct SBTLUNIT_WORK {
     s32 framecnt;
     u8 pad55C[0x10];
     SKLID skillid;
-    u8 pad570[0x15];
+    u8 pad570[0x10];
+    SKLID order_sklidbk;
+    u8 pad584[0x1];
     s8 action_flg;
     u8 pad586[0xA];
     s32 field474;
@@ -386,7 +388,9 @@ struct SBTLUNIT_WORK {
     u8 field6E9; /* set by trmSetProcessTerm */
     u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
-    u8 pad6F5[0x7F4 - 0x6F5]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
+    u8 pad6F5[0x770 - 0x6F5];
+    s32 miusinai;
+    u8 pad774[0x7F4 - 0x774]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */
