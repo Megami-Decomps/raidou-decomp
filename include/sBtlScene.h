@@ -9,6 +9,7 @@ s32 Init_sbtlScene(void);
 s32 SetTestCamera(void);
 s32 sbtlDefaultCutScroll(void);
 void sbtlSetCutScroll(sdfVector4_t *pos);
+void sbtlDefaultZoom2(s32 time);
 s32 sbtlReLoadMap(void);
 s32 sbtlSceneLoad(void);
 

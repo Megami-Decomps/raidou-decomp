@@ -63,6 +63,7 @@
 #include "fldProcess.h"
 #include "sdfMath.h"
 #include "sdfDifficulty.h"
+#include "sBtlScene.h"
 
 /* NON_MATCHING: 68 of 192 words match.  */
 #ifdef NON_MATCHING
@@ -181,7 +182,7 @@ void sbtlSetZoom2(const sdfVector4_t *pos, f32 zoom, s32 time)
     sbtlData86 = 1;
 }
 
-void sbtlCallBtlSearchUnitID(s32 time)
+void sbtlDefaultZoom2(s32 time)
 {
     sdfVector4_t pos;
     struct SBTLUNIT_WORK *wk;
@@ -1459,14 +1460,14 @@ s32 sbtlSetEndData(void) {
             }
             if (skill == 1) {
                 if (wk_sbtl->battleMode == 3
-                    || (sbtlCallBtlGetSkilltbl24(&DDS3_GBWK->playerData.unit, skill, 0, SKLID_NONE, helper->unit.autost_cnt,
+                    || (CalcAutoSkill(&DDS3_GBWK->playerData.unit, skill, 0, SKLID_NONE, helper->unit.autost_cnt,
                                                  helper->unit.autost_cnt2),
                         wk_sbtl->battleMode == 3)) {
                     if (sbtlGetBadStatus(&helper->unit) != BST_KANSEN) {
-                        sbtlCallBtlGetSkilltbl24(&helper->unit, skill, 0, SKLID_NONE, helper->unit.autost_cnt, helper->unit.autost_cnt2);
+                        CalcAutoSkill(&helper->unit, skill, 0, SKLID_NONE, helper->unit.autost_cnt, helper->unit.autost_cnt2);
                     }
                 } else {
-                    sbtlCallBtlGetSkilltbl24(&helper->unit, skill, 0, SKLID_NONE, helper->unit.autost_cnt, helper->unit.autost_cnt2);
+                    CalcAutoSkill(&helper->unit, skill, 0, SKLID_NONE, helper->unit.autost_cnt, helper->unit.autost_cnt2);
                 }
             }
             if (wk_sbtl->expList->field10 >= 250) {
@@ -3626,7 +3627,7 @@ void sbtlHuumaParamUp(struct sdatUnitWork_t *unit) {
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlHuumaParamUp);
 #endif
 
-struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index)
+struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index, s32 flg)
 {
     struct SBTLUNIT_WORK *wk;
     s32 id;

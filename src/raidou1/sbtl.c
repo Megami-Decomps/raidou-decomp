@@ -20,6 +20,7 @@
 #include "dds3obj.h"
 #include "sBtlItem.h"
 #include "sBtlPlayer.h"
+#include "sBtlEXP.h"
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
 s32 sbtlLeaf125(void) {
@@ -211,21 +212,256 @@ s32 sbtlCheckItemCost(s32 itemid, s32 flg) {
     return 0;
 }
 
+/* NON_MATCHING: 68 of 72 words match.  */
+#ifdef NON_MATCHING
+void sbtlSetWeakBit(s32 devilid) {
+    u32 pair = 0;
+
+    DDS3_GBWK->anlyzBit[devilid / 32] |= 1 << devilid;
+    switch (devilid) {
+    case 96:
+        pair = 235;
+        break;
+    case 104:
+        pair = 234;
+        break;
+    case 126:
+        pair = 214;
+        break;
+    case 136:
+        pair = 236;
+        break;
+    case 214:
+        pair = 136;
+        break;
+    case 235:
+        pair = 96;
+        break;
+    case 234:
+        pair = 104;
+        break;
+    case 236:
+        pair = 126;
+        break;
+    }
+    if (pair != 0) {
+        DDS3_GBWK->anlyzBit[pair / 32] |= 1 << pair;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlSetWeakBit);
+#endif
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckItemMember_Dead);
+s32 sbtlCheckItemMember_Dead(s32 index) {
+    struct SBTLUNIT_WORK *wk;
+    BST bst;
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlSearchUnitID35);
+    if (wk_sbtl->field344 > 0 && wk_sbtl->summonIndex[0] == index) {
+        wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[index]);
+        if (wk != NULL && !CheckLiveTarget(wk)) {
+            sbtlResetBadStatus(wk, wk->unit.badStatus);
+            wk->unit = *sbtlGetStockUnitData(index);
+            bst = sbtlGetBadStatus(&wk->unit);
+            if (bst != BST_BOYCOTT) {
+                sbtlSetBadStatus_No(wk, SKLID_NONE, bst, 1, -1);
+            }
+        }
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetItemtbl3);
+s32 sbtlCheckItemMember(s32 index) {
+    struct SBTLUNIT_WORK *wk;
+    BST bst;
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetItemtbl2);
+    if (wk_sbtl->field344 > 0 && wk_sbtl->summonIndex[0] == index) {
+        wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[index]);
+        if (wk != NULL) {
+            if (wk_sbtl->field358[index] != 2) {
+                sbtlResetBadStatus(wk, wk->unit.badStatus);
+                wk->unit = *sbtlGetStockUnitData(index);
+                bst = sbtlGetBadStatus(&wk->unit);
+                if (bst != BST_BOYCOTT && !(wk->mode == 1 || wk->mode == 2)) {
+                    sbtlSetBadStatus_No(wk, SKLID_NONE, bst, 1, -1);
+                }
+            } else {
+                if (!CheckLiveTarget(wk)) {
+                    sbtlResetVicePara(wk_sbtl->expList);
+                    wk->unit.vice = wk_sbtl->expList->field10;
+                    sbtlBtlSetEndDataSub(wk, index);
+                }
+            }
+        }
+    }
+    return 1;
+}
+
+s32 CalcItem(sdatUnitWork_t *unit, s32 itemid) {
+    SBTLCALC_DMGWORK wk;
+    struct SBTLSKILLP_TBL *ptbl;
+    SKLID sklid;
+    s32 damage;
+
+    damage = 0;
+    sklid = sbtlGetItemtbl(itemid)->sklid;
+    if (sklid != SKLID_NONE) {
+        ptbl = sbtlGetSkilltbl(sklid);
+        if ((ptbl->flg & 0x80) && (ptbl->attr & 0x400)) {
+            damage = sbtlLeaf97(unit);
+        }
+        if (ptbl->flg & 0x1000) {
+            wk.n0 = ptbl->n0;
+            damage = sbtlGetDamage_I_REC_K(unit, &wk, ptbl, 0);
+        }
+        if (ptbl->flg & 0x2000) {
+            wk.n1 = ptbl->n1;
+            damage = sbtlGetDamage_I_REC_P(unit, &wk, ptbl, 0);
+        }
+        if (ptbl->flg & 0x4000) {
+            wk.n0 = ptbl->n0;
+            damage = sbtlGetDamage_I_REC_K(unit, &wk, ptbl, 1);
+        }
+        if (ptbl->flg & 0x8000) {
+            wk.n1 = ptbl->n1;
+            damage = sbtlGetDamage_I_REC_P(unit, &wk, ptbl, 1);
+        }
+        if (ptbl->flg & 0x10000) {
+            damage = sbtlGetDamage_I_REC_PARA(unit, &wk, ptbl);
+        }
+        if (ptbl->attrtime > 0 && (ptbl->flg & 0x1E0000)) {
+            sbtlBtlCheckItemCountSub(unit);
+        }
+        if (ptbl->flg & 0x20000) {
+            damage = sbtlGetDamage_P_STR(unit, &wk, ptbl, itemid);
+        }
+        if (ptbl->flg & 0x40000) {
+            damage = sbtlGetDamage_P_VIT(unit, &wk, ptbl, itemid);
+        }
+        if (ptbl->flg & 0x80000) {
+            damage = sbtlGetDamage_P_TEC(unit, &wk, ptbl, itemid);
+        }
+        if (ptbl->flg & 0x100000) {
+            damage = sbtlGetDamage_P_LUCK(unit, &wk, ptbl, itemid);
+        }
+        if (ptbl->flg & 0x40) {
+            damage = sbtlGetDamage_CHUUSEI(unit, &wk, ptbl);
+        }
+        if (ptbl->flg & 0x80) {
+            damage = sbtlGetDamage_ITEMFLG(unit, &wk, ptbl, itemid);
+        }
+        if (ptbl->badst & 0x10000) {
+            if (GetPercentage() < 50) {
+                if (sbtlCheckBadStatus_Number(unit->badStatus, BST_STONE)
+                    && sbtlCheckBadStatus_Hit(unit->aisyo.word, unit->now.luck, unit, unit->now.luck, sklid, BST_STONE,
+                                              sbtlGetBadStatus_Attr(BST_STONE), 1)) {
+                    unit->badst_cnt = 0;
+                    unit->badStatus = (unit->badStatus & ~BSTF_MOUDOKU) | BSTF_STONE;
+                }
+            } else {
+                if (sbtlCheckBadStatus_Number(unit->badStatus, BST_MOUDOKU)
+                    && sbtlCheckBadStatus_Hit(unit->aisyo.word, unit->now.luck, unit, unit->now.luck, sklid, BST_MOUDOKU,
+                                              sbtlGetBadStatus_Attr(BST_MOUDOKU), 1)) {
+                    unit->badst_cnt = 0;
+                    unit->badStatus = (unit->badStatus & ~BSTF_STONE) | BSTF_MOUDOKU;
+                }
+            }
+        }
+    }
+    return damage;
+}
+
+s32 CalcItem_Battle_sbtlCalc(struct SBTLUNIT_WORK *wk, sdatUnitWork_t *unit, s32 itemid) {
+    SBTLCALC_DMGWORK dwk;
+    struct SBTLSKILLP_TBL *ptbl;
+    SKLID sklid;
+    s32 damage;
+
+    damage = 0;
+    sklid = sbtlGetItemtbl(itemid)->sklid;
+    if (sklid != SKLID_NONE) {
+        ptbl = sbtlGetSkilltbl(sklid);
+        if ((ptbl->flg & 0x80) && (ptbl->attr & 0x400)) {
+            damage = sbtlLeaf97(unit);
+        }
+        if (ptbl->flg & 0x1000) {
+            dwk.n0 = ptbl->n0;
+            damage = sbtlGetDamage_I_REC_K(unit, &dwk, ptbl, 0);
+            sbtlCreateAnim_Unit(wk, damage, 0, 3);
+        }
+        if (ptbl->flg & 0x2000) {
+            dwk.n1 = ptbl->n1;
+            damage = sbtlGetDamage_I_REC_P(unit, &dwk, ptbl, 0);
+            sbtlCreateAnim_Unit(wk, damage, 0, 3);
+        }
+        if (ptbl->flg & 0x4000) {
+            dwk.n0 = ptbl->n0;
+            damage = sbtlGetDamage_I_REC_K(unit, &dwk, ptbl, 1);
+            sbtlCreateAnim_Unit(wk, damage, 12, 4);
+        }
+        if (ptbl->flg & 0x8000) {
+            dwk.n1 = ptbl->n1;
+            damage = sbtlGetDamage_I_REC_P(unit, &dwk, ptbl, 1);
+            sbtlCreateAnim_Unit(wk, damage, 12, 4);
+        }
+        if (ptbl->flg & 0x10000) {
+            damage = sbtlGetDamage_I_REC_PARA(unit, &dwk, ptbl);
+        }
+        if (ptbl->attrtime > 0 && (ptbl->flg & 0x1E0000)) {
+            sbtlBtlCheckItemCountSub(unit);
+        }
+        if (ptbl->flg & 0x20000) {
+            damage = sbtlGetDamage_P_STR(unit, &dwk, ptbl, itemid);
+        }
+        if (ptbl->flg & 0x40000) {
+            damage = sbtlGetDamage_P_VIT(unit, &dwk, ptbl, itemid);
+        }
+        if (ptbl->flg & 0x80000) {
+            damage = sbtlGetDamage_P_TEC(unit, &dwk, ptbl, itemid);
+        }
+        if (ptbl->flg & 0x100000) {
+            damage = sbtlGetDamage_P_LUCK(unit, &dwk, ptbl, itemid);
+        }
+        if (ptbl->flg & 0x40) {
+            damage = sbtlGetDamage_CHUUSEI(unit, &dwk, ptbl);
+        }
+        if (ptbl->flg & 0x80) {
+            damage = sbtlGetDamage_ITEMFLG(unit, &dwk, ptbl, itemid);
+        }
+    }
+    return damage;
+}
 
 void sbtlResetItemFlg(sdatUnitWork_t *unit) {
     unit->itemstatus &= ~0x410;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckDrink);
+s32 sbtlCheckDrink(void) {
+    s32 ret = 0;
+    SBTL_PLAYER_DATA *pd = sbtlGetPlayerData();
+    sdatUnitWork_t *unit = &pd->unit;
+
+    if (unit->itemst_cnt2 != 0) {
+        if (sbtlCheckMoon(0)) {
+            if (!(unit->itemstatus & 0x40000000)) {
+                if (!(unit->itemstatus & 0x80000000)) {
+                    unit->itemstatus |= 0x40000000;
+                    unit->itemst_cnt--;
+                } else {
+                    unit->itemstatus = (unit->itemstatus & 0x7FFFFFFF) | 0x40000000;
+                    unit->itemst_cnt--;
+                }
+            }
+        } else {
+            unit->itemstatus &= ~0x40000000;
+        }
+        if (unit->itemst_cnt <= 0) {
+            ret = unit->itemst_cnt2;
+            sbtlCheckItemCount(unit);
+            datCallGetPlayerMaxHP(unit, pd->val146);
+        }
+    }
+    return ret;
+}
 
 s32 sbtlCheckItemCount(sdatUnitWork_t *unit) {
     unit->itemst_cnt2 = 0;
@@ -498,7 +734,77 @@ s32 sbtlCheckAutoSkill_Action(struct SBTLUNIT_WORK *wk, SBTLDMG_HITWORK *hwk, s3
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl24);
+/* NON_MATCHING: 156 of 196 words match.  */
+#ifdef NON_MATCHING
+s32 CalcAutoSkill(sdatUnitWork_t *unit, s32 mode, s32 value, SKLID skillid, s16 attr, s16 percent) {
+    s32 ret = 0;
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    s32 type;
+    s32 hp;
+
+    switch (mode) {
+    case 6:
+        wk_sbtl->drop.gold = (s32)((percent / 100.0f) * wk_sbtl->drop.gold);
+        break;
+    case 8:
+        wk_sbtl->drop.nakama_exp = (s32)((percent / 100.0f) * wk_sbtl->drop.nakama_exp);
+        break;
+    case 9:
+        wk_sbtl->drop.chuusei = (s32)((percent / 100.0f) * wk_sbtl->drop.chuusei);
+        break;
+    case 1:
+        unit->now.hp += (s32)((percent / 100.0f) * unit->now.maxhp);
+        hp = unit->now.hp;
+        unit->now.hp = (hp <= 0) ? 0 : (hp < unit->now.maxhp) ? hp : unit->now.maxhp;
+        break;
+    case 12:
+        if ((s16)GetPercentage() < 50) {
+            type = tbl->type & 0xFFF;
+            if (type == 1 || type == 12 || type == 13) {
+                ret = (s32)((percent / 100.0f) * value);
+            }
+        }
+        break;
+    case 13:
+        if ((s16)GetPercentage() < 50) {
+            type = tbl->type & 0xFFF;
+            if ((type == 3 || type == 15) && (tbl->flg & 1) && !(tbl->flg & 0x200000)) {
+                ret = (s32)((percent / 100.0f) * value);
+            }
+        }
+        break;
+    case 14:
+        if ((tbl->attr & (1 << attr) & 0xFFF) && !(tbl->flg & 0x200000)) {
+            ret = (s32)((percent / 100.0f) * value);
+        }
+        break;
+    case 17:
+        if (tbl->attr & (1 << attr) & 0xFFF) {
+            ret = (s32)((percent / 100.0f) * value);
+        }
+        break;
+    case 15:
+        if ((tbl->flg & 0x10004) == 4 && !(tbl->s_type & 8)) {
+            ret = (s32)((percent / 100.0f) * value);
+        }
+        break;
+    case 3:
+        ret = (s32)((percent / 100.0f) * value);
+        break;
+    case 2:
+    case 4:
+    case 5:
+    case 7:
+    case 10:
+    case 11:
+    case 16:
+        break;
+    }
+    return ret;
+}
+#else
+INCLUDE_ASM(const s32, "sbtl", CalcAutoSkill);
+#endif
 
 s32 sbtlGetDropMoney(sdatUnitWork_t *unit, s32 gold) {
     if ((unit->itemstatus & 0x100) != 0) {

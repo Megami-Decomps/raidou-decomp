@@ -2916,7 +2916,7 @@ vice:
                 bst = sbtlGetBadStatus(&wk->unit);
                 if ((bst == BST_STONE || bst == BST_MOUDOKU || bst == BST_SLEEP || bst == BST_RAND0 || bst == BST_BOYCOTT) &&
                     (s16)GetPercentage() < 80 && sbtlCheckAutoSkill_Action(wk, hwk, attr) && !charmHit) {
-                    counterDamage = sbtlCallBtlGetSkilltbl24(&unit->unit, counter, damage, skillid, wk->unit.autost_cnt, wk->unit.autost_cnt2);
+                    counterDamage = CalcAutoSkill(&unit->unit, counter, damage, skillid, wk->unit.autost_cnt, wk->unit.autost_cnt2);
                     if (counterDamage <= 0) {
                         counterDamage = 1;
                     }

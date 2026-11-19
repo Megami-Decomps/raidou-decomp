@@ -24,5 +24,11 @@ s32 fclSetModelLight(char *pKeyWord, dds3Basic_t *Model);
 s32 fclStartSelMessage(s32 SelMsgNo);
 void fclUpdateMessage(void);
 s8 evtGetCapturedWindowPanelValue(void);
+s8 fclInitMessage(void *pData);
+s32 fclStartMessage(s32 MsgNo);
+s32 fclDestroyMessage(void);
+s32 fclChkMessage(void);
+s32 fclChangeMessageWindowAlpha(s32 pageValue);
+void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 #endif

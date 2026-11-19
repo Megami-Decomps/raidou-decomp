@@ -103,7 +103,12 @@ typedef struct SBTLUNIT_MODEL {
     s16 field140;
     u8 pad142[0x144 - 0x142];
     s32 kaihiID; /* unit the N_Kaihi AI dodges (HD kaihiID) */
-    u8 pad148[0x164 - 0x148];
+    s16 path_mode;
+    u8 pad14A[0x2];
+    s32 path_cnt;
+    s16 path_datap;
+    u8 pad152[0x2];
+    sdfVector4Unaligned_t path_ofspos;
     f32 hitbk_cnt;
     f32 hitbk_cmpcnt;
     f32 hitbk_rate;
@@ -229,7 +234,7 @@ void sbtlCallPreCalcStrWidth(struct SBTLUNIT_WORK *wk);
 void sbtlBtlSetMotionSBtlUnitSub(struct SBTLUNIT_WORK *wk);
 s32 sbtlSetLight_Map(struct SBTLUNIT_WORK *wk, s32 frame, s32 flg);
 void sbtlGetRotate(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos);
-struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index);
+struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index, s32 flg);
 s32 sbtlCallBtlGetSkilltbl10(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckYukaDamageEffect(struct SBTLUNIT_WORK *wk, SKLID skillid, u16 type, s32 a3, s8 a4);
 s32 sbtlCallBtlGetDevilDataSBtlSub4(struct SBTLUNIT_WORK *wk);

@@ -54,6 +54,8 @@ extern MOTIONMOVE_WORK *sbtlmotionmove_tbldata_player;
 
 MOTIONMOVE_WORK *sbtlGetMotionMoveData(MODELTYPE major, s32 minor);
 s32 sbtlGetCylinderData_ID(MODELTYPE major, s32 minor, struct SBTLVISUAL_DATA *);
+s32 sbtlCallBtlCheckDamageTarget8(struct SBTLVISUAL_DATA *data);
+s32 sbtlCalcAnim_DmgNumPos(struct SBTLVISUAL_DATA *data, struct SBTLUNIT_WORK *wk);
 struct V_POSITION_WORK *sbtlGetEffCylinderData(MODELTYPE major, s32 id);
 s32 sbtlGetCylinderData(struct SBTLUNIT_WORK *wk, SBTLVISUAL_DATA *data);
 

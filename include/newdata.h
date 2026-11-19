@@ -209,7 +209,8 @@ typedef struct
     /* 0x48E0 */ u8 nameLength[2];
     /* 0x48E2 */ u8 unk48E2[0xE];
     /* 0x48F0 */ u32 unk48F0;
-    /* 0x48F4 */ u8 unk48F4[0x144C];
+    /* 0x48F4 */ u8 unk48F4[0x140C];
+    /* 0x5D00 */ u32 anlyzBit[16]; /* analysed devils, one bit per devil ID */
     /* 0x5D40 */ dds3NameImage_t nbNameImage[16];
     /* 0x6F40 */ dds3NameChar_t nbNameCode[16];
     /* 0x6F60 */ u8 unk6F60;

@@ -7258,7 +7258,6 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046AAE0	0x004DD898	SetEffectPosFloat	.lit4	0x4	yes	code-ref
 0x0046AAE4	0x004DD8A0	CreateSTPFloat	.lit4	0x4	yes	code-ref
 0x0046AAE8	0x004DD8A4	sbtlCallSetOt2Float	.lit4	0x4	yes	code-ref
-0x0046AAEC	0x004DD8A8	sbtlGetPointDataFloat	.lit4	0x4	yes	code-ref
 0x0046AB38	0x004DDA60	sbtlCallBtlSearchUnitID36Float	.lit4	0x4	yes	code-ref
 0x0046AB3C	0x004DDA64	sbtlCallBtlSearchUnitID36Float2	.lit4	0x4	yes	code-ref
 0x0046AB40	0x004DDA68	sbtlCallBtlSearchUnitID36Float3	.lit4	0x4	yes	code-ref

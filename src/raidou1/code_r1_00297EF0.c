@@ -62,7 +62,7 @@ struct SBTLUNIT_WORK *SetEncountData_Sub_sbtlEncount(s32 devilId, s32 point, s32
     devil = sbtlGetDevilData_sbtlSub(devilId);
     visual = sbtlGetVisualData(2, devil->motionId);
     sub = sbtlGetMotionVisualData(2, devil->motionId, 0);
-    unit = sbtlSetSummon(1, devilId, arg);
+    unit = sbtlSetSummon(1, devilId, arg, 0);
     unit->unit.devilId = devilId;
     unit->unit.level = devil->level;
     unit->unit.raceId = devil->field0E;

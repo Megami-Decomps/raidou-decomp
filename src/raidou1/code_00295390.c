@@ -25,8 +25,69 @@
 #include "fld.h"
 #include "sBtlDvltk.h"
 #include "sBtlAI.h"
+#include "code_002929C8.h"
+#include "code_00195698.h"
+#include "sBtlSM.h"
+#include "sBtlScene.h"
 
+/* NON_MATCHING: 114 of 122 words match.  */
+#ifdef NON_MATCHING
+void sbtlCheckBattleWin(void) {
+    s32 win = 0;
+    struct SBTLUNIT_WORK *wk;
+    s32 i;
+
+    if (sbtlCheckTutorialBattle()) {
+        if (!evtBitCheck(1934)) {
+            if ((evtBitCheck(1933) || evtBitCheck(248)) && wk_sbtl->stockNum > 0) {
+                if (wk_sbtl->field344 > 0) {
+                    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
+                    if (wk == NULL || !CheckLiveTarget(wk)) {
+                        win = 1;
+                    }
+                } else {
+                    win = 1;
+                }
+            }
+            if (!win && !evtBitCheck(1933) && !evtBitCheck(248) && evtBitCheck(1932)) {
+                for (i = 11; i >= 0; i--) {
+                    if (wk_sbtl->huumaDevilID[i] != -1) {
+                        break;
+                    }
+                }
+                if (i < 0) {
+                    win = 2;
+                }
+            }
+        }
+        if (!win) {
+            win = 3;
+        }
+    }
+    switch (win) {
+    case 1:
+        evtBitOff(2096);
+        evtBitOff(2097);
+        evtBitOff(2098);
+        evtBitOn(2099);
+        break;
+    case 2:
+        evtBitOff(2096);
+        evtBitOff(2097);
+        evtBitOn(2098);
+        evtBitOff(2099);
+        break;
+    case 3:
+        evtBitOn(2096);
+        evtBitOff(2097);
+        evtBitOff(2098);
+        evtBitOff(2099);
+        break;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00295390", sbtlCheckBattleWin);
+#endif
 
 void sbtlCheckBattleLose(void) {
     if (sbtlCheckTutorialBattle()) {
@@ -101,9 +162,16 @@ s32 sbtlEvent_DeleteEventScript(void) {
     return ret;
 }
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlEvent_SetCharacterProc);
+s32 sbtlEvent_SetCharacterProc(s32 negoid) {
+    u8 *mes[3] = { sbtlEvent_SetCharacterProcData, sbtlEvent_SetCharacterProcData2, sbtlEvent_SetCharacterProcData3 };
+    s32 mesno0[20] = { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 4, 0, 0, 5, 0 };
+    s32 mesno1[20] = { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 4, 0, 0, 5, 0 };
+    s32 mesno2[20] = { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 4, 0, 0, 5, 0 };
+    s32 *mesno[3] = { mesno0, mesno1, mesno2 };
 
-INCLUDE_RODATA(const s32, "code_00295390", sbtlCallMemset20Table);
+    wk_sbtl->nego_chrid = negoid;
+    return sbtlEvent_NegoProc(mes[wk_sbtl->field2D8], mesno[wk_sbtl->field2D8][wk_sbtl->stockDevilSkill[wk_sbtl->summonIndex[0]]]) != 0;
+}
 
 u8 *sbtlGetEventMes(s16 eventno) {
     u8 *mes[8] = {
@@ -114,9 +182,95 @@ u8 *sbtlGetEventMes(s16 eventno) {
     return mes[eventno];
 }
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlEvent_NegoProc);
+s32 sbtlEvent_NegoProc(u8 *adr, s32 no) {
+    switch (wk_sbtl->nego_gstat) {
+    case 0:
+        fclInitMessage(adr);
+        wk_sbtl->flg |= 0x80;
+        wk_sbtl->nego_gstat++;
+        mphStartLoadID(wk_sbtl->nego_chrid);
+        return 0;
+    case 1:
+        if (!sbtlRefSbtl28()) {
+            return 0;
+        }
+        if (wk_sbtl->nego_chrid >= 4) {
+            mphStartDrawBtlLeft();
+        } else {
+            mphStartDrawBtlRight();
+        }
+        wk_sbtl->nego_gstat++;
+        return 0;
+    case 2:
+        wk_sbtl->nego_alpha += 16;
+        wk_sbtl->nego_alpha = (wk_sbtl->nego_alpha <= 0) ? 0 : (wk_sbtl->nego_alpha < 129) ? wk_sbtl->nego_alpha : 128;
+        if (wk_sbtl->nego_alpha >= 128) {
+            fclStartMessage(no);
+            fclChangeMessageWindowAlpha(1);
+            wk_sbtl->nego_gstat++;
+        }
+        return 0;
+    case 3:
+        if (fclChkMessage() == 1) {
+            fclUpdateMessage();
+        } else {
+            wk_sbtl->nego_gstat++;
+        }
+        return 0;
+    case 4:
+        wk_sbtl->nego_alpha -= 16;
+        wk_sbtl->nego_alpha = (wk_sbtl->nego_alpha <= 0) ? 0 : (wk_sbtl->nego_alpha < 129) ? wk_sbtl->nego_alpha : 128;
+        if (wk_sbtl->nego_alpha <= 0) {
+            wk_sbtl->nego_gstat++;
+        }
+        return 0;
+    case 5:
+        fclDestroyMessage();
+        fldConsumeSceneInputFlags();
+        wk_sbtl->nego_gstat = 0;
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlMessageProc);
+s32 sbtlMessageProc(u8 *adr, s32 no, struct SBTLUNIT_WORK *wk, s32 flg) {
+    switch (wk_sbtl->nego_gstat) {
+    case 0:
+        fclInitMessage(adr);
+        wk_sbtl->nego_gstat++;
+        return 0;
+    case 1:
+        if (!flg) {
+            fclSetMessageVar(0, sbtlData94[wk->unit.raceId]);
+            fclSetMessageVar(1, g_itemNo[wk->unit.devilId]);
+        } else {
+            fclSetMessageVar(0, g_itemNo[sbtlGetDevilData_sbtlSub(wk->unit.devilId)->huumaMesNo]);
+        }
+        wk_sbtl->nego_gstat++;
+        return 0;
+    case 2:
+        fclStartMessage(no);
+        fclChangeMessageWindowAlpha(1);
+        wk_sbtl->nego_gstat++;
+        return 0;
+    case 3:
+        if (fclChkMessage() == 1) {
+            fclUpdateMessage();
+        } else {
+            wk_sbtl->nego_gstat++;
+        }
+        return 0;
+    case 4:
+        wk_sbtl->nego_gstat++;
+        return 0;
+    case 5:
+        fclDestroyMessage();
+        wk_sbtl->nego_gstat = 0;
+        return 1;
+    default:
+        return 1;
+    }
+}
 
 s32 sbtlRefSbtl29(void) {
     if (wk_sbtl->flg & 0x400) {
@@ -137,9 +291,75 @@ s32 EventProcTbl_00(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_01);
+s32 EventProcTbl_01(void) {
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_02);
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        if (sbtlEvent_NegoProc(sbtlGetEventMes(wk_sbtl->eventno), 10)) {
+            fclEndMessage();
+            wk_sbtl->eventgstat++;
+        }
+        return 0;
+    case 1:
+        if (sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID) != NULL) {
+            for (i = 0; i < 12; i++) {
+                if (sbtlCheckBit(&wk_sbtl->summonBit, i) && wk_sbtl->stockUnitID[i] == wk_sbtl->eventListID) {
+                    break;
+                }
+            }
+            if (i >= 12) {
+                wk_sbtl->flg &= ~0x4C0;
+            } else {
+                if (wk_sbtl->field358[i] != 2) {
+                    return 0;
+                }
+                sbtlCallBtlSearchUnitID4(i, 0);
+                sbtlResetBit(&wk_sbtl->summonBit, i);
+                wk_sbtl->flg &= ~0x4C0;
+                sbtlActiveAction();
+                wk_sbtl->eventgstat = 0;
+                break;
+            }
+        } else {
+            wk_sbtl->flg &= ~0x4C0;
+        }
+        sbtlActiveAction();
+        wk_sbtl->eventgstat = 0;
+        return 1;
+    case 2:
+        break;
+    }
+    return 0;
+}
+
+s32 EventProcTbl_02(void) {
+    s32 ret = 0;
+
+    wk_sbtl->flg2 |= 0x80;
+    sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID);
+    wk_sbtl->eventcounter++;
+    wk_sbtl->eventcounter = (wk_sbtl->eventcounter <= 0) ? 0 : (wk_sbtl->eventcounter < 10001) ? wk_sbtl->eventcounter : 10000;
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        sbtlDefaultZoom2(15);
+        wk_sbtl->eventcounter = 0;
+        wk_sbtl->eventgstat++;
+        break;
+    case 1:
+        if (wk_sbtl->eventcounter < 15) {
+            break;
+        }
+        wk_sbtl->eventgstat = 0;
+        ret = 1;
+        RestartBattle();
+        wk_sbtl->flg &= ~0x400;
+        wk_sbtl->flg2 &= ~0x80;
+        sbtlResetNSTOP();
+        break;
+    }
+    return ret;
+}
 
 /* NON_MATCHING: 90 of 91 words match.  */
 #ifdef NON_MATCHING
@@ -211,7 +431,33 @@ s32 EventProcTbl_04(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_05);
+s32 EventProcTbl_05(void) {
+    s32 no[2] = { 0, 0 };
+    struct SBTLUNIT_WORK *wk;
+    s32 mesno;
+
+    wk_sbtl->flg2 |= 0x80;
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID);
+    mesno = (wk != NULL) ? no[0] : no[1];
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        if (sbtlMessageProc(sbtlGetEventMes(wk_sbtl->eventno), mesno, wk, 0)) {
+            fclEndMessage();
+            wk_sbtl->eventgstat++;
+        }
+        return 0;
+    case 1:
+        wk_sbtl->eventgstat = 0;
+        RestartBattle();
+        wk_sbtl->flg &= ~0x400;
+        wk_sbtl->flg2 &= ~0x80;
+        sbtlResetNSTOP();
+        return 1;
+    case 2:
+        break;
+    }
+    return 0;
+}
 
 s32 sbtlLoadHuuma_MesData(void) {
     struct SBTLUNIT_WORK *wk;
@@ -299,9 +545,82 @@ s32 EventProcTbl_06(void) {
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_06);
 #endif
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_08);
+s32 EventProcTbl_08(void) {
+    struct SBTLUNIT_WORK *wk;
 
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID);
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 1:
+        sbtlCallBtlGetMotionVisualData4(wk, 1);
+        if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 1)) {
+            wk->m_rate = 0.0f;
+            wk->action_flg = 1;
+            wk_sbtl->eventgstat++;
+            sbtlCheckEffectData(wk, SKLID_E_DEADIM, 1, 0, wk->field414, -1, 0);
+            wk->framecnt = 0;
+        }
+        return 0;
+    case 2:
+        wk->m_rate = 0.0f;
+        if (wk->framecnt >= 186) {
+            wk_sbtl->eventgstat++;
+        }
+        return 0;
+    case 3:
+        wk->m_rate = 0.0f;
+        sbtlSetFade(wk, SBTLUNIT_VST_FADEOUT, 0, 0, 3);
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 4:
+        wk->m_rate = 0.0f;
+        if (!(wk->vstatus & 2)) {
+            wk_sbtl->eventgstat++;
+        }
+        return 0;
+    case 5:
+        wk->m_rate = 0.5f;
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 6:
+        wk_sbtl->eventgstat = 0;
+        wk_sbtl->flg &= ~0x400;
+        return 1;
+    }
+    return 0;
+}
+
+/* NON_MATCHING: 27 of 52 words match.  */
+#ifdef NON_MATCHING
+s32 EventProcTbl_09(void) {
+    struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID);
+
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        if (!(wk_sbtl->flg & 0x10000000)) {
+            return 1;
+        }
+        wk_sbtl->eventprocID = scrStartScript2(1014, wk_sbtl->evtloadpData, wk_sbtl->evtload_evtno);
+        wk_sbtl->eventgstat++;
+        sbtlSbattle3();
+        return 0;
+    case 1:
+        if (dds3SearchProcessPriority(1014)) {
+            return 0;
+        }
+        wk_sbtl->eventgstat = 0;
+        wk_sbtl->flg &= ~0x400;
+        RestartBattle();
+        sbtlResetAAI(wk);
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_09);
+#endif
 
 s32 EventProcTbl_0A(void) {
     sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID);
@@ -473,7 +792,37 @@ f32 sbtlGetSETime(struct SBTLUNIT_WORK *wk, s32 motionID) {
     return frame / speed;
 }
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlGetCylinderData_ID);
+s32 sbtlGetCylinderData_ID(MODELTYPE major, s32 minor, struct SBTLVISUAL_DATA *data) {
+    sdfVector4_t ofs;
+    sdfVector4_t rot;
+    SBTL_MOTION_VISUAL *visual;
+    V_POSITION_WORK *eff;
+
+    memset(&ofs, 0, sizeof(ofs));
+    ofs.w = 1.0f;
+    memset(&rot, 0, sizeof(rot));
+    rot.w = 1.0f;
+    visual = sbtlGetVisualData(major, minor);
+    eff = sbtlGetEffCylinderData(major, minor);
+    ofs.x = visual->field18;
+    ofs.y = visual->field1C;
+    ofs.z = visual->field20;
+    sbtlGetRotateDeg(&rot, 180.0f);
+    ToMatrix();
+    SDF_VU0_LOADVECTOR(&ofs);
+    SDF_VU0_APPLYMATRIX();
+    SDF_VU0_STOREVECTOR(&ofs);
+    data->center.x = ofs.x;
+    data->center.y = ofs.y;
+    data->center.z = ofs.z;
+    data->center.w = ofs.w;
+    data->hit_area_r = visual->field10;
+    data->width = visual->field24;
+    data->height = visual->field28;
+    data->e_width = eff->cylinder;
+    data->e_height = eff->height;
+    return 1;
+}
 
 s32 sbtlGetCylinderData(struct SBTLUNIT_WORK *wk, SBTLVISUAL_DATA *data) {
     sdfVector4_t ofs;
@@ -504,11 +853,174 @@ s32 sbtlGetCylinderData(struct SBTLUNIT_WORK *wk, SBTLVISUAL_DATA *data) {
     return 1;
 }
 
+/* NON_MATCHING: 153 of 161 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCalcAnim_DmgNumPos(SBTLVISUAL_DATA *data, struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t rot;
+    SBTLVISUAL_DATA vis;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+    s32 found;
+    f32 minx, maxx, miny, maxy, minz, maxz;
+    f32 y;
+    f32 sx, sy, sz;
+
+    memset(&rot, 0, sizeof(rot));
+    rot.w = 1.0f;
+    found = 0;
+    maxz = miny = maxx = minz = minx = maxy = 0.0f;
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit == NULL || !sbtlCheckDamageTarget(unit)) {
+            continue;
+        }
+        if (unit->field1A0 != wk->field1A0 && unit->field1A0 != wk->model->field104) {
+            continue;
+        }
+        sbtlGetCylinderData(unit, &vis);
+        if (!found) {
+            found = 1;
+            minx = unit->pos.x;
+            minz = unit->pos.z;
+            maxz = minz;
+            maxx = minx;
+            maxy = vis.center.y + vis.height * 0.5f;
+            miny = maxy;
+            continue;
+        }
+        if (unit->pos.x < minx) {
+            minx = unit->pos.x;
+        }
+        if (maxx < unit->pos.x) {
+            maxx = unit->pos.x;
+        }
+        y = vis.center.y + vis.height * 0.5f;
+        if (maxy < y) {
+            maxy = y;
+        }
+        if (y < miny) {
+            miny = y;
+        }
+        if (unit->pos.z < minz) {
+            minz = unit->pos.z;
+        }
+        if (maxz < unit->pos.z) {
+            maxz = unit->pos.z;
+        }
+    }
+    sx = minx + maxx;
+    sy = maxy + miny;
+    sz = minz + maxz;
+    data->center.w = 1.0f;
+    data->height = sy;
+    data->center.x = sx * 0.5f;
+    data->center.y = sy * 0.5f;
+    data->center.z = sz * 0.5f;
+    if (sz < sx) {
+        data->width = sx;
+    } else {
+        data->width = sz;
+    }
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+    if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+        sbtlGetQuat(&wk->pos, &unit->pos);
+        SDF_VU0_STOREVECTOR(&rot);
+    }
+    SDF_VU0_LOADVECTOR(&rot);
+    SDF_VU0_STOREVECTOR(&data->rot);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00295390", sbtlCalcAnim_DmgNumPos);
+#endif
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlCallBtlCheckDamageTarget8);
+s32 sbtlCallBtlCheckDamageTarget8(SBTLVISUAL_DATA *data) {
+    SBTLVISUAL_DATA vis;
+    struct SBTLUNIT_WORK *wk;
+    s32 i;
+    s32 found;
+    f32 minx, maxx, miny, maxy, minz, maxz;
+    f32 y;
+    f32 sx, sy, sz;
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlGetPointData);
+    found = 0;
+    maxz = miny = maxx = minz = minx = maxy = 0.0f;
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk == NULL || !sbtlCheckDamageTarget(wk)) {
+            continue;
+        }
+        sbtlGetCylinderData(wk, &vis);
+        if (!found) {
+            found = 1;
+            minx = wk->pos.x;
+            minz = wk->pos.z;
+            maxz = minz;
+            maxx = minx;
+            maxy = vis.center.y + vis.height * 0.5f;
+            miny = maxy;
+            continue;
+        }
+        if (wk->pos.x < minx) {
+            minx = wk->pos.x;
+        }
+        if (maxx < wk->pos.x) {
+            maxx = wk->pos.x;
+        }
+        y = vis.center.y + vis.height * 0.5f;
+        if (maxy < y) {
+            maxy = y;
+        }
+        if (y < miny) {
+            miny = y;
+        }
+        if (wk->pos.z < minz) {
+            minz = wk->pos.z;
+        }
+        if (maxz < wk->pos.z) {
+            maxz = wk->pos.z;
+        }
+    }
+    sx = minx + maxx;
+    sy = maxy + miny;
+    sz = minz + maxz;
+    data->center.w = 1.0f;
+    data->height = sy;
+    data->center.x = sx * 0.5f;
+    data->center.y = sy * 0.5f;
+    data->center.z = sz * 0.5f;
+    if (sz < sx) {
+        data->width = sx;
+    } else {
+        data->width = sz;
+    }
+    return 1;
+}
+
+s32 sbtlGetPointData(s32 pointID, sdfVector4_t *pos, sdfVector4_t *rot) {
+    f32 x, y, z, r;
+
+    if (pointID == 100) {
+        pos->x = sb_enc_ex_pos.x;
+        pos->y = sb_enc_ex_pos.y;
+        pos->z = sb_enc_ex_pos.z;
+        pos->w = sb_enc_ex_pos.w;
+        rot->x = sb_enc_ex_rot.x;
+        rot->y = sb_enc_ex_rot.y;
+        rot->z = sb_enc_ex_rot.z;
+        rot->w = sb_enc_ex_rot.w;
+        return 1;
+    } else {
+        mapEncPointGet(pointID, &x, &y, &z, &r);
+        pos->x = x;
+        pos->y = y;
+        pos->z = z;
+        pos->w = 1.0f;
+        FromEuler(0.0f, r * 0.017453293f, 0.0f);
+        SDF_VU0_STOREVECTOR(rot);
+    }
+    return 1;
+}
 
 void sbtlSetExPos(sdfVector4_t *pos, sdfVector4_t *rot) {
     sb_enc_ex_pos.x = pos->x;

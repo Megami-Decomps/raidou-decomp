@@ -59,7 +59,7 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlCallBitOn);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlHuumaParamUp);
 
-struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index)
+struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index, s32 flg)
 {
     struct SBTLUNIT_WORK *wk;
     s32 id;

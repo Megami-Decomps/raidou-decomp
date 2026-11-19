@@ -2241,7 +2241,7 @@ void sbtlSetNoMP_sbtlActAI(struct SBTLUNIT_WORK *wk) {
 
 /* NON_MATCHING: 209 of 213 words match.  */
 #ifdef NON_MATCHING
-s32 sbtlSetNormalAction(struct SBTLUNIT_WORK *wk, u16 type, s8 flg, s32 time, s32 arg4) {
+s32 sbtlSetNormalAction(struct SBTLUNIT_WORK *wk, u16 type, s8 flg, s32 time, sdfVector4_t *pos) {
     sdfVector4_t zero;
     SBTLUNIT_MODEL *model;
 

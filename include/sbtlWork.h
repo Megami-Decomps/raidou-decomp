@@ -449,7 +449,8 @@ typedef struct SBTL_WORK {
     struct SBTLUNIT_LISTWORK *list2CC;
     s32 field2D0; /* list2D4 index found by sbtlCallBtlCheckDamageTarget2, -1 for none */
     struct SBTLUNIT_LISTWORK *list2D4;
-    u8 pad2D8[4];
+    s16 field2D8; /* negotiation character set: indexes sbtlEvent_SetCharacterProc's tables */
+    u8 pad2DA[2];
     s32 stockMinor[SDAT_STOCK_NUM];
     s32 stockDevilSkill[SDAT_STOCK_NUM];
     u32 summonBit;
@@ -660,7 +661,7 @@ typedef struct SBTL_DEVIL_DATA {
     u32 flag;
     u16 level;
     s16 motionId;
-    u8 pad08[2];
+    s16 minorno_d; /* copied to SBTLUNIT_WORK.minor_d, the model id mdlPrepare loads */
     s16 field0A;
     s16 aisyoId;
     s8 field0E; /* race, copied to sdatUnitWork_t.raceId */
@@ -1055,8 +1056,8 @@ void sbtlCallEffectShutdown3(s32 mode);
 sdatUnitWork_t *sbtlGetStockUnitData(s32 id);
 s32 sbtlLeaf53(sdatUnitWork_t *unit);
 s32 sbtlGetDamage_GB(sdatUnitWork_t *acter, sdatUnitWork_t *unit, SKLID sklid);
-s32 sbtlCallBtlGetItemtbl3(sdatUnitWork_t *unit, s32 itemID);
-s32 sbtlCallBtlSearchUnitID35(s32 stockID);
+s32 CalcItem(sdatUnitWork_t *unit, s32 itemID);
+s32 sbtlCheckItemMember(s32 stockID);
 s32 sbtlCheckItemMember_Dead(s32 stockID);
 void sbtlSetWeakBit(s32 devilId);
 s32 sbtlSbattle5(dds3ProcessID_t *id);
@@ -1065,7 +1066,7 @@ void sbtlSbtlCameraproc(void);
 s32 sbtlLeaf103(dds3ProcessID_t *id);
 s32 sbtlLeaf87(dds3ProcessID_t *id);
 s32 sbtlSetScrollID(s32 id);
-struct SBTLUNIT_WORK *sbtlSetSummon(s32 side, s32 devilId, s32 arg);
+struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index, s32 flg);
 #ifdef VERSION_RAIDOU2
 /* The raidou2 symbol of this name takes sbtlGetVisualData's arguments. */
 SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id);

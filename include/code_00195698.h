@@ -35,5 +35,7 @@ s32 saveCallMenuProcessCheck2(struct tagMAP_MENU_WORK *wk);
 void mphStartLoad(const char *filename);
 void mphStart_itf(void);
 void mphDestroy(void);
+void mphStartDrawBtlRight(void);
+void mphStartDrawBtlLeft(void);
 
 #endif

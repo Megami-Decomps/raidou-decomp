@@ -22,5 +22,11 @@ s32 sbtlLeaf77(struct SBTL_PANEL *panel);
 s32 sbtlLeaf78(void);
 void sbtlSummonMenuProc(struct SBTLUNIT_WORK *wk);
 u32 sbtlCallRefSbtl51(void);
+void mphStartLoadID(s32 id);
+#ifdef VERSION_RAIDOU1
+/* 1 once the bust-up picture has loaded (or none was loading). */
+s32 sbtlRefSbtl28(void);
+#endif
+void fldConsumeSceneInputFlags(void);
 
 #endif

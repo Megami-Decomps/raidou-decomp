@@ -8,7 +8,6 @@
 #include "sdfChip.h"
 #include "sdatUnit.h"
 #include "sBtlEncount.h"
-#include "sBtlWeapon.h"
 #include "sBtlCalc.h"
 #include "sBtlUnit.h"
 #include "sdk_libc.h"
@@ -482,7 +481,7 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlResetBadStatus_GB);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlResetBadStatus);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlBtlCheckBadStatusWeakNumberSub);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetBadStatus_Attr);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCheckBadStatus);
 
@@ -490,7 +489,7 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallCheckBadStatus);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlResetUnit);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlLeaf107);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCheckBadStatus_Number);
 
 INCLUDE_RODATA(const s32, "sbtl_0029BFB8", CalcBadStatusTable);
 
@@ -529,7 +528,7 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCheckBadStatus_WeakNumber);
 /* Whether the status bst from skill lands on a unit with resistance table
  * resist: the skill's percentage, by the luck ratio and the resistance, against
  * a roll. luck is the attacker's, tgtLuck the target's. */
-s32 sbtlCallBtlGetSkilltbl17(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx) {
+s32 sbtlCheckBadStatus_Hit(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx, u8 side) {
     struct SBTLSKILLP_TBL *tbl;
     f32 chance;
     f32 hundred;
@@ -563,7 +562,7 @@ s32 sbtlCallBtlGetSkilltbl17(s32 *resist, s32 luck, struct sdatUnitWork_t *unit,
     return (s16)GetPercentage() < (s16)chance;
 }
 #else
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlGetSkilltbl17);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCheckBadStatus_Hit);
 #endif
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_GB);
@@ -662,7 +661,7 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_I_REC_K);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_I_REC_P);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlplayertblPlayerSkill_GetMag3);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_I_REC_PARA);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlBtlCheckItemCountSub);
 
@@ -679,8 +678,8 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_CHUUSEI);
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_ITEMFLG);
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00), proto differs */
-struct SBTLWEAPON_TBL *sbtlLeaf97(void) {
-    return NULL;
+s32 sbtlLeaf97(struct sdatUnitWork_t *unit) {
+    return 0;
 }
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetViceLevel);

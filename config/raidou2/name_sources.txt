@@ -6764,7 +6764,7 @@
 0x0026C548	sbtlSetCutScroll	hd-inferred	hd: Raidou HD sBtlScene.sBtlSetCutScroll, score 13.8 band A
 0x0026C5A8	sbtlDefaultCutScroll	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlScene.sBtlDefaultCutScroll score 3.5 flag I: calls1 prev edge st2:edge r2-only
 0x0026C5F0	sbtlLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlDefaultCutScroll; no named callee, caller or string
-0x0026C618	sbtlCallBtlSearchUnitID3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlDefaultCutScroll; calls sbtlSearchUnit_ID
+0x0026C618	sbtlDefaultZoom2	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlScene.sBtlDefaultZoom2 (neighbour sbtlDefaultCutScroll); R2 EventProcTbl_02 calls it where R1 calls sbtlDefaultZoom2; replaces sbtlCallBtlSearchUnitID3
 0x0026C650	sbtlLeaf55	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetZoom2; no named callee, caller or string
 0x0026C678	sbtlCallBtlSearchUnitID19	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetZoom2; calls sbtlSearchUnit_ID
 0x0026C6C0	sbtlLeaf56	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetZoom2; no named callee, caller or string
@@ -7920,7 +7920,7 @@
 0x002CA600	sbtlGetActionTime	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlVisual.sBtlGetActionTime score 6.3 flag I: calls3 calls-of-match votes2 st2:call r1-disagree:0x297258
 0x002CA708	sbtlGetSETime	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlVisual.sBtlGetSETime (f32 from wk and motionID); HD sBtlGetRotate_Jump takes a vector; same callee as R1 sbtlPlayMotionSENowSub; replaces sbtlGetRotate_Jump
 0x002CA7C8	sbtlGetCylinderData_ID	hd-inferred	hd: Raidou HD sBtlVisual.sBtlGetCylinderData_ID, score 10.0 band A
-0x002CA900	sbtlCallMemset11	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls memset
+0x002CA900	sbtlGetCylinderData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R1 sbtlGetCylinderData counterpart: sbtlCallBtlCheckDamageTarget8 calls it at the same site; replaces sbtlCallMemset11
 0x002CAA88	sbtlCalcAnim_DmgNumPos	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDMG.sBtlCalcAnim_DmgNumPos score 7.1 flag I: calls2 callers-of-match votes2 st1:call r1+r2
 0x002CAD10	sbtlCallBtlCheckDamageTarget8	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlCheckDamageTarget
 0x002CAEF8	sbtlGetPointData	hd-inferred	hd: Raidou HD sBtlEncount.sBtlGetPointData, score 11.8 band A
@@ -8092,11 +8092,11 @@
 0x002D7470	CalcBadStatus	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.CalcBadStatus score 11.0 flag -: calls6 callers-of-match votes6 st1:call r1+r2
 0x002D7890	sbtlResetBadStatus_GB	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlResetBadStatus_GB score 8.5 flag I: calls2 calls-of-match votes2 st1:call r1+r2
 0x002D78B0	sbtlResetBadStatus	hd-inferred	hd: Raidou HD sBtlCalc.sBtlResetBadStatus, score 9.8 band B, hd-ab: calls3 callers-of-match votes2 st1:call r1+r2
-0x002D7980	sbtlBtlCheckBadStatusWeakNumberSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlCheckBadStatus_WeakNumber
+0x002D7980	sbtlGetBadStatus_Attr	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R1 sbtlGetBadStatus_Attr counterpart (r1_r2_pairs); replaces sbtlBtlCheckBadStatusWeakNumberSub
 0x002D7A70	sbtlCheckBadStatus	hd-inferred	hd: Raidou HD sBtlCalc.sBtlCheckBadStatus, score 7.15 band B
 0x002D7AC0	sbtlCallCheckBadStatus	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=same body as R1 sbtlCallCheckBadStatus; sbtlCheckBadStatus is taken in both games; replaces sbtlCheckBadStatus_sbtlCalc
 0x002D81E8	sbtlResetUnit	hd-inferred	hd: Raidou HD sBtlCalc.sBtlResetUnit, score 7.45 band B
-0x002D82B0	sbtlLeaf107	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002D82B0	sbtlCheckBadStatus_Number	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R1 sbtlCheckBadStatus_Number counterpart (r1_r2_pairs); replaces sbtlLeaf107
 0x002D8420	sbtlCallSetClutColor	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls mdlSetClutColor
 0x002D8590	sbtlCheckBadStatus_Weak	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckBadStatus_Weak score 9.8 flag I: calls3 calls-of-match votes3 st1:call r1+r2
 0x002D86D8	sbtlBtlSetBadStatusNoSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlSetBadStatus_No
@@ -8137,7 +8137,7 @@
 0x002DC670	sbtlLeaf115	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002DC6F0	sbtlITEMRECUP	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtl; string 'ITEMRECUP %d * [H]%d/100 -> %d\n'
 0x002DC9A0	sbtlITEMRECUP2	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtl; string 'ITEMRECUP %f * [H]%d/100 -> %f\n'
-0x002DCE50	sbtlplayertblPlayerSkill_GetMag3	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sbtlplayertbl.sbtlplayertblPlayerSkill_GetMag3 score 2.3 flag I: calls1 calls-of-match st1:call r1-only
+0x002DCE50	sbtlGetDamage_I_REC_PARA	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R1 sbtlGetDamage_I_REC_PARA counterpart (r1_r2_pairs); replaces sbtlplayertblPlayerSkill_GetMag3
 0x002DCE80	sbtlBtlCheckItemCountSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlCheckItemCount
 0x002DCED0	sbtlGetDamage_P_STR	hd-inferred	hd: Raidou HD sBtlCalc.sBtlGetDamage_P_STR, score 5.3 band C, hd-consensus: calls1 next gap2/14 votes2 st2:gap r2-only; 10/10 fold runs agree, fold scores 7.3,7.8,7.3,7.3,7.3,7.3,7.3,7.3,5.3,7.3
 0x002DCFD8	sbtlGetDamage_P_VIT	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetDamage_P_VIT score 7.8 flag I: calls2 next gap3/24 st1:gap r1+r2

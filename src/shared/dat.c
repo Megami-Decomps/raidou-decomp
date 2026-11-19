@@ -636,7 +636,7 @@ INCLUDE_ASM(const s32, "dat", datLeaf45);
 
 #ifdef VERSION_RAIDOU1
 s32 datTakumiKoukaDSub(sdatUnitWork_t *unit, s32 itemID) {
-    return sbtlCallBtlGetItemtbl3(unit, itemID);
+    return CalcItem(unit, itemID);
 }
 #else
 INCLUDE_ASM(const s32, "dat", datTakumiKoukaDSub);

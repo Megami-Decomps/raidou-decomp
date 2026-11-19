@@ -23,6 +23,14 @@ typedef struct datRndEncTbl_t {
     datRndEncRitu_t ritu[8];
 } datRndEncTbl_t;
 
+/* Up to three devils a random encounter table can field, picked by sbtlGetDevilInfo. */
+typedef struct SB_RNDENC_DEVILINFO {
+    s32 devil_id[3];
+    s32 num;
+} SB_RNDENC_DEVILINFO;
+
+void sbtlGetDevilInfo(s32 id, SB_RNDENC_DEVILINFO *pDevilInfo);
+
 /* One encounter generator; HD packs zan_cnt with type_d_sommon_flg, as raidou2 does; raidou1 reads it as a word. */
 typedef struct SB_GENERATOR_WORK {
     s32 use;

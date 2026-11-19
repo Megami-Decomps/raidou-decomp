@@ -49,7 +49,7 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDefaultCutScroll);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallBtlSearchUnitID3);
+INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDefaultZoom2);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf55);
 

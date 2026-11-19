@@ -590,8 +590,8 @@ s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s
                 for (i = 0; i < wk_sbtl->stockNum; i++) {
                     stock = sbtlGetStockUnitData(i);
                     if (sbtlLeaf53(stock)) {
-                        sbtlCallBtlGetItemtbl3(stock, wk_sbtl->useitemID);
-                        sbtlCallBtlSearchUnitID35(i);
+                        CalcItem(stock, wk_sbtl->useitemID);
+                        sbtlCheckItemMember(i);
                     }
                 }
                 goto end;
@@ -601,12 +601,12 @@ s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s
             }
             stock = sbtlGetStockUnitData(wk_sbtl->useitem_stock);
             if (tbl->area & 0x100) {
-                sbtlCallBtlSearchUnitID35(wk_sbtl->useitem_stock);
-                sbtlCallBtlGetItemtbl3(stock, wk_sbtl->useitemID);
+                sbtlCheckItemMember(wk_sbtl->useitem_stock);
+                CalcItem(stock, wk_sbtl->useitemID);
                 sbtlCheckItemMember_Dead(wk_sbtl->useitem_stock);
             } else if (sbtlLeaf53(stock)) {
-                sbtlCallBtlGetItemtbl3(stock, wk_sbtl->useitemID);
-                sbtlCallBtlSearchUnitID35(wk_sbtl->useitem_stock);
+                CalcItem(stock, wk_sbtl->useitemID);
+                sbtlCheckItemMember(wk_sbtl->useitem_stock);
             }
             wk_sbtl->useitem_stock = -1;
         } else if ((tbl->area & 6) && (wk->field414 & 1) && wk_sbtl->battleMode != 3) {

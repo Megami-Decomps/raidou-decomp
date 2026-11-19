@@ -121,8 +121,15 @@ sbtlCallBitCheck	code_00295390	raidou1 0x2BC	69 of 175 words differ	docs/matchin
 EventProcTbl_06	code_00295390	raidou1 0x88	17 of 34 words differ	docs/matching/code_00295390.md	11		
 sbtlCheckMotionTiming	code_00295390	raidou1 0x8C	5 of 35 words differ	docs/matching/code_00295390.md	19		
 EventProcTbl_03	code_00295390	raidou1 0x16C	1 of 91 words differ	docs/matching/code_00295390.md	25		
+EventProcTbl_09	code_00295390	raidou1 0xD0	25 of 52 words differ	docs/matching/code_00295390.md	33		
+sbtlCheckBattleWin	code_00295390	raidou1 0x1E8	8 of 122 words differ	docs/matching/code_00295390.md	41		
+sbtlCalcAnim_DmgNumPos	code_00295390	raidou1 0x284	8 of 161 words differ	docs/matching/code_00295390.md	49		
 sbtlRndEncCalc	code_00298540	raidou1 0x204	78 of 130 words differ	docs/matching/code_00298540.md	3		
 sbtlGetLevelAverage	code_00298540	raidou1 0xF4	1 of 61 words differ	docs/matching/code_00298540.md	11		
+sbtlGetRndEncJoken	code_00298540	raidou1 0xE0	10 of 56 words differ	docs/matching/code_00298540.md	19		
+sbtlSetNextPathData	code_00298540	raidou1 0x1AC	35 of 107 words differ	docs/matching/code_00298540.md	27		
+sbtlGetDevilInfo	code_00298540	raidou1 0x2AC	107 of 171 words differ	docs/matching/code_00298540.md	35		
+sbtlSetEncountData_Unit	code_00298540	raidou1 0x41C	38 of 263 words differ	docs/matching/code_00298540.md	43		
 sbtlEntryItemList	code_002999C0	raidou1 0x128	59 of 71 words differ	docs/matching/code_002999C0.md	3		
 sbtlEntryItemList_Type	code_002999C0	raidou1 0x11C	54 of 68 words differ	docs/matching/code_002999C0.md	11		
 sbtlCallSetVarSBtlSM	code_002A38D8	raidou1 0xF4	4 of 61 words differ	docs/matching/code_002A38D8.md	3		
@@ -428,6 +435,8 @@ slLoadProc_openFile	mc/slMain	raidou1 0xA4, raidou2 0xA4	1 of 41 words differ	do
 mnuUpdateMovieDrawShutdownCountdown	movie/mviManager	raidou1 0xA8, raidou2 0xA8	1 of 42 words differ	docs/matching/movie/mviManager.md	3		
 sbtlSetAutoSkill_GBID	sbtl	raidou1 0xC0	16 of 48 words differ	docs/matching/sbtl.md	3		
 sbtlCheckHaveskill_Atk	sbtl	raidou1 0xA8	7 of 42 words differ	docs/matching/sbtl.md	9		
+sbtlSetWeakBit	sbtl	raidou1 0x120	4 of 72 words differ	docs/matching/sbtl.md	17		
+CalcAutoSkill	sbtl	raidou1 0x310	40 of 196 words differ	docs/matching/sbtl.md	25		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		
@@ -528,7 +537,7 @@ sbtlGetSkillMenu	sbtlSub_0027ED08	raidou1 0x11C, raidou2 0x11C	16 of 71 words di
 CalcBadStatus	sbtl_0029BFB8	raidou1 0x3B0	204 of 218 words differ	docs/matching/sbtl_0029BFB8.md	3		
 sbtlRefSbtl62	sbtl_0029BFB8	raidou1 0xF8	20 of 61 words differ	docs/matching/sbtl_0029BFB8.md	11		
 CalcBtlMagicStatus	sbtl_0029BFB8	raidou1 0x6E4	5 of 441 words differ	docs/matching/sbtl_0029BFB8.md	19		
-sbtlCallBtlGetSkilltbl17	sbtl_0029BFB8	raidou1 0x1EC	89 of 119 words differ	docs/matching/sbtl_0029BFB8.md	27		
+sbtlCheckBadStatus_Hit	sbtl_0029BFB8	raidou1 0x1EC	89 of 119 words differ	docs/matching/sbtl_0029BFB8.md	27		
 sdfCorePacketGen	sdf/sdfCoreDraw	raidou1 0x914, raidou2 0x914	527 of 581 words differ	docs/matching/sdf/sdfCoreDraw.md	3		
 sdfDefaultMain	sdf/sdfDefaultMain	raidou1 0x188, raidou2 0x188		docs/matching/sdf/sdfDefaultMain.md	3		inherited, alternatives not recorded.
 sdfGrStdDrawEnvPredraw	sdf/sdfDraw	raidou1 0x1B8, raidou2 0x1B8	25 of 110 words differ	docs/matching/sdf/sdfDraw.md	3		

@@ -23,6 +23,12 @@
 #include "dds3KernelCore.h"
 #include "sbtlActAI.h"
 #include "sBtlDvltk.h"
+#include "AW_XAtkPad.h"
+#include "code_r1_0027CBE8.h"
+#include "sBtlScene.h"
+#include "sdfQuat.h"
+#include "sbtlSub.h"
+#include "fld.h"
 
 s32 sbtlCheckLoadFlg(void) {
     u32 load;
@@ -357,7 +363,33 @@ s32 EventProcTbl_00(void) {
 
 INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_01);
 
-INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_02);
+s32 EventProcTbl_02(void) {
+    s32 ret = 0;
+
+    wk_sbtl->flg2 |= 0x80;
+    sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID);
+    wk_sbtl->eventcounter++;
+    wk_sbtl->eventcounter = (wk_sbtl->eventcounter <= 0) ? 0 : (wk_sbtl->eventcounter < 10001) ? wk_sbtl->eventcounter : 10000;
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        sbtlDefaultZoom2(15);
+        wk_sbtl->eventcounter = 0;
+        wk_sbtl->eventgstat++;
+        break;
+    case 1:
+        if (wk_sbtl->eventcounter < 15) {
+            break;
+        }
+        wk_sbtl->eventgstat = 0;
+        ret = 1;
+        RestartBattle();
+        wk_sbtl->flg &= ~0x400;
+        wk_sbtl->flg2 &= ~0x80;
+        sbtlResetNSTOP();
+        break;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID13);
 
@@ -367,7 +399,33 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallMemset10);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLoadHuuma_MesData);
 
-INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_07);
+s32 EventProcTbl_07(void) {
+    struct SBTLUNIT_WORK *wk;
+
+    wk_sbtl->flg2 |= 0x80;
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    sbtlIfDrawActionSub(wk->unit.devilId);
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        wk_sbtl->field4CE = GetIntervalRand(35, 37);
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 1:
+        if (sbtlMessageProc(wk->msgData, wk_sbtl->field4CE, wk, 1)) {
+            fclEndMessage();
+            wk_sbtl->eventgstat++;
+        }
+        return 0;
+    case 2:
+        wk_sbtl->flg2 &= ~0x80;
+        sbtlResetNSTOP();
+        wk_sbtl->eventgstat = 0;
+        RestartBattle();
+        wk_sbtl->flg &= ~0x400;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_06);
 
@@ -426,15 +484,129 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetActionTime);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetSETime);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetCylinderData_ID);
+s32 sbtlGetCylinderData_ID(MODELTYPE major, s32 minor, struct SBTLVISUAL_DATA *data) {
+    sdfVector4_t ofs;
+    sdfVector4_t rot;
+    SBTL_MOTION_VISUAL *visual;
+    V_POSITION_WORK *eff;
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallMemset11);
+    memset(&ofs, 0, sizeof(ofs));
+    ofs.w = 1.0f;
+    memset(&rot, 0, sizeof(rot));
+    rot.w = 1.0f;
+    visual = sbtlGetMotionVisualData(major, minor);
+    eff = sbtlGetEffCylinderData(major, minor);
+    ofs.x = visual->field18;
+    ofs.y = visual->field1C;
+    ofs.z = visual->field20;
+    sbtlGetRotateDeg(&rot, 180.0f);
+    ToMatrix();
+    SDF_VU0_LOADVECTOR(&ofs);
+    SDF_VU0_APPLYMATRIX();
+    SDF_VU0_STOREVECTOR(&ofs);
+    data->center.x = ofs.x;
+    data->center.y = ofs.y;
+    data->center.z = ofs.z;
+    data->center.w = ofs.w;
+    data->hit_area_r = visual->field10;
+    data->width = visual->field24;
+    data->height = visual->field28;
+    data->e_width = eff->cylinder;
+    data->e_height = eff->height;
+    return 1;
+}
+
+INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetCylinderData);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCalcAnim_DmgNumPos);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlCheckDamageTarget8);
+s32 sbtlCallBtlCheckDamageTarget8(SBTLVISUAL_DATA *data) {
+    SBTLVISUAL_DATA vis;
+    struct SBTLUNIT_WORK *wk;
+    s32 i;
+    s32 found;
+    f32 minx, maxx, miny, maxy, minz, maxz;
+    f32 y;
+    f32 sx, sy, sz;
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetPointData);
+    found = 0;
+    maxz = miny = maxx = minz = minx = maxy = 0.0f;
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk == NULL || !sbtlCheckDamageTarget(wk)) {
+            continue;
+        }
+        sbtlGetCylinderData(wk, &vis);
+        if (!found) {
+            found = 1;
+            minx = wk->pos.x;
+            minz = wk->pos.z;
+            maxz = minz;
+            maxx = minx;
+            maxy = vis.center.y + vis.height * 0.5f;
+            miny = maxy;
+            continue;
+        }
+        if (wk->pos.x < minx) {
+            minx = wk->pos.x;
+        }
+        if (maxx < wk->pos.x) {
+            maxx = wk->pos.x;
+        }
+        y = vis.center.y + vis.height * 0.5f;
+        if (maxy < y) {
+            maxy = y;
+        }
+        if (y < miny) {
+            miny = y;
+        }
+        if (wk->pos.z < minz) {
+            minz = wk->pos.z;
+        }
+        if (maxz < wk->pos.z) {
+            maxz = wk->pos.z;
+        }
+    }
+    sx = minx + maxx;
+    sy = maxy + miny;
+    sz = minz + maxz;
+    data->center.w = 1.0f;
+    data->height = sy;
+    data->center.x = sx * 0.5f;
+    data->center.y = sy * 0.5f;
+    data->center.z = sz * 0.5f;
+    if (sz < sx) {
+        data->width = sx;
+    } else {
+        data->width = sz;
+    }
+    return 1;
+}
+
+s32 sbtlGetPointData(s32 pointID, sdfVector4_t *pos, sdfVector4_t *rot) {
+    f32 x, y, z, r;
+
+    if (pointID == 100) {
+        pos->x = sb_enc_ex_pos.x;
+        pos->y = sb_enc_ex_pos.y;
+        pos->z = sb_enc_ex_pos.z;
+        pos->w = sb_enc_ex_pos.w;
+        rot->x = sb_enc_ex_rot.x;
+        rot->y = sb_enc_ex_rot.y;
+        rot->z = sb_enc_ex_rot.z;
+        rot->w = sb_enc_ex_rot.w;
+        return 1;
+    } else {
+        mapEncPointGet(pointID, &x, &y, &z, &r);
+        pos->x = x;
+        pos->y = y;
+        pos->z = z;
+        pos->w = 1.0f;
+        FromEuler(0.0f, r * 0.017453293f, 0.0f);
+        SDF_VU0_STOREVECTOR(rot);
+    }
+    return 1;
+}
 
 void sbtlSetExPos(sdfVector4_t *pos, sdfVector4_t *rot) {
     sb_enc_ex_pos.x = pos->x;

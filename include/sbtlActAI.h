@@ -93,7 +93,7 @@ s32 sbtlSetAIData(struct SBTLUNIT_WORK *wk, s32 code, s32 arg, s32 codet, s32 ar
 s32 sbtlUseTableDataProc(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckEquationProc(struct SBTLUNIT_WORK *wk);
 s32 sbtlEAIInit_None(struct SBTLUNIT_WORK *wk);
-s32 sbtlSetNormalAction(struct SBTLUNIT_WORK *wk, u16 type, s8 flg, s32 time, s32 arg4);
+s32 sbtlSetNormalAction(struct SBTLUNIT_WORK *wk, u16 type, s8 flg, s32 time, sdfVector4_t *pos);
 s32 sbtlGetUseTable_Target_sbtlActAI(struct SBTLUNIT_WORK *wk, s32 type, s32 index);
 s32 sbtlAAIInit_Attack(struct SBTLUNIT_WORK *wk);
 s32 GetSenkaiPointSub(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, sdfVector4_t *pos, s32 area);

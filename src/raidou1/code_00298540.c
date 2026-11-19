@@ -88,7 +88,100 @@ struct SBTLUNIT_WORK *sbtlSetEncountData4(s32 devil, s32 point, u32 addst) {
     return wk;
 }
 
-INCLUDE_ASM(const s32, "code_00298540", Choice1);
+/* NON_MATCHING: 225 of 263 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSetEncountData_Unit(struct SBTLUNIT_WORK *wk)
+{
+    struct SBTLUNIT_WORK *unit;
+    SBTL_DEVIL_DATA *devil;
+    SBTL_MOTION_VISUAL *visual;
+    SBTL_UNIT_SUB *sub;
+    s32 i;
+    s32 field1A0;
+    SBTLUNIT_MODEL *model;
+
+    devil = sbtlGetDevilData_sbtlSub(wk->field400);
+    visual = sbtlGetVisualData(2, devil->motionId);
+    sub = sbtlGetMotionVisualData(2, devil->motionId, 0);
+    unit = sbtlSetSummon(1, devil->motionId, wk->GroupID, 0);
+    unit->unit.level = devil->level;
+    unit->unit.devilId = wk->field400;
+    unit->field400 = devil->field0A;
+    unit->field404 = devil->aisyoId;
+    unit->unit.aisyo = *sbtlGetAisyotbl(devil->aisyoId);
+    unit->aisyoBase = unit->unit.aisyo;
+    if (devil->minorno_d != 0) {
+        unit->minor_d = devil->minorno_d;
+        unit->flg |= 0x40;
+    }
+    unit->flg |= devil->flag;
+    unit->unit.backup.str = devil->resist[0];
+    unit->unit.now.hp = devil->stat18;
+    unit->unit.backup.vit = devil->resist[1];
+    unit->unit.backup.hp = devil->stat18;
+    unit->unit.backup.tec = devil->resist[2];
+    unit->unit.backup.maxhp = devil->stat1C;
+    unit->unit.backup.luck = devil->resist[3];
+    unit->unit.now.mp = devil->stat20;
+    unit->unit.backup.mp = devil->stat20;
+    unit->unit.backup.maxmp = devil->stat24;
+    for (i = 0; i < 9; i++) {
+        unit->haveskill[i + 2] = devil->param[i];
+    }
+    sbtlCheckAutoSkill_Enemy(unit);
+    sbtlCheckBattlePara(unit);
+    unit->unit.seikaku = devil->field0F;
+    field1A0 = unit->field1A0;
+    VU0_LOAD_VF(vf10, &wk->pos);
+    VU0_STORE_VF(vf10, &unit->pos);
+    VU0_LOAD_VF(vf10, &wk->rot);
+    VU0_STORE_VF(vf10, &unit->rot);
+    VU0_LOAD_VF(vf10, &wk->rotBase);
+    VU0_STORE_VF(vf10, &unit->rotBase);
+    if (unit->flg & 0x80000) {
+        VU0_LOAD_VF(vf10, &unit->pos);
+        VU0_STORE_VF(vf10, &unit->posSaved);
+    }
+    CheckAIScript(unit);
+    unit->field414 = 2;
+    unit->mv_spd.z = 0;
+    unit->field424 = 0;
+    unit->max_mvspd.z = visual->field04;
+    unit->model->field0FC = field1A0;
+    unit->model->field100 = 0;
+    unit->model->flags = ((unit->model->flags | 0x140) & ~0xA0) | 0x28;
+    unit->field428 = visual->field08;
+    VU0_LOAD_VF(vf10, &unit->pos);
+    VU0_STORE_VF(vf10, &unit->model->vec20);
+    VU0_STORE_VF(vf10, &unit->model->vec30);
+    model = unit->model;
+    model->field12C = devil->field64;
+    model->field130 = devil->field60;
+    unit->visual[0] = visual->scale;
+    unit->visual[1] = visual->scale;
+    unit->visual[2] = visual->scale;
+    unit->visual[3] = visual->scale;
+    unit->visualKind = visual->kind;
+    model->field11C = visual->field10;
+    model->field120 = sub->field04;
+    model->field124 = devil->field60;
+    model->field128 = devil->field64;
+    if (unit->flg & 0x8000000) {
+        unit->motion_setno = devil->field42;
+    }
+    unit->actMax = wk->actMax;
+    sbtlSetactcounter(unit);
+    unit->actCounter = wk->actCounter;
+    if (visual->field30 > 0) {
+        sbtlGetDevilData(unit, visual->field32, visual->field30);
+        unit->flg |= 0x1000;
+    }
+    sbtlCreateEff(wk_sbtl->effList, unit, 14, 0, &unit->pos.x, 0x80808080, 0);
+    return 1;
+}
+#else
+INCLUDE_ASM(const s32, "code_00298540", sbtlSetEncountData_Unit);
+#endif
 
 void sbtlSetactcounter(struct SBTLUNIT_WORK *wk)
 {
@@ -261,7 +354,29 @@ s32 sbtlCallBtlGetNumUnitGroupID(void)
     return 1;
 }
 
+/* NON_MATCHING: 46 of 56 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetRndEncJoken(s32 id) {
+    datRndEncTbl_t *tbl;
+    s32 i = 0;
+
+    do {
+        tbl = &sbtlData101[id][i];
+        if (tbl->flag0 == 0 || (tbl->flag0j == 0 ? !evtBitCheck(tbl->flag0) : evtBitCheck(tbl->flag0))) {
+            if (tbl->flag1 == 0) {
+                return i;
+            }
+            if (tbl->flag1j != 0 ? evtBitCheck(tbl->flag1) : !evtBitCheck(tbl->flag1)) {
+                return i;
+            }
+        }
+        i++;
+    } while (i < 3);
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00298540", sbtlGetRndEncJoken);
+#endif
 
 s32 sbtlGetRndEncMax(s32 id)
 {
@@ -412,9 +527,169 @@ void sbtlRndEncTopPriorityMap(s32 *map, s32 *floor) {
     *floor = g_rndenc1_floor;
 }
 
-INCLUDE_ASM(const s32, "code_00298540", sbtlGetDevilInfo);
+/* NON_MATCHING: 64 of 171 words match.  */
+#ifdef NON_MATCHING
+void sbtlGetDevilInfo(s32 id, SB_RNDENC_DEVILINFO *pDevilInfo) {
+    s32 list[64][2];
+    s32 num = 0;
+    datRndEncTbl_t *tbl;
+    datRndEncRitu_t *ritu;
+    SB_ENCOUNT1 *enc;
+    s32 devil;
+    s32 found;
+    s32 total;
+    s32 rnd;
+    s32 sum;
+    s32 i;
+    s32 j;
+    s32 k;
 
+    pDevilInfo->devil_id[0] = 0;
+    pDevilInfo->devil_id[1] = 0;
+    pDevilInfo->devil_id[2] = 0;
+    pDevilInfo->num = 0;
+    if (id == 0) {
+        return;
+    }
+    tbl = &sbtlData101[id][sbtlGetRndEncJoken(id)];
+    for (i = 0; i < 64; i++) {
+        list[i][0] = 0;
+        list[i][1] = 0;
+    }
+    ritu = tbl->ritu;
+    for (i = 0; i < 8; i++, ritu++) {
+        if (ritu->encountid == 0 || ritu->ritu == 0) {
+            continue;
+        }
+        enc = sbtlData100[ritu->encountid].enc1;
+        for (j = 0; j < 13; j++, enc++) {
+            if (enc->type == 0) {
+                continue;
+            }
+            switch (enc->devil) {
+            case 218:
+                devil = 217;
+                break;
+            case 214:
+                devil = 126;
+                break;
+            case 283:
+            case 284:
+                devil = 282;
+                break;
+            default:
+                devil = enc->devil;
+                break;
+            }
+            found = 0;
+            for (k = 0; k < num; k++) {
+                if (list[k][0] == devil) {
+                    found = 1;
+                    list[k][1] += ritu->ritu;
+                }
+            }
+            if (!found) {
+                list[num][0] = devil;
+                list[num][1] = ritu->ritu;
+                num++;
+                if (num == 64) {
+                    break;
+                }
+            }
+        }
+    }
+    if (num >= 4) {
+        pDevilInfo->num = 3;
+        for (i = 0; i < 3; i++) {
+            total = 0;
+            for (k = 0; k < num; k++) {
+                total += list[k][1];
+            }
+            rnd = dds3GetRandIntA(NULL, total);
+            sum = 0;
+            for (k = 0; k < num; k++) {
+                if (rnd < sum + list[k][1]) {
+                    list[k][1] = 0;
+                    pDevilInfo->devil_id[i] = list[k][0];
+                    break;
+                }
+                sum += list[k][1];
+            }
+        }
+    } else {
+        pDevilInfo->num = num;
+        pDevilInfo->devil_id[0] = list[0][0];
+        pDevilInfo->devil_id[1] = list[1][0];
+        pDevilInfo->devil_id[2] = list[2][0];
+    }
+}
+#else
+INCLUDE_ASM(const s32, "code_00298540", sbtlGetDevilInfo);
+#endif
+
+/* NON_MATCHING: 72 of 107 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSetNextPathData(struct SBTLUNIT_WORK *wk) {
+    SBTLENMY_ACTDATA *act;
+    SBTLENMY_PATHDATA *path;
+    SBTLUNIT_MODEL *ai;
+    sdfVector4_t pos;
+    s32 cnt;
+    u32 flg;
+
+    act = sbtlGetPathACTData(0, wk->model->path_datap);
+    path = sbtlGetPathData(act->pathid);
+    flg = act->flg;
+    ai = wk->model;
+    if (!(flg & 0x10)) {
+        ai->path_mode = 1;
+    }
+    switch (ai->path_mode) {
+    case 0:
+        wk->model->path_cnt = GetIntervalRand(0, act->frame);
+        wk->model->path_mode = 1;
+        return 0;
+    case 1:
+        if (!(flg & 0x10)) {
+            ai->path_cnt = 0;
+            break;
+        }
+        ai->path_cnt++;
+        if (ai->path_cnt <= 0) {
+            ai->path_cnt = 0;
+        } else if (ai->path_cnt >= act->frame) {
+            ai->path_cnt = act->frame;
+        }
+        if (ai->path_cnt < act->frame) {
+            return 0;
+        }
+        ai->path_cnt = 0;
+        break;
+    default:
+        ai->path_cnt = 0;
+        break;
+    }
+    ai->path_mode = 0;
+    ai->path_datap = act->jmpid;
+    if (act->flg & 2) {
+        SDF_VU0_LOADVECTOR(&path->nowpos);
+        SDF_VU0_STOREVECTOR(&pos);
+    } else if (act->flg & 1) {
+        SDF_VU0_LOADVECTOR(&path->nextpos);
+        SDF_VU0_STOREVECTOR(&pos);
+    } else {
+        SDF_VU0_LOADVECTOR(&path->nextpos);
+        SDF_VU0_STOREVECTOR(&pos);
+    }
+    pos.x += main_data.val20 + ai->path_ofspos.x;
+    pos.z += main_data.val24 + ai->path_ofspos.z;
+    pos.y += sbtlFree(pos.x, pos.z);
+    sbtlSetNormalAction(wk, act->type, 1, act->frame, &pos);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00298540", sbtlSetNextPathData);
+#endif
 
 s16 sbtlGetPathDataCount(s16 id) {
     return tbldatacnt[id];

@@ -330,7 +330,20 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_ActerDamage_ID);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_TargetDamage_ID);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_ActerDamage);
+s32 sbtlCheckAutoSkill_ActerDamage(s32 autono) {
+    s32 result = 0;
+
+    switch (autono) {
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 54:
+        result = 1;
+        break;
+    }
+    return result;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_TargetDamage);
 
@@ -490,7 +503,7 @@ INCLUDE_RODATA(const s32, "sbtl", CalcBadStatusTable3);
 
 INCLUDE_RODATA(const s32, "sbtl", CalcBadStatusTable4);
 
-s32 sbtlBtlCheckBadStatusWeakNumberSub(BST id)
+s32 sbtlGetBadStatus_Attr(BST id)
 {
     s32 table[21] = { 2, 3, 4, 5, 0, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 1, 7, 7, 7 };
 
@@ -503,7 +516,7 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallCheckBadStatus);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlResetUnit);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf107);
+INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_Number);
 
 INCLUDE_RODATA(const s32, "sbtl", sbtlLeaf107Table);
 
@@ -626,7 +639,7 @@ INCLUDE_ASM(const s32, "sbtl", sbtlITEMRECUP);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlITEMRECUP2);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlplayertblPlayerSkill_GetMag3);
+INCLUDE_ASM(const s32, "sbtl", sbtlGetDamage_I_REC_PARA);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlBtlCheckItemCountSub);
 

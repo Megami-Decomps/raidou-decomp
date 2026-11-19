@@ -24,7 +24,7 @@ only the tdan expiry clear differs: retail stores tdanhitcnt, tdancnt, tdancount
 
 Related: sched.
 
-## sbtlCallBtlGetSkilltbl17 (sbtl_0029BFB8, raidou1 0x1EC)
+## sbtlCheckBadStatus_Hit (sbtl_0029BFB8, raidou1 0x1EC)
 
 Raidou 1: 89 of 119 words differ, first at +0x44; emitted 476 bytes, native 492 bytes.
 
