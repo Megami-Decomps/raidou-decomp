@@ -40,7 +40,7 @@ s32 OnDataLoadProc(dds3ProcessID_t *id) {
     return -1;
 }
 
-void sbtlLeaf75(dds3ProcessID_t *id) {
+void OnDataLoadShutdown(dds3ProcessID_t *id) {
 }
 
 /* NON_MATCHING: 26 of 32 words match.  */

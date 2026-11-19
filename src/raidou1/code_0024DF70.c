@@ -272,7 +272,7 @@ s32 DataLoadProc(dds3ProcessID_t *id) {
 }
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0024E6A0.c:1, found */
-s32 sbtlLeaf54(dds3ProcessID_t *id) {
+s32 DataLoadShutdown(dds3ProcessID_t *id) {
     return sbtlOnDataLoadInit();
 }
 

@@ -28,7 +28,7 @@ INCLUDE_ASM(const s32, "code_0026A9B0", sbtlRefSbtl5);
 
 INCLUDE_ASM(const s32, "code_0026A9B0", sbtlBGMLOADSTART);
 
-s32 sbtlLeaf54(dds3ProcessID_t *id) {
+s32 DataLoadShutdown(dds3ProcessID_t *id) {
     return sbtlOnDataLoadInit();
 }
 

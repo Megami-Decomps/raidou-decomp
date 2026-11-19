@@ -72,7 +72,7 @@ s32 OnDataLoadProc(dds3ProcessID_t *id) {
     return -1;
 }
 
-void sbtlLeaf75(dds3ProcessID_t *id) {
+void OnDataLoadShutdown(dds3ProcessID_t *id) {
 }
 
 /* NON_MATCHING: 23 of 81 words match. The table copy picks v1/a3 for source and destination where retail uses a3/t0, which shifts every later register. */

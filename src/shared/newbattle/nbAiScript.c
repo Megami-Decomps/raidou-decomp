@@ -60,8 +60,8 @@ s32 gohLeaf27(dds3ProcessID_t *PID);
 s32 gohLeaf28(dds3ProcessID_t *PID);
 s32 gohLeaf29(dds3ProcessID_t *PID);
 s32 gohLeaf30(dds3ProcessID_t *PID);
-s32 gohLeaf33(dds3ProcessID_t *PID);
-s32 gohLeaf34(dds3ProcessID_t *PID);
+s32 gohInit(dds3ProcessID_t *PID);
+s32 gohDestroy(dds3ProcessID_t *PID);
 s32 gohMiscInit(dds3ProcessID_t *PID);
 s32 gohRecoverCalcProcess(dds3ProcessID_t *PID);
 s32 gohRecoverDrawProcess(dds3ProcessID_t *PID);
@@ -100,6 +100,6 @@ jmsSeqUnit_t gohSeqUnit[16] = {
     {0, gohMiscInit, gohLeaf28, gohCallGetProcessData31, gohCallGetProcessData32, gohCallGetProcessData33, NULL},
     {0, gohCallGetProcessData34, gohLeaf29, gohSinanCalcProcess, gohCallGetProcessData35, gohCallGetProcessData36, NULL},
     {0, gohCallGetProcessData37, gohLeaf30, gohSearchiErrorCalcProcess, evtRefreshDispatchStart, gohCallGetProcessData38, NULL},
-    {0, gohLeaf33, gohLeaf34, gohCalcProcess, gohDrawProcess, gohUpdateProcess, NULL},
+    {0, gohInit, gohDestroy, gohCalcProcess, gohDrawProcess, gohUpdateProcess, NULL},
 };
 #endif

@@ -254,7 +254,7 @@ INCLUDE_ASM(const s32, "code_003382B8", MenuDrawFunc);
 
 INCLUDE_ASM(const s32, "code_003382B8", BridgeLoop);
 
-INCLUDE_ASM(const s32, "code_003382B8", ctnLeaf);
+INCLUDE_ASM(const s32, "code_003382B8", BridgeDestroy);
 
 INCLUDE_ASM(const s32, "code_003382B8", ctnRefWorkCtn);
 

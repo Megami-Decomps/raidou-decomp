@@ -159,11 +159,11 @@ s32 sbtlCallSetPosPoseSetDds3Basic2(SBTLCAMERA_WORK *wk) {
     return 1;
 }
 
-s32 sbtlLeaf103(dds3ProcessID_t *id) {
+s32 ProcCamera(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf87);
+INCLUDE_ASM(const s32, "sbtl", ShutdownCamera);
 
 s32 sbtlLeaf118(void)
 {

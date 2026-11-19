@@ -39,7 +39,7 @@ s32 sbtlSceneLoad(void)
         }
     }
     fclFilterOFF();
-    dds3StartProcess("sbtlscene_load", 1015, 1, 1, DataLoadProc, sbtlLeaf54, NULL);
+    dds3StartProcess("sbtlscene_load", 1015, 1, 1, DataLoadProc, DataLoadShutdown, NULL);
     return 1;
 }
 #else

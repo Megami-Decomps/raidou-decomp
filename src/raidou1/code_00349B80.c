@@ -46,9 +46,9 @@ dds3ProcessFunc_t shpCallGetProcessData3(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_00349B80", shpLeaf9);
+INCLUDE_ASM(const s32, "code_00349B80", CyousaSelInit);
 
-INCLUDE_ASM(const s32, "code_00349B80", shpLeaf10);
+INCLUDE_ASM(const s32, "code_00349B80", CyousaSelDestroy);
 
 INCLUDE_ASM(const s32, "code_00349B80", shpUpdateDBOOK);
 

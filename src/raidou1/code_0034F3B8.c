@@ -242,7 +242,7 @@ dds3ProcessFunc_t rstCallGetProcessData37(dds3ProcessID_t *PID) {
 }
 
 /* body: matched in raidou @ 88f0d54: src/raidou1/code_002F5BD0.c:413, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 rstLeaf14(dds3ProcessID_t *PID) {
+s32 rstEndInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
@@ -266,7 +266,7 @@ dds3ProcessFunc_t rstEndUpdateProcess(dds3ProcessID_t *PID) {
 INCLUDE_ASM(const s32, "code_0034F3B8", rstBtlEndWaitInit);
 
 /* body: matched in raidou @ 88f0d54: src/raidou1/code_002F5BD0.c:413, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 rstLeaf15(dds3ProcessID_t *PID) {
+s32 rstBtlEndWaitDestroy(dds3ProcessID_t *PID) {
     return 1;
 }
 

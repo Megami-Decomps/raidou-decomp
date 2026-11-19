@@ -54,11 +54,11 @@ dds3ProcessFunc_t ActWnd_DrawProcess(dds3ProcessID_t *proc) {
 
 INCLUDE_ASM(const s32, "lmap", ActWnd_Initialize);
 
-dds3ProcessFunc_t lmapLeaf8(dds3ProcessID_t *id) {
+dds3ProcessFunc_t ActWnd_Process(dds3ProcessID_t *id) {
     return ActWnd_Main(id);
 }
 
-INCLUDE_ASM(const s32, "lmap", lmapCallMemFreeDelayedDirect);
+INCLUDE_ASM(const s32, "lmap", ActWnd_Shutdown);
 
 INCLUDE_ASM(const s32, "lmap", ActWnd_Start);
 

@@ -250,7 +250,7 @@ INCLUDE_ASM(const s32, "code_002D7950", ctnCallMenuGetSelectID);
 
 INCLUDE_ASM(const s32, "code_002D7950", BridgeLoop);
 
-INCLUDE_ASM(const s32, "code_002D7950", ctnLeaf);
+INCLUDE_ASM(const s32, "code_002D7950", BridgeDestroy);
 
 INCLUDE_ASM(const s32, "code_002D7950", ctnRefWorkCtn);
 

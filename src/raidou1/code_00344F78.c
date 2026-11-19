@@ -4,7 +4,7 @@
 #include "code_r1_001CC1D0.h"
 #include "fclMisc.h"
 
-INCLUDE_ASM(const s32, "code_00344F78", fldLeaf36);
+INCLUDE_ASM(const s32, "code_00344F78", DLCDestroy);
 
 INCLUDE_ASM(const s32, "code_00344F78", DLCCalcProcess);
 

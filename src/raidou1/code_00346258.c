@@ -29,9 +29,9 @@ INCLUDE_ASM(const s32, "code_00346258", gohModelFree);
 
 INCLUDE_ASM(const s32, "code_00346258", gohModelLightSet);
 
-INCLUDE_ASM(const s32, "code_00346258", gohLeaf33);
+INCLUDE_ASM(const s32, "code_00346258", gohInit);
 
-INCLUDE_ASM(const s32, "code_00346258", gohLeaf34);
+INCLUDE_ASM(const s32, "code_00346258", gohDestroy);
 
 INCLUDE_ASM(const s32, "code_00346258", gohCalcProcess);
 

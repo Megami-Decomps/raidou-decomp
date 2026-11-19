@@ -895,10 +895,10 @@ void *effPCPThunderSpherePolyCopy(void *);
 void *effCallEffectPCPDataGetData(void *);
 void effCallPCPThunderSphereLowRotate(void *);
 void effPCPFlashPolyRingExp2Delete(void *);
-void *effLeaf195(void *);
-void effLeaf196(void *, void *);
-void effLeaf198(void *, f32);
-void effLeaf197(void *, u32);
+void *effPCPThunderSpherePolyLowCopy(void *);
+void effPCPThunderSpherePolyLowSetPosition(void *, void *);
+void effPCPThunderSpherePolyLowSetScale(void *, f32);
+void effPCPThunderSpherePolyLowSetColor(void *, u32);
 void *effPCPSpiralBEDCreatePCF(void *);
 void effPCPSpiralBEDDraw(void *);
 void effPCPSpiralBEDDelete(void *);
@@ -1193,7 +1193,7 @@ dds3EffectFunc_t EffectPCPFuncTable[98] = {
     { effPCPRadiateTBCreatePCF, effPCPRadiateTBDraw, effPCPRadiateTBDelete, effPCPRadiateTBCopy, effPCPRadiateTBSetPosition, NULL, NULL, effPCPRadiateTBSetColor, NULL, NULL },
     { effPCPWhirlwind3PolyCreatePCF, effPCPWhirlwind3PolyDraw, effPCPWhirlwind3PolyDelete, effPCPWhirlwind3PolyCopy, effPCPWhirlwind3PolySetPosition, effPCPWhirlwind3PolySetScale, effCallMultMatrixNoArg, effPCPWhirlwind3PolySetColor, NULL, NULL },
     { effPCPThunderSpherePolyCreatePCF, effPCPThunderSpherePolyLowDraw, effPCPFlashPolyCircleDelete, effPCPThunderSpherePolyCopy, effPCPShockWave01DrawSub, effPCPThunderSphereExpDrawSub, NULL, effPCPShockWave01DrawSub2, NULL, NULL },
-    { effCallEffectPCPDataGetData, effCallPCPThunderSphereLowRotate, effPCPFlashPolyRingExp2Delete, effLeaf195, effLeaf196, effLeaf198, NULL, effLeaf197, NULL, NULL },
+    { effCallEffectPCPDataGetData, effCallPCPThunderSphereLowRotate, effPCPFlashPolyRingExp2Delete, effPCPThunderSpherePolyLowCopy, effPCPThunderSpherePolyLowSetPosition, effPCPThunderSpherePolyLowSetScale, NULL, effPCPThunderSpherePolyLowSetColor, NULL, NULL },
     { effPCPSpiralBEDCreatePCF, effPCPSpiralBEDDraw, effPCPSpiralBEDDelete, effPCPSpiralBEDCopy, effPCPSpiralBEDSetPosition, effPCPSpiralBEDSetScale, NULL, effPCPSpiralBEDSetColor, NULL, NULL },
     { effPCPAgiFireballSpCreatePCF, effPCPAgiFireball2DrawSub, effPCPAgiFireballDelete, effPCPAgiFireballSpCopy, effPCPAgiFireballSetPosition, NULL, effPCPAgiFireballSetRotateMatrix, effPCPAgiFireballSetColor, NULL, NULL },
     { effPCPAgiFireballSp2CreatePCF, effPCPAgiFireball2DrawSub, effPCPAgiFireballDelete, effPCPAgiFireballSp2Copy, effPCPAgiFireballSetPosition, NULL, effPCPAgiFireballSetRotateMatrix, effPCPAgiFireballSetColor, NULL, NULL },

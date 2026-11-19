@@ -1226,7 +1226,7 @@ dds3ProcessFunc_t rstCallGetProcessData37(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-s32 rstLeaf14(void)
+s32 rstEndInit(void)
 {
     return 1;
 }
@@ -1289,7 +1289,7 @@ s32 rstBtlEndWaitInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
-s32 rstLeaf15(void)
+s32 rstBtlEndWaitDestroy(void)
 {
     return 1;
 }

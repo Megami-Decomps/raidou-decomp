@@ -623,17 +623,17 @@ void *effCallEffectPCPDataGetData(void *pParam) {
     return effBTLBindCreateTrack(parameters);
 }
 
-void *effLeaf195(void *parameters) {
+void *effPCPThunderSpherePolyLowCopy(void *parameters) {
     return effBTLBindCreateTrack(parameters);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf196);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSpherePolyLowSetPosition);
 
-void effLeaf197(effPCPThunderSpherePoly_t *hData, u32 value) {
+void effPCPThunderSpherePolyLowSetColor(effPCPThunderSpherePoly_t *hData, u32 value) {
     hData->abgr = value;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf198);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSpherePolyLowSetScale);
 
 u32 effPCPThunderSpherePolyLowGetParam(u32 pThunderPoly) {
     return pThunderPoly;

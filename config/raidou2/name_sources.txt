@@ -5378,10 +5378,10 @@
 0x0021E798	effBTLBindCreateTrack	inferred	SMT3HD name via SLUS_209.11 0x00176E28, reloc-identical; map-agrees
 0x0021E958	effPCPFlashPolyRingExp2Delete	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x186390 sim 1.000 margin 0.00 pair
 0x0021E988	effCallEffectPCPDataGetData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPThunder; calls dds3EffectPCPDataGetData
-0x0021E9A8	effLeaf195	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPThunder; no named callee, caller or string
-0x0021E9C0	effLeaf196	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPThunder; no named callee, caller or string
-0x0021E9D0	effLeaf197	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPThunder; no named callee, caller or string
-0x0021E9D8	effLeaf198	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPThunder; no named callee, caller or string
+0x0021E9A8	effPCPThunderSpherePolyLowCopy	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPThunderSpherePolyLowCopy: Copy slot of the effPart row matching SMT3's ThunderSpherePolyLow row by body shape in 5 slots; same body (exact shape); replaces effLeaf195
+0x0021E9C0	effPCPThunderSpherePolyLowSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPThunderSpherePolyLowSetPosition: SetPosition slot of the same effPart row; same body (exact shape); replaces effLeaf196
+0x0021E9D0	effPCPThunderSpherePolyLowSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPThunderSpherePolyLowSetColor: SetColor slot of the same effPart row; same body (exact shape); replaces effLeaf197
+0x0021E9D8	effPCPThunderSpherePolyLowSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPThunderSpherePolyLowSetScale: SetScale slot of the same effPart row; same body (exact shape); replaces effLeaf198
 0x0021E9F8	effPCPThunderSpherePolyLowGetParam	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0021EA00	effPCPThunderSphereInit	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x177090 sim 1.000 margin 0.00 pair
 0x0021EC38	effPCPThunderSphereLowRotate	inferred	SMT3HD name via SLUS_209.11 0x001772C8, reloc-identical; map-agrees
@@ -6744,7 +6744,7 @@
 0x0026ABE8	sbtlRefSbtl31	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSetZoomLock; references wk_sbtl
 0x0026AC80	sbtlRefSbtl5	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlRestart_Scene; references wk_sbtl
 0x0026ACB0	sbtlBGMLOADSTART	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlRestart_Scene; string 'BGM LOAD START %d\n'
-0x0026AF00	sbtlLeaf54	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlGetScrollID; no named callee, caller or string
+0x0026AF00	DataLoadShutdown	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlScene.DataLoadShutdown: the shutdown passed with DataLoadProc to dds3StartProcess("sbtlscene_load"), as in HD; replaces sbtlLeaf54
 0x0026AF18	BasicSceneFree	hd	hd: Raidou HD sBtlScene.BasicSceneFree, score 10.0 band A
 0x0026AF90	SetTestCamera	hd	hd: Raidou HD sBtlScene.SetTestCamera, score 12.0 band A
 0x0026B0A8	sbtlReLoadMap	hd-inferred	hd: Raidou HD sBtlScene.sBtlReLoadMap, score 11.5 band A
@@ -7684,7 +7684,7 @@
 0x002BAF80	btlLoadSbPack	inferred	string: pacLoad("/battle/SB_PACK4.LB"), copies each resource to tail memory
 0x002BB0E8	sbtlOnDataLoadInit	hd-inferred	hd: Raidou HD sBtlEff.sBtlOnDataLoadInit, score 7.3 band B
 0x002BB130	OnDataLoadProc	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sBtlEff.OnDataLoadProc score 2.2 flag -: calls1 callers-of-match st1:call r1-only
-0x002BB1D8	sbtlLeaf75	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
+0x002BB1D8	OnDataLoadShutdown	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEff.OnDataLoadShutdown: the shutdown passed with OnDataLoadProc to dds3StartProcess("sbtleffonmem_load"), as in HD sBtlOnDataLoadInit; replaces sbtlLeaf75
 0x002BB1E0	sbtlFunc6	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
 0x002BB260	sbtlLoadEffectData_Decode	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlEff.sBtlLoadEffectData_Decode score 8.4 flag I: calls2 callers-of-match-uniq votes3 st1:call r1+r2
 0x002BB390	sbtlInitLoadPlayerOnMemData	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlEff.sBtlInitLoadPlayerOnMemData score 3.2 flag I: calls2 next callers-of-match st2:call r1-disagree:0x28a178
@@ -8001,8 +8001,8 @@
 0x002D07B8	SetPara	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCamera.SetPara score 8.0 flag -: calls3 callers-of-match votes2 st2:call r2-only
 0x002D33A8	sbtlCallCameraObjectBasicGetFovy	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls dds3CameraObjectBasicGetFovy
 0x002D3440	sbtlCallSetPosPoseSetDds3Basic2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls dds3SetPosPoseSet
-0x002D3510	sbtlLeaf103	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002D3518	sbtlLeaf87	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002D3510	ProcCamera	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCamera.ProcCamera: the process function sbtlSbtlCameraproc passes to dds3StartProcess("sbtl_cameraproc"), as in HD sBtlCamera/sBtlCameraR1; replaces sbtlLeaf103
+0x002D3518	ShutdownCamera	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCamera.ShutdownCamera: the shutdown function sbtlSbtlCameraproc passes to dds3StartProcess("sbtl_cameraproc"), as in HD; replaces sbtlLeaf87
 0x002D3520	sbtlLeaf118	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002D3528	sbtlCallBtlSearchUnitID35	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlSearchUnit_ID
 0x002D3578	sbtlCallSetPara	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls SetPara
@@ -9283,7 +9283,7 @@
 0x003447F8	MenuPadFunc	hd	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD mjn.MenuPadFunc score 5.5 flag -: calls3 next gap3/1 st2:gap r1-disagree:0x2e3c58
 0x00344AC8	MenuDrawFunc	hd	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD mjn.MenuDrawFunc score 6.5 flag -: calls2 next callers-of-match votes3 st2:call r1-disagree:0x2e3e30
 0x00344C10	BridgeLoop	hd	hd: Raidou HD mjn.BridgeLoop, score 10.65 band A
-0x00344D38	ctnLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002D7950, neighbour ctnLoadDataIDFloor; no named callee, caller or string
+0x00344D38	BridgeDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mjn.BridgeDestroy: the shutdown passed with BridgeLoop to dds3StartProcess("mjn_bridge_process"), as in HD mjn.c; replaces ctnLeaf
 0x00344D40	ctnRefWorkCtn	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_002D7950, neighbour ctnLoadDataIDFloor; references Work_ctn
 0x00344D80	ctnSimulateSetFlagsSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_002D7950, neighbour ctnLoadDataIDFloor; called by SimulateSetFlags
 0x00344D90	ctnMoveFollowerSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_002D7950, neighbour ctnLoadDataIDFloor; called by MoveFollower
@@ -9560,8 +9560,8 @@
 0x00356D18	ActWnd_Reset	hd	hd: Raidou HD lmap.ActWnd_Reset, score 8.95 band B
 0x00356D30	ActWnd_DrawProcess	hd	hd: Raidou HD lmap.ActWnd_DrawProcess, score 7.45 band B
 0x00356D48	ActWnd_Initialize	hd	hd: Raidou HD lmap.ActWnd_Initialize, score 8.0 band B
-0x00356DA8	lmapLeaf8	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
-0x00356DC0	lmapCallMemFreeDelayedDirect	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit lmap; calls sdfMemFreeDelayedDirect
+0x00356DA8	ActWnd_Process	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD lmap.ActWnd_Process: the process function ActWnd_Start passes to dds3StartProcess("lmapActWndProc"), as in HD lmap.c; replaces lmapLeaf8
+0x00356DC0	ActWnd_Shutdown	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD lmap.ActWnd_Shutdown: the shutdown ActWnd_Start passes to dds3StartProcess("lmapActWndProc"); frees the window work; replaces lmapCallMemFreeDelayedDirect
 0x00356DE0	ActWnd_Start	hd	hd: Raidou HD lmap.ActWnd_Start, score 9.0 band B
 0x00356E78	lmapCallTexFreeDelayed	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit lmap; calls sdfTexFreeDelayed
 0x00356EC8	lmapCallExistProcess	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit lmap; calls dds3ExistProcess
@@ -11002,7 +11002,7 @@
 0x003A9020	gohCallGetProcessData43	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
 0x003A9110	gohCallGetProcessData44	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
 0x003A9160	gohCallGetProcessData45	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F28, nearest named function gohCmbSelCalcProcess; calls dds3GetProcessData
-0x003A91B0	fldLeaf36	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; no named callee, caller or string
+0x003A91B0	DLCDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.DLCDestroy: Destroy slot of the scene table entry {Init, Destroy, DLCCalcProcess, Draw, Update}; replaces fldLeaf36
 0x003A91B8	DLCCalcProcess	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMain.DLCCalcProcess score 7.0 flag -: calls4 callers-of-match votes3 st1:call r1-only
 0x003A9300	fldCallGetProcessData4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
 0x003A93F0	fldCallGetProcessData5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
@@ -11057,8 +11057,8 @@
 0x003AADC8	gohModelLoad	hd-inferred	hd: Raidou HD gohDirection.gohModelLoad, score 10.3 band A
 0x003AB098	gohModelFree	hd-inferred	hd: Raidou HD gohDirection.gohModelFree, score 9.3 band B
 0x003AB120	gohModelLightSet	hd-inferred	hd: Raidou HD gohDirection.gohModelLightSet, score 10.3 band A
-0x003AB188	gohLeaf33	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour gohModelLightSet; no named callee, caller or string
-0x003AB190	gohLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour gohCalcProcess; no named callee, caller or string
+0x003AB188	gohInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD gohDirection.gohInit: Init slot of the scene table entry whose Calc/Draw/Update are gohCalcProcess, gohDrawProcess, gohUpdateProcess; replaces gohLeaf33
+0x003AB190	gohDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD gohDirection.gohDestroy: Destroy slot of the scene table entry whose Calc/Draw/Update are gohCalcProcess, gohDrawProcess, gohUpdateProcess; replaces gohLeaf34
 0x003AB198	gohCalcProcess	hd-inferred	hd: Raidou HD gohDirection.gohCalcProcess, score 9.15 band B
 0x003AB2B0	gohDrawProcess	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD gohDirection.gohDrawProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
 0x003AB2E8	gohUpdateProcess	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD gohDirection.gohUpdateProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
@@ -11516,8 +11516,8 @@
 0x003B8528	shpCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003B7840, neighbour shpUpdateDBOOK; calls dds3GetProcessData
 0x003B85F8	shpCallGetProcessData2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003B7840, neighbour shpUpdateDBOOK; calls dds3GetProcessData
 0x003B8660	shpCallGetProcessData3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour shpUpdateDBOOK; calls dds3GetProcessData
-0x003B8698	shpLeaf9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour shpUpdateDBOOK; no named callee, caller or string
-0x003B86A0	shpLeaf10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour shpUpdateDBOOK; no named callee, caller or string
+0x003B8698	CyousaSelInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaSelInit: Init slot of the scene table entry whose Draw/Update are CyousaSelDrawProcess, CyousaSelUpdateProcess; replaces shpLeaf9
+0x003B86A0	CyousaSelDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaSelDestroy: Destroy slot of the same scene table entry; replaces shpLeaf10
 0x003B86A8	shpUpdateDBOOK	hd-inferred	hd: Raidou HD shpAction.shpUpdateDBOOK, score 8.5 band B
 0x003B8840	CyousaSelDrawProcess	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD jmsMain.CyousaSelDrawProcess score 3.6 flag -: calls1 next gap14/18 st2:gap r2-only
 0x003B88A8	CyousaSelUpdateProcess	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD jmsMain.CyousaSelUpdateProcess score 4.5 flag -: calls2 next~ gap15/21 st2:gap r2-only
@@ -11865,13 +11865,13 @@
 0x003C52E8	rstCalcProcess_rstResult	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD rstResult.rstCalcProcess score 6.0 flag I: calls4 callee-index st2:cidx r1-disagree:0x3521d0
 0x003C5B80	rstDrawProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstResult.rstDrawProcess score 9.4 flag I: calls3 prev callers-of-match votes2 st1:call r1+r2
 0x003C5BD0	rstCallGetProcessData37	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstDrawProcess; calls dds3GetProcessData
-0x003C5C08	rstLeaf14	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstDrawProcess; no named callee, caller or string
+0x003C5C08	rstEndInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstResult.rstEndInit: Init slot of the scene table entry whose Calc/Draw/Update are rstEnd*; replaces rstLeaf14
 0x003C5C10	rstEndDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstResult.c rstEndDestroy: ends the three itfCount processes of the rstEnd work and returns 1; replaces ReleaseFontList
 0x003C5C68	rstEndCalcProcess	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD rstResult.rstEndCalcProcess score 5.7 flag I: calls4 callers-of-match-uniq votes2 st1:call r2-disagree:0x3b99d8
 0x003C5D00	rstEndDrawProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstResult.rstEndDrawProcess score 7.5 flag I: calls2 next gap1/5 st1:gap r1+r2
 0x003C5D50	rstEndUpdateProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstResult.rstEndUpdateProcess score 7.5 flag I: calls2 next gap2/7 st1:gap r1+r2
 0x003C5D88	rstBtlEndWaitInit	hd-inferred	hd: Raidou HD rstResult.rstBtlEndWaitInit, score 7.15 band B
-0x003C5E20	rstLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstBtlEndWaitInit; no named callee, caller or string
+0x003C5E20	rstBtlEndWaitDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstResult.rstBtlEndWaitDestroy: Destroy slot of the scene table entry whose Init/Calc/Draw are rstBtlEndWait*; replaces rstLeaf15
 0x003C5E28	rstBtlEndWaitCalcProcess	hd-inferred	hd: Raidou HD rstResult.rstBtlEndWaitCalcProcess, score 8.65 band B
 0x003C5F18	rstBtlEndWaitDrawProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstResult.rstBtlEndWaitDrawProcess score 11.4 flag I: calls3 callers-of-match-uniq votes2 st1:call r1+r2
 0x003C5F68	rstCallGetProcessData38	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; calls dds3GetProcessData

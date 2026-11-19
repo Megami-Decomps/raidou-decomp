@@ -37,7 +37,7 @@ void sbtlSbtlCameraproc(void) {
 
     wk_sbtl->camera.cm = NULL;
     wk_sbtl->camerabk.cm = NULL;
-    pid = dds3StartProcess("sbtl_cameraproc", 0x40A, 1, 1, sbtlLeaf103, sbtlLeaf87, NULL);
+    pid = dds3StartProcess("sbtl_cameraproc", 0x40A, 1, 1, ProcCamera, ShutdownCamera, NULL);
     target.x += main_data.val20;
     target.z += main_data.val24;
     pos.x += main_data.val20;
@@ -163,11 +163,11 @@ s32 sbtlCallSetPosPoseSetDds3Basic2(SBTLCAMERA_WORK *wk) {
     return 1;
 }
 
-s32 sbtlLeaf103(dds3ProcessID_t *id) {
+s32 ProcCamera(dds3ProcessID_t *id) {
     return 0;
 }
 
-s32 sbtlLeaf87(dds3ProcessID_t *id)
+s32 ShutdownCamera(dds3ProcessID_t *id)
 {
 #ifdef FIX_BUGS
     return 0;
