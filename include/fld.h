@@ -144,6 +144,10 @@ void mapRiberaMa2ClearMsg(void);
 s32 mapCallBitCheck4(void);
 #ifdef VERSION_RAIDOU1
 s32 mapCallBitCheck5(void);
+#else
+s32 mapCallBitCheck9(void);
+s32 mapCallBitCheck10(void);
+s32 mapCallBitCheck11(void);
 #endif
 s32 mapGetSkilTakumiMapCheck(void);
 void mapProcRandomEncountCheckFldSub(s32 type);

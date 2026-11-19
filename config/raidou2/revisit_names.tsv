@@ -3391,7 +3391,6 @@
 0x00278070	sbtlSetUnitLight_Dir	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlSetUnitLight_Dir, score 8.8 band B
 0x002782C8	sbtlCallSetUnitLightAndAmbient3	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlSetUnitLight; calls evtSetUnitLightAndAmbient3
 0x00278388	sbtlCallToMatrix	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlSetUnitLight; calls ToMatrix
-0x002788B0	sbtlCallMemset3	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlReleaseUnitList_ID; calls memset
 0x00279B68	sbtlCallBtlGetBadStatus	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlBgnWaitALL_TimeStopSkill; calls sbtlGetBadStatus
 0x0027A1D0	btlAverageActorAttribute	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001A95B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0027A2B0	sbtlCallBtlGetSkilltbl	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlCheckKajaAny; calls sbtlGetSkilltbl
@@ -3808,7 +3807,6 @@
 0x002BBFF0	sbtlCallMemset9	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls memset
 0x002BC4B0	sbtlBtlCheckEffectDataSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlCheckEffectData
 0x002BC4E8	sbtlBtlSetEffectDataSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlSetEffectData
-0x002BC530	sbtlBtlCheckDeleteEffectSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlCheckDeleteEffect
 0x002BC578	sbtlBtlListProcSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlListProc
 0x002BC940	sbtlCallBtlGetSkilltbl16	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetSkilltbl
 0x002BE0F8	sbtlGetEffectData_Num	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEff.sBtlGetEffectData_Num, score 8.15 band B
@@ -20018,7 +20016,6 @@
 0x004E21A0	sbtlData84	data	tier=D	derived-shared	na	used by 14 functions: sbtlCallMemFreeDirect, sbtlPacData_FreeIndex, sbtlCallBtlSearchPacData
 0x004E21A5	pbData	data	tier=D	derived-shared	na	used by 3 functions: sbtlCallMemset3, pbProcSequenceSub, pbCallBtlCheckLoadFlg
 0x004E21B0	sbtlCallSetOtData	data	tier=D	derived-dominant	na	used by sbtlCallSetOt (5 of 7 refs, 3 functions)
-0x004E21B4	sbtlCheckStartBattleData	data	tier=D	derived-dominant	na	used by sbtlCheckStartBattle (2 of 3 refs, 2 functions)
 0x004E21B8	sbtlBGMLOADSTARTData	data	tier=D	derived-dominant	na	used by sbtlBGMLOADSTART (4 of 5 refs, 2 functions)
 0x004E21BC	Exit_sbtlData	data	tier=D	derived-shared	na	used by 2 functions: Exit_sbtl, Init_sbtl
 0x004E21C0	Exit_sbtlData2	data	tier=D	derived-shared	na	used by 2 functions: Exit_sbtl, Init_sbtl
@@ -23571,6 +23568,7 @@
 0x00276980	sbtlPlayerDirectDmg	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlPlayer_Spirit.sBtlPlayerDirectDmg score 4.5 flag I: calls2 callee-index st2:cidx r2-only
 0x00277FC0	sbtlGetLight_SetPos	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlGetLight_SetPos score 4.6 flag I: next gap2/1 st1:gap r1+r2
 0x00277FF0	sbtlSetLight_SetPos	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlSetLight_SetPos score 5.3 flag I: next gap3/2 st1:gap r1+r2
+0x002788B0	sbtlCheckMotionMove	func	tier=C	derived-derived-role	na	raidou1 sbtlCheckMotionMove by body (motion move along rot, sbtlCheckMapHit_Cross, field415); replaces sbtlCallMemset3
 0x00278DC8	GetCommListCnt	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x259c90 sim 0.638 margin 0.25 single
 0x00279518	sbtlGetPlayer_HitTarget	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlUnit.sBtlGetPlayer_HitTarget score 3.7 flag I: calls1 calls-of-match st2:call r2-only
 0x002795F8	sbtlSetRunAway	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlUnit.sBtlSetRunAway score 4.8 flag I: calls1 next gap4/1 st2:gap r2-only
@@ -24296,6 +24294,7 @@
 0x004E210C	effColorEditKeyColor	data	tier=C	dds-ref	0.59 (n=D_r1_0046D9CC)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effEditColorTrack
 0x004E2130	effColorEditFrameCountFormat	data	tier=C	dds-ref	0.59 (n=D_r1_0046D9F0)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effEditColorTrack
 0x004E21A4	VRF_DeltaTime	data	tier=C	hd	0.37 (n=D_r1_0046DA64)	hd/medium: conf=medium, agree=2, using=2
+0x004E21B4	sbtlSbattleData	data	tier=C	derived-derived-role	na	raidou1 sbtlSbattleData by body: sbtlSbattle stores dds3GetKernelCount() here; replaces sbtlCheckStartBattleData
 0x004E22D4	fldTitleMiniWork6	data	tier=C	smt3-ref	0.80 (n=D_004E22D4)	smt3-ref/close: nfun=1, other=0, sim=0.9714, games=1, size=True, sec=True, fn=pbCallEffectDelete; fldTitleMiniWork is another symbol
 0x004E22D8	effScalyTextureHandle3	data	tier=C	dds-ref	0.59 (n=D_004E22D8)	dds-ref/exact: nfun=1, other=0, sim=1.0, games=1, size=True, sec=True, fn=slCampEFFTES; effScalyTextureHandle is another symbol
 0x004E22DC	fldTitleMiniTex6	data	tier=C	smt3-ref	0.80 (n=D_004E22DC)	smt3-ref/close: nfun=1, other=0, sim=0.9714, games=1, size=True, sec=True, fn=pbCallEffectDelete; fldTitleMiniTex is another symbol
@@ -24755,6 +24754,7 @@
 0x002BB608	evtCommand_PMV_LOAD_END_WAIT	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1e82f8 sim 0.909 margin 0.12 single
 0x002BB9A8	sbtlGetDmgEffScale	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlEff.sBtlGetDmgEffScale score 2.8 flag I: prev~ next gap1/2 st2:gap r2-only
 0x002BBAE0	sbtlCreateEff	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEff.sBtlCreateEff score 6.2 flag I: calls4 calls-of-match votes3 st2:call r1-disagree:0x28a710
+0x002BC530	sbtlGetEffectPacData	func	tier=B	hd-role	na	HD sBtlEff.c sBtlGetEffectPacData by body (effpac[id].pwk[no] when EFFPAC_ST_LOADEND); replaces sbtlBtlCheckDeleteEffectSub
 0x002BC888	sbtlCheckEffectData_SeOnly	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEff.sBtlCheckEffectData_SeOnly score 6.5 flag I: calls3 callers-of-match votes4 st2:call r2-only
 0x002BCB88	CheckEffectData_Core_sbtlEff	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEff.CheckEffectData_Core score 6.7 flag -: calls5 callers-of-match-uniq votes2 st2:call r1-disagree:0x28b008
 0x002BE4A0	sbtlDeleteEffectData_SkillIDType	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEff.sBtlDeleteEffectData_SkillIDType score 5.6 flag I: calls3 calls-of-match votes4 st2:call r1-disagree:0x28c680

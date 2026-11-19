@@ -68,5 +68,8 @@ void DeleteMessage(SBTLSM_LISTWORK *lwk, SBTLSM_WORK *dwk);
 void SetVar_sbtlSM(SBTLSM_WORK *dwk);
 s32 sbtlDeleteSMList(SBTLSM_LISTWORK *lwk);
 s32 sbtlReleaseSM_List(SBTLSM_LISTWORK *lwk, u8 flg);
+#ifdef VERSION_RAIDOU2
+s32 Proc(SBTLSM_LISTWORK *lwk);
+#endif
 
 #endif

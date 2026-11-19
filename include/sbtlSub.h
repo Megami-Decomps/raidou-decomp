@@ -35,4 +35,9 @@ s32 sbtlSetVibeFadeIn(s32 index, u8 power, s32 frame);
 s32 sbtlSetVibeFadeOut(s32 index, u8 power, s32 frame);
 void sbtlSetRotateDeg(struct SBTLUNIT_WORK *wk);
 
+#ifdef VERSION_RAIDOU2
+extern const char sbtlStrWkNull2[];
+extern const char sbtlStrWkModelNull[];
+#endif
+
 #endif

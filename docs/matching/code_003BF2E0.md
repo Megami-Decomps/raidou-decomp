@@ -90,6 +90,8 @@ Raidou 2: 2 of 83 words differ, first at +0x88.
 
 Register swap: retail builds the sprNo * 0xA0 slot offset in $4 and copies it to $5, cc1 builds it in $5 and copies to $4. Tried a slot pointer per block, a u16 index and the y update first. 81 of 83 words.
 
+Fragile: on bdf2c164 the R2-S3 part 9 declarations moved the full unit from CONTEXT 2/83 to CONTEXT 6/83, and reverting fld.h or sBtlEff.h alone made it match, so it moves with the count of declarations, not its own C. On 0469e6c5 it is back at 2/83.
+
 ## rstResultGetExpCyuuseiSub (code_003BF2E0, raidou2 0x15C)
 
 Raidou 2: 6 of 87 words differ, first at +0x84.

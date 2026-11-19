@@ -18,10 +18,20 @@ typedef struct {
     dds3ProcessID_t *drawPID;
     dds3ProcessID_t *menuPID;
     dds3ProcessID_t *menuPID2;
-    u8 unk10[0x2];
+    u8 unk10;
+    u8 field11; /* party slot: DrawProc draws sbtlGetNakama(field11) */
     u8 stat; /* 1 and 2 count as started (sbtlIsStart), 4 deleted */
-    u8 unk13[0x39];
+    u8 unk13;
+    s8 field14; /* DrawProc draws the tab panel when set */
+    u8 unk15[0x3];
+    s32 field18;
+    u8 unk1C[0x4];
+    f32 field20;
+    u8 unk24[0x4];
+    s32 field28;
+    u8 unk2C[0x20];
 } sbtlCmndMenuNew_t;
+SIZE_CHECK(sbtlCmndMenuNew_tSizeCheck, sbtlCmndMenuNew_t, 0x4C);
 
 extern const char sbtlStrCmndMenu[];
 extern const char sbtlStrCmndMenuDraw[];
@@ -32,6 +42,10 @@ sbtlCmndMenuNew_t *GetProcessData(void);
 void Delete_sbtlCmndMenuNew(void);
 s32 sbtlGetStat(void);
 s32 DrawProc(dds3ProcessID_t *id);
+extern u32 DrawProcData;
+s32 GetTabLimit(s32 *a_pmin, s32 *a_pmax);
+void DrawRepeatIconEx(s32 a_x, s32 a_y, s32 a_z, f32 a_angle, f32 a_alphaRate, DDS3_OT a_otNo, struct SBTLUNIT_WORK *a_pBtlUnit, SKLID a_sklId);
+extern u32 sbtlCheckData;
 
 /* Boss event table row (0x94 bytes), loaded from /battle/sb_bossevtbl.dat; ends at devil_id -1. */
 typedef struct TYPE_BOSS_NML_EVENT {
@@ -108,6 +122,7 @@ void sbtlRefSbtl28(void);
 void sbtlRefSbtl29(sbtlSummonText_t *text, sdfVector4_t *pos, s32 arg2, s32 arg3, s32 arg4);
 sbtlSummonText_t *sbtlRefSbtl30(void);
 void sbtlCallSetOt(sbtlSummonText_t *text);
+extern void (*sbtlCallSetOtTable[])(sbtlSummonText_t *text);
 s32 sbtlBtlFirstSummonTextSetSub(sdfVector4_t *pos, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void sbtlStart(void);
 s32 sbtlCheckEnemyAllDead(void);

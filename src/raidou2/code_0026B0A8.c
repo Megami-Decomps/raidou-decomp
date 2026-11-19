@@ -26,6 +26,7 @@
 #include "sBtlPlayer.h"
 #include "code_r1_0010DF68.h"
 #include "sBtlScript.h"
+#include "code_0027A1E8.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
@@ -1114,7 +1115,91 @@ s32 sbtlEntryUnitList(struct SBTLUNIT_LISTWORK *lwk, struct SBTLUNIT_WORK *wk)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf4);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateUnit);
+struct SBTLUNIT_WORK *sbtlCreateUnit(s32 major, s32 minor, s16 mode) {
+    sdfMemHandle_t *handle;
+    struct SBTLUNIT_WORK *wk;
+
+    handle = sdfMemAllocDirect(sizeof(struct SBTLUNIT_WORK));
+    wk = sdfMemLock(handle);
+    memset(wk, 0, sizeof(struct SBTLUNIT_WORK));
+    wk->handle = handle;
+    wk->major = major;
+    wk->minor = minor;
+    wk->pBasic = NULL;
+    wk->hEveUnit = NULL;
+    wk->hModel = NULL;
+    wk->pBasic_d = NULL;
+    wk->hEveUnit_d = NULL;
+    wk->hModel_d = NULL;
+    wk->pacHandle = NULL;
+    wk->msgHandle = NULL;
+    wk->msgData = NULL;
+    wk->cacheHandle = NULL;
+    wk->motionno = 0;
+    sbtlRestartMotion(wk);
+    wk->fadergb = 8;
+    wk->field4F3 = 1;
+    wk->damage_serialID = -1;
+    wk->damage_workID = -1;
+    wk->bst_effserialID2 = -1;
+    wk->color = 0x808080;
+    wk->model = sbtlCreate();
+    wk->aiwk = Create_sbtlAI();
+    wk->mode = mode;
+    wk->unit.haveskill[0] = 149;
+    wk->unit.haveskill[1] = 288;
+    wk->haveskill[0] = 149;
+    wk->haveskill[1] = 288;
+    wk->mag_on1 = -1;
+    wk->mag_on2 = -1;
+    wk->mag_on3 = -1;
+    wk->dead_on = -1;
+    wk->field5E0 = 0;
+    wk->field5E4 = 0;
+    wk->field704 = 0;
+    wk->field708 = 0;
+    wk->nakama_asimoto_anim = 0.0f;
+    wk->field710 = 0;
+    wk->field714 = 0;
+    wk->field718 = 0;
+    wk->field71C = 0;
+    wk->field72C = 0;
+    wk->asimoto_mode = 0;
+    wk->asimoto_pos_x = 0.0f;
+    wk->asimoto_pos_z = 0.0f;
+    wk->asimoto_pos_x2 = 0.0f;
+    wk->asimoto_pos_z2 = 0.0f;
+    wk->asimoto_pos_x3 = 0.0f;
+    wk->asimoto_pos_z3 = 0.0f;
+    wk->asimoto_pos_x4 = 0.0f;
+    wk->asimoto_pos_z4 = 0.0f;
+    wk->field768 = 0;
+    wk->field76C = 0;
+    wk->field5DE = 0;
+    wk->no_dead_se = 0;
+    wk->miusinai = 0;
+    wk->field790 = -4000.0f;
+    wk->fieldFC = 1.0f;
+    wk->kuramasi = 0;
+    wk->field778 = 0;
+    wk->field78C = 0;
+    wk->field794 = 0;
+    wk->L2_muteki = 0;
+    wk->field79C = 0;
+    wk->field780 = 0;
+    wk->field7A0 = 0;
+    wk->field7A4 = 0;
+    wk->field7A8 = 0;
+    wk->fieldF0 = 0;
+    wk->fieldF4 = 0;
+    wk->fieldF8 = 0;
+    wk->field7AC = 0;
+    wk->field7B0 = 0;
+    wk->eff_wait_kaisin = 0;
+    Init_sbtlScript(wk);
+    cmpLeaf3(wk);
+    return wk;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDeleteUnit_UnWork);
 

@@ -32,10 +32,44 @@
 #include "dat.h"
 #include "sbtlActAI.h"
 #include "sBtlMenu.h"
+#include "rstInit.h"
+#include "sdfSystem.h"
+#include "code_001C32D8.h"
+#include "sBtlScript.h"
+#include "dds3KernelMain.h"
+#include "sbattle.h"
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlRaidouKatana);
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlSbattle);
+s32 sbtlSbattle(SBTL_START_DATA *start, s8 flag)
+{
+    dds3ProcessID_t *process;
+
+    sbtlSbattleData = dds3GetKernelCount();
+    sbtlBGMLOADSTARTData = sdfGetRunTimeCountBase();
+    main_data = *start;
+    if (flag == 0) {
+        ReloadTableData();
+        rstSetFlag(0x20000);
+    }
+    sbtlForceDelete_EffectWork(2);
+    sbtlForceDelete_AttackHitData();
+    sbtlInitEffectWork();
+    sbtlInitLoadAttackHitData_pData();
+    Init_sbtl(start->val30, start->val28);
+    process = dds3StartProcess(sbtlData85, 1015, 0, 0, sbtlSbattle3, sbtlFunc, NULL);
+    wk_sbtl->process = process;
+    dds3LinkProcess(process, dds3StartProcess("sbattle_draw", 11020, 0, 0, sbtlSbattle4, NULL, NULL));
+    dds3LinkProcess(process, dds3StartProcess("sbattle_draw2", 11021, 0, 0, DrawProc2_sbtl, NULL, NULL));
+    sbtlSceneLoad();
+    Init_sbtlUnit(flag);
+    sbtlCreateAIScript();
+    sbtlInitDropWork();
+    RestartBattle();
+    sbtlStopVibe();
+    evtExitSBtlSub(0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", Exit_sbtl);
 
@@ -465,7 +499,49 @@ void sbtlPacData_Free(void)
     }
 }
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlCallMemFreeDirect);
+void sbtlCallMemFreeDirect(MODELTYPE major, s32 minor, s32 devilid)
+{
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < SBTL_PACDATA_NUM; i++) {
+        if ((sbtlData84->pac[i].key.major || sbtlData84->pac[i].key.minor || sbtlData84->pac[i].key.devilid)
+            && sbtlData84->pac[i].key.major == major && sbtlData84->pac[i].key.minor == minor
+            && sbtlData84->pac[i].key.devilid == devilid) {
+            if (sbtlData84->pac[i].hit.status & 1) {
+                for (j = 0; j < sbtlData84->pac[i].hit.num; j++) {
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle08) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle08);
+                        sbtlData84->pac[i].hit.pwk[j]->handle08 = NULL;
+                    }
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle10) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle10);
+                        sbtlData84->pac[i].hit.pwk[j]->handle10 = NULL;
+                    }
+                    if (sbtlData84->pac[i].hit.pwk[j]->handle) {
+                        sdfMemFreeDirect(sbtlData84->pac[i].hit.pwk[j]->handle);
+                        sbtlData84->pac[i].hit.pwk[j]->handle = NULL;
+                    }
+                }
+                sbtlData84->pac[i].hit.status = 0;
+            }
+            if (sbtlData84->pac[i].mht.handle) {
+                sdfMemFreeDirect(sbtlData84->pac[i].mht.handle);
+                sbtlData84->pac[i].mht.handle = NULL;
+                sbtlData84->pac[i].mht.data = NULL;
+                sbtlData84->pac[i].mht.size = 0;
+            }
+            if (sbtlData84->pac[i].file20.handle) {
+                sdfMemFreeDirect(sbtlData84->pac[i].file20.handle);
+                sbtlData84->pac[i].file20.handle = NULL;
+                sbtlData84->pac[i].file20.data = NULL;
+            }
+            sbtlData84->pac[i].key.major = 0;
+            sbtlData84->pac[i].key.minor = 0;
+            sbtlData84->pac[i].key.devilid = 0;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", Init_sbtl);
 

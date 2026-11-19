@@ -167,7 +167,7 @@ typedef struct sbtlSummonText_t {
     f32 field34;
     f32 field38;
     f32 field3C;
-    s32 field40;
+    f32 field40;
     s32 field44;
     s32 field48;
     s32 count;
@@ -209,7 +209,7 @@ typedef struct SBTL_WORK {
     u8 pad422[0x424 - 0x422];
     sdfMemHandle_t *handle;
     dds3ProcessID_t *process;
-    u8 pad42C[0x430 - 0x42C];
+    s32 syscnt;
     s32 field430; /* sbtlMainDraw fades the moon out when set */
     u8 pad434[0x438 - 0x434];
     s32 equipbullet; /* HD name */
@@ -356,7 +356,8 @@ typedef struct SBTL_WORK {
     u8 pad9D4[0x4];
     s32 field9D8; /* Proc_sbtlEXP adds a bind's para, clamped to 0..999999 */
     struct SBTL_STP *stp;
-    u8 pad9E0[0x4];
+    s8 field9E0; /* sbtlCallBtlGetBadStatus2 counts it up to 40 */
+    u8 pad9E1[0x3];
     struct scrProcessWork_s *hAIScript;
     u8 pad9E8[0x4];
     struct SBTLUNIT_WORK *scrUnit;
@@ -409,7 +410,11 @@ typedef struct SBTL_WORK {
     u8 padDA0[0xDA4 - 0xDA0];
     struct dds3Basic_t *apMarkerUnit[8];
     struct dds3Basic_t *apMarkerUnitR[8];
-    u8 padDE4[0xE81 - 0xDE4];
+    u8 padDE4[0xE2C - 0xDE4];
+    s32 fieldE2C; /* sbtlCallSetOt sets 10 when a text adds magnetite */
+    u8 padE30[0xE40 - 0xE30];
+    s32 fieldE40; /* sbtlCallSetOt sets 100 when a kind 0 text ends */
+    u8 padE44[0xE81 - 0xE44];
     s8 bEffNoDraw; /* HD name */
     u8 padE82[0xE84 - 0xE82];
     s32 fieldE84; /* sbtlDat's index into datData20 */
@@ -447,7 +452,7 @@ typedef struct SBTL_WORK {
     u8 pad4210[0x4264 - 0x4210];
     s8 field4264; /* set: sbtlCreateSTP_Unit creates nothing */
     u8 pad4265[0x4288 - 0x4265];
-    s8 field4288; /* nonzero: sbtlReset_SupportAction_Shugou does nothing */
+    s8 field4288; /* nonzero: sbtlReset_SupportAction_Shugou does nothing and sbtlCallBtlGetBadStatus2 returns 0 */
     u8 pad4289[0x42A8 - 0x4289];
     s16 field42A8;
     u8 pad42AA[0x2];
@@ -485,11 +490,15 @@ typedef struct SBTL_WORK {
     s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
     s32 field4328; /* Init_sbtl: set when the caller gave no stage, so the stage and sword come from Exit_sbtl */
     s32 field432C;
-    s32 field4330;
+    s32 field4330; /* frames while 0x80000 of flg2 is clear and the scene runs */
     s32 field4334;
     u8 pad4338[0x4344 - 0x4338];
     s32 field4344; /* sbtlSummonKey counts it down; the summon menu waits for 0 */
-    u8 pad4348[0x4360 - 0x4348];
+    s32 field4348; /* counted down to 0 by sbtlSbattle3 */
+    s32 field434C;
+    u8 pad4350[0x4];
+    s32 field4354;
+    u8 pad4358[0x4360 - 0x4358]; /* Init_sbtl clears 0x4360 bytes */
 } SBTL_WORK;
 SIZE_CHECK(SBTL_WORKSizeCheck, SBTL_WORK, 0x4360);
 #else
@@ -1075,6 +1084,9 @@ extern char sbtlStr0204[];              /* "%02d %04x %d" */
 extern char sbtlStrEnmy[];              /* "ENMY: %d" */
 extern char sbtlENMYData[];             /* "SKL: %d" */
 extern s32 sbtlSbattleData;
+#ifdef VERSION_RAIDOU2
+extern s32 sbtlBGMLOADSTARTData;
+#endif
 extern s32 sbtlSceneLoadData;
 extern s32 sbtlSceneLoadData2;
 extern s32 sbtlSceneLoadData3;
@@ -1243,6 +1255,23 @@ void sbtlSetGunNum(s32 num);
 extern s32 Exit_sbtlData;  /* stage Init_sbtl uses when the caller gives none */
 extern s32 Exit_sbtlData2; /* sword Init_sbtl equips in that case */
 E_CAMERA_MODE sbtlGetMode(void);
+extern s32 sbtlSbattle3Data; /* frames counted by sbtlSbattle3 */
+void cmpRefSbtl2(void);
+s32 Exit_sbtl(s32 mode);
+s32 sbtlCheckStartBattle(void);
+s32 sbtlRunSklProc(void);
+void sbtlEisyoWaitTask(void);
+void sbtlAttackwaitWaitTask(void);
+void sbtlLeaf42(void);
+s32 sbtlSetCameraLockOnTgtUpdate(void);
+void sbtlKettouProc(void);
+s32 sbtlCallObjectBaseSetPadControl(void);
+s32 sbtlProcHitStop(void);
+s32 sbtlGeneratorProc(void);
+s32 slCallPlaySE(void);
+void slQueryYesNoDraw_slMain(void);
+s32 Proc_sbtlSound(void);
+s32 CheckEnd(void);
 #endif
 s64 sbtlCallBtlCheckTutorialBattle3(void);
 void sbtlGetDevilData(struct SBTLUNIT_WORK *wk, s32 a, s32 b);
@@ -1266,7 +1295,15 @@ s32 sbtlRefSbtl31(void);
 void sbtlResetRndEncCount(void);
 void sbtlRndEncTopPriorityMap(s32 *mapOut, s32 *floorOut);
 s32 sbtlSbattle(SBTL_START_DATA *start, s8 flag);
+#ifdef VERSION_RAIDOU2
+s32 sbtlSbattle3(dds3ProcessID_t *id);
+s32 sbtlSbattle4(dds3ProcessID_t *id);
+s32 DrawProc2_sbtl(dds3ProcessID_t *id);
+s32 ReloadTableData(void);
+void Init_sbtl(s32 battleMode, s32 stageNo);
+#else
 s32 sbtlSbattle3(void);
+#endif
 void sbtlCallEffectShutdown3(s32 mode);
 sdatUnitWork_t *sbtlGetStockUnitData(s32 id);
 s32 sbtlLeaf53(sdatUnitWork_t *unit);
@@ -1347,6 +1384,7 @@ s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
 s32 sbtlSetHitStop(s32 sttime, s32 cmpcnt);
 #ifdef VERSION_RAIDOU2
 void sbtlLeaf110(f32 x, f32 y, f32 z);
+void sbtlRefSbtl54(s32 num);
 #endif
 struct SBTLUNIT_WORK *sbtlRefSbtl38(void);
 f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */

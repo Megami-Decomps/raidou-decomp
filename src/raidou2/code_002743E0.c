@@ -11,6 +11,8 @@
 #include "sBtlItem.h"
 #include "ps2asm.h"
 #include "evtUnitManager.h"
+#include "sbtlActAI.h"
+#include "sdfQuat.h"
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlRefSbtl8);
 
@@ -307,7 +309,44 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlCallSetUnitLightAndAmbient3);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCallToMatrix);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlCallMemset3);
+s32 sbtlCheckMotionMove(struct SBTLUNIT_WORK *wk)
+{
+    sdfVector4_t dir = { 0.0f, 0.0f, -1.0f, 0.0f };
+    sdfVector4_t pos = { 0.0f, 0.0f, 0.0f, 1.0f };
+    f32 move;
+    f32 frame;
+
+    if (wk_sbtl->fieldCA2 && wk == sbtlGetPChara()) {
+        return 0;
+    }
+    if (wk->flg & SBTLUNIT_FLG_KAIHIMUTEKI) {
+        return 0;
+    }
+    if (wk->hModel == NULL) {
+        return 0;
+    }
+    frame = wk->hModel->first->frame;
+    wk->field415 = 0;
+    move = sbtlGetMotionMove(wk, frame);
+    if (move != 0.0f) {
+        SDF_VU0_LOADVECTOR(&wk->rot);
+        ToMatrix();
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_SCALEVECTOR(move);
+        SDF_VU0_LOADVECTOR_B(&wk->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&pos);
+        if (!(wk->flg & SBTLUNIT_FLG_NODMGROT) && !sbtlCheckMapHit_Cross(&wk->pos, &pos, move) &&
+            (wk->unit.devilId != 0 || (wk->next_motionno != 41 && wk->next_motionno != 42))) {
+            return 0;
+        }
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_STOREVECTOR(&wk->pos);
+        wk->field415 = 1;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", MotinProc);
 

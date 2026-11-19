@@ -28,7 +28,72 @@ void fldCallMemGetPtr7(dds3ProcessID_t *id) {
 
 INCLUDE_ASM(const s32, "code_0035E5B8", fldNakamaCashLoad_Decode);
 
+/* NON_MATCHING: 51 of 119 words match.  */
+#ifdef NON_MATCHING
+s32 fldCallMemGetPtr3(dds3ProcessID_t *id, s32 *index) {
+    fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
+    fldNmeSlotList_t *list;
+    u32 i;
+    u32 j;
+    s32 used;
+    s32 n;
+    s32 match;
+    s32 ids[4];
+
+    list = work->list;
+    for (i = 0; i < 2; i++) {
+        used = 0;
+        for (j = 0; j < list->count; j++) {
+            if (list->slot[j].id != 0xFFFF) {
+                used++;
+            }
+        }
+        if (used == 0) {
+            if (index != NULL) {
+                *index = i;
+            }
+            return 0;
+        }
+        list++;
+    }
+    match = FALSE;
+    n = 0;
+    used = 0;
+    for (j = 0; j < work->list[1].count; j++) {
+        if (work->list[1].slot[j].id != 0xFFFF) {
+            used++;
+            if (n < 2) {
+                ids[n++] = work->list[1].slot[j].id;
+            }
+        }
+    }
+    if (used == 2 && ids[0] == 597) {
+        match = ids[1] == 0xBCB;
+    }
+    if (!match) {
+        return 1;
+    }
+    n = 0;
+    used = 0;
+    for (j = 0; j < work->list[0].count; j++) {
+        if (work->list[0].slot[j].id != 0xFFFF) {
+            used++;
+            if (n < 4) {
+                ids[n++] = work->list[0].slot[j].id;
+            }
+        }
+    }
+    if (used == 4 && ids[0] == 119 && ids[1] == 82 && ids[2] == 141 && ids[3] == 83) {
+        if (index != NULL) {
+            *index = -1;
+        }
+        return 0;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0035E5B8", fldCallMemGetPtr3);
+#endif
 
 void fldCallMemGetPtr8(dds3ProcessID_t *id) {
     fldNmeWork_t *work = sdfMemGetPtr(id->workdata);

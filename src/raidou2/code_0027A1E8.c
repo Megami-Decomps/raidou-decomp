@@ -919,7 +919,91 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallMemset4);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlLeaf7);
 
+/* NON_MATCHING: 150 of 161 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlGetBadStatus2(struct SBTLUNIT_WORK *wk) {
+    s32 bst;
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
+    s32 ret;
+
+    ret = sbtlLeaf63(wk);
+    if (ret == 0) {
+        return ret;
+    }
+    ret = 0;
+    if (wk_sbtl->field4288 || wk_sbtl->field42CA || (wk_sbtl->flg2 & 0x20000000)) {
+        return ret;
+    }
+    bst = sbtlGetBadStatus(&wk->unit);
+    if (!(wk_sbtl->flg & 0x40000) && !dds3PadButtonState[0x29] && !sbtlCallBtlGetNakama3()) {
+        wk_sbtl->flg2 &= ~0x2000;
+    }
+    if (wk_sbtl->field430 == 0 && dds3PadButtonState[0x29] != 0) {
+        if (bst == BST_KANASHIB) {
+            goto clear;
+        }
+        if (bst == BST_HYOUKETU) {
+            goto clear;
+        }
+        if (bst == BST_KANDEN) {
+            goto clear;
+        }
+        if (bst == BST_APPAKU) {
+            goto clear;
+        }
+        if (bst == BST_KAEN) {
+            goto clear;
+        }
+        if (bst == BST_KOUFUN) {
+            goto clear;
+        }
+        if (bst == BST_CHARM) {
+            goto clear;
+        }
+        if (bst == BST_PANIC) {
+            goto clear;
+        }
+        if (bst == BST_BOUDO) {
+            goto clear;
+        }
+        if (bst == BST_MAHUU) {
+            goto clear;
+        }
+        if (bst == BST_GUN) {
+            goto clear;
+        }
+        if (bst == BST_KANSEN) {
+            goto clear;
+        }
+        if (bst != BST_UNK18 && !(wk_sbtl->flg2 & 0x2000) && !sbtlCallBtlGetNakama3()) {
+            if (dds3PadButtonState[0x29] < 0 || wk_sbtl->field9E0 >= 4) {
+                if (!(wk_sbtl->flg & 0x40000)) {
+                    sbtlPlaySE(0x1002E);
+                    for (i = 0; i < 20; i++) {
+                        if (sbtlCheckBit(&wk_sbtl->stock_mask, i) && wk_sbtl->summonflg[i] == 2) {
+                            unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[i]);
+                            Check_Stls(unit);
+                            if (unit->field6C4 & 0x400) {
+                                wk_sbtl->field9E0 = 0;
+                            }
+                        }
+                    }
+                }
+                wk_sbtl->flg |= 0x40000;
+            }
+            wk_sbtl->field9E0++;
+            wk_sbtl->field9E0 = wk_sbtl->field9E0 <= 0 ? 0 : wk_sbtl->field9E0 > 40 ? 40 : wk_sbtl->field9E0;
+            return 1;
+        }
+    }
+clear:
+    wk_sbtl->field9E0 = 0;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetBadStatus2);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl37);
 

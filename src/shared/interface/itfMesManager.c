@@ -3945,7 +3945,102 @@ s32 DrawMesFlow(instanceMes_tag *pinst) {
     return 3;
 }
 #else
-INCLUDE_ASM(const s32, "interface/itfMesManager", DrawMesFlow);
+s32 DrawMesFlow(instanceMes_tag *pinst) {
+    u32 stat = pinst->stat;
+    frFontHandle_t *messageFont;
+    frFontHandle_t *selectFont;
+    frFontHandle_t *prevFont;
+
+    itfCallGetRandFloatA();
+    if (pinst->select.pfont != NULL) {
+        itfData.dist[0] = 0;
+        itfData.dist[1] = 0;
+    }
+    if (pinst->message.pfont != NULL) {
+        ChangeFontPosition(pinst->message.pfont, itfData.dist[0], itfData.dist[1]);
+    }
+    if (pinst->speaker.pfont != NULL) {
+        ChangeFontPosition(pinst->speaker.pfont, itfData.dist[0], itfData.dist[1]);
+    }
+    itfMesMngManager.flags &= ~2;
+    DrawWindow(pinst);
+    {
+        frFontHandle_t *speakerFont = pinst->speaker.pfont;
+
+        if ((stat & 0x10000) == 0 && speakerFont != NULL) {
+            frDrawFont(speakerFont);
+        }
+    }
+    if (pinst->message.pfont != NULL) {
+        ChangeFontPosition(pinst->message.pfont, -itfData.dist[0], -itfData.dist[1]);
+    }
+    if (pinst->speaker.pfont != NULL) {
+        ChangeFontPosition(pinst->speaker.pfont, -itfData.dist[0], -itfData.dist[1]);
+    }
+    prevFont = pinst->message.pfontPrev;
+    if (prevFont != NULL) {
+        frDrawMesFlowSub(prevFont, pinst->message.limit);
+        frDrawFontEx(prevFont, 1);
+        if (pinst->message.limit > 16) {
+            pinst->message.limit -= 8;
+            if (pinst->message.limit < 16) {
+                pinst->message.limit = 16;
+            }
+        } else {
+            frDestroyFontRequestAfter(prevFont);
+            pinst->message.pfontPrev = NULL;
+        }
+    } else {
+        messageFont = pinst->message.pfont;
+        if ((stat & 0x20000) == 0 && (stat & 7) >= 3) {
+            s32 drawn;
+
+            if (messageFont == NULL) {
+                drawn = 0;
+                pinst->message.phase = -1;
+            } else {
+                drawn = frDrawFont(messageFont);
+            }
+            if (drawn > 0) {
+                u32 cur = pinst->stat;
+
+                if ((cur & 7) != 4) {
+                    pinst->curctr[0].ctr_key = 0;
+                    pinst->curctr[0].lf_wait = 0;
+                    pinst->curctr[0].lf_after_wait = 0;
+                    pinst->stat = (cur & ~7) | 4;
+                    pinst->curctr[0].cut_wait = 0;
+                }
+            }
+        }
+    }
+    selectFont = pinst->select.pfont;
+    if ((stat & 0x40000) == 0) {
+        u32 selStat = stat & 0x38;
+
+        if (selStat >= 0x18 && frDrawFontEx(selectFont, 1) > 0 && selStat == 0x18) {
+            select_tag *select = &pinst->select;
+
+            if (select->select == -1) {
+                select->select = 0;
+                select->select_imm = 0;
+            }
+            ChangeFontColor(select->pfont, select->select, select->lines, 1);
+            pinst->stat = (pinst->stat & ~0x38) | 0x20;
+            pinst->curctr[1].isdraw = 2;
+        }
+    }
+    if (pinst->curctr[0].isdraw & 1) {
+        itfCallGrAllocPacketBuff2(pinst);
+    }
+    if (pinst->curctr[1].isdraw & 2) {
+        if (pinst->type == 3) {
+            return itfLeaf14(pinst);
+        }
+        return itfCallGrAllocPacketBuff(pinst);
+    }
+    return 3;
+}
 #endif
 
 void DrawWindow(instanceMes_tag *pinst) {

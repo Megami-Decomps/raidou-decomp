@@ -99,7 +99,22 @@ s32 sbtlCalcVibe(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlSub", sbtlGetUnitHelperPos);
+s32 sbtlGetUnitHelperPos(struct SBTLUNIT_WORK *wk, SBTLUNIT_MARK mark)
+{
+    if (wk == NULL) {
+        printf(sbtlStrWkNull2);
+    }
+    if (wk->hModel == NULL) {
+        printf(sbtlStrWkModelNull);
+    }
+    if (wk->hModel != NULL && (wk->field414 & 7) && (!(wk->flg & 0x40) || !wk->changeflg)) {
+        sdfModelEvalTm(wk->hEveUnit->owner->inner);
+        sdfModelGetMarkPos_sdfModel(wk->hEveUnit->owner->inner, mark);
+    } else {
+        SDF_VU0_LOADVECTOR(&wk->pos);
+    }
+    return 1;
+}
 
 s32 sbtlGetUnitHelperMatrix(struct SBTLUNIT_WORK *wk, SBTLUNIT_MARK mark) {
     if (GetUnitHelperMatrix(wk, mark)) {
@@ -194,6 +209,10 @@ void sbtlAddUnitDeg(struct SBTLUNIT_WORK *wk, f32 deg) {
         }
     }
 }
+
+INCLUDE_RODATA(const s32, "sbtlSub", sbtlStrWkNull2);
+
+INCLUDE_RODATA(const s32, "sbtlSub", sbtlStrWkModelNull);
 
 s32 sbtlGetRotateDeg(const sdfVector4_t *rot, f32 deg) {
     f32 axis[4] = { 0.0f, 1.0f, 0.0f, 1.0f };

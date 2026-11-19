@@ -509,7 +509,107 @@ void evtMoonAddMove(f32 leng)
     }
 }
 #else
-INCLUDE_ASM(const s32, "event/evtMoon", evtMoonAddMove);
+void evtMoonAddMove(f32 leng)
+{
+    if (evtBitCheck(2100) != 0) {
+        return;
+    }
+    DDS3_GBWK->moonTimer += leng;
+    if (!(4000.0f < DDS3_GBWK->moonTimer)) {
+        return;
+    }
+    DDS3_GBWK->moonTimer = 0.0f;
+    gMoonAgeOld = evtGetAgeOfMoon();
+    gMoonAge16Old = evtGetAgeOfMoon16();
+    gMoonCngCnt = 85;
+    evtSetAgeOfMoon((DDS3_GBWK->moonPhase + 1) & 0xF);
+    evtBitOff(3008);
+    evtBitOff(3009);
+    evtBitOff(3010);
+    evtBitOff(3011);
+    evtBitOff(3012);
+    evtBitOff(3013);
+    evtBitOff(3014);
+    evtBitOff(3015);
+    evtBitOff(3016);
+    switch (evtGetAgeOfMoon()) {
+    case 0:
+        evtBitOn(3008);
+        break;
+    case 1:
+        evtBitOn(3009);
+        break;
+    case 2:
+        evtBitOn(3010);
+        break;
+    case 3:
+        evtBitOn(3011);
+        break;
+    case 4:
+        evtBitOn(3012);
+        break;
+    case 5:
+        evtBitOn(3013);
+        break;
+    case 6:
+        evtBitOn(3014);
+        break;
+    case 7:
+        evtBitOn(3015);
+        break;
+    case 8:
+        evtBitOn(3016);
+        break;
+    }
+    if (evtGetAgeOfMoon() == 0) {
+        mapEsutoMaClearMsg();
+        mapRiberaMaClearMsg();
+        mapEsutoMa2ClearMsg();
+        mapRiberaMa2ClearMsg();
+        mapMoudokuClearMsg();
+    }
+    if (mapCallBitCheck9() != 0) {
+        DDS3_GBWK->takaraCnt--;
+        if (DDS3_GBWK->takaraCnt < 0) {
+            DDS3_GBWK->takaraCnt = 0;
+        }
+    }
+    if (mapCallBitCheck10() != 0) {
+        DDS3_GBWK->zeniCnt--;
+        if (DDS3_GBWK->zeniCnt < 0) {
+            DDS3_GBWK->zeniCnt = 0;
+        }
+    }
+    if (mapCallBitCheck11() != 0) {
+        DDS3_GBWK->takumiCnt--;
+        if (DDS3_GBWK->takumiCnt < 0) {
+            DDS3_GBWK->takumiCnt = 0;
+        }
+    }
+    DDS3_GBWK->teisatuCnt--;
+    if (DDS3_GBWK->teisatuCnt < 0) {
+        DDS3_GBWK->teisatuCnt = 0;
+    }
+    DDS3_GBWK->unk1F8A--;
+    if (DDS3_GBWK->unk1F8A <= 0) {
+        DDS3_GBWK->unk1F8A = 0;
+        evtBitOn(2449);
+    }
+    DDS3_GBWK->unk1F8B--;
+    if (DDS3_GBWK->unk1F8B <= 0) {
+        DDS3_GBWK->unk1F8B = 0;
+        evtBitOn(2448);
+    }
+    DDS3_GBWK->unk1F8C--;
+    if (DDS3_GBWK->unk1F8C <= 0) {
+        DDS3_GBWK->unk1F8C = 0;
+        evtBitOn(2450);
+    }
+    DDS3_GBWK->unk1F8D--;
+    if (DDS3_GBWK->unk1F8D <= 0) {
+        DDS3_GBWK->unk1F8D = 0;
+    }
+}
 #endif
 
 s32 Process1_evtMoon(dds3ProcessID_t *id) {

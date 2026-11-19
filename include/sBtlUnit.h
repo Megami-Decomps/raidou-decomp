@@ -249,6 +249,7 @@ s32 sbtlCheckLoopMotion(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
 s32 sbtlSetMotion_ID(struct SBTLUNIT_WORK *wk, s32 id, s32 bframe, s32 aframe, s8 flg);
 void sbtlCallMemFreeDirect(MODELTYPE major, s32 minor, s32 devilid);
 void cmpCallMemFreeDirect(struct SBTLUNIT_WORK *wk);
+void cmpLeaf3(struct SBTLUNIT_WORK *wk);
 s32 sbtlDrawShadow(struct SBTLUNIT_WORK *wk);
 void sbtlCallBtlGetRaceName(struct SBTLUNIT_WORK *wk);
 s32 sbtlGetMotionNo(struct SBTLUNIT_WORK *wk, u8 side, s32 no);
@@ -338,7 +339,11 @@ struct SBTLUNIT_WORK {
     sdfVector4_t field0B0;
     u8 pad0C0[0x10];
     sdfVector4_t posSaved;
-    u8 pad0E0[0x20];
+    u8 pad0E0[0xF0 - 0xE0];
+    s32 fieldF0;
+    s32 fieldF4;
+    s32 fieldF8;
+    f32 fieldFC; /* 1.0 from sbtlCreateUnit */
     mapLightParam_t light;
     SBTLSOUND_DEVILWORK se;
     u8 pad170[0x1D4 - 0x170 - sizeof(SBTLSOUND_DEVILWORK)];
@@ -401,7 +406,8 @@ struct SBTLUNIT_WORK {
     struct evtUnit_t *hEveUnit_d;
     struct mdlObj_t *hModel_d;
     u8 field414;
-    u8 pad531[0x3];
+    s8 field415; /* set when sbtlCheckMotionMove moved the unit */
+    u8 pad532[0x2];
     u32 flg;
     u32 vstatus;
     u32 flg2;
@@ -443,7 +449,11 @@ struct SBTLUNIT_WORK {
     s16 field4A2;
     s32 damage_serialID;
     s32 damage_workID;
-    u8 pad5D8[0x5F0 - 0x5D8];
+    u8 pad5D8[0x5DE - 0x5D8];
+    s16 field5DE;
+    s32 field5E0;
+    s16 field5E4;
+    u8 pad5E6[0x5F0 - 0x5E6];
     s32 bst_effserialID2;
     u8 pad5F4[0x600 - 0x5F4];
     struct sdfMemHandle_t *msgHandle;
@@ -474,10 +484,16 @@ struct SBTLUNIT_WORK {
     s8 field6E9; /* set by trmSetProcessTerm; HD talkBreakDownFlg, blocks talk */
     u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
-    u8 pad6F5[0x708 - 0x6F5];
+    u8 pad6F5[0x704 - 0x6F5];
+    s32 field704;
     s32 field708; /* frames left of the HP bar sbtlCallSetFontDrawOT draws */
     f32 nakama_asimoto_anim;
-    u8 pad710[0x730 - 0x710];
+    s32 field710;
+    s32 field714;
+    s32 field718;
+    s32 field71C;
+    u8 pad720[0x72C - 0x720];
+    s32 field72C;
     s32 mag_on1; /* HD names; -1 takes the boss event table's value */
     s32 mag_on2;
     s32 mag_on3;
@@ -492,15 +508,24 @@ struct SBTLUNIT_WORK {
     f32 asimoto_pos_z3;
     f32 asimoto_pos_x4;
     f32 asimoto_pos_z4;
-    u8 pad768[0x770 - 0x768];
+    s32 field768;
+    s32 field76C;
     s32 miusinai;
     s32 kuramasi;
-    u8 pad778[0x78C - 0x778];
+    s32 field778;
+    u8 pad77C[0x4];
+    s32 field780;
+    u8 pad784[0x78C - 0x784];
     s32 field78C;
-    u8 pad790[0x798 - 0x790];
+    f32 field790; /* -4000.0 from sbtlCreateUnit */
+    s32 field794;
     s32 L2_muteki; /* HD name */
     s32 field79C; /* set when trmCallBtlCheckReturnUnit cannot start the wait motion */
-    u8 pad7A0[0x7B4 - 0x7A0];
+    s32 field7A0;
+    s32 field7A4;
+    s32 field7A8;
+    s32 field7AC;
+    s32 field7B0;
     s32 eff_wait_kaisin;
     u8 pad7B8[0x7EC - 0x7B8];
     s32 cap_skillname_x; /* HD name; screen position of the skill name */

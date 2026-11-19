@@ -6947,7 +6947,7 @@
 0x00278160	sbtlSetUnitLight	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.sBtlSetUnitLight score 9.4 flag I: calls1 prev callers-of-match votes2 st1:call r1+r2
 0x002782C8	sbtlCallSetUnitLightAndAmbient3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlSetUnitLight; calls evtSetUnitLightAndAmbient3
 0x00278388	sbtlCallToMatrix	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlSetUnitLight; calls ToMatrix
-0x002788B0	sbtlCallMemset3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlReleaseUnitList_ID; calls memset
+0x002788B0	sbtlCheckMotionMove	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou1 sbtlCheckMotionMove by body (motion move along rot, sbtlCheckMapHit_Cross, field415); replaces sbtlCallMemset3
 0x00278A20	MotinProc	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlUnit.MotinProc score 7.0 flag -: calls4 callers-of-match votes2 st2:call r1-disagree:0x2590f8
 0x00278C90	sbtlReleaseUnitList_ID	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlUnit.sBtlReleaseUnitList_ID score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
 0x00278CB8	UnitRegist	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.UnitRegist score 11.3 flag -: calls9 calls-of-match votes8 st1:call r1+r2
@@ -7703,7 +7703,7 @@
 0x002BBFF0	sbtlCallMemset9	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls memset
 0x002BC4B0	sbtlBtlCheckEffectDataSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by sbtlCheckEffectData
 0x002BC4E8	sbtlBtlSetEffectDataSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by sbtlSetEffectData
-0x002BC530	sbtlBtlCheckDeleteEffectSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by sbtlCheckDeleteEffect
+0x002BC530	sbtlGetEffectPacData	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEff.c sBtlGetEffectPacData by body (effpac[id].pwk[no] when EFFPAC_ST_LOADEND); replaces sbtlBtlCheckDeleteEffectSub
 0x002BC578	sbtlBtlListProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by sbtlListProc
 0x002BC5B8	CheckEffectDataSingle	hd	hd: Raidou HD sbtlTubeSupport.CheckEffectDataSingle, score 8.1 band B
 0x002BC5F0	sbtlCheckEffectData	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlEff.sBtlCheckEffectData score 7.5 flag I: calls7 calls-of-match votes5 st2:call r1-disagree:0x28ac58
@@ -28063,7 +28063,7 @@
 0x004E21A4	VRF_DeltaTime	inferred	method=hd; p=0.37 (n=D_r1_0046DA64); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
 0x004E21A5	pbData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlCallMemset3, pbProcSequenceSub, pbCallBtlCheckLoadFlg
 0x004E21B0	sbtlCallSetOtData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCallSetOt (5 of 7 refs, 3 functions)
-0x004E21B4	sbtlCheckStartBattleData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCheckStartBattle (2 of 3 refs, 2 functions)
+0x004E21B4	sbtlSbattleData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou1 sbtlSbattleData by body: sbtlSbattle stores dds3GetKernelCount() here; replaces sbtlCheckStartBattleData
 0x004E21B8	sbtlBGMLOADSTARTData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlBGMLOADSTART (4 of 5 refs, 2 functions)
 0x004E21BC	Exit_sbtlData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: Exit_sbtl, Init_sbtl
 0x004E21C0	Exit_sbtlData2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: Exit_sbtl, Init_sbtl

@@ -8,6 +8,7 @@
 #include "dds3Randomize.h"
 #include "dds3ObjectBase.h"
 #include "sdk_libc.h"
+#include "EventBit.h"
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallSetOt6);
 
@@ -460,7 +461,167 @@ INCLUDE_ASM(const s32, "code_0014B7B0", mapLeaf18);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallPositioningGuardSystem3);
 
+/* NON_MATCHING: 220 of 224 words match.  */
+#ifdef NON_MATCHING
+s32 mapWarpGet_Pos(f32 x, f32 y, f32 z, s32 *attr, f32 *objx, f32 *objy, f32 *objz) {
+    s32 ix;
+    s32 iz;
+    s32 i;
+    s32 found;
+    f32 deg;
+
+    fldSetPlayerTargetData(&ix, &iz, x, z);
+    for (i = 0; i < 80; i++) {
+        if (mapData24[i].use != 1) {
+            continue;
+        }
+        if ((mapData24[i].id & 0xF) == 1) {
+            if (evtBitCheck(2993)) {
+                continue;
+            }
+        } else if ((mapData24[i].id & 0xF) == 2) {
+            if (!evtBitCheck(2993)) {
+                continue;
+            }
+        }
+        if (ix < mapData24[i].ix || ix >= mapData24[i].ix + mapData24[i].iw) {
+            continue;
+        }
+        if (iz < mapData24[i].iy || iz >= mapData24[i].iy + mapData24[i].ih) {
+            continue;
+        }
+        if ((u8)mapData24[i].act != 0) {
+            if ((u8)mapData24[i].act == 15 && fldGlobalBase.nakamaMode != 0) {
+                goto take;
+            }
+            if ((u8)mapData24[i].act == 16 && fldGlobalBase.nakamaMode == 0) {
+                goto take;
+            }
+            if ((u8)mapData24[i].act != 17) {
+                if ((u8)mapData24[i].act == 18) {
+                    goto take;
+                }
+                found = FALSE;
+                switch (mapData24[i].dir) {
+                case 0:
+                    deg = R360_LR(fldGlobalBase.floatC0, 0.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 1:
+                    deg = R360_LR(fldGlobalBase.floatC0, 337.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 2:
+                    deg = R360_LR(fldGlobalBase.floatC0, 315.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 3:
+                    deg = R360_LR(fldGlobalBase.floatC0, 292.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 4:
+                    deg = R360_LR(fldGlobalBase.floatC0, 270.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 5:
+                    deg = R360_LR(fldGlobalBase.floatC0, 248.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 6:
+                    deg = R360_LR(fldGlobalBase.floatC0, 225.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 7:
+                    deg = R360_LR(fldGlobalBase.floatC0, 202.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 8:
+                    deg = R360_LR(fldGlobalBase.floatC0, 180.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 9:
+                    deg = R360_LR(fldGlobalBase.floatC0, 158.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 10:
+                    deg = R360_LR(fldGlobalBase.floatC0, 135.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 11:
+                    deg = R360_LR(fldGlobalBase.floatC0, 112.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 12:
+                    deg = R360_LR(fldGlobalBase.floatC0, 90.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 13:
+                    deg = R360_LR(fldGlobalBase.floatC0, 67.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 14:
+                    deg = R360_LR(fldGlobalBase.floatC0, 45.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 15:
+                    deg = R360_LR(fldGlobalBase.floatC0, 22.0f);
+                    if (deg < 80.0f && deg > -80.0f) {
+                        found = TRUE;
+                    }
+                    break;
+                case 16:
+                    found = TRUE;
+                    break;
+                }
+                if (!found) {
+                    continue;
+                }
+            }
+        }
+    take:
+        *objx = mapData24[i].x;
+        *objy = mapData24[i].y;
+        *attr = mapData24[i].act;
+        *objz = mapData24[i].z;
+        fldGlobalBase.word154 = mapData24[i].id;
+        fldGlobalBase.nowDoorSe = mapData24[i].se;
+        return i;
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0014B7B0", mapWarpGet_Pos);
+#endif
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapWarpChk_Idx);
 

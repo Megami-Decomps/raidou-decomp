@@ -249,10 +249,10 @@ typedef struct
     /* 0x1F84 */ f32 moonTimer;
     /* 0x1F88 */ s8 takumiCnt;
     /* 0x1F89 */ s8 teisatuCnt;
-    /* 0x1F8A */ u8 unk1F8A;
-    /* 0x1F8B */ u8 unk1F8B;
-    /* 0x1F8C */ u8 unk1F8C;
-    /* 0x1F8D */ u8 unk1F8D;
+    /* 0x1F8A */ s8 unk1F8A; /* evtMoonAddMove counts these down per moon phase */
+    /* 0x1F8B */ s8 unk1F8B;
+    /* 0x1F8C */ s8 unk1F8C;
+    /* 0x1F8D */ s8 unk1F8D;
     /* 0x1F8E */ u8 unk1F8E[0x2];
     /* 0x1F90 */ u32 configFlag;
     /* 0x1F94 */ u32 unk1F94;

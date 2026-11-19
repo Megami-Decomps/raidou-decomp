@@ -109,9 +109,13 @@ void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
 
 typedef struct
 {
+#ifdef VERSION_RAIDOU1
     char *texFile;
+#endif
     char *modelFile;
+#ifdef VERSION_RAIDOU1
     char *motionFile;
+#endif
 } dds3ModelFileTable_t;
 
 typedef struct
@@ -124,8 +128,10 @@ typedef struct
 {
     u16 major;
     u16 minor;
+#ifdef VERSION_RAIDOU1
     u16 scale;
     u16 radius;
+#endif
 } dds3ModelFileIndex_t;
 
 typedef struct
@@ -727,7 +733,56 @@ saddr_t mdlPrepare(s32 aMajor, s32 aMinor, s32 aBlockMode) {
     return 0;
 }
 #else
-INCLUDE_ASM(const s32, "model/mdlManager", mdlPrepare);
+saddr_t mdlPrepare(s32 aMajor, s32 aMinor, s32 aBlockMode) {
+    char requestPath[0x80];
+    dds3ModelResrc_t *entity;
+    dds3ModelFileIndex_t *selection;
+    dds3ModelFileTable_t *paths;
+    mdlManager_mdlTbMbAbLoadCb_t *request;
+    char *extension;
+    s32 packedBundle;
+
+    WaitSema(mdlManagerWork);
+    entity = mdlSearchResrc(aMajor, aMinor);
+    if (entity != NULL) {
+        SignalSema(mdlManagerWork);
+        return EE_ADDR_S(entity);
+    }
+    if (mdlCheckLoading(aMajor, aMinor)) {
+        SignalSema(mdlManagerWork);
+        if (aBlockMode != 0) {
+            return EE_ADDR_S(mdlWaitLoadEnd(aMajor, aMinor));
+        }
+        return -1;
+    }
+    selection = (dds3ModelFileIndex_t *)modelFileKindTable[aMajor].entries;
+    selection += aMinor;
+    paths = &((dds3ModelFileTable_t *)modelFileTable[selection->major].entries)[selection->minor];
+    packedBundle = 0;
+    extension = strrchr(paths->modelFile, '.');
+    if (extension != NULL) {
+        packedBundle = strcasecmp(extension, mdlPackedBundleExt) == 0;
+    }
+    mdlRegLoading(aMajor, aMinor);
+    SignalSema(mdlManagerWork);
+    if (packedBundle != 0) {
+        mdlSetFileName(requestPath, paths->modelFile);
+        mdlFileLoad(aMajor, aMinor, 0x101, requestPath,
+                                  (void (*)(u32))sdfDummyFunc, 0);
+    } else {
+        request = sdfChipAllocZeroDirect(sizeof(*request));
+        request->options = 0x101;
+        request->itemsRequested = 1;
+        request->group = aMajor;
+        request->id = aMinor;
+        mdlSetFileName(requestPath, paths->modelFile);
+        fileLoadEx(requestPath, 0, EE_ADDR(MbLoadCallback), EE_ADDR(request));
+    }
+    if (aBlockMode != 0) {
+        return EE_ADDR_S(mdlWaitLoadEnd(aMajor, aMinor));
+    }
+    return 0;
+}
 #endif
 
 dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id)

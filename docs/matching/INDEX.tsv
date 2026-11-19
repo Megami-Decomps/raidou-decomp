@@ -53,6 +53,7 @@ mapMapObjectRefresh	code_0014B660	raidou1 0x6C0	4 of 432 words differ	docs/match
 sbtlCheckEndEscape	code_0014B7B0	raidou2 0x1C	3 of 5 words differ	docs/matching/code_0014B7B0.md	3		
 mapHitCalc	code_0014B7B0	raidou2 0x15C	13 of 87 words differ	docs/matching/code_0014B7B0.md	11	the R2 enum BST entries in enums.h, the fldAreaWork_t renames in field.h or the per-game mapCallBitCheckData_t in mapData.h, each alone, turn OK into DIFF 13/87; the function's own types do not change.	
 mapCallSetPlayerTargetData4	code_0014B7B0	raidou2 0x104	4 of 65 words differ	docs/matching/code_0014B7B0.md	19		
+mapWarpGet_Pos	code_0014B7B0	raidou2 0x380	4 of 224 words differ	docs/matching/code_0014B7B0.md	27		
 mapMapSetEnc	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	3		
 mapMapSetForm	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	11		
 mapGetHit	code_00153438	raidou1 0x60	4 of 24 words differ	docs/matching/code_00153438.md	19		
@@ -121,6 +122,7 @@ SEquationno_06	code_0027A1E8	raidou2 0x1D0	29 of 116 words differ	docs/matching/
 sbtlSummonKey	code_0027A1E8	raidou2 0x2C0	88 of 176 words differ	docs/matching/code_0027A1E8.md	49		
 sbtlCallBtlGetSkilltbl2	code_0027A1E8	raidou2 0x26C	4 of 155 words differ	docs/matching/code_0027A1E8.md	55		
 TEquationno_01	code_0027A1E8	raidou2 0x214	31 of 133 words differ	docs/matching/code_0027A1E8.md	63		
+sbtlCallBtlGetBadStatus2	code_0027A1E8	raidou2 0x284	11 of 161 words differ	docs/matching/code_0027A1E8.md	71		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
@@ -202,6 +204,7 @@ Result_sbtlTime	code_00309FE0	raidou2 0x2C8	129 of 178 words differ	docs/matchin
 cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
 cmpCallGetProcessData6	code_00323280	raidou1 0x1AC	4 of 107 words differ	docs/matching/code_00323280.md	11		
 rstCallGetProcessData42	code_0034F3B8	raidou1 0x38		docs/matching/code_0034F3B8.md	3		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, the same form as fclCallGetProcessData. Tried: no read (tail j), an s32 return with no return statement (still j), a dds3ProcessFunc_t return (still j). Only a dead store or dummy use after the call remains, which is banned.
+fldCallMemGetPtr3	code_0035E5B8	raidou2 0x1DC	68 of 117 words differ	docs/matching/code_0035E5B8.md	3		
 evtFunc18	code_003648C0	raidou2 0x48	8 of 18 words differ	docs/matching/code_003648C0.md	3		
 evtCallGetSpriteHnd	code_003648C0	raidou2 0x74	22 of 29 words differ	docs/matching/code_003648C0.md	9		
 cmpChkDevilStockExist	code_003648C0	raidou2 0x58	19 of 19 words differ	docs/matching/code_003648C0.md	15		
@@ -230,12 +233,12 @@ rstResultNakamaLevelSub	code_003BF2E0	raidou2 0x68	20 of 26 words differ	docs/ma
 rstCallGetProcessData39	code_003BF2E0	raidou2 0x124	37 of 74 words differ	docs/matching/code_003BF2E0.md	69		
 jmsFunc17	code_003BF2E0	raidou2 0x5C	12 of 23 words differ	docs/matching/code_003BF2E0.md	75		
 rstPreCalcUnit	code_003BF2E0	raidou2 0x158	2 of 86 words differ	docs/matching/code_003BF2E0.md	81		
-rstResultLevelUpAnimSub	code_003BF2E0	raidou2 0x14C	2 of 83 words differ	docs/matching/code_003BF2E0.md	87		
-rstResultGetExpCyuuseiSub	code_003BF2E0	raidou2 0x15C	6 of 87 words differ	docs/matching/code_003BF2E0.md	93	the full-unit result moves with declarations in headers the unit includes. The R2-C3 part 3 edits to sBtlEff.h, sbtlDMG.h and sbtlWork.h turn the -DNON_MATCHING full unit from OK into CONTEXT 6/87 (reverting any one of them alone restores it), and the part 4 edits do the same to the default build.	
-cmpCallGetProcessData33	code_003BF2E0	raidou2 0x1E0	9 of 120 words differ	docs/matching/code_003BF2E0.md	101		
-cmpCallBitCheck10	code_003BF2E0	raidou2 0x148	23 of 81 words differ	docs/matching/code_003BF2E0.md	107		
-rstResultLevelUpAnim	code_003BF2E0	raidou2 0x1D0	12 of 116 words differ	docs/matching/code_003BF2E0.md	113		
-cmpLoadLocalizeText	code_003BF2E0	raidou2 0x1C4	8 of 113 words differ	docs/matching/code_003BF2E0.md	119		
+rstResultLevelUpAnimSub	code_003BF2E0	raidou2 0x14C	2 of 83 words differ	docs/matching/code_003BF2E0.md	87	on bdf2c164 the R2-S3 part 9 declarations moved the full unit from CONTEXT 2/83 to CONTEXT 6/83, and reverting fld.h or sBtlEff.h alone made it match, so it moves with the count of declarations, not its own C. On 0469e6c5 it is back at 2/83.	
+rstResultGetExpCyuuseiSub	code_003BF2E0	raidou2 0x15C	6 of 87 words differ	docs/matching/code_003BF2E0.md	95	the full-unit result moves with declarations in headers the unit includes. The R2-C3 part 3 edits to sBtlEff.h, sbtlDMG.h and sbtlWork.h turn the -DNON_MATCHING full unit from OK into CONTEXT 6/87 (reverting any one of them alone restores it), and the part 4 edits do the same to the default build.	
+cmpCallGetProcessData33	code_003BF2E0	raidou2 0x1E0	9 of 120 words differ	docs/matching/code_003BF2E0.md	103		
+cmpCallBitCheck10	code_003BF2E0	raidou2 0x148	23 of 81 words differ	docs/matching/code_003BF2E0.md	109		
+rstResultLevelUpAnim	code_003BF2E0	raidou2 0x1D0	12 of 116 words differ	docs/matching/code_003BF2E0.md	115		
+cmpLoadLocalizeText	code_003BF2E0	raidou2 0x1C4	8 of 113 words differ	docs/matching/code_003BF2E0.md	121		
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
 dds3CallDLinkTexPacket	code_r1_00104370	raidou1 0x128, raidou2 0x128	37 of 73 words differ	docs/matching/code_r1_00104370.md	12		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		

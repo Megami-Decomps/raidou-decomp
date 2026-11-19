@@ -233,7 +233,26 @@ INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlStrBattleSbPack3ALb);
 
 INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlBtlLoadPlayerOnMemDataSubTable2);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetDmgEffScale);
+f32 sbtlGetDmgEffScale(struct SBTLUNIT_WORK *wk)
+{
+    f32 scale = 1.0f;
+
+    switch (wk->unit.devilId) {
+    case 0x1D5:
+    case 0x1D6:
+    case 0x1D7:
+    case 0x1DB:
+    case 0x1DC:
+    case 0x1DD:
+        scale = 2.0f;
+        break;
+    case 0x1B8:
+    case 0x1CE:
+        scale = 5.0f;
+        break;
+    }
+    return scale;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetDmgEffShinad);
 
@@ -263,7 +282,13 @@ EFFPDATA_WORK *sbtlBtlSetEffectDataSub(s32 id, s32 no)
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlCheckDeleteEffectSub);
+SBTLEFF_PACDATAWORK *sbtlGetEffectPacData(s32 id, s32 no)
+{
+    if (sbtlData83->effpac[id].status & EFFPAC_ST_LOADEND) {
+        return sbtlData83->effpac[id].pwk[no];
+    }
+    return NULL;
+}
 
 s32 sbtlBtlListProcSub(SBTLEFF_WORK *wk)
 {
@@ -285,7 +310,67 @@ s32 CheckEffectDataSingle(s32 type, s32 cmp)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckEffectData);
+s32 sbtlCheckEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param)
+{
+    struct SBTLSKILLP_TBL *tbl;
+    EFFPDATA_WORK *data;
+    s32 index;
+    s32 i;
+    s32 num;
+    s32 mute;
+    u32 bit;
+
+    mute = 0;
+    index = sbtlSearchEffectData(skillid);
+    if (index == -1) {
+        return 0;
+    }
+    tbl = sbtlGetSkilltbl(skillid);
+    if (tbl != NULL) {
+        if (flg == 1) {
+            bit = tbl->flg2 & 0x100000;
+            mute = bit != 0;
+        }
+        if (flg == 2 && (tbl->flg2 & 0x200000)) {
+            mute = 1;
+        }
+    }
+    if (!mute) {
+        sbtlBstse(&wk->pos, skillid, flg);
+    }
+    num = sbtlBtlCheckEffectDataSub(index);
+    for (i = 0; i < num; i++) {
+        data = sbtlBtlSetEffectDataSub(index, i);
+        if (!CheckEffectDataSingle(data->type, flg)) {
+            continue;
+        }
+        if (type == 1) {
+            return 1;
+        }
+        switch (data->iti & 0xF) {
+        case 0:
+            CheckEffectData_Core_sbtlEff(wk, skillid, flg, index, i, side, id, 1, param, i);
+            break;
+        case 4:
+            CheckEffectData_Core_sbtlEff(wk, skillid, flg, index, i, side, id, 2, param, i);
+            break;
+        case 5:
+            CheckEffectData_Core_sbtlEff(wk, skillid, flg, index, i, side, id, 3, param, i);
+            break;
+        case 8:
+            CheckEffectData_Core_sbtlEff(wk, skillid, flg, index, i, side, id, 4, param, i);
+            break;
+        default:
+            CheckEffectData_Core_sbtlEff(wk, skillid, flg, index, i, side, id, 0, param, i);
+            break;
+        }
+    }
+    if (num > 0) {
+        sbtlGetEffectData_Num();
+        sbtlAddSerialID2();
+    }
+    return 1;
+}
 
 s32 sbtlCheckEffectData_SeOnly(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type) {
     struct SBTLSKILLP_TBL *skl;
@@ -395,7 +480,7 @@ void sbtlSetEffectData(SBTLEFF_WORK *ewk, struct SBTLUNIT_WORK *wk, SKLID sklid,
     ewk->acterID = wk->field1A0;
     ewk->targetID = wk->model->field104;
     data = sbtlBtlSetEffectDataSub(workID, no);
-    pac = sbtlBtlCheckDeleteEffectSub(ewk->workID, ewk->BEDno);
+    pac = sbtlGetEffectPacData(ewk->workID, ewk->BEDno);
     if (!CheckEffectDataSingle(data->type, type)) {
         return;
     }
@@ -2108,7 +2193,72 @@ s32 sbtlProcSBtlSTPSub(struct SBTLUNIT_WORK *wk)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", Proc_sbtlSTP);
+s32 Proc_sbtlSTP(SBTL_STP *stp)
+{
+    SBTLVISUAL_DATA data;
+    SBTL_STP_NODE *node;
+    struct SBTLUNIT_WORK *unit;
+    s32 n;
+
+    if (stp == NULL) {
+        return 0;
+    }
+    node = stp->head;
+    if (node == NULL || stp->enabled == 0) {
+        return 0;
+    }
+    if (wk_sbtl->flg & 0x8000000) {
+        return 0;
+    }
+    if (wk_sbtl->flg2 & 0x40) {
+        return 0;
+    }
+    do {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, node->ListID);
+        if (unit == NULL || !sbtlProcSBtlSTPSub(unit)) {
+            node->mode = 2;
+        } else if (node->id == 1 && !(unit->flg & 0x800)) {
+            sbtlGetCylinderData(unit, &data);
+            SDF_VU0_LOADVECTOR(&data.center);
+            SDF_VU0_STOREVECTOR(&node->pos);
+        }
+        switch (node->mode) {
+        case 0:
+            node->alpha += 16;
+            node->alpha = node->alpha <= 0 ? 0 : node->alpha >= 128 ? 127 : node->alpha;
+            n = node->alpha;
+            if (n >= 127) {
+                node->counter = 0;
+                node->mode = 1;
+            }
+            break;
+        case 1:
+            if (wk_sbtl->fieldCA2 && unit->status == 9) {
+                break;
+            }
+            if (node->counter < 60) {
+                node->y -= node->spd;
+            }
+            node->counter++;
+            node->counter = node->counter <= 0 ? 0 : node->counter > 0x7FFF ? 0x7FFF : node->counter;
+            n = node->counter;
+            if (n >= node->counterMax) {
+                node->mode = 2;
+            }
+            break;
+        case 2:
+            node->alpha -= 16;
+            node->alpha = node->alpha <= 0 ? 0 : node->alpha > 128 ? 128 : node->alpha;
+            n = node->alpha;
+            if (n <= 0) {
+                node->mode = 3;
+            }
+            break;
+        }
+        node = node->next;
+    } while (node != NULL);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", Draw_sbtlSTP);
 

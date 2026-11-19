@@ -282,7 +282,11 @@ extern const char sbtlBstseData2[];
 s32 sbtlCheckEffectData_SeOnly(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type);
 s32 sbtlMainDraw2(void);
 #endif
+#ifdef VERSION_RAIDOU2
+s32 sbtlFunc(struct dds3ProcessID_t *id);
+#else
 s32 sbtlFunc(s32 id, void *pData);
+#endif
 s32 sbtlLoadPlayerOnMemData(void);
 s32 sbtlReleaseEff(struct SBTLEFF_LISTWORK *lwk, u8 flg);
 s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg);
@@ -303,19 +307,16 @@ s32 sbtlLeaf7(s32 id);
 #ifdef VERSION_RAIDOU2
 /* raidou2 returns the pack effect's wk. */
 EFFPDATA_WORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
-#else
-SBTLEFF_PACDATAWORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
-#endif
-#ifdef VERSION_RAIDOU2
+SBTLEFF_PACDATAWORK *sbtlGetEffectPacData(s32 id, s32 no);
 f32 sbtlGetDmgEffScale(struct SBTLUNIT_WORK *wk);
 void sbtlSetDmgEffShinad(struct SBTLEFF_WORK *pEff, struct SBTLUNIT_WORK *pUnit, s32 Type);
+s32 CheckEffectData_Core_sbtlEff(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s32 index, s32 id, u16 acterside,
+                                 s32 serialID2, s16 tflg, s32 sttime, s16 count);
 #else
+SBTLEFF_PACDATAWORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
 EFFPDATA_WORK *sbtlGetDmgEffScale(s32 id, s32 no);
 #endif
-#ifdef VERSION_RAIDOU2
-/* raidou2 symbol name of the pack-data lookup raidou1 calls sbtlBtlSetEffectDataSub. */
-SBTLEFF_PACDATAWORK *sbtlBtlCheckDeleteEffectSub(s32 id, s32 no);
-#else
+#ifndef VERSION_RAIDOU2
 s32 sbtlBtlCheckDeleteEffectSub(struct SBTLEFF_WORK *wk);
 #endif
 s32 sbtlBtlLoadEffectDataIDMaskSub(SKLID skillid);

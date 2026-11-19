@@ -6593,7 +6593,6 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0028A5B8	0x002BB850	sbtlCallMemAllocDirect3	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
 0x0028AB40	0x002BB9A8	sbtlGetDmgEffScale	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	size
 0x0028AB90	0x002BC4E8	sbtlBtlSetEffectDataSub	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	size
-0x0028ABD8	0x002BC530	sbtlBtlCheckDeleteEffectSub	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	size
 0x0028AC20	0x002BC5B8	CheckEffectDataSingle	yes	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x0028AEA8	0x002BC940	sbtlCallBtlGetSkilltbl16	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
 0x0028AF10	0x002BC9A8	CheckEffectData_Core	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash

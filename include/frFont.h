@@ -15,7 +15,11 @@ frFontHandle_t *frDestroyFontRequestAfterSub(frFontHandle_t *pFRQ1, frFontHandle
 frFontHandle_t *frCombineFontRequest(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2);
 frFontHandle_t *frSetFontString(u8 *text, s8 style, s8 firstOption, s8 secondOption, frFontHandle_t *chain);
 u32 frGetStrWidth2(frFontHandle_t *pFRQ);
+extern s32 frData3;
 s32 frDestroyFontRequestAfter(frFontHandle_t *pFRQ);
+#ifdef VERSION_RAIDOU2
+void frDrawMesFlowSub(frFontHandle_t *pfont, u32 alpha);
+#endif
 u8 frDisableMode(u8 Flag);
 u8 frEnableMode(s32 Flag);
 u32 frGetFontHandleNum(void);

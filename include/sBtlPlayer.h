@@ -53,6 +53,8 @@ s32 ChkHuuma_PlayerInputOk(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetBadStatus3(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetBadStatus4(struct SBTLUNIT_WORK *wk);
 #ifdef VERSION_RAIDOU2
+s32 sbtlCallBtlGetNakama3(void);
+void Check_Stls(struct SBTLUNIT_WORK *wk);
 void sbtlRefSbtl11(struct SBTLUNIT_WORK *wk);
 #else
 s32 sbtlRefSbtl11(struct SBTLUNIT_WORK *wk, s32 type);

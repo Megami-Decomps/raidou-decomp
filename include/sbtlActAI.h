@@ -101,7 +101,9 @@ s32 sbtlGetEscapePoint(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, s
 s32 sbtlBtlMVSupportSub2(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
 
 s32 PosOut(struct SBTLUNIT_WORK *wk);
+#ifdef VERSION_RAIDOU1 /* Raidou 2's Proc runs the system message list (sBtlSM.h) */
 s32 Proc(struct SBTLUNIT_WORK *wk);
+#endif
 s32 sbtlCallBtlDeleteHitHelper(struct SBTLUNIT_WORK *wk);
 s32 sbtlAAIInit_BAttack(struct SBTLUNIT_WORK *wk);
 s32 sbtlAAIInit_N_Escape(struct SBTLUNIT_WORK *wk);
