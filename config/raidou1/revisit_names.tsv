@@ -190,7 +190,6 @@
 0x0011F790	datCreateDevilUnitExSub	func	tier=D	derived-caller	na	unit dat; called by datCreateDevilUnitEx
 0x0011F7B0	datCheckJidouSkillPrioSub	func	tier=D	derived-caller	na	unit dat; called by CheckJidouSkillPrio
 0x0011F7F0	datFunc4	func	tier=D	derived-unit	na	unit dat; no named callee, caller or string
-0x0011F880	datLeaf44	func	tier=D	derived-unit	na	unit dat; no named callee, caller or string
 0x0011FE60	datCallAddCheckDevilUnit	func	tier=D	derived-callee	na	unit dat; calls datAddCheckDevilUnit
 0x0011FF90	datCallCreateDevilUnitEx	func	tier=D	derived-callee	na	unit dat; calls datCreateDevilUnitEx
 0x00120008	datCallGetStockDevilID2	func	tier=D	derived-callee	na	unit dat; calls datGetStockDevilID
@@ -614,7 +613,6 @@
 0x00174BC8	mapBtlEndWaitInitSub	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapNpcPathMake_KeyFrame; called by rstBtlEndWaitInit
 0x00174C20	mapFadeProc	func	tier=D	derived-string	na	unit code_00174790, neighbour mapNpcPathMake_KeyFrame; string 'xFadeProc'
 0x00174F70	mapCallAtan22	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapNpcPathMake_Rot; calls sdfAtan2
-0x00175128	mapLeaf29	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathCalc_RotGoal; no named callee, caller or string
 0x00175348	mapLeaf30	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathMakeControl; no named callee, caller or string
 0x001754F0	mapCallGetElement	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapNpcPathControlGetRot; calls GetElement
 0x00175660	mapNpcPathTaskSub	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapNpcPathControlGetRot; called by mapNpcPathTask
@@ -827,7 +825,6 @@
 0x00185F88	itfCallMiscDrawRectanglePrim	func	tier=D	derived-callee	na	unit interface/itfPanel; calls itfMiscDrawRectanglePrim
 0x00186540	itfCallMiscDrawSpritePrim	func	tier=D	derived-callee	na	unit interface/itfPanel; calls itfMiscDrawSpritePrim
 0x001867E8	itfDrawTintedPanelRect	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0019AC68, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00186970	itfLeaf8	func	tier=D	derived-unit	na	unit interface/itfMesManager; no named callee, caller or string
 0x001869B8	itfEndMessageExSub	func	tier=D	derived-caller	na	unit interface/itfMesManager; called by fclEndMessageEx
 0x00186A68	itfPanelAcquireHold	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0019AE78, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00186AC8	itfPanelReleaseHold	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0019AED8, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -932,7 +929,6 @@
 0x00194758	itfCallMessageNumSearch	func	tier=D	derived-callee	na	unit code_00190668, neighbour itfDvlMsgEnd; calls MessageNumSearch
 0x001948D0	itfCallSetOt4	func	tier=D	derived-callee	na	unit code_00190668, neighbour itfDvlMsgProcessStart; calls eglSetOt
 0x00194BD8	itfCallGetProcessData9	func	tier=D	derived-callee	na	unit code_00190668, neighbour itfDvlMsgProcessStart; calls dds3GetProcessData
-0x00194E28	itfLeaf25	func	tier=D	derived-unit	na	unit code_00190668, neighbour itfDvlMsgProcessStart; no named callee, caller or string
 0x00194E78	itfDvlMsgProcessStart	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfDvlMsgProcessStart, score 11.5 band A
 0x00194F78	itfCallExistProcess	func	tier=D	derived-callee	na	unit code_00190668, neighbour itfDvlMsgProcessEnd_itf; calls dds3ExistProcess
 0x00194FB0	itfMoneyProcessSub	func	tier=D	derived-caller	na	unit code_00190668, neighbour itfDvlMsgProcessEnd_itf; called by MoneyProcess
@@ -1126,7 +1122,6 @@
 0x001B48B0	evtCallDrawFont	func	tier=D	derived-callee	na	unit event/evtEventViewer; calls frDrawFont
 0x001B4918	evtProcess3Sub2	func	tier=D	derived-caller	na	unit event/evtEventViewer; called by Process3
 0x001B4CA0	evtViewerDispatchFlagMode	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0022FDE8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001B4CE8	evtLeaf6	func	tier=D	derived-unit	na	unit event/evtEventViewer; no named callee, caller or string
 0x001B4D68	evtLeaf7	func	tier=D	derived-unit	na	unit event/evtEventViewer; no named callee, caller or string
 0x001B4E50	evtViewerPopHistory	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0022FF98, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001B4F00	sndVoiceStatus	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sndManager.sndVoiceStatus, score 9.6 band B
@@ -1466,7 +1461,6 @@
 0x001D6870	slCallSetInfo5	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
 0x001D6898	slLeaf7	func	tier=D	derived-unit	na	unit mc/slMain; no named callee, caller or string
 0x001D68A8	slCallSetInfo6	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
-0x001D6900	slLeaf9	func	tier=D	derived-unit	na	unit mc/slMain; no named callee, caller or string
 0x001D6978	slCallSetInfo7	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
 0x001D69A8	slCallPlaySE2	func	tier=D	derived-callee	na	unit mc/slMain; calls p2sdPlaySE
 0x001D6A10	slCallBitOn	func	tier=D	derived-callee	na	unit mc/slMain; calls evtBitOn
@@ -3882,7 +3876,6 @@
 0x002F0360	checkCallLMAPPOINTFLAG2	func	tier=D	derived-callee	na	unit code_002D7950, neighbour check_point_line; calls dmLMAP_POINT_FLAG
 0x002F26E8	lmapCallLMAPPOINTFLAG	func	tier=D	derived-callee	na	unit lmap; calls dmLMAP_POINT_FLAG
 0x002F27E8	lmapLockSetPointChrSub	func	tier=D	derived-caller	na	unit lmap; called by Lock_SetPointChr
-0x002F28A0	lmapLeaf6	func	tier=D	derived-unit	na	unit lmap; no named callee, caller or string
 0x002F29B8	lmapActWndInitSub	func	tier=D	derived-caller	na	unit lmap; called by ActWnd_Init
 0x002F29C0	lmapLeaf7	func	tier=D	derived-unit	na	unit lmap; no named callee, caller or string
 0x002F2AA0	lmapCallSetFontString	func	tier=D	derived-callee	na	unit lmap; calls frSetFontString
@@ -4727,8 +4720,6 @@
 0x00337FA0	sdfGohmadenDraw	func	tier=D	derived-string	na	unit code_0032F2B8, neighbour sdfCreateRuntimeTask; string 'gohmaden_draw'
 0x00338178	campGohmadenCalc	func	tier=D	derived-string	na	unit code_0032F2B8, neighbour campKillProcesses; string 'gohmaden_calc'
 0x00338248	gohFunc	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour gohProcessCheck; no named callee, caller or string
-0x00338270	gohLeaf22	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour gohProcessCheck; no named callee, caller or string
-0x00338288	gohLeaf23	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour gohScrCmd_RenkenSpirit; no named callee, caller or string
 0x00338380	gohCallGetIntPara	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour gohCheckSequence; calls scrGetIntPara
 0x00338518	gohFunc2	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour gohCheckScrRun; no named callee, caller or string
 0x00338588	gohCallGetStockDevilNums	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour gohCheckScrRun; calls datGetStockDevilNums
@@ -17684,6 +17675,7 @@
 0x00174DC0	mapNpcPathMake_KeyFrame	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapNpcPathMake_KeyFrame score 5.4 flag -: next gap10/25 st1:gap r1+r2
 0x001750B0	scrClearProcessGlobals	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x21f4e8 sim 0.769 margin 0.00 pair
 0x001750E8	mapNpcPathCalc_RotGoal	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapNpcPathCalc_RotGoal score 4.0 flag -: next~ gap1/4 st1:gap r1+r2
+0x00175128	mapNpcPathDelete	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathDelete(uniq): over the 16 NPC paths, the used one with that uniq gets basic, use and uniq cleared; after mapNpcPathCalc_RotGoal, in the HD mapNpcPath Init/Add/Delete group; replaces mapLeaf29
 0x00175908	mapDrinkClearMsg	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapDrinkClearMsg score 4.2 flag -: calls1 next gap48/32 st1:gap r1-only
 0x00175CC8	mapRiberaMa2Start	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapRiberaMa2Start score 4.6 flag -: calls1 calls-of-match st1:call r1+r2
 0x00175DC0	mapEsutoMa2Start	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapEsutoMa2Start score 4.6 flag -: calls1 calls-of-match st1:call r1+r2
@@ -17707,6 +17699,7 @@
 0x0017F850	frDrawFontOt	func	tier=C	derived-derived-role	na	find_similar 0.796 to DDS1 frDrawFontOt and 0.54 to SMT3 frDrawFontOt; frDrawMesFlowSub2 (SMT3 frDrawFontEx) calls it with gFontDrawOT as SMT3 frDrawFontEx calls frDrawFontOt; replaces frDrawFontEx2
 0x00183C08	mjnDeleteScene	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD mjn.mjnDeleteScene score 3.5 flag I: calls1 callers-of-match st1:call r1-only
 0x00185120	itfQuickSaveExeCheck	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.itfQuickSaveExeCheck score 5.6 flag I: calls1 callers-of-match st1:call r1+r2
+0x00186970	itfMesMngSetOffsetY1	func	tier=C	derived-derived-role	na	Raidou HD itf.itfMesMngSetOffsetY1(msgid, y1): itfPnlSetPositionOffset(window of message msgid, 0, y1, 0, 0, 0); in the HD itfMesMng group between itfMesMngMessage and itfMesMngChkWaitTag; replaces itfLeaf8
 0x00186A00	itfMesMngChkWaitTag	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.itfMesMngChkWaitTag score 1.2 flag I: calls1 calls-of-match st1:call r2-disagree:0x19ba50
 0x001875F8	itfMesMngClearCursor	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.itfMesMngClearCursor score 5.9 flag I: calls1 calls-of-match-uniq st1:call r1+r2
 0x00188030	itfMesMngGetMesPage	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf.itfMesMngGetMesPage score 5.0 flag R: prev gap2/2 st1:gap r1+r2
@@ -17804,6 +17797,7 @@
 0x001AEB80	fldFreeAddressProcess	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x144760 sim 1.000 margin 0.00 pair
 0x001AFC40	evtDelProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtCutIn.evtDelProcess score 5.0 flag I: calls1 callers-of-match st1:call r1+r2
 0x001B0310	SearchNameTable	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtViewer.SearchNameTable score 5.9 flag -: prev next~ gap1/1 st1:gap r1+r2
+0x001B4CE8	GetNextNearCameraFrame	func	tier=C	derived-derived-role	na	Raidou HD evtViewer.GetNextNearCameraFrame(pInfo): over type 2 objects, the frame after nowframe nearest to it (best starts at 99999); after evtViewerStopFrame (HD evtStopFrame) as in HD; replaces evtLeaf6
 0x001B67F8	EnterFrameChange	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1ef288 sim 0.657 margin 0.29 pair
 0x001B7158	evtViewCmdSetObjectTarget	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x232108 sim 1.000 margin 0.70 pair
 0x001B7488	EnterData	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1ef880 sim 0.696 margin 0.31 pair
@@ -18198,6 +18192,7 @@
 0x002F1CA0	Chr_UpdatePosShip_lmap	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD lmap.Chr_UpdatePosShip score 5.3 flag -: calls3 callers-of-match votes4 st1:call r2-disagree:0x354cd8
 0x002F22F8	Chr_UpdatePosAuto	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD lmap.Chr_UpdatePosAuto score 3.5 flag -: calls1 callers-of-match-uniq st2:call r2-only
 0x002F25B0	Chr_GetNearPortTableNo	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD lmap.Chr_GetNearPortTableNo score 4.5 flag -: calls2 calls-of-match votes2 st1:call r2-disagree:0x350f98
+0x002F28A0	Lock_SetLineNo	func	tier=C	derived-derived-role	na	Raidou HD lmap.Lock_SetLineNo(wk, lockLineNo, lockFlg): returns 0 when no < 1, else sets or clears no in tagLMAP_LOCK_WORK.lineNo[8] (offset 0x80 after pointNo[64]); after the pointNo[64] twin (lmapLockSetPointChrSub, HD Lock_SetPointNo) as in HD; replaces lmapLeaf6
 0x002F32F8	Util_Point3To2	func	tier=C	hd-d	0.53 (n=98)	Raidou HD lmap.Util_Point3To2 score 4.7 flag -: calls1 calls-of-match st1:call r1-only
 0x002F3EF0	FldWnd_Start	func	tier=C	hd-d	0.53 (n=98)	Raidou HD lmap.FldWnd_Start score 4.3 flag -: calls1 calls-of-match-uniq st1:call r1-only
 0x002F3FD0	cmpSetStockVisible	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x232550 sim 0.654 margin 0.65 pair
@@ -18299,6 +18294,7 @@
 0x00336DC0	fldShowSceneModels	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x1339c0 sim 0.688 margin 0.02 pair
 0x00337928	gohTableLoad	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohInit.gohTableLoad score 6.4 flag I: calls1 prev calls-of-match votes2 st1:call r1-only
 0x00337F30	sdfCreateRuntimeTask	func	tier=C	dds-fuzzy-60-tie-single	0.30 (n=4)	dds body 0x1176a0 sim 0.645 margin 0.01 single
+0x00338288	gohDebugProcessCheck	func	tier=C	derived-derived-role	na	Raidou HD gohInit.gohDebugProcessCheck: same result as gohProcessCheck (calls it); follows gohDebugProcessEnd as in HD; replaces gohLeaf23
 0x003382A0	gohScrCmd_RenkenSpirit	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohInit.gohScrCmd_RenkenSpirit score 5.5 flag I: calls2 callee-index st1:cidx r1-only
 0x00338320	fldFacilityMistDraw	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD fld.fldFacilityMistDraw score 3.2 flag I: calls1 calls-of-match st1:call r1-only
 0x00338348	gohStopSequence	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohInit.gohStopSequence score 2.5 flag I: next gap4/4 st2:gap r2-only

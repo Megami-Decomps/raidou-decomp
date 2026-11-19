@@ -3235,7 +3235,7 @@ void evtViewerDispatchFlagMode(evtViewerInfo_t *viewer) {
 }
 
 /* body: matched in raidou @ 1424963: src/shared/event/evtEventViewer.c:2458, near, same function 0.99 (words 32/32, calls 1.00, shape 0.97) */
-evtFrameInfo_t *evtLeaf6(evtViewerInfo_t *viewer) {
+evtFrameInfo_t *GetNextNearCameraFrame(evtViewerInfo_t *viewer) {
     evtFrameInfo_t *result = NULL;
     s32 best = 99999;
     evtViewerObject_t *node = viewer->firstobjinfo;

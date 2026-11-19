@@ -71,7 +71,6 @@ frFontMeasureGlyphStripWidth = 0x00194E88;
 itfDrawColor = 0x001960D8;
 itfDecodeGlyph = 0x00197CD0;
 itfDrawBackgroundSprite = 0x00198B68;
-itfMesMngSetOffsetY1 = 0x0019B9C0;
 itfMesMngInitialize = 0x0019C518;
 itfMesMngRequestMessage = 0x0019C6C0;
 itfMesStartEntry = 0x0019C6C0;

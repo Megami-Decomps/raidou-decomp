@@ -237,7 +237,7 @@ SIZE_CHECK(tagITFDVLMSG_WORKSizeCheck, struct tagITFDVLMSG_WORK, 0x1CC);
 
 extern dds3ProcessID_t *DevilMessage_g_mainPID;
 s32 itfCallGetProcessData9(dds3ProcessID_t *PID);
-void itfLeaf25(struct tagITFDVLMSG_WORK *wk);
+void DvlMsgInit(struct tagITFDVLMSG_WORK *wk);
 struct tagITF_MONEY_WORK {
     struct sdfMemHandle_t *hMem;
     dds3ProcessID_t *drawPID;

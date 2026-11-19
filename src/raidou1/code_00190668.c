@@ -774,7 +774,7 @@ INCLUDE_ASM(const s32, "code_00190668", itfCallSetOt4);
 INCLUDE_ASM(const s32, "code_00190668", itfCallGetProcessData9);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/00194E28.c:1, match */
-void itfLeaf25(struct tagITFDVLMSG_WORK *wk) {
+void DvlMsgInit(struct tagITFDVLMSG_WORK *wk) {
     DvlMsgLoadSprite(wk);
 }
 
@@ -793,7 +793,7 @@ void itfDvlMsgProcessStart(void) {
     DevilMessage_g_mainPID = dds3StartProcess("itfDvlMsgMainProc", 0x3FF, 0, 0, (dds3ProcessFunc_t)DvlMsgProcess,
                                               (dds3ProcessFunc_t)DvlMsgShutdown, wk);
     wk->drawPID = dds3StartProcess("itfDvlMsgDrawProc", 0x2B07, 0, 0, itfCallGetProcessData9, NULL, wk);
-    itfLeaf25(wk);
+    DvlMsgInit(wk);
 }
 
 INCLUDE_ASM(const s32, "code_00190668", itfDvlMsgProcessEnd_itf);

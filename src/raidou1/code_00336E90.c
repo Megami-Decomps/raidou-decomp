@@ -99,11 +99,11 @@ s32 gohProcessCheck(void) {
 
 INCLUDE_ASM(const s32, "code_00336E90", gohFunc);
 
-void gohLeaf22(void) {
+void gohDebugProcessEnd(void) {
     campKillProcesses();
 }
 
-void gohLeaf23(void) {
+void gohDebugProcessCheck(void) {
     gohProcessCheck();
 }
 

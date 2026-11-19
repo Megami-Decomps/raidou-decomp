@@ -382,7 +382,7 @@ INCLUDE_ASM(const s32, "code_001A5D20", itfCallSetOt4);
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfCallGetProcessData9);
 
-INCLUDE_ASM(const s32, "code_001A5D20", itfLeaf25);
+INCLUDE_ASM(const s32, "code_001A5D20", DvlMsgInit);
 
 INCLUDE_ASM(const s32, "code_001A5D20", DvlMsgShutdown);
 

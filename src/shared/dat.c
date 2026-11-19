@@ -399,7 +399,7 @@ INCLUDE_ASM(const s32, "dat", datBtlGetCalcDamageExSub);
 INCLUDE_ASM(const s32, "dat", datCallCalcDevilMaxParCheck);
 #endif
 
-INCLUDE_ASM(const s32, "dat", datLeaf44);
+INCLUDE_ASM(const s32, "dat", datCheckHaveSkill);
 
 INCLUDE_ASM(const s32, "dat", CheckJidouSkillPrio);
 

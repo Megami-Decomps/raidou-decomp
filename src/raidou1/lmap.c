@@ -24,7 +24,7 @@ INCLUDE_ASM(const s32, "lmap", lmapCallLMAPPOINTFLAG);
 
 INCLUDE_ASM(const s32, "lmap", lmapLockSetPointChrSub);
 
-INCLUDE_ASM(const s32, "lmap", lmapLeaf6);
+INCLUDE_ASM(const s32, "lmap", Lock_SetLineNo);
 
 INCLUDE_ASM(const s32, "lmap", Lock_SetPointChr);
 

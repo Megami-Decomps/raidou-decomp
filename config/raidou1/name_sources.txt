@@ -929,7 +929,7 @@
 0x0011F790	datCreateDevilUnitExSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit dat; called by datCreateDevilUnitEx
 0x0011F7B0	datCheckJidouSkillPrioSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit dat; called by CheckJidouSkillPrio
 0x0011F7F0	datFunc4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit dat; no named callee, caller or string
-0x0011F880	datLeaf44	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit dat; no named callee, caller or string
+0x0011F880	datCheckHaveSkill	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD dat.datCheckHaveSkill(pUnit, SkillID): 1 when SkillID is in pUnit->haveskill (offset 0x90; 10 slots here, 17 in HD); right after the datGetDefaultSkill body (datFunc4) as in HD; replaces datLeaf44
 0x0011F8C0	CheckJidouSkillPrio	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD dat.CheckJidouSkillPrio score 7.3 flag -: calls1 next calls-of-match-uniq votes2 st2:call r2-only
 0x0011F978	datCheckSkillEnable	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD dat.datCheckSkillEnable score 2.8 flag I: next gap13/8 st2:gap r2-only
 0x0011FAC0	datGetSkillCopyIndex	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD dat.datGetSkillCopyIndex score 2.6 flag I: next gap14/9 st2:gap r2-only
@@ -1958,7 +1958,7 @@
 0x00175038	mapNpcPathFastInit	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD fld.mapNpcPathFastInit score 8.5 flag -: calls2 calls-of-match votes2 st1:call r1+r2
 0x001750B0	scrClearProcessGlobals	inferred	method=dds-fuzzy-70-tie-pair; p=0.38 (n=8); tier=C; source=dds; evidence=dds body 0x21f4e8 sim 0.769 margin 0.00 pair
 0x001750E8	mapNpcPathCalc_RotGoal	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD fld.mapNpcPathCalc_RotGoal score 4.0 flag -: next~ gap1/4 st1:gap r1+r2
-0x00175128	mapLeaf29	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathCalc_RotGoal; no named callee, caller or string
+0x00175128	mapNpcPathDelete	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathDelete(uniq): over the 16 NPC paths, the used one with that uniq gets basic, use and uniq cleared; after mapNpcPathCalc_RotGoal, in the HD mapNpcPath Init/Add/Delete group; replaces mapLeaf29
 0x00175180	mapNpcPathMakeControl	hd	hd: Raidou HD fld.mapNpcPathMakeControl, score 7.0 band B
 0x00175348	mapLeaf30	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathMakeControl; no named callee, caller or string
 0x00175350	mapNpcPathControlGetPos	hd	hd: Raidou HD fld.mapNpcPathControlGetPos, score 7.4 band B
@@ -2361,7 +2361,7 @@
 0x001867E8	itfDrawTintedPanelRect	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0019AC68, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00186860	DrawTestAlphaPrim	inferred	SMT3HD name via SLUS_209.11 0x001CD270, reloc-identical; map-agrees
 0x001868D0	itfMesMngMessage	inferred	SMT3HD name via SLUS_209.11 0x001CD2E0, reloc-identical; map-agrees
-0x00186970	itfLeaf8	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit interface/itfMesManager; no named callee, caller or string
+0x00186970	itfMesMngSetOffsetY1	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD itf.itfMesMngSetOffsetY1(msgid, y1): itfPnlSetPositionOffset(window of message msgid, 0, y1, 0, 0, 0); in the HD itfMesMng group between itfMesMngMessage and itfMesMngChkWaitTag; replaces itfLeaf8
 0x001869B8	itfEndMessageExSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit interface/itfMesManager; called by fclEndMessageEx
 0x00186A00	itfMesMngChkWaitTag	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD itf.itfMesMngChkWaitTag score 1.2 flag I: calls1 calls-of-match st1:call r2-disagree:0x19ba50
 0x00186A28	itfMesMngGetPhase	inferred	SMT3HD name via SLUS_209.11 0x001CD3C8, reloc-identical; map-agrees
@@ -2684,7 +2684,7 @@
 0x00194758	itfCallMessageNumSearch	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00190668, neighbour itfDvlMsgEnd; calls MessageNumSearch
 0x001948D0	itfCallSetOt4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00190668, neighbour itfDvlMsgProcessStart; calls eglSetOt
 0x00194BD8	itfCallGetProcessData9	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00190668, neighbour itfDvlMsgProcessStart; calls dds3GetProcessData
-0x00194E28	itfLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00190668, neighbour itfDvlMsgProcessStart; no named callee, caller or string
+0x00194E28	DvlMsgInit	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD itf.DvlMsgInit(wk): static init of the devil message work, the last function before DvlMsgShutdown in both; called with wk by itfDvlMsgProcessStart after the processes start (here it loads the sprites, the HD body is empty); replaces itfLeaf25
 0x00194E40	DvlMsgShutdown	hd	hd: Raidou HD itf.DvlMsgShutdown, score 8.45 band B
 0x00194E78	itfDvlMsgProcessStart	hd-inferred	hd: Raidou HD itf.itfDvlMsgProcessStart, score 11.5 band A
 0x00194F28	itfDvlMsgProcessEnd_itf	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfDvlMsgProcessEnd score 13.1 flag I: calls4 prev callers-of-match votes2 st1:call r1+r2
@@ -3344,7 +3344,7 @@
 0x001B4920	GetUnitMotionChangeFrame	hd	hd: Raidou HD evtViewer.GetUnitMotionChangeFrame, score 7.3 band B; replaces evtViewerFindLatestMatchingMotionKey: dds-decomp DDS1 name via SLUS_209.74 0x0022FA68, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001B49E8	evtViewerStopFrame	hd	hd: Raidou HD evtViewer.evtViewerStopFrame, score 8.7 band B
 0x001B4CA0	evtViewerDispatchFlagMode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0022FDE8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001B4CE8	evtLeaf6	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit event/evtEventViewer; no named callee, caller or string
+0x001B4CE8	GetNextNearCameraFrame	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD evtViewer.GetNextNearCameraFrame(pInfo): over type 2 objects, the frame after nowframe nearest to it (best starts at 99999); after evtViewerStopFrame (HD evtStopFrame) as in HD; replaces evtLeaf6
 0x001B4D68	evtLeaf7	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit event/evtEventViewer; no named callee, caller or string
 0x001B4DE8	PushMenu	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x1ee608 sim 0.923 margin 0.69 pair
 0x001B4E50	evtViewerPopHistory	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0022FF98, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -3946,7 +3946,7 @@
 0x001D6898	slLeaf7	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit mc/slMain; no named callee, caller or string
 0x001D68A8	slCallSetInfo6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
 0x001D68E8	slLoadProc1st	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 fmProcTrigSequence mode 1 sets proc_func_ans = slLoadProc1st; Raidou mode 1 sets slLeaf8 (0x18 bytes, SMT3 0x14), same order as SMT3 slSaveProc1st/slLoadProc1st/slEndingProc1st/slBootProc1st; replaces slLeaf8
-0x001D6900	slLeaf9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit mc/slMain; no named callee, caller or string
+0x001D6900	slLoadProc1stBgm	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD slMain.slLoadProc1stBgm: returns slTop(), the same body as slLoadProc1st which it follows as in HD; replaces slLeaf9
 0x001D6918	slEndingProc1st	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x153908 sim 1.000 margin 0.00 pair
 0x001D6940	slBootProc1st	inferred	SMT3HD name via SLUS_209.11 0x00153930, reloc-identical; map-agrees
 0x001D6978	slCallSetInfo7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
@@ -8572,7 +8572,7 @@
 0x002F25B0	Chr_GetNearPortTableNo	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD lmap.Chr_GetNearPortTableNo score 4.5 flag -: calls2 calls-of-match votes2 st1:call r2-disagree:0x350f98
 0x002F26E8	lmapCallLMAPPOINTFLAG	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit lmap; calls dmLMAP_POINT_FLAG
 0x002F27E8	lmapLockSetPointChrSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit lmap; called by Lock_SetPointChr
-0x002F28A0	lmapLeaf6	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
+0x002F28A0	Lock_SetLineNo	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD lmap.Lock_SetLineNo(wk, lockLineNo, lockFlg): returns 0 when no < 1, else sets or clears no in tagLMAP_LOCK_WORK.lineNo[8] (offset 0x80 after pointNo[64]); after the pointNo[64] twin (lmapLockSetPointChrSub, HD Lock_SetPointNo) as in HD; replaces lmapLeaf6
 0x002F2958	Lock_SetPointChr	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD lmap.Lock_SetPointChr score 8.8 flag -: calls2 calls-of-match-uniq votes2 st1:call r1+r2
 0x002F29B8	lmapActWndInitSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit lmap; called by ActWnd_Init
 0x002F29C0	lmapLeaf7	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
@@ -9766,8 +9766,8 @@
 0x003381E0	campKillProcesses	inferred	smt3-decomp name campKillProcesses, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.17 callees=3 size=1.000; R2 top op=1.00 full=1.00 margin=0.17 callees=3 size=1.000; replaces gohProcessEnd: hd: Raidou HD gohInit.gohProcessEnd, score 14.0 band A
 0x00338220	gohProcessCheck	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD gohInit.gohProcessCheck score 7.0 flag I: calls1 str1 prev gap9/11 st2:gap r2-only
 0x00338248	gohFunc	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohProcessCheck; no named callee, caller or string
-0x00338270	gohLeaf22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohProcessCheck; no named callee, caller or string
-0x00338288	gohLeaf23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohScrCmd_RenkenSpirit; no named callee, caller or string
+0x00338270	gohDebugProcessEnd	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD gohInit.gohDebugProcessEnd: calls the gohProcessEnd body (campKillProcesses); after gohProcessCheck as in HD; replaces gohLeaf22
+0x00338288	gohDebugProcessCheck	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD gohInit.gohDebugProcessCheck: same result as gohProcessCheck (calls it); follows gohDebugProcessEnd as in HD; replaces gohLeaf23
 0x003382A0	gohScrCmd_RenkenSpirit	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD gohInit.gohScrCmd_RenkenSpirit score 5.5 flag I: calls2 callee-index st1:cidx r1-only
 0x00338320	fldFacilityMistDraw	hd-inferred	method=hd-d-single-raidou1; p=0.71 (n=403); tier=C; source=hd; evidence=Raidou HD fld.fldFacilityMistDraw score 3.2 flag I: calls1 calls-of-match st1:call r1-only
 0x00338348	gohStopSequence	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD gohInit.gohStopSequence score 2.5 flag I: next gap4/4 st2:gap r2-only

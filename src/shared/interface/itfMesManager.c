@@ -570,7 +570,7 @@ s32 itfMesMngMessage(void) {
 }
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/interface/itfMesManager.c:480, match, same function 0.97 (words 17/18, calls 1.00, shape 0.97) */
-void itfLeaf8(s32 msgid, s32 y1)
+void itfMesMngSetOffsetY1(s32 msgid, s32 y1)
 {
     itfPnlSetPositionOffset(pinst[msgid].mes->window.mes, 0, y1, 0, 0, 0);
 }

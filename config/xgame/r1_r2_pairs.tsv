@@ -879,7 +879,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0011F280	0x00122218	datFunc24	no	yes	asm/raidou1/dat.s	asm/raidou2/dat.s	masked-hash-in-gap
 0x0011F570	0x00122778	datGetEmptyStock	no	no	asm/raidou1/dat.s	asm/raidou2/dat.s	unique-masked-hash
 0x0011F720	0x00122848	datGetStockDevilNums	no	no	asm/raidou1/dat.s	asm/raidou2/dat.s	unique-masked-hash
-0x0011F880	0x00122B80	datLeaf44	no	no	asm/raidou1/dat.s	asm/raidou2/dat.s	size
+0x0011F880	0x00122B80	datCheckHaveSkill	no	no	asm/raidou1/dat.s	asm/raidou2/dat.s	size
 0x0011F8C0	0x00122BC0	CheckJidouSkillPrio	no	no	asm/raidou1/dat.s	asm/raidou2/dat.s	size
 0x0011F978	0x00122C78	datCheckSkillEnable	no	no	asm/raidou1/dat.s	asm/raidou2/dat.s	run-order-near
 0x0011FAC0	0x00122DA0	datGetSkillCopyIndex	yes	yes	asm/raidou1/dat.s	asm/raidou2/dat.s	unique-reloc-hash
@@ -1750,7 +1750,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00175038	0x00187998	mapNpcPathFastInit	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
 0x001750B0	0x00187A10	scrClearProcessGlobals	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
 0x001750E8	0x00187A48	mapNpcPathCalc_RotGoal	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
-0x00175128	0x00187A88	mapLeaf29	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
+0x00175128	0x00187A88	mapNpcPathDelete	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
 0x00175180	0x00187AE0	mapNpcPathMakeControl	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
 0x00175348	0x00187CA8	mapLeaf30	yes	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	masked-hash-in-gap
 0x00175350	0x00187CB0	mapNpcPathControlGetPos	no	yes	asm/raidou1/code_00174790.s	asm/raidou2/code_001870F0.s	unique-reloc-hash
@@ -2135,7 +2135,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001867E8	0x0019B838	itfDrawTintedPanelRect	no	yes	asm/raidou1/interface/itfPanel.s	asm/raidou2/interface/itfPanel.s	unique-reloc-hash
 0x00186860	0x0019B8B0	DrawTestAlphaPrim	no	yes	asm/raidou1/interface/itfPanel.s	asm/raidou2/interface/itfPanel.s	unique-reloc-hash
 0x001868D0	0x0019B920	itfMesMngMessage	no	no	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-masked-hash
-0x00186970	0x0019B9C0	itfLeaf8	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
+0x00186970	0x0019B9C0	itfMesMngSetOffsetY1	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x001869B8	0x0019BA08	itfEndMessageExSub	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00186A28	0x0019BA90	itfMesMngGetPhase	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-reloc-hash
 0x00186A48	0x0019BAB0	itfMesMngSetPhase	no	yes	asm/raidou1/interface/itfMesManager.s	asm/raidou2/interface/itfMesManager.s	unique-masked-hash
@@ -2438,7 +2438,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00194758	0x001AA378	itfCallMessageNumSearch	no	no	asm/raidou1/code_00190668.s	asm/raidou2/code_001A5768.s	unique-masked-hash
 0x001948D0	0x001AA4F0	itfCallSetOt4	no	no	asm/raidou1/code_00190668.s	asm/raidou2/code_001A5768.s	unique-masked-hash
 0x00194BD8	0x001AA7F8	itfCallGetProcessData9	no	no	asm/raidou1/code_00190668.s	asm/raidou2/code_001A5768.s	unique-masked-hash
-0x00194E28	0x001AAA48	itfLeaf25	no	yes	asm/raidou1/code_00190668.s	asm/raidou2/code_001A5768.s	masked-hash-in-gap
+0x00194E28	0x001AAA48	DvlMsgInit	no	yes	asm/raidou1/code_00190668.s	asm/raidou2/code_001A5768.s	masked-hash-in-gap
 0x00194E40	0x001AAA60	DvlMsgShutdown	no	yes	asm/raidou1/code_00190668.s	asm/raidou2/code_001A5768.s	masked-hash-in-gap
 0x00194E78	0x001AAA98	itfDvlMsgProcessStart	no	yes	asm/raidou1/code_00190668.s	asm/raidou2/code_001A5768.s	unique-reloc-hash
 0x00194F28	0x001AAB48	itfDvlMsgProcessEnd_itf	no	yes	asm/raidou1/code_00190668.s	asm/raidou2/code_001A5768.s	unique-reloc-hash
@@ -3016,7 +3016,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001B4920	0x001CA9E8	GetUnitMotionChangeFrame	no	yes	asm/raidou1/event/evtEventViewer.s	asm/raidou2/event/evtEventViewer.s	unique-reloc-hash
 0x001B49E8	0x001CAAB0	evtViewerStopFrame	no	yes	asm/raidou1/event/evtEventViewer.s	asm/raidou2/event/evtEventViewer.s	unique-reloc-hash
 0x001B4CA0	0x001CAD68	evtViewerDispatchFlagMode	no	yes	asm/raidou1/event/evtEventViewer.s	asm/raidou2/event/evtEventViewer.s	unique-reloc-hash
-0x001B4CE8	0x001CADB0	evtLeaf6	yes	yes	asm/raidou1/event/evtEventViewer.s	asm/raidou2/event/evtEventViewer.s	unique-reloc-hash
+0x001B4CE8	0x001CADB0	GetNextNearCameraFrame	yes	yes	asm/raidou1/event/evtEventViewer.s	asm/raidou2/event/evtEventViewer.s	unique-reloc-hash
 0x001B4D68	0x001CAE30	evtLeaf7	yes	yes	asm/raidou1/event/evtEventViewer.s	asm/raidou2/event/evtEventViewer.s	unique-reloc-hash
 0x001B4DE8	0x001CAEB0	PushMenu	yes	yes	asm/raidou1/event/evtEventViewer.s	asm/raidou2/event/evtEventViewer.s	unique-reloc-hash
 0x001B4E50	0x001CAF18	evtViewerPopHistory	yes	yes	asm/raidou1/event/evtEventViewer.s	asm/raidou2/event/evtEventViewer.s	unique-reloc-hash
@@ -3607,7 +3607,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001D6898	0x001ED160	slLeaf7	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	masked-hash-in-gap
 0x001D68A8	0x001ED170	slCallSetInfo6	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D68E8	0x001ED1B0	slLoadProc1st	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	masked-hash-in-gap
-0x001D6900	0x001ED1C8	slLeaf9	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	masked-hash-in-gap
+0x001D6900	0x001ED1C8	slLoadProc1stBgm	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	masked-hash-in-gap
 0x001D6918	0x001ED1E0	slEndingProc1st	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D6940	0x001ED208	slBootProc1st	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
 0x001D6978	0x001ED240	slCallSetInfo7	no	yes	asm/raidou1/mc/slMain.s	asm/raidou2/mc/slMain.s	unique-reloc-hash
@@ -7632,7 +7632,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002F2350	0x003552F8	Chr_UpdateMove	no	no	asm/raidou1/lmap.s	asm/raidou2/lmap.s	run-order-near
 0x002F25B0	0x00355598	Chr_GetNearPortTableNo	no	no	asm/raidou1/lmap.s	asm/raidou2/lmap.s	unique-masked-hash
 0x002F27E8	0x00355D10	lmapLockSetPointChrSub	yes	yes	asm/raidou1/lmap.s	asm/raidou2/lmap.s	unique-reloc-hash
-0x002F28A0	0x00355DC8	lmapLeaf6	yes	yes	asm/raidou1/lmap.s	asm/raidou2/lmap.s	unique-reloc-hash
+0x002F28A0	0x00355DC8	Lock_SetLineNo	yes	yes	asm/raidou1/lmap.s	asm/raidou2/lmap.s	unique-reloc-hash
 0x002F2958	0x00355E80	Lock_SetPointChr	no	no	asm/raidou1/lmap.s	asm/raidou2/lmap.s	unique-masked-hash
 0x002F29B8	0x00356800	lmapActWndInitSub	yes	yes	asm/raidou1/lmap.s	asm/raidou2/lmap.s	masked-hash-in-gap
 0x002F29C0	0x00356808	lmapLeaf7	yes	yes	asm/raidou1/lmap.s	asm/raidou2/lmap.s	unique-reloc-hash
@@ -8456,8 +8456,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00337E00	0x0039C938	Destroy_gohInit	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	unique-reloc-hash
 0x003381E0	0x0039CE20	campKillProcesses	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap
 0x00338220	0x0039CE60	gohProcessCheck	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap
-0x00338270	0x0039D018	gohLeaf22	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap
-0x00338288	0x0039D030	gohLeaf23	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap
+0x00338270	0x0039D018	gohDebugProcessEnd	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap
+0x00338288	0x0039D030	gohDebugProcessCheck	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap
 0x003382A0	0x0039D048	gohScrCmd_RenkenSpirit	no	no	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap
 0x00338348	0x0039D100	gohStopSequence	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap
 0x00338360	0x0039D118	gohCheckSequence	no	yes	asm/raidou1/code_0032F2B8.s	asm/raidou2/code_0039B8E8.s	masked-hash-in-gap

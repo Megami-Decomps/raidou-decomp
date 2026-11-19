@@ -900,7 +900,7 @@ dds3ProcessFunc_t slLoadProc1st(void)
     return EE_ADDR_AS(dds3ProcessFunc_t, slTop());
 }
 
-s32 slLeaf9(void) {
+s32 slLoadProc1stBgm(void) {
     return slTop();
 }
 
@@ -1544,7 +1544,7 @@ void fmProcTrigSequence_slMain(s32 mode) {
             if (mode == 4) {
                 gslDrawFlagBg = 1;
                 mode = 1;
-                proc_func_ans = (s32 (*)(dds3ProcessID_t *))slLeaf9;
+                proc_func_ans = (s32 (*)(dds3ProcessID_t *))slLoadProc1stBgm;
             } else {
                 gslDrawFlagBg = 0;
                 proc_func_ans = (s32 (*)(dds3ProcessID_t *))slBootProc1st;
