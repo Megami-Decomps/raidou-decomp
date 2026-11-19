@@ -124,7 +124,7 @@ Related: register allocation (retail holds &wk->rot in a 7th saved register) and
 
 Raidou 1: 10 of 15 words differ, first at +0x0.
 
-v0/v1 swapped through the body, the SetUseskl shape (docs/matching/sbtlActAI.md); the &= ~ siblings sbtlLeaf65/sbtlResetUseskl match with the same C; a bit temp gets worse (14); SBTLUNIT_MODEL useskl[36] split into useskl[17] + chkskl[19] at 0x1D8 (HD chkskl); vectors do not reach, checked against the asm
+v0/v1 swapped through the body, the SetUseskl shape (docs/matching/sbtlActAI.md); the &= ~ siblings sbtlResetChkskl/sbtlResetUseskl match with the same C; a bit temp gets worse (14); SBTLUNIT_MODEL useskl[36] split into useskl[17] + chkskl[19] at 0x1D8 (HD chkskl); vectors do not reach, checked against the asm
 
 Related: regalloc.
 
