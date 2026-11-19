@@ -6665,7 +6665,7 @@
 0x00262D30	sbtlRefDDS3GBWK2	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlGetPlayerData; references DDS3_GBWK
 0x00262D88	sbtlSetData_Unit_Stock	hd-inferred	method=hd-gap-single-raidou2; p=0.96 (n=405); tier=A; source=hd; evidence=Raidou HD sBtlMain.sBtlSetData_Unit_Stock score 4.8 flag I: prev next gap=exact st2:gap r1-disagree:0x24b7e0
 0x00263000	sbtlGetData_Stock_Unit	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlMain.sBtlGetData_Stock_Unit score 5.8 flag I: calls2 next~ calls-of-match votes3 st2:call r1-disagree:0x24b9a0
-0x00263420	sbtlLeaf53	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlGetStockUnitData; no named callee, caller or string
+0x00263420	sbtlCheckLive	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD sBtlMain.sBtlCheckLive(unit): 1 unless bad status bit 0x8000 is set (0x20000 in HD); precedes the sBtlCheckSelect body (sbtlBtlNakamaSetUpSub, 0xC000 here for HD 0x130000) and sbtlCheckStockPara as in HD; replaces sbtlLeaf53
 0x00263430	sbtlBtlCheckSummonSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlCheckStockPara; called by sbtlCheckSummon
 0x00263460	sbtlCheckStockPara	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlMain.sBtlCheckStockPara score 6.2 flag I: calls4 calls-of-match votes4 st2:call r1-disagree:0x24bc78
 0x00263898	sbtlCallBtlGetItemtbl	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlCheckStockPara; calls sbtlGetItemtbl
@@ -6795,7 +6795,7 @@
 0x0026D4A0	sbtlCallGetRandIntA4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlPlayDamageSE; calls dds3GetRandIntA
 0x0026D528	sbtlCallGetRandIntA5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlPlaySpecialSE; calls dds3GetRandIntA
 0x0026D628	sbtlPlaySpecialSE	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD sBtlSound.sBtlPlaySpecialSE score 6.0 flag I: calls2 calls-of-match votes3 st1:call r1-only
-0x0026D6F0	sbtlLeaf58	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlPlaySpecialSE; no named callee, caller or string
+0x0026D6F0	sbtlStopSE	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sBtlSound.sBtlStopSE(no): stops sound effect no (p2sdStopSe); after sbtlPlaySpecialSE as in HD; replaces sbtlLeaf58
 0x0026D708	Proc_sbtlSound	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlSound.Proc score 4.1 flag -: calls2 next calls-of-match votes2 st2:call r1-disagree:0x2505c8
 0x0026E100	sbtlGetDevilSESub	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD sBtlSound.sBtlGetDevilSESub score 6.7 flag I: calls4 calls-of-match votes3 st2:call r1-disagree:0x250890
 0x0026E118	GetDevilSE	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSound.GetDevilSE(devilID, motionID): sBtlGetDevilSESub tail-calls it with both args (motionID - 4 < 28 check); HD sBtlGetViceSE takes one arg; replaces sbtlGetViceSE
@@ -8233,7 +8233,7 @@
 0x002E1F58	sbtlLeaf94	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002E1F80	sbtlBtlDebugInitSbattleSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlDebug_Init_sbtl
 0x002E1FC8	sbtlDebug_CheckMainPanel	hd	hd: Raidou HD sbattle.sBtlDebug_CheckMainPanel, score 8.3 band B
-0x002E2040	sbtlLeaf111	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002E2040	sbtlDebug_CheckEffectEditor	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sbattle.sBtlDebug_CheckEffectEditor: returns (debug work status & 0x30) != 0; right after sbtlDebug_CheckMainPanel as in HD; replaces sbtlLeaf111
 0x002E2058	sbtlSbtlDebug_CheckFreeCameraFlg	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.sbattleSbtlDebug_CheckFreeCameraFlg score 7.5 flag I: calls1 str1 next~ callers-of-match st1:call r1-only
 0x002E2090	evtBEnterStateA	inferred	method=dds-fuzzy-60-tie-pair; p=0.40 (n=2); tier=C; source=dds; evidence=dds body 0x24bd48 sim 0.633 margin 0.00 pair
 0x002E2118	sbtlDebug_Init	hd	hd: Raidou HD sbattle.sBtlDebug_Init, score 13.2 band A

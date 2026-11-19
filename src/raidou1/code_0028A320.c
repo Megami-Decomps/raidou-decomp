@@ -576,7 +576,7 @@ s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s
             } else if (!(tbl->type & 8) && wk_sbtl->battleMode != 3) {
                 /* A stocked demon's skill on its own side reaches the player's stock. */
                 stock = sbtlGetStockUnitData(wk->stockID);
-                if ((tbl->area & 0x100) || sbtlLeaf53(stock)) {
+                if ((tbl->area & 0x100) || sbtlCheckLive(stock)) {
                     sbtlGetDamage_GB(&wk->unit, stock, sklid);
                 }
             }
@@ -589,7 +589,7 @@ s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s
             if (sbtlGetItemtbl(wk_sbtl->useitemID)->side & 4) {
                 for (i = 0; i < wk_sbtl->stockNum; i++) {
                     stock = sbtlGetStockUnitData(i);
-                    if (sbtlLeaf53(stock)) {
+                    if (sbtlCheckLive(stock)) {
                         CalcItem(stock, wk_sbtl->useitemID);
                         sbtlCheckItemMember(i);
                     }
@@ -604,7 +604,7 @@ s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s
                 sbtlCheckItemMember(wk_sbtl->useitem_stock);
                 CalcItem(stock, wk_sbtl->useitemID);
                 sbtlCheckItemMember_Dead(wk_sbtl->useitem_stock);
-            } else if (sbtlLeaf53(stock)) {
+            } else if (sbtlCheckLive(stock)) {
                 CalcItem(stock, wk_sbtl->useitemID);
                 sbtlCheckItemMember(wk_sbtl->useitem_stock);
             }
@@ -619,7 +619,7 @@ s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s
                     continue;
                 }
                 stock = sbtlGetStockUnitData(i);
-                if ((tbl->area & 0x100) || sbtlLeaf53(stock)) {
+                if ((tbl->area & 0x100) || sbtlCheckLive(stock)) {
                     sbtlGetDamage_GB(&wk->unit, stock, sklid);
                 }
             }

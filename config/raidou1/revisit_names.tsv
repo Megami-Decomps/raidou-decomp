@@ -2669,7 +2669,6 @@
 0x0024B7E0	sbtlCallMemset	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlGetStockUnitData; calls memset
 0x0024B9A0	sbtlCallMemset2	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlGetStockUnitData; calls memset
 0x0024BBF8	sbtlRefSbtl	func	tier=D	derived-data	na	unit code_0024AAD8, neighbour sbtlGetStockUnitData; references wk_sbtl
-0x0024BC40	sbtlLeaf53	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlGetStockUnitData; no named callee, caller or string
 0x0024BC50	sbtlBtlNakamaSetUpSub	func	tier=D	derived-caller	na	unit code_0024AAD8, neighbour sbtlSetMapFade; called by sbtlNakamaSetUp
 0x0024C568	sbtlCallBtlSearchPacData	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSearchPacData2; calls sbtlSearchPacData
 0x0024C850	sbtlCallBtlSearchPacData2	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlSetPacData_MHT; calls sbtlSearchPacData
@@ -2713,7 +2712,6 @@
 0x002500C8	sbtlPlayMotionSENowSub	func	tier=D	derived-caller	na	unit code_0024AAD8, neighbour sbtlGetBossSE; called by PlayMotionSENow
 0x00250370	sbtlCallGetRandIntA4	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlPlayDamageSE; calls dds3GetRandIntA
 0x002503F8	sbtlCallGetRandIntA5	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlPlaySpecialSE; calls dds3GetRandIntA
-0x002505B0	sbtlLeaf58	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlPlaySpecialSE; no named callee, caller or string
 0x002505C8	sbtlCallBtlCheckEnshutuSummonUnit	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlPlaySpecialSE; calls sbtlCheckEnshutuSummonUnit
 0x00250890	sbtlPlayMotionSENowSub2	func	tier=D	derived-caller	na	unit code_0024AAD8, neighbour sbtlGetDevilSESub; called by PlayMotionSENow
 0x002508D8	sbtlPlayMotionSENowSub3	func	tier=D	derived-caller	na	unit code_0024AAD8, neighbour sbtlGetDevilSESub; called by PlayMotionSENow
@@ -2862,7 +2860,6 @@
 0x00265F68	sbtlRefSbtl17	func	tier=D	derived-data	na	unit code_0024AAD8, neighbour sbtlAllInit; references wk_sbtl
 0x00265FF0	sbtlRefSbtl18	func	tier=D	derived-data	na	unit code_0024AAD8, neighbour sbtlDeath; references wk_sbtl
 0x00266288	sbtlRefSbtl19	func	tier=D	derived-data	na	unit code_0024AAD8, neighbour sbtlDeath; references wk_sbtl
-0x002663B0	sbtlLeaf5	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlSetAttr; no named callee, caller or string
 0x002664B0	sbtlCheckSkillCancel	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlScript.sBtlCheckSkillCancel, score 8.8 band B
 0x002667D0	sbtlGetPointLast	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlScript.sBtlGetPointLast, score 8.6 band B
 0x002674A0	sbtlCheckEffectCancel	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlScript.sBtlCheckEffectCancel, score 7.0 band B
@@ -3349,7 +3346,6 @@
 0x002A58F8	sbtlFunc20	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002A5940	sbtlCallMessageNumSearch4	func	tier=D	derived-callee	na	unit sbtl; calls MessageNumSearch
 0x002A5A80	sbtlBtlDebugInitSbattleSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlDebug_Init_sbtl
-0x002A5B40	sbtlLeaf111	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002A6180	sbtlCallBtlGetPlayerData5	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetPlayerData
 0x002A6458	sbtlCallDrawMiscFontAlpha	func	tier=D	derived-callee	na	unit sbtl; calls itfDrawMiscFontAlpha
 0x002A6750	sbtlLeaf92	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
@@ -17985,6 +17981,7 @@
 0x0024FC88	NakamaMotion3DSE	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.NakamaMotion3DSE score 3.1 flag -: calls1 calls-of-match st2:call r2-only
 0x002500E0	sbtlGetBossSE	func	tier=C	hd-both	0.71 (n=206)	Raidou HD sBtlSound.sBtlGetBossSE score 5.3 flag I: next gap3/4 st1:gap r1+r2
 0x002504E8	sbtlPlaySpecialSE	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlSound.sBtlPlaySpecialSE score 6.0 flag I: calls2 calls-of-match votes3 st1:call r1-only
+0x002505B0	sbtlStopSE	func	tier=C	derived-derived-role	na	Raidou HD sBtlSound.sBtlStopSE(no): stops sound effect no (p2sdStopSe); after sbtlPlaySpecialSE as in HD; replaces sbtlLeaf58
 0x002515B8	sbtlStopSkillSE	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlSound.sBtlStopSkillSE score 3.6 flag I: calls2 calls-of-match votes2 st1:call r2-disagree:0x26f460
 0x00252378	sbtlClearUnitList	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlClearUnitList score 4.0 flag I: next~ gap2/2 st1:gap r1+r2
 0x00253550	sbtlResetMutekiColor	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlUnit.sBtlResetMutekiColor score 3.3 flag I: prev gap11/4 st2:gap r2-only
@@ -18092,6 +18089,7 @@
 0x002A4DD8	CheckBadStatus_sbtlSkill	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlSkill.CheckBadStatus score 6.3 flag -: calls3 calls-of-match votes2 st1:call r2-disagree:0x2e0fa0
 0x002A5408	SetVar_sbtlSM	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlSM.SetVar score 3.5 flag -: calls2 callers-of-match votes2 st1:call r2-disagree:0x2e16a8
 0x002A58C0	sbtlDeleteSMList	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlSM.sBtlDeleteSMList score 5.1 flag I: calls1 prev callers-of-match votes2 st2:call r2-only
+0x002A5B40	sbtlDebug_CheckEffectEditor	func	tier=C	derived-derived-role	na	Raidou HD sbattle.sBtlDebug_CheckEffectEditor: returns (debug work status & 0x30) != 0; right after sbtlDebug_CheckMainPanel as in HD; replaces sbtlLeaf111
 0x002A5B90	evtBEnterStateA	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x24bd48 sim 0.633 margin 0.00 pair
 0x002A65E8	sbtlDebug_DrawHPGauge	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sbattle.sBtlDebug_DrawHPGauge score 6.2 flag -: calls2 prev~ callers-of-match votes4 st2:call r2-only
 0x002A7848	sbtlDrawUnitChangeList	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sbattle.sbattleDrawUnitChangeList score 4.1 flag I: calls1 callers-of-match st1:call r1+r2

@@ -105,7 +105,7 @@ struct SBTLUNIT_WORK *sbtlRefSbtl(void) {
 INCLUDE_ASM(const s32, "code_r1_0024B788", sbtlRefSbtl);
 #endif
 
-s32 sbtlLeaf53(sdatUnitWork_t *unit) {
+s32 sbtlCheckLive(sdatUnitWork_t *unit) {
     if (unit->badStatus & 0x8000) {
         return 0;
     }

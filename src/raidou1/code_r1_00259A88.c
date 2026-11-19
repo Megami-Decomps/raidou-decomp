@@ -4412,7 +4412,7 @@ void sbtlBattleStart(SBTL_STAGE_DATA *stage)
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlSetAttr);
 
-INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlLeaf5);
+INCLUDE_ASM(const s32, "code_r1_00259A88", sbtlCheckHuttobi);
 
 INCLUDE_ASM(const s32, "code_r1_00259A88", CheckBadStatus);
 

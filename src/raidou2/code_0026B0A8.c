@@ -463,7 +463,7 @@ void sbtlRefSbtl6(struct SBTLUNIT_WORK *wk, u32 seid, s32 vol, s32 motionID)
         }
     }
     if ((u32)(motionID - 13) < 2 && !(wk->field414 & 0x80) && (wk->field414 & 1)) {
-        sbtlLeaf58(seid);
+        sbtlStopSE(seid);
     }
     sbtlSEVolAngleCalc(seid, vol);
 }
@@ -562,7 +562,7 @@ void sbtlPlaySpecialSE(const sdfVector4_t *pos, s32 specialType)
     }
 }
 
-void sbtlLeaf58(u32 seid) {
+void sbtlStopSE(u32 seid) {
     p2sdStopSe(seid);
 }
 

@@ -558,7 +558,7 @@ void sbtlRefSbtl6(struct SBTLUNIT_WORK *wk, u32 seid, s32 vol, s32 motionID)
             }
         }
         if ((u32)(motionID - 13) < 2 && !(wk->field414 & 0x80) && (wk->field414 & 1)) {
-            sbtlLeaf58(seid);
+            sbtlStopSE(seid);
         }
         break;
     }
@@ -741,7 +741,7 @@ void sbtlPlaySpecialSE(const sdfVector4_t *pos, s32 specialType)
     }
 }
 
-void sbtlLeaf58(u32 seid) {
+void sbtlStopSE(u32 seid) {
     p2sdStopSe(seid);
 }
 
@@ -1234,11 +1234,11 @@ void sbtlCallBtlGetDevilSESub2(struct SBTLUNIT_WORK *wk, s32 type)
     switch (type) {
     case 1:
         se = sbtlPlayMotionSENowSub2(devilID, 13);
-        sbtlLeaf58(se);
+        sbtlStopSE(se);
         break;
     case 2:
         se = sbtlPlayMotionSENowSub2(devilID, 14);
-        sbtlLeaf58(se);
+        sbtlStopSE(se);
         break;
     case 3:
         se = sbtlGetDevilSESub(devilID);

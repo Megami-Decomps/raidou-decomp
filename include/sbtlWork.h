@@ -1306,7 +1306,7 @@ s32 sbtlSbattle3(void);
 #endif
 void sbtlCallEffectShutdown3(s32 mode);
 sdatUnitWork_t *sbtlGetStockUnitData(s32 id);
-s32 sbtlLeaf53(sdatUnitWork_t *unit);
+s32 sbtlCheckLive(sdatUnitWork_t *unit);
 s32 sbtlGetDamage_GB(sdatUnitWork_t *acter, sdatUnitWork_t *unit, SKLID sklid);
 s32 CalcItem(sdatUnitWork_t *unit, s32 itemID);
 s32 sbtlCheckItemMember(s32 stockID);

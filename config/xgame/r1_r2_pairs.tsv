@@ -6038,7 +6038,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0024B4E8	0x00262A98	sbtlMap_Init	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
 0x0024B510	0x00262AC0	sbtlInitPlayerData	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	run-order-near
 0x0024B788	0x00262D20	sbtlGetPlayerData	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	masked-hash-in-gap
-0x0024BC40	0x00263420	sbtlLeaf53	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
+0x0024BC40	0x00263420	sbtlCheckLive	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
 0x0024BF48	0x00263920	sbtlSetMapFade	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	masked-hash-in-gap
 0x0024C0B8	0x00263A90	sbtlMapFadeProc	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
 0x0024C1D8	0x00263BB0	sbtlSetMapFade_H	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	masked-hash-in-gap
@@ -6077,7 +6077,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00250370	0x0026D4A0	sbtlCallGetRandIntA4	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
 0x002503F8	0x0026D528	sbtlCallGetRandIntA5	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	run-order-near
 0x002504E8	0x0026D628	sbtlPlaySpecialSE	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
-0x002505B0	0x0026D6F0	sbtlLeaf58	no	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	masked-hash-in-gap
+0x002505B0	0x0026D6F0	sbtlStopSE	no	yes	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	masked-hash-in-gap
 0x002509C8	0x0026E100	sbtlGetDevilSESub	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	size
 0x00251018	0x0026EE30	sbtlLoadSkillSE	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	size
 0x00251380	0x0026F190	sbtlCallLoad	no	no	asm/raidou1/code_0024AAD8.s	asm/raidou2/code_00261DF0.s	unique-masked-hash
@@ -6886,7 +6886,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002A5940	0x002E1E18	sbtlCallMessageNumSearch4	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	near-size
 0x002A5A80	0x002E1F80	sbtlBtlDebugInitSbattleSub	yes	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	masked-hash-in-gap
 0x002A5AC8	0x002E1FC8	sbtlDebug_CheckMainPanel	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
-0x002A5B40	0x002E2040	sbtlLeaf111	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
+0x002A5B40	0x002E2040	sbtlDebug_CheckEffectEditor	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A5B58	0x002E2058	sbtlSbtlDebug_CheckFreeCameraFlg	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A5B90	0x002E2090	evtBEnterStateA	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A5C18	0x002E2118	sbtlDebug_Init	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	size

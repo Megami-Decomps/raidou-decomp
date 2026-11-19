@@ -610,7 +610,7 @@ void sbtlBtlDebugInitSbattleSub(const char *format, ...)
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_CheckMainPanel);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf111);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_CheckEffectEditor);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlSbtlDebug_CheckFreeCameraFlg);
 

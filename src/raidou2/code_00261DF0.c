@@ -246,7 +246,7 @@ s32 sbtlGetData_Stock_Unit(struct SBTLUNIT_WORK *wk, s32 stock)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlLeaf53);
+INCLUDE_ASM(const s32, "code_00261DF0", sbtlCheckLive);
 
 s32 sbtlBtlCheckSummonSub(sdatUnitWork_t *unit) {
     if (unit->flag & 1) {

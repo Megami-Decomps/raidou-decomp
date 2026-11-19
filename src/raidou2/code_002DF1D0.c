@@ -443,7 +443,7 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBtlDebugInitSbattleSub);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_CheckMainPanel);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf111);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_CheckEffectEditor);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSbtlDebug_CheckFreeCameraFlg);
 

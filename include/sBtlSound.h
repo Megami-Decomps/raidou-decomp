@@ -67,7 +67,7 @@ s32 sbtlBtlForceDeleteEffectWorkIDSub(s32 arg);
 void sbtlSoundatBossAt(s32 id, char *name);
 void sbtlStopSkillSE(SKLID skillid, s32 type);
 void sbtlPlaySkillSE(const sdfVector4_t *pos, SKLID skillid, s32 type);
-void sbtlLeaf58(u32 seid);
+void sbtlStopSE(u32 seid);
 #ifdef VERSION_RAIDOU2
 void sbtlPlayDeadVoice(struct SBTLUNIT_WORK *wk);
 s32 sbtlSEVolAngleCalc_sbtlSound(const sdfVector4_t *pos, f32 maxlen, f32 minlen, s32 basevol, s32 minvol);
