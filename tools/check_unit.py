@@ -27,7 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from retail_elf import RETAIL, ROOT, VERSIONS, load_segments, off_to_va, va_to_off  # noqa: E402
 from symbol_aliases import load_symbol_aliases  # noqa: E402
 from version_guard import view  # noqa: E402
-from eeas_compat import read_folder  # noqa: E402
+from eeas_compat import read_folder, write_folder  # noqa: E402
 from resolved_code import (  # noqa: E402
     hi_lo_addend,
     instruction_shape_matches,
@@ -852,6 +852,23 @@ def text_residual_summary(size, comparison_size, diffs, native_size=None):
     return summary
 
 
+def refresh_eeasm(version, text):
+    """Rewrite the build/eeasm folder files the unit includes when their split asm changed, as ninja would:
+    a folder file written before a rename has no macro for the new name, so the full-unit compile fails."""
+    nonmatchings = Path("asm") / version / "nonmatchings"
+    folders = re.findall(r'^\s*INCLUDE_(?:ASM|RODATA|SDATA)\([^,]+,\s*"([^"]+)"', text, re.M)
+    for folder in dict.fromkeys(folders):
+        inputs = sorted((ROOT / nonmatchings / folder).glob("*.s"))
+        out = ROOT / "build" / "eeasm" / nonmatchings / f"{folder}.s"
+        if not inputs or (out.exists() and out.stat().st_mtime >= max(p.stat().st_mtime for p in inputs)
+                          and set(re.findall(r"^\.equ \.L__ia_(\S+), 1$", out.read_text(), re.M))
+                          == {p.stem for p in inputs}):
+            continue
+        tmp = out.with_name(f".{out.name}.{os.getpid()}")
+        write_folder(tmp, inputs)
+        os.replace(tmp, out)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("unit", type=Path)
@@ -960,6 +977,7 @@ def main():
         as_built = set()  # differs under SKIP_ASM, but the build's code matches retail
         ro_diff = None    # first retail address where the full unit's .rodata differs
         full = Path(tmp) / "full.o"
+        refresh_eeasm(version, source_view)
         rf = subprocess.run([str(ROOT / "tools/cc.sh"), *extra,
                              str(source), "-o", str(full)],
                             capture_output=True, text=True, env=env)

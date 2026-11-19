@@ -46,7 +46,7 @@ class Run:
         self.cache = Path(args.cache).resolve() if args.cache else None
         self.python = str(self.tree / ".venv/bin/python")
         self.maps = {g: renames.name_map(self.batch.applied + self.batch.renames, g) for g in ("raidou1", "raidou2")}
-        self.draft_names = self.maps["raidou1"] if args.rename_drafts else {}
+        self.rename_drafts = args.rename_drafts
         self.notes: list[str] = []
         self.promoted: set[str] = set()
         self.lines: list[str] = []
@@ -83,7 +83,7 @@ class Run:
         out = {}
         for key, row in self.batch.rows.items():
             new = self.current(row.name, row.version)
-            names = self.draft_names or ({row.name: new} if new != row.name else {})
+            names = self.maps[row.version] if self.rename_drafts else ({row.name: new} if new != row.name else {})
             if (text := self.batch.final(key, names)) is not None:
                 out[key] = text
         return out
@@ -243,7 +243,6 @@ class Run:
         if added:
             self.batch.renames = rows
             self.maps = {g: renames.name_map(self.batch.applied + rows, g) for g in ("raidou1", "raidou2")}
-            self.draft_names = self.maps["raidou1"] if self.draft_names else {}
         renames.apply(self.tree, self.batch.renames)
         renames.drop(self.tree, self.batch.drop)
         self.say(f"renames: {len(self.batch.renames)} rows, {len(self.batch.drop)} labels dropped")
@@ -299,7 +298,8 @@ class Run:
                 continue
             old = self.git("show", f"{self.base}:{source}", check=False) if self.base else ""
             before: dict[str, int] = {}
-            for d in decls.parse(unit_text.substitute(old, self.maps["raidou1"])):
+            names = {**self.maps["raidou2"], **self.maps["raidou1"]}
+            for d in decls.parse(unit_text.substitute(old, names)):
                 before[d.norm()] = before.get(d.norm(), 0) + 1
             after = decls.parse(path.read_text())
             defined = {d.name for d in after if d.kind == "def"}

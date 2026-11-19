@@ -18,6 +18,23 @@ DRAFT_CALL = "        smt3Alias(wk->drawPID, 0);\n"
 WRONG = 0x00100E38  # _KillProcess, the address smt3_symbols gives KillProcess
 
 
+class RefreshEeasm(unittest.TestCase):
+    def test_a_folder_file_without_a_renamed_function_is_rewritten(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            split = root / "asm/raidou2/nonmatchings/u"
+            split.mkdir(parents=True)
+            (split / "old.s").write_text("glabel old\n")
+            out = root / "build/eeasm/asm/raidou2/nonmatchings/u.s"
+            with mock.patch.object(check_unit, "ROOT", root):
+                check_unit.refresh_eeasm("raidou2", 'INCLUDE_ASM(const s32, "u", old);\n')
+                self.assertIn("__ia_old", out.read_text())
+                (split / "old.s").rename(split / "new.s")
+                check_unit.refresh_eeasm("raidou2", 'INCLUDE_ASM(const s32, "u", new);\n')
+            self.assertIn("__ia_new", out.read_text())
+            self.assertNotIn("__ia_old", out.read_text())
+
+
 @unittest.skipUnless((ROOT / RETAIL["raidou1"]).exists(), "no retail executable")
 class Smt3AliasRelocation(unittest.TestCase):
     def check(self, aliases, call=DRAFT_CALL):

@@ -298,6 +298,22 @@ class BothGamesTests(unittest.TestCase):
             self.assertIn('INCLUDE_ASM(const s32, "u", f);', b.final("f@raidou2"))
             self.assertEqual(b.final("g@raidou2"), "void g(void) { 2; }\n")
 
+    def test_a_raidou2_draft_is_renamed_by_the_raidou2_rows(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "results.tsv").write_text("name\twords\tresult\nf\t4\tmatch\ng\t2\tnonmatch 1 words\n")
+            (root / "renames.tsv").write_text("raidou1\th\tnh\tHD\nraidou2\tf\tnf\tHD\nraidou2\tg\tng\tHD\n")
+            (root / "f.c").write_text("void f(void) { g(); }\n")
+            (root / "g.c").write_text("void g(void) {}\n")
+            run = land_batch.Run.__new__(land_batch.Run)
+            run.batch = self.load(root, "R\tf\t0\t4\tsrc/raidou2/u\tR2\nR\tg\t0\t2\tsrc/raidou2/u\tR2\n")
+            run.maps = {g: renames.name_map(run.batch.renames, g) for g in ("raidou1", "raidou2")}
+            run.rename_drafts = True
+            finals = run.finals()
+        self.assertEqual(finals["f"], "void nf(void) { ng(); }\n")
+        self.assertIn('INCLUDE_ASM(const s32, "u", ng);', finals["g"])
+        self.assertNotRegex(finals["g"], r"\bg\b")
+
     def test_rows_with_a_commit_are_skipped(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
@@ -328,7 +344,7 @@ class BothGamesTests(unittest.TestCase):
             run.tree, run.base, run.store = root, "", None
             run.batch = self.load(root, "R\tf\t0\t4\tsrc/raidou1/u\tR1\nR\tf\t0\t4\tsrc/raidou2/u\tR2\n")
             run.maps = {g: {} for g in ("raidou1", "raidou2")}
-            run.draft_names = {}
+            run.rename_drafts = False
             run.notes, run.lines = [], []
             run.say = run.lines.append
             run.work = root
@@ -349,7 +365,7 @@ class LateR1onlyTests(unittest.TestCase):
             run = land_batch.Run.__new__(land_batch.Run)
             run.tree = root
             run.maps = {g: {"old": "new"} for g in ("raidou1", "raidou2")}
-            run.draft_names = {}
+            run.rename_drafts = False
             run.batch = batch_files.Batch(root, "R", {"old": batch_files.Row("old", "src/shared/u")}, r1only={"new"})
             run.notes, run.lines = [], []
             run.say = run.lines.append
@@ -653,7 +669,7 @@ class DeclarationTests(unittest.TestCase):
         self.unit.write_text(unit_text.splice(self.unit.read_text(), "f", "s32 f(void) {\n}\n"))
         (self.root / "final").mkdir()
         (self.root / "final/f.c").write_text("s32 f(void) {\n}\n")
-        self.run_.draft_names = {}
+        self.run_.rename_drafts = False
         self.run_.retire()
         self.assertIn("retire: skipped", self.run_.lines[-1])
         self.run_.gate_passed = True
