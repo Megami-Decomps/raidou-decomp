@@ -17,6 +17,7 @@ struct SBTLAI_WORK;
 struct fileRequest;
 struct sdfMemHandle_t;
 struct effRefObj_t;
+struct SBTL_STP;
 
 #ifdef VERSION_RAIDOU2
 /* Partial raidou2 layout: only the fields read so far are named, the rest is padding. */

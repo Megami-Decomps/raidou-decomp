@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "kernel.h"
+#include "libsdf.h"
 #include "code_r1_001CC1D0.h"
 
 /* A battle's rewards, built by sbtlCallBtlSearchUnitID30 from the battle's

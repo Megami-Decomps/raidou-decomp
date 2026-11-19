@@ -8,6 +8,7 @@
 
 struct sprHandle_t;
 struct gohData_t;
+struct rstWork_t;
 
 /* The result screen background: one sprite resource set. */
 typedef struct rstBG_t {
