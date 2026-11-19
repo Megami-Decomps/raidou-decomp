@@ -1084,7 +1084,7 @@ void dds3BillboardSetAnimNumber(billHandle_t *hBillboard, u32 number) {
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/effect/billManager.c:1312, match, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
-s32 dds3Leaf32(billHandle_t *hBillboard) {
+s32 dds3BillboardGetCurrentAnimNumber(billHandle_t *hBillboard) {
     if (hBillboard->type == 1) {
         return hBillboard->animationEntryIndex;
     }
@@ -1157,7 +1157,7 @@ u16 dds3BillboardGetAnimState(const billHandle_t *hBillboard) {
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/effect/billManager.c:1312, near, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
-s32 dds3Leaf33(billHandle_t *hBillboard) {
+s32 dds3BillboardGetAnimType(billHandle_t *hBillboard) {
     if (hBillboard->type == 1) {
         return hBillboard->modeFlags;
     }
@@ -1274,7 +1274,7 @@ void dds3P2APolygonSetScale(s32 hData, float scale) {
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/effect/billManager.c:1499, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
 /* vu0 routine: copy the 4x4 rotation matrix into the polygon. */
-void dds3Leaf34(dds3P2APolygon_tag *hData, void *pMatrix) {
+void dds3P2APolygonSetRotateMatrix(dds3P2APolygon_tag *hData, void *pMatrix) {
     SDF_VU0_LOADMATRIX(pMatrix);
     SDF_VU0_STOREMATRIX(hData->rot);
 }
@@ -1284,7 +1284,7 @@ void dds3P2APolygonSetRGBA(dds3P2APolygon_tag *hData, u32 abgr) {
 }
 
 /* vu0 routine: copy the 4x4 direction matrix into the polygon. */
-void dds3Leaf35(dds3P2APolygon_tag *hData, const void *pDir) {
+void dds3P2APolygonSetDirection(dds3P2APolygon_tag *hData, const void *pDir) {
     SDF_VU0_LOADMATRIX(pDir);
     SDF_VU0_STOREMATRIX(hData->dir);
 }

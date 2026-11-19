@@ -3711,7 +3711,7 @@ void dds3ParticleExpSetRGBA(dds3Particle_Basic_t *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", parLeaf3);
+INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleExpSetLoop);
 
 u8 dds3ParticleExpGetLoop(dds3Particle_Basic_t *hData) {
     return dds3ParticleGetLoop(hData);

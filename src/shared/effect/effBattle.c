@@ -280,19 +280,19 @@ void *effBTLCutGetFormation(effBTLCut_t *hBTLCutEffect) {
 }
 
 #ifdef VERSION_RAIDOU1
-void effLeaf12(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
+void effBTLCutSetMotionChangeCallbackFunc(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
     hBTLCutEffect->sourceFrameCallback = pCallback;
 }
 #else
-INCLUDE_ASM(const s32, "effect/effBattle", effLeaf12);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetMotionChangeCallbackFunc);
 #endif
 
 #ifdef VERSION_RAIDOU1
-void effLeaf13(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
+void effBTLCutSetCutEndCallbackFunc(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
     hBTLCutEffect->triggerFrameCallback = pCallback;
 }
 #else
-INCLUDE_ASM(const s32, "effect/effBattle", effLeaf13);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetCutEndCallbackFunc);
 #endif
 
 s32 effBTLCutGetMotionChangeFrame(effBTLCut_t *hBTLCutEffect) {
@@ -320,7 +320,7 @@ u32 effBTLCutGetDrawEndFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->colorRampEndFrame;
 }
 
-void effLeaf15(effBTLCut_t *hBTLCutEffect, void *userData) {
+void effBTLCutSetUserData(effBTLCut_t *hBTLCutEffect, void *userData) {
     hBTLCutEffect->userData = userData;
 }
 

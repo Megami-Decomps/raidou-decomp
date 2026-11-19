@@ -250,9 +250,9 @@ void effPCPBezierBillDelete(effPCPBezierBill_tag *hData) {
 void effLeaf206(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", effLeaf207);
+INCLUDE_ASM(const s32, "effect/effPCPBezier", effPCPBezierBillSetPosition);
 
-void effLeaf208(effPCPBezierBill_tag *hData, u32 abgr) {
+void effPCPBezierBillSetColor(effPCPBezierBill_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 

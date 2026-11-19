@@ -2042,11 +2042,11 @@ void effPCPSparkleSphereDraw(effPCPSparkleSphere_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf59);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSparkleSphereSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf60);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSparkleSphereSetColor);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf61);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSparkleSphereSetArea);
 
 void effPCPHama01PartInit(effPCPHama01_tag *pPCPHama01, s32 number) {
     u128 mtx[4];
@@ -2161,11 +2161,11 @@ void effPCPHama01Draw(effPCPHama01_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf62);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf63);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama01SetScale);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf64);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama01SetColor);
 
 void effPCPHama02PartInit(effPCPHama02_tag *pPCPHama02, s32 number) {
     u128 mtx[4];
@@ -2263,11 +2263,11 @@ void effPCPHama02Draw(effPCPHama02_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf65);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf66);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02SetScale);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf67);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02SetColor);
 
 void effPCPHamaonPartInit(effPCPHamaon_tag *pPCPHamaon, u32 kind, u32 attach) {
     u128 mtx[4];
@@ -2378,11 +2378,11 @@ void effPCPHamaonDraw(effPCPHamaon_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf68);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf69);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonSetScale);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf70);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonSetColor);
 
 void effPCPMHanma01PartInit(effPCPMHanma01_tag *pPCPMHanma01, s32 number) {
 
@@ -2471,11 +2471,11 @@ void effPCPMHanma01Draw(effPCPMHanma01_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf71);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMHanma01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf72);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMHanma01SetScale);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf73);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMHanma01SetColor);
 
 void effPCPMudoPartInit(effPCPMudo_tag *pPCPMudo) {
     pPCPMudo->historyCount = 0;
@@ -2582,11 +2582,11 @@ void effPCPMudoDraw(effPCPMudo_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf74);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf75);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoSetScale);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf76);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoSetColor);
 
 effPCPHwave01_tag *effPCPHwave01Create(void *src) {
     effPCPHwave01_tag *dst;
@@ -2639,9 +2639,9 @@ void effPCPHwave01Draw(effPCPHwave01_tag *hData) {
     dds3EffectPartDraw(hData->hD3P);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf77);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHwave01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf78);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHwave01SetColor);
 
 void effPCPZiodin01Init(effPCPZiodin01_tag *pPCPZiodin01) {
     s32 i;
@@ -3014,11 +3014,11 @@ void effPCPZiodin04Draw(effPCPZiodin01_tag *hData) {
     ShiftThunderHandles(hData, 12);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf88);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin04SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf89);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin04SetScale);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf90);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin04SetColor);
 
 void effPCPMZiodin01Init(effPCPZiodin01_tag *pPCPMZiodin01) {
     s32 i;
@@ -3076,11 +3076,11 @@ void effPCPMZiodin01Draw(effPCPZiodin01_tag *hData) {
     ShiftThunderHandles(hData, 12);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf91);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf92);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin01SetScale);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf93);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin01SetColor);
 
 void effPCPMZiodin02Init(effPCPZiodin01_tag *pPCPMZiodin02) {
     s32 i;
@@ -3140,11 +3140,11 @@ void effPCPMZiodin02Draw(effPCPZiodin01_tag *hData) {
     ShiftThunderHandles(hData, 8);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf94);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin02SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf95);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin02SetScale);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf96);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin02SetColor);
 
 void effPCPShockWave01Init(effPCPShockWave01_tag *pPCPShockWave01) {
     effPCPThunderSpherePoly_t *handle;
@@ -3296,11 +3296,11 @@ void effPCPShockWave02Draw(effPCPZiodin01_tag *hData) {
     ShiftThunderHandles(hData, 30);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf100);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave02SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf101);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave02SetScale);
 
-void effLeaf102(effPCPZiodin01_tag *hData, u32 abgr) {
+void effPCPShockWave02SetColor(effPCPZiodin01_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -3363,11 +3363,11 @@ void effPCPHouden01Draw(effPCPShockWave01_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf103);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHouden01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf104);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHouden01SetScale);
 
-void effLeaf105(effPCPShockWave01_tag *hData, u32 abgr) {
+void effPCPHouden01SetColor(effPCPShockWave01_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -3461,13 +3461,13 @@ void effPCPMultiBlurExpDraw(effPCPMultiBlurExp_tag *hData) {
     dds3EffectPartialMultiBlurDraw(obj);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf109);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiBlurExpSetPosition);
 
-void effLeaf110(effPCPMultiBlurExp_tag *hData, u32 abgr) {
+void effPCPMultiBlurExpSetColor(effPCPMultiBlurExp_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf111);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiBlurExpSetArea);
 
 effPCPMultiBlurExp2_tag *effPCPMultiFilterExpCreate(effPCPMultiFilterExpParam_t *params) {
     effPCPMultiBlurExp2_tag *work;
@@ -3548,13 +3548,13 @@ void effPCPMultiFilterExpDraw(effPCPMultiBlurExp2_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf112);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiFilterExpSetPosition);
 
-void effLeaf113(effPCPMultiBlurExp2_tag *hData, u32 color) {
+void effPCPMultiFilterExpSetColor(effPCPMultiBlurExp2_tag *hData, u32 color) {
     hData->color = color;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf114);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiFilterExpSetArea);
 
 effPCPMultiBlurExp2_tag *effPCPMultiBlurExp2Create(effPCPMultiBlurExp2Param_t *pParam) {
     effPCPMultiBlurExp2_tag *work;
@@ -3635,9 +3635,9 @@ void effPCPMultiBlurExp2Draw(effPCPMultiBlurExp2_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf115);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiBlurExp2SetPosition);
 
-void effLeaf116(effPCPMultiBlurExp2_tag *hData, u32 color) {
+void effPCPMultiBlurExp2SetColor(effPCPMultiBlurExp2_tag *hData, u32 color) {
     hData->color = color;
 }
 
@@ -3693,7 +3693,7 @@ void effPCPFilterExpDraw(effPCPFilterExp_tag *hData) {
     }
 }
 
-void effLeaf118(effPCPFilterExp_tag *hData, u32 abgr) {
+void effPCPFilterExpSetColor(effPCPFilterExp_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -3749,7 +3749,7 @@ void effPCPBlurExpDraw(effPCPBlurExp_tag *hData) {
     }
 }
 
-void effLeaf119(effPCPBlurExp_tag *hData, u32 abgr) {
+void effPCPBlurExpSetColor(effPCPBlurExp_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -3831,9 +3831,9 @@ void effPCPDistortionBlurExpDraw(effPCPDistortionBlurExp_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf120);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPDistortionBlurExpSetPosition);
 
-void effLeaf121(effPCPDistortionBlurExp_tag *hData, u32 abgr) {
+void effPCPDistortionBlurExpSetColor(effPCPDistortionBlurExp_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -3921,9 +3921,9 @@ void effPCPRippleBlurExpDraw(effPCPDistortionBlurExp_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf122);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRippleBlurExpSetPosition);
 
-void effLeaf123(effPCPDistortionBlurExp_tag *hData, u32 abgr) {
+void effPCPRippleBlurExpSetColor(effPCPDistortionBlurExp_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -3991,11 +3991,11 @@ void effPCPMegidora01Draw(effPCPShockWave01_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf124);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMegidora01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf125);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMegidora01SetScale);
 
-void effLeaf126(effPCPShockWave01_tag *hData, u32 abgr) {
+void effPCPMegidora01SetColor(effPCPShockWave01_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -4058,11 +4058,11 @@ void effPCPMegidoraon01Draw(effPCPShockWave01_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf127);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMegidoraon01SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf128);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMegidoraon01SetScale);
 
-void effLeaf129(effPCPShockWave01_tag *hData, u32 abgr) {
+void effPCPMegidoraon01SetColor(effPCPShockWave01_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -4115,9 +4115,9 @@ void effPCPBreathDelete(effPCPBreath_tag *hData) {
 void effLeaf130(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf131);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBreathSetPosition);
 
-void effLeaf132(effPCPBreath_tag *hData, u32 abgr) {
+void effPCPBreathSetColor(effPCPBreath_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -4237,9 +4237,9 @@ void effPCPAgiraoFireDraw(effPCPAgiraoFire_tag *hData) {
     hData->frame = (s32)((u32)hData->frame + 1);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf133);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiraoFireSetPosition);
 
-void effLeaf134(effPCPAgiraoFire_tag *hData, u32 color) {
+void effPCPAgiraoFireSetColor(effPCPAgiraoFire_tag *hData, u32 color) {
     hData->color = color;
 }
 
@@ -4947,9 +4947,9 @@ void effPCPEyeThunderDelete(effPCPEyeThunder_tag *hData) {
 void effLeaf163(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf164);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPEyeThunderSetPosition);
 
-void effLeaf165(effPCPEyeThunder_tag *hData, u32 abgr) {
+void effPCPEyeThunderSetColor(effPCPEyeThunder_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -5036,13 +5036,13 @@ void effPCPThunderSphereExpDraw(effPCPThunderSphereExp_tag *hData) {
     hData->frame = (s32)((u32)hData->frame + 1);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf166);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPThunderSphereExpSetPosition);
 
-void effLeaf167(effPCPThunderSphereExp_tag *hData, u32 abgr) {
+void effPCPThunderSphereExpSetColor(effPCPThunderSphereExp_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf168);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPThunderSphereExpSetScale);
 
 /* vu0 routine: initialize both transforms with the libvu0 identity primitive. */
 dds3RingPolyExpList_tag *dds3RingPolyExpListCreate(u32 face) {
@@ -5737,11 +5737,11 @@ void effPCPRadiateThunderDraw(effPCPRadiateThunder_tag *work)
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf175);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateThunderSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf176);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateThunderSetScale);
 
-void effLeaf177(effPCPRadiateThunder_tag *hData, u32 abgr) {
+void effPCPRadiateThunderSetColor(effPCPRadiateThunder_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -5811,13 +5811,13 @@ void effPCPMakkaUpdateNode(sdfModelNode_t *node) {
 void effLeaf178(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf179);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaSetPosition);
 
-void effLeaf180(effPCPMakka_tag *hData, u32 abgr) {
+void effPCPMakkaSetColor(effPCPMakka_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf181);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaSetScale);
 
 effPCPRadiateBED_tag *effPCPRadiateBEDCreate(effPCPRadiateBEDParam_t *pParam, void *pBEDData) {
     u32 count = pParam->count;
@@ -6008,11 +6008,11 @@ void effPCPRadiateBEDDraw(effPCPRadiateBED_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf182);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateBEDSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf183);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateBEDSetScale);
 
-void effLeaf184(effPCPRadiateBED_tag *hData, u32 color) {
+void effPCPRadiateBEDSetColor(effPCPRadiateBED_tag *hData, u32 color) {
     hData->color = color;
 }
 
@@ -6258,9 +6258,9 @@ void effPCPRadiateTBDraw(effPCPRadiateTB_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf185);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateTBSetPosition);
 
-void effLeaf186(effPCPRadiateTB_tag *hData, u32 abgr) {
+void effPCPRadiateTBSetColor(effPCPRadiateTB_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -6460,11 +6460,11 @@ void effPCPSpiralBEDDraw(effPCPSpiralBED_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf187);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSpiralBEDSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf188);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSpiralBEDSetScale);
 
-void effLeaf189(effPCPSpiralBED_tag *hData, u32 color) {
+void effPCPSpiralBEDSetColor(effPCPSpiralBED_tag *hData, u32 color) {
     hData->color = color;
 }
 

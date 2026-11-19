@@ -1537,9 +1537,9 @@ void effPCP_ThunderRadiatePolyDelete(effPCP_ThunderRadiatePoly_t *hData) {
     sdfMemFreeDirect(hData->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf202);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderRadiatePolySetPosition);
 
-void effLeaf203(effPCP_ThunderRadiatePoly_t *hData, u32 abgr) {
+void effPCP_ThunderRadiatePolySetColor(effPCP_ThunderRadiatePoly_t *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -1762,11 +1762,11 @@ void effPCP_ThunderPolyListDelete(effPCP_ThunderPolyList_t *hData) {
     sdfChipFreeDirect(hData);
 }
 
-void *effLeaf204(void *pTPolyList) {
+void *effPCP_ThunderPolyListGetParam(void *pTPolyList) {
     return pTPolyList;
 }
 
-void effLeaf205(effPCP_ThunderPolyList_t *hData, u32 color) {
+void effPCP_ThunderPolyListSetColor(effPCP_ThunderPolyList_t *hData, u32 color) {
     hData->color = color;
 }
 

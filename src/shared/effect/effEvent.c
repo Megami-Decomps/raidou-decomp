@@ -816,7 +816,7 @@ void effCommandEFFBEDSTARTEVOSub(effEveBEDCut_t *hEveBEDCut, f32 scale) {
     effBTLCutSetScale(hEveBEDCut->effect, scale);
 }
 
-void effLeaf31(effEveBEDCut_t *hEveBEDCut, evtUnit_t *actor) {
+void effEveBEDCutSetUnitHandle(effEveBEDCut_t *hEveBEDCut, evtUnit_t *actor) {
     hEveBEDCut->actor = actor;
 }
 

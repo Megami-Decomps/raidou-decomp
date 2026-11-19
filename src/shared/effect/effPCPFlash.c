@@ -989,14 +989,14 @@ void effPCPFlashPolySphere2Delete(effPCPFlashPolySphere2_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf209);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2SetPosition);
 
 void effPCPFlashPolySphere2SetColor(effPCPFlashPolySphere2_tag *hData, u32 abgr)
 {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf211);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2SetScale);
 
 void effPCPFlashPolySphere2PartSetVC(effPCPFlashPolySphere2_tag *work, s32 index, s32 color)
 {
@@ -1174,14 +1174,14 @@ void effPCPFlashPolySphereDelete(effPCPFlashPolySphere_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf212);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereSetPosition);
 
 void effPCPFlashPolySphereSetColor(effPCPFlashPolySphere_tag *hData, u32 abgr)
 {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf214);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereSetScale);
 
 void effPCPFlashPolySpherePartSetVC(effPCPFlashPolySphere_tag *work, s32 index, s32 color)
 {
@@ -1439,14 +1439,14 @@ void effPCPFlashPolyRingDelete(effPCPFlashPolyRing_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf215);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingSetPosition);
 
 void effPCPFlashPolyRingSetColor(effPCPFlashPolyRing_tag *hData, u32 abgr)
 {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf217);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingSetScale);
 
 void effPCPFlashPolyRingPartSetVC(effPCPFlashPolyRing_tag *work, s32 index, s32 color)
 {
@@ -1675,7 +1675,7 @@ void effPCPFlashPolyPipeDelete(effPCPFlashPolyPipe_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf218);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyPipeSetPosition);
 
 void effPCPFlashPolyPipeSetColor(effPCPFlashPolyPipe_tag *hData, u32 abgr)
 {
