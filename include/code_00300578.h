@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "kernel.h"
+#include "cmpStatus.h"
 extern dds3ProcessID_t *g_mainPID;
 void titleFunc7(void);
 s32 fldCallSetFontColor(f32 arg);
@@ -20,7 +21,18 @@ typedef struct cmpStatusWork_t {
     s32 step2;                   /* 0x14 */
     u8 unk18[0xC];
     s16 count;                   /* 0x24 */
-    u8 unk26[0x3150 - 0x26];
+    u8 unk26[2];
+    s32 unk28;
+    s32 unk2C;
+    u8 unk30[0x2E00 - 0x30];
+    s32 unk2E00;
+    u8 unk2E04[0x2ECC - 0x2E04];
+    s32 unk2ECC;
+    u8 unk2ED0[0x2F1C - 0x2ED0];
+    cmpSummnerRankMng_t rankMng;   /* 0x2F1C */
+    u8 unk310C[0x314D - 0x310C];
+    u8 unk314D;
+    u8 unk314E[2];
 #else
     s8 step;                     /* 0x0C */
     s8 step2;                    /* 0x0D */

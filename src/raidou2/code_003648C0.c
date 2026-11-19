@@ -980,7 +980,33 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpSTATUSSTEP);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSeqRankUp);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallEndCmpModel);
+void cmpCallEndCmpModel(cmpStatusWork_t *wk) {
+    End_cmpModel();
+    if (wk->flags & 2) {
+        wk->flags &= ~2;
+        cmpFreeSpriteMem(CMP_SPR_COMMON);
+    }
+    if (wk->flags & 4) {
+        wk->flags &= ~4;
+        cmpFreeSpriteHnd(CMP_SPR_COMMON);
+    }
+    if (wk->flags & 8) {
+        wk->flags &= ~8;
+        cmpFreeSpriteMem(CMP_SPR_STATUS);
+    }
+    if (wk->flags & 0x10) {
+        wk->flags &= ~0x10;
+        cmpFreeSpriteHnd(CMP_SPR_STATUS);
+    }
+    if (wk->flags & 0x40000) {
+        wk->flags &= ~0x40000;
+        cmpFreeSpriteMem(CMP_SPR_LIST);
+    }
+    if (wk->flags & 0x80000) {
+        wk->flags &= ~0x80000;
+        cmpFreeSpriteHnd(CMP_SPR_LIST);
+    }
+}
 
 void CallProcEnd_cmpStatus(void) {
 }
@@ -1234,7 +1260,38 @@ INCLUDE_ASM(const s32, "code_003648C0", Init_cmpStatus);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetProcessData15);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallInitCmpModel);
+void cmpCallInitCmpModel(cmpStatusWork_t *wk) {
+    Init_cmpModel();
+    wk->flags = 0;
+    wk->step2 = -1;
+    wk->unk2E00 = -1;
+    wk->unk28 = -1;
+    wk->unk2C = -1;
+    if (cmpGetSpriteHnd(CMP_SPR_COMMON) == NULL) {
+        if (cmpLoadSpriteHnd(CMP_SPR_COMMON) == NULL) {
+            cmpLoadSpriteMem(CMP_SPR_COMMON);
+            wk->flags |= 2;
+        }
+        wk->flags |= 4;
+    }
+    if (cmpGetSpriteHnd(CMP_SPR_STATUS) == NULL) {
+        if (cmpLoadSpriteHnd(CMP_SPR_STATUS) == NULL) {
+            cmpLoadSpriteMem(CMP_SPR_STATUS);
+            wk->flags |= 8;
+        }
+        wk->flags |= 0x10;
+    }
+    if (cmpGetSpriteHnd(CMP_SPR_LIST) == NULL) {
+        if (cmpLoadSpriteHnd(CMP_SPR_LIST) == NULL) {
+            cmpLoadSpriteMem(CMP_SPR_LIST);
+            wk->flags |= 0x40000;
+        }
+        wk->flags |= 0x80000;
+    }
+    cmpSummnerRankMngInit(&wk->rankMng);
+    wk->unk2ECC = 0;
+    wk->unk314D = 0;
+}
 
 void Shutdown_cmpStatus(dds3ProcessID_t *id)
 {
@@ -1503,7 +1560,36 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpRefDDS3GBWK4);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockPID4);
 
+/* NON_MATCHING: 1 of 64 words match.  */
+#ifdef NON_MATCHING
+s32 cmpCallMenuGetFlag(void) {
+    dds3ProcessID_t *PID = cmpPartyDrawFuncSub();
+
+    switch (cmpData40) {
+    case 0:
+        if (itfMenuGetFlag(PID, 8)) {
+            return 0;
+        }
+        itfMenuSetFlagMenu(PID, 0, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+        cmpChkSkillSelectHd();
+        return 1;
+    case 1:
+        if (cmpChkEnd()) {
+            itfMenuStart(PID);
+            cmpData40 = 0;
+            itfMenuSetFlag(cmpFunc7(), 0x2000, 1);
+            cmpCallGetStockPID();
+            cmpUpdateFontCharPID();
+        } else if (!(Init_cmpStatus() & 0x10000) && !(Init_cmpStatus() & 8)) {
+            cmpCallGetStockDevilNums2(PID);
+        }
+        break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallMenuGetFlag);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpPartSetParticle);
 
@@ -1515,7 +1601,24 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockPID6);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateSkillListHd);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpChkSkillSelectHd);
+void cmpChkSkillSelectHd(void) {
+    dds3ProcessID_t *PID = cmpPartyDrawFuncSub();
+
+    itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+    itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+    if (DDS3_GBWK->unk4242 == -1) {
+        itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+    } else {
+        itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+    }
+    if (DDS3_GBWK->unk4244 == -1) {
+        itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+    } else {
+        itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+    }
+    itfMenuSetFlagMenu(PID, 3, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+    itfMenuSetFlagMenu(PID, 3, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+}
 
 void CmpOnMenu(u32 a_menu)
 {
@@ -1674,7 +1777,25 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpReadFlgChk);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpReadFlgOn);
 
+/* NON_MATCHING: 26 of 52 words match.  */
+#ifdef NON_MATCHING
+s32 cmpMakeCateChk(void) {
+    s32 cate;
+    s32 i;
+    s32 count = 0;
+
+    for (cate = 0; cate < 24; cate++) {
+        for (i = 0; i < 10 && cmpData31[cate][i] != -1; i++) {
+            if (cmpCallBitCheck(cmpData31[cate][i])) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpMakeCateChk);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpMakekeywordctlist);
 

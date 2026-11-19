@@ -65,3 +65,9 @@ Branch form: cc1 folds the 0x20000 and bit 0 tests into one (flags & 0x20001) ==
 Raidou 2: 20 of 26 words differ, first at +0x8.
 
 Register allocation: retail keeps the table in $3 and a_x in $8, cc1 uses $8/$9. Tried no steps local, a base local and an s32 return. 6 of 26 words; behaviour equal (nm_behaviour clean).
+
+## rstCallGetProcessData39 (code_003BF2E0, raidou2 0x124)
+
+Raidou 2: 37 of 74 words differ, first at +0x30; emitted 296 bytes, native 292 bytes.
+
+Register allocation: after rstGetGlobalEncountNo cc1 copies v0 to a0 before forming the sbtlData100 row offset, one extra move that shifts the later branches. Tried a flags local, the set path first and unk10 - 1 != 0. 36 of 73 words; behaviour equal (nm_behaviour clean).

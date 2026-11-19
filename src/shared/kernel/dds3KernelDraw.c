@@ -297,16 +297,6 @@ extern s32 dds3ScreenBlurOfsX[2];
 #include "newdata.h"
 #include "dds3PadManager.h"
 
-/* The screen fade's colour. Its setters store each component; the fade
- * overlay reads each one unsigned
- * (lbu), and its alpha as 0x80 minus the component. */
-typedef struct {
-    u8 r;
-    u8 g;
-    u8 b;
-    u8 a;
-} dds3FadeColor_t;
-
 extern fclNamedSlot_t D_003C1C90[];
 
 /* One shared initializer for the three configure modes and unregister. */
@@ -430,8 +420,6 @@ static inline void dds3SetNamedSlotState(s32 index, s32 kind, dds3ProcessFunc_t 
 #define DDS3_BGFADE_FIRST_RAMP_SCALE 49.0f
 
 #define DDS3_BGFADE_SECOND_RAMP_SCALE 79.0f
-
-void dds3FadeColorGet(dds3FadeColor_t **outColor);
 
 #include "event.h"
 #include "scr.h"

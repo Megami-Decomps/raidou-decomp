@@ -36,15 +36,27 @@ typedef struct rstInitWork_t {
     u8 pad7800[0x7EB0 - 0x5560 - sizeof(SBTL_PLAYER_DATA)];
     rstGift_t gift[20];                                    /* 0x7EB0 */
     s32 rankUp;                                            /* 0x7FA0 */
+    void *hResultSpr;                                      /* 0x7FA4 */
+    void *hBgSpr;                                          /* 0x7FA8 */
+    u8 unk7FAC[4];
+    rstBG_t *bg;                                           /* 0x7FB0 */
+    u8 unk7FB4[0x8054 - 0x7FB4];
+    s32 fadeCount; /* 0x8054 */
 } rstInitWork_t;
 
 extern dds3ProcessID_t *ProcessStart_rstInitData;
 extern jmsSeqUnit_t rstEndCalcProcessData;
+extern jmsSeqUnit_t rstBtlEndWaitCalcProcessData;
+s32 rstCallGetProcessStat(void);
+dds3ProcessFunc_t rstCallGetProcessData39(dds3ProcessID_t *PID);
 s32 rstCallGetGlobalEncountNo(rstInitWork_t *work);
 SBTL_PLAYER_DATA *rstGetPlayerUnit(void);
 #endif
 /* Nonzero when the return to the map cross-fades. */
 extern s32 rstData5;
+extern s32 rstData6;
+extern s32 rstLoadMapResourceData;
+extern s32 rstLoadMapResourceData2;
 
 rstBG_t *InitBgCore(struct sprHandle_t *pSpr);
 rstBG_t *InitBG(void);
@@ -52,6 +64,11 @@ void rstCallCalcAlphaRate(rstBG_t *bg, s32 alpha, s32 ot);
 void rstDestroyBG(rstBG_t *bg);
 s32 ProcessCheck_rstInit(void);
 void ProcessEnd_rstInit(void);
+struct rstInitWork_t *Init_rstInit(struct rstWork_t *src);
+dds3ProcessFunc_t rstResultStartWaitProcess(dds3ProcessID_t *PID);
+s32 rstResultDraw(dds3ProcessID_t *PID);
+s32 rstProcessStartRstInitSub(void);
+void mapRetuenFromNakamaDead(void);
 dds3ProcessID_t *ProcessStart_rstInit(void);
 s32 rstCheckFlag(s32 Flag);
 s32 rstCheckRankUp(void);
@@ -69,5 +86,6 @@ void rstSetFlag(s32 Flag);
 
 extern const char rstStrResult[];
 extern const char rstStrRsHaikeiSpr[];
+extern const char rstStrResultSpr[];
 
 #endif

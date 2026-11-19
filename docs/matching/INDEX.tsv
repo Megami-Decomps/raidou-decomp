@@ -180,6 +180,8 @@ cmpInitDstEff2	code_003648C0	raidou2 0x70	4 of 28 words differ	docs/matching/cod
 Init_cmpModel	code_003648C0	raidou2 0x6C	6 of 27 words differ	docs/matching/code_003648C0.md	39		
 cmpLoadStatusModel	code_003648C0	raidou2 0xC0	31 of 47 words differ	docs/matching/code_003648C0.md	45		
 cmpGetSummonerRank2SprNo	code_003648C0	raidou2 0x80	1 of 32 words differ	docs/matching/code_003648C0.md	51		
+cmpCallMenuGetFlag	code_003648C0	raidou2 0x100	1 of 64 words differ	docs/matching/code_003648C0.md	57		
+cmpMakeCateChk	code_003648C0	raidou2 0xD0	26 of 52 words differ	docs/matching/code_003648C0.md	63		
 CheckFlagTGS	code_003BF2E0	raidou2 0x48	9 of 17 words differ	docs/matching/code_003BF2E0.md	3		
 SetFlagMenu	code_003BF2E0	raidou2 0x98	14 of 38 words differ	docs/matching/code_003BF2E0.md	9		
 SetRootMenu	code_003BF2E0	raidou2 0x94	15 of 38 words differ	docs/matching/code_003BF2E0.md	15		
@@ -191,6 +193,7 @@ rstResultStartWaitProcess	code_003BF2E0	raidou2 0x6C	17 of 27 words differ	docs/
 rstCalcProcess	code_003BF2E0	raidou2 0xD4	21 of 51 words differ	docs/matching/code_003BF2E0.md	51		
 rstCallGetGlobalEncountNo	code_003BF2E0	raidou2 0x98	31 of 38 words differ	docs/matching/code_003BF2E0.md	57		
 rstResultNakamaLevelSub	code_003BF2E0	raidou2 0x68	20 of 26 words differ	docs/matching/code_003BF2E0.md	63		
+rstCallGetProcessData39	code_003BF2E0	raidou2 0x124	37 of 74 words differ	docs/matching/code_003BF2E0.md	69		
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
 dds3CallDLinkTexPacket	code_r1_00104370	raidou1 0x128, raidou2 0x128	37 of 73 words differ	docs/matching/code_r1_00104370.md	12		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		

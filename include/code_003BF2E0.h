@@ -57,4 +57,13 @@ void cmpCallBitCheck10(jmsWork_t *wk);
 void rstCallGetStockDevilNums(gohData_t *work);
 extern s32 rstCallBitCheckWork;
 
+extern const char jmsStrJmsMenuMain[];
+extern const char jmsStrJmsMenuDraw[];
+s32 ProcessCheck_jmsMenu(void);
+s32 Process_jmsMenu(dds3ProcessID_t *PID);
+void jmsMenuShutdown(dds3ProcessID_t *PID);
+s32 cmpCallGetProcessData33(dds3ProcessID_t *PID);
+void cmpCallMenuGetMenuNum(struct jmsInputPanelWork_t *work);
+void jmsMenuMain(void);
+
 #endif

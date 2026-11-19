@@ -24,10 +24,32 @@
 #include "rstGrowth.h"
 #include "code_003B7840.h"
 #include "dat.h"
+#include "jmsInit.h"
+#include "code_r1_00128378.h"
+#include "dds3KernelDraw.h"
+#include "dds3AdminiProcess.h"
+#include "mapData.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData28);
+void cmpCallGetProcessData28(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate) {
+    jmsInputPanelWork_t *work = dds3GetProcessData(inputpanel_id);
+    struct sprHandle_t *hSpr = jmsGetSpriteHandle();
+
+    itfDrawMiscSpriteList(a_x, a_y, a_z, a_alphaRate, hSpr, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL,
+                          &SetCommand_jmsMenuData5);
+    if (a_id == itfMenuGetSelectID(work->menuPID)) {
+        itfDrawMiscSpriteList(a_x, a_y, a_z, a_alphaRate, hSpr, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL,
+                              &SetCommand_jmsMenuData6);
+        if (a_id == 4 && itfMenuGetCtrlType(work->menuPID) == 2) {
+            if (work->unk2C == 0) {
+                work->unk2C = 1;
+            } else if (work->unk2C == 6) {
+                work->unk2C = 7;
+            }
+        }
+    }
+}
 
 void cmpCallGetProcessData29(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate) {
     jmsInputPanelWork_t *work = dds3GetProcessData(inputpanel_id);
@@ -213,7 +235,29 @@ INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallGetProcessData8);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallGetProcessData9);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsMenuMain);
+void jmsMenuMain(void) {
+    sdfMemHandle_t *hMem;
+    jmsInputPanelWork_t *work;
+
+    if (ProcessCheck_jmsMenu()) {
+        return;
+    }
+    hMem = sdfMemAllocDirect(sizeof(jmsInputPanelWork_t));
+    work = sdfMemGetPtr(hMem);
+    memset(work, 0, sizeof(jmsInputPanelWork_t));
+    work->hMem = hMem;
+    inputpanel_id = dds3StartProcess(jmsStrJmsMenuMain, 0x3FE, 0, 0, Process_jmsMenu,
+                                     (dds3ProcessFunc_t)jmsMenuShutdown, work);
+    work->drawPID = dds3StartProcess(jmsStrJmsMenuDraw, 0x2B15, 0, 0, cmpCallGetProcessData33, NULL, work);
+    work->menuPID = itfMenuProcessStart();
+    work->hSpr = jmsGetSpriteHandle();
+    itfMenuLinkSprite(work->menuPID, work->hSpr);
+    cmpCallMenuGetMenuNum(work);
+    itfMenuSetFlag(work->menuPID, 0x10, 0);
+    work->flags |= 4;
+    work->unk1C = 0;
+    work->unk2C = 0;
+}
 
 /* NON_MATCHING: 10 of 26 words match.  */
 #ifdef NON_MATCHING
@@ -525,7 +569,65 @@ INCLUDE_ASM(const s32, "code_003BF2E0", cmpStorySelectDebug);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstStorySelectDebug);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstLoadMapResource);
+s32 rstLoadMapResource(s32 RetType) {
+    s32 result;
+
+    rstLoadMapResourceData2++;
+    if (rstLoadMapResourceData == 0) {
+        fldPlayerALoadStart();
+        rstLoadMapResourceData = 1;
+        return 0;
+    }
+    if (rstLoadMapResourceData == 1) {
+        result = fldPlayerALoadEndCheck();
+        if (!result) {
+            return result;
+        }
+        rstLoadMapResourceData = 2;
+    }
+    if (rstLoadMapResourceData == 2) {
+        fldNakamaCashLoad_RndEncRetStart();
+        rstLoadMapResourceData = 3;
+    }
+    if (rstLoadMapResourceData == 3) {
+        result = fldNakamaCashLoad_EndCheck();
+        if (!result) {
+            return result;
+        }
+        rstLoadMapResourceData = 4;
+    }
+    if (rstLoadMapResourceData == 4) {
+        fldRefBasic();
+        rstLoadMapResourceData = 5;
+    }
+    if (rstLoadMapResourceData == 5) {
+        result = fldAiboCashLoad_EndCheck();
+        if (!result) {
+            return result;
+        }
+        rstLoadMapResourceData = 6;
+    }
+    if (rstLoadMapResourceData == 6) {
+        fldLoadMapResourceSub();
+        rstLoadMapResourceData = 7;
+    }
+    if (rstLoadMapResourceData == 7) {
+        result = fldLoadMapResourceSub2();
+        if (!result) {
+            return result;
+        }
+        rstLoadMapResourceData = 8;
+    }
+    switch (RetType) {
+    case 0:
+        rstData5 = 1;
+        break;
+    case 1:
+        rstData6 = 1;
+        break;
+    }
+    return 1;
+}
 
 s32 rstMapReturnChkXFade(rstInitWork_t *pWork) {
     if (pWork->flags & 0x20000) {
@@ -570,7 +672,46 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstResultDraw);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstProcessStartRstInitSub);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", ProcessStart_rstInit);
+dds3ProcessID_t *ProcessStart_rstInit(void) {
+    dds3ProcessID_t *pid = NULL;
+    rstWork_t *src = NULL;
+    s32 seq;
+
+    if (ProcessStart_rstInitData != NULL) {
+        return ProcessStart_rstInitData;
+    }
+    if (!(rstData4 & 0x40000)) {
+        if (rstData4 & 1) {
+            src = &rstWork;
+        }
+        pid = dds3StartProcess(cmpCalcProcName, 0x403, 0, 1, (dds3ProcessFunc_t)rstResultStartWaitProcess,
+                               rstResultDraw, Init_rstInit(src));
+    } else if (evtBitCheck(864)) {
+        sndBgmFadeOut();
+        seq = 501;
+        dds3AdminiCallSequence(9, &seq, 4, 0);
+        scrAllReleaseScript();
+    } else {
+        fldBgTexClear();
+        if (!(rstData4 & 0x20000)) {
+            sbtlCheckEndEscape();
+            if (!rstProcessStartRstInitSub()) {
+                if (!(rstData4 & 0x80000)) {
+                    seq = 696;
+                    dds3AdminiCallSequence(9, &seq, 4, 0);
+                } else {
+                    mapRetuenFromNakamaDead();
+                }
+            } else {
+                seq = 696;
+                dds3AdminiCallSequence(9, &seq, 4, 0);
+            }
+        }
+    }
+    ProcessStart_rstInitData = pid;
+    rstData4 = 0;
+    return pid;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", ProcessEnd_rstInit);
 
@@ -599,7 +740,37 @@ dds3ProcessFunc_t rstResultStartWaitProcess(dds3ProcessID_t *PID) {
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultStartWaitProcess);
 #endif
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstResultLoadWaitProcess);
+dds3ProcessFunc_t rstResultLoadWaitProcess(dds3ProcessID_t *PID) {
+    rstInitWork_t *work = dds3GetProcessData(PID);
+    dds3FadeColor_t *color;
+
+    if (!(work->flags & 4)) {
+        effRequestResourceByMode(rstStrResult, rstStrResultSpr, 0, &work->hResultSpr);
+        work->flags |= 4;
+        return NULL;
+    }
+    if (work->hResultSpr == NULL) {
+        return NULL;
+    }
+    if (!(work->flags & 8)) {
+        effRequestResourceByMode(rstStrResult, rstStrRsHaikeiSpr, 0, &work->hBgSpr);
+        work->flags |= 8;
+        return NULL;
+    }
+    if (work->hBgSpr == NULL) {
+        return NULL;
+    }
+    work->bg = InitBgCore(work->hBgSpr);
+    work->flags |= 0x10;
+    dds3FadeColorGet(&color);
+    if (color->a == 0x80) {
+        dds3FadeIn2(30);
+        work->flags |= 0x100;
+    }
+    dds3StartProcess(campDrawProcName, 0x2B12, 0, 1, (dds3ProcessFunc_t)rstDrawProcess, NULL, work);
+    dds3StartProcess(campUpdateProcName, 0x520F, 0, 1, (dds3ProcessFunc_t)rstCallGetProcessData37, NULL, work);
+    return (dds3ProcessFunc_t)rstCalcProcess_rstResult;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstSetReward);
 
@@ -798,7 +969,28 @@ s32 rstLeaf15(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstBtlEndWaitCalcProcess);
+dds3ProcessFunc_t rstBtlEndWaitCalcProcess(dds3ProcessID_t *PID) {
+    rstInitWork_t *work = dds3GetProcessData(PID);
+    dds3ProcessFunc_t next = menuRunPanel(&work->panel, &work->seqUnit, 0, PID);
+
+    if (next != NULL) {
+        return next;
+    }
+    if (!rstMapReturnChkXFade(work)) {
+        if (rstCalcProcess(work) && sndBgmStatus_XF() != 2) {
+            return NULL;
+        }
+        if (dds3FadeCheck()) {
+            return NULL;
+        }
+    } else if (sbtlReLoadFldScene() && !mapRndEncReturn_BgmLoadEndCheck()) {
+        return NULL;
+    }
+    if (!Proc_sbtl()) {
+        jmsSeqJumpAndFree(&work->seqUnit, &rstBtlEndWaitCalcProcessData);
+    }
+    return NULL;
+}
 
 dds3ProcessFunc_t rstBtlEndWaitDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
@@ -823,7 +1015,40 @@ s32 rstLeaf17(void)
     return 1;
 }
 
+/* NON_MATCHING: 37 of 73 words match.  */
+#ifdef NON_MATCHING
+dds3ProcessFunc_t rstCallGetProcessData39(dds3ProcessID_t *PID) {
+    rstInitWork_t *work = dds3GetProcessData(PID);
+    dds3ProcessFunc_t next = menuRunPanel(&work->panel, &work->seqUnit, 0, PID);
+
+    if (next != NULL) {
+        return next;
+    }
+    if (!(work->flags & 0x80)) {
+        work->flags |= 0x80;
+        rstCmpItemGrowthStart();
+        dds3FadeIn(0, 0, 0, 0);
+    } else {
+        if (rstCallGetProcessStat()) {
+            return NULL;
+        }
+        dds3FadeIn(0, 0, 0, 0);
+        if (sbtlData100[rstGetGlobalEncountNo()].unk10 != 1) {
+            return (dds3ProcessFunc_t)-1;
+        }
+        if (work->fadeCount == 0) {
+            sndBgmFadeOut();
+        }
+        work->fadeCount++;
+        if (work->fadeCount >= 60) {
+            return (dds3ProcessFunc_t)-1;
+        }
+    }
+    return NULL;
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData39);
+#endif
 
 dds3ProcessFunc_t rstCallGetProcessData40(dds3ProcessID_t *PID) {
     jmsSeqWork_t *work = dds3GetProcessData(PID);

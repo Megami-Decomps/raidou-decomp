@@ -21,6 +21,8 @@ typedef struct rstWork_t {
 extern rstWork_t rstWork;
 extern u32 rstData4;
 extern dds3ProcessID_t *inputpanel_id;
+extern struct itfSprList_t SetCommand_jmsMenuData5;
+extern struct itfSprList_t SetCommand_jmsMenuData6;
 extern dds3ProcessID_t *g_mainPID3;
 
 /* Partial layouts of process work read through dds3GetProcessData. */
@@ -34,6 +36,9 @@ typedef struct jmsInputPanelWork_t {
     s32 flags; /* 0x14 */
     s32 count;
     s32 unk1C;
+    u8 unk20[0xC];
+    s32 unk2C;
+    u8 unk30[0xC];
 #else
     u8 unk0C[4];
     u8 step;

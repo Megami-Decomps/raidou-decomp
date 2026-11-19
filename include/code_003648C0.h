@@ -62,6 +62,14 @@ typedef struct cmpPlayerRank_t {
     s32 sprNo;
 } cmpPlayerRank_t;
 extern cmpPlayerRank_t cmpGetSummonerRank2SprNoData[];
+extern s8 cmpData31[24][10];
+s32 cmpMakeCateChk(void);
+void cmpChkSkillSelectHd(void);
+extern s8 cmpData40;
+u32 Init_cmpStatus(void);
+void cmpUpdateFontCharPID(void);
+void cmpCallGetStockDevilNums2(dds3ProcessID_t *PID);
+s32 cmpCallMenuGetFlag(void);
 s32 cmpGetNowSummonerRank(void);
 s32 cmpGetSummonerRank2SprNo(void);
 

@@ -156,4 +156,16 @@ extern u8 fadetype;
 void FadeTypeSet(DDS3_FADETYPE eType);
 #endif
 
+/* The screen fade's colour. Its setters store each component; the fade
+ * overlay reads each one unsigned
+ * (lbu), and its alpha as 0x80 minus the component. */
+typedef struct {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+} dds3FadeColor_t;
+
+void dds3FadeColorGet(dds3FadeColor_t **outColor);
+
 #endif
