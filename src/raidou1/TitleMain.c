@@ -37,6 +37,13 @@ s32 evtFunc9(s32 frame, const titleKey_t *key, s32 count) {
         }
     }
     frame -= key[i].frame;
+#ifdef TITLE_KEY_STOP_AT_LAST
+    /* Outside the keys retail divides by key[count].frame - key[i].frame, read
+     * past the table from the caller's stack, which a host stack can make zero. */
+    if (i == count - 1) {
+        return key[i].value * 2;
+    }
+#endif
     return (key[i].value + (key[i + 1].value - key[i].value) * frame / (key[i + 1].frame - key[i].frame)) * 2;
 }
 
