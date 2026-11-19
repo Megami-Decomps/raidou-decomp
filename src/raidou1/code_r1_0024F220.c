@@ -243,7 +243,7 @@ void sbtlRefSbtl4(void)
     p2sdLoadEntry_t *midi;
     s32 i;
 
-    midi = sdfLeaf35();
+    midi = sdfSndGetTrackSlotTable();
     for (i = 0; i < 30; i++) {
         wk_sbtl->midiLoad[i].unk0 = midi[i].unk0;
         wk_sbtl->midiLoad[i].unk4 = midi[i].unk4;

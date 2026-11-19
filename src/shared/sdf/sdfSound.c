@@ -603,7 +603,7 @@ void sdfSkil(s32 MidiNo)
     switch (p2sdLoadCheckMidi(MidiNo)) {
     case 0:
     case 2:
-        entry = sdfLeaf35();
+        entry = sdfSndGetTrackSlotTable();
         for (i = 0; i < 29; i++) {
             if (i == 11) {
                 printf("[skil]-------------\n");
@@ -802,7 +802,7 @@ sndChannel_t *sdfLeaf34(void) {
     return sdfSndWork.channels;
 }
 
-p2sdLoadEntry_t *sdfLeaf35(void) {
+p2sdLoadEntry_t *sdfSndGetTrackSlotTable(void) {
     return sdfSndWork.slots;
 }
 

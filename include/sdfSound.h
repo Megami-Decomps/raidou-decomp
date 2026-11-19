@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-/* One loaded MIDI entry of the sound driver; sdfLeaf35 returns the table. */
+/* One loaded MIDI entry of the sound driver; sdfSndGetTrackSlotTable returns the table. */
 typedef struct {
     u32 unk0;
     u8 unk4;
@@ -35,7 +35,7 @@ void sdfDumpHexLine(const void *aData, s32 size);
 s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
 s32 sdfSndSetChannelCount(u32 aCh);
 s32 sdfBtlReLoadMapSBtlSceneSub(void);
-p2sdLoadEntry_t *sdfLeaf35(void);
+p2sdLoadEntry_t *sdfSndGetTrackSlotTable(void);
 void sdfCallSndSendCmd(s32 arg);
 s32 sdfCallSndSendCmd2(s32 arg);
 

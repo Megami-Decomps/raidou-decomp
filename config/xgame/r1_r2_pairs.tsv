@@ -9644,7 +9644,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00370698	0x003E6428	sdfLeaf33	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	run-order-size
 0x003706B0	0x003E6440	sndGetNonnegativeEntryBalance	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
 0x003706D8	0x003E6468	sdfLeaf34	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	masked-hash-in-gap
-0x003706E8	0x003E6478	sdfLeaf35	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	masked-hash-in-gap
+0x003706E8	0x003E6478	sdfSndGetTrackSlotTable	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	masked-hash-in-gap
 0x003706F8	0x003E6488	sdfLeaf36	no	no	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	run-order-size
 0x00370718	0x003E64A8	sndCopyGroupedMidiStateBytes	no	no	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	run-order-size
 0x00370778	0x003E6508	p2sdPlayBGMFade	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash

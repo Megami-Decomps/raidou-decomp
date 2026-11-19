@@ -11121,7 +11121,7 @@
 0x00370698	sdfLeaf33	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
 0x003706B0	sndGetNonnegativeEntryBalance	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e95c8 sim 1.000 margin 0.77 pair
 0x003706D8	sdfLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
-0x003706E8	sdfLeaf35	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
+0x003706E8	sdfSndGetTrackSlotTable	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
 0x003706F8	sdfLeaf36	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
 0x00370718	sndCopyGroupedMidiStateBytes	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e9630 sim 1.000 margin 0.48 pair
 0x00370778	p2sdPlayBGMFade	inferred	SMT3HD name via SLUS_209.11 0x002C1FF0, reloc-identical; map-agrees
@@ -26029,7 +26029,7 @@
 0x00501980	sdfSndMap	inferred	method=smt3-ref; p=0.88 (n=D_r1_00501980); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=p2sdLoadCheckMidi
 0x00501990	sdfLeaf34Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sdfLeaf34
 0x00501B94	sdfSndSeqMapInitWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sdfSndSeqMapInit
-0x00501C90	sndWork6	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sndGetNonnegativeEntryBalance, sdfLeaf35
+0x00501C90	sndWork6	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sndGetNonnegativeEntryBalance, sdfSndGetTrackSlotTable
 0x00501C94	sdfLeaf32Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sdfLeaf32
 0x00501C95	sdfLeaf33Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sdfLeaf33
 0x00502138	sdfSndPcmRequest	inferred	method=smt3-alias; p=0.90 (n=D_r1_00502138); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1

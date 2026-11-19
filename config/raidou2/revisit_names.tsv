@@ -6549,7 +6549,7 @@
 0x003E6410	sdfLeaf32	func	tier=D	derived-unit	na	unit sdf/sdfSound; no named callee, caller or string
 0x003E6428	sdfLeaf33	func	tier=D	derived-unit	na	unit sdf/sdfSound; no named callee, caller or string
 0x003E6468	sdfLeaf34	func	tier=D	derived-unit	na	unit sdf/sdfSound; no named callee, caller or string
-0x003E6478	sdfLeaf35	func	tier=D	derived-unit	na	unit sdf/sdfSound; no named callee, caller or string
+0x003E6478	sdfSndGetTrackSlotTable	func	tier=D	derived-unit	na	unit sdf/sdfSound; no named callee, caller or string
 0x003E6488	sdfLeaf36	func	tier=D	derived-unit	na	unit sdf/sdfSound; no named callee, caller or string
 0x003E6760	sdfLeaf37	func	tier=D	derived-unit	na	unit sdf/sdfSound; no named callee, caller or string
 0x003E6AF8	sdfCallSndTransToIOP	func	tier=D	derived-callee	na	unit code_00370D68, nearest named function sdfFileRpcHandleCmd; calls sdfSndTransToIOP
@@ -23068,7 +23068,7 @@
 0x00590070	bssWork221	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x390
 0x00590410	sdfLeaf34Work	data	tier=D	derived-sole	na	used by sdfLeaf34
 0x00590614	sdfSndSeqMapInitWork	data	tier=D	derived-sole	na	used by sdfSndSeqMapInit
-0x00590710	sndWork6	data	tier=D	derived-shared	na	used by 2 functions: sndGetNonnegativeEntryBalance, sdfLeaf35
+0x00590710	sndWork6	data	tier=D	derived-shared	na	used by 2 functions: sndGetNonnegativeEntryBalance, sdfSndGetTrackSlotTable
 0x00590714	sdfLeaf32Work	data	tier=D	derived-sole	na	used by sdfLeaf32
 0x00590715	sdfLeaf33Work	data	tier=D	derived-sole	na	used by sdfLeaf33
 0x00590CA8	sdfFileRpcHandleCmdWork	data	tier=D	derived-sole	na	used by sdfFileRpcHandleCmd
