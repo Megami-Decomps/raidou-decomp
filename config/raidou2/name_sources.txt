@@ -7812,7 +7812,7 @@
 0x002C4230	sbtlCallColorSet	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls ColorSet
 0x002C42E8	sbtlCallMemAllocDirect4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemAllocDirect
 0x002C4340	sbtlRefSbtl42	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
-0x002C4360	sbtlCallMemFreeDirect4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemFreeDirect
+0x002C4360	sbtlDeleteTalk	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDeleteTalk, called on wk->talkwk by DeletePanel; replaces sbtlCallMemFreeDirect4
 0x002C4380	sbtlSetDevilSkillID	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlTalk.sBtlSetDevilSkillID score 7.8 flag I: calls2 calls-of-match st1:call r1+r2
 0x002C45B0	sbtlRefSbtl43	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x002C45D8	sbtlLeaf76	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
@@ -7827,9 +7827,9 @@
 0x002C4F20	sbtlDeleteSTPList	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlSTP.sBtlDeleteSTPList score 10.4 flag I: calls2 prev callers-of-match votes2 st1:call r1+r2
 0x002C4F60	Check_SupportAction	hd	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlPlayer.Check_SupportAction score 5.0 flag -: calls3 callee-index st2:cidx r1-disagree:0x291d98
 0x002C5120	sbtlRefSbtl45	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
-0x002C5188	sbtlRefSbtl46	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
+0x002C5188	sbtlDeleteMainPanel	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDeleteMainPanel: status 0x800 test, DeletePanel, clears panelwk and the bit; replaces sbtlRefSbtl46
 0x002C51D8	sbtlCallMemAllocDirect5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemAllocDirect
-0x002C5258	sbtlCallMemFreeDirect5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemFreeDirect
+0x002C5258	DeletePanel	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlPanel.c static DeletePanel: status 1/2 tests, frees the panel and the talk work; replaces sbtlCallMemFreeDirect5
 0x002C52E0	sbtlRefSbtl47	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x002C5348	sbtlFunc13	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
 0x002C5368	Proc_sbtlPanel	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlPanel.Proc score 2.3 flag -: next edge st2:edge r2-only
@@ -8531,8 +8531,8 @@
 0x00303290	sbtlSpriteEx	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDraw.sBtlSpriteEx score 9.8 flag I: next gap10/164 st1:gap r1+r2
 0x003032C8	sbtlSprite	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDraw.sBtlSprite score 9.1 flag I: calls1 calls-of-match votes2 st1:call r1+r2
 0x003032E8	sbtlNum	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDraw.sBtlNum score 7.0 flag I: calls1 prev~ calls-of-match votes2 st1:call r1+r2
-0x003033F8	sbtlCallGetFigure	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls itfGetFigure
-0x00303848	sbtlAIUpdateSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by AI_Update
+0x003033F8	sbtlNum3	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlNum3, callee of sBtlDrawNum4 with the same argument order; replaces sbtlCallGetFigure
+0x00303848	sbtlDrawNum4	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDrawNum4: 16/36/48/60 x offset by digit count, y - 12; replaces sbtlAIUpdateSub
 0x003038A0	sbtlCallGetSmallFontFRQ4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls frwGetSmallFontFRQ2
 0x00303988	sbtlCallGetSmallFontFRQ3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls frwGetSmallFontFRQ2
 0x00303A80	sbtlNumFont	hd-inferred	method=hd-vote; p=0.95 (n=66); tier=A; source=hd; evidence=Raidou HD sBtlDraw.sBtlNumFont score 5.8 flag I: calls1 gap3/6 votes2 st1:gap r1+r2
@@ -28245,8 +28245,8 @@
 0x004E2580	sbtlGetBSTNameFontDataEntry15	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetBSTNameFontData
 0x004E2588	sbtlGetBSTNameFontDataEntry16	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetBSTNameFontData
 0x004E2590	sbtlGetBSTNameFontDataEntry17	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetBSTNameFontData
-0x004E259C	LoadOnMemoryDataData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by LoadOnMemoryData
-0x004E25A0	LoadOnMemoryDataData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by LoadOnMemoryData
+0x004E259C	dmg_tbldata_p	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbtleff.h, declared before dmg_tbldata; LoadOnMemoryData returns it for major 0; replaces LoadOnMemoryDataData
+0x004E25A0	dmg_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCheckYukaDamageEffect uses dmg_tbldata for major != 0; replaces LoadOnMemoryDataData2
 0x004E25A4	btlLoadSbPackData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by btlLoadSbPack (2 of 3 refs, 2 functions)
 0x004E25A8	sbtlCallBtlSearchUnitID17Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID17
 0x004E25B0	sbtlCallBtlSearchUnitID12Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID12
@@ -28742,10 +28742,10 @@
 0x004E3468	fldMAPMenuData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldMAPMenu
 0x004E3470	sbtlLeaf73DataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlLeaf73Data
 0x004E3478	sbtlSummonDevilData_SubData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSummonDevilData_Sub
-0x004E347C	DrawAddMagData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by DrawAddMag (4 of 7 refs, 3 functions)
-0x004E3480	DrawAddMagData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by DrawAddMag (7 of 9 refs, 3 functions)
-0x004E3484	DrawAddMagData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by DrawAddMag (5 of 7 refs, 3 functions)
-0x004E3488	sbtlData174	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: SetAddMag, DrawAddMag, sbtlInitAddMag
+0x004E347C	gAddMagNum	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sbtldraw.h, SetAddMag body; replaces DrawAddMagData
+0x004E3480	gAddMagNumDrawCnt	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD SetAddMag sets it to 100; replaces DrawAddMagData2
+0x004E3484	gAddMagNumNow	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD SetAddMag subtracts it; replaces DrawAddMagData3
+0x004E3488	gAddMagNumUp	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD SetAddMag stores the step; replaces sbtlData174
 0x004E348C	DrawTimeData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by DrawTime (2 of 3 refs, 2 functions)
 0x004E3490	DrawStatusBarData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by DrawStatusBar
 0x004E3494	sbtlData121	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: sbtlLeaf113, sbtlEnableSceneGroupAdvancementSub, Init_sbtlDraw

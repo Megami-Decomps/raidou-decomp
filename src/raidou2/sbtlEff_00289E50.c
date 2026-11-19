@@ -8,6 +8,10 @@
 #include "sBtlSkill.h"
 #include "code_r1_0021CE60.h"
 #include "nbDebugProcess.h"
+#include "sBtlCmndMenuNew.h"
+#include "code_r1_002C8188.h"
+#include "code_r1_002C7ED0.h"
+#include "sdfMemory.h"
 
 s32 OnDataLoadProc(dds3ProcessID_t *id) {
     s32 i;
@@ -30,7 +34,29 @@ s32 OnDataLoadProc(dds3ProcessID_t *id) {
 void sbtlLeaf75(dds3ProcessID_t *id) {
 }
 
+/* NON_MATCHING: 26 of 32 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlFunc6(s32 id, void *pData) {
+    id -= 4;
+    if (id < 46) {
+        if (id < 12) {
+            if (sbtlCallBtlSearchEffectData2(sbtlFunc6Table[id], 12, pData)) {
+                return 1;
+            }
+        } else {
+            if (!sbtlCallBtlSearchEffectData2(sbtlFunc6Table[id], 12, pData)) {
+                return 0;
+            }
+            return 1;
+        }
+    } else {
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlFunc6);
+#endif
 
 s32 sbtlLoadEffectData_Decode(struct SBTLUNIT_WORK *wk) {
     struct SBTLUNIT_WORK *unit;
@@ -99,7 +125,9 @@ s32 sbtlLoadPlayerOnMemData(void) {
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlLoadPlayerOnMemDataSub);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", evtCommand_PMV_LOAD_END_WAIT);
+s32 evtCommand_PMV_LOAD_END_WAIT(void) {
+    return sbtlLoadEffectData_IDMask(sbtlCallBtlDat3(), EFFPAC_ST_DECODE | EFFPAC_ST_ONMEM) != 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteOnData);
 
@@ -170,7 +198,19 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateEff);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemset9);
 
+/* NON_MATCHING: 5 of 14 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlBtlCheckEffectDataSub(s32 id) {
+    SBTLEFF_PACLIST *pac = &sbtlData83->effpac[id];
+
+    if (pac->status & EFFPAC_ST_LOADEND) {
+        return pac->num;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlCheckEffectDataSub);
+#endif
 
 EFFPDATA_WORK *sbtlBtlSetEffectDataSub(s32 id, s32 no)
 {
@@ -286,7 +326,14 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffectData_SkillIDTypeUnit)
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlEff_DeleteEffectData_EffID);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetStartTime_Damage);
+s32 sbtlGetStartTime_Damage(void) {
+    SBTL_WORK *wk = wk_sbtl;
+
+    if (++wk->effcnt >= 8) {
+        wk->effcnt = 0;
+    }
+    return wk_sbtl->effcnt;
+}
 
 void Draw_sbtlEff(EFFID id, s32 *starttime, s32 *life)
 {
@@ -333,7 +380,23 @@ SBTLEFF_WORK *sbtlGetEffectWork_ID(SBTLEFF_LISTWORK *lwk, s32 eListID)
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetEffectStat_ID);
+s32 sbtlGetEffectStat_ID(SBTLEFF_LISTWORK *lwk, s32 eListID) {
+    SBTLEFF_WORK *wk = lwk->wk;
+
+    if (!lwk->num || !wk) {
+        return -1;
+    }
+    for (;;) {
+        if (wk->eListID == eListID) {
+            return wk->st;
+        }
+        wk = wk->next;
+        if (!wk) {
+            break;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID);
 
@@ -422,7 +485,15 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceResetDecAlpha);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlReleaseEff);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffList);
+s32 sbtlDeleteEffList(SBTLEFF_LISTWORK *lwk) {
+    s32 ret = sbtlReleaseEff(lwk, 1);
+
+    if (ret) {
+        sdfChipFreeDirect(lwk);
+        return 1;
+    }
+    return ret;
+}
 
 s32 sbtlGetNumOfEffect_SAB(SBTLEFF_LISTWORK *lwk, s32 BEDtype, u8 side)
 {
@@ -441,7 +512,24 @@ s32 sbtlGetNumOfEffect_SAB(SBTLEFF_LISTWORK *lwk, s32 BEDtype, u8 side)
     return num;
 }
 
+/* NON_MATCHING: 8 of 29 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSearchEffect_SAB(SBTLEFF_LISTWORK *lwk, SKLID BEDsklid, s32 BEDtype) {
+    SBTLEFF_WORK *wk = lwk->wk;
+
+    if (lwk->num) {
+        while (wk) {
+            if (wk->BEDsklid == BEDsklid && CheckEffectDataSingle(wk->BEDtype, BEDtype)) {
+                return 1;
+            }
+            wk = wk->next;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_SAB);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_SAB_Acter);
 
@@ -455,7 +543,18 @@ s32 sbtlInitEffectWork(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckLoadEnd_EffectWork);
+s32 sbtlCheckLoadEnd_EffectWork(void) {
+    s32 i;
+
+    for (i = 0; i < SBTLEFF_PACLIST_MAX; i++) {
+        if (sbtlData83->effpac[i].gstat > 0 && !(sbtlData83->effpac[i].status & EFFPAC_ST_ONMEM) &&
+            !(sbtlData83->effpac[i].status & EFFPAC_ST_LOADEND)) {
+            CheckLoadEffectData(&sbtlData83->effpac[i], sbtlData83->effpac[i].skillID, 0, NULL);
+            return 0;
+        }
+    }
+    return 1;
+}
 
 SBTLEFF_DELLISTWORK *sbtlCreateDelList(void)
 {
@@ -466,9 +565,39 @@ SBTLEFF_DELLISTWORK *sbtlCreateDelList(void)
     return lwk;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckDelWork_Request);
+s32 sbtlCheckDelWork_Request(SBTLEFF_DELLISTWORK *lwk, s32 GroupID) {
+    SBTLEFF_DELWORK *dwk;
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchDelWork_Side);
+    if (lwk) {
+        dwk = lwk->dwk;
+        if (!dwk || !lwk->num) {
+            return 0;
+        }
+        if (dwk->gstat == SBTLEFF_DELST_PROC && dwk->GroupID != -1 && GroupID == dwk->GroupID) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+s32 sbtlSearchDelWork_Side(SBTLEFF_DELLISTWORK *lwk, u8 side) {
+    SBTLEFF_DELWORK *dwk;
+
+    if (lwk) {
+        dwk = lwk->dwk;
+        if (!dwk || !lwk->num) {
+            return 0;
+        }
+        do {
+            if (dwk->gstat == SBTLEFF_DELST_PROC && (dwk->side & side)) {
+                return 1;
+            }
+            dwk = dwk->next;
+        } while (dwk);
+        return 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateDelWork);
 
@@ -542,7 +671,11 @@ s32 sbtlReleaseDelList(SBTLEFF_DELLISTWORK *lwk, u8 flg)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteDelList);
+s32 sbtlDeleteDelList(SBTLEFF_DELLISTWORK *lwk) {
+    sbtlReleaseDelList(lwk, 1);
+    sdfChipFreeDirect(lwk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteHaveSkill_EffectWork);
 
@@ -550,7 +683,19 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_EffectWork_ID);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_EffectWork);
 
+/* NON_MATCHING: 4 of 18 words match.  */
+#ifdef NON_MATCHING
+void sbtlBtlForceDeleteEffectWorkIDSub2(s32 id) {
+    sbtlData83->effpac[id].handle = NULL;
+    sbtlData83->effpac[id].skillID = -1;
+    sbtlData83->effpac[id].pData = NULL;
+    sbtlData83->effpac[id].SMGID = 0;
+    sbtlData83->effpac[id].status = 0;
+    sbtlData83->effpac[id].gstat = 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlForceDeleteEffectWorkIDSub2);
+#endif
 
 s32 sbtlSearchEffectData(SKLID skillid)
 {
@@ -602,11 +747,31 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetSummonEffect_Nakama);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetReturnEffect_Nakama);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", LoadOnMemoryData);
+SBTLEFFDMG_TBL *LoadOnMemoryData(s32 major, s32 minor) {
+    if (!major) {
+        return &dmg_tbldata_p[minor];
+    }
+    return &dmg_tbldata[minor];
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckYukaDamageEffect);
 
+/* NON_MATCHING: 5 of 19 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallIsSceanStop2(SBTLEFF_WORK *wk) {
+    s32 ret = 1;
+
+    if (wk_sbtl->flg & 0x8000000) {
+        if (wk->flg & 0x10) {
+            return ret;
+        }
+        ret = IsSceanStop() == 0;
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallIsSceanStop2);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallPartsCreateFinish);
 
@@ -693,11 +858,41 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID25);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlBtlAddHitEffSub);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlOutHitEff);
+void sbtlOutHitEff(SBTL_HITEFF *pHitEff) {
+    SBTL_HITEFF *next = pHitEff->next;
+
+    if (next) {
+        if (pHitEff->prev) {
+            pHitEff->prev->next = next;
+            pHitEff->next->prev = pHitEff->prev;
+            return;
+        }
+        wk_sbtl->hitEffList.pHitEffBgn = next;
+        pHitEff->next->prev = NULL;
+        return;
+    }
+    next = pHitEff->prev;
+    if (next) {
+        wk_sbtl->hitEffList.pHitEffEnd = next;
+        pHitEff->prev->next = NULL;
+        return;
+    }
+    wk_sbtl->hitEffList.pHitEffBgn = NULL;
+    wk_sbtl->hitEffList.pHitEffEnd = NULL;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlAddHitEff);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDltHitEff);
+void sbtlDltHitEff(SBTLEFF_WORK *pEffWork) {
+    SBTL_HITEFF *pHitEff = pEffWork->pHitEff;
+
+    if (pHitEff) {
+        sbtlOutHitEff(pHitEff);
+        pHitEff->bUse = 0;
+        wk_sbtl->hitEffList.cnt--;
+        pEffWork->pHitEff = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLeaf31);
 
@@ -722,7 +917,7 @@ s32 sbtlRefSbtl42(SBTL_FIELD630_WORK *wk)
     return wk->num > 0;
 }
 
-s32 sbtlCallMemFreeDirect4(SBTL_FIELD630_WORK *wk)
+s32 sbtlDeleteTalk(SBTL_FIELD630_WORK *wk)
 {
     sdfMemFreeDirect(wk->handle);
     return 1;
@@ -802,7 +997,14 @@ s32 sbtlReleaseSTP_List(SBTL_STP *stp, u8 flg) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteSTPList);
+s32 sbtlDeleteSTPList(SBTL_STP *lwk) {
+    if (lwk == NULL) {
+        return 1;
+    }
+    sbtlReleaseSTP_List(lwk, 1);
+    sdfChipFreeDirect(lwk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", Check_SupportAction);
 
@@ -824,7 +1026,19 @@ void sbtlRefSbtl45(void) {
     wk_sbtl->field630 = sbtlCallMemAllocDirect4();
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlRefSbtl46);
+s32 sbtlDeleteMainPanel(void) {
+    s32 ret;
+
+    if (wk_sbtl->flg & 0x800) {
+        ret = DeletePanel(wk_sbtl->panel);
+        if (ret) {
+            wk_sbtl->panel = NULL;
+            wk_sbtl->flg &= ~0x800;
+        }
+        return ret;
+    }
+    return 1;
+}
 
 SBTL_PANEL *sbtlCallMemAllocDirect5(void) {
     sdfMemHandle_t *handle = sdfMemAllocDirect(sizeof(SBTL_PANEL));
@@ -843,7 +1057,30 @@ SBTL_PANEL *sbtlCallMemAllocDirect5(void) {
     return panel;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemFreeDirect5);
+/* NON_MATCHING: 30 of 33 words match.  */
+#ifdef NON_MATCHING
+s32 DeletePanel(SBTL_PANEL *wk) {
+    s32 ret = 1;
+
+    if (wk->flg & 1) {
+        if (!(wk->flg & 2)) {
+            return 0;
+        }
+        effDestroyResourceSlotSet(wk->resources);
+        effDestroyResourceSlotSet(wk->hPanelSpr3);
+        effDestroyResourceSlotSet(wk->hPanelSpr4);
+        effDestroyResourceSlotSet(wk->hPanelSpr5);
+        effDestroyEffectList(wk->list);
+        sdfMemFreeDirect(wk->handle);
+        sbtlDeleteTalk(wk_sbtl->field630);
+        wk_sbtl->field630 = NULL;
+        return 1;
+    }
+    return ret;
+}
+#else
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", DeletePanel);
+#endif
 
 s32 sbtlRefSbtl47(void) {
     SBTL_PANEL *panel;

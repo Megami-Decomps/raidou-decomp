@@ -81,5 +81,24 @@ extern s32 Init_sbtlDrawData;
 extern s32 sbtlData122;
 extern s8 Init_sbtlDrawData2;
 extern s8 sbtlData123;
+#ifdef VERSION_RAIDOU2
+extern s32 gAddMagNum;  /* MAG gained */
+extern s32 gAddMagNumDrawCnt; /* frames left to draw the gain */
+extern s32 gAddMagNumNow; /* MAG shown */
+extern s32 gAddMagNumUp;     /* MAG shown per frame */
+void sbtlInitAddMag(void);
+void SetAddMag(s32 num);
+char *sbtlGetRaceName(s32 a_raceID);
+void sbtlHelp(s32 a_type, s32 a_num, u8 a_alphaRate);
+void sbtlHelpEx(s32 a_type, s32 a_num, struct sprHandle_t *a_hSpr, u8 a_alphaRate);
+void sbtlPlaySE(u32 frame);
+s32 sbtlSelectTargetCursor(s8 bDrawName);
+s32 NewLogSave(struct SBTLUNIT_WORK *wk, s8 bDrawName);
+void sbtlDrawTargetCursorEnemy(void);
+s32 sbtlUseItemProcSBtlPlayerSub(void);
+s32 sbtlUseItemProcSBtlPlayerSub2(struct SBTLUNIT_WORK *wk, u32 rgba);
+void sbtlNum3(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_OT a_ot, u32 rinkaku_rgba, f32 scale);
+void sbtlDrawNum4(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_OT a_ot, u32 rinkaku_rgba, f32 scale);
+#endif
 
 #endif

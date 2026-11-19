@@ -91,7 +91,12 @@ typedef struct SBTLEFF_DELWORK {
     SBTLEFF_DELST gstat;
     SKLID sklid;
     s32 GroupID;
+#ifdef VERSION_RAIDOU2
+    u8 side; /* SBTLUNIT_SIDE */
+    u8 pad11[3];
+#else
     SBTLUNIT_SIDE side;
+#endif
     struct SBTLEFF_DELWORK *prev;
     struct SBTLEFF_DELWORK *next;
 } SBTLEFF_DELWORK;
@@ -148,7 +153,7 @@ typedef struct SBTLEFF_WORK {
     u8 pad111[0x114 - 0x111];
     SBTLEFF_DATAWORK dwk;
 #ifdef VERSION_RAIDOU2
-    u8 pad124[0x128 - 0x124]; /* one of HD's pHitEff and sklid */
+    struct SBTL_HITEFF *pHitEff;
 #endif
     struct SBTLEFF_WORK *prev;
     struct SBTLEFF_WORK *next;
@@ -191,7 +196,7 @@ s32 sbtlCheckDeleteEffect(struct SBTLEFF_WORK *wk);
 struct SBTLEFF_DELLISTWORK *sbtlCreateDelList(void);
 s32 sbtlCreateDelWork(struct SBTLEFF_DELLISTWORK *lwk, SKLID skillid, SBTLUNIT_SIDE side, s32 GroupID);
 s32 sbtlDelProc(struct SBTLEFF_DELLISTWORK *lwk);
-s32 sbtlDeleteDelList(struct SBTLUNIT_WORK *wk);
+s32 sbtlDeleteDelList(struct SBTLEFF_DELLISTWORK *lwk);
 s32 sbtlDeleteEffList(struct SBTLEFF_LISTWORK *lwk);
 s32 sbtlDeleteEffectData_SerialID2(struct SBTLEFF_LISTWORK *lwk, s32 serialID);
 s32 sbtlForceReset(struct SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk);
@@ -217,6 +222,38 @@ s32 sbtlCallBtlLoadEffectDataIDMask(void);
 #ifdef VERSION_RAIDOU2
 /* R1 sbtlCallBtlLoadEffectDataIDMask, sbtlCallBtlGetSkilltbl10 and sbtlLoadEffectData_Nakama at the same call sites. */
 s32 evtCommand_PMV_LOAD_END_WAIT(void);
+/* Floor and damage effect colours of a unit's major/minor damage type (0x10 bytes). */
+typedef struct SBTLEFFDMG_TBL {
+    EFFDMG flg;
+    s16 d_eplno;
+    s16 y_eplno;
+    u8 dr;
+    u8 dg;
+    u8 db;
+    u8 yr;
+    u8 yg;
+    u8 yb;
+} SBTLEFFDMG_TBL;
+extern SBTLEFFDMG_TBL *dmg_tbldata_p;
+extern SBTLEFFDMG_TBL *dmg_tbldata;
+SBTLEFFDMG_TBL *LoadOnMemoryData(s32 major, s32 minor);
+struct SBTL_HITEFF;
+void sbtlOutHitEff(struct SBTL_HITEFF *pHitEff);
+void sbtlDltHitEff(struct SBTLEFF_WORK *pEffWork);
+s32 sbtlCallIsSceanStop2(struct SBTLEFF_WORK *wk);
+s32 sbtlBtlCheckEffectDataSub(s32 id);
+void sbtlBtlForceDeleteEffectWorkIDSub2(s32 id);
+struct SBTL_STP;
+s32 sbtlDeleteSTPList(struct SBTL_STP *lwk);
+s32 sbtlDeleteMainPanel(void);
+extern const s32 sbtlFunc6Table[46];
+s32 sbtlFunc6(s32 id, void *pData);
+s32 CheckLoadEffectData(SBTLEFF_PACLIST *pac, SKLID skillid, EFFPAC_ST pacflg, void *ppData);
+s32 sbtlCheckLoadEnd_EffectWork(void);
+struct SBTL_PANEL;
+s32 DeletePanel(struct SBTL_PANEL *wk);
+struct SBTL_FIELD630_WORK;
+s32 sbtlDeleteTalk(struct SBTL_FIELD630_WORK *wk);
 s32 sbtlLoadEffectData(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlSearchDelWorkSide(struct SBTLUNIT_WORK *wk);
 #endif
@@ -224,7 +261,7 @@ s32 sbtlFunc(s32 id, void *pData);
 s32 sbtlLoadPlayerOnMemData(void);
 s32 sbtlReleaseEff(struct SBTLEFF_LISTWORK *lwk, u8 flg);
 s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg);
-s32 sbtlSearchDelWork_Side(struct SBTLEFF_DELLISTWORK *lwk, SBTLUNIT_SIDE side);
+s32 sbtlSearchDelWork_Side(struct SBTLEFF_DELLISTWORK *lwk, u8 side);
 s32 sbtlSearchEffectData(SKLID skillid);
 s32 sbtlCheckEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param);
 void sbtlSetEffectData(struct SBTLEFF_WORK *ewk, struct SBTLUNIT_WORK *wk, SKLID sklid, s32 workID, u8 type, s32 no, u16 acterside,

@@ -13,9 +13,17 @@ struct sdfMemHandle_t;
 typedef struct sBtlMenu_t {
     struct sdfMemHandle_t *hMem; /* 0x00 */
     dds3ProcessID_t *drawPID;    /* 0x04 */
-    u8 unk8[0x10];
-    u8 unk18;                    /* 0x18 */
-    u8 unk19[0x2F];
+    dds3ProcessID_t *menuPID;    /* 0x08 */
+    dds3ProcessID_t *listPID;    /* 0x0C */
+    dds3ProcessID_t *charPID;    /* 0x10 */
+    dds3ProcessID_t *nakamaPID;  /* 0x14 */
+    u8 step;                     /* 0x18 */
+    u8 flag;                     /* 0x19 */
+    s16 count;                   /* 0x1A */
+    s32 menuID;                  /* 0x1C */
+    s32 cntAnalyze;              /* 0x20 */
+    s32 type;                    /* 0x24 */
+    u8 pad28[0x48 - 0x28];
 } sBtlMenu_t;
 SIZE_CHECK(sBtlMenu_t_size, sBtlMenu_t, 0x48);
 extern const char sbtlStrSbtlmenuMain[];
@@ -24,7 +32,12 @@ extern dds3ProcessID_t *ProcessCheckData;
 extern u8 sbtlFuncEscapeData;
 s32 sbtlFuncDecideItem_sbtlMenu(dds3ProcessID_t *id);
 s32 sbtlDrawProcess_sbtlMenu(dds3ProcessID_t *id);
-#else
+s32 ProcessCheck(void);
+void sbtlCallProcEnd(sBtlMenu_t *wk);
+void IsStart(s32 type);
+void sbtlMenuOpen(void);
+#endif
+#ifndef VERSION_RAIDOU2
 /* Battle menu process data (0x20 bytes in R1). */
 typedef struct sBtlMenu_t {
     struct sdfMemHandle_t *hMem; /* 0x00 */

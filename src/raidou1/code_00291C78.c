@@ -68,7 +68,7 @@ void sbtlRefSbtl45(void) {
     wk_sbtl->field630 = sbtlCallMemAllocDirect4();
 }
 
-INCLUDE_ASM(const s32, "code_00291C78", sbtlRefSbtl46);
+INCLUDE_ASM(const s32, "code_00291C78", sbtlDeleteMainPanel);
 
 SBTL_PANEL *sbtlCallMemAllocDirect5(void) {
     sdfMemHandle_t *handle = sdfMemAllocDirect(sizeof(SBTL_PANEL));
@@ -87,7 +87,7 @@ SBTL_PANEL *sbtlCallMemAllocDirect5(void) {
     return panel;
 }
 
-INCLUDE_ASM(const s32, "code_00291C78", sbtlCallMemFreeDirect5);
+INCLUDE_ASM(const s32, "code_00291C78", DeletePanel);
 
 s32 sbtlRefSbtl47(void) {
     SBTL_PANEL *panel;

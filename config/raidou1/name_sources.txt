@@ -7319,7 +7319,7 @@
 0x00291150	sbtlLeaf10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
 0x00291158	sbtlCallMemAllocDirect4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemAllocDirect
 0x002911B0	sbtlRefSbtl42	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
-0x002911D0	sbtlCallMemFreeDirect4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemFreeDirect
+0x002911D0	sbtlDeleteTalk	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDeleteTalk, called on wk->talkwk by DeletePanel; replaces sbtlCallMemFreeDirect4
 0x002911F0	sbtlSetDevilSkillID	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlTalk.sBtlSetDevilSkillID score 7.8 flag I: calls2 calls-of-match st1:call r1+r2
 0x00291420	sbtlRefSbtl43	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x00291448	sbtlLeaf76	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
@@ -7334,9 +7334,9 @@
 0x00291D58	sbtlDeleteSTPList	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlSTP.sBtlDeleteSTPList score 10.4 flag I: calls2 prev callers-of-match votes2 st1:call r1+r2
 0x00291D98	sbtlCallBtlSearchUnitID16	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
 0x00291EE0	sbtlRefSbtl45	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
-0x00291F48	sbtlRefSbtl46	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
+0x00291F48	sbtlDeleteMainPanel	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDeleteMainPanel: status 0x800 test, DeletePanel, clears panelwk and the bit; replaces sbtlRefSbtl46
 0x00291F98	sbtlCallMemAllocDirect5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemAllocDirect
-0x00292018	sbtlCallMemFreeDirect5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sdfMemFreeDirect
+0x00292018	DeletePanel	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlPanel.c static DeletePanel: status 1/2 tests, frees the panel and the talk work; replaces sbtlCallMemFreeDirect5
 0x002920A0	sbtlRefSbtl47	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x00292108	sbtlFunc13	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
 0x00292128	Proc_sbtlPanel	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlPanel.Proc score 2.3 flag -: next edge st2:edge r2-only
@@ -23027,8 +23027,8 @@
 0x0046DC50	sbtlGetBSTNameFontDataEntry15	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetBSTNameFontData
 0x0046DC58	sbtlGetBSTNameFontDataEntry16	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetBSTNameFontData
 0x0046DC60	sbtlGetBSTNameFontDataEntry17	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetBSTNameFontData
-0x0046DC68	LoadOnMemoryDataData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by LoadOnMemoryData
-0x0046DC6C	LoadOnMemoryDataData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by LoadOnMemoryData
+0x0046DC68	dmg_tbldata_p	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbtleff.h, declared before dmg_tbldata; LoadOnMemoryData returns it for major 0; replaces LoadOnMemoryDataData
+0x0046DC6C	dmg_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCheckYukaDamageEffect uses dmg_tbldata for major != 0; replaces LoadOnMemoryDataData2
 0x0046DC70	btlLoadSbPackData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by btlLoadSbPack (2 of 3 refs, 2 functions)
 0x0046DC78	sbtlSobedSABData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSobedSAB
 0x0046DC80	sbtlCallBtlSearchUnitID17Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID17

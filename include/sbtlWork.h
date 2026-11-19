@@ -142,6 +142,22 @@ struct SBTLEFF_WORK;
 struct scrProcessWork_s;
 
 #ifdef VERSION_RAIDOU2
+/* Hit effect slot (0x10 bytes) in SBTL_WORK's hitEffList. */
+typedef struct SBTL_HITEFF {
+    u8 bUse;
+    s32 effID;
+    struct SBTL_HITEFF *prev;
+    struct SBTL_HITEFF *next;
+} SBTL_HITEFF;
+
+typedef struct HITEFFLIST {
+    s32 lstIdx;
+    s32 cnt;
+    SBTL_HITEFF aHitEff[16];
+    SBTL_HITEFF *pHitEffBgn;
+    SBTL_HITEFF *pHitEffEnd;
+} HITEFFLIST;
+
 /* Battle text entry (0x80 bytes) in SBTL_WORK's textPool; type 0 is free. */
 typedef struct sbtlSummonText_t {
     u8 pad00[0x30];
@@ -162,7 +178,9 @@ typedef struct SBTL_WORK {
     fileRequest_t *panelPack;
     u32 panelPackPos;
     s32 panelPackLen;
-    u8 pad40C[0x1C];
+    u8 pad40C[0x420 - 0x40C];
+    s16 effcnt; /* sbtlGetStartTime_Damage cycles it through 0..7 */
+    u8 pad422[0x428 - 0x422];
     dds3ProcessID_t *process;
     u8 pad42C[0x10];
     u32 flg;
@@ -190,7 +208,11 @@ typedef struct SBTL_WORK {
     u8 pad4A0[0x518 - 0x4A0];
     SKLID stock_useskill[10];
     u16 stock_useskill_num;
-    u8 pad542[0x5A0 - 0x542];
+    u8 pad542[0x544 - 0x542];
+    s32 tgt_csr;
+    u8 pad548[0x598 - 0x548];
+    struct SBTLUNIT_LISTWORK *tgtList;
+    u8 pad59C[0x5A0 - 0x59C];
     struct SBTLUNIT_LISTWORK *list2D4;
     u8 pad5A4[0x650 - 0x5A4];
     s32 member_num; /* HD name; partners in the battle */
@@ -283,7 +305,8 @@ typedef struct SBTL_WORK {
     struct sbtlSummonText_t textPool[100];
     struct sbtlSummonText_t *textList;
     struct sbtlSummonText_t *textCursor; /* sbtlRefSbtl30 searches for a free entry from here */
-    u8 pad40E8[0x42A8 - 0x40E8];
+    HITEFFLIST hitEffList;
+    u8 pad41F8[0x42A8 - 0x41F8];
     s16 field42A8;
     u8 pad42AA[0x4];
     s16 field42AE;

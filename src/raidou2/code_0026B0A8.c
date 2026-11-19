@@ -590,7 +590,7 @@ s32 sbtlUseItemProcSBtlPlayerSub(void)
     return 1;
 }
 
-s32 sbtlUseItemProcSBtlPlayerSub2(void)
+s32 sbtlUseItemProcSBtlPlayerSub2(struct SBTLUNIT_WORK *wk, u32 rgba)
 {
     return 1;
 }

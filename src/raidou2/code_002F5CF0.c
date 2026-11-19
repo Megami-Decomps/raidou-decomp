@@ -10,6 +10,8 @@
 #include "sdk_libc.h"
 #include "sBtlPlayer.h"
 #include "code_002F5CF0.h"
+#include "sBtlSM.h"
+#include "code_r1_002C8188.h"
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf7);
 
@@ -143,11 +145,27 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlLeaf116);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlDebugProcSub);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlFuncKatana);
+s32 sbtlFuncKatana(void) {
+    s32 ret = ProcessCheck();
+
+    if (ret) {
+        return (s32)dds3GetProcessData(ProcessCheckData);
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawTargetCursorNakama);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawTargetCursorEnemy);
+void sbtlDrawTargetCursorEnemy(void) {
+    struct SBTLUNIT_WORK *unit;
+
+    sbtlSelectTargetCursor(0);
+    sbtlUseItemProcSBtlPlayerSub();
+    unit = sbtlSearchUnit_ID(wk_sbtl->tgtList, wk_sbtl->tgt_csr);
+    if (unit) {
+        sbtlUseItemProcSBtlPlayerSub2(unit, 0x80808080);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawTargetCharList);
 
@@ -234,7 +252,12 @@ INCLUDE_ASM(const s32, "code_002F5CF0", Init_sbtlMenu);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallMenuClearMenuAll);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallProcEnd);
+void sbtlCallProcEnd(sBtlMenu_t *wk) {
+    itfMenuProcessEnd(wk->menuPID);
+    itfMenuProcessEnd(wk->listPID);
+    itfMenuProcessEnd(wk->charPID);
+    itfMenuProcessEnd(wk->nakamaPID);
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCheckProcEnd);
 
@@ -273,7 +296,16 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlIsMenuStartScript);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", ProcessStart_sbtlMenu);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", IsStart);
+void IsStart(s32 type) {
+    sBtlMenu_t *wk;
+
+    if (ProcessCheck()) {
+        wk = dds3GetProcessData(ProcessCheckData);
+        wk->type = type;
+        wk->flag |= 0x10;
+        sbtlMenuOpen();
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSetSummonMenuSub);
 
@@ -287,7 +319,7 @@ void ProcessStart(void) {
     wk->hMem = hMem;
     ProcessCheckData = dds3StartProcess(sbtlStrSbtlmenuMain, 0x3FE, 0, 0, sbtlFuncDecideItem_sbtlMenu, sbtlDrawProcess, wk);
     wk->drawPID = dds3StartProcess(sbtlStrSbtlmenuDraw, 0x2B15, 0, 0, sbtlDrawProcess_sbtlMenu, NULL, wk);
-    wk->unk18 = 0;
+    wk->step = 0;
     sbtlFuncEscapeData = 0;
 }
 
@@ -318,9 +350,31 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawTabPanel);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlDrawProcessSBtlMenuSub);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlInitAddMag);
+void sbtlInitAddMag(void) {
+    gAddMagNum = 0;
+    gAddMagNumDrawCnt = 0;
+    gAddMagNumNow = 0;
+    gAddMagNumUp = 0;
+}
 
+/* NON_MATCHING: 15 of 24 words match.  */
+#ifdef NON_MATCHING
+void SetAddMag(s32 num) {
+    s32 diff;
+
+    gAddMagNum += num;
+    gAddMagNumDrawCnt = 100;
+    diff = gAddMagNum - gAddMagNumNow;
+    if (diff / 8 > 0) {
+        gAddMagNumUp = diff / 8;
+    } else {
+        gAddMagNumUp = 1;
+    }
+    sbtlPlaySE(0x10020);
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", SetAddMag);
+#endif
 
 INCLUDE_ASM(const s32, "code_002F5CF0", DrawAddMag);
 
@@ -336,7 +390,14 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBarCtrl);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", DrawStatusBar);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", btlLoadInterfaceSprite);
+void btlLoadInterfaceSprite(void) {
+    struct sprHandle_t *hSpr;
+
+    memset(&sbtlData135, 0, sizeof(sbtlData135));
+    hSpr = effLoadIndexedResource(btlLoadInterfaceSpriteStrBattlePanel, btlLoadInterfaceSpriteStrBattleInterfaceSpr, 0);
+    sbtlData135.hSpr = hSpr;
+    sbtlData135.field04 = -1;
+}
 
 s64 sbtlCallBtlCheckTutorialBattle3(void)
 {
@@ -365,11 +426,39 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlLeaf113);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlEnableSceneGroupAdvancementSub);
 
+/* NON_MATCHING: 1 of 23 words match.  */
+#ifdef NON_MATCHING
+void sbtlInitSBtlSub2(void) {
+    sbtlData121 = 1;
+    sbtlData123 = -1;
+    sbtlRefSbtl57Data = 0;
+    sbtlRefSbtl61Data = -1;
+    sbtlRefSbtl59Data = -1;
+    sbtlCallBtlSearchUnitID37Data2 = -1;
+    sbtlCallBtlSpriteData = -1;
+    sbtlCallBtlSpriteData2 = 0;
+    sbtlEscapeGaugeData = -1;
+    sbtlCallCheckDying2Data = -1;
+    sbtlCallCheckDying3Data = -1;
+    sbtlCallCheckDying2Data2 = -1;
+    sbtlCallCheckDying3Data2 = -1;
+    sbtlCallCheckDying2Data3 = -1;
+    sbtlCallCheckDying3Data3 = -1;
+    sbtlCallCheckDying3Data4 = -1;
+    sbtlCallEventBattleStopChack2Data2 = -1;
+    Init_sbtlDrawData = -1;
+    sbtlData122 = -1;
+    Init_sbtlDrawData2 = -1;
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlInitSBtlSub2);
+#endif
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlInitDevil);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlGetRaceName);
+char *sbtlGetRaceName(s32 a_raceID) {
+    return sbtlData94[a_raceID + 34];
+}
 
 void sbtlSpriteEx(s32 a_x, s32 a_y, u8 a_alpha, s32 a_sprNo, DDS3_OT a_ot)
 {
@@ -397,9 +486,35 @@ void sbtlNum(s32 a_x, s32 a_y, u32 a_color, u8 a_alpha, s32 a_num, DDS3_OT a_ot)
     }
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallGetFigure);
+INCLUDE_ASM(const s32, "code_002F5CF0", sbtlNum3);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlAIUpdateSub);
+/* NON_MATCHING: 2 of 21 words match.  */
+#ifdef NON_MATCHING
+void sbtlDrawNum4(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_OT a_ot, u32 rinkaku_rgba, f32 scale) {
+    s32 ofs1;
+    s32 ofs2;
+    s32 ofs;
+
+    if (a_num >= 10) {
+        ofs1 = 36;
+    } else {
+        ofs1 = 16;
+    }
+    if (a_num < 100) {
+        ofs2 = ofs1;
+    } else {
+        ofs2 = 48;
+    }
+    if (a_num < 1000) {
+        ofs = ofs2;
+    } else {
+        ofs = 60;
+    }
+    sbtlNum3(a_x - ofs, a_y - 12, a_rgba, a_alphaRate, a_num, a_ot, rinkaku_rgba, scale);
+}
+#else
+INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawNum4);
+#endif
 
 s32 sbtlCallGetSmallFontFRQ4(s32 x, s32 y, u8 bRight, u32 color, u8 alpha, s32 ot, void *str) {
     frFontHandle_t *frq;
@@ -489,11 +604,29 @@ void sbtlResetTargetCursor(void) {
 
 INCLUDE_ASM(const s32, "code_002F5CF0", NewLogSave);
 
+/* NON_MATCHING: 9 of 27 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSelectTargetCursor(s8 bDrawName) {
+    if (!wk_sbtl->tgtList) {
+        return 0;
+    }
+    if (wk_sbtl->tgtList->count < 1) {
+        return 0;
+    }
+    if (!(wk_sbtl->flg & 0x80000)) {
+        return 0;
+    }
+    return NewLogSave(sbtlSearchUnit_ID(wk_sbtl->tgtList, wk_sbtl->tgt_csr), bDrawName);
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSelectTargetCursor);
+#endif
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlHelpEx);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlHelp);
+void sbtlHelp(s32 a_type, s32 a_num, u8 a_alphaRate) {
+    sbtlHelpEx(a_type, a_num, wk_sbtl->panel->hPanelSpr3, a_alphaRate);
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlHelpCantUseEx);
 

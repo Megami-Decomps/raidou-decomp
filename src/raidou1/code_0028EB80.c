@@ -536,7 +536,7 @@ s32 sbtlRefSbtl42(SBTL_FIELD630_WORK *wk)
     return wk->num > 0;
 }
 
-s32 sbtlCallMemFreeDirect4(SBTL_FIELD630_WORK *wk)
+s32 sbtlDeleteTalk(SBTL_FIELD630_WORK *wk)
 {
     sdfMemFreeDirect(wk->handle);
     return 1;

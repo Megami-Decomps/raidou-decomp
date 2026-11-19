@@ -9209,8 +9209,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046DC50	0x004E2580	sbtlGetBSTNameFontDataEntry15	.sdata	0x8	no	data-word
 0x0046DC58	0x004E2588	sbtlGetBSTNameFontDataEntry16	.sdata	0x8	no	data-word
 0x0046DC60	0x004E2590	sbtlGetBSTNameFontDataEntry17	.sdata	0x8	no	data-word
-0x0046DC68	0x004E259C	LoadOnMemoryDataData	.sdata	0x4	yes	code-ref
-0x0046DC6C	0x004E25A0	LoadOnMemoryDataData2	.sdata	0x4	yes	code-ref
+0x0046DC68	0x004E259C	dmg_tbldata_p	.sdata	0x4	yes	code-ref
+0x0046DC6C	0x004E25A0	dmg_tbldata	.sdata	0x4	yes	code-ref
 0x0046DC70	0x004E25A4	btlLoadSbPackData2	.sdata	0x8	no	code-ref
 0x0046DC80	0x004E25A8	sbtlCallBtlSearchUnitID17Data	.sdata	0x8	yes	unique-contents
 0x0046DC90	0x004E25B8	sbtlCallBtlSearchUnitID17Data3	.sdata	0x8	yes	unique-contents

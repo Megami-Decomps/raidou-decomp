@@ -6659,7 +6659,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00291080	0x002C3E80	sbtlCallBtlSearchUnitID25	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
 0x00291158	0x002C42E8	sbtlCallMemAllocDirect4	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x002911B0	0x002C4340	sbtlRefSbtl42	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
-0x002911D0	0x002C4360	sbtlCallMemFreeDirect4	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
+0x002911D0	0x002C4360	sbtlDeleteTalk	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x002911F0	0x002C4380	sbtlSetDevilSkillID	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
 0x00291420	0x002C45B0	sbtlRefSbtl43	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	run-order-size
 0x00291448	0x002C45D8	sbtlLeaf76	yes	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
@@ -6673,9 +6673,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00291C78	0x002C4E40	sbtlReleaseSTP_List	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x00291D58	0x002C4F20	sbtlDeleteSTPList	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-reloc-hash
 0x00291EE0	0x002C5120	sbtlRefSbtl45	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
-0x00291F48	0x002C5188	sbtlRefSbtl46	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
+0x00291F48	0x002C5188	sbtlDeleteMainPanel	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
 0x00291F98	0x002C51D8	sbtlCallMemAllocDirect5	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
-0x00292018	0x002C5258	sbtlCallMemFreeDirect5	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
+0x00292018	0x002C5258	DeletePanel	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
 0x002920A0	0x002C52E0	sbtlRefSbtl47	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	unique-masked-hash
 0x00292108	0x002C5348	sbtlFunc13	no	yes	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	masked-hash-in-gap
 0x00292128	0x002C5368	Proc_sbtlPanel	no	no	asm/raidou1/sbtlEff_00289E50.s	asm/raidou2/sbtlEff_00289E50.s	run-order-size

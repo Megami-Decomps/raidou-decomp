@@ -3524,16 +3524,13 @@
 0x00291150	sbtlLeaf10	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x00291158	sbtlCallMemAllocDirect4	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sdfMemAllocDirect
 0x002911B0	sbtlRefSbtl42	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
-0x002911D0	sbtlCallMemFreeDirect4	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sdfMemFreeDirect
 0x00291420	sbtlRefSbtl43	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x00291448	sbtlLeaf76	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x00291518	sbtlRefSbtl44	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x002917C0	sbtlProcSBtlSTPSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by Proc_sbtlSTP
 0x00291D98	sbtlCallBtlSearchUnitID16	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
 0x00291EE0	sbtlRefSbtl45	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
-0x00291F48	sbtlRefSbtl46	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x00291F98	sbtlCallMemAllocDirect5	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sdfMemAllocDirect
-0x00292018	sbtlCallMemFreeDirect5	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sdfMemFreeDirect
 0x002920A0	sbtlRefSbtl47	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x00292108	sbtlFunc13	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x002921B0	sbtlResetMidashiAnim	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlPanel.sBtlResetMidashiAnim, score 8.0 band B, hd-ab: calls3 calls-of-match votes4 st2:call r2-only
@@ -15535,8 +15532,6 @@
 0x0046DC50	sbtlGetBSTNameFontDataEntry15	data	tier=D	derived-table	na	pointed to by sbtlGetBSTNameFontData
 0x0046DC58	sbtlGetBSTNameFontDataEntry16	data	tier=D	derived-table	na	pointed to by sbtlGetBSTNameFontData
 0x0046DC60	sbtlGetBSTNameFontDataEntry17	data	tier=D	derived-table	na	pointed to by sbtlGetBSTNameFontData
-0x0046DC68	LoadOnMemoryDataData	data	tier=D	derived-sole	na	used by LoadOnMemoryData
-0x0046DC6C	LoadOnMemoryDataData2	data	tier=D	derived-sole	na	used by LoadOnMemoryData
 0x0046DC70	btlLoadSbPackData2	data	tier=D	derived-dominant	na	used by btlLoadSbPack (2 of 3 refs, 2 functions)
 0x0046DC78	sbtlSobedSABData2	data	tier=D	derived-sole	na	used by sbtlSobedSAB
 0x0046DC80	sbtlCallBtlSearchUnitID17Data	data	tier=D	derived-sole	na	used by sbtlCallBtlSearchUnitID17
@@ -19449,6 +19444,9 @@
 0x0028E160	sbtlForceDelete_EffectWork_ID	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlEff.sBtlForceDelete_EffectWork_ID score 6.0 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2c0aa8
 0x0028EB80	sbtlLoadEffectData_Nakama	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlEff.sBtlLoadEffectData_Nakama score 5.8 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2c13e0
 0x0028F738	sbtlCheckYukaDamageEffect	func	tier=B	hd-role	na	HD sBtlCheckYukaDamageEffect; R2 already uses the name; replaces sbtlCallBtlGetSklVisualTbl
+0x002911D0	sbtlDeleteTalk	func	tier=B	hd-role	na	HD sBtlDeleteTalk, called on wk->talkwk by DeletePanel; replaces sbtlCallMemFreeDirect4
+0x00291F48	sbtlDeleteMainPanel	func	tier=B	hd-role	na	HD sBtlDeleteMainPanel: status 0x800 test, DeletePanel, clears panelwk and the bit; replaces sbtlRefSbtl46
+0x00292018	DeletePanel	func	tier=B	hd-role	na	HD sBtlPanel.c static DeletePanel: status 1/2 tests, frees the panel and the talk work; replaces sbtlCallMemFreeDirect5
 0x002936F0	sbtlSummonMenuProc	func	tier=B	hd-role	na	HD sBtlPlayer.c sBtlSummonMenuProc (0x1f6c4a0): switch on menutype 1..7 over SummonMenuFunc0..6[sgstat[0]](wk, mode); its tables hold SummonMenuFunc_Open00/_50/_40 here; replaces sbtlRefSbtl51
 0x00295390	sbtlCheckBattleWin	func	tier=B	hd-role	na	HD sBtlEvent.sBtlCheckBattleWin, before sBtlCheckBattleLose; R2 sbtlCheckBattleWin; replaces sbtlCallBtlCheckTutorialBattle2
 0x00295578	sbtlCheckBattleLose	func	tier=B	hd-role	na	HD sBtlEvent.sBtlCheckBattleLose: tutorial battle sets evt bits 2096-2099, between sBtlCheckBattleWin and sBtlCheckTutorialBattle; replaces campFreeStatusModel
@@ -19795,6 +19793,8 @@
 0x0046D188	effPadVibeFadeIn	data	tier=B	smt3-role	na	SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effData37
 0x0046DAB8	loadstep	data	tier=B	hd-role	na	HD DataLoadProc switches on loadstep; replaces DataLoadProcData
 0x0046DAF0	ai_tbldata	data	tier=B	hd-role	na	HD ai_tbldata, the AITBLDATA_WORK array sbtlGetAITBL indexes by devil id; replaces sbtlData93
+0x0046DC68	dmg_tbldata_p	data	tier=B	hd-role	na	HD sbtleff.h, declared before dmg_tbldata; LoadOnMemoryData returns it for major 0; replaces LoadOnMemoryDataData
+0x0046DC6C	dmg_tbldata	data	tier=B	hd-role	na	HD sBtlCheckYukaDamageEffect uses dmg_tbldata for major != 0; replaces LoadOnMemoryDataData2
 0x0046DCE4	sbtleff_cylindertbl	data	tier=B	hd-role	na	HD sBtlVisual.c: table read for major nonzero by sBtlGetEffCylinderData; replaces sbtlGetEffCylinderDataData
 0x0046DCE8	sbtlmotionmv_tbldata	data	tier=B	hd-role	na	HD sBtlGetMotionMoveData: major nonzero table; replaces sbtlBtlGetMotionMoveSubData
 0x0046DCF0	sbtleff_cylindertbl_p	data	tier=B	derived-role	na	HD: player table (major zero); replaces sbtlGetEffCylinderDataData2
