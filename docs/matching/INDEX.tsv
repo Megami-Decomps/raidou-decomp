@@ -107,6 +107,7 @@ sbtlUnit_CheckSummon_LoadExecOk_sub	code_0027A1E8	raidou2 0xB8	1 of 46 words dif
 sbtlCheckMove_BadStatus	code_0027A1E8	raidou2 0xA8	27 of 40 words differ	docs/matching/code_0027A1E8.md	9		
 Init_sbtlScript	code_0027A1E8	raidou2 0xC0	7 of 48 words differ	docs/matching/code_0027A1E8.md	15		
 sbtlCallBtlGetSkilltbl4	code_0027A1E8	raidou2 0x194	41 of 95 words differ	docs/matching/code_0027A1E8.md	21		
+sbtlDrawEscapeGauge	code_0027A1E8	raidou2 0xF8	53 of 62 words differ	docs/matching/code_0027A1E8.md	29		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
@@ -171,6 +172,10 @@ sbtlRefDDS3GBWK6	code_00309FE0	raidou2 0x30	9 of 12 words differ	docs/matching/c
 sbtlCallBtlSearchUnitID15	code_00309FE0	raidou2 0x74	9 of 29 words differ	docs/matching/code_00309FE0.md	57		
 evtCallMemset3	code_00309FE0	raidou2 0xA4	6 of 41 words differ	docs/matching/code_00309FE0.md	63		
 sbtlLeaf43	code_00309FE0	raidou2 0x60	4 of 24 words differ	docs/matching/code_00309FE0.md	69		
+cmpCallGetProcessData4	code_00309FE0	raidou2 0x164	63 of 83 words differ	docs/matching/code_00309FE0.md	75		
+cmpCallGetProcessData7	code_00309FE0	raidou2 0x10C	52 of 65 words differ	docs/matching/code_00309FE0.md	81		
+slCallBitCheck2	code_00309FE0	raidou2 0x11C	33 of 72 words differ	docs/matching/code_00309FE0.md	87		
+sbtlIsStart	code_00309FE0	raidou2 0x7C	3 of 31 words differ	docs/matching/code_00309FE0.md	93		
 cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
 cmpCallGetProcessData6	code_00323280	raidou1 0x1AC	4 of 107 words differ	docs/matching/code_00323280.md	11		
 rstCallGetProcessData42	code_0034F3B8	raidou1 0x38		docs/matching/code_0034F3B8.md	3		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, the same form as fclCallGetProcessData. Tried: no read (tail j), an s32 return with no return statement (still j), a dds3ProcessFunc_t return (still j). Only a dead store or dummy use after the call remains, which is banned.

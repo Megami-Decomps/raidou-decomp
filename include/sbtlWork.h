@@ -194,7 +194,8 @@ typedef struct SUMMON_CTRL {
 
 /* Partial raidou2 layout of the battle main work: only the fields read so far are named, the rest is padding. */
 typedef struct SBTL_WORK {
-    u8 pad000[0x180];
+    sdfVector4_t vPosBossEvent; /* HD name; boss event camera target */
+    u8 pad010[0x180 - 0x10];
     SBTLCAMERA_WORK camera;
     SBTLCAMERA_WORK camerabk;
     u8 pad2E0[0x400 - 0x2E0];
@@ -207,7 +208,8 @@ typedef struct SBTL_WORK {
     dds3ProcessID_t *process;
     u8 pad42C[0x430 - 0x42C];
     s32 field430; /* sbtlMainDraw fades the moon out when set */
-    u8 pad434[0x43C - 0x434];
+    u8 pad434[0x438 - 0x434];
+    s32 equipbullet; /* HD name */
     s32 flg;
     u32 flg2;
     u32 status3;
@@ -243,7 +245,8 @@ typedef struct SBTL_WORK {
     struct SBTLUNIT_LISTWORK *tgtList;
     u8 pad59C[0x5A0 - 0x59C];
     struct SBTLUNIT_LISTWORK *list2D4;
-    u8 pad5A4[0x64C - 0x5A4];
+    u8 pad5A4[0x648 - 0x5A4];
+    u32 stock_mask; /* HD name */
     s32 field64C; /* stock devil count, the bound of sbtlRefDDS3GBWK2 */
     s32 member_num; /* HD name; partners in the battle */
     s32 summonnum;
@@ -299,7 +302,10 @@ typedef struct SBTL_WORK {
     s32 huumaTargetID; /* unit ID of the battle talk partner */
     u8 pad83C[0x86E - 0x83C];
     s16 field50A;
-    u8 pad870[0x880 - 0x870];
+    s16 escapegauge_w; /* HD name */
+    u8 pad872[0x2];
+    f32 escapegauge_counter; /* HD name */
+    u8 pad878[0x880 - 0x878];
     SBTLDROP_WORK drop;
     u8 pad974[0x9A8 - 0x880 - sizeof(SBTLDROP_WORK)];
     s32 field614;
@@ -376,7 +382,8 @@ typedef struct SBTL_WORK {
     HITEFFLIST hitEffList;
     u8 pad41F8[0x42A8 - 0x41F8];
     s16 field42A8;
-    u8 pad42AA[0x4];
+    u8 pad42AA[0x2];
+    s16 field42AC;
     s16 field42AE;
     u8 pad42B0[0x42C0 - 0x42B0];
     s16 field42C0;
@@ -394,7 +401,9 @@ typedef struct SBTL_WORK {
     u8 pad42DE[0x4309 - 0x42DE];
     s8 geirinstep;
     s16 geirincnt;
-    u8 pad430C[0x4324 - 0x430C];
+    u8 pad430C[0x4310 - 0x430C];
+    s32 boss_eventID; /* HD name; unit ID the boss event camera follows */
+    u8 pad4314[0x4324 - 0x4314];
     s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
 } SBTL_WORK;
 #else
@@ -671,7 +680,8 @@ typedef struct SBTL_DEVIL_DATA {
     u32 flag;
     u8 pad04[0x68 - 0x4];
     SBTLITEM_WORK item[4];
-    u8 pad78[0x82 - 0x78];
+    u8 pad78[0x80 - 0x78];
+    s16 field80;
     s16 field82; /* index into DDS3_GBWK->devilWork */
     u8 pad84[0x94 - 0x84];
 } SBTL_DEVIL_DATA;

@@ -19,4 +19,11 @@ void sbtlProc_YoyakuEndChk(struct SBTLUNIT_WORK *wk);
 s32 sbtlUnit_CheckSummon_LoadExecOk_sub(void);
 void Init_sbtlScript(struct SBTLUNIT_WORK *wk);
 
+s32 sbtlCallBtlGetNakama3(void);
+s32 ShugouKaijyoSub(struct SBTLUNIT_WORK *wk);
+s32 sbtlDrawEscapeGauge(void);
+void sbtlResetATKEffect(void);
+s32 sbtlCheckSetHITNONE(s32 Group, u32 DevilID);
+void sbtlCallBtlResetJump(struct SBTLUNIT_WORK *wk, s32 frame);
+void sbtlShugouKaijyo(void);
 #endif

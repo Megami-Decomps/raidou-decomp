@@ -820,7 +820,7 @@ void sbtlResetTargetCursor(void) {
     sbtlTargetCursorData6 = 1;
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", NewLogSave);
+INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSelectTargetCursorSub);
 
 /* NON_MATCHING: 9 of 27 words match.  */
 #ifdef NON_MATCHING
@@ -834,7 +834,7 @@ s32 sbtlSelectTargetCursor(s8 bDrawName) {
     if (!(wk_sbtl->flg & 0x80000)) {
         return 0;
     }
-    return NewLogSave(sbtlSearchUnit_ID(wk_sbtl->tgtList, wk_sbtl->tgt_csr), bDrawName);
+    return sbtlSelectTargetCursorSub(sbtlSearchUnit_ID(wk_sbtl->tgtList, wk_sbtl->tgt_csr), bDrawName);
 }
 #else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSelectTargetCursor);

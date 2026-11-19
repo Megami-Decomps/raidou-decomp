@@ -33,6 +33,34 @@ void Delete_sbtlCmndMenuNew(void);
 s32 sbtlGetStat(void);
 s32 DrawProc(dds3ProcessID_t *id);
 extern u32 sbtlCheckData;
+
+/* Boss event table row (0x94 bytes), loaded from /battle/sb_bossevtbl.dat; ends at devil_id -1. */
+typedef struct TYPE_BOSS_NML_EVENT {
+    s32 enc_id;
+    s32 devil_id;
+    s32 cam_size; /* HD BOSSEVENT_CAMERA; 4 aims between two helper points */
+    u8 pad0C[0x10 - 0xC];
+    s8 field10;
+    u8 pad11[0x94 - 0x11];
+} TYPE_BOSS_NML_EVENT;
+
+/* Boss event process work (sbtlCallGetProcessStatData); only the fields read so far. */
+typedef struct sbtlBossEvent_t {
+    u8 pad00[0x1E];
+    s16 eventtype; /* HD SBTLBOSSEVENT: 0 start, 1-3 mag, 4 dead, 5 lose, 6 dying, 7 time */
+    u8 pad20[0x2C - 0x20];
+    TYPE_BOSS_NML_EVENT *pTypeBossNmlEvent;
+} sbtlBossEvent_t;
+
+/* HD S_CameraMoveDt; R2 entries hold only the two position moves. */
+typedef struct S_CameraMoveDt {
+    struct S_PosMove *m_pPosMoveCam;
+    struct S_PosMove *m_pPosMoveTgt;
+} S_CameraMoveDt;
+
+extern u8 sbtlData138[][7]; /* camera move pattern per event kind and cam_size */
+S_CameraMoveDt *sbtlBtlRunSklProcSub(s32 idx); /* HD sBtlGetCamMovePtn */
+void sbtlRefSbtl65(S_CameraMoveDt *dt); /* HD sBtlSetMove */
 extern u32 btlLoadBossEventTableData;
 
 /* Time limit battle table entry, matched by (field0, field4) in Start_sbtlTime. */
@@ -64,6 +92,7 @@ datSword_t *sbtlDat(void);
 s32 sbtlCallBtlDat(void);
 s32 sbtlCallBtlDat2(void);
 s32 sbtlCallBtlDat3(void);
+s32 sbtlCallBtlDat4(void);
 void sbtlRefSbtl25(sbtlSummonText_t *text);
 void sbtlRefSbtl26(sbtlSummonText_t *text);
 void sbtlRefSbtl27(void (*func)(sbtlSummonText_t *text));
@@ -83,8 +112,22 @@ extern u32 btlLoadKaiwaDataData;
 s32 sbtlCallMemFreeDirect3(void);
 
 /* One entry of sbtl_kaiwa_data.dat (0xD8A bytes). */
+/* One talk entry, 0x22 bytes. */
 typedef struct {
-    u8 pad000[0xD2C];
+    s16 field00;
+    u16 field02;
+    s16 field04;
+    s16 field06;
+    u8 pad08[0x2];
+    u16 field0A;
+    u8 pad0C[0x22 - 0xC];
+} sbtlKaiwaEntry_t;
+
+typedef struct {
+    u8 pad000[0xC];
+    sbtlKaiwaEntry_t entry[48];
+    sbtlKaiwaEntry_t entry2[48];
+    u8 padCCC[0xD2C - 0xCCC];
     s16 fieldD2C[47];
 } sbtlKaiwaData_t;
 
@@ -108,15 +151,22 @@ typedef struct {
     u8 pad1E[0x6];
     s16 kind;
     s16 field26;
-    u8 pad28[0x1E];
+    s16 field28;
+    s16 field2A;
+    u8 pad2C[0x46 - 0x2C];
     s16 field46;
     sbtlKaiwaMsg_t msg[3]; /* copies of the talk files */
     u8 pad6C[0x98 - 0x6C];
     s16 field98; /* talk result from the devil table entry, 0 for none */
-    u8 pad9A[0xAA - 0x9A];
+    u16 field9A;
+    u8 pad9C[0xAA - 0x9C];
     s8 fieldAA;
     s8 fieldAB;
-    u8 padAC[0xF4 - 0xAC];
+    u8 padAC[0xBC - 0xAC];
+    s32 fieldBC;
+    u8 padC0[0xC8 - 0xC0];
+    s16 fieldC8; /* load step of sbtlCallGetProcessData38 */
+    u8 padCA[0xF4 - 0xCA];
 } sbtlKaiwa_t;
 
 extern u8 evtKAIWANoEnemyData2;
@@ -160,6 +210,20 @@ void evtCallMemset3(s32 index, s32 value);
 void evtCallGetProcessData3(void);
 s32 cmpCallGetNowSummonerRank(s32 flag);
 void trmCallBtlClearHitC(struct SBTLUNIT_WORK *wk);
+s32 sbtlIsStart(s8 idx);
+s32 sbtlCallGetProcessData38(s32 idx);
+void CameraPosSet(s32 hpos);
+void CameraSet(void);
+void sbtlDeleteDeBuffAll(BST keep);
+void ResetBadStatusAll(BST IgnoreBstNo);
+s32 sbtlCallGetProcessData14(void);
+s32 cmpCallGetProcessData7(void);
+extern char cmpPartyListMake_cmpMiscData[];
+void cmpPartyAnimFunc(dds3ProcessID_t *PID);
+void cmpCallGetProcessData9(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha);
+s32 cmpCallGetProcessData3(s32 devilId);
+s32 cmpCallBtlSearchUnitID(s32 devilId);
+s16 cmpCallGetProcessData4(s32 second);
 #endif
 
 #endif

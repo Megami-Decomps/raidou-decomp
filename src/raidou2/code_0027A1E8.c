@@ -16,6 +16,11 @@
 #include "AW_XAtkPad.h"
 #include "sBtlPlayer.h"
 #include "EventBit.h"
+#include "sBtlTalk.h"
+#include "sBtlEff.h"
+#include "sBtlItem.h"
+#include "sBtlCmndMenuNew.h"
+#include "dds3KernelDraw.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -133,7 +138,28 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl36);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlActiveAction);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetATKEffect);
+void sbtlResetATKEffect(void) {
+    SKLID skillid;
+    SBTLITEM_TBL *itemtbl;
+
+    skillid = sbtlCallBtlDat4();
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, skillid, SBTLEFF_BEDTYPE_KOUKA);
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, SKLID_MAWASIKERI, SBTLEFF_BEDTYPE_KOUKA);
+    skillid = sbtlCallBtlDat();
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, skillid, SBTLEFF_BEDTYPE_KOUKA);
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, SKLID_NOUSE_SORD1, SBTLEFF_BEDTYPE_KOUKA);
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, SKLID_NOUSE_SORD2, SBTLEFF_BEDTYPE_KOUKA);
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, SKLID_NOUSE_SORD3, SBTLEFF_BEDTYPE_KOUKA);
+    skillid = sbtlCallBtlDat2();
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, skillid, SBTLEFF_BEDTYPE_KOUKA);
+    skillid = sbtlCallBtlDat3();
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, skillid, SBTLEFF_BEDTYPE_KOUKA);
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, SKLID_NOUSE_KAITEN, SBTLEFF_BEDTYPE_KOUKA);
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, SKLID_OFS_BUTURI, SBTLEFF_BEDTYPE_KOUKA);
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, SKLID_OIUCHI, SBTLEFF_BEDTYPE_KOUKA);
+    itemtbl = sbtlGetItemtbl(wk_sbtl->equipbullet);
+    sbtlDeleteEffectData_SkillIDType(wk_sbtl->effList, itemtbl->sklid, SBTLEFF_BEDTYPE_KOUKA);
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetCombine);
 
@@ -323,11 +349,91 @@ INCLUDE_ASM(const s32, "code_0027A1E8", EscapeGauge);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", CheckAutoSkill_Escape);
 
+/* NON_MATCHING: 9 of 62 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlDrawEscapeGauge(void) {
+    struct SBTLUNIT_WORK *unit;
+    s16 mode;
+    s32 ret = 0;
+
+    if (wk_sbtl != NULL && (wk_sbtl->flg & 0x1400000)) {
+        ret = IsSceanStop();
+        if (ret) {
+            return 0;
+        }
+        if (wk_sbtl->field430 == 0) {
+            unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+            if (unit == NULL) {
+                return 0;
+            }
+            if (unit->status == 34) {
+                return 0;
+            }
+            mode = wk_sbtl->mode;
+            if (mode == 8) {
+                return 0;
+            }
+            if (mode == 9) {
+                return 0;
+            }
+            if (mode == 16) {
+                return 0;
+            }
+            if (mode == 12 || mode == 21 || (wk_sbtl->flg & 8)) {
+                return 0;
+            }
+            sbtlEscapeGauge((s16)wk_sbtl->escapegauge_counter, wk_sbtl->escapegauge_w);
+            return 1;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlDrawEscapeGauge);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SetColor);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlResetJump);
+void sbtlCallBtlResetJump(struct SBTLUNIT_WORK *wk, s32 frame) {
+    s32 skillid = sbtlCallBtlDat();
+
+    if (wk->skillid == skillid) {
+        if (frame == 14 && !sbtlResetJump()) {
+            dds3SetQuake(20, 200);
+        }
+        return;
+    }
+    switch (wk->skillid) {
+        case SKLID_NOUSE_SORD3:
+            if (frame == 14 && !sbtlResetJump()) {
+                dds3SetQuake(10, 80);
+            }
+            break;
+        case SKLID_OIUCHI:
+            if (frame == 60 && !sbtlResetJump()) {
+                dds3SetQuake(20, 500);
+            }
+            break;
+        case SKLID_NOUSE_KAITEN:
+            if (frame == 8 && !sbtlResetJump()) {
+                dds3SetQuake(20, 100);
+            }
+            break;
+        case SKLID_NOUSE_IAITATE:
+            if (frame == 92) {
+                dds3SetQuake(20, 120);
+            }
+            break;
+        case SKLID_NOUSE_MEGATONWARI:
+            if (frame == 60) {
+                dds3SetQuake(30, 500);
+            }
+            if (frame == 70) {
+                dds3SetQuake(30, 500);
+            }
+            break;
+    }
+}
 
 INCLUDE_RODATA(const s32, "code_0027A1E8", CancelSystemTable);
 
@@ -352,15 +458,83 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlSearchUnitID4);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetNearTarget_Random);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", ShugouKaijyoSub);
+s32 ShugouKaijyoSub(struct SBTLUNIT_WORK *wk) {
+    s32 flg;
+    s32 miusinai;
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetNakama3);
+    if (wk != NULL) {
+        flg = wk->field6C4;
+        if (flg & 0x400) {
+            miusinai = wk->miusinai;
+            wk->L2_muteki = 0;
+            wk->field4A2 = 0;
+            wk->field6C4 = flg & ~0x2 & ~0x400u;
+            if (!miusinai) {
+                wk->model->field104 = -1;
+                sbtlSetAIWkStat(wk);
+                wk->aiwk->mode = 0;
+                ResetAction(wk, 0);
+            }
+            if (sbtlGetBadStatus(&wk->unit) == BST_STONE) {
+                sbtlLeaf59(wk, 0x80A53A6C);
+            } else {
+                sbtlLeaf59(wk, 0x80808080);
+            }
+            sbtlChangeModelColor(wk);
+            if (sbtlCheckDamageTarget(wk)) {
+                wk->actCounter = wk->actMax;
+            }
+        }
+    }
+    return 1;
+}
+
+s32 sbtlCallBtlGetNakama3(void) {
+    struct SBTLUNIT_WORK *unit = sbtlGetNakama(0);
+
+    if (unit != NULL && unit->status == 58) {
+        return 1;
+    }
+    unit = sbtlGetNakama(1);
+    if (unit != NULL && unit->status == 58) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", Check_Stls);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlReset_SupportAction_Shugou);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlShugouKaijyo);
+void sbtlShugouKaijyo(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
+
+    if (wk_sbtl->flg & 0x40000) {
+        wk_sbtl->flg &= ~0x40000;
+        wk_sbtl->flg2 &= ~0x2000;
+    }
+    for (i = 0; i < 20; i++) {
+        if (sbtlCheckBit(&wk_sbtl->stock_mask, i) && wk_sbtl->summonflg[i] == 2) {
+            unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[i]);
+            if (unit != NULL && (u32)(sbtlGetBadStatus(&unit->unit) - BST_GUN) >= 2) {
+                ShugouKaijyoSub(unit);
+                unit->flg &= ~1;
+                unit->vstatus &= ~0x1000;
+                unit->vstatus &= ~0x2;
+                unit->vstatus &= ~0x1;
+                unit->vstatus &= ~0x200000;
+                unit->fadepara = 16;
+                unit->color = 0x80808080;
+                unit->asimoto_mode = 0;
+                if (sbtlGetBadStatus(&unit->unit) == BST_STONE) {
+                    unit->color = 0x80A53A6C;
+                }
+                unit->field4A2 = 0;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlNakamaWarpReset);
 
@@ -1003,7 +1177,23 @@ void Init_sbtlScript(struct SBTLUNIT_WORK *wk) {
 INCLUDE_ASM(const s32, "code_0027A1E8", Init_sbtlScript);
 #endif
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSetHITNONE);
+s32 sbtlCheckSetHITNONE(s32 Group, u32 DevilID) {
+    struct {
+        s32 group;
+        u32 devilId;
+    } tbl[9] = {
+        { 0, 0x1B9 }, { 0, 0x1BA }, { 1, 0x1C7 }, { 1, 0x1C8 }, { 2, 0x1CF },
+        { 3, 0x1BC }, { 3, 0x1CB }, { 3, 0x1CD }, { 4, 0x1CE },
+    };
+    u32 i;
+
+    for (i = 0; i < 9; i++) {
+        if ((Group == tbl[i].group || Group < 0) && DevilID == tbl[i].devilId) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlEncountInit);
 
@@ -1042,6 +1232,4 @@ s32 sbtlCheckEnshutuSummonUnit(struct SBTLUNIT_WORK *wk) {
     }
     return 0;
 }
-
-INCLUDE_RODATA(const s32, "code_0027A1E8", sbtlCheckSetHITNONETable);
 

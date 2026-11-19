@@ -25,6 +25,9 @@
 #include "code_002F5CF0.h"
 #include "fclMsg.h"
 #include "sBtlMenu.h"
+#include "sbtlSub.h"
+#include "sbattle.h"
+#include "sBtlCalc.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -92,7 +95,7 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetPChara5);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl22);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlSelectTargetCursorSub);
+INCLUDE_ASM(const s32, "code_00309FE0", sbtlSbattle3Sub);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlLeaf36);
 
@@ -108,7 +111,28 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlPlayerSetEnemyPos);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetPChara6);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlDeleteDeBuffAll);
+void sbtlDeleteDeBuffAll(BST keep) {
+    struct SBTLUNIT_LISTWORK *list = sbtlCreateUnitList(48);
+    s32 i = 0;
+    struct SBTLUNIT_WORK *unit;
+    s32 bst;
+
+    if (list->number > 0) {
+        do {
+            unit = wk_sbtl->unitList->pUnitL[i++].pUnit;
+            if (unit != NULL) {
+                bst = sbtlGetBadStatus(&unit->unit);
+                if (bst < BST_KANSEN && bst != keep) {
+                    sbtlResetBadStatus(unit, 1 << bst);
+                    unit->field688 = 0;
+                    unit->flg &= ~0x20;
+                    unit->flg2 &= ~0x10;
+                }
+            }
+        } while (i < list->number);
+    }
+    sbtlDeleteUnitList(list);
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlLeaf37);
 
@@ -174,7 +198,58 @@ INCLUDE_ASM(const s32, "code_00309FE0", DeadTextLogGet);
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData3);
 
+/* NON_MATCHING: 26 of 89 words match.  */
+#ifdef NON_MATCHING
+s16 cmpCallGetProcessData4(s32 second) {
+    s16 list[48];
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    sbtlKaiwaEntry_t *entry;
+    s16 *p;
+    s32 num;
+    s32 i;
+    s32 idx;
+    s32 rand;
+
+    entry = second ? wk->data->entry2 : wk->data->entry;
+    num = 0;
+    p = list;
+    for (i = 0; i < 48; i++, entry++) {
+        if (entry->field00 == 0) {
+            continue;
+        }
+        if (entry->field04 == 0) {
+            *p++ = i;
+            num++;
+            continue;
+        }
+        if (cmpCallBtlSearchUnitID(entry->field04)) {
+            *p++ = i;
+            num++;
+        }
+        if (entry->field04 == 22 && cmpCallGetProcessData3(entry->field06)) {
+            *p++ = i;
+            num++;
+            if ((rand = GetRand(1000)) < 600) {
+                if (second) {
+                    wk->field2A = i;
+                } else {
+                    wk->field28 = i;
+                }
+                return i;
+            }
+        }
+    }
+    idx = list[GetRand(num & 0xFFFF)];
+    if (second) {
+        wk->field2A = idx;
+    } else {
+        wk->field28 = idx;
+    }
+    return idx;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData4);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData5);
 
@@ -211,7 +286,37 @@ INCLUDE_ASM(const s32, "code_00309FE0", cmpCallBtlSearchUnitID);
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData6);
 
+/* NON_MATCHING: 15 of 67 words match.  */
+#ifdef NON_MATCHING
+s32 cmpCallGetProcessData7(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    s16 mode = wk_sbtl->field42C0;
+    s8 i;
+    struct SBTLUNIT_WORK *nakama;
+
+    if (mode == 4 || mode == 5 || mode == 7 || wk->kind == 13) {
+        wk->field1A = 24;
+        return 1;
+    }
+    if (sbtlCheckMoon(8)) {
+        wk_sbtl->field42A8 = 45;
+        wk->field1A = 3;
+        for (i = 0; i < 2; i++) {
+            nakama = sbtlGetNakama(i);
+            if (nakama != NULL && nakama->unit.field14C == 5) {
+                wk->field1C = 23;
+                return 1;
+            }
+        }
+        wk->field1C = 88;
+    } else {
+        wk->field1A = 24;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData7);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData8);
 
@@ -269,7 +374,31 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlDeadDevilTalkSet);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData13);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData14);
+s32 sbtlCallGetProcessData14(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    s16 kind = wk->kind;
+    struct SBTLUNIT_WORK *unit;
+    s32 rand;
+    sbtlKaiwaData_t *data;
+
+    wk->fieldBC = 10;
+    if ((kind == 12 || kind == 15 || kind == 16) && (rand = GetRand(100)) < 50) {
+        wk_sbtl->field42AC = -5;
+        wk_sbtl->field42A8 = wk->data->fieldD2C[12];
+        wk->field1C = 83;
+        wk->field9A = 3;
+        wk->field1A = 0;
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+        sbtlIfDrawActionSub(unit->unit.devilId);
+        return 1;
+    }
+    data = wk->data;
+    wk_sbtl->field42A8 = data->entry[wk->field28].field02;
+    wk_sbtl->field42AE = data->entry[wk->field28].field0A;
+    wk->field1A = 1;
+    wk->field1C = 36;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlTALKNETARecovery);
 
@@ -628,7 +757,34 @@ s32 slCallBtlSearchUnitID(void) {
 
 INCLUDE_ASM(const s32, "code_00309FE0", slRefSbtl);
 
+/* NON_MATCHING: 38 of 71 words match.  */
+#ifdef NON_MATCHING
+s32 slCallBitCheck2(s32 devilId, s32 arg1) {
+    s32 stage;
+
+    if (devilId == 305 || devilId == 357 || devilId == 243 || devilId == 414 || devilId == 415 || devilId == 416) {
+        return 1;
+    }
+    if (devilId == 359 || devilId == 360) {
+        if (!evtBitCheck(8104)) {
+            return 1;
+        }
+    }
+    if (arg1 == 0) {
+        if (gohData7[devilId].field80 == 13) {
+            return 0;
+        }
+        stage = wk_sbtl->stageNo;
+        if (stage == 471 || stage == 487 || stage == 528 || stage == 560 || stage == 482 || stage == 483 ||
+            stage == 484) {
+            return 0;
+        }
+    }
+    return (devilId < 434) == 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", slCallBitCheck2);
+#endif
 
 s32 trmCallBtlSearchUnitID(void) {
     struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
@@ -877,7 +1033,31 @@ INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData9);
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData10);
 
-INCLUDE_ASM(const s32, "code_00309FE0", cmpPartyListMake_cmpMisc);
+void cmpPartyListMake_cmpMisc(dds3ProcessID_t *menuPID) {
+    s32 i;
+
+    itfMenuSetFlag(menuPID, 0x8, 1);
+    itfMenuSetFlag(menuPID, 0x20, 0);
+    itfMenuSetFlag(menuPID, 0x100, 0);
+    itfMenuSetFlag(menuPID, 0x200, 0);
+    itfMenuSetFlag(menuPID, 0x1000, 0);
+    itfMenuSetFlag(menuPID, 0x2000, 0);
+    itfMenuSetFlag(menuPID, 0x4000, 0);
+    itfMenuSetFlag(menuPID, 0x1, 1);
+    itfCallGetProcessData5(menuPID, 0);
+    for (i = 0; i < 4; i++) {
+        itfMenuSetRootMenu(menuPID, i, cmpPartyListMake_cmpMiscData, NULL);
+        itfMenuSetDrawFunc(menuPID, i, cmpCallGetProcessData9);
+        itfMenuSetFlagMenu(menuPID, i, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+    }
+    itfGeneralMenuCreatePIDSub(menuPID, 3);
+    itfGeneralMenuCreatePIDSub2(menuPID, 3);
+    itfMenuSetFlag(menuPID, 0x2, 0);
+    itfMenuSetFlag(menuPID, 0x10, 0);
+    cmpPartyAnimFunc(menuPID);
+    itfMenuSetOt(menuPID);
+    itfCallGetProcessData5(menuPID, 0);
+}
 
 void cmpSbtlkaiwaMain(void) {
     sdfMemHandle_t *hMem = sdfMemAllocDirect(sizeof(sbtlKaiwa_t));
@@ -919,7 +1099,26 @@ s32 sbtlCallMemFreeDirect3(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData38);
+s32 sbtlCallGetProcessData38(s32 idx) {
+    sbtlKaiwa_t *kwk = dds3GetProcessData(inputpanel_id2);
+
+    switch (kwk->fieldC8) {
+    case 0:
+        if (sbtlWork12[2] != NULL) {
+            sdfMemFreeDirect(sbtlWork12[2]);
+        }
+        sbtlWork12[2] = sdfDevLoadFileEx(sbtlData136[idx], &slWork2[2], &sbtlWork14[2]);
+        kwk->fieldC8++;
+        break;
+    case 1:
+        if (sbtlWork12[2] != NULL) {
+            kwk->fieldC8 = 0;
+            return 1;
+        }
+        break;
+    }
+    return 0;
+}
 
 s32 btlLoadKaiwaData(void) {
     sdfDevLoadFileEx("/battle/dvlkaiwa/sbtl_kaiwa_data.dat", &sbtlData179, &btlLoadKaiwaDataData);
@@ -936,15 +1135,74 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlChkEvent);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallMemset15);
 
-INCLUDE_ASM(const s32, "code_00309FE0", ResetBadStatusAll);
+void ResetBadStatusAll(BST IgnoreBstNo) {
+    struct SBTLUNIT_WORK *list[4];
+    u32 i;
+    s32 bst;
 
-INCLUDE_ASM(const s32, "code_00309FE0", CameraPosSet);
+    list[0] = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->boss_eventID);
+    list[1] = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    list[2] = sbtlGetNakama(0);
+    list[3] = sbtlGetNakama(1);
+    for (i = 0; i < 4; i++) {
+        if (list[i] != NULL) {
+            bst = sbtlGetBadStatus(&list[i]->unit);
+            if (bst != BST_BOYCOTT && bst != BST_GUN && bst < BST_KANSEN && bst != IgnoreBstNo) {
+                sbtlResetBadStatus(list[i], 1 << bst);
+                list[i]->field688 = 0;
+                list[i]->flg &= ~0x20;
+                list[i]->flg2 &= ~0x10;
+            }
+        }
+    }
+}
+
+void CameraPosSet(s32 hpos) {
+    sbtlBossEvent_t *wk = dds3GetProcessData(sbtlCallGetProcessStatData);
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->boss_eventID);
+    sdfVector4_t pos;
+    sdfVector4_t pos2;
+
+    sbtlGetUnitHelperPos(unit, hpos);
+    SDF_VU0_STOREVECTOR(&pos);
+    if (wk->eventtype != 4 && wk->pTypeBossNmlEvent->cam_size == 4) {
+        sbtlGetUnitHelperPos(unit, 2);
+        SDF_VU0_STOREVECTOR(&pos2);
+        pos.y += (pos2.y - pos.y) * 0.5f;
+    }
+    wk_sbtl->vPosBossEvent.x = pos.x;
+    wk_sbtl->vPosBossEvent.y = pos.y;
+    wk_sbtl->vPosBossEvent.z = pos.z;
+    wk_sbtl->vPosBossEvent.w = pos.w;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", PosSet);
 
 INCLUDE_ASM(const s32, "code_00309FE0", PosReSet_sbtlBossEvent);
 
-INCLUDE_ASM(const s32, "code_00309FE0", CameraSet);
+void CameraSet(void) {
+    sbtlBossEvent_t *wk = dds3GetProcessData(sbtlCallGetProcessStatData);
+    s32 kind;
+
+    if (wk->eventtype == 0) {
+        kind = 0;
+    } else if (wk->eventtype >= 1 && wk->eventtype <= 3) {
+        kind = 1;
+    } else if (wk->eventtype == 4) {
+        kind = 2;
+    } else if (wk->eventtype == 5) {
+        kind = 3;
+    } else if (wk->eventtype == 6) {
+        kind = 4;
+    } else if (wk->eventtype == 7) {
+        kind = 5;
+    } else {
+        kind = 0;
+    }
+    sbtlSetMode(E_CAMERA_MODE_Move);
+    sbtlSetCmbBfrPos();
+    sbtlRefSbtl65(sbtlBtlRunSklProcSub(sbtlData138[kind][wk->pTypeBossNmlEvent->cam_size]));
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", ReStartBattle);
 
@@ -1309,7 +1567,27 @@ void Delete_sbtlCmndMenuNew(void) {
     }
 }
 
+/* NON_MATCHING: 28 of 31 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlIsStart(s8 idx) {
+    struct SBTLUNIT_WORK *unit = sbtlGetNakama(idx);
+    sbtlCmndMenuNew_t *wk = dds3GetProcessData(sbtlData181);
+    s32 ret = 0;
+
+    if (unit != NULL) {
+        ret = CheckLiveTarget(unit);
+        if (ret) {
+            if (sbtlCheckReturn_Unit(unit)) {
+                return 0;
+            }
+            return (u8)(wk->stat - 1) < 2;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlIsStart);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", Start_Local);
 

@@ -382,7 +382,10 @@ struct SBTLUNIT_WORK {
     u8 pad552[0x2];
     u32 status;
     s32 framecnt;
-    u8 pad55C[0x10];
+    u8 pad55C[0x4];
+    s32 field560;
+    s32 field564;
+    u8 pad568[0x4];
     SKLID skillid;
     u8 pad570[0x10];
     SKLID order_sklidbk;
@@ -390,7 +393,9 @@ struct SBTLUNIT_WORK {
     s8 action_flg;
     u8 pad586[0xA];
     s32 field474;
-    u8 pad594[0x10];
+    u8 pad594[0x8];
+    s32 scrStep; /* HD name */
+    u8 pad5A0[0x4];
     s32 field5A4;
     u8 pad5A8[0x8];
     struct SBTLUNIT_MODEL *model;
@@ -411,7 +416,8 @@ struct SBTLUNIT_WORK {
     s8 light_buff[3];
     s8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;
-    u8 pad688[0x6A4 - 0x688];
+    s32 field688;
+    u8 pad68C[0x6A4 - 0x68C];
     s8 bOldDispOff; /* vstatus bit 0x1000 when sbtlSetCmbBfrPos ran */
     u8 pad6A5[0x6C0 - 0x6A5];
     s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */
@@ -422,10 +428,13 @@ struct SBTLUNIT_WORK {
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
     u8 pad6F5[0x740 - 0x6F5];
     s32 no_dead_se; /* HD name; skips the dead voice */
-    u8 pad744[0x770 - 0x744];
+    s32 asimoto_mode; /* HD name */
+    u8 pad748[0x770 - 0x748];
     s32 miusinai;
     s32 kuramasi;
-    u8 pad778[0x7F4 - 0x778]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
+    u8 pad778[0x798 - 0x778];
+    s32 L2_muteki; /* HD name */
+    u8 pad79C[0x7F4 - 0x79C]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */

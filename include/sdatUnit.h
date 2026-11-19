@@ -65,7 +65,9 @@ typedef struct sdatUnitWork_t {
     /* 0x104 */ u32 itemstatus;
     /* 0x108 */ s16 itemst_cnt;
     /* 0x10A */ s16 itemst_cnt2;
-    /* 0x10C */ u8 pad10C[0x178 - 0x10C];
+    /* 0x10C */ u8 pad10C[0x14C - 0x10C];
+    /* 0x14C */ s16 field14C;
+    /* 0x14E */ u8 pad14E[0x178 - 0x14E];
 #else
     /* 0x90 */ s32 haveskill[10];
     /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */

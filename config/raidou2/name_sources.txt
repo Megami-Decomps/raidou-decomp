@@ -8565,7 +8565,7 @@
 0x00306B20	sbtlCallSetFontDrawOT	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls frSetFontDrawOT
 0x00306CF8	sbtlTargetCursor	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlDraw.sBtlTargetCursor score 3.0 flag I: calls1 callers-of-match st2:call r2-only
 0x00307350	sbtlResetTargetCursor	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlDraw.sBtlResetTargetCursor score 5.2 flag I: calls1 prev gap1/43 votes2 st2:gap r2-only
-0x00307360	NewLogSave	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD scr.NewLogSave score 3.0 flag -: calls1 callers-of-match st2:call r2-only
+0x00307360	sbtlSelectTargetCursorSub	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSelectTargetCursorSub(wk, bDrawName): called by sbtlSelectTargetCursor with the cursor unit and by the target draw functions, calls sbtlTargetCursor and CheckLiveTarget; replaces NewLogSave
 0x00307480	sbtlSelectTargetCursor	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlDraw.sBtlSelectTargetCursor score 5.3 flag I: calls2 calls-of-match st2:call r2-only
 0x003074F0	sbtlHelpEx	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlDraw.sBtlHelpEx score 8.0 flag I: prev next gap=exact st2:gap r2-only
 0x00307668	sbtlHelp	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlDraw.sBtlHelp score 4.8 flag I: calls2 calls-of-match votes2 st2:call r1-disagree:0x29bcf8
@@ -8630,7 +8630,7 @@
 0x0030CDE0	sbtlCallBtlGetPChara4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00309FE0, neighbour sbtlSelectTargetCursorSub; calls sbtlGetPChara
 0x0030D3B8	sbtlCallBtlGetPChara5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00309FE0, neighbour sbtlSelectTargetCursorSub; calls sbtlGetPChara
 0x0030D5D8	sbtlRefSbtl22	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_00309FE0, neighbour sbtlSelectTargetCursorSub; references wk_sbtl
-0x0030D658	sbtlSelectTargetCursorSub	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlDraw.sBtlSelectTargetCursorSub score 7.2 flag I: calls4 callers-of-match votes2 st2:call r2-only
+0x0030D658	sbtlSbattle3Sub	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=not HD sBtlSelectTargetCursorSub: called only by sbtlSbattle3, plays SE and fades, prints TIMEUP; tier D derived-caller; replaces sbtlSelectTargetCursorSub
 0x0030E0A0	sbtlLeaf36	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00309FE0, neighbour sbtlSelectTargetCursorSub; no named callee, caller or string
 0x0030E178	sbtlPlayerSetTateHit	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlPlayer_Spirit.sBtlPlayerSetTateHit score 3.6 flag I: calls1 calls-of-match st2:call r2-only
 0x0030E1F8	sbtlPlayerSetTateHitEnemy	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlPlayer_Spirit.sBtlPlayerSetTateHitEnemy score 5.7 flag I: calls2 callee-index votes2 st2:cidx r2-only
