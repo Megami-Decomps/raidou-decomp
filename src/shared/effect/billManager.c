@@ -954,7 +954,7 @@ billHandle_t *dds3BillboardGeneral(s32 number) {
     return obj;
 }
 
-u32 dds3Leaf30(void) {
+u32 dds3BillboardGeneralNumber(void) {
     return 0x15;
 }
 

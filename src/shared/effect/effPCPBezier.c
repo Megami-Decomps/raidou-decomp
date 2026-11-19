@@ -247,7 +247,7 @@ void effPCPBezierBillDelete(effPCPBezierBill_tag *hData) {
     sdfMemFreeDirect(hData->hMem);
 }
 
-void effLeaf206(void) {
+void effPCPBezierBillDraw(void) {
 }
 
 INCLUDE_ASM(const s32, "effect/effPCPBezier", effPCPBezierBillSetPosition);

@@ -2735,11 +2735,11 @@ void effPCPZiodin01Draw(effPCPZiodin01_tag *hData) {
     ShiftThunderHandles(hData, 12);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf79);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin01SetPosition);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf80);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf81);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin01SetColor);
 
 void effPCPZiodin04Init(effPCPZiodin01_tag *pPCPZiodin04) {
     effPCP_ThunderPoly_t **out = pPCPZiodin04->handles;
@@ -2827,11 +2827,11 @@ void effPCPZiodin02Draw(effPCPZiodin01_tag *hData) {
     ShiftThunderHandles(hData, 12);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf82);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin02SetPosition);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf83);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf84);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin02SetColor);
 
 /* NON_MATCHING: 169 of 176 words match.  */
 #ifdef NON_MATCHING
@@ -2922,11 +2922,11 @@ void effPCPZiodin03Draw(effPCPZiodin01_tag *hData) {
     ShiftThunderHandles(hData, 30);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf85);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin03SetPosition);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf86);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf87);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPZiodin03SetColor);
 
 void effPCPZiodin02Init(effPCPZiodin01_tag *pPCPZiodin02) {
     effPCP_ThunderPoly_t **out = pPCPZiodin02->handles;
@@ -3201,11 +3201,11 @@ void effPCPShockWave01Draw(effPCPShockWave01_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf97);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave01SetPosition);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf98);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf99);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave01SetColor);
 
 /* NON_MATCHING: 169 of 176 words match.  */
 #ifdef NON_MATCHING
@@ -4112,7 +4112,7 @@ void effPCPBreathDelete(effPCPBreath_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-void effLeaf130(void) {
+void effPCPBreathDraw(void) {
 }
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBreathSetPosition);
@@ -4608,16 +4608,16 @@ void effPCPBufuIceDraw(effPCPBufuIce_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf135);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuIceSetPosition);
 
-void effLeaf136(effPCPBufuIce_tag *hData, u32 color) {
+void effPCPBufuIceSetColor(effPCPBufuIce_tag *hData, u32 color) {
     hData->color = color;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf137);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuIceSetScale);
 
 /* vu0 routine: copy the 4x4 matrix into the ice effect. */
-void effLeaf138(effPCPBufuIce_tag *hData, const void *pMatrix) {
+void effPCPBufuIceSetRotateMatrix(effPCPBufuIce_tag *hData, const void *pMatrix) {
     SDF_VU0_LOADMATRIX(pMatrix);
     SDF_VU0_STOREMATRIX(hData->matrix);
 }
@@ -4678,16 +4678,16 @@ void effPCPBufudnIceDraw(effPCPBufuIce_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf139);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufudnIceSetPosition);
 
-void effLeaf140(effPCPBufuIce_tag *hData, u32 color) {
+void effPCPBufudnIceSetColor(effPCPBufuIce_tag *hData, u32 color) {
     hData->color = color;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf141);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufudnIceSetScale);
 
 /* vu0 routine: copy the 4x4 matrix into the ice effect. */
-void effLeaf142(effPCPBufuIce_tag *hData, const void *pMatrix) {
+void effPCPBufudnIceSetRotateMatrix(effPCPBufuIce_tag *hData, const void *pMatrix) {
     SDF_VU0_LOADMATRIX(pMatrix);
     SDF_VU0_STOREMATRIX(hData->matrix);
 }
@@ -4748,16 +4748,16 @@ void effPCPBufuraIceDraw(effPCPBufuIce_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf143);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuraIceSetPosition);
 
-void effLeaf144(effPCPBufuIce_tag *hData, u32 color) {
+void effPCPBufuraIceSetColor(effPCPBufuIce_tag *hData, u32 color) {
     hData->color = color;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf145);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuraIceSetScale);
 
 /* vu0 routine: copy the 4x4 matrix into the ice effect. */
-void effLeaf146(effPCPBufuIce_tag *hData, const void *pMatrix) {
+void effPCPBufuraIceSetRotateMatrix(effPCPBufuIce_tag *hData, const void *pMatrix) {
     SDF_VU0_LOADMATRIX(pMatrix);
     SDF_VU0_STOREMATRIX(hData->matrix);
 }
@@ -4781,7 +4781,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect2(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf151(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy00_0(void) {
     return effCallChipAllocDirect2(0);
 }
 
@@ -4795,7 +4795,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect3(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf152(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy00_1(void) {
     return effCallChipAllocDirect3(0);
 }
 
@@ -4809,7 +4809,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect4(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf153(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy01_0(void) {
     return effCallChipAllocDirect4(0);
 }
 
@@ -4823,7 +4823,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect5(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf154(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy01_1(void) {
     return effCallChipAllocDirect5(0);
 }
 
@@ -4837,7 +4837,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect6(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf155(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy02_0(void) {
     return effCallChipAllocDirect6(0);
 }
 
@@ -4851,7 +4851,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect7(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf156(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy02_1(void) {
     return effCallChipAllocDirect7(0);
 }
 
@@ -4865,7 +4865,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect8(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf157(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy03_0(void) {
     return effCallChipAllocDirect8(0);
 }
 
@@ -4879,7 +4879,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect9(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf158(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy03_1(void) {
     return effCallChipAllocDirect9(0);
 }
 
@@ -4893,7 +4893,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect10(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf159(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy04_0(void) {
     return effCallChipAllocDirect10(0);
 }
 
@@ -4907,7 +4907,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect11(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf160(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy04_1(void) {
     return effCallChipAllocDirect11(0);
 }
 
@@ -4921,7 +4921,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect12(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf161(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy05_0(void) {
     return effCallChipAllocDirect12(0);
 }
 
@@ -4935,7 +4935,7 @@ effPCPEyeThunder_tag *effCallChipAllocDirect13(u32 unused) {
     return work;
 }
 
-effPCPEyeThunder_tag *effLeaf162(void) {
+effPCPEyeThunder_tag *effPCPEyeThunderCopy05_1(void) {
     return effCallChipAllocDirect13(0);
 }
 
@@ -4944,7 +4944,7 @@ void effPCPEyeThunderDelete(effPCPEyeThunder_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-void effLeaf163(void) {
+void effPCPEyeThunderDraw(void) {
 }
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPEyeThunderSetPosition);
@@ -5260,11 +5260,11 @@ void effPCPRingPolyExpDraw(effPCPRingPolyExp_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf169);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExpSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf170);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExpSetScale);
 
-void effLeaf171(effPCPRingPolyExp_tag *hData, u32 abgr) {
+void effPCPRingPolyExpSetColor(effPCPRingPolyExp_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -5436,11 +5436,11 @@ void effPCPRingPolyExp2Draw(effPCPRingPolyExp2_tag *hData) {
     hData->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf172);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExp2SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf173);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExp2SetScale);
 
-void effLeaf174(effPCPRingPolyExp2_tag *hData, u32 abgr) {
+void effPCPRingPolyExp2SetColor(effPCPRingPolyExp2_tag *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -5808,7 +5808,7 @@ void effPCPMakkaUpdateNode(sdfModelNode_t *node) {
     }
 }
 
-void effLeaf178(void) {
+void effPCPMakkaDraw(void) {
 }
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaSetPosition);

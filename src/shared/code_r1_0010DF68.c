@@ -75,77 +75,77 @@ typedef char sdfHeapOverlayBlock_size[(sizeof(sdfHeapOverlayBlock_t) == 0x0C) ? 
 #ifdef VERSION_RAIDOU1
 extern void evtViewerCreateTaskWithSky(void);
 #else
-INCLUDE_ASM(const s32, "code_r1_0010DF68", evtCreateTestAndSkyTasks);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallEventTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", evtInitializeSelectionScene);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitEventTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", evtKeepTestSkyModePending);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckEventTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", evtClearSecondaryWorldAndViewer);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallEventViewer);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", evtInitializeSelectionScreen);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitEventViewer);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf26);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckEventViewer);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf27);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallInterfaceTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf28);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitInterfaceTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf29);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckInterfaceTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf30);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallCampTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc22);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitCampTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc23);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckCampTest);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf31);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc24);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitShopTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc25);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckShopTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallInitSky);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallTerminalTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallExitSky);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitTerminalTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf32);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckTerminalTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf33);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallResult2Test);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessEndRstInit);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitResult2Test);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessCheckRstInit);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckResult2Test);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf34);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallModelViewerTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf35);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitModelViewerTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf36);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckModelViewerTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf37);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallSoundTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf38);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitSoundTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf39);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckSoundTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf40);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallFontTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc26);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitFontTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc27);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckFontTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf41);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallMovieViewerTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallFinishMovieViewer);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitMovieViewerTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf42);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckMovieViewerTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf43);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallSprMotEditTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc28);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitSprMotEditTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf44);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckSprMotEditTest);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", TestProcess3);
 
@@ -153,57 +153,57 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", evtCallTestProcess3);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", evtCallTestProcess32);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitMahjon);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckLmap);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckMahjon);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf32);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallMorph);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown2);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitMorph);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf33);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckMorph);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf34);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallCtnTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallInit);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitCtnTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf35);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckCtnTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf36);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallNameEntryTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc18);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitNameEntryTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc19);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckNameEntryTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf37);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallNameEntry);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc20);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitNameEntry);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc21);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckNameEntry);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf38);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallWater);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitHanafudaTest);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitWater);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckHanafudaTest);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckWater);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", CallGomaden);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitGomaden);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf39);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckGomaden);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datRefDDS3GBWK);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessEnd);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitJimusyoTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessCheck);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckJimusyoTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf40);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallStorySelect);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc22);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitStorySelect);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc23);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckStorySelect);
 #endif
 
 enum {
@@ -264,11 +264,11 @@ static inline void eeUnpackRGBAWordFloatReadOnly(u32 color, f32 unit) {
     EE_MMI_RGBA_UNPACK_READONLY(rgba, unit);
 }
 
-dds3ProcessID_t *evtCreateTestAndSkyTasks(void);
-u32 evtInitializeSelectionScene(void);
-u32 evtKeepTestSkyModePending(void);
-void evtClearSecondaryWorldAndViewer(void);
-u32 evtInitializeSelectionScreen(void);
+dds3ProcessID_t *CallEventTest(void);
+u32 ExitEventTest(void);
+u32 CheckEventTest(void);
+void CallEventViewer(void);
+u32 ExitEventViewer(void);
 u32 evtEnsureFontResourceChain(void);
 void evtDestroyFontResourceChain(void);
 extern u16 D_00435D40;
@@ -292,14 +292,14 @@ s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task);
 extern s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task);
 #ifdef VERSION_RAIDOU1
 
-dds3ProcessID_t *evtCreateTestAndSkyTasks(void) {
+dds3ProcessID_t *CallEventTest(void) {
     dds3KernelDebugSign = 0;
     D_00435D28 = 0;
     evtInitEventTest();
     return evtInitSky();
 }
 
-u32 evtInitializeSelectionScene(void) {
+u32 ExitEventTest(void) {
     dds3KernelDebugSign = 1;
     dds3FadeBackgroundStartOut(0);
     evtChkEndProcess();
@@ -308,105 +308,105 @@ u32 evtInitializeSelectionScene(void) {
 }
 
 /* Admin mode 16 cleanup: zero leaves the mode pending. */
-u32 evtKeepTestSkyModePending(void) {
+u32 CheckEventTest(void) {
     return 0;
 }
 
-void evtClearSecondaryWorldAndViewer(void) {
+void CallEventViewer(void) {
     dds3KernelDebugSign = 0;
     evtFreeStage();
     evtViewerCreateTaskWithSky();
 }
 
-u32 evtInitializeSelectionScreen(void) {
+u32 ExitEventViewer(void) {
     evtEventViewerDestroyTask();
     dds3KernelDebugSign = 1;
     dds3FadeBackgroundStartOut(0);
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf26);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckEventViewer);
 
-void sysLeaf27(void) {
+void CallInterfaceTest(void) {
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf28);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitInterfaceTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf29);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckInterfaceTest);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E038.c:1, match */
-void sysLeaf30(void) {
+void CallCampTest(void) {
     cmpProcessStart_cmpMain();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc22);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitCampTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc23);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckCampTest);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E090.c:1, match */
 void sysLeaf31(void) {
     gohShopDebug();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc24);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitShopTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc25);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckShopTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallInitSky);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallTerminalTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallExitSky);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitTerminalTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf32);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckTerminalTest);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E130.c:1, match */
-dds3ProcessID_t *sysLeaf33(void) {
+dds3ProcessID_t *CallResult2Test(void) {
     return ProcessStart_rstInit();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessEndRstInit);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitResult2Test);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessCheckRstInit);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckResult2Test);
 
-void sysLeaf34(void) {
+void CallModelViewerTest(void) {
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf35);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitModelViewerTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf36);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckModelViewerTest);
 
-void sysLeaf37(void) {
+void CallSoundTest(void) {
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf38);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitSoundTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf39);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckSoundTest);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E1B8.c:1, match */
-void sysLeaf40(void) {
+void CallFontTest(void) {
     mjnTestFontCalc();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc26);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitFontTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc27);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckFontTest);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E210.c:1, match */
-void sysLeaf41(void) {
+void CallMovieViewerTest(void) {
     InitMovieViewer();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallFinishMovieViewer);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitMovieViewerTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf42);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckMovieViewerTest);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E250.c:1, match */
-void sysLeaf43(void) {
+void CallSprMotEditTest(void) {
     fclLeaf12();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc28);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitSprMotEditTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf44);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckSprMotEditTest);
 
 s32 sysLeaf(s32 restored, void *reqdata)
 {
@@ -424,29 +424,29 @@ s32 datLeaf2(void) {
     return Start_mjn();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitMahjon);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckLmap);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckMahjon);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E328.c:1, match */
-void datLeaf32(void) {
+void CallMorph(void) {
     mphStart_itf();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown2);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitMorph);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf33);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckMorph);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E368.c:1, match */
-void datLeaf34(void) {
+void CallCtnTest(void) {
     stfCtnTestProcess();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallInit);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitCtnTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf35);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckCtnTest);
 
-s32 datLeaf36(s32 restored, void *reqdata)
+s32 CallNameEntryTest(s32 restored, void *reqdata)
 {
     if (reqdata == NULL) {
         return fldCommand_SET_ALLPANEL(3);
@@ -454,11 +454,11 @@ s32 datLeaf36(s32 restored, void *reqdata)
     return fldCommand_SET_ALLPANEL(*(s32 *)reqdata);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc18);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitNameEntryTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc19);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckNameEntryTest);
 
-s32 datLeaf37(s32 restored, void *reqdata)
+s32 CallNameEntry(s32 restored, void *reqdata)
 {
     if (reqdata == NULL) {
         return fldCommand_SET_ALLPANEL(0);
@@ -466,9 +466,9 @@ s32 datLeaf37(s32 restored, void *reqdata)
     return fldCommand_SET_ALLPANEL(*(s32 *)reqdata);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc20);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitNameEntry);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc21);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckNameEntry);
 
 void datLeaf3(void) {
     titleFunc7();
@@ -479,13 +479,13 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc);
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf4);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E4C8.c:1, match */
-void datLeaf38(void) {
+void CallWater(void) {
     frTestFontInit();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitHanafudaTest);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitWater);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckHanafudaTest);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckWater);
 
 void datLeaf5(void) {
     fclLeaf();
@@ -506,28 +506,28 @@ s32 CallGomaden(s32 restored, void *reqdata)
 INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitGomaden);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E5B0.c:1, match */
-s32 datLeaf39(void) {
+s32 CheckGomaden(void) {
     return gohCheckSequence();
 }
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datRefDDS3GBWK);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessEnd);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitJimusyoTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessCheck);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckJimusyoTest);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010E628.c:1, match */
-void datLeaf40(void) {
+void CallStorySelect(void) {
     cmpStartProcessPanelEff();
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc22);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitStorySelect);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc23);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckStorySelect);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf6);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallInit2);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitDitectiveBook);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf7);
 #endif

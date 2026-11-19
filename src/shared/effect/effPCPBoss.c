@@ -982,12 +982,12 @@ void effPCPBossBaelDelete(effPCPBossBael_t *hData)
     sdfChipFreeDirect(hData);
 }
 
-void effLeaf288(void) {
+void effPCPBossBaelDraw(void) {
 }
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", effLeaf289);
 
-void effLeaf290(effPCPCrack_t *hData, s32 frames)
+void effPCPBossBaelSetColor(effPCPCrack_t *hData, s32 frames)
 {
     hData->trailColorTransitionFrames = frames;
 }

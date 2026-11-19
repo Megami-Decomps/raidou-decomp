@@ -1923,14 +1923,14 @@ void effPCPFlashPolyRingExpDelete(effPCPFlashPolyRingExp_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf221);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpSetPosition);
 
 void effPCPFlashPolyRingExpHSetColor(effPCPFlashPolyRingExpH_tag *hData, u32 abgr)
 {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf223);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpSetScale);
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:2008, match, same function 1.00 (words 60/60, calls 1.00, shape 1.00) */
 void effPCPFlashPolyRingExpPartSetVC(effPCPFlashPolyRingExp_tag *work, s32 index, s32 color)
@@ -3299,14 +3299,14 @@ effPCPFlashPolyRingExpH_tag *effPCPFlashPolyRingExpHCopy(effPCPFlashPolyRingExpH
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effCallFlashPolyListHDelete);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf239);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHSetPosition);
 
 void effPCPFlashPolyRingExpSetColor(effPCPFlashPolyRingExp_tag *hData, u32 abgr)
 {
     hData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effLeaf241);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExpHSetScale);
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/effect/effPCPFlash.c:3418, match, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
 void effPCPFlashPolyRingExpHSetRotateMatrix(effPCPFlashPolyRingExpH_tag *hData, void *pMatrix) {

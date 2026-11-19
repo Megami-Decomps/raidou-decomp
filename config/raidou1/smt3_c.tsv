@@ -10,7 +10,7 @@ AreaBasicDrawprocuder	c
 AreaBasicMainprocuder	c
 CB_BasicDrawProcuder	c
 CalcMsgMng_Process	c
-CallBattleFieldTest	c
+CallConfig	c
 CallBootMc	c
 CallDebug	c
 CallEndSave	c
@@ -24,7 +24,7 @@ ChangeProcessFlag	c
 ChangeProcessFlagChild	c
 ChangeZBuffer	c
 CheckAddress	c
-CheckBattleFieldTest	c
+CheckConfig	c
 CheckBootMc	c
 CheckDebug	c
 CheckESP	c
@@ -133,7 +133,7 @@ EventObjectBasicConstructor	c
 EventObjectBasicDestructor	c
 EventObjectBasicMainProcuder	c
 ExecPS2	c
-ExitBattleFieldTest	c
+ExitConfig	c
 ExitBootMc	c
 ExitDebug	c
 ExitEndSave	c
@@ -1923,7 +1923,7 @@ evtCheckScriptDone	c	compiles identical
 evtCheckSelectionState	c
 evtCheckSkyAlphaAnime	c
 evtChkEndProcess	c
-evtClearSecondaryWorldAndViewer	c
+CallEventViewer	c
 evtCommandClearPolygonMovieFlag	c
 evtCommand_BGM_PLAY_E	c
 evtCommand_BGM_TRANS_E	c
@@ -2015,7 +2015,7 @@ evtCommand_TEX_OFF	c
 evtCommand_TEX_ON	c
 evtCommand_UNIT_CLS	c
 evtCommand_UNIT_CLS_STOP	c
-evtCreateTestAndSkyTasks	c
+CallEventTest	c
 evtDestroyFontResourceChain	c
 evtDestroySelectionState	c
 evtDispatchActionByIndex	c
@@ -2086,10 +2086,10 @@ evtInitEventTest	c
 evtInitFrameVar	c
 evtInitGlobalWork	c
 evtInitMotionSeProcess	c
-evtInitializeSelectionScene	c
-evtInitializeSelectionScreen	c
+ExitEventTest	c
+ExitEventViewer	c
 evtIsMenuTableEntryEnabled	c
-evtKeepTestSkyModePending	c
+CheckEventTest	c
 evtKillEventPack	c
 evtKillFieldScript	c
 evtKillPictureProcess	c

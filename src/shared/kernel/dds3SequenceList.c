@@ -47,9 +47,9 @@ s32 CheckStaff(void);
 void CallEndSave(void);
 s32 ExitEndSave(void);
 s32 CheckEndSave(void);
-void CallBattleFieldTest(void);
-s32 ExitBattleFieldTest(void);
-s32 CheckBattleFieldTest(void);
+void CallConfig(void);
+s32 ExitConfig(void);
+s32 CheckConfig(void);
 
 dds3ProcessID_t *CallDebug(void)
 {
@@ -349,30 +349,30 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitCamp);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckCamp);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallModeSelect);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallShop);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallShowSceneModels);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitShop);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3Func14);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckShop);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0010DD20.c:1, match */
-dds3ProcessID_t *dds3Leaf24(void) {
+dds3ProcessID_t *CallResult2(void) {
     return ProcessStart_rstInit();
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallProcessEndRstInit);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitResult2);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallProcessCheckRstInit);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckResult2);
 
-void CallBattleFieldTest(void) {
+void CallConfig(void) {
 }
 
-s32 ExitBattleFieldTest(void)
+s32 ExitConfig(void)
 {
     return 0;
 }
 
-s32 CheckBattleFieldTest(void)
+s32 CheckConfig(void)
 {
     return 0;
 }

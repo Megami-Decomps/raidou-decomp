@@ -1265,7 +1265,7 @@ void effPCP_ThunderPolySetPosition(u8 *hData, void *pPos) {
         SDF_VU0_STOREVECTOR(hData);
 }
 
-void effLeaf201(effPCP_ThunderPoly_t *hData, u32 color) {
+void effPCP_ThunderPolyLowSetColor(effPCP_ThunderPoly_t *hData, u32 color) {
     hData->color = color;
 }
 

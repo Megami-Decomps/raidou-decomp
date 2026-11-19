@@ -334,7 +334,7 @@ void sdfCoreDrawSetZBias(f32 z) {
     corePktZBias = z;
 }
 
-void sdfLeaf25(void) {
+void sdfCoreDrawReset(void) {
     corePktCurrLight = 0;
     corePktCurrFog = 0;
 }

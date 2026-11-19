@@ -9,7 +9,7 @@ AreaBasicDrawprocuder	c
 AreaBasicMainprocuder	c
 CB_BasicDrawProcuder	c
 CalcMsgMng_Process	c
-CallBattleFieldTest	c
+CallConfig	c
 CallBootMc	c
 CallDebug	c
 CallEndSave	c
@@ -23,7 +23,7 @@ ChangeProcessFlag	c
 ChangeProcessFlagChild	c
 ChangeZBuffer	c
 CheckAddress	c
-CheckBattleFieldTest	c
+CheckConfig	c
 CheckBootMc	c
 CheckDebug	c
 CheckESP	c
@@ -131,7 +131,7 @@ EventObjectBasicConstructor	c
 EventObjectBasicDestructor	c
 EventObjectBasicMainProcuder	c
 ExecPS2	c
-ExitBattleFieldTest	c
+ExitConfig	c
 ExitBootMc	c
 ExitDebug	c
 ExitEndSave	c

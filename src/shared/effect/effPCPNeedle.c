@@ -176,7 +176,7 @@ void *effPCPNeedleSpiralCopy(void *arg) {
     return effPCPNeedleSpiralCreate(arg);
 }
 
-void effLeaf264(void) {
+void effPCPNeedleSpiralDraw(void) {
 }
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralSetPosition);

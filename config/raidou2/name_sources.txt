@@ -304,89 +304,89 @@
 0x0010E700	CallCamp	hd	hd: Raidou HD dds3SequenceList.CallCamp, score 8.7 band B
 0x0010E718	ExitCamp	hd	hd: Raidou HD dds3SequenceList.ExitCamp, score 7.0 band B
 0x0010E738	CheckCamp	hd	hd: Raidou HD dds3SequenceList.CheckCamp, score 9.0 band B
-0x0010E758	CallModeSelect	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x109768 sim 1.000 margin 0.00 pair
-0x0010E788	dds3CallShowSceneModels	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit kernel/dds3SequenceList; calls fldShowSceneModels
-0x0010E7A8	dds3Func14	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit kernel/dds3SequenceList; no named callee, caller or string
-0x0010E7C8	dds3Leaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit kernel/dds3SequenceList; no named callee, caller or string
-0x0010E7E0	dds3CallProcessEndRstInit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit kernel/dds3SequenceList; calls ProcessEnd_rstInit
-0x0010E800	dds3CallProcessCheckRstInit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit kernel/dds3SequenceList; calls ProcessCheck_rstInit
-0x0010E820	CallBattleFieldTest	inferred	SMT3HD name via SLUS_209.11 0x001090D8, shared-hash-in-run; map-silent
-0x0010E828	ExitBattleFieldTest	inferred	SMT3HD name via SLUS_209.11 0x001090E0, shared-hash-in-run; map-silent
-0x0010E830	CheckBattleFieldTest	inferred	SMT3HD name via SLUS_209.11 0x001090E8, shared-hash-in-run; map-silent
+0x0010E758	CallShop	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallShop: dds3AdminiList slot 11 is DDS3_ADMINI_LIST_SHOP (HD kernel.h enum, same 44 slots), Call member; calls shpProcessStart; replaces CallModeSelect
+0x0010E788	ExitShop	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitShop: dds3AdminiList slot 11 is DDS3_ADMINI_LIST_SHOP (HD kernel.h enum, same 44 slots), Exit member; calls fldShowSceneModels; replaces dds3CallShowSceneModels
+0x0010E7A8	CheckShop	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckShop: dds3AdminiList slot 11 is DDS3_ADMINI_LIST_SHOP (HD kernel.h enum, same 44 slots), Check member; calls fldCallGetProcessStat; replaces dds3Func14
+0x0010E7C8	CallResult2	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallResult2: dds3AdminiList slot 12 is DDS3_ADMINI_LIST_RESULT (HD kernel.h enum, same 44 slots), Call member; calls ProcessStart_rstInit; replaces dds3Leaf24
+0x0010E7E0	ExitResult2	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitResult2: dds3AdminiList slot 12 is DDS3_ADMINI_LIST_RESULT (HD kernel.h enum, same 44 slots), Exit member; calls ProcessEnd_rstInit; replaces dds3CallProcessEndRstInit
+0x0010E800	CheckResult2	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckResult2: dds3AdminiList slot 12 is DDS3_ADMINI_LIST_RESULT (HD kernel.h enum, same 44 slots), Check member; calls ProcessCheck_rstInit; replaces dds3CallProcessCheckRstInit
+0x0010E820	CallConfig	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallConfig: dds3AdminiList slot 15 is DDS3_ADMINI_LIST_CONFIG (HD kernel.h enum, same 44 slots), Call member (old name was a low-confidence HD gap guess); replaces CallBattleFieldTest
+0x0010E828	ExitConfig	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitConfig: dds3AdminiList slot 15 is DDS3_ADMINI_LIST_CONFIG (HD kernel.h enum, same 44 slots), Exit member (old name was a low-confidence HD gap guess); replaces ExitBattleFieldTest
+0x0010E830	CheckConfig	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckConfig: dds3AdminiList slot 15 is DDS3_ADMINI_LIST_CONFIG (HD kernel.h enum, same 44 slots), Check member (old name was a low-confidence HD gap guess); replaces CheckBattleFieldTest
 0x0010E838	CallJimusyo	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD dds3SequenceList.CallJimusyo score 2.8 flag -: next gap16/10 st2:gap r2-only
 0x0010E858	ExitJimusyo	hd	hd: Raidou HD dds3SequenceList.ExitJimusyo, score 9.0 band B
 0x0010E878	CheckJimusyo	hd	hd: Raidou HD dds3SequenceList.CheckJimusyo, score 7.7 band B
 0x0010E898	CallNewBattleTest	hd	hd: Raidou HD dds3SequenceList.CallNewBattleTest, score 11.9 band A, hd-ab: calls1 prev next gap=exact votes2 st1:gap r1+r2
 0x0010E978	ExitNewBattleTest	hd	hd: Raidou HD dds3SequenceList.ExitNewBattleTest, score 5.0 band C, hd-consensus: next gap17/11 st1:gap r1+r2; 10/10 fold runs agree, fold scores 9.5,5.0,7.5,5.0,5.0,7.5,9.5,5.0,9.5,5.0
 0x0010E9A0	CheckNewBattleTest	hd	hd: Raidou HD dds3SequenceList.CheckNewBattleTest, score 11.0 band A
-0x0010EA00	sysLeaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF50, no named neighbour; no named callee, caller or string
-0x0010EA08	sysLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF50, no named neighbour; no named callee, caller or string
-0x0010EA10	evtKeepBattleStageTestModePending	inferred	twin-of-raidou1-0x0010DF60, masked-hash-in-gap
-0x0010EA18	evtCreateTestAndSkyTasks	inferred	twin-of-raidou1-0x0010DF68, run-order-near
-0x0010EA40	evtInitializeSelectionScene	inferred	twin-of-raidou1-0x0010DF88, size
-0x0010EA78	evtKeepTestSkyModePending	inferred	twin-of-raidou1-0x0010DFC0, masked-hash-in-gap
-0x0010EA80	evtClearSecondaryWorldAndViewer	inferred	twin-of-raidou1-0x0010DFC8, run-order-near
-0x0010EAA8	evtInitializeSelectionScreen	inferred	twin-of-raidou1-0x0010DFE8, run-order-size
-0x0010EAD8	sysLeaf26	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EAE0	sysLeaf27	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EAE8	sysLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EAF0	sysLeaf29	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EAF8	sysLeaf30	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EB10	sysFunc22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EB30	sysFunc23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
+0x0010EA00	CallBattleFieldTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallBattleFieldTest: dds3AdminiList slot 20 is DDS3_ADMINI_LIST_BATTLEFIELD_TEST (HD kernel.h enum, same 44 slots), Call member; replaces sysLeaf24
+0x0010EA08	ExitBattleFieldTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitBattleFieldTest: dds3AdminiList slot 20 is DDS3_ADMINI_LIST_BATTLEFIELD_TEST (HD kernel.h enum, same 44 slots), Exit member; replaces sysLeaf25
+0x0010EA10	CheckBattleFieldTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckBattleFieldTest: dds3AdminiList slot 20 is DDS3_ADMINI_LIST_BATTLEFIELD_TEST (HD kernel.h enum, same 44 slots), Check member; replaces evtKeepBattleStageTestModePending
+0x0010EA18	CallEventTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallEventTest: dds3AdminiList slot 21 is DDS3_ADMINI_LIST_EVENT_TEST (HD kernel.h enum, same 44 slots), Call member; calls evtInitEventTest evtInitSky; replaces evtCreateTestAndSkyTasks
+0x0010EA40	ExitEventTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitEventTest: dds3AdminiList slot 21 is DDS3_ADMINI_LIST_EVENT_TEST (HD kernel.h enum, same 44 slots), Exit member; calls dds3BistaIn evtChkEndProcess evtExitSky; replaces evtInitializeSelectionScene
+0x0010EA78	CheckEventTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckEventTest: dds3AdminiList slot 21 is DDS3_ADMINI_LIST_EVENT_TEST (HD kernel.h enum, same 44 slots), Check member; replaces evtKeepTestSkyModePending
+0x0010EA80	CallEventViewer	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallEventViewer: dds3AdminiList slot 22 is DDS3_ADMINI_LIST_EVENT_VIEWER (HD kernel.h enum, same 44 slots), Call member; calls evtFreeStage mapInit; replaces evtClearSecondaryWorldAndViewer
+0x0010EAA8	ExitEventViewer	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitEventViewer: dds3AdminiList slot 22 is DDS3_ADMINI_LIST_EVENT_VIEWER (HD kernel.h enum, same 44 slots), Exit member; calls dds3BistaIn evtEventViewerDestroyTask; replaces evtInitializeSelectionScreen
+0x0010EAD8	CheckEventViewer	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckEventViewer: dds3AdminiList slot 22 is DDS3_ADMINI_LIST_EVENT_VIEWER (HD kernel.h enum, same 44 slots), Check member; replaces sysLeaf26
+0x0010EAE0	CallInterfaceTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallInterfaceTest: dds3AdminiList slot 23 is DDS3_ADMINI_LIST_INTERFACE_TEST (HD kernel.h enum, same 44 slots), Call member; replaces sysLeaf27
+0x0010EAE8	ExitInterfaceTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitInterfaceTest: dds3AdminiList slot 23 is DDS3_ADMINI_LIST_INTERFACE_TEST (HD kernel.h enum, same 44 slots), Exit member; replaces sysLeaf28
+0x0010EAF0	CheckInterfaceTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckInterfaceTest: dds3AdminiList slot 23 is DDS3_ADMINI_LIST_INTERFACE_TEST (HD kernel.h enum, same 44 slots), Check member; replaces sysLeaf29
+0x0010EAF8	CallCampTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallCampTest: dds3AdminiList slot 24 is DDS3_ADMINI_LIST_CAMP_TEST (HD kernel.h enum, same 44 slots), Call member; calls cmpProcessStart_cmpMain; replaces sysLeaf30
+0x0010EB10	ExitCampTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitCampTest: dds3AdminiList slot 24 is DDS3_ADMINI_LIST_CAMP_TEST (HD kernel.h enum, same 44 slots), Exit member; calls cmpCallProcessEnd; replaces sysFunc22
+0x0010EB30	CheckCampTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckCampTest: dds3AdminiList slot 24 is DDS3_ADMINI_LIST_CAMP_TEST (HD kernel.h enum, same 44 slots), Check member; calls cmpCallGetProcessStat2; replaces sysFunc23
 0x0010EB50	sysLeaf31	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EB68	sysFunc24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EB88	sysFunc25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EBA8	sysCallInitSky	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; calls evtInitSky
-0x0010EBC8	sysCallExitSky	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; calls evtExitSky
-0x0010EBE8	sysLeaf32	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EBF0	sysLeaf33	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EC08	sysCallProcessEndRstInit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; calls ProcessEnd_rstInit
-0x0010EC28	sysCallProcessCheckRstInit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; calls ProcessCheck_rstInit
-0x0010EC48	sysLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EC50	sysLeaf35	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EC58	sysLeaf36	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EC60	sysLeaf37	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EC68	sysLeaf38	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EC70	sysLeaf39	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EC78	sysLeaf40	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010EC90	sysFunc26	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010ECB0	sysFunc27	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010ECD0	sysLeaf41	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010ECE8	sysCallFinishMovieViewer	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; calls FinishMovieViewer
-0x0010ED08	sysLeaf42	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010ED10	sysLeaf43	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010ED28	sysFunc28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
-0x0010ED48	sysLeaf44	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, no named neighbour; no named callee, caller or string
+0x0010EB68	ExitShopTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitShopTest: dds3AdminiList slot 25 is DDS3_ADMINI_LIST_SHOP_TEST (HD kernel.h enum, same 44 slots), Exit member; calls gohCallExistProcess; replaces sysFunc24
+0x0010EB88	CheckShopTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckShopTest: dds3AdminiList slot 25 is DDS3_ADMINI_LIST_SHOP_TEST (HD kernel.h enum, same 44 slots), Check member; calls gohCallGetProcessStat; replaces sysFunc25
+0x0010EBA8	CallTerminalTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallTerminalTest: dds3AdminiList slot 26 is DDS3_ADMINI_LIST_SAVE_TEST (HD kernel.h enum, same 44 slots), Call member; calls evtInitSky; replaces sysCallInitSky
+0x0010EBC8	ExitTerminalTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitTerminalTest: dds3AdminiList slot 26 is DDS3_ADMINI_LIST_SAVE_TEST (HD kernel.h enum, same 44 slots), Exit member; calls evtExitSky; replaces sysCallExitSky
+0x0010EBE8	CheckTerminalTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckTerminalTest: dds3AdminiList slot 26 is DDS3_ADMINI_LIST_SAVE_TEST (HD kernel.h enum, same 44 slots), Check member; replaces sysLeaf32
+0x0010EBF0	CallResult2Test	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallResult2Test: dds3AdminiList slot 27 is DDS3_ADMINI_LIST_RESULT_TEST (HD kernel.h enum, same 44 slots), Call member; calls ProcessStart_rstInit; replaces sysLeaf33
+0x0010EC08	ExitResult2Test	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitResult2Test: dds3AdminiList slot 27 is DDS3_ADMINI_LIST_RESULT_TEST (HD kernel.h enum, same 44 slots), Exit member; calls ProcessEnd_rstInit; replaces sysCallProcessEndRstInit
+0x0010EC28	CheckResult2Test	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckResult2Test: dds3AdminiList slot 27 is DDS3_ADMINI_LIST_RESULT_TEST (HD kernel.h enum, same 44 slots), Check member; calls ProcessCheck_rstInit; replaces sysCallProcessCheckRstInit
+0x0010EC48	CallModelViewerTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallModelViewerTest: dds3AdminiList slot 28 is DDS3_ADMINI_LIST_MODEL_VIEWER (HD kernel.h enum, same 44 slots), Call member; replaces sysLeaf34
+0x0010EC50	ExitModelViewerTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitModelViewerTest: dds3AdminiList slot 28 is DDS3_ADMINI_LIST_MODEL_VIEWER (HD kernel.h enum, same 44 slots), Exit member; replaces sysLeaf35
+0x0010EC58	CheckModelViewerTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckModelViewerTest: dds3AdminiList slot 28 is DDS3_ADMINI_LIST_MODEL_VIEWER (HD kernel.h enum, same 44 slots), Check member; replaces sysLeaf36
+0x0010EC60	CallSoundTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallSoundTest: dds3AdminiList slot 29 is DDS3_ADMINI_LIST_SOUND_TEST (HD kernel.h enum, same 44 slots), Call member; replaces sysLeaf37
+0x0010EC68	ExitSoundTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitSoundTest: dds3AdminiList slot 29 is DDS3_ADMINI_LIST_SOUND_TEST (HD kernel.h enum, same 44 slots), Exit member; replaces sysLeaf38
+0x0010EC70	CheckSoundTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckSoundTest: dds3AdminiList slot 29 is DDS3_ADMINI_LIST_SOUND_TEST (HD kernel.h enum, same 44 slots), Check member; replaces sysLeaf39
+0x0010EC78	CallFontTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallFontTest: dds3AdminiList slot 30 is DDS3_ADMINI_LIST_FONT_TEST (HD kernel.h enum, same 44 slots), Call member; calls mjnTestFontCalc; replaces sysLeaf40
+0x0010EC90	ExitFontTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitFontTest: dds3AdminiList slot 30 is DDS3_ADMINI_LIST_FONT_TEST (HD kernel.h enum, same 44 slots), Exit member; calls itfTestFontCalc; replaces sysFunc26
+0x0010ECB0	CheckFontTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckFontTest: dds3AdminiList slot 30 is DDS3_ADMINI_LIST_FONT_TEST (HD kernel.h enum, same 44 slots), Check member; calls itfTestFontCalc2; replaces sysFunc27
+0x0010ECD0	CallMovieViewerTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallMovieViewerTest: dds3AdminiList slot 31 is DDS3_ADMINI_LIST_MOVIE_VIEWER (HD kernel.h enum, same 44 slots), Call member; calls InitMovieViewer; replaces sysLeaf41
+0x0010ECE8	ExitMovieViewerTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitMovieViewerTest: dds3AdminiList slot 31 is DDS3_ADMINI_LIST_MOVIE_VIEWER (HD kernel.h enum, same 44 slots), Exit member; calls FinishMovieViewer; replaces sysCallFinishMovieViewer
+0x0010ED08	CheckMovieViewerTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckMovieViewerTest: dds3AdminiList slot 31 is DDS3_ADMINI_LIST_MOVIE_VIEWER (HD kernel.h enum, same 44 slots), Check member; replaces sysLeaf42
+0x0010ED10	CallSprMotEditTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallSprMotEditTest: dds3AdminiList slot 32 is DDS3_ADMINI_LIST_SPRITE_MOTION (HD kernel.h enum, same 44 slots), Call member; calls fclLeaf12; replaces sysLeaf43
+0x0010ED28	ExitSprMotEditTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitSprMotEditTest: dds3AdminiList slot 32 is DDS3_ADMINI_LIST_SPRITE_MOTION (HD kernel.h enum, same 44 slots), Exit member; calls itfInitializeAdminInterfaceNoop; replaces sysFunc28
+0x0010ED48	CheckSprMotEditTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckSprMotEditTest: dds3AdminiList slot 32 is DDS3_ADMINI_LIST_SPRITE_MOTION (HD kernel.h enum, same 44 slots), Check member; replaces sysLeaf44
 0x0010ED50	TestProcess3	inferred	method=smt3-fuzzy-60-m-single; p=0.33 (n=9); tier=C; source=smt3; evidence=smt3 body 0x28c780 sim 0.652 margin 0.31 single
 0x0010EDC8	evtCallTestProcess3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010EA00, neighbour evtInitializeSelectionScreen; calls TestProcess3
 0x0010EE00	evtCallTestProcess32	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010EA00, neighbour evtInitializeSelectionScreen; calls TestProcess3
-0x0010EE38	datCallShutDown	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; calls ShutDown
-0x0010EE58	CheckLmap	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD dds3SequenceList.CheckLmap score 2.3 flag -: prev gap26/17 st2:gap r2-only
-0x0010EE60	datLeaf32	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EE78	datCallShutDown2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; calls mphShutDown
-0x0010EE98	datLeaf33	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EEA0	datLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EEB8	datCallInit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; calls stfInit
-0x0010EED8	datLeaf35	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EEE0	datLeaf36	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EF10	datFunc18	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EF30	datFunc19	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EF50	datLeaf37	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EF80	datFunc20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EFA0	datFunc21	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EFC0	datLeaf38	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010EFD8	ExitHanafudaTest	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD dds3SequenceList.ExitHanafudaTest score 2.6 flag -: next gap23/14 st2:gap r2-only
-0x0010EFF8	CheckHanafudaTest	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD dds3SequenceList.CheckHanafudaTest score 2.3 flag -: next gap24/15 st2:gap r2-only
+0x0010EE38	ExitMahjon	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitMahjon: dds3AdminiList slot 16 is DDS3_ADMINI_LIST_MAHJON (HD kernel.h enum, same 44 slots), Exit member; calls ShutDown; replaces datCallShutDown
+0x0010EE58	CheckMahjon	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckMahjon: dds3AdminiList slot 16 is DDS3_ADMINI_LIST_MAHJON (HD kernel.h enum, same 44 slots), Check member (old name was a low-confidence HD gap guess); replaces CheckLmap
+0x0010EE60	CallMorph	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallMorph: dds3AdminiList slot 33 is DDS3_ADMINI_LIST_MORPH (HD kernel.h enum, same 44 slots), Call member; calls mphStart_itf; replaces datLeaf32
+0x0010EE78	ExitMorph	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitMorph: dds3AdminiList slot 33 is DDS3_ADMINI_LIST_MORPH (HD kernel.h enum, same 44 slots), Exit member; calls mphShutDown; replaces datCallShutDown2
+0x0010EE98	CheckMorph	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckMorph: dds3AdminiList slot 33 is DDS3_ADMINI_LIST_MORPH (HD kernel.h enum, same 44 slots), Check member; replaces datLeaf33
+0x0010EEA0	CallCtnTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallCtnTest: dds3AdminiList slot 34 is DDS3_ADMINI_LIST_CITIZEN (HD kernel.h enum, same 44 slots), Call member; calls stfCtnTestProcess; replaces datLeaf34
+0x0010EEB8	ExitCtnTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitCtnTest: dds3AdminiList slot 34 is DDS3_ADMINI_LIST_CITIZEN (HD kernel.h enum, same 44 slots), Exit member; calls stfInit; replaces datCallInit
+0x0010EED8	CheckCtnTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckCtnTest: dds3AdminiList slot 34 is DDS3_ADMINI_LIST_CITIZEN (HD kernel.h enum, same 44 slots), Check member; replaces datLeaf35
+0x0010EEE0	CallNameEntryTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallNameEntryTest: dds3AdminiList slot 36 is DDS3_ADMINI_LIST_NME_TEST (HD kernel.h enum, same 44 slots), Call member; calls fldCommand_SET_ALLPANEL; replaces datLeaf36
+0x0010EF10	ExitNameEntryTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitNameEntryTest: dds3AdminiList slot 36 is DDS3_ADMINI_LIST_NME_TEST (HD kernel.h enum, same 44 slots), Exit member; calls fldFunc27; replaces datFunc18
+0x0010EF30	CheckNameEntryTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckNameEntryTest: dds3AdminiList slot 36 is DDS3_ADMINI_LIST_NME_TEST (HD kernel.h enum, same 44 slots), Check member; calls nmeCallExistProcess; replaces datFunc19
+0x0010EF50	CallNameEntry	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallNameEntry: dds3AdminiList slot 18 is DDS3_ADMINI_LIST_NME (HD kernel.h enum, same 44 slots), Call member; calls fldCommand_SET_ALLPANEL; replaces datLeaf37
+0x0010EF80	ExitNameEntry	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitNameEntry: dds3AdminiList slot 18 is DDS3_ADMINI_LIST_NME (HD kernel.h enum, same 44 slots), Exit member; calls fldFunc27; replaces datFunc20
+0x0010EFA0	CheckNameEntry	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckNameEntry: dds3AdminiList slot 18 is DDS3_ADMINI_LIST_NME (HD kernel.h enum, same 44 slots), Check member; calls nmeCallExistProcess; replaces datFunc21
+0x0010EFC0	CallWater	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallWater: dds3AdminiList slot 38 is DDS3_ADMINI_LIST_WATER (HD kernel.h enum, same 44 slots), Call member; calls frTestFontInit; replaces datLeaf38
+0x0010EFD8	ExitWater	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitWater: dds3AdminiList slot 38 is DDS3_ADMINI_LIST_WATER (HD kernel.h enum, same 44 slots), Exit member; calls frEndingWaterTest (old name was a low-confidence HD gap guess); replaces ExitHanafudaTest
+0x0010EFF8	CheckWater	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckWater: dds3AdminiList slot 38 is DDS3_ADMINI_LIST_WATER (HD kernel.h enum, same 44 slots), Check member (old name was a low-confidence HD gap guess); replaces CheckHanafudaTest
 0x0010F000	CallGomaden	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD dds3SequenceList.CallGomaden score 2.8 flag -: next gap26/17 st2:gap r2-only
 0x0010F030	ExitGomaden	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD dds3SequenceList.ExitGomaden score 4.0 flag -: calls1 callers-of-match-uniq st2:call r2-only
-0x0010F050	datLeaf39	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
+0x0010F050	CheckGomaden	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckGomaden: dds3AdminiList slot 40 is DDS3_ADMINI_LIST_GOMADEN (HD kernel.h enum, same 44 slots), Check member; calls gohCheckSequence; replaces datLeaf39
 0x0010F068	datRefDDS3GBWK	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_0010EA00, nearest named function datDebugPrintf; references DDS3_GBWK
-0x0010F098	datCallDebugProcessEnd	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; calls jmsDebugProcessEnd
-0x0010F0B8	datCallDebugProcessCheck	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; calls jmsDebugProcessCheck
-0x0010F0D8	datLeaf40	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010F0F0	datFunc22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
-0x0010F110	datFunc23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0010DF68, neighbour datDebugPrintf; no named callee, caller or string
+0x0010F098	ExitJimusyoTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitJimusyoTest: dds3AdminiList slot 41 is DDS3_ADMINI_LIST_JIMUSYO_TEST (HD kernel.h enum, same 44 slots), Exit member; calls jmsDebugProcessEnd; replaces datCallDebugProcessEnd
+0x0010F0B8	CheckJimusyoTest	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckJimusyoTest: dds3AdminiList slot 41 is DDS3_ADMINI_LIST_JIMUSYO_TEST (HD kernel.h enum, same 44 slots), Check member; calls jmsDebugProcessCheck; replaces datCallDebugProcessCheck
+0x0010F0D8	CallStorySelect	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CallStorySelect: dds3AdminiList slot 42 is DDS3_ADMINI_LIST_SSELECT (HD kernel.h enum, same 44 slots), Call member; calls cmpStartProcessPanelEff; replaces datLeaf40
+0x0010F0F0	ExitStorySelect	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c ExitStorySelect: dds3AdminiList slot 42 is DDS3_ADMINI_LIST_SSELECT (HD kernel.h enum, same 44 slots), Exit member; calls cmpStorySelectDebug; replaces datFunc22
+0x0010F110	CheckStorySelect	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3SequenceList.c CheckStorySelect: dds3AdminiList slot 42 is DDS3_ADMINI_LIST_SSELECT (HD kernel.h enum, same 44 slots), Check member; calls rstStorySelectDebug; replaces datFunc23
 0x0010F130	evtEnsureFontResourceChain	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0010AB90, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0010F180	evtDestroyFontResourceChain	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0010ABE0, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0010F1B0	datDebugPrintf	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0010AC10, masked-words-identical (strict map pair); dds-decomp: SMT3HD name
@@ -4337,7 +4337,7 @@
 0x001F5108	dds3BillboardDelete	inferred	SMT3HD name via SLUS_209.11 0x0015CF40, reloc-identical; map-agrees
 0x001F5140	dds3BillboardDraw	inferred	SMT3HD name via SLUS_209.11 0x0015CF78, byte-identical; map-agrees
 0x001F5160	dds3BillboardGeneral	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; replaces dds3BillboardGeneral_dds3Billboard
-0x001F51C8	dds3Leaf30	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/billManager, neighbour dds3BillboardGeneral_dds3Billboard; no named callee, caller or string
+0x001F51C8	dds3BillboardGeneralNumber	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 dds3BillboardGeneralNumber: same place (after dds3BillboardGeneral, before dds3BillboardGetGeneralTex), returns the general billboard count (21 here, 8 in SMT3); replaces dds3Leaf30
 0x001F51D0	dds3BillboardGetGeneralTex	inferred	SMT3HD name via SLUS_209.11 0x0015D000, reloc-identical; map-agrees
 0x001F51F0	dds3BillboardSetPosition	hd	hd: Raidou HD dds3Billboard.dds3BillboardSetPosition, score 7.7 band B, hd-ab: calls1 prev calls-of-match votes2 st1:call r1+r2
 0x001F5200	dds3BillboardSetRotate_dds3Billboard	hd	hd: Raidou HD dds3Billboard.dds3BillboardSetRotate, score 7.05 band B
@@ -5035,25 +5035,25 @@
 0x00213490	effPCPZiodin01Delete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x002134E8	effPCPZiodin01Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213520	effPCPZiodin01Draw	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x00213610	effLeaf79	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213610	effPCPZiodin01SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin01SetPosition: fills slot 4 of the effPCPZiodin01Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf79
 0x00213620	effLeaf80	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00213628	effLeaf81	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213628	effPCPZiodin01SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin01SetColor: fills slot 7 of the effPCPZiodin01Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf81
 0x00213630	effPCPZiodin04Init	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x18cab0 sim 1.000 margin 0.00 pair
 0x002138D0	effPCPZiodin02Create	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213908	effPCPZiodin02Delete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213960	effPCPZiodin02Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213998	effPCPZiodin02Draw	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x00213A88	effLeaf82	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213A88	effPCPZiodin02SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin02SetPosition: fills slot 4 of the effPCPZiodin02Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf82
 0x00213A98	effLeaf83	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00213AA0	effLeaf84	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213AA0	effPCPZiodin02SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin02SetColor: fills slot 7 of the effPCPZiodin02Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf84
 0x00213AA8	effPCPShockWave02Init	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x18d858 sim 1.000 margin 0.00 pair
 0x00213D68	effPCPZiodin03Create	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213DA0	effPCPZiodin03Delete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213DF8	effPCPZiodin03Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00213E30	effPCPZiodin03Draw	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x00213F20	effLeaf85	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213F20	effPCPZiodin03SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin03SetPosition: fills slot 4 of the effPCPZiodin03Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf85
 0x00213F30	effLeaf86	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00213F38	effLeaf87	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00213F38	effPCPZiodin03SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPZiodin03SetColor: fills slot 7 of the effPCPZiodin03Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf87
 0x00213F40	effPCPZiodin02Init	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x18cab0 sim 1.000 margin 0.00 pair
 0x002141E0	effPCPZiodin04Create	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00214218	effPCPZiodin04Delete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -5083,9 +5083,9 @@
 0x00214B08	effBTLSys_Nego_Kaihuku_Delete2	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x173bb0 sim 1.000 margin 0.00 pair
 0x00214B38	effPCPShockWave01Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00214B70	effPCPShockWave01Draw	inferred	SMT3HD name via SLUS_209.11 0x0018D6E0, reloc-identical; map-agrees
-0x00214CC8	effLeaf97	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00214CC8	effPCPShockWave01SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPShockWave01SetPosition: fills slot 4 of the effPCPShockWave01Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf97
 0x00214CD8	effLeaf98	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00214CE0	effLeaf99	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00214CE0	effPCPShockWave01SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPShockWave01SetColor: fills slot 7 of the effPCPShockWave01Create row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf99
 0x00214CE8	effPCPZiodin03Init	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x18d858 sim 1.000 margin 0.00 pair
 0x00214FA8	effPCPShockWave02Create	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00214FE0	effPCPShockWave02Delete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -5176,7 +5176,7 @@
 0x00217060	effPCPBreathCreatePCF	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=wraps effPCPBreathCreate; replaces effPCP_BED_CreatePCF
 0x002170A8	effPCPBreathCopy	inferred	SMT3HD name via SLUS_209.11 0x0018FC18, reloc-identical; map-agrees
 0x00217100	effPCPBreathDelete	inferred	SMT3HD name via SLUS_209.11 0x0018FC70, reloc-identical; map-agrees
-0x00217138	effLeaf130	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00217138	effPCPBreathDraw	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBreathDraw: fills slot 1 of the effPCPBreathCreatePCF row in the effPart PCP function table, as in SMT3's table; body empty in Raidou (SMT3 draws here); replaces effLeaf130
 0x00217140	effPCPBreathSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBreathSetPosition: same body (exact shape) at the same place, between effPCPBreathDelete and effPCPBreathSetRotateMatrix; replaces effLeaf131
 0x00217158	effPCPBreathSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBreathSetColor: same body (exact shape) at the same place, between effPCPBreathDelete and effPCPBreathSetRotateMatrix; replaces effLeaf132
 0x00217160	effPCPBreathSetRotateMatrix	inferred	smt3-decomp C name via SLUS_209.11 0x0018FF18, unique-masked-hash-c; map-silent
@@ -5212,56 +5212,56 @@
 0x00218AE8	effPCPBufuIceCopy	inferred	SMT3HD name via SLUS_209.11 0x00192268, reloc-identical; map-agrees
 0x00218BC8	effPCPBufuIceDelete	inferred	SMT3HD name via SLUS_209.11 0x00192348, reloc-identical; map-agrees
 0x00218BF8	effPCPBufuIceDraw	inferred	SMT3HD name via SLUS_209.11 0x00192378, reloc-identical; map-agrees
-0x00218CA0	effLeaf135	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00218CB0	effLeaf136	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00218CB8	effLeaf137	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00218CC0	effLeaf138	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00218CA0	effPCPBufuIceSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufuIceSetPosition: fills slot 4 of the effPCPBufuIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf135
+0x00218CB0	effPCPBufuIceSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufuIceSetColor: fills slot 7 of the effPCPBufuIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf136
+0x00218CB8	effPCPBufuIceSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufuIceSetScale: fills slot 5 of the effPCPBufuIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf137
+0x00218CC0	effPCPBufuIceSetRotateMatrix	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufuIceSetRotateMatrix: fills slot 6 of the effPCPBufuIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf138
 0x00218CF0	effPCPBufudnIceCreate	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x192770 sim 1.000 margin 0.00 pair
 0x00218DB0	effPCPBufudnIceCopy	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x192830 sim 1.000 margin 0.00 pair
 0x00218E68	effCallEffectPartDelete	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls dds3EffectPartDelete
 0x00218EA0	effPCPBufudnIceDraw	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x192920 sim 1.000 margin 0.00 pair
-0x00218FA0	effLeaf139	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00218FB0	effLeaf140	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00218FB8	effLeaf141	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00218FC0	effLeaf142	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00218FA0	effPCPBufudnIceSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufudnIceSetPosition: fills slot 4 of the effPCPBufudnIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf139
+0x00218FB0	effPCPBufudnIceSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufudnIceSetColor: fills slot 7 of the effPCPBufudnIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf140
+0x00218FB8	effPCPBufudnIceSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufudnIceSetScale: fills slot 5 of the effPCPBufudnIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf141
+0x00218FC0	effPCPBufudnIceSetRotateMatrix	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufudnIceSetRotateMatrix: fills slot 6 of the effPCPBufudnIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf142
 0x00218FF0	effPCPBufuraIceCreate	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x192770 sim 1.000 margin 0.00 pair
 0x002190B0	effPCPBufuraIceCopy	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x192830 sim 1.000 margin 0.00 pair
 0x00219168	effCallEffectPartDelete2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls dds3EffectPartDelete
 0x002191A0	effPCPBufuraIceDraw	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x192920 sim 1.000 margin 0.00 pair
-0x002192A0	effLeaf143	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x002192B0	effLeaf144	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x002192B8	effLeaf145	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x002192C0	effLeaf146	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x002192A0	effPCPBufuraIceSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufuraIceSetPosition: fills slot 4 of the effPCPBufuraIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf143
+0x002192B0	effPCPBufuraIceSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufuraIceSetColor: fills slot 7 of the effPCPBufuraIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf144
+0x002192B8	effPCPBufuraIceSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufuraIceSetScale: fills slot 5 of the effPCPBufuraIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf145
+0x002192C0	effPCPBufuraIceSetRotateMatrix	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBufuraIceSetRotateMatrix: fills slot 6 of the effPCPBufuraIceCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf146
 0x002192F0	effLeaf147	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
 0x00219300	effLeaf148	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
 0x00219310	effLeaf149	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
 0x00219318	effLeaf150	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
 0x00219330	effCallChipAllocDirect2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x00219378	effLeaf151	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219378	effPCPEyeThunderCopy00_0	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy00_0: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf151
 0x00219390	effCallChipAllocDirect3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x002193E0	effLeaf152	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x002193E0	effPCPEyeThunderCopy00_1	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy00_1: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf152
 0x002193F8	effCallChipAllocDirect4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x00219440	effLeaf153	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219440	effPCPEyeThunderCopy01_0	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy01_0: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf153
 0x00219458	effCallChipAllocDirect5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x002194A8	effLeaf154	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x002194A8	effPCPEyeThunderCopy01_1	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy01_1: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf154
 0x002194C0	effCallChipAllocDirect6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x00219508	effLeaf155	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219508	effPCPEyeThunderCopy02_0	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy02_0: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf155
 0x00219520	effCallChipAllocDirect7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x00219570	effLeaf156	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219570	effPCPEyeThunderCopy02_1	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy02_1: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf156
 0x00219588	effCallChipAllocDirect8	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x002195D0	effLeaf157	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x002195D0	effPCPEyeThunderCopy03_0	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy03_0: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf157
 0x002195E8	effCallChipAllocDirect9	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x00219638	effLeaf158	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219638	effPCPEyeThunderCopy03_1	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy03_1: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf158
 0x00219650	effCallChipAllocDirect10	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x00219698	effLeaf159	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219698	effPCPEyeThunderCopy04_0	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy04_0: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf159
 0x002196B0	effCallChipAllocDirect11	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x00219700	effLeaf160	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219700	effPCPEyeThunderCopy04_1	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy04_1: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf160
 0x00219718	effCallChipAllocDirect12	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x00219760	effLeaf161	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219760	effPCPEyeThunderCopy05_0	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy05_0: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf161
 0x00219778	effCallChipAllocDirect13	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; calls sdfChipAllocDirect
-0x002197C8	effLeaf162	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x002197C8	effPCPEyeThunderCopy05_1	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderCopy05_1: Copy slot of the matching EyeThunder row (12 rows in the same order as SMT3's effPart table); same body (exact shape, same immediates); replaces effLeaf162
 0x002197E0	effPCPEyeThunderDelete	inferred	SMT3HD name via SLUS_209.11 0x00192F90, reloc-identical; map-agrees
-0x00219810	effLeaf163	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00219810	effPCPEyeThunderDraw	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderDraw: fills slot 1 of the effCallChipAllocDirect10 row in the effPart PCP function table, as in SMT3's table; body empty in Raidou (SMT3 draws here); replaces effLeaf163
 0x00219818	effPCPEyeThunderSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderSetPosition: same body (exact shape) at the same place, between effPCPEyeThunderDelete and effPCPThunderSphereExpCreate; replaces effLeaf164
 0x00219828	effPCPEyeThunderSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPEyeThunderSetColor: same body (exact shape) at the same place, between effPCPEyeThunderDelete and effPCPThunderSphereExpCreate; replaces effLeaf165
 0x00219830	effPCPThunderSphereExpCreate	inferred	SMT3HD name via SLUS_209.11 0x001930E0, reloc-identical; map-agrees
@@ -5282,9 +5282,9 @@
 0x0021A290	effPCPRingPolyExpCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0021A2A8	effPCPRingPolyExpDelete	inferred	SMT3HD name via SLUS_209.11 0x00193B58, reloc-identical; map-agrees
 0x0021A2D8	effPCPRingPolyExpDraw	inferred	SMT3HD name via SLUS_209.11 0x00193B88, reloc-identical; map-agrees
-0x0021A500	effLeaf169	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x0021A510	effLeaf170	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x0021A520	effLeaf171	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x0021A500	effPCPRingPolyExpSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPRingPolyExpSetPosition: fills slot 4 of the effPCPRingPolyExpCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf169
+0x0021A510	effPCPRingPolyExpSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPRingPolyExpSetScale: fills slot 5 of the effPCPRingPolyExpCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf170
+0x0021A520	effPCPRingPolyExpSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPRingPolyExpSetColor: fills slot 7 of the effPCPRingPolyExpCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf171
 0x0021A528	effPCPRingPolyExp2SetRotateMatrix	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x194468 sim 1.000 margin 0.00 pair
 0x0021A558	effPCPRingPolyExpSetDirection	inferred	SMT3HD name via SLUS_209.11 0x00193E08, reloc-identical; map-agrees
 0x0021A5B0	effPCPRingPolyExp2SetVertex	inferred	SMT3HD name via SLUS_209.11 0x00193E60, reloc-identical; map-agrees
@@ -5294,9 +5294,9 @@
 0x0021AA20	effPCPRingPolyExp2Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0021AA38	effPCPRingPolyExp2Delete	inferred	SMT3HD name via SLUS_209.11 0x001942E8, reloc-identical; map-agrees
 0x0021AA68	effPCPRingPolyExp2Draw	inferred	SMT3HD name via SLUS_209.11 0x00194318, reloc-identical; map-agrees
-0x0021AB90	effLeaf172	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x0021ABA0	effLeaf173	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x0021ABB0	effLeaf174	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x0021AB90	effPCPRingPolyExp2SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPRingPolyExp2SetPosition: fills slot 4 of the effPCPRingPolyExp2CreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf172
+0x0021ABA0	effPCPRingPolyExp2SetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPRingPolyExp2SetScale: fills slot 5 of the effPCPRingPolyExp2CreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf173
+0x0021ABB0	effPCPRingPolyExp2SetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPRingPolyExp2SetColor: fills slot 7 of the effPCPRingPolyExp2CreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf174
 0x0021ABB8	effPCPRingPolyExpSetRotateMatrix	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x194468 sim 1.000 margin 0.00 pair
 0x0021ABE8	effPCPRadiateThunderCreate	inferred	SMT3HD name via SLUS_209.11 0x00194498, reloc-identical; map-agrees
 0x0021AE70	effPCPRadiateThunderCreatePCF	inferred	SMT3HD name via SLUS_209.11 0x00194720, reloc-identical; map-agrees
@@ -5311,7 +5311,7 @@
 0x0021B760	effPCPMakkaCopy	inferred	SMT3HD name via SLUS_209.11 0x00195010, reloc-identical; map-agrees
 0x0021B860	effPCPMakkaDelete	inferred	SMT3HD name via SLUS_209.11 0x00195110, reloc-identical; map-agrees
 0x0021B8D0	effPCPMakkaUpdateNode	inferred	SMT3HD name via SLUS_209.11 0x00195180, reloc-identical; map-agrees
-0x0021B928	effLeaf178	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x0021B928	effPCPMakkaDraw	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPMakkaDraw: fills slot 1 of the effPCPMakkaCreat row in the effPart PCP function table, as in SMT3's table; body empty in Raidou (SMT3 draws here); replaces effLeaf178
 0x0021B930	effPCPMakkaSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPMakkaSetPosition: same body (exact shape) at the same place, between effPCPMakkaUpdateNode and effPCPRadiateBEDCreate; replaces effLeaf179
 0x0021B940	effPCPMakkaSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPMakkaSetColor: same body (exact shape) at the same place, between effPCPMakkaUpdateNode and effPCPRadiateBEDCreate; replaces effLeaf180
 0x0021B948	effPCPMakkaSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPMakkaSetScale: same body (exact shape) at the same place, between effPCPMakkaUpdateNode and effPCPRadiateBEDCreate; replaces effLeaf181
@@ -5408,7 +5408,7 @@
 0x00220858	effPCP_ThunderPolyLowCreate	inferred	SMT3HD name via SLUS_209.11 0x00178EE8, reloc-identical; map-agrees
 0x00220A50	effPCP_ThunderPolyLowDelete	inferred	SMT3HD name via SLUS_209.11 0x001790E0, reloc-identical; map-agrees
 0x00220A88	effPCP_ThunderPolySetPosition	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x179118 sim 1.000 margin 0.00 pair
-0x00220AB8	effLeaf201	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPThunder; no named callee, caller or string
+0x00220AB8	effPCP_ThunderPolyLowSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCP_ThunderPolyLowSetColor: fills slot 7 of the effPCP_ThunderPolyLowCreate row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf201
 0x00220AC0	effCallGetRandA2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPThunder; calls dds3GetRandA
 0x00220B60	effPCP_ThunderPolyLowPartRefresh	inferred	SMT3HD name via SLUS_209.11 0x001791F0, reloc-identical; map-agrees
 0x00221198	effPCP_ThunderPolyLowDraw	inferred	SMT3HD name via SLUS_209.11 0x00179828, reloc-identical; map-agrees
@@ -5429,7 +5429,7 @@
 0x00222800	effPCPBezierBillCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00222848	effPCPBezierBillCopy	inferred	SMT3HD name via SLUS_209.11 0x0017AED8, reloc-identical; map-agrees
 0x00222AC0	effPCPBezierBillDelete	inferred	SMT3HD name via SLUS_209.11 0x0017B150, reloc-identical; map-agrees
-0x00222B48	effLeaf206	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBezier; no named callee, caller or string
+0x00222B48	effPCPBezierBillDraw	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBezierBillDraw: fills slot 1 of the effPCPBezierBillCreatePCF row in the effPart PCP function table, as in SMT3's table; body empty in Raidou (SMT3 draws here); replaces effLeaf206
 0x00222B50	effPCPBezierBillSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBezierBillSetPosition: same body (exact shape) at the same place, between effPCPBezierBillDelete and dds3BezierTrackPolySetVertex; replaces effLeaf207
 0x00222B60	effPCPBezierBillSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBezierBillSetColor: same body (exact shape) at the same place, between effPCPBezierBillDelete and dds3BezierTrackPolySetVertex; replaces effLeaf208
 0x00222B68	dds3BezierTrackPolySetVertex	inferred	SMT3HD name via SLUS_209.11 0x0017C958, reloc-identical; map-agrees
@@ -5483,9 +5483,9 @@
 0x00225230	effPCPFlashPolyRingExpCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00225250	effPCPFlashPolyRingExpCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00225268	effPCPFlashPolyRingExpDelete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x00225298	effLeaf221	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00225298	effPCPFlashPolyRingExpSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyRingExpSetPosition: fills slot 4 of the effPCPFlashPolyRingExpCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf221
 0x002252A8	effPCPFlashPolyRingExpHSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPFlashPolyRingExpHSetColor: same body (hData->abgr = abgr) on effPCPFlashPolyRingExpH_tag, third leaf group of its type; replaces effLeaf222
-0x002252B0	effLeaf223	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x002252B0	effPCPFlashPolyRingExpSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyRingExpSetScale: fills slot 5 of the effPCPFlashPolyRingExpCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf223
 0x002252B8	effPCPFlashPolyRingExpPartSetVC	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x002253A8	effPCPFlashPolyRingExpHPartSetVertex	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1825e0 sim 1.000 margin 0.00 pair
 0x00225570	effPCPFlashPolyRingExpPartRotate	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -5549,9 +5549,9 @@
 0x00228318	effPCPFlashPolyRingExpHCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00228338	effPCPFlashPolyRingExpHCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00228350	effCallFlashPolyListHDelete	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; calls dds3FlashPolyListHDelete
-0x00228380	effLeaf239	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00228380	effPCPFlashPolyRingExpHSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyRingExpHSetPosition: fills slot 4 of the effPCPFlashPolyRingExpHCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf239
 0x00228390	effPCPFlashPolyRingExpSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPFlashPolyRingExpSetColor: same body (hData->abgr = abgr) on effPCPFlashPolyRingExp_tag, third leaf group of its type; replaces effLeaf240
-0x00228398	effLeaf241	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00228398	effPCPFlashPolyRingExpHSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyRingExpHSetScale: fills slot 5 of the effPCPFlashPolyRingExpHCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf241
 0x002283A0	effPCPFlashPolyRingExpHSetRotateMatrix	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1824c0 sim 1.000 margin 0.04 pair
 0x002283D0	effPCPFlashPolyRingExpHPartSetVC	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x002284C0	effPCPFlashPolyRingExpPartSetVertex	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1825e0 sim 1.000 margin 0.00 pair
@@ -5677,7 +5677,7 @@
 0x0022F2B0	effPCPNeedleSpiralDelete	inferred	SMT3HD name via SLUS_209.11 0x001893D0, reloc-identical; map-agrees
 0x0022F2E8	effPCPNeedleSpiralCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0022F308	effPCPNeedleSpiralCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x0022F320	effLeaf264	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPNeedle; no named callee, caller or string
+0x0022F320	effPCPNeedleSpiralDraw	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPNeedleSpiralDraw: fills slot 1 of the effPCPNeedleSpiralCreatePCF row in the effPart PCP function table, as in SMT3's table; body empty in Raidou (SMT3 draws here); replaces effLeaf264
 0x0022F328	effPCPNeedleSpiralSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPNeedleSpiralSetPosition: same body (exact shape) at the same place, between effPCPNeedleSpiralCopy and effPCPNeedleSpiralSetColor; replaces effLeaf265
 0x0022F338	effPCPNeedleSpiralSetRotateMatrix	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPNeedleSpiralSetRotateMatrix: same body (exact shape) at the same place, between effPCPNeedleSpiralCopy and effPCPNeedleSpiralSetColor; replaces effLeaf266
 0x0022F350	effPCPNeedleSpiralSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPNeedleSpiralSetColor: same body (hData->abgr = abgr) on effPCPNeedleSpiral_tag, third leaf group of its type; replaces effLeaf267
@@ -5730,9 +5730,9 @@
 0x00231938	effPCPBossBaelCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x002319A0	effPCPBossBaelCopy	inferred	SMT3HD name via SLUS_209.11 0x0019AE70, reloc-identical; map-agrees
 0x00231A20	effPCPBossBaelDelete	inferred	SMT3HD name via SLUS_209.11 0x0019AEF0, reloc-identical; map-agrees
-0x00231A58	effLeaf288	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBoss; no named callee, caller or string
+0x00231A58	effPCPBossBaelDraw	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBossBaelDraw: fills slot 1 of the effPCPBossBaelCreatePCF row in the effPart PCP function table, as in SMT3's table; body empty in Raidou (SMT3 draws here); replaces effLeaf288
 0x00231A60	effLeaf289	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBoss; no named callee, caller or string
-0x00231A78	effLeaf290	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBoss; no named callee, caller or string
+0x00231A78	effPCPBossBaelSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBossBaelSetColor: fills slot 7 of the effPCPBossBaelCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf290
 0x00231A80	effLeaf291	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBoss; no named callee, caller or string
 0x00231A88	effLeaf292	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBoss; no named callee, caller or string
 0x00231A90	effLeaf293	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBoss; no named callee, caller or string
@@ -5789,9 +5789,9 @@
 0x00231F78	effPCPBossMETATOBeamCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00231F98	effPCPBossMETATOBeamCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00231FB0	effPCPBossMETATOBeamDelete	inferred	SMT3HD name via SLUS_209.11 0x0019E4E0, reloc-identical; map-agrees
-0x00231FE8	effLeaf336	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021ACF0, nearest named function effPCPBossMETATOBeamDelete; no named callee, caller or string
-0x00231FF0	effLeaf337	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021ACF0, nearest named function effPCPBossMETATOBeamDelete; no named callee, caller or string
-0x00232000	dds3Leaf42	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021ACF0, nearest named function dds3EffectDirOpen; no named callee, caller or string
+0x00231FE8	effPCPBossMETATOBeamDraw	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBossMETATOBeamDraw: fills slot 1 of the effPCPBossMETATOBeamCreatePCF row in the effPart PCP function table, as in SMT3's table; body empty in Raidou (SMT3 draws here); replaces effLeaf336
+0x00231FF0	effPCPBossMETATOBeamSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBossMETATOBeamSetPosition: fills slot 4 of the effPCPBossMETATOBeamCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces effLeaf337
+0x00232000	effPCPBossMETATOBeamSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBossMETATOBeamSetColor: fills slot 7 of the effPCPBossMETATOBeamCreatePCF row in the effPart PCP function table, as in SMT3's table; same body (exact shape); replaces dds3Leaf42
 0x00232008	dds3EffectDirOpen	inferred	smt3-decomp C name via SLUS_209.11 0x001AAD00, unique-masked-hash-c; map-agrees
 0x00232058	nbEffectFileListCreateSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit newbattle/nbCameraHelper; called by dds3EffectFileListCreate
 0x00232088	dds3EffectDirRead	inferred	SMT3HD name via SLUS_209.11 0x001AAD80, reloc-identical; map-agrees
@@ -12455,7 +12455,7 @@
 0x003DDF00	sdfCoreDrawSetLight	inferred	SMT3HD name via SLUS_209.11 0x002B9B38, shared-hash-in-run; map-agrees
 0x003DDF08	sdfCoreDrawSetFog	inferred	SMT3HD name via SLUS_209.11 0x002B9B40, reloc-identical; map-agrees
 0x003DDF30	sdfCoreDrawSetZBias	inferred	SMT3HD name via SLUS_209.11 0x002B9B68, shared-hash-in-run; map-agrees
-0x003DDF38	sdfLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfCoreDraw; no named callee, caller or string
+0x003DDF38	sdfCoreDrawReset	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 sdfCoreDrawReset: same body (clears corePktCurrLight and corePktCurrFog) at the same place, between sdfCoreDrawSetZBias and sdfCoreDrawInit; replaces sdfLeaf25
 0x003DDF48	sdfCoreDrawInit	inferred	SMT3HD name via SLUS_209.11 0x002B9B80, reloc-identical; map-agrees
 0x003DDFE0	sdf2DGetTexPacketSize	inferred	SMT3HD name via SLUS_209.11 0x002B9C18, shared-hash-in-run; map-agrees
 0x003DDFE8	sdf2DMakeTexPacket	inferred	SMT3HD name via SLUS_209.11 0x002B9C20, reloc-identical; map-agrees
