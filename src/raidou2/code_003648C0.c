@@ -18,6 +18,10 @@
 #include "mapData.h"
 #include "code_r1_002C8188.h"
 #include "itf.h"
+#include "cmpKuda.h"
+#include "cmpStatus.h"
+#include "newdata.h"
+#include "mdlManager.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -394,7 +398,13 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpLoadSpriteToMem);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpFreeSpriteToMem);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpFreeSpriteToGS);
+void cmpFreeSpriteToGS(void) {
+    s32 i;
+
+    for (i = 0; i < 5; i++) {
+        cmpFreeSpriteHnd(i);
+    }
+}
 
 struct sdfMemHandle_t *cmpLoadSpriteHnd(CMP_SPR a_no)
 {
@@ -540,7 +550,14 @@ INCLUDE_ASM(const s32, "code_003648C0", Init_cmpModel);
 
 INCLUDE_ASM(const s32, "code_003648C0", End_cmpModel);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpFreeResource);
+s32 cmpFreeResource(void) {
+    if (cmpGetFlagScreenShot()) {
+        mdlFree(cmpDrawStatusModel_cmpModelData);
+        cmpDrawStatusModel_cmpModelData = NULL;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallPrepare);
 
@@ -746,9 +763,15 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpGetSummonerRank2SprNo);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankObjectInit);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallSummnerRankInit);
+void cmpSummnerRankMngInit(cmpSummnerRankMng_t *psSelf) {
+    cmpSummnerRankInit(&psSelf->sSummnerRank);
+    cmpSummnerRankMngSetState(psSelf, cmpSummnerRankStateWait);
+}
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankDraw);
+void cmpSummnerRankMngSetState(cmpSummnerRankMng_t *psSelf, cmpSummnerRankFunc_t cbFunc) {
+    psSelf->cbState = cbFunc;
+    psSelf->sSummnerRank.iCounter = 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankMngExecute);
 
@@ -790,7 +813,7 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankDrawRaido);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankDrawSummnerRankBlur);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallSummnerRankStateBGFukki);
+INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankDraw);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallDrawSprList);
 
@@ -864,7 +887,11 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpChkDraw);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetProcessData35);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpSetFlagCamp);
+void cmpSetFlagCamp(void) {
+    cmpStatusWork_t *wk = dds3GetProcessData(g_mainPID);
+
+    wk->flags = (wk->flags & ~0x1000) | 0x2000;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", StatusGoSword);
 
@@ -1036,13 +1063,29 @@ s32 cmpCallGetStockPID(void)
     return cmpMenuFilter(cmpGetStockPID());
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockPID2);
+void cmpSetFilterEx(sdatUnitWork_t *psUse, ecmpKudaSelectMode eSelMode, ecmpKudaCMU iSelectAttrId,
+                    ecmpKudaCMU iDecideAttrId) {
+    struct tagCMP_WORK *wk = cmpGetStockPID();
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpSetFilter);
+    wk->psUse = psUse;
+    wk->eSelMode = eSelMode;
+    wk->iAttrId = iSelectAttrId;
+    wk->iSelectAttrId = iSelectAttrId;
+    wk->iDecideAttrId = iDecideAttrId;
+}
 
-INCLUDE_ASM(const s32, "code_003648C0", nbSetTarSelJyokyoTime);
+void cmpSetFilter(sdatUnitWork_t *psUse, ecmpKudaSelectMode eSelMode, ecmpKudaCMU iAttrId) {
+    cmpSetFilterEx(psUse, eSelMode, iAttrId, iAttrId);
+}
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpClearFilter);
+void cmpSetFilterBadStatus(BSTF iBadStatus) {
+    cmpGetStockPID()->iBadStatus = iBadStatus;
+}
+
+void cmpClearFilter(void) {
+    cmpSetFilter(NULL, ecmpKudaSelectMode_ecmpKSM_Target, ecmpKudaCMU_None);
+    cmpSetFilterBadStatus(BSTF_NONE);
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpChkEnableUseSkill);
 

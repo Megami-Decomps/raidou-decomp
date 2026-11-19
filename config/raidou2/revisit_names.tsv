@@ -5364,9 +5364,7 @@
 0x00377FD0	cmpCallSetFontSpace	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpDrawSprList; calls frSetFontSpace
 0x00378118	cmpCallGetSpriteHnd3	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpDrawSprList; calls cmpGetSpriteHnd
 0x003781E8	cmpCallGetSpriteHnd4	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpDrawSprList; calls cmpGetSpriteHnd
-0x00379130	cmpCallSummnerRankInit	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpSummnerRankObjectInit; calls cmpSummnerRankInit
 0x00379808	cmpLeaf6	func	tier=D	derived-unit	na	unit code_003648C0, neighbour cmpSummnerRankStateSummnerRankRaidoPika; no named callee, caller or string
-0x0037A0B8	cmpCallSummnerRankStateBGFukki	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpSummnerRankDrawSummnerRankBlur; calls cmpSummnerRankStateBGFukki
 0x0037A148	cmpCallDrawSprList	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpDrawPartsExp; calls cmpDrawSprList
 0x0037AC68	cmpCallGetSwordName	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpGetSwordName; calls cmpGetSwordName
 0x0037AD28	cmpRefDDS3GBWK	func	tier=D	derived-data	na	unit code_003648C0, neighbour cmpGetSwordNameEx; references DDS3_GBWK
@@ -5410,7 +5408,6 @@
 0x00380688	cmpCallCombineDraw2	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpMenuFilterUnit; calls fclCombineDraw
 0x00380748	cmpRefDDS3GBWK3	func	tier=D	derived-data	na	unit code_003648C0, neighbour cmpMenuFilterUnit; references DDS3_GBWK
 0x003810B8	cmpCallGetStockPID	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpMenuFilter; calls cmpGetStockPID
-0x003810D8	cmpCallGetStockPID2	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpSetFilter; calls cmpGetStockPID
 0x003823C0	mapCallGetStockPID	func	tier=D	derived-callee	na	unit code_003648C0, neighbour mapMenuCreateMenuPID_itf; calls cmpGetStockPID
 0x00382988	mapSetupCmpKudaSub	func	tier=D	derived-caller	na	unit code_003648C0, neighbour mapMenuCreateMenuPID_itf; called by Setup_cmpKuda
 0x00382A00	nmeCallSetFilter	func	tier=D	derived-callee	na	unit code_003648C0, neighbour nmeDrawBox; calls cmpSetFilter
@@ -23898,7 +23895,6 @@
 0x00378FE8	cmpGetNowSummonerRank	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpStatus.cmpGetNowSummonerRank score 4.5 flag I: calls1 prev gap7/5 st2:gap r2-only
 0x00379050	cmpGetSummonerRank2SprNo	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpStatus.cmpGetSummonerRank2SprNo score 4.0 flag I: calls1 prev gap6/4 st2:gap r2-only
 0x003790D0	cmpSummnerRankObjectInit	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpStatus.cmpSummnerRankObjectInit score 3.0 flag I: next gap2/1 st2:gap r2-only
-0x00379168	cmpSummnerRankDraw	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpStatus.cmpSummnerRankDraw score 2.3 flag I: calls1 calls-of-match-uniq st2:call r2-only
 0x00379178	cmpSummnerRankMngExecute	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpStatus.cmpSummnerRankMngExecute score 4.8 flag I: calls2 calls-of-match votes2 st2:call r1-disagree:0x31a9e0
 0x00379360	cmpSummnerRankStateBGHalf	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpStatus.cmpSummnerRankStateBGHalf score 2.6 flag I: prev gap17/18 st2:gap r2-only
 0x00379DC8	cmpSummnerRankDrawSummnerRankBlur	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpStatus.cmpSummnerRankDrawSummnerRankBlur score 2.3 flag I: calls1 next~ gap17/18 st2:gap r2-only
@@ -23916,7 +23912,6 @@
 0x0037FE60	mtrUnitSelectInit	func	tier=C	dds-fuzzy-60-tie-single	0.30 (n=4)	dds body 0x287600 sim 0.600 margin 0.01 single
 0x00380A20	cmpMenuFilterUnit	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpKuda.cmpMenuFilterUnit score 3.5 flag I: calls1 callers-of-match st2:call r2-only
 0x00381138	cmpSetFilter	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpKuda.cmpSetFilter score 3.9 flag I: calls1 calls-of-match votes2 st2:call r2-only
-0x00381150	nbSetTarSelJyokyoTime	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x25d700 sim 1.000 margin 0.05 single
 0x00381178	cmpClearFilter	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpKuda.cmpClearFilter score 3.0 flag I: next gap5/6 st2:gap r2-only
 0x00381E28	itfGeneralMenuReturnFunc	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD itf.itfGeneralMenuReturnFunc score 4.0 flag -: calls3 callee-index st2:cidx r2-only
 0x00382788	mapMenuCreateMenuPID_itf	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD itf.mapMenuCreateMenuPID score 4.3 flag -: calls3 callers-of-match st2:call r2-only
@@ -24963,6 +24958,9 @@
 0x00376828	cmpMemSetSeqStatusStepUpdate	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpStatus.cmpMemSetSeqStatusStepUpdate score 6.1 flag I: calls2 callers-of-match votes3 st2:call r2-only
 0x00377CA0	CallProcEnd_cmpStatus	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD cmpStatus.CallProcEnd score 6.8 flag -: prev gap=exact st1:gap r1+r2
 0x003783B0	cmpDrawParam	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpStatus.cmpDrawParam score 5.3 flag I: calls3 callers-of-match votes4 st2:call r1-disagree:0x319ff0
+0x00379130	cmpSummnerRankMngInit	func	tier=B	hd-role	na	HD cmpSummnerRankMngInit: cmpSummnerRankInit(&sSummnerRank) then state cmpSummnerRankStateWait; replaces cmpCallSummnerRankInit
+0x00379168	cmpSummnerRankMngSetState	func	tier=B	hd-role	na	HD cmpSummnerRankMngSetState: sets cbState and zeroes sSummnerRank.iCounter; HD order ObjectInit, MngInit, MngSetState, MngExecute; replaces cmpSummnerRankDraw
+0x0037A0B8	cmpSummnerRankDraw	func	tier=B	hd-role	na	HD cmpSummnerRankDraw: draws the BG, SummnerRank, Raido, Cyusei and Blur objects of cmpSummnerRank_t; replaces cmpCallSummnerRankStateBGFukki
 0x0037BD20	drawMiscHelp	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpStatus.drawMiscHelp score 5.3 flag -: calls1 prev callers-of-match votes2 st2:call r2-only
 0x0037BE20	cmpDrawPartsOmoideSkill	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpStatus.cmpDrawPartsOmoideSkill score 5.2 flag I: calls3 callers-of-match-uniq votes3 st2:call r1-disagree:0x325168
 0x0037DBA0	Start_cmpStatus	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpStatus.Start score 5.2 flag -: calls3 calls-of-match st2:call r1-disagree:0x31d000
@@ -24976,6 +24974,8 @@
 0x0037FD40	cmpCheckStepGoodbyMessage	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpStatus.cmpCheckStepGoodbyMessage score 6.5 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x00380070	cmpEquipSwordNoHelp	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpStatus.cmpEquipSwordNoHelp score 6.9 flag I: calls3 calls-of-match st2:call r2-only
 0x00380458	cmpCurGetSelectMemSklID	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpStatus.cmpCurGetSelectMemSklID score 5.5 flag I: calls2 calls-of-match st2:call r2-only
+0x003810D8	cmpSetFilterEx	func	tier=B	hd-role	na	HD cmpSetFilterEx (cmpKuda.c): stores psUse, eSelMode and the attr ids in the cmp work; called by cmpSetFilter; replaces cmpCallGetStockPID2
+0x00381150	cmpSetFilterBadStatus	func	tier=B	hd-role	na	HD cmpSetFilterBadStatus: stores iBadStatus in the cmp work; cmpClearFilter calls it with 0 after cmpSetFilter(0, 0, 0); replaces nbSetTarSelJyokyoTime
 0x00381D90	cmpCharSelectSetDefault	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpKuda.cmpCharSelectSetDefault score 5.4 flag I: calls3 callee-index votes3 st2:cidx r1-disagree:0x31f088
 0x00382050	DrawFuncSkl_sbtlCmndMenuNew	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCmndMenuNew.DrawFuncSkl score 5.5 flag -: calls3 callers-of-match votes2 st2:call r2-only
 0x00382A80	Setup_cmpKuda	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpKuda.Setup score 6.5 flag -: calls3 calls-of-match st2:call r2-only

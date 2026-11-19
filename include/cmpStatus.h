@@ -6,6 +6,28 @@
 
 struct tagCMP_STATUS_WORK;
 
+#ifdef VERSION_RAIDOU2
+typedef struct cmpSummnerRank_t {
+    s8 bSummnerRankStart;           /* 0x00 */
+    s8 bSummnerRankWait;            /* 0x01 */
+    struct sdatUnitWork_t *psUnit;  /* 0x04 */
+    s32 iAlphaRate;                 /* 0x08 */
+    s32 iCounter;                   /* 0x0C */
+} cmpSummnerRank_t;
+
+typedef void *(*cmpSummnerRankFunc_t)(cmpSummnerRank_t *psSelf);
+
+typedef struct cmpSummnerRankMng_t {
+    cmpSummnerRankFunc_t cbState;   /* 0x00 */
+    cmpSummnerRank_t sSummnerRank;  /* 0x04 */
+} cmpSummnerRankMng_t;
+
+void cmpSummnerRankMngInit(cmpSummnerRankMng_t *psSelf);
+void cmpSummnerRankMngSetState(cmpSummnerRankMng_t *psSelf, cmpSummnerRankFunc_t cbFunc);
+void cmpSummnerRankInit(cmpSummnerRank_t *psSelf);
+void *cmpSummnerRankStateWait(cmpSummnerRank_t *psSelf);
+#endif
+
 dds3ProcessFunc_t DrawProcess_cmpStatus(dds3ProcessID_t *PID);
 s32 ProcessCheck_cmpStatus(void);
 dds3ProcessID_t *ProcessStart_cmpStatus(void);

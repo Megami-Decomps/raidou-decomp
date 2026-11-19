@@ -22,6 +22,16 @@ struct tagCMP_WORK {
     u8 unk17[5];
     s32 markID;                  /* 0x1C */
     s32 count;                   /* 0x20 */
+#ifdef VERSION_RAIDOU2
+    u8 unk24[0x14];
+    /* the Kuda list filter (cmpSetFilterEx) */
+    struct sdatUnitWork_t *psUse;   /* 0x38 */
+    ecmpKudaSelectMode eSelMode;    /* 0x3C */
+    ecmpKudaCMU iAttrId;            /* 0x40 */
+    ecmpKudaCMU iSelectAttrId;      /* 0x44 */
+    ecmpKudaCMU iDecideAttrId;      /* 0x48 */
+    BSTF iBadStatus;                /* 0x4C */
+#endif
 };
 
 void cmpCallGetSpriteHnd10(s32 a_sprNo, s32 a_x, s32 a_y, s32 a_alphaRate);
