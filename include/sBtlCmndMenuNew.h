@@ -229,6 +229,7 @@ extern s32 cmpCallGetProcessData10Work[];
 s32 mapMenuStart(void);
 s32 sbtlCheckLoopMotion(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
 struct sdatUnitWork_t *sbtlRefDDS3GBWK2(u32 index);
+struct SBTLUNIT_WORK *GetTargetUnit_sbtlCmndMenuNew(void);
 void sbtlHelp(s32 type, s32 num, u8 alphaRate);
 s32 cmpGetNowSummonerRank(void);
 void sbtlResetAction_Flag(struct SBTLUNIT_WORK *wk);
@@ -268,6 +269,7 @@ s32 cmpCallGetProcessData3(s32 devilId);
 s32 cmpCallBtlSearchUnitID(s32 devilId);
 s16 cmpCallGetProcessData4(s32 second);
 void sbtlInit(void);
+void slCallSin(u8 a_alphaRate);
 #endif
 
 #endif

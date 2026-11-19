@@ -41,3 +41,15 @@ Retail masks both the count and the count + 1 before each test and picks one; th
 Raidou 2: 6 of 93 words differ, first at +0xF8.
 
 Code matches except the font colour: retail builds 0xA09DC300 in v1 before the shift and divide, cc1 swaps v1 and a1. Tried the constant first, a u32 cast and *128. 6 words. Behaviour equal (nm_behaviour clean).
+
+## sbtlBarCtrl (code_002F5CF0, raidou2 0x21C)
+
+Raidou 2: 2 of 135 words differ, first at +0x1E8.
+
+The final evtBtlBarCtrlSub argument (field41FC - 126) * 16 is compiled as sll then subtract 0x7E0 where retail subtracts 126 first (2 words). Tried a switch (jump table), if chains and the zero case as the else arm. Vector checked (R2 battle/menu rows, the paths they take). nm_behaviour reports the missing -0x7E immediate: the draft folds (field41FC - 126) * 16 into x*16 - 2016, the same value.
+
+## sbtlPlayerData (code_002F5CF0, raidou2 0x288)
+
+Raidou 2: 118 of 157 words differ, first at +0x2C; emitted 628 bytes, native 648 bytes.
+
+The bullet animation counter (118 words): retail keeps the incremented sbtlPlayerDataData byte in a register stored on both arms and sign-extended at each use; this reloads it with lb after the store. Tried an s8 local set on both arms, ++ on the global, and a u8 global with (s8) casts. Vector checked: R2 battle/menu rows are TRUNC with no inputs or stores, checked against the asm.

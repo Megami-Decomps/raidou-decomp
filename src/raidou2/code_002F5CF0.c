@@ -22,6 +22,19 @@
 #include "event.h"
 #include "sdfModel.h"
 #include "sBtlAI.h"
+#include "code_r1_002250F8.h"
+#include "effPacket.h"
+#include "dds3KernelDraw.h"
+#include "dds3KernelDraw_0010A750.h"
+#include "evtMoon.h"
+#include "code_r1_0027CBE8.h"
+#include "sBtlItem.h"
+#include "sbtlActAI.h"
+#include "EventBit.h"
+#include "sBtlSkill.h"
+#include "sdfMath.h"
+#include "dds3Basic.h"
+#include "mdlManager.h"
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf7);
 
@@ -443,7 +456,72 @@ void ChkEnableDecideEscape(sBtlMenu_t *wk) {
     itfMenuSetFlagMenu(wk->menuPID, 7, ITFMENU_CB_GF_ENABLE_DECIDE, enable);
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", TutorialMenuCtrl);
+INCLUDE_RODATA(const s32, "code_002F5CF0", sdfSetLocalMapCounterMarkerStateTable);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrILeaveItToYou);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrDonWasteMp);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrHealSupportMe);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrUseMagicAttacks);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrListenToMyOrdersUse);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrNegotiate);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrCancelEscape2);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrBeginBattle);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrCommandMenu2);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrChangeDemon);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrOneShot);
+
+INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrAutoRepeat);
+
+s32 TutorialMenuCtrl(sBtlMenu_t *wk)
+{
+    s32 devilTbl[7] = { 0x1D9, 0x1ED, 0x1EE, 0x184, 0x185, 0x186, 0x187 };
+    struct SBTLUNIT_WORK *unit;
+    SBTL_STAGE_DATA *stage;
+    s32 enable = 0;
+    s32 i;
+    u32 j;
+
+    if (wk_sbtl->stageNo == 0x1DC) {
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (unit != NULL && unit->unit.devilId == 505 && unit->unit.now.hp <= unit->unit.now.maxhp / 100) {
+                return 0;
+            }
+        }
+    }
+    if (wk_sbtl == NULL) {
+        return 0;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL) {
+            for (j = 0; j < 7; j++) {
+                if (unit->unit.devilId == devilTbl[j]) {
+                    return 0;
+                }
+            }
+            if (unit->flg & 0x100000) {
+                enable = 1;
+            }
+        }
+    }
+    stage = &sbtlData100[wk_sbtl->stageNo];
+    if (!(stage->flags & 6) && !enable) {
+        return 0;
+    }
+    itfMenuSetFlagMenu(wk->menuPID, 14, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlChkEnableDecideMenu);
 
@@ -530,34 +608,6 @@ void sbtlCallEnd(sBtlMenu_t *wk) {
         sbtlMenuClose();
     }
 }
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sdfSetLocalMapCounterMarkerStateTable);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrILeaveItToYou);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrDonWasteMp);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrHealSupportMe);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrUseMagicAttacks);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrListenToMyOrdersUse);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrNegotiate);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrCancelEscape2);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrBeginBattle);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrCommandMenu2);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrChangeDemon);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrOneShot);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrAutoRepeat);
-
-INCLUDE_RODATA(const s32, "code_002F5CF0", TutorialMenuCtrlTable);
 
 s32 sbtlChkCallEnd(sBtlMenu_t *wk) {
     s32 end = 0;
@@ -721,7 +771,92 @@ INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrSbtlmenuDraw);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", GetActionUnit);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", GetTargetUnit);
+struct SBTLUNIT_WORK *GetTargetUnit(void) {
+    sBtlMenu_t *menu;
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_WORK *nakama;
+    struct sdatUnitWork_t *stock;
+    SBTLMENU_NODE node;
+    s32 id;
+    s32 i;
+
+    menu = sbtlFuncKatana();
+    if (menu == NULL) {
+        return NULL;
+    }
+    if (!itfMenuProcessCheck(menu->menuPID)) {
+        return NULL;
+    }
+    node = sbtlGetNode();
+    if (node < SBTLMENU_NODE_ORDER) {
+        return NULL;
+    }
+    unit = NULL;
+    switch (node) {
+        case SBTLMENU_NODE_ORDER:
+            unit = GetTargetUnit_sbtlCmndMenuNew();
+            break;
+        case SBTLMENU_NODE_SUMMON:
+            if (menu->step == 9) {
+                id = itfMenuGetSelectID(menu->charPID);
+                if (id < 0) {
+                    break;
+                }
+                stock = sbtlRefDDS3GBWK2(id);
+                if (stock != NULL) {
+                    for (i = 0; i < 2; i++) {
+                        nakama = sbtlGetNakama(i);
+                        if (nakama != NULL && nakama->unit.devilId == stock->devilId) {
+                            unit = nakama;
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+        case SBTLMENU_NODE_RETURN:
+            id = itfMenuGetSelectID(menu->nakamaPID);
+            if (id >= 0 && id < 2) {
+                unit = sbtlGetNakama(id);
+            }
+            break;
+        case SBTLMENU_NODE_ITEM:
+            if (menu->step == 10) {
+                id = itfMenuGetSelectID(menu->charPID);
+                if (id < 0) {
+                    break;
+                }
+                if (id == 0) {
+                    unit = sbtlRefSbtl10(sbtlGetPlayerID());
+                } else if (id > 0) {
+                    stock = sbtlRefDDS3GBWK2(id - 1);
+                    if (stock != NULL) {
+                        for (i = 0; i < 2; i++) {
+                            nakama = sbtlGetNakama(i);
+                            if (nakama != NULL && nakama->unit.devilId == stock->devilId) {
+                                unit = nakama;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } else if (menu->step == 5) {
+                id = itfMenuGetSelectID(menu->charPID);
+                if (id >= 0) {
+                    unit = wk_sbtl->unitList->pUnitL[id].pUnit;
+                }
+            }
+            break;
+        case SBTLMENU_NODE_KATANA:
+        case SBTLMENU_NODE_ANALYZE:
+            id = itfMenuGetSelectID(menu->charPID);
+            if (id >= 0 && wk_sbtl->tgtList != NULL) {
+                unit = wk_sbtl->tgtList->pUnitL[id].pUnit;
+            }
+            break;
+    }
+    return unit;
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlFuncDecideItemSBtlMenuSub);
 
@@ -767,7 +902,80 @@ void sbtlGetIdling_HD(s32 a_x, s32 a_y, u8 a_alphaRate, s32 a_otNo, struct sdatU
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlMoonOff);
 
+/* NON_MATCHING: 133 of 135 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlBarCtrl(void)
+{
+    s32 len = 350;
+    s32 alpha = 126;
+
+    if (!wk_sbtl->bBfrBtlEnd) {
+        wk_sbtl->field4200 = len;
+        wk_sbtl->field41FC = alpha;
+        sbtlData135.hSpr->workEntries[13].geometry.bounds[2] = len * 16;
+        sbtlData135.hSpr->workEntries[41].geometry.bounds[2] = wk_sbtl->field4200 * 16;
+        evtBtlBarCtrlSub(0);
+    } else if (!(wk_sbtl->flg2 & 0x200000) && wk_sbtl->mode != 8) {
+        if (wk_sbtl->field430) {
+            wk_sbtl->field4200 = len;
+            wk_sbtl->field41FC = alpha;
+            sbtlData135.hSpr->workEntries[13].geometry.bounds[2] = len * 16;
+            sbtlData135.hSpr->workEntries[41].geometry.bounds[2] = wk_sbtl->field4200 * 16;
+            evtBtlBarCtrlSub(0);
+            return 0;
+        }
+        if (wk_sbtl->field42CA != 0) {
+            if (wk_sbtl->field42CA != 3) {
+            if (wk_sbtl->field42CA == 2) {
+                alpha = 40;
+                len = 200;
+                wk_sbtl->field4200 = len;
+                wk_sbtl->field41FC = alpha;
+                sbtlData135.hSpr->workEntries[13].geometry.bounds[2] = len * 16;
+                sbtlData135.hSpr->workEntries[41].geometry.bounds[2] = wk_sbtl->field4200 * 16;
+            } else {
+                wk_sbtl->field4200 = len;
+                wk_sbtl->field41FC = alpha;
+                sbtlData135.hSpr->workEntries[13].geometry.bounds[2] = len * 16;
+                sbtlData135.hSpr->workEntries[41].geometry.bounds[2] = wk_sbtl->field4200 * 16;
+            }
+            }
+        } else {
+            alpha = 40;
+            len = 200;
+        }
+    }
+    if (wk_sbtl->field4200 < len) {
+        wk_sbtl->field4200 += 16;
+        if (wk_sbtl->field4200 > len) {
+            wk_sbtl->field4200 = len;
+        }
+    } else if (wk_sbtl->field4200 > len) {
+        wk_sbtl->field4200 -= 16;
+        if (wk_sbtl->field4200 < len) {
+            wk_sbtl->field4200 = len;
+        }
+    }
+    if (wk_sbtl->field41FC < alpha) {
+        wk_sbtl->field41FC += 16;
+        if (wk_sbtl->field41FC > alpha) {
+            wk_sbtl->field41FC = alpha;
+        }
+    } else if (wk_sbtl->field41FC > alpha) {
+        wk_sbtl->field41FC -= 16;
+        if (wk_sbtl->field41FC < alpha) {
+            wk_sbtl->field41FC = alpha;
+        }
+    }
+    sbtlData135.hSpr->workEntries[13].geometry.bounds[2] = wk_sbtl->field4200 * 16;
+    sbtlData135.hSpr->workEntries[41].geometry.bounds[2] = wk_sbtl->field4200 * 16;
+    sbtlData135.hSpr->workEntries[44].geometry.bounds[2] = wk_sbtl->field4200 * 16;
+    evtBtlBarCtrlSub((wk_sbtl->field41FC - 126) * 16);
+    return wk_sbtl->field4200 == 350;
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBarCtrl);
+#endif
 
 INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrSummoner2);
 
@@ -946,7 +1154,65 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallCheckDying);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf3);
 
+/* NON_MATCHING: 44 of 162 words match.  */
+#ifdef NON_MATCHING
+void sbtlPlayerData(void) {
+    sdfVector4_t pos;
+    SBTLPROJECTEDSCREEN_POINT point;
+    struct SBTLUNIT_WORK *unit;
+    s32 x;
+    s32 bx;
+    s32 frame;
+
+    if (sbtlGetMode() == E_CAMERA_MODE_End) {
+        return;
+    }
+    if (wk_sbtl->flg2 & 0x20000) {
+        return;
+    }
+    if (wk_sbtl->flg2 & 0x10000) {
+        return;
+    }
+    if (wk_sbtl->flg2 & 0x40000) {
+        return;
+    }
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (unit == NULL) {
+        return;
+    }
+    DrawStatusBar(&unit->unit, NULL, 10, 1, 0);
+    itfDrawMiscSprite(wk_sbtl->field41FC - 25, 10, 0, sbtlData135.hSpr, 20, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    x = wk_sbtl->field41FC + wk_sbtl->field4200;
+    bx = x - 100;
+    if ((s8)(sbtlPlayerDataData + 1) < 24) {
+        sbtlPlayerDataData++;
+    } else {
+        sbtlPlayerDataData = 0;
+    }
+    frame = (s8)sbtlPlayerDataData / 4;
+    itfDrawMiscSprite(bx, 24, 0, sbtlData135.hSpr, 0, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    if (wk_sbtl->mag > 0) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, frame + 1, (wk_sbtl->magMax < wk_sbtl->mag) ? wk_sbtl->magMax : wk_sbtl->mag,
+                           wk_sbtl->magMax);
+        itfDrawMiscSprite(x - 97, 24, 0, sbtlData135.hSpr, frame + 1, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    }
+    sbtlNum(bx + (4 - itfGetFigure(wk_sbtl->mag)) * 9 + 63, 14, 0x50FF5064, 0xFF, wk_sbtl->mag, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    DrawAddMag(x + 15, 12);
+    if (wk_sbtl->bltNumDrwCnt != 0) {
+        wk_sbtl->bltNumDrwCnt--;
+        SDF_VU0_LOADVECTOR(&unit->pos);
+        SDF_VU0_STOREVECTOR(&pos);
+        pos.y -= 200.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        if (btlProjectForwardPositionToScreen(&point)) {
+            itfDrawMiscSprite(point.x, point.y, 0, sbtlData135.hSpr, 14, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+            sbtlNum(point.x + 10, point.y + 5, 0xA09DC380, 0xFF, sbtlGetGun_Num(), DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlPlayerData);
+#endif
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilAshimotoReset);
 
@@ -1016,7 +1282,42 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallBtlAnalyzeBack2);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlAnalyzeBoss);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSetFontDrawOT);
+void sbtlCallSetFontDrawOT(struct SBTLUNIT_WORK *wk, sdfVector4_t *pos)
+{
+    SBTLPROJECTEDSCREEN_POINT point;
+    u32 ot;
+    s32 x;
+    s32 y;
+    s32 left;
+
+    if (wk_sbtl->panel == NULL || wk_sbtl->panel->hPanelSpr4 == NULL) {
+        return;
+    }
+    VU0_LOAD_VF(vf10, pos);
+    if (!btlProjectForwardPositionToScreen(&point)) {
+        return;
+    }
+    ot = frBtlEnemyDataSub();
+    frSetFontDrawOT(0x68);
+    if (!(wk_sbtl->flg2 & 0x1000) && wk->field6A8 != 0) {
+        sbtlDrawSkillName(point.x - 32, point.y + 16, 0, 0x80A0A0A0, wk->field6A8);
+    }
+    frSetFontDrawOT(ot);
+    if (wk->field708 > 0) {
+        wk->field708--;
+        x = point.x;
+        y = point.y;
+        left = x - 32;
+        eglSetOt(0x68);
+        eglLinkAlpha(0);
+        eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 1);
+        evtSubmitDefaultDepthGradientRect(left, y, 48, 6, 0x80000080, 0x80000080, 0x80000080, 0x80000080);
+        evtSubmitDefaultDepthGradientRect(left, y, wk->unit.now.hp * 48 / wk->unit.now.maxhp, 6, 0x8000C0C0,
+                                          0x8000C0C0, 0x8000C0C0, 0x8000C0C0);
+        eglLinkSprite(x - 64, y - 16, 32, 32, 1, 1, 32, 32, 0x80808080, 0x80808080, 0x80808080, 0x80808080,
+                      sdfGetOrCreateTextureForReference(&evtData2, wk->field624));
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlTargetCursor);
 

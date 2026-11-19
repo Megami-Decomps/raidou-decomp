@@ -3812,7 +3812,6 @@
 0x002BC530	sbtlBtlCheckDeleteEffectSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlCheckDeleteEffect
 0x002BC578	sbtlBtlListProcSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by sbtlListProc
 0x002BC940	sbtlCallBtlGetSkilltbl16	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetSkilltbl
-0x002BD890	sbtlCallCheckEffectDataSingle	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls CheckEffectDataSingle
 0x002BE0F8	sbtlGetEffectData_Num	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEff.sBtlGetEffectData_Num, score 8.15 band B
 0x002BE128	sbtlGetEffectSerialID2_Now	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEff.sBtlGetEffectSerialID2_Now, score 7.2 band B
 0x002BE220	sbtlSetDecAlpha_SerialID2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEff.sBtlSetDecAlpha_SerialID2, score 7.8 band B
@@ -3844,7 +3843,6 @@
 0x002C1310	sbtlLoadEffectData_ID	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEff.sBtlLoadEffectData_ID, score 8.8 band B
 0x002C13E0	sbtlCallBtlSearchDelWorkSide	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchDelWork_Side
 0x002C2358	sbtlCallIsSceanStop2	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls IsSceanStop
-0x002C23A8	sbtlCallPartsCreateFinish	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls effPartsCreateFinish
 0x002C2920	sbtlCallBtlSearchUnitID9	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
 0x002C2AD8	sbtlCallBtlSearchUnitID10	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
 0x002C2C30	sbtlCallBtlSearchUnitID11	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
@@ -8420,8 +8418,6 @@
 0x00478C78	sbtlCallDestroyFontRequestAfterData	data	tier=D	derived-dominant	na	used by sbtlCallDestroyFontRequestAfter (4 of 6 refs, 2 functions)
 0x00478CB0	sbtlGetBSTNameFontData	data	tier=D	derived-sole	na	used by sbtlGetBSTNameFont
 0x00479B70	sbtl_effonfilepath	data	tier=D	derived-table	na	R1 pair
-0x00479C28	sbtlCallPartsCreateFinishData2	data	tier=D	derived-sole	na	used by sbtlCallPartsCreateFinish
-0x00479D68	sbtlData129	data	tier=D	derived-shared	na	used by 2 functions: sbtlCreateEff, sbtlCallMemset9
 0x00479E08	sbtlListProcData	data	tier=D	derived-sole	na	used by sbtlListProc
 0x00479F48	sbtlRefSbtl51Data	data	tier=D	derived-sole	na	used by sbtlRefSbtl51
 0x00479F50	sbtlRefSbtl51Data2	data	tier=D	derived-sole	na	used by sbtlRefSbtl51
@@ -24145,6 +24141,8 @@
 0x00473098	effMappingState	data	tier=C	dds-ref	0.59 (n=D_r1_004172D8)	dds-ref/exact: nfun=20, other=0, sim=1.0, games=2, size=True, sec=True, fn=effResetMappingFlags
 0x004734C0	main_data	data	tier=C	hd	0.47 (n=D_r1_004175D0)	hd/high: conf=high, agree=3, using=3
 0x00479B40	sbtl_effonfilecheck	data	tier=C	hd	na	R1 pair
+0x00479C28	LoadOnMemoryData_sbtlEffData2	data	tier=C	derived-derived-role	na	R1 name of the effectid to onmem table LoadOnMemoryData_sbtlEff reads; replaces sbtlCallPartsCreateFinishData2
+0x00479D68	sbtlCallMemset17Data	data	tier=C	derived-derived-role	na	R1 name of the per-EFFID SBTLEFF_FLG table sbtlCreateEff ORs into ewk->flg (same read, lhu table[effectid]); replaces sbtlData129
 0x00481DE0	evtStageTestState	data	tier=C	dds-ref	0.59 (n=D_r1_0041E870)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=SceneDel_Calc
 0x0049E3F8	ModelTable	data	tier=C	hd	0.37 (n=D_r1_0043BB40)	hd/medium: conf=medium, agree=2, using=2
 0x0049E818	gohSeqUnit2	data	tier=C	hd	0.37 (n=D_r1_0043BE9C)	hd/medium: conf=medium, agree=2, using=3; gohSeqUnit is another symbol

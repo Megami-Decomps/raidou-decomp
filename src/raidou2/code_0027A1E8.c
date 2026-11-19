@@ -183,7 +183,7 @@ void SetFirstAtk_Core(s32 sklid, s32 arg1) {
             && sbtlGetNakama(wk_sbtl->fieldCB1)->field4A4 >= 21) {
             sklid = wk_sbtl->fieldCAC;
         } else {
-            wk_sbtl->fieldEB0 = 80;
+            wk_sbtl->bltNumDrwCnt = 80;
             if (sbtlGetGun_Num() <= 0) {
                 sbtlCreateSM(wk_sbtl->sysmsgList, sbtlGetPChara(), SBTLSM_MODE_NOTBULLET, SKLID_NONE);
                 sbtlPlaySE(0x10035);

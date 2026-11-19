@@ -116,8 +116,8 @@ sbtlCheckMove_BadStatus	code_0027A1E8	raidou2 0xA8	27 of 40 words differ	docs/ma
 Init_sbtlScript	code_0027A1E8	raidou2 0xC0	7 of 48 words differ	docs/matching/code_0027A1E8.md	15		
 sbtlCallBtlGetSkilltbl4	code_0027A1E8	raidou2 0x194	41 of 95 words differ	docs/matching/code_0027A1E8.md	21		
 sbtlDrawEscapeGauge	code_0027A1E8	raidou2 0xF8	53 of 62 words differ	docs/matching/code_0027A1E8.md	29		
-sbtlCheckEnableUseKaja	code_0027A1E8	raidou2 0x174	60 of 89 words differ	docs/matching/code_0027A1E8.md	35		
-SEquationno_06	code_0027A1E8	raidou2 0x1D0	29 of 116 words differ	docs/matching/code_0027A1E8.md	41		
+sbtlCheckEnableUseKaja	code_0027A1E8	raidou2 0x174	60 of 89 words differ	docs/matching/code_0027A1E8.md	35	the full-unit result moves with declarations in headers the unit includes. At dcf72cfd the R2-C3 part 4 header edits turn the -DNON_MATCHING full-unit CONTEXT 55/84 into the standalone code (DIFF 60/89); the standalone compile is unchanged.	
+SEquationno_06	code_0027A1E8	raidou2 0x1D0	29 of 116 words differ	docs/matching/code_0027A1E8.md	43		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
@@ -139,6 +139,7 @@ EventProcTbl_03	code_00295390	raidou1 0x16C	1 of 91 words differ	docs/matching/c
 EventProcTbl_09	code_00295390	raidou1 0xD0	25 of 52 words differ	docs/matching/code_00295390.md	33		
 sbtlCheckBattleWin	code_00295390	raidou1 0x1E8	8 of 122 words differ	docs/matching/code_00295390.md	41		
 sbtlCalcAnim_DmgNumPos	code_00295390	raidou1 0x284	8 of 161 words differ	docs/matching/code_00295390.md	49		
+sbtlGetPointData	code_00295390	raidou1 0xF4	0 of 61 words differ	docs/matching/code_00295390.md	57	the full-unit result moves with declarations in headers the unit includes. At bdf2c164 the R2-C3 part 3 sBtlUnit.h edits alone turn OK into CONTEXT 4/61; at b2308309 the part 4 edits to itf.h, sBtlUnit.h and sbtlWork.h did the same, and reverting any one of them restored it.	
 sbtlRndEncCalc	code_00298540	raidou1 0x204	78 of 130 words differ	docs/matching/code_00298540.md	3		
 sbtlGetLevelAverage	code_00298540	raidou1 0xF4	1 of 61 words differ	docs/matching/code_00298540.md	11		
 sbtlGetRndEncJoken	code_00298540	raidou1 0xE0	10 of 56 words differ	docs/matching/code_00298540.md	19		
@@ -158,6 +159,7 @@ sbtlCallEventBattleStopChack2	code_002A38D8	raidou1 0x298	70 of 166 words differ
 sbtlCallExistProcess2	code_002A38D8	raidou1 0x68	8 of 26 words differ	docs/matching/code_002A38D8.md	71		
 sbtlDraw3DSphere	code_002A38D8	raidou1 0x294	26 of 165 words differ	docs/matching/code_002A38D8.md	79		
 sbtlCallVsprintf2	code_002A38D8	raidou1 0xC8	20 of 48 words differ	docs/matching/code_002A38D8.md	89		
+sbtlGetPointData	code_002C5D78	raidou2 0xF4	3 of 61 words differ	docs/matching/code_002C5D78.md	3	the full-unit result moves with declarations in headers the unit includes. At dcf72cfd the R2-C3 part 4 header edits (sBtlUnit.h, sbtlWork.h, itf.h) turn OK into CONTEXT 3/61.	
 campDhIconIsReady	code_002D7950	raidou1 0x2C	5 of 11 words differ	docs/matching/code_002D7950.md	3		
 SetAddMag	code_002F5CF0	raidou2 0x60	9 of 21 words differ	docs/matching/code_002F5CF0.md	3		
 sbtlInitSBtlSub2	code_002F5CF0	raidou2 0x5C	22 of 24 words differ	docs/matching/code_002F5CF0.md	9		
@@ -166,6 +168,8 @@ sbtlSelectTargetCursor	code_002F5CF0	raidou2 0x6C	18 of 28 words differ	docs/mat
 sbtlDrawFuncTalk	code_002F5CF0	raidou2 0xF0	27 of 60 words differ	docs/matching/code_002F5CF0.md	27		
 sbtlCheckProcEnd	code_002F5CF0	raidou2 0x88	18 of 29 words differ	docs/matching/code_002F5CF0.md	33		
 sbtlHelpEx	code_002F5CF0	raidou2 0x174	6 of 93 words differ	docs/matching/code_002F5CF0.md	39		
+sbtlBarCtrl	code_002F5CF0	raidou2 0x21C	2 of 135 words differ	docs/matching/code_002F5CF0.md	45		
+sbtlPlayerData	code_002F5CF0	raidou2 0x288	118 of 157 words differ	docs/matching/code_002F5CF0.md	51		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	13		
 fclCallSetFontColorNo3	code_002FA4F0	raidou1 0x118	4 of 70 words differ	docs/matching/code_002FA4F0.md	21		
@@ -569,6 +573,9 @@ sbtlMainDraw	sbtlEff_00289E50	raidou2 0x13C	71 of 80 words differ	docs/matching/
 sbtlMainDraw2	sbtlEff_00289E50	raidou2 0xC0	38 of 46 words differ	docs/matching/sbtlEff_00289E50.md	83		
 sbtlLoadEffectData	sbtlEff_00289E50	raidou2 0x170	81 of 90 words differ	docs/matching/sbtlEff_00289E50.md	89		
 sbtlCreateSTP_Unit	sbtlEff_00289E50	raidou2 0xF4	2 of 61 words differ	docs/matching/sbtlEff_00289E50.md	95		
+sbtlForceDeleteAll	sbtlEff_00289E50	raidou2 0x1C0	5 of 112 words differ	docs/matching/sbtlEff_00289E50.md	101		
+sbtlDeleteHaveSkill_EffectWork	sbtlEff_00289E50	raidou2 0x224	107 of 136 words differ	docs/matching/sbtlEff_00289E50.md	107		
+sbtlForceDelete_EffectWork_ID	sbtlEff_00289E50	raidou2 0x2BC	51 of 174 words differ	docs/matching/sbtlEff_00289E50.md	113		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		
 sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSub.md	19		

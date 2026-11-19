@@ -286,7 +286,10 @@ typedef struct SBTL_WORK {
     s16 walk_counter;
     u8 pad77E[0x2];
     s16 field440;
-    u8 pad782[0x1A];
+    u8 pad782[0x6];
+    s32 mag;
+    s32 magMax;
+    u8 pad790[0x79C - 0x790];
     s32 hgunNum;
     u8 pad7A0[0x7C8 - 0x7A0];
     s32 field7C8;
@@ -386,7 +389,7 @@ typedef struct SBTL_WORK {
     u8 padC57[0xC74 - 0xC57];
     s32 fieldC74; /* field1A0 of the first gun target */
     u8 padC78[0xC7B - 0xC78];
-    u8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
+    s8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
     u8 padC7C[0xC84 - 0xC7C];
     u8 fieldC84; /* hit stops sbtlProcHitStop still has to start */
     u8 fieldC85; /* frames until the next of them */
@@ -412,12 +415,14 @@ typedef struct SBTL_WORK {
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */
     u8 padE8D;
     s8 hitStop;
-    u8 padE8F[0xE98 - 0xE8F];
+    u8 padE8F[0xE94 - 0xE8F];
+    s8 effNoStop; /* nonzero: effects keep running while the scene is stopped */
+    u8 padE95[0xE98 - 0xE95];
     struct mdlObj_t *hMapMdl;
     struct mdlObj_t *hMapMdl2;
     u32 mapclr;
     u8 padEA4[0xEB0 - 0xEA4];
-    s32 fieldEB0;
+    s32 bltNumDrwCnt; /* HD name; frames left to draw the bullet count over the player */
     u8 padEB4[0xEC0 - 0xEB4];
     s32 fieldEC0;
     u8 padEC4[0xED8 - 0xEC4];
@@ -432,7 +437,10 @@ typedef struct SBTL_WORK {
     struct sbtlSummonText_t *textList;
     struct sbtlSummonText_t *textCursor; /* sbtlRefSbtl30 searches for a free entry from here */
     HITEFFLIST hitEffList;
-    u8 pad41F8[0x4264 - 0x41F8];
+    u8 pad41F8[0x41FC - 0x41F8];
+    s32 field41FC; /* bar alpha sbtlBarCtrl steps toward 126 or 40 */
+    s32 field4200; /* bar length sbtlBarCtrl steps toward 350 or 200 */
+    u8 pad4204[0x4264 - 0x4204];
     s8 field4264; /* set: sbtlCreateSTP_Unit creates nothing */
     u8 pad4265[0x4288 - 0x4265];
     s8 field4288; /* nonzero: sbtlReset_SupportAction_Shugou does nothing */
@@ -466,7 +474,7 @@ typedef struct SBTL_WORK {
     s32 boss_eventID; /* HD name; unit ID the boss event camera follows */
     u8 pad4314[0x431A - 0x4314];
     s8 bNoEndCam; /* HD name */
-    u8 pad431B[0x431C - 0x431B];
+    s8 field431B; /* set: sbtlEnemyData draws no enemy name plates */
     s8 field431C; /* 1: sbtlSENSEIDMGCHK always starts the talk */
     u8 pad431D[0x4324 - 0x431D];
     s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
@@ -751,7 +759,9 @@ typedef struct SBTL_DEVIL_DATA {
     u32 flag;
     u8 pad04[0xE - 0x4];
     s8 kuda_id; /* HD name */
-    u8 pad0F[0x68 - 0xF];
+    u8 pad0F[0x30 - 0xF];
+    s16 haveskill[16]; /* HD DEVILDATA_WORK haveskill */
+    u8 pad50[0x68 - 0x50];
     SBTLITEM_WORK item[4];
     u8 pad78[0x80 - 0x78];
     s16 field80;
@@ -892,7 +902,9 @@ typedef struct SBTL_STP_NODE {
 typedef struct SBTL_FIELD630_WORK {
     sdfMemHandle_t *handle;
     s32 num;
-    u8 pad008[0x198 - 0x8];
+    u8 pad008[0x14 - 0x8];
+    SKLID sklid[4]; /* talk skills (HD SBTLTALK_WORK sklid) */
+    u8 pad024[0x198 - 0x24];
 } SBTL_FIELD630_WORK;
 
 typedef struct SBTL_STP {
@@ -1210,6 +1222,7 @@ s32 sbtlClearGeneratorWork(void);
 void sbtlSetGunNum(s32 num);
 extern s32 Exit_sbtlData;  /* stage Init_sbtl uses when the caller gives none */
 extern s32 Exit_sbtlData2; /* sword Init_sbtl equips in that case */
+E_CAMERA_MODE sbtlGetMode(void);
 #endif
 s64 sbtlCallBtlCheckTutorialBattle3(void);
 void sbtlGetDevilData(struct SBTLUNIT_WORK *wk, s32 a, s32 b);
@@ -1343,6 +1356,8 @@ s32 sbtlGetGun_Num(void);
 void sbtlRefSbtl66(s32 num);
 s32 sbtlRefSbtl71(s32 num);
 E_CAMMOD_CUT sbtlGetCutFlg(void);
+s32 sbtlCheckSummonUnit(void);
+s32 sbtlCheckSummonUnit_Dead_or_ALive(s8 idx);
 #endif
 s32 sbtlNakamaSetUp(void);
 void sbtlPacData_Init(void);

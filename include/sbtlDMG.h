@@ -351,6 +351,10 @@ s32 sbtlCheckTargetList_csr(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 sbtlClearHitC(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk);
 s32 sbtlCreateHitC_None(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *acter, struct SBTLDMG_HITWORK *twk, SKLID skillid, struct SBTLSKILLP_TBL *tbl, const sdfVector4_t *pos, s32 serialID2);
 s32 sbtlCreateHitC_New(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk, struct SBTLEFF_WORK *ewk, s32 acterID, SKLID skillid, struct SBTLSKILLP_TBL *tbl, struct SBTLSKILLHIT_TBL *hittbl, struct SBTL_HIT_PACDATA *pwk, u16 acterside, s32 serialID2);
+#ifdef VERSION_RAIDOU2
+/* raidou2 symbol name of sbtlCreateHitC_New. */
+s32 sbtlCallMemset6(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLUNIT_WORK *wk, struct SBTLEFF_WORK *ewk, s32 acterID, SKLID skillid, struct SBTLSKILLP_TBL *tbl, struct SBTLSKILLHIT_TBL *hittbl, struct SBTL_HIT_PACDATA *pwk, u16 acterside, s32 serialID2);
+#endif
 SBTLDMG_HITLISTWORK *sbtlCreateHitList(void);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Normal(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 sbtlCreateTargetList_csr(struct SBTLUNIT_WORK *wk, SKLID skillid);

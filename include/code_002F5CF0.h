@@ -14,6 +14,7 @@ typedef struct sbtlInterfaceSpr_t {
     u8 pad08[0x1C - 0x8];
 } sbtlInterfaceSpr_t;
 extern sbtlInterfaceSpr_t sbtlData135;
+extern u8 sbtlPlayerDataData; /* bullet icon animation counter, 0..23 */
 extern char sbtlData175[];
 extern s32 DrawTimeData; /* DrawTime frame count */
 extern char DrawTimeData2[]; /* "%02d" */
@@ -21,5 +22,11 @@ extern const char btlLoadInterfaceSpriteStrBattlePanel[];
 extern const char btlLoadInterfaceSpriteStrBattleInterfaceSpr[];
 void btlLoadInterfaceSprite(void);
 void sbtlInitSBtlSub2(void);
+extern s32 sbtlDrawProcess_sbtlMenuData[]; /* help number per battle menu entry */
+extern char *sbtlDrawProcess_sbtlMenuData2[]; /* .data, not small data */
+extern s8 sbtlFuncDecideItem_sbtlMenuData;
+s32 sbtlBtlFuncDecideItemSBtlMenuSub(s32 *a_tab, s32 *a_max);
+s32 sbtlBtlFuncDecideItemSBtlMenuSub2(s32 *a_tab, s32 *a_max);
+void sbtlBtlDrawProcessSBtlMenuSub(s32 a_tab, s32 a_max, s8 a_sel, s32 a_flag, f32 a_alphaRate);
 
 #endif

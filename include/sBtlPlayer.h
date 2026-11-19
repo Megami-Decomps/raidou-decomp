@@ -89,7 +89,9 @@ s32 sbtlCallBtlCheckDamageTarget3(struct SBTLUNIT_WORK *wk);
 #ifdef VERSION_RAIDOU1
 f32 sbtlCallBtlSearchUnitID6(f32 rate);
 #endif
+#ifndef VERSION_RAIDOU2
 struct SBTLUNIT_WORK *sbtlCallMemset6(s32 index, s32 flg);
+#endif
 s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk);
 s32 sbtlRefSbtl12(void);
 s32 sbtlCallBtlSetReturn(struct SBTLUNIT_WORK *wk);

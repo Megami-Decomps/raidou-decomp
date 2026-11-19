@@ -52,6 +52,7 @@ typedef struct effCacheTexList_Anim_t {
 } effCacheTexList_Anim_t;
 
 void effCacheTexAnimGet(const ctexlHandle_t *set, u32 frame, effCacheTexList_Anim_t *out);
+sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, effRefObj_t *source);
 sdfTexHandle_t *effAssignSampledSegmentReference(const ctexlHandle_t *set, sdfGrOt_t *target,
                                                  const effCacheTexList_Anim_t *sample);
 

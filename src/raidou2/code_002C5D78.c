@@ -614,6 +614,8 @@ s32 sbtlCallBtlCheckDamageTarget8(SBTLVISUAL_DATA *data) {
     return 1;
 }
 
+/* NON_MATCHING: 58 of 61 words match.  */
+#ifdef NON_MATCHING
 s32 sbtlGetPointData(s32 pointID, sdfVector4_t *pos, sdfVector4_t *rot) {
     f32 x, y, z, r;
 
@@ -638,6 +640,9 @@ s32 sbtlGetPointData(s32 pointID, sdfVector4_t *pos, sdfVector4_t *rot) {
     }
     return 1;
 }
+#else
+INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetPointData);
+#endif
 
 void sbtlSetExPos(sdfVector4_t *pos, sdfVector4_t *rot) {
     sb_enc_ex_pos.x = pos->x;

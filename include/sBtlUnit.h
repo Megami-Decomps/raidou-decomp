@@ -258,7 +258,6 @@ struct SBTLUNIT_LISTWORK *sbtlCreateSideList(u8 side, s32 flg);
 struct SBTLUNIT_LISTWORK *sbtlCreateSideList_sbtlUnit(u8 side, s32 flg);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_MASK(u8 side, u32 mask, u32 mask_v);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList(u8 side);
-struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Talk(u8 side);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_AI(u8 side);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Group(u8 side, s32 GroupID);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_PForward(u8 side);
@@ -346,8 +345,8 @@ struct SBTLUNIT_WORK {
     u16 mode;
     u8 pad1E6[0x2];
     sdatUnitWork_t unit;
-    s32 haveskill[18]; /* [0..15] copied to unit.haveskill by sbtlCheckAutoSkill_Enemy; sbtlCallBtlSearchDelWorkSide reads [2..17] */
-    u8 pad3A8[0x3B0 - 0x3A8];
+    s32 haveskill[19]; /* [0..15] copied to unit.haveskill by sbtlCheckAutoSkill_Enemy; sbtlCallBtlSearchDelWorkSide reads [2..17] */
+    u8 pad3AC[0x3B0 - 0x3AC];
     SBTL_AISYO_TBL aisyo_bkup; /* unit.aisyo as loaded, before battle changes */
     u8 pad3F0[0x3F4 - 0x3F0];
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
@@ -448,7 +447,7 @@ struct SBTLUNIT_WORK {
     struct effRefObj_t *cacheRef;
     struct sdfMemHandle_t *field61C; /* a second cache, freed like cacheHandle */
     s32 field620;
-    struct effRefObj_t *field624;
+    struct effRefObj_t *field624; /* icon drawn by sbtlCallSetFontDrawOT */
     u8 pad628[0x630 - 0x628];
     s8 light_buff[3];
     s8 field4F3;
@@ -457,17 +456,31 @@ struct SBTLUNIT_WORK {
     u8 pad68C[0x6A0 - 0x68C];
     s32 field6A0; /* nonzero: motion column sbtlGetMotionNo uses for motions 0..2 */
     s8 bOldDispOff; /* vstatus bit 0x1000 when sbtlSetCmbBfrPos ran */
-    u8 pad6A5[0x6C0 - 0x6A5];
+    u8 pad6A5[0x6A8 - 0x6A5];
+    SKLID field6A8; /* skill name sbtlCallSetFontDrawOT draws */
+    u8 pad6AC[0x6C0 - 0x6AC];
     s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */
     u32 field6C4; /* bit 0x40 blocks hitback */
-    u8 pad6C8[0x6E9 - 0x6C8];
+    s32 byctCnt;
+    u8 pad6CC[0x6E9 - 0x6CC];
     s8 field6E9; /* set by trmSetProcessTerm; HD talkBreakDownFlg, blocks talk */
     u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
-    u8 pad6F5[0x740 - 0x6F5];
+    u8 pad6F5[0x708 - 0x6F5];
+    s32 field708; /* frames left of the HP bar sbtlCallSetFontDrawOT draws */
+    f32 nakama_asimoto_anim;
+    u8 pad710[0x740 - 0x710];
     s32 no_dead_se; /* HD name; skips the dead voice */
     s32 asimoto_mode; /* HD name */
-    u8 pad748[0x770 - 0x748];
+    f32 asimoto_pos_x;
+    f32 asimoto_pos_z;
+    f32 asimoto_pos_x2;
+    f32 asimoto_pos_z2;
+    f32 asimoto_pos_x3;
+    f32 asimoto_pos_z3;
+    f32 asimoto_pos_x4;
+    f32 asimoto_pos_z4;
+    u8 pad768[0x770 - 0x768];
     s32 miusinai;
     s32 kuramasi;
     u8 pad778[0x78C - 0x778];
@@ -477,7 +490,10 @@ struct SBTLUNIT_WORK {
     s32 field79C; /* set when trmCallBtlCheckReturnUnit cannot start the wait motion */
     u8 pad7A0[0x7B4 - 0x7A0];
     s32 eff_wait_kaisin;
-    u8 pad7B8[0x7F4 - 0x7B8]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
+    u8 pad7B8[0x7EC - 0x7B8];
+    s32 cap_skillname_x; /* HD name; screen position of the skill name */
+    s32 cap_skillname_y;
+    /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */

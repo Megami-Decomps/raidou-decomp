@@ -15,6 +15,7 @@ u64 *effPkt2DAllocF4(u32 prim);
 /* sdfGrOtTable entries the crossfade files its capture and its fading copy into. */
 extern sdfGrOt_t dds3UpdateCrossfadeData;
 extern sdfGrOt_t dds3Data9;
+extern sdfGrOt_t evtData2;
 extern sdfGrOt_t dds3UpdateCrossfadeData2;
 extern s8 dds3CrossfadeRunFlag;
 void dds3CrossfadeEnd(void);

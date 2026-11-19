@@ -18,6 +18,7 @@ void sbtlAnalyzeBackEx(u8 a_type, s32 a_x, s32 a_y, u8 a_alphaRate, struct sprHa
 void sbtlAnalyzeLvEx(struct sdatUnitWork_t *unit, s32 a_x, s32 a_y, u8 a_alphaRate, s32 a_bSecret, struct sprHandle_t *a_hSpr);
 void sbtlGetIdling_HD(s32 a_x, s32 a_y, u8 a_alphaRate, s32 a_otNo, struct sdatUnitWork_t *unit);
 void sbtlHelpCantUse(s32 a_type, s32 a_num, u8 a_alphaRate);
+void sbtlCallBtlAnalyzeBack2(struct SBTLUNIT_WORK *wk, u8 a_alphaRate);
 void sbtlCallBtlAnalyzeBack3(struct SBTLUNIT_WORK *wk, u8 a_alphaRate);
 char *sbtlGetPlayerName(void);
 void sbtlCallCheckDying(u16 mode, s32 x, s32 y, u8 alpha, DDS3_OT ot, struct sdatUnitWork_t *unit, s8 bUnknown);
@@ -107,8 +108,12 @@ void sbtlNum3(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_OT a
 void sbtlDrawNum4(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_OT a_ot, u32 rinkaku_rgba, f32 scale);
 void sbtlSummonDevilData_Sub(struct SBTLUNIT_WORK *wk, s32 no);
 void sbtlSummonDevilData(void);
+void DrawAddMag(s32 x, s32 y);
+void DrawStatusBar(struct sdatUnitWork_t *pUnit, struct effCtexHandle_t *cTex, s32 y, s32 mode, s32 idx);
 void sbtlPlayerData(void);
 void sbtlEnemyData(void);
+void sbtlCallSetFontDrawOT(struct SBTLUNIT_WORK *wk, sdfVector4_t *pos);
+s32 sbtlBarCtrl(void);
 void sbtlSummonDevilAshimoto(struct SBTLUNIT_WORK *wk, s32 no);
 #endif
 

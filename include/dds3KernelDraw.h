@@ -101,6 +101,8 @@ void LinkSprite4F(f32 x0, f32 y0, f32 x1, f32 y1, f32 x2, f32 y2, f32 x3, f32 y3
 void dds3CallSetOt3(f32 x, f32 y, f32 z, f32 r);
 #ifdef VERSION_RAIDOU2
 void dds3CallSetOt(void);
+void dds3DrawAddMagSub(s32 arg);
+void nbResultCountEntries(s32 x, s32 y, s32 type);
 #endif
 void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 x3, f32 y3, f32 z3,
                   u32 color0, u32 color1, u32 color2, u32 color3);

@@ -158,7 +158,7 @@ typedef struct SBTLEFF_WORK {
     struct SBTLEFF_WORK *prev;
     struct SBTLEFF_WORK *next;
 #ifdef VERSION_RAIDOU2
-    u8 unk130;
+    s8 bTateBg; /* HD name */
     u8 pad131[0x134 - 0x131];
 #endif
 } SBTLEFF_WORK;
@@ -246,8 +246,15 @@ void sbtlOutHitEff(struct SBTL_HITEFF *pHitEff);
 void sbtlDltHitEff(struct SBTLEFF_WORK *pEffWork);
 s32 sbtlBtlAddHitEffSub(struct SBTLEFF_LISTWORK *lwk, s32 eListID);
 void sbtlAddHitEff(struct SBTLEFF_WORK *pEffWork);
-s32 sbtlCallPartsCreateFinish(struct SBTLEFF_WORK *wk, struct SBTLUNIT_WORK *unit, u16 status);
+void LoadOnMemoryData_sbtlEff(struct SBTLEFF_WORK *wk, struct SBTLUNIT_WORK *wklock, u16 no);
+void sbtlCallPartsCreateFinish2(struct SBTLEFF_WORK *wk);
+extern s32 LoadOnMemoryData_sbtlEffData2[];
+extern s32 sbtlTable2[];
 s32 sbtlCallIsSceanStop2(struct SBTLEFF_WORK *wk);
+s32 EffFunc_TateBg(struct SBTLEFF_WORK *wk);
+s32 sbtlLeaf30(SKLID sklid);
+/* Per-effect process functions, indexed by SBTLEFF_WORK.effectid. */
+extern s32 (*sbtlListProcData[])(struct SBTLEFF_WORK *wk);
 s32 sbtlBtlCheckEffectDataSub(s32 id);
 void sbtlBtlForceDeleteEffectWorkIDSub2(s32 id);
 struct SBTL_STP;
@@ -299,8 +306,18 @@ EFFPDATA_WORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
 #else
 SBTLEFF_PACDATAWORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
 #endif
+#ifdef VERSION_RAIDOU2
+f32 sbtlGetDmgEffScale(struct SBTLUNIT_WORK *wk);
+void sbtlSetDmgEffShinad(struct SBTLEFF_WORK *pEff, struct SBTLUNIT_WORK *pUnit, s32 Type);
+#else
 EFFPDATA_WORK *sbtlGetDmgEffScale(s32 id, s32 no);
+#endif
+#ifdef VERSION_RAIDOU2
+/* raidou2 symbol name of the pack-data lookup raidou1 calls sbtlBtlSetEffectDataSub. */
+SBTLEFF_PACDATAWORK *sbtlBtlCheckDeleteEffectSub(s32 id, s32 no);
+#else
 s32 sbtlBtlCheckDeleteEffectSub(struct SBTLEFF_WORK *wk);
+#endif
 s32 sbtlBtlLoadEffectDataIDMaskSub(SKLID skillid);
 void sbtlGetEffectData_Num(void);
 s32 sbtlSearchEffect_SAB(struct SBTLEFF_LISTWORK *lwk, SKLID BEDsklid, s32 BEDtype);

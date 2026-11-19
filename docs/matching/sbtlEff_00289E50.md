@@ -97,3 +97,21 @@ Same calls and checks; retail keeps -1 in s17 and s18 and the sklid end in s20 (
 Raidou 2: 2 of 61 words differ, first at +0x4C.
 
 One register: retail loads eff_wait_kaisin into v0 after the id == 2 compare, cc1 into v1. Tried a ret variable, an else form and a switch. 2 words. Behaviour equal (nm_behaviour clean).
+
+## sbtlForceDeleteAll (sbtlEff_00289E50, raidou2 0x1C0)
+
+Raidou 2: 5 of 112 words differ, first at +0x168.
+
+The final flag update keeps flg in v1 where retail uses v0 (5 words). Tried one folded SESTOP|FORCERESET constant and two ORs (two ORs give retail's hoisted 0x80000000), a local and a re-read effectid. Vector checked (R2 battle/menu rows, the paths they take).
+
+## sbtlDeleteHaveSkill_EffectWork (sbtlEff_00289E50, raidou2 0x224)
+
+Raidou 2: 107 of 136 words differ, first at +0x10; emitted 544 bytes, native 548 bytes.
+
+Register allocation (107 words): retail keeps the haveskill pointer in fp and spills i, j and a second &sklid[j] pointer IV used by the inner compare; here the inner address stays unreduced (sll j,2 each k iteration) and j takes fp. Tried a while (l++ < 19) inner loop, do-while and for on j, and a pointer local for the compare target. Vector checked (R2 battle/menu rows, the paths they take). nm_behaviour reports the unreduced &sklid[j] (sll 2, +0x360) where the original walks a pointer: the same address.
+
+## sbtlForceDelete_EffectWork_ID (sbtlEff_00289E50, raidou2 0x2BC)
+
+Raidou 2: 51 of 174 words differ, first at +0x3C; emitted 696 bytes, native 700 bytes.
+
+Retail reads the pack status bits and gstat through base + no*0x60 + 0x10 (the address of effpac[no].num) with offsets 6 and 4; the draft reads them from the pac pointer at 0x16 and 0x14 (51 words). Tried a pwk pointer walk, pac->pwk[i] indexing, the store order and a single clamp ternary. Vectors do not reach, checked against the asm. nm_behaviour reports base+no*0x60+0x10 with +0x50/+0x54 where the draft uses +0x60/+0x64 from the entry: the same addresses.

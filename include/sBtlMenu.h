@@ -40,6 +40,9 @@ void sbtlMenuOpen(void);
 /* Battle menu strings by menu index. */
 extern char *sbtlCallMenuClearMenuAllData[];
 void ChkEnableDecideEscape(sBtlMenu_t *wk);
+#ifdef VERSION_RAIDOU2
+s32 TutorialMenuCtrl(sBtlMenu_t *wk);
+#endif
 u8 sbtlCheckProcEnd(sBtlMenu_t *wk);
 s32 sbtlCheckTalkSelectTarget(struct SBTLUNIT_WORK *unit);
 SBTLMENU_ENABLETALK sbtlCheckEnableTalk(struct SBTLUNIT_WORK *unit);
