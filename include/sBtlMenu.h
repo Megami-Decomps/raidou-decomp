@@ -118,5 +118,11 @@ extern struct itfSprList_t sbtlSetMenuImageData[];
 extern struct itfSprList_t sbtlSetMenuImageData2[];
 extern struct itfSprList_t sbtlSetMenuImageData3[];
 extern struct itfSprList_t sbtlSetMenuImageData4[];
+#ifdef VERSION_RAIDOU2
+extern struct itfSprList_t cmpPartyAnimFuncData[];
+extern struct itfSprList_t cmpPartyAnimFuncData2[];
+extern struct itfSprList_t cmpPartyAnimFuncData3[];
+extern struct itfSprList_t cmpPartyAnimFuncData4[];
+#endif
 
 #endif

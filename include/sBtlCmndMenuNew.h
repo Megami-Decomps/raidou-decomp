@@ -65,12 +65,13 @@ s32 sbtlCallBtlDat(void);
 s32 sbtlCallBtlDat2(void);
 s32 sbtlCallBtlDat3(void);
 void sbtlRefSbtl25(sbtlSummonText_t *text);
+void sbtlRefSbtl26(sbtlSummonText_t *text);
 void sbtlRefSbtl27(void (*func)(sbtlSummonText_t *text));
 void sbtlRefSbtl28(void);
-void sbtlRefSbtl29(sbtlSummonText_t *text, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void sbtlRefSbtl29(sbtlSummonText_t *text, sdfVector4_t *pos, s32 arg2, s32 arg3, s32 arg4);
 sbtlSummonText_t *sbtlRefSbtl30(void);
 void sbtlCallSetOt(sbtlSummonText_t *text);
-s32 sbtlBtlFirstSummonTextSetSub(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+s32 sbtlBtlFirstSummonTextSetSub(sdfVector4_t *pos, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 
 /* Battle talk files: names, then the two loaded files' handles, data and sizes. */
 extern const char *sbtlData136[];

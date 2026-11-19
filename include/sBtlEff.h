@@ -305,7 +305,9 @@ void Draw_sbtlEff(EFFID id, s32 *starttime, s32 *life);
 s32 sbtlCallMemset18(SBTLEFF_PACLIST *pac, SKLID skillid, u16 flg, void *pData);
 s32 sbtlGetNumOfEffect_SAB(struct SBTLEFF_LISTWORK *lwk, s32 BEDtype, u8 side);
 SBTLEFF_WORK *sbtlCallMemAllocDirect3(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, s32 id, s32 no);
+#ifdef VERSION_RAIDOU1
 s32 sbtlRefSbtl26(struct SBTLEFF_WORK *wk);
+#endif
 
 /* Per-effect process functions, indexed by SBTLEFF_WORK.effectid. */
 extern s32 (*sbtlCallPadVibeFadeUpdateData[])(struct SBTLEFF_WORK *wk);

@@ -319,7 +319,8 @@ typedef struct SBTL_WORK {
     struct scrProcessWork_s *hAIScript;
     u8 pad9E8[0x4];
     struct SBTLUNIT_WORK *scrUnit;
-    u8 pad9F0[0xA0C - 0x9F0];
+    u8 pad9F0[0xA08 - 0x9F0];
+    s32 scrStep;
     s32 field678;
     s32 scrUnitNum;
     struct SBTLUNIT_WORK *scrUnitList[16];
@@ -327,7 +328,13 @@ typedef struct SBTL_WORK {
     s32 scrCnt[4];
     s32 scrEncountNo;
     s32 scrFlag;
-    u8 padA70[0xC4C - 0xA70];
+    s8 scr_flg;
+    s32 enshutuCnt[8];
+    s32 enshutuCmpCnt[8];
+    s32 scrData[8];
+    s32 scrWarp[4];
+    s32 EscOdds;
+    u8 padAE8[0xC4C - 0xAE8];
     s32 midiSkillCount;
     u8 pad_C50[0x4];
     u8 field878;
@@ -372,7 +379,10 @@ typedef struct SBTL_WORK {
     s32 timeMode;
     u8 pad42D8[0x42DD - 0x42D8];
     s8 field42DD;
-    u8 pad42DE[0x4324 - 0x42DE];
+    u8 pad42DE[0x4309 - 0x42DE];
+    s8 geirinstep;
+    s16 geirincnt;
+    u8 pad430C[0x4324 - 0x430C];
     s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
 } SBTL_WORK;
 #else
@@ -987,6 +997,24 @@ extern const char slStrCampEffTesEpl[]; /* "/camp/EFF_TES.EPL" */
 extern u32 effScalyTextureHandle3;
 extern void *fldTitleMiniWork6;
 extern dds3ProcessID_t *sbtlCallGetProcessStatData;
+/* HD sBtlBossEvent_t, the boss event process work (0x30 bytes in R2). */
+typedef struct sBtlBossEvent_t {
+    struct sdfMemHandle_t *hMem;    /* 0x00 */
+    dds3ProcessID_t *listPID;       /* 0x04 */
+    struct sdfMemHandle_t *hDatScr; /* 0x08 */
+    u8 *pDatScr;                    /* 0x0C */
+    s32 scrReq;                     /* 0x10 */
+    dds3ProcessID_t *scrPID;        /* 0x14 */
+    u8 step;                        /* 0x18 */
+    u8 flag;                        /* 0x19 */
+    s8 end_mode;                    /* 0x1A */
+    s8 end_enemypos_no_reset;       /* 0x1B */
+    s16 fade_count;                 /* 0x1C */
+    s16 eventtype;                  /* 0x1E */
+    u8 unk20[0xC];
+    void *pTypeBossNmlEvent;        /* 0x2C */
+} sBtlBossEvent_t;
+SIZE_CHECK(sBtlBossEvent_t_size, sBtlBossEvent_t, 0x30);
 extern dds3ProcessID_t *inputpanel_id2;
 #endif
 extern SBTL_PACDATA_WORK *sbtlData84;

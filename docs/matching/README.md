@@ -45,6 +45,7 @@ menu scenarios); an entry says which paths they covered.
 | 5 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
 | 5 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 4 | code_0014B660 | raidou1 | [code_0014B660.md](code_0014B660.md) |
+| 4 | code_0027A1E8 | raidou2 | [code_0027A1E8.md](code_0027A1E8.md) |
 | 4 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 4 | event/evtEventViewerMenu | raidou1, raidou2 | [event/evtEventViewerMenu.md](event/evtEventViewerMenu.md) |
 | 4 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
@@ -56,7 +57,6 @@ menu scenarios); an entry says which paths they covered.
 | 3 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
 | 3 | code_0024DF70 | raidou1 | [code_0024DF70.md](code_0024DF70.md) |
 | 3 | code_002743E0 | raidou2 | [code_002743E0.md](code_002743E0.md) |
-| 3 | code_0027A1E8 | raidou2 | [code_0027A1E8.md](code_0027A1E8.md) |
 | 3 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
 | 3 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 3 | fclDrawBack | raidou1, raidou2 | [fclDrawBack.md](fclDrawBack.md) |
@@ -166,6 +166,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | effect/effBattle | raidou1, raidou2 | [effect/effBattle.md](effect/effBattle.md) |
 | 1 | effect/effEvent | raidou1, raidou2 | [effect/effEvent.md](effect/effEvent.md) |
 | 1 | effect/polyManager | raidou1, raidou2 | [effect/polyManager.md](effect/polyManager.md) |
+| 1 | event/evtCommand | raidou2 | [event/evtCommand.md](event/evtCommand.md) |
 | 1 | event/evtMoon | raidou1 | [event/evtMoon.md](event/evtMoon.md) |
 | 1 | evtTmxPreLoad | raidou1 | [evtTmxPreLoad.md](evtTmxPreLoad.md) |
 | 1 | facility/fclCombineInit | raidou1 | [facility/fclCombineInit.md](facility/fclCombineInit.md) |

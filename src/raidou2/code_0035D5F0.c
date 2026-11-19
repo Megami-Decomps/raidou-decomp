@@ -74,7 +74,35 @@ dds3ProcessID_t *fldNmeProcess(void) {
 
 INCLUDE_ASM(const s32, "code_0035D5F0", fldCallMemGetPtr);
 
-INCLUDE_ASM(const s32, "code_0035D5F0", fldCallMemGetPtr2);
+s32 fldCallMemGetPtr2(dds3ProcessID_t *id) {
+    fldNmeWork_t *work = sdfMemGetPtr(id->workdata);
+
+    switch (work->unk8) {
+    case 1:
+        fclCallSetSelect(&work->draw, 0);
+        fclLeaf15(&work->draw);
+        fldCallMemGetPtr9(id);
+        fclCallSetFontColorNo(&work->draw, work->unkC, work->unk30, work->unk10, work->unk34, work->unk38);
+        fclFunc6(&work->draw, work->unk10, work->unk3C);
+        fldCallMemGetPtr10(id);
+        break;
+    case 2:
+        fclCallSetSelect(&work->draw, 0);
+        fclLeaf15(&work->draw);
+        fldCallMemGetPtr9(id);
+        fclFunc6(&work->draw, work->unk10, work->unk3C);
+        fldCallMemGetPtr11(id);
+        break;
+    case 3:
+        fclCallSetSelect(&work->draw, 0);
+        fclLeaf15(&work->draw);
+        fldCallMemGetPtr9(id);
+        fclFunc6(&work->draw, work->unk10, work->unk3C);
+        fldCallMemGetPtr4(id);
+        break;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0035D5F0", fldLeaf28);
 

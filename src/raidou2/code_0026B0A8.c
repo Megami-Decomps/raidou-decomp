@@ -118,7 +118,44 @@ void sbtlSEVolAngleCalc(u32 no, s32 vol)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlay3DSE_BaseVol);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", DevilFootSEProc);
+void DevilFootSEProc(struct SBTLUNIT_WORK *wk)
+{
+    s32 devilID;
+    SBTLSOUND_FOOTWORK *fwk;
+    DVLFOOTSE_WORK *foot;
+    f32 frame;
+    f32 prev;
+    s32 i;
+    u32 se;
+
+    if (wk->field1A0 == wk_sbtl->targetUnitID && wk_sbtl->battleMode == 1) {
+        devilID = 321;
+    } else {
+        devilID = wk->unit.devilId;
+    }
+    fwk = &wk->se.footwk;
+    foot = sbtlDevilFootSEProcSub(devilID);
+    if (wk->hModel != NULL) {
+        frame = wk->hModel->first->frame;
+    } else {
+        frame = 0.0f;
+    }
+    prev = fwk->prevFrame;
+    fwk->prevFrame = frame;
+    if (frame < prev) {
+        fwk->played = 0;
+    }
+    for (i = 0; i < foot->frameNum; i++) {
+        if (i >= fwk->played && foot->frame[i] <= frame) {
+            se = sbtlCallGetRandIntA5(fwk, devilID);
+            if (se != 0) {
+                sbtlSEVolAngleCalc(se, sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96));
+                fwk->prevSMGID = se;
+                fwk->played = i + 1;
+            }
+        }
+    }
+}
 
 s32 NakamaMotion3DSE(struct SBTLSOUND_FOOTWORK *fwk, s32 devilID, f32 frame)
 {

@@ -40,6 +40,8 @@
 #include "mdlManager.h"
 #include "sdfMemory.h"
 #include "evtPolygonMovie.h"
+#include "dat.h"
+#include "code_001C32D8.h"
 
 extern fileRequest_t *evtCallMemsetData;
 extern const char evtStrEffeplLoad[];
@@ -2298,7 +2300,50 @@ void CallBattleSub_evtCommand(s32 encno, s32 eventno) {
     scrAllReleaseScript();
 }
 #else
+/* NON_MATCHING: 84 of 87 words match.  */
+#ifdef NON_MATCHING
+void CallBattleSub_evtCommand(s32 encno, s32 eventno) {
+    SBTLMAIN_DATA data;
+    sdfVector4_t pos;
+    sdfVector4_t rot;
+
+    memset(&pos, 0, 0x10);
+    pos.w = 1.0f;
+    memset(&rot, 0, 0x10);
+    rot.w = 1.0f;
+    if (DDS3_GBWK->unk48FC != 0) {
+        prmRefDDS3GBWK4();
+        DDS3_GBWK->unk48FC = 0;
+        DDS3_GBWK->unkD1D4 = 0;
+    }
+    sbtlCountClear();
+    mapRndEncParamSet();
+    p2sdPlaySE(15, 127, 63);
+    encStart();
+    data.encountno = encno;
+    data.type = 1;
+    SDF_VU0_LOADVECTOR(&pos);
+    SDF_VU0_STOREVECTOR(&data.pos);
+    SDF_VU0_LOADVECTOR(&rot);
+    SDF_VU0_STOREVECTOR(&data.rot);
+    data.stock_id = -1;
+    data.offset_x = 0.0f;
+    data.offset_z = 0.0f;
+    data.mode = 0;
+    if (encno == 31) {
+        data.mode = 1;
+    }
+    if (evtBitCheck(2993)) {
+        data.mode = 3;
+        data.stock_id = datGetStockDevilIndex(DDS3_GBWK->mapSummonID);
+    }
+    evtPendingEventSelection = eventno;
+    dds3AdminiCallSequence(21, &data, sizeof(data), 0);
+    scrAllReleaseScript();
+}
+#else
 INCLUDE_ASM(const s32, "event/evtCommand", CallBattleSub_evtCommand);
+#endif
 #endif
 
 s32 evtCommand_CALL_BATTLE(void)

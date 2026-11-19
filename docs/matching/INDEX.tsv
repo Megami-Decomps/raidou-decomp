@@ -103,6 +103,7 @@ sbtlCreateSideList_sbtlUnit	code_002743E0	raidou2 0x120	2 of 72 words differ	doc
 sbtlUnit_CheckSummon_LoadExecOk_sub	code_0027A1E8	raidou2 0xB8	1 of 46 words differ	docs/matching/code_0027A1E8.md	3		
 sbtlCheckMove_BadStatus	code_0027A1E8	raidou2 0xA8	27 of 40 words differ	docs/matching/code_0027A1E8.md	9		
 Init_sbtlScript	code_0027A1E8	raidou2 0xC0	7 of 48 words differ	docs/matching/code_0027A1E8.md	15		
+sbtlCallBtlGetSkilltbl4	code_0027A1E8	raidou2 0x194	41 of 95 words differ	docs/matching/code_0027A1E8.md	21		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
@@ -357,6 +358,7 @@ effSimpleBEDDelete	effect/effEvent	raidou1 0x40, raidou2 0x40	1 of 16 words diff
 effPCPShockWave02Init	effect/effPCPMisc	raidou1 0x2C0, raidou2 0x2C0	7 of 176 words differ	docs/matching/effect/effPCPMisc.md	3		
 effPCPZiodin03Init	effect/effPCPMisc	raidou1 0x2C0, raidou2 0x2C0	7 of 176 words differ	docs/matching/effect/effPCPMisc.md	14		
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3		
+CallBattleSub_evtCommand	event/evtCommand	raidou2 0x15C	3 of 87 words differ	docs/matching/event/evtCommand.md	3		
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3		
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9		
 ReqMessage	event/evtEventViewer	raidou1 0x1E8	4 of 122 words differ	docs/matching/event/evtEventViewer.md	17	renaming the fldProcess.h prototype mapCalcFXY to mapDebugLightSet, with no other change, turned a full-unit match into 4 differing words. The B4-field-big header declaration edits make the full unit match again; it stays NON_MATCHING. The K03-effect header declaration edits (8 headers, no change to the unit) turned the match back into DIFF 4/122.	

@@ -5,6 +5,7 @@
 #include "kernel.h"
 
 void Create_fclMsg(void);
+void Delete_fclMsg(void);
 dds3ProcessFunc_t Process_fclMsg(dds3ProcessID_t *PID);
 void SetMessagePos(u8 a_pos);
 s32 Update_fclMsg(void);

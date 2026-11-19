@@ -869,7 +869,20 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpSetLightDef);
 
 INCLUDE_ASM(const s32, "code_003648C0", ModelLoadBuffEnd);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCampEFFTES);
+void cmpCampEFFTES(void)
+{
+    sdfVector4_t position = cmpCampEFFTESTable;
+
+    if (fldTitleMiniWork5 == NULL) {
+        fldTitleMiniWork5 = sdfDevLoadFileEx(cmpStrCampEffTesEpl, &cmpCampEFFTESData, NULL);
+        fldTitleMiniTex5 = dds3EffectLoadEPL((void *)cmpCampEFFTESData);
+        fclInitDstEff2Sub((struct plistHandle_t *)fldTitleMiniTex5->instance);
+        dds3EffectReset(fldTitleMiniTex5);
+        dds3EffectSetPosition(fldTitleMiniTex5, &position);
+        dds3EffectSetLoop_dds3Effect(fldTitleMiniTex5, 1);
+        dds3EffectSetScale(fldTitleMiniTex5, 1.5f);
+    }
+}
 
 void cmpDeleteEffect(void) {
     if (fldTitleMiniTex5 != NULL) {

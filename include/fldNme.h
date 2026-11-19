@@ -182,3 +182,4 @@ void fclFunc6(fldNmeDraw_t *draw, s32 mode, s32 index);
 void fclCallSetSelect(fldNmeDraw_t *draw, s32 flag);
 void fldCallMemGetPtr10(dds3ProcessID_t *id);
 void fldCallMemGetPtr11(dds3ProcessID_t *id);
+void fldCallMemGetPtr4(dds3ProcessID_t *id);

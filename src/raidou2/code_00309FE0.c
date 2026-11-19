@@ -23,6 +23,8 @@
 #include "sBtlSM.h"
 #include "sBtlEff.h"
 #include "code_002F5CF0.h"
+#include "fclMsg.h"
+#include "sBtlMenu.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -862,7 +864,14 @@ s32 evtCallGetProcessData4(dds3ProcessID_t *pid) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", cmpPartyAnimFunc);
+void cmpPartyAnimFunc(dds3ProcessID_t *PID) {
+    itfMenuLinkSprite(PID, wk_sbtl->panel->hPanelSpr3);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_TITLE, 0, 0, 0, 0, 23, 24, NULL, cmpPartyAnimFuncData3);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_PANEL, 322, 71, 128, 23, 17, 4, NULL, cmpPartyAnimFuncData);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_SELECT, 322, 71, 128, 23, 17, 4, NULL, cmpPartyAnimFuncData2);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_SCROLL, 0, 0, 3, 163, 490, 84, NULL, cmpPartyAnimFuncData4);
+    itfMenuSetImageColor(PID, ITFMENU_IMG_DAT_SCROLL, 200, 180, 80, 128);
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData9);
 
@@ -971,7 +980,22 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl24);
 
 INCLUDE_ASM(const s32, "code_00309FE0", Process_sbtlBossEvent);
 
-INCLUDE_ASM(const s32, "code_00309FE0", Shutdown);
+void Shutdown(dds3ProcessID_t *PID) {
+    sBtlBossEvent_t *wk = dds3GetProcessData(PID);
+
+    Delete_fclMsg();
+    if (wk->scrPID != NULL) {
+        dds3KillProcess(wk->scrPID, 0);
+        wk->scrPID = NULL;
+    }
+    if (wk->hDatScr != NULL) {
+        sdfMemFreeDelayedDirect(wk->hDatScr);
+        wk->hDatScr = NULL;
+    }
+    wk->pDatScr = NULL;
+    sdfMemFreeDirect(wk->hMem);
+    sbtlCallGetProcessStatData = NULL;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlProcessStart);
 
@@ -1049,7 +1073,17 @@ void sbtlRefSbtl25(sbtlSummonText_t *text) {
     wk_sbtl->textList = text;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl26);
+void sbtlRefSbtl26(sbtlSummonText_t *text) {
+    if (text->prev != NULL) {
+        text->prev->next = text->next;
+    }
+    if (text->next != NULL) {
+        text->next->prev = text->prev;
+    }
+    if (wk_sbtl->textList == text) {
+        wk_sbtl->textList = text->next;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl27);
 
@@ -1087,7 +1121,16 @@ void sbtlRefSbtl28(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl29);
+void sbtlRefSbtl29(sbtlSummonText_t *text, sdfVector4_t *pos, s32 arg2, s32 arg3, s32 arg4) {
+    text->type = 1;
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&text->pos);
+    text->field5C = arg2;
+    text->count = arg3;
+    text->unitID = arg4;
+    sbtlRefSbtl25(text);
+    wk_sbtl->textCursor = text + 1;
+}
 
 /* NON_MATCHING: 29 of 36 words match.  */
 #ifdef NON_MATCHING
@@ -1113,13 +1156,13 @@ sbtlSummonText_t *sbtlRefSbtl30(void) {
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl30);
 #endif
 
-s32 sbtlBtlFirstSummonTextSetSub(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+s32 sbtlBtlFirstSummonTextSetSub(sdfVector4_t *pos, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     sbtlSummonText_t *text = sbtlRefSbtl30();
 
     if (text == NULL) {
         return 0;
     }
-    sbtlRefSbtl29(text, arg0, arg1, arg2, arg3);
+    sbtlRefSbtl29(text, pos, arg1, arg2, arg3);
     text->field74 = arg4;
     return 1;
 }

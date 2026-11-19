@@ -15,6 +15,7 @@
 #include "code_0027A1E8.h"
 #include "AW_XAtkPad.h"
 #include "sBtlPlayer.h"
+#include "EventBit.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -415,11 +416,93 @@ s32 SEquationno_00(struct SBTLUNIT_WORK *wk, s16 skillid) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl3);
+s32 sbtlCallBtlGetSkilltbl3(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 flag;
+    s32 i;
+
+    flag = (tbl->type & 0xFFF) == 1 && (tbl->flg & 1);
+    switch (skillid) {
+        case 3:
+        case 0x12:
+        case 0x22:
+        case 0x32:
+        case 0x60:
+        case 0x61:
+        case 0x191:
+        case 0x192:
+        case 0x214:
+        case 0x224:
+        case 0x234:
+        case 0x244:
+            flag = 1;
+            break;
+    }
+    if (flag == 1) {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (sbtlCheckCrossCircle(&wk->pos, wk->model->field11C * 2.5f, &unit->pos, unit->model->field11C)) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_02);
 
+/* NON_MATCHING: 60 of 101 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlGetSkilltbl4(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    SBTL_PANEL *panel;
+    s32 aisyo;
+    s32 count;
+    s32 type;
+    s32 i;
+
+    if (tbl->area & 0x4000) {
+        return 1;
+    }
+    count = 0;
+    for (i = 0; i < wk_sbtl->field408->count; i++) {
+        unit = wk_sbtl->field408->pUnitL[i].pUnit;
+        if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+            aisyo = sbtlCheckAisyoEx(unit, tbl->attr, NULL);
+            if (aisyo != 0x1000 && aisyo != 0x2000) {
+                count++;
+            }
+        }
+    }
+    if (count != 0) {
+        return 1;
+    }
+    type = tbl->type & 0xFFF;
+    switch (type) {
+        case 1:
+        case 2:
+            panel = wk_sbtl->panel;
+            if (panel->setdata[GetMeireiNo(wk)].meirei_no == 3) {
+                return 1;
+            }
+            return 0;
+        case 3:
+        case 5:
+            panel = wk_sbtl->panel;
+            if (panel->setdata[GetMeireiNo(wk)].meirei_no == 4) {
+                return 1;
+            }
+            return 0;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl4);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_04);
 
@@ -865,7 +948,34 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallRegistScript2);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallReleaseScript2);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl13);
+void sbtlAllInit(void)
+{
+    s32 i;
+
+    wk_sbtl->scrStep = 0;
+    wk_sbtl->scrEncountNo = wk_sbtl->stageNo;
+    wk_sbtl->scrUnitNum = 0;
+    wk_sbtl->field678 = 0;
+    for (i = 0; i < 4; i++) {
+        wk_sbtl->scrCnt[i] = 0;
+    }
+    wk_sbtl->scrCmpCnt = 0x7FFFFFFF;
+    for (i = 0; i < 16; i++) {
+        wk_sbtl->scrUnitList[i] = NULL;
+    }
+    for (i = 0; i < 8; i++) {
+        wk_sbtl->scrData[i] = 0;
+    }
+    for (i = 0; i < 3; i++) {
+        wk_sbtl->scrWarp[i] = -1;
+    }
+    wk_sbtl->scrWarp[3] = 0;
+    wk_sbtl->geirinstep = 0;
+    wk_sbtl->geirincnt = 0;
+    wk_sbtl->EscOdds = 0;
+    wk_sbtl->scrFlag = 0;
+    evtBitOff(2239);
+}
 
 /* NON_MATCHING: 41 of 48 words match.  */
 #ifdef NON_MATCHING

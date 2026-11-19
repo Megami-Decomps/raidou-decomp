@@ -51,6 +51,8 @@ extern s32 cmpData26;
 extern struct sdfMemHandle_t *fldTitleMiniWork5;
 extern u32 cmpCampEFFTESData;
 extern struct effHandle_t *fldTitleMiniTex5;
+extern const sdfVector4_t cmpCampEFFTESTable;
+extern const char cmpStrCampEffTesEpl[]; /* "/camp/EFF_TES.EPL" */
 
 /* nbLeaf71 is empty in retail. */
 void nbLeaf69(s32 a, s32 b);
