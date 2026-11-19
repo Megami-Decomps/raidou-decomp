@@ -30,6 +30,8 @@
 #include "sBtlSkill.h"
 #include "fclMisc.h"
 #include "sdfDelayedResrc.h"
+#include "scr.h"
+#include "itfMesManager.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -419,7 +421,13 @@ s32 evtFunc20(void) {
 
 INCLUDE_ASM(const s32, "code_003648C0", evtStartTerminalMenuMessage);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpResetMotion);
+s32 cmpResetMotion(s32 a_motNo)
+{
+    if ((u32)a_motNo >= 2) {
+        return 0;
+    }
+    return cmpResetMotFunc[a_motNo]();
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpFreeSpriteMem);
 
@@ -497,7 +505,19 @@ struct sprHandle_t *cmpGetSpriteHnd(CMP_SPR a_no)
     return hSpr;
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpFirstInitSub);
+void cmpFirstInitSub(void)
+{
+    s32 i;
+
+    for (i = 0; i < CMP_SPR_NUM; i++) {
+        cmpWork3[i] = NULL;
+        evtWork6[i] = NULL;
+        cmpWork8[i] = 0;
+    }
+    for (i = 0; i < 2; i++) {
+        evtWork[i] = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallDevLoadFileEx);
 
@@ -1538,15 +1558,149 @@ INCLUDE_ASM(const s32, "code_003648C0", nmeSetupCmpKudaSub2);
 
 INCLUDE_ASM(const s32, "code_003648C0", Setup_cmpKuda);
 
+/* NON_MATCHING: 90 of 92 words match.  */
+#ifdef NON_MATCHING
+void cmpCallGetStockDevilNums(void)
+{
+    dds3ProcessID_t *pid = cmpPartyDrawFuncSub();
+    s32 num = datGetStockDevilNums();
+    struct tagCMP_WORK *wk = cmpGetStockPID();
+    s32 sel = itfMenuGetSelectID(pid);
+    s32 id;
+
+    if ((u32)sel < 3 && itfMenuGetFlagMenu(pid, sel, 1)) {
+        itfCallGetProcessData5(pid, sel);
+        return;
+    }
+    if (itfMenuGetFlagMenu(pid, sel, 1) && sel + wk->page * 8 - 4 < num) {
+        return;
+    }
+    for (sel++; sel < 4; sel++) {
+        if (itfMenuGetFlagMenu(pid, sel, 1)) {
+            itfCallGetProcessData5(pid, sel);
+            return;
+        }
+    }
+    for (sel = wk->page * 8; sel < wk->page * 8 + 8; sel++) {
+        id = sel - wk->page * 8 + 4;
+        if (itfMenuGetFlagMenu(pid, id, 1)) {
+            itfCallGetProcessData5(pid, id);
+            return;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockDevilNums);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockPID3);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateFontCharPID);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpChangeChkTabPage);
+/* NON_MATCHING: 51 of 101 words match.  */
+#ifdef NON_MATCHING
+s32 cmpChangeChkTabPage(CMP_MENU_ID a_id)
+{
+    s32 ret = 1;
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpChangeTabPage);
+    if (itfMenuGetFlag(cmpPartyDrawFuncSub(), 0x200)) {
+        return 0;
+    }
+    switch (a_id) {
+    case CMP_MENU_ID_SKILLUSE:
+        if (cmpData40 != 0) {
+            if (cmpData40 != 3) {
+                ret = 0;
+            } else if (cmpCallGetStockPID5Data >= 0) {
+                ret = 0;
+            }
+        }
+        break;
+    case CMP_MENU_ID_USE:
+        if (cmpChangeChkTabPageSub() != 1) {
+            ret = 0;
+        } else if (cmpChangeChkTabPageSub2() >= 0) {
+            ret = 0;
+        }
+        break;
+    case CMP_MENU_ID_SUMMON:
+    case CMP_MENU_ID_PART:
+    case CMP_MENU_ID_SKILLBT:
+        if (cmpData40 != 0) {
+            ret = 0;
+        }
+        break;
+    case CMP_MENU_ID_SWORD:
+    case CMP_MENU_ID_JEWEL:
+    case CMP_MENU_ID_MATERIAL:
+        ret = 0;
+        break;
+    case CMP_MENU_ID_SWAP:
+        if ((u8)cmpData40 >= 2) {
+            ret = 0;
+        }
+        break;
+    case CMP_MENU_ID_STATUS:
+        ret = cmpData40 != 1;
+        break;
+    }
+    return ret;
+}
+#else
+INCLUDE_ASM(const s32, "code_003648C0", cmpChangeChkTabPage);
+#endif
+
+void cmpChangeTabPage(dds3ProcessID_t *PID)
+{
+    struct tagCMP_WORK *wk = dds3GetProcessData(PID);
+    s16 old;
+    s32 i;
+
+    if (!cmpChangeChkTabPage(itfMenuGetSelectID(wk->menuPID))) {
+        return;
+    }
+    if (dds3PadButtonState[0x25] < 0) {
+        old = wk->page;
+        if (++wk->page > wk->pageMax) {
+            wk->page = 0;
+        }
+        for (i = 0; i < 3; i++) {
+            cmpCallGetStockPID();
+            if (wk->listNum != 0) {
+                break;
+            }
+            if (++wk->page > wk->pageMax) {
+                wk->page = 0;
+            }
+        }
+        if (old != wk->page) {
+            p2sdPlaySE(24, 127, 63);
+        }
+        cmpUpdateFontCharPID();
+        cmpCallGetStockDevilNums();
+    }
+    if (dds3PadButtonState[0x24] >= 0) {
+        return;
+    }
+    old = wk->page;
+    if (--wk->page < 0) {
+        wk->page = wk->pageMax;
+    }
+    for (i = 0; i < 3; i++) {
+        cmpCallGetStockPID();
+        if (wk->listNum != 0) {
+            break;
+        }
+        if (--wk->page < 0) {
+            wk->page = wk->pageMax;
+        }
+    }
+    if (old != wk->page) {
+        p2sdPlaySE(24, 127, 63);
+    }
+    cmpUpdateFontCharPID();
+    cmpCallGetStockDevilNums();
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockDevilNums2);
 
@@ -1709,7 +1863,19 @@ void End_cmpItem(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpChkMessageDraw);
+s32 cmpChkMessageDraw(void)
+{
+    scrProcessWork_s *work;
+
+    if (hWorkArea3 == NULL) {
+        return 0;
+    }
+    if (!dds3ExistProcess(hWorkArea3)) {
+        return 0;
+    }
+    work = dds3GetProcessData(hWorkArea3);
+    return itfMesMngGetStat(work->MesHandle) != 0;
+}
 
 s32 cmpGetItemIDFromSortNo(s32 a_sortNo) {
     s32 id = -1;
@@ -1722,11 +1888,61 @@ s32 cmpGetItemIDFromSortNo(s32 a_sortNo) {
 
 INCLUDE_ASM(const s32, "code_003648C0", fldCommand_FLD_WARP_RUN_START);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpDrawFunc);
+void cmpDrawFunc(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate)
+{
+    sprHandle_t *spr = cmpGetSpriteHnd(CMP_SPR_LIST);
+    f32 alpha;
+
+    if (spr == NULL) {
+        return;
+    }
+    if (a_id == itfMenuGetSelectID(cmpCallGetCharPIDData3)) {
+        itfDrawMiscSpriteAlpha(a_x, a_y, a_z, GetSelectRootID(cmpCallGetCharPIDData3, 2), cmpGetSpriteHnd(CMP_SPR_COMMON), 21,
+                               DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        alpha = a_alphaRate / 255.0f;
+        itfDrawMiscHelp(0x12, 0x180, a_z, 0, 0xA09DC380, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL, 1,
+                        cmpCallMakeCateChkWork[a_id], alpha, 0);
+    }
+    if (itfMenuChkMenuTop(cmpCallGetCharPIDData3, a_id)) {
+        itfDrawMiscSpriteList(0, 0, a_z, a_alphaRate, spr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL, cmpDrawFuncData);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetCharPID);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallMakeCateChk);
+s32 cmpCallMakeCateChk(CMP_MENU_ID a_id)
+{
+    u16 i;
+
+    cmpCallMakeCateChkData = 0;
+    if (a_id == CMP_MENU_ID_KEYWORD) {
+        cmpCallMakeCateChkData = cmpMakeCateChk();
+    } else if (a_id == CMP_MENU_ID_CHECK2) {
+        for (i = 400; i < 0x200; i++) {
+            if (datCallCalcGetItemNum2(i, 1)) {
+                cmpCallMakeCateChkWork[cmpCallMakeCateChkData] = i;
+                cmpCallMakeCateChkData++;
+            }
+        }
+    } else if (a_id == CMP_MENU_ID_MUSHI) {
+        for (i = 0; i < datGetItemNum(43); i++) {
+            cmpCallMakeCateChkWork[cmpCallMakeCateChkData] = 43;
+            cmpCallMakeCateChkData++;
+        }
+        for (i = 0; i < datGetItemNum(44); i++) {
+            cmpCallMakeCateChkWork[cmpCallMakeCateChkData] = 44;
+            cmpCallMakeCateChkData++;
+        }
+    } else if (a_id == CMP_MENU_ID_EVENT) {
+        for (i = 7809; i < 7909; i++) {
+            if (evtBitCheck(i)) {
+                cmpCallMakeCateChkWork[cmpCallMakeCateChkData] = i - 7809;
+                cmpCallMakeCateChkData++;
+            }
+        }
+    }
+    return cmpCallMakeCateChkData;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallMenuGetWaitType);
 
@@ -1754,7 +1970,10 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCallMenuGetWaitType4);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpLeaf15);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpLeaf16);
+s32 cmpUpdate(void)
+{
+    return cmpLeaf16Data[(u32)cmpCallGetCharPIDData7 >> 16]();
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpRefDDS3GBWK5);
 

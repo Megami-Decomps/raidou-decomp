@@ -477,7 +477,7 @@ INCLUDE_ASM(const s32, "code_00323280", cmpLeaf14);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpLeaf15);
 
-INCLUDE_ASM(const s32, "code_00323280", cmpLeaf16);
+INCLUDE_ASM(const s32, "code_00323280", cmpUpdate);
 
 INCLUDE_ASM(const s32, "code_00323280", cmpFunc13);
 

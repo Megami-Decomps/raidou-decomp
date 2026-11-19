@@ -47,14 +47,27 @@ void UserInit(void);
 s32 datAddDevil(void);
 s32 datMoonAddMoveSub(void);
 s32 datGetPlayerExp(s32 level);
+#ifdef VERSION_RAIDOU2
+void datGetPlayerLevelUpUnit(struct SBTL_PLAYER_DATA *pDst, struct SBTL_PLAYER_DATA *pSrc);
+#else
 struct SBTL_PLAYER_DATA datGetPlayerLevelUpUnit(struct SBTL_PLAYER_DATA *player);
+#endif
 s32 datSetPlayerUnitSword(struct SBTL_PLAYER_DATA *player, s32 sword);
 s32 datGetDevilLevelUpNumsSub(s32 devilId, s32 level);
+#ifdef VERSION_RAIDOU2
+void datGetDevilLevelUpUnit(struct sdatUnitWork_t *pDst, struct sdatUnitWork_t *pSrc);
+#else
 struct sdatUnitWork_t datGetDevilLevelUpUnit(struct sdatUnitWork_t *unit);
+#endif
 void datCallGetPlayerMaxHP(struct sdatUnitWork_t *unit, s32 swordLevel);
 void datGlobalWorkDestroy(void);
 void dds3GlobalWorkInit(void);
 s32 sdatCalc_GetBadStatus(struct sdatUnitWork_t *unit);
+s32 datGetTotalCyuusei(struct sdatUnitWork_t *pUnit);
+void datAddTotalCyuusei(struct sdatUnitWork_t *pUnit, s32 Val);
+s32 datCallCalcGetItemNum2(s32 id, s32 num);
+s32 datGetItemNum(s32 id);
+void datAddStock(s32 nums);
 s32 datCreateDevilUnitExSub(s32 devilId);
 
 extern u32 sdatLvUpDevilGiftTbl;
@@ -67,7 +80,14 @@ extern sdatLvUpDevilParamUp_t *sdatLvUpDevilParamUp;
 extern u32 sdatLvUpDevilParamUpSize;
 extern u32 sdatLvUpPlayerParamUp;
 extern u32 sdatLvUpPlayerParamUpSize;
-extern u32 sdatLvUpPlayerRankUp;
+/* One summoner rank: the loyalty total it needs, the bit set once it is reached, and a bit it requires (0 for none). */
+typedef struct sdatLvUpPlayerRankUp_t {
+    s32 Cyuusei;
+    u32 GetFlag;
+    u32 ChkFlag;
+} sdatLvUpPlayerRankUp_t;
+
+extern sdatLvUpPlayerRankUp_t *sdatLvUpPlayerRankUp;
 extern u32 sdatLvUpPlayerRankUpSize;
 
 /* gohDevilParam.dat and gohSameDevils.dat buffers and sizes, filled by cmpLoadModelTables. */

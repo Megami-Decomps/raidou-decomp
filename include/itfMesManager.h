@@ -160,6 +160,7 @@ u32 itfMesMngCloseSelectWindow(void);
 s32 itfMesMngCloseWindow(void);
 s32 itfMesMngIgnoreConfig(void);
 s32 itfMesMngInitialize(void *data);
+u32 itfMesMngGetStat(s32 id);
 void itfMesMngMarkBitStat(s32 id, u32 flag);
 void itfMesMngClearBitStat(s32 id, u32 flag);
 void itfMesMngSetSelect(s32 id, s32 selno);

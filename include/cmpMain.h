@@ -25,7 +25,9 @@ struct tagCMP_WORK {
 #ifdef VERSION_RAIDOU2
     u8 unk24[8];
     s16 page;                    /* 0x2C: stock list page, 8 entries each */
-    u8 unk2E[0xA];
+    u8 unk2E[2];
+    s16 pageMax;                 /* 0x30: last stock list page */
+    u8 unk32[6];
     /* the Kuda list filter (cmpSetFilterEx) */
     struct sdatUnitWork_t *psUse;   /* 0x38 */
     ecmpKudaSelectMode eSelMode;    /* 0x3C */
@@ -33,6 +35,7 @@ struct tagCMP_WORK {
     ecmpKudaCMU iSelectAttrId;      /* 0x44 */
     ecmpKudaCMU iDecideAttrId;      /* 0x48 */
     BSTF iBadStatus;                /* 0x4C */
+    s32 listNum;                    /* 0x50: entries cmpMenuFilter found on the page */
 #endif
 };
 

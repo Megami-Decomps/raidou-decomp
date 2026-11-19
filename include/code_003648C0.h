@@ -66,11 +66,25 @@ extern s8 cmpData31[24][10];
 s32 cmpMakeCateChk(void);
 void cmpChkSkillSelectHd(void);
 extern s8 cmpData40;
+extern s8 cmpCallGetStockPID5Data;
+s32 cmpChangeChkTabPageSub(void);
+s32 cmpChangeChkTabPageSub2(void);
+s32 cmpChangeChkTabPage(CMP_MENU_ID a_id);
+s32 cmpCallGetStockPID(void);
+void cmpCallGetStockDevilNums(void);
 u32 Init_cmpStatus(void);
 void cmpUpdateFontCharPID(void);
 void cmpCallGetStockDevilNums2(dds3ProcessID_t *PID);
 s32 cmpCallMenuGetFlag(void);
 s32 cmpGetNowSummonerRank(void);
 s32 cmpGetSummonerRank2SprNo(void);
+/* HD g_menuID: the open camp menu; the high half selects the cmpLeaf16Data entry. */
+extern s32 cmpCallGetCharPIDData7;
+/* HD cmpBookFunc: per-page update of the book menu. */
+extern s32 (*cmpLeaf16Data[4])(void);
+/* Help text id of each book menu row. */
+extern u16 cmpCallMakeCateChkWork[];
+extern s32 cmpCallMakeCateChkData; /* entries in cmpCallMakeCateChkWork */
+extern struct itfSprList_t cmpDrawFuncData[];
 
 #endif

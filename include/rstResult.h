@@ -21,6 +21,7 @@ typedef struct rstGaugeTable_t {
 extern rstGaugeTable_t rstData3[];
 
 u16 rstResultCyuuseiGaugeSub(s32 a_table, s32 a_step);
+void rstResultNakamaLevelSub(s32 a_table, s32 a_step, s32 *a_x, s32 *a_y);
 s32 rstBtlEndWaitInit(dds3ProcessID_t *PID);
 struct rstInitWork_t;
 s32 rstCalcProcess(struct rstInitWork_t *pWork);

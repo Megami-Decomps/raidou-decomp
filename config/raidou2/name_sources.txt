@@ -10407,7 +10407,7 @@
 0x00389298	cmpCallMenuGetWaitType3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; calls itfMenuGetWaitType
 0x003892D8	cmpCallMenuGetWaitType4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; calls itfMenuGetWaitType
 0x00389318	cmpLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; no named callee, caller or string
-0x00389328	cmpLeaf16	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpReadFlgChk; no named callee, caller or string
+0x00389328	cmpUpdate	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD cmpBook.c cmpUpdate: calls cmpBookFunc[CMP_MENU_ID_ROOT_MASK(g_menuID)]; table holds cmpCallMenuGetWaitType..4; replaces cmpLeaf16
 0x00389358	cmpRefDDS3GBWK5	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpReadFlgChk; references DDS3_GBWK
 0x00389370	cmpCallGetItemNum	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpReadFlgChk; calls datGetItemNum
 0x003893B8	cmpRefDDS3GBWK6	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpReadFlgChk; references DDS3_GBWK
@@ -11866,7 +11866,7 @@
 0x003C5B80	rstDrawProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstResult.rstDrawProcess score 9.4 flag I: calls3 prev callers-of-match votes2 st1:call r1+r2
 0x003C5BD0	rstCallGetProcessData37	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstDrawProcess; calls dds3GetProcessData
 0x003C5C08	rstLeaf14	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstDrawProcess; no named callee, caller or string
-0x003C5C10	ReleaseFontList	inferred	method=smt3-fuzzy-70-m-single; p=0.83 (n=60); tier=B; source=smt3; evidence=smt3 body 0x21ab40 sim 0.744 margin 0.74 single
+0x003C5C10	rstEndDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstResult.c rstEndDestroy: ends the three itfCount processes of the rstEnd work and returns 1; replaces ReleaseFontList
 0x003C5C68	rstEndCalcProcess	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD rstResult.rstEndCalcProcess score 5.7 flag I: calls4 callers-of-match-uniq votes2 st1:call r2-disagree:0x3b99d8
 0x003C5D00	rstEndDrawProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstResult.rstEndDrawProcess score 7.5 flag I: calls2 next gap1/5 st1:gap r1+r2
 0x003C5D50	rstEndUpdateProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstResult.rstEndUpdateProcess score 7.5 flag I: calls2 next gap2/7 st1:gap r1+r2

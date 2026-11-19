@@ -28,6 +28,7 @@ extern struct sdfMemHandle_t *cmpWork3[CMP_SPR_NUM];
 extern struct sprHandle_t *evtWork6[CMP_SPR_NUM];
 extern s32 evtData9[CMP_SPR_NUM];
 extern s32 cmpWork8[CMP_SPR_NUM]; /* load count of each pack */
+extern s32 (*cmpResetMotFunc[2])(void);
 #endif
 extern s32 (*cmpLinkMotFunc[2])(void);
 extern void *cmpFreeScriptData;

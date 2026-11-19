@@ -359,6 +359,12 @@ ITFMENU_CTRL_TYPE itfMenuGetCtrlType(dds3ProcessID_t *PID);
 s32 itfMenuGetFlag(dds3ProcessID_t *PID, u32 a_bit);
 s32 itfMenuGetSelectID(dds3ProcessID_t *PID);
 u8 GetSelectRootID(dds3ProcessID_t *PID, u32 a_no);
+s32 itfMenuChkMenuTop(dds3ProcessID_t *PID, s32 a_id);
+s32 itfMenuGetFlagMenu(dds3ProcessID_t *PID, s32 a_id, u16 a_bit);
+#ifdef VERSION_RAIDOU2
+/* Draws help text a_helpID at (a_x * 16, a_y * 8) faded by a_alphaRate (0.0 to 1.0). */
+void itfDrawMiscHelp(s32 a_x, s32 a_y, s32 a_type, s32 a_space, u32 a_color, s32 a_otNo, s8 a_mode, u16 a_helpID, f32 a_alphaRate, s32 a_arg);
+#endif
 ITFMENU_WAIT_TYPE itfMenuGetWaitType(dds3ProcessID_t *PID);
 f32 itfMenuImgGetRatio(dds3ProcessID_t *PID, u32 a_abgr);
 s32 itfMenuLinkSprite(dds3ProcessID_t *PID, struct sprHandle_t *a_hSpr);

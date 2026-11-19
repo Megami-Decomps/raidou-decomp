@@ -9424,7 +9424,7 @@
 0x00326F30	cmpCallTexFreeDelayed2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpDrawItemListHeader; calls sdfTexFreeDelayed
 0x00326F80	cmpLeaf14	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
 0x00326FB8	cmpLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
-0x00326FF0	cmpLeaf16	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
+0x00326FF0	cmpUpdate	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD cmpBook.c cmpUpdate: calls cmpBookFunc[CMP_MENU_ID_ROOT_MASK(g_menuID)]; table holds cmpCallMenuGetWaitType..4; replaces cmpLeaf16
 0x00327140	cmpFunc13	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
 0x00327290	cmpErrorCheckYaku	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpDrawItemListHeader; string '\nError! ... checkYaku yaku = %d -> %d\n\n'
 0x00327320	cmpLeaf17	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string

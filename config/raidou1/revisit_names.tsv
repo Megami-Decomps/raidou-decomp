@@ -4874,7 +4874,6 @@
 0x00326F30	cmpCallTexFreeDelayed2	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpDrawItemListHeader; calls sdfTexFreeDelayed
 0x00326F80	cmpLeaf14	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
 0x00326FB8	cmpLeaf15	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
-0x00326FF0	cmpLeaf16	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
 0x00327140	cmpFunc13	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
 0x00327290	cmpErrorCheckYaku	func	tier=D	derived-string	na	unit code_00300578, neighbour cmpDrawItemListHeader; string '\nError! ... checkYaku yaku = %d -> %d\n\n'
 0x00327320	cmpLeaf17	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpDrawItemListHeader; no named callee, caller or string
@@ -19558,6 +19557,7 @@
 0x00322B60	Process_cmpMap	func	tier=B	hd-role	na	HD cmpMap.c Process, started as camp_automap_main process func; replaces fldCallGetProcessData3
 0x00323520	Shutdown_cmpMap	func	tier=B	hd-role	na	HD cmpMap.c Shutdown; passed as shutdown func by ProcessStart_cmpMap, matches Release_cmpMap/ProcessStart_cmpMap naming; replaces itfDvlMsgProcessEnd
 0x003240D0	cmpCallFunc	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD cmpMain.cmpCallFunc score 6.2 flag I: calls4 callee-index st1:cidx r2-disagree:0x38c290
+0x00326FF0	cmpUpdate	func	tier=B	hd-role	na	HD cmpBook.c cmpUpdate: calls cmpBookFunc[CMP_MENU_ID_ROOT_MASK(g_menuID)]; table holds cmpCallMenuGetWaitType..4; replaces cmpLeaf16
 0x003281F8	cmpDrawItemListHeader	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x238a88 sim 0.776 margin 0.17 single
 0x0032BE10	Reset3DGlobal	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD shpModel.Reset3DGlobal score 5.7 flag -: prev next gap=exact st1:gap r2-disagree:0x39bf58
 0x0032BE30	stfResetUI	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x22ac48 sim 0.889 margin 0.21 pair

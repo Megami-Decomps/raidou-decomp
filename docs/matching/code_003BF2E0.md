@@ -71,3 +71,21 @@ Register allocation: retail keeps the table in $3 and a_x in $8, cc1 uses $8/$9.
 Raidou 2: 37 of 74 words differ, first at +0x30; emitted 296 bytes, native 292 bytes.
 
 Register allocation: after rstGetGlobalEncountNo cc1 copies v0 to a0 before forming the sbtlData100 row offset, one extra move that shifts the later branches. Tried a flags local, the set path first and unk10 - 1 != 0. 36 of 73 words; behaviour equal (nm_behaviour clean).
+
+## jmsFunc17 (code_003BF2E0, raidou2 0x5C)
+
+Raidou 2: 12 of 23 words differ, first at +0x10.
+
+Register allocation: retail keeps the object in $5 and the vtable slot in $3, cc1 the object in $3 and the slot in $2 (same as jmsJimusyoJmsQuest). Tried a slot local and direct wk->vtbl[n] access. 11 of 23 words.
+
+## rstPreCalcUnit (code_003BF2E0, raidou2 0x158)
+
+Raidou 2: 2 of 86 words differ, first at +0x34.
+
+Two independent pointer setups (pData+0x118 and pData+0x5AA0) are emitted in swapped order. Tried both statement orders and while/for loop forms. 84 of 86 words.
+
+## rstResultLevelUpAnimSub (code_003BF2E0, raidou2 0x14C)
+
+Raidou 2: 2 of 83 words differ, first at +0x88.
+
+Register swap: retail builds the sprNo * 0xA0 slot offset in $4 and copies it to $5, cc1 builds it in $5 and copies to $4. Tried a slot pointer per block, a u16 index and the y update first. 81 of 83 words.

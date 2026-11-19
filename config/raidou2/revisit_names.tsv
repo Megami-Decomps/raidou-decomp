@@ -5428,7 +5428,6 @@
 0x00389298	cmpCallMenuGetWaitType3	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpDrawFunc; calls itfMenuGetWaitType
 0x003892D8	cmpCallMenuGetWaitType4	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpDrawFunc; calls itfMenuGetWaitType
 0x00389318	cmpLeaf15	func	tier=D	derived-unit	na	unit code_003648C0, neighbour cmpDrawFunc; no named callee, caller or string
-0x00389328	cmpLeaf16	func	tier=D	derived-unit	na	unit code_003648C0, neighbour cmpReadFlgChk; no named callee, caller or string
 0x00389358	cmpRefDDS3GBWK5	func	tier=D	derived-data	na	unit code_003648C0, neighbour cmpReadFlgChk; references DDS3_GBWK
 0x00389370	cmpCallGetItemNum	func	tier=D	derived-callee	na	unit code_003648C0, neighbour cmpReadFlgChk; calls datGetItemNum
 0x003893B8	cmpRefDDS3GBWK6	func	tier=D	derived-data	na	unit code_003648C0, neighbour cmpReadFlgChk; references DDS3_GBWK
@@ -24984,6 +24983,7 @@
 0x00388C20	fldCommand_FLD_WARP_RUN_START	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x15a0e8 sim 0.812 margin 0.81 pair
 0x00388C60	cmpDrawFunc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpBook.cmpDrawFunc score 5.4 flag I: calls3 next edge st2:edge r2-only
 0x00389258	cmpUpdateKeyWord	func	tier=B	hd-role	na	HD cmpUpdateKeyWord (cmpBook.c): 0 while the step byte is set, else whether the list menu waits on cancel; replaces cmpCallMenuGetWaitType2
+0x00389328	cmpUpdate	func	tier=B	hd-role	na	HD cmpBook.c cmpUpdate: calls cmpBookFunc[CMP_MENU_ID_ROOT_MASK(g_menuID)]; table holds cmpCallMenuGetWaitType..4; replaces cmpLeaf16
 0x003894F0	cmpReadFlgChk	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpKeyword.cmpReadFlgChk score 6.8 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x00389BA8	cmpMenuSetMenuImage2	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpKeyword.cmpMenuSetMenuImage2 score 6.8 flag I: calls2 prev gap2/3 votes2 st2:gap r2-only
 0x0038A088	cmpMenuCallProcEnd	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cmpKeyword.cmpMenuCallProcEnd score 7.0 flag I: calls1 next callers-of-match votes2 st2:call r2-only
@@ -25075,7 +25075,7 @@
 0x003C5078	rstGetPlayerUnit	func	tier=B	hd-role	na	HD rstGetPlayerUnit (rstInit.c): the player data in the rstInit process work, or NULL without the process; replaces rstCallGetProcessData36
 0x003C50F8	rstGetGiftItemNums	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD rstInit.rstGetGiftItemNums score 6.8 flag I: calls1 next gap3/4 st1:gap r1+r2
 0x003C52E8	rstCalcProcess_rstResult	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD rstResult.rstCalcProcess score 6.0 flag I: calls4 callee-index st2:cidx r1-disagree:0x3521d0
-0x003C5C10	ReleaseFontList	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x21ab40 sim 0.744 margin 0.74 single
+0x003C5C10	rstEndDestroy	func	tier=B	hd-role	na	HD rstResult.c rstEndDestroy: ends the three itfCount processes of the rstEnd work and returns 1; replaces ReleaseFontList
 0x003C9BF8	MapMoveCalc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD DitectiveBook.MapMoveCalc score 6.6 flag -: calls3 callers-of-match votes2 st2:call r2-only
 0x003CB438	rstGetGiftMsgPID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD rstGrowth.rstGetGiftMsgPID score 6.1 flag I: calls1 next gap1/4 st1:gap r1+r2
 0x003CD590	SdfIopInit	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2a99b0 sim 0.817 margin 0.21 pair
