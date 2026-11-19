@@ -35,6 +35,8 @@ extern char *sbtlGetBSTNameFontData[];
 extern char *sbtlCallDestroyFontRequestAfterData[];
 
 BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(SBTLPROJECTEDSCREEN_POINT *outPoint);
+/* Projects vf10 to screen x, y and depth. */
+BtlProjectedScreenPointResult sbtlCallFptodp(sdfVector3_t *out);
 
 void sbtlCallDestroyFontRequestAfter(s32 x, s32 y, s32 depth, u32 colors, s32 num, s8 mode);
 void sbtlCallDevilName(s32 x, s32 y, s32 z, u32 rgba, s32 id);

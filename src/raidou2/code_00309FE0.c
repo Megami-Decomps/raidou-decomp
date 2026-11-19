@@ -29,6 +29,17 @@
 #include "sbattle.h"
 #include "sBtlCalc.h"
 #include "sBtlDraw.h"
+#include "code_r1_0010DF68.h"
+#include "sbtlSub_0027ED08.h"
+#include "sBtlPlayer.h"
+#include "fldProcess.h"
+#include "rstInit.h"
+#include "AW_XAtkPad.h"
+#include "fld.h"
+#include "sdfQuat.h"
+#include "mdlManager.h"
+#include "sBtlEncount.h"
+#include "dds3Randomize.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -419,7 +430,68 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData3);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData4);
 
+/* NON_MATCHING: 122 of 125 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallGetProcessData5(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    struct SBTLUNIT_WORK *target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    SBTL_DEVIL_DATA *devil = sbtlIfDrawActionSub(target->unit.devilId);
+    struct SBTLUNIT_LISTWORK *list;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if (wk_sbtl->tgtList != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->tgtList);
+        wk_sbtl->tgtList = NULL;
+    }
+    list = sbtlCreateTargetList_Talk(2);
+    wk_sbtl->tgtList = list;
+    if (list->count < 2) {
+        return 0;
+    }
+    if (wk_sbtl->field42C0 != 0) {
+        return 0;
+    }
+    if (wk->fieldB2 != 0) {
+        return 0;
+    }
+    if (DDS3_GBWK->devilWork[devil->field82].field0 != 0) {
+        return 0;
+    }
+    if (GetRand(100) < 10) {
+        for (i = 0; i < wk_sbtl->tgtList->count; i++) {
+            unit = wk_sbtl->tgtList->pUnitL[i].pUnit;
+            if (wk_sbtl->huumaTargetID == unit->field1A0) {
+                continue;
+            }
+            if (unit->field6E9 != 0) {
+                continue;
+            }
+            if (target->unit.devilId == unit->unit.devilId) {
+                continue;
+            }
+            if (slRefSbtl(unit->unit.devilId) && GetRand(100) < 60) {
+                continue;
+            }
+            if (slCallBitCheck2(unit->unit.devilId, 0)) {
+                continue;
+            }
+            if (unit->field6E9 != 0) {
+                continue;
+            }
+            if (gohData7[unit->unit.devilId].field80 == 12) {
+                continue;
+            }
+            wk->fieldB2 = 1;
+            wk->fieldAC = unit->field1A0;
+            return 1;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData5);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData6);
 
@@ -479,7 +551,63 @@ s32 sbtlCallGetProcessData14(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlTALKNETARecovery);
+s32 sbtlTALKNETARecovery(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    s32 value = wk->data->entry[wk->field28].field0C[wk->field16];
+
+    if (value >= 10000) {
+        wk_sbtl->field42A8 = wk->data->entry[wk->field28].field14[wk->field16];
+        wk->field1A = 0;
+        if (value == 10001) {
+            wk->field1C = 58;
+            wk_sbtl->field42AC = -8;
+        }
+        if (value == 10003) {
+            wk->field1C = 57;
+            wk_sbtl->field42AC = 1;
+        }
+        if (value == 10004) {
+            wk->field1C = 57;
+            wk_sbtl->field42AC = 7;
+        }
+        if (value == 10005) {
+            wk->field1C = 57;
+            wk_sbtl->field42AC = 6;
+            return 1;
+        }
+        return 1;
+    }
+    if (value < 0 && (unit->unit.level < 21 || (wk_sbtl->status3 & 0x40))) {
+        value = 0;
+        datDebugPrintf("TALK A NETA Recovery Kokowa LV20made\n");
+    }
+    if (value >= 100) {
+        unit->vstatus |= 0x2000000;
+        sbtlSetMotion_sbtlUnit(unit, sbtlLeaf37(unit->unit.devilId, 0), 6, 0, 2);
+        wk->fieldAB = 1;
+    }
+    if (value < 0) {
+        unit->vstatus |= 0x2000000;
+        sbtlCallGetProcessData2(unit);
+        wk->fieldB8++;
+    }
+    wk->field26 += value;
+    wk_sbtl->field42A8 = wk->data->entry[wk->field28].field14[wk->field16];
+    wk->field1A = 0;
+    GetRand(100);
+    cmpCallGetProcessData2(1, wk->kind);
+    if (wk->field26 > 0) {
+        wk->field9C = 0;
+        wk->field1C = 37;
+    } else {
+        wk->field1C = cmpCallGetProcessData6();
+        if (wk->field1C == 58 && (u16)(wk_sbtl->field42AC + 2) < 2) {
+            wk->field20 = 41;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData15);
 
@@ -1099,7 +1227,57 @@ void trmCallBtlCheckReturnUnit(s32 motionFlag) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", ChangeTarget_BSHelper_sbtlAI);
+struct SBTLUNIT_LISTWORK *ChangeTarget_BSHelper_sbtlAI(u8 side) {
+    struct SBTLUNIT_LISTWORK *list;
+    struct SBTLUNIT_LISTWORK *result;
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_WORK *best;
+    s32 i;
+    s32 cnt;
+    s32 bestNo;
+    f32 bestX;
+
+    list = sbtlCreateUnitList(48);
+    result = sbtlCreateUnitList(48);
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && (unit->field414 & 0x3F) == side && !(unit->flg & 0x1000) && sbtlCheckDamageTarget(unit)) {
+            sbtlEntryUnitList(list, unit);
+        }
+    }
+    if (list->count > 0) {
+        cnt = 0;
+        bestNo = 0;
+        do {
+            bestX = -10000.0f;
+            best = NULL;
+            for (i = 0; i < list->number; i++) {
+                unit = list->pUnitL[i].pUnit;
+                if (unit != NULL && CheckLiveTarget(unit)) {
+                    SDF_VU0_LOADVECTOR(&unit->pos);
+                    if (bestX <= unit->pos.x) {
+                        bestX = unit->pos.x;
+                        best = unit;
+                        bestNo = i;
+                    }
+                }
+            }
+            if (best != NULL) {
+                if ((best->flg & 0x8800) == 0x8800) {
+                    if (++cnt == 6) {
+                        sbtlEntryUnitList(result, best);
+                    }
+                    sbtlReleaseUnitList_ID(list, bestNo);
+                } else {
+                    sbtlEntryUnitList(result, best);
+                    sbtlReleaseUnitList_ID(list, bestNo);
+                }
+            }
+        } while (list->count > 0);
+    }
+    sbtlDeleteUnitList(list);
+    return result;
+}
 
 struct SBTLUNIT_LISTWORK *trmCallBtlCreateUnitList(u8 group) {
     struct SBTLUNIT_LISTWORK *list = sbtlCreateUnitList(48);
@@ -1115,7 +1293,54 @@ struct SBTLUNIT_LISTWORK *trmCallBtlCreateUnitList(u8 group) {
     return list;
 }
 
+/* NON_MATCHING: 101 of 126 words match.  */
+#ifdef NON_MATCHING
+void SetBSHelper(void) {
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if (wk_sbtl->tgtList != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->tgtList);
+        wk_sbtl->tgtList = NULL;
+    }
+    if (pbData == 0 && evtKAIWANoEnemyData2 == 0) {
+        if (wk_sbtl->tgtList != NULL) {
+            sbtlDeleteUnitList(wk_sbtl->tgtList);
+            wk_sbtl->tgtList = NULL;
+        }
+        wk_sbtl->tgtList = ChangeTarget_BSHelper_sbtlAI(2);
+        for (i = 0; i < wk_sbtl->tgtList->count; i++) {
+            unit = sbtlSearchUnit_ID(wk_sbtl->tgtList, i);
+            unit->vstatus &= ~0x1000;
+            unit->flg &= ~1;
+            unit->vstatus &= ~0x2000000;
+        }
+    }
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    unit->vstatus &= ~0x1000;
+    unit->flg &= ~1;
+    unit->vstatus &= ~0x2000000;
+    if (pbData != 0) {
+        sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID)->vstatus |= 0x1000;
+    }
+    unit = sbtlGetNakama(0);
+    if (unit != NULL) {
+        unit->vstatus &= ~0x1000;
+        unit->flg &= ~1;
+        unit->vstatus &= ~0x2000000;
+    }
+    unit = sbtlGetNakama(1);
+    if (unit != NULL) {
+        unit->vstatus &= ~0x1000;
+        unit->flg &= ~1;
+        unit->vstatus &= ~0x2000000;
+    }
+    wk_sbtl->bEffNoDraw = 0;
+    wk_sbtl->scrFlag &= ~0x40000;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", SetBSHelper);
+#endif
 
 /* NON_MATCHING: 96 of 119 words match.  */
 #ifdef NON_MATCHING
@@ -1539,7 +1764,114 @@ INCLUDE_ASM(const s32, "code_00309FE0", BattleStartApo_Effect);
 
 INCLUDE_ASM(const s32, "code_00309FE0", GetTable);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlCheck);
+s32 sbtlCheck(struct SBTLUNIT_WORK *wk, s16 type, s16 skillid) {
+    s32 i = 0;
+    s32 devilId;
+    s32 on;
+    s32 skill;
+    struct SBTLUNIT_WORK *player;
+
+    if (wk == NULL) {
+        return -1;
+    }
+    devilId = wk->unit.devilId;
+    for (;; i++) {
+        if (arrBossEveTable[i].devil_id == -1) {
+            return -1;
+        }
+        if (arrBossEveTable[i].enc_id != 0 && wk_sbtl->stageNo != arrBossEveTable[i].enc_id) {
+            continue;
+        }
+        if (devilId != arrBossEveTable[i].devil_id) {
+            continue;
+        }
+        switch (type) {
+        case 0:
+            if (arrBossEveTable[i].start_on == 0) {
+                break;
+            }
+            if (devilId != wk_sbtl->boss_devilID) {
+                return i;
+            }
+            break;
+        case 1:
+            on = wk->mag_on1;
+            if (on < 0) {
+                on = arrBossEveTable[i].mag_on1;
+            }
+            if (on > 0) {
+                return i;
+            }
+            break;
+        case 2:
+            on = wk->mag_on2;
+            if (on < 0) {
+                on = arrBossEveTable[i].mag_on2;
+            }
+            if (on > 0) {
+                return i;
+            }
+            break;
+        case 3:
+            on = wk->mag_on3;
+            if (on < 0) {
+                on = arrBossEveTable[i].mag_on3;
+            }
+            if (on > 0) {
+                return i;
+            }
+            break;
+        case 4:
+            on = wk->dead_on;
+            if (on < 0) {
+                on = arrBossEveTable[i].dead_on;
+            }
+            if (on <= 0 || !(on & 3)) {
+                break;
+            }
+            if (!(on & 4)) {
+                return i;
+            }
+            if (sbtlIsEnemyLastOne(wk)) {
+                return i;
+            }
+            break;
+        case 5:
+            if (arrBossEveTable[i].lose_on == 0) {
+                break;
+            }
+            if (skillid != 0) {
+                skill = arrBossEveTable[i].skill_id;
+                if (skill == 0 || skillid == skill) {
+                    return i;
+                }
+            } else {
+                player = sbtlRefSbtl10(wk_sbtl->targetUnitID);
+                if (player != NULL) {
+                    if (player->unit.now.hp < 2) {
+                        return i;
+                    }
+                    if (wk_sbtl->scrFlag & 0x200000) {
+                        return i;
+                    }
+                }
+            }
+            break;
+        case 6:
+            if (arrBossEveTable[i].dying_on) {
+                return i;
+            }
+            break;
+        case 7:
+            if (arrBossEveTable[i].time_on) {
+                return i;
+            }
+            break;
+        case 10:
+            return i;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl24);
 
@@ -1576,7 +1908,7 @@ s32 sbtlCallGetProcessStat(void) {
 }
 
 void btlLoadBossEventTable(void) {
-    sdfDevLoadFileEx("/battle/sb_bossevtbl.dat", &sbtlCheckData, &btlLoadBossEventTableData);
+    sdfDevLoadFileEx("/battle/sb_bossevtbl.dat", (u32 *)&arrBossEveTable, &btlLoadBossEventTableData);
 }
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlLeaf41);
@@ -1601,7 +1933,7 @@ s32 Start_sbtlTime(s32 arg0, s32 arg1) {
                 wk->timeLimit = tbl->timeLimit;
                 wk->field42CE = tbl->fieldD;
                 wk_sbtl->timeState = 1;
-                sbtlData141 = 0;
+                gb_btltime = 0;
                 break;
             }
             i++;
@@ -1618,7 +1950,85 @@ INCLUDE_ASM(const s32, "code_00309FE0", Start_sbtlTime);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCheckEnemyAllDead);
 
+/* NON_MATCHING: 49 of 178 words match.  */
+#ifdef NON_MATCHING
+s32 Result_sbtlTime(void) {
+    struct SBTLUNIT_WORK *unit;
+    SBTLUNIT_LISTWORK *list;
+    s32 rest;
+    s32 i;
+    s16 no;
+
+    if (Result_sbtlTimeData) {
+        if (!sbtlCheckPlayerDead()) {
+            Result_sbtlTimeData2++;
+        }
+        if (Result_sbtlTimeData2 == 60) {
+            dds3FadeOut(255, 255, 255, 60);
+        }
+        if (Result_sbtlTimeData2 > 120 && sbtlCheckUnit_Exec()) {
+            wk_sbtl->flg |= 0x40000008;
+            wk_sbtl->flg2 &= ~0x10000000;
+            sbtlInitDropWork();
+            sbtlSetEndData();
+            rstSetFlag(0x100000);
+        }
+        return 0;
+    }
+    if (wk_sbtl->timeState != 1) {
+        return 0;
+    }
+    rest = gb_btltime;
+    if (wk_sbtl->timeLimit != 0) {
+        if (sbtlCheckEnemyAllDead()) {
+            return 0;
+        }
+        rest = wk_sbtl->timeLimit - gb_btltime;
+        if (rest < 0) {
+            rest = 0;
+        }
+        if (rest == 0) {
+            wk_sbtl->status4 |= 0x4000;
+            if (wk_sbtl->timeMode == 3) {
+                list = wk_sbtl->unitList;
+                for (i = 0; i < list->number; i++) {
+                    unit = list->pUnitL[i].pUnit;
+                    if (unit != NULL && (unit->field414 & 2)) {
+                        unit = sbtlSearchUnit_ID(list, wk_sbtl->targetUnitID);
+                        sbtlResetAction(unit);
+                        sbtlResetNSTOP();
+                        sbtlCreateSM(wk_sbtl->sysmsgList, unit, SBTLSM_MODE_EXBATTLEESC, SKLID_NONE);
+                        wk_sbtl->field7D8 = 0;
+                        unit->flg |= 0x4000;
+                        wk_sbtl->flg |= 0x1000000;
+                        VRF_DeltaTime = 1;
+                        wk_sbtl->mode = 21;
+                        wk_sbtl->flg |= 0x40000000;
+                        Result_sbtlTimeData = 1;
+                        Result_sbtlTimeData2 = 0;
+                        return 0;
+                    }
+                }
+            }
+            for (i = 0; i < wk_sbtl->unitList->number; i++) {
+                unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+                if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                    no = sbtlCheck(unit, 7, 0);
+                    if (no >= 0) {
+                        wk_sbtl->timeState = 2;
+                        wk_sbtl->boss_timeno = no;
+                        wk_sbtl->boss_eventID = unit->field1A0;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return rest;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", Result_sbtlTime);
+#endif
 
 s32 End_sbtlTime(void) {
     wk_sbtl->timeState = 0;
@@ -1655,7 +2065,74 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl27);
 void sbtlLeaf42(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlFirstSummonTextSet);
+void sbtlFirstSummonTextSet(sbtlSummonText_t *text) {
+    sdfVector3_t point;
+    f32 base;
+    f32 scale;
+    u16 sign;
+
+    switch (text->type) {
+    case 1:
+        base = 80.0f;
+        scale = 25.0f;
+        text->field10.x = ((s32)GetRand(80) + base) / scale;
+        sign = GetRand(100) & 1;
+        if (sign) {
+            text->field10.x = -text->field10.x;
+        }
+        text->field10.y = ((s32)GetRand(80) + base) / scale;
+        sign = GetRand(100) & 1;
+        if (sign) {
+            text->field10.y = -text->field10.y;
+        }
+        text->field10.z = 0.0f;
+        SDF_VU0_LOADVECTOR(&text->pos);
+        sbtlCallFptodp(&point);
+        text->pos.x = point.x;
+        text->pos.y = point.y;
+        text->pos.z = point.z + 2.0f;
+        text->field38 = 0.999f;
+        text->field44 = 200;
+        text->field3C = 2.5f;
+        text->field58 = 3;
+        text->field64 = 40.0f;
+        text->hSpr = sbtlData135.hSpr;
+        text->sprNo = 42;
+        text->field20.x = 0.0f;
+        text->field20.y = 0.0f;
+        text->field20.z = 0.0f;
+        text->field34 = 0.0f;
+        text->field48 = 0;
+        text->field40 = 0;
+        text->field60 = 0;
+        break;
+    case 20:
+        text->field34 = (s32)GetRand(20) * 0.01f + 0.2f;
+        text->field38 = 0.999f;
+        if (text->pos.x > 256.0f) {
+            text->field20.x = text->pos.x - 128.0f;
+            text->field20.y = 448.0f - text->pos.y;
+        } else {
+            text->field20.x = 0.0f;
+            text->field20.y = 0.0f;
+        }
+        text->field20.z = 0.0f;
+        break;
+    case 30:
+        text->field20.x = 0.0f;
+        text->field20.y = 0.0f;
+        text->field20.z = 0.0f;
+        break;
+    case 60:
+        text->field34 = 1.5f;
+        text->field38 = 0.9f;
+        break;
+    }
+    sbtlBtlFirstSummonTextSetSub(&text->pos, 1, text->count, 0, 0);
+    if (++text->count >= 3) {
+        text->count = 0;
+    }
+}
 
 /* NON_MATCHING: 20 of 24 words match.  */
 #ifdef NON_MATCHING

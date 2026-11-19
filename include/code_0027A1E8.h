@@ -14,6 +14,8 @@ SKLID sbtlCallBtlGetSkilltbl23(SKLID skillid, s32 *base);
 void Delete_sbtlScript(struct SBTLUNIT_WORK *wk);
 void sbtlResetBtlMagicStatus(struct SBTLUNIT_WORK *wk);
 s32 IsEnemyZenmetsu(void);
+s32 SetNextTarget_sbtlEquat(struct SBTLUNIT_WORK *wk);
+s32 CancelSystem(void);
 s32 sbtlCheckMove_BadStatus(struct SBTLUNIT_WORK *wk);
 void sbtlProc_YoyakuEndChk(struct SBTLUNIT_WORK *wk);
 s32 sbtlUnit_CheckSummon_LoadExecOk_sub(void);
@@ -33,4 +35,7 @@ void SetFirstAtk_Core(s32 sklid, s32 arg1);
 s32 slCallBtlGetPChara(void);
 s32 slCallSetFirstAtkGun(void);
 s32 slCallSetFirstAtkCore(struct SBTLUNIT_WORK *wk, s32 flag);
+/* frames before the summon key is read again */
+extern s32 sBtlPlayer_R1R2NoInput;
+void SetSummonMenu(s32 mode);
 #endif

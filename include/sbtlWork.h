@@ -249,7 +249,9 @@ typedef struct SBTL_WORK {
     struct SBTLUNIT_LISTWORK *tgtList;
     u8 pad59C[0x5A0 - 0x59C];
     struct SBTLUNIT_LISTWORK *list2D4;
-    u8 pad5A4[0x648 - 0x5A4];
+    u8 pad5A4[0x5A8 - 0x5A4];
+    s32 stockMinor[20];
+    s32 stockDevilSkill[20];
     u32 stock_mask; /* HD name */
     s32 field64C; /* stock devil count, the bound of sbtlRefDDS3GBWK2 */
     s32 member_num; /* HD name; partners in the battle */
@@ -440,7 +442,9 @@ typedef struct SBTL_WORK {
     u8 pad41F8[0x41FC - 0x41F8];
     s32 field41FC; /* bar alpha sbtlBarCtrl steps toward 126 or 40 */
     s32 field4200; /* bar length sbtlBarCtrl steps toward 350 or 200 */
-    u8 pad4204[0x4264 - 0x4204];
+    u8 pad4204[0x420C - 0x4204];
+    s32 field420C; /* sbtlSummonKey refuses the summon menu when set */
+    u8 pad4210[0x4264 - 0x4210];
     s8 field4264; /* set: sbtlCreateSTP_Unit creates nothing */
     u8 pad4265[0x4288 - 0x4265];
     s8 field4288; /* nonzero: sbtlReset_SupportAction_Shugou does nothing */
@@ -472,7 +476,8 @@ typedef struct SBTL_WORK {
     s16 field430C;
     u8 pad430E[0x4310 - 0x430E];
     s32 boss_eventID; /* HD name; unit ID the boss event camera follows */
-    u8 pad4314[0x431A - 0x4314];
+    s32 boss_devilID; /* HD name; sbtlCheck skips start events for this devil */
+    s16 boss_timeno; /* HD name; time event row Result_sbtlTime found */
     s8 bNoEndCam; /* HD name */
     s8 field431B; /* set: sbtlEnemyData draws no enemy name plates */
     s8 field431C; /* 1: sbtlSENSEIDMGCHK always starts the talk */
@@ -482,7 +487,9 @@ typedef struct SBTL_WORK {
     s32 field432C;
     s32 field4330;
     s32 field4334;
-    u8 pad4338[0x4360 - 0x4338];
+    u8 pad4338[0x4344 - 0x4338];
+    s32 field4344; /* sbtlSummonKey counts it down; the summon menu waits for 0 */
+    u8 pad4348[0x4360 - 0x4348];
 } SBTL_WORK;
 SIZE_CHECK(SBTL_WORKSizeCheck, SBTL_WORK, 0x4360);
 #else
@@ -757,13 +764,20 @@ typedef struct SBTLITEM_WORK {
 /* Devil table entry returned by sbtlIfDrawActionSub (0x94 bytes). Partial raidou2 layout. */
 typedef struct SBTL_DEVIL_DATA {
     u32 flag;
-    u8 pad04[0xE - 0x4];
+    u8 pad04[0x6 - 0x4];
+    s16 motionId;
+    u8 pad08[0xA - 0x8];
+    s16 field0A;
+    s16 aisyoId;
     s8 kuda_id; /* HD name */
-    u8 pad0F[0x30 - 0xF];
+    u8 pad0F[0x14 - 0xF];
+    s16 field14;
+    u8 pad16[0x30 - 0x16];
     s16 haveskill[16]; /* HD DEVILDATA_WORK haveskill */
     u8 pad50[0x68 - 0x50];
     SBTLITEM_WORK item[4];
-    u8 pad78[0x80 - 0x78];
+    f32 field60;
+    f32 field64;
     s16 field80;
     s16 field82; /* index into DDS3_GBWK->devilWork */
     u8 pad84[0x8C - 0x84];
@@ -984,8 +998,14 @@ SIZE_CHECK(SBTL_UNIT_SUBSizeCheck, SBTL_UNIT_SUB, 0x24);
 #endif
 
 typedef struct SBTL_MOTION_VISUAL {
+#ifdef VERSION_RAIDOU2
+    u8 field00;
+    u8 kind; /* Raidou 2 reads the kind from byte 1 */
+#else
     u8 kind;
-    u8 pad01[3];
+    u8 pad01;
+#endif
+    u8 pad02[2];
     f32 field04;
     f32 field08;
     f32 field0C;

@@ -1491,12 +1491,12 @@ void DrawTime(void) {
     }
     DrawTimeData++;
     if (wk_sbtl->timeLimit) {
-        time = wk_sbtl->timeLimit - sbtlData141;
+        time = wk_sbtl->timeLimit - gb_btltime;
         if (time < 0) {
             time = 0;
         }
     } else {
-        time = sbtlData141;
+        time = gb_btltime;
     }
     if (!wk_sbtl->field42CE) {
         return;

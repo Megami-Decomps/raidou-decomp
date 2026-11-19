@@ -7025,7 +7025,7 @@
 0x002807C8	sbtlCheckBit	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.sBtlCheckBit score 9.6 flag I: calls2 calls-of-match votes2 st1:call r1+r2
 0x002807D8	sbtlSetBit	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.sBtlSetBit score 8.1 flag I: calls2 calls-of-match votes2 st1:call r1+r2
 0x002807F0	sbtlResetBit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sbtlplayer.h sBtlResetBit(u32 *data, s32 bit), body clears the bit; neighbours sbtlCheckBit/sbtlSetBit; replaces sbtlGetDamage
-0x00280810	sbtlCallBtlGetMotionVisualDataSBtlVi	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlGetDamage; calls sbtlGetMotionVisualData_sbtlVisual
+0x00280810	sbtlSetSummon_Unit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R2 copy of the matched R1 sbtlSetSummon_Unit (same six arguments, same statement sequence, find_similar 0.912); old name was derived tier D; replaces sbtlCallBtlGetMotionVisualDataSBtlVi
 0x00280A50	sbtlCallBtlSearchUnitID4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0027A1E8, neighbour sbtlGetNearTarget_Random; calls sbtlSearchUnit_ID
 0x00280DF0	sbtlGetNearTarget_Random	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.sBtlGetNearTarget_Random score 7.1 flag I: calls3 callers-of-match votes3 st2:call r1-disagree:0x261950
 0x002812D8	ShugouKaijyoSub	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlPlayer.ShugouKaijyoSub score 8.0 flag -: calls3 calls-of-match votes2 st2:call r2-only
@@ -25759,7 +25759,7 @@
 0x004DE5F8	datData17	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: datLeaf, datCallNewGame2Push
 0x004DE5FC	datCallNewGame2PushData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by datCallNewGame2Push (2 of 3 refs, 2 functions)
 0x004DE600	DDS3_GBWK	inferred	smt3-pair: dds3GlobalWorkInit stores the GBWK allocation here
-0x004DE604	sbtlData141	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: sbtlWkScrData, sbtlSbattle3, Result_sbtlTime
+0x004DE604	gb_btltime	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlTime Check returns gb_btltime when no limit is set and subtracts it from wk->timecount, as R2 Result_sbtlTime does with this word; replaces sbtlData141
 0x004DE608	sbtlSbattle3Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlSbattle3 (4 of 7 refs, 3 functions)
 0x004DE618	evtCallMemset9Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCallMemset9
 0x004DE624	datEnemyRecords	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B4BC); tier=C; source=dds; evidence=dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=datCheckSyojiSkill
@@ -28165,7 +28165,7 @@
 0x004E2364	sbtlCheckSummon_LoadExecOkData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckSummon_LoadExecOk
 0x004E2368	sbtlCheckSummon_LoadExecOkData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckSummon_LoadExecOk
 0x004E236C	sbtlCheckSummon_LoadExecOkData5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCheckSummon_LoadExecOk
-0x004E2370	sbtlSummonKeyData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSummonKey
+0x004E2370	sBtlPlayer_R1R2NoInput	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSummonKey decrements sBtlPlayer_R1R2NoInput when positive and refuses input while it is nonzero, as R2 sbtlSummonKey does with this word; replaces sbtlSummonKeyData
 0x004E2374	UseItemProc_sbtlPlayerData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by UseItemProc_sbtlPlayer
 0x004E2378	UseItemProc_sbtlPlayerData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by UseItemProc_sbtlPlayer
 0x004E237C	UseItemProc_sbtlPlayerData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by UseItemProc_sbtlPlayer
@@ -28828,7 +28828,7 @@
 0x004E3660	BattleMag_EffectData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by BattleMag_Effect
 0x004E3664	BattleMag_EffectData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by BattleMag_Effect
 0x004E3668	BattleMag_EffectData5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by BattleMag_Effect
-0x004E366C	sbtlCheckData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCheck (3 of 9 refs, 7 functions)
+0x004E366C	arrBossEveTable	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCheck walks arrBossEveTable rows (enc_id, devil_id, start_on, mag_on1-3, dead_on, lose_on, dying_on, time_on) exactly as R2 sbtlCheck walks this pointer, loaded from /battle/sb_bossevtbl.dat; replaces sbtlCheckData
 0x004E3670	btlLoadBossEventTableData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by btlLoadBossEventTable
 0x004E3674	Result_sbtlTimeData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by Result_sbtlTime (2 of 3 refs, 2 functions)
 0x004E3678	Result_sbtlTimeData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by Result_sbtlTime (4 of 5 refs, 2 functions)

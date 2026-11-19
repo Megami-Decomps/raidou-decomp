@@ -32,17 +32,25 @@ sbtlCmndMenuNew_t *GetProcessData(void);
 void Delete_sbtlCmndMenuNew(void);
 s32 sbtlGetStat(void);
 s32 DrawProc(dds3ProcessID_t *id);
-extern u32 sbtlCheckData;
 
 /* Boss event table row (0x94 bytes), loaded from /battle/sb_bossevtbl.dat; ends at devil_id -1. */
 typedef struct TYPE_BOSS_NML_EVENT {
     s32 enc_id;
     s32 devil_id;
     s32 cam_size; /* HD BOSSEVENT_CAMERA; 4 aims between two helper points */
-    u8 pad0C[0x10 - 0xC];
-    s8 field10;
-    u8 pad11[0x94 - 0x11];
+    s32 skill_id;
+    s8 start_on;
+    s8 mag_on1;
+    s8 mag_on2;
+    s8 mag_on3;
+    s8 dead_on; /* bits 0-1 enable, bit 2 only for the last enemy */
+    s8 lose_on;
+    s8 dying_on;
+    s8 time_on;
+    u8 pad18[0x94 - 0x18];
 } TYPE_BOSS_NML_EVENT;
+
+extern TYPE_BOSS_NML_EVENT *arrBossEveTable;
 
 /* Boss event process work (sbtlCallGetProcessStatData); only the fields read so far. */
 typedef struct sbtlBossEvent_t {
@@ -74,7 +82,7 @@ typedef struct {
 } sbtlTimeTbl_t;
 
 extern sbtlTimeTbl_t Start_sbtlTimeData[29];
-extern s32 sbtlData141; /* frames counted by the time limit battle */
+extern s32 gb_btltime; /* frames counted by the time limit battle */
 extern s32 Result_sbtlTimeData;
 extern s32 Result_sbtlTimeData2;
 s32 Start_sbtlTime(s32 arg0, s32 arg1);
@@ -101,6 +109,8 @@ void sbtlRefSbtl29(sbtlSummonText_t *text, sdfVector4_t *pos, s32 arg2, s32 arg3
 sbtlSummonText_t *sbtlRefSbtl30(void);
 void sbtlCallSetOt(sbtlSummonText_t *text);
 s32 sbtlBtlFirstSummonTextSetSub(sdfVector4_t *pos, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void sbtlStart(void);
+s32 sbtlCheckEnemyAllDead(void);
 
 /* Battle talk files: names, then the two loaded files' handles, data and sizes. */
 extern const char *sbtlData136[];
@@ -120,7 +130,9 @@ typedef struct {
     s16 field06;
     u8 pad08[0x2];
     u16 field0A;
-    u8 pad0C[0x22 - 0xC];
+    s16 field0C[4];
+    u16 field14[4];
+    u8 pad1C[0x22 - 0x1C];
 } sbtlKaiwaEntry_t;
 
 typedef struct {
@@ -153,8 +165,10 @@ typedef struct {
     s16 field16; /* evtGetCapturedWindowPanelValue */
     u8 pad18[0x2];
     u16 field1A;
-    u16 field1C;
-    u8 pad1E[0x6];
+    s16 field1C;
+    u8 pad1E[0x2];
+    s16 field20;
+    u8 pad22[0x2];
     s16 kind;
     s16 field26;
     s16 field28;
@@ -176,7 +190,9 @@ typedef struct {
     s32 fieldAC; /* unit ID sbtlCallGetProcessData5 picked to join the talk */
     u8 padB0[0x2];
     s8 fieldB2;
-    u8 padB3[0xBC - 0xB3];
+    u8 padB3[0xB8 - 0xB3];
+    s16 fieldB8;
+    u8 padBA[0xBC - 0xBA];
     s32 fieldBC;
     s16 fieldC0; /* cmpData29 entry of the party talk */
     s16 fieldC2;
@@ -210,6 +226,9 @@ typedef struct {
 extern cmpData29_t cmpData29[80];
 s32 cmpCallBtlCreateTargetList(void);
 s32 cmpCallGetProcessData5(void);
+s32 cmpCallGetProcessData6(void);
+s32 sbtlLeaf37(s32 devilId, s32 kind);
+void sbtlCallGetProcessData2(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallGetProcessData29(void);
 void cmpPartyListMake_cmpMisc(dds3ProcessID_t *menuPID);
 s32 slCallGetProcessData6(void *msg, s32 arg1, struct SBTLUNIT_WORK *unit, s32 arg3, s32 arg4, s32 arg5);

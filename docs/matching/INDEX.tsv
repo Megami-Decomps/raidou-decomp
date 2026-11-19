@@ -118,6 +118,9 @@ sbtlCallBtlGetSkilltbl4	code_0027A1E8	raidou2 0x194	41 of 95 words differ	docs/m
 sbtlDrawEscapeGauge	code_0027A1E8	raidou2 0xF8	53 of 62 words differ	docs/matching/code_0027A1E8.md	29		
 sbtlCheckEnableUseKaja	code_0027A1E8	raidou2 0x174	60 of 89 words differ	docs/matching/code_0027A1E8.md	35	the full-unit result moves with declarations in headers the unit includes. At dcf72cfd the R2-C3 part 4 header edits turn the -DNON_MATCHING full-unit CONTEXT 55/84 into the standalone code (DIFF 60/89); the standalone compile is unchanged.	
 SEquationno_06	code_0027A1E8	raidou2 0x1D0	29 of 116 words differ	docs/matching/code_0027A1E8.md	43		
+sbtlSummonKey	code_0027A1E8	raidou2 0x2C0	88 of 176 words differ	docs/matching/code_0027A1E8.md	49		
+sbtlCallBtlGetSkilltbl2	code_0027A1E8	raidou2 0x26C	4 of 155 words differ	docs/matching/code_0027A1E8.md	55		
+TEquationno_01	code_0027A1E8	raidou2 0x214	31 of 133 words differ	docs/matching/code_0027A1E8.md	63		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
@@ -193,6 +196,9 @@ slCallBitCheck2	code_00309FE0	raidou2 0x11C	33 of 72 words differ	docs/matching/
 sbtlIsStart	code_00309FE0	raidou2 0x7C	3 of 31 words differ	docs/matching/code_00309FE0.md	93		
 sbtlCallGetProcessData29	code_00309FE0	raidou2 0x1E8	2 of 122 words differ	docs/matching/code_00309FE0.md	99		
 trmCallBtlSearchUnitID5	code_00309FE0	raidou2 0x1DC	23 of 119 words differ	docs/matching/code_00309FE0.md	105		
+sbtlCallGetProcessData5	code_00309FE0	raidou2 0x1F4	3 of 125 words differ	docs/matching/code_00309FE0.md	111		
+SetBSHelper	code_00309FE0	raidou2 0x1F8	25 of 126 words differ	docs/matching/code_00309FE0.md	117		
+Result_sbtlTime	code_00309FE0	raidou2 0x2C8	129 of 178 words differ	docs/matching/code_00309FE0.md	123		
 cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
 cmpCallGetProcessData6	code_00323280	raidou1 0x1AC	4 of 107 words differ	docs/matching/code_00323280.md	11		
 rstCallGetProcessData42	code_0034F3B8	raidou1 0x38		docs/matching/code_0034F3B8.md	3		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, the same form as fclCallGetProcessData. Tried: no read (tail j), an s32 return with no return statement (still j), a dds3ProcessFunc_t return (still j). Only a dead store or dummy use after the call remains, which is banned.

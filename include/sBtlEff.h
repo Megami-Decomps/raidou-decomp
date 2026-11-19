@@ -330,6 +330,9 @@ SBTLEFF_WORK *sbtlCallMemAllocDirect3(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WOR
 #ifdef VERSION_RAIDOU1
 s32 sbtlRefSbtl26(struct SBTLEFF_WORK *wk);
 #endif
+#ifdef VERSION_RAIDOU2
+s32 sbtlSetSummonEffect_Nakama(struct SBTLUNIT_WORK *wk, s8 flg);
+#endif
 
 /* Per-effect process functions, indexed by SBTLEFF_WORK.effectid. */
 extern s32 (*sbtlCallPadVibeFadeUpdateData[])(struct SBTLEFF_WORK *wk);

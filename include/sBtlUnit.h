@@ -22,7 +22,9 @@ struct effRefObj_t;
 /* Partial raidou2 layout: only the fields read so far are named, the rest is padding. */
 typedef struct SBTLUNIT_MODEL {
     sdfVector4_t vec00;
-    u8 pad010[0x30];
+    u8 pad010[0x10];
+    sdfVector4_t vec20; /* HD searchpos */
+    u8 pad030[0x10];
     sdfVector4_t hitbk_dir;
     u8 pad050[0x40];
     sdfVector4_t scrPos3;
@@ -334,7 +336,9 @@ struct SBTLUNIT_WORK {
     sdfVector4_t rot;
     u8 pad090[0x20];
     sdfVector4_t field0B0;
-    u8 pad0C0[0x40];
+    u8 pad0C0[0x10];
+    sdfVector4_t posSaved;
+    u8 pad0E0[0x20];
     mapLightParam_t light;
     SBTLSOUND_DEVILWORK se;
     u8 pad170[0x1D4 - 0x170 - sizeof(SBTLSOUND_DEVILWORK)];
@@ -368,7 +372,8 @@ struct SBTLUNIT_WORK {
     s32 motionno;
     s32 motionID;
     f32 m_rate;
-    u8 pad4D0[0x2];
+    s8 visualKind;
+    u8 pad4D1[0x1];
     s16 motion_setno;
     s16 fade_sttime;
     s16 fadecnt;
@@ -388,7 +393,9 @@ struct SBTLUNIT_WORK {
     struct mdlObj_t *hModel;
     s8 gstat;
     s8 changeflg;
-    u8 pad516[0xC];
+    u8 pad516[0x6];
+    s32 field400;
+    s16 field404;
     s16 field406;
     struct dds3Basic_t *pBasic_d;
     struct evtUnit_t *hEveUnit_d;
@@ -398,7 +405,8 @@ struct SBTLUNIT_WORK {
     u32 flg;
     u32 vstatus;
     u32 flg2;
-    u8 pad540[0x8];
+    f32 field424;
+    f32 field428;
     f32 angleY;
     f32 deg;
     s16 degcnt;
@@ -469,7 +477,11 @@ struct SBTLUNIT_WORK {
     u8 pad6F5[0x708 - 0x6F5];
     s32 field708; /* frames left of the HP bar sbtlCallSetFontDrawOT draws */
     f32 nakama_asimoto_anim;
-    u8 pad710[0x740 - 0x710];
+    u8 pad710[0x730 - 0x710];
+    s32 mag_on1; /* HD names; -1 takes the boss event table's value */
+    s32 mag_on2;
+    s32 mag_on3;
+    s32 dead_on;
     s32 no_dead_se; /* HD name; skips the dead voice */
     s32 asimoto_mode; /* HD name */
     f32 asimoto_pos_x;
@@ -697,6 +709,7 @@ s32 sbtlCheckDamageTargetTemp(struct SBTLUNIT_WORK *wk);
 void sbtlSetRunAway(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Analyze(u8 side);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Talk(u8 side);
+struct SBTLUNIT_WORK *sbtlSetSummon_sbtlUnit(s32 a, s32 motionId, s32 stock, s8 flg);
 #endif
 
 #endif

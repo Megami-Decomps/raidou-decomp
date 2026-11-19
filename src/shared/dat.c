@@ -702,7 +702,7 @@ INCLUDE_SDATA(const s32, "dat", datCallNewGame2PushData);
 INCLUDE_SDATA(const s32, "dat", DDS3_GBWK);
 #ifdef VERSION_RAIDOU2
 
-INCLUDE_SDATA(const s32, "dat", sbtlData141);
+INCLUDE_SDATA(const s32, "dat", gb_btltime);
 
 INCLUDE_SDATA(const s32, "dat", sbtlSbattle3Data);
 #endif
