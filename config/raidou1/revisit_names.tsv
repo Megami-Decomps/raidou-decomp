@@ -677,14 +677,6 @@
 0x0017AA80	evtCallGetIntPara3	func	tier=D	derived-callee	na	unit code_00179808, neighbour evtBCheckPanelMode; calls scrGetIntPara
 0x0017BAE8	pbLeaf	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
 0x0017BAF0	pbLeaf2	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
-0x0017BAF8	pbLeaf3	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
-0x0017BB10	pbLeaf4	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
-0x0017BB18	pbLeaf5	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
-0x0017BB20	pbLeaf6	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
-0x0017BB28	pbLeaf7	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
-0x0017BB30	pbLeaf8	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
-0x0017BB38	pbLeaf9	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
-0x0017BB40	pbLeaf10	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
 0x0017BB70	pbLeaf11	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
 0x0017BB78	pbLeaf12	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
 0x0017BB80	pbLeaf13	func	tier=D	derived-unit	na	unit code_0017BAE8, nearest named function pbDrawRotatedPrim; no named callee, caller or string
@@ -5585,14 +5577,6 @@
 0x003E7654	mapData49	data	tier=D	derived-shared	na	used by 2 functions: mapLeaf37, mapFileLoadSub9
 0x003E79E0	nbDevilInfoEncidData7	data	tier=D	derived-sole	na	used by nbDevilInfoEncid
 0x003E7AA8	pbDebugPrintPanel2Data	data	tier=D	derived-sole	na	used by pbDebugPrintPanel2
-0x003E7B00	pbLeaf10Data2Entry12	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry10
-0x003E7C38	pbLeaf10Data2Entry10	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
-0x003E7C70	pbLeaf10Data2Entry13	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry11
-0x003E7E20	pbLeaf10Data2Entry11	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
-0x003E7E58	pbLeaf10DataEntry	data	tier=D	derived-table	na	pointed to by pbLeaf10Data
-0x003E8038	pbLeaf10Data	data	tier=D	derived-sole	na	used by pbLeaf10
-0x003E8070	pbLeaf10Data2Entry	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2
-0x003E83A0	pbLeaf10Data2	data	tier=D	derived-sole	na	used by pbLeaf10
 0x003E84D0	btlUpdateResourceNameEditorData	data	tier=D	derived-sole	na	used by btlUpdateResourceNameEditor
 0x003E8680	frData	data	tier=D	derived-shared	na	used by 2 functions: frCallCheckEnableMovieCancel, frDrawFontEx2
 0x003E8688	frSetFontSubData	data	tier=D	derived-sole	na	used by frSetFontSub
@@ -14236,19 +14220,6 @@
 0x0046BFD8	itfOverlayColorEditorRowsEntry5	data	tier=D	derived-table	na	pointed to by itfOverlayColorEditorRows
 0x0046BFDC	pbDebugPrintPanel3Data	data	tier=D	derived-sole	na	used by pbDebugPrintPanel3
 0x0046C000	pbDebugPrintPanel3Data2	data	tier=D	derived-sole	na	used by pbDebugPrintPanel3
-0x0046C008	pbLeaf3Data	data	tier=D	derived-sole	na	used by pbLeaf3
-0x0046C00C	pbLeaf10Data2Entry3	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
-0x0046C010	pbLeaf10Data2Entry4	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
-0x0046C014	pbLeaf10Data2Entry5	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
-0x0046C018	pbLeaf10Data2Entry6	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
-0x0046C01C	pbLeaf10Data2Entry14	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry12
-0x0046C020	pbLeaf10Data2Entry15	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry12
-0x0046C038	pbLeaf10Data2Entry18	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x0046C064	pbLeaf10Data2Entry24	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x0046C068	pbLeaf10Data2Entry25	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x0046C070	pbLeaf10Data2Entry26	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x0046C0A8	pbLeaf10DataEntry2	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x0046C0AC	pbLeaf10DataEntry3	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
 0x0046C120	dds3EffectFileNameTable2Entry	data	tier=D	derived-table	na	pointed to by dds3EffectFileNameTable2
 0x0046C128	dds3EffectFileNameTable2Entry2	data	tier=D	derived-table	na	pointed to by dds3EffectFileNameTable2
 0x0046C130	dds3EffectFileNameTable2Entry3	data	tier=D	derived-table	na	pointed to by dds3EffectFileNameTable2
@@ -16043,20 +16014,6 @@
 0x004B5EBC	nbDevilInfoEncidWork3	data	tier=D	derived-sole	na	used by nbDevilInfoEncid
 0x004B5EC0	nbDevilInfoEncidWork4	data	tier=D	derived-sole	na	used by nbDevilInfoEncid
 0x004B5EC4	nbDevilInfoEncidWork5	data	tier=D	derived-sole	na	used by nbDevilInfoEncid
-0x004B5F00	pbLeaf10DataEntry15	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F04	pbLeaf10DataEntry16	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F08	pbLeaf10DataEntry17	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F10	pbLeaf10DataEntry18	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F14	pbLeaf10DataEntry19	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F18	pbLeaf10DataEntry20	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F20	pbLeaf10DataEntry21	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F24	pbLeaf10DataEntry22	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F28	pbLeaf10DataEntry23	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F2C	pbLeaf10DataEntry24	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F30	pbLeaf10DataEntry25	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F34	pbLeaf10DataEntry26	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F38	pbLeaf10DataEntry27	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004B5F3C	pbLeaf10DataEntry28	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
 0x004B5F58	effGetFontListCountWork	data	tier=D	derived-sole	na	used by effGetFontListCount
 0x004B6304	frWork2	data	tier=D	derived-shared	na	used by 2 functions: frGetFontWidth, frGetFontHeight
 0x004B6420	frGetGsFontNumWork	data	tier=D	derived-sole	na	used by frGetGsFontNum
@@ -17743,6 +17700,14 @@
 0x00179578	mapCtnGetObjNum	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.mapCtnGetObjNum score 4.9 flag -: calls1 calls-of-match st1:call r1+r2
 0x0017A878	nbCommand_AI_ACT_SKILL	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x287e08 sim 0.690 margin 0.69 pair
 0x0017A9F8	evtBCheckPanelMode	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x24c8a0 sim 0.661 margin 0.00 pair
+0x0017BAF8	pbEffectEditCommand	func	tier=C	derived-derived-role	na	command of the "EFFECT EDIT" item of pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); sets bit 0x2000000 of pbDebugFlags; replaces pbLeaf3
+0x0017BB10	pbFieldLightMenuValue	func	tier=C	derived-derived-role	na	create.value callback of pbFieldLightMenu (returns its argument); referenced nowhere else; replaces pbLeaf4
+0x0017BB18	pbFieldLightMenuUpdate	func	tier=C	derived-derived-role	na	update callback of pbFieldLightMenu (empty); referenced nowhere else; replaces pbLeaf5
+0x0017BB20	pbFieldLightMenuDestroy	func	tier=C	derived-derived-role	na	destroy callback of pbFieldLightMenu (empty); referenced nowhere else; replaces pbLeaf6
+0x0017BB28	pbPointLightMenuUpdate	func	tier=C	derived-derived-role	na	update callback of pbPointLightMenu (empty); referenced nowhere else; replaces pbLeaf7
+0x0017BB30	pbPointLightMenuDestroy	func	tier=C	derived-derived-role	na	destroy callback of pbPointLightMenu (empty); referenced nowhere else; replaces pbLeaf8
+0x0017BB38	pbCameraMenuUpdate	func	tier=C	derived-derived-role	na	update callback of pbCameraMenu (empty); referenced nowhere else; replaces pbLeaf9
+0x0017BB40	pbCameraMenuDestroy	func	tier=C	derived-derived-role	na	destroy callback of pbCameraMenu; clears flag 0x80 of pbDebugMenu and pbCameraMenu; replaces pbLeaf10
 0x0017BB90	DEBUG_PRINT	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x29d0e8 sim 1.000 margin 0.00 pair
 0x0017ED30	frSetFont	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1c76e0 sim 0.659 margin 0.35 pair
 0x0017F078	frSetDrawSpeed	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1c7a60 sim 0.696 margin 0.43 pair
@@ -18576,6 +18541,14 @@
 0x003E7620	DDS3_GBWK4	data	tier=C	smt3-ref	0.80 (n=D_r1_003E7620)	smt3-ref/close: nfun=2, other=0, sim=0.7692, games=2, size=True, sec=False, fn=scrClearProcessGlobals; DDS3_GBWK is another symbol
 0x003E7AC0	itfOverlayColorEditorRows	data	tier=C	dds-ref	0.59 (n=D_r1_003E7AC0)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=pbDebugPrintPanel3
 0x003E7AF0	itfTestOverlayColor	data	tier=C	dds-ref	0.59 (n=D_r1_003E7AF0)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=pbDebugPrintPanel3
+0x003E7B00	pbFieldLightMenuItems	data	tier=C	derived-derived-role	na	item array of pbFieldLightMenu; replaces pbLeaf10Data2Entry12
+0x003E7C38	pbFieldLightMenu	data	tier=C	derived-derived-role	na	effDebugMenu_t opened by the "FIELD LIGHT" item of pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); replaces pbLeaf10Data2Entry10
+0x003E7C70	pbPointLightMenuItems	data	tier=C	derived-derived-role	na	item array of pbPointLightMenu; replaces pbLeaf10Data2Entry13
+0x003E7E20	pbPointLightMenu	data	tier=C	derived-derived-role	na	effDebugMenu_t opened by the "POINT LIGHT" item of pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); replaces pbLeaf10Data2Entry11
+0x003E7E58	pbCameraMenuItems	data	tier=C	derived-derived-role	na	item array of pbCameraMenu; replaces pbLeaf10DataEntry
+0x003E8038	pbCameraMenu	data	tier=C	derived-derived-role	na	effDebugMenu_t opened by the "CAMERA" item of pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); replaces pbLeaf10Data
+0x003E8070	pbDebugMenuItems	data	tier=C	derived-derived-role	na	item array of pbDebugMenu (its items field, 34 entries); replaces pbLeaf10Data2Entry
+0x003E83A0	pbDebugMenu	data	tier=C	derived-derived-role	na	effDebugMenu_t titled pbStrDebugMenu "DEBUG MENU"; parent of the field light, point light and camera pages; replaces pbLeaf10Data2
 0x003E83D8	dds3EffectFileNameTable2	data	tier=C	smt3-ref	0.88 (n=D_r1_003E83D8)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=btlReadBattleResourceDirectoryEntry; dds3EffectFileNameTable is another symbol
 0x003E8998	itfPanelSelWinStripVertexIndex2	data	tier=C	smt3-ref	0.98 (n=D_r1_003E8998)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=DrawMesWin; itfPanelSelWinStripVertexIndex is another symbol
 0x003E89B0	itfPanelSelWinStripColorIndex2	data	tier=C	smt3-ref	0.98 (n=D_r1_003E89B0)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=DrawMesWin; itfPanelSelWinStripColorIndex is another symbol
@@ -18708,19 +18681,32 @@
 0x0046BD54	effQueuedResourceNameRecord4	data	tier=C	dds-ref	0.59 (n=D_r1_0046BD54)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldCallTexFreeDelayed; effQueuedResourceNameRecord is another symbol
 0x0046BDAC	fscroll_s_x	data	tier=C	hd	0.37 (n=D_r1_0046BDAC)	hd/medium: conf=medium, agree=2, using=3
 0x0046BF38	mapCtnColor	data	tier=C	hd	0.37 (n=D_r1_0046BF38)	hd/medium: conf=medium, agree=2, using=3
+0x0046C008	pbDebugFlags	data	tier=C	derived-derived-role	na	bit word toggled by the CHANGE, DAMAGE, PRESS, ALL DEAD, BGM, CYLINDER C, FIX ... BIT items of pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); pbLeaf3 sets bit 0x2000000; replaces pbLeaf3Data
+0x0046C00C	pbDebugFlags2	data	tier=C	derived-derived-role	na	second bit word toggled by the BAD, ALL KYUSYU, ALL HIT, AI, CAMERA ... BIT items of pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); replaces pbLeaf10Data2Entry3
+0x0046C010	pbEnemyPartyWidth	data	tier=C	derived-derived-role	na	f32 edited by the WIDTH item under "ENEMY PARTY" in pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); replaces pbLeaf10Data2Entry4
+0x0046C014	pbEnemyPartyHeight	data	tier=C	derived-derived-role	na	f32 edited by the HEIGHT item under "ENEMY PARTY" in pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); replaces pbLeaf10Data2Entry5
+0x0046C018	pbEnemyPartyUpDown	data	tier=C	derived-derived-role	na	f32 edited by the UP DOWN item under "ENEMY PARTY" in pb DEBUG MENU table (src/shared/code_r1_0017BBD8.c); replaces pbLeaf10Data2Entry6
+0x0046C01C	pbFieldLightColor	data	tier=C	derived-derived-role	na	RGB word edited by the R/G/B items under "LIGHT" in pbFieldLightMenu; replaces pbLeaf10Data2Entry14
+0x0046C020	pbFieldFilterColor	data	tier=C	derived-derived-role	na	RGBA word edited by the R/G/B/A items under "FILTER" in pbFieldLightMenu; replaces pbLeaf10Data2Entry15
 0x0046C028	pbStrA	data	tier=C	derived-derived-role	na	string data "A" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry16
 0x0046C030	pbStrFilter	data	tier=C	derived-derived-role	na	string data "FILTER" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry17
+0x0046C038	pbStrBlank	data	tier=C	derived-derived-role	na	string data "" used as the label of the blank rows in both light menus; replaces pbLeaf10Data2Entry18
 0x0046C040	pbStrB	data	tier=C	derived-derived-role	na	string data "B" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry19
 0x0046C048	pbStrG	data	tier=C	derived-derived-role	na	string data "G" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry20
 0x0046C050	pbStrR	data	tier=C	derived-derived-role	na	string data "R" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry21
 0x0046C058	pbStrLight	data	tier=C	derived-derived-role	na	string data "LIGHT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry22
 0x0046C060	pbStrFix	data	tier=C	derived-derived-role	na	string data "FIX" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry23
+0x0046C064	pbPointLightDiffuse	data	tier=C	derived-derived-role	na	RGB word edited by the R/G/B items under "DIFFUSE" in pbPointLightMenu; replaces pbLeaf10Data2Entry24
+0x0046C068	pbPointLightAmbient	data	tier=C	derived-derived-role	na	RGB word edited by the R/G/B items under "AMBIENT" in pbPointLightMenu; replaces pbLeaf10Data2Entry25
+0x0046C070	pbPointLightPattern	data	tier=C	derived-derived-role	na	bytes edited by TARGET, HEIGHT, DIRECT under "PATTERN" in pbPointLightMenu; replaces pbLeaf10Data2Entry26
 0x0046C078	pbStrDirect	data	tier=C	derived-derived-role	na	string data "DIRECT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry27
 0x0046C080	pbStrHeight	data	tier=C	derived-derived-role	na	string data "HEIGHT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry28
 0x0046C088	pbStrTarget	data	tier=C	derived-derived-role	na	string data "TARGET" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry29
 0x0046C090	pbStrPattern	data	tier=C	derived-derived-role	na	string data "PATTERN" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry30
 0x0046C098	pbStrAmbient	data	tier=C	derived-derived-role	na	string data "AMBIENT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry31
 0x0046C0A0	pbStrDiffuse	data	tier=C	derived-derived-role	na	string data "DIFFUSE" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry32
+0x0046C0A8	pbCameraFovy	data	tier=C	derived-derived-role	na	f32 edited by the FOVY item of pbCameraMenu; replaces pbLeaf10DataEntry2
+0x0046C0AC	pbCameraDivi	data	tier=C	derived-derived-role	na	f32 edited by the DIVI item of pbCameraMenu; replaces pbLeaf10DataEntry3
 0x0046C0B0	pbStrEnd	data	tier=C	derived-derived-role	na	string data "END" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry4
 0x0046C0B8	pbStrRw	data	tier=C	derived-derived-role	na	string data "RW  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry5
 0x0046C0C0	pbStrRz	data	tier=C	derived-derived-role	na	string data "RZ  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry6
@@ -18829,6 +18815,20 @@
 0x00474F10	fldD3pData	data	tier=C	derived-derived-role	na	as above; replaces fldWork5
 0x00476710	evtStageTestState2	data	tier=C	dds-ref	0.59 (n=D_r1_00476710)	dds-ref/loose: nfun=2, other=0, sim=0.9677, games=2, size=False, sec=True, fn=fldCallMemFreeDelayedDirect4; evtStageTestState is another symbol
 0x004B4B90	mdl_linkflag	data	tier=C	hd	0.37 (n=D_r1_004B4B90)	hd/medium: conf=medium, agree=3, using=4
+0x004B5F00	pbCameraStartX	data	tier=C	derived-derived-role	na	f32 edited by X under "START" in pbCameraMenu; replaces pbLeaf10DataEntry15
+0x004B5F04	pbCameraStartY	data	tier=C	derived-derived-role	na	f32 edited by Y under "START" in pbCameraMenu; replaces pbLeaf10DataEntry16
+0x004B5F08	pbCameraStartZ	data	tier=C	derived-derived-role	na	f32 edited by Z under "START" in pbCameraMenu; replaces pbLeaf10DataEntry17
+0x004B5F10	pbCameraEndX	data	tier=C	derived-derived-role	na	f32 edited by X under "END" in pbCameraMenu; replaces pbLeaf10DataEntry18
+0x004B5F14	pbCameraEndY	data	tier=C	derived-derived-role	na	f32 edited by Y under "END" in pbCameraMenu; replaces pbLeaf10DataEntry19
+0x004B5F18	pbCameraEndZ	data	tier=C	derived-derived-role	na	f32 edited by Z under "END" in pbCameraMenu; replaces pbLeaf10DataEntry20
+0x004B5F20	pbCameraStartRx	data	tier=C	derived-derived-role	na	f32 edited by RX under "START" in pbCameraMenu; replaces pbLeaf10DataEntry21
+0x004B5F24	pbCameraStartRy	data	tier=C	derived-derived-role	na	f32 edited by RY under "START" in pbCameraMenu; replaces pbLeaf10DataEntry22
+0x004B5F28	pbCameraStartRz	data	tier=C	derived-derived-role	na	f32 edited by RZ under "START" in pbCameraMenu; replaces pbLeaf10DataEntry23
+0x004B5F2C	pbCameraStartRw	data	tier=C	derived-derived-role	na	f32 edited by RW under "START" in pbCameraMenu; replaces pbLeaf10DataEntry24
+0x004B5F30	pbCameraEndRx	data	tier=C	derived-derived-role	na	f32 edited by RX under "END" in pbCameraMenu; replaces pbLeaf10DataEntry25
+0x004B5F34	pbCameraEndRy	data	tier=C	derived-derived-role	na	f32 edited by RY under "END" in pbCameraMenu; replaces pbLeaf10DataEntry26
+0x004B5F38	pbCameraEndRz	data	tier=C	derived-derived-role	na	f32 edited by RZ under "END" in pbCameraMenu; replaces pbLeaf10DataEntry27
+0x004B5F3C	pbCameraEndRw	data	tier=C	derived-derived-role	na	f32 edited by RW under "END" in pbCameraMenu; replaces pbLeaf10DataEntry28
 0x004B67EC	pinst	data	tier=C	dds-ref	0.59 (n=D_r1_004B67EC)	dds-ref/exact: nfun=62, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfMesMngMessage
 0x004B6CE0	mdlViewerState	data	tier=C	dds-ref	0.59 (n=D_r1_004B6CE0)	dds-ref/exact: nfun=64, other=0, sim=1.0, games=2, size=True, sec=True, fn=mdlLoadViewerResourceAndResetCursors
 0x004B6E68	CustomSceneLightArray	data	tier=C	hd	0.37 (n=D_r1_004B6E68)	hd/medium: conf=medium, agree=3, using=4

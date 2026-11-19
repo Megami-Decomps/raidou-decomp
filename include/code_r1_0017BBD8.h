@@ -143,15 +143,15 @@ void btlDebugMenuRecordNoOp(void *context);
 void btlBossDebugPrintfN(s32 x, s32 y, s32 color, const char *format, ...);
 
 /* Callbacks of the pb debug menus (asm unit code_0017BAE8); the menu slots fix the parameters. */
-u32 pbLeaf3(void);
-u32 pbLeaf4(u32 value);
-void pbLeaf5(u32 job);
-void pbLeaf6(u32 job);
-void pbLeaf7(u32 job);
-void pbLeaf8(u32 job);
-void pbLeaf9(u32 job);
-void pbLeaf10(u32 job);
-extern struct effDebugMenu_t pbLeaf10Data;
-extern struct effDebugMenu_t pbLeaf10Data2;
+u32 pbEffectEditCommand(void);
+u32 pbFieldLightMenuValue(u32 value);
+void pbFieldLightMenuUpdate(u32 job);
+void pbFieldLightMenuDestroy(u32 job);
+void pbPointLightMenuUpdate(u32 job);
+void pbPointLightMenuDestroy(u32 job);
+void pbCameraMenuUpdate(u32 job);
+void pbCameraMenuDestroy(u32 job);
+extern struct effDebugMenu_t pbCameraMenu;
+extern struct effDebugMenu_t pbDebugMenu;
 
 #endif

@@ -41,24 +41,24 @@ INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf);
 
 INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf2);
 
-INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf3);
+INCLUDE_ASM(const s32, "code_0017BAE8", pbEffectEditCommand);
 
-INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf4);
+INCLUDE_ASM(const s32, "code_0017BAE8", pbFieldLightMenuValue);
 
-INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf5);
+INCLUDE_ASM(const s32, "code_0017BAE8", pbFieldLightMenuUpdate);
 
-INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf6);
+INCLUDE_ASM(const s32, "code_0017BAE8", pbFieldLightMenuDestroy);
 
-INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf7);
+INCLUDE_ASM(const s32, "code_0017BAE8", pbPointLightMenuUpdate);
 
-INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf8);
+INCLUDE_ASM(const s32, "code_0017BAE8", pbPointLightMenuDestroy);
 
-INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf9);
+INCLUDE_ASM(const s32, "code_0017BAE8", pbCameraMenuUpdate);
 
-void pbLeaf10(u32 job)
+void pbCameraMenuDestroy(u32 job)
 {
-    pbLeaf10Data2.flags &= ~0x80;
-    pbLeaf10Data.flags &= ~0x80;
+    pbDebugMenu.flags &= ~0x80;
+    pbCameraMenu.flags &= ~0x80;
 }
 
 INCLUDE_ASM(const s32, "code_0017BAE8", pbLeaf11);

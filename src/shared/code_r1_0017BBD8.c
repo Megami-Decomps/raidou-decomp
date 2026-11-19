@@ -1152,29 +1152,29 @@ INCLUDE_ASM(const s32, "code_r1_0017BBD8", fmOVERWRITEOK);
 
 #ifdef VERSION_RAIDOU1
 /* pb debug menus (DEBUG MENU and its field light, point light and camera pages); see effDebugMenu_t. */
-extern u32 pbLeaf10Data2Entry14;
-extern u32 pbLeaf10Data2Entry15;
+extern u32 pbFieldLightColor;
+extern u32 pbFieldFilterColor;
 extern char pbStrA[];
 extern char pbStrFilter[];
-extern char pbLeaf10Data2Entry18[];
+extern char pbStrBlank[];
 extern char pbStrB[];
 extern char pbStrG[];
 extern char pbStrR[];
 extern char pbStrLight[];
 extern char pbStrFix[];
-extern u32 pbLeaf10Data2Entry24;
-extern u32 pbLeaf10Data2Entry25;
-extern u8 pbLeaf10Data2Entry26[];
+extern u32 pbPointLightDiffuse;
+extern u32 pbPointLightAmbient;
+extern u8 pbPointLightPattern[];
 extern char pbStrDirect[];
 extern char pbStrHeight[];
 extern char pbStrTarget[];
 extern char pbStrPattern[];
 extern char pbStrAmbient[];
 extern char pbStrDiffuse[];
-extern u32 pbLeaf10Data2Entry3;
-extern f32 pbLeaf10Data2Entry4;
-extern f32 pbLeaf10Data2Entry5;
-extern f32 pbLeaf10Data2Entry6;
+extern u32 pbDebugFlags2;
+extern f32 pbEnemyPartyWidth;
+extern f32 pbEnemyPartyHeight;
+extern f32 pbEnemyPartyUpDown;
 extern char pbStrCamera2[];
 extern char pbStrUpDown[];
 extern char pbStrWidth[];
@@ -1183,29 +1183,29 @@ extern char pbStrX[];
 extern char pbStrStart[];
 extern char pbStrDivi[];
 extern char pbStrFovy[];
-extern f32 pbLeaf10DataEntry15;
-extern f32 pbLeaf10DataEntry16;
-extern f32 pbLeaf10DataEntry17;
-extern f32 pbLeaf10DataEntry18;
-extern f32 pbLeaf10DataEntry19;
-extern f32 pbLeaf10DataEntry20;
-extern f32 pbLeaf10DataEntry21;
-extern f32 pbLeaf10DataEntry22;
-extern f32 pbLeaf10DataEntry23;
-extern f32 pbLeaf10DataEntry24;
-extern f32 pbLeaf10DataEntry25;
-extern f32 pbLeaf10DataEntry26;
-extern f32 pbLeaf10DataEntry27;
-extern f32 pbLeaf10DataEntry28;
-extern f32 pbLeaf10DataEntry2;
-extern f32 pbLeaf10DataEntry3;
+extern f32 pbCameraStartX;
+extern f32 pbCameraStartY;
+extern f32 pbCameraStartZ;
+extern f32 pbCameraEndX;
+extern f32 pbCameraEndY;
+extern f32 pbCameraEndZ;
+extern f32 pbCameraStartRx;
+extern f32 pbCameraStartRy;
+extern f32 pbCameraStartRz;
+extern f32 pbCameraStartRw;
+extern f32 pbCameraEndRx;
+extern f32 pbCameraEndRy;
+extern f32 pbCameraEndRz;
+extern f32 pbCameraEndRw;
+extern f32 pbCameraFovy;
+extern f32 pbCameraDivi;
 extern char pbStrEnd[];
 extern char pbStrRw[];
 extern char pbStrRz[];
 extern char pbStrRy[];
 extern char pbStrRx[];
 extern char pbStrZ[];
-extern u32 pbLeaf3Data;
+extern u32 pbDebugFlags;
 extern char pbStr1Shot[];
 extern char pbStrAi[];
 extern char pbStrAllCrticl[];
@@ -1238,153 +1238,153 @@ INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData);
 #endif
 
 #ifdef VERSION_RAIDOU1
-extern effDebugMenuItem_t pbLeaf10Data2Entry12[];
-extern effDebugMenu_t pbLeaf10Data2Entry10;
-extern effDebugMenuItem_t pbLeaf10Data2Entry13[];
-extern effDebugMenu_t pbLeaf10Data2Entry11;
-extern effDebugMenuItem_t pbLeaf10DataEntry[];
-extern effDebugMenu_t pbLeaf10Data;
-extern effDebugMenuItem_t pbLeaf10Data2Entry[];
-extern effDebugMenu_t pbLeaf10Data2;
+extern effDebugMenuItem_t pbFieldLightMenuItems[];
+extern effDebugMenu_t pbFieldLightMenu;
+extern effDebugMenuItem_t pbPointLightMenuItems[];
+extern effDebugMenu_t pbPointLightMenu;
+extern effDebugMenuItem_t pbCameraMenuItems[];
+extern effDebugMenu_t pbCameraMenu;
+extern effDebugMenuItem_t pbDebugMenuItems[];
+extern effDebugMenu_t pbDebugMenu;
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData2);
 #endif
 
 #ifdef VERSION_RAIDOU1
-effDebugMenuItem_t pbLeaf10Data2Entry12[13] = {
-    { pbStrFix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x20000000 }, 0, 1.0f },
+effDebugMenuItem_t pbFieldLightMenuItems[13] = {
+    { pbStrFix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x20000000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrLight, EFF_DEBUG_ITEM_BLANK },
-    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry18, EFF_DEBUG_ITEM_BLANK },
+    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbFieldLightColor }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbFieldLightColor }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbFieldLightColor }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrBlank, EFF_DEBUG_ITEM_BLANK },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrFilter, EFF_DEBUG_ITEM_BLANK },
-    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrA, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbFieldFilterColor }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbFieldFilterColor }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbFieldFilterColor }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrA, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &pbFieldFilterColor }, { .minValue = 0 }, 0, 1.0f },
 };
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditorData2);
 #endif
 
 #ifdef VERSION_RAIDOU1
-effDebugMenu_t pbLeaf10Data2Entry10 = {
-    NULL, 184, 4, 0, 0x0, pbLeaf10Data2Entry12, 13, NULL,
-    { .value = pbLeaf4 }, pbLeaf5, pbLeaf6, NULL, { 0 }, NULL,
+effDebugMenu_t pbFieldLightMenu = {
+    NULL, 184, 4, 0, 0x0, pbFieldLightMenuItems, 13, NULL,
+    { .value = pbFieldLightMenuValue }, pbFieldLightMenuUpdate, pbFieldLightMenuDestroy, NULL, { 0 }, NULL,
 };
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditorData3);
 #endif
 
 #ifdef VERSION_RAIDOU1
-effDebugMenuItem_t pbLeaf10Data2Entry13[18] = {
-    { pbStrFix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x40000000 }, 0, 1.0f },
+effDebugMenuItem_t pbPointLightMenuItems[18] = {
+    { pbStrFix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x40000000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrDiffuse, EFF_DEBUG_ITEM_BLANK },
-    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry18, EFF_DEBUG_ITEM_BLANK },
+    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbPointLightDiffuse }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbPointLightDiffuse }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbPointLightDiffuse }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrBlank, EFF_DEBUG_ITEM_BLANK },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrAmbient, EFF_DEBUG_ITEM_BLANK },
-    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry18, EFF_DEBUG_ITEM_BLANK },
+    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbPointLightAmbient }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbPointLightAmbient }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbPointLightAmbient }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrBlank, EFF_DEBUG_ITEM_BLANK },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrPattern, EFF_DEBUG_ITEM_BLANK },
-    { pbStrTarget, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[0] }, { .minValue = 0 }, 8, 1.0f },
-    { pbStrHeight, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[1] }, { .minValue = 0 }, 5, 1.0f },
-    { pbStrDirect, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[2] }, { .minValue = 0 }, 0xA, 1.0f },
+    { pbStrTarget, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbPointLightPattern[0] }, { .minValue = 0 }, 8, 1.0f },
+    { pbStrHeight, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbPointLightPattern[1] }, { .minValue = 0 }, 5, 1.0f },
+    { pbStrDirect, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbPointLightPattern[2] }, { .minValue = 0 }, 0xA, 1.0f },
 };
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmData);
 #endif
 
 #ifdef VERSION_RAIDOU1
-effDebugMenu_t pbLeaf10Data2Entry11 = {
-    NULL, 184, 4, 0, 0x0, pbLeaf10Data2Entry13, 18, NULL,
-    { 0 }, pbLeaf7, pbLeaf8, NULL, { 0 }, NULL,
+effDebugMenu_t pbPointLightMenu = {
+    NULL, 184, 4, 0, 0x0, pbPointLightMenuItems, 18, NULL,
+    { 0 }, pbPointLightMenuUpdate, pbPointLightMenuDestroy, NULL, { 0 }, NULL,
 };
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData);
 #endif
 
 #ifdef VERSION_RAIDOU1
-effDebugMenuItem_t pbLeaf10DataEntry[20] = {
-    { pbStrFovy, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry2 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrDivi, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry3 }, { .minValue = 0 }, 0, 1.0f },
+effDebugMenuItem_t pbCameraMenuItems[20] = {
+    { pbStrFovy, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbCameraFovy }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrDivi, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbCameraDivi }, { .minValue = 0 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrStart, EFF_DEBUG_ITEM_BLANK },
-    { pbStrX, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry15 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrY, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry16 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrZ, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry17 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrRx, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry21 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrRy, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry22 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrRz, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry23 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrRw, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry24 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrX, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbCameraStartX }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrY, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbCameraStartY }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrZ, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbCameraStartZ }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRx, 0x26, { 0 }, { .f32Value = &pbCameraStartRx }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRy, 0x26, { 0 }, { .f32Value = &pbCameraStartRy }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRz, 0x26, { 0 }, { .f32Value = &pbCameraStartRz }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRw, 0x26, { 0 }, { .f32Value = &pbCameraStartRw }, { .minValue = -1 }, -1, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrEnd, EFF_DEBUG_ITEM_BLANK },
-    { pbStrX, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry18 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrY, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry19 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrZ, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry20 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrRx, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry25 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrRy, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry26 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrRz, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry27 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrRw, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry28 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrX, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbCameraEndX }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrY, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbCameraEndY }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrZ, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbCameraEndZ }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRx, 0x26, { 0 }, { .f32Value = &pbCameraEndRx }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRy, 0x26, { 0 }, { .f32Value = &pbCameraEndRy }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRz, 0x26, { 0 }, { .f32Value = &pbCameraEndRz }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRw, 0x26, { 0 }, { .f32Value = &pbCameraEndRw }, { .minValue = -1 }, -1, 1.0f },
 };
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData2);
 #endif
 
 #ifdef VERSION_RAIDOU1
-effDebugMenu_t pbLeaf10Data = {
-    NULL, 184, 4, 0, 0x0, pbLeaf10DataEntry, 20, NULL,
-    { 0 }, pbLeaf9, pbLeaf10, NULL, { 0 }, NULL,
+effDebugMenu_t pbCameraMenu = {
+    NULL, 184, 4, 0, 0x0, pbCameraMenuItems, 20, NULL,
+    { 0 }, pbCameraMenuUpdate, pbCameraMenuDestroy, NULL, { 0 }, NULL,
 };
 
-effDebugMenuItem_t pbLeaf10Data2Entry[34] = {
-    { pbStrChange, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x40 }, 0, 1.0f },
-    { pbStrDamage, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x80 }, 0, 1.0f },
-    { pbStrPress, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x100 }, 0, 1.0f },
-    { pbStrBad, 0x0A, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x80 }, 0, 1.0f },
-    { pbStrAllKyusyu, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 8 }, 0, 1.0f },
-    { pbStrAllHansya, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x10 }, 0, 1.0f },
-    { pbStrAllSake, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x20 }, 0, 1.0f },
-    { pbStrAllHit, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x40 }, 0, 1.0f },
-    { pbStrAllCrticl, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x1000 }, 0, 1.0f },
-    { pbStrAllDead, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x200000 }, 0, 1.0f },
-    { pbStrAllSkill, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x1000000 }, 0, 1.0f },
-    { pbStrAllSelect, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x800 }, 0, 1.0f },
-    { pbStrEnemyComm, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 1 }, 0, 1.0f },
-    { pbStrAi, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 2 }, 0, 1.0f },
-    { pbStrBgm, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x10000 }, 0, 1.0f },
-    { pbStrCamera, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x400 }, 0, 1.0f },
-    { pbStrAllHide, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x4000000 }, 0, 1.0f },
+effDebugMenuItem_t pbDebugMenuItems[34] = {
+    { pbStrChange, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x40 }, 0, 1.0f },
+    { pbStrDamage, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x80 }, 0, 1.0f },
+    { pbStrPress, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x100 }, 0, 1.0f },
+    { pbStrBad, 0x0A, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x80 }, 0, 1.0f },
+    { pbStrAllKyusyu, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 8 }, 0, 1.0f },
+    { pbStrAllHansya, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x10 }, 0, 1.0f },
+    { pbStrAllSake, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x20 }, 0, 1.0f },
+    { pbStrAllHit, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x40 }, 0, 1.0f },
+    { pbStrAllCrticl, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x1000 }, 0, 1.0f },
+    { pbStrAllDead, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x200000 }, 0, 1.0f },
+    { pbStrAllSkill, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x1000000 }, 0, 1.0f },
+    { pbStrAllSelect, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x800 }, 0, 1.0f },
+    { pbStrEnemyComm, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 1 }, 0, 1.0f },
+    { pbStrAi, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 2 }, 0, 1.0f },
+    { pbStrBgm, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x10000 }, 0, 1.0f },
+    { pbStrCamera, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x400 }, 0, 1.0f },
+    { pbStrAllHide, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x4000000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbStrCylinderC, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x400000 }, 0, 1.0f },
-    { pbStrCylinderF, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf10Data2Entry3 }, { .mask = 0x200 }, 0, 1.0f },
-    { pbStr1Shot, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x800000 }, 0, 1.0f },
+    { pbStrCylinderC, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x400000 }, 0, 1.0f },
+    { pbStrCylinderF, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags2 }, { .mask = 0x200 }, 0, 1.0f },
+    { pbStr1Shot, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x800000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrEnemyParty, EFF_DEBUG_ITEM_BLANK },
-    { pbStrWidth, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry4 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrHeight, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry5 }, { .minValue = -1 }, -1, 1.0f },
-    { pbStrUpDown, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry6 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrWidth, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbEnemyPartyWidth }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrHeight, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbEnemyPartyHeight }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrUpDown, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbEnemyPartyUpDown }, { .minValue = -1 }, -1, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbStrCut23Fix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x10000000 }, 0, 1.0f },
-    { pbStrFldFilter, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x20000 }, 0, 1.0f },
-    { pbStrFieldLight, 0x18, { 0 }, { .child = &pbLeaf10Data2Entry10 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrPointLight, 0x18, { 0 }, { .child = &pbLeaf10Data2Entry11 }, { .minValue = 0 }, 0, 1.0f },
-    { pbStrCamera2, 0x18, { 0 }, { .child = &pbLeaf10Data }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrCut23Fix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x10000000 }, 0, 1.0f },
+    { pbStrFldFilter, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbDebugFlags }, { .mask = 0x20000 }, 0, 1.0f },
+    { pbStrFieldLight, 0x18, { 0 }, { .child = &pbFieldLightMenu }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrPointLight, 0x18, { 0 }, { .child = &pbPointLightMenu }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrCamera2, 0x18, { 0 }, { .child = &pbCameraMenu }, { .minValue = 0 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbStrEffectEdit, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = pbLeaf3 }, { .color = 0x0 } },
+    { pbStrEffectEdit, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = pbEffectEditCommand }, { .color = 0x0 } },
 };
 
-effDebugMenu_t pbLeaf10Data2 = {
-    pbStrDebugMenu, 8, 4, 0, 0x0, pbLeaf10Data2Entry, 34, NULL,
+effDebugMenu_t pbDebugMenu = {
+    pbStrDebugMenu, 8, 4, 0, 0x0, pbDebugMenuItems, 34, NULL,
     { 0 }, NULL, NULL, NULL, { 0 }, NULL,
 };
 
