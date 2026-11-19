@@ -375,7 +375,8 @@ struct SBTLUNIT_WORK {
     s16 field494;
     u8 pad5C2[0x2];
     s16 field498;
-    u8 pad5C6[0x8];
+    u8 pad5C6[0x6];
+    s16 field4A0;
     s16 field4A2;
     u8 pad5D0[0x630 - 0x5D0];
     s8 light_buff[3];
@@ -388,7 +389,9 @@ struct SBTLUNIT_WORK {
     u8 field6E9; /* set by trmSetProcessTerm */
     u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
-    u8 pad6F5[0x770 - 0x6F5];
+    u8 pad6F5[0x740 - 0x6F5];
+    s32 no_dead_se; /* HD name; skips the dead voice */
+    u8 pad744[0x770 - 0x744];
     s32 miusinai;
     u8 pad774[0x7F4 - 0x774]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };

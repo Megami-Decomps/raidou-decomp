@@ -13,6 +13,7 @@
 #include "sndAt3.h"
 #include "mdlManager.h"
 #include "AW_XAtkPad.h"
+#include "sBtlCalc.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
@@ -144,7 +145,23 @@ s32 NakamaMotion3DSE(struct SBTLSOUND_FOOTWORK *fwk, s32 devilID, f32 frame)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayViceSE);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRefSbtl6);
+void sbtlRefSbtl6(struct SBTLUNIT_WORK *wk, u32 seid, s32 vol, s32 motionID)
+{
+    if (motionID == 12) {
+        if (wk->field1A0 != wk_sbtl->targetUnitID || wk_sbtl->battleMode == 3 || wk_sbtl->battleMode == 1) {
+            if (!(wk->se.field10 & 1)) {
+                if (!wk->no_dead_se) {
+                    sbtlPlayDeadVoice(wk);
+                }
+                return;
+            }
+        }
+    }
+    if ((u32)(motionID - 13) < 2 && !(wk->field414 & 0x80) && (wk->field414 & 1)) {
+        sbtlLeaf58(seid);
+    }
+    sbtlSEVolAngleCalc(seid, vol);
+}
 
 f32 sbtlPlayMotionSENowSub(struct SBTLUNIT_WORK *wk, s32 motionID) {
     return sbtlGetSETime(wk, motionID);
@@ -360,7 +377,29 @@ s32 Init_sbtlUnit(s8 flg)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetEndBadStatus);
+void sbtlSetEndBadStatus(void)
+{
+    struct SBTLUNIT_WORK *wk;
+    BST bst;
+    s32 i;
+
+    if (wk_sbtl->member_num <= 0) {
+        return;
+    }
+    for (i = 0; i < 2; i++) {
+        wk = sbtlGetNakama(i);
+        if (wk == NULL || !CheckLiveTarget(wk)) {
+            continue;
+        }
+        bst = sbtlGetBadStatus(&wk->unit);
+        if (bst != BST_RAND0 && bst != BST_BOYCOTT && bst != BST_MOUDOKU && bst != BST_STONE) {
+            sbtlResetBadStatus(wk, BSTF_DEAD | BSTF_GUN | BSTF_SLEEP | BSTF_MOUDOKU | BSTF_MAHUU | BSTF_BOUDO | BSTF_PANIC
+                                       | BSTF_CHARM | BSTF_KOUFUN | BSTF_KAEN | BSTF_APPAKU | BSTF_KANDEN | BSTF_HYOUKETU
+                                       | BSTF_KANASHIB);
+        }
+        sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetEndData);
 

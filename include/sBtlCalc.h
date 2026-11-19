@@ -35,6 +35,9 @@ s32 sbtlCheckAutoSkill_TargetDamage(s32 autono);
 s32 sbtlCheckAutoSkill_Action(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, s32 attr);
 s32 sbtlCheckKuishibari(struct SBTLUNIT_WORK *wk, s32 damage);
 s32 sbtlGetAutoSkillPara(SKLID id, s16 *badst, s16 *power);
+#ifdef VERSION_RAIDOU2
+u32 sbtlCheckAisyoEx(struct SBTLUNIT_WORK *wk, u32 attr, s32 *hanshaType);
+#endif
 s32 sbtlBtlCheckBadStatusWeakSub(SKLID skill);
 s32 sbtlCallBtlGetSkilltbl17(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx);
 s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk);

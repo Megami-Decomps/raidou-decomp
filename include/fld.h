@@ -39,7 +39,12 @@ s32 fldAiboMotReset(void);
 struct dds3ProcessID_t;
 s32 BgProcSequence(struct dds3ProcessID_t *id);
 s32 fldProcSequence2(struct dds3ProcessID_t *id);
+#ifdef VERSION_RAIDOU2
+/* Raidou 2 keeps it in .data and reaches it with lui, so its size is not known here. */
+extern s32 mapBgDrawOnOffData[];
+#else
 extern s32 mapBgDrawOnOffData;
+#endif
 void nbRefDDS3GBWK2(void);
 void nbRefDDS3GBWK3(void);
 void nbCallSetOt(void);

@@ -187,7 +187,9 @@ typedef struct SBTL_WORK {
     u16 stock_useskill_num;
     u8 pad542[0x5A0 - 0x542];
     struct SBTLUNIT_LISTWORK *list2D4;
-    u8 pad5A4[0x148];
+    u8 pad5A4[0x650 - 0x5A4];
+    s32 member_num; /* HD name; partners in the battle */
+    u8 pad654[0x6EC - 0x654];
     SBTLVIBE_WORK vibe[2];
     s32 vibe_startf[2];
     s32 vibe_frame[2];
@@ -210,7 +212,9 @@ typedef struct SBTL_WORK {
     s16 mode;
     u8 pad772[0x4];
     s16 field436;
-    u8 pad778[0x8];
+    s16 gstat[2];
+    s16 walk_counter;
+    u8 pad77E[0x2];
     s16 field440;
     u8 pad782[0x1A];
     s32 hgunNum;
@@ -220,7 +224,8 @@ typedef struct SBTL_WORK {
     s32 field7D0;
     s32 field7D4;
     s32 field7D8;
-    u8 pad7DC[0x7FC - 0x7DC];
+    s32 field7DC;
+    u8 pad7E0[0x7FC - 0x7E0];
     s32 field7FC;
     s32 field800;
     u8 pad804[0x8];
@@ -228,11 +233,16 @@ typedef struct SBTL_WORK {
     s32 field810;
     u8 pad814[0x838 - 0x814];
     s32 field838; /* unit ID of the battle talk partner */
-    u8 pad83C[0x880 - 0x83C];
+    u8 pad83C[0x86E - 0x83C];
+    s16 field50A;
+    u8 pad870[0x880 - 0x870];
     SBTLDROP_WORK drop;
     u8 pad974[0x9A8 - 0x880 - sizeof(SBTLDROP_WORK)];
     s32 field614;
-    u8 pad9AC[0x9BC - 0x9AC];
+    u8 field618;
+    u8 pad9AD[0x9B4 - 0x9AD];
+    s32 field620;
+    u8 pad9B8[0x4];
     SBTL_PANEL *panel;
     u8 pad9C0[0x4];
     struct SBTL_FIELD630_WORK *field630;
@@ -277,6 +287,8 @@ typedef struct SBTL_WORK {
     u8 pad42CF;
     s32 timeLimit;
     s32 timeMode;
+    u8 pad42D8[0x4324 - 0x42D8];
+    s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
 } SBTL_WORK;
 #else
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
@@ -1049,6 +1061,9 @@ s32 sbtlLoadEffectData_Decode(struct SBTLUNIT_WORK *wk);
 s32 sbtlMapFadeProc(void);
 s32 sbtlMapFadeProc_H(void);
 void sbtlMap_Init(void);
+#ifdef VERSION_RAIDOU2
+struct SBTLUNIT_WORK *sbtlGetNakama(s8 idx);
+#endif
 s32 sbtlNakamaSetUp(void);
 void sbtlPacData_Init(void);
 s32 sbtlRefSbtl15(s32 x, s32 y);

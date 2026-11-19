@@ -14,6 +14,7 @@
 #include "sBtlSkill.h"
 #include "code_0027A1E8.h"
 #include "AW_XAtkPad.h"
+#include "sBtlPlayer.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -63,7 +64,32 @@ struct SBTLUNIT_WORK *sbtlRefSbtl10(s32 ID)
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallObjectBaseSetPadControl);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetAction);
+s32 sbtlResetAction(struct SBTLUNIT_WORK *wk)
+{
+    wk->vstatus &= 0xF67DFFFF;
+    wk->flg &= 0xFFFFBEEE;
+    wk->flg2 &= ~0x20;
+    wk->flg2 &= ~0x400;
+    wk->model->flags &= ~0x4200;
+    wk_sbtl->mode = 1;
+    wk_sbtl->gstat[0] = 0;
+    wk_sbtl->gstat[1] = 0;
+    wk_sbtl->field7C8 = 0;
+    wk_sbtl->field7D8 = 0;
+    wk_sbtl->field7D0 = 0;
+    wk_sbtl->walk_counter = 0;
+    wk_sbtl->field7DC = 0;
+    wk_sbtl->field50A = 0;
+    wk_sbtl->field618 = 0;
+    wk_sbtl->field620 = 0;
+    wk_sbtl->raido_magwaza_costnot = 0;
+    wk->field4A0 = 0;
+    sbtlRestartMotion(wk);
+    wk->vstatus |= 0x80;
+    wk->field474 = 0;
+    sbtlRefSbtl11(wk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl36);
 
@@ -384,7 +410,21 @@ s32 SEquationno_09(struct SBTLUNIT_WORK *wk, s16 skillid) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0a);
+s32 SEquationno_0a(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if (tbl->flg & 1) {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit) && sbtlCheckAisyoEx(unit, tbl->attr, NULL) == 0x4000) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0b);
 
@@ -419,7 +459,17 @@ s32 SEquationno_0e(struct SBTLUNIT_WORK *wk, s16 skillid) {
     return type != 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0f);
+s32 SEquationno_0f(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+
+    if (wk_sbtl->panel->setdata[GetMeireiNo(wk)].meirei_no != 6) {
+        return 0;
+    }
+    if (tbl->s_type && tbl->para != 0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_10);
 

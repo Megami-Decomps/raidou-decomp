@@ -65,6 +65,9 @@ void sbtlSoundatBossAt(s32 id, char *name);
 void sbtlStopSkillSE(SKLID skillid, s32 type);
 void sbtlPlaySkillSE(const sdfVector4_t *pos, SKLID skillid, s32 type);
 void sbtlLeaf58(u32 seid);
+#ifdef VERSION_RAIDOU2
+void sbtlPlayDeadVoice(struct SBTLUNIT_WORK *wk);
+#endif
 void sbtlRefSbtl6(struct SBTLUNIT_WORK *wk, u32 seid, s32 vol, s32 motionID);
 u32 sbtlCallGetRandIntA4(struct SBTLUNIT_WORK *wk);
 #ifdef VERSION_RAIDOU2

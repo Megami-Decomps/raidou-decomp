@@ -279,7 +279,15 @@ s32 BgProcSequence(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_001416C0", fldProcSequence2);
+s32 fldProcSequence2(dds3ProcessID_t *id) {
+    mapSKYBGEDIT();
+    if (mapBgDrawOnOffData[0] != 0 && dds3SearchProcessName(BgProcSequenceStrFldProcSequence) != NULL) {
+        nbRefDDS3GBWK2();
+        nbRefDDS3GBWK3();
+        nbCallSetOt();
+    }
+    return 0;
+}
 
 void fldBgTaskInit(void) {
     dds3StartProcess(fldStrBgProcSequence, 1013, 0, 0, BgProcSequence, NULL, NULL);
