@@ -6,7 +6,7 @@
 
 struct SBTLUNIT_WORK;
 
-s32 nwdLeaf5(void);
+s32 NWD_GET_INTIMATE_RANK(void);
 s32 sbtlCallBtlGetSkilltbl16(struct SBTLUNIT_WORK *tgtwk, SKLID sklid);
 
 #endif

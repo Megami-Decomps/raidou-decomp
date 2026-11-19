@@ -5,7 +5,7 @@
 #include "sdfSound.h"
 #include "sdk_libc.h"
 
-INCLUDE_ASM(const s32, "TitleMain", evtLeaf29);
+INCLUDE_ASM(const s32, "TitleMain", LMP_NPC_DELETE);
 
 INCLUDE_ASM(const s32, "TitleMain", dds3CallListStart);
 

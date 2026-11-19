@@ -4,7 +4,7 @@
 #include "sBtlAI.h"
 #include "scrTraceCode.h"
 
-s32 datLeaf81(void) {
+s32 SBTL_SET_CUTSCROLL_DEFAULT(void) {
     return sbtlDefaultCutScroll();
 }
 

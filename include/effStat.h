@@ -7,7 +7,7 @@
 void Init_effStat(void);
 s32 Process_effStat(dds3ProcessID_t *proc);
 void effUpdateBlur(void);
-void effFadeInBlur(void);
+void effCallStopStat2(void);
 void effCallRestoreStat(void);
 s32 effCallStopStat(void);
 void fclBtlDebugSetStatusflgSub(void);

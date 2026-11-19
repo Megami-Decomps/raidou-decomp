@@ -764,7 +764,7 @@
 0x00119E98	Constructor	hd	hd: Raidou HD dds3CameraObjectBasic.Constructor, score 9.25 band B
 0x00119EF8	Destructor	hd	hd: Raidou HD dds3CameraObjectBasic.Destructor, score 11.95 band A
 0x00119F38	Mainprocuder	hd	hd: Raidou HD dds3CameraObjectBasic.Mainprocuder, score 10.7 band A
-0x0011A020	dds3Leaf27	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit basic/dds3CameraObjectBasic; no named callee, caller or string
+0x0011A020	Drawprocuder	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD dds3CameraObjectBasic.Drawprocuder: returns 1; 4th entry of the camera basic table after Constructor/Destructor/Mainprocuder, right before MakeCamera as in HD; replaces dds3Leaf27
 0x0011A028	MakeCamera	inferred	SMT3HD name via SLUS_209.11 0x00112500, reloc-identical; map-agrees
 0x0011A0F0	dds3GetCameraObjectBaseControlWorkData	inferred	SMT3HD name via SLUS_209.11 0x001125C8, shared-hash-in-run; map-agrees
 0x0011A100	dds3AllocCameraObjectBasic	inferred	SMT3HD name via SLUS_209.11 0x001125D8, reloc-identical; map-agrees
@@ -2039,7 +2039,7 @@
 0x00179A40	nbCallSetIntReturnValue	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; calls scrSetIntReturnValue
 0x00179A88	nbCallGetIntPara3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; calls scrGetIntPara
 0x00179AE8	nbDevilInfoEncid	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; string 'DevilInfo: encid: 0x%x\n'
-0x0017A500	nbLeaf55	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; no named callee, caller or string
+0x0017A500	FLD_NEKO	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fldCommand.FLD_NEKO: returns 1; script command table entry right before MAP_ZOOM (fldBgZoomTest(param)) as in HD; replaces nbLeaf55
 0x0017A508	nbCallGetIntPara4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; calls scrGetIntPara
 0x0017A530	nbCallGetIntPara5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; calls scrGetIntPara
 0x0017A588	nbCallGetIntPara2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; calls scrGetIntPara
@@ -5541,15 +5541,15 @@
 0x0021BA78	effGetFlags	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD effStat.effGetFlags returns flags_stat; 0x21BA78 returns 0x46D0C0; HD effSRAnimation is an effBehavior function; replaces effSRAnimation
 0x0021BA80	effCallStopStat	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0021BA28, neighbour effSRAnimation; calls effStopStat
 0x0021BAC8	effStopEffectStop	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD effStat.effStopEffectStop score 6.5 flag I: calls2 calls-of-match votes3 st2:call r2-only
-0x0021BB00	effFadeInBlur	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD effStat.effFadeInBlur score 3.0 flag -: prev gap3/4 st2:gap r2-only
+0x0021BB00	effCallStopStat2	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=not HD effFadeInBlur (that body is effLeaf344): effStopStat(), sets flags_stat bit 0, then effFadeOutBlur(8); calls effStopStat like its neighbour effCallStopStat; replaces effFadeInBlur
 0x0021BB30	effCallRestoreStat	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0021BA28, neighbour effFadeInBlur; calls effRestoreStat
 0x0021BB60	effLeaf340	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021BA28, neighbour effFadeInBlur; no named callee, caller or string
 0x0021BB88	effLeaf341	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021BA28, neighbour effFadeInBlur; no named callee, caller or string
 0x0021BBB0	Init_effStat	hd	hd: Raidou HD effStat.Init, score 9.5 band B
 0x0021BC00	Process_effStat	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD effStat.Process (the eff_stat process function Init passes to dds3StartProcess) calls effUpdateBlur then effUpdate; Init_effStat passes 0x21BC00; replaces effCallFadeInBlur
 0x0021BC78	effLeaf342	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
-0x0021BC80	effLeaf343	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
-0x0021BD10	effLeaf344	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
+0x0021BC80	effFadeOutBlur	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD effStat.effFadeOutBlur(frame): clear flags_blur bit 1; frame 0 sets the blur value to 0, else set bit 0 and vel_blur from 1/frame; right before effFadeInBlur and effUpdateBlur as in HD; replaces effLeaf343
+0x0021BD10	effFadeInBlur	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD effStat.effFadeInBlur(frame): clear flags_blur bit 0; frame 0 sets the blur value to 1.0, else set bit 1 and vel_blur = 1/frame; between effFadeOutBlur and effUpdateBlur as in HD; replaces effLeaf344
 0x0021BDA0	effUpdateBlur	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD effStat.effUpdateBlur: step the blur value by vel_blur toward 1 (flag 2) or 0 (flag 1), clear the flag at the end; same body; replaces effFunc11
 0x0021BE48	effStopStat	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD effQuake.effStopStat score 6.9 flag I: calls1 next callers-of-match votes2 st2:call r2-only
 0x0021BED0	effRestoreStat	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD effQuake.effRestoreStat score 3.2 flag I: calls1 callers-of-match st2:call r2-only
@@ -6811,7 +6811,7 @@
 0x002692A0	sbtlCallGetIntPara4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSupport_StopAction; calls scrGetIntPara
 0x002692C8	sbtlCallSetIntReturnValue2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlSupport_StopAction; calls scrSetIntReturnValue
 0x002692F0	btlRunCameraMotionResetTask	inferred	twin-of-raidou2-0x0028AD40, masked-hash-in-gap
-0x00269318	datLeaf81	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00269318, neighbour datCommand_GET_DEVIL_ID; no named callee, caller or string
+0x00269318	SBTL_SET_CUTSCROLL_DEFAULT	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sBtlCommand.SBTL_SET_CUTSCROLL_DEFAULT: calls sbtlDefaultCutScroll; script command table entry after the SET_CUTSCROLL_UNIT command (sbtlSetCutScroll) as in HD; replaces datLeaf81
 0x00269330	datCallStopEffectStop	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00269318, neighbour datCommand_GET_DEVIL_ID; calls effStopEffectStop
 0x00269380	datCallSupportRunWarpProcess	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00269318, neighbour datCommand_GET_DEVIL_ID; calls Support_RunWarpProcess
 0x00269568	datCallGetIntPara7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00269318, neighbour datCommand_GET_DEVIL_ID; calls scrGetIntPara
@@ -6929,7 +6929,7 @@
 0x002706C0	sbtlBtlCheckEquationProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlActAI; called by sbtlCheckEquationProc
 0x002706D8	sbtlCallBtlGetBadStatus6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlGetBadStatus
 0x00270720	sbtlCheckCharmTarget	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlCheckCharmTarget score 4.5 flag I: calls2 callee-index st1:cidx r1-only
-0x00270778	sbtlLeaf66	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
+0x00270778	AICHK_NONE	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sBtlActAI.AICHK_NONE: returns -1; CheckFuncTbl[0], followed by AICHK_MYHP (charm target HP check) as in HD; replaces sbtlLeaf66
 0x00270780	sbtlCallBtlCheckCharmTarget	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCheckCharmTarget
 0x00270818	sbtlCallBtlCreateSideList2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCreateSideList
 0x002708F8	sbtlCallBtlCheckCharmTarget2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCheckCharmTarget
@@ -6938,7 +6938,7 @@
 0x00270BB8	sbtlCallBtlCheckCharmTarget3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCheckCharmTarget
 0x00270C40	sbtlCallBtlCreateSideList3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCreateSideList
 0x00270D18	sbtlCallBtlCreateSideListSBtlUnit6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCreateSideList_sbtlUnit
-0x00270DD8	sbtlLeaf67	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
+0x00270DD8	AICHK_BTLTIME	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sBtlActAI.AICHK_BTLTIME: syscnt_stop >= arg sets ai_target[index]; CheckFuncTbl[9], before CHKSKL/CHKSKL_R as in HD; replaces sbtlLeaf67
 0x00270E10	sbtlCallBtlSetChkskl2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlSetChkskl
 0x00270F38	sbtlCallBtlSetChkskl3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlSetChkskl
 0x00271078	sbtlCallBtlSetUseskl	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlSetUseskl
@@ -6962,7 +6962,7 @@
 0x00272BB0	sbtlRefSbtl21	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlActAI; references wk_sbtl
 0x00272BF8	sbtlResetAIPattern	hd-inferred	method=hd-vote; p=0.95 (n=66); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlResetAIPattern score 6.6 flag I: calls1 calls-of-match-uniq votes2 st1:call r1+r2
 0x00272C18	sbtlCallBtlCheckEquation	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCheckEquation
-0x00272D50	sbtlLeaf68	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
+0x00272D50	sbtlEAIInit_Dummy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sBtlActAI.sBtlEAIInit_Dummy: returns 1; right before sbtlEAIInit_None as in HD, fills the unused slots of the EAIInit table; replaces sbtlLeaf68
 0x00272D58	sbtlEAIInit_None	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIInit_None, score 8.3 band B, hd-ab: calls2 callers-of-match votes3 st1:call r1+r2
 0x00272DF8	sbtlEAIInit_Summon	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIInit_Summon, score 5.0 band C, hd-consensus: prev gap5/4 st1:gap r1+r2; 10/10 fold runs agree, fold scores 3.0,5.0,5.0,3.0,3.0,3.0,5.0,8.0,5.0,8.0
 0x00273050	sbtlEAIInit_BtlInit	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlEAIInit_BtlInit score 8.3 flag I: prev gap4/18 st1:gap r1+r2
@@ -7791,8 +7791,8 @@
 0x002B5628	sbtlAddPrev	hd-inferred	hd: Raidou HD sbattle.sbattleAddPrev, score 9.45 band B
 0x002B56E0	sbtlDecPrev	hd-inferred	hd: Raidou HD sbattle.sbattleDecPrev, score 11.45 band A
 0x002B5798	sbtlClearEffHitData	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.sbattleClearEffHitData score 8.0 flag I: calls2 calls-of-match votes2 st1:call r1+r2
-0x002B5808	sbtlLeaf108	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002B5940	sbtlLeaf95	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002B5808	sbtlNEFMODE_Func_Hittype	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sbattle.sbattleNEFMODE_Func_Hittype: slot 4 of sbtlDebug_NEFMODE_Func after Open/Save/Load/PageList; cursor wrap, mode 13 flag set, nef_mode = 3, limit 16 as in HD; replaces sbtlLeaf108
+0x002B5940	sbtlMOVEMODE_Func_SelMenu	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sbattle.sbattleMOVEMODE_Func_SelMenu: slot 5 (SelMenu) of sbtlDebug_NMDLMVMODE_Func; sets nef_mode 3/7/9 as in HD; replaces sbtlLeaf95
 0x002B5BA8	sbtlSizeofData	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtl; string 'sizeof data %d\n'
 0x002B5E48	sbtlFunc28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002B5F50	sbtlCallRestartBattle	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls RestartBattle
@@ -8652,7 +8652,7 @@
 0x002F5380	lmapCallMemFreeDirect	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit lmap; calls sdfMemFreeDirect
 0x002F53A0	EffWave_Start	hd	hd: Raidou HD lmap.EffWave_Start, score 8.0 band B
 0x002F5430	cmpCallExistProcess11	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_002F5430, nearest named function cmpInitDHWindow; calls dds3ExistProcess
-0x002F5470	evtLeaf29	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
+0x002F5470	LMP_NPC_DELETE	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD lmpCommand.LMP_NPC_DELETE: returns NpcDelete(); script command table entry; replaces evtLeaf29
 0x002F5488	evtLeaf30	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x002F54B0	evtFunc9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x002F5578	evtLeaf31	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
@@ -9196,8 +9196,8 @@
 0x00317690	cmpCallFromEuler	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpSetStatusModelParam; calls FromEuler
 0x00317758	cmpSetStatusModelParam	hd	hd: Raidou HD cmpModel.cmpSetStatusModelParam, score 8.2 band B
 0x003178D0	cmpCallGetFlagScreenShot5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpSetStatusModelParam; calls cmpGetFlagScreenShot
-0x00317908	cmpLeaf46	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpSetStatusModelParam; no named callee, caller or string
-0x00317970	cmpLeaf47	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpSetStatusModelParam; no named callee, caller or string
+0x00317908	cmpGetPosStatus	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD cmpModel.cmpGetPosStatus(a_pos): minor = major ? gMinorNo : 0, copy cmpStatusModelTbl[minor].Pos to a_pos; after cmpGetPos (mdlGetPosition) as in HD; replaces cmpLeaf46
+0x00317970	cmpGetRot	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD cmpModel.cmpGetRot(a_rot): table Rot + cmpModelRot per axis, wrapped with 180/360/-179; after cmpGetPosStatus, before cmpGetScl (mdlGetScale) as in HD; replaces cmpLeaf47
 0x00317A28	cmpCallGetFlagScreenShot6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpAddPos; calls cmpGetFlagScreenShot
 0x00317A60	cmpCallGetFlagScreenShot7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpAddPos; calls cmpGetFlagScreenShot
 0x00317AA8	cmpAddPos	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD cmpModel.cmpAddPos score 6.0 flag I: calls1 gap18/10 votes2 st1:gap r1+r2
@@ -9675,14 +9675,14 @@
 0x00333B68	shpCallGetRandIntA	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpDrawStraightLineWide; calls dds3GetRandIntA
 0x00333EA0	shpCallMemset	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpDrawStraightLineWide; calls memset
 0x00334248	shpErrorShpDraw	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpDrawStraightLineWide; string 'Error! ...shpDrawStraightLineWide a_pPos=NULL\n'
-0x00334378	shpLeaf3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpDrawStraightLineWide; no named callee, caller or string
-0x00334390	shpLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpDrawStraightLineWide; no named callee, caller or string
-0x003343A8	shpLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpDrawStraightLineWide; no named callee, caller or string
-0x003343C0	shpLeaf6	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpDrawStraightLineWide; no named callee, caller or string
-0x003343D8	nwdLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour nwdLoadModel; no named callee, caller or string
-0x003343F0	nwdLeaf3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour nwdLoadModel; no named callee, caller or string
-0x00334408	nwdLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour nwdLoadModel; no named callee, caller or string
-0x00334420	nwdLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour nwdLoadModel; no named callee, caller or string
+0x00334378	SHP_GET_SELECT_ID	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpCommand.SHP_GET_SELECT_ID: calls shpGetSelectItemID; script command, 1st of the 8 shp commands in HD order; replaces shpLeaf3
+0x00334390	SHP_MDL_GET_HANDLE	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpCommand.SHP_MDL_GET_HANDLE: calls shpGetModelHandle; 2nd shp command in HD order; replaces shpLeaf4
+0x003343A8	SHP_MOTION	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpCommand.SHP_MOTION: calls shpSetModelMotion; 3rd shp command in HD order; replaces shpLeaf5
+0x003343C0	SHP_CALL_RELEASE	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpCommand.SHP_CALL_RELEASE: calls the g_bCallRelease = 1 setter; 4th shp command in HD order; replaces shpLeaf6
+0x003343D8	SHP_WAIT_RELEASE	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpCommand.SHP_WAIT_RELEASE: calls the return-1 function; 5th shp command in HD order; replaces nwdLeaf2
+0x003343F0	SHP_GET_INDEX	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpCommand.SHP_GET_INDEX: calls nwdGetSelectModelID; 6th shp command in HD order; replaces nwdLeaf3
+0x00334408	KNY_GET_INTIMATE_RANK	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpCommand.KNY_GET_INTIMATE_RANK: calls the knyGetGoodRank + scrSetIntReturnValue function; 7th in HD order; replaces nwdLeaf4
+0x00334420	NWD_GET_INTIMATE_RANK	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpCommand.NWD_GET_INTIMATE_RANK: calls the nwdGetGoodRank + scrSetIntReturnValue function; 8th in HD order; replaces nwdLeaf5
 0x00334438	nwdRefDDS3GBWK	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour nwdLoadModel; references DDS3_GBWK
 0x003345B0	nwdCallBitCheck	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour nwdLoadModel; calls evtBitCheck
 0x00334710	nwdLoadModel	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD shpMain.nwdLoadModel score 3.7 flag -: calls2 callers-of-match-uniq votes3 st1:call r2-disagree:0x398ea0

@@ -90,7 +90,7 @@ INCLUDE_RODATA(const s32, "code_00179808", nbStrMapSetTakaraOpen02);
 
 INCLUDE_ASM(const s32, "code_00179808", nbDevilInfoEncid);
 
-s32 nbLeaf55(void) {
+s32 FLD_NEKO(void) {
     return 1;
 }
 

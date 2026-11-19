@@ -1054,9 +1054,9 @@ void cmpSetStatusModelParam(void)
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallGetFlagScreenShot5);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpLeaf46);
+INCLUDE_ASM(const s32, "code_00300578", cmpGetPosStatus);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpLeaf47);
+INCLUDE_ASM(const s32, "code_00300578", cmpGetRot);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallGetFlagScreenShot6);
 

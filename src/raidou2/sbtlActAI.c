@@ -23,7 +23,7 @@
 #include "dds3Randomize.h"
 #include "mdlManager.h"
 
-INCLUDE_ASM(const s32, "sbtlActAI", datLeaf81);
+INCLUDE_ASM(const s32, "sbtlActAI", SBTL_SET_CUTSCROLL_DEFAULT);
 
 INCLUDE_ASM(const s32, "sbtlActAI", datCallStopEffectStop);
 
@@ -543,7 +543,7 @@ struct SBTLUNIT_WORK *sbtlCheckCharmTarget(struct SBTLUNIT_WORK *wk) {
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckCharmTarget);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf66);
+INCLUDE_ASM(const s32, "sbtlActAI", AICHK_NONE);
 
 s32 sbtlCallBtlCheckCharmTarget(struct SBTLUNIT_WORK *wk, s32 per, s32 idx) {
     struct SBTLUNIT_WORK *unit = sbtlCheckCharmTarget(wk);
@@ -659,7 +659,7 @@ s32 sbtlCallBtlCreateSideListSBtlUnit6(struct SBTLUNIT_WORK *wk, s32 arg, s32 id
     return hit;
 }
 
-s32 sbtlLeaf67(struct SBTLUNIT_WORK *wk, s32 cnt, s32 idx) {
+s32 AICHK_BTLTIME(struct SBTLUNIT_WORK *wk, s32 cnt, s32 idx) {
     if (wk->aiwk->syscnt_stop >= cnt) {
         wk->model->ai_target[idx] = wk->field1A0;
         return 1;
@@ -1027,7 +1027,7 @@ s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg) {
 
 INCLUDE_ASM(const s32, "sbtlActAI", sbtlEnemyAI);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf68);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlEAIInit_Dummy);
 
 s32 sbtlEAIInit_None(struct SBTLUNIT_WORK *wk) {
     s16 stat = 1;

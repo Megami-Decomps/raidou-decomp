@@ -34,7 +34,7 @@ INCLUDE_ASM(const s32, "code_0021BA28", effCallStopStat);
 
 INCLUDE_ASM(const s32, "code_0021BA28", effStopEffectStop);
 
-INCLUDE_ASM(const s32, "code_0021BA28", effFadeInBlur);
+INCLUDE_ASM(const s32, "code_0021BA28", effCallStopStat2);
 
 INCLUDE_ASM(const s32, "code_0021BA28", effCallRestoreStat);
 
@@ -52,7 +52,7 @@ s32 Process_effStat(dds3ProcessID_t *proc) {
     if (flags_stat & 4) {
         if (~flags_stat & 1) {
             if (dds3PadButtonState[0x31] < 0) {
-                effFadeInBlur();
+                effCallStopStat2();
             }
         } else if (dds3PadButtonState[0x31] == 0) {
             effCallRestoreStat();
@@ -68,9 +68,9 @@ void effLeaf342(void) {
     flags_blur = 0;
 }
 
-INCLUDE_ASM(const s32, "code_0021BA28", effLeaf343);
+INCLUDE_ASM(const s32, "code_0021BA28", effFadeOutBlur);
 
-INCLUDE_ASM(const s32, "code_0021BA28", effLeaf344);
+INCLUDE_ASM(const s32, "code_0021BA28", effFadeInBlur);
 
 void effUpdateBlur(void) {
     f32 blur;

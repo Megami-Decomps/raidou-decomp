@@ -207,7 +207,6 @@
 0x0011C220	dds3CallMemset	func	tier=D	derived-callee	na	unit basic/dds3ObjectBase; calls memset
 0x0011C898	dds3ObjectBaseSetControlBasicCamLen	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3ObjectBase.dds3ObjectBaseSetControlBasicCamLen, score 7.95 band B
 0x0011C8E0	dds3CallGetBaseControlWorkData	func	tier=D	derived-callee	na	unit code_00119E30, neighbour dds3ObjectBaseSetControlBasicCamLen; calls dds3GetBaseControlWorkData
-0x0011CA88	dds3Leaf27	func	tier=D	derived-unit	na	unit basic/dds3CameraObjectBasic; no named callee, caller or string
 0x0011CE18	dds3LoadObjectMatrixPointerIntoVu	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00112E70, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011CFB0	dds3CameraObjectBasicSetTgtCam	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3CameraObjectBasic.dds3CameraObjectBasicSetTgtCam, score 10.8 band A
 0x0011D000	dds3CameraObjectBasicFourceCalc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3CameraObjectBasic.dds3CameraObjectBasicFourceCalc, score 10.95 band A
@@ -838,7 +837,6 @@
 0x0018C890	fldCallWarpFloorRefresh	func	tier=D	derived-callee	na	unit code_0018C430, neighbour fldGetMAP_CUT_OVERSET_Cam; calls mapWarpFloorRefresh
 0x0018C8B0	nbCallGetIntPara3	func	tier=D	derived-callee	na	unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; calls scrGetIntPara
 0x0018C910	nbMapBossFirst	func	tier=D	derived-string	na	unit code_0018C430, neighbour nbCommand_AI_ACT_SKILL; string 'map23_bossFirst'
-0x0018DFF0	nbLeaf55	func	tier=D	derived-unit	na	unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; no named callee, caller or string
 0x0018DFF8	nbCallGetIntPara4	func	tier=D	derived-callee	na	unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; calls scrGetIntPara
 0x0018E020	nbCallGetIntPara5	func	tier=D	derived-callee	na	unit code_00179808, neighbour nbCommand_AI_ACT_SKILL; calls scrGetIntPara
 0x0018E078	nbErrNPCMODEL	func	tier=D	derived-string	na	unit code_0018C430, neighbour nbCommand_AI_ACT_SKILL; string 'Err : NPC MODEL ID:%04x N'
@@ -2252,8 +2250,6 @@
 0x00232E68	effLeaf340	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effFadeInBlur; no named callee, caller or string
 0x00232E90	effLeaf341	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effFadeInBlur; no named callee, caller or string
 0x00232F80	effLeaf342	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
-0x00232F88	effLeaf343	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
-0x00233018	effLeaf344	func	tier=D	derived-unit	na	unit code_0021BA28, neighbour effStopStat; no named callee, caller or string
 0x002335B8	fclCallDrawSprite	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour fclDrawSprite; calls fclDrawSprite
 0x00233630	fclInitDstEff2Sub	func	tier=D	derived-caller	na	unit code_0021BA28, neighbour fclDrawSprite; called by cmpInitDstEff2
 0x00233678	fclCallSingleMotion	func	tier=D	derived-callee	na	unit code_0021BA28, neighbour fclDrawSprite; calls mdlSingleMotion
@@ -3159,7 +3155,6 @@
 0x0028AD30	sbtlLeaf16	func	tier=D	derived-unit	na	unit code_00288220, neighbour sbtlSupport_StopAction; no named callee, caller or string
 0x0028AD38	sbtlLeaf17	func	tier=D	derived-unit	na	unit code_00288220, neighbour sbtlSupport_StopAction; no named callee, caller or string
 0x0028AD40	btlRunCameraMotionResetTask	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001DBDF8, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x0028AD68	datLeaf81	func	tier=D	derived-unit	na	unit code_00269318, neighbour datCommand_GET_DEVIL_ID; no named callee, caller or string
 0x0028AD80	datCallStopEffectStop	func	tier=D	derived-callee	na	unit code_00269318, neighbour datCommand_GET_DEVIL_ID; calls effStopEffectStop
 0x0028ADD0	datCallSupportRunWarpProcess	func	tier=D	derived-callee	na	unit code_00269318, neighbour datCommand_GET_DEVIL_ID; calls Support_RunWarpProcess
 0x0028AFB0	datCallGetIntPara7	func	tier=D	derived-callee	na	unit code_00269318, neighbour datCommand_GET_DEVIL_ID; calls scrGetIntPara
@@ -3293,7 +3288,6 @@
 0x00294458	sbtlCallBtlCheckEquationProc	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCheckEquationProc
 0x00294A40	sbtlBtlCheckEquationProcSub	func	tier=D	derived-caller	na	unit sbtlActAI; called by sbtlCheckEquationProc
 0x00294A58	sbtlCallBtlGetBadStatus6	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlGetBadStatus
-0x00294AF8	sbtlLeaf66	func	tier=D	derived-unit	na	unit sbtlActAI; no named callee, caller or string
 0x00294B00	sbtlCallBtlCheckCharmTarget	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCheckCharmTarget
 0x00294B98	sbtlCallBtlCreateSideList2	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCreateSideList
 0x00294C78	sbtlCallBtlCheckCharmTarget2	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCheckCharmTarget
@@ -3302,7 +3296,6 @@
 0x00294F38	sbtlCallBtlCheckCharmTarget3	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCheckCharmTarget
 0x00294FC0	sbtlCallBtlCreateSideList3	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCreateSideList
 0x00295098	sbtlCallBtlCreateSideListSBtlUnit6	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlCreateSideList_sbtlUnit
-0x00295158	sbtlLeaf67	func	tier=D	derived-unit	na	unit sbtlActAI; no named callee, caller or string
 0x00295190	sbtlCallBtlSetChkskl2	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlSetChkskl
 0x002952B8	sbtlCallBtlSetChkskl3	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlSetChkskl
 0x002953F8	sbtlCallBtlSetUseskl	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlSetUseskl
@@ -3324,7 +3317,6 @@
 0x00296168	sbtlRefSbtl14	func	tier=D	derived-data	na	unit sbtlActAI; references wk_sbtl
 0x002961C0	sbtlCallEffectFldTypeIsSpecial	func	tier=D	derived-callee	na	unit sbtlActAI; calls dds3EffectFldTypeIsSpecial
 0x00297AB8	sbtlCheckEnemyTarget	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlCheckEnemyTarget, score 7.8 band B
-0x00297E30	sbtlLeaf68	func	tier=D	derived-unit	na	unit sbtlActAI; no named callee, caller or string
 0x00297E38	sbtlEAIInit_None	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlEAIInit_None, score 8.3 band B, hd-ab: calls2 callers-of-match votes3 st1:call r1+r2
 0x00297ED8	sbtlEAIInit_Summon	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlEAIInit_Summon, score 5.0 band C, hd-consensus: prev gap5/4 st1:gap r1+r2; 10/10 fold runs agree, fold scores 3.0,5.0,5.0,3.0,3.0,3.0,5.0,8.0,5.0,8.0
 0x00298238	sbtlEAIProc_Wait	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlEAIProc_Wait, score 8.8 band B
@@ -3767,8 +3759,6 @@
 0x002F1A28	sbtlMDLMODE_Func_PageList	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleMDLMODE_Func_PageList, score 10.7 band A
 0x002F2240	sbtlAddPrev	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleAddPrev, score 9.45 band B
 0x002F22F8	sbtlDecPrev	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleDecPrev, score 11.45 band A
-0x002F2420	sbtlLeaf108	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002F2558	sbtlLeaf95	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002F27C0	sbtlSizeofData	func	tier=D	derived-string	na	unit sbtl; string 'sizeof data %d\n'
 0x002F2A60	sbtlFunc28	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002F2B68	sbtlCallRestartBattle	func	tier=D	derived-callee	na	unit sbtl; calls RestartBattle
@@ -4520,7 +4510,6 @@
 0x003592B0	lmapCallSetOt	func	tier=D	derived-callee	na	unit lmap; calls eglSetOt
 0x00359330	lmapCallMemFreeDirect	func	tier=D	derived-callee	na	unit lmap; calls sdfMemFreeDirect
 0x003593E0	cmpCallExistProcess11	func	tier=D	derived-callee	na	unit code_002F5430, nearest named function cmpInitDHWindow; calls dds3ExistProcess
-0x00359420	evtLeaf29	func	tier=D	derived-unit	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x00359438	dds3CallListStart	func	tier=D	derived-callee	na	unit TitleMain, neighbour dds3EffectDirClose; calls ListStart
 0x00359460	dds3Func2	func	tier=D	derived-unit	na	unit TitleMain, neighbour dds3EffectDirClose; no named callee, caller or string
 0x00359480	dds3CallWorkActive	func	tier=D	derived-callee	na	unit TitleMain, neighbour dds3EffectDirClose; calls ndWorkActive
@@ -4925,8 +4914,6 @@
 0x00374060	cmpCallGetFlagScreenShot4	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpGetMotionNum; calls cmpGetFlagScreenShot
 0x003740D0	cmpSetModelScale	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD cmpModel.cmpSetModelScale, score 8.4 band B
 0x003745E8	cmpCallGetFlagScreenShot5	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpSetStatusModelParam; calls cmpGetFlagScreenShot
-0x00374620	cmpLeaf46	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpSetStatusModelParam; no named callee, caller or string
-0x00374688	cmpLeaf47	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpSetStatusModelParam; no named callee, caller or string
 0x00374740	cmpCallGetFlagScreenShot6	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpAddPos; calls cmpGetFlagScreenShot
 0x00374778	cmpCallGetFlagScreenShot7	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpAddPos; calls cmpGetFlagScreenShot
 0x003749D0	cmpDrawStatusModel	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD cmpModel.cmpDrawStatusModel, score 6.1 band C, hd-consensus: calls2 callers-of-match-uniq votes3 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.1,5.6,5.6,7.1,5.6,7.6,6.1,6.1,5.6,7.6
@@ -5189,14 +5176,6 @@
 0x00398300	shpCallGetRandIntA	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour shpDrawStraightLineWide; calls dds3GetRandIntA
 0x00398638	shpCallMemset	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour shpDrawStraightLineWide; calls memset
 0x003989E0	shpErrorShpDraw	func	tier=D	derived-string	na	unit code_0032F2B8, neighbour shpDrawStraightLineWide; string 'Error! ...shpDrawStraightLineWide a_pPos=NULL\n'
-0x00398B10	shpLeaf3	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour shpDrawStraightLineWide; no named callee, caller or string
-0x00398B28	shpLeaf4	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour shpDrawStraightLineWide; no named callee, caller or string
-0x00398B40	shpLeaf5	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour shpDrawStraightLineWide; no named callee, caller or string
-0x00398B58	shpLeaf6	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour shpDrawStraightLineWide; no named callee, caller or string
-0x00398B70	nwdLeaf2	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour nwdLoadModel; no named callee, caller or string
-0x00398B88	nwdLeaf3	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour nwdLoadModel; no named callee, caller or string
-0x00398BA0	nwdLeaf4	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour nwdLoadModel; no named callee, caller or string
-0x00398BB8	nwdLeaf5	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour nwdLoadModel; no named callee, caller or string
 0x00398BD0	shpCallProcessStart	func	tier=D	derived-callee	na	unit code_00393758, neighbour shpMakeIndexList; calls shpProcessStart
 0x00398BF8	shpFunc	func	tier=D	derived-unit	na	unit code_00393758, neighbour shpMakeIndexList; no named callee, caller or string
 0x00398C18	shpGetPriceBuySub	func	tier=D	derived-caller	na	unit code_00393758, neighbour shpMakeIndexList; called by knyGetPriceBuy
@@ -22594,6 +22573,7 @@
 0x00118F58	fldGetZakuroReward	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fld.fldGetZakuroReward score 4.5 flag I: calls2 callers-of-match votes3 st2:call r2-only
 0x0011C048	dds3ObjectBaseModelLinkOtSvs	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x111bc0 sim 0.663 margin 0.17 single
 0x0011C1F8	itfCampStartProcess	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x1cc048 sim 0.667 margin 0.67 single
+0x0011CA88	Drawprocuder	func	tier=C	derived-derived-role	na	Raidou HD dds3CameraObjectBasic.Drawprocuder: returns 1; 4th entry of the camera basic table after Constructor/Destructor/Mainprocuder, right before MakeCamera as in HD; replaces dds3Leaf27
 0x0011D550	Constructor_dds3UnitObjectBasic	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD dds3UnitObjectBasic.Constructor score 4.8 flag -: calls2 next callers-of-match votes4 st2:call r1-disagree:0x11aad8
 0x0011F2F0	effObjCreateIndexedKindZero	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x114e48 sim 1.000 margin 0.00 pair
 0x0011F338	AddD3PEffect	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x114478 sim 1.000 margin 0.00 pair
@@ -22741,6 +22721,7 @@
 0x00189098	mapCtnColorFadeTask	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapCtnColorFadeTask score 5.7 flag -: calls1 next calls-of-match st1:call r1+r2
 0x0018C040	mapCtnGetObjNum	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.mapCtnGetObjNum score 4.9 flag -: calls1 calls-of-match st1:call r1+r2
 0x0018C430	fldGetMAP_CUT_OVERSET_Cam	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fldCommand.fldGetMAP_CUT_OVERSET_Cam score 2.0 flag I: prev edge st2:edge r2-only
+0x0018DFF0	FLD_NEKO	func	tier=C	derived-derived-role	na	Raidou HD fldCommand.FLD_NEKO: returns 1; script command table entry right before MAP_ZOOM (fldBgZoomTest(param)) as in HD; replaces nbLeaf55
 0x0018E3F0	nbCommand_AI_ACT_SKILL	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x287e08 sim 0.690 margin 0.69 pair
 0x0018E570	evtBCheckPanelMode	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x24c8a0 sim 0.661 margin 0.00 pair
 0x0018E688	prm_MAKA_PLUS	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x10cfe0 sim 1.000 margin 0.00 single
@@ -23025,8 +23006,9 @@
 0x0022F970	effReleaseOptionalResource	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2ab260 sim 1.000 margin 0.00 pair
 0x00232D70	effGetFlags	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021BA78 (r1_r2 pair at 0x00232D70, masked-hash-in-gap); replaces effSRAnimation
 0x00232DD0	effStopEffectStop	func	tier=C	hd-c	0.69 (n=45)	Raidou HD effStat.effStopEffectStop score 6.5 flag I: calls2 calls-of-match votes3 st2:call r2-only
-0x00232E08	effFadeInBlur	func	tier=C	hd-d	0.53 (n=98)	Raidou HD effStat.effFadeInBlur score 3.0 flag -: prev gap3/4 st2:gap r2-only
 0x00232F08	Process_effStat	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021BC00 (r1_r2 pair at 0x00232F08, unique-reloc-hash); replaces effCallFadeInBlur
+0x00232F88	effFadeOutBlur	func	tier=C	derived-derived-role	na	Raidou HD effStat.effFadeOutBlur(frame): clear flags_blur bit 1; frame 0 sets the blur value to 0, else set bit 0 and vel_blur from 1/frame; right before effFadeInBlur and effUpdateBlur as in HD; replaces effLeaf343
+0x00233018	effFadeInBlur	func	tier=C	derived-derived-role	na	Raidou HD effStat.effFadeInBlur(frame): clear flags_blur bit 0; frame 0 sets the blur value to 1.0, else set bit 1 and vel_blur = 1/frame; between effFadeOutBlur and effUpdateBlur as in HD; replaces effLeaf344
 0x002330A8	effUpdateBlur	func	tier=C	derived-derived-role	na	same function as raidou1 0x0021BDA0 (r1_r2 pair at 0x002330A8, unique-reloc-hash); replaces effFunc11
 0x00233150	effStopStat	func	tier=C	hd-c	0.69 (n=45)	Raidou HD effQuake.effStopStat score 6.9 flag I: calls1 next callers-of-match votes2 st2:call r2-only
 0x002331D8	effRestoreStat	func	tier=C	hd-d	0.53 (n=98)	Raidou HD effQuake.effRestoreStat score 3.2 flag I: calls1 callers-of-match st2:call r2-only
@@ -23114,6 +23096,7 @@
 0x002862F8	sbtlProc_YoyakuEnd	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlAI.sBtlProc_YoyakuEnd score 2.6 flag I: prev gap3/1 st2:gap r2-only
 0x002890B0	Support_RunWaitProcess	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlScript.Support_RunWaitProcess score 5.0 flag -: calls1 callers-of-match votes2 st2:call r2-only
 0x00289F38	mapEncGetPointNums	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapEncGetPointNums score 6.2 flag -: calls2 calls-of-match votes2 st1:call r1-only
+0x0028AD68	SBTL_SET_CUTSCROLL_DEFAULT	func	tier=C	derived-derived-role	na	Raidou HD sBtlCommand.SBTL_SET_CUTSCROLL_DEFAULT: calls sbtlDefaultCutScroll; script command table entry after the SET_CUTSCROLL_UNIT command (sbtlSetCutScroll) as in HD; replaces datLeaf81
 0x0028B018	datCommand_GET_DEVIL_ID	func	tier=C	hd-d	0.53 (n=98)	Raidou HD dat.datCommand_GET_DEVIL_ID score 3.3 flag I: calls2 callee-index st2:cidx r2-only
 0x0028B428	at3decReadBits	func	tier=C	dds-fuzzy-60-m-pair	0.65 (n=1)	dds body 0x2f83d8 sim 0.625 margin 0.15 pair
 0x0028B550	nbCommand_BTL_CAM_BOUGAI	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x288a88 sim 1.000 margin 0.00 pair
@@ -23137,8 +23120,11 @@
 0x00294628	SetUseskl	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlActAI.SetUseskl score 3.5 flag -: calls1 gap5/42 votes2 st2:gap r2-only
 0x00294668	sbtlResetUseskl	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlActAI.sBtlResetUseskl score 2.6 flag I: next gap5/6 st2:gap r2-only
 0x002946A8	sbtlCheckMeshiyose	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlActAI.sBtlCheckMeshiyose score 6.0 flag I: calls2 callers-of-match-uniq votes2 st2:call r2-only
+0x00294AF8	AICHK_NONE	func	tier=C	derived-derived-role	na	Raidou HD sBtlActAI.AICHK_NONE: returns -1; CheckFuncTbl[0], followed by AICHK_MYHP (charm target HP check) as in HD; replaces sbtlLeaf66
+0x00295158	AICHK_BTLTIME	func	tier=C	derived-derived-role	na	Raidou HD sBtlActAI.AICHK_BTLTIME: syscnt_stop >= arg sets ai_target[index]; CheckFuncTbl[9], before CHKSKL/CHKSKL_R as in HD; replaces sbtlLeaf67
 0x00295860	sbtlGetBgmID	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlScene.sBtlGetBgmID score 1.0 flag I: calls1 callers-of-match st2:call r1-disagree:0x24e6a0
 0x00297C78	sbtlEnemyAI	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlActAI.sBtlEnemyAI score 2.3 flag I: calls1 callers-of-match-uniq st2:call r1-disagree:0x272c18
+0x00297E30	sbtlEAIInit_Dummy	func	tier=C	derived-derived-role	na	Raidou HD sBtlActAI.sBtlEAIInit_Dummy: returns 1; right before sbtlEAIInit_None as in HD, fills the unused slots of the EAIInit table; replaces sbtlLeaf68
 0x00298CA0	SetUnitHitApproach	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlActAI.SetUnitHitApproach score 3.6 flag -: calls1 next gap3/3 st1:gap r1-only
 0x002998D0	sbtlCheckHITCheck_Char	func	tier=C	derived-derived-role	na	same predicate as HD sBtlCheckHITCheck_Char (devilid != 292 and not 294..296); name unused in R1 symbol_addrs; replaces sbtlCheckExist2
 0x0029B4E8	sbtlAAIProc	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlActAI.sBtlAAIProc score 3.8 flag I: calls2 calls-of-match st2:call r1-disagree:0x2758c0
@@ -23223,6 +23209,8 @@
 0x002E9C28	sbtlDrawPoseture	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sbattle.sbattleDrawPoseture score 5.0 flag I: calls1 prev~ gap3/13 st1:gap r1+r2
 0x002ECFF8	SceneDel_Calc	func	tier=C	hd-both	0.71 (n=206)	Raidou HD mapEnemy.SceneDel_Calc score 4.3 flag -: calls1 callers-of-match st1:call r1+r2
 0x002ED0A0	MainProc	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sbattle.MainProc score 5.5 flag -: calls1 callers-of-match-uniq st1:call r1+r2
+0x002F2420	sbtlNEFMODE_Func_Hittype	func	tier=C	derived-derived-role	na	Raidou HD sbattle.sbattleNEFMODE_Func_Hittype: slot 4 of sbtlDebug_NEFMODE_Func after Open/Save/Load/PageList; cursor wrap, mode 13 flag set, nef_mode = 3, limit 16 as in HD; replaces sbtlLeaf108
+0x002F2558	sbtlMOVEMODE_Func_SelMenu	func	tier=C	derived-derived-role	na	Raidou HD sbattle.sbattleMOVEMODE_Func_SelMenu: slot 5 (SelMenu) of sbtlDebug_NMDLMVMODE_Func; sets nef_mode 3/7/9 as in HD; replaces sbtlLeaf95
 0x002F48A8	sbtlSetEffHitPara_sbtl	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sbattle.sbattleSetEffHitPara score 4.5 flag I: calls1 callers-of-match st1:call r1+r2
 0x002F8288	sbtlSetSword	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sbattle.sbattleSetSword score 2.6 flag I: calls1 next~ calls-of-match st2:call r2-only
 0x002F9838	sbtlDebug_SetBattleMode	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sbattle.sBtlDebug_SetBattleMode score 4.8 flag -: calls1 prev calls-of-match st2:call r2-only
@@ -23359,6 +23347,7 @@
 0x003589C8	EffGrid_ReleaseDraw	func	tier=C	derived-derived-role	na	Raidou HD lmap.EffGrid_ReleaseDraw: empty; right after EffGrid_Start and before the Finish-shaped caller (exist check, kill process) as in HD; replaces lmapLeaf14
 0x00358A68	cmpInitDHWindow	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x232e90 sim 0.667 margin 0.17 pair
 0x00359248	FldWnd_LinkSprite	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD lmap.FldWnd_LinkSprite score 2.3 flag -: next~ gap1/28 st2:gap r2-only
+0x00359420	LMP_NPC_DELETE	func	tier=C	derived-derived-role	na	Raidou HD lmpCommand.LMP_NPC_DELETE: returns NpcDelete(); script command table entry; replaces evtLeaf29
 0x0035A898	mselDrawSaveNum	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x228710 sim 1.000 margin 0.00 single
 0x0035AB40	TitleInitCursor	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x002F56C8 (r1_r2_pairs, unique-reloc-hash): HD TitleMain TitleInitCursor clears titleCursor_t and sets ScaleTimer = 6 (TITLEenum_CURSOR_SCALE_TIMER); 0x2F56C8 is memset 0x30 + store 6 at 0x20, called on titleData_t.Cursor; replaces Flow1_6
 0x0035ABD0	TitleCalcCursor	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x002F5758 (r1_r2_pairs, unique-masked-hash): HD TitleMain TitleCalcCursor(PID, pCursor, step): up/down moves Index with Timer = 0, ScaleTimer = 6, SE 0x500001, LastPush from the held buttons, then ItemAlpha[5] fades +-32 toward the selected item and ScaleTimer counts down; 0x2F5758 is the same on titleCursor_t; replaces evtCallPlaySE
@@ -23389,6 +23378,8 @@
 0x00373FD0	cmpCheckHandle	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpModel.cmpCheckHandle score 2.3 flag I: calls1 calls-of-match st2:call r2-only
 0x00374098	cmpGetMotionSpeed	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpModel.cmpGetMotionSpeed score 4.1 flag I: calls1 next gap6/5 st2:gap r2-only
 0x003741A0	cmpSetModelPosition	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpModel.cmpSetModelPosition score 4.8 flag I: calls2 callers-of-match votes3 st2:call r1-disagree:0x317520
+0x00374620	cmpGetPosStatus	func	tier=C	derived-derived-role	na	Raidou HD cmpModel.cmpGetPosStatus(a_pos): minor = major ? gMinorNo : 0, copy cmpStatusModelTbl[minor].Pos to a_pos; after cmpGetPos (mdlGetPosition) as in HD; replaces cmpLeaf46
+0x00374688	cmpGetRot	func	tier=C	derived-derived-role	na	Raidou HD cmpModel.cmpGetRot(a_rot): table Rot + cmpModelRot per axis, wrapped with 180/360/-179; after cmpGetPosStatus, before cmpGetScl (mdlGetScale) as in HD; replaces cmpLeaf47
 0x003747F0	cmpSetPos_GoodBy	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpModel.cmpSetPos_GoodBy score 4.0 flag I: calls1 gap16/11 votes2 st2:gap r2-only
 0x00374808	cmpAdjustPosY_Gattai	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpModel.cmpAdjustPosY_Gattai score 4.2 flag I: calls1 prev gap6/4 st2:gap r2-only
 0x003748F0	cmpSetRot_GoodBy	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpModel.cmpSetRot_GoodBy score 3.6 flag I: calls1 gap5/3 votes2 st2:gap r2-only
@@ -23469,6 +23460,14 @@
 0x00397798	FloatToSprX	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD shpDrawMisc.FloatToSprX score 2.1 flag -: next edge st1:edge r1-only
 0x003977D0	FloatToSprY	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD shpDrawMisc.FloatToSprY score 2.1 flag -: next edge st1:edge r1-only
 0x00397C90	shpDrawStraightLineWide	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD shpDrawMisc.shpDrawStraightLineWide score 4.0 flag I: calls1 calls-of-match-uniq st1:call r1-only
+0x00398B10	SHP_GET_SELECT_ID	func	tier=C	derived-derived-role	na	Raidou HD shpCommand.SHP_GET_SELECT_ID: calls shpGetSelectItemID; script command, 1st of the 8 shp commands in HD order; replaces shpLeaf3
+0x00398B28	SHP_MDL_GET_HANDLE	func	tier=C	derived-derived-role	na	Raidou HD shpCommand.SHP_MDL_GET_HANDLE: calls shpGetModelHandle; 2nd shp command in HD order; replaces shpLeaf4
+0x00398B40	SHP_MOTION	func	tier=C	derived-derived-role	na	Raidou HD shpCommand.SHP_MOTION: calls shpSetModelMotion; 3rd shp command in HD order; replaces shpLeaf5
+0x00398B58	SHP_CALL_RELEASE	func	tier=C	derived-derived-role	na	Raidou HD shpCommand.SHP_CALL_RELEASE: calls the g_bCallRelease = 1 setter; 4th shp command in HD order; replaces shpLeaf6
+0x00398B70	SHP_WAIT_RELEASE	func	tier=C	derived-derived-role	na	Raidou HD shpCommand.SHP_WAIT_RELEASE: calls the return-1 function; 5th shp command in HD order; replaces nwdLeaf2
+0x00398B88	SHP_GET_INDEX	func	tier=C	derived-derived-role	na	Raidou HD shpCommand.SHP_GET_INDEX: calls nwdGetSelectModelID; 6th shp command in HD order; replaces nwdLeaf3
+0x00398BA0	KNY_GET_INTIMATE_RANK	func	tier=C	derived-derived-role	na	Raidou HD shpCommand.KNY_GET_INTIMATE_RANK: calls the knyGetGoodRank + scrSetIntReturnValue function; 7th in HD order; replaces nwdLeaf4
+0x00398BB8	NWD_GET_INTIMATE_RANK	func	tier=C	derived-derived-role	na	Raidou HD shpCommand.NWD_GET_INTIMATE_RANK: calls the nwdGetGoodRank + scrSetIntReturnValue function; 8th in HD order; replaces nwdLeaf5
 0x00398C20	shpMakeIndexList	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD shpMain.shpMakeIndexList score 4.8 flag -: calls3 calls-of-match votes2 st2:call r1-disagree:0x334438
 0x0039AF80	shpSetDrawNewspaper	func	tier=C	derived-derived-role	na	Raidou HD shpMain.shpSetDrawNewspaper(bDraw): sets or clears bit 0x200 of the shop work stat (0x24C); between shpSetZoom and shpSetStatDraw as in HD; replaces shpLeaf7
 0x0039B7E0	shpKonnouyaProcessStart	func	tier=C	derived-derived-role	na	Raidou HD shpMain.shpKonnouyaProcessStart: shpProcessStart(0); right after shpProcessStart as in HD; replaces shpLeaf8

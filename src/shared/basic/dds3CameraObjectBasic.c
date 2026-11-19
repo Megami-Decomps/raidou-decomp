@@ -118,7 +118,7 @@ s32 Mainprocuder(dds3Basic_t *basic)
     return 1;
 }
 
-u32 dds3Leaf27(void) {
+u32 Drawprocuder(void) {
     return 1;
 }
 

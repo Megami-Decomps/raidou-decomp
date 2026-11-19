@@ -1889,9 +1889,9 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlDecPrev);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlClearEffHitData);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf108);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlNEFMODE_Func_Hittype);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf95);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlMOVEMODE_Func_SelMenu);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlSizeofData);
 

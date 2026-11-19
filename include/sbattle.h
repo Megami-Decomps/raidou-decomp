@@ -160,12 +160,12 @@ s32 sbtlVisualHitDraw(dds3ProcessID_t *id);
 s32 sbtlEffHitEditorProc(dds3ProcessID_t *id);
 s32 sbtlVisualHitProc(dds3ProcessID_t *id);
 s32 sbtlAIProc(dds3ProcessID_t *id);
-s32 sbtlLeaf108(void);
+s32 sbtlNEFMODE_Func_Hittype(void);
 s32 sbtlAIDraw(dds3ProcessID_t *id);
 s32 sbtlLeaf118(void);
 s32 sbtlEffEditorDraw(dds3ProcessID_t *id);
 s32 sbtlMdlHitEditorProc(dds3ProcessID_t *id);
-s32 sbtlLeaf95(void);
+s32 sbtlMOVEMODE_Func_SelMenu(void);
 s32 sbtlMdlMoveEditorProc(dds3ProcessID_t *id);
 #ifdef VERSION_RAIDOU2
 s32 sbtlCallSetPara(void);

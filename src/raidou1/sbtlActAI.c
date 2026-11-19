@@ -385,7 +385,7 @@ INCLUDE_ASM(const s32, "sbtlActAI", sbtlCheckCharmTarget);
 #endif
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, near, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 sbtlLeaf66(void) {
+s32 AICHK_NONE(void) {
     return -1;
 }
 
@@ -531,7 +531,7 @@ s32 sbtlCallBtlCreateSideListSBtlUnit6(struct SBTLUNIT_WORK *wk, s32 arg, s32 id
     return hit;
 }
 
-s32 sbtlLeaf67(struct SBTLUNIT_WORK *wk, s32 cnt, s32 idx) {
+s32 AICHK_BTLTIME(struct SBTLUNIT_WORK *wk, s32 cnt, s32 idx) {
     if (wk->aiwk->syscnt_stop >= cnt) {
         wk->model->ai_target[idx] = wk->field1A0;
         return 1;
@@ -1431,7 +1431,7 @@ s32 sbtlCallBtlCheckEquation(struct SBTLUNIT_WORK *wk) {
 }
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/code_002929C8.c:124, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 sbtlLeaf68(void) {
+s32 sbtlEAIInit_Dummy(void) {
     return 1;
 }
 

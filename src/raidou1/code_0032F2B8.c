@@ -205,35 +205,35 @@ INCLUDE_ASM(const s32, "code_0032F2B8", shpCallMemset);
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpErrorShpDraw);
 
-s32 shpLeaf3(void) {
+s32 SHP_GET_SELECT_ID(void) {
     return shpGetSelectItemID();
 }
 
-s32 shpLeaf4(void) {
+s32 SHP_MDL_GET_HANDLE(void) {
     return shpGetModelHandle();
 }
 
-s32 shpLeaf5(void) {
+s32 SHP_MOTION(void) {
     return shpSetModelMotion();
 }
 
-s32 shpLeaf6(void) {
+s32 SHP_CALL_RELEASE(void) {
     return shpCallRelease();
 }
 
-s32 nwdLeaf2(void) {
+s32 SHP_WAIT_RELEASE(void) {
     return shpWaitRelease();
 }
 
-s32 nwdLeaf3(void) {
+s32 SHP_GET_INDEX(void) {
     return nwdGetSelectModelID();
 }
 
-s32 nwdLeaf4(void) {
+s32 KNY_GET_INTIMATE_RANK(void) {
     return knyGetIntimateRank();
 }
 
-s32 nwdLeaf5(void) {
+s32 NWD_GET_INTIMATE_RANK(void) {
     return shpCallProcEnd();
 }
 

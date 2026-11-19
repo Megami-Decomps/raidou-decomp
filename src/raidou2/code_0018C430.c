@@ -30,7 +30,7 @@ INCLUDE_ASM(const s32, "code_0018C430", nbCallGetIntPara3);
 
 INCLUDE_ASM(const s32, "code_0018C430", nbMapBossFirst);
 
-INCLUDE_ASM(const s32, "code_0018C430", nbLeaf55);
+INCLUDE_ASM(const s32, "code_0018C430", FLD_NEKO);
 
 s32 nbCallGetIntPara4(void)
 {

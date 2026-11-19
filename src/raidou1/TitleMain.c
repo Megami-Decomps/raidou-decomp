@@ -17,7 +17,7 @@
 extern titleSpritePlacement_t evtLeaf31Data[];
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/002F5470.c:1, match */
-s32 evtLeaf29(void) {
+s32 LMP_NPC_DELETE(void) {
     return NpcDelete();
 }
 
