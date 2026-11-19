@@ -1030,7 +1030,10 @@ void cmpModelFreeResource(void) {
     }
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00128378", fldLoadMapResourceSub);
+void fldLoadMapResourceSub(void)
+{
+    mapSoundSmgLoadChk(fldLoadMapResourceSubData[0]);
+}
 #endif
 
 #ifdef VERSION_RAIDOU1

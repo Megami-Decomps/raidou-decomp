@@ -231,7 +231,31 @@ u32 sbtlCallGetRandIntA4(struct SBTLUNIT_WORK *wk)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallGetRandIntA5);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlaySpecialSE);
+void sbtlPlaySpecialSE(const sdfVector4_t *pos, s32 specialType)
+{
+    u32 se = 0;
+
+    switch (specialType) {
+    case 1:
+        se = 0x10014;
+        break;
+    case 2:
+        se = 0x10015;
+        break;
+    case 3:
+        se = 0x10016;
+        break;
+    case 4:
+        se = 0x10019;
+        break;
+    case 5:
+        se = 0x1001C;
+        break;
+    }
+    if (se != 0) {
+        sbtlSEVolAngleCalc(se, sbtlSEVolAngleCalc_sbtlSound(pos, 2000.0f, 1000.0f, 127, 96));
+    }
+}
 
 void sbtlLeaf58(u32 seid) {
     p2sdStopSe(seid);
@@ -548,7 +572,22 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCreateUnit);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDeleteUnit_UnWork);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckReturn_Unit);
+s32 sbtlCheckReturn_Unit(struct SBTLUNIT_WORK *wk)
+{
+    struct SBTLUNIT_WORK *unit;
+    s32 index;
+
+    if (wk_sbtl->flg2 & 0x100) {
+        index = wk_sbtl->returnindex[0];
+        if (index != -1) {
+            unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[index]);
+            if (unit != NULL && wk->field1A0 == unit->field1A0) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 s32 sbtlSearchReturn_Unit(struct SBTLUNIT_WORK *wk)
 {
@@ -672,7 +711,10 @@ void UnitMV(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", UnitMV_sbtlUnit);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckMotionNo);
+s32 sbtlCheckMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no)
+{
+    return wk->motionno == sbtlGetMotionNo(wk, wk->field414, no);
+}
 
 s32 sbtlCheckMotionEnd(struct SBTLUNIT_WORK *wk)
 {

@@ -52,6 +52,7 @@ mapNpcTblRefresh_Wait	code_0014B660	raidou1 0x35C	121 of 216 words differ	docs/m
 mapMapObjectRefresh	code_0014B660	raidou1 0x6C0	4 of 432 words differ	docs/matching/code_0014B660.md	27		
 sbtlCheckEndEscape	code_0014B7B0	raidou2 0x1C	3 of 5 words differ	docs/matching/code_0014B7B0.md	3		
 mapHitCalc	code_0014B7B0	raidou2 0x15C	13 of 87 words differ	docs/matching/code_0014B7B0.md	11	the R2 enum BST entries in enums.h, the fldAreaWork_t renames in field.h or the per-game mapCallBitCheckData_t in mapData.h, each alone, turn OK into DIFF 13/87; the function's own types do not change.	
+mapCallSetPlayerTargetData4	code_0014B7B0	raidou2 0x104	4 of 65 words differ	docs/matching/code_0014B7B0.md	19		
 mapMapSetEnc	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	3		
 mapMapSetForm	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	11		
 mapGetHit	code_00153438	raidou1 0x60	4 of 24 words differ	docs/matching/code_00153438.md	19		
@@ -98,6 +99,7 @@ sbtlCallBtlSearchPacData	code_00261DF0	raidou2 0x1F8	2 of 126 words differ	docs/
 sbtlLoadSkillSE	code_0026B0A8	raidou2 0x114	8 of 69 words differ	docs/matching/code_0026B0A8.md	3		
 sbtlCreateEnemyList	code_002743E0	raidou2 0xB8	1 of 46 words differ	docs/matching/code_002743E0.md	3		
 sbtlCreateSideList	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	11		
+sbtlCreateSideList_sbtlUnit	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	19		
 sbtlUnit_CheckSummon_LoadExecOk_sub	code_0027A1E8	raidou2 0xB8	1 of 46 words differ	docs/matching/code_0027A1E8.md	3		
 sbtlCheckMove_BadStatus	code_0027A1E8	raidou2 0xA8	27 of 40 words differ	docs/matching/code_0027A1E8.md	9		
 Init_sbtlScript	code_0027A1E8	raidou2 0xC0	7 of 48 words differ	docs/matching/code_0027A1E8.md	15		

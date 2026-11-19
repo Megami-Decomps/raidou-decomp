@@ -1437,7 +1437,41 @@ s32 fldProcDraw(struct dds3ProcessID_t *id)
     return 0;
 }
 #else
-INCLUDE_ASM(const s32, "field/fldProcess", fldProcDraw);
+s32 fldProcDraw(struct dds3ProcessID_t *id)
+{
+    if (dds3AdminiGetNextSequence() != -1) {
+        return 0;
+    }
+    if (fldAutoMapSeqFlags.stage < 3) {
+        return 0;
+    }
+    switch (fldAutoMapSeqFlags.stage) {
+    case 11:
+    case 14:
+    case 15:
+        mapIsFldKeyFreeSub3();
+        break;
+    }
+    mapIsFldKeyFreeSub();
+    mapBadEffDrawTask_fld();
+    mapIsFldKeyFreeSub4();
+    if (dds3NullDrawProc()) {
+        return 0;
+    }
+    if (fldGlobalBase.ifDrawOn && !dds3BistaCheck()) {
+        if (!sbtlExt_ChkMes() && !evtBitCheck(0xC40)) {
+            mapCallSetOt4(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.encountState);
+            mapIsFldKeyFreeSub2();
+        }
+        if (fldEncountTestFlag(0x40) && !fldGlobalBase.noInpPlCnt && !tipsProcessCheck()) {
+            mapCallPreCalcStrWidth();
+        }
+    }
+    saveIsFldKeyFreeSub();
+    fldCallSetOt2();
+    mapSeNakamaDelayTask();
+    return 0;
+}
 #endif
 
 void fldAutoMapSeqSetFlag(u32 flag)
@@ -1707,7 +1741,10 @@ reload:
 INCLUDE_ASM(const s32, "field/fldProcess", mapCallMap);
 #endif
 
-INCLUDE_ASM(const s32, "field/fldProcess", fldHardSelect1Sub);
+s32 fldHardSelect1Sub(void)
+{
+    return fldHardSelect1SubData[0];
+}
 
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask);
 

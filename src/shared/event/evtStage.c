@@ -138,7 +138,29 @@ s32 evtSetRegistUnit_evt(s32 major, s32 minor) {
 #else
 INCLUDE_ASM(const s32, "event/evtStage", itfCriLipSyncManagerOff);
 
-INCLUDE_ASM(const s32, "event/evtStage", evtSetRegistUnit_evt);
+s32 evtSetRegistUnit_evt(s32 major, s32 minor) {
+    sdfVector4_t position;
+    sdfVector4_t rotation;
+    s32 counter;
+    dds3Basic_t *object;
+    mdlObj_t *model;
+
+    memset(&position, 0, 0x10);
+    position.w = 1.0f;
+    memset(&rotation, 0, 0x10);
+    rotation.w = 1.0f;
+    counter = dds3AllocObjectId();
+    object = dds3AddUnitObjectBasic(counter, &position, &rotation);
+    dds3ObjectBaseOnFlag(object, 0x20);
+    dds3ObjectBaseMakeUnit(object, major, minor);
+    model = dds3ObjectBaseGetModelHandle(object);
+    if (model->first != NULL) {
+        mdlLoopMotion(dds3ObjectBaseGetModelHandle(object), 0, 0);
+    }
+    dds3GetRadiusPoseSet(object, itfCriLipSyncManagerOff(major, minor));
+    dds3ObjectBaseSetPadControl(object, 0);
+    return counter;
+}
 #endif
 
 #ifdef VERSION_RAIDOU1

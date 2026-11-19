@@ -323,7 +323,18 @@ void ProcessStart(void) {
     sbtlFuncEscapeData = 0;
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlProcessEnd);
+void sbtlProcessEnd(void) {
+    sBtlMenu_t *wk;
+
+    if (ProcessCheckData != NULL && dds3ExistProcess(ProcessCheckData)) {
+        wk = dds3GetProcessData(ProcessCheckData);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 15;
+            wk->count = 0;
+        }
+    }
+}
 
 s32 ProcessCheck(void) {
     if (ProcessCheckData == NULL) {

@@ -184,6 +184,14 @@ typedef struct sbtlSummonText_t {
     u8 pad78[0x8];
 } sbtlSummonText_t;
 
+/* HD SUMMON_CTRL: a pending summon (io set) or return of a demon, run by SmnCtrlRun. */
+typedef struct SUMMON_CTRL {
+    s32 bNoOk;
+    s32 stkId;
+    s32 aprId;
+    s32 io;
+} SUMMON_CTRL;
+
 /* Partial raidou2 layout of the battle main work: only the fields read so far are named, the rest is padding. */
 typedef struct SBTL_WORK {
     u8 pad000[0x180];
@@ -220,7 +228,9 @@ typedef struct SBTL_WORK {
     u8 pad496[2];
     s32 eventListID;
     dds3ProcessID_t *eventprocID; /* script process of the running battle event */
-    u8 pad4A0[0x518 - 0x4A0];
+    s16 summonIndex[2];
+    s16 returnindex[2]; /* HD name; summonIndex slot of the demon returning to its tube */
+    u8 pad4A8[0x518 - 0x4A8];
     SKLID stock_useskill[10];
     u16 stock_useskill_num;
     u8 pad542[0x544 - 0x542];
@@ -232,7 +242,11 @@ typedef struct SBTL_WORK {
     u8 pad5A4[0x64C - 0x5A4];
     s32 field64C; /* stock devil count, the bound of sbtlRefDDS3GBWK2 */
     s32 member_num; /* HD name; partners in the battle */
-    u8 pad654[0x6EC - 0x654];
+    s32 summonnum;
+    u8 summon[20];
+    u8 summonflg[20]; /* HD name; 2 while the stock slot's demon is out */
+    s32 stockUnitID[20];
+    u8 pad6D0[0x6EC - 0x6D0];
     SBTLVIBE_WORK vibe[2];
     s32 vibe_startf[2];
     s32 vibe_frame[2];
@@ -317,7 +331,9 @@ typedef struct SBTL_WORK {
     u8 field87A;
     u8 padC57[0xC90 - 0xC57];
     struct SBTLUNIT_WORK *pNakama1;
-    u8 pad_C94[0xE84 - 0xC94];
+    u8 pad_C94[0xD90 - 0xC94];
+    SUMMON_CTRL smnCtrl;
+    u8 padDA0[0xE84 - 0xDA0];
     s32 fieldE84; /* sbtlDat's index into datData20 */
     u8 padE88[0x4];
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */

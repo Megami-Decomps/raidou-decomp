@@ -15,6 +15,7 @@
 #include "effManager.h"
 #include "dds3KernelCore.h"
 #include "sdfTex.h"
+#include "code_r1_002C8188.h"
 
 INCLUDE_ASM(const s32, "code_00169A40", mapLeaf4);
 
@@ -420,7 +421,16 @@ struct mapUnloadRequestSubWork_t *mapUnloadRequestSub(void) {
 
 INCLUDE_ASM(const s32, "code_00169A40", mapAll2);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapProcShutDownSub);
+void mapProcShutDownSub(void)
+{
+    struct mapUnloadRequestSubWork_t *work = mapUnloadRequestSub();
+
+    if (work->fieldC4 != NULL) {
+        effReleaseTextureHandlesAndResetSlots(work->fieldC4);
+        effDestroyResourceSlotSet(work->fieldC4);
+        work->fieldC4 = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapLeaf5);
 

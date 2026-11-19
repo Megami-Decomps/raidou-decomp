@@ -14,6 +14,7 @@
 #include "rstResult.h"
 #include "sdfMemory.h"
 #include "EventBit.h"
+#include "jmsMenu.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
@@ -92,7 +93,9 @@ INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallBitCheck4);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallMenuGetMenuNum);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", CallProcEnd);
+void CallProcEnd(jmsInputPanelWork_t *wk) {
+    itfMenuProcessEnd(wk->menuPID);
+}
 
 u8 CheckProcEnd(jmsInputPanelWork_t *wk) {
     u8 ret = 0;

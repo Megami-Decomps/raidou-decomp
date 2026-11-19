@@ -420,7 +420,29 @@ INCLUDE_ASM(const s32, "code_0014B7B0", mapCallSetPlayerTargetData2);
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallSetPlayerTargetData3);
 
+/* NON_MATCHING: 61 of 65 words match.  */
+#ifdef NON_MATCHING
+s32 mapCallSetPlayerTargetData4(f32 x, f32 z)
+{
+    s32 ix;
+    s32 iz;
+    s32 i;
+
+    for (i = 0; i < 64; i++) {
+        if (mapWallObjTaskData[i].use != 0 && mapWallObjTaskData[i].type == 6) {
+            fldSetPlayerTargetData(&ix, &iz, x, z);
+            if (ix >= mapWallObjTaskData[i].eveix0 && ix < mapWallObjTaskData[i].eveix1 &&
+                iz >= mapWallObjTaskData[i].eveiy0 && iz < mapWallObjTaskData[i].eveiy1 &&
+                mapWallObjTaskData[i].floor == fldGlobalBase.nameU) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0014B7B0", mapCallSetPlayerTargetData4);
+#endif
 
 INCLUDE_ASM(const s32, "code_0014B7B0", mapProcSequenceSub4);
 

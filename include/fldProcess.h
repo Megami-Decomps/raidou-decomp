@@ -59,7 +59,11 @@ s32 sndProcSequenceSub3(void);
 s32 sndProcSequenceSub2(void);
 void sndCallWaitSema(void);
 s32 sndSePlay(void);
+#ifdef VERSION_RAIDOU2
+s32 mapCallSetPlayerTargetData4(f32 x, f32 z);
+#else
 void mapCallSetPlayerTargetData4(void);
+#endif
 s32 mapGetLight(f32 x, f32 z);
 s32 mapCallSetPlayerTargetData6(f32 x, f32 z);
 s32 mapBadMafuHajiki(void);
@@ -122,6 +126,10 @@ void nbProcSequenceSub(s32 arg);
 void nbCameraInit(void);
 void itfGeneralMenuFreeSpriteHnd(void);
 void UnloadRequest(s32 mode);
+void mapBadEffDrawTask_fld(void);
+void mapCallSetOt4(s32 amSBlock, s32 nameU, s32 encountState);
+void mapIsFldKeyFreeSub2(void);
+void saveIsFldKeyFreeSub(void);
 #endif
 void mnuQueueTitleSoundStreamEntry(s32 id);
 void mapTitleStart_fld(s32 a, s32 b, s32 c, s32 d);
@@ -158,7 +166,11 @@ void mapCallSetOt10(s32 x, s32 y, s32 w, s32 e, s32 f);
 void mapCallSetOt11(s32 x, s32 y, s32 w, s32 e, s32 f);
 s32 mapRefDDS3GBWK6(s32 id);
 void mapIfDrawActionWin2(s32 x, s32 y, u32 color, const char *str);
+#ifdef VERSION_RAIDOU2
+void mapCallPreCalcStrWidth(void);
+#else
 void mapCallPreCalcStrWidth(s32 nakama, s32 kind, s32 x, s32 y);
+#endif
 void mapCallPreCalcStrWidth2(s32 nakama, s32 kind, s32 x, s32 y);
 char *mapScriptGet_Pos(f32 x, f32 y, f32 z, f32 r, s32 *attr, f32 *objx, f32 *objy, f32 *objz, s32 *type);
 s32 mapCallSetPlayerTargetData(f32 x, f32 z, f32 r);

@@ -40,11 +40,14 @@ struct dds3ProcessID_t;
 s32 BgProcSequence(struct dds3ProcessID_t *id);
 s32 fldProcSequence2(struct dds3ProcessID_t *id);
 #ifdef VERSION_RAIDOU2
-/* Raidou 2 keeps it in .data and reaches it with lui, so its size is not known here. */
+/* Raidou 2 keeps these in .data and reaches them with lui, so their size is not known here. */
 extern s32 mapBgDrawOnOffData[];
+extern s32 fldLoadMapResourceSubData[];
+extern s16 nbData14[];
 #else
 extern s32 mapBgDrawOnOffData;
 #endif
+extern s32 fldHardSelect1SubData[3];
 void nbRefDDS3GBWK2(void);
 void nbRefDDS3GBWK3(void);
 void nbCallSetOt(void);

@@ -237,6 +237,7 @@ s32 sbtlCallBtlLoadAttackHitData(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetMotionVisualData2(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
 #ifdef VERSION_RAIDOU2
 s32 sbtlCheckLoopMotion(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
+s32 sbtlGetMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_SIDE side, SBTLUNIT_MOTION no);
 #endif
 s32 sbtlCheckMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
 s32 sbtlCheckTateSkillSelectTarget(struct SBTLUNIT_WORK *wk);

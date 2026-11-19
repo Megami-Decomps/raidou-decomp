@@ -3,8 +3,10 @@
 
 #include "common.h"
 #include "kernel.h"
+#include "code_0034F3B8.h"
 
-dds3ProcessFunc_t CheckProcEnd(dds3ProcessID_t *PID);
+void CallProcEnd(jmsInputPanelWork_t *wk);
+u8 CheckProcEnd(jmsInputPanelWork_t *wk);
 void ProcessStart_jmsMenu(void);
 
 #endif

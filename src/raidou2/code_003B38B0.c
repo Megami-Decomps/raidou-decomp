@@ -1,6 +1,8 @@
 #include "common.h"
 #include "dds3KernelCore.h"
 #include "code_00346258.h"
+#include "gohMain.h"
+#include "fld.h"
 
 INCLUDE_ASM(const s32, "code_003B38B0", datFunc11);
 
@@ -292,7 +294,22 @@ INCLUDE_RODATA(const s32, "code_003B38B0", campUpdateProcName3);
 
 INCLUDE_ASM(const s32, "code_003B38B0", jmsJimusyoYoigoshiHiru);
 
-INCLUDE_ASM(const s32, "code_003B38B0", jmsCallGetProcessData);
+dds3ProcessFunc_t jmsCallGetProcessData(dds3ProcessID_t *PID)
+{
+    jmsData_t *work = dds3GetProcessData(PID);
+
+    if (!jmsCheckScrRun(work->fieldD0)) {
+        if (work->fieldE4) {
+            return rstCallGetProcessData27;
+        }
+        return jmsJimusyoYoigoshiHiru;
+    }
+    if (!(work->flag & 0x2000)) {
+        work->flag |= 0x2000;
+        mapTitleSkip();
+    }
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "code_003B38B0", fclJimusyoJmsMes);
 

@@ -780,6 +780,25 @@ typedef struct mapNpcCond_t
 } mapNpcCond_t;
 
 /* One field NPC (ALLTBL.LB resource 0); the model_c* fields replace the model once model_cflag is set. */
+#ifdef VERSION_RAIDOU2
+/* Model of an NPC; change.id1 replaces model.id2 once change.flag is set. */
+typedef struct mapNpcModel_t
+{
+    s16 field00;
+    s16 flag;
+    u16 id1;
+    u16 id2;
+    u8 pad08[0x8];
+} mapNpcModel_t;
+
+/* Partial raidou2 layout (0x68 bytes). */
+typedef struct mapNpc_t
+{
+    mapNpcModel_t model;
+    mapNpcModel_t change;
+    u8 pad20[0x68 - 0x20];
+} mapNpc_t;
+#else
 typedef struct mapNpc_t
 {
     s16 map;
@@ -802,6 +821,7 @@ typedef struct mapNpc_t
     char scr_label[32];
     mapNpcCond_t cond[4];
 } mapNpc_t;
+#endif
 
 extern mapNpc_t mapEXFloorData[640];
 
@@ -925,8 +945,13 @@ void mdlCallMemGetSize2(void);
 void mdlCallMemFreeDirect(void);
 #ifdef VERSION_RAIDOU2
 void sbtlCheckEndEscape(void);
-/* Layout unknown: mapProcShutDownSub and mapIsFldKeyFreeSub2 read a handle at 0xC4. */
-struct mapUnloadRequestSubWork_t;
+/* Partial layout. */
+struct mapUnloadRequestSubWork_t {
+    u8 pad00[0xC4];
+    struct sprHandle_t *fieldC4; /* read by mapProcShutDownSub and mapIsFldKeyFreeSub2 */
+    s32 fieldC8; /* fldCallSetOt2: -1 fades the screen dim in, 1 out */
+    s32 fieldCC; /* dim alpha, 0 to 80 */
+};
 extern struct mapUnloadRequestSubWork_t mapUnloadRequestSubWork;
 struct mapUnloadRequestSubWork_t *mapUnloadRequestSub(void);
 extern struct effBlurScatterWork_t *DeadMoonTmx3; /* nbCallEffectDistortionBlurCreate */

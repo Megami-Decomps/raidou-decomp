@@ -208,7 +208,46 @@ SBTLSM_LISTWORK *sbtlCreateSMList(void)
     return lwk;
 }
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCreateSM);
+SBTLSM_WORK *sbtlCreateSM(SBTLSM_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SBTLSM mode, SKLID sklid)
+{
+    sdfMemHandle_t *handle;
+    SBTLSM_WORK *dwk;
+
+    if (lwk->bLock) {
+        return NULL;
+    }
+    handle = sdfMemAllocDirect(sizeof(SBTLSM_WORK));
+    dwk = sdfMemLock(handle);
+    memset(dwk, 0, sizeof(SBTLSM_WORK));
+    dwk->handle = handle;
+    dwk->prev = NULL;
+    dwk->next = NULL;
+    if (lwk->dwk == NULL) {
+        lwk->dwk = dwk;
+        lwk->num = 1;
+    } else {
+        sbtlAddMessage(lwk, dwk, mode);
+    }
+    if (wk != NULL) {
+        dwk->listID = wk->field1A0;
+    }
+    dwk->mode = mode;
+    if (wk != NULL) {
+        dwk->raceid = wk->unit.raceId;
+        dwk->devilid = wk->unit.devilId;
+        if (sklid) {
+            dwk->sklid = sklid;
+        } else {
+            dwk->sklid = wk->skillid;
+        }
+        dwk->side = wk->field414;
+    }
+    dwk->ofs_x = 0;
+    dwk->ofs_y = 0;
+    dwk->gstat = SBTLSM_ST_INIT;
+    dwk->cmpcounter = 120;
+    return dwk;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallSprintf8);
 

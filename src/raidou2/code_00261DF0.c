@@ -210,7 +210,19 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlCallMemFreeDirect);
 
 INCLUDE_ASM(const s32, "code_00261DF0", Init_sbtl);
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlCallBtlSearchUnitID);
+void SmnCtrlRun(void)
+{
+    if (wk_sbtl != NULL && wk_sbtl->smnCtrl.bNoOk) {
+        if (wk_sbtl->smnCtrl.io) {
+            if (wk_sbtl->summonflg[wk_sbtl->smnCtrl.stkId] == 2) {
+                wk_sbtl->smnCtrl.bNoOk = 0;
+            }
+        } else if (sbtlSearchUnit_ID(wk_sbtl->unitList,
+                                     wk_sbtl->stockUnitID[wk_sbtl->summonIndex[wk_sbtl->smnCtrl.aprId]]) == NULL) {
+            wk_sbtl->smnCtrl.bNoOk = 0;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlSbattle3);
 
