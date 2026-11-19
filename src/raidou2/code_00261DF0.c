@@ -998,7 +998,7 @@ void sbtlSetRndEncBg(s32 rnd_enc_id) {
     datRndEncTbl_t *tbl;
 
     sbtlSetRndEncBgData = rnd_enc_id;
-    tbl = &sbtlData101[rnd_enc_id][sbtlCallBitCheck3(rnd_enc_id)];
+    tbl = &sbtlData101[rnd_enc_id][sbtlGetRndEncJoken(rnd_enc_id)];
     sbtlSceneLoadData4 = tbl->map;
     sbtlSceneLoadData5 = tbl->floor;
     sbtlSceneLoadData6 = 1;

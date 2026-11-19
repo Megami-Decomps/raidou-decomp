@@ -32,19 +32,34 @@ typedef struct V_POSITION_WORK {
 
 /* One motion-move window: inside [startframe, endframe] of motion motionno the unit moves at sokudo. */
 typedef struct MTIONMV_PARA {
+#ifdef VERSION_RAIDOU2
+    s16 motionno;
+    s16 startframe;
+    s16 endframe;
+    s16 sokudo;
+#else
     s8 motionno;
     u8 pad01[3];
     f32 startframe;
     f32 endframe;
     f32 sokudo;
+#endif
 } MTIONMV_PARA;
 
 /* A model id's motion-move windows (HD MOTIONMOVE_WORK, inline on the PS2). */
 typedef struct MOTIONMOVE_WORK {
+#ifdef VERSION_RAIDOU2
+    MTIONMV_PARA para[8];
+#else
     MTIONMV_PARA para[10];
+#endif
 } MOTIONMOVE_WORK;
 
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(MOTIONMOVE_WORKSizeCheck, MOTIONMOVE_WORK, 0x40);
+#else
 SIZE_CHECK(MOTIONMOVE_WORKSizeCheck, MOTIONMOVE_WORK, 0xA0);
+#endif
 
 /* Per-model tables for devils (major nonzero) and for the player (major zero). */
 extern V_POSITION_WORK *sbtleff_cylindertbl;

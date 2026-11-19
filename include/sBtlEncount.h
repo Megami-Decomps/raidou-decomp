@@ -76,7 +76,7 @@ s32 sbtlCheckGeneratorGroupID(s32 group);
 s32 sbtlCheckGenerator_D(void);
 s32 sbtlGetRndEncJoken(s32 id);
 #ifdef VERSION_RAIDOU2
-s32 sbtlCallBitCheck3(s32 id);
+s32 sbtlGetRndEncJoken(s32 id);
 #endif
 s32 sbtlGetRndEncMax(s32 id);
 s32 sbtlRndEncCalc(s32 id, f32 length);

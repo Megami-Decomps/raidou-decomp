@@ -3900,7 +3900,6 @@
 0x002C9AE0	sbtlRefSbtl17	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x002C9B28	sbtlRefSbtl18	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x002C9D10	sbtlCallSetOt2	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls eglSetOt
-0x002CA240	sbtlCallBtlGetMotionMoveData	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetMotionMoveData
 0x002CA560	sbtlCallBtlGetMotionVisualDataSBtlVi2	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetMotionVisualData_sbtlVisual
 0x002CA7C8	sbtlGetCylinderData_ID	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlVisual.sBtlGetCylinderData_ID, score 10.0 band A
 0x002CAD10	sbtlCallBtlCheckDamageTarget8	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlCheckDamageTarget
@@ -3908,9 +3907,6 @@
 0x002CBDC8	sbtlAddAWXAtkPadSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by Add_AW_XAtkPad
 0x002CBDE0	sbtlAddAWXAtkPadSub2	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by Add_AW_XAtkPad
 0x002CBE28	sbtlLeaf34	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
-0x002CBEB0	sbtlInitSBtlSub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by Init_sbtl
-0x002CC808	sbtlCallBitCheck3	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls evtBitCheck
-0x002CCFA0	sbtlCallBitCheck4	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls evtBitCheck
 0x002CD0A8	sbtlCallGetRandIntA	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls dds3GetRandIntA
 0x002CD340	sbtlRefDDS3GBWK3	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references DDS3_GBWK
 0x002CD478	sbtlCallGetRandIntA2	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls dds3GetRandIntA

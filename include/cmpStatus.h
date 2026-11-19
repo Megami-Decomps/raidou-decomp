@@ -58,6 +58,7 @@ void *cmpSummnerRankStateWait(cmpSummnerRank_t *psSelf);
 #endif
 
 dds3ProcessFunc_t DrawProcess_cmpStatus(dds3ProcessID_t *PID);
+void ProcessEnd_cmpStatus(void);
 s32 ProcessCheck_cmpStatus(void);
 dds3ProcessID_t *ProcessStart_cmpStatus(void);
 void Shutdown_cmpStatus(dds3ProcessID_t *PID);

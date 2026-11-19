@@ -243,7 +243,12 @@ s32 sbtlCallMemFreeDirect6(struct SBTL_MODELBIND_LIST *stp, u8 flg) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlBattleEnd);
+s32 sbtlBattleEnd(SBTL_MODELBIND_LIST *lwk)
+{
+    sbtlCallMemFreeDirect6(lwk, 1);
+    sdfChipFreeDirect(lwk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlSearchUnitID26);
 
@@ -461,9 +466,14 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlDrawShadow);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallSetOt2);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetMotionMoveData);
+MOTIONMOVE_WORK *sbtlGetMotionMoveData(MODELTYPE major, s32 minor) {
+    if (major == 0) {
+        return &sbtlmotionmove_tbldata_player[minor];
+    }
+    return &sbtlmotionmv_tbldata[minor];
+}
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlGetMotionMoveData);
+INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetMotionMove);
 
 V_POSITION_WORK *sbtlGetEffCylinderData(MODELTYPE major, s32 id) {
     if (major == 0) {
@@ -472,11 +482,32 @@ V_POSITION_WORK *sbtlGetEffCylinderData(MODELTYPE major, s32 id) {
     return &sbtleff_cylindertbl[id];
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetMotionVisualData);
+SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id) {
+    if (a == 0) {
+        return &sbtlData99[id].head;
+    }
+    if (id < 416) {
+        return &sbtlData167[id].head;
+    }
+    return &sbtlData168[id - 416].head;
+}
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetVisualData);
+SBTL_MOTION_VISUAL *sbtlGetVisualData(s32 a, s32 id) {
+    if (a == 0) {
+        return &sbtlData99[id].head;
+    }
+    return &sbtlData168[id].head;
+}
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetMotionVisualData_sbtlVisual);
+SBTL_UNIT_SUB *sbtlGetMotionVisualData_sbtlVisual(s32 a, s32 id, s32 b) {
+    if (a == 0) {
+        return &sbtlData99[id].mwk[b];
+    }
+    if (id < 416) {
+        return &sbtlData167[id].mwk[b];
+    }
+    return &sbtlData168[id - 416].mwk[b];
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlGetMotionVisualDataSBtlVi2);
 
@@ -653,7 +684,20 @@ void sbtlSetactcounter(struct SBTLUNIT_WORK *wk)
     }
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlInitSBtlSub);
+s32 sbtlClearGeneratorWork(void)
+{
+    s32 i;
+
+    for (i = 0; i < 13; i++) {
+        sb_gen_work[i].use = 0;
+        sb_gen_work[i].zan_cnt = 0;
+        sb_gen_work[i].type_d_sommon_flg = 0;
+        sb_gen_work[i].wait = 0;
+        sb_gen_work[i].penc = NULL;
+    }
+    sb_gen_d_flag = 0;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetGeneratorData);
 
@@ -679,19 +723,35 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckGenerator_ND);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckGenerator_D);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckGeneratorAll);
+s32 sbtlCheckGeneratorAll(void)
+{
+    s32 i;
+
+    for (i = 0; i < 13; i++) {
+        if (sb_gen_work[i].use == 0) {
+            continue;
+        }
+        if (sb_gen_work[i].penc->devil == 523 && sb_gen_work[i].penc->groupID == 20) {
+            continue;
+        }
+        if (sb_gen_work[i].zan_cnt > 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetGeneCam);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGeneratorProc);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBitCheck3);
+INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetRndEncJoken);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetRndEncType);
 
 INCLUDE_ASM(const s32, "code_002C5D78", campUpdateEffectStep);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBitCheck4);
+INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetRndEncMax);
 
 s32 sbtlGetRndEncCnt(void)
 {
@@ -804,5 +864,13 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlEntryItemList);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlEntryItemList_Type);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlReleaseItemList);
+s32 sbtlReleaseItemList(SBTLITEM_LISTWORK *lwk)
+{
+    if (lwk->handle != NULL) {
+        sdfMemFreeDirect(lwk->handle);
+        lwk->handle = NULL;
+    }
+    lwk->num = 0;
+    return 1;
+}
 

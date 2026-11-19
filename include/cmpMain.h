@@ -12,14 +12,19 @@ struct tagCMP_WORK {
 #ifdef VERSION_RAIDOU2
     dds3ProcessID_t *partyPID;   /* 0x0C */
     dds3ProcessID_t *charPID;    /* 0x10 */
+    dds3ProcessID_t *submPID;    /* 0x14: the sub menu (cmpGetsubMenuPID) */
 #else
     dds3ProcessID_t *charPID;    /* 0x0C */
     u8 unk10[4];
 #endif
-    u8 step;                     /* 0x14 */
+    u8 step;                     /* 0x14, raidou2 0x18 */
     u8 flag;                     /* 0x15: bit 0 ends the process */
     s8 unk16;                    /* 0x16 */
+#ifdef VERSION_RAIDOU2
+    u8 unk1B[1];
+#else
     u8 unk17[5];
+#endif
     s32 markID;                  /* 0x1C */
     s32 count;                   /* 0x20 */
 #ifdef VERSION_RAIDOU2

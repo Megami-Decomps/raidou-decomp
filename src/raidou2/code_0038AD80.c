@@ -11,6 +11,10 @@
 #include "cmpMap.h"
 #include "sdk_libc.h"
 #include "code_0016A7D8.h"
+#include "cmpStatus.h"
+#include "code_r1_002CA3F0.h"
+#include "EventBit.h"
+#include "fclMsg.h"
 
 void DrawTop(struct tagCMP_MAP_WORK *wk) {
     struct sprHandle_t *spr;
@@ -102,7 +106,18 @@ void ProcessStart_cmpMap(void) {
     fldMapAllAmap();
 }
 
-INCLUDE_ASM(const s32, "code_0038AD80", ProcessEnd_cmpMap);
+void ProcessEnd_cmpMap(void) {
+    tagCMP_MAP_WORK *wk;
+
+    if (g_mainPID_cmpMap != NULL && dds3ExistProcess(g_mainPID_cmpMap)) {
+        wk = dds3GetProcessData(g_mainPID_cmpMap);
+        if (!(wk->flag & 1)) {
+            wk->flag |= 1;
+            wk->step = 4;
+            wk->count = 0;
+        }
+    }
+}
 
 s32 ProcessCheck_cmpMap(void) {
     if (g_mainPID_cmpMap == NULL) {
@@ -149,9 +164,16 @@ INCLUDE_ASM(const s32, "code_0038AD80", cmpUpdateSkillHDCmpKudaSub3);
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpUpdateSkillHDCmpKudaSub4);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawPartsOmoideSkillSub3);
+const char *cmpDrawPartsOmoideSkillSub3(u32 id) {
+    if (id < 36) {
+        return cmpDrawPartsOmoideSkillSub3Data[id];
+    }
+    return cmpData49;
+}
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpChkTabChg);
+s32 cmpChkTabChg(void) {
+    return cmpRefMainPIDCmpMain()->pageMax != 0;
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallMenuSetFlagMenu);
 
@@ -165,7 +187,21 @@ INCLUDE_ASM(const s32, "code_0038AD80", cmpProcess);
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpChkEnableSelectMenu);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpGetstrCmpMenuHD);
+s32 cmpGetstrCmpMenuHD(void) {
+    s32 i;
+
+    for (i = 0x1F01; i < 0x1F65; i++) {
+        if (evtBitCheck(i)) {
+            return 1;
+        }
+    }
+    for (i = 0x1E81; i < 0x1EE5; i++) {
+        if (evtBitCheck(i)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpSetMenu);
 
@@ -173,7 +209,9 @@ INCLUDE_ASM(const s32, "code_0038AD80", Init_cmpMain);
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetProcessData25);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawKeyHelp2);
+void cmpDrawKeyHelp2(u8 a_alphaRate, DDS3_OT a_otNo) {
+    itfDrawMiscSpriteList(-10, 379, 0, a_alphaRate, cmpGetSpriteHnd(CMP_SPR_COMMON), a_otNo, cmpDrawKeyHelp2Data);
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawHelpText);
 
@@ -193,9 +231,13 @@ INCLUDE_ASM(const s32, "code_0038AD80", cmpGetEvtItemSprNo);
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetSpriteHnd2);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpLeaf49);
+void cmpLeaf49(s32 a_sprNo, s32 a_x, s32 a_y, u32 a_alphaRate, struct sprHandle_t *a_hSpr) {
+    effDrawSpriteWithCornerFade(a_x * 16, a_y * 8, 0, a_alphaRate, 96, a_hSpr, a_sprNo, DDS3_OT_BACK5_NORMAL);
+}
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetSpriteHnd9);
+void cmpCallGetSpriteHnd9(s32 a_sprNo, s32 a_x, s32 a_y, s32 a_alphaRate) {
+    cmpLeaf49(a_sprNo, a_x, a_y, a_alphaRate, cmpGetSpriteHnd(CMP_SPR_COMMON));
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetSpriteHnd10);
 
@@ -233,7 +275,15 @@ s32 cmpCallGetProcessData26(void)
     return wk->count;
 }
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpCallProcEnd);
+void cmpCallProcEnd(struct tagCMP_WORK *wk) {
+    ProcessEnd_cmpMap();
+    itfMenuProcessEnd(wk->menuPID);
+    itfMenuProcessEnd(wk->partyPID);
+    itfMenuProcessEnd(wk->charPID);
+    itfMenuProcessEnd(wk->submPID);
+    Delete_fclMsg();
+    ProcessEnd_cmpStatus();
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCheckProcEnd);
 

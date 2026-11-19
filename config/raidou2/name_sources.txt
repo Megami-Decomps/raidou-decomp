@@ -7911,7 +7911,7 @@
 0x002C9B78	sbtlDrawShadow	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlShadow.sBtlDrawShadow score 6.3 flag I: calls3 calls-of-match votes2 st2:call r2-only
 0x002C9D10	sbtlCallSetOt2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls eglSetOt
 0x002CA218	sbtlGetMotionMoveData	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlVisual.sBtlGetMotionMoveData score 5.0 flag I: calls1 next calls-of-match-uniq votes2 st2:call r1-disagree:0x296fe0
-0x002CA240	sbtlCallBtlGetMotionMoveData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetMotionMoveData
+0x002CA240	sbtlGetMotionMove	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R1 sbtlGetMotionMove body (HD sBtlGetMotionMove(wk, now_frame)) with IsSceanStop, field6CC and the minor-5 motion-33 window; name free in raidou2; replaces sbtlCallBtlGetMotionMoveData
 0x002CA3B8	sbtlGetEffCylinderData	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlVisual.sBtlGetEffCylinderData score 9.0 flag I: calls1 next calls-of-match votes2 st1:call r1+r2
 0x002CA3F0	sbtlGetMotionVisualData	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub
 0x002CA468	sbtlGetVisualData	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlVisual.c sBtlGetVisualData(major, id): per-major VISUALDATA_WORK table; replaces sbtlGetMotionVisualData
@@ -7933,7 +7933,7 @@
 0x002CBDF8	sbtlSetEncountData4	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlEncount.sBtlSetEncountData4 score 6.7 flag I: calls3 callers-of-match votes4 st2:call r2-only
 0x002CBE28	sbtlLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
 0x002CBE30	sbtlSetactcounter	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlEncount.sBtlSetactcounter score 8.5 flag I: calls2 calls-of-match votes2 st1:call r1+r2
-0x002CBEB0	sbtlInitSBtlSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by Init_sbtl
+0x002CBEB0	sbtlClearGeneratorWork	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R1 sbtlClearGeneratorWork body (13 generators cleared, sb_gen_d_flag = 0, return 1) plus the R2 type_d_sommon_flg; name free in raidou2; replaces sbtlInitSBtlSub
 0x002CBEF0	sbtlSetGeneratorData	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlEncount.sBtlSetGeneratorData score 4.8 flag I: calls2 callers-of-match votes2 st2:call r1-disagree:0x298a90
 0x002CC050	sbtlGeneratorD_On	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sBtlEncount.sBtlGeneratorD_On score 3.2 flag I: calls1 next gap1/2 st2:gap r2-only
 0x002CC060	sbtlCheckGeneratorGroupID	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD sBtlEncount.sBtlCheckGeneratorGroupID score 6.5 flag I: calls2 calls-of-match-uniq votes3 st2:call r2-only
@@ -7943,10 +7943,10 @@
 0x002CC2A0	sbtlCheckGeneratorAll	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlEncount.sBtlCheckGeneratorAll score 8.2 flag I: calls3 next gap6/9 votes4 st2:gap r2-only
 0x002CC308	sbtlSetGeneCam	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlEncount.sBtlSetGeneCam score 10.3 flag I: calls3 next callers-of-match votes5 st2:call r2-only
 0x002CC3A0	sbtlGeneratorProc	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlEncount.sBtlGeneratorProc score 4.2 flag I: calls3 callers-of-match votes3 st2:call r1-disagree:0x298d30
-0x002CC808	sbtlCallBitCheck3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls evtBitCheck
+0x002CC808	sbtlGetRndEncJoken	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R1 sbtlGetRndEncJoken body (find_similar 0.93, flag0/flag1 with j tests over sbtlData101[id][i]), 5 slots in R2; name free in raidou2; replaces sbtlCallBitCheck3
 0x002CC8F0	sbtlGetRndEncType	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlEncount.sBtlGetRndEncType score 8.1 flag I: calls2 prev next~ callers-of-match votes4 st2:call r2-only
 0x002CCF70	campUpdateEffectStep	inferred	method=smt3-fuzzy-70-m-single; p=0.83 (n=60); tier=B; source=smt3; evidence=smt3 body 0x232158 sim 0.750 margin 0.32 single
-0x002CCFA0	sbtlCallBitCheck4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls evtBitCheck
+0x002CCFA0	sbtlGetRndEncMax	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R1 sbtlGetRndEncMax body (sbtlGetRndEncJoken slot, ritu sum, encmax from datRndEncBase - normalritu*48/100) plus an evtBitCheck(2999) early return; name free in raidou2, sBtlEncount.h already declares it; replaces sbtlCallBitCheck4
 0x002CD098	sbtlGetRndEncCnt	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD sBtlEncount.sBtlGetRndEncCnt score 4.3 flag I: next gap3/1 st1:gap r1+r2
 0x002CD0A8	sbtlCallGetRandIntA	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls dds3GetRandIntA
 0x002CD340	sbtlRefDDS3GBWK3	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references DDS3_GBWK

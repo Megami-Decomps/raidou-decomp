@@ -830,9 +830,10 @@ s32 sbtlCallMemset(struct SBTLUNIT_WORK *wk, s32 index);
 s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg);
 
 #ifdef VERSION_RAIDOU2
-/* One generator entry of a stage. Partial raidou2 layout: HD's s8 groupID, the rest unread so far. */
+/* One generator entry of a stage. Partial raidou2 layout: HD's s16 devil and s8 groupID, the rest unread so far. */
 typedef struct SB_ENCOUNT1 {
-    u8 pad00[4];
+    u8 pad00[2];
+    s16 devil;
     s8 groupID;
     u8 pad05[3];
 } SB_ENCOUNT1;
@@ -954,11 +955,17 @@ typedef struct SBTL_UNIT_SUB {
     f32 field14;
     s16 field18;
     u8 pad1A[2];
+#ifndef VERSION_RAIDOU2
     f32 cancelrate;
     f32 se_rate; /* s32 in HD */
+#endif
 } SBTL_UNIT_SUB;
 
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(SBTL_UNIT_SUBSizeCheck, SBTL_UNIT_SUB, 0x1C);
+#else
 SIZE_CHECK(SBTL_UNIT_SUBSizeCheck, SBTL_UNIT_SUB, 0x24);
+#endif
 
 typedef struct SBTL_MOTION_VISUAL {
     u8 kind;
@@ -973,19 +980,53 @@ typedef struct SBTL_MOTION_VISUAL {
     f32 field20;
     f32 field24;
     f32 field28;
+#ifndef VERSION_RAIDOU2
     u8 field2C;
     u8 pad2D;
     s16 field2E;
     s16 field30;
     s16 field32;
     SBTL_UNIT_SUB mwk[43]; /* HD VISUALDATA_WORK.mwk, inline on the PS2 */
+#endif
 } SBTL_MOTION_VISUAL;
 
+#ifdef VERSION_RAIDOU2
+/* raidou2 keeps the motion records after the shared head, 43 for the player and 16 or 27 for devils. */
+SIZE_CHECK(SBTL_MOTION_VISUALSizeCheck, SBTL_MOTION_VISUAL, 0x2C);
+
+typedef struct SBTL_PLAYER_VISUAL {
+    SBTL_MOTION_VISUAL head;
+    SBTL_UNIT_SUB mwk[43];
+} SBTL_PLAYER_VISUAL;
+
+SIZE_CHECK(SBTL_PLAYER_VISUALSizeCheck, SBTL_PLAYER_VISUAL, 0x4E0);
+
+/* Devils below model 416. */
+typedef struct SBTL_DEVIL_VISUAL {
+    SBTL_MOTION_VISUAL head;
+    SBTL_UNIT_SUB mwk[16];
+} SBTL_DEVIL_VISUAL;
+
+SIZE_CHECK(SBTL_DEVIL_VISUALSizeCheck, SBTL_DEVIL_VISUAL, 0x1EC);
+
+/* Devils from model 416 on, indexed from 416. */
+typedef struct SBTL_DEVIL_VISUAL2 {
+    SBTL_MOTION_VISUAL head;
+    SBTL_UNIT_SUB mwk[27];
+} SBTL_DEVIL_VISUAL2;
+
+SIZE_CHECK(SBTL_DEVIL_VISUAL2SizeCheck, SBTL_DEVIL_VISUAL2, 0x320);
+
+extern SBTL_PLAYER_VISUAL *sbtlData99;
+extern SBTL_DEVIL_VISUAL *sbtlData167;
+extern SBTL_DEVIL_VISUAL2 *sbtlData168;
+#else
 SIZE_CHECK(SBTL_MOTION_VISUALSizeCheck, SBTL_MOTION_VISUAL, 0x640);
 
 /* Per-model visual tables for devils (major nonzero) and for the player (major zero). */
 extern SBTL_MOTION_VISUAL *sbtlData98;
 extern SBTL_MOTION_VISUAL *sbtlData99;
+#endif
 
 struct SBTLUNIT_WORK;
 
@@ -1161,7 +1202,7 @@ s32 sbtlCheckTutorialBattle(void);
 s32 IsSceanStop(void);
 void sbtlInitSBtlSub3(void);
 void sbtlCallBtlCheckTutorialBattle(void);
-s32 sbtlInitSBtlSub(void);
+s32 sbtlClearGeneratorWork(void);
 void sbtlSetGunNum(s32 num);
 extern s32 Exit_sbtlData;  /* stage Init_sbtl uses when the caller gives none */
 extern s32 Exit_sbtlData2; /* sword Init_sbtl equips in that case */
