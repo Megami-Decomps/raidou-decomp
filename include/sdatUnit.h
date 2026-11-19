@@ -102,7 +102,10 @@ typedef struct SBTL_PLAYER_DATA {
     /* 0x02C */ s32 val2C;
     /* 0x030 */ u8 pad30[4];
     /* 0x034 */ sdatUnitWork_t unit;
-    /* 0x1AC */ u8 pad1AC[0x200 - 0x1AC];
+    /* 0x1AC */ u8 pad1AC[0x1B8 - 0x1AC];
+    /* 0x1B8 */ s32 hgunnum;
+    /* 0x1BC */ s32 bulletno;
+    /* 0x1C0 */ u8 pad1C0[0x200 - 0x1C0];
     /* 0x200 */ s16 item[SDAT_ITEM_NUM]; /* stock per item id; R2's item count is not established */
     /* 0x340 */ u8 pad340[0x540 - 0x340];
     /* 0x540 */ sdatUnitWork_t stock[SDAT_STOCK_NUM];

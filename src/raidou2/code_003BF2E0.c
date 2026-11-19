@@ -11,6 +11,9 @@
 #include "code_003BF2E0.h"
 #include "cmpMain.h"
 #include "itf.h"
+#include "rstResult.h"
+#include "sdfMemory.h"
+#include "EventBit.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
@@ -32,13 +35,54 @@ INCLUDE_ASM(const s32, "code_003BF2E0", ListDrawStation);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData32);
 
+/* NON_MATCHING: 9 of 18 words match.  */
+#ifdef NON_MATCHING
+s32 CheckFlagTGS(s32 MenuID) {
+    if (!evtBitCheck(864)) {
+        return 0;
+    }
+    if (MenuID == 3 || MenuID == 5) {
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", CheckFlagTGS);
+#endif
 
+/* NON_MATCHING: 24 of 38 words match.  */
+#ifdef NON_MATCHING
+void SetFlagMenu(dds3ProcessID_t *PID, s32 MenuID, ITFMENU_CB_GF Flag, s8 Bool) {
+    u16 flag = SetRootMenuData[MenuID];
+
+    if (!CheckFlagTGS(MenuID) && (flag == 0 || evtBitCheck(flag))) {
+        itfMenuSetFlagMenu(PID, MenuID, Flag, Bool);
+    }
+}
+#else
+INCLUDE_ASM(const s32, "code_003BF2E0", SetFlagMenu);
+#endif
+
+/* NON_MATCHING: 22 of 37 words match.  */
+#ifdef NON_MATCHING
+void SetRootMenu(dds3ProcessID_t *PID, s32 MenuID, itfMenuFunc_t func) {
+    u16 flag = SetRootMenuData[MenuID];
+
+    if (!CheckFlagTGS(MenuID) && (flag == 0 || evtBitCheck(flag))) {
+        itfMenuSetRootMenu(PID, MenuID, cmpData34[MenuID], func);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", SetRootMenu);
+#endif
 
-INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallCheckFlagTGS);
+void SetMenu(dds3ProcessID_t *PID, s32 MenuID, s32 ParentMenuID, itfMenuFunc_t func) {
+    u16 flag = SetRootMenuData[MenuID];
 
-INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallBitCheck2);
+    if (flag == 0 || evtBitCheck(flag)) {
+        itfMenuSetMenu(PID, MenuID, ParentMenuID, cmpData34[MenuID], func);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallBitCheck3);
 
@@ -50,11 +94,28 @@ INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallMenuGetMenuNum);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", CallProcEnd);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", DrawProcess_jmsMenu);
+u8 CheckProcEnd(jmsInputPanelWork_t *wk) {
+    u8 ret = 0;
+
+    if (!itfMenuProcessCheck(wk->menuPID)) {
+        wk->menuPID = NULL;
+    } else {
+        ret = 1;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", Process_jmsMenu);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", RunBadEffKaifukuKouka);
+void Release_jmsMenu(jmsInputPanelWork_t *pWork) {
+    if (pWork->flags & 2) {
+        if (pWork->hSpr != NULL) {
+            effDestroyResourceSlotSet(pWork->hSpr);
+            pWork->hSpr = NULL;
+        }
+        pWork->flags &= ~2;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpMenuShutdown2);
 
@@ -69,9 +130,21 @@ s32 cmpGetMarkID(void)
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData34);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallGetProcessData7);
+void jmsStart(void) {
+    jmsInputPanelWork_t *work = dds3GetProcessData(inputpanel_id);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsSetFocus);
+    itfMenuStart(work->menuPID);
+    work->unk1C = -1;
+    if (!(work->flags & 0x20)) {
+        work->flags |= 8;
+    }
+}
+
+void jmsSetFocus(s8 a_bFocus) {
+    jmsInputPanelWork_t *work = dds3GetProcessData(inputpanel_id);
+
+    itfMenuSetFlag(work->menuPID, 8, a_bFocus);
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", ProcessStart_jmsMenu);
 
@@ -100,21 +173,46 @@ INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallGetProcessData10);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsAddTalkTarget);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallGetProcessData11);
+void jmsCallGetProcessData11(s8 a_bSet) {
+    jmsInputPanelWork_t *work;
+
+    if (inputpanel_id != NULL) {
+        work = dds3GetProcessData(inputpanel_id);
+        SetFlagMenu(work->menuPID, 1, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, a_bSet);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallBitCheck2);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsCheckMovePrev);
+s32 jmsCheckMovePrev(void) {
+    jmsInputPanelWork_t *work;
+
+    if (inputpanel_id == NULL) {
+        return 0;
+    }
+    work = dds3GetProcessData(inputpanel_id);
+    if (itfMenuGetCtrlType(work->menuPID) == ITFMENU_CTRL_TYPE_PREV) {
+        return 1;
+    }
+    return itfMenuGetCtrlType(work->menuPID) == ITFMENU_CTRL_TYPE_CANCEL;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsGetCursorPosID);
 
-s32 jmsLeaf9(void) {
+jmsWork_t *jmsLeaf9(void) {
     return jmsLeaf11Data;
 }
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsLeaf10);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsFirstInitSub);
+s32 jmsFirstInitSub(void) {
+    jmsWork_t *wk;
+
+    wk = sdfCallMemAllocDirect(sizeof(jmsWork_t));
+    jmsRefDDS3GBWK(wk);
+    jmsLeaf11Data = wk;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsLeaf11);
 
@@ -182,21 +280,75 @@ void jmsCallMemset(jmsMemsetWork_t *work) {
     work->unk0C = 0;
 }
 
+/* NON_MATCHING: 1 of 4 words match.  */
+#ifdef NON_MATCHING
+void jmsLeaf12(jmsWork_t *wk) {
+    wk->vtbl = jmsData13;
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsLeaf12);
+#endif
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsLeaf13);
 
+/* NON_MATCHING: 29 of 31 words match.  */
+#ifdef NON_MATCHING
+s32 jmsRefDDS3GBWK(jmsWork_t *wk) {
+    jmsLeaf12(wk);
+    wk->vtbl = jmsData12;
+    wk->hFile = NULL;
+    wk->fileData = 0;
+    wk->hFile2 = NULL;
+    wk->fileData2 = 0;
+    wk->gbwk = &DDS3_GBWK->unkD230;
+    wk->unk18 = 0;
+    jmsCallMemset(wk->gbwk);
+    wk->unkAC = 79;
+    wk->unkB0 = 89;
+    wk->unkB4 = 98;
+    wk->unkB8 = 99;
+    return 99;
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsRefDDS3GBWK);
+#endif
 
 INCLUDE_ASM(const s32, "code_003BF2E0", jmsFunc37);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallDevLoadFileEx2);
+s32 jmsCallDevLoadFileEx2(jmsWork_t *wk, const char *name) {
+    wk->hFile = sdfDevLoadFileEx(name, &wk->fileData, NULL);
+    cmpCallBitCheck10(wk);
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_003BF2E0", jmsCallMemFreeDirect);
+s32 jmsCallMemFreeDirect(jmsWork_t *wk) {
+    s32 ret = 0;
 
-INCLUDE_ASM(const s32, "code_003BF2E0", sysCallDevLoadFileEx);
+    if (wk->hFile != NULL) {
+        sdfMemFreeDirect(wk->hFile);
+        ret = 1;
+        wk->hFile = NULL;
+    }
+    wk->fileData = 0;
+    return ret;
+}
 
-INCLUDE_ASM(const s32, "code_003BF2E0", sysCallMemFreeDirect);
+s32 sysCallDevLoadFileEx(jmsWork_t *wk, const char *name) {
+    wk->hFile2 = sdfDevLoadFileEx(name, &wk->fileData2, NULL);
+    return 1;
+}
+
+s32 sysCallMemFreeDirect(jmsWork_t *wk) {
+    s32 ret = 0;
+
+    if (wk->hFile2 != NULL) {
+        sdfMemFreeDirect(wk->hFile2);
+        ret = 1;
+        wk->hFile2 = NULL;
+    }
+    wk->fileData2 = 0;
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpLeaf18);
 
@@ -284,7 +436,12 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstStorySelectDebug);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstLoadMapResource);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstMapReturnChkXFade);
+s32 rstMapReturnChkXFade(struct gohData_t *pData) {
+    if (pData->flag & 0x20000) {
+        return 0;
+    }
+    return rstData5;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstLeaf13);
 
@@ -346,19 +503,74 @@ s32 rstGetGlobalEncountNo(void) {
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstSetFlag);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCheckFlag);
+s32 rstCheckFlag(s32 Flag) {
+    rstInitWork_t *wk;
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstResultStart);
+    if (ProcessStart_rstInitData == NULL) {
+        if (rstData4 & Flag) {
+            return 1;
+        }
+    } else {
+        wk = dds3GetProcessData(ProcessStart_rstInitData);
+        if (wk->flags & Flag) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void rstResultStart(void) {
+    rstInitWork_t *wk;
+
+    if (ProcessStart_rstInitData == NULL) {
+        rstData4 |= 2;
+    } else {
+        wk = dds3GetProcessData(ProcessStart_rstInitData);
+        wk->flags |= 2;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultFadeCheck);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData36);
+SBTL_PLAYER_DATA *rstGetPlayerUnit(void) {
+    rstInitWork_t *wk;
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstGetGiftItem);
+    if (ProcessStart_rstInitData == NULL) {
+        return NULL;
+    }
+    wk = dds3GetProcessData(ProcessStart_rstInitData);
+    return &wk->player;
+}
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstGetGiftItemNums);
+s32 rstGetGiftItem(s32 StockIndex) {
+    rstInitWork_t *wk;
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCheckRankUp);
+    if (ProcessStart_rstInitData == NULL) {
+        return 0;
+    }
+    wk = dds3GetProcessData(ProcessStart_rstInitData);
+    return wk->gift[StockIndex].item;
+}
+
+s32 rstGetGiftItemNums(s32 StockIndex) {
+    rstInitWork_t *wk;
+
+    if (ProcessStart_rstInitData == NULL) {
+        return 0;
+    }
+    wk = dds3GetProcessData(ProcessStart_rstInitData);
+    return wk->gift[StockIndex].nums;
+}
+
+s32 rstCheckRankUp(void) {
+    rstInitWork_t *wk;
+
+    if (ProcessStart_rstInitData == NULL) {
+        return -1;
+    }
+    wk = dds3GetProcessData(ProcessStart_rstInitData);
+    return wk->rankUp;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcProcess);
 
@@ -447,7 +659,9 @@ dds3ProcessFunc_t rstCallGetProcessData41(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstResultCyuuseiGaugeSub);
+u16 rstResultCyuuseiGaugeSub(s32 a_table, s32 a_step) {
+    return rstData3[a_table].steps[a_step].value;
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultNakamaLevelSub);
 
@@ -544,7 +758,18 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData42);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCmpItemGrowthStart);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstProcessEnd);
+void rstProcessEnd(void) {
+    rstMainWork_t *work;
+
+    if (g_mainPID3 != NULL && dds3ExistProcess(g_mainPID3)) {
+        work = dds3GetProcessData(g_mainPID3);
+        if (!(work->flags & 1)) {
+            work->flags |= 1;
+            work->step = 3;
+            work->count = 0;
+        }
+    }
+}
 
 s32 rstCallGetProcessStat(void) {
     if (g_mainPID3 == NULL) {

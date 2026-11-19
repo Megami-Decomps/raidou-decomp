@@ -10403,7 +10403,7 @@
 0x00388DA0	cmpCallGetCharPID	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; calls cmpGetCharPID
 0x00389070	cmpCallMakeCateChk	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; calls cmpMakeCateChk
 0x00389218	cmpCallMenuGetWaitType	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; calls itfMenuGetWaitType
-0x00389258	cmpCallMenuGetWaitType2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; calls itfMenuGetWaitType
+0x00389258	cmpUpdateKeyWord	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD cmpUpdateKeyWord (cmpBook.c): 0 while the step byte is set, else whether the list menu waits on cancel; replaces cmpCallMenuGetWaitType2
 0x00389298	cmpCallMenuGetWaitType3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; calls itfMenuGetWaitType
 0x003892D8	cmpCallMenuGetWaitType4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; calls itfMenuGetWaitType
 0x00389318	cmpLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour cmpDrawFunc; no named callee, caller or string
@@ -11718,22 +11718,22 @@
 0x003BFA48	ListDrawStation	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD lmap.ListDrawStation score 4.1 flag -: calls3 callee-index st2:cidx r1-disagree:0x2ea530
 0x003BFED8	cmpCallGetProcessData32	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls dds3GetProcessData
 0x003C00E8	CheckFlagTGS	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD jmsMenu.CheckFlagTGS score 3.4 flag -: calls1 next~ gap2/222 st2:gap r2-only
-0x003C0130	SetRootMenu	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD jmsMenu.SetRootMenu score 5.5 flag -: calls3 callers-of-match votes3 st1:call r2-disagree:0x3c01c8
-0x003C01C8	cmpCallCheckFlagTGS	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls CheckFlagTGS
-0x003C0260	cmpCallBitCheck2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls evtBitCheck
+0x003C0130	SetFlagMenu	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD cmp.SetFlagMenu: same body (evtBitCheck of SetRootMenuData[MenuID], then itfMenuSetFlagMenu); R1 SetRootMenu is other code; replaces SetRootMenu
+0x003C01C8	SetRootMenu	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD cmp.SetRootMenu: same body (itfMenuSetRootMenu after the CheckFlagTGS and flag tests); replaces cmpCallCheckFlagTGS
+0x003C0260	SetMenu	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD cmp.SetMenu: same body (itfMenuSetMenu under the SetRootMenuData flag test); R1 cmpCallBitCheck2 is other code; replaces cmpCallBitCheck2
 0x003C0308	cmpCallBitCheck3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls evtBitCheck
 0x003C03A8	IsBuyItem	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD RaijinDLC.IsBuyItem score 2.4 flag -: calls1 calls-of-match st2:call r2-only
 0x003C0410	cmpCallBitCheck4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls evtBitCheck
 0x003C0488	cmpCallMenuGetMenuNum	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls itfMenuGetMenuNum
 0x003C0820	CallProcEnd	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMenu.CallProcEnd score 7.8 flag -: prev gap=exact st1:gap r1+r2
-0x003C0838	DrawProcess_jmsMenu	hd	hd: Raidou HD jmsMenu.DrawProcess, score 11.1 band A
+0x003C0838	CheckProcEnd	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD CheckProcEnd (jmsMenu.c): 1 while the menu process runs, else clears menuPID; replaces DrawProcess_jmsMenu
 0x003C0880	Process_jmsMenu	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD jmsMenu.Process score 7.2 flag -: calls2 prev next gap=exact st2:gap r1-disagree:0x34fc80
-0x003C0AC8	RunBadEffKaifukuKouka	inferred	method=smt3-fuzzy-70-m-single; p=0.83 (n=60); tier=B; source=smt3; evidence=smt3 body 0x25faf8 sim 0.761 margin 0.11 single
+0x003C0AC8	Release_jmsMenu	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD Release (jmsMenu.c): frees the sprite set when flag bit 1 is set; replaces RunBadEffKaifukuKouka
 0x003C0B20	cmpMenuShutdown2	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; string ' jmsMenuShutdown() start\n'
 0x003C0B90	cmpCallGetProcessData33	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls dds3GetProcessData
 0x003C0D70	cmpGetMarkID	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD cmpMain.cmpGetMarkID score 2.6 flag I: calls2 next~ gap46/23 st1:gap r2-disagree:0x38e750
 0x003C0D98	cmpCallGetProcessData34	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls dds3GetProcessData
-0x003C0DD0	jmsCallGetProcessData7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour jmsSetFocus; calls dds3GetProcessData
+0x003C0DD0	jmsStart	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsStart (jmsMenu.c): starts the menu, sets select unless bit 5; replaces jmsCallGetProcessData7
 0x003C0E20	jmsSetFocus	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMenu.jmsSetFocus score 9.9 flag I: calls2 prev calls-of-match votes2 st1:call r1+r2
 0x003C0E58	ProcessStart_jmsMenu	hd	hd: Raidou HD jmsMenu.ProcessStart, score 13.5 band A
 0x003C0E88	jmsCallGetProcessData8	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour jmsSetFocus; calls dds3GetProcessData
@@ -11856,7 +11856,7 @@
 0x003C4F88	rstCheckFlag	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstCheckFlag score 7.3 flag I: calls2 prev edge st1:edge r1+r2
 0x003C4FF0	rstResultStart	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstResultStart score 8.0 flag I: calls2 prev gap4/5 st1:gap r1+r2
 0x003C5038	rstResultFadeCheck	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD rstInit.rstResultFadeCheck score 6.5 flag I: calls1 prev gap3/4 st1:gap r1+r2
-0x003C5078	rstCallGetProcessData36	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstResultFadeCheck; calls dds3GetProcessData
+0x003C5078	rstGetPlayerUnit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstGetPlayerUnit (rstInit.c): the player data in the rstInit process work, or NULL without the process; replaces rstCallGetProcessData36
 0x003C50A8	rstGetGiftItem	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstGetGiftItem score 7.8 flag I: calls1 prev~ next gap1/2 st1:gap r1+r2
 0x003C50F8	rstGetGiftItemNums	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD rstInit.rstGetGiftItemNums score 6.8 flag I: calls1 next gap3/4 st1:gap r1+r2
 0x003C5148	rstCheckRankUp	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstCheckRankUp score 8.1 flag I: calls2 calls-of-match-uniq votes2 st1:call r1+r2

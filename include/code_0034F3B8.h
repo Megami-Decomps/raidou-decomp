@@ -26,19 +26,30 @@ extern dds3ProcessID_t *g_mainPID3;
 /* Partial layouts of process work read through dds3GetProcessData. */
 typedef struct jmsInputPanelWork_t {
     struct sdfMemHandle_t *hMem;
-    u8 unk04[4];
+    dds3ProcessID_t *menuPID;
     dds3ProcessID_t *drawPID;
+#ifdef VERSION_RAIDOU2
+    struct sprHandle_t *hSpr; /* 0x0C */
+    u8 unk10[4];
+    s32 flags; /* 0x14 */
+    u8 unk18[4];
+    s32 unk1C;
+#else
     u8 unk0C[4];
     u8 step;
     u8 flags;
     u16 count;
     s32 unk14;
+#endif
 } jmsInputPanelWork_t;
 
 typedef struct rstMainWork_t {
     u8 unk00[4];
     dds3ProcessID_t *giftMsgPID;
-    u8 unk08[0x18];
+    u8 unk08[0x10];
+    u8 step; /* 0x18 */
+    u8 unk19[5];
+    u16 count; /* 0x1E */
     u32 flags;
 } rstMainWork_t;
 
@@ -49,6 +60,7 @@ extern const char campUpdateProcName[];
 
 void rstSetReward(const rstWork_t *pReward);
 void Release_jmsMenu(jmsInputPanelWork_t *pWork);
+void jmsSetFocus(s8 a_bFocus);
 
 /* Partial layout of the process work that rstCallKillProcess releases. */
 typedef struct rstProcWork_t {

@@ -4,7 +4,7 @@
 #include "common.h"
 #include "kernel.h"
 
-dds3ProcessFunc_t DrawProcess_jmsMenu(dds3ProcessID_t *PID);
+dds3ProcessFunc_t CheckProcEnd(dds3ProcessID_t *PID);
 void ProcessStart_jmsMenu(void);
 
 #endif

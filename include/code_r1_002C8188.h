@@ -25,6 +25,7 @@ u32 effDestroyResourceSlotSet(struct sprHandle_t *owner);
 void effReleaseTextureHandlesAndResetSlots(struct sprHandle_t *set);
 
 struct effMappedResource_t;
+s32 effDestroyPackedBatch(struct effMappedResource_t *batch);
 
 u32 effConfigureIndexedSlotMaterial(struct sprHandle_t *work, s32 index,
                                     struct effMappedResource_t *data, s32 item,

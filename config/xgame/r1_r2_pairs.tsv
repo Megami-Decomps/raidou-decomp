@@ -8815,9 +8815,10 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0034F1F8	0x003BF120	jmsLeaf28	yes	yes	src/raidou1/code_0034F068.c	src/raidou2/code_003BEF90.c	unique-reloc-hash
 0x0034F210	0x003BF138	jmsFunc48	no	yes	src/raidou1/code_0034F068.c	src/raidou2/code_003BEF90.c	unique-reloc-hash
 0x0034F458	0x003C00E8	CheckFlagTGS	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-masked-hash
-0x0034F4A0	0x003C0130	SetRootMenu	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	size
+0x0034F4A0	0x003C01C8	SetRootMenu	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	same-name
+0x0034F5E0	0x003C0130	SetFlagMenu	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	same-name
 0x0034FC20	0x003C0820	CallProcEnd	no	yes	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	masked-hash-in-gap
-0x0034FC38	0x003C0838	DrawProcess_jmsMenu	no	yes	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-reloc-hash
+0x0034FC38	0x003C0838	CheckProcEnd	no	yes	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-reloc-hash
 0x00350228	0x003C0E20	jmsSetFocus	no	yes	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-reloc-hash
 0x00350260	0x003C0E58	ProcessStart_jmsMenu	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	size
 0x003503D8	0x003C1058	ProcessCheck_jmsMenu	no	yes	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	masked-hash-in-gap
@@ -8850,7 +8851,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00351E90	0x003C4F88	rstCheckFlag	no	yes	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-reloc-hash
 0x00351EF8	0x003C4FF0	rstResultStart	no	yes	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-reloc-hash
 0x00351F40	0x003C5038	rstResultFadeCheck	no	yes	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-reloc-hash
-0x00351F80	0x003C5078	rstCallGetProcessData36	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-masked-hash
+0x00351F80	0x003C5078	rstGetPlayerUnit	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-masked-hash
 0x00351FB0	0x003C50A8	rstGetGiftItem	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	run-order-near
 0x00351FF8	0x003C50F8	rstGetGiftItemNums	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	run-order-near
 0x00352040	0x003C5148	rstCheckRankUp	no	no	asm/raidou1/code_0034F3B8.s	asm/raidou2/code_003BF2E0.s	unique-masked-hash

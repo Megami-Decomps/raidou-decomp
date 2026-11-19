@@ -5460,7 +5460,6 @@
 0x003511B0	rstCallMemAllocDirect	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstCheckTaiitsu; calls sdfMemAllocDirect
 0x00351700	rstResultDraw	func	tier=D	derived-string	na	unit code_0034F3B8, neighbour rstCheckTaiitsu; string 'result_draw'
 0x00351C20	rstResultLoadWaitProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstInit.rstResultLoadWaitProcess, score 14.15 band A
-0x00351F80	rstCallGetProcessData36	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstResultFadeCheck; calls dds3GetProcessData
 0x00352070	rstCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstResult.rstCalcProcess, score 10.85 band A
 0x003521D0	rstCallGetProcessData3	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstCallLoadMapResourceFunc; calls dds3GetProcessData
 0x00352678	rstCallGetProcessData37	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstDrawProcess; calls dds3GetProcessData
@@ -19599,9 +19598,11 @@
 0x0034A9B8	MahjanDestroy	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsMain.MahjanDestroy score 2.8 flag -: prev~ next gap1/1 st2:gap r2-only
 0x0034A9C0	MahjanCalcProcess	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD jmsMain.MahjanCalcProcess score 6.9 flag -: calls9 callers-of-match votes5 st1:call r2-disagree:0x3b9280
 0x0034F5E0	SetFlagMenu	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD jmsMenu.SetFlagMenu score 6.3 flag -: calls3 calls-of-match votes2 st1:call r2-disagree:0x3c0130
+0x0034FC38	CheckProcEnd	func	tier=B	hd-role	na	HD CheckProcEnd (jmsMenu.c): 1 while the menu process runs, else clears menuPID; replaces DrawProcess_jmsMenu
 0x003501D0	jmsStart	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD jmsMenu.jmsStart score 6.0 flag I: calls3 calls-of-match-uniq votes3 st1:call r2-disagree:0x3c0dd0
 0x00350A10	cmpStartProcessPanelEff	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x23f860 sim 0.914 margin 0.13 pair
 0x00351F40	rstResultFadeCheck	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD rstInit.rstResultFadeCheck score 6.5 flag I: calls1 prev gap3/4 st1:gap r1+r2
+0x00351F80	rstGetPlayerUnit	func	tier=B	hd-role	na	HD rstGetPlayerUnit (rstInit.c): the player data in the rstInit process work, or NULL without the process; replaces rstCallGetProcessData36
 0x00351FF8	rstGetGiftItemNums	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD rstInit.rstGetGiftItemNums score 6.8 flag I: calls1 next gap3/4 st1:gap r1+r2
 0x003540D0	rstResultNakamaLevel	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD rstResultDraw.rstResultNakamaLevel score 5.2 flag I: calls3 prev callers-of-match votes5 st1:call r2-disagree:0x3c7e60
 0x003559C8	rstGetGiftMsgPID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD rstGrowth.rstGetGiftMsgPID score 6.1 flag I: calls1 next gap1/4 st1:gap r1+r2

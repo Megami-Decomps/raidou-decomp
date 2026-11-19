@@ -10261,7 +10261,7 @@
 0x0034F678	CheckCyousaFlag	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD jmsMenu.CheckCyousaFlag score 5.8 flag -: calls2 next calls-of-match st1:call r2-disagree:0x3c0410
 0x0034F780	SetCommand_jmsMenu	hd	method=hd-d-single-raidou1; p=0.71 (n=403); tier=C; source=hd; evidence=Raidou HD jmsMenu.SetCommand score 4.5 flag -: calls2 calls-of-match votes2 st1:call r2-disagree:0x3c0488
 0x0034FC20	CallProcEnd	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMenu.CallProcEnd score 7.8 flag -: prev gap=exact st1:gap r1+r2
-0x0034FC38	DrawProcess_jmsMenu	hd	hd: Raidou HD jmsMenu.DrawProcess, score 11.1 band A
+0x0034FC38	CheckProcEnd	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD CheckProcEnd (jmsMenu.c): 1 while the menu process runs, else clears menuPID; replaces DrawProcess_jmsMenu
 0x0034FC80	jmsCallGetProcessData4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour jmsStart; calls dds3GetProcessData
 0x0034FDE8	Release_jmsMenu	hd	method=hd-gap-single-raidou1; p=0.95 (n=418); tier=A; source=hd; evidence=Raidou HD jmsMenu.Release score 5.9 flag -: prev next gap=exact st1:gap r2-disagree:0x3c0ac8
 0x0034FE40	Shutdown	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD jmsMenu.Shutdown score 7.7 flag -: calls3 next gap=exact st1:gap r2-disagree:0x3c0b20
@@ -10310,7 +10310,7 @@
 0x00351E90	rstCheckFlag	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstCheckFlag score 7.3 flag I: calls2 prev edge st1:edge r1+r2
 0x00351EF8	rstResultStart	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstResultStart score 8.0 flag I: calls2 prev gap4/5 st1:gap r1+r2
 0x00351F40	rstResultFadeCheck	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD rstInit.rstResultFadeCheck score 6.5 flag I: calls1 prev gap3/4 st1:gap r1+r2
-0x00351F80	rstCallGetProcessData36	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstResultFadeCheck; calls dds3GetProcessData
+0x00351F80	rstGetPlayerUnit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstGetPlayerUnit (rstInit.c): the player data in the rstInit process work, or NULL without the process; replaces rstCallGetProcessData36
 0x00351FB0	rstGetGiftItem	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstGetGiftItem score 7.8 flag I: calls1 prev~ next gap1/2 st1:gap r1+r2
 0x00351FF8	rstGetGiftItemNums	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD rstInit.rstGetGiftItemNums score 6.8 flag I: calls1 next gap3/4 st1:gap r1+r2
 0x00352040	rstCheckRankUp	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstCheckRankUp score 8.1 flag I: calls2 calls-of-match-uniq votes2 st1:call r1+r2

@@ -8,6 +8,9 @@
 s32 SdfIopFileRpc(const char *aName, s32 aDataSize, const void *aData, s32 *aOutSize);
 sdfMemHandle_t *sdfMemAlloc2Direct(s32 aSize);
 sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
+#ifdef VERSION_RAIDOU2
+void *sdfCallMemAllocDirect(s32 aSize);
+#endif
 sdfMemHandle_t *sdfMemAllocFromTailDirect(s32 aSize);
 void sdfMemFreeDelayedDirect(sdfMemHandle_t *aHandle);
 void sdfMemFreeDirect(sdfMemHandle_t *aHandle);

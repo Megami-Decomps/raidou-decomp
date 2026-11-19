@@ -159,6 +159,16 @@ sbtlLeaf43	code_00309FE0	raidou2 0x60	4 of 24 words differ	docs/matching/code_00
 cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
 cmpCallGetProcessData6	code_00323280	raidou1 0x1AC	4 of 107 words differ	docs/matching/code_00323280.md	11		
 rstCallGetProcessData42	code_0034F3B8	raidou1 0x38		docs/matching/code_0034F3B8.md	3		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, the same form as fclCallGetProcessData. Tried: no read (tail j), an s32 return with no return statement (still j), a dds3ProcessFunc_t return (still j). Only a dead store or dummy use after the call remains, which is banned.
+evtFunc18	code_003648C0	raidou2 0x48	8 of 18 words differ	docs/matching/code_003648C0.md	3		
+evtCallGetSpriteHnd	code_003648C0	raidou2 0x74	22 of 29 words differ	docs/matching/code_003648C0.md	9		
+cmpChkDevilStockExist	code_003648C0	raidou2 0x58	19 of 19 words differ	docs/matching/code_003648C0.md	15		
+cmpGetBstNo	code_003648C0	raidou2 0x50	17 of 19 words differ	docs/matching/code_003648C0.md	21		
+cmpUpdateKeyWord	code_003648C0	raidou2 0x40	11 of 13 words differ	docs/matching/code_003648C0.md	27		
+CheckFlagTGS	code_003BF2E0	raidou2 0x48	9 of 17 words differ	docs/matching/code_003BF2E0.md	3		
+SetFlagMenu	code_003BF2E0	raidou2 0x98	14 of 38 words differ	docs/matching/code_003BF2E0.md	9		
+SetRootMenu	code_003BF2E0	raidou2 0x94	15 of 38 words differ	docs/matching/code_003BF2E0.md	15		
+jmsLeaf12	code_003BF2E0	raidou2 0x10	3 of 4 words differ	docs/matching/code_003BF2E0.md	21		
+jmsRefDDS3GBWK	code_003BF2E0	raidou2 0x7C	2 of 31 words differ	docs/matching/code_003BF2E0.md	27		
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
 dds3CallDLinkTexPacket	code_r1_00104370	raidou1 0x128, raidou2 0x128	37 of 73 words differ	docs/matching/code_r1_00104370.md	12		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		

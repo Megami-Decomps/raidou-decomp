@@ -22,6 +22,12 @@
 #include "cmpStatus.h"
 #include "newdata.h"
 #include "mdlManager.h"
+#include "cmpItem.h"
+#include "cmpBook.h"
+#include "EventBit.h"
+#include "effManager.h"
+#include "sdfChip.h"
+#include "sBtlSkill.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -342,7 +348,22 @@ s32 evtCreateLinkSub(CMP_SPR a_no) {
     return cmpLinkMotFunc[mot]();
 }
 
+/* NON_MATCHING: 10 of 18 words match.  */
+#ifdef NON_MATCHING
+u8 evtFunc18(s32 a_no) {
+    effMappedResource_t **res = &evtWork[a_no];
+    u8 ret = 0;
+
+    if (*res != NULL) {
+        effDestroyPackedBatch(*res);
+        ret = 1;
+        *res = NULL;
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", evtFunc18);
+#endif
 
 s32 evtFunc19(CMP_SPR a_no)
 {
@@ -358,9 +379,28 @@ s32 evtFunc19(CMP_SPR a_no)
     return evtFunc18(mot);
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", evtCallGetSpriteHnd);
+/* NON_MATCHING: 7 of 29 words match.  */
+#ifdef NON_MATCHING
+s32 evtCallGetSpriteHnd(CMP_SPR a_no, s32 a_index) {
+    sprHandle_t *hSpr;
+    s32 ret = 0;
 
-INCLUDE_ASM(const s32, "code_003648C0", evtFunc20);
+    if ((u32)a_no < CMP_SPR_NUM && a_index >= 0) {
+        hSpr = cmpGetSpriteHnd(a_no);
+        hSpr->workEntries[a_index].states[0].flags &= ~1;
+        effInitializeSlotWork(hSpr, a_index);
+        return 1;
+    }
+    return ret;
+}
+#else
+INCLUDE_ASM(const s32, "code_003648C0", evtCallGetSpriteHnd);
+#endif
+
+s32 evtFunc20(void) {
+    evtCallGetSpriteHnd(CMP_SPR_COMMON, 142);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", evtStartTerminalMenuMessage);
 
@@ -432,15 +472,65 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCallDevLoadFileEx);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGrAllocPacketBuff3);
 
+/* NON_MATCHING: 3 of 22 words match.  */
+#ifdef NON_MATCHING
+s32 cmpChkDevilStockExist(s32 a_stockID) {
+    sdatUnitWork_t *unit;
+    s32 ret = 0;
+
+    if ((u32)a_stockID < CMP_STOCK_NUM) {
+        unit = &DDS3_GBWK->playerData.stock[a_stockID];
+        if (unit->flag & 1) {
+            ret = unit->devilId != 0;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpChkDevilStockExist);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpDelDevilStock);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpGetDevilStockDevilID);
+s32 cmpGetDevilStockDevilID(s32 a_stockID) {
+    if (cmpChkDevilStockExist(a_stockID)) {
+        return DDS3_GBWK->playerData.stock[a_stockID].devilId;
+    }
+    return -1;
+}
 
+/* NON_MATCHING: 3 of 20 words match.  */
+#ifdef NON_MATCHING
+BST cmpGetBstNo(BSTF a_bst) {
+    BST ret = BST_BOYCOTT;
+
+    if (a_bst & BSTF_KANSEN) {
+        ret = BST_KANSEN;
+    } else if (a_bst & BSTF_BOYCOTT) {
+        ret = BST_UNK19;
+    } else {
+        if (a_bst & BSTF_STONE) {
+            ret = BST_STONE;
+        }
+        if (a_bst & BSTF_MOUDOKU) {
+            ret = BST_MOUDOKU;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpGetBstNo);
+#endif
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateBulletNum);
+void cmpUpdateBulletNum(void) {
+    s32 bulletno = DDS3_GBWK->playerData.bulletno;
+
+    if (bulletno > 0) {
+        DDS3_GBWK->playerData.hgunnum = DDS3_GBWK->playerData.item[bulletno];
+    } else {
+        DDS3_GBWK->playerData.hgunnum = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpPartyDrawFunc);
 
@@ -548,7 +638,16 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpDrawBstEff);
 
 INCLUDE_ASM(const s32, "code_003648C0", Init_cmpModel);
 
-INCLUDE_ASM(const s32, "code_003648C0", End_cmpModel);
+void End_cmpModel(void) {
+    cmpWaitLoadModel();
+    cmpFreeResource();
+    cmpDeleteBstEff();
+    cmpDeleteEffect();
+    if (cmpData18 != NULL) {
+        sdfChipFreeDirect(cmpData18);
+        cmpData18 = NULL;
+    }
+}
 
 s32 cmpFreeResource(void) {
     if (cmpGetFlagScreenShot()) {
@@ -567,7 +666,15 @@ INCLUDE_ASM(const s32, "code_003648C0", Setup_cmpModel);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpLoadStatusModel);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpWaitLoadModel);
+s32 cmpWaitLoadModel(void) {
+    if (cmpLoadStatusModel() == 1) {
+        cmpCallPrepare(cmpData11, cmpData12, 1);
+        if (cmpLoadStatusModel() != 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetModelMotion);
 
@@ -639,7 +746,17 @@ INCLUDE_ASM(const s32, "code_003648C0", ModelLoadBuffEnd);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCampEFFTES);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpDeleteEffect);
+void cmpDeleteEffect(void) {
+    if (fldTitleMiniTex5 != NULL) {
+        dds3EffectDelete(fldTitleMiniTex5);
+        fldTitleMiniTex5 = NULL;
+    }
+    if (fldTitleMiniWork5 != NULL) {
+        sdfMemFreeDirect(fldTitleMiniWork5);
+        fldTitleMiniWork5 = NULL;
+        cmpCampEFFTESData = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpEffectSetRGBA);
 
@@ -839,7 +956,23 @@ INCLUDE_ASM(const s32, "code_003648C0", sbtlCallSprintf);
 
 INCLUDE_ASM(const s32, "code_003648C0", sbtlFunc7);
 
-INCLUDE_ASM(const s32, "code_003648C0", sbtlChkRepeat);
+s32 sbtlChkRepeat(SKLID a_sklId) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(a_sklId);
+
+    if (tbl == NULL) {
+        return -1;
+    }
+    if (tbl->type & 0x1000) {
+        return 66;
+    }
+    if (tbl->type & 0x2000) {
+        return 65;
+    }
+    if (sbtlCallBtlGetSkilltbl15(a_sklId)) {
+        return 64;
+    }
+    return 67;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", sbtlDrawSkillNameExSub);
 
@@ -865,7 +998,14 @@ INCLUDE_ASM(const s32, "code_003648C0", Start_cmpStatus);
 
 INCLUDE_ASM(const s32, "code_003648C0", End);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpChkEnd);
+s32 cmpChkEnd(void) {
+    cmpStatusWork_t *wk = dds3GetProcessData(g_mainPID);
+
+    if (wk->step2 == 5) {
+        return wk->step == 7;
+    }
+    return wk->step == 9;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetProcessData13);
 
@@ -883,7 +1023,17 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpSetRecover);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetFlagDraw);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpChkDraw);
+s32 cmpChkDraw(void) {
+    cmpStatusWork_t *wk;
+
+    if (g_mainPID != NULL && dds3ExistProcess(g_mainPID)) {
+        wk = dds3GetProcessData(g_mainPID);
+        if (wk->flags & 0x100) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetProcessData35);
 
@@ -1117,7 +1267,14 @@ INCLUDE_ASM(const s32, "code_003648C0", mapCallGetStockPID);
 
 INCLUDE_ASM(const s32, "code_003648C0", mapMenuCreateMenuPID_itf);
 
-INCLUDE_ASM(const s32, "code_003648C0", mapSetupCmpKudaSub);
+void mapSetupCmpKudaSub(void) {
+    sdatUnitWork_t *unit = NULL;
+
+    if (cmpData41 >= 0) {
+        unit = cmpRefDDS3GBWK2(cmpData41);
+    }
+    cmpSetFilterEx(unit, ecmpKudaSelectMode_ecmpKSM_Target, ecmpKudaCMU_Devil, ecmpKudaCMU_Devil);
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", nmeDrawBox);
 
@@ -1214,7 +1371,12 @@ INCLUDE_ASM(const s32, "code_003648C0", MakeList);
 
 INCLUDE_ASM(const s32, "code_003648C0", Setup_cmpItem);
 
-INCLUDE_ASM(const s32, "code_003648C0", FreeSpriteHnd);
+void FreeSpriteHnd(void) {
+    if (cmpPanelEffList3 != NULL) {
+        cmpFreeSpriteHnd(CMP_SPR_STATUS);
+        cmpPanelEffList3 = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", sbtlSetItemScript);
 
@@ -1241,11 +1403,24 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpFreeScript);
 void cmpStart(void) {
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", End_cmpItem);
+void End_cmpItem(void) {
+    FreeSpriteHnd();
+    if (hWorkArea3 != NULL) {
+        dds3KillProcess(hWorkArea3, 0);
+        hWorkArea3 = NULL;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpChkMessageDraw);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpGetItemIDFromSortNo);
+s32 cmpGetItemIDFromSortNo(s32 a_sortNo) {
+    s32 id = -1;
+
+    if ((u32)a_sortNo < 443) {
+        id = cmpData30[a_sortNo];
+    }
+    return id;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", fldCommand_FLD_WARP_RUN_START);
 
@@ -1257,7 +1432,23 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCallMakeCateChk);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallMenuGetWaitType);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallMenuGetWaitType2);
+/* NON_MATCHING: 5 of 16 words match.  */
+#ifdef NON_MATCHING
+s32 cmpUpdateKeyWord(void) {
+    s32 ret = 0;
+
+    if (cmpData46 == 0) {
+        if (itfMenuGetWaitType(cmpCallGetCharPIDData3) == ITFMENU_WAIT_TYPE_CANCEL) {
+            ret = 1;
+        } else {
+            ret = 0;
+        }
+    }
+    return ret;
+}
+#else
+INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateKeyWord);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallMenuGetWaitType3);
 
@@ -1277,7 +1468,12 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpFunc);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallSetIntReturnValue);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallBitCheck);
+s32 cmpCallBitCheck(s32 a_no) {
+    if ((u32)a_no < 64 && evtBitCheck(cmpCallBitCheckData[a_no])) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpReadFlgChk);
 

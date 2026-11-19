@@ -37,6 +37,6 @@ void cmpSetPosLimit(s8 a_bool);
 void cmpSetSmoothLoopMotion(s32 a_motNo, f32 a_beforeLeng, f32 a_smoothLeng);
 void cmpSetStatusModelParam(void);
 void cmpSetViewerLimit(s8 a_bool);
-void cmpWaitLoadModel(void);
+s32 cmpWaitLoadModel(void);
 
 #endif

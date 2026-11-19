@@ -134,6 +134,16 @@ typedef union {
     u8 bytes[2];
 } dds3NameChar_t;
 
+#ifdef VERSION_RAIDOU2
+typedef struct jmsMemsetWork_t {
+    /* 0x00 */ u8 unk00;
+    /* 0x04 */ s32 unk04;
+    /* 0x08 */ s32 unk08;
+    /* 0x0C */ s32 unk0C;
+    /* 0x10 */ u8 pad10[0x40];
+} jmsMemsetWork_t;
+#endif
+
 /* A 24x24 4-bit name glyph. */
 typedef struct {
     u8 pixel[0x120];
@@ -304,7 +314,9 @@ typedef struct
     /* 0xD1E1 */ u8 unkD1E1[0x3];
     /* 0xD1E4 */ u16 unkD1E4;
     /* 0xD1E6 */ u16 unkD1E6;
-    /* 0xD1E8 */ u8 unkD1E8[0x198];
+    /* 0xD1E8 */ u8 unkD1E8[0x48];
+    /* 0xD230 */ jmsMemsetWork_t unkD230;
+    /* 0xD280 */ u8 unkD280[0x100];
 #endif
 } dds3GlobalWork_t;
 #ifdef VERSION_RAIDOU1

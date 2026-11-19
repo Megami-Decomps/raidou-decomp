@@ -37,7 +37,7 @@ INCLUDE_ASM(const s32, "code_0034F3B8", SetCommand_jmsMenu);
 
 INCLUDE_ASM(const s32, "code_0034F3B8", CallProcEnd);
 
-INCLUDE_ASM(const s32, "code_0034F3B8", DrawProcess_jmsMenu);
+INCLUDE_ASM(const s32, "code_0034F3B8", CheckProcEnd);
 
 INCLUDE_ASM(const s32, "code_0034F3B8", jmsCallGetProcessData4);
 
@@ -214,7 +214,7 @@ INCLUDE_ASM(const s32, "code_0034F3B8", rstResultStart);
 
 INCLUDE_ASM(const s32, "code_0034F3B8", rstResultFadeCheck);
 
-INCLUDE_ASM(const s32, "code_0034F3B8", rstCallGetProcessData36);
+INCLUDE_ASM(const s32, "code_0034F3B8", rstGetPlayerUnit);
 
 INCLUDE_ASM(const s32, "code_0034F3B8", rstGetGiftItem);
 
