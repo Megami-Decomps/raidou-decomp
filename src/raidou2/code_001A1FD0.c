@@ -356,15 +356,15 @@ s32 itfCallLoadIconSprite2(void)
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfFunc5);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfLeaf21);
+INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverAppear00);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfLeaf22);
+INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverAppear01);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfLeaf23);
+INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverAppear02);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallMoverInit);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfLeaf24);
+INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverAppear04);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverAppear);
 

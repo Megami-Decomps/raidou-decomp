@@ -2791,11 +2791,11 @@
 0x001A3DD8	itfLeaf20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
 0x001A3E00	itfCallLoadIconSprite2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfIconDrawBullet; calls itfLoadIconSprite
 0x001A3E28	itfFunc5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
-0x001A3E48	itfLeaf21	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
-0x001A3E78	itfLeaf22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
-0x001A3EA8	itfLeaf23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
+0x001A3E48	MenuSetMoverAppear00	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD itf.MenuSetMoverAppear00(mover, no, x, y, w, h): itfMoverSetParam(mover, x, y + h*no, x, y + h*no, 10); first of the five appear movers before MenuSetMoverAppear and MenuSetMoverDisappear00..03 as in HD; replaces itfLeaf21
+0x001A3E78	MenuSetMoverAppear01	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD itf.MenuSetMoverAppear01: itfMoverSetParam(mover, x, y, x, y + h*no, 10); after Appear00 as in HD; replaces itfLeaf22
+0x001A3EA8	MenuSetMoverAppear02	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD itf.MenuSetMoverAppear02: start x = -w - ((w + x) / 10 * no * 3), frames 3*no + 10; after Appear01 as in HD; replaces itfLeaf23
 0x001A3F28	itfCallMoverInit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfIconDrawBullet; calls itfMoverInit
-0x001A3FA8	itfLeaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfMenuLinkPrintf; no named callee, caller or string
+0x001A3FA8	MenuSetMoverAppear04	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD itf.MenuSetMoverAppear04: itfMoverSetParam(mover, x, h*no + 448, x, h*no + y, 10); after Appear03 (here itfCallMoverInit) as in HD; replaces itfLeaf24
 0x001A3FD8	MenuSetMoverAppear	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD itf.MenuSetMoverAppear score 3.0 flag -: calls2 gap55/17 votes3 st2:gap r1-disagree:0x18ec68
 0x001A4228	MenuSetMoverDisappear00	hd	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD itf.MenuSetMoverDisappear00 score 5.7 flag -: prev gap=exact st1:gap r1+r2
 0x001A4280	MenuSetMoverDisappear01	hd	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD itf.MenuSetMoverDisappear01 score 6.7 flag -: prev gap=exact st1:gap r1+r2

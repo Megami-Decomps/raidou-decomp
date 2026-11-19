@@ -857,11 +857,7 @@
 0x0018EA68	itfLeaf20	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
 0x0018EA90	itfCallLoadIconSprite2	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfIconDrawBullet; calls itfLoadIconSprite
 0x0018EAB8	itfFunc5	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
-0x0018EAD8	itfLeaf21	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
-0x0018EB08	itfLeaf22	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
-0x0018EB38	itfLeaf23	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
 0x0018EBB8	itfCallMoverInit	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfIconDrawBullet; calls itfMoverInit
-0x0018EC38	itfLeaf24	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfMenuLinkPrintf; no named callee, caller or string
 0x0018EC68	itfCallMoverInit2	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfMenuLinkPrintf; calls itfMoverInit
 0x0018F700	itfMenuSetMenu	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMenuSetMenu, score 7.4 band B
 0x0018F798	itfMenuSetRootMenu	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMenuSetRootMenu, score 9.45 band B
@@ -17693,6 +17689,10 @@
 0x0018DCB0	itfDrawMiscGauge	func	tier=C	derived-derived-role	na	Raidou HD itf.itfDrawMiscGauge(x, y, z, w, h, num, max, color, u8 alpha): same nine arguments (alpha on the stack), skips when num <= 0; itfCallSetOt3 (HD itfDrawMiscGauge2, mode first) draws a box by mode and tail-calls it with its other arguments; after itfDrawMiscHelp as in HD; replaces itfLeaf15
 0x0018E500	itfSwapRGBA	func	tier=C	derived-derived-role	na	Raidou HD itf.itfSwapRGBA: byte-swaps a u32 colour; between itfGetFigureNum and itfCalcSpriteWidth as in HD; replaces itfLeaf16
 0x0018EA18	itfIconDrawBullet	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfIconDrawBullet score 4.0 flag I: calls1 prev calls-of-match votes2 st2:call r2-only
+0x0018EAD8	MenuSetMoverAppear00	func	tier=C	derived-derived-role	na	Raidou HD itf.MenuSetMoverAppear00(mover, no, x, y, w, h): itfMoverSetParam(mover, x, y + h*no, x, y + h*no, 10); first of the five appear movers before MenuSetMoverAppear and MenuSetMoverDisappear00..03 as in HD; replaces itfLeaf21
+0x0018EB08	MenuSetMoverAppear01	func	tier=C	derived-derived-role	na	Raidou HD itf.MenuSetMoverAppear01: itfMoverSetParam(mover, x, y, x, y + h*no, 10); after Appear00 as in HD; replaces itfLeaf22
+0x0018EB38	MenuSetMoverAppear02	func	tier=C	derived-derived-role	na	Raidou HD itf.MenuSetMoverAppear02: start x = -w - ((w + x) / 10 * no * 3), frames 3*no + 10; after Appear01 as in HD; replaces itfLeaf23
+0x0018EC38	MenuSetMoverAppear04	func	tier=C	derived-derived-role	na	Raidou HD itf.MenuSetMoverAppear04: itfMoverSetParam(mover, x, h*no + 448, x, h*no + y, 10); after Appear03 (here itfCallMoverInit) as in HD; replaces itfLeaf24
 0x0018F1F8	MenuUpdateMover	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD itf.MenuUpdateMover score 4.8 flag -: calls2 callers-of-match votes2 st1:call r2-disagree:0x1a4688
 0x0018F320	itfMenuLinkPrintf	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD itf.itfMenuLinkPrintf score 2.0 flag I: calls1 next gap58/21 st1:gap r2-disagree:0x1a4810
 0x0018F650	_MenuSetMenu	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD itf._MenuSetMenu score 5.2 flag -: prev next~ gap1/1 st1:gap r1+r2

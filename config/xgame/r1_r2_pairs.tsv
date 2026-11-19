@@ -2321,11 +2321,11 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0018EA68	0x001A3DD8	itfLeaf20	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018EA90	0x001A3E00	itfCallLoadIconSprite2	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	masked-hash-in-gap
 0x0018EAB8	0x001A3E28	itfFunc5	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	masked-hash-in-gap
-0x0018EAD8	0x001A3E48	itfLeaf21	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
-0x0018EB08	0x001A3E78	itfLeaf22	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
-0x0018EB38	0x001A3EA8	itfLeaf23	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018EAD8	0x001A3E48	MenuSetMoverAppear00	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018EB08	0x001A3E78	MenuSetMoverAppear01	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018EB38	0x001A3EA8	MenuSetMoverAppear02	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018EBB8	0x001A3F28	itfCallMoverInit	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
-0x0018EC38	0x001A3FA8	itfLeaf24	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018EC38	0x001A3FA8	MenuSetMoverAppear04	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018EE10	0x001A4228	MenuSetMoverDisappear00	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018EE68	0x001A4280	MenuSetMoverDisappear01	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018EEC8	0x001A42E0	MenuSetMoverDisappear02	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
