@@ -235,6 +235,9 @@ s32 sbtlCheckYukaDamageEffect(struct SBTLUNIT_WORK *wk, SKLID skillid, u16 type,
 s32 sbtlCallBtlGetDevilDataSBtlSub4(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlLoadAttackHitData(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetMotionVisualData2(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCheckLoopMotion(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
+#endif
 s32 sbtlCheckMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
 s32 sbtlCheckTateSkillSelectTarget(struct SBTLUNIT_WORK *wk);
 s32 sbtlClearUnitList(struct SBTLUNIT_LISTWORK *wk);
@@ -295,7 +298,8 @@ struct SBTLUNIT_WORK {
     sdfVector4_t mv_spdbk;
     sdfVector4_t pos;
     sdfVector4_t rot;
-    u8 pad090[0xE0];
+    u8 pad090[0x70];
+    mapLightParam_t light;
     SBTLSOUND_DEVILWORK se;
     u8 pad170[0x1D4 - 0x170 - sizeof(SBTLSOUND_DEVILWORK)];
     struct sdfMemHandle_t *handle;
@@ -324,9 +328,13 @@ struct SBTLUNIT_WORK {
     s32 cmpfade;
     u32 color;
     u32 chgcolor;
-    u8 pad4E8[0x14];
+    u32 dstcolor;
+    s32 fadergb;
+    u32 field3D4;
+    u8 pad4F4[0x8];
     s32 next_motionno;
-    u8 pad500[0x8];
+    s32 next_motionID;
+    u8 pad504[0x4];
     struct dds3Basic_t *pBasic;
     struct evtUnit_t *hEveUnit;
     struct mdlObj_t *hModel;
@@ -367,7 +375,9 @@ struct SBTLUNIT_WORK {
     s16 field498;
     u8 pad5C6[0x8];
     s16 field4A2;
-    u8 pad5D0[0x634 - 0x5D0];
+    u8 pad5D0[0x630 - 0x5D0];
+    s8 light_buff[3];
+    s8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;
     u8 pad688[0x6C0 - 0x688];
     s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */

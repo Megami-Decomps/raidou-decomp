@@ -295,7 +295,30 @@ void CallEvent(DDS3_ADMINI_CALL flg, s32 *data)
     evtStartEvent(eventNo);
 }
 #else
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallEvent);
+void CallEvent(DDS3_ADMINI_CALL flg, s32 *data)
+{
+    s32 eventNo;
+
+    dds3CallEventSub(0);
+    eventNo = 0;
+    switch (flg) {
+    case DDS3_ADMINI_CALL_NEW:
+        eventNo = *data;
+        break;
+    case DDS3_ADMINI_CALL_RESTORE:
+        eventNo = evtPendingEventSelection;
+        break;
+    }
+    if (eventNo <= 0) {
+        return;
+    }
+    if (eventNo < 100) {
+        fldCallElvReset2(eventNo);
+        return;
+    }
+    evtInitSky();
+    evtStartEvent(eventNo);
+}
 #endif
 
 #ifdef VERSION_RAIDOU1

@@ -499,13 +499,53 @@ INCLUDE_ASM(const s32, "code_001A1FD0", MenuGetSelectMenu);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuMakeLink);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", MenuUpdateSelectMenu);
+INCLUDE_ASM(const s32, "code_001A1FD0", MenuUpdateLinkMover);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallMenuGetSelectMenu);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallMenuGetSelectMenu2);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", MenuUpdatePrevLink);
+void MenuUpdatePrevLink(Menu_t *wk)
+{
+    MenuCB_tag *parent;
+    MenuCB_tag *cb;
+    s32 h;
+
+    wk->selMax = 0;
+    for (cb = wk->pHead; cb != NULL; cb = cb->pNext) {
+        if (!(cb->lflag & 1)) {
+            continue;
+        }
+        cb->hierarchy = -1;
+        cb->lflag &= ~2;
+        cb->pParent = NULL;
+        cb->no = -1;
+        if (cb->parentId == -1) {
+            cb->hierarchy = 0;
+            cb->no = wk->selMax;
+            wk->selMax++;
+        } else if (cb->id == cb->parentId) {
+            cb->no = -1;
+            cb->hierarchy = 0;
+        }
+    }
+    for (h = 1; h < 4; h++) {
+        for (parent = wk->pHead; parent != NULL; parent = parent->pNext) {
+            if (!(parent->lflag & 1) || parent->hierarchy != h - 1) {
+                continue;
+            }
+            for (cb = wk->pHead; cb != NULL; cb = cb->pNext) {
+                if ((cb->lflag & 1) && cb->parentId == parent->id) {
+                    cb->hierarchy = h;
+                    cb->pParent = parent;
+                    parent->lflag |= 2;
+                }
+            }
+        }
+    }
+    MenuUpdateLinkMover(wk);
+    wk->lflag |= 0x10;
+}
 
 void itfMenuSetOt(dds3ProcessID_t *PID)
 {

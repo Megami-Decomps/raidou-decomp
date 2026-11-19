@@ -745,7 +745,23 @@ void mapSetSceneParam(fldSceneParam_t *param, s32 field, s32 floor, s32 point) {
     fldGlobalBase.focusZ = 0.0f;
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00128378", mapSetSceneParam);
+void mapSetSceneParam(fldSceneParam_t *param, s32 field, s32 floor, s32 point) {
+    param->FoceScript[0] = Process_WarpIdx[0];
+    param->loadField = field;
+    param->loadFloor = floor;
+    param->loadPoint = point;
+    param->loadMode = 0;
+    param->flag = 0;
+    fldRefTexLoadLast();
+    fldGlobalBase.cutIdx = 0;
+    fldGlobalBase.cutIdxPrev = 0;
+    fldGlobalBase.cutState = 0;
+    fldGlobalBase.playerSeTable = 0;
+    fldGlobalBase.hitMatterIndex = 0;
+    fldGlobalBase.focusX = 0.0f;
+    fldGlobalBase.focusY = 0.0f;
+    fldGlobalBase.focusZ = 0.0f;
+}
 #endif
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapSetSceneParam_BattleReturn);
@@ -836,7 +852,27 @@ s32 PlayerGetMdlLoadID(char *path) {
     return type;
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00128378", PlayerGetMdlLoadID);
+s32 PlayerGetMdlLoadID(char *path) {
+    s32 type = 0;
+
+    if (tipsProcessCheck()) {
+        fldGlobalBase.wordE0 = 1;
+        type = 8;
+    } else {
+        fldGlobalBase.wordE0 = 0;
+    }
+    if (path != NULL) {
+        switch (type) {
+        case 0:
+            sprintf(path, fldStrModelField000Lb);
+            break;
+        case 8:
+            sprintf(path, fldStrModelFieldNakedLb2);
+            break;
+        }
+    }
+    return type;
+}
 #endif
 
 void fldPlayerALoad(void) {
@@ -931,6 +967,12 @@ void fldCallMemFreeDelayedDirect2(void) {
     fldNakamaCashLoad_EndCheckData = 0;
 }
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "code_r1_00128378", fldStrModelField000Lb);
+
+INCLUDE_RODATA(const s32, "code_r1_00128378", fldStrModelFieldNakedLb2);
+
+#endif
 INCLUDE_ASM(const s32, "code_r1_00128378", fldNakamaCashLoad_Start);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldNakamaCashLoad_Resrc);

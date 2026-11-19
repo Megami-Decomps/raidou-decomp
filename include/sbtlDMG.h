@@ -292,6 +292,10 @@ void sbtlAnalyzeAisyo(struct SBTLUNIT_WORK *wk, s32 mode, sdfVector4_t *pos);
 SBTLDMG_LISTWORK *sbtlAnimListProc(void);
 s32 sbtlCHitFunc_ATTACK(struct SBTLUNIT_WORK *wk, struct SBTLEFF_WORK *ewk, struct SBTLDMG_HITWORK *twk, struct SBTLSKILL_TBL *tbl);
 s32 sbtlCalcVibe(void);
+#ifdef VERSION_RAIDOU2
+/* the aura value when wk has an aura whose kind is in kindFlg, else -1 */
+s32 sbtlIsAura(struct SBTLUNIT_WORK *wk, s32 kindFlg);
+#endif
 struct SBTLUNIT_WORK *sbtlCheckALLSkill(struct SBTLUNIT_WORK *wk, s32 mode);
 s32 sbtlCallColorSet3(void);
 s32 sbtlCheckDamageTarget_Skilltbl(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *ptbl, SKLID skillid, s32 flg);

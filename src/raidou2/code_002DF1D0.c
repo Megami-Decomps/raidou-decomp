@@ -119,7 +119,15 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSkilltbl23);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetDamageSub2);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetSkilltbl);
+struct SBTLSKILLP_TBL *sbtlGetSkilltbl(SKLID skillid)
+{
+    struct SBTLSKILLP_TBL *tbl = NULL;
+
+    if (sbtlCallBtlDrawRedGgData != NULL && (u32)skillid < 0x500) {
+        tbl = &sbtlCallBtlDrawRedGgData[skillid];
+    }
+    return tbl;
+}
 
 SBTLSKLVISUAL_TBL *sbtlGetSklVisualTbl(SKLID sklid)
 {

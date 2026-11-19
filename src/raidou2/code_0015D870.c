@@ -10,6 +10,7 @@
 #include "dds3KernelDraw.h"
 #include "sdfVu0.h"
 #include "fldProcess.h"
+#include "EventBit.h"
 
 INCLUDE_ASM(const s32, "code_0015D870", mapMapSetAreaRefresh);
 
@@ -99,7 +100,41 @@ void mapHitWorkCalcSetupSub(f32 *outx, f32 *outz, f32 x, f32 z) {
     *outz = (f32)(iz * 100) + mapData104;
 }
 
-INCLUDE_ASM(const s32, "code_0015D870", mapGetLight);
+s32 mapGetLight(f32 x, f32 z) {
+    s32 ix;
+    s32 iz;
+    s32 w;
+    s32 light;
+
+    if (mapData106 == NULL) {
+        return 0;
+    }
+    if (mapData108 == NULL) {
+        return 0;
+    }
+    fldSetPlayerTargetData(&ix, &iz, x, z);
+    if (iz < 0) {
+        iz = 0;
+    }
+    if (ix < 0) {
+        ix = 0;
+    }
+    w = mapData106->w;
+    if (ix >= w) {
+        ix = w - 1;
+    }
+    if (iz >= mapData106->h) {
+        iz = mapData106->h - 1;
+    }
+    light = mapData108[w * iz + ix].light;
+    if (light == 0xFF) {
+        return 0;
+    }
+    if (fldGlobalBase.amSBlock == 34 && fldGlobalBase.nameU == 0 && evtBitCheck(5682) && !evtBitCheck(5686)) {
+        light = 2;
+    }
+    return light;
+}
 
 INCLUDE_ASM(const s32, "code_0015D870", mapCallGetNowCutID);
 

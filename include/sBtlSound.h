@@ -23,6 +23,25 @@ typedef struct SBTLSOUND_SEENTRY {
 
 extern SBTLSOUND_SEENTRY sbtlWork[256];
 
+#ifdef VERSION_RAIDOU2
+/* Queued SE request, played later by the battle sound process. */
+typedef struct SBTLSOUND_SEQUEUE {
+    s32 active;
+    s32 type;
+    u32 seid;
+    s32 vol;
+} SBTLSOUND_SEQUEUE;
+
+extern SBTLSOUND_SEENTRY sbtlWork10[256];
+extern SBTLSOUND_SEQUEUE sbtlWork11[32];
+extern s32 sbtlCallBtlSEVolAngleCalcData;
+extern DVLFOOTSE_WORK sbtlDevilFootSEProcSubData2;
+extern DVLFOOTSE_WORK *sbtlDevilFootSEProcSubData3;
+
+void sbtlLeaf2(void);
+void sbtlLeaf3(u32 seid, s32 type, s32 vol);
+#endif
+
 struct SBTLEFF_PACLIST;
 struct SBTLUNIT_WORK;
 struct SBTLSOUND_FOOTWORK;

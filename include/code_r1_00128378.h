@@ -73,6 +73,9 @@ extern s32 fldNakamaCashLoad_EndCheckData;
 
 #ifdef VERSION_RAIDOU2
 void sbtlCountClear(void);
+s32 tipsProcessCheck(void);
+extern const char fldStrModelField000Lb[];
+extern const char fldStrModelFieldNakedLb2[];
 #endif
 s32 mapCallLoadCheckMidi(void);
 

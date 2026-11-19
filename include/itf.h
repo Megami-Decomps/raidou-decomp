@@ -269,6 +269,10 @@ void MenuCreateMenu(struct Menu_t *wk);
 s32 MenuDelMenuSub(struct Menu_t *wk, s32 a_id);
 void MenuDeleteMenu(struct Menu_t *wk, struct MenuCB_tag *cb);
 void cmpCallMenuDeleteMenu(struct Menu_t *wk);
+#ifdef VERSION_RAIDOU2
+/* raidou1 names this function cmpCallMenuDeleteMenu. */
+void MenuRelease(struct Menu_t *wk);
+#endif
 MenuCB_tag *MenuGetBlankMenu(Menu_t *wk);
 struct MenuCB_tag *MenuGetMenu(struct Menu_t *wk, s32 a_hierarchy, s32 a_no);
 void MenuInit_itf(struct Menu_t *wk);

@@ -51,5 +51,8 @@ void mdlCallMemGetInfo(void);
 dds3ModelResrc_t *mdlSearchResrc(s32 aMajor, s32 aMinor);
 void mdlUnRegist(s32 aMajor, s32 aMinor);
 void mdlInitManager(void);
+#ifdef VERSION_RAIDOU2
+extern const char mdlStrNoAvaiableMotion0[];
+#endif
 
 #endif

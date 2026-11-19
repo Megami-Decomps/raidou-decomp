@@ -17,6 +17,7 @@
 #include "sdk_libc.h"
 #include "mapData.h"
 #include "code_r1_002C8188.h"
+#include "itf.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -324,7 +325,18 @@ INCLUDE_ASM(const s32, "code_003648C0", evtFunc16);
 
 INCLUDE_ASM(const s32, "code_003648C0", evtFunc17);
 
-INCLUDE_ASM(const s32, "code_003648C0", evtCreateLinkSub);
+s32 evtCreateLinkSub(CMP_SPR a_no) {
+    s32 mot;
+
+    if (a_no >= CMP_SPR_NUM) {
+        return 0;
+    }
+    mot = evtData9[a_no];
+    if (mot < 0) {
+        return 0;
+    }
+    return cmpLinkMotFunc[mot]();
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", evtFunc18);
 
@@ -422,7 +434,13 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateBulletNum);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpPartyDrawFunc);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpStockListProcessStart);
+dds3ProcessID_t *cmpStockListProcessStart(void)
+{
+    dds3ProcessID_t *PID = itfMenuProcessStart();
+
+    cmpStockListMake(PID);
+    return PID;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpPartyList);
 
@@ -871,9 +889,32 @@ void Shutdown_cmpStatus(dds3ProcessID_t *id)
     g_mainPID = NULL;
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", ProcessStart_cmpStatus);
+dds3ProcessID_t *ProcessStart_cmpStatus(void)
+{
+    struct sdfMemHandle_t *hMem = sdfMemAllocDirect(sizeof(cmpStatusWork_t));
+    cmpStatusWork_t *wk = sdfMemGetPtr(hMem);
 
-INCLUDE_ASM(const s32, "code_003648C0", ProcessEnd_cmpStatus);
+    memset(wk, 0, sizeof(cmpStatusWork_t));
+    wk->hMem = hMem;
+    g_mainPID = dds3StartProcess(ProcessStart_cmpStatusStrCampStatusMain, 0x3EE, 0, 0, cmpCallGetProcessData11, (dds3ProcessFunc_t)Shutdown_cmpStatus, wk);
+    wk->drawPID = dds3StartProcess(ProcessStart_cmpStatusStrCampStatusDraw, 0x2B03, 0, 0, cmpCallGetProcessData12, NULL, wk);
+    cmpCallInitCmpModel(wk);
+    return g_mainPID;
+}
+
+void ProcessEnd_cmpStatus(void) {
+    cmpStatusWork_t *wk;
+
+    if (g_mainPID != NULL && dds3ExistProcess(g_mainPID)) {
+        wk = dds3GetProcessData(g_mainPID);
+        if (!(wk->flags & 1)) {
+            wk->flags |= 1;
+            wk->step2 = 3;
+            wk->count = 0;
+            wk->step = 0;
+        }
+    }
+}
 
 s32 ProcessCheck_cmpStatus(void) {
     if (g_mainPID == NULL) {

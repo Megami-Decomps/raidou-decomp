@@ -11,6 +11,8 @@
 #include "dds3KernelCore.h"
 #include "sBtlSkill.h"
 #include "sndAt3.h"
+#include "mdlManager.h"
+#include "AW_XAtkPad.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
@@ -75,7 +77,13 @@ void sbtlSummonDvTaskSub(SBTLSOUND_FOOTWORK *fwk)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", cmpCallMemFreeDirect);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDevilFootSEProcSub);
+DVLFOOTSE_WORK *sbtlDevilFootSEProcSub(s32 devilID)
+{
+    if (devilID == 156 || devilID == 363) {
+        return &sbtlDevilFootSEProcSubData2;
+    }
+    return &sbtlDevilFootSEProcSubData3[devilID];
+}
 
 void sbtlBtlLoadSkillSESub(s32 arg)
 {
@@ -287,7 +295,19 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBtlModelDataLoadSBtlUnitSub);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayDeadVoice);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRefSbtl7);
+void sbtlRefSbtl7(void)
+{
+    s32 i;
+
+    wk_sbtl->field878 = 1;
+    wk_sbtl->field879 = 1;
+    wk_sbtl->field87A = 0;
+    for (i = 0; i < 256; i++) {
+        sbtlWork10[i].count = 0x0FFFFFFF;
+        sbtlWork10[i].field04 = 4;
+    }
+    sbtlLeaf2();
+}
 
 void sbtlCallEffectShutdown3(s32 mode)
 {
@@ -301,9 +321,34 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlFunc10);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlENMY);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf2);
+void sbtlLeaf2(void)
+{
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf3);
+    for (i = 0; i < 32; i++) {
+        sbtlWork11[i].active = 0;
+        sbtlWork11[i].type = 0;
+        sbtlWork11[i].seid = 0;
+        sbtlWork11[i].vol = 127;
+    }
+    sbtlCallBtlSEVolAngleCalcData = 0;
+}
+
+void sbtlLeaf3(u32 seid, s32 type, s32 vol)
+{
+    SBTLSOUND_SEQUEUE *queue = sbtlWork11;
+    s32 i;
+
+    for (i = 0; i < 32; i++, queue++) {
+        if (queue->active == 0) {
+            queue->active = 1;
+            queue->type = type;
+            queue->seid = seid;
+            queue->vol = vol;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallBtlSEVolAngleCalc);
 
@@ -381,13 +426,44 @@ struct SBTLUNIT_LISTWORK *sbtlCreateUnitList(s32 number)
     return lwk;
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSearchUnit_ID);
+struct SBTLUNIT_WORK *sbtlSearchUnit_ID(struct SBTLUNIT_LISTWORK *lwk, s32 ID)
+{
+    if (ID < 0) {
+        return NULL;
+    }
+    if (wk_sbtl == NULL || wk_sbtl->unitList == NULL) {
+        return NULL;
+    }
+    if (ID >= lwk->number) {
+        return NULL;
+    }
+    return lwk->pUnitL[ID].pUnit;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSearchUnit_GroupID);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSearchUnit_Nakama);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlGetNumUnit_GroupID);
+s32 sbtlGetNumUnit_GroupID(struct SBTLUNIT_LISTWORK *lwk, s32 serialID)
+{
+    struct SBTLUNIT_WORK *wk;
+    s32 num = 0;
+    s32 i;
+
+    if (lwk == NULL) {
+        return 0;
+    }
+    for (i = 0; i < lwk->number; i++) {
+        wk = lwk->pUnitL[i].pUnit;
+        if (wk != NULL && !(wk->field414 & 0x18) && wk->GroupID == serialID) {
+            num++;
+        }
+        if (sbtlCheckDelWork_Request(wk_sbtl->effdelList, serialID)) {
+            num++;
+        }
+    }
+    return num;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlGetNumUnit_GroupID2);
 
@@ -482,7 +558,7 @@ s32 sbtlUseItemProcSBtlPlayerSub2(void)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf5);
 
-s32 sbtlResetColorSub(void)
+s32 sbtlResetColorSub(u32 color)
 {
     return 1;
 }
@@ -513,7 +589,12 @@ s32 sbtlChangeModelColor(struct SBTLUNIT_WORK *wk)
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlResetMutekiColor);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBtlFadeOutBadStatusEffectSub2);
+void sbtlBtlFadeOutBadStatusEffectSub2(struct SBTLUNIT_WORK *wk)
+{
+    wk->dstcolor = 0;
+    wk->color = 0x80808080;
+    wk->field3D4 = 0x80808080;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf61);
 
@@ -554,7 +635,16 @@ INCLUDE_ASM(const s32, "code_0026B0A8", UnitMV_sbtlUnit);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckMotionNo);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckMotionEnd);
+s32 sbtlCheckMotionEnd(struct SBTLUNIT_WORK *wk)
+{
+    if (wk->hModel == NULL) {
+        return 1;
+    }
+    if (sbtlCheckLoopMotion(wk, wk->motionID) != 0) {
+        return 0;
+    }
+    return wk->hModel->first->stat == 5;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckGuardMotion);
 
@@ -576,7 +666,13 @@ s32 sbtlRestartMotion(struct SBTLUNIT_WORK *wk)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetMotion);
+s32 sbtlSetMotion(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no)
+{
+    if (wk->next_motionID != no && wk->motionID != no) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetMotion_ID);
 
@@ -735,7 +831,19 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlUpdateMiusinai);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckDamageTargetTemp);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckDamageTarget);
+s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk)
+{
+    s32 status;
+
+    if (wk == NULL) {
+        return 0;
+    }
+    status = wk->status;
+    if (status != 10 && !(wk->flg & 0x5000) && status != 11 && status != 14 && wk->model->mode != 9 && status != 30 && wk->mode >= 5 && status != 40) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf6);
 

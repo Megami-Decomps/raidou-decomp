@@ -59,7 +59,9 @@ typedef struct sdatUnitWork_t {
     /* 0x90 */ s32 haveskill[16];
     /* 0xD0 */ u8 padD0[0xF8 - 0xD0];
     /* 0xF8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
-    /* 0xFC */ u8 padFC[0x104 - 0xFC];
+    /* 0xFC */ u8 padFC[0x4];
+    /* 0x100 */ s16 autost_cnt;
+    /* 0x102 */ s16 autost_cnt2; /* frames between auto skill heals */
     /* 0x104 */ u32 itemstatus;
     /* 0x108 */ s16 itemst_cnt;
     /* 0x10A */ s16 itemst_cnt2;

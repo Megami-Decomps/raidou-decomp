@@ -52,7 +52,11 @@ s32 sbtlCallBtlGetBadStatus2(struct SBTLUNIT_WORK *wk);
 s32 ChkHuuma_PlayerInputOk(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetBadStatus3(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetBadStatus4(struct SBTLUNIT_WORK *wk);
+#ifdef VERSION_RAIDOU2
+void sbtlRefSbtl11(struct SBTLUNIT_WORK *wk);
+#else
 s32 sbtlRefSbtl11(struct SBTLUNIT_WORK *wk, s32 type);
+#endif
 void sbtlRefSbtl18(struct SBTLUNIT_WORK *wk, s32 mode);
 f32 GetAnlogKey(struct SBTLUNIT_WORK *wk, sdfVector4_t *dir);
 s32 sbtlCallBtlCheckDamageTarget4(struct SBTLUNIT_WORK *wk);
@@ -72,7 +76,11 @@ s32 sbtlNormalProcNakamaSub(struct SBTLUNIT_WORK *wk);
 void sbtlResetColorFlag(void);
 void sbtlResetCharge(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_WORK *sbtlGetPlayer_HitTarget(void);
+#ifdef VERSION_RAIDOU2
+struct SBTLUNIT_WORK *sbtlRefSbtl10(s32 ID);
+#else
 s32 sbtlRefSbtl10(struct SBTLUNIT_WORK *wk);
+#endif
 void sbtlSetNSTOP(void);
 extern const SBTLPLAYER_VIBE sbtlSetVibeTable[11];
 void sbtlSetVibe(SBTLPLAYER_VTYPE mode);
@@ -97,6 +105,8 @@ s32 NormalProc_Nakama(struct SBTLUNIT_WORK *wk);
 s32 sbtlNormalProcNakamaSub2(s32 no);
 s32 AtkProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode);
 s32 KaihiProc_Nakama(struct SBTLUNIT_WORK *wk, s16 *mode);
+#ifndef VERSION_RAIDOU2
 s32 sbtlLeaf3(struct SBTLUNIT_WORK *wk, s16 *mode);
+#endif
 
 #endif

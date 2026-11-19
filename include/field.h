@@ -566,6 +566,10 @@ typedef struct fldSceneParam_t {
 } fldSceneParam_t;
 
 extern fldSceneParam_t gfldSceneParam;
+#ifdef VERSION_RAIDOU2
+/* an empty string: mapSetSceneParam copies its first byte into FoceScript */
+extern char Process_WarpIdx[];
+#endif
 /* The scene to return to after a battle (HD gMapBtlReturnParam). */
 extern fldSceneParam_t gMapBtlReturnParam;
 

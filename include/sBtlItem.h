@@ -36,6 +36,10 @@ s32 sbtlEntryItemList_Type(struct SBTLITEM_LISTWORK *lwk, u16 type);
 s32 sbtlReleaseItemList(struct SBTLITEM_LISTWORK *lwk);
 s32 sbtlDeleteItemList(struct SBTLITEM_LISTWORK *lwk);
 s32 sbtlItem_CheckSetItem(struct SBTLITEM_WORK *item, const sdfVector4_t *pos);
+#ifdef VERSION_RAIDOU2
+/* raidou1 names this function sbtlItem_CheckSetItem. */
+s32 sbtlItemIDDrop(struct SBTLITEM_WORK *item, const sdfVector4_t *pos);
+#endif
 s32 sbtlSetDropItem(s32 itemid, s32 num, s16 per);
 
 #endif

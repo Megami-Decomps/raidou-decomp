@@ -89,6 +89,7 @@ MenuDrawProcess	code_00190668	raidou1 0x32C	181 of 203 words differ	docs/matchin
 MenuProcess	code_00190668	raidou1 0x6DC	404 of 426 words differ	docs/matching/code_00190668.md	11		
 MenuShutdown	code_00190668	raidou1 0x50	4 of 19 words differ	docs/matching/code_00190668.md	19		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, same form as fclCallGetProcessData. Tried: the s32 return of dds3ProcessFunc_t with no return statement (still j, 4 of 19 words differ); the call is last, nothing to reorder. Header: cmpCallMenuDeleteMenu declared in itf.h.
 itfMenuSetSpriteData	code_001A5D20	raidou2 0xE8	1 of 58 words differ	docs/matching/code_001A5D20.md	3		
+MenuShutdown	code_001A5D20	raidou2 0x50	4 of 20 words differ	docs/matching/code_001A5D20.md	11		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, the same form as the Raidou 1 MenuShutdown (code_00190668). Tried: the s32 return of dds3ProcessFunc_t with no return statement (still j, 4 of 20 words differ); the call is last, nothing to reorder. Header: MenuRelease declared in itf.h.
 evtMoonTeisatuCntReset	code_001AD4E8	raidou1 0x10	4 of 4 words differ	docs/matching/code_001AD4E8.md	3		
 sbtlRefSbtl31	code_0024DF70	raidou1 0x94	34 of 35 words differ	docs/matching/code_0024DF70.md	3		
 sbtlRefSbtl3	code_0024DF70	raidou1 0x2C	6 of 11 words differ	docs/matching/code_0024DF70.md	11		

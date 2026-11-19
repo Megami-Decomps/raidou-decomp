@@ -13,6 +13,7 @@
 #include "sbtlSub.h"
 #include "sBtlSkill.h"
 #include "code_0027A1E8.h"
+#include "AW_XAtkPad.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -55,7 +56,10 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetVibe);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetPlayerID);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl10);
+struct SBTLUNIT_WORK *sbtlRefSbtl10(s32 ID)
+{
+    return sbtlSearchUnit_ID(wk_sbtl->unitList, ID);
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallObjectBaseSetPadControl);
 
@@ -113,7 +117,11 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetReturn);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallHirukoYukaGoIdx2B);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetColor);
+s32 sbtlResetColor(u32 color) {
+    cmpSetColor(color);
+    sbtlResetColorSub(color);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SetSummonMenu);
 
@@ -195,7 +203,15 @@ s32 sbtlEscapeCheck(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl11);
+void sbtlRefSbtl11(struct SBTLUNIT_WORK *wk)
+{
+    wk_sbtl->field7FC = 0;
+    wk_sbtl->field800 = 0;
+    wk_sbtl->field80C = 0;
+    wk_sbtl->field810 = 0;
+    wk->vstatus &= ~0x1000000;
+    wk_sbtl->fieldEC0 = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlCreateEff);
 
@@ -277,7 +293,28 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSkillEquation);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckTargetEquation);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_00);
+s32 SEquationno_00(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if (tbl->area & 0x4000) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                return 1;
+            }
+        }
+    } else {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl3);
 
@@ -287,7 +324,23 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl4);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_04);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_05);
+s32 SEquationno_05(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    u32 flg = sbtlGetSkilltbl(skillid)->flg;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if ((flg & 4) && (flg & 0x81F000)) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (unit->unit.now.maxhp != 0 && 100 * unit->unit.now.hp / unit->unit.now.maxhp < 40) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_06);
 
@@ -297,9 +350,39 @@ s32 SEquationno_07(struct SBTLUNIT_WORK *wk, s16 skillid) {
     return type != 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_08);
+s32 SEquationno_08(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    u32 flg = sbtlGetSkilltbl(skillid)->flg;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_09);
+    if ((flg & 4) && (flg & 0x81F000)) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (unit->unit.now.maxhp != 0 && 100 * unit->unit.now.hp / unit->unit.now.maxhp < 70) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+s32 SEquationno_09(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if ((tbl->attr & 1) && (tbl->flg & 1)) {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit) && (unit->flg2 & 0x10)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0a);
 
@@ -315,7 +398,20 @@ s32 SEquationno_0c(struct SBTLUNIT_WORK *wk, s16 skillid) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_0d);
+s32 SEquationno_0d(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        if (SetNextTarget(wk, tbl, sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, i), &wk->unit.autost_cnt, &wk->unit.autost_cnt2))) {
+            return 1;
+        }
+    }
+    if (sbtlIsAura(wk, 0x1000000) && (tbl->type & 0xFFF) == 1) {
+        return 1;
+    }
+    return 0;
+}
 
 s32 SEquationno_0e(struct SBTLUNIT_WORK *wk, s16 skillid) {
     s32 type = sbtlGetSkilltbl(skillid)->type & 0x1000;
@@ -333,13 +429,58 @@ s32 SEquationno_12(struct SBTLUNIT_WORK *wk, s16 skillid) {
     return sbtlCheckCost_SkillID(wk, skillid, 0);
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_13);
+s32 SEquationno_13(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_14);
+    for (i = 0; i < 6; i++) {
+        if (((tbl->s_type >> i) & 1) && tbl->para > 0 && wk_sbtl->panel->setdata[GetMeireiNo(wk)].meirei_no == 6) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+s32 SEquationno_14(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    u32 badst;
+    s32 i;
+
+    if ((tbl->flg & 0x10004) == 0x10004) {
+        badst = tbl->badst;
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if ((unit->unit.badStatus & badst) != 0 && (badst & 0x8000) == 0) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_15);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_16);
+s32 SEquationno_16(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    u32 flg = sbtlGetSkilltbl(skillid)->flg;
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if ((flg & 4) && (flg & 0x81F000)) {
+        for (i = 0; i < wk_sbtl->field404->count; i++) {
+            unit = wk_sbtl->field404->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (unit->unit.now.maxhp != 0 && 100 * unit->unit.now.hp / unit->unit.now.maxhp < 20) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_17);
 
@@ -369,7 +510,26 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckArea_Masic);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SetOrderTarget);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SetNextTarget);
+s32 SetNextTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl, s32 no) {
+    switch (no) {
+    case 13:
+        if ((tbl->type & 0xFFF) != 1) {
+            break;
+        }
+        return 1;
+    case 14:
+        if ((tbl->type & 0xFFF) != 3) {
+            break;
+        }
+        return 1;
+    case 15:
+        if (!(tbl->attr & (1 << wk->unit.autost_cnt) & 0xFFF)) {
+            break;
+        }
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", SetNextTarget_sbtlEquat);
 
@@ -398,7 +558,22 @@ s32 sbtlGetTargetUnit(struct SBTLUNIT_WORK *wk) {
     return TEquationno_01(wk);
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", CheckBSTTarget);
+s32 CheckBSTTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl) {
+    BST bst = sbtlGetBadStatus(&wk->unit);
+
+    if (!(tbl->area & 0x4000) && (bst == BST_BOUDO || bst == BST_MAHUU)) {
+        if (wk->aiwk->mode == 18) {
+            wk->model->field104 = wk->field1A0;
+        } else {
+            if (wk->aiwk->bstside & 1) {
+                return 0;
+            }
+            wk->model->field104 = wk_sbtl->targetUnitID;
+        }
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", TEquationno_01);
 

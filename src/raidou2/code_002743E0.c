@@ -10,6 +10,7 @@
 #include "sbtlWork.h"
 #include "sBtlItem.h"
 #include "ps2asm.h"
+#include "evtUnitManager.h"
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlRefSbtl8);
 
@@ -25,7 +26,16 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlGetHelperPos);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlDeleteHitHelper);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlSetItem);
+s32 sbtlSetItem(struct SBTLUNIT_WORK *wk)
+{
+    SBTL_DEVIL_DATA *data = sbtlIfDrawActionSub(wk->unit.devilId);
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        sbtlItemIDDrop(&data->item[i], &wk->pos);
+    }
+    return 1;
+}
 
 INCLUDE_RODATA(const s32, "code_002743E0", sbtlGetHelperPosTable);
 
@@ -197,11 +207,70 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlSetModelDataLoadEnd);
 
 INCLUDE_ASM(const s32, "code_002743E0", CheckLoadData);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlGetLight_SetPos);
+s32 sbtlGetLight_SetPos(struct SBTLUNIT_WORK *wk, s8 lightno)
+{
+    if (wk->light_buff[0] == lightno) {
+        return 1;
+    }
+    if (wk->light_buff[1] == lightno) {
+        return 2;
+    }
+    return 3;
+}
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlSetLight_SetPos);
+s32 sbtlSetLight_SetPos(struct SBTLUNIT_WORK *wk, s8 lightno)
+{
+    s8 no = sbtlGetLight_SetPos(wk, lightno);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlSetUnitLight_Dir);
+    if (no >= 3) {
+        no = wk->field4F3;
+        if (++wk->field4F3 >= 3) {
+            wk->field4F3 = 1;
+        }
+    }
+    wk->light_buff[no - 1] = lightno;
+    return no;
+}
+
+s32 sbtlSetUnitLight_Dir(struct SBTLUNIT_WORK *wk, const sdfVector4_t *dir, s32 flg)
+{
+    s32 idx = 0;
+
+    if (flg == 4) {
+        if (!(wk->vstatus & 0x40000)) {
+            idx = 1;
+        } else if (!(wk->vstatus & 0x80000)) {
+            idx = 2;
+        }
+    } else {
+        idx = flg;
+    }
+    if (idx >= 4) {
+        return 0;
+    }
+    if (wk->flg & 0x800) {
+        return 0;
+    }
+    switch (idx) {
+    case 1:
+        SDF_VU0_LOADVECTOR(dir);
+        SDF_VU0_STOREVECTOR_NOMEM(&wk->light);
+        evtSetUnitLightDir(wk->hEveUnit, 0);
+        break;
+    case 2:
+        SDF_VU0_LOADVECTOR(dir);
+        SDF_VU0_STOREVECTOR_NOMEM(&wk->light.dir1);
+        evtSetUnitLightDir1(wk->hEveUnit, 1);
+        break;
+    case 3:
+    default:
+        SDF_VU0_LOADVECTOR(dir);
+        SDF_VU0_STOREVECTOR_NOMEM(&wk->light.dir2);
+        evtSetUnitLightDir2(wk->hEveUnit, 2);
+        break;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlSetUnitLight);
 

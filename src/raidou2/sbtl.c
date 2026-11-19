@@ -311,7 +311,7 @@ INCLUDE_ASM(const s32, "sbtl", cmbClearUnitSkills);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetAutoSkillPara);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl19);
+INCLUDE_ASM(const s32, "sbtl", sbtlGetAutoSkill_ID);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_ActerDamage_ID);
 

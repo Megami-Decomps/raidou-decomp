@@ -505,7 +505,32 @@ s32 GetVolume(titleAudioStreamState_t *stream) {
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "sndAt3", GetVolume);
+s32 GetVolume(titleAudioStreamState_t *stream) {
+    sdfMemHandle_t *handle;
+    u8 *data;
+    s32 size;
+
+    if (pacFileCheckEnd(GetVolumeWork) == 0) {
+        return 0;
+    }
+    handle = fileGetMemHandle(GetVolumeWork);
+    data = fileGetLoadPtr(GetVolumeWork);
+    size = fileGetLoadSize(GetVolumeWork);
+    fileHandleFree(GetVolumeWork);
+    mnuTitleStreamStatus.compressedData = data;
+    mnuTitleStreamStatus.allocation = handle;
+    stream->frameCount = size / stream->frameBytes;
+    if (sndData5 == 99) {
+        stream->frameCount = 6500;
+    }
+    if (sndData5 == 101) {
+        stream->frameCount = 6030;
+    }
+    stream->frameIndex = 0;
+    at3DecInit(mnuTitleStreamDecoderState);
+    mnuTitleStreamStatus.loadState = 2;
+    return 1;
+}
 #endif
 
 /* Install the fixed title track and queue its compressed frames under the lock. */

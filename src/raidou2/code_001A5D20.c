@@ -131,7 +131,12 @@ INCLUDE_ASM(const s32, "code_001A5D20", itfMenuSetMoveType);
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuGetCtrlType);
 
-INCLUDE_ASM(const s32, "code_001A5D20", itfMenuUpdateLink);
+void itfMenuUpdateLink(dds3ProcessID_t *PID, DDS3_OT ot)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    wk->ot = ot;
+}
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuSetSelectID);
 
@@ -201,7 +206,20 @@ INCLUDE_ASM(const s32, "code_001A5D20", cmpCallGetProcessData);
 
 INCLUDE_ASM(const s32, "code_001A5D20", MenuRelease);
 
-INCLUDE_ASM(const s32, "code_001A5D20", MenuShutdown);
+s32 MenuShutdown(dds3ProcessID_t *PID)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    MenuRelease(wk);
+    if (dds3ExistProcess(wk->drawPID)) {
+        dds3KillProcess(wk->drawPID, 0);
+    }
+    sdfMemFreeDirect(wk->hMem);
+    FAKEMATCH_ASM_READ(wk);
+#ifdef FIX_BUGS
+    return 0;
+#endif
+}
 
 dds3ProcessID_t *itfMenuProcessStart(void)
 {

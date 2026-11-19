@@ -15,7 +15,9 @@ typedef struct SBTLAI_WORK {
     s16 stat;
     u16 mode;
     u16 backmode;
-    u8 pad00A[0x64 - 0xA];
+    u8 pad00A[0x5E - 0xA];
+    u8 bstside; /* bit 0: confused unit stays on its own side */
+    u8 pad05F[0x64 - 0x5F];
     s32 syscnt_stop;
     s32 field4C;
     s8 scr_actcheckflg;
@@ -84,6 +86,10 @@ s32 SEquationno_16(struct SBTLUNIT_WORK *wk, s16 skillid);
 s32 SEquationno_17(struct SBTLUNIT_WORK *wk, s16 skillid);
 s32 CheckBSTTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl);
 s32 SetNextTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl, s32 no);
+#ifdef VERSION_RAIDOU2
+/* the summon slot (0 or 1) of wk, or -1 */
+s16 GetMeireiNo(struct SBTLUNIT_WORK *wk);
+#endif
 u8 TEquationno_01(struct SBTLUNIT_WORK *wk);
 u8 TEquationno_0c(struct SBTLUNIT_WORK *wk);
 u8 TEquationno_0d(struct SBTLUNIT_WORK *wk);

@@ -19,6 +19,7 @@
 #include "sdfPacDecode.h"
 #include "sdf_model_packet_callback.h"
 #include "fileManager.h"
+#include "code_r1_0010DF68.h"
 
 #define MDL_GROUP_COUNT 8
 
@@ -76,7 +77,7 @@ void mdlRegistMotion(s32 aMajor, s32 aMinor, u32 aFlags, s32 aFirstMotion, s32 a
                      sdfMotionPlayBook_t *aData, sdfMemHandle_t *aHandle);
 
 
-void mdlMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, s32 aType, f32 aBeforeLeng,
+void mdlMotion(mdlObj_t *aHandle, s32 aGroup, u32 aNumber, s32 aType, f32 aBeforeLeng,
                f32 aSmoothLeng);
 
 sdfMotionCtrlr_t *mdlGetMotionCtrlr(mdlObj_t *aHandle, s32 aGroup);
@@ -1089,7 +1090,7 @@ void mdlHideAllNode(mdlObj_t *aHandle)
 }
 
 #ifdef VERSION_RAIDOU1
-void mdlMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, s32 aType,
+void mdlMotion(mdlObj_t *aHandle, s32 aGroup, u32 aNumber, s32 aType,
                                      f32 aBeforeLeng, f32 aSmoothLeng) {
     sdfMotionCtrlr_t *node;
     s16 slotIndex;
@@ -1114,7 +1115,34 @@ void mdlMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, s32 aType,
     mdlGenEffect(aHandle, aNumber, slotIndex);
 }
 #else
-INCLUDE_ASM(const s32, "model/mdlManager", mdlMotion);
+void mdlMotion(mdlObj_t *aHandle, s32 aGroup, u32 aNumber, s32 aType,
+                                     f32 aBeforeLeng, f32 aSmoothLeng) {
+    sdfMotionCtrlr_t *node;
+    s16 slotIndex;
+
+    for (node = aHandle->inner->motion; node != NULL; node = node->next) {
+        if (node->userId == aGroup) {
+            break;
+        }
+    }
+    if (node == NULL) {
+        node = mdlCreateMotion(aHandle, aGroup);
+    }
+    slotIndex = node->userId2;
+    aHandle->slots[slotIndex] = node;
+    if (slotIndex == 0) {
+        aHandle->first = node;
+    }
+    if (aNumber >= node->playbook->numOfCut) {
+        datDEBUGCONSOLE(mdlStrNoAvaiableMotion0, aNumber);
+        aNumber = 0;
+    }
+    sdfMotionChangeBlend(node, aNumber, aType, aBeforeLeng, aSmoothLeng);
+    aHandle->current.h.id = aGroup;
+    aHandle->current.h.motionIndex = aNumber;
+    mdlStopEffect(aHandle, slotIndex);
+    mdlGenEffect(aHandle, aNumber, slotIndex);
+}
 #endif
 
 void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber)
@@ -1883,6 +1911,8 @@ void mdlMakeHddFileList(void) {
     mdlMakeHddFileListDummy();
 }
 #else
+INCLUDE_RODATA(const s32, "model/mdlManager", mdlStrNoAvaiableMotion0);
+
 INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileList);
 #endif
 char mdlModelPathPrefix[8] = "/model/";

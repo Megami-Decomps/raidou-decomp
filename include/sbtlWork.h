@@ -75,6 +75,18 @@ typedef struct SBTLPNL_WORK {
     u8 pad18[0x14];
 } SBTLPNL_WORK;
 
+/* HD SBTLPNL_SETDATA: the order and target chosen for a summoned demon. */
+typedef struct SBTLPNL_SETDATA {
+    s8 flg;
+    s16 target_p;
+    s16 select_no; /* SBTLPNL_MENU */
+    s16 meirei_no; /* SBTLPNL_MENU */
+    SKLID skillid;
+    s32 itemid;
+    s32 targetid;
+} SBTLPNL_SETDATA;
+SIZE_CHECK(SBTLPNL_SETDATASizeCheck, SBTLPNL_SETDATA, 0x14);
+
 /* HD SBTLPANEL_WORK, 0x530 bytes from sbtlCallMemAllocDirect5; pointed to by SBTL_WORK.panel at 0x628. */
 typedef struct SBTL_PANEL {
     struct sdfMemHandle_t *handle;
@@ -100,14 +112,20 @@ typedef struct SBTL_PANEL {
     SBTLPNL_WORK mds_waku0;
     SBTLPNL_WORK mds_waku1;
     SBTLPNL_WORK mds_light;
+#ifdef VERSION_RAIDOU2
+    u8 padD0[0x51C - 0xD0];
+    SBTLPNL_SETDATA setdata[2]; /* one per summoned demon, indexed by GetMeireiNo */
+#else
     u8 padD0[0x522 - 0xD0];
     s16 meirei_no; /* order given to the summoned demon (HD SBTLPNL_SETDATA meirei_no) */
-#ifdef VERSION_RAIDOU2
-    u8 pad524[0x544 - 0x524];
-#else
     u8 pad524[0x530 - 0x524];
 #endif
 } SBTL_PANEL;
+#ifdef VERSION_RAIDOU2
+SIZE_CHECK(SBTL_PANELSizeCheck, SBTL_PANEL, 0x544);
+#else
+SIZE_CHECK(SBTL_PANELSizeCheck, SBTL_PANEL, 0x530);
+#endif
 
 struct SBTLDMG_HITLISTWORK;
 struct SBTLDMG_LISTWORK;
@@ -185,7 +203,7 @@ typedef struct SBTL_WORK {
     struct SBTLITEM_LISTWORK *itemList;
     struct SBTLITEM_LISTWORK *bulletList;
     struct SBTLSM_LISTWORK *sysmsgList;
-    u8 pad75C[0x4];
+    struct SBTLEFF_DELLISTWORK *effdelList;
     struct SBTLDMG_HITWORK *huka2hwk; /* hit whose attacker data later hits copy (HD name) */
     s32 field424;
     u8 pad768[0x8];
@@ -196,9 +214,15 @@ typedef struct SBTL_WORK {
     s16 field440;
     u8 pad782[0x1A];
     s32 hgunNum;
-    u8 pad7A0[0x98];
+    u8 pad7A0[0x5C];
+    s32 field7FC;
+    s32 field800;
+    u8 pad804[0x8];
+    s32 field80C;
+    s32 field810;
+    u8 pad814[0x838 - 0x814];
     s32 field838; /* unit ID of the battle talk partner */
-    u8 pad83C[0x44];
+    u8 pad83C[0x880 - 0x83C];
     SBTLDROP_WORK drop;
     u8 pad880[0x9BC - 0x880 - sizeof(SBTLDROP_WORK)];
     SBTL_PANEL *panel;
@@ -217,11 +241,17 @@ typedef struct SBTL_WORK {
     s32 field678;
     u8 padA10[0xC4C - 0xA10];
     s32 midiSkillCount;
-    u8 pad_C50[0xE84 - 0xC50];
+    u8 pad_C50[0x4];
+    u8 field878;
+    u8 field879;
+    u8 field87A;
+    u8 padC57[0xE84 - 0xC57];
     s32 fieldE84; /* sbtlDat's index into datData20 */
     u8 padE88[0x4];
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */
-    u8 padE8D[0xEE0 - 0xE8D];
+    u8 padE8D[0xEC0 - 0xE8D];
+    s32 fieldEC0;
+    u8 padEC4[0xEE0 - 0xEC4];
     struct sbtlSummonText_t textPool[100];
     struct sbtlSummonText_t *textList;
     struct sbtlSummonText_t *textCursor; /* sbtlRefSbtl30 searches for a free entry from here */
@@ -509,7 +539,9 @@ typedef struct SBTLITEM_WORK {
 /* Devil table entry returned by sbtlIfDrawActionSub (0x94 bytes). Partial raidou2 layout. */
 typedef struct SBTL_DEVIL_DATA {
     u32 flag;
-    u8 pad04[0x94 - 0x4];
+    u8 pad04[0x68 - 0x4];
+    SBTLITEM_WORK item[4];
+    u8 pad78[0x94 - 0x78];
 } SBTL_DEVIL_DATA;
 
 SIZE_CHECK(SBTL_DEVIL_DATASizeCheck, SBTL_DEVIL_DATA, 0x94);

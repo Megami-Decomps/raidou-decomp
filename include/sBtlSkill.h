@@ -56,11 +56,14 @@ struct SBTLSKILLP_TBL {
     s16 hitbk_cnt;
     f32 hitbk_rate;
 #ifdef VERSION_RAIDOU2
-    u32 flg2; /* partial: the entry is larger than raidou1's */
+    u32 flg2;
+    u8 pad38[0x8];
 #endif
 };
 #ifdef VERSION_RAIDOU1
 SIZE_CHECK(sbtlSkillpTblSizeCheck, struct SBTLSKILLP_TBL, 0x34);
+#else
+SIZE_CHECK(sbtlSkillpTblSizeCheck, struct SBTLSKILLP_TBL, 0x40);
 #endif
 
 extern struct SBTLSKILLP_TBL *sbtlCallBtlDrawRedGgData;

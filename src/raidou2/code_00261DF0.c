@@ -21,7 +21,17 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlCheckSummon);
 
 INCLUDE_ASM(const s32, "code_00261DF0", CheckStopBattle);
 
-INCLUDE_ASM(const s32, "code_00261DF0", RestartBattle);
+s32 RestartBattle(void)
+{
+    if (dds3SearchProcessName(sbtlData85) == NULL) {
+        return 0;
+    }
+    if (wk_sbtl == NULL) {
+        return 0;
+    }
+    wk_sbtl->flg &= ~0x40;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", ReloadTableData);
 

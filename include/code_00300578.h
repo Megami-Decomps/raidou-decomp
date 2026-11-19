@@ -13,11 +13,21 @@ typedef struct cmpStatusWork_t {
     struct sdfMemHandle_t *hMem; /* 0x00 */
     dds3ProcessID_t *drawPID;    /* 0x04 */
     s32 flags;                   /* 0x08: bit 0 ends the process; sign bit read by cmpGetFlagCallDebug */
+#ifdef VERSION_RAIDOU2
+    /* partial raidou2 layout */
+    s32 step;                    /* 0x0C */
+    u8 unk10[4];
+    s32 step2;                   /* 0x14 */
+    u8 unk18[0xC];
+    s16 count;                   /* 0x24 */
+    u8 unk26[0x3150 - 0x26];
+#else
     s8 step;                     /* 0x0C */
     s8 step2;                    /* 0x0D */
     u8 unk0E[6];
     s16 count;                   /* 0x14 */
     u8 unk16[0x13D4 - 0x16];
+#endif
 } cmpStatusWork_t;
 void Release_cmpStatus(cmpStatusWork_t *wk);
 #ifdef VERSION_RAIDOU1
