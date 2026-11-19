@@ -11729,7 +11729,7 @@
 0x003C0838	CheckProcEnd	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD CheckProcEnd (jmsMenu.c): 1 while the menu process runs, else clears menuPID; replaces DrawProcess_jmsMenu
 0x003C0880	Process_jmsMenu	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD jmsMenu.Process score 7.2 flag -: calls2 prev next gap=exact st2:gap r1-disagree:0x34fc80
 0x003C0AC8	Release_jmsMenu	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD Release (jmsMenu.c): frees the sprite set when flag bit 1 is set; replaces RunBadEffKaifukuKouka
-0x003C0B20	cmpMenuShutdown2	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; string ' jmsMenuShutdown() start\n'
+0x003C0B20	jmsMenuShutdown	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=game string " jmsMenuShutdown() start"; HD jmsMenu.c Shutdown; replaces cmpMenuShutdown2
 0x003C0B90	cmpCallGetProcessData33	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls dds3GetProcessData
 0x003C0D70	cmpGetMarkID	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD cmpMain.cmpGetMarkID score 2.6 flag I: calls2 next~ gap46/23 st1:gap r2-disagree:0x38e750
 0x003C0D98	cmpCallGetProcessData34	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour cmpGetMarkID; calls dds3GetProcessData

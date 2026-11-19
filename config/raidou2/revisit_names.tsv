@@ -6347,7 +6347,6 @@
 0x003C0308	cmpCallBitCheck3	func	tier=D	derived-callee	na	unit code_003BF2E0, neighbour cmpGetMarkID; calls evtBitCheck
 0x003C0410	cmpCallBitCheck4	func	tier=D	derived-callee	na	unit code_003BF2E0, neighbour cmpGetMarkID; calls evtBitCheck
 0x003C0488	cmpCallMenuGetMenuNum	func	tier=D	derived-callee	na	unit code_003BF2E0, neighbour cmpGetMarkID; calls itfMenuGetMenuNum
-0x003C0B20	cmpMenuShutdown2	func	tier=D	derived-string	na	unit code_003BF2E0, neighbour cmpGetMarkID; string ' jmsMenuShutdown() start\n'
 0x003C0B90	cmpCallGetProcessData33	func	tier=D	derived-callee	na	unit code_003BF2E0, neighbour cmpGetMarkID; calls dds3GetProcessData
 0x003C0D98	cmpCallGetProcessData34	func	tier=D	derived-callee	na	unit code_003BF2E0, neighbour cmpGetMarkID; calls dds3GetProcessData
 0x003C0E88	jmsCallGetProcessData8	func	tier=D	derived-callee	na	unit code_003BF2E0, neighbour jmsSetFocus; calls dds3GetProcessData
@@ -24028,6 +24027,7 @@
 0x003BFA48	ListDrawStation	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD lmap.ListDrawStation score 4.1 flag -: calls3 callee-index st2:cidx r1-disagree:0x2ea530
 0x003C00E8	CheckFlagTGS	func	tier=C	hd-d	0.53 (n=98)	Raidou HD jmsMenu.CheckFlagTGS score 3.4 flag -: calls1 next~ gap2/222 st2:gap r2-only
 0x003C03A8	IsBuyItem	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD RaijinDLC.IsBuyItem score 2.4 flag -: calls1 calls-of-match st2:call r2-only
+0x003C0B20	jmsMenuShutdown	func	tier=C	derived-derived-role	na	game string " jmsMenuShutdown() start"; HD jmsMenu.c Shutdown; replaces cmpMenuShutdown2
 0x003C0D70	cmpGetMarkID	func	tier=C	hd-d	0.53 (n=98)	Raidou HD cmpMain.cmpGetMarkID score 2.6 flag I: calls2 next~ gap46/23 st1:gap r2-disagree:0x38e750
 0x003C1058	ProcessCheck_jmsMenu	func	tier=C	hd-d	0.53 (n=98)	Raidou HD jmsMenu.ProcessCheck score 3.5 flag -: calls1 next~ gap2/7 st2:gap r2-only
 0x003C1330	jmsGetCursorPosID	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMenu.jmsGetCursorPosID score 4.6 flag I: calls2 calls-of-match-uniq st1:call r1-only

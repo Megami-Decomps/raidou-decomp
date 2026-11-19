@@ -23,7 +23,9 @@ struct tagCMP_WORK {
     s32 markID;                  /* 0x1C */
     s32 count;                   /* 0x20 */
 #ifdef VERSION_RAIDOU2
-    u8 unk24[0x14];
+    u8 unk24[8];
+    s16 page;                    /* 0x2C: stock list page, 8 entries each */
+    u8 unk2E[0xA];
     /* the Kuda list filter (cmpSetFilterEx) */
     struct sdatUnitWork_t *psUse;   /* 0x38 */
     ecmpKudaSelectMode eSelMode;    /* 0x3C */

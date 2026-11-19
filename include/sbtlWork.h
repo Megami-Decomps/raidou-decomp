@@ -737,7 +737,9 @@ typedef struct SBTL_STAGE_DATA {
     s8 encPoint;    /* 0x03: mapEncPointGet point */
     u16 flags;      /* 0x04: 0x20 stops units at battle start */
     s16 bgmId;      /* 0x06 */
-    u8 pad08[0x28];
+    u8 pad08[8];
+    s16 unk10;      /* 0x10: 0 and 2 reload the map after the result screen */
+    u8 pad12[0x1E];
     SB_ENCOUNT1 enc1[13]; /* 0x30 */
 } SBTL_STAGE_DATA;
 

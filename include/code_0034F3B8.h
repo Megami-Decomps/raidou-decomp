@@ -30,9 +30,9 @@ typedef struct jmsInputPanelWork_t {
     dds3ProcessID_t *drawPID;
 #ifdef VERSION_RAIDOU2
     struct sprHandle_t *hSpr; /* 0x0C */
-    u8 unk10[4];
+    s32 step;
     s32 flags; /* 0x14 */
-    u8 unk18[4];
+    s32 count;
     s32 unk1C;
 #else
     u8 unk0C[4];
@@ -56,6 +56,9 @@ typedef struct rstMainWork_t {
 extern const char cmpCalcProcName[];
 extern const char campDrawProcName[];
 extern const char campUpdateProcName[];
+extern const char cmpStrJmsMenuShutdownStart[];
+extern const char cmpStrJmsMenuShutdownEnd[];
+extern const char jmsStrJmsMenuProcessEndAccept[];
 
 
 void rstSetReward(const rstWork_t *pReward);

@@ -10,7 +10,8 @@ struct tagCMP_STATUS_WORK;
 /* HD tagOBJECT_WORK: one sprite object of the summoner rank screen. */
 typedef struct tagOBJECT_WORK {
     s8 bEnabled;      /* 0x00 */
-    char szString[15]; /* 0x01 */
+    char szString[11]; /* 0x01 */
+    s32 iRankSprNo;   /* 0x0C: HD iSprNo of the two rank objects */
     s32 iSprNo;       /* 0x10 */
     f32 fSize;        /* 0x14 */
     f32 fSizeW;       /* 0x18 */
@@ -34,6 +35,13 @@ typedef struct cmpSummnerRank_t {
     struct sdatUnitWork_t *psUnit;  /* 0x04 */
     s32 iAlphaRate;                 /* 0x08 */
     s32 iCounter;                   /* 0x0C */
+    tagOBJECT_WORK sObjBG;          /* 0x10 */
+    tagOBJECT_WORK sObjBGSRank;     /* 0x54 */
+    tagOBJECT_WORK sObjBGRaido;     /* 0x98 */
+    tagOBJECT_WORK sObjCyusei;      /* 0xDC */
+    tagOBJECT_WORK sObjSRank;       /* 0x120 */
+    tagOBJECT_WORK sObjRaido;       /* 0x164 */
+    tagOBJECT_WORK sObjBlur;        /* 0x1A8 */
 } cmpSummnerRank_t;
 
 typedef void *(*cmpSummnerRankFunc_t)(cmpSummnerRank_t *psSelf);

@@ -9,6 +9,7 @@ void mapAutoMapDraw3(void);
 s32 cmpSetupCmpItemSub(CMP_SPR a_no);
 void End_cmpItem(void);
 struct tagCMP_WORK *cmpGetStockPID(void);
+dds3ProcessID_t *cmpPartyDrawFuncSub(void);
 extern const char ProcessStart_cmpMapStrCampAutomapMain[];
 extern const char ProcessStart_cmpMapStrCampAutomapDraw[];
 

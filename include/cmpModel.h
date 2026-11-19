@@ -31,7 +31,7 @@ void cmpInitDstEff(void);
 void cmpSetLight(void);
 void cmpSetLightDef(void);
 void cmpSetLightUnit(s32 a_modelID, s32 a_lightNo);
-void cmpSetModelMotion(struct dds3ModelHandle_t *a_hModel);
+void cmpSetModelMotion(struct mdlObj_t *a_hModel);
 f32 cmpSetModelScale(struct dds3ModelHandle_t *Handle, s32 Mode);
 void cmpSetPosLimit(s8 a_bool);
 void cmpSetSmoothLoopMotion(s32 a_motNo, f32 a_beforeLeng, f32 a_smoothLeng);

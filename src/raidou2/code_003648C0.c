@@ -28,6 +28,8 @@
 #include "effManager.h"
 #include "sdfChip.h"
 #include "sBtlSkill.h"
+#include "fclMisc.h"
+#include "sdfDelayedResrc.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -331,7 +333,20 @@ INCLUDE_ASM(const s32, "code_003648C0", frCallMemAllocDirect2);
 
 INCLUDE_ASM(const s32, "code_003648C0", frLeaf15);
 
-INCLUDE_ASM(const s32, "code_003648C0", evtFunc16);
+s32 evtFunc16(void) {
+    evtStatus13_t *status;
+
+    if (evtWork6[CMP_SPR_COMMON] == NULL) {
+        return 0;
+    }
+    evtWork[0] = effCreateStatusBatch(13);
+    status = (evtStatus13_t *)evtWork[0]->records->status;
+    status->unk0 = 299;
+    status->unk4 = 80;
+    status->unk8 = 2;
+    effConfigureIndexedSlotResource(evtWork6[CMP_SPR_COMMON], 142, evtWork[0], 0, 4);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", evtFunc17);
 
@@ -432,7 +447,23 @@ s32 cmpFreeSpriteHnd(CMP_SPR a_no) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpSetupCmpItemSub);
+s32 cmpSetupCmpItemSub(CMP_SPR a_no) {
+    struct sprHandle_t **spr = &evtWork6[a_no];
+    struct sprHandle_t *hSpr;
+
+    if ((u32)a_no < CMP_SPR_NUM) {
+        if (*spr == NULL || cmpWork8[a_no] == 0) {
+            hSpr = effCreateResourceSlotSetFromAllocation(cmpWork3[a_no], 0);
+            cmpWork8[a_no] = 1;
+            *spr = hSpr;
+            evtCreateLinkSub(a_no);
+            return 1;
+        }
+        cmpWork8[a_no]++;
+        return 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpLoadSpriteToMem);
 
@@ -546,7 +577,15 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpPartyList);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpStockListMake);
 
-INCLUDE_ASM(const s32, "code_003648C0", datDlcNoneCheck);
+void datDlcNoneCheck(dds3ProcessID_t *PID, struct sprHandle_t *hSpr) {
+    if (!itfMenuLinkSprite(PID, hSpr)) {
+        printf(datStrErrorItfMenuLinkSprite);
+    }
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_PANEL, 219, 27, 293, 25, 14, 2, NULL, datDlcNoneCheckData);
+    itfMenuSetSpriteData(PID, ITFMENU_IMG_DAT_SELECT, 219, 27, 293, 25, 14, 2, NULL, datDlcNoneCheckData2);
+    itfGeneralMenuCreatePIDSub(PID, 3);
+    itfGeneralMenuCreatePIDSub2(PID, 3);
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", datLeaf82);
 
@@ -626,17 +665,75 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpInitCore2);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetLightUnit);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpInitDstEff2);
+/* NON_MATCHING: 4 of 28 words match.  */
+#ifdef NON_MATCHING
+void cmpInitDstEff2(s32 a_type) {
+    effHandle_t **eff = &cmpWork2[a_type];
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpInitDstEff);
+    if ((u32)a_type < 2 && *eff != NULL) {
+        fclInitDstEff2Sub((struct plistHandle_t *)(*eff)->instance);
+        dds3EffectSetLoop_dds3Effect(*eff, 1);
+        dds3EffectSetScale(*eff, 1.0f);
+    }
+}
+#else
+INCLUDE_ASM(const s32, "code_003648C0", cmpInitDstEff2);
+#endif
+
+void cmpInitDstEff(void) {
+    u32 data[4];
+
+    cmpWork[0] = sdfDevLoadFileEx(cmpStrCampBad01Epl, data, NULL);
+    cmpWork2[0] = dds3EffectLoadEPL((void *)data[0]);
+    cmpInitDstEff2(0);
+    cmpWork[1] = sdfDevLoadFileEx(cmpStrCampBad04Epl, data, NULL);
+    cmpWork2[1] = dds3EffectLoadEPL((void *)data[0]);
+    cmpInitDstEff2(1);
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCreateBstEff);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpDeleteBstEff);
+void cmpDeleteBstEff(void) {
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        if (cmpWork2[i] != NULL) {
+            dds3EffectDelete(cmpWork2[i]);
+            cmpWork2[i] = NULL;
+        }
+        if (cmpWork[i] != NULL) {
+            sdfMemFreeDelayedDirect(cmpWork[i]);
+            cmpWork[i] = NULL;
+        }
+    }
+    g_hEffBst = NULL;
+    g_bstID = 21;
+    cmpDeleteBstEffData = 0;
+    cmpDeleteBstEffData2 = 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpDrawBstEff);
 
+/* NON_MATCHING: 6 of 27 words match.  */
+#ifdef NON_MATCHING
+void Init_cmpModel(void) {
+    cmpInitCmpModelSub();
+    cmpCampEFFTES();
+    cmpInitDstEff();
+    cmpData18 = NULL;
+    cmpData18 = sdfChipAllocZeroDirect(0xE0);
+    cmpData11 = 7;
+    cmpSetModelMotionData = -1;
+    cmpData17 = 30.0f;
+    cmpData19 = -1;
+    cmpData10 = 0;
+    cmpData12 = 0;
+    cmpData13 = 0;
+    cmpData16 = 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", Init_cmpModel);
+#endif
 
 void End_cmpModel(void) {
     cmpWaitLoadModel();
@@ -664,7 +761,35 @@ INCLUDE_ASM(const s32, "code_003648C0", Setup);
 
 INCLUDE_ASM(const s32, "code_003648C0", Setup_cmpModel);
 
+/* NON_MATCHING: 32 of 48 words match.  */
+#ifdef NON_MATCHING
+s32 cmpLoadStatusModel(void) {
+    if (cmpData10 == 1) {
+        if (sdfDelayedResrcCheck()) {
+            return 1;
+        }
+        cmpCallPrepare(cmpData11, cmpData12, cmpData13);
+        cmpData10 = 2;
+    }
+    if (cmpData10 == 0) {
+        return 0;
+    }
+    if (cmpCallPrepare(cmpData11, cmpData12, cmpData13) == NULL) {
+        return 1;
+    }
+    if (cmpCallPrepare(cmpData11, cmpData12, cmpData13) == (dds3ModelResrc_t *)-1) {
+        return 1;
+    }
+    cmpFreeResource();
+    cmpDrawStatusModel_cmpModelData = mdlLoad(cmpData11, cmpData12);
+    cmpSetModelMotion(cmpDrawStatusModel_cmpModelData);
+    cmpCreateBstEff();
+    cmpData10 = 0;
+    return 2;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpLoadStatusModel);
+#endif
 
 s32 cmpWaitLoadModel(void) {
     if (cmpLoadStatusModel() == 1) {
@@ -874,9 +999,37 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpDrawParamCursor);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpDrawParameter);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpGetNowSummonerRank);
+s32 cmpGetNowSummonerRank(void) {
+    s32 i = 0;
+    s32 rank;
 
+    for (rank = 29;; rank--) {
+        s32 bit = cmpGetSummonerRank2SprNoData[i++].bit;
+
+        if (bit < 0 || evtBitCheck(bit)) {
+            break;
+        }
+    }
+    return rank;
+}
+
+/* NON_MATCHING: 1 of 32 words match.  */
+#ifdef NON_MATCHING
+s32 cmpGetSummonerRank2SprNo(void) {
+    s32 i;
+    s32 sprNo = 29;
+
+    for (i = 0; cmpGetSummonerRank2SprNoData[i].bit >= 0; i++) {
+        if (evtBitCheck(cmpGetSummonerRank2SprNoData[i].bit)) {
+            sprNo = cmpGetSummonerRank2SprNoData[i].sprNo + 29;
+            break;
+        }
+    }
+    return sprNo;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpGetSummonerRank2SprNo);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankObjectInit);
 
@@ -892,7 +1045,24 @@ void cmpSummnerRankMngSetState(cmpSummnerRankMng_t *psSelf, cmpSummnerRankFunc_t
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankMngExecute);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankInit);
+void cmpSummnerRankInit(cmpSummnerRank_t *psSelf) {
+    s32 sprNo = cmpGetSummonerRank2SprNo();
+
+    memset(psSelf, 0, sizeof(cmpSummnerRank_t));
+    psSelf->bSummnerRankStart = 0;
+    psSelf->bSummnerRankWait = 1;
+    cmpSummnerRankObjectInit(&psSelf->sObjBG);
+    cmpSummnerRankObjectInit(&psSelf->sObjBGSRank);
+    cmpSummnerRankObjectInit(&psSelf->sObjBGRaido);
+    cmpSummnerRankObjectInit(&psSelf->sObjCyusei);
+    cmpSummnerRankObjectInit(&psSelf->sObjSRank);
+    cmpSummnerRankObjectInit(&psSelf->sObjRaido);
+    cmpSummnerRankObjectInit(&psSelf->sObjBlur);
+    psSelf->sObjBGSRank.bEnabled = 1;
+    psSelf->sObjBGSRank.iRankSprNo = sprNo;
+    psSelf->sObjBGRaido.bEnabled = 1;
+    psSelf->sObjSRank.iRankSprNo = sprNo;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankStateWait);
 
@@ -1194,7 +1364,19 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCurGetSelectMemSklID);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpLeaf14);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallMenuGetSelectID);
+s32 cmpCallMenuGetSelectID(void) {
+    s32 id = itfMenuGetSelectID(cmpPartyDrawFuncSub());
+    s32 ret = -1;
+
+    if (id == 1) {
+        ret = DDS3_GBWK->unk4242;
+    } else if (id == 2) {
+        ret = DDS3_GBWK->unk4244;
+    } else if (id >= 4) {
+        ret = id + cmpGetStockPID()->page * 8 - 4;
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpRefDDS3GBWK2);
 

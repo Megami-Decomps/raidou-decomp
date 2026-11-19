@@ -10,8 +10,9 @@
 
 /* ee-g++ vtable slot: this adjustment, then the method. */
 typedef struct jmsVtblEntry_t {
-    s32 delta;
-    void *func;
+    s16 delta;
+    s16 index;
+    s32 (*func)();
 } jmsVtblEntry_t;
 
 /* The object jmsFirstInitSub allocates (0xBC bytes); jmsLeaf12 and jmsRefDDS3GBWK construct it. */
@@ -39,10 +40,17 @@ void SetFlagMenu(dds3ProcessID_t *PID, s32 MenuID, ITFMENU_CB_GF Flag, s8 Bool);
 void SetRootMenu(dds3ProcessID_t *PID, s32 MenuID, itfMenuFunc_t func);
 void SetMenu(dds3ProcessID_t *PID, s32 MenuID, s32 ParentMenuID, itfMenuFunc_t func);
 void jmsStart(void);
+/* jmsMenu item callback and title draw function. */
+s32 cmpCallGetProcessData27(void);
+void cmpCallGetProcessData32(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate);
+void cmpCallGetProcessData28(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate);
+extern char cmpData50[];
 
 extern jmsVtblEntry_t jmsData12[34];
 extern jmsVtblEntry_t jmsData13[33];
 extern jmsWork_t *jmsLeaf11Data;
+extern const char jmsStrJimusyoJmsQuestTbl[];
+extern const char jmsStrJimusyoJmsQuestStrBmd[];
 void jmsLeaf12(jmsWork_t *wk);
 s32 jmsRefDDS3GBWK(jmsWork_t *wk);
 void cmpCallBitCheck10(jmsWork_t *wk);
