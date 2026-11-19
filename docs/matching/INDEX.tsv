@@ -141,6 +141,8 @@ SetAddMag	code_002F5CF0	raidou2 0x60	9 of 21 words differ	docs/matching/code_002
 sbtlInitSBtlSub2	code_002F5CF0	raidou2 0x5C	22 of 24 words differ	docs/matching/code_002F5CF0.md	9		
 sbtlDrawNum4	code_002F5CF0	raidou2 0x54	19 of 19 words differ	docs/matching/code_002F5CF0.md	15		
 sbtlSelectTargetCursor	code_002F5CF0	raidou2 0x6C	18 of 28 words differ	docs/matching/code_002F5CF0.md	21		
+sbtlDrawFuncTalk	code_002F5CF0	raidou2 0xF0	27 of 60 words differ	docs/matching/code_002F5CF0.md	27		
+sbtlCheckProcEnd	code_002F5CF0	raidou2 0x88	18 of 29 words differ	docs/matching/code_002F5CF0.md	33		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	13		
 fclCallSetFontColorNo3	code_002FA4F0	raidou1 0x118	4 of 70 words differ	docs/matching/code_002FA4F0.md	21		
@@ -512,6 +514,13 @@ sbtlSearchEffect_SAB	sbtlEff_00289E50	raidou2 0x74	21 of 30 words differ	docs/ma
 sbtlBtlForceDeleteEffectWorkIDSub2	sbtlEff_00289E50	raidou2 0x48	14 of 18 words differ	docs/matching/sbtlEff_00289E50.md	29		
 sbtlCallIsSceanStop2	sbtlEff_00289E50	raidou2 0x4C	14 of 19 words differ	docs/matching/sbtlEff_00289E50.md	35		
 DeletePanel	sbtlEff_00289E50	raidou2 0x84	3 of 33 words differ	docs/matching/sbtlEff_00289E50.md	41		
+sbtlDeleteEffectData_SkillIDType	sbtlEff_00289E50	raidou2 0x94	17 of 36 words differ	docs/matching/sbtlEff_00289E50.md	47		
+sbtlForceDelete_ID_Acter	sbtlEff_00289E50	raidou2 0xE4	5 of 57 words differ	docs/matching/sbtlEff_00289E50.md	53		
+sbtlForceDelete_ID_SummonFR	sbtlEff_00289E50	raidou2 0x9C	20 of 38 words differ	docs/matching/sbtlEff_00289E50.md	59		
+sbtlCallBtlSearchDelWorkSide	sbtlEff_00289E50	raidou2 0x12C	36 of 75 words differ	docs/matching/sbtlEff_00289E50.md	65		
+sbtlSetSummonEffect_Nakama	sbtlEff_00289E50	raidou2 0xD4	10 of 53 words differ	docs/matching/sbtlEff_00289E50.md	71		
+sbtlMainDraw	sbtlEff_00289E50	raidou2 0x13C	71 of 80 words differ	docs/matching/sbtlEff_00289E50.md	77		
+sbtlMainDraw2	sbtlEff_00289E50	raidou2 0xC0	38 of 46 words differ	docs/matching/sbtlEff_00289E50.md	83		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		
 sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSub.md	19		

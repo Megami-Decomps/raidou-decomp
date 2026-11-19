@@ -12,6 +12,10 @@
 #include "code_r1_002C8188.h"
 #include "code_r1_002C7ED0.h"
 #include "sdfMemory.h"
+#include "sBtlDraw.h"
+#include "code_0027A1E8.h"
+#include "dds3KernelDraw.h"
+#include "evtMoon.h"
 
 s32 OnDataLoadProc(dds3ProcessID_t *id) {
     s32 i;
@@ -95,7 +99,23 @@ s32 sbtlLoadEffectData_Decode(struct SBTLUNIT_WORK *wk) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlInitLoadPlayerOnMemData);
+s32 sbtlInitLoadPlayerOnMemData(void) {
+    switch (sbtlDat()->kind) {
+        case 1:
+            sbtlData83->pacHandle = pacLoad(sbtlStrBattleSbPack3SLb);
+            break;
+        case 2:
+            sbtlData83->pacHandle = pacLoad(sbtlStrBattleSbPack3LLb);
+            break;
+        case 3:
+            sbtlData83->pacHandle = pacLoad(sbtlStrBattleSbPack3ALb);
+            break;
+    }
+    sbtlData83->setflg = 0;
+    sbtlData83->dataCnt = 0;
+    pacSync(sbtlData83->pacHandle);
+    return 1;
+}
 
 s32 sbtlLoadEndCheck_PlayerOnMemData(void) {
     if (sbtlData83->setflg == 0) {
@@ -129,7 +149,21 @@ s32 evtCommand_PMV_LOAD_END_WAIT(void) {
     return sbtlLoadEffectData_IDMask(sbtlCallBtlDat3(), EFFPAC_ST_DECODE | EFFPAC_ST_ONMEM) != 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteOnData);
+s32 sbtlDeleteOnData(s32 flg) {
+    s32 i;
+
+    for (i = 0; i < SBTL_PACK_SLOT_COUNT; i++) {
+        if (btlLoadSbPackData[i].unkC) {
+            effPartsDelete(btlLoadSbPackData[i].unkC);
+            btlLoadSbPackData[i].unkC = NULL;
+        }
+        if (flg == 1 && btlLoadSbPackData[i].handle) {
+            sdfMemFreeDirect(btlLoadSbPackData[i].handle);
+            btlLoadSbPackData[i].handle = NULL;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallColorSet4);
 
@@ -188,6 +222,10 @@ SBTLEFF_WORK *sbtlCallMemAllocDirect3(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WOR
     return ewk;
 }
 
+INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlStrBattleSbPack3LLb);
+
+INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlStrBattleSbPack3ALb);
+
 INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlBtlLoadPlayerOnMemDataSubTable2);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlGetDmgEffScale);
@@ -244,7 +282,27 @@ s32 CheckEffectDataSingle(s32 type, s32 cmp)
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckEffectData);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckEffectData_SeOnly);
+s32 sbtlCheckEffectData_SeOnly(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type) {
+    struct SBTLSKILLP_TBL *skl;
+    s32 flg = 0;
+
+    if (sbtlSearchEffectData(sklid) == -1) {
+        return 0;
+    }
+    skl = sbtlGetSkilltbl(sklid);
+    if (skl) {
+        if (type == 1 && (skl->flg2 & 0x100000)) {
+            flg = 1;
+        }
+        if (type == 2 && (skl->flg2 & 0x200000)) {
+            flg = 1;
+        }
+    }
+    if (!flg) {
+        sbtlBstse(&wk->pos, sklid, type);
+    }
+    return 1;
+}
 
 /* body: matched in raidou @ 780f3f57: src/raidou1/code_0028A320.c:405, found, same function 1.00 (words 25/25, calls 1.00, shape 1.00) */
 s32 sbtlCallBtlGetSkilltbl16(struct SBTLUNIT_WORK *tgtwk, SKLID sklid)
@@ -320,9 +378,55 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffectData_SkillID);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_SPID);
 
+/* NON_MATCHING: 20 of 37 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlDeleteEffectData_SkillIDType(SBTLEFF_LISTWORK *lwk, SKLID skillid, u8 type) {
+    SBTLEFF_WORK *wk = lwk->wk;
+    if (!skillid) {
+        return 1;
+    }
+    if (!lwk->num || !wk) {
+        return 0;
+    }
+    do {
+        if (wk->BEDsklid == skillid && wk->BEDtype == type) {
+            if ((u32)(wk->st - 1) >= 2) {
+                wk->st = 5;
+                wk->alpha = 0;
+                wk->flg |= 0x80000000;
+            }
+            wk->flg |= 8;
+        }
+        wk = wk->next;
+    } while (wk);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffectData_SkillIDType);
+#endif
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlDeleteEffectData_SkillIDTypeUnit);
+s32 sbtlDeleteEffectData_SkillIDTypeUnit(SBTLEFF_LISTWORK *lwk, SKLID skillid, u8 type, s32 unitID) {
+    SBTLEFF_WORK *wk = lwk->wk;
+
+    if (!skillid) {
+        return 1;
+    }
+    if (!lwk->num || !wk) {
+        return 0;
+    }
+    do {
+        if (wk->BEDsklid == skillid && wk->BEDtype == type && wk->acterID == unitID) {
+            if ((u32)(wk->st - 1) < 2) {
+                wk->flg |= 8;
+            } else {
+                wk->st = 5;
+                wk->alpha = 0;
+            }
+        }
+        wk = wk->next;
+    } while (wk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlEff_DeleteEffectData_EffID);
 
@@ -400,11 +504,71 @@ s32 sbtlGetEffectStat_ID(SBTLEFF_LISTWORK *lwk, s32 eListID) {
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID);
 
+/* NON_MATCHING: 52 of 57 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlForceDelete_ID_Acter(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, EFFID effectid) {
+    SBTLEFF_WORK *next;
+    u32 flg;
+
+    if (!wk_sbtl->effList) {
+        return 0;
+    }
+    next = lwk->wk;
+    if (!lwk->num || !next) {
+        return 0;
+    }
+    do {
+        if (next->effectid == effectid && sbtlCheckDeleteEffect(next) && wk->field1A0 == next->acterID) {
+            flg = next->flg;
+            if ((u32)(next->st - 1) < 2) {
+                flg |= 0x80000000;
+                flg |= 8;
+            } else {
+                next->st = 4;
+                flg |= 0x80000000;
+            }
+            next->flg = flg;
+        }
+        next = next->next;
+    } while (next);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID_Acter);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID_Summon);
 
+/* NON_MATCHING: 19 of 39 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlForceDelete_ID_SummonFR(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk) {
+    SBTLEFF_WORK *next;
+    u32 flg;
+
+    if (!wk_sbtl->effList) {
+        return 0;
+    }
+    next = lwk->wk;
+    if (!lwk->num || !next) {
+        return 0;
+    }
+    do {
+        if (next->effectid == 40 && wk->field1A0 == next->acterID) {
+            flg = next->flg | 0x80000000;
+            if ((u32)(next->st - 1) < 2) {
+                flg |= 8;
+            } else {
+                next->st = 4;
+            }
+            next->flg = flg;
+        }
+        next = next->next;
+    } while (next);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID_SummonFR);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_ID_Return);
 
@@ -473,9 +637,56 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDeleteAll_TimeStopSkill);
 
 INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlLeaf30Table);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckDeleteEffect);
+s32 sbtlCheckDeleteEffect(SBTLEFF_WORK *wk) {
+    s32 ret = 1;
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckSABData);
+    if ((u16)((sbtlGetSkilltbl(wk->BEDsklid)->type & 0xFFF) - 9) < 2) {
+        return 0;
+    }
+    if (sbtlBtlListProcSub(wk)) {
+        return 1;
+    }
+    switch (wk->effectid) {
+        case 3:
+        case 4:
+        case 5:
+        case 7:
+        case 14:
+        case 18:
+        case 40:
+        case 42:
+        case 44:
+        case 51:
+            ret = 0;
+            break;
+    }
+    return ret;
+}
+
+s32 sbtlCheckSABData(SKLID sklid) {
+    switch (sklid) {
+    case 152:
+    case 418:
+    case 419:
+    case 420:
+    case 425:
+    case 427:
+    case 433:
+    case 435:
+    case 436:
+    case 437:
+    case 439:
+    case 442:
+    case 449:
+    case 451:
+    case 468:
+    case 472:
+    case 477:
+    case 1120:
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceReset);
 
@@ -531,7 +742,24 @@ s32 sbtlSearchEffect_SAB(SBTLEFF_LISTWORK *lwk, SKLID BEDsklid, s32 BEDtype) {
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_SAB);
 #endif
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_SAB_Acter);
+s32 sbtlSearchEffect_SAB_Acter(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SKLID BEDsklid, s32 BEDtype) {
+    SBTLEFF_WORK *ewk = lwk->wk;
+    struct SBTLUNIT_WORK *acter;
+
+    if (!lwk->num) {
+        return 0;
+    }
+    while (ewk) {
+        if (ewk->BEDsklid == BEDsklid && sbtlBtlListProcSub(ewk) && CheckEffectDataSingle(ewk->BEDtype, BEDtype)) {
+            acter = sbtlSearchUnit_ID(wk_sbtl->unitList, ewk->acterID);
+            if (acter && wk->field1A0 == acter->field1A0) {
+                return 1;
+            }
+        }
+        ewk = ewk->next;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSearchEffect_ID);
 
@@ -599,7 +827,35 @@ s32 sbtlSearchDelWork_Side(SBTLEFF_DELLISTWORK *lwk, u8 side) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateDelWork);
+s32 sbtlCreateDelWork(SBTLEFF_DELLISTWORK *lwk, SKLID skillid, u8 side, s32 GroupID) {
+    sdfMemHandle_t *handle;
+    SBTLEFF_DELWORK *dwk;
+    SBTLEFF_DELWORK *last;
+
+    handle = sdfMemAllocDirect(sizeof(SBTLEFF_DELWORK));
+    dwk = sdfMemLock(handle);
+    memset(dwk, 0, sizeof(SBTLEFF_DELWORK));
+    dwk->handle = handle;
+    dwk->prev = NULL;
+    dwk->next = NULL;
+    last = lwk->dwk;
+    if (!last) {
+        lwk->dwk = dwk;
+        lwk->num = 1;
+    } else {
+        while (last->next) {
+            last = last->next;
+        }
+        last->next = dwk;
+        dwk->prev = last;
+        lwk->num++;
+    }
+    dwk->GroupID = GroupID;
+    dwk->sklid = skillid;
+    dwk->side = side;
+    dwk->gstat = SBTLEFF_DELST_PROC;
+    return 1;
+}
 
 s32 sbtlDelProc(SBTLEFF_DELLISTWORK *lwk)
 {
@@ -737,13 +993,63 @@ s32 sbtlGetExeSkill(SKLID sklid)
     return no;
 }
 
+/* NON_MATCHING: 39 of 75 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlSearchDelWorkSide(struct SBTLUNIT_WORK *wk) {
+    struct SBTLSKILLP_TBL *tbl;
+    s32 sklid[4];
+    s32 i;
+    s32 k;
+
+    if (sbtlSearchDelWork_Side(wk_sbtl->effdelList, wk->field414)) {
+        return 0;
+    }
+    for (i = 0; i < 16; i++) {
+        sklid[0] = sbtlCallBtlGetSkilltbl23(wk->haveskill[i + 2], &sklid[1]);
+        if (sklid[0] != 0) {
+            k = 0;
+            do {
+                tbl = sbtlGetSkilltbl(sklid[k]);
+                if (!(tbl->flg2 & 0x1000) && (!(tbl->type & 0x2000) || sklid[k] == SKLID_OFS_AUTO)
+                    && sbtlGetExeSkill(sklid[k]) != -1 && !sbtlLoadEffectData_IDMask(sklid[k], EFFPAC_ST_DECODE)) {
+                    return 0;
+                }
+                k++;
+            } while (k < 2 && sklid[k] != 0);
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchDelWorkSide);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckLoadEffectData);
 
+/* NON_MATCHING: 43 of 53 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSetSummonEffect_Nakama(struct SBTLUNIT_WORK *wk, s8 flg) {
+    if (wk_sbtl->status4 & 0x200) {
+        flg = 1;
+    }
+    switch (flg) {
+    case 0:
+        sbtlCreateEff(wk_sbtl->effList, wk, EFFID_SUMMON_FR, 0, &wk->pos, 0x80808080, 0);
+        break;
+    case 1:
+        sbtlCreateEff(wk_sbtl->effList, wk, EFFID_SUMMON_ND, 0, &wk->pos, 0x80808080, 0);
+        break;
+    case 2:
+        sbtlCreateEff(wk_sbtl->effList, wk, EFFID_SWTIN_FR, 0, &wk->pos, 0x80808080, 0);
+        break;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetSummonEffect_Nakama);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetReturnEffect_Nakama);
 
@@ -1128,6 +1434,71 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetSelectAnim);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlResetSelectAnim);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlMainDraw);
+/* NON_MATCHING: 8 of 79 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlMainDraw(void) {
+    SBTL_PANEL *panel = wk_sbtl->panel;
+    u8 kaiwaflg;
 
+    if (panel) {
+        if (!panel->resources) {
+            return 0;
+        }
+        if ((panel->flg & 2) && panel->mode != 3 && !(wk_sbtl->status4 & 0x10)) {
+            sbtlEnemyData();
+            kaiwaflg = wk_sbtl->field42CA;
+            if ((u32)(kaiwaflg - 1) < 2) {
+                if (wk_sbtl->field42CB) {
+                    sbtlPlayerData();
+                }
+                if (wk_sbtl->field42CC) {
+                    sbtlSummonDevilData();
+                }
+            } else {
+                sbtlPlayerData();
+                sbtlSummonDevilData();
+            }
+            sbtlLeaf78();
+            eglSetOt(0x68);
+            if (!wk_sbtl->fieldCA2) {
+                if (wk_sbtl->field430) {
+                    evtMoonFadeOut(1);
+                } else if (!wk_sbtl->bBfrBtlEnd) {
+                    evtEnableMoonDraw();
+                } else if (wk_sbtl->flg2 & 2) {
+                    evtEnableMoonDraw();
+                }
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+#else
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlMainDraw);
+#endif
+
+/* NON_MATCHING: 10 of 48 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlMainDraw2(void) {
+    SBTL_PANEL *panel = wk_sbtl->panel;
+    s32 i;
+
+    if (panel) {
+        if (!panel->resources) {
+            return 0;
+        }
+        if ((panel->flg & 2) && panel->mode != 3 && !(wk_sbtl->status4 & 0x10)) {
+            for (i = 0; i < 2; i++) {
+                if (sbtlGetNakama(i)) {
+                    sbtlSummonDevilAshimoto(sbtlGetNakama(i), i);
+                }
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlMainDraw2);
+#endif

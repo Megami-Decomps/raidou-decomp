@@ -99,6 +99,11 @@ s32 sbtlUseItemProcSBtlPlayerSub(void);
 s32 sbtlUseItemProcSBtlPlayerSub2(struct SBTLUNIT_WORK *wk, u32 rgba);
 void sbtlNum3(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_OT a_ot, u32 rinkaku_rgba, f32 scale);
 void sbtlDrawNum4(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_OT a_ot, u32 rinkaku_rgba, f32 scale);
+void sbtlSummonDevilData_Sub(struct SBTLUNIT_WORK *wk, s32 no);
+void sbtlSummonDevilData(void);
+void sbtlPlayerData(void);
+void sbtlEnemyData(void);
+void sbtlSummonDevilAshimoto(struct SBTLUNIT_WORK *wk, s32 no);
 #endif
 
 #endif

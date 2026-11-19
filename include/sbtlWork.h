@@ -205,11 +205,15 @@ typedef struct SBTL_WORK {
     s16 effcnt; /* sbtlGetStartTime_Damage cycles it through 0..7 */
     u8 pad422[0x428 - 0x422];
     dds3ProcessID_t *process;
-    u8 pad42C[0x10];
+    u8 pad42C[0x430 - 0x42C];
+    s32 field430; /* sbtlMainDraw fades the moon out when set */
+    u8 pad434[0x43C - 0x434];
     u32 flg;
     u32 flg2;
     u32 status3;
-    u8 pad448[0xC];
+    u8 pad448[0x4];
+    u32 status4; /* HD name; 0x10 hides the summon foot markers, 0x200 forces the ND summon effect */
+    u8 pad450[0x4];
     s32 targetUnitID;
     u16 hitMdlNo; /* next mdl resource number for hit models (type 7) */
     s16 battleMode;
@@ -329,11 +333,18 @@ typedef struct SBTL_WORK {
     u8 field878;
     u8 field879;
     u8 field87A;
-    u8 padC57[0xC90 - 0xC57];
+    u8 padC57[0xC7B - 0xC57];
+    u8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
+    u8 padC7C[0xC90 - 0xC7C];
     struct SBTLUNIT_WORK *pNakama1;
-    u8 pad_C94[0xD90 - 0xC94];
+    u8 pad_C94[0xCA2 - 0xC94];
+    s8 fieldCA2; /* sbtlMainDraw leaves the moon alone when set */
+    u8 padCA3[0xD90 - 0xCA3];
     SUMMON_CTRL smnCtrl;
-    u8 padDA0[0xE84 - 0xDA0];
+    u8 padDA0[0xDA4 - 0xDA0];
+    struct dds3Basic_t *apMarkerUnit[8];
+    struct dds3Basic_t *apMarkerUnitR[8];
+    u8 padDE4[0xE84 - 0xDE4];
     s32 fieldE84; /* sbtlDat's index into datData20 */
     u8 padE88[0x4];
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */

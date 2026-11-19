@@ -23,3 +23,15 @@ Retail copies a_num and a_x into other registers and computes the three compares
 Raidou 2: 18 of 28 words differ, first at +0x1C; emitted 120 bytes, native 108 bytes.
 
 Retail keeps tgtList in $6 and the zero result in $2 from the first test; the draft allocates them the other way. Tried a tgtList local with one && test and a result variable (both worse). 18 words; behaviour equal (nm_behaviour clean).
+
+## sbtlDrawFuncTalk (code_002F5CF0, raidou2 0xF0)
+
+Raidou 2: 27 of 60 words differ, first at +0x2C; emitted 272 bytes, native 240 bytes.
+
+Retail sends every result branch to one shared exit; the draft splits the epilogue. Tried the if chain, a switch and nested ifs in retail test order. 27 words.
+
+## sbtlCheckProcEnd (code_002F5CF0, raidou2 0x88)
+
+Raidou 2: 18 of 29 words differ, first at +0x28; emitted 116 bytes, native 136 bytes.
+
+Retail masks both the count and the count + 1 before each test and picks one; the draft masks after the add. Tried a zero start with four ifs and a ternary per check (worse). 18 words; behaviour equal (nm_behaviour clean).

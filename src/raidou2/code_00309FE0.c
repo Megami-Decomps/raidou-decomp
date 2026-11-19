@@ -22,6 +22,7 @@
 #include "ps2asm.h"
 #include "sBtlSM.h"
 #include "sBtlEff.h"
+#include "code_002F5CF0.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -1066,7 +1067,7 @@ void sbtlLeaf43(sbtlSummonText_t *text) {
         text->field44 = 80;
         text->field48 = -10;
         text->field3C = 1.5f;
-        text->hSpr = sbtlData135[0];
+        text->hSpr = sbtlData135.hSpr;
         text->field60 = 0;
         text->field40 = 0;
         text->field64 = 0.0f;

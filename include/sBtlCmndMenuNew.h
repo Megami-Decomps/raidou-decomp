@@ -135,7 +135,6 @@ s32 slCallBitCheck2(s32 devilId, s32 arg1);
 s32 trmCallBtlSearchUnitID(void);
 s32 trmCallGetProcessData(void);
 struct SBTLUNIT_LISTWORK *trmCallBtlCreateUnitList(u8 group);
-extern struct sprHandle_t *sbtlData135[];
 extern s32 cmpCallGetProcessData10Work[];
 s32 mapMenuStart(void);
 s32 sbtlCheckLoopMotion(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);

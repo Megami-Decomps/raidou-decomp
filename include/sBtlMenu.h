@@ -36,6 +36,34 @@ s32 ProcessCheck(void);
 void sbtlCallProcEnd(sBtlMenu_t *wk);
 void IsStart(s32 type);
 void sbtlMenuOpen(void);
+/* Battle menu strings by menu index. */
+extern char *sbtlCallMenuClearMenuAllData[];
+void ChkEnableDecideEscape(sBtlMenu_t *wk);
+u8 sbtlCheckProcEnd(sBtlMenu_t *wk);
+s32 sbtlCheckTalkSelectTarget(struct SBTLUNIT_WORK *unit);
+SBTLMENU_ENABLETALK sbtlCheckEnableTalk(struct SBTLUNIT_WORK *unit);
+/* Node of each menu select ID for steps 3 to 14. */
+extern SBTLMENU_NODE sbtlGetNodeData[16];
+SBTLMENU_NODE sbtlGetNode(void);
+extern char sbtlData173[]; /* "" */
+dds3ProcessID_t *sbtlInitMenuPID(u8 a_max);
+void sbtlBtlCallEndSub(void);
+void sbtlMenuClose(void);
+void StopBattle(void);
+void sbtlCallEnd(sBtlMenu_t *wk);
+s32 sbtlFuncStart(void);
+s32 sbtlFuncMeirei(void);
+s32 sbtlFunc23(void);
+s32 sbtlCallGetProcessData48(void);
+s32 sbtlFuncEscape(void);
+s32 sbtlFuncTalk(void);
+/* Help text banks by sbtlHelpEx type. */
+extern struct frTextBank_t *cmpCallGetProcessData12Data;
+extern struct frTextBank_t *sbtlData165;
+extern struct frTextBank_t sbtlData131;
+extern struct frTextBank_t sbtlData132;
+extern struct frTextBank_t sbtlData133;
+extern struct frTextBank_t sbtlData134;
 #endif
 #ifndef VERSION_RAIDOU2
 /* Battle menu process data (0x20 bytes in R1). */
@@ -61,7 +89,7 @@ s32 sbtlCallMemFreeDelayedDirect(void);
 void sbtlCampSubSpr(void);
 void sbtlCmndCntST(void);
 s32 sbtlDrawProcess(dds3ProcessID_t *PID);
-s32 sbtlFuncKatana(void);
+sBtlMenu_t *sbtlFuncKatana(void);
 s32 sbtlIsMenuStartScript(void);
 void sbtlSetMenuImage(dds3ProcessID_t *PID);
 s32 sbtlCallGetProcessData53(dds3ProcessID_t *id);

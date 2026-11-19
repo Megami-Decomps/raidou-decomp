@@ -12,6 +12,10 @@
 #include "code_002F5CF0.h"
 #include "sBtlSM.h"
 #include "code_r1_002C8188.h"
+#include "dds3ObjectBase.h"
+#include "code_0027A1E8.h"
+#include "sBtlCmndMenuNew.h"
+#include "sBtlPanel.h"
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf7);
 
@@ -145,13 +149,11 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlLeaf116);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlDebugProcSub);
 
-s32 sbtlFuncKatana(void) {
-    s32 ret = ProcessCheck();
-
-    if (ret) {
-        return (s32)dds3GetProcessData(ProcessCheckData);
+sBtlMenu_t *sbtlFuncKatana(void) {
+    if (ProcessCheck()) {
+        return dds3GetProcessData(ProcessCheckData);
     }
-    return ret;
+    return NULL;
 }
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawTargetCursorNakama);
@@ -175,7 +177,27 @@ INCLUDE_ASM(const s32, "code_002F5CF0", summonMenuResetMenu);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlCallEndSub);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCheckEnableTalk);
+SBTLMENU_ENABLETALK sbtlCheckEnableTalk(struct SBTLUNIT_WORK *unit) {
+    BST bst;
+
+    if (!unit) {
+        return SBTLMENU_ENABLETALK_ERROR;
+    }
+    if (unit->field6C4 & 1) {
+        return SBTLMENU_ENABLETALK_NG;
+    }
+    if (unit->field6E9) {
+        return SBTLMENU_ENABLETALK_NG_BREAK;
+    }
+    bst = sbtlGetBadStatus(&unit->unit);
+    if (bst != BST_BOYCOTT && bst != BST_MOUDOKU && bst != BST_STONE) {
+        return SBTLMENU_ENABLETALK_NG_BST;
+    }
+    if (!sbtlCheckTalkSelectTarget(unit)) {
+        return SBTLMENU_ENABLETALK_NG;
+    }
+    return SBTLMENU_ENABLETALK_OK;
+}
 
 void sbtlSetMenuImage(dds3ProcessID_t *PID) {
     itfMenuLinkSprite(PID, wk_sbtl->panel->hPanelSpr3);
@@ -186,9 +208,52 @@ void sbtlSetMenuImage(dds3ProcessID_t *PID) {
     itfMenuSetImageColor(PID, ITFMENU_IMG_DAT_SCROLL, 200, 180, 80, 128);
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlInitMenuPID);
+dds3ProcessID_t *sbtlInitMenuPID(u8 a_max) {
+    dds3ProcessID_t *PID = itfMenuProcessStart();
+    s32 i;
 
+    if (!PID) {
+        return PID;
+    }
+    for (i = 0; i < a_max; i++) {
+        itfMenuSetRootMenu(PID, i, sbtlData173, NULL);
+    }
+    itfGeneralMenuCreatePIDSub(PID, 3);
+    itfGeneralMenuCreatePIDSub2(PID, 3);
+    itfMenuSetFlag(PID, 2, 0);
+    itfMenuSetFlag(PID, 0x10, 0);
+    sbtlSetMenuImage(PID);
+    itfMenuSetOt(PID);
+    return PID;
+}
+
+/* NON_MATCHING: 33 of 60 words match.  */
+#ifdef NON_MATCHING
+void sbtlDrawFuncTalk(s32 a_id, s32 x, s32 y, s32 z, u32 fontColor, u8 alphaRate) {
+    dds3ProcessID_t **data = dds3GetProcessData(ProcessCheckData);
+    s32 ret;
+
+    if (wk_sbtl->tgtList && a_id == itfMenuGetSelectID(data[4])) {
+        wk_sbtl->tgt_csr = a_id;
+        sbtlDrawTargetCursorEnemy();
+        ret = sbtlCheckEnableTalk(sbtlSearchUnit_ID(wk_sbtl->tgtList, wk_sbtl->tgt_csr));
+        switch (ret) {
+        case SBTLMENU_ENABLETALK_OK:
+            sbtlHelp(3, 17, alphaRate);
+            break;
+        case SBTLMENU_ENABLETALK_NG:
+        case SBTLMENU_ENABLETALK_NG_BST:
+            sbtlHelpCantUse(5, 15, alphaRate);
+            break;
+        case SBTLMENU_ENABLETALK_NG_BREAK:
+            sbtlHelpCantUse(5, 14, alphaRate);
+            break;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawFuncTalk);
+#endif
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawAnalyzePlayer);
 
@@ -242,15 +307,61 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlFuncDecideTalk);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlFuncTalk);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", ChkEnableDecideEscape);
+void ChkEnableDecideEscape(sBtlMenu_t *wk) {
+    s32 esc = sbtlEscapeCheck();
+    s32 idx;
+    s32 enable;
+
+    if (esc == 1) {
+        idx = 9;
+    } else {
+        idx = 8;
+    }
+    enable = esc != 2;
+    itfMenuSetFont(wk->menuPID, 7, sbtlCallMenuClearMenuAllData[idx]);
+    if (wk_sbtl->status3 & 0x200000) {
+        enable = 0;
+    }
+    itfMenuSetFlagMenu(wk->menuPID, 7, ITFMENU_CB_GF_ENABLE_DECIDE, enable);
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", TutorialMenuCtrl);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlChkEnableDecideMenu);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", Init_sbtlMenu);
+void Init_sbtlMenu(sBtlMenu_t *wk) {
+    wk->menuPID = sbtlInitMenuPID(8);
+    wk->listPID = sbtlInitMenuPID(32);
+    wk->charPID = sbtlInitMenuPID(32);
+    wk->nakamaPID = sbtlInitMenuPID(2);
+    cmpCallMenuProcessCheck(wk->menuPID, 1, 0, 50, 0);
+    cmpCallMenuProcessCheck(wk->charPID, 1, 0, 12, 0);
+    cmpCallMenuProcessCheck(wk->nakamaPID, 1, 0, 12, 0);
+    itfCallGetProcessData7(wk->charPID, 1, -87);
+    itfCallGetProcessData7(wk->charPID, 2, -87);
+    itfCallGetProcessData7(wk->nakamaPID, 1, -87);
+    itfCallGetProcessData7(wk->nakamaPID, 2, -87);
+    if (sbtlCheckTutorialBattle()) {
+        sbtlFuncEscapeData |= 4;
+    }
+}
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallMenuClearMenuAll);
+void sbtlCallMenuClearMenuAll(sBtlMenu_t *wk) {
+    itfMenuClearMenuAll(wk->menuPID);
+    if (wk->type == 1) {
+        itfMenuSetRootMenu(wk->menuPID, 15, sbtlCallMenuClearMenuAllData[1], sbtlFuncStart);
+    } else {
+        itfMenuSetRootMenu(wk->menuPID, 1, sbtlCallMenuClearMenuAllData[2], sbtlFuncMeirei);
+    }
+    itfMenuSetRootMenu(wk->menuPID, 2, sbtlCallMenuClearMenuAllData[3], sbtlFunc23);
+    itfMenuSetRootMenu(wk->menuPID, 3, sbtlCallMenuClearMenuAllData[4], sbtlCallGetProcessData48);
+    if (wk->type == 0) {
+        itfMenuSetRootMenu(wk->menuPID, 5, sbtlCallMenuClearMenuAllData[6], sbtlFuncItem);
+    }
+    itfMenuSetRootMenu(wk->menuPID, 6, sbtlCallMenuClearMenuAllData[7], sbtlCallGetProcessData47);
+    itfMenuSetRootMenu(wk->menuPID, 7, sbtlCallMenuClearMenuAllData[8], sbtlFuncEscape);
+    itfMenuSetRootMenu(wk->menuPID, 14, sbtlCallMenuClearMenuAllData[10], sbtlFuncTalk);
+}
 
 void sbtlCallProcEnd(sBtlMenu_t *wk) {
     itfMenuProcessEnd(wk->menuPID);
@@ -259,9 +370,48 @@ void sbtlCallProcEnd(sBtlMenu_t *wk) {
     itfMenuProcessEnd(wk->nakamaPID);
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCheckProcEnd);
+/* NON_MATCHING: 16 of 34 words match.  */
+#ifdef NON_MATCHING
+u8 sbtlCheckProcEnd(sBtlMenu_t *wk) {
+    u8 cnt = itfMenuProcessCheck(wk->menuPID) != 0;
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallEnd);
+    if (itfMenuProcessCheck(wk->listPID)) {
+        cnt++;
+    }
+    if (itfMenuProcessCheck(wk->charPID)) {
+        cnt++;
+    }
+    if (itfMenuProcessCheck(wk->nakamaPID)) {
+        cnt++;
+    }
+    return cnt;
+}
+#else
+INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCheckProcEnd);
+#endif
+
+void sbtlCallEnd(sBtlMenu_t *wk) {
+    if (wk_sbtl->tgtList) {
+        sbtlDeleteUnitList(wk_sbtl->tgtList);
+        wk_sbtl->tgtList = NULL;
+    }
+    if (wk->type == 0) {
+        sbtlBtlCallEndSub();
+        sbtlCancelMenuPara();
+    } else if (wk->type == 1) {
+        wk_sbtl->bBfrBtlEnd = 1;
+        sbtlMenuClose();
+        if (wk_sbtl->stageNo == 500 || wk_sbtl->stageNo == 567) {
+            StopBattle();
+        }
+    }
+    wk->step = 1;
+    wk->flag &= 0xCD;
+    if (wk_sbtl->flg2 & 2) {
+        wk_sbtl->flg2 &= ~2;
+        sbtlMenuClose();
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlChkCallEnd);
 
@@ -347,7 +497,30 @@ s32 ProcessCheck(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlGetNode);
+SBTLMENU_NODE sbtlGetNode(void) {
+    SBTLMENU_NODE node = SBTLMENU_NODE_NONE;
+    sBtlMenu_t *wk = sbtlFuncKatana();
+    u32 id;
+
+    if (!wk) {
+        return SBTLMENU_NODE_NONE;
+    }
+    if (!itfMenuProcessCheck(wk->menuPID)) {
+        return SBTLMENU_NODE_NONE;
+    }
+    if (wk->step == 1 && sbtlGetStat() == SBTLMENU_NODE_ORDER) {
+        return SBTLMENU_NODE_ORDER;
+    }
+    if (wk->step == 2) {
+        node = SBTLMENU_NODE_ROOT;
+    } else if ((u8)(wk->step - 3) < 12) {
+        id = itfMenuGetSelectID(wk->menuPID);
+        if (id < 16) {
+            node = sbtlGetNodeData[id];
+        }
+    }
+    return node;
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", GetActionUnit);
 
@@ -545,7 +718,21 @@ s32 sbtlCallGetSmallFontFRQ4(s32 x, s32 y, u8 bRight, u32 color, u8 alpha, s32 o
     return width;
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallGetSmallFontFRQ3);
+s32 sbtlCallGetSmallFontFRQ3(s32 x, s32 y, s32 w, u32 color, u8 alpha, s32 ot, void *str) {
+    frFontHandle_t *frq;
+    s32 width;
+
+    if (str == NULL) {
+        return -1;
+    }
+    frq = frwGetSmallFontFRQ2(x << 4, y << 3, 0, (color & ~0xFF) + (u8)((color & 0xFF) * alpha / 255), str, 0);
+    frSetFontSpace(frq, 0);
+    width = frq->advance;
+    frSetDrawPosition(frq, (x << 4) + (((w - width) >> 1) << 4), y << 3);
+    frDrawFontOt(frq, 1, ot);
+    frDestroyFontRequestAfter(frq);
+    return width;
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlNumFont);
 
@@ -566,7 +753,27 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilAshimoto);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilData_Sub);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilData);
+void sbtlSummonDevilData(void) {
+    struct SBTLUNIT_WORK *nakama[2];
+    s32 i;
+
+    if (wk_sbtl) {
+        for (i = 0; i < 2; i++) {
+            if (wk_sbtl->apMarkerUnit[i]) {
+                dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[i], 1);
+                dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[i], 1);
+            }
+        }
+    }
+    nakama[0] = sbtlGetNakama(0);
+    nakama[1] = sbtlGetNakama(1);
+    if (nakama[0]) {
+        sbtlSummonDevilData_Sub(nakama[0], 0);
+    }
+    if (nakama[1]) {
+        sbtlSummonDevilData_Sub(nakama[1], 1);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlEnemyData);
 

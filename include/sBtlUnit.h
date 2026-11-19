@@ -325,8 +325,8 @@ struct SBTLUNIT_WORK {
     u16 mode;
     u8 pad1E6[0x2];
     sdatUnitWork_t unit;
-    s32 haveskill[16]; /* copied to unit.haveskill by sbtlCheckAutoSkill_Enemy */
-    u8 pad3A0[0x3F4 - 0x3A0];
+    s32 haveskill[18]; /* [0..15] copied to unit.haveskill by sbtlCheckAutoSkill_Enemy; sbtlCallBtlSearchDelWorkSide reads [2..17] */
+    u8 pad3A8[0x3F4 - 0x3A8];
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
     u8 pad40C[0x4];
     SBTLSKL_KAJA_WORK kaja[3][2];
@@ -412,7 +412,7 @@ struct SBTLUNIT_WORK {
     s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */
     u32 field6C4; /* bit 0x40 blocks hitback */
     u8 pad6C8[0x6E9 - 0x6C8];
-    s8 field6E9; /* set by trmSetProcessTerm */
+    s8 field6E9; /* set by trmSetProcessTerm; HD talkBreakDownFlg, blocks talk */
     u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
     u8 pad6F5[0x740 - 0x6F5];

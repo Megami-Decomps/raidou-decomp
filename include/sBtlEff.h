@@ -194,7 +194,11 @@ struct SBTLEFF_LISTWORK *sbtlCallColorSet5(void);
 s32 sbtlCheckDelWork_Request(struct SBTLEFF_DELLISTWORK *lwk, s32 GroupID);
 s32 sbtlCheckDeleteEffect(struct SBTLEFF_WORK *wk);
 struct SBTLEFF_DELLISTWORK *sbtlCreateDelList(void);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCreateDelWork(struct SBTLEFF_DELLISTWORK *lwk, SKLID skillid, u8 side, s32 GroupID);
+#else
 s32 sbtlCreateDelWork(struct SBTLEFF_DELLISTWORK *lwk, SKLID skillid, SBTLUNIT_SIDE side, s32 GroupID);
+#endif
 s32 sbtlDelProc(struct SBTLEFF_DELLISTWORK *lwk);
 s32 sbtlDeleteDelList(struct SBTLEFF_DELLISTWORK *lwk);
 s32 sbtlDeleteEffList(struct SBTLEFF_LISTWORK *lwk);
@@ -256,6 +260,15 @@ struct SBTL_FIELD630_WORK;
 s32 sbtlDeleteTalk(struct SBTL_FIELD630_WORK *wk);
 s32 sbtlLoadEffectData(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlSearchDelWorkSide(struct SBTLUNIT_WORK *wk);
+s32 sbtlDeleteEffectData_SkillIDType(SBTLEFF_LISTWORK *lwk, SKLID skillid, u8 type);
+s32 sbtlDeleteEffectData_SkillIDTypeUnit(SBTLEFF_LISTWORK *lwk, SKLID skillid, u8 type, s32 unitID);
+s32 sbtlInitLoadPlayerOnMemData(void);
+extern const char sbtlStrBattleSbPack3SLb[];
+extern const char sbtlStrBattleSbPack3LLb[];
+extern const char sbtlStrBattleSbPack3ALb[];
+s32 sbtlBstse(sdfVector4_t *pos, SKLID sklid, u8 type);
+s32 sbtlCheckEffectData_SeOnly(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type);
+s32 sbtlMainDraw2(void);
 #endif
 s32 sbtlFunc(s32 id, void *pData);
 s32 sbtlLoadPlayerOnMemData(void);

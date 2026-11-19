@@ -372,6 +372,7 @@ void cmpSklTypeSet(dds3ProcessID_t *PID);
 s32 itfMenuSetRootMenu(dds3ProcessID_t *PID, s32 a_id, char *a_str, itfMenuFunc_t a_func);
 s8 itfMenuSetMenu(dds3ProcessID_t *PID, s32 a_id, s32 a_parentId, char *a_str, itfMenuFunc_t a_func);
 void itfMenuSetMenuTitle(dds3ProcessID_t *PID, char *a_str);
+s32 itfMenuSetFont(dds3ProcessID_t *PID, s32 a_id, char *a_str);
 void itfMenuSetDrawFunc(dds3ProcessID_t *PID, s32 a_id, itfMenuDrawFunc_t a_func);
 void itfMenuSetCancelSE(dds3ProcessID_t *PID, s32 a_id, s32 a_se);
 void itfCallGetProcessData(dds3ProcessID_t *PID, s32 a_id);
@@ -381,6 +382,10 @@ void itfMenuSetOt(dds3ProcessID_t *PID);
 s32 itfGetFigure(s32 a_num);
 s32 itfGetFigureNum(s32 a_num, s32 a_figure);
 s32 itfCallGetProcessData7(dds3ProcessID_t *PID, u32 a_no, s32 a_val);
+#ifdef VERSION_RAIDOU2
+s32 cmpCallMenuProcessCheck(dds3ProcessID_t *PID, u32 a_no, u32 a_idx, s32 a_x, s32 a_y);
+struct frFontHandle_t *itfDrawBankTextWithLayoutFlags(s32 a_x, s32 a_y, s32 a_z, u16 a_num, struct frTextBank_t *a_bank, s32 a_flag);
+#endif
 void itfMenuSetDrawParam(dds3ProcessID_t *PID, s32 a_max, s32 a_bFix);
 #ifdef VERSION_RAIDOU2
 f32 itfCriLipSyncManagerOff(s32 major, s32 minor);
