@@ -8,7 +8,7 @@
 #include "sdfSound.h"
 #include "dds3PadManager.h"
 
-s32 rstCallGetProcessData31(dds3ProcessID_t *PID)
+s32 MainSubInit(dds3ProcessID_t *PID)
 {
     titleData_t *data = dds3GetProcessData(PID);
 
@@ -16,7 +16,7 @@ s32 rstCallGetProcessData31(dds3ProcessID_t *PID)
     return 1;
 }
 
-s32 rstLeaf11(void)
+s32 MainSubDestroy(void)
 {
     return 1;
 }
@@ -66,7 +66,7 @@ s32 rstCallGetProcessData(dds3ProcessID_t *PID) {
     return 0;
 }
 
-s32 rstCallGetProcessData32(dds3ProcessID_t *PID) {
+s32 MainSubDrawProcess(dds3ProcessID_t *PID) {
     titleData_t *data;
     s32 ret;
 
@@ -78,12 +78,12 @@ s32 rstCallGetProcessData32(dds3ProcessID_t *PID) {
     return ret;
 }
 
-s32 rstLeaf12(void)
+s32 TitleEndWaitInit(void)
 {
     return 1;
 }
 
-s32 TitleEndWaitCalcProcess(void)
+s32 TitleEndWaitDestroy(void)
 {
     return 1;
 }
@@ -101,21 +101,21 @@ s32 TitleEndWaitDrawProcess(dds3ProcessID_t *PID) {
     return ret;
 }
 
-INCLUDE_ASM(const s32, "code_0035C0B0", TitleDLCInit);
+INCLUDE_ASM(const s32, "code_0035C0B0", TitleConfigInit);
 
 INCLUDE_ASM(const s32, "code_0035C0B0", TitleConfigDestroy);
 
 INCLUDE_ASM(const s32, "code_0035C0B0", TitleConfigCalcProcess);
 
-INCLUDE_ASM(const s32, "code_0035C0B0", rstCallGetProcessData33);
+INCLUDE_ASM(const s32, "code_0035C0B0", TitleConfigDrawProcess);
 
 INCLUDE_ASM(const s32, "code_0035C0B0", TitleAdvertiseInit);
 
-INCLUDE_ASM(const s32, "code_0035C0B0", rstCallGetProcessData34);
+INCLUDE_ASM(const s32, "code_0035C0B0", TitleAdvertiseDestroy);
 
 INCLUDE_ASM(const s32, "code_0035C0B0", TitleAdvertiseCalcProcess);
 
-INCLUDE_ASM(const s32, "code_0035C0B0", rstCallGetProcessData35);
+INCLUDE_ASM(const s32, "code_0035C0B0", TitleAdvertiseDrawProcess);
 
 sdfTexHandle_t *rstCallDevLoadFileEx(const char *filename)
 {

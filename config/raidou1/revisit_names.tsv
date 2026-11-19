@@ -3978,30 +3978,13 @@
 0x002F6408	evtLeaf33	func	tier=D	derived-unit	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x002F6500	evtCallGetProcessData32	func	tier=D	derived-callee	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls dds3GetProcessData
 0x002F6598	TitleGoMain	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleGoMain, score 8.0 band B
-0x002F66A8	evtLeaf34	func	tier=D	derived-unit	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
-0x002F66B0	evtCallGetProcessData33	func	tier=D	derived-callee	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls dds3GetProcessData
-0x002F6830	rstCallGetProcessData28	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x002F68A8	rstFunc	func	tier=D	derived-unit	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
-0x002F68F8	rstCallGetProcessData29	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x002F6928	rstLeaf10	func	tier=D	derived-unit	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
-0x002F6930	rstLvUpWaitCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstResult.rstLvUpWaitCalcProcess, score 10.65 band A
-0x002F6AE8	rstCallGetProcessData30	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x002F6C00	rstCallGetProcessData31	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x002F6C28	rstLeaf11	func	tier=D	derived-unit	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
-0x002F6C30	rstCallGetProcessData	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x002F6D80	rstCallGetProcessData32	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x002F6E10	rstLeaf12	func	tier=D	derived-unit	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
-0x002F6E18	TitleEndWaitCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleEndWaitCalcProcess, score 8.0 band B
 0x002F6E20	rstCallMemset	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls memset
-0x002F6E90	rstCallGetProcessData2	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x002F6F70	TitleEndWaitDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleEndWaitDrawProcess, score 8.45 band B
 0x002F7018	TitleConfigDestroy	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleConfigDestroy, score 7.55 band B
 0x002F7048	TitleConfigCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleConfigCalcProcess, score 7.45 band B
-0x002F7140	rstCallGetProcessData33	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x002F71D0	TitleAdvertiseInit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleAdvertiseInit, score 8.95 band B
-0x002F7200	rstCallGetProcessData34	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x002F7240	TitleAdvertiseCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleAdvertiseCalcProcess, score 7.75 band B
-0x002F7460	rstCallGetProcessData35	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x002F7670	TitleDestroy	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleDestroy, score 9.45 band B
 0x002F7710	TitleProcessStart	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleProcessStart, score 12.15 band A
 0x002F7788	TitleProcessEnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleProcessEnd, score 11.0 band A
@@ -5010,22 +4993,8 @@
 0x003492A0	jmsProcessEnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD jmsInit.jmsProcessEnd, score 13.3 band A
 0x003492E0	jmsProcessCheck	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD jmsInit.jmsProcessCheck, score 7.0 band B
 0x00349360	jmsScrCmd_JMS_MOTION	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD jmsInit.jmsScrCmd_JMS_MOTION, score 9.2 band B
-0x00349B58	mnuClearTerminalPanelSelection	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0024D588, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00349DB8	shpCallGetProcessData	func	tier=D	derived-callee	na	unit code_00349B80, neighbour shpUpdateDBOOK; calls dds3GetProcessData
-0x00349E08	shpCallGetProcessData3	func	tier=D	derived-callee	na	unit code_00349B80, neighbour shpUpdateDBOOK; calls dds3GetProcessData
-0x00349E50	shpUpdateDBOOK	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD shpAction.shpUpdateDBOOK, score 8.5 band B
-0x0034A070	shpLeaf11	func	tier=D	derived-unit	na	unit code_00349B80, neighbour shpUpdateDBOOK; no named callee, caller or string
-0x0034A078	jmsLeaf14	func	tier=D	derived-unit	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
-0x0034A140	jmsCallGetProcessData12	func	tier=D	derived-callee	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
-0x0034A1E8	jmsLeaf15	func	tier=D	derived-unit	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
-0x0034A2A8	jmsCallGetProcessData13	func	tier=D	derived-callee	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
-0x0034A2F8	jmsCallGetProcessData14	func	tier=D	derived-callee	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
 0x0034A330	jmsFunc38	func	tier=D	derived-unit	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
 0x0034A368	jmsFunc39	func	tier=D	derived-unit	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
-0x0034A3A8	jmsCallGetProcessData15	func	tier=D	derived-callee	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
-0x0034A3D8	jmsCallProcessStartJmsMenu	func	tier=D	derived-callee	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls ProcessStart_jmsMenu
-0x0034A3F8	jmsCallGetProcessData16	func	tier=D	derived-callee	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
-0x0034AC50	jmsCallGetProcessData	func	tier=D	derived-callee	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
 0x0034ADE0	jmsDrawBtnIconSub	func	tier=D	derived-caller	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; called by DrawBtnIcon
 0x0034AE48	jmsFunc40	func	tier=D	derived-unit	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
 0x0034AFB8	jmsFunc41	func	tier=D	derived-unit	na	unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
@@ -5158,12 +5127,6 @@
 0x00352678	rstCallGetProcessData37	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstDrawProcess; calls dds3GetProcessData
 0x003527E0	rstBtlEndWaitInit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstResult.rstBtlEndWaitInit, score 7.15 band B
 0x00352880	rstBtlEndWaitCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstResult.rstBtlEndWaitCalcProcess, score 8.65 band B
-0x003529C0	rstCallGetProcessData38	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; calls dds3GetProcessData
-0x003529F8	rstLeaf16	func	tier=D	derived-unit	na	unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; no named callee, caller or string
-0x00352A00	rstLeaf17	func	tier=D	derived-unit	na	unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; no named callee, caller or string
-0x00352A08	rstCallGetProcessData39	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; calls dds3GetProcessData
-0x00352B08	rstCallGetProcessData40	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; calls dds3GetProcessData
-0x00352B40	rstCallGetProcessData41	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstCalcAlphaRate; calls dds3GetProcessData
 0x00352B78	rstResultCyuuseiGaugeSub	func	tier=D	derived-caller	na	unit code_0034F3B8, neighbour rstCalcAlphaRate; called by rstResultCyuuseiGauge
 0x00352B98	rstResultNakamaLevelSub	func	tier=D	derived-caller	na	unit code_0034F3B8, neighbour rstCalcAlphaRate; called by rstResultNakamaLevel
 0x00352C00	rstResultLevelUpAnimSub	func	tier=D	derived-caller	na	unit code_0034F3B8, neighbour rstCalcAlphaRate; called by rstResultLevelUpAnim
@@ -18438,7 +18401,6 @@
 0x002F6188	TitleFirstDrawProcess	func	tier=C	hd-c	0.69 (n=45)	Raidou HD TitleMain.TitleFirstDrawProcess score 5.5 flag I: calls2 prev gap42/25 st2:gap r2-only
 0x002F6200	TitleCesaInit	func	tier=C	hd-c	0.69 (n=45)	Raidou HD TitleMain.TitleCesaInit score 5.0 flag I: calls2 prev gap41/23 st2:gap r2-only
 0x002F6410	evtBStartSelectionChainAfterFade	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x26b260 sim 0.626 margin 0.05 pair
-0x002F6FE8	TitleDLCInit	func	tier=C	hd-d	0.53 (n=98)	Raidou HD TitleMain.TitleDLCInit score 4.0 flag I: calls1 prev gap17/13 st2:gap r2-only
 0x002F7568	TitleInit	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD TitleMain.TitleInit score 4.1 flag I: calls1 next calls-of-match votes2 st1:call r2-disagree:0x35d160
 0x002F8C50	CameraNormalPosSet	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD TutorialScript.CameraNormalPosSet score 2.6 flag -: calls1 callers-of-match st1:call r1-only
 0x002F91C8	mselInit	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x22a458 sim 1.000 margin 0.00 single
@@ -18562,12 +18524,6 @@
 0x00349548	jmsScrCmd_JMS_SET_MODE	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsInit.jmsScrCmd_JMS_SET_MODE score 5.0 flag I: calls2 prev edge st1:edge r1-only
 0x003498A8	RootInit	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMain.RootInit score 6.8 flag -: calls3 callers-of-match votes4 st1:call r1-only
 0x00349D10	TalkCalcProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMain.TalkCalcProcess score 5.5 flag -: calls3 callers-of-match-uniq votes2 st1:call r2-disagree:0x3b8528
-0x00349FD8	CyousaSelDrawProcess	func	tier=C	hd-d	0.53 (n=98)	Raidou HD jmsMain.CyousaSelDrawProcess score 3.6 flag -: calls1 next gap14/18 st2:gap r2-only
-0x0034A038	CyousaSelUpdateProcess	func	tier=C	hd-d	0.53 (n=98)	Raidou HD jmsMain.CyousaSelUpdateProcess score 4.5 flag -: calls2 next~ gap15/21 st2:gap r2-only
-0x0034A080	CyousaInit	func	tier=C	hd-d	0.53 (n=98)	Raidou HD jmsMain.CyousaInit score 3.0 flag -: calls1 next~ gap16/23 st2:gap r2-only
-0x0034A190	jmsReportReadFlagUpdate	func	tier=C	hd-d	0.53 (n=98)	Raidou HD jmsMain.jmsReportReadFlagUpdate score 2.1 flag I: next gap17/24 st2:gap r2-only
-0x0034A1C8	CyousaDestroy	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMain.CyousaDestroy score 5.5 flag -: calls1 callers-of-match-uniq st1:call r1+r2
-0x0034A1F0	CyousaCalcProcess	func	tier=C	hd-d	0.53 (n=98)	Raidou HD jmsMain.CyousaCalcProcess score 2.8 flag -: calls2 gap26/38 st2:gap r2-only
 0x0034A890	CyousaUpdateProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMain.CyousaUpdateProcess score 5.5 flag -: calls2 prev gap5/4 st1:gap r1-only
 0x0034ACA0	MahjanUpdateProcess	func	tier=C	hd-c	0.69 (n=45)	Raidou HD jmsMain.MahjanUpdateProcess score 7.0 flag -: calls3 prev gap1/17 st2:gap r2-only
 0x0034ACF8	EndProcess_jmsMain	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMain.EndProcess score 6.9 flag -: calls5 callers-of-match votes4 st1:call r2-disagree:0x3ba8f8
@@ -19321,6 +19277,19 @@
 0x002F56C8	TitleInitCursor	func	tier=B	hd-role	na	HD TitleMain TitleInitCursor clears titleCursor_t and sets ScaleTimer = 6 (TITLEenum_CURSOR_SCALE_TIMER); 0x2F56C8 is memset 0x30 + store 6 at 0x20, called on titleData_t.Cursor; replaces Flow1_6
 0x002F5758	TitleCalcCursor	func	tier=B	hd-role	na	HD TitleMain TitleCalcCursor(PID, pCursor, step): up/down moves Index with Timer = 0, ScaleTimer = 6, SE 0x500001, LastPush from the held buttons, then ItemAlpha[5] fades +-32 toward the selected item and ScaleTimer counts down; 0x2F5758 is the same on titleCursor_t; replaces evtCallPlaySE
 0x002F65F0	TitleMovieInit	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD TitleMain.TitleMovieInit score 6.3 flag I: calls2 callers-of-match st1:call r1+r2
+0x002F66A8	TitleMovieDestroy	func	tier=B	hd-role	na	HD TitleMain.TitleMovieDestroy: Destroy slot of the TitleMovieInit row; HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces evtLeaf34
+0x002F6830	TitleMovieDrawProcess	func	tier=B	hd-role	na	HD TitleMain.TitleMovieDrawProcess: Draw slot of the TitleMovieInit row; replaces rstCallGetProcessData28
+0x002F68F8	MainInit	func	tier=B	hd-role	na	HD TitleMain.MainInit: Init slot of the Main row (after Movie); HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces rstCallGetProcessData29
+0x002F6928	MainDestroy	func	tier=B	hd-role	na	HD TitleMain.MainDestroy: Destroy slot of the Main row; empty as HD; replaces rstLeaf10
+0x002F6AE8	MainDrawProcess	func	tier=B	hd-role	na	HD TitleMain.MainDrawProcess: Draw slot of the Main row; replaces rstCallGetProcessData30
+0x002F6C00	MainSubInit	func	tier=B	hd-role	na	HD TitleMain.MainSubInit: Init slot of the MainSub row (after Main); HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces rstCallGetProcessData31
+0x002F6C28	MainSubDestroy	func	tier=B	hd-role	na	HD TitleMain.MainSubDestroy: Destroy slot of the MainSub row; empty as HD; replaces rstLeaf11
+0x002F6D80	MainSubDrawProcess	func	tier=B	hd-role	na	HD TitleMain.MainSubDrawProcess: Draw slot of the MainSub row; replaces rstCallGetProcessData32
+0x002F6E10	TitleEndWaitInit	func	tier=B	hd-role	na	HD TitleMain.TitleEndWaitInit: Init slot of the EndWait row; HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces rstLeaf12
+0x002F6FE8	TitleConfigInit	func	tier=B	hd-role	na	HD TitleMain.TitleConfigInit: Init slot of the row whose Destroy/Calc are TitleConfigDestroy/TitleConfigCalcProcess; HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces TitleDLCInit
+0x002F7140	TitleConfigDrawProcess	func	tier=B	hd-role	na	HD TitleMain.TitleConfigDrawProcess: Draw slot of the Config row; replaces rstCallGetProcessData33
+0x002F7200	TitleAdvertiseDestroy	func	tier=B	hd-role	na	HD TitleMain.TitleAdvertiseDestroy: Destroy slot of the row whose Init/Calc are TitleAdvertiseInit/TitleAdvertiseCalcProcess; replaces rstCallGetProcessData34
+0x002F7460	TitleAdvertiseDrawProcess	func	tier=B	hd-role	na	HD TitleMain.TitleAdvertiseDrawProcess: Draw slot of the Advertise row; replaces rstCallGetProcessData35
 0x002FDE30	effPCP_HBED2_SetRotateMatrix	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a1450 sim 0.778 margin 0.16 pair
 0x0030E6F0	frTestFontInit	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1cad00 sim 0.808 margin 0.12 single
 0x00314D38	cmpFreeSpriteHnd	func	tier=B	hd-role	na	HD Release calls cmpFreeSpriteHnd(3) at this site (0x314D38); replaces fldCreateLinkSub
@@ -19375,17 +19344,35 @@
 0x003474E0	fldPlayerSvsOff	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x134ea0 sim 0.750 margin 0.19 pair
 0x00349348	jmsDebugProcessCheck	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsInit.jmsDebugProcessCheck score 5.1 flag I: next gap=exact st1:gap r1-only
 0x00349640	ScrControl_jmsMain	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD jmsMain.ScrControl score 6.4 flag -: calls4 callers-of-match votes4 st1:call r2-disagree:0x3b7d58
+0x00349820	jmsRootWaitDrawProcess	func	tier=B	hd-role	na	HD jmsMain.jmsRootWaitDrawProcess: the word after jmsRootWaitCalcProcess in the {Calc, Draw, Update} triple and the function after it in code, as HD order; the Talk row's Draw slot is another copy; replaces TalkDrawProcess
+0x00349870	jmsRootWaitUpdateProcess	func	tier=B	hd-role	na	HD jmsMain.jmsRootWaitUpdateProcess: third word of the jmsRootWaitCalcProcess triple, next function in code as HD order; replaces TalkUpdateProcess
 0x003498F8	RootDestroy	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsMain.RootDestroy score 6.8 flag -: prev next gap=exact st1:gap r1-only
 0x00349AE0	RootUpdateProcess	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsMain.RootUpdateProcess score 6.5 flag -: calls2 gap=exact st1:gap r1-only
-0x00349B18	nbUpdateEventProcessData	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x28f9f0 sim 0.700 margin 0.70 pair
+0x00349B18	TalkSelInit	func	tier=B	hd-role	na	HD jmsMain.TalkSelInit: Init slot of the TalkSel row (Calc/Draw/Update TalkSel*); HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); replaces nbUpdateEventProcessData
+0x00349B58	TalkSelDestroy	func	tier=B	hd-role	na	HD jmsMain.TalkSelDestroy: Destroy slot of the TalkSel row; replaces mnuClearTerminalPanelSelection
 0x00349C50	TalkSelDrawProcess	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsMain.TalkSelDrawProcess score 6.5 flag -: calls1 next gap=exact st1:gap r1-only
 0x00349CA8	TalkSelUpdateProcess	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsMain.TalkSelUpdateProcess score 6.5 flag -: calls2 gap=exact st1:gap r1-only
 0x00349CE0	TalkInit	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsMain.TalkInit score 6.5 flag -: calls1 prev gap=exact st1:gap r1-only
 0x00349D08	TalkDestroy	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsMain.TalkDestroy score 6.8 flag -: prev next gap=exact st1:gap r1-only
-0x00349E40	CyousaSelInit	func	tier=B	hd-role	na	HD jmsMain.CyousaSelInit: Init slot of the scene table entry whose Draw/Update are CyousaSelDrawProcess, CyousaSelUpdateProcess; replaces shpLeaf9
-0x00349E48	CyousaSelDestroy	func	tier=B	hd-role	na	HD jmsMain.CyousaSelDestroy: Destroy slot of the same scene table entry; replaces shpLeaf10
+0x00349E08	TalkUpdateProcess	func	tier=B	hd-role	na	HD jmsMain.TalkUpdateProcess: Update slot of the Talk row; replaces shpCallGetProcessData3
+0x00349E40	SaveInit	func	tier=B	hd-role	na	HD jmsMain.SaveInit: Init slot of the fourth jms row; HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); empty as HD; replaces CyousaSelInit
+0x00349E48	SaveDestroy	func	tier=B	hd-role	na	HD jmsMain.SaveDestroy: Destroy slot of the Save row; replaces CyousaSelDestroy
+0x00349FD8	SaveDrawProcess	func	tier=B	hd-role	na	HD jmsMain.SaveDrawProcess: Draw slot of the Save row; replaces CyousaSelDrawProcess
+0x0034A038	SaveUpdateProcess	func	tier=B	hd-role	na	HD jmsMain.SaveUpdateProcess: Update slot of the Save row; replaces CyousaSelUpdateProcess
+0x0034A070	CyousaFileSelInit	func	tier=B	hd-role	na	HD jmsMain.CyousaFileSelInit: Init slot of the fifth jms row; HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); replaces shpLeaf11
+0x0034A078	CyousaFileSelDestroy	func	tier=B	hd-role	na	HD jmsMain.CyousaFileSelDestroy: Destroy slot of the CyousaFileSel row; replaces jmsLeaf14
+0x0034A140	CyousaFileSelDrawProcess	func	tier=B	hd-role	na	HD jmsMain.CyousaFileSelDrawProcess: Draw slot of the CyousaFileSel row; replaces jmsCallGetProcessData12
+0x0034A190	CyousaFileSelUpdateProcess	func	tier=B	hd-role	na	HD jmsMain.CyousaFileSelUpdateProcess: Update slot of the CyousaFileSel row; replaces jmsReportReadFlagUpdate
+0x0034A1C8	CyousaSelInit	func	tier=B	hd-role	na	HD jmsMain.CyousaSelInit: Init slot of the sixth jms row; HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); replaces CyousaDestroy
+0x0034A1E8	CyousaSelDestroy	func	tier=B	hd-role	na	HD jmsMain.CyousaSelDestroy: Destroy slot of the CyousaSel row; replaces jmsLeaf15
+0x0034A2A8	CyousaSelDrawProcess	func	tier=B	hd-role	na	HD jmsMain.CyousaSelDrawProcess: Draw slot of the CyousaSel row; replaces jmsCallGetProcessData13
+0x0034A2F8	CyousaSelUpdateProcess	func	tier=B	hd-role	na	HD jmsMain.CyousaSelUpdateProcess: Update slot of the CyousaSel row; replaces jmsCallGetProcessData14
+0x0034A3A8	CyousaInit	func	tier=B	hd-role	na	HD jmsMain.CyousaInit: Init slot of the row whose Draw/Update are CyousaDrawProcess/CyousaUpdateProcess; HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); replaces jmsCallGetProcessData15
+0x0034A3D8	CyousaDestroy	func	tier=B	hd-role	na	HD jmsMain.CyousaDestroy: Destroy slot of the Cyousa row; replaces jmsCallProcessStartJmsMenu
+0x0034A3F8	CyousaCalcProcess	func	tier=B	hd-role	na	HD jmsMain.CyousaCalcProcess: Calc slot of the Cyousa row; replaces jmsCallGetProcessData16
 0x0034A9B8	MahjanDestroy	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD jmsMain.MahjanDestroy score 2.8 flag -: prev~ next gap1/1 st2:gap r2-only
 0x0034A9C0	MahjanCalcProcess	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD jmsMain.MahjanCalcProcess score 6.9 flag -: calls9 callers-of-match votes5 st1:call r2-disagree:0x3b9280
+0x0034AC50	MahjanDrawProcess	func	tier=B	hd-role	na	HD jmsMain.MahjanDrawProcess: Draw slot of the Mahjan row (MahjanInit, MahjanDestroy, MahjanCalcProcess, MahjanUpdateProcess); replaces jmsCallGetProcessData
 0x0034F5E0	SetFlagMenu	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD jmsMenu.SetFlagMenu score 6.3 flag -: calls3 calls-of-match votes2 st1:call r2-disagree:0x3c0130
 0x0034FC38	CheckProcEnd	func	tier=B	hd-role	na	HD CheckProcEnd (jmsMenu.c): 1 while the menu process runs, else clears menuPID; replaces DrawProcess_jmsMenu
 0x003501D0	jmsStart	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD jmsMenu.jmsStart score 6.0 flag I: calls3 calls-of-match-uniq votes3 st1:call r2-disagree:0x3c0dd0

@@ -33,14 +33,47 @@ INCLUDE_ASM(const s32, "code_00349B80", TalkDestroy);
 
 INCLUDE_ASM(const s32, "code_00349B80", TalkCalcProcess);
 
-dds3ProcessFunc_t shpCallGetProcessData(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t TalkDrawProcess(dds3ProcessID_t *PID) {
     jmsData_t *work = dds3GetProcessData(PID);
 
     DrawModel(work, -1);
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t shpCallGetProcessData3(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t TalkUpdateProcess(dds3ProcessID_t *PID) {
+    jmsData_t *work = dds3GetProcessData(PID);
+
+    return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
+}
+
+INCLUDE_ASM(const s32, "code_00349B80", SaveInit);
+
+INCLUDE_ASM(const s32, "code_00349B80", SaveDestroy);
+
+INCLUDE_ASM(const s32, "code_00349B80", SaveCalcProcess);
+
+INCLUDE_ASM(const s32, "code_00349B80", SaveDrawProcess);
+
+dds3ProcessFunc_t SaveUpdateProcess(dds3ProcessID_t *PID) {
+    jmsData_t *work = dds3GetProcessData(PID);
+
+    return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
+}
+
+INCLUDE_ASM(const s32, "code_00349B80", CyousaFileSelInit);
+
+INCLUDE_ASM(const s32, "code_00349B80", CyousaFileSelDestroy);
+
+INCLUDE_ASM(const s32, "code_00349B80", CyousaFileSelCalcProcess);
+
+dds3ProcessFunc_t CyousaFileSelDrawProcess(dds3ProcessID_t *PID) {
+    jmsData_t *work = dds3GetProcessData(PID);
+
+    DrawModel(work, -1);
+    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
+}
+
+dds3ProcessFunc_t CyousaFileSelUpdateProcess(dds3ProcessID_t *PID) {
     jmsData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
@@ -50,49 +83,16 @@ INCLUDE_ASM(const s32, "code_00349B80", CyousaSelInit);
 
 INCLUDE_ASM(const s32, "code_00349B80", CyousaSelDestroy);
 
-INCLUDE_ASM(const s32, "code_00349B80", shpUpdateDBOOK);
+INCLUDE_ASM(const s32, "code_00349B80", CyousaSelCalcProcess);
 
-INCLUDE_ASM(const s32, "code_00349B80", CyousaSelDrawProcess);
+dds3ProcessFunc_t CyousaSelDrawProcess(dds3ProcessID_t *PID) {
+    jmsData_t *work = dds3GetProcessData(PID);
+
+    DrawModel(work, -1);
+    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
+}
 
 dds3ProcessFunc_t CyousaSelUpdateProcess(dds3ProcessID_t *PID) {
-    jmsData_t *work = dds3GetProcessData(PID);
-
-    return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
-}
-
-INCLUDE_ASM(const s32, "code_00349B80", shpLeaf11);
-
-INCLUDE_ASM(const s32, "code_00349B80", jmsLeaf14);
-
-INCLUDE_ASM(const s32, "code_00349B80", CyousaInit);
-
-dds3ProcessFunc_t jmsCallGetProcessData12(dds3ProcessID_t *PID) {
-    jmsData_t *work = dds3GetProcessData(PID);
-
-    DrawModel(work, -1);
-    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
-}
-
-dds3ProcessFunc_t jmsReportReadFlagUpdate(dds3ProcessID_t *PID) {
-    jmsData_t *work = dds3GetProcessData(PID);
-
-    return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
-}
-
-INCLUDE_ASM(const s32, "code_00349B80", CyousaDestroy);
-
-INCLUDE_ASM(const s32, "code_00349B80", jmsLeaf15);
-
-INCLUDE_ASM(const s32, "code_00349B80", CyousaCalcProcess);
-
-dds3ProcessFunc_t jmsCallGetProcessData13(dds3ProcessID_t *PID) {
-    jmsData_t *work = dds3GetProcessData(PID);
-
-    DrawModel(work, -1);
-    return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
-}
-
-dds3ProcessFunc_t jmsCallGetProcessData14(dds3ProcessID_t *PID) {
     jmsData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
@@ -102,11 +102,11 @@ INCLUDE_ASM(const s32, "code_00349B80", jmsFunc38);
 
 INCLUDE_ASM(const s32, "code_00349B80", jmsFunc39);
 
-INCLUDE_ASM(const s32, "code_00349B80", jmsCallGetProcessData15);
+INCLUDE_ASM(const s32, "code_00349B80", CyousaInit);
 
-INCLUDE_ASM(const s32, "code_00349B80", jmsCallProcessStartJmsMenu);
+INCLUDE_ASM(const s32, "code_00349B80", CyousaDestroy);
 
-INCLUDE_ASM(const s32, "code_00349B80", jmsCallGetProcessData16);
+INCLUDE_ASM(const s32, "code_00349B80", CyousaCalcProcess);
 
 INCLUDE_ASM(const s32, "code_00349B80", GetDrawText);
 
@@ -126,7 +126,7 @@ INCLUDE_ASM(const s32, "code_00349B80", MahjanDestroy);
 
 INCLUDE_ASM(const s32, "code_00349B80", MahjanCalcProcess);
 
-dds3ProcessFunc_t jmsCallGetProcessData(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t MahjanDrawProcess(dds3ProcessID_t *PID) {
     jmsData_t *work = dds3GetProcessData(PID);
 
     DrawModel(work, -1);

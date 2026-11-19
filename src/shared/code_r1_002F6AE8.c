@@ -7,7 +7,7 @@
 
 extern const titleKeyTable_t rstCallGetProcessData30Table;
 
-s32 rstCallGetProcessData30(dds3ProcessID_t *PID)
+s32 MainDrawProcess(dds3ProcessID_t *PID)
 {
     titleData_t *data;
     titleKeyTable_t keys;

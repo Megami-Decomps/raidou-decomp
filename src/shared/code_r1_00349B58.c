@@ -102,7 +102,7 @@ typedef struct {
     u16 entryIndices[0];
 } ActiveList;
 
-u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task);
+u32 TalkSelDestroy(dds3ProcessID_t *task);
 
 struct MenuTerminalWork;
 
@@ -132,7 +132,7 @@ typedef struct evtListPanelRecord_t {
 } evtListPanelRecord_t;
 
 /* Clear the terminal task's stored selection word and report completion. */
-u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task) {
+u32 TalkSelDestroy(dds3ProcessID_t *task) {
     s32 workAddress;
 
     workAddress = EE_ADDR_S(dds3GetProcessData(task));
@@ -140,5 +140,5 @@ u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task) {
     return 1;
 }
 #else
-INCLUDE_ASM(const s32, "code_r1_00349B58", mnuClearTerminalPanelSelection);
+INCLUDE_ASM(const s32, "code_r1_00349B58", TalkSelDestroy);
 #endif

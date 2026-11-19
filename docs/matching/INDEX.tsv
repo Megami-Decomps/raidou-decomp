@@ -230,7 +230,7 @@ rstResultStartWaitProcess	code_003BF2E0	raidou2 0x6C	17 of 27 words differ	docs/
 rstCalcProcess	code_003BF2E0	raidou2 0xD4	21 of 51 words differ	docs/matching/code_003BF2E0.md	51		
 rstCallGetGlobalEncountNo	code_003BF2E0	raidou2 0x98	31 of 38 words differ	docs/matching/code_003BF2E0.md	57		
 rstResultNakamaLevelSub	code_003BF2E0	raidou2 0x68	20 of 26 words differ	docs/matching/code_003BF2E0.md	63		
-rstCallGetProcessData39	code_003BF2E0	raidou2 0x124	37 of 74 words differ	docs/matching/code_003BF2E0.md	69		
+rstLvUpWaitCalcProcess	code_003BF2E0	raidou2 0x124	37 of 74 words differ	docs/matching/code_003BF2E0.md	69		
 jmsFunc17	code_003BF2E0	raidou2 0x5C	12 of 23 words differ	docs/matching/code_003BF2E0.md	75		
 rstPreCalcUnit	code_003BF2E0	raidou2 0x158	2 of 86 words differ	docs/matching/code_003BF2E0.md	81		
 rstResultLevelUpAnimSub	code_003BF2E0	raidou2 0x14C	2 of 83 words differ	docs/matching/code_003BF2E0.md	87	on bdf2c164 the R2-S3 part 9 declarations moved the full unit from CONTEXT 2/83 to CONTEXT 6/83, and reverting fld.h or sBtlEff.h alone made it match, so it moves with the count of declarations, not its own C. On 0469e6c5 it is back at 2/83.	

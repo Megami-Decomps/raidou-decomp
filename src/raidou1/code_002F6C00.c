@@ -18,7 +18,7 @@ extern jmsSeqUnit_t rstData2;
 extern jmsSeqUnit_t rstCallGetProcessDataData;
 extern jmsSeqUnit_t rstCallGetProcessDataData2;
 
-s32 rstCallGetProcessData31(dds3ProcessID_t *PID)
+s32 MainSubInit(dds3ProcessID_t *PID)
 {
     titleData_t *data = dds3GetProcessData(PID);
 
@@ -27,11 +27,11 @@ s32 rstCallGetProcessData31(dds3ProcessID_t *PID)
 }
 
 /* body: matched in raidou @ 6575c15: src/raidou1/code_002F5BD0.c:413, found, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 rstLeaf11(dds3ProcessID_t *PID) {
+s32 MainSubDestroy(dds3ProcessID_t *PID) {
     return 1;
 }
 
-s32 rstCallGetProcessData(dds3ProcessID_t *PID) {
+s32 MainSubCalcProcess(dds3ProcessID_t *PID) {
     titleData_t *data;
     s32 ret;
 
@@ -68,7 +68,7 @@ s32 rstCallGetProcessData(dds3ProcessID_t *PID) {
     return 0;
 }
 
-s32 rstCallGetProcessData32(dds3ProcessID_t *PID) {
+s32 MainSubDrawProcess(dds3ProcessID_t *PID) {
     titleData_t *data;
     s32 ret;
 
@@ -81,11 +81,11 @@ s32 rstCallGetProcessData32(dds3ProcessID_t *PID) {
 }
 
 /* body: matched in raidou @ 6575c15: src/raidou1/code_002F5BD0.c:413, found, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 rstLeaf12(dds3ProcessID_t *PID) {
+s32 TitleEndWaitInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002F6C00", TitleEndWaitCalcProcess);
+INCLUDE_ASM(const s32, "code_002F6C00", TitleEndWaitDestroy);
 
 void rstCallMemset(void) {
     sdfMemHandle_t *handle;
@@ -101,7 +101,7 @@ void rstCallMemset(void) {
     dds3AdminiCallSequence(9, &field, sizeof(field), 0);
 }
 
-s32 rstCallGetProcessData2(dds3ProcessID_t *PID) {
+s32 TitleEndWaitCalcProcess(dds3ProcessID_t *PID) {
     titleData_t *data;
     s32 ret;
 
@@ -139,13 +139,13 @@ s32 TitleEndWaitDrawProcess(dds3ProcessID_t *PID)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "code_002F6C00", TitleDLCInit);
+INCLUDE_ASM(const s32, "code_002F6C00", TitleConfigInit);
 
 INCLUDE_ASM(const s32, "code_002F6C00", TitleConfigDestroy);
 
 INCLUDE_ASM(const s32, "code_002F6C00", TitleConfigCalcProcess);
 
-dds3ProcessFunc_t rstCallGetProcessData33(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t TitleConfigDrawProcess(dds3ProcessID_t *PID) {
     titleData_t *data;
     dds3ProcessFunc_t ret;
 
@@ -166,8 +166,8 @@ s32 TitleAdvertiseInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002F6C00", rstCallGetProcessData34);
+INCLUDE_ASM(const s32, "code_002F6C00", TitleAdvertiseDestroy);
 
 INCLUDE_ASM(const s32, "code_002F6C00", TitleAdvertiseCalcProcess);
 
-INCLUDE_ASM(const s32, "code_002F6C00", rstCallGetProcessData35);
+INCLUDE_ASM(const s32, "code_002F6C00", TitleAdvertiseDrawProcess);

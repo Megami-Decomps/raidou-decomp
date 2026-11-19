@@ -85,7 +85,7 @@ s32 TitleAtlusLogoCalcProcess(dds3ProcessID_t *PID);
 s32 TitleAtlusLogoDrawProcess(dds3ProcessID_t *PID);
 dds3ProcessFunc_t TitleConfigCalcProcess(dds3ProcessID_t *PID);
 s32 TitleConfigDestroy(dds3ProcessID_t *PID);
-s32 TitleDLCInit(dds3ProcessID_t *PID);
+s32 TitleConfigInit(dds3ProcessID_t *PID);
 void TitleDestroy(dds3ProcessID_t *PID);
 s32 TitleEndWaitDrawProcess(dds3ProcessID_t *PID);
 s32 TitleFirstCalcProcess3(dds3ProcessID_t *PID);
@@ -102,7 +102,7 @@ s32 evtCallPlay(s32 MovieNo, s32 Length, s32 FadeFrame, s32 Mode, titleData_t *p
 s32 TitleProcessCheck(void);
 void TitleProcessEnd(void);
 void evtFunc11(titleCursor_t *cursor, void **sprite);
-s32 rstCallGetProcessData30(dds3ProcessID_t *PID);
+s32 MainDrawProcess(dds3ProcessID_t *PID);
 s32 evtLeaf30(s32 value, s32 low, s32 high);
 s32 evtFunc9(s32 frame, const titleKey_t *key, s32 count);
 void evtFunc10(s32 slot, s32 value, void **sprite);
@@ -111,8 +111,8 @@ void rstFunc(titleData_t *data);
 void rstCallMemset(void);
 s32 TitleCalcCursor(titleCursor_t *pCursor);
 void fldCallElvReset(s32 iMode);
-s32 rstCallGetProcessData32(dds3ProcessID_t *PID);
-dds3ProcessFunc_t rstCallGetProcessData33(dds3ProcessID_t *PID);
-s32 rstCallGetProcessData34(dds3ProcessID_t *PID);
+s32 MainSubDrawProcess(dds3ProcessID_t *PID);
+dds3ProcessFunc_t TitleConfigDrawProcess(dds3ProcessID_t *PID);
+s32 TitleAdvertiseDestroy(dds3ProcessID_t *PID);
 
 #endif

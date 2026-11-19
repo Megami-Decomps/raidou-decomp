@@ -66,7 +66,7 @@ Raidou 2: 20 of 26 words differ, first at +0x8.
 
 Register allocation: retail keeps the table in $3 and a_x in $8, cc1 uses $8/$9. Tried no steps local, a base local and an s32 return. 6 of 26 words; behaviour equal (nm_behaviour clean).
 
-## rstCallGetProcessData39 (code_003BF2E0, raidou2 0x124)
+## rstLvUpWaitCalcProcess (code_003BF2E0, raidou2 0x124)
 
 Raidou 2: 37 of 74 words differ, first at +0x30; emitted 296 bytes, native 292 bytes.
 

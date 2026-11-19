@@ -261,14 +261,14 @@ INCLUDE_ASM(const s32, "code_00346258", ScrControl_jmsMain);
 
 INCLUDE_ASM(const s32, "code_00346258", jmsRootWaitCalcProcess);
 
-dds3ProcessFunc_t TalkDrawProcess(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t jmsRootWaitDrawProcess(dds3ProcessID_t *PID) {
     jmsData_t *work = dds3GetProcessData(PID);
 
     DrawModel(work, -1);
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t TalkUpdateProcess(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t jmsRootWaitUpdateProcess(dds3ProcessID_t *PID) {
     jmsData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
@@ -288,7 +288,7 @@ dds3ProcessFunc_t RootUpdateProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-s32 nbUpdateEventProcessData(dds3ProcessID_t *PID) {
+s32 TalkSelInit(dds3ProcessID_t *PID) {
     gohData_t *pData = dds3GetProcessData(PID);
 
     if (pData->unk90[1] == 0) {

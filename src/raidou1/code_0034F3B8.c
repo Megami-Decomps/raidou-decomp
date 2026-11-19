@@ -279,31 +279,31 @@ dds3ProcessFunc_t rstBtlEndWaitDrawProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t rstCallGetProcessData38(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t rstBtlEndWaitUpdateProcess(dds3ProcessID_t *PID) {
     jmsSeqWork_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
 /* body: matched in raidou @ 88f0d54: src/raidou1/code_002F5BD0.c:413, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 rstLeaf16(dds3ProcessID_t *PID) {
+s32 rstLvUpWaitInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
 /* body: matched in raidou @ 88f0d54: src/raidou1/code_002F5BD0.c:413, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 rstLeaf17(dds3ProcessID_t *PID) {
+s32 rstLvUpWaitDestroy(dds3ProcessID_t *PID) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0034F3B8", rstCallGetProcessData39);
+INCLUDE_ASM(const s32, "code_0034F3B8", rstLvUpWaitCalcProcess);
 
-dds3ProcessFunc_t rstCallGetProcessData40(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t rstLvUpWaitDrawProcess(dds3ProcessID_t *PID) {
     jmsSeqWork_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t rstCallGetProcessData41(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t rstLvUpWaitUpdateProcess(dds3ProcessID_t *PID) {
     jmsSeqWork_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);

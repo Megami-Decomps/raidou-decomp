@@ -58,7 +58,7 @@ extern dds3ProcessID_t *ProcessStart_rstInitData;
 extern jmsSeqUnit_t rstEndCalcProcessData;
 extern jmsSeqUnit_t rstBtlEndWaitCalcProcessData;
 s32 rstCallGetProcessStat(void);
-dds3ProcessFunc_t rstCallGetProcessData39(dds3ProcessID_t *PID);
+dds3ProcessFunc_t rstLvUpWaitCalcProcess(dds3ProcessID_t *PID);
 s32 rstCallGetGlobalEncountNo(rstInitWork_t *work);
 /* HD rstRankUpKudaAddNumTbl: tubes added at each summoner rank. */
 extern const s8 rstCalcRankUpTable[];

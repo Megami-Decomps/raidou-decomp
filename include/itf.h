@@ -427,7 +427,7 @@ s32 lmapMenuProcess(dds3ProcessID_t *PID);
 #endif
 void mapMenuRelease(tagMAP_MENU_WORK *wk);
 void mapMenuShutdown(dds3ProcessID_t *PID);
-dds3ProcessFunc_t rstCallGetProcessData35(dds3ProcessID_t *PID);
+dds3ProcessFunc_t TitleAdvertiseDrawProcess(dds3ProcessID_t *PID);
 void mphCallMemAllocDirect(void);
 
 #endif

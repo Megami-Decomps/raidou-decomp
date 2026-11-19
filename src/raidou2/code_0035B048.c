@@ -342,12 +342,12 @@ s32 TitleMovieInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
-s32 evtLeaf34(void)
+s32 TitleMovieDestroy(void)
 {
     return 1;
 }
 
-s32 evtCallGetProcessData33(dds3ProcessID_t *PID) {
+s32 TitleMovieCalcProcess(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
     s32 ret;
     s32 end;
@@ -394,7 +394,7 @@ s32 evtCallGetProcessData33(dds3ProcessID_t *PID) {
     return 0;
 }
 
-s32 rstCallGetProcessData28(dds3ProcessID_t *PID) {
+s32 TitleMovieDrawProcess(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
     s32 ret;
 
@@ -409,7 +409,7 @@ void rstFunc(titleData_t *data) {
     evtFunc10(3, 256, data->sprite);
 }
 
-s32 rstCallGetProcessData29(dds3ProcessID_t *PID) {
+s32 MainInit(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
 
     data->Timer = 0;
@@ -418,7 +418,7 @@ s32 rstCallGetProcessData29(dds3ProcessID_t *PID) {
     return 1;
 }
 
-s32 rstLeaf10(void)
+s32 MainDestroy(void)
 {
     return 1;
 }
@@ -426,7 +426,7 @@ s32 rstLeaf10(void)
 extern jmsSeqUnit_t TitleConfigCalcProcessData;
 extern jmsSeqUnit_t rstData;
 
-s32 rstLvUpWaitCalcProcess(dds3ProcessID_t *PID) {
+s32 MainCalcProcess(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
     s32 ret;
 

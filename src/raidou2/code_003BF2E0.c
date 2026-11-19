@@ -1324,25 +1324,25 @@ dds3ProcessFunc_t rstBtlEndWaitDrawProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t rstCallGetProcessData38(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t rstBtlEndWaitUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-s32 rstLeaf16(void)
+s32 rstLvUpWaitInit(void)
 {
     return 1;
 }
 
-s32 rstLeaf17(void)
+s32 rstLvUpWaitDestroy(void)
 {
     return 1;
 }
 
 /* NON_MATCHING: 37 of 73 words match.  */
 #ifdef NON_MATCHING
-dds3ProcessFunc_t rstCallGetProcessData39(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t rstLvUpWaitCalcProcess(dds3ProcessID_t *PID) {
     rstInitWork_t *work = dds3GetProcessData(PID);
     dds3ProcessFunc_t next = menuRunPanel(&work->panel, &work->seqUnit, 0, PID);
 
@@ -1372,16 +1372,16 @@ dds3ProcessFunc_t rstCallGetProcessData39(dds3ProcessID_t *PID) {
     return NULL;
 }
 #else
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetProcessData39);
+INCLUDE_ASM(const s32, "code_003BF2E0", rstLvUpWaitCalcProcess);
 #endif
 
-dds3ProcessFunc_t rstCallGetProcessData40(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t rstLvUpWaitDrawProcess(dds3ProcessID_t *PID) {
     jmsSeqWork_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t rstCallGetProcessData41(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t rstLvUpWaitUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);

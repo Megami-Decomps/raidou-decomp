@@ -9698,31 +9698,31 @@
 0x0035B9C8	evtCallGetProcessData32	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls dds3GetProcessData
 0x0035BA60	TitleGoMain	hd-inferred	hd: Raidou HD TitleMain.TitleGoMain, score 8.0 band B
 0x0035BAB8	TitleMovieInit	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD TitleMain.TitleMovieInit score 6.3 flag I: calls2 callers-of-match st1:call r1+r2
-0x0035BB70	evtLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
-0x0035BB78	evtCallGetProcessData33	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls dds3GetProcessData
-0x0035BD00	rstCallGetProcessData28	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
+0x0035BB70	TitleMovieDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.TitleMovieDestroy: Destroy slot of the TitleMovieInit row; HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces evtLeaf34
+0x0035BB78	TitleMovieCalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD TitleMain.TitleMovieCalcProcess: Calc slot of the TitleMovieInit row; body calls TitleGoMain as HD; replaces evtCallGetProcessData33
+0x0035BD00	TitleMovieDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.TitleMovieDrawProcess: Draw slot of the TitleMovieInit row; replaces rstCallGetProcessData28
 0x0035BD78	rstFunc	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
-0x0035BDC8	rstCallGetProcessData29	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x0035BDF8	rstLeaf10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
-0x0035BE00	rstLvUpWaitCalcProcess	hd-inferred	hd: Raidou HD rstResult.rstLvUpWaitCalcProcess, score 10.65 band A
-0x0035BF98	rstCallGetProcessData30	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x0035C0B0	rstCallGetProcessData31	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x0035C0D8	rstLeaf11	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
+0x0035BDC8	MainInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.MainInit: Init slot of the Main row (after Movie); HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces rstCallGetProcessData29
+0x0035BDF8	MainDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.MainDestroy: Destroy slot of the Main row; empty as HD; replaces rstLeaf10
+0x0035BE00	MainCalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD TitleMain.MainCalcProcess: Calc slot of the TitleMain table row after Movie; HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; body calls TitleAt3Play, TitleInitCursor, sndBgmFadeOut, dds3FadeOut as HD; replaces rstLvUpWaitCalcProcess
+0x0035BF98	MainDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.MainDrawProcess: Draw slot of the Main row; replaces rstCallGetProcessData30
+0x0035C0B0	MainSubInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.MainSubInit: Init slot of the MainSub row (after Main); HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces rstCallGetProcessData31
+0x0035C0D8	MainSubDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.MainSubDestroy: Destroy slot of the MainSub row; empty as HD; replaces rstLeaf11
 0x0035C0E0	rstCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x0035C2C8	rstCallGetProcessData32	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
-0x0035C358	rstLeaf12	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
-0x0035C360	TitleEndWaitCalcProcess	hd-inferred	hd: Raidou HD TitleMain.TitleEndWaitCalcProcess, score 8.0 band B
+0x0035C2C8	MainSubDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.MainSubDrawProcess: Draw slot of the MainSub row; replaces rstCallGetProcessData32
+0x0035C358	TitleEndWaitInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.TitleEndWaitInit: Init slot of the EndWait row; HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces rstLeaf12
+0x0035C360	TitleEndWaitDestroy	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD TitleMain.TitleEndWaitDestroy: Destroy slot of the EndWait row (Draw is TitleEndWaitDrawProcess); 2-insn body; replaces TitleEndWaitCalcProcess
 0x0035C368	TitleNewGameStart	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD TitleMain.TitleNewGameStart score 3.7 flag I: calls2 callers-of-match votes3 st2:call r1-disagree:0x2f6e20
 0x0035C3F0	TitleEndWaitCalcProcess_TitleMain	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD TitleMain.TitleEndWaitCalcProcess score 7.5 flag I: calls4 callers-of-match st2:call r2-only
 0x0035C4C0	TitleEndWaitDrawProcess	hd-inferred	hd: Raidou HD TitleMain.TitleEndWaitDrawProcess, score 8.45 band B
-0x0035C538	TitleDLCInit	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD TitleMain.TitleDLCInit score 4.0 flag I: calls1 prev gap17/13 st2:gap r2-only
+0x0035C538	TitleConfigInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.TitleConfigInit: Init slot of the row whose Destroy/Calc are TitleConfigDestroy/TitleConfigCalcProcess; HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces TitleDLCInit
 0x0035C568	TitleConfigDestroy	hd-inferred	hd: Raidou HD TitleMain.TitleConfigDestroy, score 7.55 band B
 0x0035C598	TitleConfigCalcProcess	hd-inferred	hd: Raidou HD TitleMain.TitleConfigCalcProcess, score 7.45 band B
-0x0035C690	rstCallGetProcessData33	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
+0x0035C690	TitleConfigDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.TitleConfigDrawProcess: Draw slot of the Config row; replaces rstCallGetProcessData33
 0x0035C720	TitleAdvertiseInit	hd-inferred	hd: Raidou HD TitleMain.TitleAdvertiseInit, score 8.95 band B
-0x0035C750	rstCallGetProcessData34	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
+0x0035C750	TitleAdvertiseDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.TitleAdvertiseDestroy: Destroy slot of the row whose Init/Calc are TitleAdvertiseInit/TitleAdvertiseCalcProcess; replaces rstCallGetProcessData34
 0x0035C790	TitleAdvertiseCalcProcess	hd-inferred	hd: Raidou HD TitleMain.TitleAdvertiseCalcProcess, score 7.75 band B
-0x0035C9B0	rstCallGetProcessData35	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
+0x0035C9B0	TitleAdvertiseDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.TitleAdvertiseDrawProcess: Draw slot of the Advertise row; replaces rstCallGetProcessData35
 0x0035CAB8	rstCallDevLoadFileEx	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls sdfDevLoadFileEx
 0x0035CB08	TitleFirstCalcProcess	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD TitleMain.TitleFirstCalcProcess score 7.5 flag I: calls3 callers-of-match votes3 st2:call r2-only
 0x0035CB60	rstCallTexFreeDelayed	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls sdfTexFreeDelayed
@@ -11499,15 +11499,15 @@
 0x003B7D10	jmsCheckScrRun	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD jmsMain.jmsCheckScrRun score 7.0 flag I: calls2 calls-of-match-uniq st1:call r1+r2
 0x003B7D58	jmsScrControl	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003B7840, neighbour jmsCheckScrRun; string ' jmsScrControl() end script1\n'
 0x003B7F10	jmsRootWaitCalcProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMain.jmsRootWaitCalcProcess score 10.2 flag I: calls4 callers-of-match votes4 st1:call r1+r2
-0x003B7FB0	TalkDrawProcess	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMain.TalkDrawProcess score 7.0 flag -: calls2 prev~ gap29/28 votes3 st1:gap r1+r2
-0x003B8008	TalkUpdateProcess	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMain.TalkUpdateProcess score 7.5 flag -: calls2 prev gap28/27 st1:gap r1+r2
+0x003B7FB0	jmsRootWaitDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.jmsRootWaitDrawProcess: the word after jmsRootWaitCalcProcess in the {Calc, Draw, Update} triple and the function after it in code, as HD order; the Talk row's Draw slot is another copy; replaces TalkDrawProcess
+0x003B8008	jmsRootWaitUpdateProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.jmsRootWaitUpdateProcess: third word of the jmsRootWaitCalcProcess triple, next function in code as HD order; replaces TalkUpdateProcess
 0x003B8040	nbCommand_BTL_FORM_ENE_ON	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x288c68 sim 0.900 margin 0.90 pair
 0x003B8068	RootDestroy	hd	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD jmsMain.RootDestroy score 6.8 flag -: prev next gap=exact st1:gap r1-only
 0x003B8070	nbRootCalcProcess	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003B7840, neighbour nbCommand_BTL_FORM_ENE_ON; string ' jmsRootCalcProcess() exit decide\n'
 0x003B8270	nbCallGetProcessData30	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003B7840, neighbour nbUpdateEventProcessData; calls dds3GetProcessData
 0x003B82E0	RootUpdateProcess	hd	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD jmsMain.RootUpdateProcess score 6.5 flag -: calls2 gap=exact st1:gap r1-only
-0x003B8318	nbUpdateEventProcessData	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x28f9f0 sim 0.700 margin 0.70 pair
-0x003B8358	mnuClearTerminalPanelSelection	inferred	twin-of-raidou1-0x00349B58, masked-hash-in-gap
+0x003B8318	TalkSelInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.TalkSelInit: Init slot of the TalkSel row (Calc/Draw/Update TalkSel*); HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); replaces nbUpdateEventProcessData
+0x003B8358	TalkSelDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.TalkSelDestroy: Destroy slot of the TalkSel row; replaces mnuClearTerminalPanelSelection
 0x003B8380	TalkSelCalcProcess	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMain.TalkSelCalcProcess score 7.8 flag -: calls2 next gap=exact st1:gap r1-only
 0x003B8450	TalkSelDrawProcess	hd	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD jmsMain.TalkSelDrawProcess score 6.5 flag -: calls1 next gap=exact st1:gap r1-only
 0x003B84B8	TalkSelUpdateProcess	hd	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD jmsMain.TalkSelUpdateProcess score 6.5 flag -: calls2 gap=exact st1:gap r1-only
@@ -11515,27 +11515,27 @@
 0x003B8520	TalkDestroy	hd	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD jmsMain.TalkDestroy score 6.8 flag -: prev next gap=exact st1:gap r1-only
 0x003B8528	shpCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003B7840, neighbour shpUpdateDBOOK; calls dds3GetProcessData
 0x003B85F8	shpCallGetProcessData2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003B7840, neighbour shpUpdateDBOOK; calls dds3GetProcessData
-0x003B8660	shpCallGetProcessData3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour shpUpdateDBOOK; calls dds3GetProcessData
-0x003B8698	CyousaSelInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaSelInit: Init slot of the scene table entry whose Draw/Update are CyousaSelDrawProcess, CyousaSelUpdateProcess; replaces shpLeaf9
-0x003B86A0	CyousaSelDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaSelDestroy: Destroy slot of the same scene table entry; replaces shpLeaf10
-0x003B86A8	shpUpdateDBOOK	hd-inferred	hd: Raidou HD shpAction.shpUpdateDBOOK, score 8.5 band B
-0x003B8840	CyousaSelDrawProcess	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD jmsMain.CyousaSelDrawProcess score 3.6 flag -: calls1 next gap14/18 st2:gap r2-only
-0x003B88A8	CyousaSelUpdateProcess	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD jmsMain.CyousaSelUpdateProcess score 4.5 flag -: calls2 next~ gap15/21 st2:gap r2-only
-0x003B88E0	shpLeaf11	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour shpUpdateDBOOK; no named callee, caller or string
-0x003B88E8	jmsLeaf14	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
-0x003B88F0	CyousaInit	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD jmsMain.CyousaInit score 3.0 flag -: calls1 next~ gap16/23 st2:gap r2-only
-0x003B89D0	jmsCallGetProcessData12	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
-0x003B8A28	jmsReportReadFlagUpdate	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD jmsMain.jmsReportReadFlagUpdate score 2.1 flag I: next gap17/24 st2:gap r2-only
-0x003B8A60	CyousaDestroy	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD jmsMain.CyousaDestroy score 5.5 flag -: calls1 callers-of-match-uniq st1:call r1+r2
-0x003B8A80	jmsLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
-0x003B8A88	CyousaCalcProcess	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD jmsMain.CyousaCalcProcess score 2.8 flag -: calls2 gap26/38 st2:gap r2-only
-0x003B8B40	jmsCallGetProcessData13	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
-0x003B8B98	jmsCallGetProcessData14	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
+0x003B8660	TalkUpdateProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.TalkUpdateProcess: Update slot of the Talk row; replaces shpCallGetProcessData3
+0x003B8698	SaveInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.SaveInit: Init slot of the fourth jms row; HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); empty as HD; replaces CyousaSelInit
+0x003B86A0	SaveDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.SaveDestroy: Destroy slot of the Save row; replaces CyousaSelDestroy
+0x003B86A8	SaveCalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD jmsMain.SaveCalcProcess: Calc slot of the Save row; body ProcessEnd, fmProcTrigSequence, fmProcessChk, jmsAddTalkMenu, dds3FadeIn as HD; replaces shpUpdateDBOOK
+0x003B8840	SaveDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.SaveDrawProcess: Draw slot of the Save row; replaces CyousaSelDrawProcess
+0x003B88A8	SaveUpdateProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.SaveUpdateProcess: Update slot of the Save row; replaces CyousaSelUpdateProcess
+0x003B88E0	CyousaFileSelInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaFileSelInit: Init slot of the fifth jms row; HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); replaces shpLeaf11
+0x003B88E8	CyousaFileSelDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaFileSelDestroy: Destroy slot of the CyousaFileSel row; replaces jmsLeaf14
+0x003B88F0	CyousaFileSelCalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD jmsMain.CyousaFileSelCalcProcess: Calc slot of the CyousaFileSel row; body jmsCheckMovePrev as HD; replaces CyousaInit
+0x003B89D0	CyousaFileSelDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaFileSelDrawProcess: Draw slot of the CyousaFileSel row; replaces jmsCallGetProcessData12
+0x003B8A28	CyousaFileSelUpdateProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaFileSelUpdateProcess: Update slot of the CyousaFileSel row; replaces jmsReportReadFlagUpdate
+0x003B8A60	CyousaSelInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaSelInit: Init slot of the sixth jms row; HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); replaces CyousaDestroy
+0x003B8A80	CyousaSelDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaSelDestroy: Destroy slot of the CyousaSel row; replaces jmsLeaf15
+0x003B8A88	CyousaSelCalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD jmsMain.CyousaSelCalcProcess: Calc slot of the CyousaSel row; body jmsCheckMovePrev as HD; replaces CyousaCalcProcess
+0x003B8B40	CyousaSelDrawProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaSelDrawProcess: Draw slot of the CyousaSel row; replaces jmsCallGetProcessData13
+0x003B8B98	CyousaSelUpdateProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaSelUpdateProcess: Update slot of the CyousaSel row; replaces jmsCallGetProcessData14
 0x003B8BD0	jmsFunc38	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
 0x003B8C08	jmsFunc39	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; no named callee, caller or string
-0x003B8C48	jmsCallGetProcessData15	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
-0x003B8C78	jmsCallProcessStartJmsMenu	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls ProcessStart_jmsMenu
-0x003B8C98	jmsCallGetProcessData16	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00349B80, neighbour jmsReportReadFlagUpdate; calls dds3GetProcessData
+0x003B8C48	CyousaInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaInit: Init slot of the row whose Draw/Update are CyousaDrawProcess/CyousaUpdateProcess; HD jmsMain cctor order Root, TalkSel, Talk, Save, CyousaFileSel, CyousaSel, Cyousa, Mahjan matches the raidou1 jms table array (Talk and Mahjan rows and Cyousa Draw/Update anchor it); replaces jmsCallGetProcessData15
+0x003B8C78	CyousaDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaDestroy: Destroy slot of the Cyousa row; replaces jmsCallProcessStartJmsMenu
+0x003B8C98	CyousaCalcProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.CyousaCalcProcess: Calc slot of the Cyousa row; replaces jmsCallGetProcessData16
 0x003B8EF8	GetDrawText	hd	hd: Raidou HD sBtlDvltk.GetDrawText, score 7.8 band B
 0x003B9098	CyousaDrawProcess	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMain.CyousaDrawProcess score 7.2 flag -: calls3 callers-of-match votes4 st1:call r1-only
 0x003B9120	CyousaUpdateProcess	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD jmsMain.CyousaUpdateProcess score 5.5 flag -: calls2 prev gap5/4 st1:gap r1-only
@@ -11874,12 +11874,12 @@
 0x003C5E20	rstBtlEndWaitDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstResult.rstBtlEndWaitDestroy: Destroy slot of the scene table entry whose Init/Calc/Draw are rstBtlEndWait*; replaces rstLeaf15
 0x003C5E28	rstBtlEndWaitCalcProcess	hd-inferred	hd: Raidou HD rstResult.rstBtlEndWaitCalcProcess, score 8.65 band B
 0x003C5F18	rstBtlEndWaitDrawProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstResult.rstBtlEndWaitDrawProcess score 11.4 flag I: calls3 callers-of-match-uniq votes2 st1:call r1+r2
-0x003C5F68	rstCallGetProcessData38	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; calls dds3GetProcessData
-0x003C5FA0	rstLeaf16	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; no named callee, caller or string
-0x003C5FA8	rstLeaf17	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; no named callee, caller or string
-0x003C5FB0	rstCallGetProcessData39	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; calls dds3GetProcessData
-0x003C60D8	rstCallGetProcessData40	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstBtlEndWaitDrawProcess; calls dds3GetProcessData
-0x003C6110	rstCallGetProcessData41	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstCalcAlphaRate; calls dds3GetProcessData
+0x003C5F68	rstBtlEndWaitUpdateProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD rstResult.rstBtlEndWaitUpdateProcess: Update slot of the BtlEndWait scene row (Init/Destroy/Calc/Draw named rstBtlEndWait*); body jmsSeqChange(.., 2, ..) as HD; replaces rstCallGetProcessData38
+0x003C5FA0	rstLvUpWaitInit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD rstResult.rstLvUpWaitInit: Init slot of the third rst scene row; HD rstResult cctor order End, BtlEndWait, LvUpWait; body return 1 as HD; replaces rstLeaf16
+0x003C5FA8	rstLvUpWaitDestroy	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD rstResult.rstLvUpWaitDestroy: Destroy slot of the same row; body return 1 as HD; replaces rstLeaf17
+0x003C5FB0	rstLvUpWaitCalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD rstResult.rstLvUpWaitCalcProcess: Calc slot of the same row; body as HD (flag 0x80, rstCmpItemGrowthStart, encount endtype 1, sndBgmFadeOut, 60 frames); replaces rstCallGetProcessData39
+0x003C60D8	rstLvUpWaitDrawProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD rstResult.rstLvUpWaitDrawProcess: Draw slot of the same row; body jmsSeqChange(.., 1, ..) as HD; replaces rstCallGetProcessData40
+0x003C6110	rstLvUpWaitUpdateProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD rstResult.rstLvUpWaitUpdateProcess: Update slot of the same row; body jmsSeqChange(.., 2, ..) as HD; replaces rstCallGetProcessData41
 0x003C6148	rstResultCyuuseiGaugeSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstCalcAlphaRate; called by rstResultCyuuseiGauge
 0x003C6168	rstResultNakamaLevelSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstCalcAlphaRate; called by rstResultNakamaLevel
 0x003C61D0	rstResultLevelUpAnimSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstCalcAlphaRate; called by rstResultLevelUpAnim
