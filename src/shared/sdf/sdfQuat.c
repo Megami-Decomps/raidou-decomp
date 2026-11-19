@@ -95,7 +95,7 @@ void Normalize(void)
     VU0_SEQ_NORMALIZE();
 }
 
-f32 sdfLeaf30(void)
+f32 LengthSq(void)
 {
     f32 lengthSq;
     VU0_QUAT_LENGTHSQ(lengthSq);

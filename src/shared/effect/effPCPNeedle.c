@@ -179,9 +179,9 @@ void *effPCPNeedleSpiralCopy(void *arg) {
 void effLeaf264(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf265);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf266);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralSetRotateMatrix);
 
 void effPCPNeedleSpiralSetColor(effPCPNeedleSpiral_tag *hData, u32 abgr)
 {

@@ -184,7 +184,7 @@ void dds3FirstInit(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3NewGameStart);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3Leaf21);
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SoftReset);
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/kernel/dds3KernelMain.c:128, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
 u32 dds3GetKernelCount(void)

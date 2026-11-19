@@ -3408,11 +3408,11 @@ void effPCPBlinkMultiBlurDelete(effPCPBlinkMultiBlur_tag *hData)
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlinkMultiBlurDraw);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf106);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlinkMultiBlurSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf107);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlinkMultiBlurSetColor);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf108);
+INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlinkMultiBlurSetArea);
 
 effPCPMultiBlurExp_tag *effPCPMultiBlurExpCreate(effPCPBlinkMultiBlurParam_t *params) {
     effPCPMultiBlurExp_tag *work = sdfChipAllocDirect(sizeof(effPCPMultiBlurExp_tag));

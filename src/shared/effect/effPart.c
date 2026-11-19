@@ -561,7 +561,7 @@ void effPCPFlashPolyPipeDraw(void *);
 void effPCPFlashPolyPipeDelete(void *);
 void *effPCPFlashPolyPipeCopy(void *);
 void effPCPFlashPolyPipeSetPosition(void *, void *);
-void effLeaf220(void *, f32);
+void effPCPFlashPolyPipeSetScale(void *, f32);
 void effPCPFlashPolyPipeSetColor(void *, u32);
 void *effPCPFlashPolySphere2CreatePCF(void *);
 void effPCPFlashPolySphere2Draw(void *);
@@ -622,9 +622,9 @@ void effPCPMultiFilterExpSetArea(void *, f32);
 void *effPCPBlinkMultiBlurCreate(void *);
 void effPCPBlinkMultiBlurDraw(void *);
 void effPCPBlinkMultiBlurDelete(void *);
-void effLeaf106(void *, void *);
-void effLeaf107(void *, u32);
-void effLeaf108(void *, f32);
+void effPCPBlinkMultiBlurSetPosition(void *, void *);
+void effPCPBlinkMultiBlurSetColor(void *, u32);
+void effPCPBlinkMultiBlurSetArea(void *, f32);
 void *effPCPMultiFilterExpCreatePCF(void *);
 void *effPCPMultiFilterExpCopy(void *);
 void *effPCPShockWave02Create(void *);
@@ -678,15 +678,15 @@ void *effPCPHamaCardSpiralCreatePCF(void *);
 void effPCPHamaCardSpiralDraw(void *);
 void effPCPHamaCardSpiralDelete(void *);
 void *effPCPHamaCardSpiralCopy(void *);
-void effLeaf244(void *, void *);
+void effPCPHamaCardSpiralSetPosition(void *, void *);
 void effPCPHamaCardSpiralSetScale(void *, f32);
 void effPCPHamaCardSpiralSetColor(void *, u32);
 void *effPCPHamaCardSphereCreatePCF(void *);
 void effPCPHamaCardSphereDraw(void *);
 void effPCPHamaCardSphereDelete(void *);
 void *effPCPHamaCardSphereCopy(void *);
-void effLeaf246(void *, void *);
-void effLeaf248(void *, f32);
+void effPCPHamaCardSphereSetPosition(void *, void *);
+void effPCPHamaCardSphereSetScale(void *, f32);
 void effPCPHamaCardSphereSetColor(void *, u32);
 void *effPCPAgiraoFireCreatePCF(void *);
 void effPCPAgiraoFireDraw(void *);
@@ -733,7 +733,7 @@ void *effPCPNeedleSpiralCreatePCF(void *);
 void effLeaf264(void *);
 void effPCPNeedleSpiralDelete(void *);
 void *effPCPNeedleSpiralCopy(void *);
-void effLeaf265(void *, void *);
+void effPCPNeedleSpiralSetPosition(void *, void *);
 void effPCPNeedleSpiralSetColor(void *, u32);
 void *effCallChipAllocDirect2(void *);
 void effLeaf163(void *);
@@ -785,8 +785,8 @@ void *effPCPWhirlwindPolyCreatePCF(void *);
 void effPCPWhirlwindPolyDraw(void *);
 void effPCPWhirlwindPolyDelete(void *);
 void *effPCPWhirlwindPolyCopy(void *);
-void effLeaf251(void *, void *);
-void effLeaf252(void *, f32);
+void effPCPWhirlwindPolySetPosition(void *, void *);
+void effPCPWhirlwindPolySetScale(void *, f32);
 void effPCPWhirlwind3PolySetRotateMatrix(void *, void *);
 void effPCPWhirlwindPolySetColor(void *, u32);
 void *effCallChipAllocDirect12(void *);
@@ -804,44 +804,44 @@ void *effPCPWwSpherePolyCreatePCF(void *);
 void effPCPWwSpherePolyDraw(void *);
 void effPCPWwSpherePolyDelete(void *);
 void *effPCPWwSpherePolyCopy(void *);
-void effLeaf260(void *, void *);
-void effLeaf261(void *, f32);
+void effPCPWwSpherePolySetPosition(void *, void *);
+void effPCPWwSpherePolySetScale(void *, f32);
 void effPCPWwSpherePolySetRotateMatrix(void *, void *);
 void effPCPWwSpherePolySetColor(void *, u32);
 void *effPCPFlashPolySphereExpCreatePCF(void *);
 void effPCPFlashPolySphereExpDraw(void *);
 void effPCPFlashPolySphereExpDelete(void *);
 void *effPCPFlashPolySphereExpCopy(void *);
-void effLeaf224(void *, void *);
-void effLeaf226(void *, f32);
+void effPCPFlashPolySphereExpSetPosition(void *, void *);
+void effPCPFlashPolySphereExpSetScale(void *, f32);
 void effPCPFlashPolySphereExpSetColor(void *, u32);
 void *effPCPFlashPolySphere2ExpCreatePCF(void *);
 void effPCPFlashPolySphere2ExpDraw(void *);
 void effPCPFlashPolySphere2ExpDelete(void *);
 void *effPCPFlashPolySphere2ExpCopy(void *);
-void effLeaf227(void *, void *);
-void effLeaf229(void *, f32);
+void effPCPFlashPolySphere2ExpSetPosition(void *, void *);
+void effPCPFlashPolySphere2ExpSetScale(void *, f32);
 void effPCPFlashPolySphere2ExpSetColor(void *, u32);
 void *effPCPFlashPolySphere3CreatePCF(void *);
 void effPCPFlashPolySphere3Draw(void *);
 void effPCPFlashPolySphere3Delete(void *);
 void *effPCPFlashPolySphere3Copy(void *);
-void effLeaf230(void *, void *);
-void effLeaf232(void *, f32);
+void effPCPFlashPolySphere3SetPosition(void *, void *);
+void effPCPFlashPolySphere3SetScale(void *, f32);
 void effPCPFlashPolySphere3SetColor(void *, u32);
 void *effPCPFlashPolyRingExp2CreatePCF(void *);
 void effPCPFlashPolyRingExp2Draw(void *);
 void effFunc9(void *);
 void *effPCPFlashPolyRingExp2Copy(void *);
-void effLeaf233(void *, void *);
-void effLeaf235(void *, f32);
+void effPCPFlashPolyRingExp2SetPosition(void *, void *);
+void effPCPFlashPolyRingExp2SetScale(void *, f32);
 void effPCPFlashPolyRingExp2SetColor(void *, u32);
 void *effPCPWhirlwind2PolyCreatePCF(void *);
 void effPCPWhirlwind2PolyDraw(void *);
 void effPCPWhirlwind2PolyDelete(void *);
 void *effPCPWhirlwind2PolyCopy(void *);
-void effLeaf254(void *, void *);
-void effLeaf255(void *, f32);
+void effPCPWhirlwind2PolySetPosition(void *, void *);
+void effPCPWhirlwind2PolySetScale(void *, f32);
 void effPCPWhirlwind2PolySetRotateMatrix(void *, void *);
 void effPCPWhirlwind2PolySetColor(void *, u32);
 void *effPCPMakkaCreat(void *);
@@ -886,8 +886,8 @@ void *effPCPWhirlwind3PolyCreatePCF(void *);
 void effPCPWhirlwind3PolyDraw(void *);
 void effPCPWhirlwind3PolyDelete(void *);
 void *effPCPWhirlwind3PolyCopy(void *);
-void effLeaf257(void *, void *);
-void effLeaf258(void *, f32);
+void effPCPWhirlwind3PolySetPosition(void *, void *);
+void effPCPWhirlwind3PolySetScale(void *, f32);
 void effCallMultMatrixNoArg(void *, void *);
 void effPCPWhirlwind3PolySetColor(void *, u32);
 void *effPCPThunderSpherePolyCreatePCF(void *);
@@ -920,21 +920,21 @@ void *effPCPCrackCreatePCF(void *);
 void effPCPCrackDraw(void *);
 void effPCPCrackDelete(void *);
 void *effPCPCrackCopy(void *);
-void effLeaf286(void *, void *);
-void effLeaf287(void *, u32);
+void effPCPCrackSetPosition(void *, void *);
+void effPCPCrackSetColor(void *, u32);
 void *effPCPHelperBEDCreatePCF(void *);
 void effPCPHelperBEDDraw(void *);
 void effPCPHelperBEDDelete(void *);
 void *effPCPHelperBEDCopy(void *);
-void effLeaf190(void *, void *);
-void effLeaf191(void *, f32);
-void effLeaf192(void *, u32);
+void effPCPHelperBEDSetPosition(void *, void *);
+void effPCPHelperBEDSetScale(void *, f32);
+void effPCPHelperBEDSetColor(void *, u32);
 void *effPCPFlashPolyCircleCreatePCF(void *);
 void effPCPFlashPolyCircleDraw(void *);
 void effFunc10(void *);
 void *effPCPFlashPolyCircleCopy(void *);
-void effLeaf236(void *, void *);
-void effLeaf238(void *, f32);
+void effPCPFlashPolyCircleSetPosition(void *, void *);
+void effPCPFlashPolyCircleSetScale(void *, f32);
 void effPCPFlashPolyCircleSetColor(void *, u32);
 void *effPCPFlashPolyRingExpHCreatePCF(void *);
 void effPCPFlashPolyRingExpDraw(void *);
@@ -1133,7 +1133,7 @@ dds3EffectFunc_t EffectPCPFuncTable[98] = {
     { effPCPFlashPolySphereCreate, effPCPFlashPolySphereDraw, effPCPFlashPolySphereDelete, NULL, effPCPFlashPolySphereSetPosition, effPCPFlashPolySphereSetScale, NULL, effPCPFlashPolySphereSetColor, NULL, NULL },
     { effPCPFlashPolySphereCreatePCF, effPCPFlashPolySphereDraw, effPCPFlashPolySphereDelete, effPCPFlashPolySphereCopy, effPCPFlashPolySphereSetPosition, effPCPFlashPolySphereSetScale, NULL, effPCPFlashPolySphereSetColor, NULL, NULL },
     { effPCPFlashPolyRingCreatePCF, effPCPFlashPolyRingDraw, effPCPFlashPolyRingDelete, effPCPFlashPolyRingCopy, effPCPFlashPolyRingSetPosition, effPCPFlashPolyRingSetScale, NULL, effPCPFlashPolyRingSetColor, NULL, NULL },
-    { effPCPFlashPolyPipeCreatePCF, effPCPFlashPolyPipeDraw, effPCPFlashPolyPipeDelete, effPCPFlashPolyPipeCopy, effPCPFlashPolyPipeSetPosition, effLeaf220, NULL, effPCPFlashPolyPipeSetColor, NULL, NULL },
+    { effPCPFlashPolyPipeCreatePCF, effPCPFlashPolyPipeDraw, effPCPFlashPolyPipeDelete, effPCPFlashPolyPipeCopy, effPCPFlashPolyPipeSetPosition, effPCPFlashPolyPipeSetScale, NULL, effPCPFlashPolyPipeSetColor, NULL, NULL },
     { effPCPFlashPolySphere2CreatePCF, effPCPFlashPolySphere2Draw, effPCPFlashPolySphere2Delete, effPCPFlashPolySphere2Copy, effPCPFlashPolySphere2SetPosition, effPCPFlashPolySphere2SetScale, NULL, effPCPFlashPolySphere2SetColor, NULL, NULL },
     { effPCPFlashPolyRingExpCreatePCF, effPCPFlashPolyRingExpHDraw, effPCPFlashPolyRingExpDelete, effPCPFlashPolyRingExpCopy, effLeaf221, effLeaf223, NULL, effPCPFlashPolyRingExpHSetColor, NULL, NULL },
     { effPCPMZiodin02Create, effPCPMZiodin02Draw, effPCPMZiodin02Delete, effPCPMZiodin02Copy, effPCPMZiodin02SetPosition, NULL, NULL, effPCPMZiodin02SetColor, NULL, NULL },
@@ -1143,7 +1143,7 @@ dds3EffectFunc_t EffectPCPFuncTable[98] = {
     { effPCPShockWave01Create, effPCPShockWave01Draw, effBTLSys_Nego_Kaihuku_Delete2, effPCPShockWave01Copy, effLeaf97, NULL, NULL, effLeaf99, NULL, NULL },
     { effPCPHouden01Create, effPCPHouden01Draw, effBTLSys_Nego_Kaihuku_Delete, effPCPHouden01Copy, effPCPHouden01SetPosition, NULL, NULL, effPCPHouden01SetColor, NULL, NULL },
     { effPCPMultiFilterExpCreate, effPCPMultiFilterExpDraw, effBTLSys_Encount_Delete, NULL, effPCPMultiFilterExpSetPosition, NULL, NULL, effPCPMultiFilterExpSetColor, NULL, effPCPMultiFilterExpSetArea },
-    { effPCPBlinkMultiBlurCreate, effPCPBlinkMultiBlurDraw, effPCPBlinkMultiBlurDelete, NULL, effLeaf106, NULL, NULL, effLeaf107, NULL, effLeaf108 },
+    { effPCPBlinkMultiBlurCreate, effPCPBlinkMultiBlurDraw, effPCPBlinkMultiBlurDelete, NULL, effPCPBlinkMultiBlurSetPosition, NULL, NULL, effPCPBlinkMultiBlurSetColor, NULL, effPCPBlinkMultiBlurSetArea },
     { effPCPMultiFilterExpCreatePCF, effPCPMultiFilterExpDraw, effBTLSys_Encount_Delete, effPCPMultiFilterExpCopy, effPCPMultiFilterExpSetPosition, NULL, NULL, effPCPMultiFilterExpSetColor, NULL, effPCPMultiFilterExpSetArea },
     { effPCPShockWave02Create, effPCPShockWave02Draw, effPCPShockWave02Delete, effPCPShockWave02Copy, effPCPShockWave02SetPosition, NULL, NULL, effPCPShockWave02SetColor, NULL, NULL },
     { effPCPFilterExpCreatePCF, effPCPFilterExpDraw, effPCPFilterExpDelete, effPCPFilterExpCopy, NULL, NULL, NULL, effPCPFilterExpSetColor, NULL, NULL },
@@ -1153,15 +1153,15 @@ dds3EffectFunc_t EffectPCPFuncTable[98] = {
     { effPCPMegidora01Create, effPCPMegidora01Draw, effPCPMegidora01Delete, effPCPMegidora01Copy, effPCPMegidora01SetPosition, NULL, NULL, effPCPMegidora01SetColor, NULL, NULL },
     { effPCPMegidoraon01Create, effPCPMegidoraon01Draw, effPCPMegidoraon01Delete, effPCPMegidoraon01Copy, effPCPMegidoraon01SetPosition, NULL, NULL, effPCPMegidoraon01SetColor, NULL, NULL },
     { effPCPBreathCreatePCF, effLeaf130, effPCPBreathDelete, effPCPBreathCopy, effPCPBreathSetPosition, NULL, effPCPBreathSetRotateMatrix, effPCPBreathSetColor, NULL, NULL },
-    { effPCPHamaCardSpiralCreatePCF, effPCPHamaCardSpiralDraw, effPCPHamaCardSpiralDelete, effPCPHamaCardSpiralCopy, effLeaf244, effPCPHamaCardSpiralSetScale, NULL, effPCPHamaCardSpiralSetColor, NULL, NULL },
-    { effPCPHamaCardSphereCreatePCF, effPCPHamaCardSphereDraw, effPCPHamaCardSphereDelete, effPCPHamaCardSphereCopy, effLeaf246, effLeaf248, NULL, effPCPHamaCardSphereSetColor, NULL, NULL },
+    { effPCPHamaCardSpiralCreatePCF, effPCPHamaCardSpiralDraw, effPCPHamaCardSpiralDelete, effPCPHamaCardSpiralCopy, effPCPHamaCardSpiralSetPosition, effPCPHamaCardSpiralSetScale, NULL, effPCPHamaCardSpiralSetColor, NULL, NULL },
+    { effPCPHamaCardSphereCreatePCF, effPCPHamaCardSphereDraw, effPCPHamaCardSphereDelete, effPCPHamaCardSphereCopy, effPCPHamaCardSphereSetPosition, effPCPHamaCardSphereSetScale, NULL, effPCPHamaCardSphereSetColor, NULL, NULL },
     { effPCPAgiraoFireCreatePCF, effPCPAgiraoFireDraw, effPCPAgiraoFireDelete, effPCPAgiraoFireCopy, effPCPAgiraoFireSetPosition, NULL, NULL, effPCPAgiraoFireSetColor, NULL, NULL },
     { effPCPBufuIceCreate, effPCPBufuIceDraw, effPCPBufuIceDelete, effPCPBufuIceCopy, effLeaf135, effLeaf137, effLeaf138, effLeaf136, NULL, NULL },
     { effPCPBufudnIceCreate, effPCPBufudnIceDraw, effCallEffectPartDelete, effPCPBufudnIceCopy, effLeaf139, effLeaf141, effLeaf142, effLeaf140, NULL, NULL },
     { effPCPBufuraIceCreate, effPCPBufuraIceDraw, effCallEffectPartDelete2, effPCPBufuraIceCopy, effLeaf143, effLeaf145, effLeaf146, effLeaf144, NULL, NULL },
     { effLeaf147, effLeaf150, effLeaf149, effLeaf148, NULL, NULL, NULL, NULL, NULL, NULL },
     { effPCPAgiFireballCreatePCF, effPCPAgiFireball2DrawSub, effPCPAgiFireballDelete, effPCPAgiFireballCopy, effPCPAgiFireballSetPosition, NULL, effPCPAgiFireballSetRotateMatrix, effPCPAgiFireballSetColor, NULL, NULL },
-    { effPCPNeedleSpiralCreatePCF, effLeaf264, effPCPNeedleSpiralDelete, effPCPNeedleSpiralCopy, effLeaf265, NULL, NULL, effPCPNeedleSpiralSetColor, NULL, NULL },
+    { effPCPNeedleSpiralCreatePCF, effLeaf264, effPCPNeedleSpiralDelete, effPCPNeedleSpiralCopy, effPCPNeedleSpiralSetPosition, NULL, NULL, effPCPNeedleSpiralSetColor, NULL, NULL },
     { effCallChipAllocDirect2, effLeaf163, effPCPEyeThunderDelete, effLeaf151, effPCPEyeThunderSetPosition, NULL, NULL, effPCPEyeThunderSetColor, NULL, NULL },
     { effCallChipAllocDirect3, effLeaf163, effPCPEyeThunderDelete, effLeaf152, effPCPEyeThunderSetPosition, NULL, NULL, effPCPEyeThunderSetColor, NULL, NULL },
     { effCallChipAllocDirect4, effLeaf163, effPCPEyeThunderDelete, effLeaf153, effPCPEyeThunderSetPosition, NULL, NULL, effPCPEyeThunderSetColor, NULL, NULL },
@@ -1175,32 +1175,32 @@ dds3EffectFunc_t EffectPCPFuncTable[98] = {
     { effPCPRippleBlurExpCreatePCF, effPCPRippleBlurExpDraw, effPCPRippleBlurExpDelete, effPCPDistortionBlurExpCopy, effPCPRippleBlurExpSetPosition, NULL, NULL, effPCPRippleBlurExpSetColor, NULL, NULL },
     { effPCPThunderSphereExpCreatePCF, effPCPThunderSphereExpDraw, effPCPThunderSphereExpDelete, effPCPThunderSphereExpCopy, effPCPThunderSphereExpSetPosition, effPCPThunderSphereExpSetScale, NULL, effPCPThunderSphereExpSetColor, NULL, NULL },
     { effPCPRingPolyExpCreatePCF, effPCPRingPolyExpDraw, effPCPRingPolyExpDelete, effPCPRingPolyExpCopy, effLeaf169, effLeaf170, effPCPRingPolyExp2SetRotateMatrix, effLeaf171, effPCPRingPolyExpSetDirection, NULL },
-    { effPCPWhirlwindPolyCreatePCF, effPCPWhirlwindPolyDraw, effPCPWhirlwindPolyDelete, effPCPWhirlwindPolyCopy, effLeaf251, effLeaf252, effPCPWhirlwind3PolySetRotateMatrix, effPCPWhirlwindPolySetColor, NULL, NULL },
+    { effPCPWhirlwindPolyCreatePCF, effPCPWhirlwindPolyDraw, effPCPWhirlwindPolyDelete, effPCPWhirlwindPolyCopy, effPCPWhirlwindPolySetPosition, effPCPWhirlwindPolySetScale, effPCPWhirlwind3PolySetRotateMatrix, effPCPWhirlwindPolySetColor, NULL, NULL },
     { effCallChipAllocDirect12, effLeaf163, effPCPEyeThunderDelete, effLeaf161, effPCPEyeThunderSetPosition, NULL, NULL, effPCPEyeThunderSetColor, NULL, NULL },
     { effCallChipAllocDirect13, effLeaf163, effPCPEyeThunderDelete, effLeaf162, effPCPEyeThunderSetPosition, NULL, NULL, effPCPEyeThunderSetColor, NULL, NULL },
     { effPCPRadiateThunderCreatePCF, effPCPRadiateThunderDraw, effPCPRadiateThunderDelete, effPCPRadiateThunderCopy, effPCPRadiateThunderSetPosition, effPCPRadiateThunderSetScale, NULL, effPCPRadiateThunderSetColor, NULL, NULL },
-    { effPCPWwSpherePolyCreatePCF, effPCPWwSpherePolyDraw, effPCPWwSpherePolyDelete, effPCPWwSpherePolyCopy, effLeaf260, effLeaf261, effPCPWwSpherePolySetRotateMatrix, effPCPWwSpherePolySetColor, NULL, NULL },
-    { effPCPFlashPolySphereExpCreatePCF, effPCPFlashPolySphereExpDraw, effPCPFlashPolySphereExpDelete, effPCPFlashPolySphereExpCopy, effLeaf224, effLeaf226, NULL, effPCPFlashPolySphereExpSetColor, NULL, NULL },
-    { effPCPFlashPolySphere2ExpCreatePCF, effPCPFlashPolySphere2ExpDraw, effPCPFlashPolySphere2ExpDelete, effPCPFlashPolySphere2ExpCopy, effLeaf227, effLeaf229, NULL, effPCPFlashPolySphere2ExpSetColor, NULL, NULL },
-    { effPCPFlashPolySphere3CreatePCF, effPCPFlashPolySphere3Draw, effPCPFlashPolySphere3Delete, effPCPFlashPolySphere3Copy, effLeaf230, effLeaf232, NULL, effPCPFlashPolySphere3SetColor, NULL, NULL },
-    { effPCPFlashPolyRingExp2CreatePCF, effPCPFlashPolyRingExp2Draw, effFunc9, effPCPFlashPolyRingExp2Copy, effLeaf233, effLeaf235, NULL, effPCPFlashPolyRingExp2SetColor, NULL, NULL },
-    { effPCPWhirlwind2PolyCreatePCF, effPCPWhirlwind2PolyDraw, effPCPWhirlwind2PolyDelete, effPCPWhirlwind2PolyCopy, effLeaf254, effLeaf255, effPCPWhirlwind2PolySetRotateMatrix, effPCPWhirlwind2PolySetColor, NULL, NULL },
+    { effPCPWwSpherePolyCreatePCF, effPCPWwSpherePolyDraw, effPCPWwSpherePolyDelete, effPCPWwSpherePolyCopy, effPCPWwSpherePolySetPosition, effPCPWwSpherePolySetScale, effPCPWwSpherePolySetRotateMatrix, effPCPWwSpherePolySetColor, NULL, NULL },
+    { effPCPFlashPolySphereExpCreatePCF, effPCPFlashPolySphereExpDraw, effPCPFlashPolySphereExpDelete, effPCPFlashPolySphereExpCopy, effPCPFlashPolySphereExpSetPosition, effPCPFlashPolySphereExpSetScale, NULL, effPCPFlashPolySphereExpSetColor, NULL, NULL },
+    { effPCPFlashPolySphere2ExpCreatePCF, effPCPFlashPolySphere2ExpDraw, effPCPFlashPolySphere2ExpDelete, effPCPFlashPolySphere2ExpCopy, effPCPFlashPolySphere2ExpSetPosition, effPCPFlashPolySphere2ExpSetScale, NULL, effPCPFlashPolySphere2ExpSetColor, NULL, NULL },
+    { effPCPFlashPolySphere3CreatePCF, effPCPFlashPolySphere3Draw, effPCPFlashPolySphere3Delete, effPCPFlashPolySphere3Copy, effPCPFlashPolySphere3SetPosition, effPCPFlashPolySphere3SetScale, NULL, effPCPFlashPolySphere3SetColor, NULL, NULL },
+    { effPCPFlashPolyRingExp2CreatePCF, effPCPFlashPolyRingExp2Draw, effFunc9, effPCPFlashPolyRingExp2Copy, effPCPFlashPolyRingExp2SetPosition, effPCPFlashPolyRingExp2SetScale, NULL, effPCPFlashPolyRingExp2SetColor, NULL, NULL },
+    { effPCPWhirlwind2PolyCreatePCF, effPCPWhirlwind2PolyDraw, effPCPWhirlwind2PolyDelete, effPCPWhirlwind2PolyCopy, effPCPWhirlwind2PolySetPosition, effPCPWhirlwind2PolySetScale, effPCPWhirlwind2PolySetRotateMatrix, effPCPWhirlwind2PolySetColor, NULL, NULL },
     { effPCPMakkaCreat, effLeaf178, effPCPMakkaDelete, effPCPMakkaCopy, effPCPMakkaSetPosition, effPCPMakkaSetScale, NULL, effPCPMakkaSetColor, NULL, NULL },
     { effPCPRingPolyExp2CreatePCF, effPCPRingPolyExp2Draw, effPCPRingPolyExp2Delete, effPCPRingPolyExp2Copy, effLeaf172, effLeaf173, NULL, effLeaf174, NULL, NULL },
     { effPCPAgiFireball2CreatePCF, effPCPAgiFireball2Draw, effPCPAgiFireball2Delete, effPCPAgiFireball2Copy, effPCPAgiFireball2SetRotateMatrix, NULL, effCallPCPAgiFireballSetRotateMatri, effPCPAgiFireball2SetColor, NULL, NULL },
     { effPCPRadiateBEDCreatePCF, effPCPRadiateBEDDraw, effPCPRadiateBEDDelete, effPCPRadiateBEDCopy, effPCPRadiateBEDSetPosition, effPCPRadiateBEDSetScale, NULL, effPCPRadiateBEDSetColor, NULL, NULL },
     { effAPPoint4CreatePCF, effAPPoint4Draw, effAPPoint4Delete, effAPPoint4Copy, NULL, NULL, NULL, NULL, NULL, NULL },
     { effPCPRadiateTBCreatePCF, effPCPRadiateTBDraw, effPCPRadiateTBDelete, effPCPRadiateTBCopy, effPCPRadiateTBSetPosition, NULL, NULL, effPCPRadiateTBSetColor, NULL, NULL },
-    { effPCPWhirlwind3PolyCreatePCF, effPCPWhirlwind3PolyDraw, effPCPWhirlwind3PolyDelete, effPCPWhirlwind3PolyCopy, effLeaf257, effLeaf258, effCallMultMatrixNoArg, effPCPWhirlwind3PolySetColor, NULL, NULL },
+    { effPCPWhirlwind3PolyCreatePCF, effPCPWhirlwind3PolyDraw, effPCPWhirlwind3PolyDelete, effPCPWhirlwind3PolyCopy, effPCPWhirlwind3PolySetPosition, effPCPWhirlwind3PolySetScale, effCallMultMatrixNoArg, effPCPWhirlwind3PolySetColor, NULL, NULL },
     { effPCPThunderSpherePolyCreatePCF, effPCPThunderSpherePolyLowDraw, effPCPFlashPolyCircleDelete, effPCPThunderSpherePolyCopy, effPCPShockWave01DrawSub, effPCPThunderSphereExpDrawSub, NULL, effPCPShockWave01DrawSub2, NULL, NULL },
     { effCallEffectPCPDataGetData, effCallPCPThunderSphereLowRotate, effPCPFlashPolyRingExp2Delete, effLeaf195, effLeaf196, effLeaf198, NULL, effLeaf197, NULL, NULL },
     { effPCPSpiralBEDCreatePCF, effPCPSpiralBEDDraw, effPCPSpiralBEDDelete, effPCPSpiralBEDCopy, effPCPSpiralBEDSetPosition, effPCPSpiralBEDSetScale, NULL, effPCPSpiralBEDSetColor, NULL, NULL },
     { effPCPAgiFireballSpCreatePCF, effPCPAgiFireball2DrawSub, effPCPAgiFireballDelete, effPCPAgiFireballSpCopy, effPCPAgiFireballSetPosition, NULL, effPCPAgiFireballSetRotateMatrix, effPCPAgiFireballSetColor, NULL, NULL },
     { effPCPAgiFireballSp2CreatePCF, effPCPAgiFireball2DrawSub, effPCPAgiFireballDelete, effPCPAgiFireballSp2Copy, effPCPAgiFireballSetPosition, NULL, effPCPAgiFireballSetRotateMatrix, effPCPAgiFireballSetColor, NULL, NULL },
     { effPCPBezierBillCreatePCF, effLeaf206, effPCPBezierBillDelete, effPCPBezierBillCopy, effPCPBezierBillSetPosition, NULL, NULL, effPCPBezierBillSetColor, NULL, NULL },
-    { effPCPCrackCreatePCF, effPCPCrackDraw, effPCPCrackDelete, effPCPCrackCopy, effLeaf286, NULL, NULL, effLeaf287, NULL, NULL },
-    { effPCPHelperBEDCreatePCF, effPCPHelperBEDDraw, effPCPHelperBEDDelete, effPCPHelperBEDCopy, effLeaf190, effLeaf191, NULL, effLeaf192, NULL, NULL },
-    { effPCPFlashPolyCircleCreatePCF, effPCPFlashPolyCircleDraw, effFunc10, effPCPFlashPolyCircleCopy, effLeaf236, effLeaf238, NULL, effPCPFlashPolyCircleSetColor, NULL, NULL },
+    { effPCPCrackCreatePCF, effPCPCrackDraw, effPCPCrackDelete, effPCPCrackCopy, effPCPCrackSetPosition, NULL, NULL, effPCPCrackSetColor, NULL, NULL },
+    { effPCPHelperBEDCreatePCF, effPCPHelperBEDDraw, effPCPHelperBEDDelete, effPCPHelperBEDCopy, effPCPHelperBEDSetPosition, effPCPHelperBEDSetScale, NULL, effPCPHelperBEDSetColor, NULL, NULL },
+    { effPCPFlashPolyCircleCreatePCF, effPCPFlashPolyCircleDraw, effFunc10, effPCPFlashPolyCircleCopy, effPCPFlashPolyCircleSetPosition, effPCPFlashPolyCircleSetScale, NULL, effPCPFlashPolyCircleSetColor, NULL, NULL },
     { effPCPFlashPolyRingExpHCreatePCF, effPCPFlashPolyRingExpDraw, effCallFlashPolyListHDelete, effPCPFlashPolyRingExpHCopy, effLeaf239, effLeaf241, effPCPFlashPolyRingExpHSetRotateMatrix, effPCPFlashPolyRingExpSetColor, NULL, NULL },
     { effPCPBossBaelCreatePCF, effLeaf288, effPCPBossBaelDelete, effPCPBossBaelCopy, effLeaf289, NULL, NULL, effLeaf290, NULL, NULL },
     { effLeaf292, effLeaf295, effLeaf294, effLeaf293, NULL, NULL, NULL, effLeaf296, NULL, NULL },

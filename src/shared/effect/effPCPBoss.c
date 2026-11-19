@@ -930,9 +930,9 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
     work->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effLeaf286);
+INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackSetPosition);
 
-void effLeaf287(effPCPCrack_t *hData, u32 abgr)
+void effPCPCrackSetColor(effPCPCrack_t *hData, u32 abgr)
 {
     hData->abgr = abgr;
 }
@@ -1220,11 +1220,11 @@ void effPCPCrack2Draw(effPCPCrack_t *hData)
 }
 
 void effPCPCrack2SetPosition(void *arg0, void *arg1) {
-    effLeaf286(arg0, arg1);
+    effPCPCrackSetPosition(arg0, arg1);
 }
 
 void effPCPCrack2SetColor(void *arg0, u32 arg1) {
-    effLeaf287(arg0, arg1);
+    effPCPCrackSetColor(arg0, arg1);
 }
 
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam)

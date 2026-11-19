@@ -1451,7 +1451,7 @@ void effAPPoint4Draw(effAPPoint4_tag *hData) {
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/effect/effEvent.c:1773, match, same function 1.00 (words 23/23, calls 1.00, shape 1.00) */
-void effLeaf34(effChan_t *channel, f32 *source) {
+void effCopyVertRows(effChan_t *channel, f32 *source) {
     f32 *sourceRow;
     u32 rowIndex;
     f32 *scalarCursor;

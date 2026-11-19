@@ -8,7 +8,7 @@
 0x001001F0	dds3Leaf20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001001D8, neighbour dds3FirstInit; no named callee, caller or string
 0x001001F8	dds3FirstInit	inferred	smt3-pair: same process names (1st, draw1st, RequestDraw, basic_main, basic_draw, font_sys, DbgDevDump) and init call order as SMT3 dds3FirstInit
 0x00100498	dds3NewGameStart	hd-inferred	hd: Raidou HD dds3KernelMain.dds3NewGameStart, score 9.5 band B
-0x001004F8	dds3Leaf21	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001001D8, neighbour dds3NewGameStart; no named callee, caller or string
+0x001004F8	dds3SoftReset	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 dds3SoftReset (SMT3 HD name): same body but the flag's address, between dds3FirstInit and dds3GetKernelCount; sets dds3SoftResetFlag to 1; replaces dds3Leaf21
 0x00100508	dds3GetKernelCount	inferred	SMT3HD name via SLUS_209.11 0x00100410, shared-hash-in-run; map-agrees
 0x00100510	dds3GetFrameID	inferred	SMT3HD name via SLUS_209.11 0x00100418, shared-hash-in-run; map-agrees
 0x00100518	dds3PauseOn	inferred	SMT3HD name via SLUS_209.11 0x00100420, shared-hash-in-run; map-silent
@@ -4237,7 +4237,7 @@
 0x001ED958	slErrorWaitToFileMc	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x154088 sim 0.961 margin 0.43 pair
 0x001EDA28	slCallPlaySE3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls p2sdPlaySE
 0x001EDA98	slExitWaitProc	inferred	SMT3HD name via SLUS_209.11 0x001541C8, reloc-identical; map-agrees
-0x001EDAE8	slLeaf10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit mc/slMain; no named callee, caller or string
+0x001EDAE8	slHitAnyKeyNoChk	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 slHitAnyKeyNoChk (SMT3 HD name): same body but gp offsets, between slExitWaitProc and slHitAnyKeyNoChkProc; returns slHitAnyKeyNoChkProc; replaces slLeaf10
 0x001EDB00	slHitAnyKeyNoChkProc	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x154230 sim 0.970 margin 0.22 pair
 0x001EDB80	slHitAnyKey	inferred	smt3-decomp name via SLUS_209.11 0x001542B8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.318
 0x001EDBB0	slHitAnyKeyProc	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x1542e8 sim 0.759 margin 0.16 pair
@@ -4621,7 +4621,7 @@
 0x00200448	effAPPoint4Delete	inferred	SMT3HD name via SLUS_209.11 0x001B01C8, reloc-identical; map-agrees
 0x002004B8	effAPPoint4PartInit	inferred	SMT3HD name via SLUS_209.11 0x001B0238, reloc-identical; map-agrees
 0x002007B0	effAPPoint4Draw	inferred	SMT3HD name via SLUS_209.11 0x001B0530, reloc-identical; map-agrees
-0x002009B0	effLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effEvent; no named callee, caller or string
+0x002009B0	effCopyVertRows	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effCopyVertRows: same body (exact shape) at the same place, between effAPPoint4Draw and effEveAPP4Randomize; replaces effLeaf34
 0x00200A10	effEveAPP4Randomize	inferred	SMT3HD name via SLUS_209.11 0x001B0790, reloc-identical; map-agrees
 0x00200AD8	dds3EffectManagerInit	hd	hd: Raidou HD dds3Effect.dds3EffectManagerInit, score 13.5 band A
 0x00200B80	ManagerExit	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD dds3Effect.ManagerExit score 8.8 flag -: prev next gap=exact st1:gap r1+r2
@@ -5105,9 +5105,9 @@
 0x002153C8	effPCPBlinkMultiBlurCreate	inferred	SMT3HD name via SLUS_209.11 0x0018DF38, reloc-identical; map-agrees
 0x00215490	effPCPBlinkMultiBlurDelete	inferred	SMT3HD name via SLUS_209.11 0x0018E000, reloc-identical; map-agrees
 0x002154E0	effPCPBlinkMultiBlurDraw	inferred	SMT3HD name via SLUS_209.11 0x0018E050, reloc-identical; map-agrees
-0x00215620	effLeaf106	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00215638	effLeaf107	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
-0x00215648	effLeaf108	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc; no named callee, caller or string
+0x00215620	effPCPBlinkMultiBlurSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBlinkMultiBlurSetPosition (SMT3 HD name): same body but field offsets, first setter after effPCPBlinkMultiBlurDraw; replaces effLeaf106
+0x00215638	effPCPBlinkMultiBlurSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBlinkMultiBlurSetColor (SMT3 HD name): same body but field offsets, second setter after effPCPBlinkMultiBlurDraw; replaces effLeaf107
+0x00215648	effPCPBlinkMultiBlurSetArea	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPBlinkMultiBlurSetArea (SMT3 HD name): same body but field offsets, third setter after effPCPBlinkMultiBlurDraw; replaces effLeaf108
 0x00215658	effPCPMultiBlurExpCreate	inferred	SMT3HD name via SLUS_209.11 0x0018E1C8, reloc-identical; map-agrees
 0x002156F0	effBTLSys_Encount_Delete2	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x173bb0 sim 1.000 margin 0.00 pair
 0x00215720	effPCPMultiBlurExpDraw	inferred	SMT3HD name via SLUS_209.11 0x0018E290, reloc-identical; map-agrees
@@ -5347,9 +5347,9 @@
 0x0021D7F8	effPCPHelperBEDCopy	inferred	SMT3HD name via SLUS_209.11 0x001972C8, reloc-identical; map-agrees
 0x0021D850	effPCPHelperBEDDelete	inferred	SMT3HD name via SLUS_209.11 0x00197320, reloc-identical; map-agrees
 0x0021D8F0	effPCPHelperBEDDraw	inferred	SMT3HD name via SLUS_209.11 0x001973C0, reloc-identical; map-agrees
-0x0021DBE0	effLeaf190	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002068E8, nearest named function effPCPHelperBEDDraw; no named callee, caller or string
-0x0021DBF0	effLeaf191	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002068E8, nearest named function effPCPHelperBEDDraw; no named callee, caller or string
-0x0021DBF8	effLeaf192	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002068E8, nearest named function effPCPHelperBEDDraw; no named callee, caller or string
+0x0021DBE0	effPCPHelperBEDSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPHelperBEDSetPosition (SMT3 HD name): same body (exact shape) at the same place, first setter after effPCPHelperBEDDraw; replaces effLeaf190
+0x0021DBF0	effPCPHelperBEDSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPHelperBEDSetScale (SMT3 HD name): same body (exact shape) at the same place, second setter after effPCPHelperBEDDraw; replaces effLeaf191
+0x0021DBF8	effPCPHelperBEDSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPHelperBEDSetColor (SMT3 HD name): same body (exact shape) at the same place, third setter after effPCPHelperBEDDraw; replaces effLeaf192
 0x0021DC00	effLeaf193	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002068E8, nearest named function effPCPHelperBEDDraw; no named callee, caller or string
 0x0021DC08	effPcpKind88CreateDisabled	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00184448, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0021DC10	effPcpKind88DuplicateDisabled	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00184450, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -5474,7 +5474,7 @@
 0x00224968	effPCPFlashPolyPipeDelete	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00224998	effPCPFlashPolyPipeSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyPipeSetPosition: same body (exact shape) at the same place, between effPCPFlashPolyPipeDelete and effPCPFlashPolyPipeSetColor; replaces effLeaf218
 0x002249A8	effPCPFlashPolyPipeSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPFlashPolyPipeSetColor: same body (hData->abgr = abgr) on effPCPFlashPolyPipe_tag, third leaf group of its type; replaces effLeaf219
-0x002249B0	effLeaf220	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x002249B0	effPCPFlashPolyPipeSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyPipeSetScale: same body (exact shape) at the same place, between effPCPFlashPolyPipeSetColor and effPCPFlashPolyPipePartSetVC; replaces effLeaf220
 0x002249B8	effPCPFlashPolyPipePartSetVC	inferred	SMT3HD name via SLUS_209.11 0x0017EAD8, reloc-identical; map-agrees
 0x00224AA8	effPCPFlashPolyPipePartSetVertex	inferred	SMT3HD name via SLUS_209.11 0x0017EBC8, reloc-identical; map-agrees
 0x00224D18	effPCPFlashPolyPipePartRotate	inferred	SMT3HD name via SLUS_209.11 0x0017EE38, byte-identical; map-agrees
@@ -5494,9 +5494,9 @@
 0x00225AA8	effPCPFlashPolySphereExpCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00225AC8	effPCPFlashPolySphereExpCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00225AE0	effPCPFlashPolySphereExpDelete	inferred	SMT3HD name via SLUS_209.11 0x0017FC00, reloc-identical; map-agrees
-0x00225B10	effLeaf224	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00225B10	effPCPFlashPolySphereExpSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolySphereExpSetPosition: same body (exact shape) at the same place, between effPCPFlashPolySphereExpDelete and effPCPFlashPolySphereExpSetColor; replaces effLeaf224
 0x00225B20	effPCPFlashPolySphereExpSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPFlashPolySphereExpSetColor: same body (hData->abgr = abgr) on effPCPFlashPolySphereExp_tag, third leaf group of its type; replaces effLeaf225
-0x00225B28	effLeaf226	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00225B28	effPCPFlashPolySphereExpSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolySphereExpSetScale: same body (exact shape) at the same place, between effPCPFlashPolySphereExpSetColor and effPCPFlashPolySphereExpPartSetVC; replaces effLeaf226
 0x00225B30	effPCPFlashPolySphereExpPartSetVC	inferred	SMT3HD name via SLUS_209.11 0x0017FC50, reloc-identical; map-agrees
 0x00225C20	effPCPFlashPolySphereExpPartInit	inferred	SMT3HD name via SLUS_209.11 0x0017FD40, reloc-identical; map-agrees
 0x00225CF8	effPCPFlashPolySphereExpPartSetVertex	inferred	SMT3HD name via SLUS_209.11 0x0017FE18, reloc-identical; map-agrees
@@ -5506,9 +5506,9 @@
 0x002262D8	effPCPFlashPolySphere2ExpCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x002262F8	effPCPFlashPolySphere2ExpCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00226310	effPCPFlashPolySphere2ExpDelete	inferred	SMT3HD name via SLUS_209.11 0x00180430, reloc-identical; map-agrees
-0x00226340	effLeaf227	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00226340	effPCPFlashPolySphere2ExpSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolySphere2ExpSetPosition: same body (exact shape) at the same place, between effPCPFlashPolySphere2ExpDelete and effPCPFlashPolySphere2ExpSetColor; replaces effLeaf227
 0x00226350	effPCPFlashPolySphere2ExpSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPFlashPolySphere2ExpSetColor: same body (hData->abgr = abgr) on effPCPFlashPolySphere2Exp_tag, third leaf group of its type; replaces effLeaf228
-0x00226358	effLeaf229	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00226358	effPCPFlashPolySphere2ExpSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolySphere2ExpSetScale: same body (exact shape) at the same place, between effPCPFlashPolySphere2ExpSetColor and effPCPFlashPolySphere2ExpPartSetVC; replaces effLeaf229
 0x00226360	effPCPFlashPolySphere2ExpPartSetVC	inferred	SMT3HD name via SLUS_209.11 0x00180480, reloc-identical; map-agrees
 0x00226400	effPCPFlashPolySphere2ExpPartSetVertex	inferred	SMT3HD name via SLUS_209.11 0x00180520, reloc-identical; map-agrees
 0x00226598	effPCPFlashPolySphere2ExpDraw	inferred	SMT3HD name via SLUS_209.11 0x001806B8, reloc-identical; map-agrees
@@ -5516,9 +5516,9 @@
 0x00226A10	effPCPFlashPolySphere3CreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00226A30	effPCPFlashPolySphere3Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00226A48	effPCPFlashPolySphere3Delete	inferred	SMT3HD name via SLUS_209.11 0x00180B68, reloc-identical; map-agrees
-0x00226A78	effLeaf230	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00226A78	effPCPFlashPolySphere3SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolySphere3SetPosition: same body (exact shape) at the same place, between effPCPFlashPolySphere3Delete and effPCPFlashPolySphere3SetColor; replaces effLeaf230
 0x00226A88	effPCPFlashPolySphere3SetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPFlashPolySphere3SetColor: same body (hData->abgr = abgr) on effPCPFlashPolySphere3_tag, third leaf group of its type; replaces effLeaf231
-0x00226A90	effLeaf232	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00226A90	effPCPFlashPolySphere3SetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolySphere3SetScale: same body (exact shape) at the same place, between effPCPFlashPolySphere3SetColor and effPCPFlashPolySphere3PartSetVC; replaces effLeaf232
 0x00226A98	effPCPFlashPolySphere3PartSetVC	inferred	SMT3HD name via SLUS_209.11 0x00180BB8, reloc-identical; map-agrees
 0x00226B88	effPCPFlashPolySphere3PartInit	inferred	SMT3HD name via SLUS_209.11 0x00180CA8, reloc-identical; map-agrees
 0x00226C60	effPCPFlashPolySphere3PartSetVertex	inferred	SMT3HD name via SLUS_209.11 0x00180D80, reloc-identical; map-agrees
@@ -5528,9 +5528,9 @@
 0x002273B8	effPCPFlashPolyRingExp2CreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x002273D8	effPCPFlashPolyRingExp2Copy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x002273F0	effFunc9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
-0x00227420	effLeaf233	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00227420	effPCPFlashPolyRingExp2SetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyRingExp2SetPosition: same body (exact shape) at the same place, between effPCPFlashPolyRingExp2Copy and effPCPFlashPolyRingExp2SetColor; replaces effLeaf233
 0x00227430	effPCPFlashPolyRingExp2SetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPFlashPolyRingExp2SetColor: same body (hData->abgr = abgr) on effPCPFlashPolyRingExp2_tag, third leaf group of its type; replaces effLeaf234
-0x00227438	effLeaf235	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00227438	effPCPFlashPolyRingExp2SetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyRingExp2SetScale: same body (exact shape) at the same place, between effPCPFlashPolyRingExp2SetColor and effPCPFlashPolyRingExp2PartSetVC; replaces effLeaf235
 0x00227440	effPCPFlashPolyRingExp2PartSetVC	inferred	SMT3HD name via SLUS_209.11 0x00181560, reloc-identical; map-agrees
 0x00227530	effPCPFlashPolyRingExp2PartSetVertex	inferred	SMT3HD name via SLUS_209.11 0x00181650, reloc-identical; map-agrees
 0x00227718	effPCPFlashPolyRingExp2PartRotate	inferred	SMT3HD name via SLUS_209.11 0x00181838, byte-identical; map-agrees
@@ -5539,9 +5539,9 @@
 0x00227B38	effPCPFlashPolyCircleCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00227B58	effPCPFlashPolyCircleCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x00227B70	effFunc10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
-0x00227BA0	effLeaf236	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00227BA0	effPCPFlashPolyCircleSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyCircleSetPosition: same body (exact shape) at the same place, between effPCPFlashPolyCircleCopy and effPCPFlashPolyCircleSetColor; replaces effLeaf236
 0x00227BB0	effPCPFlashPolyCircleSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPFlashPolyCircleSetColor: same body (hData->abgr = abgr) on effPCPFlashPolyCircle_tag, third leaf group of its type; replaces effLeaf237
-0x00227BB8	effLeaf238	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPFlash; no named callee, caller or string
+0x00227BB8	effPCPFlashPolyCircleSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPFlashPolyCircleSetScale: same body (exact shape) at the same place, between effPCPFlashPolyCircleSetColor and effPCPFlashPolyCirclePartSetVC; replaces effLeaf238
 0x00227BC0	effPCPFlashPolyCirclePartSetVC	inferred	SMT3HD name via SLUS_209.11 0x00181CE0, reloc-identical; map-agrees
 0x00227C60	effPCPFlashPolyCirclePartSetVertex	inferred	SMT3HD name via SLUS_209.11 0x00181D80, reloc-identical; map-agrees
 0x00227DF8	effPCPFlashPolyCircleDraw	inferred	SMT3HD name via SLUS_209.11 0x00181F18, reloc-identical; map-agrees
@@ -5589,7 +5589,7 @@
 0x00229BD8	effPCPHamaCardSpiralDelete	inferred	SMT3HD name via SLUS_209.11 0x00183CF8, reloc-identical; map-agrees
 0x00229C60	effPCPHamaCardSpiralPartInit	inferred	SMT3HD name via SLUS_209.11 0x00183D80, reloc-identical; map-agrees
 0x00229E20	effPCPHamaCardSpiralDraw	inferred	SMT3HD name via SLUS_209.11 0x00183F40, reloc-identical; map-agrees
-0x0022A408	effLeaf244	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
+0x0022A408	effPCPHamaCardSpiralSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPHamaCardSpiralSetPosition: same body (exact shape) at the same place, between effPCPHamaCardSpiralDraw and effPCPHamaCardSpiralSetColor; replaces effLeaf244
 0x0022A418	effPCPHamaCardSpiralSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPHamaCardSpiralSetColor: same body (hData->abgr = abgr) on effPCPHamaCardSpiral_tag, third leaf group of its type; replaces effLeaf245
 0x0022A420	effPCPHamaCardSpiralSetScale	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=scales param.up_s/radius_s/radius_e of effPCPHamaCardSpiral_tag by f12; SetScale column (index 5) of the HamaCardSpiral row in effPart.c, as smt3 effPCPFlashPolyRingSetScale; the dds-fuzzy name was a 0.58 tie; replaces sdfVectorScale
 0x0022A448	effPCPHamaCardSphereCreate	inferred	SMT3HD name via SLUS_209.11 0x00184568, reloc-identical; map-agrees
@@ -5598,9 +5598,9 @@
 0x0022A830	effPCPHamaCardSphereDelete	inferred	SMT3HD name via SLUS_209.11 0x00184950, reloc-identical; map-agrees
 0x0022A8B8	effPCPHamaCardSpherePartInit	inferred	SMT3HD name via SLUS_209.11 0x001849D8, reloc-identical; map-agrees
 0x0022AA20	effPCPHamaCardSphereDraw	inferred	SMT3HD name via SLUS_209.11 0x00184B40, reloc-identical; map-agrees
-0x0022B018	effLeaf246	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
+0x0022B018	effPCPHamaCardSphereSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPHamaCardSphereSetPosition: same body (exact shape) at the same place, between effPCPHamaCardSphereDraw and effPCPHamaCardSphereSetColor; replaces effLeaf246
 0x0022B028	effPCPHamaCardSphereSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPHamaCardSphereSetColor: same body (hData->abgr = abgr) on effPCPHamaCardSphere_tag, third leaf group of its type; replaces effLeaf247
-0x0022B030	effLeaf248	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
+0x0022B030	effPCPHamaCardSphereSetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPHamaCardSphereSetScale: same body (exact shape) at the same place, between effPCPHamaCardSphereSetColor and effPCPHamaCardScatterCreate; replaces effLeaf248
 0x0022B050	effPCPHamaCardScatterCreate	inferred	SMT3HD name via SLUS_209.11 0x00185170, reloc-identical; map-agrees
 0x0022B2F8	effPCPHamaCardScatterCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0022B360	effPCPHamaCardScatterCopy	inferred	SMT3HD name via SLUS_209.11 0x00185480, reloc-identical; map-agrees
@@ -5627,8 +5627,8 @@
 0x0022C2A0	effPCPWhirlwindPolyPartInit	inferred	smt3-decomp C name via SLUS_209.11 0x001863C0, unique-masked-hash-c; map-agrees
 0x0022C630	effPCPWhirlwindPolyPartMove	inferred	SMT3HD name via SLUS_209.11 0x00186750, reloc-identical; map-agrees
 0x0022C7C0	effPCPWhirlwindPolyDraw	inferred	SMT3HD name via SLUS_209.11 0x001868E0, reloc-identical; map-agrees
-0x0022C9B8	effLeaf251	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
-0x0022C9D0	effLeaf252	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
+0x0022C9B8	effPCPWhirlwindPolySetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPWhirlwindPolySetPosition: same body (exact shape) at the same place, between effPCPWhirlwindPolyDraw and effPCPWhirlwindPolySetColor; replaces effLeaf251
+0x0022C9D0	effPCPWhirlwindPolySetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPWhirlwindPolySetScale: same body (exact shape) at the same place, between effPCPWhirlwindPolyDraw and effPCPWhirlwindPolySetColor; replaces effLeaf252
 0x0022C9D8	effPCPWhirlwindPolySetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPWhirlwindPolySetColor: same body (hData->abgr = abgr) on effPCPWhirlwindPoly_tag, third leaf group of its type; replaces effLeaf253
 0x0022C9E0	effPCPWhirlwind3PolySetRotateMatrix	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1881e8 sim 1.000 margin 0.00 pair
 0x0022CA40	effPCPWhirlwind2PolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00186B60, reloc-identical; map-agrees
@@ -5638,8 +5638,8 @@
 0x0022CD30	effPCPWhirlwind2PolyPartInit	inferred	smt3-decomp C name via SLUS_209.11 0x00186E50, unique-masked-hash-c; map-agrees
 0x0022D0A8	effPCPWhirlwind2PolyPartMove	inferred	SMT3HD name via SLUS_209.11 0x001871C8, reloc-identical; map-agrees
 0x0022D248	effPCPWhirlwind2PolyDraw	inferred	SMT3HD name via SLUS_209.11 0x00187368, reloc-identical; map-agrees
-0x0022D4F0	effLeaf254	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
-0x0022D508	effLeaf255	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
+0x0022D4F0	effPCPWhirlwind2PolySetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPWhirlwind2PolySetPosition: same body (exact shape) at the same place, between effPCPWhirlwind2PolyDraw and effPCPWhirlwind2PolySetColor; replaces effLeaf254
+0x0022D508	effPCPWhirlwind2PolySetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPWhirlwind2PolySetScale: same body (exact shape) at the same place, between effPCPWhirlwind2PolyDraw and effPCPWhirlwind2PolySetColor; replaces effLeaf255
 0x0022D510	effPCPWhirlwind2PolySetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPWhirlwind2PolySetColor: same body (hData->abgr = abgr) on effPCPWhirlwind2Poly_tag, third leaf group of its type; replaces effLeaf256
 0x0022D518	effPCPWhirlwind2PolySetRotateMatrix	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1881e8 sim 1.000 margin 0.00 pair
 0x0022D578	effPCPWhirlwind3PolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00187698, reloc-identical; map-agrees
@@ -5649,8 +5649,8 @@
 0x0022D838	effPCPWhirlwind3PolyPartInit	inferred	smt3-decomp C name via SLUS_209.11 0x00187958, unique-masked-hash-c; map-agrees
 0x0022DC28	effPCPWhirlwind3PolyPartMove	inferred	SMT3HD name via SLUS_209.11 0x00187D48, reloc-identical; map-agrees
 0x0022DDC8	effPCPWhirlwind3PolyDraw	inferred	SMT3HD name via SLUS_209.11 0x00187EE8, reloc-identical; map-agrees
-0x0022E0A0	effLeaf257	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
-0x0022E0B8	effLeaf258	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
+0x0022E0A0	effPCPWhirlwind3PolySetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPWhirlwind3PolySetPosition: same body (exact shape) at the same place, between effPCPWhirlwind3PolyDraw and effPCPWhirlwind3PolySetColor; replaces effLeaf257
+0x0022E0B8	effPCPWhirlwind3PolySetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPWhirlwind3PolySetScale: same body (exact shape) at the same place, between effPCPWhirlwind3PolyDraw and effPCPWhirlwind3PolySetColor; replaces effLeaf258
 0x0022E0C0	effPCPWhirlwind3PolySetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPWhirlwind3PolySetColor: same body (hData->abgr = abgr) on effPCPWhirlwind3Poly_tag, third leaf group of its type; replaces effLeaf259
 0x0022E0C8	effCallMultMatrixNoArg	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; calls MultMatrixNoArg
 0x0022E128	effPCPWwSpherePolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00188248, reloc-identical; map-agrees
@@ -5660,8 +5660,8 @@
 0x0022E3D8	effPCPWwSpherePolyPartInit	inferred	smt3-decomp C name via SLUS_209.11 0x001884F8, unique-masked-hash-c; map-agrees
 0x0022E678	effPCPWwSpherePolyPartMove	inferred	SMT3HD name via SLUS_209.11 0x00188798, reloc-identical; map-agrees
 0x0022E800	effPCPWwSpherePolyDraw	inferred	SMT3HD name via SLUS_209.11 0x00188920, reloc-identical; map-agrees
-0x0022E9F8	effLeaf260	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
-0x0022EA10	effLeaf261	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPScatter; no named callee, caller or string
+0x0022E9F8	effPCPWwSpherePolySetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPWwSpherePolySetPosition: same body (exact shape) at the same place, between effPCPWwSpherePolyDraw and effPCPWwSpherePolySetColor; replaces effLeaf260
+0x0022EA10	effPCPWwSpherePolySetScale	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPWwSpherePolySetScale: same body (exact shape) at the same place, between effPCPWwSpherePolyDraw and effPCPWwSpherePolySetColor; replaces effLeaf261
 0x0022EA18	effPCPWwSpherePolySetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPWwSpherePolySetColor: same body (hData->abgr = abgr) on effPCPWwSpherePoly_tag, third leaf group of its type; replaces effLeaf262
 0x0022EA20	effPCPWwSpherePolySetRotateMatrix	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 same body and position after effPCPWwSpherePolySetColor (effLeaf262); replaces effLeaf263
 0x0022EA48	dds3WhirlwindPolyListCreate	inferred	SMT3HD name via SLUS_209.11 0x00188B68, reloc-identical; map-agrees
@@ -5678,8 +5678,8 @@
 0x0022F2E8	effPCPNeedleSpiralCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0022F308	effPCPNeedleSpiralCopy	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x0022F320	effLeaf264	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPNeedle; no named callee, caller or string
-0x0022F328	effLeaf265	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPNeedle; no named callee, caller or string
-0x0022F338	effLeaf266	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPNeedle; no named callee, caller or string
+0x0022F328	effPCPNeedleSpiralSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPNeedleSpiralSetPosition: same body (exact shape) at the same place, between effPCPNeedleSpiralCopy and effPCPNeedleSpiralSetColor; replaces effLeaf265
+0x0022F338	effPCPNeedleSpiralSetRotateMatrix	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPNeedleSpiralSetRotateMatrix: same body (exact shape) at the same place, between effPCPNeedleSpiralCopy and effPCPNeedleSpiralSetColor; replaces effLeaf266
 0x0022F350	effPCPNeedleSpiralSetColor	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 effPCPNeedleSpiralSetColor: same body (hData->abgr = abgr) on effPCPNeedleSpiral_tag, third leaf group of its type; replaces effLeaf267
 0x0022F358	dds3NeedleModelCreate	inferred	SMT3HD name via SLUS_209.11 0x00189A48, reloc-identical; map-agrees
 0x0022F478	dds3NeedleModelDelete	inferred	SMT3HD name via SLUS_209.11 0x00189B68, reloc-identical; map-agrees
@@ -5724,8 +5724,8 @@
 0x00230CD0	effPCPCrackCopy	inferred	SMT3HD name via SLUS_209.11 0x0019A1A0, reloc-identical; map-agrees
 0x00230DF8	effPCPCrackDelete	inferred	SMT3HD name via SLUS_209.11 0x0019A2C8, reloc-identical; map-agrees
 0x00230E90	effPCPCrackDraw	inferred	SMT3HD name via SLUS_209.11 0x0019A360, reloc-identical; map-agrees
-0x00231880	effLeaf286	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBoss; no named callee, caller or string
-0x00231890	effLeaf287	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effPCPBoss; no named callee, caller or string
+0x00231880	effPCPCrackSetPosition	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPCrackSetPosition: same body (exact shape) at the same place, between effPCPCrackDraw and effPCPBossBaelCreate; replaces effLeaf286
+0x00231890	effPCPCrackSetColor	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effPCPCrackSetColor: same body (exact shape) at the same place, between effPCPCrackDraw and effPCPBossBaelCreate; replaces effLeaf287
 0x00231898	effPCPBossBaelCreate	inferred	SMT3HD name via SLUS_209.11 0x0019AD68, reloc-identical; map-agrees
 0x00231938	effPCPBossBaelCreatePCF	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x002319A0	effPCPBossBaelCopy	inferred	SMT3HD name via SLUS_209.11 0x0019AE70, reloc-identical; map-agrees
@@ -12235,8 +12235,8 @@
 0x003D6C28	sdfGetLodChunkValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002D9F08, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x003D6C58	sdfModelSetFaceDivParm	inferred	SMT3HD name via SLUS_209.11 0x002B29F8, byte-identical; map-agrees
 0x003D6C70	sdfModelResetFaceDivParm	inferred	SMT3HD name via SLUS_209.11 0x002B2A10, byte-identical; map-agrees
-0x003D6C80	sdfLeaf23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00360EE8, neighbour sdfModelResetFaceDivParm; no named callee, caller or string
-0x003D6CA0	sdfLeaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00360EE8, neighbour sdfModelResetFaceDivParm; no named callee, caller or string
+0x003D6C80	sdfModelGetFaceDivSoften	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 HD sdfModelGetFaceDivSoften: same body but field offsets, after sdfModelResetFaceDivParm; returns sdfFaceDivSoften unless the model overrides it; replaces sdfLeaf23
+0x003D6CA0	sdfModelGetFaceDivBias	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 HD sdfModelGetFaceDivBias: same body but field offsets, after sdfModelGetFaceDivSoften; returns sdfFaceDivBias unless the model overrides it; replaces sdfLeaf24
 0x003D6CC0	sdfSetForcedAssetTextureMode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002D9FA0, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x003D6CC8	sdfTexListNew	inferred	SMT3HD name via SLUS_209.11 0x002B2A60, reloc-identical; map-agrees
 0x003D6CE8	sdfTexListFree	inferred	SMT3HD name via SLUS_209.11 0x002B2A80, reloc-identical; map-agrees
@@ -12605,7 +12605,7 @@
 0x003E41E0	sdfZeroMemQuad	inferred	SMT3HD name via SLUS_209.11 0x002BFCE8, shared-hash-in-run; map-silent
 0x003E4258	sdfStrdupChip	inferred	SMT3HD name via SLUS_209.11 0x002BFD60, reloc-identical; map-agrees
 0x003E42C8	sdfBcdToDecimal	inferred	SMT3HD name via SLUS_209.11 0x002BFDD0, byte-identical; map-agrees
-0x003E4300	sdfLeaf29	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0036E570, nearest named function sdfBcdToDecimal; no named callee, caller or string
+0x003E4300	sdfDecimalToPackedDigits	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 sdfDecimalToPackedDigits: same body (exact shape) at the same place, between sdfBcdToDecimal and sdfItemArrayNew; replaces sdfLeaf29
 0x003E4350	sdfItemArrayNew	inferred	SMT3HD name via SLUS_209.11 0x002BFE58, reloc-identical; map-agrees
 0x003E43E0	sdfItemArrayFree	inferred	SMT3HD name via SLUS_209.11 0x002BFEE8, shared-hash-in-run; map-agrees
 0x003E4410	sdfItemArrayGrow	inferred	SMT3HD name via SLUS_209.11 0x002BFF18, reloc-identical; map-agrees
@@ -12621,7 +12621,7 @@
 0x003E4980	Mult	inferred	SMT3HD name via SLUS_209.11 0x002C0488, byte-identical; map-agrees
 0x003E49B0	Inverse	inferred	SMT3HD name via SLUS_209.11 0x002C04B8, shared-hash-in-run; map-silent
 0x003E49E0	Normalize	inferred	SMT3HD name via SLUS_209.11 0x002C04E8, byte-identical; map-agrees
-0x003E4A08	sdfLeaf30	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfQuat; no named callee, caller or string
+0x003E4A08	LengthSq	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 LengthSq: same body (exact shape) at the same place in sdfQuat, between Normalize and SDF_QUAT_INNERPRODUCT; replaces sdfLeaf30
 0x003E4A30	SDF_QUAT_INNERPRODUCT	inferred	SMT3HD name via SLUS_209.11 0x002C0538, shared-hash-in-run; map-silent
 0x003E4A58	FromRotation	inferred	SMT3HD name via SLUS_209.11 0x002C0560, reloc-identical; map-agrees
 0x003E4AA8	FromRotation_B	inferred	SMT3HD name via SLUS_209.11 0x002C05B0, reloc-identical; map-agrees
@@ -12657,7 +12657,7 @@
 0x003E5B60	p2sdStopAllBgm	inferred	SMT3HD name via SLUS_209.11 0x002C1760, reloc-identical; map-agrees
 0x003E5B88	sdfCommandPADDISABLESub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; called by fldCommand_PAD_DISABLE
 0x003E5BB0	p2sdStopAllSe	inferred	SMT3HD name via SLUS_209.11 0x002C17B0, reloc-identical; map-agrees
-0x003E5BD8	sdfLeaf31	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfSound; no named callee, caller or string
+0x003E5BD8	sdfSndDispatchCommandWithoutPayload	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 sdfSndDispatchCommandWithoutPayload: same body (exact shape) at the same place, between p2sdStopAllSe and sdfSndLoadHDFile; replaces sdfLeaf31
 0x003E5C00	sdfSndLoadHDFile	inferred	SMT3HD name via SLUS_209.11 0x002C1800, reloc-identical; map-agrees
 0x003E5C48	sdfSndLoadBDFile	inferred	SMT3HD name via SLUS_209.11 0x002C1848, reloc-identical; map-agrees
 0x003E5C90	sdfSndLoadSQFile	inferred	SMT3HD name via SLUS_209.11 0x002C1890, reloc-identical; map-agrees
@@ -12743,8 +12743,8 @@
 0x003E9840	sdfIpuDecodeThread	inferred	SMT3HD name via SLUS_209.11 0x002C4A40, reloc-identical; map-agrees
 0x003E9910	sdfIpuFromDmacHandler	inferred	method=smt3-alias; p=0.90 (n=D_003E9910); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x003E9940	sdfIpuToDmacHandler	inferred	SMT3HD name via SLUS_209.11 0x002C4B40, reloc-identical; map-agrees
-0x003E99D8	sdfLeaf38	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfIpu; no named callee, caller or string
-0x003E9A00	sdfLeaf39	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfIpu; no named callee, caller or string
+0x003E99D8	sdfIpuGetActivePacket	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 sdfIpuGetActivePacket: same body (exact shape) at the same place, between sdfIpuToDmacHandler and sdfIpuFinishActiveFrame; replaces sdfLeaf38
+0x003E9A00	sdfIpuGetActiveFrame	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 sdfIpuGetActiveFrame: same body (exact shape) at the same place, between sdfIpuToDmacHandler and sdfIpuFinishActiveFrame; replaces sdfLeaf39
 0x003E9A28	sdfIpuFinishActiveFrame	inferred	SMT3HD name via SLUS_209.11 0x002C4C28, reloc-identical; map-agrees
 0x003E9AB0	sdfIpuSetChainTag	inferred	SMT3HD name via SLUS_209.11 0x002C4CB0, reloc-identical; map-agrees
 0x003E9B30	sdfAdvanceStreamPlayback	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2ec5e0 sim 1.000 margin 0.71 pair
@@ -13290,10 +13290,10 @@
 0x0040BEF0	_lseek_r	inferred	SMT3HD name via SLUS_209.11 0x002DB9B0, reloc-identical; map-agrees
 0x0040BF50	_read_r	inferred	SMT3HD name via SLUS_209.11 0x002DBA10, shared-hash-in-run; map-agrees
 0x0040BFB0	_realloc_r	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x3652a8 sim 1.000 margin 0.80 pair
-0x0040C580	isnanLeaf3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
-0x0040C590	isnanLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
+0x0040C580	RFU000_FullReset	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 RFU000_FullReset: same body; EE syscall 0 stub; replaces isnanLeaf3
+0x0040C590	ResetEE	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 ResetEE: same body; EE syscall 1 stub; replaces isnanLeaf4
 0x0040C5A0	isnanLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
-0x0040C5B0	isnanLeaf6	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
+0x0040C5B0	RFU003	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 RFU003: same body; EE syscall 3 stub; replaces isnanLeaf6
 0x0040C5C0	_Exit	inferred	SCE libkernl _Exit: syscall 4 (Exit)
 0x0040C5D0	isnanLeaf8	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string
 0x0040C5E0	isnanLeaf9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00393080, nearest named function isnan; no named callee, caller or string

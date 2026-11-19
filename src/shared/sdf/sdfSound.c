@@ -571,7 +571,7 @@ s32 p2sdStopAllSe(void)
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfSound.c:666, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
-s32 sdfLeaf31(s32 aSeId)
+s32 sdfSndDispatchCommandWithoutPayload(s32 aSeId)
 {
     return sdfSndSendCmd(aSeId | 0x50, 0, 0, 0);
 }

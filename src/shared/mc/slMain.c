@@ -1016,7 +1016,7 @@ s32 slExitWaitProc(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slLeaf10);
+INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyNoChk);
 
 INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyNoChkProc);
 

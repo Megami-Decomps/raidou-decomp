@@ -751,7 +751,7 @@ s32 sdfIpuToDmacHandler(void) {
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfIpu.c:870, near, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
-void *sdfLeaf38(sdfIpuDecodeCb_t *cb)
+void *sdfIpuGetActivePacket(sdfIpuDecodeCb_t *cb)
 {
     void *frame = NULL;
 
@@ -762,7 +762,7 @@ void *sdfLeaf38(sdfIpuDecodeCb_t *cb)
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfIpu.c:870, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
-void *sdfLeaf39(sdfIpuDecodeCb_t *cb)
+void *sdfIpuGetActiveFrame(sdfIpuDecodeCb_t *cb)
 {
     void *frame = NULL;
 

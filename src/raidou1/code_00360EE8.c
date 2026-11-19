@@ -10,7 +10,7 @@ void sdfModelResetFaceDivParm(sdfModelRootNode_t *aRoot)
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfModel.c:1606, adapt, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
-f32 sdfLeaf23(sdfModelRootNode_t *aRoot)
+f32 sdfModelGetFaceDivSoften(sdfModelRootNode_t *aRoot)
 {
     if (aRoot->flags & SDF_MODEL_FLAG_SELF_FACEDIV_PARM) {
         return aRoot->faceDivSoften;
@@ -19,7 +19,7 @@ f32 sdfLeaf23(sdfModelRootNode_t *aRoot)
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfModel.c:1606, adapt, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
-f32 sdfLeaf24(sdfModelRootNode_t *aRoot)
+f32 sdfModelGetFaceDivBias(sdfModelRootNode_t *aRoot)
 {
     if (aRoot->flags & SDF_MODEL_FLAG_SELF_FACEDIV_PARM) {
         return aRoot->faceDivBias;

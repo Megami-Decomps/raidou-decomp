@@ -15,11 +15,11 @@
 #include "sdf_packet_list.h"
 #include "effPCPHelperBED.h"
 
-INCLUDE_ASM(const s32, "code_002068E8", effLeaf190);
+INCLUDE_ASM(const s32, "code_002068E8", effPCPHelperBEDSetPosition);
 
-INCLUDE_ASM(const s32, "code_002068E8", effLeaf191);
+INCLUDE_ASM(const s32, "code_002068E8", effPCPHelperBEDSetScale);
 
-void effLeaf192(effPCPHelperBED_tag *hData, u32 color) {
+void effPCPHelperBEDSetColor(effPCPHelperBED_tag *hData, u32 color) {
     hData->color = color;
 }
 

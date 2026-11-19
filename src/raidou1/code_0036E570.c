@@ -14,7 +14,7 @@
 #include "sdf2D.h"
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/sdf/sdfDev9.c:178, found, same function 1.00 (words 19/19, calls 1.00, shape 1.00) */
-s32 sdfLeaf29(s32 number) {
+s32 sdfDecimalToPackedDigits(s32 number) {
     s32 digitShift = 0;
     s32 packedDigits = 0;
     while (number > 0) {
