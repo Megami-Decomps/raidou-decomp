@@ -784,6 +784,7 @@ INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfVifFlagsNoneName);
 char sdfDumpIndentStr[8] = "    ";
 
 char sdfDumpWordFmt[8] = "%08X";
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemClutName);
 
@@ -794,4 +795,17 @@ INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemFrameName);
 INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemFreeName);
 
 INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemTypeFmt);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemClutName);
+
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemTexName);
+
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemFrameName);
+
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemFreeName);
+
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", sdfGsMemTypeFmt);
+
+#endif

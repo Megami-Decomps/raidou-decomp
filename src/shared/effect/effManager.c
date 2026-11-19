@@ -334,6 +334,12 @@ void dds3EffectDataRevision(effResourceHeader_t *header)
         }
     }
 }
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "effect/effManager", dds3EffectProcessName);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "effect/effManager", dds3EffectProcessName);
+
+#endif

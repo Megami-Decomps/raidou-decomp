@@ -188,37 +188,37 @@ dds3ProcessFunc_t gohRootUpdateProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_00336E90", gohCallGetProcessData);
+INCLUDE_ASM(const s32, "code_00336E90", gohCmbSelInit);
 
-INCLUDE_ASM(const s32, "code_00336E90", gohBakNmlCalcProcess);
+INCLUDE_ASM(const s32, "code_00336E90", gohCmbSelDestroy);
 
-INCLUDE_ASM(const s32, "code_00336E90", gohCallGetProcessData2);
+INCLUDE_ASM(const s32, "code_00336E90", gohCmbSelCalcProcess);
 
-dds3ProcessFunc_t gohBakNmlDrawProcess(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohCmbSelDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     gohModel(work);
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohBakNmlUpdateProcess(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohCmbSelUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_00336E90", gohBakBakInit);
+INCLUDE_ASM(const s32, "code_00336E90", gohCmb1Init);
 
-INCLUDE_ASM(const s32, "code_00336E90", gohBakBakDestroy);
+INCLUDE_ASM(const s32, "code_00336E90", gohCmb1Destroy);
 
-INCLUDE_ASM(const s32, "code_00336E90", gohCallGetProcessData3);
+INCLUDE_ASM(const s32, "code_00336E90", gohCmb1CalcProcess);
 
-INCLUDE_ASM(const s32, "code_00336E90", gohCallGetProcessData4);
+INCLUDE_ASM(const s32, "code_00336E90", gohCmb1DrawProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData23(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohCmb1UpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_00336E90", gohLeaf24);
+INCLUDE_ASM(const s32, "code_00336E90", gohCmb2Init);

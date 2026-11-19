@@ -1400,7 +1400,6 @@ INCLUDE_ASM(const s32, "field/fldProcess", ProcSequence);
 INCLUDE_ASM(const s32, "field/fldProcess", ProcSequence);
 #endif
 
-#ifdef VERSION_RAIDOU1
 s32 fldProcDraw(struct dds3ProcessID_t *id)
 {
     if (dds3AdminiGetNextSequence() != -1) {
@@ -1416,8 +1415,14 @@ s32 fldProcDraw(struct dds3ProcessID_t *id)
         mapIsFldKeyFreeSub3();
         break;
     }
+#ifdef VERSION_RAIDOU1
     mapEffEplAllDrawTask();
     mapCallMemset2();
+#else
+    mapIsFldKeyFreeSub();
+    mapBadEffDrawTask_fld();
+#endif
+#ifdef VERSION_RAIDOU1
     mapIsFldKeyFreeSub4();
     if (dds3NullDrawProc()) {
         return 0;
@@ -1431,29 +1436,7 @@ s32 fldProcDraw(struct dds3ProcessID_t *id)
             mapIfDrawMsk();
         }
     }
-    mapIsFldKeyFreeSub();
-    fldCallSetOt2();
-    mapSeNakamaDelayTask();
-    return 0;
-}
 #else
-s32 fldProcDraw(struct dds3ProcessID_t *id)
-{
-    if (dds3AdminiGetNextSequence() != -1) {
-        return 0;
-    }
-    if (fldAutoMapSeqFlags.stage < 3) {
-        return 0;
-    }
-    switch (fldAutoMapSeqFlags.stage) {
-    case 11:
-    case 14:
-    case 15:
-        mapIsFldKeyFreeSub3();
-        break;
-    }
-    mapIsFldKeyFreeSub();
-    mapBadEffDrawTask_fld();
     mapIsFldKeyFreeSub4();
     if (dds3NullDrawProc()) {
         return 0;
@@ -1467,12 +1450,16 @@ s32 fldProcDraw(struct dds3ProcessID_t *id)
             mapCallPreCalcStrWidth();
         }
     }
+#endif
+#ifdef VERSION_RAIDOU1
+    mapIsFldKeyFreeSub();
+#else
     saveIsFldKeyFreeSub();
+#endif
     fldCallSetOt2();
     mapSeNakamaDelayTask();
     return 0;
 }
-#endif
 
 void fldAutoMapSeqSetFlag(u32 flag)
 {
@@ -1534,6 +1521,9 @@ void fldProcTrigSequence(fldSceneParam_t *srcParam, s32 mode)
     fldProcShutDownData = 1;
 }
 
+#ifdef VERSION_RAIDOU2
+/* body: matched in raidou @ 780f3f57: src/shared/field/fldProcess.c:1495, found, same function 0.90 (words 84/94, calls 0.86, shape 0.94) */
+#endif
 #ifdef VERSION_RAIDOU1
 void fldProcShutDown(void)
 {
@@ -1577,8 +1567,11 @@ void fldProcShutDown(void)
     fldBgTexClear();
     fldFreeMapData();
 }
+
+s32 fldCallDelayedResrcCheck(void) {
+    return sdfDelayedResrcCheck() == 0;
+}
 #else
-/* body: matched in raidou @ 780f3f57: src/shared/field/fldProcess.c:1495, found, same function 0.90 (words 84/94, calls 0.86, shape 0.94) */
 void fldProcShutDown(void)
 {
     if (fldProcShutDownData == 0) {
@@ -1616,11 +1609,11 @@ void fldProcShutDown(void)
     fldBgTexClear();
     fldFreeMapData();
 }
-#endif
 
 s32 fldCallDelayedResrcCheck(void) {
     return sdfDelayedResrcCheck() == 0;
 }
+#endif
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "field/fldProcess", ProcSequenceStrBunriHajikiLabel);
@@ -1679,76 +1672,19 @@ INCLUDE_ASM(const s32, "field/fldProcess", autoNakamaToRaidou);
 
 INCLUDE_ASM(const s32, "field/fldProcess", mapCallMapNext);
 
-#ifdef VERSION_RAIDOU1
 void mapCallMap(s32 map, s32 flor, s32 point, char *label)
 {
     sdfVector4_t rotation;
     sdfVector4_t axis = { 0.0f, 1.0f, 0.0f, 1.0f };
     f32 pos[4];
 
-    if (map == 0) {
-        map = mapCallLastMap;
-        flor = mapCallLastFloor;
-        point = mapCallLastPoint;
-        label = mapCallLastLabel;
-    } else if (playerBasic == NULL || fldGlobalBase.amSBlock != map || fldGlobalBase.nameU != flor) {
-        goto reload;
-    } else {
-        fldBgZoomTest(4);
-        mapObjPointGet(point, &pos[0], &pos[1], &pos[2], &pos[3]);
-        fldGlobalBase.focusX = pos[0];
-        fldGlobalBase.focusZ = pos[2];
-        fldGlobalBase.focusY = mapGetY(fldGlobalBase.focusX, fldGlobalBase.focusZ);
-        mapHamidasiCheck();
-        mapCutSet_From_Pos(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
-        fldPlayerForceSetPos_NoHokan(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
-        if (fldGlobalBase.nakamaMode == 0) {
-            mapAiboFoceSet3(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
-            mapAiboWakeUp(1);
-            mapSummonDvFoceSet2(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
-            mapNakamaWakeUp(1);
-        }
-        fldGlobalBase.floatC0 = pos[3];
-        fldGlobalBase.floatC4 = pos[3];
-        VU0_LOAD_VF(vf10, &axis);
-        FromRotation(fldGlobalBase.floatC0 * 3.14f / 180.0f);
-        VU0_STORE_VF(vf10, &rotation);
-        dds3SetRotPoseSet(playerBasic, &rotation);
-        if (mapNpcTblRefresh_Wait() == -1) {
-            mapNpcTblRefresh();
-        }
-        while (mapNpcTblRefresh_Wait() == 1) {
-        }
-        mapMapObjectRefresh();
-        fldRegistUnitPad();
-        if (label != NULL) {
-            fldPlayerMotReset();
-            dds3SceneBasicStartScript(dds3GetActiveScene(), label);
-        }
-        return;
-    }
-reload:
-    fldGlobalBase.mapCallMode = 1;
-    fldGlobalBase.word1D8 = 0;
-    mapSetSceneParam(&mapCallScriptBuf, map, flor, point);
-    if (label != NULL) {
-        sprintf(mapCallScriptBuf.FoceScript, mapCallMapFmt, label);
-    }
-    dds3AdminiCallSequence(7, &mapCallScriptBuf, sizeof(mapCallScriptBuf), 0);
-    scrAllReleaseScript();
-}
-#else
-void mapCallMap(s32 map, s32 flor, s32 point, char *label)
-{
-    sdfVector4_t rotation;
-    sdfVector4_t axis = { 0.0f, 1.0f, 0.0f, 1.0f };
-    f32 pos[4];
-
+#ifdef VERSION_RAIDOU2
     fldGlobalBase.word35C = 0;
     if (fldGlobalBase.word394 != 0) {
         fldGlobalBase.word394 = 0;
         goto reload;
     }
+#endif
     if (map == 0) {
         map = mapCallLastMap;
         flor = mapCallLastFloor;
@@ -1785,21 +1721,29 @@ void mapCallMap(s32 map, s32 flor, s32 point, char *label)
         mapMapObjectRefresh();
         fldRegistUnitPad();
         if (label != NULL) {
+#ifdef VERSION_RAIDOU2
             strcpy(ProcSequenceData9, label);
+#endif
             fldPlayerMotReset();
             dds3SceneBasicStartScript(dds3GetActiveScene(), label);
         }
         return;
     }
 reload:
+#ifdef VERSION_RAIDOU2
     fldGlobalBase.word1D8 = 0;
+#endif
     fldGlobalBase.mapCallMode = 1;
+#ifdef VERSION_RAIDOU1
+    fldGlobalBase.word1D8 = 0;
+#else
     if (map == 1 && flor > 0) {
         fldGlobalBase.mapCallMode = 2;
     }
     if (map == 19) {
         fldGlobalBase.mapCallMode = 3;
     }
+#endif
     mapSetSceneParam(&mapCallScriptBuf, map, flor, point);
     if (label != NULL) {
         sprintf(mapCallScriptBuf.FoceScript, mapCallMapFmt, label);
@@ -1807,7 +1751,6 @@ reload:
     dds3AdminiCallSequence(7, &mapCallScriptBuf, sizeof(mapCallScriptBuf), 0);
     scrAllReleaseScript();
 }
-#endif
 
 s32 fldHardSelect1Sub(void)
 {
@@ -2373,8 +2316,6 @@ s32 fldSaveLabel(void) {
 INCLUDE_ASM(const s32, "field/fldProcess", fldSaveLabel);
 #endif
 
-#endif
-#ifdef VERSION_RAIDOU1
 s32 MskL2Task(void)
 {
     fldSequenceController_t *seq = &fldAutoMapSeqFlags;
@@ -2418,26 +2359,20 @@ s32 MskL2Task(void)
     }
     return 0;
 }
+
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData6);
+
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData7);
+
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData8);
 #else
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask_fld);
 INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData11);
-#endif
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData6);
-#else
 INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData12);
-#endif
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData7);
-#else
 INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData13);
-#endif
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData8);
-#else
 INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData14);
 #endif
 

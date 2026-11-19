@@ -1733,6 +1733,8 @@ s32 evtCallConsPanelTagLinkZ(evtViewerInfo_t *runtime) {
 #else
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallConsPanelTagLinkZ);
 #endif
+#ifdef VERSION_RAIDOU1
+
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrX);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrY);
@@ -1817,3 +1819,90 @@ INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtBLENDData4);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallConsPanelTagLinkZData);
 
+#endif
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrX);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrY);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrRight);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrQuick);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCMPVALUETableEntry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtSOUTAIColumnWidth);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtSOUTAIDataEntry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtSOUTAIDataEntry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtDrawGroupListRowData);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtDrawGroupListRowData2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtData18);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtSOUTAIData3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtSOUTAIData4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtGROUPMAXData2Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtGROUPMAXData2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtGROUPMAXData3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtGROUPMAXData4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtData19);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCOPYCOLORData2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5TableEntry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5TableEntry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5TableEntry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5TableEntry4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5TableEntry5);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5TableEntry6);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5Data2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp6Data2Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp6Data2Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp6Data2Entry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp6Data3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp6Data4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp6Data5);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtViewerDrawGroupRowData);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtViewerDrawShadowConfigRowDataEntry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtViewerDrawShadowConfigRowDataEntry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtData20);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtData21);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtBLENDData);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtBLENDData2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtBLENDData3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtBLENDData4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", evtCallConsPanelTagLinkZData);
+
+#endif

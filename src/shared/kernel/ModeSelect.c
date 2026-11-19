@@ -477,6 +477,7 @@ s32 ShutDown(void)
     dds3KillProcessName(InitExStrMahjonMainProcess, 1);
     return 0;
 }
+#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", gMjnRun);
 
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", ManageEndHanchanPhaseData);
@@ -561,3 +562,90 @@ INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellT
 
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry11);
 
+#endif
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", gMjnRun);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", ManageEndHanchanPhaseData);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", Work_mjn);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry2);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry3);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry4);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry5);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry6);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry7);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry8);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry9);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry10);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry11);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry12);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry13);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry14);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry15);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry16);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry17);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry18);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry19);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry20);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry21);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry22);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry23);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry24);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry25);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry2);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry26);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry27);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry28);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry3);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry4);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry5);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry6);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry7);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry8);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry9);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry10);
+
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry11);
+
+#endif

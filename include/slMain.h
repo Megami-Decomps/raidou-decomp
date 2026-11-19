@@ -38,7 +38,7 @@ extern s32 gSlMcAccessCnt;
 
 #include "kernel.h"
 
-void fldCallEndMessage(void);
+void gohKarteRegStatInit(void);
 void fmProcTrigSequence_slMain(s32 mode);
 s32 fmProcessChk_slMain(void);
 s32 fmShutDown2_slMain(void);
@@ -73,7 +73,7 @@ dds3ProcessFunc_t slErrorWaitMc(void);
 dds3ProcessFunc_t slExitWait(dds3ProcessID_t *procId);
 saddr_t slTop(void);
 dds3ProcessFunc_t slHitAnyKeyNoChkProc(void);
-void slInfoMsgDraw(s32 msgNum);
+void gohKarteResResultUpdateProcess(s32 msgNum);
 void slKanjiDraw3(s32 x, s32 y, u32 rgba, char **moji, s32 ot);
 s32 slExitToTitle(void);
 dds3ProcessFunc_t slLoadData_slMain(void);

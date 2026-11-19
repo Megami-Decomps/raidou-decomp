@@ -436,8 +436,8 @@ u32 dds3SlowTime = 4;
 u32 dds3SlowRunCount = 0;
 
 u32 dds3SlowEndCount = 0;
-
 #endif
+
 INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3DrawProcessName);
 
 INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3BasicMainProcessName);

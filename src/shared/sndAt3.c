@@ -1144,32 +1144,16 @@ s32 movieNoMemoryAlloc(void)
     release_movieobj2(&movieCb, &sdfGrOtTable[movieData]);
     return 0;
 }
-
 #ifdef VERSION_RAIDOU1
+
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Demo03Ips);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16EIpu);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Demo02Ips);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16DIpu);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Demo01Ips);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16CIpu);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Ending2Ips);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16BIpu);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2TitleBgIpu);
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieLoop01Ips);
@@ -1177,9 +1161,6 @@ INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieLoop01Ips);
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2EndingIps);
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2TgsIps);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16AIpu);
-#endif
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie616001Ipu);
 
@@ -1191,13 +1172,9 @@ INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2660003Ips);
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2660002Ips);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2660001Ips);
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2654001Ips);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie15Ips);
-#endif
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie696001Ips);
 
@@ -1207,17 +1184,13 @@ INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie657001Ips);
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie659001Ips);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie658002Ips);
 
-#endif
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie658001Ips);
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie695001Ips);
-#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie656001Ips);
-#endif
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie653001Ips);
 
@@ -1227,23 +1200,11 @@ INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie652002Ips);
 
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie652001Ips);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie651002Ips);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie02Ips);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie651001Ips);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie01Ips);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie606001Ipu);
-#else
-INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie00Ipu);
-#endif
 
 INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData2);
 
@@ -1263,21 +1224,84 @@ INCLUDE_SDATA(const s32, "sndAt3", sndData7);
 
 INCLUDE_SDATA(const s32, "sndAt3", evtData25);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData5);
-#else
-INCLUDE_SDATA(const s32, "sndAt3", sndData8);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData6);
-#else
-INCLUDE_SDATA(const s32, "sndAt3", sndData9);
-#endif
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData7);
-#else
+#endif
+#ifdef VERSION_RAIDOU2
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16EIpu);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16DIpu);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16CIpu);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16BIpu);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie16AIpu);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie616001Ipu);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2661002Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2661001Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2660003Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2660002Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie15Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie696001Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie657002Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie657001Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie659001Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie658001Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie695001Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie653001Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie652003Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie652002Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie652001Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie02Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie01Ips);
+
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieMovie00Ipu);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData2);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData3);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndData3);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData4);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndData4);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndData5);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndData6);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndData7);
+
+INCLUDE_SDATA(const s32, "sndAt3", evtData25);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndData8);
+
+INCLUDE_SDATA(const s32, "sndAt3", sndData9);
+
 INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData9);
 #endif
 

@@ -1155,34 +1155,9 @@ void mnuUpdateFade(s32 *list) {
         }
     }
 }
-
 #ifdef VERSION_RAIDOU1
+
 INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode12);
-#else
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCompleted);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile10);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile9);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile8);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile7);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile6);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile5);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile4);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile3);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile2);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile1);
-
-INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrEpisode12);
-#endif
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode11);
 
@@ -1206,9 +1181,64 @@ INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode2
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode1);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrPlayMahjong);
-#else
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrCaseFiles);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrCheckIn);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", jmsStrCommandMenu);
+
+INCLUDE_SDATA(const s32, "code_r1_0034D128", mnuDrawWindowListEntriesData);
+#endif
+
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCompleted);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile10);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile9);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile8);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile7);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile6);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile5);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile4);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile3);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile2);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCaseFile1);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrEpisode12);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode11);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode10);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode9);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode8);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode7);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode6);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode5);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode4);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode3);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode2);
+
+INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrEpisode1);
+
 INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrMeetingLog);
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrGoToTheRoof);
@@ -1216,17 +1246,13 @@ INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrGoToTheRoof);
 INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrPlayMahjong);
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCheckCaseFiles);
-#endif
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrCaseFiles);
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", SetCommand_jmsMenuData4StrCheckIn);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_RODATA(const s32, "code_r1_0034D128", jmsStrCommandMenu);
-#else
 INCLUDE_RODATA(const s32, "code_r1_0034D128", cmpStrCommandMenu);
-#endif
 
 INCLUDE_SDATA(const s32, "code_r1_0034D128", mnuDrawWindowListEntriesData);
 
+#endif

@@ -1566,6 +1566,12 @@ s32 EffEveCPSmokeCount = 0;
 addr_t hEffEveCPSmokeBill01Tex = 0;
 
 addr_t hEffEveCPSmokeBill02Tex = 0;
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "effect/effEvent", evtUpdateEffectViewerGroupData3);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "effect/effEvent", evtUpdateEffectViewerGroupData3);
+
+#endif

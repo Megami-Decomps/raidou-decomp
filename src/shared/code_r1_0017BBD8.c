@@ -1233,7 +1233,11 @@ extern char pbStrFieldLight[];
 extern char pbStrFldFilter[];
 extern char pbStrPointLight[];
 extern char pbStrPress[];
+#else
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData);
+#endif
 
+#ifdef VERSION_RAIDOU1
 extern effDebugMenuItem_t pbLeaf10Data2Entry12[];
 extern effDebugMenu_t pbLeaf10Data2Entry10;
 extern effDebugMenuItem_t pbLeaf10Data2Entry13[];
@@ -1242,7 +1246,11 @@ extern effDebugMenuItem_t pbLeaf10DataEntry[];
 extern effDebugMenu_t pbLeaf10Data;
 extern effDebugMenuItem_t pbLeaf10Data2Entry[];
 extern effDebugMenu_t pbLeaf10Data2;
+#else
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData2);
+#endif
 
+#ifdef VERSION_RAIDOU1
 effDebugMenuItem_t pbLeaf10Data2Entry12[13] = {
     { pbLeaf10Data2Entry23, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x20000000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
@@ -1258,12 +1266,20 @@ effDebugMenuItem_t pbLeaf10Data2Entry12[13] = {
     { pbLeaf10Data2Entry19, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
     { pbLeaf10Data2Entry16, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
 };
+#else
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditorData2);
+#endif
 
+#ifdef VERSION_RAIDOU1
 effDebugMenu_t pbLeaf10Data2Entry10 = {
     NULL, 184, 4, 0, 0x0, pbLeaf10Data2Entry12, 13, NULL,
     { .value = pbLeaf4 }, pbLeaf5, pbLeaf6, NULL, { 0 }, NULL,
 };
+#else
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditorData3);
+#endif
 
+#ifdef VERSION_RAIDOU1
 effDebugMenuItem_t pbLeaf10Data2Entry13[18] = {
     { pbLeaf10Data2Entry23, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x40000000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
@@ -1284,12 +1300,20 @@ effDebugMenuItem_t pbLeaf10Data2Entry13[18] = {
     { pbLeaf10Data2Entry28, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[1] }, { .minValue = 0 }, 5, 1.0f },
     { pbLeaf10Data2Entry27, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[2] }, { .minValue = 0 }, 0xA, 1.0f },
 };
+#else
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmData);
+#endif
 
+#ifdef VERSION_RAIDOU1
 effDebugMenu_t pbLeaf10Data2Entry11 = {
     NULL, 184, 4, 0, 0x0, pbLeaf10Data2Entry13, 18, NULL,
     { 0 }, pbLeaf7, pbLeaf8, NULL, { 0 }, NULL,
 };
+#else
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData);
+#endif
 
+#ifdef VERSION_RAIDOU1
 effDebugMenuItem_t pbLeaf10DataEntry[20] = {
     { pbLeaf10DataEntry14, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry2 }, { .minValue = 0 }, 0, 1.0f },
     { pbLeaf10DataEntry13, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry3 }, { .minValue = 0 }, 0, 1.0f },
@@ -1312,7 +1336,11 @@ effDebugMenuItem_t pbLeaf10DataEntry[20] = {
     { pbLeaf10DataEntry6, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry27 }, { .minValue = -1 }, -1, 1.0f },
     { pbLeaf10DataEntry5, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry28 }, { .minValue = -1 }, -1, 1.0f },
 };
+#else
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData2);
+#endif
 
+#ifdef VERSION_RAIDOU1
 effDebugMenu_t pbLeaf10Data = {
     NULL, 184, 4, 0, 0x0, pbLeaf10DataEntry, 20, NULL,
     { 0 }, pbLeaf9, pbLeaf10, NULL, { 0 }, NULL,
@@ -1487,7 +1515,6 @@ char *dds3EffectFileNameTable2[62] = {
     dds3StrTestTlp,
     dds3EffectFileNameTable2Entry,
 };
-#endif
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData);
 
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData2);
@@ -1502,3 +1529,4 @@ INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData);
 
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData2);
 
+#endif

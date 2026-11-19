@@ -1064,8 +1064,16 @@ dds3ProcessID_t *evtStart2(DDS3_PRIORITY priority, s32 eventno, s32 cutno, s32 s
     evtEventViewerInitCampFontResource(viewer);
     return task;
 }
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "event/evtPolygonMovie", evtStrZikkiPlayModeEventViewer);
 
 INCLUDE_SDATA(const s32, "event/evtPolygonMovie", evtCallMemset8Data);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "event/evtPolygonMovie", evtStrZikkiPlayModeEventViewer);
+
+INCLUDE_SDATA(const s32, "event/evtPolygonMovie", evtCallMemset8Data);
+
+#endif

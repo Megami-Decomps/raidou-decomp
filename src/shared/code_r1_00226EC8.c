@@ -11613,8 +11613,8 @@ void effPadVibeFadeUpdate(void) {
         }
     }
 }
-#ifdef VERSION_RAIDOU1
 
+#ifdef VERSION_RAIDOU1
 effKindDesc_t effData5[6] = {
     { NULL, NULL, NULL, NULL, 0x0 },
     { NULL, NULL, effUpdateFadeBlendA, NULL, 0xE8 },
@@ -11629,11 +11629,12 @@ effKindDesc_t effData6[3] = {
     { NULL, NULL, effUpdateFadeBlendC, NULL, 0xD8 },
     { effCreateFadeColorWorkFromOutput, (void (*)(void *))effReleaseFadeColorWork, effUpdateProjectedFadeColor, effReplaceLinkedKindWorkTarget, 0xE4 },
 };
-#endif
 
+#endif
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", sbtlCallBtlEffCreateUnitList2Table);
 
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrAccurate);
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrLength);
 
@@ -11980,4 +11981,353 @@ INCLUDE_SDATA(const s32, "code_r1_00226EC8", effPadVibeRemain);
 INCLUDE_SDATA(const s32, "code_r1_00226EC8", effPadVibePower);
 
 INCLUDE_SDATA(const s32, "code_r1_00226EC8", effPadVibeFadeIn);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrLength);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrResource);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrSaveEp);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrAmplitude);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrMaterial);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrVcEndOut);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrVcEndIn);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrVcStartOut);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrVcStartIn);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrTBoard2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrCycleRot);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrLifeScl);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrLifeCol);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrEmtSpre);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrEmtRadi);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrEQuake2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrEdgeOut);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrBillboard);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrEmtCurve);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrEmtHeight);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrEmtRadius);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrScaleUv);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrCrackPolygon);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrFlashPolygon);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrDirection);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrOF2Cam);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrOLightS);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrOMcolrS);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePAspak1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePAspak0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePHspak1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePHspak0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSphre1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSphre0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSpirl1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSpirl0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSpark2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSpark1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSpark0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSmoke2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSmoke1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSamplePSmoke0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleGHspak0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleGSphre0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleGSpirl0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleGSpark0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleGSmoke0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleKHspak0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleKSphre0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleKSpirl0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleKSpark0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleKSmoke0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleBParal0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleBRiple0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleBDist0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleBMulti0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleBFull0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleFMulti0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleFFull0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleTBoard1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleTBoard0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleEQuake20);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleEQuake0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleEFlare0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleERain0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSCylnd0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSRing0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSSpark1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSSpark0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSRadi1Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSRngT0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSSctT0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSSpkT1Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSSpkT0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleSRadT0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleRCrcle1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleRCrcle0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleRTrack0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleRNomal1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleRNomal0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleDBug1Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleDBug0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleDPoint0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleWHspak0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleWSphre0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleWSpirl0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleWSpark0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleWSmoke0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleNCyldr0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleNCylnd1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleNCylnd0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleNSphre0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleNSpirl2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleNSpirl1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleNSpirl0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleUSpirl0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleUSmoke0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleUSphre0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleUCylnd0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleCNomal0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOMcolr2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOLight2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOUnitd0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOFovy0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOVibe0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOFldF0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOFldL0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOSe0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOMot0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOEffL0Ep);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOMcolr0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrToolEffectSampleOLight0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleXNomal0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleMAspak0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleMHspak0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleMSphre0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleMSpirl0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleMSpark0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectSampleMSmoke0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrResetOk);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrInstanceOk);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrDeleteOk);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrCopyOk);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrExitOk);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrCameraY);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrCamera);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrGround);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPosition);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrOffset);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrSize);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrInstance);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPoseture);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrBattleOnly);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrMuzzleFlash);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrF2Camera);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrFloorModel);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrEnvironment);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPolyCrack);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPolyScaly);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrPolyWind);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPolyThunder);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPolyRing);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPolyFlash);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrPolyTex);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPolyTrackS2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPolyTrack);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrObjParticle);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrParticle);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrTestMenu2);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrTestMenu1);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrTestMenu0);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPartsList);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrEffectEditor);
+
+INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectEp);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData34);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData35);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCurrentRenderPacket);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effLoadWindTextureData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effWindTextureHandle);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effSharedRibbonReferenceCount);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effSharedAssetReferenceReleaseData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effLoadScalyTextureData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effScalyTextureHandle);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effSharedStripReferenceCount);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effSharedScalyStripResource);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", sbtleffbo_acter);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", sbtleffbo_target);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", sbtlLeaf51Data);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData36);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effPadVibeFrames);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effPadVibeRemain);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effPadVibePower);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effPadVibeFadeIn);
+
+#endif

@@ -657,13 +657,13 @@ INCLUDE_SDATA(const s32, "event/evtMoon", gMoonFade);
 INCLUDE_SDATA(const s32, "event/evtMoon", gMoonFadeFrame);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", gMoonFadeFrameMax);
-
 #ifdef VERSION_RAIDOU2
+
 INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData8);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData9);
-
 #endif
+
 INCLUDE_SDATA(const s32, "event/evtMoon", gMoonCnt);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", gMoonCngCnt);

@@ -405,10 +405,12 @@ dds3ProcessID_t *evtPictureStartProcess4(s32 x, s32 y, u32 priority, s32 start, 
 INCLUDE_SDATA(const s32, "event/evtPicture", evtCallGetSmallFontFRQ2Data);
 #else
 INCLUDE_SDATA(const s32, "event/evtPicture", evtData28);
-
-INCLUDE_SDATA(const s32, "event/evtPicture", evtCallGetSmallFontFRQ2Data2);
 #endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "event/evtPicture", evtCallGetSmallFontFRQ2Data2);
+
+#endif
 char evtPictureProcName[8] = "Picture";
 
 u16 skyanime = 0;

@@ -2674,7 +2674,7 @@ mnuCreateWindowSpriteResources	c
 mnuDecreaseListNodeFadeCounters	c
 mnuDestroyListState	c
 mnuDispatchEntryWords	c
-mnuDispatchStaffMenuWithIdlePopup	c
+gohKarteErrorCalcProcess	c
 jmsSeqDestroyAll	c
 mnuDrawCutFlagLabel	c
 mnuDrawFadingWindows	c

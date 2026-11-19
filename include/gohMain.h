@@ -29,11 +29,11 @@ typedef struct gohStatWork_t {
 void gohCallMemset2(void);
 s32 MahjanInit(dds3ProcessID_t *PID);
 dds3ProcessFunc_t MahjanUpdateProcess(dds3ProcessID_t *PID);
-s32 evtBDispatchSyncD2(struct gohData_t *pData);
-dds3ProcessFunc_t gohAccidentCalcProcess(dds3ProcessID_t *PID);
-dds3ProcessFunc_t gohBakBakDestroy(dds3ProcessID_t *PID);
-dds3ProcessFunc_t gohCallGetProcessData29(dds3ProcessID_t *PID);
-dds3ProcessFunc_t gohCallGetProcessData30(dds3ProcessID_t *PID);
+s32 gohKarteResDrawProcess(struct gohData_t *pData);
+dds3ProcessFunc_t gohCyuuseiUpdateProcess(dds3ProcessID_t *PID);
+dds3ProcessFunc_t gohCmb1Destroy(dds3ProcessID_t *PID);
+dds3ProcessFunc_t gohTalkDrawProcess(dds3ProcessID_t *PID);
+dds3ProcessFunc_t gohTalkUpdateProcess(dds3ProcessID_t *PID);
 s32 gohCommandDEVILOUTAFTERSub(struct sdatUnitWork_t *unit, u32 *flag, s32 mode);
 s32 gohCreateRecoverList(struct gohData_t *pData);
 s32 gohCreateSwordList(struct gohData_t *pData);

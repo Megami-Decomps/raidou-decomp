@@ -4449,100 +4449,6 @@ void oldEventSceneUnload(evtPolygonMovieWork_t *wdata) {
 #else
 INCLUDE_ASM(const s32, "event/evtEventViewer", oldEventSceneUnload);
 #endif
-
-INCLUDE_RODATA(const s32, "event/evtEventViewer", evtViewerTaskName);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFileMajor);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evt_file_minor);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData14);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", winoff_x);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", pmv_pid);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", last_skip_stat);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evt_camera);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtCallGetFrameIDData);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData16);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKDataEntry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKDataEntry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData2Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData2Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData3Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData2Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData2Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData3Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData3Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData14Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry3);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry4);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry5);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry6);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry7);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData6Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData6Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData8Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData9Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData9Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData10Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData10Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry3);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry4);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData13Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry2);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry3);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData16Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData17Entry);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameSfog);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameFilter);
-
-INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameMfilter);
 #else
 void End_evtViewer(evtViewerInfo_t *pInfo) {
     f32 zero;
@@ -4755,6 +4661,8 @@ void oldEventSceneUnload(evtPolygonMovieWork_t *wdata) {
 #else
 INCLUDE_ASM(const s32, "event/evtEventViewer", oldEventSceneUnload);
 #endif
+#endif
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", evtViewerTaskName);
 
@@ -4851,3 +4759,99 @@ INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameFilter);
 INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameMfilter);
 #endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "event/evtEventViewer", evtViewerTaskName);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFileMajor);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evt_file_minor);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData14);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", winoff_x);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", pmv_pid);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", last_skip_stat);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evt_camera);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtCallGetFrameIDData);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtData16);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKDataEntry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKDataEntry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData2Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData2Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFRAMESETOKData3Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData2Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData2Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData3Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData3Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData14Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry5);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry6);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData5Entry7);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData6Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData6Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData8Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData9Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData9Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData10Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData10Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData12Entry4);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData13Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry2);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData15Entry3);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData16Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtDELETEFRAMEOKData17Entry);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameSfog);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameFilter);
+
+INCLUDE_SDATA(const s32, "event/evtEventViewer", evtViewerProcNameMfilter);
+
+#endif

@@ -337,6 +337,7 @@ s32 exponent(char *output, s32 value, s32 marker)
     }
     return cursor - output;
 }
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfNanText);
 
@@ -352,9 +353,24 @@ INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfZeroDigit);
 
 INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfDecimalPoint);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", jtbl_00468750);
-#else
-INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", jtbl_004DB120);
 #endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfNanText);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfHexLower);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfNullText);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfHexUpper);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfBadBaseMsg);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfZeroDigit);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfDecimalPoint);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", jtbl_004DB120);
+
+#endif

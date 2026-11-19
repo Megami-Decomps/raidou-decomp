@@ -623,6 +623,7 @@ int scePadSetWarningLevel(int level)
     }
     return padRpcPacket.slot;
 }
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "sdk/libpad/libpad", padStateNameDisconnect);
 
@@ -631,4 +632,15 @@ INCLUDE_RODATA(const s32, "sdk/libpad/libpad", padRequestNameBusy);
 INCLUDE_RODATA(const s32, "sdk/libpad/libpad", padRequestNameFailed);
 
 INCLUDE_RODATA(const s32, "sdk/libpad/libpad", padRequestNameComplete);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", padStateNameDisconnect);
+
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", padRequestNameBusy);
+
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", padRequestNameFailed);
+
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", padRequestNameComplete);
+
+#endif

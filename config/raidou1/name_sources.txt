@@ -8668,14 +8668,14 @@
 0x002F5F38	evtCallBgmStop	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls sndBgmStop
 0x002F5F98	TitleFirstCalcProcess3	hd-inferred	hd: Raidou HD TitleMain.TitleFirstCalcProcess3, score 10.15 band A
 0x002F6188	TitleFirstDrawProcess	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD TitleMain.TitleFirstDrawProcess score 5.5 flag I: calls2 prev gap42/25 st2:gap r2-only
-0x002F6200	TitleCesaInit	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD TitleMain.TitleCesaInit score 5.0 flag I: calls2 prev gap41/23 st2:gap r2-only
-0x002F6238	evtLeaf32	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
+0x002F6200	TitleAtlusLogoInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_ATLUS_LOGO (name string in the row), Init slot; raidou1 row matched by 4 paired functions; replaces TitleCesaInit
+0x002F6238	TitleAtlusLogoDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_ATLUS_LOGO (name string in the row), Destroy slot; raidou1 row matched by 4 paired functions; replaces evtLeaf32
 0x002F6240	TitleAtlusLogoCalcProcess	hd-inferred	hd: Raidou HD TitleMain.TitleAtlusLogoCalcProcess, score 10.15 band A
 0x002F6338	TitleAtlusLogoDrawProcess	hd-inferred	hd: Raidou HD TitleMain.TitleAtlusLogoDrawProcess, score 8.45 band B
-0x002F63D0	evtCallGetProcessData31	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls dds3GetProcessData
-0x002F6408	evtLeaf33	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
-0x002F6410	evtBStartSelectionChainAfterFade	inferred	method=dds-fuzzy-60-tie-pair; p=0.40 (n=2); tier=C; source=dds; evidence=dds body 0x26b260 sim 0.626 margin 0.05 pair
-0x002F6500	evtCallGetProcessData32	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls dds3GetProcessData
+0x002F63D0	TitleSforceLogoInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SFORCE_LOGO (name string in the row), Init slot; raidou1 row matched by 4 paired functions; replaces evtCallGetProcessData31
+0x002F6408	TitleSforceLogoDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SFORCE_LOGO (name string in the row), Destroy slot; raidou1 row matched by 4 paired functions; replaces evtLeaf33
+0x002F6410	TitleSforceLogoCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SFORCE_LOGO (name string in the row), CalcProcess slot; raidou1 row matched by 4 paired functions; replaces evtBStartSelectionChainAfterFade
+0x002F6500	TitleSforceLogoDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SFORCE_LOGO (name string in the row), DrawProcess slot; raidou1 row matched by 4 paired functions; replaces evtCallGetProcessData32
 0x002F6598	TitleGoMain	hd-inferred	hd: Raidou HD TitleMain.TitleGoMain, score 8.0 band B
 0x002F65F0	TitleMovieInit	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD TitleMain.TitleMovieInit score 6.3 flag I: calls2 callers-of-match st1:call r1+r2
 0x002F66A8	TitleMovieDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain.TitleMovieDestroy: Destroy slot of the TitleMovieInit row; HD TitleMain cctor scene order (Cesa, LightWarning, AtlusLogo, Movie, Main, MainSub, EndWait, Config, Advertise) matches the raidou1 TitleMain table array; replaces evtLeaf34
@@ -9794,48 +9794,48 @@
 0x00338D60	gohRootCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohRootCalcProcess, score 8.85 band B
 0x00338EF8	gohRootDrawProcess	hd-inferred	hd: Raidou HD gohMain.gohRootDrawProcess, score 8.55 band B
 0x00338F48	gohRootUpdateProcess	hd-inferred	hd: Raidou HD gohMain.gohRootUpdateProcess, score 7.95 band B
-0x00338F90	gohCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohRootUpdateProcess; calls dds3GetProcessData
-0x00338FE8	gohBakNmlCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohBakNmlCalcProcess, score 8.95 band B
-0x00338FF0	gohCallGetProcessData2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohBakNmlCalcProcess; calls dds3GetProcessData
-0x00339240	gohBakNmlDrawProcess	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD gohMain.gohBakNmlDrawProcess score 5.5 flag I: calls3 prev edge st2:edge r2-only
-0x00339290	gohBakNmlUpdateProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD gohMain.gohBakNmlUpdateProcess score 8.4 flag I: calls2 prev gap=exact st2:gap r2-only
-0x003392C8	gohBakBakInit	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD gohMain.gohBakBakInit score 5.8 flag I: prev next gap=exact st2:gap r2-only
-0x00339308	gohBakBakDestroy	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD gohMain.gohBakBakDestroy score 6.5 flag I: calls1 next gap=exact st2:gap r2-only
-0x00339360	gohCallGetProcessData3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohBakBakDestroy; calls dds3GetProcessData
-0x00339550	gohCallGetProcessData4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohBakBakDestroy; calls dds3GetProcessData
-0x00339610	gohCallGetProcessData23	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohBakBakDestroy; calls dds3GetProcessData
-0x00339648	gohLeaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour gohBakBakDestroy; no named callee, caller or string
-0x00339658	nbCommand_BTL_AI_CHANGE_ON	inferred	method=smt3-fuzzy-100-m-pair; p=1.00 (n=1842); tier=A; source=smt3; evidence=smt3 body 0x288d48 sim 1.000 margin 0.19 pair
-0x00339690	gohCallGetProcessData5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00339978	gohCallGetProcessData6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00339B48	gohCallGetProcessData24	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00339B80	gohCallEndMessageEx	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls fclEndMessageEx
-0x00339BA8	gohCallCallDrawBack2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls gohCallDrawBack
-0x00339BC8	gohCallGetProcessData7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00339D58	gohCallGetProcessData8	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00339DE0	gohSwordTreeUpdateProcess	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD gohMain.gohSwordTreeUpdateProcess score 4.5 flag I: calls2 next~ gap30/23 st2:gap r2-only
+0x00338F90	gohCmbSelInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), Init slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData
+0x00338FE8	gohCmbSelDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), Destroy slot; raidou1 row matched by 3 paired functions; replaces gohBakNmlCalcProcess
+0x00338FF0	gohCmbSelCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), CalcProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData2
+0x00339240	gohCmbSelDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), DrawProcess slot; raidou1 row matched by 3 paired functions; replaces gohBakNmlDrawProcess
+0x00339290	gohCmbSelUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), UpdateProcess slot; raidou1 row matched by 3 paired functions; replaces gohBakNmlUpdateProcess
+0x003392C8	gohCmb1Init	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), Init slot; raidou1 row matched by 3 paired functions; replaces gohBakBakInit
+0x00339308	gohCmb1Destroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), Destroy slot; raidou1 row matched by 3 paired functions; replaces gohBakBakDestroy
+0x00339360	gohCmb1CalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), CalcProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData3
+0x00339550	gohCmb1DrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), DrawProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData4
+0x00339610	gohCmb1UpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), UpdateProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData23
+0x00339648	gohCmb2Init	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB2 (name string in the row), Init slot; raidou1 row matched by 2 paired functions; replaces gohLeaf24
+0x00339658	gohCmb2Destroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB2 (name string in the row), Destroy slot; raidou1 row matched by 2 paired functions; replaces nbCommand_BTL_AI_CHANGE_ON
+0x00339690	gohCmb2CalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB2 (name string in the row), CalcProcess slot; raidou1 row matched by 2 paired functions; replaces gohCallGetProcessData5
+0x00339978	gohCmb2DrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB2 (name string in the row), DrawProcess slot; raidou1 row matched by 2 paired functions; replaces gohCallGetProcessData6
+0x00339B48	gohCmb2UpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CMB2 (name string in the row), UpdateProcess slot; raidou1 row matched by 2 paired functions; replaces gohCallGetProcessData24
+0x00339B80	gohSwordInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), Init slot; raidou1 row matched by 1 paired functions; replaces gohCallEndMessageEx
+0x00339BA8	gohSwordDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), Destroy slot; raidou1 row matched by 1 paired functions; replaces gohCallCallDrawBack2
+0x00339BC8	gohSwordCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), CalcProcess slot; raidou1 row matched by 1 paired functions; replaces gohCallGetProcessData7
+0x00339D58	gohSwordDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), DrawProcess slot; raidou1 row matched by 1 paired functions; replaces gohCallGetProcessData8
+0x00339DE0	gohSwordUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), UpdateProcess slot; raidou1 row matched by 1 paired functions; replaces gohSwordTreeUpdateProcess
 0x00339E18	gohCallSeqJumpAndFree	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls jmsSeqJumpAndFree
 0x00339F18	gohStatInit	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD gohMain.gohStatInit score 5.5 flag I: calls2 callers-of-match-uniq votes2 st2:call r2-only
-0x00339F48	gohCmbSearchiCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohCmbSearchiCalcProcess, score 9.6 band B
+0x00339F48	gohStatDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), Destroy slot; raidou1 row matched by 4 paired functions; replaces gohCmbSearchiCalcProcess
 0x00339F50	fldFastTravelSetup	hd-inferred	method=hd-d-single-raidou1; p=0.71 (n=403); tier=C; source=hd; evidence=Raidou HD fld.fldFastTravelSetup score 3.9 flag I: calls1 callers-of-match st1:call r1-only
-0x0033A398	gohCallGetProcessData9	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033A570	gohCallGetProcessData25	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033A5A8	gohCallGetProcessData26	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
+0x0033A398	gohStatCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), CalcProcess slot; replaces gohCallGetProcessData9
+0x0033A570	gohStatDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), DrawProcess slot; raidou1 row matched by 4 paired functions; replaces gohCallGetProcessData25
+0x0033A5A8	gohStatUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), UpdateProcess slot; raidou1 row matched by 4 paired functions; replaces gohCallGetProcessData26
 0x0033A5E0	gohLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
-0x0033A628	gohCallGetProcessData10	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033A690	gohLeaf26	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
-0x0033A698	gohCallGetProcessData11	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033A738	gohCallGetProcessData27	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033A770	gohCallGetProcessData28	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
+0x0033A628	gohConfirmInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), Init slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData10
+0x0033A690	gohConfirmDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), Destroy slot; raidou1 row matched by 3 paired functions; replaces gohLeaf26
+0x0033A698	gohConfirmCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), CalcProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData11
+0x0033A738	gohConfirmDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), DrawProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData27
+0x0033A770	gohConfirmUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), UpdateProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData28
 0x0033A7B8	gohCyuuseiStartDirection	hd-inferred	hd: Raidou HD gohMain.gohCyuuseiStartDirection, score 9.6 band B
 0x0033A868	gohCallStrongSwordFlag	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls gohStrongSwordFlag
-0x0033AB40	gohCallGetProcessData12	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033AC90	gohLeaf27	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
-0x0033AC98	gohCallGetProcessData13	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
+0x0033AB40	gohCyuuseiInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CYUUSEI (name string in the row), Init slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData12
+0x0033AC90	gohCyuuseiDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CYUUSEI (name string in the row), Destroy slot; raidou1 row matched by 3 paired functions; replaces gohLeaf27
+0x0033AC98	gohCyuuseiCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CYUUSEI (name string in the row), CalcProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData13
 0x0033B228	gohCyuuseiDrawProcess	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD gohMain.gohCyuuseiDrawProcess score 5.5 flag I: calls2 next gap2/30 st2:gap r2-only
-0x0033B260	gohAccidentCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohAccidentCalcProcess, score 8.15 band B
-0x0033B2A8	TestProcess2	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x28c898 sim 0.909 margin 0.91 pair
-0x0033B2D0	gohCallCallDrawBack3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls gohCallDrawBack
+0x0033B260	gohCyuuseiUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CYUUSEI (name string in the row), UpdateProcess slot; raidou1 row matched by 3 paired functions; replaces gohAccidentCalcProcess
+0x0033B2A8	gohRecoverInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_RECOVER (name string in the row), Init slot; raidou1 row matched by 5 paired functions; replaces TestProcess2
+0x0033B2D0	gohRecoverDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_RECOVER (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces gohCallCallDrawBack3
 0x0033B2F0	scrLogStart	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD scr.scrLogStart score 3.5 flag I: calls1 callers-of-match st1:call r1-only
 0x0033B420	gohRecoverCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohRecoverCalcProcess, score 9.15 band B
 0x0033B520	gohRecoverDrawProcess	hd-inferred	hd: Raidou HD gohMain.gohRecoverDrawProcess, score 9.15 band B
@@ -9843,23 +9843,23 @@
 0x0033B628	gohTalkInit	hd-inferred	hd: Raidou HD gohMain.gohTalkInit, score 7.95 band B
 0x0033B648	gohTalkDestroy	hd-inferred	hd: Raidou HD gohMain.gohTalkDestroy, score 8.75 band B
 0x0033B650	gohTalkCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohTalkCalcProcess, score 9.45 band B
-0x0033B730	gohCallGetProcessData29	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033B780	gohCallGetProcessData30	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
+0x0033B730	gohTalkDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_TALK (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData29
+0x0033B780	gohTalkUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_TALK (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData30
 0x0033B7B8	gohMiscInit	hd-inferred	hd: Raidou HD gohMain.gohMiscInit, score 7.15 band B
-0x0033B7F0	gohLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
-0x0033B7F8	gohCallGetProcessData31	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033B868	gohCallGetProcessData32	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033B8B8	gohCallGetProcessData33	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033B8F0	gohCallGetProcessData34	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033B938	gohLeaf29	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
+0x0033B7F0	gohMiscDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_MISC (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces gohLeaf28
+0x0033B7F8	gohMiscCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_MISC (name string in the row), CalcProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData31
+0x0033B868	gohMiscDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_MISC (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData32
+0x0033B8B8	gohMiscUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_MISC (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData33
+0x0033B8F0	gohSinanInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SINAN (name string in the row), Init slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData34
+0x0033B938	gohSinanDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SINAN (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces gohLeaf29
 0x0033B940	gohSinanCalcProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD gohMain.gohSinanCalcProcess score 8.4 flag I: calls7 callers-of-match votes5 st2:call r2-only
-0x0033BA60	gohCallGetProcessData35	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033BAB0	gohCallGetProcessData36	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033BAF8	gohCallGetProcessData37	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x0033BBB0	gohLeaf30	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
-0x0033BBB8	gohSearchiErrorCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohSearchiErrorCalcProcess, score 7.75 band B
-0x0033BCF8	evtRefreshDispatchStart	inferred	method=dds-fuzzy-70-tie-pair; p=0.38 (n=8); tier=C; source=dds; evidence=dds body 0x248088 sim 0.878 margin 0.02 pair
-0x0033BD60	gohCallGetProcessData38	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
+0x0033BA60	gohSinanDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SINAN (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData35
+0x0033BAB0	gohSinanUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SINAN (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData36
+0x0033BAF8	gohErrorInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), Init slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData37
+0x0033BBB0	gohErrorDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces gohLeaf30
+0x0033BBB8	gohErrorCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), CalcProcess slot; raidou1 row matched by 5 paired functions; replaces gohSearchiErrorCalcProcess
+0x0033BCF8	gohErrorDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces evtRefreshDispatchStart
+0x0033BD60	gohErrorUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData38
 0x0033BDA8	EndProcess_gohMain	hd	hd: Raidou HD gohMain.EndProcess, score 8.15 band B
 0x0033BE98	gohStrongSwordFlag	hd-inferred	method=hd-d-single-raidou1; p=0.71 (n=403); tier=C; source=hd; evidence=Raidou HD gohCalc.gohStrongSwordFlag score 2.7 flag I: calls1 callers-of-match-uniq st1:call r1-only
 0x0033BEF0	gohTablCheckEventDevil	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD gohCalc.gohTablCheckEventDevil score 8.4 flag I: calls2 prev calls-of-match votes2 st1:call r1-only
@@ -9875,9 +9875,9 @@
 0x0033C4A8	gohCallMemset	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls memset
 0x0033C700	gohCallMemset2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls memset
 0x0033C908	gohCallBitCheck2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls evtBitCheck
-0x0033C9C8	gohLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
+0x0033C9C8	gohSword2Destroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_SWORD2 (name string in the row), Destroy slot; replaces gohLeaf
 0x0033CA30	gohCallGetRandA	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetRandA
-0x0033CBC0	gohLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
+0x0033CBC0	gohCombCntDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_COMB_CNT (name string in the row), Destroy slot; replaces gohLeaf2
 0x0033CC08	gohLeaf3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
 0x0033CC38	gohLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
 0x0033CCF8	gohCallTablCheckEventDevil	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls gohTablCheckEventDevil
@@ -9943,64 +9943,64 @@
 0x00344668	gohRefDDS3GBWK7	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit gohMain; references DDS3_GBWK
 0x003447E8	gohCallSetDrawBack	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls gohSetDrawBack
 0x00344820	gohCallSetDrawBack2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls gohSetDrawBack
-0x00344860	gohCmbSelInit	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD gohMain.gohCmbSelInit score 4.3 flag I: calls1 callers-of-match votes2 st2:call r2-only
-0x00344900	gohCallGetProcessData39	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00344930	gohCmbSelDestroy	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD gohMain.gohCmbSelDestroy score 2.8 flag I: prev~ next gap1/2 st2:gap r2-only
-0x00344938	gohCmbSelCalcProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD gohMain.gohCmbSelCalcProcess score 8.3 flag I: calls4 callers-of-match votes2 st2:call r2-only
-0x00344C28	gohCallGetProcessData40	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00344C78	gohCallGetProcessData41	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00344CB0	gohCallEndMessage	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls fclEndMessage
-0x00344CD0	gohLeaf32	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
-0x00344CD8	gohCallGetProcessData42	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00344DF0	gohCallGetProcessData43	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00344ED8	gohCallGetProcessData44	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit gohMain; calls dds3GetProcessData
-0x00344F28	gohCallGetProcessData45	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F28, nearest named function gohCmbSelCalcProcess; calls dds3GetProcessData
-0x00344F78	DLCDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD jmsMain.DLCDestroy: Destroy slot of the scene table entry {Init, Destroy, DLCCalcProcess, Draw, Update}; replaces fldLeaf36
-0x00344F80	DLCCalcProcess	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsMain.DLCCalcProcess score 7.0 flag -: calls4 callers-of-match votes3 st1:call r1-only
-0x003450C0	fldCallGetProcessData4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003451A8	fldCallGetProcessData5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003451F0	fldCallEndMessage	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls fclEndMessage
-0x00345220	fldLeaf37	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; no named callee, caller or string
-0x00345228	fldCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003453F0	fldCallGetProcessData6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x00345428	fldCallGetProcessData7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x00345460	fldCommand_FLD_CALL_WAPEX	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x159eb0 sim 0.778 margin 0.78 pair
-0x00345498	fldLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; no named callee, caller or string
-0x003454A0	fldCallGetProcessData8	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x00345538	fldCallGetProcessData9	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x00345570	evtCallGetProcessData34	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtPollDispatchAfterFade; calls dds3GetProcessData
-0x003455B8	evtCallSetMessageInvalid	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtPollDispatchAfterFade; calls fclSetMessageInvalid
-0x003455F8	evtLeaf39	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtPollDispatchAfterFade; no named callee, caller or string
-0x00345600	evtPollDispatchAfterFade	inferred	method=dds-fuzzy-60-tie-pair; p=0.40 (n=2); tier=C; source=dds; evidence=dds body 0x26abb0 sim 0.661 margin 0.02 pair
-0x003456F0	evtCallGetProcessData35	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtPollDispatchAfterFade; calls dds3GetProcessData
-0x00345728	evtCallGetProcessData36	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtPollDispatchAfterFade; calls dds3GetProcessData
-0x00345770	evtCallEndMessage	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtPollDispatchAfterFade; calls fclEndMessage
-0x00345790	evtLeaf40	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtBDispatchSyncD2; no named callee, caller or string
-0x00345798	evtCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtBDispatchSyncD2; calls dds3GetProcessData
+0x00344860	gohKarteRootCalcProcessSub	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=called only by gohKarteRootCalcProcess (the SEQ_KARTE_ROOT row Calc slot); the row Init slot of SEQ_CMBSEL takes gohCmbSelInit; replaces gohCmbSelInit
+0x00344900	gohKarteRootInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), Init slot; raidou1 row matched by 10 paired functions; replaces gohCallGetProcessData39
+0x00344930	gohKarteRootDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), Destroy slot; raidou1 row matched by 10 paired functions; replaces gohCmbSelDestroy
+0x00344938	gohKarteRootCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), CalcProcess slot; raidou1 row matched by 10 paired functions; replaces gohCmbSelCalcProcess
+0x00344C28	gohKarteRootDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), DrawProcess slot; raidou1 row matched by 10 paired functions; replaces gohCallGetProcessData40
+0x00344C78	gohKarteRootUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), UpdateProcess slot; raidou1 row matched by 10 paired functions; replaces gohCallGetProcessData41
+0x00344CB0	gohKarteRegInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), Init slot; raidou1 row matched by 5 paired functions; replaces gohCallEndMessage
+0x00344CD0	gohKarteRegDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces gohLeaf32
+0x00344CD8	gohKarteRegCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), CalcProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData42
+0x00344DF0	gohKarteRegDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData43
+0x00344ED8	gohKarteRegUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData44
+0x00344F28	gohKarteRegAllInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), Init slot; raidou1 row matched by 5 paired functions; replaces gohCallGetProcessData45
+0x00344F78	gohKarteRegAllDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces DLCDestroy
+0x00344F80	gohKarteRegAllCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), CalcProcess slot; raidou1 row matched by 5 paired functions; replaces DLCCalcProcess
+0x003450C0	gohKarteRegAllDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces fldCallGetProcessData4
+0x003451A8	gohKarteRegAllUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces fldCallGetProcessData5
+0x003451F0	gohKarteRegStatInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), Init slot; raidou1 row matched by 4 paired functions; replaces fldCallEndMessage
+0x00345220	gohKarteRegStatDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), Destroy slot; raidou1 row matched by 4 paired functions; replaces fldLeaf37
+0x00345228	gohKarteRegStatCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), CalcProcess slot; raidou1 row matched by 4 paired functions; replaces fldCallGetProcessData
+0x003453F0	gohKarteRegStatDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), DrawProcess slot; raidou1 row matched by 4 paired functions; replaces fldCallGetProcessData6
+0x00345428	gohKarteRegStatUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), UpdateProcess slot; raidou1 row matched by 4 paired functions; replaces fldCallGetProcessData7
+0x00345460	gohKarteRegConfirmInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), Init slot; raidou1 row matched by 4 paired functions; replaces fldCommand_FLD_CALL_WAPEX
+0x00345498	gohKarteRegConfirmDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), Destroy slot; raidou1 row matched by 4 paired functions; replaces fldLeaf
+0x003454A0	gohKarteRegConfirmCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), CalcProcess slot; raidou1 row matched by 4 paired functions; replaces fldCallGetProcessData8
+0x00345538	gohKarteRegConfirmDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), DrawProcess slot; raidou1 row matched by 4 paired functions; replaces fldCallGetProcessData9
+0x00345570	gohKarteRegConfirmUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), UpdateProcess slot; raidou1 row matched by 4 paired functions; replaces evtCallGetProcessData34
+0x003455B8	gohKarteRegResultInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), Init slot; raidou1 row matched by 5 paired functions; replaces evtCallSetMessageInvalid
+0x003455F8	gohKarteRegResultDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces evtLeaf39
+0x00345600	gohKarteRegResultCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), CalcProcess slot; raidou1 row matched by 5 paired functions; replaces evtPollDispatchAfterFade
+0x003456F0	gohKarteRegResultDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces evtCallGetProcessData35
+0x00345728	gohKarteRegResultUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces evtCallGetProcessData36
+0x00345770	gohKarteResInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), Init slot; raidou1 row matched by 3 paired functions; replaces evtCallEndMessage
+0x00345790	gohKarteResDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), Destroy slot; raidou1 row matched by 3 paired functions; replaces evtLeaf40
+0x00345798	gohKarteResCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), CalcProcess slot; raidou1 row matched by 3 paired functions; replaces evtCallGetProcessData
 0x00345918	evtBDispatchSyncD2Sub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtBDispatchSyncD2; called by evtBDispatchSyncD2
-0x00345980	evtBDispatchSyncD2	inferred	method=dds-fuzzy-70-m-pair; p=0.64 (n=25); tier=C; source=dds; evidence=dds body 0x24ccd8 sim 0.754 margin 0.22 pair
-0x003459E8	evtCallGetProcessData2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtBDispatchSyncD2; calls dds3GetProcessData
-0x00345AA0	evtCallEndMessage2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtBDispatchSyncD2; calls fclEndMessage
-0x00345AD0	gohFunc18	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour gohCheckDevilError; no named callee, caller or string
+0x00345980	gohKarteResDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), DrawProcess slot; raidou1 row matched by 3 paired functions; replaces evtBDispatchSyncD2
+0x003459E8	gohKarteResUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), UpdateProcess slot; raidou1 row matched by 3 paired functions; replaces evtCallGetProcessData2
+0x00345AA0	gohKarteResStatInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), Init slot; raidou1 row matched by 3 paired functions; replaces evtCallEndMessage2
+0x00345AD0	gohKarteResStatDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), Destroy slot; raidou1 row matched by 3 paired functions; replaces gohFunc18
 0x00345AF0	gohCheckDevilError	hd-inferred	method=hd-d-single-raidou1; p=0.71 (n=403); tier=C; source=hd; evidence=Raidou HD gohMain.gohCheckDevilError score 4.3 flag I: calls2 callers-of-match votes3 st1:call r2-disagree:0x3a9fb8
-0x00345BF0	gohStatCalcProcess	hd-inferred	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD gohMain.gohStatCalcProcess score 8.2 flag I: calls4 callers-of-match-uniq votes2 st1:call r1-only
-0x00345D08	SetConfigData	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD ConfigUnity.SetConfigData score 4.3 flag -: calls1 next edge st1:edge r1+r2
-0x00345D40	GetConfigTab	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD ConfigUnity.GetConfigTab score 5.0 flag -: calls1 next edge st1:edge r1+r2
-0x00345D78	InitMessage	hd	hd: Raidou HD ConfigUnity.InitMessage, score 9.5 band B
-0x00345E00	evtLeaf41	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtBChooseSelectionCompletionPopup; no named callee, caller or string
-0x00345E08	evtBChooseSelectionCompletionPopup	inferred	method=dds-fuzzy-70-tie-pair; p=0.38 (n=8); tier=C; source=dds; evidence=dds body 0x24c700 sim 0.736 margin 0.00 pair
-0x00345ED0	evtCallGetProcessData37	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtBChooseSelectionCompletionPopup; calls dds3GetProcessData
-0x00345F08	evtCallGetProcessData38	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour evtBChooseSelectionCompletionPopup; calls dds3GetProcessData
-0x00345F50	ChangeMessage	hd	hd: Raidou HD ConfigUnity.ChangeMessage, score 9.4 band B
-0x00345FE8	slLeaf12	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour slInfoMsgDraw; no named callee, caller or string
-0x00345FF0	slCallGetProcessData16	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003460B0	slCallGetProcessData17	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003460E8	slInfoMsgDraw	hd	hd: Raidou HD slMain.slInfoMsgDraw, score 7.15 band B
-0x00346130	slCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003461E0	slLeaf13	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00344F78, neighbour slInfoMsgDraw; no named callee, caller or string
-0x003461E8	mnuDispatchStaffMenuWithIdlePopup	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00272A90, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00346258	gohCallGetProcessData46	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour gohSetModelScale; calls dds3GetProcessData
-0x003462A8	gohCallGetProcessData47	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour gohSetModelScale; calls dds3GetProcessData
+0x00345BF0	gohKarteResStatCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), CalcProcess slot; raidou1 row matched by 3 paired functions; replaces gohStatCalcProcess
+0x00345D08	gohKarteResStatDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), DrawProcess slot; raidou1 row matched by 3 paired functions; replaces SetConfigData
+0x00345D40	gohKarteResStatUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), UpdateProcess slot; raidou1 row matched by 3 paired functions; replaces GetConfigTab
+0x00345D78	gohKarteResConfirmInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), Init slot; raidou1 row matched by 5 paired functions; replaces InitMessage
+0x00345E00	gohKarteResConfirmDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces evtLeaf41
+0x00345E08	gohKarteResConfirmCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), CalcProcess slot; raidou1 row matched by 5 paired functions; replaces evtBChooseSelectionCompletionPopup
+0x00345ED0	gohKarteResConfirmDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces evtCallGetProcessData37
+0x00345F08	gohKarteResConfirmUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces evtCallGetProcessData38
+0x00345F50	gohKarteResResultInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), Init slot; raidou1 row matched by 5 paired functions; replaces ChangeMessage
+0x00345FE8	gohKarteResResultDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), Destroy slot; raidou1 row matched by 5 paired functions; replaces slLeaf12
+0x00345FF0	gohKarteResResultCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), CalcProcess slot; raidou1 row matched by 5 paired functions; replaces slCallGetProcessData16
+0x003460B0	gohKarteResResultDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), DrawProcess slot; raidou1 row matched by 5 paired functions; replaces slCallGetProcessData17
+0x003460E8	gohKarteResResultUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), UpdateProcess slot; raidou1 row matched by 5 paired functions; replaces slInfoMsgDraw
+0x00346130	gohKarteErrorInit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), Init slot; raidou1 row matched by 4 paired functions; replaces slCallGetProcessData
+0x003461E0	gohKarteErrorDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), Destroy slot; raidou1 row matched by 4 paired functions; replaces slLeaf13
+0x003461E8	gohKarteErrorCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), CalcProcess slot; raidou1 row matched by 4 paired functions; replaces mnuDispatchStaffMenuWithIdlePopup
+0x00346258	gohKarteErrorDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), DrawProcess slot; raidou1 row matched by 4 paired functions; replaces gohCallGetProcessData46
+0x003462A8	gohKarteErrorUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), UpdateProcess slot; raidou1 row matched by 4 paired functions; replaces gohCallGetProcessData47
 0x003462F0	gohSetModelScale	hd-inferred	hd: Raidou HD gohDirection.gohSetModelScale, score 8.95 band B
 0x00346350	gohModelLoad	hd-inferred	hd: Raidou HD gohDirection.gohModelLoad, score 10.3 band A
 0x00346650	gohModelFree	hd-inferred	hd: Raidou HD gohDirection.gohModelFree, score 9.3 band B

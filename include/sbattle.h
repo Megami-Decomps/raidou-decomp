@@ -83,7 +83,7 @@ extern SBTLDEBUG_WORK evtStageTestState;
 typedef s32 (*sbtlDebugModeFunc_t)(void);
 typedef s32 (*sbtlDebugHitEditorDrawFunc_t)(struct SBDEBUG_CSRWORK *wk, struct SBTLSKILLHIT_TBL *hwk, struct SBTLSKILLHIT_POSWORK *para, struct SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path);
 
-s32 gohCmbSelInit(dds3ProcessID_t *id);
+s32 gohKarteRootCalcProcessSub(dds3ProcessID_t *id);
 s32 MainProc(dds3ProcessID_t *id);
 s32 ModelSelectDraw(dds3ProcessID_t *id);
 s32 ModelSelectProc(dds3ProcessID_t *id);

@@ -814,6 +814,7 @@ INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelSelWinLineVertexIndex);
 u8 itfPanelPlainRectVertexIndex[8] = {0, 1, 2, 3, 0, 0, 0, 0};
 
 u8 itfPanelPlainRectColorIndex[8] = {0, 0, 1, 1, 0, 0, 0, 0};
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimTable);
 
@@ -830,4 +831,23 @@ INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelLeftFadeStripColorIndex);
 INCLUDE_SDATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimData3);
 
 INCLUDE_SDATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimData4);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimTable);
+
+INCLUDE_RODATA(const s32, "interface/itfPanel", itfCallMiscDrawSpritePrimTable);
+
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelPera1RectVertexIndex);
+
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelPera1RectColorIndex);
+
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelLeftFadeStripVertexIndex);
+
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelLeftFadeStripColorIndex);
+
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimData3);
+
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimData4);
+
+#endif

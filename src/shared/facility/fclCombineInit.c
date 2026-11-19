@@ -13,12 +13,14 @@
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", mapNakamaPosRotTable);
-
-INCLUDE_RODATA(const s32, "facility/fclCombineInit", mapNakamaSummonTaskTable);
 #else
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", fclModelDevilLbTable);
 #endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_RODATA(const s32, "facility/fclCombineInit", mapNakamaSummonTaskTable);
+
+#endif
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSummonTask);
 
 #ifdef VERSION_RAIDOU2

@@ -2236,7 +2236,23 @@ u32 itfReadEncodedCode(frFontCtx_t *args) {
     }
     return (second << 8) | first;
 }
+#else
+u32 itfReadEncodedCode(frFontCtx_t *stream) {
+    u32 first;
+    u32 second;
 
+    first = (stream->encodedText[stream->encodedTextOffset++] + ITF_BYTE_MASK) & ITF_BYTE_MASK;
+    second = stream->encodedText[stream->encodedTextOffset++];
+    if (second == ITF_BYTE_MASK) {
+        second = 0;
+    } else {
+        second = (second + ITF_BYTE_MASK) & ITF_BYTE_MASK;
+    }
+    return (second << 8) | first;
+}
+#endif
+
+#ifdef VERSION_RAIDOU1
 /* Run one 0xFx control tag; returns 1 when the message stops here. */
 s32 execTag_0(s32 code, frFontCtx_t *ctx) {
     s32 *position = &ctx->encodedTextOffset;
@@ -2436,7 +2452,6 @@ s32 execTag_0(s32 code, frFontCtx_t *ctx) {
     return 0;
 }
 
-#ifdef VERSION_RAIDOU1
 frFontHandle_t *frAnalyzeMessage(frFontCtx_t *ctx) {
     u8 encodedText[3];
     s32 code;
@@ -2495,113 +2510,6 @@ frFontHandle_t *frAnalyzeMessage(frFontCtx_t *ctx) {
     return ctx->glyphChain;
 }
 #else
-INCLUDE_ASM(const s32, "interface/frFont", frAnalyzeMessage);
-#endif
-
-frFontHandle_t *MessageRequest(s32 X, s32 Y, u8 *pMsg, frFontHandle_t *pFRQ) {
-    return MessageRequestEx2(X, Y, 0, 0, 0, 0, 0x80, pMsg, pFRQ);
-}
-
-frFontHandle_t *MessageRequestEx(s32 X, s32 Y, s32 Style, s32 ColNo, s32 Tp, s32 Spd, u8 *pMsg, frFontHandle_t *pFRQ) {
-    return MessageRequestEx2(X, Y, 0, Style & 0xFF, ColNo & 0xFF, Tp & 0xFF, Spd & 0xFF, pMsg, pFRQ);
-}
-
-frFontHandle_t *MessageRequestEx2(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32 Tp, s32 Spd, u8 *pMsg, frFontHandle_t *pFRQ) {
-    frFontCtx_t args;
-
-    args.x = X;
-    args.y = Y;
-    args.z = Z << 4;
-    args.fontIndex = Style;
-    args.firstOption = ColNo;
-    args.secondOption = Tp;
-    args.contextEncodedByte = Spd;
-    args.encodedText = pMsg;
-    args.glyphChain = pFRQ;
-    args.encodedTextOffset = 0;
-    args.pendingCreate = 1;
-    args.pendingPosition = 1;
-    return frAnalyzeMessage(&args);
-}
-
-frFontHandle_t *MessageRequestNS(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1, s32 channel2, s32 channel3, u8 *encodedText, frFontHandle_t *unusedPrevious) {
-    s8 savedSpacing = gMessageSpaceX;
-    frFontHandle_t *chain;
-
-    gMessageSpaceX = 0;
-    chain = MessageRequestEx2(x, y, depth, channel0 & 0xFF, channel1 & 0xFF, channel2 & 0xFF, channel3 & 0xFF, encodedText, NULL);
-
-    gMessageSpaceX = savedSpacing;
-    return chain;
-}
-
-frFontHandle_t *frCallMessageRequestEx2(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32 Tp, s32 Spd, u8 *pMsg,
-    frFontHandle_t *pFRQ, s32 Line) {
-    s8 savedSpacing = gMessageSpaceX;
-    frFontHandle_t *chain;
-
-    gMessageSpaceX = Line;
-    frData2 = Line;
-    chain = MessageRequestEx2(X, Y, Z, Style & 0xFF, ColNo & 0xFF, Tp & 0xFF, Spd & 0xFF, pMsg, NULL);
-    gMessageSpaceX = savedSpacing;
-    frData2 = savedSpacing;
-    return chain;
-}
-
-INCLUDE_ASM(const s32, "interface/frFont", frCallMessageRequestEx22);
-
-u32 frGetMessageResult(u32 Flag) {
-    return gMessageRequestResult & Flag;
-}
-
-/* Store an unchecked replacement-text address word in the font's indexed table. */
-void frSetVariableRequest(s32 VarNo, s32 pStr) {
-    gVarStr[VarNo] = pStr;
-}
-
-/* Return the unit identifier saved by text lip-sync control 0xF416. */
-u32 itfGetTextLipsUnitId(void) {
-    return itfTextLipsUnitId;
-}
-
-/* Return the motion number saved by text lip-sync control 0xF416. */
-u32 itfGetTextLipsMotionId(void) {
-    return itfTextLipsMotionId;
-}
-
-INCLUDE_ASM(const s32, "interface/frFont", frDumpFontTexture);
-u32 gMessageRequestResult = 0xFFFFFFFF;
-
-INCLUDE_SDATA(const s32, "interface/frFont", gMessageSpaceX);
-
-INCLUDE_SDATA(const s32, "interface/frFont", gMessageStepY);
-
-INCLUDE_SDATA(const s32, "interface/frFont", frData2);
-
-INCLUDE_SDATA(const s32, "interface/frFont", frData3);
-
-INCLUDE_SDATA(const s32, "interface/frFont", execData);
-
-INCLUDE_SDATA(const s32, "interface/frFont", execData2);
-
-INCLUDE_SDATA(const s32, "interface/frFont", gModeFlag);
-
-INCLUDE_SDATA(const s32, "interface/frFont", gFontDrawOT);
-#else
-u32 itfReadEncodedCode(frFontCtx_t *stream) {
-    u32 first;
-    u32 second;
-
-    first = (stream->encodedText[stream->encodedTextOffset++] + ITF_BYTE_MASK) & ITF_BYTE_MASK;
-    second = stream->encodedText[stream->encodedTextOffset++];
-    if (second == ITF_BYTE_MASK) {
-        second = 0;
-    } else {
-        second = (second + ITF_BYTE_MASK) & ITF_BYTE_MASK;
-    }
-    return (second << 8) | first;
-}
-
 INCLUDE_ASM(const s32, "interface/frFont", execTag_0);
 
 /* NON_MATCHING: 56 of 142 words match. branch layout around the code < 0x80 test. */
@@ -2673,6 +2581,7 @@ frFontHandle_t *frAnalyzeMessage(frFontCtx_t *ctx) {
 #else
 INCLUDE_ASM(const s32, "interface/frFont", frAnalyzeMessage);
 #endif
+#endif
 
 frFontHandle_t *MessageRequest(s32 X, s32 Y, u8 *pMsg, frFontHandle_t *pFRQ) {
     return MessageRequestEx2(X, Y, 0, 0, 0, 0, 0x80, pMsg, pFRQ);
@@ -2711,7 +2620,22 @@ frFontHandle_t *MessageRequestNS(s32 x, s32 y, s32 depth, s32 channel0, s32 chan
     return chain;
 }
 
+#ifdef VERSION_RAIDOU1
+frFontHandle_t *frCallMessageRequestEx2(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32 Tp, s32 Spd, u8 *pMsg,
+    frFontHandle_t *pFRQ, s32 Line) {
+    s8 savedSpacing = gMessageSpaceX;
+    frFontHandle_t *chain;
+
+    gMessageSpaceX = Line;
+    frData2 = Line;
+    chain = MessageRequestEx2(X, Y, Z, Style & 0xFF, ColNo & 0xFF, Tp & 0xFF, Spd & 0xFF, pMsg, NULL);
+    gMessageSpaceX = savedSpacing;
+    frData2 = savedSpacing;
+    return chain;
+}
+#else
 INCLUDE_ASM(const s32, "interface/frFont", frCallMessageRequestEx2);
+#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", frCallMessageRequestEx22);
 
@@ -2752,15 +2676,12 @@ INCLUDE_SDATA(const s32, "interface/frFont", execData2);
 INCLUDE_SDATA(const s32, "interface/frFont", gModeFlag);
 
 INCLUDE_SDATA(const s32, "interface/frFont", gFontDrawOT);
-#endif
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "interface/frFont", frSetFontString_style);
-#else
+#ifdef VERSION_RAIDOU2
 INCLUDE_SDATA(const s32, "interface/frFont", ButtonLineHelpAddTextSetData);
 
-INCLUDE_SDATA(const s32, "interface/frFont", frSetFontString_style);
 #endif
+INCLUDE_SDATA(const s32, "interface/frFont", frSetFontString_style);
 
 INCLUDE_SDATA(const s32, "interface/frFont", frFontAppendIndexedTextToGlyphChainData);
 

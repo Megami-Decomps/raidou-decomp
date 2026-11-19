@@ -9,25 +9,25 @@
 #include "newdata.h"
 #include "itf.h"
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData5);
+INCLUDE_ASM(const s32, "gohMain", gohCmb2CalcProcess);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData6);
+INCLUDE_ASM(const s32, "gohMain", gohCmb2DrawProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData24(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohCmb2UpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "gohMain", gohCallEndMessageEx);
+INCLUDE_ASM(const s32, "gohMain", gohSwordInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallCallDrawBack2);
+INCLUDE_ASM(const s32, "gohMain", gohSwordDestroy);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData7);
+INCLUDE_ASM(const s32, "gohMain", gohSwordCalcProcess);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData8);
+INCLUDE_ASM(const s32, "gohMain", gohSwordDrawProcess);
 
-dds3ProcessFunc_t gohSwordTreeUpdateProcess(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohSwordUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
@@ -41,19 +41,19 @@ s32 gohStatInit(dds3ProcessID_t *PID)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "gohMain", gohCmbSearchiCalcProcess);
+INCLUDE_ASM(const s32, "gohMain", gohStatDestroy);
 
 INCLUDE_ASM(const s32, "gohMain", fldFastTravelSetup);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData9);
+INCLUDE_ASM(const s32, "gohMain", gohStatCalcProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData25(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohStatDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohCallGetProcessData26(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohStatUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
@@ -61,19 +61,19 @@ dds3ProcessFunc_t gohCallGetProcessData26(dds3ProcessID_t *PID) {
 
 INCLUDE_ASM(const s32, "gohMain", gohLeaf25);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData10);
+INCLUDE_ASM(const s32, "gohMain", gohConfirmInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf26);
+INCLUDE_ASM(const s32, "gohMain", gohConfirmDestroy);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData11);
+INCLUDE_ASM(const s32, "gohMain", gohConfirmCalcProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData27(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohConfirmDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohCallGetProcessData28(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohConfirmUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     fclUpdateMessage();
@@ -84,11 +84,11 @@ INCLUDE_ASM(const s32, "gohMain", gohCyuuseiStartDirection);
 
 INCLUDE_ASM(const s32, "gohMain", gohCallStrongSwordFlag);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData12);
+INCLUDE_ASM(const s32, "gohMain", gohCyuuseiInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf27);
+INCLUDE_ASM(const s32, "gohMain", gohCyuuseiDestroy);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData13);
+INCLUDE_ASM(const s32, "gohMain", gohCyuuseiCalcProcess);
 
 dds3ProcessFunc_t gohCyuuseiDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
@@ -96,16 +96,16 @@ dds3ProcessFunc_t gohCyuuseiDrawProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohAccidentCalcProcess(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohCyuuseiUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     fclUpdateMessage();
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "gohMain", TestProcess2);
+INCLUDE_ASM(const s32, "gohMain", gohRecoverInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallCallDrawBack3);
+INCLUDE_ASM(const s32, "gohMain", gohRecoverDestroy);
 
 INCLUDE_ASM(const s32, "gohMain", scrLogStart);
 
@@ -125,14 +125,14 @@ INCLUDE_ASM(const s32, "gohMain", gohTalkDestroy);
 
 INCLUDE_ASM(const s32, "gohMain", gohTalkCalcProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData29(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohTalkDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     gohModel(work);
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohCallGetProcessData30(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohTalkUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
@@ -140,9 +140,9 @@ dds3ProcessFunc_t gohCallGetProcessData30(dds3ProcessID_t *PID) {
 
 INCLUDE_ASM(const s32, "gohMain", gohMiscInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf28);
+INCLUDE_ASM(const s32, "gohMain", gohMiscDestroy);
 
-s32 gohCallGetProcessData31(dds3ProcessID_t *PID)
+s32 gohMiscCalcProcess(dds3ProcessID_t *PID)
 {
     jmsSeqWork_t *work = dds3GetProcessData(PID);
     s32 result = EE_ADDR_S(menuRunPanel(&work->panel, &work->seqUnit, 0, PID));
@@ -156,48 +156,48 @@ s32 gohCallGetProcessData31(dds3ProcessID_t *PID)
     return result;
 }
 
-dds3ProcessFunc_t gohCallGetProcessData32(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohMiscDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     gohModel(work);
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohCallGetProcessData33(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohMiscUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData34);
+INCLUDE_ASM(const s32, "gohMain", gohSinanInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf29);
+INCLUDE_ASM(const s32, "gohMain", gohSinanDestroy);
 
 INCLUDE_ASM(const s32, "gohMain", gohSinanCalcProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData35(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohSinanDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     gohModel(work);
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohCallGetProcessData36(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohSinanUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     fclUpdateMessage();
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData37);
+INCLUDE_ASM(const s32, "gohMain", gohErrorInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf30);
+INCLUDE_ASM(const s32, "gohMain", gohErrorDestroy);
 
-INCLUDE_ASM(const s32, "gohMain", gohSearchiErrorCalcProcess);
+INCLUDE_ASM(const s32, "gohMain", gohErrorCalcProcess);
 
-INCLUDE_ASM(const s32, "gohMain", evtRefreshDispatchStart);
+INCLUDE_ASM(const s32, "gohMain", gohErrorDrawProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData38(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohErrorUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     fclUpdateMessage();
@@ -234,11 +234,11 @@ INCLUDE_ASM(const s32, "gohMain", gohCallMemset2);
 
 INCLUDE_ASM(const s32, "gohMain", gohCallBitCheck2);
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf);
+INCLUDE_ASM(const s32, "gohMain", gohSword2Destroy);
 
 INCLUDE_ASM(const s32, "gohMain", gohCallGetRandA);
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf2);
+INCLUDE_ASM(const s32, "gohMain", gohCombCntDestroy);
 
 INCLUDE_ASM(const s32, "gohMain", gohLeaf3);
 
@@ -396,36 +396,36 @@ INCLUDE_ASM(const s32, "gohMain", gohCallSetDrawBack);
 
 INCLUDE_ASM(const s32, "gohMain", gohCallSetDrawBack2);
 
-INCLUDE_ASM(const s32, "gohMain", gohCmbSelInit);
+INCLUDE_ASM(const s32, "gohMain", gohKarteRootCalcProcessSub);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData39);
+INCLUDE_ASM(const s32, "gohMain", gohKarteRootInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohCmbSelDestroy);
+INCLUDE_ASM(const s32, "gohMain", gohKarteRootDestroy);
 
-INCLUDE_ASM(const s32, "gohMain", gohCmbSelCalcProcess);
+INCLUDE_ASM(const s32, "gohMain", gohKarteRootCalcProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData40(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohKarteRootDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     gohModel(work);
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohCallGetProcessData41(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohKarteRootUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "gohMain", gohCallEndMessage);
+INCLUDE_ASM(const s32, "gohMain", gohKarteRegInit);
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf32);
+INCLUDE_ASM(const s32, "gohMain", gohKarteRegDestroy);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData42);
+INCLUDE_ASM(const s32, "gohMain", gohKarteRegCalcProcess);
 
-INCLUDE_ASM(const s32, "gohMain", gohCallGetProcessData43);
+INCLUDE_ASM(const s32, "gohMain", gohKarteRegDrawProcess);
 
-dds3ProcessFunc_t gohCallGetProcessData44(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohKarteRegUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     gohCallChkCommonInput(work->unkCC);

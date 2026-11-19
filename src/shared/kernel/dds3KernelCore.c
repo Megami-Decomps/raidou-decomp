@@ -911,6 +911,12 @@ u32 runninglistcnt = 0;
 INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", runprocess);
 
 char dds3DebugBlockEnd[8] = "\n\n";
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", dds3DebugTreeLineFmt);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", dds3DebugTreeLineFmt);
+
+#endif

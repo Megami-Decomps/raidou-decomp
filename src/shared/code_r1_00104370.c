@@ -620,6 +620,7 @@ void dds3InitDrawEnvSub(s32 i)
 #else
 INCLUDE_ASM(const s32, "code_r1_00104370", dds3InitDrawEnvSub);
 #endif
+#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DebugGraphUpdateData);
 
 INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DebugGraphUpdateData2);
@@ -650,6 +651,39 @@ INCLUDE_SDATA(const s32, "code_r1_00104370", dds3Func13Data2);
 
 INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureViewerFrameData);
 
+#endif
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DebugGraphUpdateData);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DebugGraphUpdateData2);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DebugGraphUpdateData3);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3Func13Data);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureResourceDetailsDataEntry);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureResourceDetailsDataEntry2);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureResourceDetailsDataEntry3);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureResourceDetailsDataEntry4);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureResourceDetailsDataEntry5);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureResourceDetailsDataEntry6);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureResourceDetailsDataEntry7);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureResourceDetailsDataEntry8);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3Data27);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3Func13Data2);
+
+INCLUDE_SDATA(const s32, "code_r1_00104370", dds3DrawTextureViewerFrameData);
+
+#endif
 #ifdef VERSION_RAIDOU2
 INCLUDE_SDATA(const s32, "code_r1_00104370", dds3Data48);
 

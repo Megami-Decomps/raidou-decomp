@@ -815,6 +815,7 @@ INCLUDE_SDATA(const s32, "model/mdlEffect", mdlColorLabelR);
 char mdlColorByteFormat[8] = "%02X";
 
 char mdlPibCursorMark[8] = ">";
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFaceDiv);
 
@@ -869,4 +870,61 @@ INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry10);
 INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry11);
 
 INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry12);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFaceDiv);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrEffectMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrOptionMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrTextureMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrArrangeMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFaceDivEdit);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrCaptureMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFogEdit);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrLightEdit);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrMotionMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrObjectMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrCameraMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrModelMode);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFaceDivParamEdit);
+
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrModel03);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry2);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry3);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry4);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry5);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry6);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry7);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry8);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry9);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry10);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry11);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry12);
+
+#endif

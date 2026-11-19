@@ -348,6 +348,7 @@ void sdfPadInitManager(void) {
 INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", sdfPadPortSlotPairs);
 
 u8 sdfPadManagerMode = 0;
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", sdfPadButtons);
 
@@ -356,4 +357,15 @@ INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", sdfPadAnalogSticks);
 INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", dds3RunProcessListData2);
 
 INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", sbtlData128);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", sdfPadButtons);
+
+INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", sdfPadAnalogSticks);
+
+INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", dds3RunProcessListData2);
+
+INCLUDE_SDATA(const s32, "sdf/sdf_PadManager", sbtlData128);
+
+#endif

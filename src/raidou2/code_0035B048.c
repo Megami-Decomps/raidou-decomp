@@ -195,7 +195,7 @@ s32 TitleFirstDrawProcess(dds3ProcessID_t *PID) {
     return ret;
 }
 
-s32 TitleCesaInit(dds3ProcessID_t *PID) {
+s32 TitleAtlusLogoInit(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
 
     data->WaitTimer = 0;
@@ -203,7 +203,7 @@ s32 TitleCesaInit(dds3ProcessID_t *PID) {
     return 1;
 }
 
-s32 evtLeaf32(void)
+s32 TitleAtlusLogoDestroy(void)
 {
     return 1;
 }
@@ -256,7 +256,7 @@ s32 TitleAtlusLogoDrawProcess(dds3ProcessID_t *PID) {
     return ret;
 }
 
-s32 evtCallGetProcessData31(dds3ProcessID_t *PID) {
+s32 TitleSforceLogoInit(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
 
     data->WaitTimer = 0;
@@ -264,14 +264,14 @@ s32 evtCallGetProcessData31(dds3ProcessID_t *PID) {
     return 1;
 }
 
-s32 evtLeaf33(void)
+s32 TitleSforceLogoDestroy(void)
 {
     return 1;
 }
 
 extern jmsSeqUnit_t evtBStartSelectionChainAfterFadeData;
 
-s32 evtBStartSelectionChainAfterFade(dds3ProcessID_t *PID) {
+s32 TitleSforceLogoCalcProcess(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
     s32 ret;
     s32 skip;
@@ -303,7 +303,7 @@ s32 evtBStartSelectionChainAfterFade(dds3ProcessID_t *PID) {
     return 0;
 }
 
-s32 evtCallGetProcessData32(dds3ProcessID_t *PID) {
+s32 TitleSforceLogoDrawProcess(dds3ProcessID_t *PID) {
     titleData_t *data = dds3GetProcessData(PID);
     s32 ret;
 

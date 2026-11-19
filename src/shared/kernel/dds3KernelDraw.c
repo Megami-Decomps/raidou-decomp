@@ -2494,6 +2494,7 @@ u16 dds3QuakeFlag = 0;
 s16 dds3QuakeFrame = 0;
 
 u16 dds3QuakeXRange = 0;
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3QuakeYRange);
 
@@ -2505,10 +2506,6 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data28);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data29);
 
-#ifdef VERSION_RAIDOU2
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", fadetype);
-
-#endif
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data30);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data31);
@@ -2522,6 +2519,35 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data32);
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3DrawBistaData2);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data33);
+#endif
+#ifdef VERSION_RAIDOU2
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3QuakeYRange);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", Zoom);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", fadergba);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data28);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data29);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", fadetype);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data30);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data31);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3DrawBistaData);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3ChangeBistaModeData);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data32);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3DrawBistaData2);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data33);
+#endif
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3DrawBistaData3);

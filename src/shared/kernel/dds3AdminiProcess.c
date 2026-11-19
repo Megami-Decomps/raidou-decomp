@@ -653,16 +653,6 @@ dds3AdminiList_t dds3AdminiList[44] = {
 char dds3AdminiProcessName[8] = "Admini";
 
 s32 fclEncycHead = -1;
-
-INCLUDE_RODATA(const s32, "kernel/dds3AdminiProcess", dds3DebugOwnerProcessName);
-
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", fclEncycTail);
-
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", fclEncycCount);
-
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", fclEncycFree);
-
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", dds3PadInitDone);
 #else
 dds3AdminiList_t dds3AdminiList[42] = {
     { CallDebug, ExitDebug, CheckDebug },
@@ -712,6 +702,7 @@ dds3AdminiList_t dds3AdminiList[42] = {
 char dds3AdminiProcessName[8] = "Admini";
 
 s32 fclEncycHead = -1;
+#endif
 
 INCLUDE_RODATA(const s32, "kernel/dds3AdminiProcess", dds3DebugOwnerProcessName);
 
@@ -722,5 +713,4 @@ INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", fclEncycCount);
 INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", fclEncycFree);
 
 INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", dds3PadInitDone);
-#endif
 

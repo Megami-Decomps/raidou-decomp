@@ -1237,16 +1237,26 @@ INCLUDE_SDATA(const s32, "field/fldDraw", fldDrawInitDone);
 void *fldDrwZBuf = 0;
 
 SDATA_PAD(4);
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtDec);
 
-#ifdef VERSION_RAIDOU2
-INCLUDE_SDATA(const s32, "field/fldDraw", fldObjTaskSubData);
-
-#endif
 INCLUDE_SDATA(const s32, "field/fldDraw", nbData4);
 
 INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtHex);
 
 INCLUDE_SDATA(const s32, "field/fldDraw", fldDrawEnv);
+#endif
+#ifdef VERSION_RAIDOU2
+
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtDec);
+
+INCLUDE_SDATA(const s32, "field/fldDraw", fldObjTaskSubData);
+
+INCLUDE_SDATA(const s32, "field/fldDraw", nbData4);
+
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtHex);
+
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDrawEnv);
+#endif
 

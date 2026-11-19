@@ -1969,6 +1969,7 @@ void mapTitleEnd(void) {
         }
     }
 }
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrModelViewer);
 
@@ -2017,4 +2018,55 @@ INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDebugLabelLight2);
 INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDebugLabelLight1);
 
 INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDebugLabelLight0);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrModelViewer);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrModelViewerEnd);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlDebugLabelAmbient);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", softenBiasTitle);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDrawViewerIndexedLabelOverlayDataEntry);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDrawViewerIndexedLabelOverlayDataEntry2);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDrawViewerMotionTimelineData);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDrawViewerTexturePreviewData);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDrawViewerSettingsData4);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDrawViewerSettingsData5);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDrawViewerSettingsData6);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlData16);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDrawViewerEffectRecordListData);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlSubmitViewerResourceDrawPacketData4);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlInitializeViewerTasksAndResourcesData3);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlLoadViewerConfigData);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlLoadViewerConfigData2);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", pbDebugFloatFormat);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlLoadViewerConfigData3);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlLoadViewerConfigData4);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlLoadViewerConfigData5);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDebugLabelLight2);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDebugLabelLight1);
+
+INCLUDE_SDATA(const s32, "code_r1_0019D3A8", mdlDebugLabelLight0);
+
+#endif

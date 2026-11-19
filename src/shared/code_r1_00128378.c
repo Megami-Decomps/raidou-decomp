@@ -671,6 +671,35 @@ void mapCutFileLoad(void) {
     playerBasic = NULL;
     cameraBasic = NULL;
 }
+
+void mapSetSceneParam(fldSceneParam_t *param, s32 field, s32 floor, s32 point) {
+    param->flag = 0;
+    param->loadField = field;
+    param->loadFloor = floor;
+    param->loadPoint = point;
+    param->loadMode = 0;
+    memset(param->FoceScript, 0, 0x10);
+    fldRefTexLoadLast();
+    fldGlobalBase.cutIdx = 0;
+    fldGlobalBase.cutIdxPrev = 0;
+    fldGlobalBase.cutState = 0;
+    fldGlobalBase.playerSeTable = 0;
+    fldGlobalBase.hitMatterIndex = 0;
+    fldGlobalBase.focusX = 0.0f;
+    fldGlobalBase.focusY = 0.0f;
+    fldGlobalBase.focusZ = 0.0f;
+}
+
+INCLUDE_ASM(const s32, "code_r1_00128378", mapSetSceneParam_BattleReturn);
+
+void fldElvReset(fldSceneParam_t *param, s32 field) {
+    param->flag = 0;
+    param->loadField = field;
+    param->loadFloor = -1;
+    param->loadPoint = -1;
+    param->loadMode = 0;
+    fldRefTexLoadLast();
+}
 #else
 INCLUDE_ASM(const s32, "code_r1_00128378", fldReturnSavePointPositionRestore);
 
@@ -724,27 +753,7 @@ void mapCutFileLoad(void) {
     playerBasic = NULL;
     cameraBasic = NULL;
 }
-#endif
 
-#ifdef VERSION_RAIDOU1
-void mapSetSceneParam(fldSceneParam_t *param, s32 field, s32 floor, s32 point) {
-    param->flag = 0;
-    param->loadField = field;
-    param->loadFloor = floor;
-    param->loadPoint = point;
-    param->loadMode = 0;
-    memset(param->FoceScript, 0, 0x10);
-    fldRefTexLoadLast();
-    fldGlobalBase.cutIdx = 0;
-    fldGlobalBase.cutIdxPrev = 0;
-    fldGlobalBase.cutState = 0;
-    fldGlobalBase.playerSeTable = 0;
-    fldGlobalBase.hitMatterIndex = 0;
-    fldGlobalBase.focusX = 0.0f;
-    fldGlobalBase.focusY = 0.0f;
-    fldGlobalBase.focusZ = 0.0f;
-}
-#else
 void mapSetSceneParam(fldSceneParam_t *param, s32 field, s32 floor, s32 point) {
     param->FoceScript[0] = Process_WarpIdx[0];
     param->loadField = field;
@@ -762,7 +771,6 @@ void mapSetSceneParam(fldSceneParam_t *param, s32 field, s32 floor, s32 point) {
     fldGlobalBase.focusY = 0.0f;
     fldGlobalBase.focusZ = 0.0f;
 }
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_00128378", mapSetSceneParam_BattleReturn);
 
@@ -774,6 +782,7 @@ void fldElvReset(fldSceneParam_t *param, s32 field) {
     param->loadMode = 0;
     fldRefTexLoadLast();
 }
+#endif
 
 #ifdef VERSION_RAIDOU1
 void fldReadyScene(void) {
@@ -851,29 +860,6 @@ s32 PlayerGetMdlLoadID(char *path) {
     }
     return type;
 }
-#else
-s32 PlayerGetMdlLoadID(char *path) {
-    s32 type = 0;
-
-    if (tipsProcessCheck()) {
-        fldGlobalBase.wordE0 = 1;
-        type = 8;
-    } else {
-        fldGlobalBase.wordE0 = 0;
-    }
-    if (path != NULL) {
-        switch (type) {
-        case 0:
-            sprintf(path, fldStrModelField000Lb);
-            break;
-        case 8:
-            sprintf(path, fldStrModelFieldNakedLb2);
-            break;
-        }
-    }
-    return type;
-}
-#endif
 
 void fldPlayerALoad(void) {
     char path[32];
@@ -928,6 +914,83 @@ void fldPlayerAFree(void) {
         fldPlayerAnimData = NULL;
     }
 }
+#else
+s32 PlayerGetMdlLoadID(char *path) {
+    s32 type = 0;
+
+    if (tipsProcessCheck()) {
+        fldGlobalBase.wordE0 = 1;
+        type = 8;
+    } else {
+        fldGlobalBase.wordE0 = 0;
+    }
+    if (path != NULL) {
+        switch (type) {
+        case 0:
+            sprintf(path, fldStrModelField000Lb);
+            break;
+        case 8:
+            sprintf(path, fldStrModelFieldNakedLb2);
+            break;
+        }
+    }
+    return type;
+}
+
+void fldPlayerALoad(void) {
+    char path[32];
+
+    if (fldPlayerAnimData == NULL) {
+        PlayerGetMdlLoadID(path);
+        fldPlayerAnimData = sdfDevLoadFileEx(path, (u32 *)&gfldPlayerPtr, &gfldPlayerSizeBk);
+    }
+}
+
+s32 fldPlayerALoad_OnDataCheck(void) {
+    return fldPlayerAnimData != NULL;
+}
+
+void fldPlayerALoadStart(void) {
+    char path[32];
+
+    if (fldPlayerAnimData == NULL) {
+        fldPlayerAnimData = NULL;
+        PlayerGetMdlLoadID(path);
+        gMapCash_pacHandle = pacLoad(path);
+    }
+}
+
+s32 fldPlayerALoadEndCheck(void) {
+    sdfPacDecodeResrc_t *resrc;
+    s32 n = 0;
+
+    if (fldPlayerAnimData != NULL) {
+        return 1;
+    }
+    if (pacCheckEnd(gMapCash_pacHandle) == 0) {
+        return 0;
+    }
+    for (resrc = gMapCash_pacHandle->pac.resrcHead; resrc != NULL; resrc = resrc->next, n++) {
+        if (n == 0) {
+            fldPlayerAnimData = resrc->resrc;
+            gfldPlayerPtr = resrc->data;
+            gfldPlayerSizeBk = sdfMemGetSize(fldPlayerAnimData);
+        }
+        else {
+            sdfMemFreeDirect(resrc->resrc);
+        }
+    }
+    pacFileHandleFree_(gMapCash_pacHandle);
+    return 1;
+}
+
+void fldPlayerAFree(void) {
+    if (fldPlayerAnimData != NULL) {
+        sdfMemFreeDirect(fldPlayerAnimData);
+        fldPlayerAnimData = NULL;
+    }
+}
+#endif
 
 #ifdef VERSION_RAIDOU1
 void fldJDataLoad(void) {
@@ -966,13 +1029,13 @@ void fldCallMemFreeDelayedDirect2(void) {
     }
     fldNakamaCashLoad_EndCheckData = 0;
 }
-
 #ifdef VERSION_RAIDOU2
+
 INCLUDE_RODATA(const s32, "code_r1_00128378", fldStrModelField000Lb);
 
 INCLUDE_RODATA(const s32, "code_r1_00128378", fldStrModelFieldNakedLb2);
-
 #endif
+
 INCLUDE_ASM(const s32, "code_r1_00128378", fldNakamaCashLoad_Start);
 
 INCLUDE_ASM(const s32, "code_r1_00128378", fldNakamaCashLoad_Resrc);
@@ -1042,23 +1105,6 @@ void fldAllShutDown(void) {
     evtFreeStage();
     fldProcShutDown();
 }
-#else
-s32 fldLoadMapResourceSub2(void)
-{
-    return mapCallLoadCheckMidi() != 0;
-}
-
-INCLUDE_ASM(const s32, "code_r1_00128378", fldCallCtnFree);
-
-void fldAllShutDown(void)
-{
-    fldCallCtnFree();
-    evtFreeStage();
-    fldProcShutDown();
-    nbFreeDeadMoonTex();
-    nbFunc2();
-}
-#endif
 
 void fldRegistUnitPad(void) {
     if (playerBasic != NULL) {
@@ -1079,6 +1125,44 @@ void fldReleaseUnitPad(void) {
     }
     fldReleaseUnitPadData[0] = 4;
 }
+#else
+s32 fldLoadMapResourceSub2(void)
+{
+    return mapCallLoadCheckMidi() != 0;
+}
+
+INCLUDE_ASM(const s32, "code_r1_00128378", fldCallCtnFree);
+
+void fldAllShutDown(void)
+{
+    fldCallCtnFree();
+    evtFreeStage();
+    fldProcShutDown();
+    nbFreeDeadMoonTex();
+    nbFunc2();
+}
+
+void fldRegistUnitPad(void) {
+    if (playerBasic != NULL) {
+        fldEncountSetFlag(0x40);
+        dds3ObjectBaseSetPrimaryControl(playerBasic, fldLeaf6);
+    }
+    fldGlobalBase.noEncountCnt = 4;
+    fldGlobalBase.noInpPlCnt = 4;
+    fldGlobalBase.ifDrawOn = 1;
+    mapWaitCbScreenFadeBSub(0);
+    fldGlobalBase.aiboRunStop = 0;
+}
+
+void fldReleaseUnitPad(void) {
+    if (fldPlayerObject != 0) {
+        fldEncountClearFlag(0x40);
+        dds3ObjectBaseSetPrimaryControl(fldPlayerObject, 0);
+    }
+    fldReleaseUnitPadData[0] = 4;
+}
+#endif
+#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "code_r1_00128378", playerModel);
 
 INCLUDE_SDATA(const s32, "code_r1_00128378", raidoBasic);
@@ -1097,15 +1181,7 @@ INCLUDE_SDATA(const s32, "code_r1_00128378", cameraBasic);
 
 INCLUDE_SDATA(const s32, "code_r1_00128378", fldData9);
 
-#ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "code_r1_00128378", mapSetSceneParam_BattleReturnData);
-#else
-INCLUDE_SDATA(const s32, "code_r1_00128378", fldReturnSavePointPositionRestoreData);
-
-INCLUDE_SDATA(const s32, "code_r1_00128378", nbData21);
-
-INCLUDE_SDATA(const s32, "code_r1_00128378", Process_WarpIdx);
-#endif
 
 INCLUDE_SDATA(const s32, "code_r1_00128378", fldPlayerAnimData);
 
@@ -1139,3 +1215,62 @@ INCLUDE_SDATA(const s32, "code_r1_00128378", fldAiboCashLoad_ResrcData);
 
 INCLUDE_SDATA(const s32, "code_r1_00128378", fldData13);
 
+#endif
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "code_r1_00128378", playerModel);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", raidoBasic);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", raidoModel);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", aiboBasic);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", aiboModel);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", summonDvBasic);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", summonDvModel);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", cameraBasic);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldData9);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldReturnSavePointPositionRestoreData);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", nbData21);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", Process_WarpIdx);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldPlayerAnimData);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", effQueuedResourceNameRecord3);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", gfldPlayerPtr);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldJDataLoadData2);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", gfldPlayerSizeBk);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", gMapCash_pacHandle);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldData11);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", nbResultFreeTexturesData);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", nbResultFreeTexturesData2);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldNakamaCashLoad_ResrcData);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldNakamaCashLoad_EndCheckData);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldData12);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldCallPackDecodeData);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldCallPackDecodeData2);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldAiboCashLoad_ResrcData);
+
+INCLUDE_SDATA(const s32, "code_r1_00128378", fldData13);
+
+#endif

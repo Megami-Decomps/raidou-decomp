@@ -1282,13 +1282,7 @@ u32 evtCallGetIntPara8(void) {
     dds3UnitObjectBasicKubiOn(basic, target->serialID);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara8);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara9);
-#endif
-
-#ifdef VERSION_RAIDOU1
 u32 evtCallGetIntPara9(void) {
     evtUnit_t *h;
     dds3Basic_t *basic;
@@ -1336,29 +1330,12 @@ u32 evtCallGetIntPara9(void) {
     dds3UnitObjectBasicKubiOff(basic);
     return 1;
 }
-
-u32 evtCommand_MODEL_ON(void)
-{
-    evtUnit_t *h;
-
-    h = evtGetUnitHandle(scrGetIntPara(0));
-    if (h != NULL) {
-        h->owner->flags &= ~1;
-    }
-    return 1;
-}
-
-u32 evtCommand_MODEL_OFF(void)
-{
-    evtUnit_t *h;
-
-    h = evtGetUnitHandle(scrGetIntPara(0));
-    if (h != NULL) {
-        h->owner->flags |= 1;
-    }
-    return 1;
-}
 #else
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara8);
+
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara9);
+#endif
+
 u32 evtCommand_MODEL_ON(void)
 {
     evtUnit_t *h;
@@ -1380,7 +1357,6 @@ u32 evtCommand_MODEL_OFF(void)
     }
     return 1;
 }
-#endif
 
 u32 evtCommand_MODEL_LIGHT_ON(void) {
     s32 worldObjectKey;
@@ -1758,26 +1734,6 @@ u32 evtCallMemset(void) {
     evtCallMemsetData = NULL;
     return 1;
 }
-
-u32 evtCommand_EFFMG1_LOAD(void)
-{
-    dds3Basic_t *basic;
-
-    basic = dds3AddMG12EffectObjectBasic(1, scrGetStrPara(0));
-    if (basic == NULL) {
-        printf(evtMsgEffmg1LoadHint);
-        printf(evtMsgNameNotFound, scrGetStrPara(0));
-        scrSetIntReturnValue(0);
-    } else {
-        dds3EffectObjectBasicStatOn(basic, 1);
-        scrSetIntReturnValue(basic->serialID);
-    }
-    return 1;
-}
-
-INCLUDE_RODATA(const s32, "event/evtCommand", evtStrEffeplLoad);
-
-const char evtMsgEffmg1LoadHint[48] = "\xa5\xb9\xa5\xaf\xa5\xea\xa5\xd7\xa5\xc8\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\x45\x46\x46\x4d\x47\x31\x5f\x4c\x4f\x41\x44\x28\x29\xa4\xc7\xc2\xd0\xbe\xdd\xa5\xd5\xa5\xa1\xa5\xa4\xa5\xeb\x0a";
 #else
 u32 evtCallMemset2(void) {
     sdfVector4_t position;
@@ -1809,7 +1765,29 @@ u32 evtCallMemset2(void) {
     evtCallMemsetData = NULL;
     return 1;
 }
+#endif
 
+#ifdef VERSION_RAIDOU1
+u32 evtCommand_EFFMG1_LOAD(void)
+{
+    dds3Basic_t *basic;
+
+    basic = dds3AddMG12EffectObjectBasic(1, scrGetStrPara(0));
+    if (basic == NULL) {
+        printf(evtMsgEffmg1LoadHint);
+        printf(evtMsgNameNotFound, scrGetStrPara(0));
+        scrSetIntReturnValue(0);
+    } else {
+        dds3EffectObjectBasicStatOn(basic, 1);
+        scrSetIntReturnValue(basic->serialID);
+    }
+    return 1;
+}
+
+INCLUDE_RODATA(const s32, "event/evtCommand", evtStrEffeplLoad);
+
+const char evtMsgEffmg1LoadHint[48] = "\xa5\xb9\xa5\xaf\xa5\xea\xa5\xd7\xa5\xc8\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\x45\x46\x46\x4d\x47\x31\x5f\x4c\x4f\x41\x44\x28\x29\xa4\xc7\xc2\xd0\xbe\xdd\xa5\xd5\xa5\xa1\xa5\xa4\xa5\xeb\x0a";
+#else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG1_LOAD);
 #endif
 
@@ -2172,9 +2150,6 @@ s32 evtCommand_EFFECT_PATH_WAIT(void)
     }
 }
 
-#ifdef VERSION_RAIDOU1
-u32 evtCommand_SEARCH_ID(void)
-#else
 u32 evtCommand_SEARCH_ID(void)
 {
     void *scene;
@@ -2183,38 +2158,25 @@ u32 evtCommand_SEARCH_ID(void)
     scene = dds3GetControlScene();
     basic = dds3SceneBasicSearchName(scene, scrGetStrPara(0));
     if (basic == NULL) {
-        datDebugPrintf(evtMsgIdNotFoundWarn, scrGetStrPara(0));
-        scrSetIntReturnValue(0);
-    } else {
-        scrSetIntReturnValue(basic->serialID);
-    }
-    return 1;
-}
-
-s32 evtCommand_RTRN_TITLE(void)
-#endif
-{
 #ifdef VERSION_RAIDOU1
-    void *scene;
-    dds3Basic_t *basic;
-
-    scene = dds3GetControlScene();
-    basic = dds3SceneBasicSearchName(scene, scrGetStrPara(0));
-    if (basic == NULL) {
         printf(evtMsgIdNotFound, scrGetStrPara(0));
+#endif
         datDebugPrintf(evtMsgIdNotFoundWarn, scrGetStrPara(0));
         scrSetIntReturnValue(0);
     } else {
         scrSetIntReturnValue(basic->serialID);
     }
-#else
-    dds3AdminiCallSequence(2, 0, 0, 0);
-#endif
     return 1;
 }
-#ifdef VERSION_RAIDOU1
 
+#ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_RTRN_TITLE);
+#else
+s32 evtCommand_RTRN_TITLE(void)
+{
+    dds3AdminiCallSequence(2, 0, 0, 0);
+    return 1;
+}
 #endif
 
 s32 evtCommand_CALL_STAFF(void)
@@ -2393,17 +2355,17 @@ s32 evtCallGetIntPara10(void)
 }
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_FIELD2);
-#ifdef VERSION_RAIDOU2
 
+#ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_FIELD3);
-#endif
 
+#endif
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallBgTexClear);
-
 #ifdef VERSION_RAIDOU2
-INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgIdNotFoundWarn);
 
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgIdNotFoundWarn);
 #endif
+
 s32 evtCommand_FIELD_BE(void)
 {
     s32 event;
@@ -3392,8 +3354,16 @@ const char evtMsgSetSkyAlphaLow[40] = "warning : SET_SKY_A alpha < -255\n";
 addr_t evtKutiUnit = 0;
 
 const char evtMsgSetSkyAlphaHigh[0x28] = "warning : SET_SKY_A alpha > 255\n";
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "event/evtCommand", evtLipsStopFunction_evtCommandData);
 
 INCLUDE_SDATA(const s32, "event/evtCommand", evtCallMemsetData);
+#endif
+#ifdef VERSION_RAIDOU2
+
+INCLUDE_SDATA(const s32, "event/evtCommand", evtLipsStopFunction_evtCommandData);
+
+INCLUDE_SDATA(const s32, "event/evtCommand", evtCallMemsetData);
+#endif
 

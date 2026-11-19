@@ -962,8 +962,16 @@ char sdfFileCmdPfsPrefix[8] = "pfs0:";
 void sdfFirstInitSub(void) {
     sdfData4 = 1;
 }
+#ifdef VERSION_RAIDOU1
 
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", sdfFileCmdMoviePath);
 
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", sdfFileCmdCdimgPrefix);
+#endif
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "sdf/sdfFileIO", sdfFileCmdMoviePath);
+
+INCLUDE_SDATA(const s32, "sdf/sdfFileIO", sdfFileCmdCdimgPrefix);
+
+#endif

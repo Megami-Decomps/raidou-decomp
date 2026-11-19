@@ -1454,8 +1454,11 @@ void fldClearCameraObjectTransitionFlags(void) {
     dds3ObjectBaseOffFlag(fldPlayerObject, 0x400);
     dds3ObjectBaseOffFlag(fldPlayerObject, 0x200);
 }
-#ifdef VERSION_RAIDOU1
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_aibo_buff_read_idx);
+#endif
 
+#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "field/fldFileResolver", VRF_Disable);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", mapSummonDvTaskTable);
@@ -1466,9 +1469,9 @@ INCLUDE_RODATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagTable);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagTable2);
 
-#endif
 INCLUDE_SDATA(const s32, "field/fldFileResolver", map_aibo_buff_read_idx);
 
+#endif
 INCLUDE_SDATA(const s32, "field/fldFileResolver", map_aibo_buff_write_idx);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver", map_aibo_spd_max);

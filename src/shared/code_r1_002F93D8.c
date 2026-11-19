@@ -61,6 +61,9 @@ void mselNameNEFLASH(void)
         dds3EffectSetScale(fldTitleMiniTex3, 1.0f);
     }
 }
+#ifdef VERSION_RAIDOU1
+
+#endif
 INCLUDE_RODATA(const s32, "code_r1_002F93D8", fldFontNameEntDataStr);
 
 INCLUDE_SDATA(const s32, "code_r1_002F93D8", fldTitleMiniWork4);

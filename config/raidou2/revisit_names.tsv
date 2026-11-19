@@ -4636,12 +4636,8 @@
 0x0035B360	TitleAt3Play	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleAt3Play, score 8.15 band B
 0x0035B3B0	evtCallBgmStop	func	tier=D	derived-callee	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls sndBgmStop
 0x0035B410	TitleFirstCalcProcess3	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleFirstCalcProcess3, score 10.15 band A
-0x0035B6F0	evtLeaf32	func	tier=D	derived-unit	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x0035B6F8	TitleAtlusLogoCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleAtlusLogoCalcProcess, score 10.15 band A
 0x0035B7F8	TitleAtlusLogoDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleAtlusLogoDrawProcess, score 8.45 band B
-0x0035B890	evtCallGetProcessData31	func	tier=D	derived-callee	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls dds3GetProcessData
-0x0035B8C8	evtLeaf33	func	tier=D	derived-unit	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
-0x0035B9C8	evtCallGetProcessData32	func	tier=D	derived-callee	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls dds3GetProcessData
 0x0035BA60	TitleGoMain	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleGoMain, score 8.0 band B
 0x0035BD78	rstFunc	func	tier=D	derived-unit	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; no named callee, caller or string
 0x0035C0E0	rstCallGetProcessData	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
@@ -5341,62 +5337,16 @@
 0x0039E2C8	gohRootCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRootCalcProcess, score 8.85 band B
 0x0039E490	gohRootDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRootDrawProcess, score 8.55 band B
 0x0039E4E0	gohRootUpdateProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRootUpdateProcess, score 7.95 band B
-0x0039E528	gohCallGetProcessData5	func	tier=D	derived-callee	na	unit code_0039B8E8, neighbour gohRootUpdateProcess; calls dds3GetProcessData
-0x0039E550	gohBakNmlCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohBakNmlCalcProcess, score 8.95 band B
-0x0039EAF8	gohCallGetProcessData23	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour gohBakBakDestroy; calls dds3GetProcessData
-0x0039EB30	gohLeaf24	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour gohBakBakDestroy; no named callee, caller or string
-0x0039EB78	gohCallGetProcessData6	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x0039F068	gohCallEndMessageEx	func	tier=D	derived-callee	na	unit gohMain; calls fclEndMessageEx
-0x0039F0A8	gohCallCallDrawBack	func	tier=D	derived-callee	na	unit gohMain; calls gohCallDrawBack
-0x0039F0E0	gohCallGetProcessData7	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x0039F320	gohCallGetProcessData8	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x0039F420	gohCallGetProcessData24	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x0039F458	gohCallCallDrawBack2	func	tier=D	derived-callee	na	unit gohMain; calls gohCallDrawBack
-0x0039F478	gohLeaf	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
 0x0039F748	gohCallSeqJumpAndFree	func	tier=D	derived-callee	na	unit gohMain; calls jmsSeqJumpAndFree
-0x0039F858	gohCmbSearchiCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohCmbSearchiCalcProcess, score 9.6 band B
-0x0039FFE0	gohCallGetProcessData9	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A0260	gohCallGetProcessData25	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A0298	gohCallGetProcessData26	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
 0x003A02D0	gohLeaf25	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
-0x003A03A8	gohLeaf26	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
-0x003A03B0	gohCallGetProcessData10	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A0488	gohCallGetProcessData27	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A04C0	gohCallGetProcessData28	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
 0x003A0508	gohCyuuseiStartDirection	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohCyuuseiStartDirection, score 9.6 band B
-0x003A07D8	gohCallGetProcessData11	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A0848	gohLeaf27	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
-0x003A0850	gohCallGetProcessData12	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1000	gohAccidentCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohAccidentCalcProcess, score 8.15 band B
-0x003A1170	gohCallGetProcessData13	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A11A8	gohCallGetProcessData14	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1220	gohCallCallDrawBack3	func	tier=D	derived-callee	na	unit gohMain; calls gohCallDrawBack
 0x003A1370	gohRecoverCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRecoverCalcProcess, score 9.15 band B
 0x003A1470	gohRecoverDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRecoverDrawProcess, score 9.15 band B
 0x003A1540	gohRecoverUpdateProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRecoverUpdateProcess, score 8.45 band B
 0x003A1578	gohTalkInit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohTalkInit, score 7.95 band B
 0x003A1598	gohTalkDestroy	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohTalkDestroy, score 8.75 band B
 0x003A15A0	gohTalkCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohTalkCalcProcess, score 9.45 band B
-0x003A16A8	gohCallGetProcessData29	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A16F8	gohCallGetProcessData30	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
 0x003A1730	gohMiscInit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohMiscInit, score 7.15 band B
-0x003A1768	gohLeaf28	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
-0x003A1770	gohCallGetProcessData31	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A17E0	gohCallGetProcessData32	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1830	gohCallGetProcessData33	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1868	gohCallGetProcessData34	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A18B0	gohLeaf29	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
-0x003A1A18	gohCallGetProcessData35	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1A68	gohCallGetProcessData36	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1AB0	gohCallGetProcessData15	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1AE8	gohLeaf2	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
-0x003A1AF0	gohCallGetProcessData16	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1B60	gohCallGetProcessData17	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1BB0	gohCallGetProcessData18	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1BE8	gohCallGetProcessData37	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A1CA0	gohLeaf30	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
-0x003A1CA8	gohSearchiErrorCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohSearchiErrorCalcProcess, score 7.75 band B
-0x003A1E18	gohCallGetProcessData38	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
 0x003A1F50	gohCallBitCheck	func	tier=D	derived-callee	na	unit gohMain; calls evtBitCheck
 0x003A20B0	gohFunc	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
 0x003A20F8	gohFunc2	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
@@ -5425,55 +5375,8 @@
 0x003A8868	gohRefDDS3GBWK7	func	tier=D	derived-data	na	unit gohMain; references DDS3_GBWK
 0x003A8A00	gohCallSetDrawBack	func	tier=D	derived-callee	na	unit gohMain; calls gohSetDrawBack
 0x003A8A38	gohCallSetDrawBack2	func	tier=D	derived-callee	na	unit gohMain; calls gohSetDrawBack
-0x003A8B18	gohCallGetProcessData39	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A8E58	gohCallGetProcessData40	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A8EA8	gohCallGetProcessData41	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A8EE0	gohCallEndMessage	func	tier=D	derived-callee	na	unit gohMain; calls fclEndMessage
-0x003A8F00	gohLeaf32	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
-0x003A8F08	gohCallGetProcessData42	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A9020	gohCallGetProcessData43	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A9110	gohCallGetProcessData44	func	tier=D	derived-callee	na	unit gohMain; calls dds3GetProcessData
-0x003A9160	gohCallGetProcessData45	func	tier=D	derived-callee	na	unit code_00344F28, nearest named function gohCmbSelCalcProcess; calls dds3GetProcessData
-0x003A9300	fldCallGetProcessData4	func	tier=D	derived-callee	na	unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003A93F0	fldCallGetProcessData5	func	tier=D	derived-callee	na	unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003A9438	fldCallEndMessage	func	tier=D	derived-callee	na	unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls fclEndMessage
-0x003A9470	fldLeaf37	func	tier=D	derived-unit	na	unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; no named callee, caller or string
-0x003A9478	fldCallGetProcessData2	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003A97D0	fldCallGetProcessData6	func	tier=D	derived-callee	na	unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003A9808	fldCallGetProcessData7	func	tier=D	derived-callee	na	unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003A9878	fldFunc	func	tier=D	derived-unit	na	unit code_003A91B0, neighbour fldCommand_FLD_CALL_WAPEX; no named callee, caller or string
-0x003A9898	fldCallGetProcessData8	func	tier=D	derived-callee	na	unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003A9930	fldCallGetProcessData9	func	tier=D	derived-callee	na	unit code_00344F78, neighbour fldCommand_FLD_CALL_WAPEX; calls dds3GetProcessData
-0x003A9968	evtCallGetProcessData34	func	tier=D	derived-callee	na	unit code_00344F78, neighbour evtPollDispatchAfterFade; calls dds3GetProcessData
-0x003A99B0	evtCallSetMessageInvalid	func	tier=D	derived-callee	na	unit code_00344F78, neighbour evtPollDispatchAfterFade; calls fclSetMessageInvalid
-0x003A99F0	evtLeaf39	func	tier=D	derived-unit	na	unit code_00344F78, neighbour evtPollDispatchAfterFade; no named callee, caller or string
-0x003A9AF8	evtCallGetProcessData35	func	tier=D	derived-callee	na	unit code_00344F78, neighbour evtPollDispatchAfterFade; calls dds3GetProcessData
-0x003A9B30	evtCallGetProcessData36	func	tier=D	derived-callee	na	unit code_00344F78, neighbour evtPollDispatchAfterFade; calls dds3GetProcessData
-0x003A9B78	evtCallEndMessage	func	tier=D	derived-callee	na	unit code_00344F78, neighbour evtPollDispatchAfterFade; calls fclEndMessage
-0x003A9B98	evtLeaf40	func	tier=D	derived-unit	na	unit code_00344F78, neighbour evtBDispatchSyncD2; no named callee, caller or string
-0x003A9BA0	evtCallGetProcessData6	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour evtBDispatchSyncD2; calls dds3GetProcessData
 0x003A9E08	evtBDispatchSyncD2Sub	func	tier=D	derived-caller	na	unit code_003A91B0, neighbour evtBDispatchSyncD2; called by evtBDispatchSyncD2
-0x003A9EE0	evtCallGetProcessData7	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour evtBDispatchSyncD2; calls dds3GetProcessData
 0x003A9FB8	evtCallKarteGetRestoreCost	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour evtBDispatchSyncD2; calls gohKarteGetRestoreCost
-0x003AA0D8	evtCallGetSklCsrMax	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour evtBDispatchSyncD2; calls cmpGetSklCsrMax
-0x003AA110	gohFunc18	func	tier=D	derived-unit	na	unit code_00344F78, neighbour gohCheckDevilError; no named callee, caller or string
-0x003AA130	evtCallGetProcessData8	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour evtBDispatchSyncD2; calls dds3GetProcessData
-0x003AA370	evtLeaf41	func	tier=D	derived-unit	na	unit code_00344F78, neighbour evtBChooseSelectionCompletionPopup; no named callee, caller or string
-0x003AA448	evtCallGetProcessData37	func	tier=D	derived-callee	na	unit code_00344F78, neighbour evtBChooseSelectionCompletionPopup; calls dds3GetProcessData
-0x003AA480	evtCallGetProcessData38	func	tier=D	derived-callee	na	unit code_00344F78, neighbour evtBChooseSelectionCompletionPopup; calls dds3GetProcessData
-0x003AA568	slLeaf12	func	tier=D	derived-unit	na	unit code_00344F78, neighbour slInfoMsgDraw; no named callee, caller or string
-0x003AA570	slCallGetProcessData16	func	tier=D	derived-callee	na	unit code_00344F78, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003AA638	slCallGetProcessData17	func	tier=D	derived-callee	na	unit code_00344F78, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003AA6B8	slCallGetProcessData11	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003AA760	slLeaf2	func	tier=D	derived-unit	na	unit code_003A91B0, neighbour slInfoMsgDraw; no named callee, caller or string
-0x003AA768	slCallGetProcessData12	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003AAB00	slCallGetProcessData13	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003AAB38	slCallGetProcessData14	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003AAB88	slCallGetProcessData15	func	tier=D	derived-callee	na	unit code_003A91B0, neighbour slInfoMsgDraw; calls dds3GetProcessData
-0x003AAC58	slLeaf13	func	tier=D	derived-unit	na	unit code_00344F78, neighbour slInfoMsgDraw; no named callee, caller or string
-0x003AAC60	mnuDispatchStaffMenuWithIdlePopup	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00272A90, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x003AACD0	gohCallGetProcessData46	func	tier=D	derived-callee	na	unit code_00346258, neighbour gohSetModelScale; calls dds3GetProcessData
-0x003AAD20	gohCallGetProcessData47	func	tier=D	derived-callee	na	unit code_00346258, neighbour gohSetModelScale; calls dds3GetProcessData
 0x003AAD68	gohSetModelScale	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohSetModelScale, score 8.95 band B
 0x003AADC8	gohModelLoad	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohModelLoad, score 10.3 band A
 0x003AB098	gohModelFree	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohModelFree, score 9.3 band B
@@ -23547,8 +23450,12 @@
 0x0035AB40	TitleInitCursor	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x002F56C8 (r1_r2_pairs, unique-reloc-hash): HD TitleMain TitleInitCursor clears titleCursor_t and sets ScaleTimer = 6 (TITLEenum_CURSOR_SCALE_TIMER); 0x2F56C8 is memset 0x30 + store 6 at 0x20, called on titleData_t.Cursor; replaces Flow1_6
 0x0035ABD0	TitleCalcCursor	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x002F5758 (r1_r2_pairs, unique-masked-hash): HD TitleMain TitleCalcCursor(PID, pCursor, step): up/down moves Index with Timer = 0, ScaleTimer = 6, SE 0x500001, LastPush from the held buttons, then ItemAlpha[5] fades +-32 toward the selected item and ScaleTimer counts down; 0x2F5758 is the same on titleCursor_t; replaces evtCallPlaySE
 0x0035B640	TitleFirstDrawProcess	func	tier=C	hd-c	0.69 (n=45)	Raidou HD TitleMain.TitleFirstDrawProcess score 5.5 flag I: calls2 prev gap42/25 st2:gap r2-only
-0x0035B6B8	TitleCesaInit	func	tier=C	hd-c	0.69 (n=45)	Raidou HD TitleMain.TitleCesaInit score 5.0 flag I: calls2 prev gap41/23 st2:gap r2-only
-0x0035B8D0	evtBStartSelectionChainAfterFade	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x26b260 sim 0.626 margin 0.05 pair
+0x0035B6B8	TitleAtlusLogoInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ATLUS_LOGO (name string in the row), Init slot; raidou1 row matched by 4 paired functions; replaces TitleCesaInit
+0x0035B6F0	TitleAtlusLogoDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ATLUS_LOGO (name string in the row), Destroy slot; raidou1 row matched by 4 paired functions; replaces evtLeaf32
+0x0035B890	TitleSforceLogoInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SFORCE_LOGO (name string in the row), Init slot; raidou1 row matched by 4 paired functions; replaces evtCallGetProcessData31
+0x0035B8C8	TitleSforceLogoDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SFORCE_LOGO (name string in the row), Destroy slot; raidou1 row matched by 4 paired functions; replaces evtLeaf33
+0x0035B8D0	TitleSforceLogoCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SFORCE_LOGO (name string in the row), CalcProcess slot; raidou1 row matched by 4 paired functions; replaces evtBStartSelectionChainAfterFade
+0x0035B9C8	TitleSforceLogoDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SFORCE_LOGO (name string in the row), DrawProcess slot; raidou1 row matched by 4 paired functions; replaces evtCallGetProcessData32
 0x0035C368	TitleNewGameStart	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD TitleMain.TitleNewGameStart score 3.7 flag I: calls2 callers-of-match votes3 st2:call r1-disagree:0x2f6e20
 0x0035E698	fldNakamaCashLoad_Decode	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.fldNakamaCashLoad_Decode score 2.0 flag I: calls1 callers-of-match st1:call r1-only
 0x0035ED20	SetSelect	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x284d50 sim 0.636 margin 0.20 pair
@@ -23658,13 +23565,69 @@
 0x0039DC70	gohGetEndFlag	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD gohAccident.gohGetEndFlag score 4.0 flag I: calls1 calls-of-match st2:call r2-only
 0x0039DCB8	gohStartStatusDraw	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD gohMain.gohStartStatusDraw score 4.5 flag I: calls2 callers-of-match votes2 st2:call r1-disagree:0x338898
 0x0039DE80	DlcDevilSelCheck	func	tier=C	hd-c	0.69 (n=45)	Raidou HD RaijinDLC.DlcDevilSelCheck score 6.1 flag -: calls2 calls-of-match votes2 st2:call r2-only
-0x0039E688	gohBakNmlDrawProcess	func	tier=C	hd-c	0.69 (n=45)	Raidou HD gohMain.gohBakNmlDrawProcess score 5.5 flag I: calls3 prev edge st2:edge r2-only
-0x0039F710	gohSwordTreeUpdateProcess	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohMain.gohSwordTreeUpdateProcess score 4.5 flag I: calls2 next~ gap30/23 st2:gap r2-only
+0x0039E528	gohCmbSelInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), Init slot; replaces gohCallGetProcessData5
+0x0039E550	gohCmbSelDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), Destroy slot; replaces gohBakNmlCalcProcess
+0x0039E558	gohCmbSelCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), CalcProcess slot; replaces gohBakNmlCalcProcess_gohMain
+0x0039E688	gohCmbSelDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), DrawProcess slot; replaces gohBakNmlDrawProcess
+0x0039E6D8	gohCmbSelUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMBSEL (name string in the row), UpdateProcess slot; replaces gohBakNmlUpdateProcess
+0x0039E710	gohCmb1Init	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), Init slot; replaces gohBakBakInit
+0x0039E750	gohCmb1Destroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), Destroy slot; replaces gohBakBakDestroy
+0x0039E7A8	gohCmb1CalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), CalcProcess slot; replaces gohBakBakCalcProcess
+0x0039EAF8	gohCmb1UpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMB1 (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData23
+0x0039EB30	gohCmb2Init	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMB2 (name string in the row), Init slot; replaces gohLeaf24
+0x0039EB40	gohCmb2Destroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMB2 (name string in the row), Destroy slot; replaces nbCommand_BTL_AI_CHANGE_ON
+0x0039EB78	gohCmb2CalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CMB2 (name string in the row), CalcProcess slot; replaces gohCallGetProcessData6
+0x0039F068	gohSwordInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), Init slot; replaces gohCallEndMessageEx
+0x0039F0A8	gohSwordDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), Destroy slot; replaces gohCallCallDrawBack
+0x0039F0E0	gohSwordCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), CalcProcess slot; replaces gohCallGetProcessData7
+0x0039F320	gohSwordDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), DrawProcess slot; replaces gohCallGetProcessData8
+0x0039F420	gohSwordUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData24
+0x0039F458	gohSword2Init	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD2 (name string in the row), Init slot; replaces gohCallCallDrawBack2
+0x0039F478	gohSword2Destroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD2 (name string in the row), Destroy slot; replaces gohLeaf
+0x0039F480	gohSword2CalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD2 (name string in the row), CalcProcess slot; replaces gohSwordTreeCalcProcess
+0x0039F638	gohSword2DrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD2 (name string in the row), DrawProcess slot; replaces gohSwordTreeDrawProcess
+0x0039F710	gohSword2UpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SWORD2 (name string in the row), UpdateProcess slot; replaces gohSwordTreeUpdateProcess
 0x0039F820	gohStatInit	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohMain.gohStatInit score 5.5 flag I: calls2 callers-of-match-uniq votes2 st2:call r2-only
+0x0039F858	gohStatDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), Destroy slot; replaces gohCmbSearchiCalcProcess
+0x0039FFE0	gohStatCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), CalcProcess slot; replaces gohCallGetProcessData9
+0x003A0260	gohStatDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), DrawProcess slot; replaces gohCallGetProcessData25
+0x003A0298	gohStatUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData26
+0x003A03A8	gohConfirmDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), Destroy slot; replaces gohLeaf26
+0x003A03B0	gohConfirmCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), CalcProcess slot; replaces gohCallGetProcessData10
+0x003A0488	gohConfirmDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), DrawProcess slot; replaces gohCallGetProcessData27
+0x003A04C0	gohConfirmUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData28
+0x003A07D8	gohCyuuseiInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CYUUSEI (name string in the row), Init slot; replaces gohCallGetProcessData11
+0x003A0848	gohCyuuseiDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CYUUSEI (name string in the row), Destroy slot; replaces gohLeaf27
+0x003A0850	gohCyuuseiCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CYUUSEI (name string in the row), CalcProcess slot; replaces gohCallGetProcessData12
 0x003A0FC8	gohCyuuseiDrawProcess	func	tier=C	hd-c	0.69 (n=45)	Raidou HD gohMain.gohCyuuseiDrawProcess score 5.5 flag I: calls2 next gap2/30 st2:gap r2-only
+0x003A1000	gohCyuuseiUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CYUUSEI (name string in the row), UpdateProcess slot; replaces gohAccidentCalcProcess
 0x003A1098	gohAccidentDestroy	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD gohMain.gohAccidentDestroy score 2.0 flag I: next gap5/33 st2:gap r2-only
+0x003A10B8	gohAccidentCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ACCIDENT (name string in the row), CalcProcess slot; replaces gohAccidentCalcProcess_gohMain
+0x003A1170	gohAccidentDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ACCIDENT (name string in the row), DrawProcess slot; replaces gohCallGetProcessData13
+0x003A11A8	gohAccidentUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ACCIDENT (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData14
+0x003A11F8	gohRecoverInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_RECOVER (name string in the row), Init slot; replaces TestProcess2
+0x003A1220	gohRecoverDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_RECOVER (name string in the row), Destroy slot; replaces gohCallCallDrawBack3
 0x003A1240	scrLogStart	func	tier=C	hd-d	0.53 (n=98)	Raidou HD scr.scrLogStart score 3.5 flag I: calls1 callers-of-match st1:call r1-only
-0x003A1DB0	evtRefreshDispatchStart	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x248088 sim 0.878 margin 0.02 pair
+0x003A16A8	gohTalkDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_TALK (name string in the row), DrawProcess slot; replaces gohCallGetProcessData29
+0x003A16F8	gohTalkUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_TALK (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData30
+0x003A1768	gohMiscDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_MISC (name string in the row), Destroy slot; replaces gohLeaf28
+0x003A1770	gohMiscCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_MISC (name string in the row), CalcProcess slot; replaces gohCallGetProcessData31
+0x003A17E0	gohMiscDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_MISC (name string in the row), DrawProcess slot; replaces gohCallGetProcessData32
+0x003A1830	gohMiscUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_MISC (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData33
+0x003A1868	gohSinanInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SINAN (name string in the row), Init slot; replaces gohCallGetProcessData34
+0x003A18B0	gohSinanDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SINAN (name string in the row), Destroy slot; replaces gohLeaf29
+0x003A1A18	gohSinanDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SINAN (name string in the row), DrawProcess slot; replaces gohCallGetProcessData35
+0x003A1A68	gohSinanUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_SINAN (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData36
+0x003A1AB0	gohCombCntInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_COMB_CNT (name string in the row), Init slot; replaces gohCallGetProcessData15
+0x003A1AE8	gohCombCntDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_COMB_CNT (name string in the row), Destroy slot; replaces gohLeaf2
+0x003A1AF0	gohCombCntCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_COMB_CNT (name string in the row), CalcProcess slot; replaces gohCallGetProcessData16
+0x003A1B60	gohCombCntDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_COMB_CNT (name string in the row), DrawProcess slot; replaces gohCallGetProcessData17
+0x003A1BB0	gohCombCntUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_COMB_CNT (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData18
+0x003A1BE8	gohErrorInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), Init slot; replaces gohCallGetProcessData37
+0x003A1CA0	gohErrorDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), Destroy slot; replaces gohLeaf30
+0x003A1CA8	gohErrorCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), CalcProcess slot; replaces gohSearchiErrorCalcProcess
+0x003A1DB0	gohErrorDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), DrawProcess slot; replaces evtRefreshDispatchStart
+0x003A1E18	gohErrorUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_ERROR (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData38
 0x003A1FD8	GohCreateDevilFormatDevil	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD GohCombUnity.GohCreateDevilFormatDevil score 3.3 flag I: calls1 callers-of-match st2:call r2-only
 0x003A2170	gohSortedDevilListCallback	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohCalc.gohSortedDevilListCallback score 3.0 flag I: next gap7/3 st1:gap r1-only
 0x003A21C0	gohCreateSortedDevilList	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohCalc.gohCreateSortedDevilList score 2.6 flag I: calls1 calls-of-match st1:call r1-only
@@ -23683,12 +23646,67 @@
 0x003A6918	gohKarteParts	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD gohDraw.gohKarteParts score 4.2 flag I: calls2 callers-of-match votes4 st2:call r2-only
 0x003A6DB0	gohKarteDevilParam	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD gohDraw.gohKarteDevilParam score 4.2 flag I: calls2 callers-of-match-uniq votes2 st2:call r2-only
 0x003A8260	gohStatusHelp	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD gohDraw.gohStatusHelp score 2.8 flag I: calls2 callee-index votes3 st2:cidx r1-disagree:0x343f98
-0x003A8A78	gohCmbSelInit	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohMain.gohCmbSelInit score 4.3 flag I: calls1 callers-of-match votes2 st2:call r2-only
-0x003A99F8	evtPollDispatchAfterFade	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x26abb0 sim 0.661 margin 0.02 pair
-0x003A9E78	evtBDispatchSyncD2	func	tier=C	dds-fuzzy-70-m-pair	0.64 (n=25)	dds body 0x24ccd8 sim 0.754 margin 0.22 pair
-0x003AA270	SetConfigData	func	tier=C	hd-both	0.71 (n=206)	Raidou HD ConfigUnity.SetConfigData score 4.3 flag -: calls1 next edge st1:edge r1+r2
-0x003AA2A8	GetConfigTab	func	tier=C	hd-both	0.71 (n=206)	Raidou HD ConfigUnity.GetConfigTab score 5.0 flag -: calls1 next edge st1:edge r1+r2
-0x003AA378	evtBChooseSelectionCompletionPopup	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x24c700 sim 0.736 margin 0.00 pair
+0x003A8A78	gohKarteRootCalcProcessSub	func	tier=C	derived-derived-role	na	called only by gohKarteRootCalcProcess (the SEQ_KARTE_ROOT row Calc slot); the row Init slot of SEQ_CMBSEL takes gohCmbSelInit; replaces gohCmbSelInit
+0x003A8B18	gohKarteRootInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), Init slot; replaces gohCallGetProcessData39
+0x003A8B48	gohKarteRootDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), Destroy slot; replaces gohCmbSelDestroy
+0x003A8B50	gohKarteRootCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), CalcProcess slot; replaces gohCmbSelCalcProcess
+0x003A8E58	gohKarteRootDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), DrawProcess slot; replaces gohCallGetProcessData40
+0x003A8EA8	gohKarteRootUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_ROOT (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData41
+0x003A8EE0	gohKarteRegInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), Init slot; replaces gohCallEndMessage
+0x003A8F00	gohKarteRegDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), Destroy slot; replaces gohLeaf32
+0x003A8F08	gohKarteRegCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), CalcProcess slot; replaces gohCallGetProcessData42
+0x003A9020	gohKarteRegDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), DrawProcess slot; replaces gohCallGetProcessData43
+0x003A9110	gohKarteRegUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData44
+0x003A9160	gohKarteRegAllInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), Init slot; replaces gohCallGetProcessData45
+0x003A91B0	gohKarteRegAllDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), Destroy slot; replaces DLCDestroy
+0x003A91B8	gohKarteRegAllCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), CalcProcess slot; replaces DLCCalcProcess
+0x003A9300	gohKarteRegAllDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), DrawProcess slot; replaces fldCallGetProcessData4
+0x003A93F0	gohKarteRegAllUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_ALL (name string in the row), UpdateProcess slot; replaces fldCallGetProcessData5
+0x003A9438	gohKarteRegStatInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), Init slot; replaces fldCallEndMessage
+0x003A9470	gohKarteRegStatDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), Destroy slot; replaces fldLeaf37
+0x003A9478	gohKarteRegStatCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), CalcProcess slot; replaces fldCallGetProcessData2
+0x003A97D0	gohKarteRegStatDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), DrawProcess slot; replaces fldCallGetProcessData6
+0x003A9808	gohKarteRegStatUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_STAT (name string in the row), UpdateProcess slot; replaces fldCallGetProcessData7
+0x003A9840	gohKarteRegConfirmInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), Init slot; replaces fldCommand_FLD_CALL_WAPEX
+0x003A9878	gohKarteRegConfirmDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), Destroy slot; replaces fldFunc
+0x003A9898	gohKarteRegConfirmCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), CalcProcess slot; replaces fldCallGetProcessData8
+0x003A9930	gohKarteRegConfirmDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), DrawProcess slot; replaces fldCallGetProcessData9
+0x003A9968	gohKarteRegConfirmUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_CONFIRM (name string in the row), UpdateProcess slot; replaces evtCallGetProcessData34
+0x003A99B0	gohKarteRegResultInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), Init slot; replaces evtCallSetMessageInvalid
+0x003A99F0	gohKarteRegResultDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), Destroy slot; replaces evtLeaf39
+0x003A99F8	gohKarteRegResultCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), CalcProcess slot; replaces evtPollDispatchAfterFade
+0x003A9AF8	gohKarteRegResultDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), DrawProcess slot; replaces evtCallGetProcessData35
+0x003A9B30	gohKarteRegResultUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_REG_RESULT (name string in the row), UpdateProcess slot; replaces evtCallGetProcessData36
+0x003A9B78	gohKarteResInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), Init slot; replaces evtCallEndMessage
+0x003A9B98	gohKarteResDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), Destroy slot; replaces evtLeaf40
+0x003A9BA0	gohKarteResCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), CalcProcess slot; replaces evtCallGetProcessData6
+0x003A9E78	gohKarteResDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), DrawProcess slot; replaces evtBDispatchSyncD2
+0x003A9EE0	gohKarteResUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES (name string in the row), UpdateProcess slot; replaces evtCallGetProcessData7
+0x003AA0D8	gohKarteResStatInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), Init slot; replaces evtCallGetSklCsrMax
+0x003AA110	gohKarteResStatDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), Destroy slot; replaces gohFunc18
+0x003AA130	gohKarteResStatCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), CalcProcess slot; replaces evtCallGetProcessData8
+0x003AA270	gohKarteResStatDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), DrawProcess slot; replaces SetConfigData
+0x003AA2A8	gohKarteResStatUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_STAT (name string in the row), UpdateProcess slot; replaces GetConfigTab
+0x003AA2E0	gohKarteResConfirmInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), Init slot; replaces InitMessage
+0x003AA370	gohKarteResConfirmDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), Destroy slot; replaces evtLeaf41
+0x003AA378	gohKarteResConfirmCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), CalcProcess slot; replaces evtBChooseSelectionCompletionPopup
+0x003AA448	gohKarteResConfirmDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), DrawProcess slot; replaces evtCallGetProcessData37
+0x003AA480	gohKarteResConfirmUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_CONFIRM (name string in the row), UpdateProcess slot; replaces evtCallGetProcessData38
+0x003AA4C8	gohKarteResResultInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), Init slot; replaces ChangeMessage
+0x003AA568	gohKarteResResultDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), Destroy slot; replaces slLeaf12
+0x003AA570	gohKarteResResultCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), CalcProcess slot; replaces slCallGetProcessData16
+0x003AA638	gohKarteResResultDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), DrawProcess slot; replaces slCallGetProcessData17
+0x003AA670	gohKarteResResultUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_RESULT (name string in the row), UpdateProcess slot; replaces slInfoMsgDraw
+0x003AA6B8	gohKarteResDetailInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_DETAIL (name string in the row), Init slot; replaces slCallGetProcessData11
+0x003AA760	gohKarteResDetailDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_DETAIL (name string in the row), Destroy slot; replaces slLeaf2
+0x003AA768	gohKarteResDetailCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_DETAIL (name string in the row), CalcProcess slot; replaces slCallGetProcessData12
+0x003AAB00	gohKarteResDetailDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_DETAIL (name string in the row), DrawProcess slot; replaces slCallGetProcessData13
+0x003AAB38	gohKarteResDetailUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_RES_DETAIL (name string in the row), UpdateProcess slot; replaces slCallGetProcessData14
+0x003AAB88	gohKarteErrorInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), Init slot; replaces slCallGetProcessData15
+0x003AAC58	gohKarteErrorDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), Destroy slot; replaces slLeaf13
+0x003AAC60	gohKarteErrorCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), CalcProcess slot; replaces mnuDispatchStaffMenuWithIdlePopup
+0x003AACD0	gohKarteErrorDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), DrawProcess slot; replaces gohCallGetProcessData46
+0x003AAD20	gohKarteErrorUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_KARTE_EROOR (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData47
 0x003AB2B0	gohDrawProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohDirection.gohDrawProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
 0x003AB2E8	gohUpdateProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohDirection.gohUpdateProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
 0x003AB350	Direction2Destroy	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohDirection.Direction2Destroy score 2.0 flag -: next gap6/4 st2:gap r2-only
@@ -24765,15 +24783,11 @@
 0x0039D928	gohCreateCombineResult	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohMain.gohCreateCombineResult score 5.8 flag I: calls2 calls-of-match st2:call r2-only
 0x0039DC18	cfgGetConfigGAME	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD cfg.cfgGetConfigGAME score 6.5 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x0039E010	gohCreateSwordList_gohMain	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohMain.gohCreateSwordList score 5.4 flag I: calls2 next callee-index st2:cidx r2-only
-0x0039E710	gohBakBakInit	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD gohMain.gohBakBakInit score 5.8 flag I: prev next gap=exact st2:gap r2-only
-0x0039E750	gohBakBakDestroy	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD gohMain.gohBakBakDestroy score 6.5 flag I: calls1 next gap=exact st2:gap r2-only
 0x0039F030	gohCmb2UpdateProcess	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohMain.gohCmb2UpdateProcess score 5.5 flag I: calls2 prev gap15/10 st2:gap r2-only
 0x0039F860	gohStartBirthDevilStatus	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohMain.gohStartBirthDevilStatus score 6.0 flag I: calls2 calls-of-match votes3 st2:call r2-only
 0x003A05B8	gohAppendNewDevil	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohMain.gohAppendNewDevil score 6.3 flag I: calls2 callers-of-match votes4 st2:call r2-only
 0x003A06A0	gohCyuuseiCombLastCalc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohMain.gohCyuuseiCombLastCalc score 6.0 flag I: calls2 callers-of-match votes2 st2:call r2-only
 0x003A1048	gohAccidentInit	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohMain.gohAccidentInit score 6.5 flag I: calls2 next gap4/32 votes3 st2:gap r2-only
-0x003A10B8	gohAccidentCalcProcess_gohMain	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohMain.gohAccidentCalcProcess score 7.0 flag I: calls3 callers-of-match votes2 st2:call r2-only
-0x003A11F8	TestProcess2	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x28c898 sim 0.909 margin 0.91 pair
 0x003A31A8	gohKarteGetRestoreCost	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohCalc.gohKarteGetRestoreCost score 6.8 flag I: calls2 callers-of-match votes2 st2:call r2-only
 0x003A34A0	gohGetCombiCount	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohCalc.gohGetCombiCount score 5.0 flag I: calls1 calls-of-match-uniq votes2 st2:call r2-only
 0x003A3598	gohAddCombiCount	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohCalc.gohAddCombiCount score 6.8 flag I: calls1 prev calls-of-match votes2 st2:call r2-only
@@ -24783,9 +24797,6 @@
 0x003A7100	gohKarteList	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohDraw.gohKarteList score 6.5 flag I: calls2 prev~ callers-of-match votes3 st2:call r2-only
 0x003A75A0	gohRecoverParam	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohDraw.gohRecoverParam score 5.5 flag I: calls2 callers-of-match votes3 st2:call r2-only
 0x003A8038	gohCombineIconHelp	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohDraw.gohCombineIconHelp score 5.0 flag I: calls2 next callers-of-match votes2 st2:call r1-disagree:0x343de8
-0x003A8B48	gohCmbSelDestroy	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD gohMain.gohCmbSelDestroy score 2.8 flag I: prev~ next gap1/2 st2:gap r2-only
-0x003A91B0	DLCDestroy	func	tier=B	hd-role	na	HD jmsMain.DLCDestroy: Destroy slot of the scene table entry {Init, Destroy, DLCCalcProcess, Draw, Update}; replaces fldLeaf36
-0x003A9840	fldCommand_FLD_CALL_WAPEX	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x159eb0 sim 0.778 margin 0.78 pair
 0x003AB188	gohInit	func	tier=B	hd-role	na	HD gohDirection.gohInit: Init slot of the scene table entry whose Calc/Draw/Update are gohCalcProcess, gohDrawProcess, gohUpdateProcess; replaces gohLeaf33
 0x003AB190	gohDestroy	func	tier=B	hd-role	na	HD gohDirection.gohDestroy: Destroy slot of the scene table entry whose Calc/Draw/Update are gohCalcProcess, gohDrawProcess, gohUpdateProcess; replaces gohLeaf34
 0x003AB6C0	gohResultDestroy	func	tier=B	hd-role	na	HD gohDirection.gohResultDestroy: Destroy slot of the Result row; empty as HD; replaces gohResultDrawProcess

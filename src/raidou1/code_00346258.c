@@ -7,14 +7,14 @@
 #include "gohDraw.h"
 #include "fclMisc.h"
 
-dds3ProcessFunc_t gohCallGetProcessData46(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohKarteErrorDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     gohModel(work);
     return menuRunPanel(&work->panel, &work->seqUnit, 1, PID);
 }
 
-dds3ProcessFunc_t gohCallGetProcessData47(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t gohKarteErrorUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     fclUpdateMessage();
