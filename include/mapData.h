@@ -1083,4 +1083,34 @@ extern f32 mapData70;
 void mapBgFScrollOn(f32 x, f32 y, f32 z, s32 hokan);
 void sndSePlay_sndAt3(s32 hokan);
 
+#ifdef VERSION_RAIDOU2
+/* Tables fldAllTblLoad reads from /map/all/MAPALL.TBL, sized by the read. */
+extern u8 mapData3[2048];
+extern u8 fldData2[48];
+extern u8 mapMapObjectRefreshData[1536];
+extern u8 mapData155[11840];
+extern u8 fldCallGetIntParaData[2560];
+extern u8 mapData156[1536];
+extern u8 mapData157[10240];
+extern u8 mapAutoMapDraw3Data[768];
+extern u8 mapData158[1024];
+extern u8 mapAutoMapDraw3Data2[288];
+extern u8 mapKazeLabelData[128];
+extern u8 fldCallGetIntParaData4[192];
+extern u8 fldData44[16];
+extern u8 tipsData[1024];
+extern u8 tipsData2[1280];
+extern u8 tipsData3[1024];
+extern u8 mapData164[1280];
+extern u8 mapData165[1024];
+extern u8 mapData166[1280];
+extern u8 fldData45[6400];
+extern u8 nbData10[256];
+extern u8 nbData9[128];
+extern u8 nbData11[768];
+extern u8 nbData12[512];
+extern u8 mapWork20[512];
+extern u8 mapData159[128];
+#endif
+
 #endif

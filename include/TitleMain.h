@@ -68,6 +68,10 @@ typedef struct titleData_t {
 
 /* Sequence TitleGoMain jumps to. */
 extern jmsSeqUnit_t rstData2;
+#ifdef VERSION_RAIDOU2
+extern jmsSeqUnit_t rstCallGetProcessDataData3;
+extern jmsSeqUnit_t rstCallGetProcessDataData4;
+#endif
 
 #ifdef VERSION_RAIDOU2
 typedef char titleData_size_must_be_0xE8[(sizeof(titleData_t) == 0xE8) ? 1 : -1];

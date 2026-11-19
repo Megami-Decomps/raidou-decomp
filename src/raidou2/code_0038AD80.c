@@ -12,7 +12,39 @@
 #include "sdk_libc.h"
 #include "code_0016A7D8.h"
 
-INCLUDE_ASM(const s32, "code_0038AD80", DrawTop);
+void DrawTop(struct tagCMP_MAP_WORK *wk) {
+    struct sprHandle_t *spr;
+    s32 flg;
+
+    spr = cmpGetSpriteHnd(CMP_SPR_MAP);
+    flg = fldDrawTopSub();
+    if (spr == NULL) {
+        return;
+    }
+    itfDrawMiscSpriteList(0, 0, 0, 0xFF, spr, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL, DrawTopData);
+    if (flg & 4) {
+        itfDrawMiscSpriteAlpha(242, 62, 0, 0xFF, spr, 21, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (flg & 8) {
+        itfDrawMiscSpriteAlpha(242, 375, 0, 0xFF, spr, 22, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (flg & 0x10) {
+        itfDrawMiscSpriteAlpha(26, 218, 0, 0xFF, spr, 20, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (flg & 0x20) {
+        itfDrawMiscSpriteAlpha(459, 219, 0, 0xFF, spr, 19, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (flg & 1) {
+        itfIconDrawSprite(11, 17, 0, 0xFF, 53, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(43, 15, 0, 0xFF, spr, 2, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (flg & 2) {
+        itfIconDrawSprite(435, 17, 0, 0xFF, 54, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(467, 15, 0, 0xFF, spr, 3, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    }
+    itfIconDrawSprite(438, 419, 0, 0xFF, 13, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    itfDrawMiscSpriteAlpha(460, 420, 0, 0xFF, spr, 4, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+}
 
 s32 DrawProcess(dds3ProcessID_t *PID) {
     tagCMP_MAP_WORK *wk = dds3GetProcessData(PID);

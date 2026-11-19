@@ -242,6 +242,11 @@ s32 sbtlCallBtlLoadAttackHitData(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetMotionVisualData2(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
 #ifdef VERSION_RAIDOU2
 s32 sbtlCheckLoopMotion(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
+s32 sbtlSetMotion_ID(struct SBTLUNIT_WORK *wk, s32 id, s32 bframe, s32 aframe, s8 flg);
+void sbtlCallMemFreeDirect(MODELTYPE major, s32 minor, s32 devilid);
+void cmpCallMemFreeDirect(struct SBTLUNIT_WORK *wk);
+s32 sbtlDrawShadow(struct SBTLUNIT_WORK *wk);
+void sbtlCallBtlGetRaceName(struct SBTLUNIT_WORK *wk);
 s32 sbtlGetMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_SIDE side, SBTLUNIT_MOTION no);
 #endif
 s32 sbtlCheckMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
@@ -313,7 +318,7 @@ typedef struct SBTLSKL_BARRIER_WORK {
 struct SBTLUNIT_WORK {
     u8 pad000[0x20];
     sdfVector4_t vPosBfrCmb; /* pos saved by sbtlSetCmbBfrPos */
-    u8 pad030[0x10];
+    f32 visual[4];
     sdfVector4_t mv_spd;
     sdfVector4_t max_mvspd;
     sdfVector4_t mv_spdbk;
@@ -369,7 +374,9 @@ struct SBTLUNIT_WORK {
     s8 changeflg;
     u8 pad516[0xC];
     s16 field406;
-    u8 pad524[0xC];
+    struct dds3Basic_t *pBasic_d;
+    struct evtUnit_t *hEveUnit_d;
+    struct mdlObj_t *hModel_d;
     u8 field414;
     u8 pad531[0x3];
     u32 flg;
@@ -410,9 +417,22 @@ struct SBTLUNIT_WORK {
     u8 pad5C6[0x6];
     s16 field4A0;
     s16 field4A2;
-    u8 pad5D0[0x608 - 0x5D0];
+    s32 damage_serialID;
+    s32 damage_workID;
+    u8 pad5D8[0x5F0 - 0x5D8];
+    s32 bst_effserialID2;
+    u8 pad5F4[0x600 - 0x5F4];
+    struct sdfMemHandle_t *msgHandle;
+    struct fileRequest *msgFile;
     void *msgData;
-    u8 pad60C[0x630 - 0x60C];
+    u8 pad60C[0x4];
+    struct sdfMemHandle_t *cacheHandle;
+    s32 field4E0;
+    struct effRefObj_t *cacheRef;
+    struct sdfMemHandle_t *field61C; /* a second cache, freed like cacheHandle */
+    s32 field620;
+    struct effRefObj_t *field624;
+    u8 pad628[0x630 - 0x628];
     s8 light_buff[3];
     s8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;

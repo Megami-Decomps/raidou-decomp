@@ -4,6 +4,8 @@
 #include "evt.h"
 #include "dds3KernelCore.h"
 #include "evtTmxPreLoad.h"
+#include "sdk_libc.h"
+#include "sdfSound.h"
 
 INCLUDE_ASM(const s32, "code_001E37C0", evtCallGrAllocPacketBuff2);
 
@@ -147,7 +149,34 @@ void DestructDestroy_evtCutIn(dds3ProcessID_t *PID) {
     DelProcessAll();
 }
 
-INCLUDE_ASM(const s32, "code_001E37C0", evtStart);
+dds3ProcessID_t *evtStart(s32 *pFrame, dds3ProcessID_t *ParentPID, s32 x, s32 y, s32 z, s32 frame, s32 length, s32 scale, s32 no) {
+    char texpath[64];
+    dds3ProcessID_t *pid;
+
+    if (no == 0) {
+        return NULL;
+    }
+    sprintf(texpath, evtCutInCreateData2, evtCutInCreateData3, evtCutInCreateData[no]);
+    if (no >= 0x20 && no < 0x30) {
+        evtCutInCreateSub(107);
+    } else {
+        evtCutInCreateSub(0);
+    }
+    switch ((u32)no) {
+    case 0x00 ... 0x15:
+    case 0x1B ... 0x1F:
+    case 0x60 ... 0x6E:
+    case 0x7A ... 0x7F:
+        p2sdPlaySE(0x1001F, 127, 63);
+        break;
+    }
+    if (GetRegistNums() == 0 && dds3SearchProcessName(evtStrCutInDestructor) == NULL) {
+        dds3LinkProcess(ParentPID, dds3StartProcess(evtStrCutInDestructor, 0, 0, 0, DestructProcess_evtCutIn, (dds3ProcessFunc_t)DestructDestroy_evtCutIn, NULL));
+    }
+    pid = evtPictureStartProcess4(x, y, z, frame, length, pFrame, scale, no, Callback_evtCutIn, texpath);
+    AddUID(no, pid);
+    return pid;
+}
 
 dds3ProcessID_t *evtStartCommand(dds3ProcessID_t *ParentPID, s32 X, s32 Y, s32 Type, u32 UID) {
     u32 type;

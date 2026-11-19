@@ -354,7 +354,8 @@ typedef struct SBTL_WORK {
     u8 field87A;
     u8 padC57[0xC7B - 0xC57];
     u8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
-    u8 padC7C[0xC90 - 0xC7C];
+    u8 padC7C[0xC8C - 0xC7C];
+    struct SBTLUNIT_WORK *pNakama0; /* HD name */
     struct SBTLUNIT_WORK *pNakama1;
     u8 pad_C94[0xCA2 - 0xC94];
     s8 fieldCA2; /* sbtlMainDraw leaves the moon alone when set */
@@ -398,7 +399,8 @@ typedef struct SBTL_WORK {
     s32 timeMode;
     u8 pad42D8[0x42DD - 0x42D8];
     s8 field42DD;
-    u8 pad42DE[0x4309 - 0x42DE];
+    u8 pad42DE[0x4308 - 0x42DE];
+    u8 field4308; /* Draw_sbtlUnit counts the units whose name it draws */
     s8 geirinstep;
     s16 geirincnt;
     u8 pad430C[0x4310 - 0x430C];
@@ -678,12 +680,16 @@ typedef struct SBTLITEM_WORK {
 /* Devil table entry returned by sbtlIfDrawActionSub (0x94 bytes). Partial raidou2 layout. */
 typedef struct SBTL_DEVIL_DATA {
     u32 flag;
-    u8 pad04[0x68 - 0x4];
+    u8 pad04[0xE - 0x4];
+    s8 kuda_id; /* HD name */
+    u8 pad0F[0x68 - 0xF];
     SBTLITEM_WORK item[4];
     u8 pad78[0x80 - 0x78];
     s16 field80;
     s16 field82; /* index into DDS3_GBWK->devilWork */
-    u8 pad84[0x94 - 0x84];
+    u8 pad84[0x8C - 0x84];
+    u8 mskskill; /* HD name */
+    u8 pad8D[0x94 - 0x8D];
 } SBTL_DEVIL_DATA;
 
 SIZE_CHECK(SBTL_DEVIL_DATASizeCheck, SBTL_DEVIL_DATA, 0x94);

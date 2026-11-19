@@ -119,7 +119,7 @@ typedef struct MenuImgDat_t {
     s16 strWidth;
     u16 flag;
 #ifdef VERSION_RAIDOU2
-    u8 unk20[0x10];
+    s16 field20[4][2]; /* cleared by MenuInit_itf */
 #endif
 } MenuImgDat_t;
 #ifdef VERSION_RAIDOU2

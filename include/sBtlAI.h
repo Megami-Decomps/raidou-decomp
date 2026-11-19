@@ -121,6 +121,7 @@ s32 SetNextTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl, s32 no);
 #ifdef VERSION_RAIDOU2
 /* the summon slot (0 or 1) of wk, or -1 */
 s32 GetMeireiNo(struct SBTLUNIT_WORK *wk);
+struct SBTLUNIT_WORK *sbtlGetAnotherEnemy(struct SBTLUNIT_WORK *wk);
 #endif
 u8 TEquationno_01(struct SBTLUNIT_WORK *wk);
 u8 TEquationno_0c(struct SBTLUNIT_WORK *wk);

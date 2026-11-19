@@ -69,6 +69,7 @@ s32 datCallCalcGetItemNum2(s32 id, s32 num);
 s32 datGetItemNum(s32 id);
 void datAddStock(s32 nums);
 s32 datCreateDevilUnitExSub(s32 devilId);
+void datLeaf(s32 arg0, s32 arg1, s32 arg2);
 
 extern u32 sdatLvUpDevilGiftTbl;
 extern u32 sdatLvUpDevilGiftSize;
@@ -131,6 +132,7 @@ s32 datCallGetStockDevilID2(u32 id);
 #ifdef VERSION_RAIDOU2
 s32 datGetStockDevilIndex(u32 id);
 s16 datRefDDS3GBWK20(s16 id);
+s32 datOmoideSkillHaveSkill(struct sdatUnitWork_t *pWork, SKLID skill);
 #endif
 s32 datCheckSameDevil(u32 id);
 s32 datAllReleaseScriptSub(void);

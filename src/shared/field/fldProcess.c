@@ -1738,7 +1738,75 @@ reload:
     scrAllReleaseScript();
 }
 #else
-INCLUDE_ASM(const s32, "field/fldProcess", mapCallMap);
+void mapCallMap(s32 map, s32 flor, s32 point, char *label)
+{
+    sdfVector4_t rotation;
+    sdfVector4_t axis = { 0.0f, 1.0f, 0.0f, 1.0f };
+    f32 pos[4];
+
+    fldGlobalBase.word35C = 0;
+    if (fldGlobalBase.word394 != 0) {
+        fldGlobalBase.word394 = 0;
+        goto reload;
+    }
+    if (map == 0) {
+        map = mapCallLastMap;
+        flor = mapCallLastFloor;
+        point = mapCallLastPoint;
+        label = mapCallLastLabel;
+    } else if (playerBasic == NULL || fldGlobalBase.amSBlock != map || fldGlobalBase.nameU != flor) {
+        goto reload;
+    } else {
+        fldBgZoomTest(4);
+        mapObjPointGet(point, &pos[0], &pos[1], &pos[2], &pos[3]);
+        fldGlobalBase.focusX = pos[0];
+        fldGlobalBase.focusZ = pos[2];
+        fldGlobalBase.focusY = mapGetY(fldGlobalBase.focusX, fldGlobalBase.focusZ);
+        mapHamidasiCheck();
+        mapCutSet_From_Pos(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
+        fldPlayerForceSetPos_NoHokan(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
+        if (fldGlobalBase.nakamaMode == 0) {
+            mapAiboFoceSet3(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
+            mapAiboWakeUp(1);
+            mapSummonDvFoceSet2(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
+            mapNakamaWakeUp(1);
+        }
+        fldGlobalBase.floatC0 = pos[3];
+        fldGlobalBase.floatC4 = pos[3];
+        VU0_LOAD_VF(vf10, &axis);
+        FromRotation(fldGlobalBase.floatC0 * 3.14f / 180.0f);
+        VU0_STORE_VF(vf10, &rotation);
+        dds3SetRotPoseSet(playerBasic, &rotation);
+        if (mapNpcTblRefresh_Wait() == -1) {
+            mapNpcTblRefresh();
+        }
+        while (mapNpcTblRefresh_Wait() == 1) {
+        }
+        mapMapObjectRefresh();
+        fldRegistUnitPad();
+        if (label != NULL) {
+            strcpy(ProcSequenceData9, label);
+            fldPlayerMotReset();
+            dds3SceneBasicStartScript(dds3GetActiveScene(), label);
+        }
+        return;
+    }
+reload:
+    fldGlobalBase.word1D8 = 0;
+    fldGlobalBase.mapCallMode = 1;
+    if (map == 1 && flor > 0) {
+        fldGlobalBase.mapCallMode = 2;
+    }
+    if (map == 19) {
+        fldGlobalBase.mapCallMode = 3;
+    }
+    mapSetSceneParam(&mapCallScriptBuf, map, flor, point);
+    if (label != NULL) {
+        sprintf(mapCallScriptBuf.FoceScript, mapCallMapFmt, label);
+    }
+    dds3AdminiCallSequence(7, &mapCallScriptBuf, sizeof(mapCallScriptBuf), 0);
+    scrAllReleaseScript();
+}
 #endif
 
 s32 fldHardSelect1Sub(void)
@@ -2304,10 +2372,8 @@ s32 fldSaveLabel(void) {
 #else
 INCLUDE_ASM(const s32, "field/fldProcess", fldSaveLabel);
 #endif
-#else
-INCLUDE_RODATA(const s32, "field/fldProcess", mapCallMapTable2);
-#endif
 
+#endif
 #ifdef VERSION_RAIDOU1
 s32 MskL2Task(void)
 {

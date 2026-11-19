@@ -272,6 +272,10 @@ extern const char ProcRandomEncountCheck_fldStrTakaraSagasiDvlItem[];
 extern const char ProcRandomEncountCheck_fldStrZeniSagasiDvlYen[];
 /* The last mapCallMap request (map 0 repeats it) and its script name buffer. */
 extern struct fldSceneParam_t mapCallScriptBuf;
+#ifdef VERSION_RAIDOU2
+/* the script label mapCallMap last started in place */
+extern char ProcSequenceData9[];
+#endif
 extern char mapCallMapFmt[];
 extern s32 mapCallLastMap;
 extern s32 mapCallLastFloor;

@@ -3,6 +3,10 @@
 #include "TitleMain.h"
 #include "sdfMemory.h"
 #include "sdfTex.h"
+#include "dat.h"
+#include "fldProcess.h"
+#include "sdfSound.h"
+#include "dds3PadManager.h"
 
 s32 rstCallGetProcessData31(dds3ProcessID_t *PID)
 {
@@ -17,7 +21,50 @@ s32 rstLeaf11(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0035C0B0", rstCallGetProcessData);
+s32 rstCallGetProcessData(dds3ProcessID_t *PID) {
+    titleData_t *data;
+    s32 ret;
+
+    data = dds3GetProcessData(PID);
+    ret = jmsSeqChange(&data->panel, &data->seqUnit, 0, PID);
+    if (ret != 0) {
+        return ret;
+    }
+    evtCallPlay(25, 5400, 30, 1, data);
+    if (TitleCalcCursor(&data->Cursor)) {
+        data->Timer = 0;
+    }
+    if (dds3PadButtonState[0x21] < 0) {
+        data->Timer = 1200;
+    }
+    if (data->Timer < 1200) {
+        if (dds3PadButtonState[0x23] < 0 || dds3PadButtonState[0x2C] < 0) {
+            switch (data->Cursor.Index) {
+            case 0:
+                p2sdPlaySE(0x500002, 127, 63);
+                dds3FadeOut(0, 0, 0, 30);
+                datLeaf(0, 0, 0);
+                jmsSeqJumpAndFree(&data->seqUnit, &rstCallGetProcessDataData3);
+                break;
+            case 1:
+                p2sdPlaySE(0x500002, 127, 63);
+                datLeaf(0, 0, 0);
+                dds3FadeOut(0, 0, 0, 60);
+                jmsSeqJumpAndFree(&data->seqUnit, &rstCallGetProcessDataData3);
+                break;
+            case 2:
+                jmsSeqJumpAndFree(&data->seqUnit, &rstCallGetProcessDataData4);
+                p2sdPlaySE(0, 127, 63);
+                break;
+            }
+        }
+    } else {
+        jmsSeqJumpAndFree(&data->seqUnit, &rstData2);
+        p2sdPlaySE(1, 127, 63);
+    }
+    data->Timer++;
+    return 0;
+}
 
 s32 rstCallGetProcessData32(dds3ProcessID_t *PID) {
     titleData_t *data;

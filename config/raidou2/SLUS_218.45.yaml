@@ -717,6 +717,7 @@ segments:
       - [0x3AA1D0, .rodata, kernel/dds3DebugStuff]
       - [0x3AA230, .rodata, fclMenu]
       - [0x3AA270, rodata, rodata_004A9270]
+      - [0x3AA690, .rodata, fclDrawBack]
       - [0x3AA840, .rodata, field/fldPlayer]
       - [0x3AA8A0, .rodata, code_r1_00128378]
       - [0x3AA9C8, rodata, rodata_004A99C8]

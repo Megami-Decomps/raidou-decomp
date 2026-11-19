@@ -21386,7 +21386,6 @@
 0x004E9FF0	mapWork20	data	tier=D	derived-shared	na	used by 2 functions: mapChkTakaraEX, fldAllTblLoad
 0x004EA200	ProcSequenceWork	data	tier=D	derived-dominant	na	used by ProcSequence (4 of 8 refs, 3 functions)
 0x004EA238	mapCallMapNextWork	data	tier=D	derived-sole	na	used by mapCallMapNext
-0x004EA258	mapCallMapWork	data	tier=D	derived-sole	na	used by mapCallMap
 0x004EB4D0	mapWork3	data	tier=D	derived-shared	na	used by 5 functions: mapSummonDvFoceSet_NotRot, mapSummonDvFoceSet, mapSummonDvFoceSet_DeadReturn
 0x004EB8D4	mapEveHitTaskFldSub3Work	data	tier=D	derived-sole	na	used by mapEveHitTaskFldSub3
 0x004EFFFF	jmsData7Entry8	data	tier=D	derived-table	na	pointed to by jmsData7Entry4
@@ -24366,6 +24365,7 @@
 0x004E49D0	cmpPanelEffList3	data	tier=C	smt3-ref	0.80 (n=D_004E49D0)	smt3-ref/close: nfun=1, other=0, sim=0.9, games=1, size=True, sec=False, fn=FreeSpriteHnd; cmpPanelEffList is another symbol
 0x004E4AD4	sdfDiscRequestSemaphore	data	tier=C	dds-ref	0.59 (n=D_r1_0046FA94)	dds-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfDevSignalPendingSemaphore
 0x004EA1F0	fldRandomBuf	data	tier=C	derived-derived-role	na	the sdfRandomize buffer of fclMapAllShadow, same call as raidou1 fldRandomBuf; replaces fclMapAllShadowWork
+0x004EA258	mapCallScriptBuf	data	tier=C	derived-derived-role	na	R1 name: the fldSceneParam_t buffer mapCallMap fills with mapSetSceneParam and passes to dds3AdminiCallSequence(7, buf, 0x38); replaces mapCallMapWork
 0x004EA290	fldResolverFL1Data	data	tier=C	derived-derived-role	na	same function as raidou1 0x00474EF0 (r1_r2 pair at 0x004EA290, code-ref); replaces fldFileResolverFL1Work
 0x004EA2A0	fldD3pHandle	data	tier=C	derived-derived-role	na	same function as raidou1 0x00474F00 (r1_r2 pair at 0x004EA2A0, code-ref); replaces fldWork4
 0x004EA2B0	fldD3pData	data	tier=C	derived-derived-role	na	same function as raidou1 0x00474F10 (r1_r2 pair at 0x004EA2B0, code-ref); replaces fldWork5

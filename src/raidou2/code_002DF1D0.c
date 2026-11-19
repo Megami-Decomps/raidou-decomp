@@ -8,6 +8,7 @@
 #include "sBtlCalc.h"
 #include "sBtlDraw.h"
 #include "sBtlUnit.h"
+#include "sBtlAI.h"
 
 s32 sbtlCheckMsgMemType(void)
 {
@@ -69,7 +70,57 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlSearchUnitID27);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetRirituNakamaHD);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlRefSbtl60);
+s32 sbtlRefSbtl60(SBTLEXP_LISTWORK *lwk) {
+    SBTLEXP_WORK *ewk;
+
+    if (lwk == NULL) {
+        return 0;
+    }
+    ewk = lwk->ewk;
+    lwk->counter++;
+    lwk->counter = (lwk->counter <= 0) ? 0 : ((lwk->counter > 180) ? 180 : lwk->counter);
+    if (lwk->counter >= 180) {
+        lwk->ganpon = 0.0f;
+        lwk->riritu = 1.0f;
+    }
+    if (lwk->ralpha > 0) {
+        if (lwk->ralpha == 128) {
+            lwk->rcounter++;
+            lwk->rcounter = (lwk->rcounter <= 0) ? 0 : ((lwk->rcounter > 60) ? 60 : lwk->rcounter);
+            if (lwk->rcounter >= 60) {
+                lwk->ralpha--;
+                lwk->alpha = 255;
+                lwk->ganpon *= lwk->riritu;
+            }
+        } else {
+            lwk->ralpha -= 16;
+            lwk->ralpha = (lwk->ralpha <= 0) ? 0 : ((lwk->ralpha > 128) ? 128 : lwk->ralpha);
+        }
+    }
+    if (lwk->alpha > 128) {
+        lwk->alpha -= 8;
+        lwk->alpha = (lwk->alpha <= 128) ? 128 : ((lwk->alpha > 255) ? 255 : lwk->alpha);
+    }
+    if (ewk == NULL || lwk->num == 0) {
+        return 0;
+    }
+    if (IsSceanStop()) {
+        return 0;
+    }
+    lwk->za_cnt = 0;
+    do {
+        if (ewk->status == SBTLEXP_ST_PROC) {
+            ewk->alpha -= 4;
+            ewk->alpha = (ewk->alpha <= 0) ? 0 : ((ewk->alpha > 128) ? 128 : ewk->alpha);
+            ewk->y -= 2;
+            if (ewk->alpha <= 0) {
+                ewk->status = SBTLEXP_ST_END;
+            }
+        }
+        ewk = ewk->next;
+    } while (ewk != NULL);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf124);
 
@@ -134,7 +185,42 @@ SBTLSKLVISUAL_TBL *sbtlGetSklVisualTbl(SKLID sklid)
     return &sbtlGetSklVisualTblData[sklid];
 }
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetSkill_MotionData);
+s32 sbtlSetSkill_MotionData(struct SBTLUNIT_WORK *wk, SKLID sklid) {
+    struct SBTLSKILLP_TBL *skl = sbtlGetSkilltbl(sklid);
+    SBTLSKLVISUAL_TBL *vis = sbtlGetSklVisualTbl(sklid);
+
+    if (wk_sbtl->battleMode == 3 && (skl->type & 0xFFF) == 8) {
+        sbtlSetMotion_sbtlUnit(wk, 4, 0, 0, 0);
+    } else if (sklid == SKLID_BS14_CSHO_R) {
+        switch (wk->aiwk->scrStep3) {
+        case 0:
+            sbtlSetMotion_ID(wk, 17, 0, 0, 0);
+            break;
+        case 1:
+            sbtlSetMotion_ID(wk, 16, 0, 0, 0);
+            break;
+        case -1:
+            sbtlSetMotion_ID(wk, 15, 0, 0, 0);
+            break;
+        }
+    } else if (skl->type & 0x1000) {
+        if (vis->flg & 0x10) {
+            sbtlSetMotion_sbtlUnit(wk, vis->motionno, 0, 0, 0);
+            if (wk_sbtl->member_num > 0) {
+                sbtlSetMotion_sbtlUnit(wk_sbtl->pNakama0, vis->motionno2, 0, 0, 0);
+            }
+        } else {
+            sbtlSetMotion_sbtlUnit(wk, vis->motionno, 0, 0, 0);
+            sbtlSetMotion_sbtlUnit(sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID), vis->motionno2, 0, 0, 0);
+        }
+    } else {
+        sbtlSetMotion_sbtlUnit(wk, vis->motionno, 0, 0, 0);
+        if (sklid == SKLID_FUKOSYUUJIRAIYA) {
+            sbtlSetMotion_sbtlUnit(sbtlGetAnotherEnemy(wk), vis->motionno, 0, 0, 0);
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSklVisualTbl3);
 

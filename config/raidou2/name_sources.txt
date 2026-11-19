@@ -29876,7 +29876,7 @@
 0x004EA1F0	fldRandomBuf	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=the sdfRandomize buffer of fclMapAllShadow, same call as raidou1 fldRandomBuf; replaces fclMapAllShadowWork
 0x004EA200	ProcSequenceWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by ProcSequence (4 of 8 refs, 3 functions)
 0x004EA238	mapCallMapNextWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallMapNext
-0x004EA258	mapCallMapWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallMap
+0x004EA258	mapCallScriptBuf	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R1 name: the fldSceneParam_t buffer mapCallMap fills with mapSetSceneParam and passes to dds3AdminiCallSequence(7, buf, 0x38); replaces mapCallMapWork
 0x004EA290	fldResolverFL1Data	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as raidou1 0x00474EF0 (r1_r2 pair at 0x004EA290, code-ref); replaces fldFileResolverFL1Work
 0x004EA2A0	fldD3pHandle	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as raidou1 0x00474F00 (r1_r2 pair at 0x004EA2A0, code-ref); replaces fldWork4
 0x004EA2B0	fldD3pData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as raidou1 0x00474F10 (r1_r2 pair at 0x004EA2B0, code-ref); replaces fldWork5

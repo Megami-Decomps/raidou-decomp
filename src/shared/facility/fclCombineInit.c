@@ -9,6 +9,7 @@
 #include "dds3WorldBasic.h"
 #include "sbtlWork.h"
 #include "code_0015D490.h"
+#include "dat.h"
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", mapNakamaPosRotTable);
@@ -172,7 +173,114 @@ void mapNakamaSkilIs_SetBit(s32 id)
     }
 }
 #else
-INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSkilIs_SetBit);
+void mapNakamaSkilIs_SetBit(s32 id)
+{
+    s32 i;
+    s32 index;
+    sdatUnitWork_t *unit;
+
+    for (i = 0; i < 32; i++) {
+        evtBitOff(i + 2272);
+    }
+    if (id <= 0) {
+        return;
+    }
+    if (id >= 209) {
+        return;
+    }
+    switch (sbtlIfDrawActionSub(id)->mskskill) {
+    case 8:
+        evtBitOn(2280);
+        break;
+    case 9:
+        evtBitOn(2281);
+        break;
+    case 10:
+        evtBitOn(2282);
+        break;
+    case 11:
+        evtBitOn(2283);
+        break;
+    case 12:
+        evtBitOn(2284);
+        break;
+    case 13:
+        evtBitOn(2285);
+        break;
+    case 14:
+    case 15:
+        break;
+    case 16:
+        evtBitOn(2288);
+        break;
+    case 17:
+        evtBitOn(2289);
+        break;
+    case 18:
+        evtBitOn(2290);
+        break;
+    case 19:
+        evtBitOn(2291);
+        break;
+    case 20:
+        evtBitOn(2292);
+        break;
+    case 21:
+        evtBitOn(2293);
+        break;
+    case 22:
+        evtBitOn(2294);
+        break;
+    case 23:
+        evtBitOn(2295);
+        break;
+    case 24:
+        evtBitOn(2296);
+        break;
+    case 25:
+        evtBitOn(2297);
+        break;
+    case 26:
+        evtBitOn(2298);
+        break;
+    }
+    switch (sbtlIfDrawActionSub(DDS3_GBWK->mapSummonID)->kuda_id) {
+    case 0:
+        break;
+    case 1:
+        evtBitOn(2272);
+        break;
+    case 2:
+        evtBitOn(2273);
+        break;
+    case 3:
+        evtBitOn(2274);
+        break;
+    case 4:
+        evtBitOn(2275);
+        break;
+    case 5:
+        evtBitOn(2276);
+        break;
+    case 6:
+        evtBitOn(2277);
+        break;
+    case 7:
+        evtBitOn(2278);
+        evtBitOn(2298);
+        break;
+    }
+    index = datGetStockDevilIndex(DDS3_GBWK->mapSummonID);
+    if (index != -1) {
+        unit = &DDS3_GBWK->playerData.stock[index];
+        if (datOmoideSkillHaveSkill(unit, SKLID_KANE_HIROU)) {
+            evtBitOn(2289);
+        }
+        if (datOmoideSkillHaveSkill(unit, SKLID_ITEM_HIROU)) {
+            evtBitOn(2290);
+        }
+    }
+}
 #endif
 
 void mapNakamaStockOnCheck(void)

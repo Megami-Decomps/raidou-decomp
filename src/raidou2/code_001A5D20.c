@@ -158,7 +158,70 @@ INCLUDE_ASM(const s32, "code_001A5D20", MenuRemakeLinkSub);
 
 INCLUDE_ASM(const s32, "code_001A5D20", MenuDelMenuSub);
 
-INCLUDE_ASM(const s32, "code_001A5D20", MenuInit_itf);
+void MenuInit_itf(Menu_t *wk)
+{
+    s32 i;
+    s32 j;
+
+    wk->pHead = NULL;
+    wk->pTail = NULL;
+    wk->select = NULL;
+    wk->nowHierarchy = 0;
+    wk->nMenuSet = 0;
+    wk->drwDefMax = 8;
+    wk->drwDefNum = 8;
+    wk->drwMax = 8;
+    wk->dispType[0] = 0;
+    wk->dispType[1] = 0;
+    wk->scrollType = 0;
+    wk->ot = 104;
+    wk->gflag = 31;
+    wk->lflag = 0;
+    wk->frame = 0;
+    wk->count = 0;
+    for (i = 0; i < 4; i++) {
+        wk->selNo[i] = 0;
+        wk->topNo[i] = 0;
+        wk->drwNo[i] = 0;
+    }
+    for (i = 0; i < ITFMENU_IMG_DAT_MAX; i++) {
+        wk->imgDat[i].hSpr = NULL;
+        wk->imgDat[i].pList = NULL;
+        wk->imgDat[i].color = 0x80808080;
+        wk->imgDat[i].flag = 0;
+        wk->imgDat[i].strStyle = 0;
+        wk->imgDat[i].strSpace = 0;
+        wk->imgDat[i].strWidth = 0;
+        if (i == ITFMENU_IMG_DAT_SCROLL) {
+            wk->imgDat[i].sx = 162;
+            wk->imgDat[i].sy = 58;
+            wk->imgDat[i].sw = 5;
+            wk->imgDat[i].sh = 208;
+            wk->imgDat[i].fx = 1;
+            wk->imgDat[i].fy = 1;
+        } else {
+            wk->imgDat[i].sw = 128;
+            wk->imgDat[i].sh = 26;
+            wk->imgDat[i].fx = 4;
+            wk->imgDat[i].fy = 2;
+            switch (i) {
+            case ITFMENU_IMG_DAT_TITLE:
+                wk->imgDat[ITFMENU_IMG_DAT_TITLE].sx = 32;
+                wk->imgDat[ITFMENU_IMG_DAT_TITLE].sy = 32;
+                break;
+            case ITFMENU_IMG_DAT_PANEL:
+            case ITFMENU_IMG_DAT_SELECT:
+                wk->imgDat[i].sx = 32;
+                wk->imgDat[i].sy = 58;
+                break;
+            }
+        }
+        for (j = 0; j < 4; j++) {
+            wk->imgDat[i].field20[j][0] = 0;
+            wk->imgDat[i].field20[j][1] = 0;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_001A5D20", itfMenuCtrlSelectSub);
 

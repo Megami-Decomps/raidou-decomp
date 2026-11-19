@@ -19,6 +19,11 @@
 #include "sdk_libc.h"
 #include "EventBit.h"
 #include "sBtlCmndMenuNew.h"
+#include "dds3SceneBasic.h"
+#include "code_r1_002250F8.h"
+#include "sBtlAI.h"
+#include "dds3ObjectBase.h"
+#include "sBtlPlayer.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
@@ -629,7 +634,64 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlRefSbtl32);
 
 INCLUDE_RODATA(const s32, "code_0026B0A8", Init_sbtlUnitStrSbtlunitProc);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", Draw_sbtlUnit);
+s32 Draw_sbtlUnit(void) {
+    struct SBTLUNIT_WORK *wk;
+    struct SBTLUNIT_WORK *target;
+    s32 i;
+
+    if (wk_sbtl == NULL || wk_sbtl->unitList == NULL) {
+        return 0;
+    }
+    wk_sbtl->field4308 = 0;
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk == NULL || (wk->vstatus & 0x2000)) {
+            continue;
+        }
+        switch (wk->mode) {
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 10:
+                SDF_VU0_LOADVECTOR(wk->visual);
+                mdlSetScale(wk->hModel);
+                if (wk->vstatus & 0x1000) {
+                    wk->hModel->flags |= 1;
+                    dds3ObjectBaseOffFlag(wk->pBasic, 0x400);
+                } else {
+                    wk->hModel->flags &= ~1;
+                    if (wk->status == 10 || wk->status == 11) {
+                        dds3ObjectBaseOffFlag(wk->pBasic, 0x400);
+                    } else {
+                        sbtlDrawShadow(wk);
+                    }
+                }
+                if ((wk->flg & 0x80000000) && wk_sbtl->fieldE8C == 0) {
+                    target = sbtlGetPlayer_HitTarget();
+                    if (target == NULL) {
+                        sbtlCallBtlGetRaceName(wk);
+                        wk_sbtl->field4308++;
+                    } else if (target == wk) {
+                        sbtlCallBtlGetRaceName(wk);
+                        wk_sbtl->field4308++;
+                    }
+                }
+                break;
+            case 4:
+                SDF_VU0_LOADVECTOR(wk->visual);
+                mdlSetScale(wk->hModel);
+                wk->hModel->flags |= 1;
+                dds3ObjectBaseOffFlag(wk->pBasic, 0x400);
+                break;
+            case 9:
+            case 11:
+            case 12:
+                break;
+        }
+    }
+    return 1;
+}
 
 struct SBTLUNIT_LISTWORK *sbtlCreateUnitList(s32 number)
 {
@@ -768,7 +830,65 @@ s32 sbtlSearchReturn_Unit(struct SBTLUNIT_WORK *wk)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlDeleteUnit);
+s32 sbtlDeleteUnit(struct SBTLUNIT_WORK *wk) {
+    if (wk_sbtl->battleMode != 3 && (wk->field414 & 1) && !(wk->field414 & 0x80)) {
+        wk_sbtl->returnindex[0] = -1;
+        wk_sbtl->flg2 &= ~0x100;
+        sbtlReleaseDvltk_List(wk_sbtl->dvltkList, 1);
+    }
+    sbtlReleaseUnitList_ID(wk_sbtl->unitList, wk->field1A0);
+    if (wk->pBasic != NULL) {
+        dds3DeleteSceneBasicData(wk->pBasic);
+        wk->pBasic = NULL;
+        wk->hEveUnit = NULL;
+    }
+    if (wk->pBasic_d != NULL) {
+        dds3DeleteSceneBasicData(wk->pBasic_d);
+        wk->pBasic_d = NULL;
+        wk->hEveUnit_d = NULL;
+    }
+    if (wk->msgHandle != NULL) {
+        if (wk->cacheHandle != NULL) {
+            effReleaseSharedReference(wk->cacheRef);
+            sdfMemFreeDirect(wk->cacheHandle);
+            wk->field4E0 = 0;
+            wk->cacheHandle = NULL;
+        }
+        if (wk->field61C != NULL) {
+            effReleaseSharedReference(wk->field624);
+            sdfMemFreeDirect(wk->field61C);
+            wk->field620 = 0;
+            wk->field61C = NULL;
+            wk->field624 = NULL;
+        }
+        sdfMemFreeDirect(wk->msgHandle);
+        wk->msgHandle = NULL;
+        wk->msgData = NULL;
+    }
+    if (wk->hitwk.status & 1) {
+        sbtlDeleteAttackHitData(wk);
+    }
+    sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
+    sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
+    if (!(wk->flg & 0x800)) {
+        cmpCallMemFreeDirect(wk);
+    }
+    sbtlDelete(wk->model);
+    Proc_sbtlAI(wk->aiwk);
+    if (!(wk->field414 & 2)) {
+        if (!(wk->flg & 0x800)) {
+            sbtlCallMemFreeDirect(wk->major, wk->minor, wk->unit.devilId);
+        }
+    } else {
+        if (!(wk->flg & 0x800)) {
+            if (!sbtlRefSbtl33(wk)) {
+                sbtlCallMemFreeDirect(wk->major, wk->minor, wk->unit.devilId);
+            }
+        }
+    }
+    sdfMemFreeDirect(wk->handle);
+    return 1;
+}
 
 s32 sbtlRefSbtl33(struct SBTLUNIT_WORK *wk)
 {
