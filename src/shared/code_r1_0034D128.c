@@ -521,9 +521,9 @@ mnuWindowContainer_t *jmsCreateCmdMenu(s32 id, s32 width, s32 height, s32 visibl
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", jmsDestroyCmdMenu);
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf22);
+INCLUDE_ASM(const s32, "code_r1_0034D128", jmsSetCmdListAlphaRate);
 
-INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf23);
+INCLUDE_ASM(const s32, "code_r1_0034D128", jmsSetCmdMenuAlphaRate);
 
 void mnuSetWindowContainerLayout(mnuWindowContainer_t *menu, struct sprHandle_t *layout2C, u32 layout30, struct sprHandle_t *layout34,
                                     u32 layout48, u32 layout38, struct sprHandle_t *layout3C, u32 layout40,

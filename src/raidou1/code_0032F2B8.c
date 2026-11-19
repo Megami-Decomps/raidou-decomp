@@ -332,9 +332,9 @@ INCLUDE_ASM(const s32, "code_0032F2B8", shpRootShutdown);
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpProcessStart);
 
-INCLUDE_ASM(const s32, "code_0032F2B8", shpLeaf8);
+INCLUDE_ASM(const s32, "code_0032F2B8", shpKonnouyaProcessStart);
 
-INCLUDE_ASM(const s32, "code_0032F2B8", fldLeaf35);
+INCLUDE_ASM(const s32, "code_0032F2B8", shpMilkHallProcessStart);
 
 INCLUDE_ASM(const s32, "code_0032F2B8", fldShowSceneModels);
 

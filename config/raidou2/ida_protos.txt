@@ -89,7 +89,7 @@
 0x00328898 effReleaseRecordBuckets void effReleaseRecordBuckets(u32 a1)
 0x00345BF0 ctnMemFree void ctnMemFree(void)
 0x0034A940 nekoCallMemFreeDelayedDirect void nekoCallMemFreeDelayedDirect(void)
-0x00357478 lmapLeaf10 void lmapLeaf10(s32 _$A0, s32 _$A1, s32 _$A2)
+0x00357478 Util_GetVerticalVector void Util_GetVerticalVector(s32 _$A0, s32 _$A1, s32 _$A2)
 0x00357620 lmapLeaf5 float lmapLeaf5(float *a1, float *a2, float *a3)
 0x0035E548 fldFontNameEnt void fldFontNameEnt(void)
 0x003CF018 func_r1_00359290 sdfTexHandle_t * func_r1_00359290(sdfTexHandle_t *a1)

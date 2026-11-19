@@ -5,7 +5,7 @@
 
 s32 datGetItemNumEquipMinus(s32 id);
 s32 fldCallGetProcessStat(void);
-void fldLeaf35(void);
+void shpMilkHallProcessStart(void);
 void fldShowSceneModels(void);
 s32 knyGetIntimateRank(void);
 s32 nwdGetSelectModelID(void);
@@ -15,7 +15,7 @@ void shpDrawBack(void);
 void shpDrawGoodPoint(void);
 s32 shpGetModelHandle(void);
 s32 shpGetSelectItemID(void);
-void shpLeaf8(void);
+void shpKonnouyaProcessStart(void);
 void shpProcessStart(s32 a_shoptype);
 void shpSetColorModel(u32 a_abgr, s32 a_defObjId);
 s32 shpSetModelMotion(void);

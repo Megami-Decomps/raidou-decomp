@@ -9571,9 +9571,9 @@
 0x00357018	lmapCallGrAllocPacketBuff	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit lmap; calls sdfGrAllocPacketBuff
 0x00357140	Util_Point3To2	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD lmap.Util_Point3To2 score 4.7 flag -: calls1 calls-of-match st1:call r1-only
 0x00357240	Util_GetPadAnalog	hd	hd: Raidou HD lmap.Util_GetPadAnalog, score 7.4 band B
-0x00357438	lmapLeaf9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
-0x00357478	lmapLeaf10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
-0x003574C0	lmapLeaf11	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
+0x00357438	UtilFloatToSdf32s	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD lmap.UtilFloatToSdf32s(a_fnum, a_shift): integer part << shift plus the scaled fraction; right after Util_GetPadAnalog as in HD; replaces lmapLeaf9
+0x00357478	Util_GetVerticalVector	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD lmap.Util_GetVerticalVector(pos0, pos1, posp): VU0 outer products of pos1 - pos0 and posp - pos0; after UtilFloatToSdf32s as in HD; replaces lmapLeaf10
+0x003574C0	Util_GetVerticalVector2	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD lmap.Util_GetVerticalVector2(vec, pos0, posp): VU0 outer products of vec and posp - pos0; after Util_GetVerticalVector as in HD; replaces lmapLeaf11
 0x003574F8	lmapFunc4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
 0x003575A8	lmapChrUpdatePosShipPadSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit lmap; called by Chr_UpdatePosShipPad
 0x00357620	lmapLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
@@ -9587,7 +9587,7 @@
 0x00357B78	FldWnd_DrawThumbnail	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD lmap.FldWnd_DrawThumbnail score 8.6 flag -: calls1 prev callers-of-match st1:call r1+r2
 0x00357D30	FldWnd_DrawProcess	hd	hd: Raidou HD lmap.FldWnd_DrawProcess, score 8.0 band B
 0x00357E68	FldWnd_Start	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD lmap.FldWnd_Start score 4.3 flag -: calls1 calls-of-match-uniq st1:call r1-only
-0x00357ED0	lmapLeaf13	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit lmap; no named callee, caller or string
+0x00357ED0	FldWnd_CallEnd	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD lmap.FldWnd_CallEnd: sets flag 8 in the field window process work (g_mainPID_FldWnd); right after FldWnd_Start as in HD; replaces lmapLeaf13
 0x00357EE8	lmapCallTexFreeDelayed2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit lmap; calls sdfTexFreeDelayed
 0x00357F38	lmapLoadFileLmapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit lmap; called by LoadFile_lmap
 0x00357F50	lmapCtrlActionWindowLmapSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit lmap; called by CtrlActionWindow_lmap
@@ -10749,8 +10749,8 @@
 0x0039B620	shpRootProcess	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD shpMain.shpRootProcess score 9.2 flag -: calls3 callers-of-match votes4 st1:call r1+r2
 0x0039B770	shpRootShutdown	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD shpMain.shpRootShutdown score 8.0 flag -: prev next gap=exact st1:gap r1+r2
 0x0039B778	shpProcessStart	hd	hd: Raidou HD shpMain.shpProcessStart, score 7.6 band B
-0x0039B7E0	shpLeaf8	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpProcessStart; no named callee, caller or string
-0x0039B7F8	fldLeaf35	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour fldShowSceneModels; no named callee, caller or string
+0x0039B7E0	shpKonnouyaProcessStart	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpMain.shpKonnouyaProcessStart: shpProcessStart(0); right after shpProcessStart as in HD; replaces shpLeaf8
+0x0039B7F8	shpMilkHallProcessStart	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpMain.shpMilkHallProcessStart: shpProcessStart(1); after shpKonnouyaProcessStart as in HD; replaces fldLeaf35
 0x0039B810	fldShowSceneModels	inferred	method=dds-fuzzy-60-tie-pair; p=0.40 (n=2); tier=C; source=dds; evidence=dds body 0x1339c0 sim 0.688 margin 0.02 pair
 0x0039B858	fldCallGetProcessStat	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour fldShowSceneModels; calls dds3GetProcessStat
 0x0039B8A8	fldCallMenuProcessEnd	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour fldShowSceneModels; calls itfMenuProcessEnd
@@ -11647,8 +11647,8 @@
 0x003BD4A8	mnuCallInitWide	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027C370, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BD4D8	jmsCreateCmdMenu	hd-inferred	hd: Raidou HD jmsCmdMenu.jmsCreateCmdMenu, score 9.0 band B, hd-ab: next edge st1:edge r1+r2; replaces mnuCreateWindowContainer: fuzzy name from SLUS_211.52 0x002B9490, score 1.00, tools/xgame/fuzzy_apply.py
 0x003BD568	jmsDestroyCmdMenu	hd-inferred	hd: Raidou HD jmsCmdMenu.jmsDestroyCmdMenu, score 7.9 band B, hd-ab: calls1 calls-of-match votes2 st1:call r1+r2; replaces mnuDestroyWindowContainer: fuzzy name from SLUS_211.52 0x002B9520, score 1.00, tools/xgame/fuzzy_apply.py
-0x003BD5A8	jmsLeaf22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034D128, neighbour jmsDestroyCmdMenu; no named callee, caller or string
-0x003BD5B0	jmsLeaf23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034D128, neighbour jmsDestroyCmdMenu; no named callee, caller or string
+0x003BD5A8	jmsSetCmdListAlphaRate	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD jmsCmdMenu.jmsSetCmdListAlphaRate(pCmdList, AlphaRate): one store of AlphaRate; right after jmsDestroyCmdMenu as in HD; replaces jmsLeaf22
+0x003BD5B0	jmsSetCmdMenuAlphaRate	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD jmsCmdMenu.jmsSetCmdMenuAlphaRate(pCmdMenu, AlphaRate): one store of AlphaRate (0x60 further in, the menu's list); after jmsSetCmdListAlphaRate as in HD; replaces jmsLeaf23
 0x003BD5B8	mnuSetWindowContainerLayout	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002B9570, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BD5E8	mnuInitializeBasicWindowLayout	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002B95A0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BD618	jmsLeaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034D128, neighbour jmsAddCmdMenuItem; no named callee, caller or string

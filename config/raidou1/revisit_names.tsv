@@ -3861,15 +3861,11 @@
 0x002F3118	lmapCallDevLoadFileEx	func	tier=D	derived-callee	na	unit lmap; calls sdfDevLoadFileEx
 0x002F3168	lmapCallFileCheckEnd	func	tier=D	derived-callee	na	unit lmap; calls pacFileCheckEnd
 0x002F31D0	lmapCallGrAllocPacketBuff	func	tier=D	derived-callee	na	unit lmap; calls sdfGrAllocPacketBuff
-0x002F35F0	lmapLeaf9	func	tier=D	derived-unit	na	unit lmap; no named callee, caller or string
-0x002F3630	lmapLeaf10	func	tier=D	derived-unit	na	unit lmap; no named callee, caller or string
-0x002F3678	lmapLeaf11	func	tier=D	derived-unit	na	unit lmap; no named callee, caller or string
 0x002F36B0	lmapFunc4	func	tier=D	derived-unit	na	unit lmap; no named callee, caller or string
 0x002F3760	lmapChrUpdatePosShipPadSub	func	tier=D	derived-caller	na	unit lmap; called by Chr_UpdatePosShipPad
 0x002F37D8	lmapLeaf12	func	tier=D	derived-unit	na	unit lmap; no named callee, caller or string
 0x002F38B8	lmapLMAPPAC	func	tier=D	derived-string	na	unit lmap; string '/lmap/LMAP_PAC.LB'
 0x002F3958	lmapCallMemGetPtr	func	tier=D	derived-callee	na	unit lmap; calls sdfMemGetPtr
-0x002F3F58	lmapLeaf13	func	tier=D	derived-unit	na	unit lmap; no named callee, caller or string
 0x002F3F70	lmapCallTexFreeDelayed2	func	tier=D	derived-callee	na	unit lmap; calls sdfTexFreeDelayed
 0x002F3FB8	lmapLoadFileLmapSub	func	tier=D	derived-caller	na	unit lmap; called by LoadFile_lmap
 0x002F4748	lmapCallEffGridSetCBAll	func	tier=D	derived-callee	na	unit lmap; calls EffGrid_SetCBAll
@@ -4661,8 +4657,6 @@
 0x003365D0	shpWaitRelease	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD shpMain.shpWaitRelease, score 7.3 band B
 0x00336660	shpCallProcEnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD shpMain.shpCallProcEnd, score 8.3 band B
 0x00336868	shpCallUpdateStatusShutdown	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour shpCheckProcEnd; calls camp_update_status_Shutdown
-0x00336D90	shpLeaf8	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour shpProcessStart; no named callee, caller or string
-0x00336DA8	fldLeaf35	func	tier=D	derived-unit	na	unit code_0032F2B8, neighbour fldShowSceneModels; no named callee, caller or string
 0x00336E08	fldCallGetProcessStat	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour fldShowSceneModels; calls dds3GetProcessStat
 0x00336E58	fldCallMenuProcessEnd	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour fldShowSceneModels; calls itfMenuProcessEnd
 0x00336E90	fldCallMenuProcessCheck	func	tier=D	derived-callee	na	unit code_0032F2B8, neighbour fldShowSceneModels; calls itfMenuProcessCheck
@@ -4871,8 +4865,6 @@
 0x0034D580	mnuCallInitWide	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0027C370, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0034D5B0	jmsCreateCmdMenu	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD jmsCmdMenu.jmsCreateCmdMenu, score 9.0 band B, hd-ab: next edge st1:edge r1+r2; replaces mnuCreateWindowContainer: fuzzy name from SLUS_211.52 0x002B9490, score 1.00, tools/xgame/fuzzy_apply.py
 0x0034D640	jmsDestroyCmdMenu	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD jmsCmdMenu.jmsDestroyCmdMenu, score 7.9 band B, hd-ab: calls1 calls-of-match votes2 st1:call r1+r2; replaces mnuDestroyWindowContainer: fuzzy name from SLUS_211.52 0x002B9520, score 1.00, tools/xgame/fuzzy_apply.py
-0x0034D680	jmsLeaf22	func	tier=D	derived-unit	na	unit code_0034D128, neighbour jmsDestroyCmdMenu; no named callee, caller or string
-0x0034D688	jmsLeaf23	func	tier=D	derived-unit	na	unit code_0034D128, neighbour jmsDestroyCmdMenu; no named callee, caller or string
 0x0034D690	mnuSetWindowContainerLayout	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x002B9570, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0034D6C0	mnuInitializeBasicWindowLayout	func	tier=D	legacy-dds	na	dds-decomp DDS2 name via SLUS_211.52 0x002B95A0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0034D6F0	jmsLeaf24	func	tier=D	derived-unit	na	unit code_0034D128, neighbour jmsAddCmdMenuItem; no named callee, caller or string
@@ -18186,7 +18178,11 @@
 0x002F25B0	Chr_GetNearPortTableNo	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD lmap.Chr_GetNearPortTableNo score 4.5 flag -: calls2 calls-of-match votes2 st1:call r2-disagree:0x350f98
 0x002F28A0	Lock_SetLineNo	func	tier=C	derived-derived-role	na	Raidou HD lmap.Lock_SetLineNo(wk, lockLineNo, lockFlg): returns 0 when no < 1, else sets or clears no in tagLMAP_LOCK_WORK.lineNo[8] (offset 0x80 after pointNo[64]); after the pointNo[64] twin (lmapLockSetPointChrSub, HD Lock_SetPointNo) as in HD; replaces lmapLeaf6
 0x002F32F8	Util_Point3To2	func	tier=C	hd-d	0.53 (n=98)	Raidou HD lmap.Util_Point3To2 score 4.7 flag -: calls1 calls-of-match st1:call r1-only
+0x002F35F0	UtilFloatToSdf32s	func	tier=C	derived-derived-role	na	Raidou HD lmap.UtilFloatToSdf32s(a_fnum, a_shift): integer part << shift plus the scaled fraction; right after Util_GetPadAnalog as in HD; replaces lmapLeaf9
+0x002F3630	Util_GetVerticalVector	func	tier=C	derived-derived-role	na	Raidou HD lmap.Util_GetVerticalVector(pos0, pos1, posp): VU0 outer products of pos1 - pos0 and posp - pos0; after UtilFloatToSdf32s as in HD; replaces lmapLeaf10
+0x002F3678	Util_GetVerticalVector2	func	tier=C	derived-derived-role	na	Raidou HD lmap.Util_GetVerticalVector2(vec, pos0, posp): VU0 outer products of vec and posp - pos0; after Util_GetVerticalVector as in HD; replaces lmapLeaf11
 0x002F3EF0	FldWnd_Start	func	tier=C	hd-d	0.53 (n=98)	Raidou HD lmap.FldWnd_Start score 4.3 flag -: calls1 calls-of-match-uniq st1:call r1-only
+0x002F3F58	FldWnd_CallEnd	func	tier=C	derived-derived-role	na	Raidou HD lmap.FldWnd_CallEnd: sets flag 8 in the field window process work (g_mainPID_FldWnd); right after FldWnd_Start as in HD; replaces lmapLeaf13
 0x002F3FD0	cmpSetStockVisible	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x232550 sim 0.654 margin 0.65 pair
 0x002F4000	EffGrid_Release	func	tier=C	hd-d	0.53 (n=98)	Raidou HD lmap.EffGrid_Release score 4.0 flag -: calls2 gap35/96 st2:gap r2-only
 0x002F40B8	EffGrid_Main	func	tier=C	hd-d	0.53 (n=98)	Raidou HD lmap.EffGrid_Main score 1.6 flag -: calls1 callers-of-match-uniq st2:call r1-disagree:0x2f4748
@@ -18286,6 +18282,8 @@
 0x00336688	shpLoadModel	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD shpMain.shpLoadModel score 4.5 flag -: calls2 calls-of-match votes3 st1:call r2-disagree:0x3998a8
 0x003367A0	shpCallProcEnd_shpMain	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD shpMain.shpCallProcEnd score 5.0 flag I: calls2 next calls-of-match votes3 st1:call r2-disagree:0x39b230
 0x003367E0	shpCheckProcEnd	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD shpMain.shpCheckProcEnd score 6.0 flag I: calls3 calls-of-match votes4 st1:call r2-disagree:0x39b268
+0x00336D90	shpKonnouyaProcessStart	func	tier=C	derived-derived-role	na	Raidou HD shpMain.shpKonnouyaProcessStart: shpProcessStart(0); right after shpProcessStart as in HD; replaces shpLeaf8
+0x00336DA8	shpMilkHallProcessStart	func	tier=C	derived-derived-role	na	Raidou HD shpMain.shpMilkHallProcessStart: shpProcessStart(1); after shpKonnouyaProcessStart as in HD; replaces fldLeaf35
 0x00336DC0	fldShowSceneModels	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x1339c0 sim 0.688 margin 0.02 pair
 0x00337928	gohTableLoad	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohInit.gohTableLoad score 6.4 flag I: calls1 prev calls-of-match votes2 st1:call r1-only
 0x00337F30	sdfCreateRuntimeTask	func	tier=C	dds-fuzzy-60-tie-single	0.30 (n=4)	dds body 0x1176a0 sim 0.645 margin 0.01 single
@@ -18443,6 +18441,8 @@
 0x0034BA60	jmsChkSeqChange	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMisc.jmsChkSeqChange score 4.6 flag I: prev gap2/2 st1:gap r1+r2
 0x0034BCE0	jmsSeqChkLast	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMisc.jmsSeqChkLast score 4.0 flag I: next~ gap2/2 st1:gap r1+r2
 0x0034BD18	jmsSeqJumpAndPop	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMisc.jmsSeqJumpAndPop score 5.0 flag I: next gap3/3 st1:gap r1+r2
+0x0034D680	jmsSetCmdListAlphaRate	func	tier=C	derived-derived-role	na	Raidou HD jmsCmdMenu.jmsSetCmdListAlphaRate(pCmdList, AlphaRate): one store of AlphaRate; right after jmsDestroyCmdMenu as in HD; replaces jmsLeaf22
+0x0034D688	jmsSetCmdMenuAlphaRate	func	tier=C	derived-derived-role	na	Raidou HD jmsCmdMenu.jmsSetCmdMenuAlphaRate(pCmdMenu, AlphaRate): one store of AlphaRate (0x60 further in, the menu's list); after jmsSetCmdListAlphaRate as in HD; replaces jmsLeaf23
 0x0034D7F8	CmdMenuCursorDrawUnlock	func	tier=C	hd-both	0.71 (n=206)	Raidou HD jmsCmdMenu.CmdMenuCursorDrawUnlock score 4.6 flag -: next gap5/8 st1:gap r1+r2
 0x0034F458	CheckFlagTGS	func	tier=C	hd-d	0.53 (n=98)	Raidou HD jmsMenu.CheckFlagTGS score 3.4 flag -: calls1 next~ gap2/222 st2:gap r2-only
 0x0034F4A0	SetRootMenu	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD jmsMenu.SetRootMenu score 5.5 flag -: calls3 callers-of-match votes3 st1:call r2-disagree:0x3c01c8

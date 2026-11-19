@@ -89,16 +89,16 @@ INCLUDE_ASM(const s32, "lmap", Util_Point3To2);
 INCLUDE_ASM(const s32, "lmap", Util_GetPadAnalog);
 
 /* body: matched in raidou @ 88f0d54: src/raidou1/code_0018CE10.c:167, match, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
-s32 lmapLeaf9(f32 a_value, s32 a_shift)
+s32 UtilFloatToSdf32s(f32 a_value, s32 a_shift)
 {
     s32 whole = (s32)a_value;
 
     return (whole << a_shift) + (s32)((a_value - (f32)whole) * (f32)(1 << a_shift));
 }
 
-INCLUDE_ASM(const s32, "lmap", lmapLeaf10);
+INCLUDE_ASM(const s32, "lmap", Util_GetVerticalVector);
 
-INCLUDE_ASM(const s32, "lmap", lmapLeaf11);
+INCLUDE_ASM(const s32, "lmap", Util_GetVerticalVector2);
 
 INCLUDE_ASM(const s32, "lmap", lmapFunc4);
 
@@ -122,7 +122,7 @@ INCLUDE_ASM(const s32, "lmap", FldWnd_DrawProcess);
 
 INCLUDE_ASM(const s32, "lmap", FldWnd_Start);
 
-INCLUDE_ASM(const s32, "lmap", lmapLeaf13);
+INCLUDE_ASM(const s32, "lmap", FldWnd_CallEnd);
 
 INCLUDE_ASM(const s32, "lmap", lmapCallTexFreeDelayed2);
 

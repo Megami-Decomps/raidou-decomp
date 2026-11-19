@@ -62,7 +62,7 @@
 0x00243410 effApplyBattleCameraToObject void effApplyBattleCameraToObject(fileJobPayload_t *a1)
 0x002C85E8 effReleaseRecordBuckets void effReleaseRecordBuckets(u32 a1)
 0x002EEDF0 dmLMAP_POINT_NO s32 dmLMAP_POINT_NO(s32 a1)
-0x002F3630 lmapLeaf10 void lmapLeaf10(s32 _$A0, s32 _$A1, s32 _$A2)
+0x002F3630 Util_GetVerticalVector void Util_GetVerticalVector(s32 _$A0, s32 _$A1, s32 _$A2)
 0x002FA480 fldFontNameEnt void fldFontNameEnt(void)
 0x00359290 func_r1_00359290 sdfTexHandle_t * func_r1_00359290(sdfTexHandle_t *a1)
 0x00359910 func_r1_00359910 void func_r1_00359910(sdfTexHandle_t *a1)
