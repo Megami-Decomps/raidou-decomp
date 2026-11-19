@@ -166,7 +166,7 @@ typedef struct SBTLSOUND_DEVILWORK {
 } SBTLSOUND_DEVILWORK;
 
 s32 CheckLiveTarget(struct SBTLUNIT_WORK *wk);
-s32 CreateSTP(struct SBTLUNIT_WORK *wk, s32 id, s32 bframe, s32 aframe, s8 flg);
+s32 CreateSTP(struct SBTL_STP *lwk, s32 ListID, const sdfVector4_t *pos, s16 id, s32 time);
 s32 Draw_sbtlUnit(void);
 s32 Exit_sbtlUnit(void);
 s32 Init_sbtlUnit(s8 flg);
@@ -258,6 +258,7 @@ struct SBTLUNIT_LISTWORK *sbtlCreateSideList(u8 side, s32 flg);
 struct SBTLUNIT_LISTWORK *sbtlCreateSideList_sbtlUnit(u8 side, s32 flg);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_MASK(u8 side, u32 mask, u32 mask_v);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList(u8 side);
+struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Talk(u8 side);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_AI(u8 side);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Group(u8 side, s32 GroupID);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_PForward(u8 side);
@@ -465,7 +466,9 @@ struct SBTLUNIT_WORK {
     u8 pad790[0x798 - 0x790];
     s32 L2_muteki; /* HD name */
     s32 field79C; /* set when trmCallBtlCheckReturnUnit cannot start the wait motion */
-    u8 pad7A0[0x7F4 - 0x7A0]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
+    u8 pad7A0[0x7B4 - 0x7A0];
+    s32 eff_wait_kaisin;
+    u8 pad7B8[0x7F4 - 0x7B8]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */

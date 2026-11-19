@@ -16,6 +16,9 @@
 #include "code_0027A1E8.h"
 #include "dds3KernelDraw.h"
 #include "evtMoon.h"
+#include "code_r1_0027CBE8.h"
+#include "sBtlVisual.h"
+#include "sBtlSound.h"
 
 s32 OnDataLoadProc(dds3ProcessID_t *id) {
     s32 i;
@@ -344,13 +347,68 @@ s32 CheckEffectData_Core(struct SBTLUNIT_LISTWORK *lwk, struct SBTLUNIT_WORK *wk
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", SetDamageProc);
+s32 SetDamageProc(struct SBTLUNIT_WORK *wklock, struct SBTLUNIT_WORK *wk, SKLID sklid, const sdfVector4_t *ppos) {
+    struct SBTLDMG_HITWORK hwk;
+    struct SBTLSKILLP_TBL *tbl;
+    s32 ret = 0;
+
+    if (wklock) {
+        ret = CheckLiveTarget(wklock);
+        if (ret) {
+            ret = sbtlCallBtlGetSkilltbl16(wklock, sklid);
+            if (ret) {
+                tbl = sbtlGetSkilltbl(sklid);
+                if (tbl == NULL) {
+                    return 0;
+                }
+                memset(&hwk, 0, sizeof(hwk));
+                sbtlCreateHitC_None(wk_sbtl->hitList, wklock, wk, &hwk, sklid, tbl, ppos, -1);
+                sbtlAddSerialID2();
+                sbtlSEISHINCNTR(wklock, &hwk, 0);
+                sbtlDeleteUnitList(hwk.hitlwk);
+                return 1;
+            }
+        }
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckEffectData_Core_sbtlEff);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallCheckEffectDataSingle);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", GetDataScale);
+f32 GetDataScale(struct SBTLUNIT_WORK *wk, SKLID sklid) {
+    struct SBTLSKILLP_TBL *tbl;
+    SBTLVISUAL_DATA base;
+    SBTLVISUAL_DATA visual;
+    f32 w;
+    f32 h;
+    f32 max;
+
+    tbl = sbtlGetSkilltbl(sklid);
+    if (wk->unit.devilId == 628 && (tbl->flg & 0x100)) {
+        return 4.0f;
+    }
+    max = 1.5f;
+    sbtlGetCylinderData_ID(0, 2, &base);
+    sbtlGetCylinderData(wk, &visual);
+    h = visual.height / base.height;
+    w = visual.width / base.width;
+    if (w <= h) {
+        if (h >= max) {
+            h = max;
+        }
+        w = h;
+    } else {
+        if (w >= max) {
+            w = max;
+        }
+    }
+    if (w <= 0.5f) {
+        w = 0.5f;
+    }
+    return w;
+}
 
 INCLUDE_RODATA(const s32, "sbtlEff_00289E50", SetEffectPosTable);
 
@@ -1024,7 +1082,56 @@ s32 sbtlCallBtlSearchDelWorkSide(struct SBTLUNIT_WORK *wk) {
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchDelWorkSide);
 #endif
 
+/* NON_MATCHING: 11 of 92 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlLoadEffectData(struct SBTLUNIT_WORK *wk) {
+    struct SBTLSKILLP_TBL *tbl;
+    s32 sklid[2];
+    s32 *p;
+    s32 id;
+    s32 i;
+    s32 *have;
+
+    have = &wk->haveskill[2];
+    for (i = 0; i < 16; i++, have++) {
+        sklid[0] = *have;
+        if (sklid[0] == 0) {
+            continue;
+        }
+        tbl = sbtlGetSkilltbl(sklid[0]);
+        if (tbl->flg2 & 0x1000) {
+            continue;
+        }
+        if ((tbl->type & 0x2000) && sklid[0] != SKLID_OFS_AUTO) {
+            continue;
+        }
+        sklid[0] = sbtlCallBtlGetSkilltbl23(sklid[0], &sklid[1]);
+        if (sklid[0] == 0) {
+            continue;
+        }
+        p = sklid;
+        do {
+            if (sbtlGetExeSkill(*p) != -1) {
+                id = sbtlSearchEffectData(*p);
+                if (id != -1) {
+                    if (!CheckLoadEffectData(&sbtlData83->effpac[id], *p, 0, NULL)) {
+                        return 0;
+                    }
+                } else {
+                    id = sbtlBtlLoadEffectDataIDMaskSub(*p);
+                    if (id != -1 && !CheckLoadEffectData(&sbtlData83->effpac[id], *p, 0, NULL)) {
+                        return 0;
+                    }
+                }
+            }
+            p++;
+        } while (p < &sklid[2] && *p != 0);
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData);
+#endif
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckLoadEffectData);
 
@@ -1148,11 +1255,88 @@ INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallLoadOnMemoryDataSBtlEff);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", effPartsColorSet);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_SUMMON);
+s32 EffFunc_SUMMON(SBTLEFF_WORK *wk) {
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->acterID);
+    s32 i;
+
+    switch (wk->st) {
+    case 1:
+        if (unit == NULL || unit->mode != 4) {
+            break;
+        }
+        if (wk_sbtl->flg & 4) {
+            wk->st = 2;
+        }
+        break;
+    case 2:
+        sbtlCallPartsCreateFinish(wk, 0, 0);
+        break;
+    case 3:
+        if (wk->counter == 1) {
+            sbtlPlaySpecialSE(&unit->pos, 4);
+        }
+        if (wk->counter == 10) {
+            unit->mode = 5;
+            if (!unit->color) {
+                unit->color = unit->dstcolor ? unit->dstcolor & 0xFFFFFF : 0x808080;
+            }
+            for (i = 0; i < 20; i++) {
+                if (wk_sbtl->summonflg[i] == 1 && wk_sbtl->stockUnitID[i] == unit->field1A0) {
+                    wk_sbtl->summonflg[i] = 2;
+                }
+            }
+        }
+        if (wk->counter >= wk->cmpcounter) {
+            wk->counter = 0;
+            wk->st = 4;
+        }
+        break;
+    case 4:
+        wk->st = 5;
+        break;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_RETURN);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_SUMMON_E);
+s32 EffFunc_SUMMON_E(SBTLEFF_WORK *wk) {
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->acterID);
+
+    switch (wk->st) {
+    case 1:
+        if (unit == NULL || unit->mode != 4 || !(wk_sbtl->flg & 4)) {
+            break;
+        }
+        wk->st = 2;
+        /* fallthrough */
+    case 2:
+        sbtlCallPartsCreateFinish(wk, 0, 0);
+        break;
+    case 3:
+        if (wk->counter == 1) {
+            sbtlPlaySpecialSE(&unit->pos, 4);
+        }
+        if (wk->counter >= wk->cmpcounter || unit == NULL) {
+            wk->counter = 0;
+            wk->st = 4;
+            break;
+        }
+        if (wk->counter == 10 && unit->status != 10 && !unit->changeflg) {
+            unit->mode = 5;
+            if (!unit->color) {
+                unit->color = unit->dstcolor ? unit->dstcolor & 0xFFFFFF : 0x808080;
+            }
+            unit->model->mode = 10;
+            sbtlSetMotion_sbtlUnit(unit, 9, 0, 0, 1);
+        }
+        break;
+    case 4:
+        wk->st = 5;
+        break;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID22);
 
@@ -1246,9 +1430,79 @@ SBTL_STP *evtAllocateContext(void)
     return stp;
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateSTP_Unit);
+/* NON_MATCHING: 59 of 61 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCreateSTP_Unit(SBTL_STP *lwk, struct SBTLUNIT_WORK *wk, s16 id, s32 time) {
+    struct SBTLUNIT_WORK *helper;
+    sdfVector4_t pos;
+    SBTLVISUAL_DATA visual;
+    s32 found;
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", CreateSTP);
+    if (wk_sbtl->field4264) {
+        return -1;
+    }
+    if (id == 2) {
+        if (wk->eff_wait_kaisin) {
+            return -1;
+        }
+        wk->eff_wait_kaisin = 20;
+    }
+    found = 0;
+    if (wk->flg & 0x1000) {
+        helper = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->field494);
+        if (helper != NULL) {
+            SDF_VU0_LOADVECTOR(&helper->pos);
+            SDF_VU0_STOREVECTOR_MEMOPS(pos);
+            found = 1;
+        }
+    }
+    if (!found) {
+        sbtlGetCylinderData(wk, &visual);
+        SDF_VU0_LOADVECTOR(&visual.center);
+        SDF_VU0_STOREVECTOR_MEMOPS(pos);
+    }
+    return CreateSTP(lwk, wk->field1A0, &pos, id, time > 0 ? time : 60);
+}
+#else
+INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateSTP_Unit);
+#endif
+
+s32 CreateSTP(SBTL_STP *lwk, s32 ListID, const sdfVector4_t *pos, s16 id, s32 time) {
+    sdfMemHandle_t *handle;
+    SBTL_STP_NODE *stp;
+    SBTL_STP_NODE *last;
+
+    if (!lwk) {
+        return 0;
+    }
+    handle = sdfMemAllocDirect(sizeof(SBTL_STP_NODE));
+    stp = sdfMemLock(handle);
+    memset(stp, 0, sizeof(SBTL_STP_NODE));
+    stp->handle = handle;
+    stp->prev = NULL;
+    stp->next = NULL;
+    last = lwk->head;
+    if (!last) {
+        lwk->head = stp;
+        lwk->enabled = 1;
+    } else {
+        while (last->next) {
+            last = last->next;
+        }
+        last->next = stp;
+        stp->prev = last;
+        lwk->enabled++;
+    }
+    stp->id = id;
+    stp->ListID = ListID;
+    stp->mode = 0;
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&stp->pos);
+    stp->pos.y -= (s32)(f32)GetIntervalRand(0, 20);
+    stp->spd = GetIntervalRand(10, 40) * 0.01f;
+    stp->counterMax = time;
+    return lwk->enabled - 1;
+}
 
 s32 sbtlProcSBtlSTPSub(struct SBTLUNIT_WORK *wk)
 {

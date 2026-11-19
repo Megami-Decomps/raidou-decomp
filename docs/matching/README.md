@@ -21,8 +21,8 @@ menu scenarios); an entry says which paths they covered.
 | 43 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
 | 21 | sbtlDMG | raidou1, raidou2 | [sbtlDMG.md](sbtlDMG.md) |
 | 18 | code_00309FE0 | raidou2 | [code_00309FE0.md](code_00309FE0.md) |
-| 15 | code_003BF2E0 | raidou2 | [code_003BF2E0.md](code_003BF2E0.md) |
-| 14 | sbtlEff_00289E50 | raidou1, raidou2 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
+| 16 | code_003BF2E0 | raidou2 | [code_003BF2E0.md](code_003BF2E0.md) |
+| 16 | sbtlEff_00289E50 | raidou1, raidou2 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
 | 13 | code_003648C0 | raidou2 | [code_003648C0.md](code_003648C0.md) |
 | 13 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
 | 11 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
@@ -33,9 +33,9 @@ menu scenarios); an entry says which paths they covered.
 | 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 7 | code_0027A1E8 | raidou2 | [code_0027A1E8.md](code_0027A1E8.md) |
 | 7 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
+| 7 | code_002F5CF0 | raidou2 | [code_002F5CF0.md](code_002F5CF0.md) |
 | 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 6 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
-| 6 | code_002F5CF0 | raidou2 | [code_002F5CF0.md](code_002F5CF0.md) |
 | 6 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |

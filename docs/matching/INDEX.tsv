@@ -157,6 +157,7 @@ sbtlDrawNum4	code_002F5CF0	raidou2 0x54	19 of 19 words differ	docs/matching/code
 sbtlSelectTargetCursor	code_002F5CF0	raidou2 0x6C	18 of 28 words differ	docs/matching/code_002F5CF0.md	21		
 sbtlDrawFuncTalk	code_002F5CF0	raidou2 0xF0	27 of 60 words differ	docs/matching/code_002F5CF0.md	27		
 sbtlCheckProcEnd	code_002F5CF0	raidou2 0x88	18 of 29 words differ	docs/matching/code_002F5CF0.md	33		
+sbtlHelpEx	code_002F5CF0	raidou2 0x174	6 of 93 words differ	docs/matching/code_002F5CF0.md	39		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	13		
 fclCallSetFontColorNo3	code_002FA4F0	raidou1 0x118	4 of 70 words differ	docs/matching/code_002FA4F0.md	21		
@@ -211,6 +212,7 @@ rstCallGetProcessData39	code_003BF2E0	raidou2 0x124	37 of 74 words differ	docs/m
 jmsFunc17	code_003BF2E0	raidou2 0x5C	12 of 23 words differ	docs/matching/code_003BF2E0.md	75		
 rstPreCalcUnit	code_003BF2E0	raidou2 0x158	2 of 86 words differ	docs/matching/code_003BF2E0.md	81		
 rstResultLevelUpAnimSub	code_003BF2E0	raidou2 0x14C	2 of 83 words differ	docs/matching/code_003BF2E0.md	87		
+rstResultGetExpCyuuseiSub	code_003BF2E0	raidou2 0x15C	6 of 87 words differ	docs/matching/code_003BF2E0.md	93	the full-unit result moves with declarations in headers the unit includes. The R2-C3 part 3 edits to sBtlEff.h, sbtlDMG.h and sbtlWork.h turn the -DNON_MATCHING full unit from OK into CONTEXT 6/87 (reverting any one of them alone restores it), and the part 4 edits do the same to the default build.	
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
 dds3CallDLinkTexPacket	code_r1_00104370	raidou1 0x128, raidou2 0x128	37 of 73 words differ	docs/matching/code_r1_00104370.md	12		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		
@@ -552,6 +554,8 @@ sbtlCallBtlSearchDelWorkSide	sbtlEff_00289E50	raidou2 0x12C	36 of 75 words diffe
 sbtlSetSummonEffect_Nakama	sbtlEff_00289E50	raidou2 0xD4	10 of 53 words differ	docs/matching/sbtlEff_00289E50.md	71		
 sbtlMainDraw	sbtlEff_00289E50	raidou2 0x13C	71 of 80 words differ	docs/matching/sbtlEff_00289E50.md	77		
 sbtlMainDraw2	sbtlEff_00289E50	raidou2 0xC0	38 of 46 words differ	docs/matching/sbtlEff_00289E50.md	83		
+sbtlLoadEffectData	sbtlEff_00289E50	raidou2 0x170	81 of 90 words differ	docs/matching/sbtlEff_00289E50.md	89		
+sbtlCreateSTP_Unit	sbtlEff_00289E50	raidou2 0xF4	2 of 61 words differ	docs/matching/sbtlEff_00289E50.md	95		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		
 sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSub.md	19		

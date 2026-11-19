@@ -23,7 +23,8 @@ typedef struct sBtlMenu_t {
     s32 menuID;                  /* 0x1C */
     s32 cntAnalyze;              /* 0x20 */
     s32 type;                    /* 0x24 */
-    u8 pad28[0x48 - 0x28];
+    s32 endtype; /* HD name */
+    u8 pad2C[0x48 - 0x2C];
 } sBtlMenu_t;
 SIZE_CHECK(sBtlMenu_t_size, sBtlMenu_t, 0x48);
 extern const char sbtlStrSbtlmenuMain[];
@@ -57,6 +58,8 @@ s32 sbtlFunc23(void);
 s32 sbtlCallGetProcessData48(void);
 s32 sbtlFuncEscape(void);
 s32 sbtlFuncTalk(void);
+s32 sbtlFuncDecideTalk(void);
+void sbtlDrawFuncTalk(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha);
 /* Help text banks by sbtlHelpEx type. */
 extern struct frTextBank_t *cmpCallGetProcessData12Data;
 extern struct frTextBank_t *sbtlData165;

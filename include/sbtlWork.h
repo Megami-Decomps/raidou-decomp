@@ -144,7 +144,7 @@ struct scrProcessWork_s;
 #ifdef VERSION_RAIDOU2
 /* Hit effect slot (0x10 bytes) in SBTL_WORK's hitEffList. */
 typedef struct SBTL_HITEFF {
-    u8 bUse;
+    s8 bUse;
     s32 effID;
     struct SBTL_HITEFF *prev;
     struct SBTL_HITEFF *next;
@@ -406,7 +406,9 @@ typedef struct SBTL_WORK {
     struct sbtlSummonText_t *textList;
     struct sbtlSummonText_t *textCursor; /* sbtlRefSbtl30 searches for a free entry from here */
     HITEFFLIST hitEffList;
-    u8 pad41F8[0x4288 - 0x41F8];
+    u8 pad41F8[0x4264 - 0x41F8];
+    s8 field4264; /* set: sbtlCreateSTP_Unit creates nothing */
+    u8 pad4265[0x4288 - 0x4265];
     s8 field4288; /* nonzero: sbtlReset_SupportAction_Shugou does nothing */
     u8 pad4289[0x42A8 - 0x4289];
     s16 field42A8;
@@ -422,7 +424,7 @@ typedef struct SBTL_WORK {
     s8 field42CB;
     s8 field42CC;
     s8 timeState; /* time limit battle: 1 counting, 2 result */
-    u8 field42CE;
+    s8 field42CE; /* nonzero: DrawTime shows the clock */
     u8 pad42CF;
     s32 timeLimit;
     s32 timeMode;
@@ -1250,6 +1252,7 @@ struct SBTLUNIT_WORK *sbtlGetNakama(s8 idx);
 s32 sbtlGetGun_Num(void);
 void sbtlRefSbtl66(s32 num);
 s32 sbtlRefSbtl71(s32 num);
+E_CAMMOD_CUT sbtlGetCutFlg(void);
 #endif
 s32 sbtlNakamaSetUp(void);
 void sbtlPacData_Init(void);

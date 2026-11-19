@@ -14,6 +14,9 @@ typedef struct sbtlInterfaceSpr_t {
     u8 pad08[0x1C - 0x8];
 } sbtlInterfaceSpr_t;
 extern sbtlInterfaceSpr_t sbtlData135;
+extern char sbtlData175[];
+extern s32 DrawTimeData; /* DrawTime frame count */
+extern char DrawTimeData2[]; /* "%02d" */
 extern const char btlLoadInterfaceSpriteStrBattlePanel[];
 extern const char btlLoadInterfaceSpriteStrBattleInterfaceSpr[];
 void btlLoadInterfaceSprite(void);

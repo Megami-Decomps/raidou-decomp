@@ -89,3 +89,11 @@ Two independent pointer setups (pData+0x118 and pData+0x5AA0) are emitted in swa
 Raidou 2: 2 of 83 words differ, first at +0x88.
 
 Register swap: retail builds the sprNo * 0xA0 slot offset in $4 and copies it to $5, cc1 builds it in $5 and copies to $4. Tried a slot pointer per block, a u16 index and the y update first. 81 of 83 words.
+
+## rstResultGetExpCyuuseiSub (code_003BF2E0, raidou2 0x15C)
+
+Raidou 2: 6 of 87 words differ, first at +0x84.
+
+It matched until the R2-C3 header declarations; the body is unchanged, so it is kept NON_MATCHING and no declaration is moved to protect it. The difference is the two stack slots the full unit loads into v0/v1 and the register added to them, swapped.
+
+Fragile: the full-unit result moves with declarations in headers the unit includes. The R2-C3 part 3 edits to sBtlEff.h, sbtlDMG.h and sbtlWork.h turn the -DNON_MATCHING full unit from OK into CONTEXT 6/87 (reverting any one of them alone restores it), and the part 4 edits do the same to the default build.

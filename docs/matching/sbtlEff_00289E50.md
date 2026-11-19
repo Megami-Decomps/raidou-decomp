@@ -85,3 +85,15 @@ The panel tests branch and allocate wk_sbtl and panel in different registers fro
 Raidou 2: 38 of 46 words differ, first at +0x18; emitted 184 bytes, native 192 bytes.
 
 Retail keeps wk_sbtl in $5 and the panel in $4, takes the resources test as a likely branch into the flag tests and jumps back for the zero return; the draft allocates the other way and falls through. Tried one && chain and an if/else on resources (worse). 38 words; behaviour equal (nm_behaviour clean).
+
+## sbtlLoadEffectData (sbtlEff_00289E50, raidou2 0x170)
+
+Raidou 2: 81 of 90 words differ, first at +0x0; emitted 360 bytes, native 368 bytes.
+
+Same calls and checks; retail keeps -1 in s17 and s18 and the sklid end in s20 (frame 0x50), cc1 uses fewer saved registers (frame 0x40). Tried index and pointer walks over haveskill. Behaviour equal (nm_behaviour clean).
+
+## sbtlCreateSTP_Unit (sbtlEff_00289E50, raidou2 0xF4)
+
+Raidou 2: 2 of 61 words differ, first at +0x4C.
+
+One register: retail loads eff_wait_kaisin into v0 after the id == 2 compare, cc1 into v1. Tried a ret variable, an else form and a switch. 2 words. Behaviour equal (nm_behaviour clean).

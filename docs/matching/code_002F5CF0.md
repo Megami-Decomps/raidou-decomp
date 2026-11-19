@@ -35,3 +35,9 @@ Retail sends every result branch to one shared exit; the draft splits the epilog
 Raidou 2: 18 of 29 words differ, first at +0x28; emitted 116 bytes, native 136 bytes.
 
 Retail masks both the count and the count + 1 before each test and picks one; the draft masks after the add. Tried a zero start with four ifs and a ternary per check (worse). 18 words; behaviour equal (nm_behaviour clean).
+
+## sbtlHelpEx (code_002F5CF0, raidou2 0x174)
+
+Raidou 2: 6 of 93 words differ, first at +0xF8.
+
+Code matches except the font colour: retail builds 0xA09DC300 in v1 before the shift and divide, cc1 swaps v1 and a1. Tried the constant first, a u32 cast and *128. 6 words. Behaviour equal (nm_behaviour clean).

@@ -98,6 +98,8 @@ void sbtlHelpEx(s32 a_type, s32 a_num, struct sprHandle_t *a_hSpr, u8 a_alphaRat
 void sbtlPlaySE(u32 frame);
 s32 sbtlSelectTargetCursor(s8 bDrawName);
 s32 sbtlSelectTargetCursorSub(struct SBTLUNIT_WORK *wk, s8 bDrawName);
+void sbtlTargetCursor(const sdfVector4_t *pos, char *str);
+void sbtlResetTargetCursor(void);
 void sbtlDrawTargetCursorEnemy(void);
 s32 sbtlUseItemProcSBtlPlayerSub(void);
 s32 sbtlUseItemProcSBtlPlayerSub2(struct SBTLUNIT_WORK *wk, u32 rgba);

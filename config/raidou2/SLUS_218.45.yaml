@@ -845,6 +845,7 @@ segments:
       - [0x3C9168, rodata, rodata_004C8168]
       - [0x3CB6C0, .rodata, code_002F5620]
       - [0x3CB780, rodata, rodata_004CA780]
+      - [0x3CB7E0, .rodata, code_002F5CF0]
       - [0x3CCBA0, .rodata, code_00309FE0]
       - [0x3CE178, rodata, rodata_004CD178]
       - [0x3CE2D8, .rodata, code_r1_002CD5A8]

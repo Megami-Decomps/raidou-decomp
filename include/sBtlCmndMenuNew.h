@@ -195,6 +195,7 @@ s32 evtKAIWANoEnemy(dds3ProcessID_t *id);
 void evtMoonShutdown(dds3ProcessID_t *id);
 s32 evtCallGetProcessData4(dds3ProcessID_t *id);
 void cmpSbtlkaiwaMain(void);
+void sbtlProcessStart(SBTLBOSSEVENT type, s16 eventno);
 s32 cmpCallGetProcessData2(s32 index, s32 kind);
 s32 slRefSbtl(s32 devilId);
 

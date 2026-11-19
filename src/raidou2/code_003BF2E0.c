@@ -1197,6 +1197,8 @@ void rstResultLevelUpAnimSub(s32 a_x, s32 a_y, f32 *a_scale, u32 a_blend, s32 a_
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultLevelUpAnimSub);
 #endif
 
+/* NON_MATCHING: 81 of 87 words match.  */
+#ifdef NON_MATCHING
 void rstResultGetExpCyuuseiSub(s32 a_x, s32 a_y, f32 *a_scale, s32 a_unused, s32 a_table, s32 a_step, sprHandle_t *a_hSpr,
                                u32 a_color, s32 a_layer)
 {
@@ -1220,6 +1222,9 @@ void rstResultGetExpCyuuseiSub(s32 a_x, s32 a_y, f32 *a_scale, s32 a_unused, s32
     colors[3] = a_color;
     effDrawSpriteWithCornerColors(x, y, 0, colors, 0, a_hSpr, sprNo, a_layer);
 }
+#else
+INCLUDE_ASM(const s32, "code_003BF2E0", rstResultGetExpCyuuseiSub);
+#endif
 
 s32 rstCalcAlphaRateSub(s32 value, s32 low, s32 high) {
     if (value >= low && value < high) {
