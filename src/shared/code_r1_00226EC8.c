@@ -2474,7 +2474,7 @@ void effResetFadeVectorFrame(effFadeVectorWork_t *work) {
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effDrawLensFlare);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf354);
+INCLUDE_ASM(const s32, "code_r1_00226EC8", effSetFadeVector);
 
 void effSetFadeVectorColor(effFadeVectorWork_t *work, u32 color) {
     work->color = color;
@@ -10680,9 +10680,9 @@ void effDrawModelBlock(effClassWork_t *work) {
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallSRAnimation12);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf372);
+INCLUDE_ASM(const s32, "code_r1_00226EC8", effSetModelBlockPosition);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf373);
+INCLUDE_ASM(const s32, "code_r1_00226EC8", effSetModelBlockOrientation);
 
 void effSetModelBlockColor(effClassWork_t *work, u32 color) {
     work->color = color;
@@ -11013,9 +11013,9 @@ void effDispatchModelResourceCallback(effModelResource_t *effect) {
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallSRAnimation13);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf374);
+INCLUDE_ASM(const s32, "code_r1_00226EC8", effSetModelResourcePosition);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf375);
+INCLUDE_ASM(const s32, "code_r1_00226EC8", effSetModelResourceOrientation);
 
 void effSetModelResourceColor(effModelResource_t *work, u32 color) {
     work->color = color;

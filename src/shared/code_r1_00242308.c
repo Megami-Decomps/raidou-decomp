@@ -2132,7 +2132,7 @@ extern u8 sysUPDOWNHEIGHTData;
 extern u8 sysUPDOWNHEIGHTData2;
 extern u8 sysUPDOWNHEIGHTData3;
 
-void sysLeaf45(void) {
+void sysUPDOWNHEIGHTSaveSelection(void) {
     sysUPDOWNHEIGHTData = effWork7[0x88];
     sysUPDOWNHEIGHTData2 = effWork7[0x89];
     sysUPDOWNHEIGHTData3 = effWork7[0x8A];
@@ -4570,7 +4570,7 @@ extern u32 sysBATTLEONLYDataEntry96;
 extern s32 sysBATTLEONLYDataEntry97;
 extern u32 sysBATTLEONLYDataEntry98;
 extern u32 sysBATTLEONLYDataEntry99;
-void sysLeaf45(void);
+void sysUPDOWNHEIGHTSaveSelection(void);
 s32 sysPARTICLE(void);
 extern char sysPARTICLEDataEntry10[];
 extern char sysPARTICLEDataEntry110[];
@@ -10724,7 +10724,7 @@ effDebugMenu_t effUpdateCameraDiagnosticsData = {
 sdfVector4_t effHandleDebugOrbitInputData __attribute__((aligned(16))) = { 0.0f, 0.0f, 1.0f, 0.0f };
 
 effDebugMenuItem_t effUpdateCameraSnapshotGuidesDataEntry[3] = {
-    { effUpdateCameraSnapshotGuidesDataEntry3, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = sysUPDOWNHEIGHT }, { .release = sysLeaf45 }, 0, 1.0f },
+    { effUpdateCameraSnapshotGuidesDataEntry3, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = sysUPDOWNHEIGHT }, { .release = sysUPDOWNHEIGHTSaveSelection }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effResetCameraSnapshotSelection }, { .color = 0xFFFFFF }, 0, 1.0f },
 };

@@ -226,7 +226,7 @@ s32 nbCameraLerpVec(effCubicBezierSlot_t *slot, f32 *out) {
     return 1;
 }
 
-void effLeaf23(effArrHdr_t *table, s32 slotIndex) {
+void dds3Bezier4PPartInit(effArrHdr_t *table, s32 slotIndex) {
     effCubicBezierSlot_t *slot = &((effCubicBezierSlot_t *)table->slots)[slotIndex];
 
     slot->step = 0.05f;

@@ -921,8 +921,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00121C58	0x001257E0	sdfRaisePackedChannelValue	no	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
 0x00121CD8	0x00125860	datLeaf53	yes	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	masked-hash-in-gap
 0x00121CE0	0x00125868	datLeaf54	yes	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	masked-hash-in-gap
-0x00121CE8	0x00125870	datLeaf55	yes	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
-0x00121D10	0x00125898	datLeaf56	yes	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
+0x00121CE8	0x00125870	datAddHp	yes	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
+0x00121D10	0x00125898	datAddMp	yes	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
 0x00121D38	0x001258C0	datLeaf57	yes	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	masked-hash-in-gap
 0x00121D40	0x001258C8	datGetStatWithStatusOverride	no	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
 0x00121D78	0x00125900	datCheckSyojiSkill	no	yes	asm/raidou1/newdata/datCalc.s	asm/raidou2/newdata/datCalc.s	unique-reloc-hash
@@ -999,7 +999,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00123C98	0x001280B8	fclScriptForcedEnd	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00123CD8	0x001280F8	fclScriptStart	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00123D48	0x00128168	cmpItemOrder	yes	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
-0x00123D70	0x00128190	fclLeaf3	yes	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
+0x00123D70	0x00128190	fclCompactList	yes	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00123DC0	0x001281E0	shuffleIndices	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00123E58	0x00128278	evtLoadResourcePair	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00123E88	0x001282A8	evtReleaseResourcePairHandle	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	masked-hash-in-gap
@@ -1024,9 +1024,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00124310	0x00128730	fclSetMessagePos	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00124358	0x00128778	fclChkMessageDraw	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00124380	0x001287C0	fclScriptStartSub	no	no	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-masked-hash
-0x00124390	0x001287D0	fclLeaf4	no	no	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	run-order-size
+0x00124390	0x001287D0	fclGetFlag	no	no	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	run-order-size
 0x001243A0	0x001287E0	fclSetWorkValue	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
-0x001243C8	0x00128808	fclLeaf5	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
+0x001243C8	0x00128808	fclGetWorkValue	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x001243F0	0x00128830	fclCallGetIntPara	no	no	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-masked-hash
 0x00124420	0x00128860	fclCallGetIntPara2	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00124468	0x001288A8	fclLoadTexture	no	yes	src/shared/facility/fclShare.c	src/shared/facility/fclShare.c	unique-reloc-hash
@@ -3875,7 +3875,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001E4EF0	0x001FC1E8	effBTLCutSetMotionChangeCallbackFunc	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	run-order-size
 0x001E4EF8	0x001FC1F0	effBTLCutSetCutEndCallbackFunc	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	run-order-size
 0x001E4F00	0x001FC1F8	effBTLCutGetMotionChangeFrame	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	masked-hash-in-gap
-0x001E4F10	0x001FC208	effLeaf14	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
+0x001E4F10	0x001FC208	effBTLCutSetCutEndFrame	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
 0x001E4F28	0x001FC220	effBTLCutGetCutEndFrame	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	masked-hash-in-gap
 0x001E4F30	0x001FC228	effBTLCutSetDrawEndFrame	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
 0x001E4F60	0x001FC258	effBTLCutGetDrawEndFrame	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	masked-hash-in-gap
@@ -3886,7 +3886,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001E4FF8	0x001FC2F0	effBattleHasActiveKind	yes	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
 0x001E5048	0x001FC340	effBTLPartCreate	no	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
 0x001E5188	0x001FC480	effBTLPartDelete	no	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
-0x001E5230	0x001FC528	effLeaf17	no	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
+0x001E5230	0x001FC528	effBTLSkillSetState	no	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
 0x001E5250	0x001FC548	effBTLSkillGetState	no	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	masked-hash-in-gap
 0x001E5258	0x001FC550	effBTLSkillGetID	no	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	masked-hash-in-gap
 0x001E5260	0x001FC558	effBTLFieldColorGetOverrideSelector	no	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	masked-hash-in-gap
@@ -3896,8 +3896,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001E5398	0x001FC690	effLeaf19	no	yes	asm/raidou1/effect/effBattle.s	asm/raidou2/effect/effBattle.s	unique-reloc-hash
 0x001E53C0	0x001FC6B8	effLeaf20	no	yes	asm/raidou1/code_001E53C0.s	asm/raidou2/code_001FC6B8.s	unique-reloc-hash
 0x001E53E0	0x001FC6D8	effBTLSkillCheckRun	yes	yes	asm/raidou1/code_001E53C0.s	asm/raidou2/code_001FC6B8.s	masked-hash-in-gap
-0x001E53E8	0x001FC6E0	effLeaf21	no	yes	asm/raidou1/code_001E53C0.s	asm/raidou2/code_001FC6B8.s	run-order-size
-0x001E53F8	0x001FC6F0	effLeaf22	no	yes	asm/raidou1/code_001E53C0.s	asm/raidou2/code_001FC6B8.s	run-order-size
+0x001E53E8	0x001FC6E0	effBTLFieldColorSetFlags	no	yes	asm/raidou1/code_001E53C0.s	asm/raidou2/code_001FC6B8.s	run-order-size
+0x001E53F8	0x001FC6F0	effBTLFieldColorClearFlags	no	yes	asm/raidou1/code_001E53C0.s	asm/raidou2/code_001FC6B8.s	run-order-size
 0x001E5410	0x001FC708	effBTLFieldColorResetFlags	no	yes	asm/raidou1/code_001E53C0.s	asm/raidou2/code_001FC6B8.s	masked-hash-in-gap
 0x001E5418	0x001FC710	effScreenOffset	no	yes	asm/raidou1/effect/effMath.s	asm/raidou2/effect/effMath.s	masked-hash-in-gap
 0x001E5498	0x001FC790	effPCPBlurScreenOffset	no	yes	asm/raidou1/effect/effMath.s	asm/raidou2/effect/effMath.s	unique-reloc-hash
@@ -3908,7 +3908,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001E57D0	0x001FCAC8	effAPPoint4DeleteSub	no	yes	asm/raidou1/effect/effMath.s	asm/raidou2/effect/effMath.s	masked-hash-in-gap
 0x001E57E8	0x001FCAE0	dds3Bezier4PPartRun	yes	yes	asm/raidou1/effect/effMath.s	asm/raidou2/effect/effMath.s	unique-reloc-hash
 0x001E5908	0x001FCC00	nbCameraLerpVec	yes	yes	asm/raidou1/effect/effMath.s	asm/raidou2/effect/effMath.s	unique-reloc-hash
-0x001E5A18	0x001FCD10	effLeaf23	no	yes	asm/raidou1/effect/effMath.s	asm/raidou2/effect/effMath.s	unique-reloc-hash
+0x001E5A18	0x001FCD10	dds3Bezier4PPartInit	no	yes	asm/raidou1/effect/effMath.s	asm/raidou2/effect/effMath.s	unique-reloc-hash
 0x001E5A40	0x001FCD38	dds3Bezier4PGetPart	yes	yes	asm/raidou1/effect/effMath.s	asm/raidou2/effect/effMath.s	unique-reloc-hash
 0x001E5A58	0x001FCD50	effCallMemAllocDirect	no	yes	asm/raidou1/code_001E5A58.s	asm/raidou2/code_001FCD50.s	unique-reloc-hash
 0x001E5AE8	0x001FCDE0	effLeaf24	no	yes	asm/raidou1/code_001E5A58.s	asm/raidou2/code_001FCD50.s	masked-hash-in-gap
@@ -5419,7 +5419,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00227110	0x0023E418	effCloneFadeVectorWork	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
 0x00227128	0x0023E430	effResetFadeVectorFrame	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x00227130	0x0023E438	effDrawLensFlare	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
-0x002277C8	0x0023EAD0	effLeaf354	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
+0x002277C8	0x0023EAD0	effSetFadeVector	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x002277D8	0x0023EAE0	effSetFadeVectorColor	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x002277E0	0x0023EAE8	effResetSelectionEntryBuffers	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	masked-hash-in-gap
 0x00227838	0x0023EB40	effCreateSelectionFlagListFromWork	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	masked-hash-in-gap
@@ -5762,8 +5762,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0023CF60	0x00254268	effAdvanceDispatchCounter	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	masked-hash-in-gap
 0x0023CFB0	0x002542B8	effDrawModelBlock	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	masked-hash-in-gap
 0x0023CFE8	0x002542F0	effCallSRAnimation12	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	masked-hash-in-gap
-0x0023D028	0x00254330	effLeaf372	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
-0x0023D038	0x00254340	effLeaf373	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
+0x0023D028	0x00254330	effSetModelBlockPosition	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
+0x0023D038	0x00254340	effSetModelBlockOrientation	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x0023D050	0x00254358	effSetModelBlockColor	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x0023D058	0x00254360	effSetModelBlockScale	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x0023D060	0x00254368	effRetainScalyTextureReference	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
@@ -5788,8 +5788,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0023E978	0x00255C80	effAdvanceModelResourceUpdateCount	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	masked-hash-in-gap
 0x0023E9C8	0x00255CD0	effDispatchModelResourceCallback	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	masked-hash-in-gap
 0x0023EA00	0x00255D08	effCallSRAnimation13	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
-0x0023EA58	0x00255D60	effLeaf374	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
-0x0023EA68	0x00255D70	effLeaf375	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
+0x0023EA58	0x00255D60	effSetModelResourcePosition	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
+0x0023EA68	0x00255D70	effSetModelResourceOrientation	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x0023EA80	0x00255D88	effSetModelResourceColor	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x0023EA88	0x00255D90	effSetModelResourceScale	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x0023EA90	0x00255D98	effCreatePointSet3	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
@@ -5940,7 +5940,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00245DB0	0x0025D0C8	effHandleDebugOrbitInput	no	no	asm/raidou1/code_00242308.s	asm/raidou2/code_00259620.s	unique-masked-hash
 0x00246060	0x0025D378	effResetStaticState	no	yes	asm/raidou1/code_00242308.s	asm/raidou2/code_00259620.s	unique-reloc-hash
 0x00246098	0x0025D3B0	effUpdateCameraDiagnostics	no	yes	asm/raidou1/code_00242308.s	asm/raidou2/code_00259620.s	unique-reloc-hash
-0x00246318	0x0025D630	sysLeaf45	no	yes	asm/raidou1/code_00242308.s	asm/raidou2/code_00259620.s	unique-reloc-hash
+0x00246318	0x0025D630	sysUPDOWNHEIGHTSaveSelection	no	yes	asm/raidou1/code_00242308.s	asm/raidou2/code_00259620.s	unique-reloc-hash
 0x00246340	0x0025D658	sysUPDOWNHEIGHT	no	no	asm/raidou1/code_00242308.s	asm/raidou2/code_00259620.s	unique-masked-hash
 0x00246850	0x0025DB68	effResetCameraSnapshotSelection	no	yes	asm/raidou1/code_00242308.s	asm/raidou2/code_00259620.s	unique-reloc-hash
 0x00246880	0x0025DB98	effUpdateCameraSnapshotGuides	no	no	asm/raidou1/code_00242308.s	asm/raidou2/code_00259620.s	unique-masked-hash

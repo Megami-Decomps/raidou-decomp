@@ -288,7 +288,7 @@ s32 cmpItemOrder(u8 *a, u8 *b)
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/facility/fclMisc.c:258, match, same function 0.97 (words 19/20, calls 1.00, shape 0.97) */
-s32 fclLeaf3(u8 *list, s32 count, u8 value)
+s32 fclCompactList(u8 *list, s32 count, u8 value)
 {
     s32 kept = 0;
     s32 i;
@@ -499,7 +499,7 @@ INCLUDE_ASM(const s32, "facility/fclMisc", fclRefMsgIDFclMisc);
 #endif
 INCLUDE_ASM(const s32, "facility/fclMisc", fclScriptStartSub);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclLeaf4);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclGetFlag);
 
 s32 fclSetWorkValue(s32 index, s32 value) {
     s32 result = 0;
@@ -512,7 +512,7 @@ s32 fclSetWorkValue(s32 index, s32 value) {
 }
 
 /* body: matched in dds @ 18d1fa88f: src/dds1/game/code_0024CFB0.c:750, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
-u32 fclLeaf5(s32 displayValueIndex) {
+u32 fclGetWorkValue(s32 displayValueIndex) {
     displayValueIndex = (displayValueIndex < EVT_DISPLAY_VALUE_COUNT) ? displayValueIndex : EVT_LAST_DISPLAY_VALUE;
     return fclWorkValue[displayValueIndex];
 }

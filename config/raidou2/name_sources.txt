@@ -1057,8 +1057,8 @@
 0x001257E0	sdfRaisePackedChannelValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00119018, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00125860	datLeaf53	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; no named callee, caller or string
 0x00125868	datLeaf54	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; no named callee, caller or string
-0x00125870	datLeaf55	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; no named callee, caller or string
-0x00125898	datLeaf56	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; no named callee, caller or string
+0x00125870	datAddHp	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 HD datAddHp: adds to hp (+6) clamped to 0..maxhp (+8); same body as SMT3 datAddHp; replaces datLeaf55
+0x00125898	datAddMp	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 HD datAddMp: adds to mp (+0xA) clamped to 0..maxmp (+0xC); same body as SMT3 datAddMp at the same place; replaces datLeaf56
 0x001258C0	datLeaf57	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; no named callee, caller or string
 0x001258C8	datGetStatWithStatusOverride	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00119368, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00125900	datCheckSyojiSkill	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x243f40 sim 0.762 margin 0.76 pair
@@ -1158,7 +1158,7 @@
 0x001280B8	fclScriptForcedEnd	inferred	SMT3HD name via SLUS_209.11 0x00213B08, reloc-identical; map-agrees
 0x001280F8	fclScriptStart	inferred	SMT3HD name via SLUS_209.11 0x00213B48, reloc-identical; map-agrees
 0x00128168	cmpItemOrder	inferred	smt3-decomp name via SLUS_209.11 0x00213CB0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.45
-0x00128190	fclLeaf3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit facility/fclMisc; no named callee, caller or string
+0x00128190	fclCompactList	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 fclCompactList: same body (exact shape) at the same place in fclMisc; moves entries other than value to the front and zeroes the rest; replaces fclLeaf3
 0x001281E0	shuffleIndices	inferred	SMT3HD name via SLUS_209.11 0x00213D28, reloc-identical; map-agrees
 0x00128278	evtLoadResourcePair	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024D990, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x001282A8	evtReleaseResourcePairHandle	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024D9C0, masked-words-identical (order map pair); dds-decomp: no provenance row
@@ -1184,9 +1184,9 @@
 0x00128778	fclChkMessageDraw	hd	hd: Raidou HD fclMisc.fclChkMessageDraw, score 7.0 band B
 0x001287A0	fclRefMsgIDFclMisc	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit facility/fclMisc; references gMsgID_fclMisc
 0x001287C0	fclScriptStartSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit facility/fclMisc; called by fclScriptStart
-0x001287D0	fclLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit facility/fclMisc; no named callee, caller or string
+0x001287D0	fclGetFlag	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 fclGetFlag: same body at the same place in fclMisc (before fclSetWorkValue); returns fclFlags[i] != 0 (gp-0x2048 = fclFlags); replaces fclLeaf4
 0x001287E0	fclSetWorkValue	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x2143c8 sim 0.909 margin 0.50 pair
-0x00128808	fclLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit facility/fclMisc; no named callee, caller or string
+0x00128808	fclGetWorkValue	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=reads fclWorkValue[i] clamped to 15, the getter after fclSetWorkValue (same clamp as fclCallGetIntPara2); replaces fclLeaf5
 0x00128830	fclCallGetIntPara	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit facility/fclMisc; calls scrGetIntPara
 0x00128860	fclCallGetIntPara2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit facility/fclMisc; calls scrGetIntPara; replaces fcl_214458: smt3-decomp C name via SLUS_209.11 0x00214458, unique-masked-hash-c; map-agrees
 0x001288A8	fclLoadTexture	inferred	SMT3HD name via SLUS_209.11 0x002144E0, reloc-identical; map-agrees
@@ -4488,7 +4488,7 @@
 0x001FC1E8	effBTLCutSetMotionChangeCallbackFunc	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effBTLCutSetMotionChangeCallbackFunc: same body (exact shape) at the same place, between effBTLCutGetFormation and effBTLCutGetMotionChangeFrame; replaces effLeaf12
 0x001FC1F0	effBTLCutSetCutEndCallbackFunc	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effBTLCutSetCutEndCallbackFunc: same body (exact shape) at the same place, between effBTLCutGetFormation and effBTLCutGetMotionChangeFrame; replaces effLeaf13
 0x001FC1F8	effBTLCutGetMotionChangeFrame	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x001FC208	effLeaf14	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effBattle; no named callee, caller or string
+0x001FC208	effBTLCutSetCutEndFrame	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 HD effBTLCutSetCutEndFrame: between effBTLCutGetMotionChangeFrame and effBTLCutGetCutEndFrame as in HD; sets +0x14, which effBTLCutGetCutEndFrame returns; replaces effLeaf14
 0x001FC220	effBTLCutGetCutEndFrame	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001FC228	effBTLCutSetDrawEndFrame	inferred	smt3-decomp name via SLUS_209.11 0x0016AEF0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.561
 0x001FC258	effBTLCutGetDrawEndFrame	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -4499,7 +4499,7 @@
 0x001FC2F0	effBattleHasActiveKind	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x161600 sim 1.000 margin 0.50 pair
 0x001FC340	effBTLPartCreate	inferred	SMT3HD name via SLUS_209.11 0x0016B588, reloc-identical; map-agrees
 0x001FC480	effBTLPartDelete	inferred	SMT3HD name via SLUS_209.11 0x0016B6C8, reloc-identical; map-agrees
-0x001FC528	effLeaf17	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effBattle; no named callee, caller or string
+0x001FC528	effBTLSkillSetState	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 HD effBTLSkillSetState: precedes effBTLSkillGetState as in HD effBattle.c and sets effData24, which effBTLSkillGetState returns; replaces effLeaf17
 0x001FC548	effBTLSkillGetState	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001FC550	effBTLSkillGetID	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001FC558	effBTLFieldColorGetOverrideSelector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00161868, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -4509,8 +4509,8 @@
 0x001FC690	effLeaf19	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effBattle; no named callee, caller or string
 0x001FC6B8	effLeaf20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001E53C0, neighbour effBTLSkillCheckRun; no named callee, caller or string
 0x001FC6D8	effBTLSkillCheckRun	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001619E8, masked-words-identical (gap map pair); dds-decomp: SMT3HD name
-0x001FC6E0	effLeaf21	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001E53C0, neighbour effBTLSkillCheckRun; no named callee, caller or string
-0x001FC6F0	effLeaf22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001E53C0, neighbour effBTLSkillCheckRun; no named callee, caller or string
+0x001FC6E0	effBTLFieldColorSetFlags	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=ORs its argument into effFieldColorFlags, beside effBTLFieldColorResetFlags; replaces effLeaf21
+0x001FC6F0	effBTLFieldColorClearFlags	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=clears its argument's bits in effFieldColorFlags, beside effBTLFieldColorResetFlags; replaces effLeaf22
 0x001FC708	effBTLFieldColorResetFlags	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00161A18, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001FC710	effScreenOffset	inferred	smt3-decomp C name via SLUS_209.11 0x001ABA68, unique-masked-hash-c; map-agrees
 0x001FC790	effPCPBlurScreenOffset	inferred	SMT3HD name via SLUS_209.11 0x001ABAE8, reloc-identical; map-agrees
@@ -4521,7 +4521,7 @@
 0x001FCAC8	effAPPoint4DeleteSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effMath; called by effAPPoint4Delete
 0x001FCAE0	dds3Bezier4PPartRun	inferred	SMT3HD name via SLUS_209.11 0x001ABE38, byte-identical; map-agrees
 0x001FCC00	nbCameraLerpVec	inferred	smt3-decomp C name via SLUS_209.11 0x001ABF58, unique-masked-hash-c; map-silent
-0x001FCD10	effLeaf23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/effMath; no named callee, caller or string
+0x001FCD10	dds3Bezier4PPartInit	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 HD dds3Bezier4PPartInit (effMath.c): resets one dds3Bezier4P part (step 0.05, t 0), next to dds3Bezier4PGetPart; SMT3 decomp has the same body at the same place; replaces effLeaf23
 0x001FCD38	dds3Bezier4PGetPart	inferred	SMT3HD name via SLUS_209.11 0x001AC090, byte-identical; map-agrees
 0x001FCD50	effCallMemAllocDirect	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001E5A58, neighbour effPCPBezierEval; calls sdfMemAllocDirect
 0x001FCDE0	effLeaf24	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001E5A58, neighbour effPCPBezierEval; no named callee, caller or string
@@ -6033,7 +6033,7 @@
 0x0023E418	effCloneFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C728, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E430	effResetFadeVectorFrame	inferred	twin-of-raidou1-0x00227128
 0x0023E438	effDrawLensFlare	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C748, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023EAD0	effLeaf354	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetFadeVectorColor; no named callee, caller or string
+0x0023EAD0	effSetFadeVector	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=copies a qword to effFadeVectorWork_t.vector, before effSetFadeVectorColor; module setter style; replaces effLeaf354
 0x0023EAE0	effSetFadeVectorColor	inferred	twin-of-raidou1-0x002277D8
 0x0023EAE8	effResetSelectionEntryBuffers	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CDF8, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x0023EB40	effCreateSelectionFlagListFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CE50, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -6376,8 +6376,8 @@
 0x00254268	effAdvanceDispatchCounter	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0830, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002542B8	effDrawModelBlock	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0880, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002542F0	effCallSRAnimation12	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetModelBlockColor; calls effSRAnimation
-0x00254330	effLeaf372	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetModelBlockColor; no named callee, caller or string
-0x00254340	effLeaf373	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetModelBlockColor; no named callee, caller or string
+0x00254330	effSetModelBlockPosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=copies a qword to effClassWork_t.position (+0), before effSetModelBlockColor/Scale; module setter style; replaces effLeaf372
+0x00254340	effSetModelBlockOrientation	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=copies a qword to effClassWork_t.orientation (+0x10), before effSetModelBlockColor/Scale; replaces effLeaf373
 0x00254358	effSetModelBlockColor	inferred	twin-of-raidou1-0x0023D050
 0x00254360	effSetModelBlockScale	inferred	twin-of-raidou1-0x0023D058
 0x00254368	effRetainScalyTextureReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0918, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -6402,8 +6402,8 @@
 0x00255C80	effAdvanceModelResourceUpdateCount	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2238, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00255CD0	effDispatchModelResourceCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2288, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00255D08	effCallSRAnimation13	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetModelResourceColor; calls effSRAnimation
-0x00255D60	effLeaf374	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetModelResourceColor; no named callee, caller or string
-0x00255D70	effLeaf375	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetModelResourceColor; no named callee, caller or string
+0x00255D60	effSetModelResourcePosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=copies a qword to effModelResource_t.position (+0), before effSetModelResourceColor/Scale; replaces effLeaf374
+0x00255D70	effSetModelResourceOrientation	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=copies a qword to effModelResource_t.orientation (+0x10), before effSetModelResourceColor/Scale; replaces effLeaf375
 0x00255D88	effSetModelResourceColor	inferred	twin-of-raidou1-0x0023EA80
 0x00255D90	effSetModelResourceScale	inferred	twin-of-raidou1-0x0023EA88
 0x00255D98	effCreatePointSet3	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2320, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -6554,7 +6554,7 @@
 0x0025D0C8	effHandleDebugOrbitInput	inferred	fuzzy name from SLUS_209.74 0x002B7B78, score 1.00, tools/xgame/fuzzy_apply.py
 0x0025D378	effResetStaticState	inferred	fuzzy name from SLUS_209.74 0x002B7E28, score 1.00, tools/xgame/fuzzy_apply.py
 0x0025D3B0	effUpdateCameraDiagnostics	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B7E60, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0025D630	sysLeaf45	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00242308, no named neighbour; no named callee, caller or string
+0x0025D630	sysUPDOWNHEIGHTSaveSelection	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=release callback of the sysUPDOWNHEIGHT debug item; copies effWork7[0x88..0x8A] (the selection effResetCameraSnapshotSelection resets) to sysUPDOWNHEIGHTData*; replaces sysLeaf45
 0x0025D658	sysUPDOWNHEIGHT	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_00242308, no named neighbour; string 'UP   & DOWN : HEIGHT'
 0x0025DB68	effResetCameraSnapshotSelection	inferred	fuzzy name from SLUS_209.74 0x002B8618, score 1.00, tools/xgame/fuzzy_apply.py
 0x0025DB98	effUpdateCameraSnapshotGuides	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B8648, masked-words-identical (strict map pair); dds-decomp: descriptive

@@ -299,7 +299,7 @@ s32 effBTLCutGetMotionChangeFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->list->callbackFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", effLeaf14);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetCutEndFrame);
 
 u32 effBTLCutGetCutEndFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->triggerFrame;
@@ -422,7 +422,7 @@ void effBTLPartDelete(effBTL_t *pSkill) {
     }
 }
 
-void effLeaf17(s32 state, s32 id, s32 overrideSelector, s32 finalSelector) {
+void effBTLSkillSetState(s32 state, s32 id, s32 overrideSelector, s32 finalSelector) {
     effData24 = state;
     effData25 = id;
     effBTLSkillID = overrideSelector ? overrideSelector : state;

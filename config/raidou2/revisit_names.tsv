@@ -329,8 +329,6 @@
 0x001257E0	sdfRaisePackedChannelValue	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00119018, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00125860	datLeaf53	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
 0x00125868	datLeaf54	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
-0x00125870	datLeaf55	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
-0x00125898	datLeaf56	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
 0x001258C0	datLeaf57	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
 0x001258C8	datGetStatWithStatusOverride	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00119368, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001259A8	datLeaf58	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
@@ -390,7 +388,6 @@
 0x00127048	datCallSetIntReturnValue	func	tier=D	derived-callee	na	unit code_00126ED0, neighbour datCommand_DEBT_FROM_GOUTO; calls scrSetIntReturnValue
 0x00127070	dds3CallGrAllocPacketBuff9	func	tier=D	derived-callee	na	unit kernel/dds3GlobalWork; calls sdfGrAllocPacketBuff
 0x00127F40	dds3Leaf29	func	tier=D	derived-unit	na	unit code_00123B18, neighbour dds3NullDrawProc; no named callee, caller or string
-0x00128190	fclLeaf3	func	tier=D	derived-unit	na	unit facility/fclMisc; no named callee, caller or string
 0x00128278	evtLoadResourcePair	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0024D990, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x001282A8	evtReleaseResourcePairHandle	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0024D9C0, masked-words-identical (order map pair); dds-decomp: no provenance row
 0x00128308	fclChangeMessageWindowAlpha	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fclMisc.fclChangeMessageWindowAlpha, score 7.3 band B; replaces evtSetMessageWindowPageValue: dds-decomp DDS1 name via SLUS_209.74 0x0024DA20, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -400,8 +397,6 @@
 0x00128598	fclUpdateMessageEx	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fclMisc.fclUpdateMessageEx, score 10.15 band A
 0x001287A0	fclRefMsgIDFclMisc	func	tier=D	derived-data	na	unit facility/fclMisc; references gMsgID_fclMisc
 0x001287C0	fclScriptStartSub	func	tier=D	derived-caller	na	unit facility/fclMisc; called by fclScriptStart
-0x001287D0	fclLeaf4	func	tier=D	derived-unit	na	unit facility/fclMisc; no named callee, caller or string
-0x00128808	fclLeaf5	func	tier=D	derived-unit	na	unit facility/fclMisc; no named callee, caller or string
 0x00128830	fclCallGetIntPara	func	tier=D	derived-callee	na	unit facility/fclMisc; calls scrGetIntPara
 0x00128860	fclCallGetIntPara2	func	tier=D	derived-callee	na	unit facility/fclMisc; calls scrGetIntPara; replaces fcl_214458: smt3-decomp C name via SLUS_209.11 0x00214458, unique-masked-hash-c; map-agrees
 0x00128CC0	fclSetParamTitle	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fclMenu.fclSetParamTitle, score 8.8 band B
@@ -1894,12 +1889,10 @@
 0x001FC1D8	effBTLCutGetFrame	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC1E0	effBTLCutGetFormation	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC1F8	effBTLCutGetMotionChangeFrame	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
-0x001FC208	effLeaf14	func	tier=D	derived-unit	na	unit effect/effBattle; no named callee, caller or string
 0x001FC220	effBTLCutGetCutEndFrame	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC258	effBTLCutGetDrawEndFrame	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC268	effBTLCutGetUserData	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC270	effLeaf16	func	tier=D	derived-unit	na	unit effect/effBattle; no named callee, caller or string
-0x001FC528	effLeaf17	func	tier=D	derived-unit	na	unit effect/effBattle; no named callee, caller or string
 0x001FC548	effBTLSkillGetState	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC550	effBTLSkillGetID	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001FC558	effBTLFieldColorGetOverrideSelector	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00161868, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -1909,12 +1902,9 @@
 0x001FC690	effLeaf19	func	tier=D	derived-unit	na	unit effect/effBattle; no named callee, caller or string
 0x001FC6B8	effLeaf20	func	tier=D	derived-unit	na	unit code_001E53C0, neighbour effBTLSkillCheckRun; no named callee, caller or string
 0x001FC6D8	effBTLSkillCheckRun	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001619E8, masked-words-identical (gap map pair); dds-decomp: SMT3HD name
-0x001FC6E0	effLeaf21	func	tier=D	derived-unit	na	unit code_001E53C0, neighbour effBTLSkillCheckRun; no named callee, caller or string
-0x001FC6F0	effLeaf22	func	tier=D	derived-unit	na	unit code_001E53C0, neighbour effBTLSkillCheckRun; no named callee, caller or string
 0x001FC708	effBTLFieldColorResetFlags	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x00161A18, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001FC930	effMagaCylinderDrawSub	func	tier=D	derived-caller	na	unit effect/effMath; called by effMagaCylinderDraw
 0x001FCAC8	effAPPoint4DeleteSub	func	tier=D	derived-caller	na	unit effect/effMath; called by effAPPoint4Delete
-0x001FCD10	effLeaf23	func	tier=D	derived-unit	na	unit effect/effMath; no named callee, caller or string
 0x001FCD50	effCallMemAllocDirect	func	tier=D	derived-callee	na	unit code_001E5A58, neighbour effPCPBezierEval; calls sdfMemAllocDirect
 0x001FCDE0	effLeaf24	func	tier=D	derived-unit	na	unit code_001E5A58, neighbour effPCPBezierEval; no named callee, caller or string
 0x001FCDF8	effLeaf25	func	tier=D	derived-unit	na	unit code_001E5A58, neighbour effPCPBezierEval; no named callee, caller or string
@@ -2574,7 +2564,6 @@
 0x0023E400	effFreeFadeVectorWork	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029C710, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023E418	effCloneFadeVectorWork	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029C728, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E438	effDrawLensFlare	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029C748, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023EAD0	effLeaf354	func	tier=D	derived-unit	na	unit code_00226EC8, neighbour effSetFadeVectorColor; no named callee, caller or string
 0x0023EAE8	effResetSelectionEntryBuffers	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029CDF8, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x0023EB40	effCreateSelectionFlagListFromWork	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029CE50, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023EB58	effCreateSelectionFlagListFromFile	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0029CE68, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -2865,8 +2854,6 @@
 0x00254268	effAdvanceDispatchCounter	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B0830, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002542B8	effDrawModelBlock	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B0880, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002542F0	effCallSRAnimation12	func	tier=D	derived-callee	na	unit code_00226EC8, neighbour effSetModelBlockColor; calls effSRAnimation
-0x00254330	effLeaf372	func	tier=D	derived-unit	na	unit code_00226EC8, neighbour effSetModelBlockColor; no named callee, caller or string
-0x00254340	effLeaf373	func	tier=D	derived-unit	na	unit code_00226EC8, neighbour effSetModelBlockColor; no named callee, caller or string
 0x00254368	effRetainScalyTextureReference	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B0918, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002543A8	effReleaseScalyTextureReference	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B0958, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002543D8	effAllocateTexturedStripWork	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B0988, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -2885,8 +2872,6 @@
 0x00255C80	effAdvanceModelResourceUpdateCount	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B2238, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00255CD0	effDispatchModelResourceCallback	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B2288, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00255D08	effCallSRAnimation13	func	tier=D	derived-callee	na	unit code_00226EC8, neighbour effSetModelResourceColor; calls effSRAnimation
-0x00255D60	effLeaf374	func	tier=D	derived-unit	na	unit code_00226EC8, neighbour effSetModelResourceColor; no named callee, caller or string
-0x00255D70	effLeaf375	func	tier=D	derived-unit	na	unit code_00226EC8, neighbour effSetModelResourceColor; no named callee, caller or string
 0x00255D98	effCreatePointSet3	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B2320, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00255E88	effReleaseModelPointSetAsset	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B2410, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00255EB8	effDrawThreePointGroups	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B2440, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -3009,7 +2994,6 @@
 0x0025D0C8	effHandleDebugOrbitInput	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.74 0x002B7B78, score 1.00, tools/xgame/fuzzy_apply.py
 0x0025D378	effResetStaticState	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.74 0x002B7E28, score 1.00, tools/xgame/fuzzy_apply.py
 0x0025D3B0	effUpdateCameraDiagnostics	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B7E60, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0025D630	sysLeaf45	func	tier=D	derived-unit	na	unit code_00242308, no named neighbour; no named callee, caller or string
 0x0025D658	sysUPDOWNHEIGHT	func	tier=D	derived-string	na	unit code_00242308, no named neighbour; string 'UP   & DOWN : HEIGHT'
 0x0025DB68	effResetCameraSnapshotSelection	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.74 0x002B8618, score 1.00, tools/xgame/fuzzy_apply.py
 0x0025DB98	effUpdateCameraSnapshotGuides	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002B8648, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -22995,6 +22979,7 @@
 0x00126EA8	datCalcMagMax	func	tier=C	hd-d	0.53 (n=98)	Raidou HD dat.datCalcMagMax score 4.0 flag I: calls1 callers-of-match-uniq st1:call r1-only
 0x00126ED0	datCommand_INC_STOCK	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD dat.datCommand_INC_STOCK score 4.5 flag I: calls1 next gap3/5 st1:gap r1-only
 0x001286B8	fclChkMessageInvalid	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fclMisc.fclChkMessageInvalid score 5.3 flag R: prev next~ gap1/1 st1:gap r1+r2
+0x00128808	fclGetWorkValue	func	tier=C	derived-derived-role	na	reads fclWorkValue[i] clamped to 15, the getter after fclSetWorkValue (same clamp as fclCallGetIntPara2); replaces fclLeaf5
 0x001291E8	fclSetLink	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fclMenu.fclSetLink score 3.2 flag I: calls1 gap7/4 votes2 st2:gap r2-only
 0x00129D40	DrawTitle	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fclMenu.DrawTitle score 3.6 flag -: calls1 calls-of-match votes2 st1:call r1-only
 0x0012A828	fclSetClsModeEx	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fclMsg.fclSetClsModeEx score 5.7 flag I: calls1 prev gap3/2 st1:gap r1+r2
@@ -23274,6 +23259,8 @@
 0x001FB948	dds3UpdateCrossfade	func	tier=C	dds-fuzzy-95-m-pair	0.60 (n=5)	dds body 0x1602f8 sim 0.978 margin 0.60 pair
 0x001FBF50	effBTLCutListRelease	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x16ac28 sim 1.000 margin 0.09 pair
 0x001FC2F0	effBattleHasActiveKind	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x161600 sim 1.000 margin 0.50 pair
+0x001FC6E0	effBTLFieldColorSetFlags	func	tier=C	derived-derived-role	na	ORs its argument into effFieldColorFlags, beside effBTLFieldColorResetFlags; replaces effLeaf21
+0x001FC6F0	effBTLFieldColorClearFlags	func	tier=C	derived-derived-role	na	clears its argument's bits in effFieldColorFlags, beside effBTLFieldColorResetFlags; replaces effLeaf22
 0x001FD7C0	BlurEditorGetParams	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD Eve.BlurEditorGetParams score 5.7 flag -: prev~ next gap1/2 st1:gap r1+r2
 0x001FD8F8	rblurSetParam	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1add60 sim 1.000 margin 0.00 pair
 0x001FDA28	dblurSetParam	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1add60 sim 1.000 margin 0.00 pair
@@ -23373,6 +23360,7 @@
 0x0023C030	effCalc	func	tier=C	hd-both	0.71 (n=206)	Raidou HD effBehavior.effCalc score 4.0 flag I: prev edge st1:edge r1+r2
 0x0023D418	effReleaseReferenceHolder	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x29c378 sim 0.723 margin 0.03 pair
 0x0023E248	effReleaseFadeHeaderAllocation	func	tier=C	dds1-derived-role	na	DDS1 code_0029C530.c, same position and free; replaces effFunc15
+0x0023EAD0	effSetFadeVector	func	tier=C	derived-derived-role	na	copies a qword to effFadeVectorWork_t.vector, before effSetFadeVectorColor; module setter style; replaces effLeaf354
 0x0023FD88	effKindWorkFrameUpdate	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x2e02f8 sim 0.939 margin 0.00 pair
 0x0023FDF0	effSetKindWorkPosition	func	tier=C	derived-derived-role	na	vector setter beside the type's color/scale setters; replaces effLeaf355
 0x00240128	effSetAlternateKindWorkPosition	func	tier=C	derived-derived-role	na	vector setter beside the type's color/scale setters; replaces effLeaf356
@@ -23386,6 +23374,10 @@
 0x0024A260	effSetRenderResourceRotation	func	tier=C	derived-derived-role	na	vector setter beside the type's color/scale setters; replaces effLeaf367
 0x00251C08	effSetBlockResourcePosition	func	tier=C	derived-derived-role	na	vector setter beside the type's color/scale setters; replaces effLeaf369
 0x00251C18	effSetBlockResourceRotation	func	tier=C	derived-derived-role	na	vector setter beside the type's color/scale setters; replaces effLeaf370
+0x00254330	effSetModelBlockPosition	func	tier=C	derived-derived-role	na	copies a qword to effClassWork_t.position (+0), before effSetModelBlockColor/Scale; module setter style; replaces effLeaf372
+0x00254340	effSetModelBlockOrientation	func	tier=C	derived-derived-role	na	copies a qword to effClassWork_t.orientation (+0x10), before effSetModelBlockColor/Scale; replaces effLeaf373
+0x00255D60	effSetModelResourcePosition	func	tier=C	derived-derived-role	na	copies a qword to effModelResource_t.position (+0), before effSetModelResourceColor/Scale; replaces effLeaf374
+0x00255D70	effSetModelResourceOrientation	func	tier=C	derived-derived-role	na	copies a qword to effModelResource_t.orientation (+0x10), before effSetModelResourceColor/Scale; replaces effLeaf375
 0x00256AF8	Calc	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD effObjectParticle.Calc score 5.6 flag -: calls1 callers-of-match-uniq st1:call r1+r2
 0x002595A8	effPadVibeFadeOUT	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1a1600 sim 1.000 margin 0.07 pair
 0x002595E0	effPadVibeFadeIN	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1a1638 sim 1.000 margin 0.07 pair
@@ -23393,6 +23385,7 @@
 0x00259B70	effSetActiveResourceRotation	func	tier=C	derived-derived-role	na	orientation setter of effActiveResource_t; replaces effLeaf389
 0x00259B88	effSetActiveResourceColor	func	tier=C	derived-derived-role	na	color setter of effActiveResource_t; replaces effLeaf390
 0x00259B90	effSetActiveResourceScale	func	tier=C	derived-derived-role	na	scale setter of effActiveResource_t; replaces effLeaf391
+0x0025D630	sysUPDOWNHEIGHTSaveSelection	func	tier=C	derived-derived-role	na	release callback of the sysUPDOWNHEIGHT debug item; copies effWork7[0x88..0x8A] (the selection effResetCameraSnapshotSelection resets) to sysUPDOWNHEIGHTData*; replaces sysLeaf45
 0x002612B8	effPollAndQueueCopiedFileResource	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2bc328 sim 1.000 margin 0.00 pair
 0x00262A98	sbtlMap_Init	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlDraw.sBtlMap_Init score 3.2 flag I: calls1 calls-of-match st2:call r2-only
 0x00262AC0	sbtlInitPlayerData	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlMain.sBtlInitPlayerData score 4.7 flag I: calls1 next~ calls-of-match st2:call r2-only
@@ -24462,6 +24455,8 @@
 0x001EEF88	slFormatCancel	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x155368 sim 0.733 margin 0.43 pair
 0x001F1C10	slQueryYesNoProc	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x157160 sim 0.850 margin 0.59 pair
 0x001F4E60	dds3BillAnimFreeP2A	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x15ccc8 sim 0.892 margin 0.89 pair
+0x001FC208	effBTLCutSetCutEndFrame	func	tier=B	smt3-role	na	SMT3 HD effBTLCutSetCutEndFrame: between effBTLCutGetMotionChangeFrame and effBTLCutGetCutEndFrame as in HD; sets +0x14, which effBTLCutGetCutEndFrame returns; replaces effLeaf14
+0x001FC528	effBTLSkillSetState	func	tier=B	smt3-role	na	SMT3 HD effBTLSkillSetState: precedes effBTLSkillGetState as in HD effBattle.c and sets effData24, which effBTLSkillGetState returns; replaces effLeaf17
 0x001FD238	Eve_PartialMultiBlurON	func	tier=B	smt3-role	na	SMT3 name; the ON half of the ON/OFF pair at +0x10 (Eve_PartialMultiBlurOFF); DrawEffect calls it under drawmblur; replaces effBlurUpdateSub3
 0x001FD2F0	Eve_DistortionBlurON	func	tier=B	smt3-role	na	SMT3 name; pairs with Eve_DistortionBlurOFF at +0x10; DrawEffect calls it under drawdblur; replaces effBlurUpdateSub5
 0x001FD3A8	Eve_RippleBlurON	func	tier=B	smt3-role	na	SMT3 name; pairs with Eve_RippleBlurOFF at +0x10; DrawEffect calls it under drawrblur; replaces effBlurUpdateSub7

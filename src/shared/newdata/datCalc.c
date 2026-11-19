@@ -452,7 +452,7 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf53);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf54);
 
-s32 datLeaf55(datActorWork_t *work, s32 amount) {
+s32 datAddHp(datUnitWork_t *work, s32 amount) {
     u32 hp = (u32)work->hp + amount;
 
     if ((s32)hp < 0) {
@@ -466,7 +466,7 @@ s32 datLeaf55(datActorWork_t *work, s32 amount) {
 }
 
 /* body: matched in smt3 @ 9401f79eb: src/smt3/newdata/datCalc.c:565, match, same function 1.00 (words 9/9, calls 1.00, shape 1.00) */
-s32 datLeaf56(datUnitWork_t *work, s32 amount)
+s32 datAddMp(datUnitWork_t *work, s32 amount)
 {
     u32 mp = (u32)work->mp + amount;
 
