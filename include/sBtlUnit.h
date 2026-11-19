@@ -65,6 +65,8 @@ typedef struct SBTLUNIT_MODEL {
     u8 pad1A0[0x1A4 - 0x1A0];
     u32 useskl[41]; /* skill-used bits, one per SKLID */
     u32 chkskl[41]; /* 0x248: skill-checked bits (HD chkskl); length not read yet */
+    u8 pad2EC[0x2F4 - 0x2EC];
+    s32 scrMotion; /* HD name */
 } SBTLUNIT_MODEL;
 #else
 typedef struct SBTLUNIT_MODEL {
@@ -324,7 +326,9 @@ struct SBTLUNIT_WORK {
     sdfVector4_t mv_spdbk;
     sdfVector4_t pos;
     sdfVector4_t rot;
-    u8 pad090[0x70];
+    u8 pad090[0x20];
+    sdfVector4_t field0B0;
+    u8 pad0C0[0x40];
     mapLightParam_t light;
     SBTLSOUND_DEVILWORK se;
     u8 pad170[0x1D4 - 0x170 - sizeof(SBTLSOUND_DEVILWORK)];
@@ -342,10 +346,14 @@ struct SBTLUNIT_WORK {
     SBTLSKL_KAJA_WORK kaja[3][2];
     u8 pad440[0x4];
     s32 karnCnt;
-    u8 pad448[0x474 - 0x448];
+    u8 pad448[0x44C - 0x448];
+    s32 field44C;
+    u8 pad450[0x474 - 0x450];
     SBTLSKL_BARRIER_WORK barrier;
-    u8 pad484[0x4AC - 0x484];
-    u32 field4AC;
+    u8 pad484[0x4A4 - 0x484];
+    s32 field4A4;
+    u8 pad4A8[0x4AC - 0x4A8];
+    s32 field4AC;
     u8 pad4B0[0x4BC - 0x4B0];
     s32 major;
     s32 minor;
@@ -452,9 +460,12 @@ struct SBTLUNIT_WORK {
     u8 pad748[0x770 - 0x748];
     s32 miusinai;
     s32 kuramasi;
-    u8 pad778[0x798 - 0x778];
+    u8 pad778[0x78C - 0x778];
+    s32 field78C;
+    u8 pad790[0x798 - 0x790];
     s32 L2_muteki; /* HD name */
-    u8 pad79C[0x7F4 - 0x79C]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
+    s32 field79C; /* set when trmCallBtlCheckReturnUnit cannot start the wait motion */
+    u8 pad7A0[0x7F4 - 0x7A0]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */
@@ -655,6 +666,9 @@ void sbtlKaihiInit(struct SBTLUNIT_WORK *wk);
 u32 sbtlCheckKajaAnyEx(struct SBTLUNIT_WORK *wk, s32 *count);
 s32 sbtlCheckEnableUseKaja(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 sbtlCheckDamageTargetTemp(struct SBTLUNIT_WORK *wk);
+void sbtlSetRunAway(struct SBTLUNIT_WORK *wk);
+struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Analyze(SBTLUNIT_SIDE side);
+struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Talk(u8 side);
 #endif
 
 #endif

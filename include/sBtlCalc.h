@@ -61,6 +61,8 @@ s32 sbtlCheckKuishibari(struct SBTLUNIT_WORK *wk, s32 damage);
 s32 sbtlGetAutoSkillPara(SKLID id, s16 *badst, s16 *power);
 #ifdef VERSION_RAIDOU2
 u32 sbtlCheckAisyoEx(struct SBTLUNIT_WORK *wk, u32 attr, s32 *hanshaType);
+s32 sbtlGetDamage_MRecover(SBTLCALC_DMGWORK *dmg, struct SBTLSKILLP_TBL *tbl);
+s32 sbtlCheckRegistKaja(struct SBTLSKL_KAJA_WORK *kaja, struct SBTLSKILLP_TBL *skill);
 #endif
 s32 sbtlBtlCheckBadStatusWeakSub(SKLID skill);
 u32 sbtlCheckBadStatus_Number(u32 badstatus, BST bstno);

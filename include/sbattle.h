@@ -191,7 +191,11 @@ s32 sbtlPacPBFile(void);
 s32 sbtlParaDraw(dds3ProcessID_t *id);
 s32 sbtlParaProc(dds3ProcessID_t *id);
 void sbtlPBLoadDraw(void);
+#ifdef VERSION_RAIDOU2
+void sbtlRefSbtl56(const sdfVector4_t *pos);
+#else
 s32 sbtlRefSbtl56(dds3ProcessID_t *id);
+#endif
 s32 sbtlRefSbtl67(dds3ProcessID_t *id);
 s32 sbtlResetEPLData(s32 i);
 void sbtlResetMotionMovePos(void);

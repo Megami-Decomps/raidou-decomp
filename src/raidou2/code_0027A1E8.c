@@ -21,6 +21,9 @@
 #include "sBtlItem.h"
 #include "sBtlCmndMenuNew.h"
 #include "dds3KernelDraw.h"
+#include "sBtlDraw.h"
+#include "sdfQuat.h"
+#include "jmsMisc.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -28,7 +31,52 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAny);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl);
 
+/* NON_MATCHING: 33 of 93 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCheckEnableUseKaja(struct SBTLUNIT_WORK *wk, SKLID skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    s32 count;
+
+    if (tbl == NULL) {
+        return -1;
+    }
+    count = 0;
+    if (skillid == SKLID_DEKAZYA || skillid == SKLID_DEKAJYA || skillid == SKLID_AKANEDEKAJYA) {
+        sbtlCheckKajaAnyEx(wk, &count);
+        if (wk->field4AC != 0) {
+            count++;
+        }
+        if (wk->barrier.size != 0) {
+            count++;
+        }
+        if (wk->karnCnt != 0) {
+            count++;
+        }
+        return count > 0;
+    }
+    if (!(tbl->flg & 0x400000)) {
+        return -1;
+    }
+    if (tbl->flg & 0x1000000) {
+        if (sbtlCheckRegistKaja(wk->kaja[0], tbl) >= 0) {
+            count++;
+        }
+    }
+    if (tbl->flg & 0x2000000) {
+        if (sbtlCheckRegistKaja(wk->kaja[1], tbl) >= 0) {
+            count++;
+        }
+    }
+    if (tbl->flg & 0x4000000) {
+        if (sbtlCheckRegistKaja(wk->kaja[2], tbl) >= 0) {
+            count++;
+        }
+    }
+    return count > 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckEnableUseKaja);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlBtlCheckEnableUseSkillSub);
 
@@ -92,9 +140,71 @@ s32 sbtlCancelSystemSub(s32 id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetPChara2);
+void sbtlCallBtlGetPChara2(s8 flag) {
+    struct SBTLUNIT_WORK *pchara = sbtlGetPChara();
+    struct SBTLUNIT_WORK *target;
+    f32 deg;
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SetFirstAtk_Core);
+    switch (sbtlGetSkilltbl(sbtlGetPChara()->skillid)->type == 2) {
+    case 0:
+        sbtlCallBtlSearchUnitID4(pchara, 0, flag);
+        break;
+    case 1:
+        pchara->model->field104 = sbtlGetNearTarget_Random(pchara, &pchara->rot, 300.0f, 0.6f, 0.1f, 2);
+        if (pchara->model->field104 == -1) {
+            pchara->model->field104 = sbtlGetNearTarget_Random(pchara, &pchara->rot, 1600.0f, 0.6f, 0.1f, 3);
+            if (pchara->model->field104 == -1) {
+                break;
+            }
+        }
+        target = sbtlSearchUnit_ID(wk_sbtl->unitList, pchara->model->field104);
+        if (target != NULL) {
+            deg = sbtlGetChorikiDeg(&pchara->pos, &pchara->rot, &target->pos, 1.0f);
+            SDF_VU0_STOREVECTOR(&pchara->rot);
+            sbtlAddUnitDeg(pchara, deg);
+            FromEuler(0.0f, pchara->angleY * 0.0174532925f, 0.0f);
+            SDF_VU0_STOREVECTOR(&pchara->rot);
+            SDF_VU0_STOREVECTOR(&pchara->field0B0);
+            if (wk_sbtl->fieldC74 == 0) {
+                wk_sbtl->fieldC74 = target->field1A0;
+                SDF_VU0_LOADVECTOR(&target->pos);
+                SDF_VU0_STOREVECTOR(&wk_sbtl->field150);
+            }
+        }
+        break;
+    }
+}
+
+void SetFirstAtk_Core(s32 sklid, s32 arg1) {
+    struct SBTLUNIT_WORK *pchara;
+
+    if (sklid == SKLID_OFS_GUN) {
+        if (wk_sbtl->fieldCAC != 0 && sbtlGetNakama(wk_sbtl->fieldCB1) != NULL
+            && sbtlGetNakama(wk_sbtl->fieldCB1)->field4A4 >= 21) {
+            sklid = wk_sbtl->fieldCAC;
+        } else {
+            wk_sbtl->fieldEB0 = 80;
+            if (sbtlGetGun_Num() <= 0) {
+                sbtlCreateSM(wk_sbtl->sysmsgList, sbtlGetPChara(), SBTLSM_MODE_NOTBULLET, SKLID_NONE);
+                sbtlPlaySE(0x10035);
+                return;
+            }
+            sbtlRefSbtl66(1);
+        }
+    }
+    pchara = sbtlGetPChara();
+    pchara->skillid = sklid;
+    wk_sbtl->mode = 3;
+    wk_sbtl->field7E8 = 0;
+    wk_sbtl->field7EC = 0;
+    wk_sbtl->field7F0 = 0;
+    wk_sbtl->field7F4 = 0;
+    sbtlResetATKEffect();
+    wk_sbtl->field7C8 = 0;
+    pchara->flg &= ~0x100;
+    sbtlCallBtlGetPChara2(1);
+    sbtlGetPChara()->field78C = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetVibe);
 
@@ -314,7 +424,41 @@ INCLUDE_ASM(const s32, "code_0027A1E8", slCallBtlGetPChara);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", slCallSetFirstAtkGun);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", slCallSetFirstAtkCore);
+s32 slCallSetFirstAtkCore(struct SBTLUNIT_WORK *wk, s32 flag) {
+    if (flag == 0) {
+        if (wk_sbtl->field7DC != 0) {
+            goto end;
+        }
+        if (sbtlNormalProcNakamaSub(wk) == 0 && wk->status != 15) {
+            goto end;
+        }
+        if (wk_sbtl->fieldED9) {
+            SetFirstAtk_Core(SKLID_NOUSE_SORD1, 0);
+            goto end;
+        }
+        if ((sbtlDat()->kind == 1 && wk_sbtl->fieldED8) || (sbtlDat()->kind == 2 && wk_sbtl->fieldED8)) {
+            SetFirstAtk_Core(sbtlCallBtlDat2(), 0);
+            wk_sbtl->raido_magwaza_costnot = sbtlRefSbtl71(5);
+        } else {
+            if (sbtlDat()->kind == 3 && wk_sbtl->fieldEDA) {
+                SetFirstAtk_Core(sbtlCallBtlDat2(), 0);
+                wk_sbtl->raido_magwaza_costnot = sbtlRefSbtl71(5);
+                return 1;
+            }
+            if (wk_sbtl->fieldEDD && slCallBtlGetPChara()) {
+                goto end;
+            }
+            if (wk_sbtl->fieldEDB && slCallSetFirstAtkGun()) {
+                goto end;
+            }
+            if (wk_sbtl->fieldEDC) {
+                SetFirstAtk_Core(SKLID_OFS_GUN, 0);
+            }
+        }
+    }
+end:
+    return -1;
+}
 
 s32 sbtlEscapeCheck(void) {
     SBTL_WORK *wk = wk_sbtl;
@@ -504,7 +648,50 @@ s32 sbtlCallBtlGetNakama3(void) {
 
 INCLUDE_ASM(const s32, "code_0027A1E8", Check_Stls);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlReset_SupportAction_Shugou);
+s32 sbtlReset_SupportAction_Shugou(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *unit;
+    BST bst;
+    s32 i;
+
+    if (IsSceanStop()) {
+        return 0;
+    }
+    if (wk_sbtl->field4288 != 0) {
+        return 0;
+    }
+    if (wk_sbtl->field42CA != 0) {
+        return 0;
+    }
+    if (wk_sbtl->flg & 0x40000) {
+        for (i = 0; i < 20; i++) {
+            unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[i]);
+            if (unit == NULL || !sbtlCheckBit(&wk_sbtl->stock_mask, i) || wk_sbtl->summonflg[i] != 2) {
+                continue;
+            }
+            Check_Stls(unit);
+            if (unit->field6C4 & 0x400) {
+                unit->L2_muteki = 1;
+                sbtlLeaf59(unit, 0x30202020);
+                sbtlChangeModelColor(unit);
+            }
+        }
+    }
+    bst = sbtlGetBadStatus(&wk->unit);
+    if ((jmsChkCommonInputData2[0] == 0 || !sbtlCheckMove_BadStatus(wk) || bst == BST_BOUDO
+         || (wk_sbtl->flg2 & 0x20000000))
+        && !sbtlCallBtlGetNakama3() && (wk_sbtl->flg & 0x40000)) {
+        wk_sbtl->flg &= ~0x40000;
+        wk_sbtl->flg2 |= 0x2000;
+        for (i = 0; i < 20; i++) {
+            if (sbtlCheckBit(&wk_sbtl->stock_mask, i) && wk_sbtl->summonflg[i] == 2) {
+                unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[i]);
+                ShugouKaijyoSub(unit);
+                unit->field4A2 = 0;
+            }
+        }
+    }
+    return 1;
+}
 
 void sbtlShugouKaijyo(void) {
     s32 i;
@@ -626,7 +813,43 @@ s32 sbtlCallBtlGetSkilltbl3(struct SBTLUNIT_WORK *wk, s16 skillid) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_02);
+s32 SEquationno_02(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLUNIT_WORK *unit;
+    s32 ok;
+    s32 i;
+
+    switch (skillid) {
+    case 3:
+    case 0x12:
+    case 0x22:
+    case 0x32:
+    case 0x60:
+    case 0x61:
+    case 0x95:
+    case 0x191:
+    case 0x192:
+    case 0x214:
+    case 0x224:
+    case 0x234:
+    case 0x244:
+        ok = 0;
+        break;
+    default:
+        ok = 1;
+        break;
+    }
+    if (ok == 1) {
+        for (i = 0; i < wk_sbtl->field408->count; i++) {
+            unit = wk_sbtl->field408->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckDamageTarget(unit)) {
+                if (sbtlCheckCrossCircle(&wk->pos, wk->model->field11C * 8.0f, &unit->pos, unit->model->field11C)) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
 
 /* NON_MATCHING: 60 of 101 words match.  */
 #ifdef NON_MATCHING
@@ -678,7 +901,31 @@ s32 sbtlCallBtlGetSkilltbl4(struct SBTLUNIT_WORK *wk, s16 skillid) {
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlGetSkilltbl4);
 #endif
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_04);
+s32 SEquationno_04(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    struct SBTLUNIT_WORK *unit;
+    s32 ret = 0;
+    s32 i;
+
+    for (i = 0; i < wk_sbtl->field404->count; i++) {
+        unit = wk_sbtl->field404->pUnitL[i].pUnit;
+        if (unit == NULL || !sbtlCheckDamageTarget(unit)) {
+            continue;
+        }
+        if (tbl->flg & 0x20) {
+            if (tbl->flg & 0x400000) {
+                if (sbtlCheckEnableUseKaja(unit, skillid) > 0) {
+                    ret = 1;
+                }
+            } else if (wk->field4AC <= 0) {
+                ret = 1;
+            }
+        } else {
+            ret = 1;
+        }
+    }
+    return ret;
+}
 
 s32 SEquationno_05(struct SBTLUNIT_WORK *wk, s16 skillid) {
     u32 flg = sbtlGetSkilltbl(skillid)->flg;
@@ -698,7 +945,61 @@ s32 SEquationno_05(struct SBTLUNIT_WORK *wk, s16 skillid) {
     return 0;
 }
 
+/* NON_MATCHING: 87 of 116 words match.  */
+#ifdef NON_MATCHING
+s32 SEquationno_06(struct SBTLUNIT_WORK *wk, s16 skillid) {
+    sdatUnitWork_t *acter = &wk->unit;
+    sdatUnitWork_t *player = &sbtlGetPlayerData()->unit;
+    struct SBTLSKILLP_TBL *tbl;
+    struct SBTLUNIT_WORK *unit;
+    sdatUnitWork_t *target;
+    sdatParaWork_t para;
+    SBTLCALC_DMGWORK dmg;
+    s32 recover;
+    s32 i;
+
+    memset(&para, 0, sizeof(para));
+    sbtlGetPlayerTec_ParaUp(player, &para);
+    tbl = sbtlGetSkilltbl(skillid);
+    if ((tbl->flg & 0x10004) == 4) {
+    for (i = 0; i < wk_sbtl->field404->count; i++) {
+        unit = wk_sbtl->field404->pUnitL[i].pUnit;
+        target = &unit->unit;
+        if (unit == NULL) {
+            continue;
+        }
+        if (!sbtlCheckDamageTarget(unit)) {
+            continue;
+        }
+        if ((tbl->area & 0x2000) && acter->devilId != target->devilId) {
+            continue;
+        }
+        if (target->now.maxhp == 0) {
+            continue;
+        }
+        dmg.atec = acter->now.tec + para.tec;
+        dmg.tluck = target->now.luck + para.luck;
+        dmg.n0 = tbl->n0;
+        dmg.damage_per = 1.0f;
+        dmg.tmaxhp = 60000.0f;
+        dmg.alevel = acter->level;
+        recover = sbtlGetDamage_MRecover(&dmg, tbl);
+        if (recover <= 0) {
+            continue;
+        }
+        if (recover < target->now.maxhp - target->now.hp || target->now.hp < target->now.maxhp >> 1) {
+            if (!(tbl->flg & 0x800000) || unit->field44C <= 0) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", SEquationno_06);
+#endif
 
 s32 SEquationno_07(struct SBTLUNIT_WORK *wk, s16 skillid) {
     s32 type = sbtlGetSkilltbl(skillid)->type & 0x2000;

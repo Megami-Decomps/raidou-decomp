@@ -21,9 +21,16 @@ void Init_sbtlScript(struct SBTLUNIT_WORK *wk);
 
 s32 sbtlCallBtlGetNakama3(void);
 s32 ShugouKaijyoSub(struct SBTLUNIT_WORK *wk);
+void Check_Stls(struct SBTLUNIT_WORK *wk);
+s32 sbtlReset_SupportAction_Shugou(struct SBTLUNIT_WORK *wk);
 s32 sbtlDrawEscapeGauge(void);
 void sbtlResetATKEffect(void);
 s32 sbtlCheckSetHITNONE(s32 Group, u32 DevilID);
 void sbtlCallBtlResetJump(struct SBTLUNIT_WORK *wk, s32 frame);
 void sbtlShugouKaijyo(void);
+void sbtlCallBtlGetPChara2(s8 flag);
+void SetFirstAtk_Core(s32 sklid, s32 arg1);
+s32 slCallBtlGetPChara(void);
+s32 slCallSetFirstAtkGun(void);
+s32 slCallSetFirstAtkCore(struct SBTLUNIT_WORK *wk, s32 flag);
 #endif

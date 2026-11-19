@@ -28,6 +28,7 @@
 #include "sbtlSub.h"
 #include "sbattle.h"
 #include "sBtlCalc.h"
+#include "sBtlDraw.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -142,7 +143,7 @@ INCLUDE_ASM(const s32, "code_00309FE0", cmpCallBtlGetNakama);
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpGetModelScale);
 
-s32 cmpCallGetProcessData2(s32 index) {
+s32 cmpCallGetProcessData2(s32 index, s32 kind) {
     sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
 
     return wk->data->fieldD2C[index];
@@ -251,9 +252,87 @@ s16 cmpCallGetProcessData4(s32 second) {
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData4);
 #endif
 
-INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData5);
+s32 cmpCallGetProcessData5(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    SBTL_STAGE_DATA *stage = &sbtlData100[wk_sbtl->stageNo];
+    struct SBTLUNIT_WORK *nakama;
+    s32 i;
+    s32 j;
+    s16 id;
 
-INCLUDE_ASM(const s32, "code_00309FE0", cmpCallBtlCreateTargetList);
+    if (stage->flags & 6) {
+        return 0;
+    }
+    id = sbtlIfDrawActionSub(sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID)->unit.devilId)->field82;
+    if (wk_sbtl->field42C0 == 4 || wk_sbtl->field42C0 == 5 || wk_sbtl->field42C0 == 7) {
+        return 0;
+    }
+    for (i = 0; i < 80; i++) {
+        for (j = 0; j < 2; j++) {
+            nakama = sbtlGetNakama(j);
+            if (nakama == NULL) {
+                continue;
+            }
+            if (cmpData29[i].field02 == id && cmpData29[i].devilId == nakama->unit.devilId
+                && !evtBitCheck(i + 0x850)) {
+                evtBitOn(i + 0x850);
+                wk->fieldC0 = i;
+                wk->field3C = j;
+                wk->fieldCA = 1;
+                wk->fieldCC[0] = cmpData29[i].field0C[4];
+                wk->fieldC2 = 0;
+                wk->fieldCC[1] = cmpData29[i].field0C[5];
+                wk->field40 = 0;
+                wk->fieldCC[2] = cmpData29[i].field0C[6];
+                wk->fieldCC[3] = cmpData29[i].field0C[7];
+                wk->fieldCC[4] = cmpData29[i].field0C[8];
+                wk->fieldCC[5] = cmpData29[i].field0C[9];
+                wk->fieldCC[6] = cmpData29[i].field0C[10];
+                wk->fieldCC[7] = cmpData29[i].field0C[11];
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+s32 cmpCallBtlCreateTargetList(void) {
+    SBTL_STAGE_DATA *stage = &sbtlData100[wk_sbtl->stageNo];
+    struct SBTLUNIT_LISTWORK *list;
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_WORK *nakama;
+    s32 i;
+    s32 j;
+    s32 k;
+    s16 id;
+
+    if (stage->flags & 6) {
+        return 0;
+    }
+    if (wk_sbtl->field42C0 == 4 || wk_sbtl->field42C0 == 5 || wk_sbtl->field42C0 == 7) {
+        return 0;
+    }
+    list = sbtlCreateTargetList(2);
+    for (i = 0; i < list->count; i++) {
+        unit = list->pUnitL[i].pUnit;
+        id = sbtlIfDrawActionSub(unit->unit.devilId)->field82;
+        for (j = 0; j < 2; j++) {
+            nakama = sbtlGetNakama(j);
+            if (nakama == NULL) {
+                continue;
+            }
+            for (k = 0; k < 80; k++) {
+                if (cmpData29[k].field02 == id && cmpData29[k].devilId == nakama->unit.devilId && !evtBitCheck(k + 0x850)) {
+                    wk_sbtl->field42C4 = unit;
+                    sbtlDeleteUnitList(list);
+                    return 1;
+                }
+            }
+        }
+    }
+    sbtlDeleteUnitList(list);
+    return 0;
+}
 
 s32 cmpCallGetNowSummonerRank(s32 flag) {
     s32 rank = cmpGetNowSummonerRank();
@@ -565,7 +644,66 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData27);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData28);
 
+/* NON_MATCHING: 120 of 122 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallGetProcessData29(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    s32 rand;
+
+    if (wk_sbtl->field42AC == -2) {
+        if (GetRand(100) < 30 || wk->kind == 13) {
+            wk_sbtl->field42AC = -1;
+        } else {
+            trmSetProcessTerm();
+            wk_sbtl->field42A8 = wk->data->fieldD1E;
+        }
+    }
+    if (wk_sbtl->field42AC == -1) {
+        if (wk->kind != 13) {
+            trmSetProcessTerm();
+        }
+        wk_sbtl->field42A8 = wk->data->fieldD1A;
+    }
+    if (wk_sbtl->field42AC == -8) {
+        if (wk->kind != 13) {
+            trmSetProcessTerm();
+        }
+        wk->field9C = 0;
+        wk_sbtl->field42A8 = 31;
+        wk->field1A = 3;
+        wk_sbtl->field42CB = 1;
+        wk->field1C = 64;
+        return 1;
+    }
+    if (wk_sbtl->field42AC == -5) {
+        wk_sbtl->field42A8 = wk->data->fieldD22;
+        wk->field1C = 83;
+        wk->field9A = 3;
+        wk->field1A = 0;
+        return 1;
+    }
+    if (wk_sbtl->field42AC == -2 || wk_sbtl->field42AC == -1) {
+        rand = GetRand(100);
+        if (rand < cmpCallGetProcessData2(4, wk->kind)) {
+            wk->field1A = 71;
+            return 1;
+        }
+    }
+    if (wk_sbtl->field42AC == -1) {
+        wk_sbtl->field42CB = 1;
+        wk->field1C = 64;
+        wk->field1A = 0;
+        wk->field9C = 0;
+        return 1;
+    } else {
+        wk->field1A = 0;
+        wk->field1C = 88;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData29);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", AW_XAtkAdd);
 
@@ -591,7 +729,54 @@ INCLUDE_ASM(const s32, "code_00309FE0", nbCallGetProcessData10);
 
 INCLUDE_ASM(const s32, "code_00309FE0", nbCallGetProcessData11);
 
-INCLUDE_ASM(const s32, "code_00309FE0", nbCallGetProcessData12);
+s32 nbCallGetProcessData12(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLUNIT_WORK *partner;
+    SBTL_DEVIL_DATA *devil;
+
+    wk->fieldEC = 30;
+    if (wk->field9A == 1) {
+        pbData = 1;
+        wk->fieldEC = 1;
+        wk_sbtl->field430 = 0;
+    }
+    if (wk->field9A == 4) {
+        pbData = 1;
+        wk->fieldEC = 1;
+        wk_sbtl->field430 = 0;
+    }
+    if (wk->field9A == 2) {
+        wk_sbtl->field7D8 = 0;
+        wk_sbtl->flg |= 0x1000000;
+        VRF_DeltaTime = 1;
+        wk_sbtl->flg |= 0x40000000;
+        wk_sbtl->mode = 12;
+        wk_sbtl->field508 = 2;
+        wk_sbtl->field50A = 0;
+        wk_sbtl->field7C8 = 2;
+        wk_sbtl->flg |= 0x400000;
+    }
+    if (wk->field9A == 3) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+        if (wk->fieldEE != 0) {
+            sbtlSetFade(unit, SBTLUNIT_VST_FADEOUT, 0, 0, 4);
+            unit->field6C4 |= 1;
+            unit->flg2 |= 8;
+        } else {
+            sbtlSetRunAway(unit);
+        }
+    }
+    sbtlCallBtlSearchUnitID15(wk->fieldBC);
+    if (wk->fieldF0 == 0) {
+        partner = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+        if (partner != NULL) {
+            devil = sbtlIfDrawActionSub(partner->unit.devilId);
+            sbtlRefDDS3GBWK5(devil->field82, sbtlRefDDS3GBWK4(devil->field82) + 1);
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", nbLeaf8);
 
@@ -881,7 +1066,38 @@ void trmCallBtlClearHitC(struct SBTLUNIT_WORK *wk) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlCheckReturnUnit);
+void trmCallBtlCheckReturnUnit(s32 motionFlag) {
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if (motionFlag != 1) {
+        return;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit == NULL) {
+            continue;
+        }
+        if (!(unit->field414 & 0x18) && !(unit->flg & 0x10) && !sbtlCheckReturn_Unit(unit) && unit->status != 10
+            && !(unit->flg & 0x800) && unit->mode >= 5 && unit->status != 40 && unit->status != 34) {
+            if (!sbtlSetMotion(unit, SBTLUNIT_MOTION_WAIT)) {
+                unit->field79C = 1;
+            }
+            trmCallBtlClearHitC(unit);
+            sbtlSetAction(unit, SBTLACTION_ST_WAIT, 0);
+            unit->vstatus |= 0x2000000;
+            unit->model->scrMotion = 0;
+            sbtlSetMotion_sbtlUnit(unit, 0, 4, 0, 0);
+            unit->vstatus &= ~0x800;
+        } else if (sbtlCheckReturn_Unit(unit)) {
+            unit->flg |= 0x10;
+        } else if ((unit->field414 & 1) && unit->status == 40) {
+            unit->flg |= 0x10;
+        } else if (unit->status == 10 || unit->status == 34) {
+            unit->flg |= 0x10;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", ChangeTarget_BSHelper_sbtlAI);
 
@@ -901,7 +1117,60 @@ struct SBTLUNIT_LISTWORK *trmCallBtlCreateUnitList(u8 group) {
 
 INCLUDE_ASM(const s32, "code_00309FE0", SetBSHelper);
 
+/* NON_MATCHING: 96 of 119 words match.  */
+#ifdef NON_MATCHING
+void trmCallBtlSearchUnitID5(void) {
+    struct SBTLUNIT_WORK *player = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    struct SBTLUNIT_WORK *partner = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    struct SBTLUNIT_WORK *nakama;
+    sdfVector4_t camera;
+    sdfVector4_t target;
+
+    player->flg |= 1;
+    sbtlSetMode(E_CAMERA_MODE_OutCtrl);
+    camera.x = 50.0f;
+    camera.y = -140.0f;
+    camera.z = -347.0f;
+    camera.w = 1.0f;
+    sbtlGetUnitHelperPos(partner, SBTLUNIT_MARK_DAMAGE);
+    SDF_VU0_STOREVECTOR(&target);
+    target.x = camera.x;
+    target.y += 20.0f;
+    switch (partner->unit.devilId) {
+    case 0x105:
+        target.y = -150.0f;
+        break;
+    case 0x109:
+        target.y -= 30.0f;
+        break;
+    case 0xEB:
+        target.y += 30.0f;
+        break;
+    }
+    trmWork2.x = target.x;
+    trmWork2.y = target.y;
+    trmWork2.z = target.z;
+    trmWork2.w = target.w;
+    sbtlRefSbtl56(&camera);
+    sbtlRefSbtl61(&target);
+    SDF_VU0_LOADVECTOR(&camera);
+    SDF_VU0_STOREVECTOR(&trmWork);
+    SDF_VU0_LOADVECTOR(&target);
+    SDF_VU0_STOREVECTOR(&trmCallBtlSearchUnitID5Work);
+    nakama = sbtlGetNakama(0);
+    if (nakama != NULL) {
+        nakama->vstatus |= 0x1000;
+        nakama->flg |= 1;
+    }
+    nakama = sbtlGetNakama(1);
+    if (nakama != NULL) {
+        nakama->vstatus |= 0x1000;
+        nakama->flg |= 1;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlSearchUnitID5);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlSetMode);
 
@@ -1204,7 +1473,45 @@ void CameraSet(void) {
     sbtlRefSbtl65(sbtlBtlRunSklProcSub(sbtlData138[kind][wk->pTypeBossNmlEvent->cam_size]));
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", ReStartBattle);
+void ReStartBattle(void) {
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+
+    if (wk_sbtl->tgtList != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->tgtList);
+        wk_sbtl->tgtList = NULL;
+    }
+    wk_sbtl->tgtList = sbtlCreateTargetList_Analyze(SBTLUNIT_SIDE_ENEMY);
+    for (i = 0; i < wk_sbtl->tgtList->count; i++) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->tgtList, i);
+        unit->vstatus &= ~0x1000;
+        unit->vstatus &= ~0x2000000;
+    }
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    unit->vstatus &= ~0x1000;
+    unit->vstatus &= ~0x2000000;
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->boss_eventID);
+    if (unit != NULL) {
+        unit->vstatus &= ~0x2000000u;
+        unit->flg &= ~0x10;
+    }
+    if (!wk_sbtl->bNoEndCam) {
+        unit = sbtlGetNakama(0);
+        if (unit != NULL) {
+            unit->vstatus &= ~0x1000;
+            unit->vstatus &= ~0x2000000;
+            unit->flg &= ~0x10;
+        }
+        unit = sbtlGetNakama(1);
+        if (unit != NULL) {
+            unit->vstatus &= ~0x1000;
+            unit->vstatus &= ~0x2000000;
+            unit->flg &= ~0x10;
+        }
+    }
+    wk_sbtl->bEffNoDraw = 0;
+    wk_sbtl->scrFlag &= ~0x40000;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlEffect);
 

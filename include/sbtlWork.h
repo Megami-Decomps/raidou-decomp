@@ -195,7 +195,9 @@ typedef struct SUMMON_CTRL {
 /* Partial raidou2 layout of the battle main work: only the fields read so far are named, the rest is padding. */
 typedef struct SBTL_WORK {
     sdfVector4_t vPosBossEvent; /* HD name; boss event camera target */
-    u8 pad010[0x180 - 0x10];
+    u8 pad010[0x150 - 0x10];
+    sdfVector4_t field150; /* position of the first gun target, set by sbtlCallBtlGetPChara2 */
+    u8 pad160[0x180 - 0x160];
     SBTLCAMERA_WORK camera;
     SBTLCAMERA_WORK camerabk;
     u8 pad2E0[0x400 - 0x2E0];
@@ -289,7 +291,12 @@ typedef struct SBTL_WORK {
     s32 field7D4;
     s32 field7D8;
     s32 field7DC;
-    u8 pad7E0[0x7FC - 0x7E0];
+    u8 pad7E0[0x7E8 - 0x7E0];
+    s32 field7E8;
+    s32 field7EC;
+    s32 field7F0;
+    s32 field7F4;
+    u8 pad7F8[0x7FC - 0x7F8];
     s32 field7FC;
     s32 field800;
     u8 pad804[0x8];
@@ -300,7 +307,8 @@ typedef struct SBTL_WORK {
     s16 huumamagnone;
     u8 pad836[2];
     s32 huumaTargetID; /* unit ID of the battle talk partner */
-    u8 pad83C[0x86E - 0x83C];
+    u8 pad83C[0x86C - 0x83C];
+    s16 field508;
     s16 field50A;
     s16 escapegauge_w; /* HD name */
     u8 pad872[0x2];
@@ -352,19 +360,27 @@ typedef struct SBTL_WORK {
     u8 field878;
     u8 field879;
     u8 field87A;
-    u8 padC57[0xC7B - 0xC57];
+    u8 padC57[0xC74 - 0xC57];
+    s32 fieldC74; /* field1A0 of the first gun target */
+    u8 padC78[0xC7B - 0xC78];
     u8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
     u8 padC7C[0xC8C - 0xC7C];
     struct SBTLUNIT_WORK *pNakama0; /* HD name */
     struct SBTLUNIT_WORK *pNakama1;
     u8 pad_C94[0xCA2 - 0xC94];
     s8 fieldCA2; /* sbtlMainDraw leaves the moon alone when set */
-    u8 padCA3[0xD90 - 0xCA3];
+    u8 padCA3[0xCAC - 0xCA3];
+    s32 fieldCAC; /* skill SetFirstAtk_Core uses for the gun when set */
+    u8 padCB0[0x1];
+    s8 fieldCB1; /* sbtlGetNakama index for fieldCAC */
+    u8 padCB2[0xD90 - 0xCB2];
     SUMMON_CTRL smnCtrl;
     u8 padDA0[0xDA4 - 0xDA0];
     struct dds3Basic_t *apMarkerUnit[8];
     struct dds3Basic_t *apMarkerUnitR[8];
-    u8 padDE4[0xE84 - 0xDE4];
+    u8 padDE4[0xE81 - 0xDE4];
+    s8 bEffNoDraw; /* HD name */
+    u8 padE82[0xE84 - 0xE82];
     s32 fieldE84; /* sbtlDat's index into datData20 */
     u8 padE88[0x4];
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */
@@ -374,21 +390,34 @@ typedef struct SBTL_WORK {
     struct mdlObj_t *hMapMdl;
     struct mdlObj_t *hMapMdl2;
     u32 mapclr;
-    u8 padEA4[0xEC0 - 0xEA4];
+    u8 padEA4[0xEB0 - 0xEA4];
+    s32 fieldEB0;
+    u8 padEB4[0xEC0 - 0xEB4];
     s32 fieldEC0;
-    u8 padEC4[0xEE0 - 0xEC4];
+    u8 padEC4[0xED8 - 0xEC4];
+    s8 fieldED8; /* slCallSetFirstAtkCore input flags */
+    s8 fieldED9;
+    s8 fieldEDA;
+    s8 fieldEDB;
+    s8 fieldEDC;
+    s8 fieldEDD;
+    u8 padEDE[0xEE0 - 0xEDE];
     struct sbtlSummonText_t textPool[100];
     struct sbtlSummonText_t *textList;
     struct sbtlSummonText_t *textCursor; /* sbtlRefSbtl30 searches for a free entry from here */
     HITEFFLIST hitEffList;
-    u8 pad41F8[0x42A8 - 0x41F8];
+    u8 pad41F8[0x4288 - 0x41F8];
+    s8 field4288; /* nonzero: sbtlReset_SupportAction_Shugou does nothing */
+    u8 pad4289[0x42A8 - 0x4289];
     s16 field42A8;
     u8 pad42AA[0x2];
     s16 field42AC;
     s16 field42AE;
     u8 pad42B0[0x42C0 - 0x42B0];
     s16 field42C0;
-    u8 pad42C2[0x42CA - 0x42C2];
+    u8 pad42C2[0x2];
+    struct SBTLUNIT_WORK *field42C4; /* enemy cmpCallBtlCreateTargetList found for a party talk */
+    u8 pad42C8[0x42CA - 0x42C8];
     s8 field42CA; /* Proc skips the pause checks when nonzero */
     s8 field42CB;
     s8 field42CC;
@@ -405,7 +434,9 @@ typedef struct SBTL_WORK {
     s16 geirincnt;
     u8 pad430C[0x4310 - 0x430C];
     s32 boss_eventID; /* HD name; unit ID the boss event camera follows */
-    u8 pad4314[0x4324 - 0x4314];
+    u8 pad4314[0x431A - 0x4314];
+    s8 bNoEndCam; /* HD name */
+    u8 pad431B[0x4324 - 0x431B];
     s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
 } SBTL_WORK;
 #else
@@ -1216,6 +1247,9 @@ s32 sbtlMapFadeProc_H(void);
 void sbtlMap_Init(void);
 #ifdef VERSION_RAIDOU2
 struct SBTLUNIT_WORK *sbtlGetNakama(s8 idx);
+s32 sbtlGetGun_Num(void);
+void sbtlRefSbtl66(s32 num);
+s32 sbtlRefSbtl71(s32 num);
 #endif
 s32 sbtlNakamaSetUp(void);
 void sbtlPacData_Init(void);

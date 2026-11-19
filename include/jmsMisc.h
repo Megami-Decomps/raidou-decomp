@@ -10,6 +10,7 @@ struct jmsSeqUnit_t;
 
 /* Negative while the trigger MskL2Task waits for is pressed (HD CHECK_TRIG(8201, 1)). */
 extern s8 jmsChkCommonInputData[];
+extern s8 jmsChkCommonInputData2[];
 
 #ifdef VERSION_RAIDOU2
 void jmsCallMemset(jmsMemsetWork_t *work);

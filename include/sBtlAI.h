@@ -100,7 +100,10 @@ s8 CheckAIScript(struct SBTLUNIT_WORK *wk);
 s32 Proc_sbtlAI(SBTLAI_WORK *aiwk);
 void Support_SetAisyo(s32 unitIndex, s32 mode);
 s32 SEquationno_00(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_02(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_04(struct SBTLUNIT_WORK *wk, s16 skillid);
 s32 SEquationno_05(struct SBTLUNIT_WORK *wk, s16 skillid);
+s32 SEquationno_06(struct SBTLUNIT_WORK *wk, s16 skillid);
 s32 SEquationno_07(struct SBTLUNIT_WORK *wk, s16 skillid);
 s32 SEquationno_08(struct SBTLUNIT_WORK *wk, s16 skillid);
 s32 SEquationno_09(struct SBTLUNIT_WORK *wk, s16 skillid);
@@ -122,6 +125,8 @@ s32 SetNextTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl, s32 no);
 /* the summon slot (0 or 1) of wk, or -1 */
 s32 GetMeireiNo(struct SBTLUNIT_WORK *wk);
 struct SBTLUNIT_WORK *sbtlGetAnotherEnemy(struct SBTLUNIT_WORK *wk);
+struct SBTLUNIT_LISTWORK *ChangeTarget_BSHelper_sbtlAI(u8 side);
+void SetBSHelper(void);
 #endif
 u8 TEquationno_01(struct SBTLUNIT_WORK *wk);
 u8 TEquationno_0c(struct SBTLUNIT_WORK *wk);

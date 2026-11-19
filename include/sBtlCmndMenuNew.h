@@ -127,7 +127,13 @@ typedef struct {
     u8 pad000[0xC];
     sbtlKaiwaEntry_t entry[48];
     sbtlKaiwaEntry_t entry2[48];
-    u8 padCCC[0xD2C - 0xCCC];
+    u8 padCCC[0xD1A - 0xCCC];
+    u16 fieldD1A;
+    u8 padD1C[0x2];
+    u16 fieldD1E;
+    u8 padD20[0x2];
+    u16 fieldD22;
+    u8 padD24[0xD2C - 0xD24];
     s16 fieldD2C[47];
 } sbtlKaiwaData_t;
 
@@ -153,37 +159,68 @@ typedef struct {
     s16 field26;
     s16 field28;
     s16 field2A;
-    u8 pad2C[0x46 - 0x2C];
+    u8 pad2C[0x3C - 0x2C];
+    s16 field3C; /* party slot of the devil cmpCallGetProcessData5 picked */
+    u8 pad3E[0x2];
+    s16 field40;
+    u8 pad42[0x46 - 0x42];
     s16 field46;
     sbtlKaiwaMsg_t msg[3]; /* copies of the talk files */
     u8 pad6C[0x98 - 0x6C];
     s16 field98; /* talk result from the devil table entry, 0 for none */
-    u16 field9A;
-    u8 pad9C[0xAA - 0x9C];
+    s16 field9A;
+    s16 field9C;
+    u8 pad9E[0xAA - 0x9E];
     s8 fieldAA;
     s8 fieldAB;
-    u8 padAC[0xBC - 0xAC];
+    s32 fieldAC; /* unit ID sbtlCallGetProcessData5 picked to join the talk */
+    u8 padB0[0x2];
+    s8 fieldB2;
+    u8 padB3[0xBC - 0xB3];
     s32 fieldBC;
-    u8 padC0[0xC8 - 0xC0];
+    s16 fieldC0; /* cmpData29 entry of the party talk */
+    s16 fieldC2;
+    u8 padC4[0xC8 - 0xC4];
     s16 fieldC8; /* load step of sbtlCallGetProcessData38 */
-    u8 padCA[0xF4 - 0xCA];
+    s16 fieldCA;
+    f32 fieldCC[8]; /* copied from cmpData29 field0C[4..11] */
+    s16 fieldEC;
+    s16 fieldEE;
+    s8 fieldF0;
+    u8 padF1[0xF4 - 0xF1];
 } sbtlKaiwa_t;
 
-extern u8 evtKAIWANoEnemyData2;
+extern s8 evtKAIWANoEnemyData2;
 s32 evtKAIWANoEnemy(dds3ProcessID_t *id);
 void evtMoonShutdown(dds3ProcessID_t *id);
 s32 evtCallGetProcessData4(dds3ProcessID_t *id);
 void cmpSbtlkaiwaMain(void);
-s32 cmpCallGetProcessData2(s32 index);
+s32 cmpCallGetProcessData2(s32 index, s32 kind);
+s32 slRefSbtl(s32 devilId);
+
+/* Party talk table entry (0x3C bytes): the party devil and the enemy devil it can talk with. */
+typedef struct {
+    s16 devilId;
+    s16 field02; /* compared with SBTL_DEVIL_DATA.field82 */
+    u8 pad04[0xC - 0x4];
+    f32 field0C[12];
+} cmpData29_t;
+
+extern cmpData29_t cmpData29[80];
+s32 cmpCallBtlCreateTargetList(void);
+s32 cmpCallGetProcessData5(void);
+s32 sbtlCallGetProcessData29(void);
 void cmpPartyListMake_cmpMisc(dds3ProcessID_t *menuPID);
 s32 slCallGetProcessData6(void *msg, s32 arg1, struct SBTLUNIT_WORK *unit, s32 arg3, s32 arg4, s32 arg5);
 s32 slCallGetProcessData7(s32 arg0);
 s32 slCallGetProcessData8(s32 arg0);
+s32 nbCallGetProcessData12(void);
 s32 nbCallGetProcessData13(void);
 s32 nbCallGetProcessData16(void);
 s32 trmSetProcessTerm(void);
 s32 slCallBitCheck2(s32 devilId, s32 arg1);
 s32 trmCallBtlSearchUnitID(void);
+void trmCallBtlSearchUnitID5(void);
 s32 trmCallGetProcessData(void);
 struct SBTLUNIT_LISTWORK *trmCallBtlCreateUnitList(u8 group);
 extern s32 cmpCallGetProcessData10Work[];
@@ -210,6 +247,7 @@ void evtCallMemset3(s32 index, s32 value);
 void evtCallGetProcessData3(void);
 s32 cmpCallGetNowSummonerRank(s32 flag);
 void trmCallBtlClearHitC(struct SBTLUNIT_WORK *wk);
+void trmCallBtlCheckReturnUnit(s32 motionFlag);
 s32 sbtlIsStart(s8 idx);
 s32 sbtlCallGetProcessData38(s32 idx);
 void CameraPosSet(s32 hpos);
@@ -219,6 +257,9 @@ void ResetBadStatusAll(BST IgnoreBstNo);
 s32 sbtlCallGetProcessData14(void);
 s32 cmpCallGetProcessData7(void);
 extern char cmpPartyListMake_cmpMiscData[];
+extern sdfVector4_t trmWork;
+extern sdfVector4_t trmCallBtlSearchUnitID5Work;
+extern sdfVector4_t trmWork2;
 void cmpPartyAnimFunc(dds3ProcessID_t *PID);
 void cmpCallGetProcessData9(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha);
 s32 cmpCallGetProcessData3(s32 devilId);
