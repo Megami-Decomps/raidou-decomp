@@ -206,7 +206,8 @@ typedef struct SBTL_WORK {
     s32 panelPackLen;
     u8 pad40C[0x420 - 0x40C];
     s16 effcnt; /* sbtlGetStartTime_Damage cycles it through 0..7 */
-    u8 pad422[0x428 - 0x422];
+    u8 pad422[0x424 - 0x422];
+    sdfMemHandle_t *handle;
     dds3ProcessID_t *process;
     u8 pad42C[0x430 - 0x42C];
     s32 field430; /* sbtlMainDraw fades the moon out when set */
@@ -238,7 +239,8 @@ typedef struct SBTL_WORK {
     dds3ProcessID_t *eventprocID; /* script process of the running battle event */
     s16 summonIndex[2];
     s16 returnindex[2]; /* HD name; summonIndex slot of the demon returning to its tube */
-    u8 pad4A8[0x518 - 0x4A8];
+    s32 summonindex_menu[2]; /* HD name; summonIndex as the command menu last showed it */
+    u8 pad4B0[0x518 - 0x4B0];
     SKLID stock_useskill[10];
     u16 stock_useskill_num;
     u8 pad542[0x544 - 0x542];
@@ -261,7 +263,9 @@ typedef struct SBTL_WORK {
     s32 vibe_frame[2];
     u8 vibe_power[2];
     u8 vibe_type[2];
-    u8 pad728[0x10];
+    struct SBTLUNIT_LISTWORK *list3E8;
+    u8 pad72C[0x734 - 0x72C];
+    struct SBTLDMG_LISTWORK *animList;
     struct SBTLDMG_HITLISTWORK *hitList;
     u8 pad73C[0x4];
     struct SBTLEFF_LISTWORK *effList;
@@ -315,7 +319,24 @@ typedef struct SBTL_WORK {
     f32 escapegauge_counter; /* HD name */
     u8 pad878[0x880 - 0x878];
     SBTLDROP_WORK drop;
-    u8 pad974[0x9A8 - 0x880 - sizeof(SBTLDROP_WORK)];
+    s16 mf_mode;
+    s16 mf_counter;
+    s16 mf_cmpcounter;
+    u8 pad97A[2];
+    u32 mf_abgr;
+    u32 mf_abgr_s;
+    s16 mf_r;
+    s16 mf_g;
+    s16 mf_b;
+    s16 mfh_mode;
+    s16 mfh_counter;
+    s16 mfh_cmpcounter;
+    u32 mfh_abgr;
+    u32 mfh_abgr_s;
+    s16 mfh_r;
+    s16 mfh_g;
+    s16 mfh_b;
+    u8 pad99E[0x9A8 - 0x99E];
     s32 field614;
     u8 field618;
     u8 pad9AD[0x9B4 - 0x9AD];
@@ -326,7 +347,8 @@ typedef struct SBTL_WORK {
     struct SBTL_FIELD630_WORK *field630;
     struct SBTLDVLTK_LISTWORK *dvltkList;
     struct SBTLEXP_LISTWORK *expList;
-    u8 pad9D0[0x8];
+    struct SBTL_MODELBIND_LIST *modelBindings;
+    u8 pad9D4[0x4];
     s32 field9D8; /* Proc_sbtlEXP adds a bind's para, clamped to 0..999999 */
     struct SBTL_STP *stp;
     u8 pad9E0[0x4];
@@ -354,9 +376,10 @@ typedef struct SBTL_WORK {
     s32 hitst_stcnt;
     s32 hitst_cnt;
     s32 hitst_cmpcnt;
-    u8 padB00[0xC4C - 0xB00];
+    u8 padB00[0xB5C - 0xB00];
+    p2sdLoadEntry_t midiLoad[30]; /* copy of the sound driver's MIDI table; 11 to 28 are skill MIDIs */
     s32 midiSkillCount;
-    u8 pad_C50[0x4];
+    s32 midiCount8;
     u8 field878;
     u8 field879;
     u8 field87A;
@@ -364,7 +387,10 @@ typedef struct SBTL_WORK {
     s32 fieldC74; /* field1A0 of the first gun target */
     u8 padC78[0xC7B - 0xC78];
     u8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
-    u8 padC7C[0xC8C - 0xC7C];
+    u8 padC7C[0xC84 - 0xC7C];
+    u8 fieldC84; /* hit stops sbtlProcHitStop still has to start */
+    u8 fieldC85; /* frames until the next of them */
+    u8 padC86[0xC8C - 0xC86];
     struct SBTLUNIT_WORK *pNakama0; /* HD name */
     struct SBTLUNIT_WORK *pNakama1;
     u8 pad_C94[0xCA2 - 0xC94];
@@ -415,7 +441,8 @@ typedef struct SBTL_WORK {
     u8 pad42AA[0x2];
     s16 field42AC;
     s16 field42AE;
-    u8 pad42B0[0x42C0 - 0x42B0];
+    u8 pad42B0[0x42BC - 0x42B0];
+    s32 field42BC;
     s16 field42C0;
     u8 pad42C2[0x2];
     struct SBTLUNIT_WORK *field42C4; /* enemy cmpCallBtlCreateTargetList found for a party talk */
@@ -434,13 +461,22 @@ typedef struct SBTL_WORK {
     u8 field4308; /* Draw_sbtlUnit counts the units whose name it draws */
     s8 geirinstep;
     s16 geirincnt;
-    u8 pad430C[0x4310 - 0x430C];
+    s16 field430C;
+    u8 pad430E[0x4310 - 0x430E];
     s32 boss_eventID; /* HD name; unit ID the boss event camera follows */
     u8 pad4314[0x431A - 0x4314];
     s8 bNoEndCam; /* HD name */
-    u8 pad431B[0x4324 - 0x431B];
+    u8 pad431B[0x431C - 0x431B];
+    s8 field431C; /* 1: sbtlSENSEIDMGCHK always starts the talk */
+    u8 pad431D[0x4324 - 0x431D];
     s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
+    s32 field4328; /* Init_sbtl: set when the caller gave no stage, so the stage and sword come from Exit_sbtl */
+    s32 field432C;
+    s32 field4330;
+    s32 field4334;
+    u8 pad4338[0x4360 - 0x4338];
 } SBTL_WORK;
+SIZE_CHECK(SBTL_WORKSizeCheck, SBTL_WORK, 0x4360);
 #else
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
 typedef struct SBTL_WORK {
@@ -1123,6 +1159,12 @@ s32 sbtlCheckScriptData(s32 devilId);
 s32 sbtlCheckTutorialBattle(void);
 #ifdef VERSION_RAIDOU2
 s32 IsSceanStop(void);
+void sbtlInitSBtlSub3(void);
+void sbtlCallBtlCheckTutorialBattle(void);
+s32 sbtlInitSBtlSub(void);
+void sbtlSetGunNum(s32 num);
+extern s32 Exit_sbtlData;  /* stage Init_sbtl uses when the caller gives none */
+extern s32 Exit_sbtlData2; /* sword Init_sbtl equips in that case */
 #endif
 s64 sbtlCallBtlCheckTutorialBattle3(void);
 void sbtlGetDevilData(struct SBTLUNIT_WORK *wk, s32 a, s32 b);
@@ -1315,10 +1357,32 @@ typedef struct RED_GUAGE {
     s32 cnt;
 } RED_GUAGE;
 void sbtlInitRedGg(RED_GUAGE *pRedGg, s32 hp);
+void sbtlAnalyzeLoyalty(s32 x, s32 y, RED_GUAGE *pRedGg, s32 hp, s32 maxhp);
+extern s32 slQueryYesNoDraw_slMainData;
+extern s32 slQueryYesNoDraw_slMainData2;
+extern s32 slQueryYesNoDraw_slMainData3;
+extern s32 slQueryYesNoDraw_slMainData4;
+extern s32 slData10;
+PLAYER_LUCK sbtlGetPlayerLuckStep(void);
 s32 sbtlBtlCheckSummonSub(sdatUnitWork_t *unit);
 s16 cmpProcSequenceSub(s32 stage);
 void pbCallEffectDelete(void);
 void slCallEffectLoadEPL(void);
+s32 sbtlCallBtlGetCutFlg(void);
+s32 sbtlCallGetActiveScene(void);
+s32 sbtlMainDraw(void);
+s32 EventProc(void);
+s32 sbtlListProc(struct SBTLEFF_LISTWORK *lwk);
+s32 sbtlAnimListProc_sbtlDMG(void);
+s32 sbtlDrawAnimList(void);
+s32 Draw_sbtlSM(struct SBTLSM_LISTWORK *lwk);
+void sbtlInitEffect(void);
+void DrawTime(void);
+/* Battle texture files sbtlBattleTmx loads: k_01..04, h_01..04 and b_roul.spr, each a handle and its data. */
+extern void *sbtlBattleTmxData, *sbtlBattleTmxData2, *sbtlBattleTmxData3, *sbtlBattleTmxData4;
+extern void *sbtlBattleTmxData5, *sbtlBattleTmxData6, *sbtlBattleTmxData7, *sbtlBattleTmxData8, *sbtlData150;
+extern u32 sbtlData142, sbtlData143, sbtlData144, sbtlData145;
+extern u32 sbtlData146, sbtlData147, sbtlData148, sbtlData149, sbtlBattleTmxData9;
 #endif
 
 #endif

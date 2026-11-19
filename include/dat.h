@@ -133,6 +133,8 @@ s32 datCallGetStockDevilID2(u32 id);
 s32 datGetStockDevilIndex(u32 id);
 s16 datRefDDS3GBWK20(s16 id);
 s32 datOmoideSkillHaveSkill(struct sdatUnitWork_t *pWork, SKLID skill);
+s32 datRefDDS3GBWK12(s32 sword);
+void datCalcNowParam(struct sdatUnitWork_t *unit, s32 sword);
 #endif
 s32 datCheckSameDevil(u32 id);
 s32 datAllReleaseScriptSub(void);

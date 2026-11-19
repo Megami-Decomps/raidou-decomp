@@ -98,8 +98,16 @@ sbtlRefSbtl2	code_0024DF70	raidou1 0x88	29 of 33 words differ	docs/matching/code
 sbtlCallBtlSearchPacData	code_00261DF0	raidou2 0x1F8	2 of 126 words differ	docs/matching/code_00261DF0.md	3		
 sbtlRefDDS3GBWK2	code_00261DF0	raidou2 0x58	20 of 20 words differ	docs/matching/code_00261DF0.md	9		
 sbtlSetHitStop	code_00261DF0	raidou2 0x40	6 of 16 words differ	docs/matching/code_00261DF0.md	15		
+sbtlProcHitStop	code_00261DF0	raidou2 0x124	3 of 73 words differ	docs/matching/code_00261DF0.md	21		
+sbtlAnalyzeLoyalty	code_00261DF0	raidou2 0x12C	30 of 75 words differ	docs/matching/code_00261DF0.md	27		
+slCallBitCheck	code_00261DF0	raidou2 0x194	13 of 101 words differ	docs/matching/code_00261DF0.md	33		
 sbtlLoadSkillSE	code_0026B0A8	raidou2 0x114	8 of 69 words differ	docs/matching/code_0026B0A8.md	3		
-sbtlCallGetSkillSE	code_0026B0A8	raidou2 0x5C	1 of 23 words differ	docs/matching/code_0026B0A8.md	9		
+sbtlStopSkillSE	code_0026B0A8	raidou2 0x5C	1 of 23 words differ	docs/matching/code_0026B0A8.md	9		
+GetDevilSE	code_0026B0A8	raidou2 0x188	96 of 96 words differ	docs/matching/code_0026B0A8.md	15		
+sbtlLoadDevilSE	code_0026B0A8	raidou2 0x134	12 of 77 words differ	docs/matching/code_0026B0A8.md	21		
+sbtlFadeProc	code_0026B0A8	raidou2 0x2CC	115 of 168 words differ	docs/matching/code_0026B0A8.md	27		
+RGBFade	code_0026B0A8	raidou2 0x130	30 of 76 words differ	docs/matching/code_0026B0A8.md	33		
+sbtlCheckTalkSelectTarget	code_0026B0A8	raidou2 0x114	36 of 70 words differ	docs/matching/code_0026B0A8.md	39		
 sbtlCreateEnemyList	code_002743E0	raidou2 0xB8	1 of 46 words differ	docs/matching/code_002743E0.md	3		
 sbtlCreateSideList	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	11		
 sbtlCreateSideList_sbtlUnit	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	19		

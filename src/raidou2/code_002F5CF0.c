@@ -376,7 +376,7 @@ s32 sbtlFuncDecideTalk(void) {
         wk_sbtl->boss_eventID = unit->field1A0;
         sbtlProcessStart(SBTLBOSSEVENT_DEAD, sbtlCheck(unit, 4, 0));
         unit->field6C0 = -2;
-        unit->aiwk->field105 = 1;
+        unit->aiwk->bWait2 = 1;
         sbtlCallEnd(wk);
         sbtlSetMenuPara(SBTLPNL_MENU_NONE, 0, SKLID_INIT, 0, -1, 0);
         wk->endtype = 2;

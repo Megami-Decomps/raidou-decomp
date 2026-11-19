@@ -249,7 +249,7 @@ void sbtlCallMemFreeDirect(MODELTYPE major, s32 minor, s32 devilid);
 void cmpCallMemFreeDirect(struct SBTLUNIT_WORK *wk);
 s32 sbtlDrawShadow(struct SBTLUNIT_WORK *wk);
 void sbtlCallBtlGetRaceName(struct SBTLUNIT_WORK *wk);
-s32 sbtlGetMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_SIDE side, SBTLUNIT_MOTION no);
+s32 sbtlGetMotionNo(struct SBTLUNIT_WORK *wk, u8 side, s32 no);
 #endif
 s32 sbtlCheckMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
 s32 sbtlCheckTateSkillSelectTarget(struct SBTLUNIT_WORK *wk);
@@ -301,7 +301,13 @@ extern mapLightParam_t sbtlSetLight_MapData;
 extern s32 sbtlCheckModelDataLoadEnd_sbtlUnitData[];
 
 /* Motion number per SBTLUNIT_MOTION, one row per motion set. */
+#ifdef VERSION_RAIDOU2
+extern s32 sbtlGetMotionNoData[][56];
+extern s32 sbtlGetMotionNoData2[56]; /* side bit 0x80 */
+extern s32 sbtlGetMotionNoData3[56]; /* minor > 0 */
+#else
 extern s32 sbtlBtlCheckMotionNoSubData[][56];
+#endif
 
 #ifdef VERSION_RAIDOU2
 /* A kaja (stat change) slot of a unit; only the count is read so far. */
@@ -341,7 +347,9 @@ struct SBTLUNIT_WORK {
     u8 pad1E6[0x2];
     sdatUnitWork_t unit;
     s32 haveskill[18]; /* [0..15] copied to unit.haveskill by sbtlCheckAutoSkill_Enemy; sbtlCallBtlSearchDelWorkSide reads [2..17] */
-    u8 pad3A8[0x3F4 - 0x3A8];
+    u8 pad3A8[0x3B0 - 0x3A8];
+    SBTL_AISYO_TBL aisyo_bkup; /* unit.aisyo as loaded, before battle changes */
+    u8 pad3F0[0x3F4 - 0x3F0];
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
     u8 pad40C[0x4];
     SBTLSKL_KAJA_WORK kaja[3][2];
@@ -446,7 +454,8 @@ struct SBTLUNIT_WORK {
     s8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;
     s32 field688;
-    u8 pad68C[0x6A4 - 0x68C];
+    u8 pad68C[0x6A0 - 0x68C];
+    s32 field6A0; /* nonzero: motion column sbtlGetMotionNo uses for motions 0..2 */
     s8 bOldDispOff; /* vstatus bit 0x1000 when sbtlSetCmbBfrPos ran */
     u8 pad6A5[0x6C0 - 0x6A5];
     s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */
@@ -670,7 +679,7 @@ u32 sbtlCheckKajaAnyEx(struct SBTLUNIT_WORK *wk, s32 *count);
 s32 sbtlCheckEnableUseKaja(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 sbtlCheckDamageTargetTemp(struct SBTLUNIT_WORK *wk);
 void sbtlSetRunAway(struct SBTLUNIT_WORK *wk);
-struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Analyze(SBTLUNIT_SIDE side);
+struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Analyze(u8 side);
 struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_Talk(u8 side);
 #endif
 

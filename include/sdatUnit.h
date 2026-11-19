@@ -56,8 +56,10 @@ typedef struct sdatUnitWork_t {
     /* 0x60 */ sdatParaWork_t pbtl;
     /* 0x78 */ sdatParaWork_t huuma;
 #ifdef VERSION_RAIDOU2
-    /* 0x90 */ s32 haveskill[16];
-    /* 0xD0 */ u8 padD0[0xF8 - 0xD0];
+    /* 0x90 */ s32 haveskill[17];
+    /* 0xD4 */ s32 battleskill[4];
+    /* 0xE4 */ s8 autoskill[17]; /* set for a haveskill entry the unit repeats on its own */
+    /* 0xF5 */ u8 padF5[0xF8 - 0xF5];
     /* 0xF8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
     /* 0xFC */ u8 padFC[0x4];
     /* 0x100 */ s16 autost_cnt;
@@ -65,7 +67,7 @@ typedef struct sdatUnitWork_t {
     /* 0x104 */ u32 itemstatus;
     /* 0x108 */ s16 itemst_cnt;
     /* 0x10A */ s16 itemst_cnt2;
-    /* 0x10C */ u8 pad10C[0x14C - 0x10C];
+    /* 0x10C */ SBTL_AISYO_TBL aisyo;
     /* 0x14C */ s16 field14C;
     /* 0x14E */ u8 pad14E[0x178 - 0x14E];
 #else
@@ -104,7 +106,9 @@ typedef struct SBTL_PLAYER_DATA {
     /* 0x02C */ s32 val2C;
     /* 0x030 */ u8 pad30[4];
     /* 0x034 */ sdatUnitWork_t unit;
-    /* 0x1AC */ u8 pad1AC[0x1B8 - 0x1AC];
+    /* 0x1AC */ u8 pad1AC[0x2];
+    /* 0x1AE */ s16 sword; /* datRefDDS3GBWK12 equips it */
+    /* 0x1B0 */ u8 pad1B0[0x1B8 - 0x1B0];
     /* 0x1B8 */ s32 hgunnum;
     /* 0x1BC */ s32 bulletno;
     /* 0x1C0 */ u8 pad1C0[0x200 - 0x1C0];

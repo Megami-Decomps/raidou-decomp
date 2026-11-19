@@ -6812,7 +6812,7 @@
 0x0026F380	sbtlPlayDeadVoice	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlSound.sBtlPlayDeadVoice score 4.8 flag I: calls2 calls-of-match votes2 st2:call r1-disagree:0x2500c8
 0x0026F3D8	sbtlRefSbtl7	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlPlayDeadVoice; references wk_sbtl
 0x0026F440	sbtlCallEffectShutdown3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlStopSkillSE; calls nbEffectShutdown
-0x0026F460	sbtlCallGetSkillSE	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlPlayDeadVoice; calls GetSkillSE
+0x0026F460	sbtlStopSkillSE	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R1 sbtlStopSkillSE body (type-1<2||type==5, p2sdStopSe(GetSkillSE)) plus an R2 se>0x10035 check; same neighbour sbtlFunc10; name free in raidou2; replaces sbtlCallGetSkillSE
 0x0026F4C0	sbtlFunc10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlStopSkillSE; no named callee, caller or string
 0x0026F4E0	sbtlENMY	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlStopSkillSE; string '%02d %04x %d'
 0x0026F628	sbtlLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlSetEndBadStatus; no named callee, caller or string
@@ -6873,7 +6873,7 @@
 0x00272A60	sbtlplayertblSetPlayerMotionData_Hokan	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sbtlplayertbl.sbtlplayertblSetPlayerMotionData_Hokan score 4.8 flag I: calls2 calls-of-match-uniq votes2 st2:call r1-disagree:0x254270
 0x00272D48	sbtlplayertblLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlplayertblSetPlayerMotionData_Hokan; no named callee, caller or string
 0x00272D80	sbtlSetFade	hd-inferred	hd: Raidou HD sBtlUnit.sBtlSetFade, score 7.6 band B
-0x00272DA8	sbtlCallIsSceanStop	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlSetFade; calls IsSceanStop
+0x00272DA8	sbtlFadeProc	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=body is R1 sbtlFadeProc (fadecnt/fade_sttime/cmpfade, vstatus 1/2 alpha fade) with R2 additions; R1 name at the same site, free in raidou2; replaces sbtlCallIsSceanStop
 0x00273078	RGBFade	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlUnit.RGBFade score 9.4 flag -: calls2 prev next gap=exact votes2 st2:gap r1-disagree:0x2545a8
 0x002731A8	sbtlCreateTargetList_MASK	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.sBtlCreateTargetList_MASK score 8.5 flag I: calls2 callers-of-match votes3 st1:call r1+r2
 0x002732C8	sbtlCreateTargetList_AI	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCreateTargetList_AI, score 8.5 band B

@@ -91,6 +91,7 @@ u32 sbtlCallBtlGetSkilltbl(s32 skillID, s32 type);
 #ifdef VERSION_RAIDOU2
 /* raidou1 names this function sbtlCallBtlGetSkilltbl. */
 u32 GetSkillSE(s32 skillID, s32 type);
+void sbtlStopSkillSE(SKLID skillid, s32 type);
 #endif
 void sbtlCheckBossSE(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetBadStatus(struct SBTLUNIT_WORK *wk);

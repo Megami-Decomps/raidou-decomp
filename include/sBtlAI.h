@@ -60,8 +60,12 @@ typedef struct SBTLAI_WORK {
     s32 bFarOk;
     SKLID usedSkl;
     u8 pad104;
-    s8 field105; /* set when a talk ends the boss: sbtlFuncDecideTalk */
-    u8 pad106[0x118 - 0x106];
+    s8 bWait2; /* HD name; set when the unit's boss event starts and when a talk ends the boss (sbtlFuncDecideTalk) */
+    u8 pad106[0x108 - 0x106];
+    SKLID RepeatOdrSkl;
+    s32 RepeatOdrTgt;
+    s32 RepeatOdrStk;
+    u8 pad114[0x118 - 0x114];
 } SBTLAI_WORK;
 #else
 /* AI state of a unit, 0x90 bytes, made by Create_sbtlAI. */

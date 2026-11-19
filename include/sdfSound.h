@@ -38,5 +38,8 @@ s32 sdfBtlReLoadMapSBtlSceneSub(void);
 p2sdLoadEntry_t *sdfSndGetTrackSlotTable(void);
 void sdfCallSndSendCmd(s32 arg);
 s32 sdfCallSndSendCmd2(s32 arg);
+#ifdef VERSION_RAIDOU2
+void sdfSndReleaseMidiTrack(s32 id);
+#endif
 
 #endif

@@ -126,6 +126,7 @@ extern struct itfSprList_t cmpPartyAnimFuncData[];
 extern struct itfSprList_t cmpPartyAnimFuncData2[];
 extern struct itfSprList_t cmpPartyAnimFuncData3[];
 extern struct itfSprList_t cmpPartyAnimFuncData4[];
+void ProcessStart(void);
 #endif
 
 #endif

@@ -269,7 +269,9 @@ s32 sbtlInitLoadPlayerOnMemData(void);
 extern const char sbtlStrBattleSbPack3SLb[];
 extern const char sbtlStrBattleSbPack3LLb[];
 extern const char sbtlStrBattleSbPack3ALb[];
-s32 sbtlBstse(sdfVector4_t *pos, SKLID sklid, u8 type);
+void sbtlBstse(sdfVector4_t *pos, SKLID sklid, s32 type);
+extern const char sbtlBstseData[];
+extern const char sbtlBstseData2[];
 s32 sbtlCheckEffectData_SeOnly(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type);
 s32 sbtlMainDraw2(void);
 #endif

@@ -3328,7 +3328,6 @@
 0x0026F378	sbtlBtlModelDataLoadSBtlUnitSub	func	tier=D	derived-caller	na	unit code_0024AAD8, neighbour sbtlStopSkillSE; called by sbtlModelDataLoad_sbtlUnit
 0x0026F3D8	sbtlRefSbtl7	func	tier=D	derived-data	na	unit code_00261DF0, neighbour sbtlPlayDeadVoice; references wk_sbtl
 0x0026F440	sbtlCallEffectShutdown3	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlStopSkillSE; calls nbEffectShutdown
-0x0026F460	sbtlCallGetSkillSE	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlPlayDeadVoice; calls GetSkillSE
 0x0026F4C0	sbtlFunc10	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlStopSkillSE; no named callee, caller or string
 0x0026F4E0	sbtlENMY	func	tier=D	derived-string	na	unit code_0024AAD8, neighbour sbtlStopSkillSE; string '%02d %04x %d'
 0x0026F628	sbtlLeaf2	func	tier=D	derived-unit	na	unit code_00261DF0, neighbour sbtlSetEndBadStatus; no named callee, caller or string
@@ -3363,7 +3362,6 @@
 0x00271EE0	sbtlSetMotion	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlSetMotion, score 9.0 band B
 0x00272D48	sbtlplayertblLeaf	func	tier=D	derived-unit	na	unit code_00261DF0, neighbour sbtlplayertblSetPlayerMotionData_Hokan; no named callee, caller or string
 0x00272D80	sbtlSetFade	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlSetFade, score 7.6 band B
-0x00272DA8	sbtlCallIsSceanStop	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlSetFade; calls IsSceanStop
 0x002732C8	sbtlCreateTargetList_AI	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCreateTargetList_AI, score 8.5 band B
 0x002733A8	sbtlCreateTargetList	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCreateTargetList, score 7.3 band B
 0x00273BB8	sbtlCreateTargetList_Group	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCreateTargetList_Group, score 6.45 band C, hd-consensus: calls2 next gap27/11 votes3 st2:gap r2-only; 10/10 fold runs agree, fold scores 9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,8.4,9.5

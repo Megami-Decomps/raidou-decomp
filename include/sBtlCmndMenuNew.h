@@ -220,6 +220,7 @@ s32 nbCallGetProcessData13(void);
 s32 nbCallGetProcessData16(void);
 s32 trmSetProcessTerm(void);
 s32 slCallBitCheck2(s32 devilId, s32 arg1);
+s32 slChoiceMsgDraw(s32 msgNum);
 s32 trmCallBtlSearchUnitID(void);
 void trmCallBtlSearchUnitID5(void);
 s32 trmCallGetProcessData(void);
@@ -266,6 +267,7 @@ void cmpCallGetProcessData9(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8
 s32 cmpCallGetProcessData3(s32 devilId);
 s32 cmpCallBtlSearchUnitID(s32 devilId);
 s16 cmpCallGetProcessData4(s32 second);
+void sbtlInit(void);
 #endif
 
 #endif

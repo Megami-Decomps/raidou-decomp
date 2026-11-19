@@ -31,10 +31,12 @@ menu scenarios); an entry says which paths they covered.
 | 9 | code_0010F2C0 | raidou1 | [code_0010F2C0.md](code_0010F2C0.md) |
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
 | 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
+| 7 | code_0026B0A8 | raidou2 | [code_0026B0A8.md](code_0026B0A8.md) |
 | 7 | code_0027A1E8 | raidou2 | [code_0027A1E8.md](code_0027A1E8.md) |
 | 7 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
 | 7 | code_002F5CF0 | raidou2 | [code_002F5CF0.md](code_002F5CF0.md) |
 | 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
+| 6 | code_00261DF0 | raidou2 | [code_00261DF0.md](code_00261DF0.md) |
 | 6 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
 | 6 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
@@ -56,7 +58,6 @@ menu scenarios); an entry says which paths they covered.
 | 3 | code_0014B7B0 | raidou2 | [code_0014B7B0.md](code_0014B7B0.md) |
 | 3 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
 | 3 | code_0024DF70 | raidou1 | [code_0024DF70.md](code_0024DF70.md) |
-| 3 | code_00261DF0 | raidou2 | [code_00261DF0.md](code_00261DF0.md) |
 | 3 | code_002743E0 | raidou2 | [code_002743E0.md](code_002743E0.md) |
 | 3 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
 | 3 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
@@ -75,7 +76,6 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
 | 2 | code_0018CE10 | raidou1 | [code_0018CE10.md](code_0018CE10.md) |
 | 2 | code_001A5D20 | raidou2 | [code_001A5D20.md](code_001A5D20.md) |
-| 2 | code_0026B0A8 | raidou2 | [code_0026B0A8.md](code_0026B0A8.md) |
 | 2 | code_002999C0 | raidou1 | [code_002999C0.md](code_002999C0.md) |
 | 2 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 2 | code_00323280 | raidou1 | [code_00323280.md](code_00323280.md) |
