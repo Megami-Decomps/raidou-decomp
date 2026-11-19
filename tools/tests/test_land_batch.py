@@ -150,6 +150,38 @@ class RenameTests(unittest.TestCase):
                 self.assertEqual((root / "include" / name).read_text(), "void mapAutoMapInit(void);\n", name)
 
 
+    def test_a_split_name_gets_no_raidou2_row(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            self.symbols(root, "a", "a")
+            out, added = renames.complete(root, [("raidou1", "a", "x", "HD")], split={"a"})
+            self.assertEqual((out, added), ([("raidou1", "a", "x", "HD")], []))
+
+    def test_a_raidou1_rename_keeps_raidou2_lines(self) -> None:
+        text = ("void a(void);\n#ifdef VERSION_RAIDOU1\nvoid f(void) { a(); }\n#else\n"
+                "INCLUDE_ASM(const s32, \"u\", a);\n#endif\n")
+        has = {"raidou1": True, "raidou2": True}
+        out = renames.rename_text("src/shared/u.c", text, "a", {"raidou1": "x"}, has)
+        self.assertEqual(out, "#ifdef VERSION_RAIDOU1\nvoid x(void);\n#else\nvoid a(void);\n#endif\n"
+                              "#ifdef VERSION_RAIDOU1\nvoid f(void) { x(); }\n#else\n"
+                              "INCLUDE_ASM(const s32, \"u\", a);\n#endif\n")
+        self.assertEqual(renames.rename_text("src/raidou2/u.c", "a();\n", "a", {"raidou1": "x"}, has), "a();\n")
+        self.assertEqual(renames.rename_text("src/raidou1/u.c", "a();\n", "a", {"raidou1": "x"}, has), "x();\n")
+
+    def test_a_prototype_raidou2_never_uses_takes_the_raidou1_name(self) -> None:
+        has = {"raidou1": True, "raidou2": True}
+        self.assertEqual(renames.rename_text("include/u.h", "void a(void);\n", "a", {"raidou1": "x"}, has,
+                                             frozenset({"raidou2"})), "void x(void);\n")
+        self.assertTrue(renames.is_use("    a();\n", "a"))
+        self.assertFalse(renames.is_use("s32 a(s32 restored, void *reqdata);\n", "a"))
+        self.assertFalse(renames.is_use('INCLUDE_ASM(const s32, "u", a);\n', "a"))
+
+    def test_a_name_raidou2_lacks_is_renamed_everywhere(self) -> None:
+        has = {"raidou1": True, "raidou2": False}
+        self.assertEqual(renames.rename_text("include/u.h", "void a(void);\n", "a", {"raidou1": "x"}, has),
+                         "void x(void);\n")
+
+
 class DocsTests(unittest.TestCase):
     PAGE = "# Draft notes: u\n\n## f (u, raidou1 0x8)\n\nA.\n\n## g (u, raidou1 0x8)\n\nB.\n"
 
