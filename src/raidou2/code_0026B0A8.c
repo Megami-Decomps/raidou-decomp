@@ -1363,7 +1363,7 @@ void sbtlBtlFadeOutBadStatusEffectSub2(struct SBTLUNIT_WORK *wk)
     wk->field3D4 = 0x80808080;
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf61);
+INCLUDE_ASM(const s32, "code_0026B0A8", sbtlChangeModelData);
 
 s32 sbtlCallBtlCheckMapHitData(f32 posx, f32 posz)
 {

@@ -801,7 +801,7 @@ INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf15);
 void evtLeaf16(void) {
 }
 
-void evtLeaf17(evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
+void evtSetBistaMode(evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
     scene->optionFlags = (scene->optionFlags & CAMP_PRIMARY_OPTION_CLEAR_MASK) | (optionIndex & CAMP_OPTION_VALUE_MASK);
 }
 
@@ -809,7 +809,7 @@ MnuCampPrimaryOptionIndex evtMainMenuItemSub(evtViewerInfo_t *scene) {
     return scene->optionFlags & CAMP_OPTION_VALUE_MASK;
 }
 
-void evtLeaf18(evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
+void evtSetSkipMode(evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
     scene->optionFlags = (scene->optionFlags & CAMP_SECONDARY_OPTION_CLEAR_MASK) | ((optionIndex & CAMP_OPTION_VALUE_MASK) << CAMP_SECONDARY_OPTION_SHIFT);
 }
 

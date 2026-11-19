@@ -945,7 +945,7 @@ INCLUDE_ASM(const s32, "code_0028A320", sbtlForceDelete_SPID);
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlProcSub);
 
-INCLUDE_ASM(const s32, "code_0028A320", sbtlLeaf8);
+INCLUDE_ASM(const s32, "code_0028A320", sbtlEff_DeleteEffectData_EffID);
 
 INCLUDE_ASM(const s32, "code_0028A320", sbtlGetStartTime_Damage);
 

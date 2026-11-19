@@ -1832,7 +1832,7 @@ struct SBTLUNIT_WORK *sbtlCreateUnit(s32 major, s32 minor, s16 mode) {
 
 s32 sbtlCallDeleteSceneBasicData(struct SBTLUNIT_WORK *wk) {
     if (wk->changeflg) {
-        sbtlLeaf61(wk);
+        sbtlChangeModelData(wk);
     }
     if (wk->pBasic_d != NULL) {
         dds3DeleteSceneBasicData(wk->pBasic_d);
@@ -2301,7 +2301,7 @@ void sbtlBtlFadeOutBadStatusEffectSub2(struct SBTLUNIT_WORK *wk)
     wk->field3D4 = 0x80808080;
 }
 
-s32 sbtlLeaf61(struct SBTLUNIT_WORK *wk)
+s32 sbtlChangeModelData(struct SBTLUNIT_WORK *wk)
 {
     struct dds3Basic_t *basic = wk->pBasic;
     struct evtUnit_t *eveUnit = wk->hEveUnit;

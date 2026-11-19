@@ -802,20 +802,11 @@
 0x00187528	mapBtlEndWaitInitSub	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapNpcPathMake_KeyFrame; called by rstBtlEndWaitInit
 0x00187580	mapFadeProc	func	tier=D	derived-string	na	unit code_00174790, neighbour mapNpcPathMake_KeyFrame; string 'xFadeProc'
 0x001878D0	mapCallAtan22	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapNpcPathMake_Rot; calls sdfAtan2
-0x00187CA8	mapLeaf30	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathMakeControl; no named callee, caller or string
 0x00187E50	mapCallGetElement	func	tier=D	derived-callee	na	unit code_00174790, neighbour mapNpcPathControlGetRot; calls GetElement
 0x00187FC0	mapNpcPathTaskSub	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapNpcPathControlGetRot; called by mapNpcPathTask
-0x00188068	mapLeaf31	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x00188070	mapLeaf32	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x00188078	mapLeaf33	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x00188088	mapLeaf34	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x001880A8	mapLeaf35	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x001880B8	mapLeaf36	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathTask; no named callee, caller or string
 0x001880D0	mapObjTaskSub	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapNpcPathTask; called by mapObjTask
-0x00188110	mapLeaf37	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathTask; no named callee, caller or string
 0x00188130	mapFileLoadSub9	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapNpcPathTask; called by mapFileLoad
 0x00188150	mapFileLoadSub10	func	tier=D	derived-caller	na	unit code_00174790, neighbour mapNpcPathTask; called by mapFileLoad
-0x00188180	mapLeaf38	func	tier=D	derived-unit	na	unit code_00174790, neighbour mapNpcPathTask; no named callee, caller or string
 0x00188490	mapRefDDS3GBWK10	func	tier=D	derived-data	na	unit code_00174790, neighbour mapRiberaMaStart; references DDS3_GBWK
 0x00188588	mapRefDDS3GBWK11	func	tier=D	derived-data	na	unit code_00174790, neighbour mapEsutoMaStart; references DDS3_GBWK
 0x00188680	mapRefDDS3GBWK12	func	tier=D	derived-data	na	unit code_00174790, neighbour mapRiberaMa2Start; references DDS3_GBWK
@@ -1580,9 +1571,7 @@
 0x001E1D10	evtCallGrAllocPacketBuff	func	tier=D	derived-callee	na	unit code_001CA8F8, neighbour evtRenderTexStart; calls sdfGrAllocPacketBuff
 0x001E1ED8	evtLeaf15	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtRenderTexStart; no named callee, caller or string
 0x001E1EF0	evtLeaf16	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtRenderTexStart; no named callee, caller or string
-0x001E1EF8	evtLeaf17	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtRenderTexStart; no named callee, caller or string
 0x001E1F18	evtMainMenuItemSub	func	tier=D	derived-caller	na	unit code_001CA8F8, neighbour evtRenderTexStart; called by evtMainMenuItem
-0x001E1F28	evtLeaf18	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
 0x001E1F48	evtEventSkipStartSub	func	tier=D	derived-caller	na	unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; called by EventSkipStart
 0x001E1F58	evtRefDDS3GBWK	func	tier=D	derived-data	na	unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; references DDS3_GBWK
 0x001E2068	evtLeaf19	func	tier=D	derived-unit	na	unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
@@ -3061,7 +3050,6 @@
 0x00271190	sbtlLeaf59	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlChangeModelColor; no named callee, caller or string
 0x00271198	sbtlLeaf60	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlChangeModelColor; no named callee, caller or string
 0x002712C8	sbtlBtlFadeOutBadStatusEffectSub2	func	tier=D	derived-caller	na	unit code_0024AAD8, neighbour sbtlResetMutekiColor; called by sbtlFadeOut_BadStatusEffect
-0x002712E0	sbtlLeaf61	func	tier=D	derived-unit	na	unit code_0024AAD8, neighbour sbtlResetMutekiColor; no named callee, caller or string
 0x00271318	sbtlCallBtlCheckMapHitData	func	tier=D	derived-callee	na	unit code_0024AAD8, neighbour sbtlCheckMapHit_Data; calls sbtlCheckMapHit_Data
 0x002713D0	sbtlCheckMapHit_Data	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCheckMapHit_Data, score 10.3 band A
 0x00271428	sbtlCheckMapHit_Cross	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlCheckMapHit_Cross, score 8.7 band B
@@ -3824,8 +3812,6 @@
 0x002F96E0	sbtlRefSbtl52	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002F9750	sbtlRefSbtl70	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002F98C0	sbtlCallBtlGetPlayerData7	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetPlayerData
-0x002F9CD0	sbtlLeaf96	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002F9D20	sbtlLeaf88	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002F9D68	sbtlFunc16	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002FB0F8	sbtlLeaf117	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002FB110	sbtlCallVsprintf	func	tier=D	derived-callee	na	unit sbtl; calls vsprintf
@@ -22767,6 +22753,14 @@
 0x00187A10	scrClearProcessGlobals	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x21f4e8 sim 0.769 margin 0.00 pair
 0x00187A48	mapNpcPathCalc_RotGoal	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapNpcPathCalc_RotGoal score 4.0 flag -: next~ gap1/4 st1:gap r1+r2
 0x00187A88	mapNpcPathDelete	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathDelete(uniq): over the 16 NPC paths, the used one with that uniq gets basic, use and uniq cleared; after mapNpcPathCalc_RotGoal, in the HD mapNpcPath Init/Add/Delete group; replaces mapLeaf29
+0x00187CA8	mapNpcPathReMakeControl	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathReMakeControl: empty in both; between mapNpcPathMakeControl and mapNpcPathControlGetPos as in HD; replaces mapLeaf30
+0x00188070	mapNpcPathControlGetMode	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathControlGetMode(pControl): returns pControl->mode; after AlterMode as in HD; replaces mapLeaf32
+0x00188078	mapNpcPathControlSetRatio	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathControlSetRatio(pControl, ratio): frame (0xC) = frameMax (0x8) * ratio; after GetMode as in HD; replaces mapLeaf33
+0x00188088	mapNpcPathControlGetRatio	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathControlGetRatio(pControl): returns frame / frameMax; after SetRatio as in HD; replaces mapLeaf34
+0x001880A8	mapNpcPathPause	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathPause(pControl): flag |= 8; after GetRatio as in HD; replaces mapLeaf35
+0x001880B8	mapNpcPathPauseOff	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathPauseOff(pControl): flag &= ~8; before PauseOnOff (here mapObjTaskSub) as in HD; replaces mapLeaf36
+0x00188110	mapNpcPathGetSpeed	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathGetSpeed(idx): returns the path speed float of entry idx; after PauseOnOff (mapObjTaskSub) and before SetSpeed (mapFileLoadSub9, stores the same float) as in HD; replaces mapLeaf37
+0x00188180	mapNpcPathLoopOff	func	tier=C	derived-derived-role	na	Raidou HD fld.mapNpcPathLoopOff(uniq): s16 uniq, clears flag 0x20; after LoopOn (mapFileLoadSub10, sets 0x20) and before mapNpcPathTask as in HD; replaces mapLeaf38
 0x00188268	mapDrinkClearMsg	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapDrinkClearMsg score 4.2 flag -: calls1 next gap48/32 st1:gap r1-only
 0x00188628	mapRiberaMa2Start	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapRiberaMa2Start score 4.6 flag -: calls1 calls-of-match st1:call r1+r2
 0x00188720	mapEsutoMa2Start	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapEsutoMa2Start score 4.6 flag -: calls1 calls-of-match st1:call r1+r2
@@ -22916,6 +22910,8 @@
 0x001D6E00	evtUpdateGroupPropertyDialog	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x239a90 sim 1.000 margin 0.00 pair
 0x001D9A20	evtViewerDrawShadowConfigRow	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x23bc30 sim 1.000 margin 0.00 pair
 0x001DB0E8	evtUpdateEffectViewerGroup	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x258700 sim 1.000 margin 0.02 pair
+0x001E1EF8	evtSetBistaMode	func	tier=C	derived-derived-role	na	Raidou HD evt.evtSetBistaMode(pInfo, mode): sets bits 0-1 of the viewer flags to mode & 3; precedes evtGetBistaMode (flags & 3, here evtMainMenuItemSub) as in HD; replaces evtLeaf17
+0x001E1F28	evtSetSkipMode	func	tier=C	derived-derived-role	na	Raidou HD evt.evtSetSkipMode(pInfo, mode): sets bits 2-3 of the viewer flags to mode & 3; after evtGetBistaMode and before evtGetSkipMode ((flags >> 2) & 3, here evtEventSkipStartSub) as in HD; replaces evtLeaf18
 0x001E3748	scrTestEntryFlag	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x3163a0 sim 0.600 margin 0.08 pair
 0x001E3DE0	CrossFadeShutdown	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.CrossFadeShutdown score 6.0 flag -: calls1 next gap9/21 st1:gap r1+r2
 0x001E4040	SetJyocyuData	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x249258 sim 0.648 margin 0.16 pair
@@ -23116,6 +23112,7 @@
 0x0026F380	sbtlPlayDeadVoice	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlSound.sBtlPlayDeadVoice score 4.8 flag I: calls2 calls-of-match votes2 st2:call r1-disagree:0x2500c8
 0x002704D8	sbtlClearUnitList	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlClearUnitList score 4.0 flag I: next~ gap2/2 st1:gap r1+r2
 0x002712A8	sbtlResetMutekiColor	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlUnit.sBtlResetMutekiColor score 3.3 flag I: prev gap11/4 st2:gap r2-only
+0x002712E0	sbtlChangeModelData	func	tier=C	derived-derived-role	na	Raidou HD sBtlUnit.sBtlChangeModelData(wk): swaps pBasic, hEveUnit and hModel with their _d copies and returns 1; the last of the model color functions before CheckMapHit as in HD; replaces sbtlLeaf61
 0x002726D0	sbtlSetMotion_sbtlUnit	func	tier=C	derived-derived-role	na	same call site: R2 sbtlCheckMHTData calls it with (wk, 0, 0, 0, 0) where R1 sbtlCheckMHTData calls sbtlSetMotion_sbtlUnit; replaces sbtlCallBtlGetPChara
 0x00272A60	sbtlplayertblSetPlayerMotionData_Hokan	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sbtlplayertbl.sbtlplayertblSetPlayerMotionData_Hokan score 4.8 flag I: calls2 calls-of-match-uniq votes2 st2:call r1-disagree:0x254270
 0x00275310	sbtlHuumaParamUp	func	tier=C	derived-derived-role	na	same function as raidou1 0x256270 (r1_r2_pairs); HD sBtlSetHangekiFlag is a different function; replaces sbtlSetHangekiFlag
@@ -23247,6 +23244,8 @@
 0x002F8288	sbtlSetSword	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sbattle.sbattleSetSword score 2.6 flag I: calls1 next~ calls-of-match st2:call r2-only
 0x002F9838	sbtlDebug_SetBattleMode	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sbattle.sBtlDebug_SetBattleMode score 4.8 flag -: calls1 prev calls-of-match st2:call r2-only
 0x002F9BA0	sbtlDebug_Shutdown	func	tier=C	hd-both	0.71 (n=206)	Raidou HD sbattle.sBtlDebug_Shutdown score 4.2 flag -: prev gap19/21 st1:gap r1+r2
+0x002F9CD0	sbtlDebug_DrawCursor	func	tier=C	derived-derived-role	na	Raidou HD sbattle.sBtlDebug_DrawCursor(x, y, csr): draws text at (16x, 8(y + 12(point - offset))) with colour 5, 0x67; after sbtlDebug_Shutdown as in HD; replaces sbtlLeaf96
+0x002F9D20	sbtlDebug_DrawCursor_OFFSET	func	tier=C	derived-derived-role	na	Raidou HD sbattle.sBtlDebug_DrawCursor_OFFSET(x, y, offsety, csr): as sBtlDebug_DrawCursor with offsety for the row height; right after it as in HD; replaces sbtlLeaf88
 0x002FA868	sbtlDebug_DrawNormalList	func	tier=C	hd-both	0.71 (n=206)	Raidou HD sbattle.sBtlDebug_DrawNormalList score 4.5 flag -: next gap3/6 st1:gap r1+r2
 0x002FD928	sdfSetLocalMapCounterMarkerState	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x30c250 sim 0.667 margin 0.07 pair
 0x002FE010	summonMenuResetMenu	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD itf.summonMenuResetMenu score 4.0 flag -: calls2 callee-index st2:cidx r2-only

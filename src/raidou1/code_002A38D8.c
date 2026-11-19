@@ -2437,9 +2437,9 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_CheckLoadEncountData);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_Shutdown);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf96);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_DrawCursor);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf88);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_DrawCursor_OFFSET);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlFunc16);
 

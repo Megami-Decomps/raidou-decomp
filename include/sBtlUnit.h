@@ -272,7 +272,7 @@ s32 sbtlGetLight_SetPos(struct SBTLUNIT_WORK *wk, s8 lightno);
 s32 sbtlGetNumUnit_GroupID(struct SBTLUNIT_LISTWORK *lwk, s32 serialID);
 s32 sbtlGetNumUnit_GroupID2(struct SBTLUNIT_LISTWORK *lwk, s32 serialID, s32 flg);
 s32 sbtlRefSbtl33(struct SBTLUNIT_WORK *wk);
-s32 sbtlLeaf61(struct SBTLUNIT_WORK *wk);
+s32 sbtlChangeModelData(struct SBTLUNIT_WORK *wk);
 s32 sbtlBtlSetEndDataSub(struct SBTLUNIT_WORK *wk, s32 stockID);
 s32 sbtlDeleteAttackHitData(struct SBTLUNIT_WORK *wk);
 void sbtlCallMemFreeDirect2(struct SBTLUNIT_WORK *wk);

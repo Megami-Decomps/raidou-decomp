@@ -2152,22 +2152,22 @@
 0x00187A48	mapNpcPathCalc_RotGoal	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD fld.mapNpcPathCalc_RotGoal score 4.0 flag -: next~ gap1/4 st1:gap r1+r2
 0x00187A88	mapNpcPathDelete	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathDelete(uniq): over the 16 NPC paths, the used one with that uniq gets basic, use and uniq cleared; after mapNpcPathCalc_RotGoal, in the HD mapNpcPath Init/Add/Delete group; replaces mapLeaf29
 0x00187AE0	mapNpcPathMakeControl	hd	hd: Raidou HD fld.mapNpcPathMakeControl, score 7.0 band B
-0x00187CA8	mapLeaf30	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathMakeControl; no named callee, caller or string
+0x00187CA8	mapNpcPathReMakeControl	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathReMakeControl: empty in both; between mapNpcPathMakeControl and mapNpcPathControlGetPos as in HD; replaces mapLeaf30
 0x00187CB0	mapNpcPathControlGetPos	hd	hd: Raidou HD fld.mapNpcPathControlGetPos, score 7.4 band B
 0x00187DC8	mapNpcPathControlGetRot	hd	hd: Raidou HD fld.mapNpcPathControlGetRot, score 8.8 band B
 0x00187E50	mapCallGetElement	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathControlGetRot; calls GetElement
 0x00187FC0	mapNpcPathTaskSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathControlGetRot; called by mapNpcPathTask
-0x00188068	mapLeaf31	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x00188070	mapLeaf32	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x00188078	mapLeaf33	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x00188088	mapLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x001880A8	mapLeaf35	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathControlGetRot; no named callee, caller or string
-0x001880B8	mapLeaf36	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathTask; no named callee, caller or string
+0x00188068	mapNpcPathControlAlterMode	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD fld.mapNpcPathControlAlterMode(pControl, mode): pControl->mode = mode; first of the run AlterMode, GetMode, SetRatio, GetRatio, Pause, PauseOff, PauseOnOff, GetSpeed, SetSpeed, LoopOn, LoopOff before mapNpcPathTask, each body as in HD; replaces mapLeaf31
+0x00188070	mapNpcPathControlGetMode	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathControlGetMode(pControl): returns pControl->mode; after AlterMode as in HD; replaces mapLeaf32
+0x00188078	mapNpcPathControlSetRatio	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathControlSetRatio(pControl, ratio): frame (0xC) = frameMax (0x8) * ratio; after GetMode as in HD; replaces mapLeaf33
+0x00188088	mapNpcPathControlGetRatio	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathControlGetRatio(pControl): returns frame / frameMax; after SetRatio as in HD; replaces mapLeaf34
+0x001880A8	mapNpcPathPause	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathPause(pControl): flag |= 8; after GetRatio as in HD; replaces mapLeaf35
+0x001880B8	mapNpcPathPauseOff	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathPauseOff(pControl): flag &= ~8; before PauseOnOff (here mapObjTaskSub) as in HD; replaces mapLeaf36
 0x001880D0	mapObjTaskSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathTask; called by mapObjTask
-0x00188110	mapLeaf37	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathTask; no named callee, caller or string
+0x00188110	mapNpcPathGetSpeed	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathGetSpeed(idx): returns the path speed float of entry idx; after PauseOnOff (mapObjTaskSub) and before SetSpeed (mapFileLoadSub9, stores the same float) as in HD; replaces mapLeaf37
 0x00188130	mapFileLoadSub9	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathTask; called by mapFileLoad
 0x00188150	mapFileLoadSub10	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathTask; called by mapFileLoad
-0x00188180	mapLeaf38	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00174790, neighbour mapNpcPathTask; no named callee, caller or string
+0x00188180	mapNpcPathLoopOff	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapNpcPathLoopOff(uniq): s16 uniq, clears flag 0x20; after LoopOn (mapFileLoadSub10, sets 0x20) and before mapNpcPathTask as in HD; replaces mapLeaf38
 0x001881B8	mapNpcPathTask	hd	hd: Raidou HD fld.mapNpcPathTask, score 9.6 band B
 0x00188268	mapDrinkClearMsg	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD fld.mapDrinkClearMsg score 4.2 flag -: calls1 next gap48/32 st1:gap r1-only
 0x00188280	mapMoudokuClearMsg	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD fld.mapMoudokuClearMsg score 8.5 flag -: calls2 callers-of-match votes2 st1:call r1+r2
@@ -3904,9 +3904,9 @@
 0x001E1D10	evtCallGrAllocPacketBuff	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtRenderTexStart; calls sdfGrAllocPacketBuff
 0x001E1ED8	evtLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtRenderTexStart; no named callee, caller or string
 0x001E1EF0	evtLeaf16	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtRenderTexStart; no named callee, caller or string
-0x001E1EF8	evtLeaf17	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtRenderTexStart; no named callee, caller or string
+0x001E1EF8	evtSetBistaMode	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD evt.evtSetBistaMode(pInfo, mode): sets bits 0-1 of the viewer flags to mode & 3; precedes evtGetBistaMode (flags & 3, here evtMainMenuItemSub) as in HD; replaces evtLeaf17
 0x001E1F18	evtMainMenuItemSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtRenderTexStart; called by evtMainMenuItem
-0x001E1F28	evtLeaf18	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
+0x001E1F28	evtSetSkipMode	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD evt.evtSetSkipMode(pInfo, mode): sets bits 2-3 of the viewer flags to mode & 3; after evtGetBistaMode and before evtGetSkipMode ((flags >> 2) & 3, here evtEventSkipStartSub) as in HD; replaces evtLeaf18
 0x001E1F48	evtEventSkipStartSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; called by EventSkipStart
 0x001E1F58	evtRefDDS3GBWK	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; references DDS3_GBWK
 0x001E2068	evtLeaf19	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CA8F8, neighbour evtEventFadeOutAllBgm; no named callee, caller or string
@@ -6852,7 +6852,7 @@
 0x00271288	sbtlChangeModelColor	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.sBtlChangeModelColor score 9.1 flag I: calls4 calls-of-match votes3 st2:call r2-only
 0x002712A8	sbtlResetMutekiColor	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sBtlUnit.sBtlResetMutekiColor score 3.3 flag I: prev gap11/4 st2:gap r2-only
 0x002712C8	sbtlBtlFadeOutBadStatusEffectSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlResetMutekiColor; called by sbtlFadeOut_BadStatusEffect
-0x002712E0	sbtlLeaf61	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlResetMutekiColor; no named callee, caller or string
+0x002712E0	sbtlChangeModelData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sBtlUnit.sBtlChangeModelData(wk): swaps pBasic, hEveUnit and hModel with their _d copies and returns 1; the last of the model color functions before CheckMapHit as in HD; replaces sbtlLeaf61
 0x00271318	sbtlCallBtlCheckMapHitData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0024AAD8, neighbour sbtlCheckMapHit_Data; calls sbtlCheckMapHit_Data
 0x00271348	CheckMapHit	hd	hd: Raidou HD sBtlUnit.CheckMapHit, score 8.8 band B
 0x002713D0	sbtlCheckMapHit_Data	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCheckMapHit_Data, score 10.3 band A
@@ -8408,8 +8408,8 @@
 0x002F98C0	sbtlCallBtlGetPlayerData7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetPlayerData
 0x002F9A78	sbtlDebug_CheckLoadEncountData	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.sBtlDebug_CheckLoadEncountData score 12.0 flag -: calls3 prev callers-of-match votes3 st1:call r1+r2
 0x002F9BA0	sbtlDebug_Shutdown	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD sbattle.sBtlDebug_Shutdown score 4.2 flag -: prev gap19/21 st1:gap r1+r2
-0x002F9CD0	sbtlLeaf96	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002F9D20	sbtlLeaf88	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002F9CD0	sbtlDebug_DrawCursor	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sbattle.sBtlDebug_DrawCursor(x, y, csr): draws text at (16x, 8(y + 12(point - offset))) with colour 5, 0x67; after sbtlDebug_Shutdown as in HD; replaces sbtlLeaf96
+0x002F9D20	sbtlDebug_DrawCursor_OFFSET	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sbattle.sBtlDebug_DrawCursor_OFFSET(x, y, offsety, csr): as sBtlDebug_DrawCursor with offsety for the row height; right after it as in HD; replaces sbtlLeaf88
 0x002F9D68	sbtlFunc16	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002F9E10	sbtlDebug_DrawNormalList_Col	hd	hd: Raidou HD sbattle.sBtlDebug_DrawNormalList_Col, score 7.95 band B
 0x002F9EE8	sbtlDebug_SetStatusflg	hd	hd: Raidou HD sbattle.sBtlDebug_SetStatusflg, score 9.0 band B, hd-ab: calls2 callers-of-match votes2 st1:call r1+r2

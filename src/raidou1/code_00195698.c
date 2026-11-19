@@ -361,7 +361,7 @@ INCLUDE_ASM(const s32, "code_00195698", mphLoadFileProcess);
 
 INCLUDE_ASM(const s32, "code_00195698", mphCommandBUSTUPLOADWAITSub);
 
-INCLUDE_ASM(const s32, "code_00195698", mphLeaf);
+INCLUDE_ASM(const s32, "code_00195698", mphCheckStat);
 
 INCLUDE_ASM(const s32, "code_00195698", mphEndDraw);
 
@@ -425,7 +425,7 @@ INCLUDE_ASM(const s32, "code_00195698", mphCallDGetPrimPacketSize3);
 
 INCLUDE_ASM(const s32, "code_00195698", mphFunc);
 
-INCLUDE_ASM(const s32, "code_00195698", mphLeaf2);
+INCLUDE_ASM(const s32, "code_00195698", mphSetPoints);
 
 INCLUDE_ASM(const s32, "code_00195698", mphCommand_BUSTUP_LOAD);
 

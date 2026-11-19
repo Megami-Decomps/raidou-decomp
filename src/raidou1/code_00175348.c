@@ -30,7 +30,7 @@
 #include "sdfQuat.h"
 #include "code_00174790.h"
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf30);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathReMakeControl);
 
 INCLUDE_ASM(const s32, "code_00175348", mapNpcPathControlGetPos);
 
@@ -65,27 +65,27 @@ s32 mapNpcPathTaskSub(mapNpcPathControl_t *pControl) {
     return ret;
 }
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf31);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathControlAlterMode);
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf32);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathControlGetMode);
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf33);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathControlSetRatio);
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf34);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathControlGetRatio);
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf35);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathPause);
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf36);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathPauseOff);
 
 INCLUDE_ASM(const s32, "code_00175348", mapObjTaskSub);
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf37);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathGetSpeed);
 
 INCLUDE_ASM(const s32, "code_00175348", mapFileLoadSub9);
 
 INCLUDE_ASM(const s32, "code_00175348", mapFileLoadSub10);
 
-INCLUDE_ASM(const s32, "code_00175348", mapLeaf38);
+INCLUDE_ASM(const s32, "code_00175348", mapNpcPathLoopOff);
 
 INCLUDE_RODATA(const s32, "code_00175348", mapCallGetElementTable);
 
