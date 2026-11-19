@@ -74,7 +74,7 @@ void fldSetUnit(void)
         SDF_VU0_COPYVECTOR_NOMEM(&poseset->pos2, &pos);
         SDF_VU0_COPYVECTOR_NOMEM(&poseset->rot, &rot);
     }
-    dds3SetPosPoseSet_dds3Basic(playerBasic, &pos);
+    dds3SetPosPoseSet(playerBasic, &pos);
     dds3SetRotPoseSet(playerBasic, &rot);
     dds3SetSclPoseSet(playerBasic, &scl);
     playerModel = dds3ObjectBaseGetModelHandle(playerBasic);
@@ -116,7 +116,7 @@ void fldSetUnit(void)
             fldCallMemFreeDelayedDirect3();
         }
         dds3ObjectBaseMakeUnit(aiboBasic, MODELTYPE_EVENT, 110);
-        dds3SetPosPoseSet_dds3Basic(aiboBasic, &pos);
+        dds3SetPosPoseSet(aiboBasic, &pos);
         dds3SetRotPoseSet(aiboBasic, &rot);
         dds3SetSclPoseSet(aiboBasic, &scl);
         aiboModel = dds3ObjectBaseGetModelHandle(aiboBasic);
@@ -153,7 +153,7 @@ void fldSetUnit(void)
         scl.x = visual->scale;
         scl.y = visual->scale;
         scl.z = visual->scale;
-        dds3SetPosPoseSet_dds3Basic(summonDvBasic, &pos);
+        dds3SetPosPoseSet(summonDvBasic, &pos);
         dds3SetRotPoseSet(summonDvBasic, &rot);
         dds3SetSclPoseSet(summonDvBasic, &scl);
         summonDvModel = dds3ObjectBaseGetModelHandle(summonDvBasic);

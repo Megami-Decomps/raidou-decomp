@@ -276,7 +276,7 @@
 0x0011E378	dds3Leaf28	func	tier=D	derived-unit	na	unit basic/dds3MatterObjectBasic; no named callee, caller or string
 0x0011E850	dds3RefreshStoredVec3	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001143B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011F408	dds3EffectObjectBasicAddD3P2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3EffectObjectBasic.dds3EffectObjectBasicAddD3P2, score 7.45 band B
-0x0011F448	dds3CallDevLoadTexList	func	tier=D	derived-callee	na	unit basic/dds3EffectObjectBasic; calls sdfDevLoadTexList
+0x0011F448	dds3AddD3PEffectObjectBasic	func	tier=D	derived-callee	na	unit basic/dds3EffectObjectBasic; calls sdfDevLoadTexList
 0x0011F558	dds3EffectObjectBasicAddEPL	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3EffectObjectBasic.dds3EffectObjectBasicAddEPL, score 7.95 band B
 0x001202B8	dds3EffectObjectBasicDrawProceduSub	func	tier=D	derived-caller	na	unit code_0011D6B8, nearest named function dds3EffectObjectBasicSetFldEx; called by dds3EffectObjectBasicDrawProcedure
 0x001216F8	dds3PointBasicGetResource	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -3954,7 +3954,7 @@
 0x002CE990	sbtlLeaf110	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002D03E8	sbtlRefSbtl67	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002D33A8	sbtlCallCameraObjectBasicGetFovy	func	tier=D	derived-callee	na	unit sbtl; calls dds3CameraObjectBasicGetFovy
-0x002D3440	sbtlCallSetPosPoseSetDds3Basic2	func	tier=D	derived-callee	na	unit sbtl; calls dds3SetPosPoseSet_dds3Basic
+0x002D3440	sbtlCallSetPosPoseSetDds3Basic2	func	tier=D	derived-callee	na	unit sbtl; calls dds3SetPosPoseSet
 0x002D3510	sbtlLeaf103	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002D3518	sbtlLeaf87	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002D3520	sbtlLeaf118	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
@@ -6147,7 +6147,7 @@
 0x003B5F70	fldCallPosReset2	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour fldDoor_GetWarpEff; calls PosReset
 0x003B5FA0	fldCallPosReset3	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour fldDoor_GetWarpEff; calls PosReset
 0x003B5FF0	fldCallPosReset4	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour fldDoor_GetWarpEff; calls PosReset
-0x003B6040	fldCallSetPosPoseSetDds3Basic	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour fldDoor_GetWarpEff; calls dds3SetPosPoseSet_dds3Basic
+0x003B6040	fldCallSetPosPoseSetDds3Basic	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour fldDoor_GetWarpEff; calls dds3SetPosPoseSet
 0x003B6130	fldCallObjectBaseOffFlag	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour fldDoor_GetWarpEff; calls dds3ObjectBaseOffFlag
 0x003B6198	jmsCallAsdMdlSetRotationXYZ	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour jmsLoadBgModel; calls AsdMdlSetRotationXYZ
 0x003B6290	jmsJimusyo	func	tier=D	derived-string	na	unit code_003B38B0, neighbour jmsLoadBgModel; string '/jimusyo/'

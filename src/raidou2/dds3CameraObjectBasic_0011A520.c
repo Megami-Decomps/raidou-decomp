@@ -10,7 +10,7 @@ INCLUDE_ASM(const s32, "dds3CameraObjectBasic_0011A520", dds3CameraObjectBasicAl
 
 void dds3CameraObjectBasicSetTgtCam(dds3Basic_t *pBasic, const sdfVector4_t *tgtpos, const sdfVector4_t *campos) {
     dds3CameraObjectBasicGetCameraTM(pBasic, tgtpos);
-    dds3SetPosPoseSet_dds3Basic(pBasic, campos);
+    dds3SetPosPoseSet(pBasic, campos);
     ((void (*)(dds3Basic_t *))pBasic->basicfunction->mainprocuder)(pBasic);
 }
 

@@ -59,7 +59,7 @@ void CutSet(s32 id) {
     pos.x = fldGlobalBase.focusX;
     pos.y = fldGlobalBase.focusY;
     pos.z = fldGlobalBase.focusZ;
-    dds3SetPosPoseSet_dds3Basic(playerBasic, &pos);
+    dds3SetPosPoseSet(playerBasic, &pos);
     poseset = playerBasic->poseset;
     SDF_VU0_COPYVECTOR(&poseset->pos2, &pos);
     dds3OnPoseSetFlag(poseset, 8);

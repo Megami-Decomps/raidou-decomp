@@ -228,7 +228,7 @@ void evtSetUnitPos(u32 unitID, u32 posID) {
         source = dds3SearchSceneBasic(dds3GetControlScene(), posID, 0x10);
         if (source != NULL) {
             sourceTransform = source->workdata;
-            dds3SetPosPoseSet_dds3Basic(target, &sourceTransform->position);
+            dds3SetPosPoseSet(target, &sourceTransform->position);
             SDF_VU0_LOADVECTOR(&quaternion);
             FromRotation(3.14159265f);
             SDF_VU0_LOADVECTOR_B(sourceTransform->rotation);

@@ -19,7 +19,7 @@ void mapNpcPathTask(void) {
         if (slot->control.flag & 1) {
             mapNpcPathControlGetPos(&slot->control);
             VU0_STORE_VF($vf10, &vec);
-            dds3SetPosPoseSet_dds3Basic(slot->pBasic, &vec);
+            dds3SetPosPoseSet(slot->pBasic, &vec);
         }
         if (slot->control.flag & 2) {
             mapNpcPathControlGetRot(&slot->control);

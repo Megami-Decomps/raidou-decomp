@@ -108,7 +108,7 @@ s32 sbtlCallSetPosPoseSetDds3Basic(SBTLCAMERA_WORK *wk) {
     SDF_VU0_ADDVECTOR();
     SDF_VU0_STOREVECTOR_B(&work->targetPos);
     SDF_VU0_STOREVECTOR(&pos);
-    dds3SetPosPoseSet_dds3Basic(wk->cm, &pos);
+    dds3SetPosPoseSet(wk->cm, &pos);
     dds3SetRotPoseSet(wk->cm, &sbtlCallSetPosPoseSetDds3BasicData2);
     SDF_VU0_LOADVECTOR(&sbtlCallSetPosPoseSetDds3BasicData);
     SDF_VU0_STOREVECTOR(&work->vertical);
@@ -151,7 +151,7 @@ s32 sbtlCallSetPosPoseSetDds3Basic2(SBTLCAMERA_WORK *wk) {
     SDF_VU0_ADDVECTOR();
     SDF_VU0_STOREVECTOR_B(&work->targetPos);
     SDF_VU0_STOREVECTOR(&pos);
-    dds3SetPosPoseSet_dds3Basic(wk->cm, &pos);
+    dds3SetPosPoseSet(wk->cm, &pos);
     dds3SetRotPoseSet(wk->cm, &sbtlCallSetPosPoseSetDds3Basic2Data2);
     SDF_VU0_LOADVECTOR(&sbtlCallSetPosPoseSetDds3Basic2Data);
     SDF_VU0_STOREVECTOR(&work->vertical);

@@ -612,7 +612,7 @@ dds3Basic_t *AddD3PEffect(void *eff, void *pos, void *rot)
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicAddD3P2);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3CallDevLoadTexList);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddD3PEffectObjectBasic);
 
 /* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0011C888.c:1, match */
 dds3Basic_t *AddEPLEffect(effHandle_t *eff, const sdfVector4_t *pos, const sdfVector4_t *rot)

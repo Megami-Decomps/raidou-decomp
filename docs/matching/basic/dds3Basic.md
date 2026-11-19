@@ -11,7 +11,7 @@ N1: typing staticdata u32 (DDS calls it word14 and stores 0) puts that store in 
 
 Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).
 
-## dds3SetPosPoseSet_dds3Basic (basic/dds3Basic, raidou1 0x2C, raidou2 0x2C)
+## dds3SetPosPoseSet (basic/dds3Basic, raidou1 0x2C, raidou2 0x2C)
 
 Raidou 1: 5 of 11 words differ, first at +0x0.
 Raidou 2: 5 of 11 words differ, first at +0x0.

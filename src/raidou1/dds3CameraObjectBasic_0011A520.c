@@ -25,7 +25,7 @@ void dds3CameraObjectBasicAlterMode(dds3Basic_t *basic, u32 mode)
 
 void dds3CameraObjectBasicSetTgtCam(dds3Basic_t *pBasic, const sdfVector4_t *tgtpos, const sdfVector4_t *campos) {
     dds3CameraObjectBasicGetCameraTM(pBasic, tgtpos);
-    dds3SetPosPoseSet_dds3Basic(pBasic, campos);
+    dds3SetPosPoseSet(pBasic, campos);
     ((void (*)(dds3Basic_t *))pBasic->basicfunction->mainprocuder)(pBasic);
 }
 

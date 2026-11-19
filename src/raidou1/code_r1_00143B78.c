@@ -156,7 +156,7 @@ s32 mapObjFloorAdd_Cash(s32 floor, s16 uniq, MODELTYPE major, s32 minor, s32 mot
     dds3ObjectBaseMakeUnit(basic, major, minor);
     o->model_id1 = major;
     o->model_id2 = minor;
-    dds3SetPosPoseSet_dds3Basic(basic, &pos);
+    dds3SetPosPoseSet(basic, &pos);
     dds3SetRotPoseSet(basic, &rot);
     dds3SetSclPoseSet(basic, &scl);
     dds3GetRadiusPoseSet(basic, s * 40.0f);

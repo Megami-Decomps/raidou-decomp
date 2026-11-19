@@ -176,7 +176,7 @@ INCLUDE_ASM(const s32, "basic/dds3Basic", dds3Leaf25);
 /* NON_MATCHING: 6 of 11 words match.  */
 #ifdef NON_MATCHING
 /* body: matched in smt3 @ 9401f79e: src/smt3/basic/dds3Basic.c:165, near, same function 1.00 (words 11/11, calls 1.00, shape 1.00) */
-void dds3SetPosPoseSet_dds3Basic(dds3Basic_t *pBasic, const sdfVector4_t *pos)
+void dds3SetPosPoseSet(dds3Basic_t *pBasic, const sdfVector4_t *pos)
 {
     dds3PoseSet_t *pose = pBasic->poseset;
     sdfVector4_t *dst = &pose->pos;
@@ -185,7 +185,7 @@ void dds3SetPosPoseSet_dds3Basic(dds3Basic_t *pBasic, const sdfVector4_t *pos)
     SDF_VU0_COPYVECTOR(dst, pos);
 }
 #else
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3SetPosPoseSet_dds3Basic);
+INCLUDE_ASM(const s32, "basic/dds3Basic", dds3SetPosPoseSet);
 #endif
 
 void dds3SetRotPoseSet(dds3Basic_t *pBasic, const sdfVector4_t *rot)

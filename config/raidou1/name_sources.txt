@@ -638,7 +638,7 @@
 0x00116EF0	dds3SetRadiusPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DE50, byte-identical; map-agrees
 0x00116F28	dds3GetRadiusPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DE88, shared-hash-in-run; map-agrees
 0x00116F38	dds3Leaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit basic/dds3Basic; no named callee, caller or string
-0x00116F48	dds3SetPosPoseSet_dds3Basic	hd	hd: Raidou HD dds3Basic.dds3SetPosPoseSet, score 11.5 band A
+0x00116F48	dds3SetPosPoseSet	hd	hd: Raidou HD dds3Basic.dds3SetPosPoseSet, score 11.5 band A
 0x00116F78	dds3SetRotPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DED8, byte-identical; map-agrees
 0x00116FA8	dds3SetSclPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DF08, byte-identical; map-agrees
 0x00116FD8	dds3GetPosPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DF38, byte-identical; map-agrees
@@ -831,7 +831,7 @@
 0x0011C6F0	effObjCreateIndexedKindZero	inferred	method=dds-fuzzy-100-tie-pair; p=0.58 (n=653); tier=C; source=dds; evidence=dds body 0x114e48 sim 1.000 margin 0.00 pair
 0x0011C738	AddD3PEffect	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x114478 sim 1.000 margin 0.00 pair
 0x0011C808	dds3EffectObjectBasicAddD3P2	hd-inferred	hd: Raidou HD dds3EffectObjectBasic.dds3EffectObjectBasicAddD3P2, score 7.45 band B
-0x0011C848	dds3CallDevLoadTexList	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit basic/dds3EffectObjectBasic; calls sdfDevLoadTexList
+0x0011C848	dds3AddD3PEffectObjectBasic	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit basic/dds3EffectObjectBasic; calls sdfDevLoadTexList
 0x0011C888	AddEPLEffect	hd	hd: Raidou HD dds3EffectObjectBasic.AddEPLEffect, score 8.1 band B
 0x0011C958	dds3EffectObjectBasicAddEPL	hd-inferred	hd: Raidou HD dds3EffectObjectBasic.dds3EffectObjectBasicAddEPL, score 7.95 band B
 0x0011C998	AddBEDEffect	inferred	SMT3HD name via SLUS_209.11 0x001145C8, unique-masked-hash; map-agrees
@@ -7473,9 +7473,9 @@
 0x0029A0B8	sbtlCallSetGameCamera0	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls pbSetGameCamera0
 0x0029A118	sbtlCallGetActiveScene4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls dds3GetActiveScene
 0x0029A1A8	sbtlRefSbtl65	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
-0x0029A1C0	sbtlCallSetPosPoseSetDds3Basic	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls dds3SetPosPoseSet_dds3Basic
+0x0029A1C0	sbtlCallSetPosPoseSetDds3Basic	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls dds3SetPosPoseSet
 0x0029A278	sbtlCallCameraObjectBasicGetFovy	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls dds3CameraObjectBasicGetFovy
-0x0029A310	sbtlCallSetPosPoseSetDds3Basic2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls dds3SetPosPoseSet_dds3Basic
+0x0029A310	sbtlCallSetPosPoseSetDds3Basic2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls dds3SetPosPoseSet
 0x0029A3E0	sbtlLeaf103	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x0029A3E8	sbtlLeaf87	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x0029A3F0	sbtlCallBitCheck5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls evtBitCheck

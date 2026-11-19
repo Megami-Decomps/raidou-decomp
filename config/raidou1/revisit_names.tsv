@@ -244,7 +244,7 @@
 0x0011B778	dds3Leaf28	func	tier=D	derived-unit	na	unit basic/dds3MatterObjectBasic; no named callee, caller or string
 0x0011BC50	dds3RefreshStoredVec3	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001143B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011C808	dds3EffectObjectBasicAddD3P2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3EffectObjectBasic.dds3EffectObjectBasicAddD3P2, score 7.45 band B
-0x0011C848	dds3CallDevLoadTexList	func	tier=D	derived-callee	na	unit basic/dds3EffectObjectBasic; calls sdfDevLoadTexList
+0x0011C848	dds3AddD3PEffectObjectBasic	func	tier=D	derived-callee	na	unit basic/dds3EffectObjectBasic; calls sdfDevLoadTexList
 0x0011C958	dds3EffectObjectBasicAddEPL	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD dds3EffectObjectBasic.dds3EffectObjectBasicAddEPL, score 7.95 band B
 0x0011D6B8	dds3EffectObjectBasicDrawProceduSub	func	tier=D	derived-caller	na	unit code_0011D6B8, nearest named function dds3EffectObjectBasicSetFldEx; called by dds3EffectObjectBasicDrawProcedure
 0x0011EAF8	dds3PointBasicGetResource	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -3595,9 +3595,9 @@
 0x0029A0B8	sbtlCallSetGameCamera0	func	tier=D	derived-callee	na	unit sbtl; calls pbSetGameCamera0
 0x0029A118	sbtlCallGetActiveScene4	func	tier=D	derived-callee	na	unit sbtl; calls dds3GetActiveScene
 0x0029A1A8	sbtlRefSbtl65	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
-0x0029A1C0	sbtlCallSetPosPoseSetDds3Basic	func	tier=D	derived-callee	na	unit sbtl; calls dds3SetPosPoseSet_dds3Basic
+0x0029A1C0	sbtlCallSetPosPoseSetDds3Basic	func	tier=D	derived-callee	na	unit sbtl; calls dds3SetPosPoseSet
 0x0029A278	sbtlCallCameraObjectBasicGetFovy	func	tier=D	derived-callee	na	unit sbtl; calls dds3CameraObjectBasicGetFovy
-0x0029A310	sbtlCallSetPosPoseSetDds3Basic2	func	tier=D	derived-callee	na	unit sbtl; calls dds3SetPosPoseSet_dds3Basic
+0x0029A310	sbtlCallSetPosPoseSetDds3Basic2	func	tier=D	derived-callee	na	unit sbtl; calls dds3SetPosPoseSet
 0x0029A3E0	sbtlLeaf103	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x0029A3E8	sbtlLeaf87	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x0029A3F0	sbtlCallBitCheck5	func	tier=D	derived-callee	na	unit sbtl; calls evtBitCheck

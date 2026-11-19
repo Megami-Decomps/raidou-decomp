@@ -2524,7 +2524,7 @@ s32 sbtlCallMemset5(struct SBTLUNIT_WORK *wk) {
         SDF_VU0_STOREVECTOR(&wk->rot);
     }
     if (!(wk->vstatus & 0x2000)) {
-        dds3SetPosPoseSet_dds3Basic(wk->pBasic, &wk->pos);
+        dds3SetPosPoseSet(wk->pBasic, &wk->pos);
         if (!(wk->vstatus & 8)) {
             dds3SetRotPoseSet(wk->pBasic, &wk->rot);
         }
@@ -4309,7 +4309,7 @@ s32 sbtlModelDataLoad_sbtlUnit(struct SBTLUNIT_WORK *wk)
         wk->hEveUnit = ((dds3UnitObjectBasicWorkData_t *)wk->pBasic->workdata)->hUnit;
         wk->hModel = wk->hEveUnit->owner;
         wk->hEveUnit->flags |= 0x200000;
-        dds3SetPosPoseSet_dds3Basic(wk->pBasic, &wk->pos);
+        dds3SetPosPoseSet(wk->pBasic, &wk->pos);
         dds3SetRotPoseSet(wk->pBasic, &wk->rot);
         SDF_VU0_LOADVECTOR(&wk->pos);
         SDF_VU0_STOREVECTOR(&wk->nextpos);
@@ -4345,7 +4345,7 @@ s32 sbtlModelDataLoad_sbtlUnit(struct SBTLUNIT_WORK *wk)
         wk->hEveUnit_d = ((dds3UnitObjectBasicWorkData_t *)wk->pBasic_d->workdata)->hUnit;
         wk->hModel_d = wk->hEveUnit_d->owner;
         wk->hEveUnit_d->flags |= 0x200000;
-        dds3SetPosPoseSet_dds3Basic(wk->pBasic_d, &wk->pos);
+        dds3SetPosPoseSet(wk->pBasic_d, &wk->pos);
         dds3SetRotPoseSet(wk->pBasic_d, &wk->rot);
         SDF_VU0_LOADVECTOR(wk->visual);
         SDF_VU0_STOREVECTOR(&wk->pBasic_d->poseset->scl);

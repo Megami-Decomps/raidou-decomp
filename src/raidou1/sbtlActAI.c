@@ -4254,8 +4254,8 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
         SDF_VU0_STOREVECTOR(&unit->pos);
         wk->pos.x += 140.0f;
         unit->pos.x -= 140.0f;
-        dds3SetPosPoseSet_dds3Basic(wk->pBasic, &wk->pos);
-        dds3SetPosPoseSet_dds3Basic(unit->pBasic, &unit->pos);
+        dds3SetPosPoseSet(wk->pBasic, &wk->pos);
+        dds3SetPosPoseSet(unit->pBasic, &unit->pos);
         return 1;
     case 43:
         frame = 8;
@@ -4821,7 +4821,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
         sbtlGetCylinderData(wk, &data);
         if (wk->framecnt >= 121) {
             wk->pos.y += data.height / 150.0f;
-            dds3SetPosPoseSet_dds3Basic(wk->pBasic, &wk->pos);
+            dds3SetPosPoseSet(wk->pBasic, &wk->pos);
         }
         if (wk->framecnt >= 270 && !wk->action_flg) {
             wk->action_flg = 1;

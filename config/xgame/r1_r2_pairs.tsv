@@ -603,7 +603,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00116EF0	0x00119720	dds3SetRadiusPoseSet	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
 0x00116F28	0x00119758	dds3GetRadiusPoseSet	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	masked-hash-in-gap
 0x00116F38	0x00119768	dds3Leaf25	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	run-order-size
-0x00116F48	0x00119778	dds3SetPosPoseSet_dds3Basic	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
+0x00116F48	0x00119778	dds3SetPosPoseSet	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
 0x00116F78	0x001197A8	dds3SetRotPoseSet	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
 0x00116FA8	0x001197D8	dds3SetSclPoseSet	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
 0x00116FD8	0x00119808	dds3GetPosPoseSet	yes	yes	src/raidou1/basic/dds3Basic.c	src/raidou2/basic/dds3Basic.c	unique-reloc-hash
@@ -794,7 +794,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0011C6F0	0x0011F2F0	effObjCreateIndexedKindZero	no	yes	asm/raidou1/basic/dds3EffectObjectBasic.s	asm/raidou2/basic/dds3EffectObjectBasic.s	masked-hash-in-gap
 0x0011C738	0x0011F338	AddD3PEffect	no	yes	asm/raidou1/basic/dds3EffectObjectBasic.s	asm/raidou2/basic/dds3EffectObjectBasic.s	masked-hash-in-gap
 0x0011C808	0x0011F408	dds3EffectObjectBasicAddD3P2	no	yes	asm/raidou1/basic/dds3EffectObjectBasic.s	asm/raidou2/basic/dds3EffectObjectBasic.s	masked-hash-in-gap
-0x0011C848	0x0011F448	dds3CallDevLoadTexList	no	yes	asm/raidou1/basic/dds3EffectObjectBasic.s	asm/raidou2/basic/dds3EffectObjectBasic.s	masked-hash-in-gap
+0x0011C848	0x0011F448	dds3AddD3PEffectObjectBasic	no	yes	asm/raidou1/basic/dds3EffectObjectBasic.s	asm/raidou2/basic/dds3EffectObjectBasic.s	masked-hash-in-gap
 0x0011C888	0x0011F488	AddEPLEffect	no	yes	asm/raidou1/basic/dds3EffectObjectBasic.s	asm/raidou2/basic/dds3EffectObjectBasic.s	masked-hash-in-gap
 0x0011C958	0x0011F558	dds3EffectObjectBasicAddEPL	no	yes	asm/raidou1/basic/dds3EffectObjectBasic.s	asm/raidou2/basic/dds3EffectObjectBasic.s	masked-hash-in-gap
 0x0011C998	0x0011F598	AddBEDEffect	no	yes	asm/raidou1/basic/dds3EffectObjectBasic.s	asm/raidou2/basic/dds3EffectObjectBasic.s	unique-reloc-hash

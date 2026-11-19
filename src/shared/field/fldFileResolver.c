@@ -1306,12 +1306,12 @@ s32 PlayerCalc_Nml_fld(void) {
         pos.x = fldGlobalBase.focusX - sdfSin(rad * 0.017453293f) * speed;
         pos.y = fldGlobalBase.focusY;
         pos.z = fldGlobalBase.focusZ - sdfCos(rad * 0.017453293f) * speed;
-        dds3SetPosPoseSet_dds3Basic(fldPlayerObject, &pos);
+        dds3SetPosPoseSet(fldPlayerObject, &pos);
     } else {
         pos.x = fldGlobalBase.focusX;
         pos.y = fldGlobalBase.focusY;
         pos.z = fldGlobalBase.focusZ;
-        dds3SetPosPoseSet_dds3Basic(fldPlayerObject, &pos);
+        dds3SetPosPoseSet(fldPlayerObject, &pos);
     }
     if (fldDbg.hitOn != 0 && fldEncountTestFlag(0x40) != 0) {
         fldGlobalBase.focusX = pos.x;
@@ -1321,7 +1321,7 @@ s32 PlayerCalc_Nml_fld(void) {
         pos.x = fldGlobalBase.focusX;
         pos.y = fldGlobalBase.focusY;
         pos.z = fldGlobalBase.focusZ;
-        dds3SetPosPoseSet_dds3Basic(fldPlayerObject, &pos);
+        dds3SetPosPoseSet(fldPlayerObject, &pos);
     }
     SDF_VU0_COPYVECTOR_F32(&old, &fldPlayerObject->poseset->pos2);
     if (fabsf(old.x - pos.x) < 1.0f) {
