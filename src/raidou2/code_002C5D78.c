@@ -15,6 +15,14 @@
 #include "sdfChip.h"
 #include "sBtlPath.h"
 #include "sBtlAI.h"
+#include "sBtlUnit.h"
+#include "code_00295390.h"
+#include "fclMisc.h"
+#include "sBtlPlayer.h"
+#include "scr.h"
+#include "dds3KernelCore.h"
+#include "sbtlActAI.h"
+#include "sBtlDvltk.h"
 
 s32 sbtlCheckLoadFlg(void) {
     u32 load;
@@ -320,17 +328,32 @@ s32 sbtlEvent_DeleteEventScript(void) {
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf32);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetEventMes);
+u8 *sbtlGetEventMes(s16 eventno) {
+    u8 *mes[8] = {
+        sbtlGetEventMesData4, sbtlGetEventMesData,  sbtlGetEventMesData2, sbtlGetEventMesData2,
+        sbtlGetEventMesData3, sbtlGetEventMesData3, sbtlGetEventMesData4, sbtlGetEventMesData4,
+    };
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlEventProcTbl00Sub);
+    return mes[eventno];
+}
 
-INCLUDE_RODATA(const s32, "code_002C5D78", sbtlGetEventMesTable);
+INCLUDE_ASM(const s32, "code_002C5D78", sbtlEvent_NegoProc);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlMessageProc);
 
 INCLUDE_ASM(const s32, "code_002C5D78", EventProc);
 
-INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_00);
+s32 EventProcTbl_00(void) {
+    s16 no[8] = { 2, 3, 3, 3, 3, 0, 1, 3 };
+
+    if (!sbtlEvent_NegoProc(sbtlGetEventMes(wk_sbtl->eventno), no[wk_sbtl->eventno])) {
+        return 0;
+    }
+    fclEndMessage();
+    wk_sbtl->flg &= ~0x4C0;
+    sbtlActiveAction();
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_01);
 
@@ -348,13 +371,27 @@ INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_07);
 
 INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_06);
 
-INCLUDE_RODATA(const s32, "code_002C5D78", EventProcTbl_00Table);
-
 INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_08);
 
 INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_09);
 
-INCLUDE_ASM(const s32, "code_002C5D78", EventProcTbl_0A);
+s32 EventProcTbl_0A(void) {
+    sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID);
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        wk_sbtl->eventprocID = scrStartScript2(1014, ai_scr, wk_sbtl->evtload_evtno);
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 1:
+        if (dds3SearchProcessPriority(1014)) {
+            return 0;
+        }
+        wk_sbtl->eventgstat = 0;
+        wk_sbtl->flg &= ~0x400;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf33);
 
@@ -399,7 +436,16 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlCheckDamageTarget8);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetPointData);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetExPos);
+void sbtlSetExPos(sdfVector4_t *pos, sdfVector4_t *rot) {
+    sb_enc_ex_pos.x = pos->x;
+    sb_enc_ex_pos.y = pos->y;
+    sb_enc_ex_pos.z = pos->z;
+    sb_enc_ex_pos.w = pos->w;
+    sb_enc_ex_rot.x = rot->x;
+    sb_enc_ex_rot.y = rot->y;
+    sb_enc_ex_rot.z = rot->z;
+    sb_enc_ex_rot.w = rot->w;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetEncountPacData);
 

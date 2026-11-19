@@ -407,17 +407,17 @@ s32 slCallGetProcessData7(s32 arg0) {
     struct SBTLUNIT_WORK *unit;
 
     wk_sbtl->flg2 |= 0x80;
-    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->field838);
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
     sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
-    switch (wk_sbtl->field494) {
+    switch (wk_sbtl->eventgstat) {
         case 0:
             if (slCallGetProcessData6(kwk->msg[0].pData, wk_sbtl->field42A8, unit, 1, wk_sbtl->field42AE, arg0) != 0) {
                 fclEndMessage();
-                wk_sbtl->field494++;
+                wk_sbtl->eventgstat++;
             }
             break;
         case 1:
-            wk_sbtl->field494 = 0;
+            wk_sbtl->eventgstat = 0;
             wk_sbtl->flg &= ~0x400;
             return 1;
     }
@@ -434,17 +434,17 @@ s32 slCallGetProcessData8(s32 arg0) {
     struct SBTLUNIT_WORK *unit;
 
     wk_sbtl->flg2 |= 0x80;
-    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->field838);
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
     sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
-    switch (wk_sbtl->field494) {
+    switch (wk_sbtl->eventgstat) {
         case 0:
             if (slCallGetProcessData6(kwk->msg[1].pData, wk_sbtl->field42A8, unit, 2, wk_sbtl->field42AE, arg0) != 0) {
                 fclEndMessageEx(0);
-                wk_sbtl->field494++;
+                wk_sbtl->eventgstat++;
             }
             break;
         case 1:
-            wk_sbtl->field494 = 0;
+            wk_sbtl->eventgstat = 0;
             wk_sbtl->flg &= ~0x400;
             return 1;
     }
@@ -479,7 +479,7 @@ INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlSearchUnitID2);
 /* NON_MATCHING: 4 of 13 words match.  */
 #ifdef NON_MATCHING
 s32 trmSetProcessTerm(void) {
-    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->field838);
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
 
     if (unit != NULL) {
         unit->field6E9 = 1;

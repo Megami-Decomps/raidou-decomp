@@ -151,7 +151,6 @@ s32 sbtlSetSkillData_AI(struct SBTLUNIT_WORK *wk, SKLID skillid);
 
 struct SBTLEFF_LISTWORK;
 s32 CalcBadStatus(struct SBTLUNIT_WORK *wk);
-struct SBTLUNIT_WORK *sbtlSetExPos(f32 *pos, f32 *rot);
 #ifdef VERSION_RAIDOU2 /* Raidou 2's sbtlCallBtlSearchUnitID4 is other code: it picks a near target */
 s32 sbtlCallBtlSearchUnitID4(struct SBTLUNIT_WORK *wk, s32 type, s8 flg);
 s32 sbtlNakamaGoalChk(struct SBTLUNIT_WORK *wk);

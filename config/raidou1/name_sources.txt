@@ -13848,6 +13848,13 @@
 0x0041B1B8	sbtlRefSbtl51Data5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl51
 0x0041B1C0	sbtlRefSbtl51Data6	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl51
 0x0041B1C8	sbtlRefSbtl51Data7	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl51
+0x0041B1D0	sbtlGetEventMesData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0041B8B0	sbtlGetEventMesData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0041BB90	sbtlGetEventMesData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0041BD68	sbtlGetEventMesData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0041C148	sbtlEvent_SetCharacterProcData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlEvent_SetCharacterProc
+0x0041C358	sbtlEvent_SetCharacterProcData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlEvent_SetCharacterProc
+0x0041C568	sbtlEvent_SetCharacterProcData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlEvent_SetCharacterProc
 0x0041C780	sbtlRefSbtl29Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl29
 0x0041C7B0	sbtlCallBtlGetMotionVisualData3Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlGetMotionVisualData3
 0x0041C7C0	sbtlCallBtlGetMotionVisualData3Data2Entry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCallBtlGetMotionVisualData3Data2
@@ -18022,8 +18029,6 @@
 0x0045BAB8	sbtlCallBtlSearchUnitID26Table2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID26
 0x0045BAE0	sbtlStrBattleEventSbBtleventBf	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by sbtlBattleEventSb; string "/battle/event/sb_btlevent.bf"
 0x0045BB00	sbtlCallMemset20Table	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallMemset20
-0x0045BB10	sbtlGetEventMesTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetEventMes
-0x0045BB68	EventProcTbl_00Table	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by EventProcTbl_00
 0x0045BBA0	sbtlSetactcounterTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSetactcounter
 0x0045BBB8	sbtlStrBattleSbDvlfootTbl	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlFunc2Data
 0x0045BBD0	sbtlStrBattleSbRndencTbl	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlFunc2Data
@@ -20819,9 +20824,6 @@
 0x0046AAEC	sbtlGetPointDataFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetPointData
 0x0046AAF0	sbtlCallMemset21Float	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallMemset21
 0x0046AAF4	sbtlSbtlCameraprocFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSbtlCameraproc
-0x0046AAF8	sbtlCallBtlGetDevilDataSBtlSub5Float	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlGetDevilDataSBtlSub5
-0x0046AAFC	sbtlCallBtlGetDevilDataSBtlSub5Float2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlGetDevilDataSBtlSub5
-0x0046AB00	sbtlCallBtlGetDevilDataSBtlSub5Float3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlGetDevilDataSBtlSub5
 0x0046AB04	CalcBtlMagicStatusFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by CalcBtlMagicStatus
 0x0046AB08	CalcBadStatusFloat	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by CalcBadStatus
 0x0046AB0C	sbtlCallBtlGetPlayerData4Float	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlGetPlayerData4

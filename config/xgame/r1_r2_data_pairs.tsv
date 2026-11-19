@@ -5256,8 +5256,6 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0045BAA0	0x004C63C0	sbtlCallBtlSearchUnitID26Table	.rodata	0x18	yes	code-ref
 0x0045BAB8	0x004C63D8	sbtlCallBtlSearchUnitID26Table2	.rodata	0x28	yes	code-ref
 0x0045BAE0	0x004C6400	sbtlStrBattleEventSbBtleventBf	.rodata	0x20	yes	code-ref
-0x0045BB10	0x004C6420	sbtlGetEventMesTable	.rodata	0x20	no	code-ref
-0x0045BB68	0x004C6458	EventProcTbl_00Table	.rodata	0x18	yes	code-ref
 0x0045BBA0	0x004C6520	sbtlSetactcounterTable	.rodata	0x18	yes	code-ref
 0x0045BBB8	0x004C6538	sbtlStrBattleSbDvlfootTbl	.rodata	0x18	yes	unique-contents
 0x0045BBD0	0x004C6550	sbtlStrBattleSbRndencTbl	.rodata	0x18	yes	unique-contents

@@ -180,9 +180,14 @@ typedef struct SBTL_WORK {
     sdfMemHandle_t *evtloadHandle;
     fileRequest_t *evtloadFile; /* /battle/event/sb_btlevent.bf */
     u8 *evtloadpData;
-    u8 pad48C[0x494 - 0x48C];
-    s16 field494; /* battle talk message step */
-    u8 pad496[0x518 - 0x496];
+    s32 evtload_evtno;
+    s16 eventno;
+    s16 eventcounter;
+    s16 eventgstat; /* battle talk message step */
+    u8 pad496[2];
+    s32 eventListID;
+    dds3ProcessID_t *eventprocID; /* script process of the running battle event */
+    u8 pad4A0[0x518 - 0x4A0];
     SKLID stock_useskill[10];
     u16 stock_useskill_num;
     u8 pad542[0x5A0 - 0x542];
@@ -231,8 +236,11 @@ typedef struct SBTL_WORK {
     u8 pad804[0x8];
     s32 field80C;
     s32 field810;
-    u8 pad814[0x838 - 0x814];
-    s32 field838; /* unit ID of the battle talk partner */
+    u8 pad814[0x832 - 0x814];
+    s16 field4CE;
+    s16 huumamagnone;
+    u8 pad836[2];
+    s32 huumaTargetID; /* unit ID of the battle talk partner */
     u8 pad83C[0x86E - 0x83C];
     s16 field50A;
     u8 pad870[0x880 - 0x870];
@@ -346,7 +354,7 @@ typedef struct SBTL_WORK {
     s16 eventgstat;
     u8 pad216[2];
     s32 eventListID;
-    u8 pad21C[4];
+    dds3ProcessID_t *eventprocID; /* script process of the running battle event */
     s16 summonIndex[2];
     s32 field224;
     u8 pad228[0x22C - 0x228];
@@ -578,7 +586,8 @@ typedef struct SBTL_DEVIL_DATA {
     s16 aisyoId;
     s8 field0E; /* race, copied to sdatUnitWork_t.raceId */
     u8 field0F;
-    u8 pad10[4];
+    s16 field10; /* base MAG cost of a summon, read by sbtlGetMagCost */
+    u8 pad12[2];
     s16 field14;
     u8 pad16[2];
     u32 stat18;

@@ -4618,7 +4618,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             SDF_VU0_STOREVECTOR(&dir);
             FromEuler(0.0f, sdfAtan2(dir.x, dir.z), 0.0f);
             SDF_VU0_STOREVECTOR(&posid);
-            sbtlSetExPos(&wk->pos.x, &posid.x);
+            sbtlSetExPos(&wk->pos, &posid);
             sbtlSetEncountData4(devil, 100, 0)->unit.now.hp = wk->unit.now.hp;
         }
         sbtlEndAction(wk);

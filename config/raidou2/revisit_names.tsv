@@ -3900,7 +3900,6 @@
 0x002C8198	sbtlLeaf82	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
 0x002C8658	sbtlCallBtlCheckTutorialBattle	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlCheckTutorialBattle
 0x002C8AD8	sbtlLeaf32	func	tier=D	derived-unit	na	unit sbtlEff_00289E50; no named callee, caller or string
-0x002C8B48	sbtlEventProcTbl00Sub	func	tier=D	derived-caller	na	unit sbtlEff_00289E50; called by EventProcTbl_00
 0x002C8B50	sbtlMessageProc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlEvent.sBtlMessageProc, score 9.55 band B
 0x002C9090	sbtlCallBtlSearchUnitID13	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlSearchUnit_ID
 0x002C9388	sbtlCallMemset10	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls memset
@@ -8455,6 +8454,10 @@
 0x00479F68	sbtlRefSbtl51Data5	data	tier=D	derived-sole	na	used by sbtlRefSbtl51
 0x00479F70	sbtlRefSbtl51Data6	data	tier=D	derived-sole	na	used by sbtlRefSbtl51
 0x00479F78	sbtlRefSbtl51Data7	data	tier=D	derived-sole	na	used by sbtlRefSbtl51
+0x00479F80	sbtlGetEventMesData	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0047A660	sbtlGetEventMesData2	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0047A940	sbtlGetEventMesData3	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0047AB20	sbtlGetEventMesData4	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlGetEventMes
 0x0047B538	EventProcData	data	tier=D	derived-sole	na	used by EventProc
 0x0047B568	sbtlDrawShadowData	data	tier=D	derived-sole	na	used by sbtlDrawShadow
 0x0047B56C	sbtlDrawShadowData2	data	tier=D	derived-sole	na	used by sbtlDrawShadow
@@ -13974,8 +13977,6 @@
 0x004C63C0	sbtlCallBtlSearchUnitID26Table	data	tier=D	derived-sole	na	used by sbtlCallBtlSearchUnitID26
 0x004C63D8	sbtlCallBtlSearchUnitID26Table2	data	tier=D	derived-sole	na	used by sbtlCallBtlSearchUnitID26
 0x004C6400	sbtlStrBattleEventSbBtleventBf	data	tier=D	derived-string	na	used by sbtlBattleEventSb; string "/battle/event/sb_btlevent.bf"
-0x004C6420	sbtlGetEventMesTable	data	tier=D	derived-sole	na	used by sbtlGetEventMes
-0x004C6458	EventProcTbl_00Table	data	tier=D	derived-sole	na	used by EventProcTbl_00
 0x004C6520	sbtlSetactcounterTable	data	tier=D	derived-sole	na	used by sbtlSetactcounter
 0x004C6538	sbtlStrBattleSbDvlfootTbl	data	tier=D	derived-table	na	pointed to by sbtlFunc2Data
 0x004C6550	sbtlStrBattleSbRndencTbl	data	tier=D	derived-table	na	pointed to by sbtlFunc2Data
@@ -24805,6 +24806,7 @@
 0x002C8998	sbtlEvent_LoadEventScript	func	tier=B	hd-role	na	HD sBtlEvent.sBtlEvent_LoadEventScript: loads sb_btlevent.bf; replaces sbtlBattleEventSb
 0x002C8A70	sbtlEvent_DeleteEventScript	func	tier=B	hd-role	na	HD sBtlEvent.sBtlEvent_DeleteEventScript: frees evtloadHandle, after sBtlEvent_LoadEventScript; replaces sbtlFreeUIScene
 0x002C8AE0	sbtlGetEventMes	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlEvent.sBtlGetEventMes score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
+0x002C8B48	sbtlEvent_NegoProc	func	tier=B	hd-role	na	HD sBtlEvent.sBtlEvent_NegoProc(adr, no), between sbtlGetEventMes and sbtlMessageProc; R2 EventProcTbl_00 calls it; replaces sbtlEventProcTbl00Sub
 0x002C9B78	sbtlDrawShadow	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlShadow.sBtlDrawShadow score 6.3 flag I: calls3 calls-of-match votes2 st2:call r2-only
 0x002CA218	sbtlGetMotionMoveData	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlVisual.sBtlGetMotionMoveData score 5.0 flag I: calls1 next calls-of-match-uniq votes2 st2:call r1-disagree:0x296fe0
 0x002CA3F0	sbtlGetMotionVisualData	func	tier=B	hd-role	na	HD sBtlVisual.c sBtlGetMotionVisualData(major, id1, id2) returns the MOTIONDATA_WORK; needs the current sbtlGetMotionVisualData renamed first (it is HD sBtlGetVisualData); replaces sbtlSetUnitSub

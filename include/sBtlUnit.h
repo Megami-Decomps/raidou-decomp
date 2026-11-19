@@ -378,7 +378,9 @@ struct SBTLUNIT_WORK {
     u8 pad5C6[0x6];
     s16 field4A0;
     s16 field4A2;
-    u8 pad5D0[0x630 - 0x5D0];
+    u8 pad5D0[0x608 - 0x5D0];
+    void *msgData;
+    u8 pad60C[0x630 - 0x60C];
     s8 light_buff[3];
     s8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;

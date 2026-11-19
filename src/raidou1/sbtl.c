@@ -235,11 +235,62 @@ s32 sbtlCheckItemCount(sdatUnitWork_t *unit) {
     return 1;
 }
 
+/* NON_MATCHING: 35 of 42 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCheckHaveskill_Atk(sdatUnitWork_t *unit) {
+    struct SBTLSKILLP_TBL *tbl;
+    s32 type;
+    s32 i;
+
+    for (i = 0; i < 10; i++) {
+        if (unit->haveskill[i] != 0 && unit->haveskill[i] != SKLID_OFS_PROGRAM) {
+            tbl = sbtlGetSkilltbl(unit->haveskill[i]);
+            type = tbl->type & 0xFFF;
+            if (!(tbl->type & 0xF000)) {
+                if (tbl->attr & 1) {
+                    return 1;
+                }
+                if (type < 3 && type != 0) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Atk);
+#endif
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Magic);
+s32 sbtlCheckHaveskill_Magic(sdatUnitWork_t *unit) {
+    s32 type;
+    s32 i;
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Rec);
+    for (i = 0; i < 10; i++) {
+        if (unit->haveskill[i] != 0 && unit->haveskill[i] != SKLID_OFS_PROGRAM && unit->haveskill[i] != SKLID_ATK) {
+            type = sbtlGetSkilltbl(unit->haveskill[i])->type;
+            if (!(type & 0xF000) && ((type & 0xFFF) == 3 || (type & 0xFFF) == 5)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+s32 sbtlCheckHaveskill_Rec(sdatUnitWork_t *unit) {
+    struct SBTLSKILLP_TBL *tbl;
+    s32 i;
+
+    for (i = 0; i < 10; i++) {
+        if (unit->haveskill[i] != 0 && unit->haveskill[i] != SKLID_OFS_PROGRAM && unit->haveskill[i] != SKLID_ATK) {
+            tbl = sbtlGetSkilltbl(unit->haveskill[i]);
+            if (!(tbl->type & 0xF000) && (tbl->flg & 0x24)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 /* body: matched in raidou @ 9c5e6e0: src/raidou2/sbtl.c:202, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
 s32 sbtlCheckAutoSkill(sdatUnitWork_t *unit, s32 flg) {
@@ -462,7 +513,36 @@ s32 sbtlCheckMoon(u16 moon) {
     return evtBitCheck(tbl[moon]) != 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetMagCost);
+s32 sbtlGetMagCost(sdatUnitWork_t *player, sdatUnitWork_t *unit, s32 devilid) {
+    SBTL_DEVIL_DATA *dv = sbtlGetDevilData_sbtlSub(devilid);
+    f32 cost = dv->field10;
+    s32 ret;
+
+    cost = (cost - player->now.tec * 1.5f) + 7.0f;
+
+    if (unit->chuusei >= 50) {
+        if (unit->chuusei < 71) {
+            cost *= 0.7999999523162842f;
+        } else if (unit->chuusei < 91) {
+            cost *= 0.69999999f;
+        } else if (unit->chuusei < 100) {
+            cost *= 0.59999997f;
+        } else {
+            cost *= 0.5f;
+        }
+    }
+    if (evtBitCheck(2961)) {
+        cost *= 3.0f;
+    }
+    ret = cost;
+    if (ret < 2) {
+        ret = 1;
+    }
+    if (ret >= 999) {
+        return 999;
+    }
+    return ret;
+}
 
 s32 sbtlCheckUseSkill(struct SBTLUNIT_WORK *wk, SKLID sklid) {
     struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(sklid);
@@ -484,5 +564,25 @@ s32 sbtlCheckMagCost_GB(sdatUnitWork_t *player, sdatUnitWork_t *unit, s32 devili
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckMagCost);
+s32 sbtlCheckMagCost(sdatUnitWork_t *unit, s32 devilid, s8 flg) {
+    struct SBTLUNIT_WORK *player;
+    s32 cost;
+
+    if (wk_sbtl->battleMode == 3) {
+        return 1;
+    }
+    player = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    cost = 0;
+    if (wk_sbtl->battleMode != 3) {
+        cost = sbtlGetMagCost(&player->unit, unit, devilid);
+    }
+    if (wk_sbtl->mag < cost) {
+        return 0;
+    }
+    if (!flg) {
+        return 1;
+    }
+    sbtlRefSbtl64(cost);
+    return 1;
+}
 

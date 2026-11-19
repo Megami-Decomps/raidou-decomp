@@ -281,7 +281,20 @@ s32 sbtlCheckItemCount(sdatUnitWork_t *unit) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Atk);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Magic);
+s32 sbtlCheckHaveskill_Magic(sdatUnitWork_t *unit) {
+    s32 type;
+    s32 i;
+
+    for (i = 0; i < 17; i++) {
+        if (unit->haveskill[i] != 0 && unit->haveskill[i] != SKLID_OFS_PROGRAM && unit->haveskill[i] != SKLID_ATK) {
+            type = sbtlGetSkilltbl(unit->haveskill[i])->type;
+            if (!(type & 0xF000) && ((type & 0xFFF) == 3 || (type & 0xFFF) == 5)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckHaveskill_Rec);
 

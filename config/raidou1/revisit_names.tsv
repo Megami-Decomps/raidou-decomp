@@ -7249,6 +7249,13 @@
 0x0041B1B8	sbtlRefSbtl51Data5	data	tier=D	derived-sole	na	used by sbtlRefSbtl51
 0x0041B1C0	sbtlRefSbtl51Data6	data	tier=D	derived-sole	na	used by sbtlRefSbtl51
 0x0041B1C8	sbtlRefSbtl51Data7	data	tier=D	derived-sole	na	used by sbtlRefSbtl51
+0x0041B1D0	sbtlGetEventMesData	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0041B8B0	sbtlGetEventMesData2	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0041BB90	sbtlGetEventMesData3	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0041BD68	sbtlGetEventMesData4	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0041C148	sbtlEvent_SetCharacterProcData	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlEvent_SetCharacterProc
+0x0041C358	sbtlEvent_SetCharacterProcData2	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlEvent_SetCharacterProc
+0x0041C568	sbtlEvent_SetCharacterProcData3	data	tier=D	derived-sole	na	MSG1 blob in the pointer table used by sbtlEvent_SetCharacterProc
 0x0041C780	sbtlRefSbtl29Data	data	tier=D	derived-sole	na	used by sbtlRefSbtl29
 0x0041C7B0	sbtlCallBtlGetMotionVisualData3Data	data	tier=D	derived-sole	na	used by sbtlCallBtlGetMotionVisualData3
 0x0041C7C0	sbtlCallBtlGetMotionVisualData3Data2Entry	data	tier=D	derived-table	na	pointed to by sbtlCallBtlGetMotionVisualData3Data2
@@ -11103,8 +11110,6 @@
 0x0045BAB8	sbtlCallBtlSearchUnitID26Table2	data	tier=D	derived-sole	na	used by sbtlCallBtlSearchUnitID26
 0x0045BAE0	sbtlStrBattleEventSbBtleventBf	data	tier=D	derived-string	na	used by sbtlBattleEventSb; string "/battle/event/sb_btlevent.bf"
 0x0045BB00	sbtlCallMemset20Table	data	tier=D	derived-sole	na	used by sbtlCallMemset20
-0x0045BB10	sbtlGetEventMesTable	data	tier=D	derived-sole	na	used by sbtlGetEventMes
-0x0045BB68	EventProcTbl_00Table	data	tier=D	derived-sole	na	used by EventProcTbl_00
 0x0045BBA0	sbtlSetactcounterTable	data	tier=D	derived-sole	na	used by sbtlSetactcounter
 0x0045BBB8	sbtlStrBattleSbDvlfootTbl	data	tier=D	derived-table	na	pointed to by sbtlFunc2Data
 0x0045BBD0	sbtlStrBattleSbRndencTbl	data	tier=D	derived-table	na	pointed to by sbtlFunc2Data
@@ -13787,9 +13792,6 @@
 0x0046AAEC	sbtlGetPointDataFloat	data	tier=D	derived-sole	na	used by sbtlGetPointData
 0x0046AAF0	sbtlCallMemset21Float	data	tier=D	derived-sole	na	used by sbtlCallMemset21
 0x0046AAF4	sbtlSbtlCameraprocFloat	data	tier=D	derived-sole	na	used by sbtlSbtlCameraproc
-0x0046AAF8	sbtlCallBtlGetDevilDataSBtlSub5Float	data	tier=D	derived-sole	na	used by sbtlCallBtlGetDevilDataSBtlSub5
-0x0046AAFC	sbtlCallBtlGetDevilDataSBtlSub5Float2	data	tier=D	derived-sole	na	used by sbtlCallBtlGetDevilDataSBtlSub5
-0x0046AB00	sbtlCallBtlGetDevilDataSBtlSub5Float3	data	tier=D	derived-sole	na	used by sbtlCallBtlGetDevilDataSBtlSub5
 0x0046AB04	CalcBtlMagicStatusFloat	data	tier=D	derived-sole	na	used by CalcBtlMagicStatus
 0x0046AB08	CalcBadStatusFloat	data	tier=D	derived-sole	na	used by CalcBadStatus
 0x0046AB0C	sbtlCallBtlGetPlayerData4Float	data	tier=D	derived-sole	na	used by sbtlCallBtlGetPlayerData4

@@ -7890,7 +7890,7 @@
 0x002C8A70	sbtlEvent_DeleteEventScript	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlEvent_DeleteEventScript: frees evtloadHandle, after sBtlEvent_LoadEventScript; replaces sbtlFreeUIScene
 0x002C8AD8	sbtlLeaf32	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; no named callee, caller or string
 0x002C8AE0	sbtlGetEventMes	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlEvent.sBtlGetEventMes score 6.0 flag I: calls1 calls-of-match st1:call r1+r2
-0x002C8B48	sbtlEventProcTbl00Sub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; called by EventProcTbl_00
+0x002C8B48	sbtlEvent_NegoProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEvent.sBtlEvent_NegoProc(adr, no), between sbtlGetEventMes and sbtlMessageProc; R2 EventProcTbl_00 calls it; replaces sbtlEventProcTbl00Sub
 0x002C8B50	sbtlMessageProc	hd-inferred	hd: Raidou HD sBtlEvent.sBtlMessageProc, score 9.55 band B
 0x002C8CE0	EventProc	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlEvent.EventProc score 3.7 flag -: calls1 prev calls-of-match votes2 st2:call r1-disagree:0x295cd8
 0x002C8D88	EventProcTbl_00	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlEvent.EventProcTbl_00 score 8.5 flag -: calls2 callers-of-match votes4 st1:call r1+r2
@@ -15613,6 +15613,10 @@
 0x00479F68	sbtlRefSbtl51Data5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl51
 0x00479F70	sbtlRefSbtl51Data6	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl51
 0x00479F78	sbtlRefSbtl51Data7	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl51
+0x00479F80	sbtlGetEventMesData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0047A660	sbtlGetEventMesData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0047A940	sbtlGetEventMesData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlGetEventMes
+0x0047AB20	sbtlGetEventMesData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=MSG1 blob in the pointer table used by sbtlGetEventMes
 0x0047B538	EventProcData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by EventProc
 0x0047B568	sbtlDrawShadowData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlDrawShadow
 0x0047B56C	sbtlDrawShadowData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlDrawShadow
@@ -21419,8 +21423,6 @@
 0x004C63C0	sbtlCallBtlSearchUnitID26Table	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID26
 0x004C63D8	sbtlCallBtlSearchUnitID26Table2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID26
 0x004C6400	sbtlStrBattleEventSbBtleventBf	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by sbtlBattleEventSb; string "/battle/event/sb_btlevent.bf"
-0x004C6420	sbtlGetEventMesTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetEventMes
-0x004C6458	EventProcTbl_00Table	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by EventProcTbl_00
 0x004C6520	sbtlSetactcounterTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSetactcounter
 0x004C6538	sbtlStrBattleSbDvlfootTbl	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlFunc2Data
 0x004C6550	sbtlStrBattleSbRndencTbl	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlFunc2Data

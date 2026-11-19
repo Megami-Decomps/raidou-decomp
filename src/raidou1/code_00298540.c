@@ -366,7 +366,39 @@ s32 sbtlRndEncCalc(s32 id, f32 length)
 INCLUDE_ASM(const s32, "code_00298540", sbtlRndEncCalc);
 #endif
 
+/* NON_MATCHING: 60 of 61 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetLevelAverage(s32 encountno) {
+    SB_ENCOUNT1 *enc;
+    s32 devil;
+    s32 sum;
+    s32 num;
+    s32 i;
+
+    if (encountno == 0) {
+        return 0;
+    }
+    sum = 0;
+    num = 0;
+    for (i = 0; i < 13; i++) {
+        enc = &sbtlData100[encountno].enc1[i];
+        devil = 0;
+        if (enc->type == 1 || enc->type == 6) {
+            devil = enc->devil;
+        }
+        if (devil != 0) {
+            num++;
+            sum += sbtlGetDevilData_sbtlSub(devil)->level;
+        }
+    }
+    if (num == 0) {
+        return 0;
+    }
+    return sum / num + DDS3_GBWK->playerData.unit.level / 4 >= DDS3_GBWK->playerData.unit.level;
+}
+#else
 INCLUDE_ASM(const s32, "code_00298540", sbtlGetLevelAverage);
+#endif
 
 void sbtlResetRndEncCount(void)
 {

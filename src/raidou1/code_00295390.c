@@ -16,6 +16,15 @@
 #include "code_00295390.h"
 #include "motion.h"
 #include "AW_XAtkPad.h"
+#include "fclMisc.h"
+#include "sBtlPlayer.h"
+#include "code_r1_0027CBE8.h"
+#include "scr.h"
+#include "dds3KernelCore.h"
+#include "sbtlActAI.h"
+#include "fld.h"
+#include "sBtlDvltk.h"
+#include "sBtlAI.h"
 
 INCLUDE_ASM(const s32, "code_00295390", sbtlCheckBattleWin);
 
@@ -94,11 +103,16 @@ s32 sbtlEvent_DeleteEventScript(void) {
 
 INCLUDE_ASM(const s32, "code_00295390", sbtlEvent_SetCharacterProc);
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlGetEventMes);
-
 INCLUDE_RODATA(const s32, "code_00295390", sbtlCallMemset20Table);
 
-INCLUDE_RODATA(const s32, "code_00295390", sbtlGetEventMesTable);
+u8 *sbtlGetEventMes(s16 eventno) {
+    u8 *mes[8] = {
+        sbtlGetEventMesData4, sbtlGetEventMesData,  sbtlGetEventMesData2, sbtlGetEventMesData2,
+        sbtlGetEventMesData3, sbtlGetEventMesData3, sbtlGetEventMesData4, sbtlGetEventMesData4,
+    };
+
+    return mes[eventno];
+}
 
 INCLUDE_ASM(const s32, "code_00295390", sbtlEvent_NegoProc);
 
@@ -111,21 +125,156 @@ s32 sbtlRefSbtl29(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_00);
+s32 EventProcTbl_00(void) {
+    s16 no[8] = { 2, 3, 3, 3, 3, 0, 1, 3 };
+
+    if (!sbtlEvent_NegoProc(sbtlGetEventMes(wk_sbtl->eventno), no[wk_sbtl->eventno])) {
+        return 0;
+    }
+    fclEndMessage();
+    wk_sbtl->flg &= ~0x4C0;
+    sbtlActiveAction();
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_01);
 
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_02);
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_03);
+/* NON_MATCHING: 90 of 91 words match.  */
+#ifdef NON_MATCHING
+s32 EventProcTbl_03(void) {
+    struct SBTLUNIT_WORK *wk;
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_04);
+    wk_sbtl->flg2 |= 0x80;
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    sbtlGetDevilData_sbtlSub(wk->unit.devilId);
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        sbtlSetMapFade_H(10, 0x80202020, 1);
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 1:
+        if (!(wk_sbtl->startFlg & 0x10)) {
+            if (sbtlMessageProc(wk->msgData, wk_sbtl->field4CE, wk, 1)) {
+                fclEndMessage();
+                wk_sbtl->eventgstat++;
+            }
+        }
+        break;
+    case 2:
+        sbtlSetMapFade_H(10, 0x80808080, 0);
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 3:
+        if (wk_sbtl->startFlg & 0x10) {
+            break;
+        }
+        wk_sbtl->eventgstat = 0;
+        wk_sbtl->huumaTargetID = -1;
+        RestartBattle();
+        wk_sbtl->flg &= ~0x400;
+        wk_sbtl->flg2 &= ~0x80;
+        sbtlResetNSTOP();
+        return 1;
+    }
+    return 0;
+}
+#else
+INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_03);
+#endif
+
+s32 EventProcTbl_04(void) {
+    struct SBTLUNIT_WORK *wk;
+
+    wk_sbtl->flg2 |= 0x80;
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    sbtlGetDevilData_sbtlSub(wk->unit.devilId);
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        wk_sbtl->field4CE = 38;
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 1:
+        if (sbtlMessageProc(wk->msgData, wk_sbtl->field4CE, wk, 1)) {
+            fclEndMessage();
+            wk_sbtl->eventgstat++;
+        }
+        return 0;
+    case 2:
+        wk_sbtl->eventgstat = 0;
+        wk_sbtl->flg &= ~0x400;
+        wk_sbtl->flg2 &= ~0x80;
+        sbtlResetNSTOP();
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_05);
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlLoadHuuma_MesData);
+s32 sbtlLoadHuuma_MesData(void) {
+    struct SBTLUNIT_WORK *wk;
+    s16 mesno;
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_07);
+    if (sbtlCheckMsgMemType()) {
+        return 1;
+    }
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    mesno = sbtlGetDevilData_sbtlSub(wk->unit.devilId)->huumaMesNo;
+    if (wk->flg2 & 1) {
+        return 1;
+    }
+    switch (wk->msgState) {
+    case 0:
+        wk->msgFile = fileLoad(sbtlData17[sbtlBtlLoadHuumaMesDataSub(mesno)]);
+        wk->msgState++;
+        break;
+    case 1:
+        if (wk->msgData != NULL) {
+            break;
+        }
+        if (!pacFileCheckEnd(wk->msgFile)) {
+            break;
+        }
+        wk->msgHandle = fileGetMemHandle(wk->msgFile);
+        wk->msgData = sdfMemLock(wk->msgHandle);
+        fileHandleFree(wk->msgFile);
+        wk->msgFile = NULL;
+        wk->msgState++;
+        wk->flg2 |= 1;
+        return 1;
+    }
+    return 0;
+}
+
+s32 EventProcTbl_07(void) {
+    struct SBTLUNIT_WORK *wk;
+
+    wk_sbtl->flg2 |= 0x80;
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    sbtlGetDevilData_sbtlSub(wk->unit.devilId);
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        wk_sbtl->field4CE = GetIntervalRand(35, 37);
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 1:
+        if (sbtlMessageProc(wk->msgData, wk_sbtl->field4CE, wk, 1)) {
+            fclEndMessage();
+            wk_sbtl->eventgstat++;
+        }
+        return 0;
+    case 2:
+        wk_sbtl->flg2 &= ~0x80;
+        sbtlResetNSTOP();
+        wk_sbtl->eventgstat = 0;
+        RestartBattle();
+        wk_sbtl->flg &= ~0x400;
+        return 1;
+    }
+    return 0;
+}
 
 /* NON_MATCHING: 17 of 34 words match.  */
 #ifdef NON_MATCHING
@@ -150,13 +299,27 @@ s32 EventProcTbl_06(void) {
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_06);
 #endif
 
-INCLUDE_RODATA(const s32, "code_00295390", EventProcTbl_00Table);
-
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_08);
 
 INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_09);
 
-INCLUDE_ASM(const s32, "code_00295390", EventProcTbl_0A);
+s32 EventProcTbl_0A(void) {
+    sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->eventListID);
+    switch (wk_sbtl->eventgstat) {
+    case 0:
+        wk_sbtl->eventprocID = scrStartScript2(1014, ai_scr, wk_sbtl->evtload_evtno);
+        wk_sbtl->eventgstat++;
+        return 0;
+    case 1:
+        if (dds3SearchProcessPriority(1014)) {
+            return 0;
+        }
+        wk_sbtl->eventgstat = 0;
+        wk_sbtl->flg &= ~0x400;
+        return 1;
+    }
+    return 0;
+}
 
 s32 sbtlCallBtlGetMotionVisualData3(struct SBTLUNIT_WORK *wk) {
     SBTL_MOTION_VISUAL *visual;
@@ -347,7 +510,16 @@ INCLUDE_ASM(const s32, "code_00295390", sbtlCallBtlCheckDamageTarget8);
 
 INCLUDE_ASM(const s32, "code_00295390", sbtlGetPointData);
 
-INCLUDE_ASM(const s32, "code_00295390", sbtlSetExPos);
+void sbtlSetExPos(sdfVector4_t *pos, sdfVector4_t *rot) {
+    sb_enc_ex_pos.x = pos->x;
+    sb_enc_ex_pos.y = pos->y;
+    sb_enc_ex_pos.z = pos->z;
+    sb_enc_ex_pos.w = pos->w;
+    sb_enc_ex_rot.x = rot->x;
+    sb_enc_ex_rot.y = rot->y;
+    sb_enc_ex_rot.z = rot->z;
+    sb_enc_ex_rot.w = rot->w;
+}
 
 /* NON_MATCHING: 106 of 175 words match.  */
 #ifdef NON_MATCHING

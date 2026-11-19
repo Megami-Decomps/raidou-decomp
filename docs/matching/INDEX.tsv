@@ -115,7 +115,9 @@ sbtlCallCheckEnd	code_002929C8	raidou1 0x25C	7 of 151 words differ	docs/matching
 sbtlCallBitCheck	code_00295390	raidou1 0x2BC	69 of 175 words differ	docs/matching/code_00295390.md	3		
 EventProcTbl_06	code_00295390	raidou1 0x88	17 of 34 words differ	docs/matching/code_00295390.md	11		
 sbtlCheckMotionTiming	code_00295390	raidou1 0x8C	5 of 35 words differ	docs/matching/code_00295390.md	19		
+EventProcTbl_03	code_00295390	raidou1 0x16C	1 of 91 words differ	docs/matching/code_00295390.md	25		
 sbtlRndEncCalc	code_00298540	raidou1 0x204	78 of 130 words differ	docs/matching/code_00298540.md	3		
+sbtlGetLevelAverage	code_00298540	raidou1 0xF4	1 of 61 words differ	docs/matching/code_00298540.md	11		
 sbtlEntryItemList	code_002999C0	raidou1 0x128	59 of 71 words differ	docs/matching/code_002999C0.md	3		
 sbtlEntryItemList_Type	code_002999C0	raidou1 0x11C	54 of 68 words differ	docs/matching/code_002999C0.md	11		
 sbtlCallSetVarSBtlSM	code_002A38D8	raidou1 0xF4	4 of 61 words differ	docs/matching/code_002A38D8.md	3		
@@ -387,6 +389,7 @@ slQueryYesNoDraw	mc/slMain	raidou1 0x960	0 of 600 words differ	docs/matching/mc/
 slLoadProc_openFile	mc/slMain	raidou1 0xA4, raidou2 0xA4	1 of 41 words differ	docs/matching/mc/slMain.md	23		
 mnuUpdateMovieDrawShutdownCountdown	movie/mviManager	raidou1 0xA8, raidou2 0xA8	1 of 42 words differ	docs/matching/movie/mviManager.md	3		
 sbtlSetAutoSkill_GBID	sbtl	raidou1 0xC0	16 of 48 words differ	docs/matching/sbtl.md	3		
+sbtlCheckHaveskill_Atk	sbtl	raidou1 0xA8	7 of 42 words differ	docs/matching/sbtl.md	9		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		

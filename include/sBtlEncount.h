@@ -15,10 +15,10 @@ typedef struct datRndEncRitu_t {
 
 typedef struct datRndEncTbl_t {
     s16 mapNo[2]; /* HD has u8 map, u8 floor, u16 flag0; Raidou reads two halfwords (pbCallBtlGetRndEncJoken) */
+    u16 flag0;
     u16 flag1;
     u16 flag0j;
     u16 flag1j;
-    u16 pad0A;
     s32 normalritu;
     datRndEncRitu_t ritu[8];
 } datRndEncTbl_t;
@@ -45,6 +45,9 @@ extern s32 encmax;
 /* The encounter sbtlRndEncCalc picked: its datRndEncRitu_t field04 and type. */
 extern s32 g_rndenc1_map;
 extern s32 g_rndenc1_floor;
+/* Position and rotation sbtlSetExPos stores for an encounter at point 100. */
+extern sdfVector4_t sb_enc_ex_pos;
+extern sdfVector4_t sb_enc_ex_rot;
 
 struct SBTLUNIT_WORK *SetEncountData_Sub_sbtlEncount(s32 devilId, s32 point, s32 arg, s32 mode);
 struct SBTLUNIT_WORK *sbtlAddAWXAtkPadSub(s32 devilId, s32 point, s32 arg);
@@ -61,6 +64,7 @@ s32 sbtlGetLevelAverage(s32 encountId);
 
 struct SBTL_AISYO_TBL *sbtlGetAisyotbl(s32 id);
 s32 sbtlGetPointData(s32 pointID, sdfVector4_t *pos, sdfVector4_t *rot);
+void sbtlSetExPos(sdfVector4_t *pos, sdfVector4_t *rot);
 void sbtlSetactcounter(struct SBTLUNIT_WORK *wk);
 
 #endif
