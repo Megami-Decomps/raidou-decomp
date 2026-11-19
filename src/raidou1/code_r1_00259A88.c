@@ -3843,7 +3843,7 @@ s32 sbtlCheckArea(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos)
     return 0;
 }
 
-s32 sbtlCheckAreaCount(struct SBTLUNIT_WORK *wk, f32 r, const sdfVector4_t *pos)
+s32 sbtlCheckAreaCount(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos, f32 r)
 {
     s32 i;
     s32 count = 0;

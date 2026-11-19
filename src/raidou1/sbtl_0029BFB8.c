@@ -8,6 +8,7 @@
 #include "sdfChip.h"
 #include "sdatUnit.h"
 #include "sBtlEncount.h"
+#include "sBtlWeapon.h"
 #include "sBtlCalc.h"
 #include "sBtlUnit.h"
 #include "sdk_libc.h"
@@ -678,8 +679,8 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_CHUUSEI);
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_ITEMFLG);
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00), proto differs */
-s32 sbtlLeaf97(dds3ProcessID_t *id) {
-    return 0;
+struct SBTLWEAPON_TBL *sbtlLeaf97(void) {
+    return NULL;
 }
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetViceLevel);

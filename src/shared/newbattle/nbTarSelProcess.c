@@ -1,4 +1,5 @@
 #include "common.h"
+#include "dds3KernelCore.h"
 
 /* The menu process's data, known only as far as the menu count. */
 typedef struct itfMenuProcessData_t {
@@ -10,9 +11,6 @@ typedef struct itfMenuProcessData_t {
     u8 menuNum;
 } itfMenuProcessData_t;
 
-extern itfMenuProcessData_t *dds3GetProcessData(void);
-
-/* The callee takes no argument here, unlike the dds3GetProcessData(task) other units declare. */
-u8 itfMenuGetMenuNum(void) {
-    return dds3GetProcessData()->menuNum;
+u8 itfMenuGetMenuNum(dds3ProcessID_t *id) {
+    return ((itfMenuProcessData_t *)dds3GetProcessData(id))->menuNum;
 }

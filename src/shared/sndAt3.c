@@ -175,7 +175,9 @@ extern s32 sndCallSeStopData6;
 extern s32 sndCallSeStopData7;
 extern s16 sndCallSeStopData[];
 extern titleAudioStreamState_t sndCallSeStopWork6;
-extern void sndLeaf2(s16 *destinationSamples, titleAudioStreamState_t *source);
+/* Copies base's samples to destinationSamples, then adds first's and second's, clamped. */
+extern void sndLeaf2(s16 *destinationSamples, titleAudioStreamState_t *first, titleAudioStreamState_t *base,
+                     titleAudioStreamState_t *second);
 
 #define MNU_STREAM_COMMIT_READY 3
 #define MNU_STREAM_COMMIT_COMPLETE 4
@@ -320,7 +322,7 @@ void sndCallSeStop(void) {
         }
     } else if (mnuTitleStreamStatus.control != 2 && voice->control == 1) {
         if (mnuTitleSoundBufferState.control != 2) {
-            sndLeaf2(mix, &mnuTitleSoundBufferState);
+            sndLeaf2(mix, &mnuTitleSoundBufferState, voice, &mnuTitleStreamStatus);
         } else {
             sndMixSampleBuffers(mix, voice, &mnuTitleStreamStatus);
         }
