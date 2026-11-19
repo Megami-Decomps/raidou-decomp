@@ -18166,39 +18166,12 @@
 0x004DF2D0	pbLeaf10Data2Entry6	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
 0x004DF2D4	pbLeaf10Data2Entry14	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry12
 0x004DF2D8	pbLeaf10Data2Entry15	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry12
-0x004DF2E0	pbLeaf10Data2Entry16	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry12
-0x004DF2E8	pbLeaf10Data2Entry17	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry12
 0x004DF2F0	pbLeaf10Data2Entry18	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF2F8	pbLeaf10Data2Entry19	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF300	pbLeaf10Data2Entry20	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF308	pbLeaf10Data2Entry21	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF310	pbLeaf10Data2Entry22	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry12
-0x004DF318	pbLeaf10Data2Entry23	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
 0x004DF31C	pbLeaf10Data2Entry24	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
 0x004DF320	pbLeaf10Data2Entry25	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
 0x004DF328	pbLeaf10Data2Entry26	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF330	pbLeaf10Data2Entry27	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF338	pbLeaf10Data2Entry28	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF340	pbLeaf10Data2Entry29	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF348	pbLeaf10Data2Entry30	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF350	pbLeaf10Data2Entry31	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
-0x004DF358	pbLeaf10Data2Entry32	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry13
 0x004DF360	pbLeaf10DataEntry2	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
 0x004DF364	pbLeaf10DataEntry3	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF368	pbLeaf10DataEntry4	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF370	pbLeaf10DataEntry5	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF378	pbLeaf10DataEntry6	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF380	pbLeaf10DataEntry7	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF388	pbLeaf10DataEntry8	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF390	pbLeaf10DataEntry9	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF398	pbLeaf10DataEntry10	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF3A0	pbLeaf10DataEntry11	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF3A8	pbLeaf10DataEntry12	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF3B0	pbLeaf10DataEntry13	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF3B8	pbLeaf10DataEntry14	data	tier=D	derived-table	na	pointed to by pbLeaf10DataEntry
-0x004DF3C0	pbLeaf10Data2Entry7	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
-0x004DF3C8	pbLeaf10Data2Entry8	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
-0x004DF3D0	pbLeaf10Data2Entry9	data	tier=D	derived-table	na	pointed to by pbLeaf10Data2Entry
 0x004DF3D8	dds3EffectFileNameTable2Entry	data	tier=D	derived-table	na	pointed to by dds3EffectFileNameTable2
 0x004DF3E0	dds3EffectFileNameTable2Entry2	data	tier=D	derived-table	na	pointed to by dds3EffectFileNameTable2
 0x004DF3E8	dds3EffectFileNameTable2Entry3	data	tier=D	derived-table	na	pointed to by dds3EffectFileNameTable2
@@ -19708,7 +19681,6 @@
 0x004E244C	cmpCallGetProcessData12Data	data	tier=D	derived-dominant	na	used by cmpCallGetProcessData12 (2 of 7 refs, 6 functions)
 0x004E2450	cmpData9	data	tier=D	derived-shared	na	used by 2 functions: cmpCallGetProcessData3, sbtlAnalyzeAisyo
 0x004E2454	sbtlData166	data	tier=D	derived-shared	na	used by 3 functions: sbtlCallMessageNumSearch, sbtlCallMessageNumSearch2, sbtlCallMessageNumSearch4
-0x004E2458	sbtlLeaf73DataEntry2	data	tier=D	derived-table	na	pointed to by sbtlLeaf73Data
 0x004E2460	sbtlGetMeireiFontDataEntry	data	tier=D	derived-table	na	pointed to by sbtlGetMeireiFontData
 0x004E2468	sbtlGetMeireiFontDataEntry2	data	tier=D	derived-table	na	pointed to by sbtlGetMeireiFontData
 0x004E2470	sbtlGetMeireiFontDataEntry3	data	tier=D	derived-table	na	pointed to by sbtlGetMeireiFontData
@@ -19983,8 +19955,6 @@
 0x004E2CD0	sbtlFunc26DataEntry3	data	tier=D	derived-table	na	pointed to by sbtlFunc26Data
 0x004E2CD8	sbtlFunc26DataEntry4	data	tier=D	derived-table	na	pointed to by sbtlFunc26Data
 0x004E2CE0	sbtlFunc26DataEntry5	data	tier=D	derived-table	na	pointed to by sbtlFunc26Data
-0x004E2CE8	sbtlLeaf114DataEntry	data	tier=D	derived-table	na	pointed to by sbtlLeaf114Data
-0x004E2CF0	sbtlLeaf114DataEntry2	data	tier=D	derived-table	na	pointed to by sbtlLeaf114Data
 0x004E2CF8	sbtlCallDestroyFontRequestAfter2Data3Entry	data	tier=D	derived-table	na	pointed to by sbtlCallDestroyFontRequestAfter2Data3
 0x004E2D00	sbtlCallDestroyFontRequestAfter2Data3Entry2	data	tier=D	derived-table	na	pointed to by sbtlCallDestroyFontRequestAfter2Data3
 0x004E2D08	sbtlCallDestroyFontRequestAfter2Data3Entry3	data	tier=D	derived-table	na	pointed to by sbtlCallDestroyFontRequestAfter2Data3
@@ -20224,7 +20194,6 @@
 0x004E3458	sbtlData173	data	tier=D	derived-shared	na	used by 4 functions: summonMenuResetMenu, sbtlInitMenuPID, sbtlCallGetProcessData44
 0x004E3460	sbtlData120	data	tier=D	derived-shared	na	used by 4 functions: sbtlCallGetProcessData48, sbtlCallGetProcessData52, sbtlCallGetProcessData58
 0x004E3468	fldMAPMenuData	data	tier=D	derived-sole	na	used by fldMAPMenu
-0x004E3470	sbtlLeaf73DataEntry	data	tier=D	derived-table	na	pointed to by sbtlLeaf73Data
 0x004E3478	sbtlSummonDevilData_SubData	data	tier=D	derived-sole	na	used by sbtlSummonDevilData_Sub
 0x004E348C	DrawTimeData	data	tier=D	derived-dominant	na	used by DrawTime (2 of 3 refs, 2 functions)
 0x004E3490	DrawStatusBarData	data	tier=D	derived-sole	na	used by DrawStatusBar
@@ -23975,6 +23944,33 @@
 0x004DEF8C	effQueuedResourceNameRecord4	data	tier=C	dds-ref	0.59 (n=D_r1_0046BD54)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldCallTexFreeDelayed; effQueuedResourceNameRecord is another symbol
 0x004DEFE0	fscroll_s_x	data	tier=C	hd	0.37 (n=D_r1_0046BDAC)	hd/medium: conf=medium, agree=2, using=3
 0x004DF1C8	mapCtnColor	data	tier=C	hd	0.37 (n=D_r1_0046BF38)	hd/medium: conf=medium, agree=2, using=3
+0x004DF2E0	pbStrA	data	tier=C	derived-derived-role	na	string data "A" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry16
+0x004DF2E8	pbStrFilter	data	tier=C	derived-derived-role	na	string data "FILTER" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry17
+0x004DF2F8	pbStrB	data	tier=C	derived-derived-role	na	string data "B" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry19
+0x004DF300	pbStrG	data	tier=C	derived-derived-role	na	string data "G" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry20
+0x004DF308	pbStrR	data	tier=C	derived-derived-role	na	string data "R" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry21
+0x004DF310	pbStrLight	data	tier=C	derived-derived-role	na	string data "LIGHT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry22
+0x004DF318	pbStrFix	data	tier=C	derived-derived-role	na	string data "FIX" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry23
+0x004DF330	pbStrDirect	data	tier=C	derived-derived-role	na	string data "DIRECT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry27
+0x004DF338	pbStrHeight	data	tier=C	derived-derived-role	na	string data "HEIGHT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry28
+0x004DF340	pbStrTarget	data	tier=C	derived-derived-role	na	string data "TARGET" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry29
+0x004DF348	pbStrPattern	data	tier=C	derived-derived-role	na	string data "PATTERN" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry30
+0x004DF350	pbStrAmbient	data	tier=C	derived-derived-role	na	string data "AMBIENT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry31
+0x004DF358	pbStrDiffuse	data	tier=C	derived-derived-role	na	string data "DIFFUSE" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry32
+0x004DF368	pbStrEnd	data	tier=C	derived-derived-role	na	string data "END" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry4
+0x004DF370	pbStrRw	data	tier=C	derived-derived-role	na	string data "RW  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry5
+0x004DF378	pbStrRz	data	tier=C	derived-derived-role	na	string data "RZ  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry6
+0x004DF380	pbStrRy	data	tier=C	derived-derived-role	na	string data "RY  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry7
+0x004DF388	pbStrRx	data	tier=C	derived-derived-role	na	string data "RX  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry8
+0x004DF390	pbStrZ	data	tier=C	derived-derived-role	na	string data "Z   " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry9
+0x004DF398	pbStrY	data	tier=C	derived-derived-role	na	string data "Y   " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry10
+0x004DF3A0	pbStrX	data	tier=C	derived-derived-role	na	string data "X   " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry11
+0x004DF3A8	pbStrStart	data	tier=C	derived-derived-role	na	string data "START" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry12
+0x004DF3B0	pbStrDivi	data	tier=C	derived-derived-role	na	string data "DIVI" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry13
+0x004DF3B8	pbStrFovy	data	tier=C	derived-derived-role	na	string data "FOVY" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry14
+0x004DF3C0	pbStrCamera2	data	tier=C	derived-derived-role	na	string data "CAMERA" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry7
+0x004DF3C8	pbStrUpDown	data	tier=C	derived-derived-role	na	string data "UP DOWN" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry8
+0x004DF3D0	pbStrWidth	data	tier=C	derived-derived-role	na	string data "WIDTH " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry9
 0x004DF484	frSetFontString_style	data	tier=C	derived-derived-role	na	same variable in R2 (0x4DF484, frFont sdata after ButtonLineHelpAddTextSetData); replaces frSetFontStringData2
 0x004DF4A4	sdfFileSeekWork2	data	tier=C	smt3-ref	0.80 (n=D_r1_0046C1EC)	smt3-ref/close: nfun=2, other=0, sim=0.8, games=2, size=True, sec=False, fn=mjnDeleteScene; sdfFileSeekWork is another symbol
 0x004DF4A8	itfFontTestScriptTask	data	tier=C	dds-ref	0.59 (n=D_r1_0046C1F0)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=mjnCallGetProcessStat
@@ -24039,6 +24035,10 @@
 0x004E22DC	fldTitleMiniTex6	data	tier=C	smt3-ref	0.80 (n=D_004E22DC)	smt3-ref/close: nfun=1, other=0, sim=0.9714, games=1, size=True, sec=True, fn=pbCallEffectDelete; fldTitleMiniTex is another symbol
 0x004E2384	ai_scr	data	tier=C	hd	0.37 (n=D_r1_0046DAD0)	hd/medium: conf=medium, agree=2, using=2
 0x004E2430	g_itemNo	data	tier=C	hd	0.37 (n=D_r1_0046DB08)	hd/medium: conf=medium, agree=2, using=2
+0x004E2458	sbtlStrDummy	data	tier=C	derived-derived-role	na	string data "Dummy" (sbtlSub_0027ED08.sdata.s), raidou2 "ダミー" in the game glyph encoding at the same table slot; named by content in the module string style; replaces sbtlLeaf73DataEntry2
+0x004E2CE8	sbtlStrVisual	data	tier=C	derived-derived-role	na	string data "VISUAL" (sdata_0046DC80.sdata.s); named by content in the module string style; replaces sbtlLeaf114DataEntry
+0x004E2CF0	sbtlStrSousa	data	tier=C	derived-derived-role	na	string data "SOUSA" (sdata_0046DC80.sdata.s); named by content in the module string style; replaces sbtlLeaf114DataEntry2
+0x004E3470	sbtlStrRaidou	data	tier=C	derived-derived-role	na	string data "Raidou" (sbtlSub_0027ED08.sdata.s); named by content in the module string style; replaces sbtlLeaf73DataEntry
 0x004E3540	effQueuedResourceNameRecord7	data	tier=C	dds-ref	0.59 (n=D_004E3540)	dds-ref/loose: nfun=1, other=0, sim=1.0, games=1, size=False, sec=True, fn=fldReleaseTitleMiniTexture; effQueuedResourceNameRecord is another symbol
 0x004E3610	inputpanel_id2	data	tier=C	smt3-ref	0.80 (n=D_004E3610)	smt3-ref/close: nfun=1, other=0, sim=0.8077, games=1, size=True, sec=True, fn=cmpCallGetProcessData2; inputpanel_id is another symbol
 0x004E3770	gMjnRun	data	tier=C	hd	0.37 (n=D_r1_0046E7E0)	hd/medium: conf=medium, agree=2, using=3

@@ -21982,39 +21982,39 @@
 0x0046C018	pbLeaf10Data2Entry6	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry
 0x0046C01C	pbLeaf10Data2Entry14	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry12
 0x0046C020	pbLeaf10Data2Entry15	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry12
-0x0046C028	pbLeaf10Data2Entry16	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry12
-0x0046C030	pbLeaf10Data2Entry17	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry12
+0x0046C028	pbStrA	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "A" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry16
+0x0046C030	pbStrFilter	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "FILTER" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry17
 0x0046C038	pbLeaf10Data2Entry18	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C040	pbLeaf10Data2Entry19	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C048	pbLeaf10Data2Entry20	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C050	pbLeaf10Data2Entry21	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C058	pbLeaf10Data2Entry22	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry12
-0x0046C060	pbLeaf10Data2Entry23	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
+0x0046C040	pbStrB	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "B" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry19
+0x0046C048	pbStrG	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "G" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry20
+0x0046C050	pbStrR	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "R" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry21
+0x0046C058	pbStrLight	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "LIGHT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry22
+0x0046C060	pbStrFix	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "FIX" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry23
 0x0046C064	pbLeaf10Data2Entry24	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
 0x0046C068	pbLeaf10Data2Entry25	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
 0x0046C070	pbLeaf10Data2Entry26	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C078	pbLeaf10Data2Entry27	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C080	pbLeaf10Data2Entry28	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C088	pbLeaf10Data2Entry29	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C090	pbLeaf10Data2Entry30	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C098	pbLeaf10Data2Entry31	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
-0x0046C0A0	pbLeaf10Data2Entry32	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry13
+0x0046C078	pbStrDirect	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "DIRECT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry27
+0x0046C080	pbStrHeight	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "HEIGHT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry28
+0x0046C088	pbStrTarget	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "TARGET" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry29
+0x0046C090	pbStrPattern	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "PATTERN" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry30
+0x0046C098	pbStrAmbient	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "AMBIENT" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry31
+0x0046C0A0	pbStrDiffuse	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "DIFFUSE" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry32
 0x0046C0A8	pbLeaf10DataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
 0x0046C0AC	pbLeaf10DataEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0B0	pbLeaf10DataEntry4	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0B8	pbLeaf10DataEntry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0C0	pbLeaf10DataEntry6	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0C8	pbLeaf10DataEntry7	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0D0	pbLeaf10DataEntry8	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0D8	pbLeaf10DataEntry9	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0E0	pbLeaf10DataEntry10	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0E8	pbLeaf10DataEntry11	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0F0	pbLeaf10DataEntry12	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C0F8	pbLeaf10DataEntry13	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C100	pbLeaf10DataEntry14	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10DataEntry
-0x0046C108	pbLeaf10Data2Entry7	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry
-0x0046C110	pbLeaf10Data2Entry8	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry
-0x0046C118	pbLeaf10Data2Entry9	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by pbLeaf10Data2Entry
+0x0046C0B0	pbStrEnd	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "END" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry4
+0x0046C0B8	pbStrRw	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "RW  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry5
+0x0046C0C0	pbStrRz	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "RZ  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry6
+0x0046C0C8	pbStrRy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "RY  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry7
+0x0046C0D0	pbStrRx	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "RX  " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry8
+0x0046C0D8	pbStrZ	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "Z   " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry9
+0x0046C0E0	pbStrY	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "Y   " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry10
+0x0046C0E8	pbStrX	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "X   " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry11
+0x0046C0F0	pbStrStart	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "START" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry12
+0x0046C0F8	pbStrDivi	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "DIVI" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry13
+0x0046C100	pbStrFovy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "FOVY" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10DataEntry14
+0x0046C108	pbStrCamera2	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "CAMERA" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry7
+0x0046C110	pbStrUpDown	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "UP DOWN" (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry8
+0x0046C118	pbStrWidth	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "WIDTH " (sdata_0046C008.sdata.s); named by content in the module string style; replaces pbLeaf10Data2Entry9
 0x0046C120	dds3EffectFileNameTable2Entry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by dds3EffectFileNameTable2
 0x0046C128	dds3EffectFileNameTable2Entry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by dds3EffectFileNameTable2
 0x0046C130	dds3EffectFileNameTable2Entry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by dds3EffectFileNameTable2
@@ -22985,8 +22985,8 @@
 0x0046DB1C	sbtlData97	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallSetFontColor, frDrawMiscHelpSub
 0x0046DB20	cmpData9	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: cmpCallGetProcessData3, sbtlAnalyzeAisyo
 0x0046DB24	sbtlCallMessageNumSearch4Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallMessageNumSearch4
-0x0046DB28	sbtlLeaf73DataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlLeaf73Data
-0x0046DB30	sbtlLeaf73DataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlLeaf73Data
+0x0046DB28	sbtlStrRaidou	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "Raidou" (sbtlSub_0027ED08.sdata.s); named by content in the module string style; replaces sbtlLeaf73DataEntry
+0x0046DB30	sbtlStrDummy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "Dummy" (sbtlSub_0027ED08.sdata.s), raidou2 "ダミー" in the game glyph encoding at the same table slot; named by content in the module string style; replaces sbtlLeaf73DataEntry2
 0x0046DB38	sbtlGetMeireiFontDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetMeireiFontData
 0x0046DB40	sbtlGetMeireiFontDataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetMeireiFontData
 0x0046DB48	sbtlGetMeireiFontDataEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlGetMeireiFontData
@@ -23110,8 +23110,8 @@
 0x0046DE90	sbtlFunc26DataEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlFunc26Data
 0x0046DE98	sbtlFunc26DataEntry4	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlFunc26Data
 0x0046DEA0	sbtlFunc26DataEntry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlFunc26Data
-0x0046DEA8	sbtlLeaf114DataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlLeaf114Data
-0x0046DEB0	sbtlLeaf114DataEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlLeaf114Data
+0x0046DEA8	sbtlStrVisual	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "VISUAL" (sdata_0046DC80.sdata.s); named by content in the module string style; replaces sbtlLeaf114DataEntry
+0x0046DEB0	sbtlStrSousa	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string data "SOUSA" (sdata_0046DC80.sdata.s); named by content in the module string style; replaces sbtlLeaf114DataEntry2
 0x0046DEB8	sbtlCallDestroyFontRequestAfter2Data3Entry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCallDestroyFontRequestAfter2Data3
 0x0046DEC0	sbtlCallDestroyFontRequestAfter2Data3Entry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCallDestroyFontRequestAfter2Data3
 0x0046DEC8	sbtlCallDestroyFontRequestAfter2Data3Entry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCallDestroyFontRequestAfter2Data3

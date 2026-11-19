@@ -1088,8 +1088,8 @@ char* sblist_modelmenu[10] = {
 char* sblist_mdlmenupanel[4] = {
     sbtlStrMotionChange,
     sbtlStrUnitChange,
-    sbtlLeaf114DataEntry2,
-    sbtlLeaf114DataEntry
+    sbtlStrSousa,
+    sbtlStrVisual
 };
 
 SBDEBUG_FLGWORK sbflg_mdlmenupanel[9] = {

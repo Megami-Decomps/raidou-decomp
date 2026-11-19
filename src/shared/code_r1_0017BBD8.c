@@ -1154,35 +1154,35 @@ INCLUDE_ASM(const s32, "code_r1_0017BBD8", fmOVERWRITEOK);
 /* pb debug menus (DEBUG MENU and its field light, point light and camera pages); see effDebugMenu_t. */
 extern u32 pbLeaf10Data2Entry14;
 extern u32 pbLeaf10Data2Entry15;
-extern char pbLeaf10Data2Entry16[];
-extern char pbLeaf10Data2Entry17[];
+extern char pbStrA[];
+extern char pbStrFilter[];
 extern char pbLeaf10Data2Entry18[];
-extern char pbLeaf10Data2Entry19[];
-extern char pbLeaf10Data2Entry20[];
-extern char pbLeaf10Data2Entry21[];
-extern char pbLeaf10Data2Entry22[];
-extern char pbLeaf10Data2Entry23[];
+extern char pbStrB[];
+extern char pbStrG[];
+extern char pbStrR[];
+extern char pbStrLight[];
+extern char pbStrFix[];
 extern u32 pbLeaf10Data2Entry24;
 extern u32 pbLeaf10Data2Entry25;
 extern u8 pbLeaf10Data2Entry26[];
-extern char pbLeaf10Data2Entry27[];
-extern char pbLeaf10Data2Entry28[];
-extern char pbLeaf10Data2Entry29[];
-extern char pbLeaf10Data2Entry30[];
-extern char pbLeaf10Data2Entry31[];
-extern char pbLeaf10Data2Entry32[];
+extern char pbStrDirect[];
+extern char pbStrHeight[];
+extern char pbStrTarget[];
+extern char pbStrPattern[];
+extern char pbStrAmbient[];
+extern char pbStrDiffuse[];
 extern u32 pbLeaf10Data2Entry3;
 extern f32 pbLeaf10Data2Entry4;
 extern f32 pbLeaf10Data2Entry5;
 extern f32 pbLeaf10Data2Entry6;
-extern char pbLeaf10Data2Entry7[];
-extern char pbLeaf10Data2Entry8[];
-extern char pbLeaf10Data2Entry9[];
-extern char pbLeaf10DataEntry10[];
-extern char pbLeaf10DataEntry11[];
-extern char pbLeaf10DataEntry12[];
-extern char pbLeaf10DataEntry13[];
-extern char pbLeaf10DataEntry14[];
+extern char pbStrCamera2[];
+extern char pbStrUpDown[];
+extern char pbStrWidth[];
+extern char pbStrY[];
+extern char pbStrX[];
+extern char pbStrStart[];
+extern char pbStrDivi[];
+extern char pbStrFovy[];
 extern f32 pbLeaf10DataEntry15;
 extern f32 pbLeaf10DataEntry16;
 extern f32 pbLeaf10DataEntry17;
@@ -1199,12 +1199,12 @@ extern f32 pbLeaf10DataEntry27;
 extern f32 pbLeaf10DataEntry28;
 extern f32 pbLeaf10DataEntry2;
 extern f32 pbLeaf10DataEntry3;
-extern char pbLeaf10DataEntry4[];
-extern char pbLeaf10DataEntry5[];
-extern char pbLeaf10DataEntry6[];
-extern char pbLeaf10DataEntry7[];
-extern char pbLeaf10DataEntry8[];
-extern char pbLeaf10DataEntry9[];
+extern char pbStrEnd[];
+extern char pbStrRw[];
+extern char pbStrRz[];
+extern char pbStrRy[];
+extern char pbStrRx[];
+extern char pbStrZ[];
 extern u32 pbLeaf3Data;
 extern char pbStr1Shot[];
 extern char pbStrAi[];
@@ -1252,19 +1252,19 @@ INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData2)
 
 #ifdef VERSION_RAIDOU1
 effDebugMenuItem_t pbLeaf10Data2Entry12[13] = {
-    { pbLeaf10Data2Entry23, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x20000000 }, 0, 1.0f },
+    { pbStrFix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x20000000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbLeaf10Data2Entry22, EFF_DEBUG_ITEM_BLANK },
-    { pbLeaf10Data2Entry21, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry20, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry19, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrLight, EFF_DEBUG_ITEM_BLANK },
+    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry14 }, { .minValue = 0 }, 0, 1.0f },
     { pbLeaf10Data2Entry18, EFF_DEBUG_ITEM_BLANK },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbLeaf10Data2Entry17, EFF_DEBUG_ITEM_BLANK },
-    { pbLeaf10Data2Entry21, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry20, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry19, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry16, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrFilter, EFF_DEBUG_ITEM_BLANK },
+    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrA, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry15 }, { .minValue = 0 }, 0, 1.0f },
 };
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditorData2);
@@ -1281,24 +1281,24 @@ INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditorData3);
 
 #ifdef VERSION_RAIDOU1
 effDebugMenuItem_t pbLeaf10Data2Entry13[18] = {
-    { pbLeaf10Data2Entry23, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x40000000 }, 0, 1.0f },
+    { pbStrFix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x40000000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbLeaf10Data2Entry32, EFF_DEBUG_ITEM_BLANK },
-    { pbLeaf10Data2Entry21, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry20, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry19, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrDiffuse, EFF_DEBUG_ITEM_BLANK },
+    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry24 }, { .minValue = 0 }, 0, 1.0f },
     { pbLeaf10Data2Entry18, EFF_DEBUG_ITEM_BLANK },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbLeaf10Data2Entry31, EFF_DEBUG_ITEM_BLANK },
-    { pbLeaf10Data2Entry21, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry20, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry19, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrAmbient, EFF_DEBUG_ITEM_BLANK },
+    { pbStrR, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrG, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrB, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &pbLeaf10Data2Entry25 }, { .minValue = 0 }, 0, 1.0f },
     { pbLeaf10Data2Entry18, EFF_DEBUG_ITEM_BLANK },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbLeaf10Data2Entry30, EFF_DEBUG_ITEM_BLANK },
-    { pbLeaf10Data2Entry29, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[0] }, { .minValue = 0 }, 8, 1.0f },
-    { pbLeaf10Data2Entry28, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[1] }, { .minValue = 0 }, 5, 1.0f },
-    { pbLeaf10Data2Entry27, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[2] }, { .minValue = 0 }, 0xA, 1.0f },
+    { pbStrPattern, EFF_DEBUG_ITEM_BLANK },
+    { pbStrTarget, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[0] }, { .minValue = 0 }, 8, 1.0f },
+    { pbStrHeight, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[1] }, { .minValue = 0 }, 5, 1.0f },
+    { pbStrDirect, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &pbLeaf10Data2Entry26[2] }, { .minValue = 0 }, 0xA, 1.0f },
 };
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmData);
@@ -1315,26 +1315,26 @@ INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData);
 
 #ifdef VERSION_RAIDOU1
 effDebugMenuItem_t pbLeaf10DataEntry[20] = {
-    { pbLeaf10DataEntry14, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry2 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10DataEntry13, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry3 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrFovy, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry2 }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrDivi, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry3 }, { .minValue = 0 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbLeaf10DataEntry12, EFF_DEBUG_ITEM_BLANK },
-    { pbLeaf10DataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry15 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry10, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry16 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry17 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry8, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry21 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry7, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry22 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry6, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry23 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry5, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry24 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrStart, EFF_DEBUG_ITEM_BLANK },
+    { pbStrX, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry15 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrY, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry16 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrZ, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry17 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRx, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry21 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRy, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry22 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRz, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry23 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRw, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry24 }, { .minValue = -1 }, -1, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { pbLeaf10DataEntry4, EFF_DEBUG_ITEM_BLANK },
-    { pbLeaf10DataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry18 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry10, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry19 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry20 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry8, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry25 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry7, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry26 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry6, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry27 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10DataEntry5, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry28 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrEnd, EFF_DEBUG_ITEM_BLANK },
+    { pbStrX, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry18 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrY, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry19 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrZ, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10DataEntry20 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRx, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry25 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRy, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry26 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRz, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry27 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrRw, 0x26, { 0 }, { .f32Value = &pbLeaf10DataEntry28 }, { .minValue = -1 }, -1, 1.0f },
 };
 #else
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData2);
@@ -1370,15 +1370,15 @@ effDebugMenuItem_t pbLeaf10Data2Entry[34] = {
     { pbStr1Shot, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x800000 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrEnemyParty, EFF_DEBUG_ITEM_BLANK },
-    { pbLeaf10Data2Entry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry4 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10Data2Entry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry5 }, { .minValue = -1 }, -1, 1.0f },
-    { pbLeaf10Data2Entry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry6 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrWidth, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry4 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrHeight, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry5 }, { .minValue = -1 }, -1, 1.0f },
+    { pbStrUpDown, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &pbLeaf10Data2Entry6 }, { .minValue = -1 }, -1, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrCut23Fix, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x10000000 }, 0, 1.0f },
     { pbStrFldFilter, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &pbLeaf3Data }, { .mask = 0x20000 }, 0, 1.0f },
     { pbStrFieldLight, 0x18, { 0 }, { .child = &pbLeaf10Data2Entry10 }, { .minValue = 0 }, 0, 1.0f },
     { pbStrPointLight, 0x18, { 0 }, { .child = &pbLeaf10Data2Entry11 }, { .minValue = 0 }, 0, 1.0f },
-    { pbLeaf10Data2Entry7, 0x18, { 0 }, { .child = &pbLeaf10Data }, { .minValue = 0 }, 0, 1.0f },
+    { pbStrCamera2, 0x18, { 0 }, { .child = &pbLeaf10Data }, { .minValue = 0 }, 0, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { pbStrEffectEdit, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = pbLeaf3 }, { .color = 0x0 } },
 };

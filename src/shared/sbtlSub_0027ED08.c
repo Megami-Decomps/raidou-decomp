@@ -910,12 +910,12 @@ INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", cmpData9);
 #ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallMessageNumSearch4Data);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlLeaf73DataEntry);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlStrRaidou);
 #else
 INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlData166);
 #endif
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlLeaf73DataEntry2);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlStrDummy);
 
 INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry);
 
