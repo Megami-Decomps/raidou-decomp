@@ -14,7 +14,13 @@ typedef struct datRndEncRitu_t {
 } datRndEncRitu_t;
 
 typedef struct datRndEncTbl_t {
+#ifdef VERSION_RAIDOU2
+    s8 map;
+    s8 floor;
+    u8 pad02[2];
+#else
     s16 mapNo[2]; /* HD has u8 map, u8 floor, u16 flag0; Raidou reads two halfwords (pbCallBtlGetRndEncJoken) */
+#endif
     u16 flag0;
     u16 flag1;
     u16 flag0j;
@@ -46,7 +52,11 @@ typedef struct SB_GENERATOR_WORK {
 
 extern SB_GENERATOR_WORK sb_gen_work[13];
 extern s32 sb_gen_d_flag;
+#ifdef VERSION_RAIDOU2
+extern datRndEncTbl_t (*sbtlData101)[5];
+#else
 extern datRndEncTbl_t (*sbtlData101)[3];
+#endif
 extern s32 pbCallBtlGetRndEncJokenData;
 extern s32 datRndEncBase;
 extern s32 encmax;
@@ -65,6 +75,9 @@ s32 sbtlCallBtlClearGeneratorWork(s32 stageNo);
 s32 sbtlCheckGeneratorGroupID(s32 group);
 s32 sbtlCheckGenerator_D(void);
 s32 sbtlGetRndEncJoken(s32 id);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCallBitCheck3(s32 id);
+#endif
 s32 sbtlGetRndEncMax(s32 id);
 s32 sbtlRndEncCalc(s32 id, f32 length);
 void pbCallBtlGetRndEncJoken(s32 id);

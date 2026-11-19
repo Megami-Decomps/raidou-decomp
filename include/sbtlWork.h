@@ -208,7 +208,7 @@ typedef struct SBTL_WORK {
     u8 pad42C[0x430 - 0x42C];
     s32 field430; /* sbtlMainDraw fades the moon out when set */
     u8 pad434[0x43C - 0x434];
-    u32 flg;
+    s32 flg;
     u32 flg2;
     u32 status3;
     u8 pad448[0x4];
@@ -334,7 +334,13 @@ typedef struct SBTL_WORK {
     s32 scrData[8];
     s32 scrWarp[4];
     s32 EscOdds;
-    u8 padAE8[0xC4C - 0xAE8];
+    s32 support_ListID;
+    s32 supportindex;
+    s32 hitst_sttime;
+    s32 hitst_stcnt;
+    s32 hitst_cnt;
+    s32 hitst_cmpcnt;
+    u8 padB00[0xC4C - 0xB00];
     s32 midiSkillCount;
     u8 pad_C50[0x4];
     u8 field878;
@@ -355,7 +361,13 @@ typedef struct SBTL_WORK {
     s32 fieldE84; /* sbtlDat's index into datData20 */
     u8 padE88[0x4];
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */
-    u8 padE8D[0xEC0 - 0xE8D];
+    u8 padE8D;
+    s8 hitStop;
+    u8 padE8F[0xE98 - 0xE8F];
+    struct mdlObj_t *hMapMdl;
+    struct mdlObj_t *hMapMdl2;
+    u32 mapclr;
+    u8 padEA4[0xEC0 - 0xEA4];
     s32 fieldEC0;
     u8 padEC4[0xEE0 - 0xEC4];
     struct sbtlSummonText_t textPool[100];
@@ -996,6 +1008,12 @@ extern SBTL_WORK2 *sbtlData83;
 extern const char slStrCampEffTesEpl[]; /* "/camp/EFF_TES.EPL" */
 extern u32 effScalyTextureHandle3;
 extern void *fldTitleMiniWork6;
+extern struct effHandle_t *fldTitleMiniTex6;
+extern const sdfVector4_t slCallEffectLoadEPLTable;
+extern s32 sbtlSetRndEncBgData;
+extern s32 sbtlSceneLoadData4;
+extern s32 sbtlSceneLoadData5;
+extern s32 sbtlSceneLoadData6;
 extern dds3ProcessID_t *sbtlCallGetProcessStatData;
 /* HD sBtlBossEvent_t, the boss event process work (0x30 bytes in R2). */
 typedef struct sBtlBossEvent_t {
@@ -1236,5 +1254,18 @@ s32 sbtlInitPlayerData(void);
 extern SBTL_DEVIL_DATA *gohData7;
 s32 sbtlCheckDrink(void);
 u16 GetPercentage(void);
+
+#ifdef VERSION_RAIDOU2
+typedef struct RED_GUAGE {
+    s32 bgn;
+    s32 len;
+    s32 cnt;
+} RED_GUAGE;
+void sbtlInitRedGg(RED_GUAGE *pRedGg, s32 hp);
+s32 sbtlBtlCheckSummonSub(sdatUnitWork_t *unit);
+s16 cmpProcSequenceSub(s32 stage);
+void pbCallEffectDelete(void);
+void slCallEffectLoadEPL(void);
+#endif
 
 #endif

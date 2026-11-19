@@ -424,7 +424,8 @@ struct SBTLUNIT_WORK {
     s32 no_dead_se; /* HD name; skips the dead voice */
     u8 pad744[0x770 - 0x744];
     s32 miusinai;
-    u8 pad774[0x7F4 - 0x774]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
+    s32 kuramasi;
+    u8 pad778[0x7F4 - 0x778]; /* sbtlInitLoadAttackHitData_pData clears 0x7F4 bytes */
 };
 #else
 /* Partial layout: only the fields read so far are named, the rest is padding. */
@@ -624,6 +625,7 @@ void KaihiInit_Sub(struct SBTLUNIT_WORK *wk, s32 mode);
 void sbtlKaihiInit(struct SBTLUNIT_WORK *wk);
 u32 sbtlCheckKajaAnyEx(struct SBTLUNIT_WORK *wk, s32 *count);
 s32 sbtlCheckEnableUseKaja(struct SBTLUNIT_WORK *wk, SKLID skillid);
+s32 sbtlCheckDamageTargetTemp(struct SBTLUNIT_WORK *wk);
 #endif
 
 #endif

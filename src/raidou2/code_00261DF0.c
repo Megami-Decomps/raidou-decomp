@@ -6,6 +6,19 @@
 #include "newdata.h"
 #include "sBtlUnit.h"
 #include "sdfMemory.h"
+#include "effManager.h"
+#include "fclMisc.h"
+#include "evtUnitManager.h"
+#include "sBtlEncount.h"
+#include "sBtlScene.h"
+#include "sBtlCalc.h"
+#include "code_002F5CF0.h"
+#include "sBtlAI.h"
+#include "itf.h"
+#include "EventBit.h"
+#include "code_r1_0010DF68.h"
+#include "code_r1_0027CBE8.h"
+#include "sBtlCmndMenuNew.h"
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlRaidouKatana);
 
@@ -13,9 +26,26 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlSbattle);
 
 INCLUDE_ASM(const s32, "code_00261DF0", Exit_sbtl);
 
-INCLUDE_ASM(const s32, "code_00261DF0", StopBattle);
+s32 StopBattle(void) {
+    if (dds3SearchProcessName(sbtlData85) == NULL) {
+        return 0;
+    }
+    if (wk_sbtl == NULL) {
+        return 0;
+    }
+    wk_sbtl->flg |= 0x40;
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_00261DF0", IsSceanStop);
+s32 IsSceanStop(void) {
+    s32 stop;
+
+    if (wk_sbtl == NULL) {
+        return 0;
+    }
+    stop = (wk_sbtl->flg >> 6) & 1;
+    return wk_sbtl->hitStop || stop;
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlCheckSummon);
 
@@ -49,7 +79,24 @@ SBTL_PLAYER_DATA *sbtlGetPlayerData(void)
     return &DDS3_GBWK->playerData;
 }
 
+/* NON_MATCHING: 2 of 22 words match.  */
+#ifdef NON_MATCHING
+struct sdatUnitWork_t *sbtlRefDDS3GBWK2(u32 index) {
+    sdatUnitWork_t *unit;
+    sdatUnitWork_t *ret = NULL;
+
+    if (index < 20) {
+        unit = &DDS3_GBWK->playerData.stock[index];
+        ret = unit;
+        if (unit->devilId == 0 || !(unit->flag & 1)) {
+            ret = NULL;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlRefDDS3GBWK2);
+#endif
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlSetData_Unit_Stock);
 
@@ -57,7 +104,12 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlGetData_Stock_Unit);
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlLeaf53);
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlBtlCheckSummonSub);
+s32 sbtlBtlCheckSummonSub(sdatUnitWork_t *unit) {
+    if (unit->flag & 1) {
+        return (unit->badStatus & 0x8C000) == 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlCheckStockPara);
 
@@ -73,7 +125,25 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlMapFadeProc_H);
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlRefSbtl);
 
+/* NON_MATCHING: 10 of 16 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSetHitStop(s32 sttime, s32 cmpcnt) {
+    if (wk_sbtl->fieldCA2) {
+        return 1;
+    }
+    if (wk_sbtl->flg2 & 0x400) {
+        return 1;
+    }
+    wk_sbtl->flg2 |= 0x400;
+    wk_sbtl->hitst_sttime = sttime;
+    wk_sbtl->hitst_cmpcnt = cmpcnt;
+    wk_sbtl->hitst_stcnt = 0;
+    wk_sbtl->hitst_cnt = 0;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlSetHitStop);
+#endif
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlProcHitStop);
 
@@ -250,11 +320,25 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlGetNakama);
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlCallBtlSearchUnitID2);
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlGetPChara);
+struct SBTLUNIT_WORK *sbtlGetPChara(void) {
+    return sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+}
 
-INCLUDE_ASM(const s32, "code_00261DF0", GetMeireiNo);
+s32 GetMeireiNo(struct SBTLUNIT_WORK *wk) {
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlInitRedGg);
+    for (i = 0; i < 2; i++) {
+        if (wk->field1A0 == wk_sbtl->stockUnitID[wk_sbtl->summonIndex[i]]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void sbtlInitRedGg(RED_GUAGE *pRedGg, s32 hp) {
+    pRedGg->bgn = hp;
+    pRedGg->cnt = 0;
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlAnalyzeLoyalty);
 
@@ -311,9 +395,29 @@ void slCampEFFTES(void) {
     fldTitleMiniWork6 = sdfDevLoadFileEx(slStrCampEffTesEpl, &effScalyTextureHandle3, 0);
 }
 
-INCLUDE_ASM(const s32, "code_00261DF0", slCallEffectLoadEPL);
+void slCallEffectLoadEPL(void) {
+    sdfVector4_t position;
 
-INCLUDE_ASM(const s32, "code_00261DF0", pbCallEffectDelete);
+    position = slCallEffectLoadEPLTable;
+    fldTitleMiniTex6 = dds3EffectLoadEPL((void *)effScalyTextureHandle3);
+    fclInitDstEff2Sub((struct plistHandle_t *)fldTitleMiniTex6->instance);
+    dds3EffectReset(fldTitleMiniTex6);
+    dds3EffectSetPosition(fldTitleMiniTex6, &position);
+    dds3EffectSetLoop_dds3Effect(fldTitleMiniTex6, 1);
+    dds3EffectSetScale(fldTitleMiniTex6, 1.5f);
+}
+
+void pbCallEffectDelete(void) {
+    if (fldTitleMiniTex6 != NULL) {
+        dds3EffectDelete(fldTitleMiniTex6);
+        fldTitleMiniTex6 = NULL;
+    }
+    if (fldTitleMiniWork6 != NULL) {
+        sdfMemFreeDirect(fldTitleMiniWork6);
+        fldTitleMiniWork6 = NULL;
+        effScalyTextureHandle3 = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", pbCallMemset);
 
@@ -328,11 +432,27 @@ void pbSetGameCamera0(void)
 
 INCLUDE_ASM(const s32, "code_00261DF0", pbLeaf19);
 
-INCLUDE_ASM(const s32, "code_00261DF0", SetMapLight);
+void SetMapLight(dds3Basic_t *unit, u32 lrgb, u32 argb) {
+    evtUnit_t *h;
+
+    if (unit != NULL) {
+        h = evtGetUnitHandle2(unit);
+        evtUnitLightOn(h);
+        evtSetUnitLightAndAmbient(h, 0, lrgb, argb);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00261DF0", Init_sbtlScene);
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlSetRndEncBg);
+void sbtlSetRndEncBg(s32 rnd_enc_id) {
+    datRndEncTbl_t *tbl;
+
+    sbtlSetRndEncBgData = rnd_enc_id;
+    tbl = &sbtlData101[rnd_enc_id][sbtlCallBitCheck3(rnd_enc_id)];
+    sbtlSceneLoadData4 = tbl->map;
+    sbtlSceneLoadData5 = tbl->floor;
+    sbtlSceneLoadData6 = 1;
+}
 
 INCLUDE_RODATA(const s32, "code_00261DF0", slStrCampEffTesEpl);
 

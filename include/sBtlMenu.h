@@ -49,7 +49,7 @@ extern char sbtlData173[]; /* "" */
 dds3ProcessID_t *sbtlInitMenuPID(u8 a_max);
 void sbtlBtlCallEndSub(void);
 void sbtlMenuClose(void);
-void StopBattle(void);
+s32 StopBattle(void);
 void sbtlCallEnd(sBtlMenu_t *wk);
 s32 sbtlFuncStart(void);
 s32 sbtlFuncMeirei(void);

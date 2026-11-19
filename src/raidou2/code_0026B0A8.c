@@ -14,30 +14,108 @@
 #include "mdlManager.h"
 #include "AW_XAtkPad.h"
 #include "sBtlCalc.h"
+#include "sBtlScene.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "EventBit.h"
+#include "sBtlCmndMenuNew.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlModelFieldLb);
+void sbtlModelFieldLb(void) {
+    sbtlCallMemGetPtrData2 = pacLoad("/model/field_lb/FIELD02D.LB");
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlModelFieldLb2);
+void sbtlModelFieldLb2(void) {
+    sbtlCallMemGetPtr2Data2 = pacLoad("/model/field_lb/FIELD09F.LB");
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallMemGetPtr);
+void sbtlCallMemGetPtr(void) {
+    sdfPacDecodeResrc_t *resrc;
+    s32 n = 0;
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallMemGetPtr2);
+    for (resrc = sbtlCallMemGetPtrData2->pac.resrcHead; resrc != NULL; resrc = resrc->next, n++) {
+        if (n == 0) {
+            sbtlCallMemGetPtrData = resrc->resrc;
+            sbtlData157 = sdfMemGetPtr(sbtlCallMemGetPtrData);
+            sbtlData159 = sdfMemGetSize(resrc->resrc);
+        } else {
+            sdfMemFreeDirect(resrc->resrc);
+        }
+    }
+    pacFileHandleFree_(sbtlCallMemGetPtrData2);
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLoadMapFromMemorySub);
+void sbtlCallMemGetPtr2(void) {
+    sdfPacDecodeResrc_t *resrc;
+    s32 n = 0;
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLoadMapFromMemorySub2);
+    for (resrc = sbtlCallMemGetPtr2Data2->pac.resrcHead; resrc != NULL; resrc = resrc->next, n++) {
+        if (n == 0) {
+            sbtlCallMemGetPtr2Data = resrc->resrc;
+            sbtlData158 = sdfMemGetPtr(sbtlCallMemGetPtr2Data);
+            sbtlData160 = sdfMemGetSize(resrc->resrc);
+        } else {
+            sdfMemFreeDirect(resrc->resrc);
+        }
+    }
+    pacFileHandleFree_(sbtlCallMemGetPtr2Data2);
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallSync);
+void sbtlLoadMapFromMemorySub(void) {
+    mdlPackDecode(2, 0x2D, 0x101, sbtlData157, sbtlData159);
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlModelFieldLb3);
+void sbtlLoadMapFromMemorySub2(void) {
+    mdlPackDecode(2, 0x9F, 0x101, sbtlData158, sbtlData160);
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallMemGetPtr3);
+void sbtlCallSync(void) {
+    sbtlModelFieldLb();
+    pacSync(sbtlCallMemGetPtrData2);
+    sbtlCallMemGetPtr();
+    sbtlModelFieldLb2();
+    pacSync(sbtlCallMemGetPtr2Data2);
+    sbtlCallMemGetPtr2();
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallPackDecode);
+void sbtlModelFieldLb3(void) {
+    char name[32];
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallSync2);
+    sprintf(name, "/model/field_lb/FIELD%03X.LB", LoadMap_FromMemoryData3);
+    sbtlCallMemGetPtr3Data = pacLoad(name);
+}
+
+void sbtlCallMemGetPtr3(void) {
+    sdfPacDecodeResrc_t *resrc;
+    s32 n = 0;
+
+    for (resrc = sbtlCallMemGetPtr3Data->pac.resrcHead; resrc != NULL; resrc = resrc->next, n++) {
+        if (n == 0) {
+            sbtlCallPackDecodeData = resrc->resrc;
+            sbtlCallPackDecodeData2 = sdfMemGetPtr(sbtlCallPackDecodeData);
+            sbtlCallPackDecodeData3 = sdfMemGetSize(resrc->resrc);
+        } else {
+            sdfMemFreeDirect(resrc->resrc);
+        }
+    }
+    pacFileHandleFree_(sbtlCallMemGetPtr3Data);
+}
+
+void sbtlCallPackDecode(void) {
+    mdlPackDecode(2, LoadMap_FromMemoryData3, 0x101, sbtlCallPackDecodeData2, sbtlCallPackDecodeData3);
+    sdfMemFreeDirect(sbtlCallPackDecodeData);
+    sbtlCallPackDecodeData = NULL;
+    sbtlCallPackDecodeData2 = NULL;
+    sbtlCallPackDecodeData3 = 0;
+}
+
+void sbtlCallSync2(void) {
+    sbtlModelFieldLb3();
+    pacSync(sbtlCallMemGetPtr3Data);
+    sbtlCallMemGetPtr3();
+    sbtlCallPackDecode();
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", LoadMap_FromMemory);
 
@@ -59,15 +137,43 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLeaf56);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", cmpLeaf2);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", cmpProcSequenceSub);
+s16 cmpProcSequenceSub(s32 stage) {
+    return sbtlData100[stage].bgmId;
+}
 
-INCLUDE_ASM(const s32, "code_0026B0A8", cmpSetColor);
+void cmpSetColor(s32 rgba) {
+    wk_sbtl->mapclr = rgba;
+    mdlSetColor(wk_sbtl->hMapMdl, rgba);
+    if (wk_sbtl->hMapMdl2 != NULL) {
+        mdlSetColor(wk_sbtl->hMapMdl2, wk_sbtl->mapclr);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", cmpRefSbtl);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", cmpRefSbtl2);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", cmpLeaf3);
+void cmpLeaf3(struct SBTLUNIT_WORK *wk) {
+    wk->se.field10 = 0;
+    wk->se.at3Handle = NULL;
+    wk->se.flag = 0;
+    wk->se.pBossAt3Data = NULL;
+    wk->se.bossAt3gstat = 0;
+    wk->se.loadHandle = NULL;
+    wk->se.loadFile = NULL;
+    wk->se.loadData = NULL;
+    wk->se.loadgstat = 0;
+    wk->se.mot_status = 0;
+    wk->se.mot_SMGID = 0;
+    wk->se.mot_SMGID2 = 0;
+    wk->se.mot_SMGID3 = 0;
+    wk->se.mot_nowcnt = 0;
+    wk->se.mot_startcnt = 0;
+    wk->se.mot_seid = 0;
+    wk->se.mot_vol = 0;
+    wk->se.mot_step = 0;
+    sbtlSummonDvTaskSub(&wk->se.footwk);
+}
 
 void sbtlSummonDvTaskSub(SBTLSOUND_FOOTWORK *fwk)
 {
@@ -371,7 +477,13 @@ INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSoundatBossAt);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlBtlModelDataLoadSBtlUnitSub);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlPlayDeadVoice);
+void sbtlPlayDeadVoice(struct SBTLUNIT_WORK *wk) {
+    if (wk->se.bossAt3Size != 0) {
+        nbEffectShutdown();
+        mnuInstallTitleSoundBufferFromData(wk->se.pBossAt3Data, wk->se.bossAt3Size, 2);
+        sndCallWaitSema();
+    }
+}
 
 void sbtlRefSbtl7(void)
 {
@@ -393,7 +505,21 @@ void sbtlCallEffectShutdown3(s32 mode)
     p2sdStopAllSe();
 }
 
+/* NON_MATCHING: 22 of 23 words match.  */
+#ifdef NON_MATCHING
+void sbtlCallGetSkillSE(SKLID skillid, s32 type) {
+    s32 se;
+
+    if ((u32)(type - 1) < 2 || type == 5) {
+        se = GetSkillSE(skillid, type);
+        if (se > 0x10035) {
+            p2sdStopSe(se);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallGetSkillSE);
+#endif
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlFunc10);
 
@@ -945,9 +1071,28 @@ struct SBTLUNIT_LISTWORK *sbtlCreateTargetList_PForward(u8 side)
     return lwk;
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlUpdateMiusinai);
+void sbtlUpdateMiusinai(struct SBTLUNIT_WORK *wk) {
+    struct SBTLUNIT_WORK *target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCheckDamageTargetTemp);
+    if (target != NULL) {
+        if (sbtlCheckDamageTargetTemp(target)) {
+            wk->miusinai = 0;
+        } else {
+            wk->miusinai = 1;
+        }
+    } else {
+        wk->miusinai = 0;
+    }
+}
+
+s32 sbtlCheckDamageTargetTemp(struct SBTLUNIT_WORK *wk) {
+    s32 ret = 0;
+
+    if (wk != NULL) {
+        ret = wk->kuramasi == 0;
+    }
+    return ret;
+}
 
 s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk)
 {

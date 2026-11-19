@@ -322,7 +322,7 @@ void datSetKillDevil(struct SBTLUNIT_WORK *wk);
 void sbtlSetAddMag_Setsuma(struct SBTLUNIT_WORK *wk, s32 mag);
 u16 sbtlGetDevilHuumaItem(s32 devilId);
 void sbtlRefDDS3GBWK6(s32 devilId, s32 num);
-s32 sbtlGetPChara(void);
+struct SBTLUNIT_WORK *sbtlGetPChara(void);
 s32 sbtlIsDeadBgn(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheck(struct SBTLUNIT_WORK *wk, s32 type, s32 flg);
 s32 sbtlCheckDeadEventMag(struct SBTLUNIT_WORK *wk);

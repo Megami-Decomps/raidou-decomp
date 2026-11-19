@@ -96,7 +96,10 @@ sbtlRefSbtl31	code_0024DF70	raidou1 0x94	34 of 35 words differ	docs/matching/cod
 sbtlRefSbtl3	code_0024DF70	raidou1 0x2C	6 of 11 words differ	docs/matching/code_0024DF70.md	11		
 sbtlRefSbtl2	code_0024DF70	raidou1 0x88	29 of 33 words differ	docs/matching/code_0024DF70.md	17		
 sbtlCallBtlSearchPacData	code_00261DF0	raidou2 0x1F8	2 of 126 words differ	docs/matching/code_00261DF0.md	3		
+sbtlRefDDS3GBWK2	code_00261DF0	raidou2 0x58	20 of 20 words differ	docs/matching/code_00261DF0.md	9		
+sbtlSetHitStop	code_00261DF0	raidou2 0x40	6 of 16 words differ	docs/matching/code_00261DF0.md	15		
 sbtlLoadSkillSE	code_0026B0A8	raidou2 0x114	8 of 69 words differ	docs/matching/code_0026B0A8.md	3		
+sbtlCallGetSkillSE	code_0026B0A8	raidou2 0x5C	1 of 23 words differ	docs/matching/code_0026B0A8.md	9		
 sbtlCreateEnemyList	code_002743E0	raidou2 0xB8	1 of 46 words differ	docs/matching/code_002743E0.md	3		
 sbtlCreateSideList	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	11		
 sbtlCreateSideList_sbtlUnit	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	19		
