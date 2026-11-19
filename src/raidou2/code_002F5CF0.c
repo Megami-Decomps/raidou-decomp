@@ -120,7 +120,7 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlOpti);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSetDebugMenuProc);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlFunc21);
+INCLUDE_ASM(const s32, "code_002F5CF0", sbtlEffEditorProc);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlMainProcSub);
 
@@ -218,9 +218,9 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallGrAllocPacketBuff7);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallGrAllocPacketBuff6);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlLeaf106);
+INCLUDE_ASM(const s32, "code_002F5CF0", sbtlAIProc);
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlLeaf116);
+INCLUDE_ASM(const s32, "code_002F5CF0", sbtlAIDraw);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlBtlDebugProcSub);
 

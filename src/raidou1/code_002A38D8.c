@@ -1361,7 +1361,7 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf109);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallSprintf6);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlFunc26);
+INCLUDE_ASM(const s32, "code_002A38D8", MainDraw);
 
 INCLUDE_ASM(const s32, "code_002A38D8", ModelSelectDraw);
 
@@ -1373,7 +1373,7 @@ INCLUDE_RODATA(const s32, "code_002A38D8", sbtlDebug_DrawTCursorTable);
 
 INCLUDE_RODATA(const s32, "code_002A38D8", sbtlParaDrawTable);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlFRAME);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlMotionChngDraw);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlUnitChngDraw);
 
@@ -1385,7 +1385,7 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallDestroyFontRequestAfter2);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlFunc25);
 
-s32 sbtlLeaf102(dds3ProcessID_t *id)
+s32 sbtlVisualHitDraw(dds3ProcessID_t *id)
 {
     return 1;
 }
@@ -1406,7 +1406,7 @@ INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrFrame4141);
 
 INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrFrame24141);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallBtlDebugDrawNormalListCol);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlMdlMoveEditorDraw);
 
 INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrBattleMdlhit);
 
@@ -1418,13 +1418,13 @@ INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrHelperloc);
 
 INCLUDE_RODATA(const s32, "code_002A38D8", sbtlBattleMdlhitTable);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlBattleMdlhit);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlMdlHitEditorDraw);
 
 INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrBattleEffhit);
 
 INCLUDE_RODATA(const s32, "code_002A38D8", sbtlBattleEffhitTable);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlBattleEffhit);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlEffHitEditorDraw);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlEditDraw_MOVE);
 
@@ -1769,20 +1769,20 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlDrawFloat_Num);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDrawInt_Num);
 
-s32 sbtlLeaf100(dds3ProcessID_t *id)
+s32 sbtlSousaDraw(dds3ProcessID_t *id)
 {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlSkillChangeProc);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlSkillChangeDraw);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlFunc15);
+INCLUDE_ASM(const s32, "code_002A38D8", ModelMenuDraw);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlRefSbtl67);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlOptionDraw);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlRefSbtl56);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlSetDebugMenuDraw);
 
-s32 sbtlLeaf119(dds3ProcessID_t *id)
+s32 sbtlEffEditorDraw(dds3ProcessID_t *id)
 {
     return 1;
 }
@@ -1799,9 +1799,9 @@ INCLUDE_ASM(const s32, "code_002A38D8", MainProc);
 
 INCLUDE_ASM(const s32, "code_002A38D8", ModelSelectProc);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallBtlDebugSetStatusflg);
+INCLUDE_ASM(const s32, "code_002A38D8", ModelMenuProc);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGetUnit);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlSkillChangeProc);
 
 INCLUDE_ASM(const s32, "code_002A38D8", MotionChngProc);
 
@@ -1819,15 +1819,15 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlUnitChngProc);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_SetVisualData);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf105);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlVisualHitProc);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlVisualProc);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf98);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlMdlMoveEditorProc);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf122);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlMdlHitEditorProc);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlLeaf104);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlEffHitEditorProc);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlNEFMODE_Func_Open);
 
@@ -2417,9 +2417,9 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlSetSword);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlOpti);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallBtlSearchUnitID31);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlSetDebugMenuProc);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlFunc21);
+INCLUDE_ASM(const s32, "code_002A38D8", sbtlEffEditorProc);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlMainProcSub);
 
@@ -2635,12 +2635,12 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGrAllocPacketBuff7);
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGrAllocPacketBuff6);
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 sbtlLeaf106(dds3ProcessID_t *id) {
+s32 sbtlAIProc(dds3ProcessID_t *id) {
     return 0;
 }
 
 /* body: matched in raidou @ 61f09dc: src/raidou1/sbtl.c:86, match, same function 1.00 (words 2/2, calls 1.00, shape 1.00) */
-s32 sbtlLeaf116(dds3ProcessID_t *id) {
+s32 sbtlAIDraw(dds3ProcessID_t *id) {
     return 0;
 }
 

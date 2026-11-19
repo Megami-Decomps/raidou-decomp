@@ -7683,24 +7683,24 @@
 0x002A6ED0	sbtlDebug_DrawTCursor	hd	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD sbattle.sBtlDebug_DrawTCursor score 6.3 flag -: calls1 calls-of-match st1:call r1+r2
 0x002A6FA8	sbtlLeaf109	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002A7030	sbtlCallSprintf6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sprintf
-0x002A70D8	sbtlFunc26	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002A70D8	MainDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.MainDraw: sbdebug_drawmenu[SBDEBUG_MODE_MAIN]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFunc26
 0x002A7180	ModelSelectDraw	hd	hd: Raidou HD sbattle.ModelSelectDraw, score 7.25 band B
 0x002A7200	sbtlParaDraw	hd-inferred	hd: Raidou HD sbattle.sbattleParaDraw, score 7.95 band B
 0x002A7558	sbtlBSTDraw	hd-inferred	hd: Raidou HD sbattle.sbattleBSTDraw, score 7.55 band B
-0x002A7670	sbtlFRAME	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtl; string 'FRAME::%f\n'
+0x002A7670	sbtlMotionChngDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleMotionChngDraw: sbdebug_drawmenu[SBDEBUG_MODE_MOTIONCHNG]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFRAME
 0x002A7820	sbtlUnitChngDraw	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.sbattleUnitChngDraw score 7.5 flag I: calls1 next callers-of-match st1:call r1+r2
 0x002A7848	sbtlDrawUnitChangeList	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sbattle.sbattleDrawUnitChangeList score 4.1 flag I: calls1 callers-of-match st1:call r1+r2
 0x002A7A40	sbtlLeaf114	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002A7A58	sbtlCallDestroyFontRequestAfter2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls frDestroyFontRequestAfter
 0x002A7BC0	sbtlFunc25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002A7C40	sbtlLeaf102	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002A7C40	sbtlVisualHitDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleVisualHitDraw: sbdebug_drawmenu[SBDEBUG_MODE_ATARI]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf102
 0x002A7C48	sbtlVisualDraw	hd-inferred	hd: Raidou HD sbattle.sbattleVisualDraw, score 6.65 band C, hd-consensus: calls3 callee-index votes2 st1:cidx r1-only; 10/10 fold runs agree, fold scores 8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7
 0x002A8588	sbtlCallChipAllocZeroDirect2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sdfChipAllocZeroDirect
 0x002A85A8	sbtlCallMemAllocDirect9	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sdfMemAllocDirect
 0x002A8670	sbtlDeleteFileList	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sbattle.sbattleDeleteFileList score 4.4 flag I: calls2 calls-of-match votes2 st1:call r2-disagree:0x2efc78
-0x002A8710	sbtlCallBtlDebugDrawNormalListCol	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlDebug_DrawNormalList_Col
-0x002A8948	sbtlBattleMdlhit	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtl; string 'battle/mdlhit/'
-0x002A8F20	sbtlBattleEffhit	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtl; string 'battle/effhit/'
+0x002A8710	sbtlMdlMoveEditorDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleMdlMoveEditorDraw: sbdebug_drawmenu[SBDEBUG_MODE_MODELMOVE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlCallBtlDebugDrawNormalListCol
+0x002A8948	sbtlMdlHitEditorDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleMdlHitEditorDraw: sbdebug_drawmenu[SBDEBUG_MODE_MODELHITE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlBattleMdlhit
+0x002A8F20	sbtlEffHitEditorDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleEffHitEditorDraw: sbdebug_drawmenu[SBDEBUG_MODE_EFFHITE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlBattleEffhit
 0x002A9650	sbtlEditDraw_MOVE	hd-inferred	hd: Raidou HD sbattle.sbattleEditDraw_MOVE, score 8.65 band B
 0x002A9760	sbtlEditDraw	hd-inferred	hd: Raidou HD sbattle.sbattleEditDraw, score 6.3 band C, hd-consensus: calls2 str1 callers-of-match votes2 st1:call r2-disagree:0x2e91c0; 10/10 fold runs agree, fold scores 10.5,11.3,10.3,10.5,10.5,10.5,11.3,10.5,6.3,10.5
 0x002A9900	sbtlDebug_HitTypeMoveDraw	hd	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sbattle.sBtlDebug_HitTypeMoveDraw score 6.3 flag -: calls1 calls-of-match st1:call r1+r2
@@ -7740,31 +7740,31 @@
 0x002AF680	sbtlDrawString	hd-inferred	hd: Raidou HD sbattle.sbattleDrawString, score 10.0 band A
 0x002AF710	sbtlDrawFloat_Num	hd-inferred	hd: Raidou HD sbattle.sbattleDrawFloat_Num, score 7.3 band B
 0x002AF7B8	sbtlDrawInt_Num	hd-inferred	hd: Raidou HD sbattle.sbattleDrawInt_Num, score 9.0 band B
-0x002AF850	sbtlLeaf100	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002AF858	sbtlSkillChangeProc	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sbattle.sbattleSkillChangeProc score 2.1 flag I: calls1 callers-of-match st1:call r1-only
-0x002AF9E8	sbtlFunc15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002AFAD0	sbtlRefSbtl67	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
-0x002AFB90	sbtlRefSbtl56	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
-0x002AFC90	sbtlLeaf119	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002AF850	sbtlSousaDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleSousaDraw: sbdebug_drawmenu[SBDEBUG_MODE_SOUSA]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf100
+0x002AF858	sbtlSkillChangeDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleSkillChangeDraw: sbdebug_drawmenu[SBDEBUG_MODE_SKILLCHANGE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlSkillChangeProc
+0x002AF9E8	ModelMenuDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.ModelMenuDraw: sbdebug_drawmenu[SBDEBUG_MODE_MODELMENU]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFunc15
+0x002AFAD0	sbtlOptionDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleOptionDraw: sbdebug_drawmenu[SBDEBUG_MODE_OPTION]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlRefSbtl67
+0x002AFB90	sbtlSetDebugMenuDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleSetDebugMenuDraw: sbdebug_drawmenu[SBDEBUG_MODE_SETMENU]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlRefSbtl56
+0x002AFC90	sbtlEffEditorDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleEffEditorDraw: sbdebug_drawmenu[SBDEBUG_MODE_EFFEDITOR]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf119
 0x002AFC98	sbtlGetUnit	hd-inferred	hd: Raidou HD sbattle.sbattleGetUnit, score 7.8 band B
 0x002AFD18	sbtlCallSbtlDebugCheckFreeCameraFlg	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlSbtlDebug_CheckFreeCameraFlg
 0x002B0420	SceneDel_Calc	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD mapEnemy.SceneDel_Calc score 4.3 flag -: calls1 callers-of-match st1:call r1+r2
 0x002B0460	sbtlDebug_Proc	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sbattle.sBtlDebug_Proc score 1.5 flag -: calls1 callers-of-match-uniq st1:call r2-disagree:0x2ed038
 0x002B04A8	MainProc	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sbattle.MainProc score 5.5 flag -: calls1 callers-of-match-uniq st1:call r1+r2
 0x002B04E0	ModelSelectProc	hd	hd: Raidou HD sbattle.ModelSelectProc, score 7.95 band B, hd-ab: calls2 callers-of-match votes3 st1:call r1+r2
-0x002B0690	sbtlCallBtlDebugSetStatusflg	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlDebug_SetStatusflg
-0x002B0780	sbtlCallGetUnit	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetUnit
+0x002B0690	ModelMenuProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.ModelMenuProc: sbdebug_procmenu[SBDEBUG_MODE_MODELMENU]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlCallBtlDebugSetStatusflg
+0x002B0780	sbtlSkillChangeProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleSkillChangeProc: sbdebug_procmenu[SBDEBUG_MODE_SKILLCHANGE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlCallGetUnit
 0x002B0890	MotionChngProc	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.MotionChngProc score 8.0 flag -: calls2 callers-of-match votes3 st1:call r1+r2
 0x002B09A8	sbtlParaProc	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.sbattleParaProc score 9.2 flag I: calls4 gap25/94 votes5 st1:gap r1+r2
 0x002B0C08	sbtlSetUnitPara	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.sbattleSetUnitPara score 8.5 flag I: calls1 prev calls-of-match votes2 st1:call r1+r2
 0x002B1118	sbtlBSTProc	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.sbattleBSTProc score 8.8 flag I: calls4 callers-of-match votes4 st1:call r1+r2
 0x002B1238	sbtlUnitChngProc	hd-inferred	hd: Raidou HD sbattle.sbattleUnitChngProc, score 7.65 band B
 0x002B14C0	sbtlDebug_SetVisualData	hd	hd: Raidou HD sbattle.sBtlDebug_SetVisualData, score 8.8 band B
-0x002B16B0	sbtlLeaf105	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002B16B0	sbtlVisualHitProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleVisualHitProc: sbdebug_procmenu[SBDEBUG_MODE_ATARI], the pair between Visual and SkillChange in HD; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf105
 0x002B1738	sbtlVisualProc	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sbattle.sbattleVisualProc score 10.7 flag I: calls3 callers-of-match votes3 st1:call r1+r2
-0x002B1CB8	sbtlLeaf98	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002B1CF8	sbtlLeaf122	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002B1D38	sbtlLeaf104	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002B1CB8	sbtlMdlMoveEditorProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleMdlMoveEditorProc: sbdebug_procmenu[SBDEBUG_MODE_MODELMOVE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf98
+0x002B1CF8	sbtlMdlHitEditorProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleMdlHitEditorProc: sbdebug_procmenu[SBDEBUG_MODE_MODELHITE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf122
+0x002B1D38	sbtlEffHitEditorProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleEffHitEditorProc: sbdebug_procmenu[SBDEBUG_MODE_EFFHITE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf104
 0x002B1D78	sbtlNEFMODE_Func_Open	hd-inferred	hd: Raidou HD sbattle.sbattleNEFMODE_Func_Open, score 9.2 band B
 0x002B1FD8	sbtlMDLMODE_Func_Open	hd-inferred	hd: Raidou HD sbattle.sbattleMDLMODE_Func_Open, score 10.6 band A
 0x002B2248	sbtlDebug_MOVEMODE_Func_Open	hd	hd: Raidou HD sbattle.sBtlDebug_MOVEMODE_Func_Open, score 11.2 band A
@@ -7828,8 +7828,8 @@
 0x002BB120	sbtlDebug_UnitPad	hd	hd: Raidou HD sbattle.sBtlDebug_UnitPad, score 10.4 band A
 0x002BB6C8	sbtlSetSword	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sbattle.sbattleSetSword score 2.6 flag I: calls1 next~ calls-of-match st2:call r2-only
 0x002BB728	sbtlOpti	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtl; string 'opti\n'
-0x002BB8B8	sbtlCallBtlSearchUnitID31	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlSearchUnit_ID
-0x002BBC68	sbtlFunc21	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002BB8B8	sbtlSetDebugMenuProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleSetDebugMenuProc: sbdebug_procmenu[SBDEBUG_MODE_SETMENU]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlCallBtlSearchUnitID31
+0x002BBC68	sbtlEffEditorProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleEffEditorProc: sbdebug_procmenu[SBDEBUG_MODE_EFFEDITOR]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFunc21
 0x002BBC90	sbtlMainProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by MainProc
 0x002BBC98	sbtlDebug_DevilNameListDraw	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sbattle.sBtlDebug_DevilNameListDraw score 2.6 flag -: calls1 calls-of-match st1:call r1-only
 0x002BBD48	sbtlDebug_UnitPanelCursor	hd	hd: Raidou HD sbattle.sBtlDebug_UnitPanelCursor, score 8.5 band B
@@ -7873,8 +7873,8 @@
 0x002C0098	sdfSetLocalMapCounterMarkerState	inferred	method=dds-fuzzy-60-tie-pair; p=0.40 (n=2); tier=C; source=dds; evidence=dds body 0x30c250 sim 0.667 margin 0.07 pair
 0x002C01C0	sbtlCallGrAllocPacketBuff7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sdfGrAllocPacketBuff
 0x002C0358	sbtlCallGrAllocPacketBuff6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sdfGrAllocPacketBuff
-0x002C0520	sbtlLeaf106	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002C0528	sbtlLeaf116	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
+0x002C0520	sbtlAIProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleAIProc: sbdebug_procmenu[SBDEBUG_MODE_AI]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf106
+0x002C0528	sbtlAIDraw	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbattle.sbattleAIDraw: sbdebug_drawmenu[SBDEBUG_MODE_AI]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf116
 0x002C0530	sbtlBtlDebugProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlDebug_Proc
 0x002C0538	sbtlCallMoonFadeIn	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls evtMoonFadeIn
 0x002C0588	sbtlFuncKatana	hd-inferred	hd: Raidou HD sBtlMenu.sBtlFuncKatana, score 8.7 band B, hd-ab: calls4 callers-of-match votes2 st2:call r2-only
@@ -10010,15 +10010,15 @@
 0x00346750	gohCalcProcess	hd-inferred	hd: Raidou HD gohDirection.gohCalcProcess, score 9.15 band B
 0x00346870	gohDrawProcess	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD gohDirection.gohDrawProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
 0x003468A8	gohUpdateProcess	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD gohDirection.gohUpdateProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
-0x003468E0	gohIsCombineFlag	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD gohDirection.gohIsCombineFlag score 3.0 flag I: next gap5/3 st2:gap r2-only
+0x003468E0	Direction2Init	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD gohDirection.Direction2Init: Init slot of the Direction2 row; body dds3FadeIn as HD; replaces gohIsCombineFlag
 0x00346910	Direction2Destroy	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD gohDirection.Direction2Destroy score 2.0 flag -: next gap6/4 st2:gap r2-only
 0x00346918	Direction2CalcProcess	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD gohDirection.Direction2CalcProcess score 7.8 flag -: calls5 next gap7/7 st2:gap r2-only
 0x003469E8	Direction2DrawProcess	hd	hd: Raidou HD gohDirection.Direction2DrawProcess, score 11.3 band A
-0x00346B20	gohResultInit	hd-inferred	hd: Raidou HD gohDirection.gohResultInit, score 9.45 band B
-0x00346B58	gohCallGetProcessData14	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour gohResultInit; calls dds3GetProcessData
-0x00346C30	gohResultDrawProcess	hd-inferred	hd: Raidou HD gohDirection.gohResultDrawProcess, score 13.6 band A
-0x00346C38	gohCyuuseiCalcProcess	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD gohMain.gohCyuuseiCalcProcess score 6.8 flag I: calls5 callers-of-match votes2 st1:call r2-disagree:0x3a0850
-0x003470A8	Direction2DrawProcess_gohDirection	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD gohDirection.Direction2DrawProcess score 8.9 flag -: calls4 str2 callee-index st1:cidx r2-disagree:0x3ab448
+0x00346B20	Direction2UpdateProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD gohDirection.Direction2UpdateProcess: Update slot of the Direction2 row; HD gohDirection cctor order Direction2, Result, End, End2 matches the raidou1 gohDirection table array (End row named); body jmsSeqChange(.., 2, ..) as HD; replaces gohResultInit
+0x00346B58	gohResultInit	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD gohDirection.gohResultInit: Init slot of the Result row; body mdlLoopMotion, mdlSetMotionSpeedEx as HD; replaces gohCallGetProcessData14
+0x00346C30	gohResultDestroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD gohDirection.gohResultDestroy: Destroy slot of the Result row; empty as HD; replaces gohResultDrawProcess
+0x00346C38	gohResultCalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD gohDirection.gohResultCalcProcess: Calc slot of the Result row; body fclStartMessage, evtSetFrame, jumps to the End row as HD; replaces gohCyuuseiCalcProcess
+0x003470A8	gohResultDrawProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD gohDirection.gohResultDrawProcess: Draw slot of the Result row; body dds3SceneBasicSearchName, gohModelLightSet, mdlSetPosition as HD; replaces Direction2DrawProcess_gohDirection
 0x00347180	gohResultUpdateProcess	hd-inferred	hd: Raidou HD gohDirection.gohResultUpdateProcess, score 8.45 band B
 0x003471C8	gohEndInit	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD gohDirection.gohEndInit score 4.8 flag I: prev gap=exact st2:gap r2-only
 0x003471D0	gohEndDestroy	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD gohDirection.gohEndDestroy score 4.8 flag I: next gap=exact st2:gap r2-only
@@ -10026,8 +10026,8 @@
 0x00347268	gohEndDrawProcess	hd-inferred	hd: Raidou HD gohDirection.gohEndDrawProcess, score 7.45 band B
 0x003472A0	gohEndUpdateProcess	hd-inferred	hd: Raidou HD gohDirection.gohEndUpdateProcess, score 12.45 band A
 0x003472D8	gohEnd2Init	hd-inferred	hd: Raidou HD gohDirection.gohEnd2Init, score 7.55 band B
-0x00347310	gohEnd2CalcProcess	hd-inferred	hd: Raidou HD gohDirection.gohEnd2CalcProcess, score 10.95 band A
-0x00347318	gohEnd2CalcProcess_gohDirection	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD gohDirection.gohEnd2CalcProcess score 6.9 flag I: calls5 callers-of-match votes5 st1:call r2-disagree:0x3abf20
+0x00347310	gohEnd2Destroy	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD gohDirection.gohEnd2Destroy: Destroy slot of the End2 row (Init gohEnd2Init); empty as HD; replaces gohEnd2CalcProcess
+0x00347318	gohEnd2CalcProcess	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD gohDirection.gohEnd2CalcProcess: Calc slot of the End2 row; body gohBgmPlay, ModelLoad, p2sdLoadCheckMidi, evtChgSeq as HD; replaces gohEnd2CalcProcess_gohDirection
 0x00347430	gohEquipSwordCalcProcess	hd-inferred	hd: Raidou HD gohDirection.gohEquipSwordCalcProcess, score 7.05 band B
 0x00347468	gohCallGetProcessData48	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour gohEquipSwordCalcProcess; calls dds3GetProcessData
 0x003474A0	fldCallGetProcessData10	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00346258, neighbour fldPlayerSvsOff; calls dds3GetProcessData

@@ -481,7 +481,7 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf109);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallSprintf6);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc26);
+INCLUDE_ASM(const s32, "code_002DF1D0", MainDraw);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", ModelSelectDraw);
 
@@ -489,7 +489,7 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlParaDraw);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBSTDraw);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFRAME);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMotionChngDraw);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlUnitChngDraw);
 
@@ -501,7 +501,7 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallDestroyFontRequestAfter2);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc25);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf102);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlVisualHitDraw);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlVisualDraw);
 
@@ -511,11 +511,11 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemAllocDirect9);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeleteFileList);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawNormalListCol);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMdlMoveEditorDraw);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBattleMdlhit);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMdlHitEditorDraw);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlBattleEffhit);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEffHitEditorDraw);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEditDraw_MOVE);
 
@@ -595,17 +595,17 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDrawFloat_Num);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDrawInt_Num);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf100);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSousaDraw);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSkillChangeProc);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSkillChangeDraw);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlFunc15);
+INCLUDE_ASM(const s32, "code_002DF1D0", ModelMenuDraw);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawONOFFList);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugDrawONOFFList2);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf119);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEffEditorDraw);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetUnit);
 
@@ -619,9 +619,9 @@ INCLUDE_ASM(const s32, "code_002DF1D0", MainProc);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", ModelSelectProc);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlDebugSetStatusflg);
+INCLUDE_ASM(const s32, "code_002DF1D0", ModelMenuProc);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallGetUnit);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSkillChangeProc);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", MotionChngProc);
 
@@ -635,15 +635,15 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlUnitChngProc);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDebug_SetVisualData);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf105);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlVisualHitProc);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlVisualProc);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf98);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMdlMoveEditorProc);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf122);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlMdlHitEditorProc);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlLeaf104);
+INCLUDE_ASM(const s32, "code_002DF1D0", sbtlEffHitEditorProc);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlNEFMODE_Func_Open);
 

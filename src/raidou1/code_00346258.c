@@ -47,7 +47,7 @@ dds3ProcessFunc_t gohUpdateProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_00346258", gohIsCombineFlag);
+INCLUDE_ASM(const s32, "code_00346258", Direction2Init);
 
 INCLUDE_ASM(const s32, "code_00346258", Direction2Destroy);
 
@@ -55,19 +55,19 @@ INCLUDE_ASM(const s32, "code_00346258", Direction2CalcProcess);
 
 INCLUDE_ASM(const s32, "code_00346258", Direction2DrawProcess);
 
-dds3ProcessFunc_t gohResultInit(dds3ProcessID_t *PID) {
+dds3ProcessFunc_t Direction2UpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
 
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "code_00346258", gohCallGetProcessData14);
+INCLUDE_ASM(const s32, "code_00346258", gohResultInit);
+
+INCLUDE_ASM(const s32, "code_00346258", gohResultDestroy);
+
+INCLUDE_ASM(const s32, "code_00346258", gohResultCalcProcess);
 
 INCLUDE_ASM(const s32, "code_00346258", gohResultDrawProcess);
-
-INCLUDE_ASM(const s32, "code_00346258", gohCyuuseiCalcProcess);
-
-INCLUDE_ASM(const s32, "code_00346258", Direction2DrawProcess_gohDirection);
 
 dds3ProcessFunc_t gohResultUpdateProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
@@ -96,9 +96,9 @@ dds3ProcessFunc_t gohEndUpdateProcess(dds3ProcessID_t *PID) {
 
 INCLUDE_ASM(const s32, "code_00346258", gohEnd2Init);
 
-INCLUDE_ASM(const s32, "code_00346258", gohEnd2CalcProcess);
+INCLUDE_ASM(const s32, "code_00346258", gohEnd2Destroy);
 
-INCLUDE_ASM(const s32, "code_00346258", gohEnd2CalcProcess_gohDirection);
+INCLUDE_ASM(const s32, "code_00346258", gohEnd2CalcProcess);
 
 dds3ProcessFunc_t gohEquipSwordCalcProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);

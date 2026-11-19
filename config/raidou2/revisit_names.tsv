@@ -3760,20 +3760,14 @@
 0x002E34B8	sbtlCallBtlSearchUnitID36	func	tier=D	derived-callee	na	unit sbtl; calls sbtlSearchUnit_ID
 0x002E3840	sbtlLeaf109	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002E38C8	sbtlCallSprintf6	func	tier=D	derived-callee	na	unit sbtl; calls sprintf
-0x002E3970	sbtlFunc26	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002E3A98	sbtlParaDraw	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleParaDraw, score 7.95 band B
 0x002E3DF0	sbtlBSTDraw	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleBSTDraw, score 7.55 band B
-0x002E3F08	sbtlFRAME	func	tier=D	derived-string	na	unit sbtl; string 'FRAME::%f\n'
 0x002E42B8	sbtlLeaf114	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002E42D0	sbtlCallDestroyFontRequestAfter2	func	tier=D	derived-callee	na	unit sbtl; calls frDestroyFontRequestAfter
 0x002E43F0	sbtlFunc25	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002E4470	sbtlLeaf102	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002E4478	sbtlVisualDraw	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleVisualDraw, score 6.65 band C, hd-consensus: calls3 callee-index votes2 st1:cidx r1-only; 10/10 fold runs agree, fold scores 8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7
 0x002E4D80	sbtlCallChipAllocZeroDirect2	func	tier=D	derived-callee	na	unit sbtl; calls sdfChipAllocZeroDirect
 0x002E4DA0	sbtlCallMemAllocDirect9	func	tier=D	derived-callee	na	unit sbtl; calls sdfMemAllocDirect
-0x002E4F08	sbtlCallBtlDebugDrawNormalListCol	func	tier=D	derived-callee	na	unit sbtl; calls sbtlDebug_DrawNormalList_Col
-0x002E5140	sbtlBattleMdlhit	func	tier=D	derived-string	na	unit sbtl; string 'battle/mdlhit/'
-0x002E5718	sbtlBattleEffhit	func	tier=D	derived-string	na	unit sbtl; string 'battle/effhit/'
 0x002E5E48	sbtlEditDraw_MOVE	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleEditDraw_MOVE, score 8.65 band B
 0x002E5F58	sbtlEditDraw	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleEditDraw, score 6.3 band C, hd-consensus: calls2 str1 callers-of-match votes2 st1:call r2-disagree:0x2e91c0; 10/10 fold runs agree, fold scores 10.5,11.3,10.3,10.5,10.5,10.5,11.3,10.5,6.3,10.5
 0x002E61D0	sbtlLoadDraw	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleLoadDraw, score 13.0 band A
@@ -3801,21 +3795,12 @@
 0x002EBD30	sbtlDrawString	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleDrawString, score 10.0 band A
 0x002EBDC0	sbtlDrawFloat_Num	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleDrawFloat_Num, score 7.3 band B
 0x002EBE68	sbtlDrawInt_Num	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleDrawInt_Num, score 9.0 band B
-0x002EBF00	sbtlLeaf100	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002EC098	sbtlFunc15	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002EC180	sbtlCallBtlDebugDrawONOFFList	func	tier=D	derived-callee	na	unit sbtl; calls sbtlDebug_DrawONOFFList
 0x002EC2C8	sbtlCallBtlDebugDrawONOFFList2	func	tier=D	derived-callee	na	unit sbtl; calls sbtlDebug_DrawONOFFList
-0x002EC510	sbtlLeaf119	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002EC518	sbtlGetUnit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleGetUnit, score 7.8 band B
 0x002EC598	sbtlTgtLock	func	tier=D	derived-string	na	unit sbtl; string 'tgt lock\n'
 0x002ED038	sbtlCallBtlDebugCheckLoadEncountData	func	tier=D	derived-callee	na	unit sbtl; calls sbtlDebug_CheckLoadEncountData
-0x002ED288	sbtlCallBtlDebugSetStatusflg	func	tier=D	derived-callee	na	unit sbtl; calls sbtlDebug_SetStatusflg
-0x002ED378	sbtlCallGetUnit	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetUnit
 0x002EDE28	sbtlUnitChngProc	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleUnitChngProc, score 7.65 band B
-0x002EE280	sbtlLeaf105	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002EE8C0	sbtlLeaf98	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002EE900	sbtlLeaf122	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002EE940	sbtlLeaf104	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002EE980	sbtlNEFMODE_Func_Open	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleNEFMODE_Func_Open, score 9.2 band B
 0x002EEBE0	sbtlMDLMODE_Func_Open	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleMDLMODE_Func_Open, score 10.6 band A
 0x002EF380	sbtlCheckOpenMenu	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sbattle.sbattleCheckOpenMenu, score 8.0 band B
@@ -3862,7 +3847,6 @@
 0x002F7310	sbtlEffectCylinderData	func	tier=D	derived-string	na	unit sbtl; string 'effect_cylinder_data_save\n'
 0x002F74E8	sbtlMotionDataSave	func	tier=D	derived-string	na	unit sbtl; string 'motion_data_save\n'
 0x002F82E8	sbtlOpti	func	tier=D	derived-string	na	unit sbtl; string 'opti\n'
-0x002F8E00	sbtlFunc21	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002F8E28	sbtlMainProcSub	func	tier=D	derived-caller	na	unit sbtl; called by MainProc
 0x002F8E30	sbtlCallSprintf2	func	tier=D	derived-callee	na	unit sbtl; calls sprintf
 0x002F96E0	sbtlRefSbtl52	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
@@ -3894,8 +3878,6 @@
 0x002FD8C0	sbtlGetMotionNumSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlGetMotionNum
 0x002FDA50	sbtlCallGrAllocPacketBuff7	func	tier=D	derived-callee	na	unit sbtl; calls sdfGrAllocPacketBuff
 0x002FDBE8	sbtlCallGrAllocPacketBuff6	func	tier=D	derived-callee	na	unit sbtl; calls sdfGrAllocPacketBuff
-0x002FDDB0	sbtlLeaf106	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002FDDB8	sbtlLeaf116	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002FDDC0	sbtlBtlDebugProcSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlDebug_Proc
 0x002FDDC8	sbtlFuncKatana	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlMenu.sBtlFuncKatana, score 8.7 band B, hd-ab: calls4 callers-of-match votes2 st2:call r2-only
 0x002FE180	sbtlBtlCallEndSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlCallEnd
@@ -5497,17 +5479,13 @@
 0x003AB098	gohModelFree	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohModelFree, score 9.3 band B
 0x003AB120	gohModelLightSet	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohModelLightSet, score 10.3 band A
 0x003AB198	gohCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohCalcProcess, score 9.15 band B
-0x003AB580	gohResultInit	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohResultInit, score 9.45 band B
 0x003AB5B8	gohResultInitGohDirectionSub	func	tier=D	derived-caller	na	unit code_003AACD0, neighbour gohResultInit; called by gohResultInit_gohDirection
-0x003AB6C0	gohResultDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohResultDrawProcess, score 13.6 band A
 0x003AB7D0	gohResultCalcProcessSub	func	tier=D	derived-caller	na	unit code_003AACD0, neighbour gohResultCalcStateMessageBirth; called by gohResultCalcProcess
 0x003ABD88	gohResultUpdateProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohResultUpdateProcess, score 8.45 band B
 0x003ABDE0	gohEndCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEndCalcProcess, score 10.15 band A
 0x003ABE70	gohEndDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEndDrawProcess, score 7.45 band B
 0x003ABEA8	gohEndUpdateProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEndUpdateProcess, score 12.45 band A
 0x003ABEE0	gohEnd2Init	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEnd2Init, score 7.55 band B
-0x003ABF18	gohEnd2CalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEnd2CalcProcess, score 10.95 band A
-0x003ABF20	gohCallGetProcessData19	func	tier=D	derived-callee	na	unit code_003AACD0, neighbour gohEnd2CalcProcess; calls dds3GetProcessData
 0x003AC610	gohEquipSwordCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohDirection.gohEquipSwordCalcProcess, score 7.05 band B
 0x003AC648	gohCallGetProcessData20	func	tier=D	derived-callee	na	unit code_003AACD0, neighbour gohEquipSwordCalcProcess; calls dds3GetProcessData
 0x003AC690	gohCallGetProcessData21	func	tier=D	derived-callee	na	unit code_003AACD0, neighbour gohEquipSwordCalcProcess; calls dds3GetProcessData
@@ -23437,7 +23415,6 @@
 0x002E4E68	sbtlDeleteFileList	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sbattle.sbattleDeleteFileList score 4.4 flag I: calls2 calls-of-match votes2 st1:call r2-disagree:0x2efc78
 0x002E7440	Calc_AW_GunTarget	func	tier=C	hd-d	0.53 (n=98)	Raidou HD AW_GunTarget.Calc score 2.2 flag -: calls1 callers-of-match st1:call r1-only
 0x002E9C28	sbtlDrawPoseture	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sbattle.sbattleDrawPoseture score 5.0 flag I: calls1 prev~ gap3/13 st1:gap r1+r2
-0x002EBF08	sbtlSkillChangeProc	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sbattle.sbattleSkillChangeProc score 2.1 flag I: calls1 callers-of-match st1:call r1-only
 0x002ECFF8	SceneDel_Calc	func	tier=C	hd-both	0.71 (n=206)	Raidou HD mapEnemy.SceneDel_Calc score 4.3 flag -: calls1 callers-of-match st1:call r1+r2
 0x002ED0A0	MainProc	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sbattle.MainProc score 5.5 flag -: calls1 callers-of-match-uniq st1:call r1+r2
 0x002F48A8	sbtlSetEffHitPara_sbtl	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sbattle.sbattleSetEffHitPara score 4.5 flag I: calls1 callers-of-match st1:call r1+r2
@@ -23714,7 +23691,6 @@
 0x003AA378	evtBChooseSelectionCompletionPopup	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x24c700 sim 0.736 margin 0.00 pair
 0x003AB2B0	gohDrawProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohDirection.gohDrawProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
 0x003AB2E8	gohUpdateProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD gohDirection.gohUpdateProcess score 4.5 flag I: calls2 prev edge st2:edge r2-only
-0x003AB320	gohIsCombineFlag	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohDirection.gohIsCombineFlag score 3.0 flag I: next gap5/3 st2:gap r2-only
 0x003AB350	Direction2Destroy	func	tier=C	hd-d	0.53 (n=98)	Raidou HD gohDirection.Direction2Destroy score 2.0 flag -: next gap6/4 st2:gap r2-only
 0x003AB838	dds3ScrollConfigList	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x29b980 sim 0.658 margin 0.23 single
 0x003AC0D0	gohOmoideSkillInit	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD gohDirection.gohOmoideSkillInit score 4.0 flag I: calls1 prev gap7/2 st2:gap r2-only
@@ -24587,10 +24563,29 @@
 0x002DFEB8	sbtlCheckDrop_Normal	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEXP.sBtlCheckDrop_Normal score 5.8 flag I: calls3 calls-of-match votes3 st2:call r1-disagree:0x2a40b0
 0x002E0BB8	sbtlSetSkill_EffectData	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlSkill.sBtlSetSkill_EffectData score 6.9 flag I: calls4 callers-of-match votes4 st2:call r1-disagree:0x2a4d40
 0x002E2548	sbtlDebug_SetDuummyData	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sbattle.sBtlDebug_SetDuummyData score 5.6 flag -: calls3 callers-of-match votes4 st2:call r1-disagree:0x2a6180
+0x002E3970	MainDraw	func	tier=B	hd-role	na	HD sbattle.MainDraw: sbdebug_drawmenu[SBDEBUG_MODE_MAIN]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFunc26
+0x002E3F08	sbtlMotionChngDraw	func	tier=B	hd-role	na	HD sbattle.sbattleMotionChngDraw: sbdebug_drawmenu[SBDEBUG_MODE_MOTIONCHNG]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFRAME
+0x002E4470	sbtlVisualHitDraw	func	tier=B	hd-role	na	HD sbattle.sbattleVisualHitDraw: sbdebug_drawmenu[SBDEBUG_MODE_ATARI]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf102
+0x002E4F08	sbtlMdlMoveEditorDraw	func	tier=B	hd-role	na	HD sbattle.sbattleMdlMoveEditorDraw: sbdebug_drawmenu[SBDEBUG_MODE_MODELMOVE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlCallBtlDebugDrawNormalListCol
+0x002E5140	sbtlMdlHitEditorDraw	func	tier=B	hd-role	na	HD sbattle.sbattleMdlHitEditorDraw: sbdebug_drawmenu[SBDEBUG_MODE_MODELHITE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlBattleMdlhit
+0x002E5718	sbtlEffHitEditorDraw	func	tier=B	hd-role	na	HD sbattle.sbattleEffHitEditorDraw: sbdebug_drawmenu[SBDEBUG_MODE_EFFHITE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlBattleEffhit
 0x002E60F8	sbtlDebug_HitTypeMoveDraw	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sbattle.sBtlDebug_HitTypeMoveDraw score 6.3 flag -: calls1 calls-of-match st1:call r1+r2
+0x002EBF00	sbtlSousaDraw	func	tier=B	hd-role	na	HD sbattle.sbattleSousaDraw: sbdebug_drawmenu[SBDEBUG_MODE_SOUSA]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf100
+0x002EBF08	sbtlSkillChangeDraw	func	tier=B	hd-role	na	HD sbattle.sbattleSkillChangeDraw: sbdebug_drawmenu[SBDEBUG_MODE_SKILLCHANGE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlSkillChangeProc
+0x002EC098	ModelMenuDraw	func	tier=B	hd-role	na	HD sbattle.ModelMenuDraw: sbdebug_drawmenu[SBDEBUG_MODE_MODELMENU]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFunc15
+0x002EC510	sbtlEffEditorDraw	func	tier=B	hd-role	na	HD sbattle.sbattleEffEditorDraw: sbdebug_drawmenu[SBDEBUG_MODE_EFFEDITOR]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf119
+0x002ED288	ModelMenuProc	func	tier=B	hd-role	na	HD sbattle.ModelMenuProc: sbdebug_procmenu[SBDEBUG_MODE_MODELMENU]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlCallBtlDebugSetStatusflg
+0x002ED378	sbtlSkillChangeProc	func	tier=B	hd-role	na	HD sbattle.sbattleSkillChangeProc: sbdebug_procmenu[SBDEBUG_MODE_SKILLCHANGE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlCallGetUnit
+0x002EE280	sbtlVisualHitProc	func	tier=B	hd-role	na	HD sbattle.sbattleVisualHitProc: sbdebug_procmenu[SBDEBUG_MODE_ATARI], the pair between Visual and SkillChange in HD; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf105
+0x002EE8C0	sbtlMdlMoveEditorProc	func	tier=B	hd-role	na	HD sbattle.sbattleMdlMoveEditorProc: sbdebug_procmenu[SBDEBUG_MODE_MODELMOVE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf98
+0x002EE900	sbtlMdlHitEditorProc	func	tier=B	hd-role	na	HD sbattle.sbattleMdlHitEditorProc: sbdebug_procmenu[SBDEBUG_MODE_MODELHITE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf122
+0x002EE940	sbtlEffHitEditorProc	func	tier=B	hd-role	na	HD sbattle.sbattleEffHitEditorProc: sbdebug_procmenu[SBDEBUG_MODE_EFFHITE]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf104
 0x002EF948	sbtlNEFMODE_Func_Save	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sbattle.sbattleNEFMODE_Func_Save score 6.0 flag I: prev~ next gap1/2 st1:gap r1+r2
 0x002F8488	sbtlSetDebugMenuProc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sbattle.sbattleSetDebugMenuProc score 6.7 flag I: calls4 callers-of-match-uniq votes3 st2:call r1-disagree:0x2bb8b8
+0x002F8E00	sbtlEffEditorProc	func	tier=B	hd-role	na	HD sbattle.sbattleEffEditorProc: sbdebug_procmenu[SBDEBUG_MODE_EFFEDITOR]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFunc21
 0x002FA920	sbtlDebug_DrawONOFFList	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sbattle.sBtlDebug_DrawONOFFList score 6.8 flag -: calls2 str1 callee-index votes3 st2:cidx r1-disagree:0x2bd5e0
+0x002FDDB0	sbtlAIProc	func	tier=B	hd-role	na	HD sbattle.sbattleAIProc: sbdebug_procmenu[SBDEBUG_MODE_AI]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf106
+0x002FDDB8	sbtlAIDraw	func	tier=B	hd-role	na	HD sbattle.sbattleAIDraw: sbdebug_drawmenu[SBDEBUG_MODE_AI]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlLeaf116
 0x002FDE68	sbtlDrawTargetCursorEnemy	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMenu.sBtlDrawTargetCursorEnemy score 5.5 flag I: calls2 calls-of-match st2:call r2-only
 0x002FE188	sbtlCheckEnableTalk	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMenu.sBtlCheckEnableTalk score 5.8 flag I: calls2 calls-of-match st2:call r2-only
 0x002FE4E0	sbtlDrawAnalyzePlayer	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMenu.sBtlDrawAnalyzePlayer score 6.9 flag I: calls4 callers-of-match votes2 st2:call r1-disagree:0x2c21e8
@@ -24793,9 +24788,12 @@
 0x003A9840	fldCommand_FLD_CALL_WAPEX	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x159eb0 sim 0.778 margin 0.78 pair
 0x003AB188	gohInit	func	tier=B	hd-role	na	HD gohDirection.gohInit: Init slot of the scene table entry whose Calc/Draw/Update are gohCalcProcess, gohDrawProcess, gohUpdateProcess; replaces gohLeaf33
 0x003AB190	gohDestroy	func	tier=B	hd-role	na	HD gohDirection.gohDestroy: Destroy slot of the scene table entry whose Calc/Draw/Update are gohCalcProcess, gohDrawProcess, gohUpdateProcess; replaces gohLeaf34
+0x003AB6C0	gohResultDestroy	func	tier=B	hd-role	na	HD gohDirection.gohResultDestroy: Destroy slot of the Result row; empty as HD; replaces gohResultDrawProcess
 0x003AB890	gohResultCalcStateFadeOut	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohDirection.gohResultCalcStateFadeOut score 6.8 flag I: calls2 callers-of-match votes3 st2:call r2-only
 0x003ABDD0	gohEndInit	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD gohDirection.gohEndInit score 4.8 flag I: prev gap=exact st2:gap r2-only
 0x003ABDD8	gohEndDestroy	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD gohDirection.gohEndDestroy score 4.8 flag I: next gap=exact st2:gap r2-only
+0x003ABF18	gohEnd2Destroy	func	tier=B	hd-role	na	HD gohDirection.gohEnd2Destroy: Destroy slot of the End2 row (Init gohEnd2Init); empty as HD; replaces gohEnd2CalcProcess
+0x003ABF20	gohEnd2CalcProcess	func	tier=B	hd-role	na	HD gohDirection.gohEnd2CalcProcess: Calc slot of the raidou2 End2 row (gohEnd2Init, Destroy, Calc, gohEnd2DrawProcess, gohEnd2UpdateProcess); replaces gohCallGetProcessData19
 0x003AC060	gohEnd2DrawProcess	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohDirection.gohEnd2DrawProcess score 5.5 flag I: calls2 prev gap9/4 st2:gap r2-only
 0x003AC098	gohEnd2UpdateProcess	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohDirection.gohEnd2UpdateProcess score 5.5 flag I: calls2 prev gap8/3 st2:gap r2-only
 0x003AC138	gohSpiritCalcProcess	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD gohDirection.gohSpiritCalcProcess score 6.5 flag I: calls8 callers-of-match votes6 st2:call r2-only
