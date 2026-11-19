@@ -229,7 +229,7 @@ s32 mefMistTexOnDataCheck(void) {
     return pMapMoya->texHandle != NULL;
 }
 
-INCLUDE_ASM(const s32, "code_00157CD0", mapLeaf22);
+INCLUDE_ASM(const s32, "code_00157CD0", mefMistSetScroll);
 
 INCLUDE_ASM(const s32, "code_00157CD0", pipeFileLoadSub);
 

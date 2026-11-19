@@ -168,7 +168,7 @@ void mapNpcPathControlGetPos(struct mapNpcPathControl_t *pControl);
 void mapNpcPathControlGetRot(struct mapNpcPathControl_t *pControl);
 void mapNpcPathFastInit(void);
 void mapLeaf12(void);
-s32 mapLeaf20(s16 uniq);
+s32 mapObjPointGetSerializeID(s16 uniq);
 struct mapNpcPathControl_t *mapNpcPathMakeControl(s16 uniq);
 void mapNpcPathMake_KeyFrame(s32 num, f32 spd, struct mapNpcPathData_t *pathdata);
 void mapNpcPathMake_Rot(s32 num, struct mapNpcPathData_t *pathdataT, struct mapNpcPathData_t *pathdataR);

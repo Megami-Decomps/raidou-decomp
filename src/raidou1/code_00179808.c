@@ -174,7 +174,7 @@ INCLUDE_ASM(const s32, "code_00179808", nbCallGetIntPara6);
 #endif
 
 s32 nbCallGetIntPara7(void) {
-    scrSetIntReturnValue(mapLeaf20(scrGetIntPara(0)));
+    scrSetIntReturnValue(mapObjPointGetSerializeID(scrGetIntPara(0)));
     return 1;
 }
 

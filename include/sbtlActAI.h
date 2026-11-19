@@ -73,7 +73,7 @@ s32 sbtlBtlMVSupportSub(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
 void sbtlSetUseSkill(struct SBTLUNIT_WORK *wk, SKLID skillid);
 void SetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
 void sbtlResetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
-void sbtlLeaf65(struct SBTLUNIT_WORK *wk, SKLID sklid);
+void sbtlResetChkskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
 s32 sbtlCallBtlSetChkskl2(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx);
 s32 sbtlCallBtlSetChkskl3(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx);
 s32 sbtlCallBtlSetUseskl(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx);

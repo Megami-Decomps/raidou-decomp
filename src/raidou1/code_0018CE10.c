@@ -115,7 +115,7 @@ INCLUDE_ASM(const s32, "code_0018CE10", itfDrawMiscFontAlpha);
 
 INCLUDE_ASM(const s32, "code_0018CE10", itfDrawMiscHelp);
 
-INCLUDE_ASM(const s32, "code_0018CE10", itfLeaf15);
+INCLUDE_ASM(const s32, "code_0018CE10", itfDrawMiscGauge);
 
 INCLUDE_ASM(const s32, "code_0018CE10", itfCallSetOt3);
 
@@ -207,7 +207,7 @@ s32 itfGetFigureNum(s32 a_num, s32 a_figure)
     return (a_num / div) % 10;
 }
 
-INCLUDE_ASM(const s32, "code_0018CE10", itfLeaf16);
+INCLUDE_ASM(const s32, "code_0018CE10", itfSwapRGBA);
 
 void itfCalcSpriteWidth(struct sprHandle_t *a_hSpr, s32 a_sprNo, s32 a_num, s32 a_max)
 {

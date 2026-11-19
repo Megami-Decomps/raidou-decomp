@@ -2,7 +2,7 @@
 #include "mapData.h"
 #include "field.h"
 
-s32 mapLeaf20(s16 uniq)
+s32 mapObjPointGetSerializeID(s16 uniq)
 {
     s32 i;
 

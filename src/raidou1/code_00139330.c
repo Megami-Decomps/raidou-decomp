@@ -44,9 +44,9 @@ void fldPlayerMotReset(void) {
 
     if (fldGlobalBase.nakamaMode == 0) {
         if (mapCheckDying(0) != 0) {
-            fldLeaf18(motion, 2, 10.0f);
+            fldPlayerMotion(motion, 2, 10.0f);
         } else {
-            fldLeaf18(motion, 0, 10.0f);
+            fldPlayerMotion(motion, 0, 10.0f);
         }
     } else {
         NakamaMotion(motion, mapCheckDying(1) != 0 ? 2 : 0, 10.0f);
@@ -59,9 +59,9 @@ void fldPlayerMotReset2(void) {
 
     if (fldGlobalBase.nakamaMode == 0) {
         if (mapCheckDying(0) != 0) {
-            fldLeaf18(motion, 2, 0.0f);
+            fldPlayerMotion(motion, 2, 0.0f);
         } else {
-            fldLeaf18(motion, 0, 0.0f);
+            fldPlayerMotion(motion, 0, 0.0f);
         }
     } else {
         NakamaMotion(motion, mapCheckDying(1) != 0 ? 2 : 0, 0.0f);
@@ -72,7 +72,7 @@ void fldPlayerMotReset3(void) {
     s16 motion = playerModel->current.h.motionIndex;
 
     if (fldGlobalBase.nakamaMode == 0) {
-        fldLeaf18(motion, 0, 15.0f);
+        fldPlayerMotion(motion, 0, 15.0f);
     } else {
         NakamaMotion(motion, 0, 15.0f);
     }

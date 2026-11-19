@@ -67,7 +67,7 @@ s32 nbCallNpcTblRefreshWait(void) {
 INCLUDE_ASM(const s32, "code_0018C430", nbCallGetIntPara6);
 
 s32 nbCallGetIntPara7(void) {
-    scrSetIntReturnValue(mapLeaf20(scrGetIntPara(0)));
+    scrSetIntReturnValue(mapObjPointGetSerializeID(scrGetIntPara(0)));
     return 1;
 }
 

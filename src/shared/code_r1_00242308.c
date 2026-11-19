@@ -2770,7 +2770,7 @@ s32 effEditMScaleTrack(effBaObj_t *p) {
     return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0xB0), ((effMappingObject_t *)p->x0C)->value108, &effData18, &effData16);
 }
 
-void effLeaf401(void) {
+void effResetAlphaKeySelection(void) {
     effColorEditSelectedAlphaKey = 1;
 }
 
@@ -4328,7 +4328,7 @@ extern s32 effEditScalarTrackData6;
 extern u8 effEditScalarTrackWork;
 extern char effInitializeResourceQueueData[];
 extern char effLabelBlur[];
-void effLeaf401(void);
+void effResetAlphaKeySelection(void);
 extern char effLoadMaterialFileDataEntry[];
 extern char effPollAndQueueCopiedFileResourceDataEntry2[];
 extern f32 effPollAndQueueCopiedFileResourceDataEntry;
@@ -7275,7 +7275,7 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry124[20] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry170 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry170 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry103 = {
@@ -7331,7 +7331,7 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry126[19] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry179 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry179 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry104 = {
@@ -7400,7 +7400,7 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry129[19] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry189 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry189 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry106 = {
@@ -7496,7 +7496,7 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry134[20] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry204 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry204 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry110 = {
@@ -7565,7 +7565,7 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry137[19] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry213 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry213 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry112 = {
@@ -7649,7 +7649,7 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry140[21] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry222 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry222 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry115 = {
@@ -7737,7 +7737,7 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry144[22] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry240 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry240 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry118 = {
@@ -7833,7 +7833,7 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry149[19] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry259 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry259 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry122 = {
@@ -8116,7 +8116,7 @@ effDebugMenuItem_t effCreatePolyThunderTaskDataEntry23[26] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditDoPolygonFadeTrack }, { .release = effLeaf401 } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditDoPolygonFadeTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyThunderTaskDataEntry20 = {
@@ -8173,7 +8173,7 @@ effDebugMenuItem_t effCreatePolyThunderTaskDataEntry25[26] = {
     { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
     { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditDoPolygonFadeTrack }, { .release = effLeaf401 } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditDoPolygonFadeTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyThunderTaskDataEntry21 = {
@@ -8703,7 +8703,7 @@ effDebugMenuItem_t sysPOLYWINDDataEntry66[15] = {
     { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry103 }, { .minValue = 0 }, 0, 0.01f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonColorTrack }, { .release = effResetMappingFlags } },
-    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effLeaf401 } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t sysPOLYWINDDataEntry47 = {
@@ -8819,7 +8819,7 @@ effDebugMenuItem_t sysPOLYWINDDataEntry73[15] = {
     { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &bssWork67 }, { .minValue = 0 }, 0, 0.01f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonColorTrack }, { .release = effResetMappingFlags } },
-    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effLeaf401 } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t sysPOLYWINDDataEntry53 = {
@@ -8925,7 +8925,7 @@ effDebugMenuItem_t sysPOLYWINDDataEntry79[15] = {
     { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry146 }, { .minValue = 0 }, 0, 0.01f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonColorTrack }, { .release = effResetMappingFlags } },
-    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effLeaf401 } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t sysPOLYWINDDataEntry58 = {
@@ -9004,7 +9004,7 @@ effDebugMenuItem_t sysPOLYWINDDataEntry83[15] = {
     { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry162 }, { .minValue = 0 }, 0, 0.01f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonColorTrack }, { .release = effResetMappingFlags } },
-    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effLeaf401 } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t sysPOLYWINDDataEntry61 = {
@@ -9097,7 +9097,7 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry45[14] = {
     { effStrScaleUv, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUCylinderPolygonUvScaleTrack }, { .release = btlResetEffectWork } },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
     { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUCylinderPolygonColorTrack }, { .release = effResetMappingFlags } },
-    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUCylinderPolygonFadeTrack }, { .release = effLeaf401 } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUCylinderPolygonFadeTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry34 = {
@@ -9318,7 +9318,7 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry57[11] = {
     { effCreatePolyScalyTaskDataEntry69, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry127 }, { .minValue = 0 }, 0, 1.0f },
     { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry128 }, { .minValue = 0 }, 0, 0.01f },
     { NULL, EFF_DEBUG_ITEM_SEPARATOR },
-    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUSpherePolygonFadeTrack }, { .release = effLeaf401 } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUSpherePolygonFadeTrack }, { .release = effResetAlphaKeySelection } },
 };
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry43 = {

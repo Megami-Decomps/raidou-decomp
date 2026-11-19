@@ -120,7 +120,7 @@ void mapObjFloor(s16 uniq, s32 floor) {
 
 INCLUDE_ASM(const s32, "code_00144130", mapObjMask);
 
-INCLUDE_ASM(const s32, "code_00144130", mapLeaf15);
+INCLUDE_ASM(const s32, "code_00144130", mapObjFloorNoClip);
 
 void mapObjNoClip(s16 uniq) {
     s32 i;

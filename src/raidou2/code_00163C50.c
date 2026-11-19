@@ -184,7 +184,7 @@ s32 mefMistTexOnDataCheck(void) {
 
 INCLUDE_ASM(const s32, "code_00163C50", mapFileLoadSub);
 
-INCLUDE_ASM(const s32, "code_00163C50", mapLeaf22);
+INCLUDE_ASM(const s32, "code_00163C50", mefMistSetScroll);
 
 INCLUDE_ASM(const s32, "code_00163C50", pipeFileLoadSub);
 

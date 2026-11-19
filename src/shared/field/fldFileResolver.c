@@ -1059,14 +1059,14 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvTask);
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvTask);
 #endif
 
-void fldLeaf18(s32 hisMotion, s32 upMotion, f32 hokan) {
+void fldPlayerMotion(s32 hisMotion, s32 upMotion, f32 hokan) {
     if (hisMotion != upMotion) {
         playerModel->first->speed = 0.5f;
         mdlSmoothLoopMotion(playerModel, 0, upMotion, hokan, hokan);
     }
 }
 
-void fldLeaf19(s32 hisMotion, s32 upMotion, f32 hokan) {
+void fldPlayerMotionS(s32 hisMotion, s32 upMotion, f32 hokan) {
     if (hisMotion != upMotion) {
         playerModel->first->speed = 0.5f;
         mdlSmoothSingleMotion(playerModel, 0, upMotion, hokan, hokan);
@@ -1087,7 +1087,7 @@ void fldSetUnitSub3(s32 motion, f32 speed) {
     mdlLoopMotion(playerModel, 0, motion);
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf20);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerMotion_SLoop);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", NakamaMotion);
 
@@ -1374,16 +1374,16 @@ s32 PlayerCalc_Nml_fld(void) {
     fldDisableCameraObjectFlag();
     if (fldGlobalBase.nakamaMode == 0) {
         if (fldGlobalBase.amSBlock == 3 && fldGlobalBase.nameU == 2) {
-            fldLeaf18(motionIndex, motion, 6.0f);
+            fldPlayerMotion(motionIndex, motion, 6.0f);
         } else if (motionIndex == 1 && motion == 0 && fldGlobalBase.wordDC >= 11) {
             motion = 10;
-            fldLeaf19(1, 10, 6.0f);
+            fldPlayerMotionS(1, 10, 6.0f);
         } else if (motionIndex == 10 && motion == 0) {
             if (fldPlayerModelContext->first->stat == 5) {
-                fldLeaf18(10, 0, 6.0f);
+                fldPlayerMotion(10, 0, 6.0f);
             }
         } else {
-            fldLeaf18(motionIndex, motion, 6.0f);
+            fldPlayerMotion(motionIndex, motion, 6.0f);
         }
         PlayerMotionSe(motionIndex, motion);
     } else {

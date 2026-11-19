@@ -484,7 +484,7 @@ s32 sbtlSetChkskl(struct SBTLUNIT_WORK *wk, s32 sklid) {
 
 INCLUDE_ASM(const s32, "sbtlActAI", SetChkskl);
 
-INCLUDE_ASM(const s32, "sbtlActAI", sbtlLeaf65);
+INCLUDE_ASM(const s32, "sbtlActAI", sbtlResetChkskl);
 
 s32 sbtlSetUseskl(struct SBTLUNIT_WORK *wk, s32 sklid) {
     return (wk->model->useskl[sklid / 32] & (1 << sklid)) != 0;
@@ -703,14 +703,14 @@ s32 sbtlCallBtlSetChkskl3(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx) {
     case 0:
         i = arg & 0xFFF;
         if (sbtlSetChkskl(wk, i)) {
-            sbtlLeaf65(wk, i);
+            sbtlResetChkskl(wk, i);
             ret = 1;
         }
         break;
     case 0x8000:
         for (i = SKLID_NONE; i < SBTL_AI_SKILL_MAX; i++) {
             if ((sbtlGetSkilltbl(i)->attr & arg) && sbtlSetChkskl(wk, i)) {
-                sbtlLeaf65(wk, i);
+                sbtlResetChkskl(wk, i);
                 ret = 1;
                 break;
             }
@@ -719,7 +719,7 @@ s32 sbtlCallBtlSetChkskl3(struct SBTLUNIT_WORK *wk, s32 arg, s32 idx) {
     case 0x4000:
         for (i = SKLID_NONE; i < SBTL_AI_SKILL_MAX; i++) {
             if ((sbtlGetSkilltbl(i)->flg & arg) && sbtlSetChkskl(wk, i)) {
-                sbtlLeaf65(wk, i);
+                sbtlResetChkskl(wk, i);
                 ret = 1;
                 break;
             }

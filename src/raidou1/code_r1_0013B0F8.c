@@ -31,7 +31,7 @@ extern void fldCallLinkAlpha(u32 color, f32 x, f32 y);
 extern void fldCallSetOt3(u32 color, f32 ox, f32 oy);
 extern void KernelDebug(s32 camId);
 extern void mefMistUpdate(void);
-extern void mapLeaf22(s32 camId);
+extern void mefMistSetScroll(s32 camId);
 
 #define SKY_GRAY 0x808080
 
@@ -388,7 +388,7 @@ void mapSKYBGEDIT(void) {
     if (mefMistTexOnDataCheck() != 0) {
         mefMistUpdate();
         mefMistDraw(offX, offY, 0);
-        mapLeaf22(camId);
+        mefMistSetScroll(camId);
     }
     eglSetOt(28);
     eglLinkTest(1, 0, 128, 2, 0, 0, 1, 2);

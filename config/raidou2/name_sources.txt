@@ -1529,12 +1529,12 @@
 0x0013EB90	fldCatGetNakamaSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; called by mapCatGetNakama
 0x0013EBB0	sndSeStatus	hd-inferred	hd: Raidou HD sndAt3.sndSeStatus, score 8.8 band B
 0x0013EC20	mapSummonDvTask	hd	hd: Raidou HD fld.mapSummonDvTask, score 10.7 band A
-0x0013F548	fldLeaf18	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; no named callee, caller or string
-0x0013F598	fldLeaf19	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; no named callee, caller or string
+0x0013F548	fldPlayerMotion	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD fld.fldPlayerMotion(hisMotion, upMotion, motHokan, motSpeed): same body (if hisMotion != upMotion set speed, mdlSmoothLoopMotion(playerModel, 0, upMotion, hokan, hokan)) with the speed fixed at 0.5; first of the HD order fldPlayerMotion, fldPlayerMotionS, _Single, _Loop, _SLoop; replaces fldLeaf18
+0x0013F598	fldPlayerMotionS	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD fld.fldPlayerMotionS: same body as fldPlayerMotion with mdlSmoothSingleMotion, speed fixed at 0.5; follows fldPlayerMotion as in HD; replaces fldLeaf19
 0x0013F5E8	fldPlayerCalcNmlFldSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; called by PlayerCalc_Nml_fld
 0x0013F630	rstDrawEvoBgFade	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x223e20 sim 0.708 margin 0.34 pair
 0x0013F660	fldSetUnitSub3	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; called by fldSetUnit
-0x0013F690	fldLeaf20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; no named callee, caller or string
+0x0013F690	fldPlayerMotion_SLoop	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.fldPlayerMotion_SLoop(Motion, spd, Hokan): sets playerModel speed, mdlSmoothLoopMotion with the int Hokan converted to float twice; after the _Single and _Loop bodies as in HD; replaces fldLeaf20
 0x0013F6D0	NakamaMotion	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same callee as R1's NakamaMotion (HD name) in fldNakamaMotReset3 and fldPlayerMotReset3; replaces fldCallBtlGetMotionVisualDataSBtlVi
 0x0013F7F0	fldPlayerCalcNmlFldSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit field/fldFileResolver; called by PlayerCalc_Nml_fld
 0x0013F840	PlayerMotionSe2	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD fld.PlayerMotionSe2 score 3.1 flag -: calls1 calls-of-match st2:call r2-only
@@ -1664,7 +1664,7 @@
 0x0014D5E8	mapObjHitSize	hd	hd: Raidou HD fld.mapObjHitSize, score 9.3 band B
 0x0014D630	mapObjFloor	hd	hd: Raidou HD fld.mapObjFloor, score 10.0 band A
 0x0014D678	mapObjMask	hd	hd: Raidou HD fld.mapObjMask, score 7.8 band B
-0x0014D6D8	mapLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00140960, neighbour mapObjMask; no named callee, caller or string
+0x0014D6D8	mapObjFloorNoClip	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapObjFloorNoClip(floor, uniq): over the 128 map objects, the one with that uniq and floor gets noclip = 1; between mapObjMask and mapObjNoClip as in HD; replaces mapLeaf15
 0x0014D730	mapObjNoClip	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD fld.mapObjNoClip score 4.5 flag -: calls1 gap1/5 st1:gap r1+r2
 0x0014D780	mapCallUnitObjectBasicSetOt	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001492A8, neighbour mapObjNoClip; calls dds3UnitObjectBasicSetOt
 0x0014D808	mapObjOnOff	hd	hd: Raidou HD fld.mapObjOnOff, score 10.0 band A
@@ -1715,9 +1715,9 @@
 0x00155620	mapSetAreaRefreshSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00140960, neighbour mapWallObjTask; called by mapMapSetAreaRefresh
 0x001558D0	mapObjLightAdd	hd	hd: Raidou HD fld.mapObjLightAdd, score 13.8 band A; replaces mapAddLightObject: string: dds3AddLightObjectBasic with object id "maplight", sets pose and light resource; callers mapFileLoad and the map label setup
 0x00155B20	mapObjPointAdd2	hd	hd: Raidou HD fld.mapObjPointAdd2, score 12.1 band A; replaces mapAddPointObject: string: dds3AddPointBasic with object id "mappos"
-0x00155C90	mapLeaf19	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00140960, neighbour mapObjPointAdd2; no named callee, caller or string
+0x00155C90	mapObjPointAdd	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapObjPointAdd(uniq, x, y, z, r): calls mapObjPointAdd2(uniq, 0xFFFF, x, y, z, r); between mapObjPointAdd2 and mapObjPointGet as in HD; replaces mapLeaf19
 0x00155CB0	mapObjPointGet	hd	hd: Raidou HD fld.mapObjPointGet, score 11.4 band A
-0x00155D88	mapLeaf20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00140960, neighbour mapObjPointGet2; no named callee, caller or string
+0x00155D88	mapObjPointGetSerializeID	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fld.mapObjPointGetSerializeID(uniq): returns the serial ID of the used map point with that uniq, else -1; right after mapObjPointGet2 as in HD; replaces mapLeaf20
 0x00155DD8	mapKaidanAdd	hd	method=hd-vote; p=0.95 (n=66); tier=A; source=hd; evidence=Raidou HD fld.mapKaidanAdd score 5.9 flag -: calls1 gap15/6 votes2 st1:gap r1+r2
 0x00155FA0	mapCHitAdd	hd	hd: Raidou HD fld.mapCHitAdd, score 11.45 band A
 0x00155FF8	mapWHitAdd	hd	hd: Raidou HD fld.mapWHitAdd, score 5.75 band C, hd-consensus: calls1 calls-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 5.8,7.8,5.8,5.8,5.8,5.8,7.8,5.8,5.8,5.8
@@ -1843,7 +1843,7 @@
 0x001678C0	mapLoadMistTexture	inferred	string: sdfDevLoadFileEx of /map/all/mist01.tmx or mist02.tmx and sdfTexSet; only caller mapFileLoad
 0x00167948	mefMistTexOnDataCheck	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD body: returns pMapMoya ? texHandle != 0 : 0, same as 0x15B410; replaces mapFileLoadSub7
 0x00167970	mapFileLoadSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001626B0, neighbour mapLoadMistTexture; called by mapFileLoad
-0x001679C0	mapLeaf22	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour mapLoadMistTexture; no named callee, caller or string
+0x001679C0	mefMistSetScroll	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=Raidou HD fld.mefMistSetScroll(scroll): stores the argument in pMapMoya->scroll (0x11018); after mefMistTexOnDataCheck and before the mefMistSetMode body (pipeFileLoadSub) as in HD; replaces mapLeaf22
 0x001679D8	pipeFileLoadSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour pipeFreeLink; called by mapFileLoad
 0x00167A10	pipeFileLoadSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00156778, neighbour pipeFreeLink; called by mapFileLoad
 0x00167A28	mefMistUpdate	inferred	method=derived-role; p=na; tier=B; source=derived; evidence=HD: if fRun { EmitParticle; UpdateParticle; cnt++ }, same shape; replaces pipeFreeLink
@@ -2767,14 +2767,14 @@
 0x001A2D10	itfDrawMiscFont	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfDrawMiscFont score 8.8 flag I: calls1 prev calls-of-match votes2 st1:call r1+r2
 0x001A2DD8	itfDrawMiscFontAlpha	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfDrawMiscFontAlpha score 7.9 flag I: prev gap10/7 st1:gap r1+r2
 0x001A2EB8	itfDrawMiscHelp	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD itf.itfDrawMiscHelp score 4.7 flag I: arity8>4 calls3 calls-of-match votes4 st2:call r2-only
-0x001A3010	itfLeaf15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfDrawMiscHelp; no named callee, caller or string
+0x001A3010	itfDrawMiscGauge	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD itf.itfDrawMiscGauge(x, y, z, w, h, num, max, color, u8 alpha): same nine arguments (alpha on the stack), skips when num <= 0; itfCallSetOt3 (HD itfDrawMiscGauge2, mode first) draws a box by mode and tail-calls it with its other arguments; after itfDrawMiscHelp as in HD; replaces itfLeaf15
 0x001A3130	itfCallSetOt3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfDrawMiscHelp; calls eglSetOt
 0x001A3248	itfCallDrawBoxLine	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfDrawMiscHelp; calls cmpDrawBoxLine
 0x001A3470	itfDrawFanBezierPt3	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD itf.c itfDrawFanBezierPt3(x0..vy, rgba0..2, ot): same itfGetDivBezierPt3(x1,y1,x2,y2,vx,vy,0.1) count, per-step itfGetRatePosBezierPt3 and eglLinkTri fan with lerped rgba; ot unused in both; replaces itfCallLinkTri
 0x001A3770	itfCalcSpriteWidthSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfGetFigure; called by itfCalcSpriteWidth
 0x001A37B0	itfGetFigure	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfGetFigure score 8.1 flag I: calls2 calls-of-match votes3 st1:call r1+r2
 0x001A3800	itfGetFigureNum	hd-inferred	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD itf.itfGetFigureNum score 6.8 flag I: calls1 next~ calls-of-match votes2 st1:call r1+r2
-0x001A3860	itfLeaf16	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0018CE10, neighbour itfGetFigureNum; no named callee, caller or string
+0x001A3860	itfSwapRGBA	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD itf.itfSwapRGBA: byte-swaps a u32 colour; between itfGetFigureNum and itfCalcSpriteWidth as in HD; replaces itfLeaf16
 0x001A3890	itfCalcSpriteWidth	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.itfCalcSpriteWidth score 9.1 flag I: calls2 calls-of-match votes2 st1:call r1+r2
 0x001A3930	itfGetRatePosBezierPt3	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD itf.c body is the same quadratic Bezier (clamped rate, (1-r)^2, 2r(1-r), r^2) with the same 9-argument signature; callers itfCallDrawBoxLine, itfCallLinkTri; replaces itfLeaf17
 0x001A39B0	itfGetVectorPosBezierPt3	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD name of the inverse: solves the control point from a point at rate; HD body is empty, signature next to itfGetRatePosBezierPt3; caller mapCallCutGetCam; replaces itfLeaf18
@@ -6616,7 +6616,7 @@
 0x002606D0	effEditTwoDimensionalScaleTrack	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BB118, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00260700	effEditTwoDimensionalRotationTrack	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BB148, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00260730	effEditMScaleTrack	inferred	dds-decomp DDS2 name via SLUS_211.52 0x00302568, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00260760	effLeaf401	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00242308, neighbour effPollAndQueueCopiedFileResource; no named callee, caller or string
+0x00260760	effResetAlphaKeySelection	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=sets effColorEditSelectedAlphaKey = 1; release callback of the 16 ALPHA and FADE items of the effect editor menus, where the RGB items use effResetMappingFlags (which also sets it); replaces effLeaf401
 0x00260770	effFunc20	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00242308, neighbour effPollAndQueueCopiedFileResource; no named callee, caller or string
 0x00260C98	effEditSPolygonAlphaTrack	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BB6B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00260CB8	effEditDoPolygonFadeTrack	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BB6D0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -7324,7 +7324,7 @@
 0x00294458	sbtlCallBtlCheckEquationProc	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCheckEquationProc
 0x00294538	sbtlSetChkskl	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD sBtlActAI.sBtlSetChkskl score 3.6 flag I: prev~ next gap1/1 st2:gap r2-only
 0x00294570	SetChkskl	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlActAI.SetChkskl score 2.0 flag -: next~ gap2/3 st2:gap r2-only
-0x002945B0	sbtlLeaf65	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
+0x002945B0	sbtlResetChkskl	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sBtlActAI.sBtlResetChkskl: clears bit sklid of chkskl; right after SetChkskl as in HD, mirrors sbtlResetUseskl; replaces sbtlLeaf65
 0x002945F0	sbtlSetUseskl	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlActAI.sBtlSetUseskl score 2.6 flag I: next gap3/4 st2:gap r2-only
 0x00294628	SetUseskl	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlActAI.SetUseskl score 3.5 flag -: calls1 gap5/42 votes2 st2:gap r2-only
 0x00294668	sbtlResetUseskl	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD sBtlActAI.sBtlResetUseskl score 2.6 flag I: next gap5/6 st2:gap r2-only
@@ -10727,7 +10727,7 @@
 0x0039A938	shpDrawProcess	hd	hd: Raidou HD shpMain.shpDrawProcess, score 7.95 band B
 0x0039AE40	datGetItemNumEquipMinus	hd	hd: Raidou HD shpMain.datGetItemNumEquipMinus, score 9.6 band B
 0x0039AE58	shpSetZoom	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD shpMain.shpSetZoom score 11.3 flag I: calls3 next~ calls-of-match votes4 st1:call r1+r2
-0x0039AF80	shpLeaf7	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0032F2B8, neighbour shpSetZoom; no named callee, caller or string
+0x0039AF80	shpSetDrawNewspaper	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD shpMain.shpSetDrawNewspaper(bDraw): sets or clears bit 0x200 of the shop work stat (0x24C); between shpSetZoom and shpSetStatDraw as in HD; replaces shpLeaf7
 0x0039AFB8	shpSetStatDraw	hd-inferred	hd: Raidou HD shpMain.shpSetStatDraw, score 8.2 band B
 0x0039B010	shpGetSelectItemID	hd-inferred	hd: Raidou HD shpMain.shpGetSelectItemID, score 6.1 band C, hd-consensus: calls1 next gap2/1 st1:gap r1+r2; 10/10 fold runs agree, fold scores 7.1,7.1,6.1,6.1,7.1,6.1,6.1,6.1,6.1,6.1
 0x0039B050	shpGetModelHandle	hd-inferred	hd: Raidou HD shpMain.shpGetModelHandle, score 8.0 band B, hd-ab: calls2 next gap3/2 st1:gap r1+r2

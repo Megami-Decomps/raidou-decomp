@@ -22,6 +22,6 @@
 #include "motion.h"
 #include "EventBit.h"
 
-void mapLeaf19(s16 uniq, f32 x, f32 y, f32 z, f32 r) {
+void mapObjPointAdd(s16 uniq, f32 x, f32 y, f32 z, f32 r) {
     mapObjPointAdd2(uniq, -1, x, y, z, r);
 }

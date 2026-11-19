@@ -277,7 +277,7 @@ INCLUDE_ASM(const s32, "code_0032F2B8", datGetItemNumEquipMinus);
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpSetZoom);
 
-INCLUDE_ASM(const s32, "code_0032F2B8", shpLeaf7);
+INCLUDE_ASM(const s32, "code_0032F2B8", shpSetDrawNewspaper);
 
 INCLUDE_ASM(const s32, "code_0032F2B8", shpSetStatDraw);
 
