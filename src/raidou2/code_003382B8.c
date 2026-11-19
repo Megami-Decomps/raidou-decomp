@@ -476,7 +476,7 @@ INCLUDE_ASM(const s32, "code_003382B8", objUpdateMessageSub);
 
 INCLUDE_ASM(const s32, "code_003382B8", objFunc);
 
-INCLUDE_ASM(const s32, "code_003382B8", getLeaf2);
+INCLUDE_ASM(const s32, "code_003382B8", SoundSmgLoad);
 
 INCLUDE_ASM(const s32, "code_003382B8", SoundSmgLoadChk);
 

@@ -265,7 +265,6 @@
 0x00122958	datCallGetIntPara5	func	tier=D	derived-callee	na	unit code_001228B0, neighbour datCommand_DEVIL_OUT_AFTER; calls scrGetIntPara
 0x00122AB8	datCallGetIntPara6	func	tier=D	derived-callee	na	unit code_001228B0, neighbour datCommand_GET_STOCK_MAX; calls scrGetIntPara
 0x00122C50	dds3CallGrAllocPacketBuff9	func	tier=D	derived-callee	na	unit kernel/dds3GlobalWork; calls sdfGrAllocPacketBuff
-0x00123B20	dds3Leaf29	func	tier=D	derived-unit	na	unit code_00123B18, neighbour dds3NullDrawProc; no named callee, caller or string
 0x00123E58	evtLoadResourcePair	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0024D990, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x00123E88	evtReleaseResourcePairHandle	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0024D9C0, masked-words-identical (order map pair); dds-decomp: no provenance row
 0x00123EE8	fclChangeMessageWindowAlpha	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD fclMisc.fclChangeMessageWindowAlpha, score 7.3 band B; replaces evtSetMessageWindowPageValue: dds-decomp DDS1 name via SLUS_209.74 0x0024DA20, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -3825,7 +3824,6 @@
 0x002EB5A8	getCallExistProcess	func	tier=D	derived-callee	na	unit code_002D7950, neighbour getID; calls dds3ExistProcess
 0x002EB610	getCallGetProcessStat	func	tier=D	derived-callee	na	unit code_002D7950, neighbour getID; calls dds3GetProcessStat
 0x002EB660	getCallStartGame	func	tier=D	derived-callee	na	unit code_002D7950, neighbour getID; calls mselStartGame
-0x002EB7A8	getLeaf2	func	tier=D	derived-unit	na	unit code_002D7950, neighbour getID; no named callee, caller or string
 0x002EB8A8	getLeaf3	func	tier=D	derived-unit	na	unit code_002D7950, neighbour getID; no named callee, caller or string
 0x002EB9D8	getLmpMainProc	func	tier=D	derived-string	na	unit code_002D7950, neighbour getID; string 'lmpMainProc'
 0x002EBE88	getCallInitializeLmap	func	tier=D	derived-callee	na	unit code_002D7950, neighbour getID; calls Initialize_lmap
@@ -17547,6 +17545,7 @@
 0x00122A70	datCommand_GET_STOCK_MAX	func	tier=C	hd-d	0.53 (n=98)	Raidou HD dat.datCommand_GET_STOCK_MAX score 4.2 flag I: calls1 prev gap3/5 st1:gap r1-only
 0x00122B88	datCalcMagMax	func	tier=C	hd-d	0.53 (n=98)	Raidou HD dat.datCalcMagMax score 4.0 flag I: calls1 callers-of-match-uniq st1:call r1-only
 0x00122BB0	datCommand_INC_STOCK	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD dat.datCommand_INC_STOCK score 4.5 flag I: calls1 next gap3/5 st1:gap r1-only
+0x00123B20	fclEncycRegist	func	tier=C	derived-derived-role	na	Raidou HD fclMisc.fclEncycRegist(punit, overwrite): returns -1; right before fclSetModelLight and fclLoadStage as in HD; replaces dds3Leaf29
 0x00124298	fclChkMessageInvalid	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fclMisc.fclChkMessageInvalid score 5.3 flag R: prev next~ gap1/1 st1:gap r1+r2
 0x001243C8	fclGetWorkValue	func	tier=C	derived-derived-role	na	reads fclWorkValue[i] clamped to 15, the getter after fclSetWorkValue (same clamp as fclCallGetIntPara2); replaces fclLeaf5
 0x00124DA8	fclSetLink	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fclMenu.fclSetLink score 3.2 flag I: calls1 gap7/4 votes2 st2:gap r2-only
@@ -18149,6 +18148,7 @@
 0x002EA320	UpdateTargetVelocity_neko	func	tier=C	hd-both	0.71 (n=206)	Raidou HD neko.UpdateTargetVelocity score 4.6 flag -: calls1 calls-of-match st1:call r1+r2
 0x002EB0B0	ListLinkSprite	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD lmap.ListLinkSprite score 5.8 flag -: calls2 calls-of-match st1:call r1-only
 0x002EB140	ListStart	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD lmap.ListStart score 5.0 flag -: calls2 calls-of-match st1:call r1-only
+0x002EB7A8	SoundSmgLoad	func	tier=C	derived-derived-role	na	Raidou HD lmap.SoundSmgLoad(map): gSoundSmgLoadId = map, gSoundSmgLoadPhase = 0 (the two words SoundSmgLoadChk reads); right before SoundSmgLoadChk as in HD; replaces getLeaf2
 0x002EB8E8	getID	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD fclMsg.getID score 3.0 flag -: calls1 calls-of-match st1:call r1-only
 0x002EB928	ChkWarp	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD lmap.ChkWarp score 3.8 flag -: calls2 calls-of-match st1:call r2-disagree:0x34c858
 0x002EBAE8	Initialize_lmap	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD lmap.Initialize score 3.0 flag -: calls3 callers-of-match-uniq votes4 st1:call r2-disagree:0x34caf0

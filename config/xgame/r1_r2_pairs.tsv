@@ -990,7 +990,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00123750	0x00127B70	dds3PrimDebugTextBox	no	yes	asm/raidou1/kernel/dds3DebugStuff.s	asm/raidou2/kernel/dds3DebugStuff.s	unique-reloc-hash
 0x00123920	0x00127D40	dds3PrimDebugTextBoxRGB	no	no	asm/raidou1/kernel/dds3DebugStuff.s	asm/raidou2/kernel/dds3DebugStuff.s	unique-masked-hash
 0x00123B18	0x00127F38	dds3NullDrawProc	yes	yes	asm/raidou1/code_00123B18.s	asm/raidou2/code_00127F38.s	masked-hash-in-gap
-0x00123B20	0x00127F40	dds3Leaf29	yes	yes	asm/raidou1/code_00123B18.s	asm/raidou2/code_00127F38.s	masked-hash-in-gap
+0x00123B20	0x00127F40	fclEncycRegist	yes	yes	asm/raidou1/code_00123B18.s	asm/raidou2/code_00127F38.s	masked-hash-in-gap
 0x00123B28	0x00127F48	fclSetModelLight	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00123B88	0x00127FA8	fclLoadStage	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
 0x00123BF8	0x00128018	fclFilterOFF	no	yes	asm/raidou1/facility/fclMisc.s	asm/raidou2/facility/fclMisc.s	unique-reloc-hash
@@ -7581,7 +7581,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002EB440	0x0034C2A0	getListProcessStartSub	no	yes	asm/raidou1/code_002D7950.s	asm/raidou2/code_003382B8.s	unique-reloc-hash
 0x002EB488	0x0034C2E8	ListProcessStart	no	yes	asm/raidou1/code_002D7950.s	asm/raidou2/code_003382B8.s	masked-hash-in-gap
 0x002EB610	0x0034C488	getCallGetProcessStat	no	yes	asm/raidou1/code_002D7950.s	asm/raidou2/code_003382B8.s	masked-hash-in-gap
-0x002EB7A8	0x0034C568	getLeaf2	no	yes	asm/raidou1/code_002D7950.s	asm/raidou2/code_003382B8.s	masked-hash-in-gap
+0x002EB7A8	0x0034C568	SoundSmgLoad	no	yes	asm/raidou1/code_002D7950.s	asm/raidou2/code_003382B8.s	masked-hash-in-gap
 0x002EB7B8	0x0034C578	SoundSmgLoadChk	no	yes	asm/raidou1/code_002D7950.s	asm/raidou2/code_003382B8.s	masked-hash-in-gap
 0x002EB850	0x0034C758	Start_lmap	no	no	asm/raidou1/code_002D7950.s	asm/raidou2/code_003382B8.s	unique-masked-hash
 0x002EBAA8	0x0034CAB0	LoadFile	no	yes	asm/raidou1/code_002D7950.s	asm/raidou2/code_003382B8.s	unique-reloc-hash

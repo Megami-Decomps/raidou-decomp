@@ -6,6 +6,6 @@ u32 dds3NullDrawProc(void)
     return 0;
 }
 
-s32 dds3Leaf29(void) {
+s32 fclEncycRegist(void) {
     return -1;
 }

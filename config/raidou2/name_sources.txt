@@ -1149,7 +1149,7 @@
 0x00127B70	dds3PrimDebugTextBox	inferred	SMT3HD name via SLUS_209.11 0x00118608, reloc-identical; map-agrees
 0x00127D40	dds3PrimDebugTextBoxRGB	inferred	SMT3HD name via SLUS_209.11 0x001187D8, unique-masked-hash; map-agrees
 0x00127F38	dds3NullDrawProc	inferred	SMT3HD name via SLUS_209.11 0x001189D0, shared-hash-in-run; map-agrees
-0x00127F40	dds3Leaf29	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00123B18, neighbour dds3NullDrawProc; no named callee, caller or string
+0x00127F40	fclEncycRegist	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD fclMisc.fclEncycRegist(punit, overwrite): returns -1; right before fclSetModelLight and fclLoadStage as in HD; replaces dds3Leaf29
 0x00127F48	fclSetModelLight	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD fclMisc.fclSetModelLight score 8.4 flag I: calls2 namediff next callers-of-match votes3 st1:call r1+r2; replaces fcl_213998: smt3-decomp C name via SLUS_209.11 0x00213998, unique-masked-hash-c; map-agrees
 0x00127FA8	fclLoadStage	inferred	SMT3HD name via SLUS_209.11 0x002139F8, reloc-identical; map-agrees
 0x00128018	fclFilterOFF	hd	hd: Raidou HD fclMisc.fclFilterOFF, score 11.2 band A
@@ -9394,7 +9394,7 @@
 0x0034C4D8	objBtlFuncKatanaSBtlMenuSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_003382B8, neighbour objDel; called by sbtlFuncKatana_sbtlMenu
 0x0034C4F0	objUpdateMessageSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_003382B8, neighbour objDel; called by UpdateMessage
 0x0034C508	objFunc	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_003382B8, neighbour objDel; no named callee, caller or string
-0x0034C568	getLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_002D7950, neighbour getID; no named callee, caller or string
+0x0034C568	SoundSmgLoad	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD lmap.SoundSmgLoad(map): gSoundSmgLoadId = map, gSoundSmgLoadPhase = 0 (the two words SoundSmgLoadChk reads); right before SoundSmgLoadChk as in HD; replaces getLeaf2
 0x0034C578	SoundSmgLoadChk	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD lmap.SoundSmgLoadChk score 8.5 flag -: calls2 callers-of-match votes3 st1:call r1+r2
 0x0034C610	objEffectOutSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_003382B8, neighbour objDel; called by EffectOut
 0x0034C630	objEffectOutSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_003382B8, neighbour objDel; called by EffectOut

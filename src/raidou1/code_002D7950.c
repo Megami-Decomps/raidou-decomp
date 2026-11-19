@@ -616,7 +616,7 @@ s32 getCallGetProcessStat(void) {
 
 INCLUDE_ASM(const s32, "code_002D7950", getCallStartGame);
 
-INCLUDE_ASM(const s32, "code_002D7950", getLeaf2);
+INCLUDE_ASM(const s32, "code_002D7950", SoundSmgLoad);
 
 INCLUDE_ASM(const s32, "code_002D7950", SoundSmgLoadChk);
 
