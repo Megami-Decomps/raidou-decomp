@@ -110,6 +110,7 @@ s32 datCallCreateDevilUnitEx(u32 itemId, s32 nums);
 s32 datCallGetStockDevilID2(u32 id);
 #ifdef VERSION_RAIDOU2
 s32 datGetStockDevilIndex(u32 id);
+s16 datRefDDS3GBWK20(s16 id);
 #endif
 s32 datCheckSameDevil(u32 id);
 s32 datAllReleaseScriptSub(void);

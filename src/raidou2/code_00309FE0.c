@@ -9,6 +9,19 @@
 #include "sBtlItem.h"
 #include "fclMisc.h"
 #include "sBtlUnit.h"
+#include "newdata.h"
+#include "EventBit.h"
+#include "sBtlSkill.h"
+#include "sbtlDMG.h"
+#include "sbtlActAI.h"
+#include "code_r1_0027CBE8.h"
+#include "code_0027A1E8.h"
+#include "model.h"
+#include "motion.h"
+#include "sBtlAI.h"
+#include "ps2asm.h"
+#include "sBtlSM.h"
+#include "sBtlEff.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -28,7 +41,19 @@ INCLUDE_ASM(const s32, "code_00309FE0", SetLightChg);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl21);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlSetCmbBfrPos);
+void sbtlSetCmbBfrPos(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *pUnit;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        pUnit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (pUnit != NULL) {
+            pUnit->bOldDispOff = (pUnit->vstatus & 0x1000) != 0;
+            SDF_VU0_LOADVECTOR(&pUnit->pos);
+        SDF_VU0_STOREVECTOR(&pUnit->vPosBfrCmb);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlSetPosCmbBfrPos);
 
@@ -152,7 +177,32 @@ INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData5);
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallBtlCreateTargetList);
 
-INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetNowSummonerRank);
+s32 cmpCallGetNowSummonerRank(s32 flag) {
+    s32 rank = cmpGetNowSummonerRank();
+    struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    s32 per;
+    s32 rnd;
+
+    if (GetRand(100) < 30) {
+        return 1;
+    }
+    per = rank * 4 - wk->unit.level + 40;
+    if (per > 85) {
+        per = 85;
+    }
+    if (flag == 0) {
+        rnd = GetRand(100);
+        if (rnd < per) {
+            return 1;
+        }
+    } else {
+        rnd = GetRand(100);
+        if (per < rnd) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallBtlSearchUnitID);
 
@@ -162,7 +212,19 @@ INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData7);
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData8);
 
-INCLUDE_ASM(const s32, "code_00309FE0", cmpCallBtlSearchUnitID2);
+s32 cmpCallBtlSearchUnitID2(void) {
+    struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+
+    if (wk->unit.devilId == 359 && !evtBitCheck(8104)) {
+        wk_sbtl->field42A8 = 198;
+        return 1;
+    }
+    if (wk->unit.devilId == 360 && !evtBitCheck(8104)) {
+        wk_sbtl->field42A8 = 199;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpTALKRECOVERY);
 
@@ -180,7 +242,15 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData7);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData8);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlCheckLoopMotion);
+s32 sbtlCallBtlCheckLoopMotion(struct SBTLUNIT_WORK *wk) {
+    if (wk->hModel == NULL) {
+        return 1;
+    }
+    if (sbtlCheckLoopMotion(wk, wk->motionID)) {
+        return 1;
+    }
+    return wk->hModel->first->stat == 5;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData9);
 
@@ -280,15 +350,80 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData25);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData26);
 
+/* NON_MATCHING: 2 of 12 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlRefDDS3GBWK4(s32 id) {
+    s32 index = id >= 209 ? id - 209 : id;
+
+    if (id < 433) {
+        return DDS3_GBWK->devilWork[index].field6;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefDDS3GBWK4);
+#endif
 
+/* NON_MATCHING: 3 of 12 words match.  */
+#ifdef NON_MATCHING
+void sbtlRefDDS3GBWK5(s32 id, s32 value) {
+    s32 index = id >= 209 ? id - 209 : id;
+
+    if (id < 433) {
+        DDS3_GBWK->devilWork[index].field6 = value;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefDDS3GBWK5);
+#endif
 
+/* NON_MATCHING: 1 of 12 words match.  */
+#ifdef NON_MATCHING
+u16 sbtlGetDevilHuumaItem(s32 id) {
+    s32 index = id >= 209 ? id - 207 : id;
+
+    if (id < 433) {
+        return DDS3_GBWK->devilWork[index].huumaItem;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlGetDevilHuumaItem);
+#endif
 
+/* NON_MATCHING: 3 of 12 words match.  */
+#ifdef NON_MATCHING
+void sbtlRefDDS3GBWK6(s32 id, s32 value) {
+    s32 index = id >= 209 ? id - 207 : id;
+
+    if (id < 433) {
+        DDS3_GBWK->devilWork[index].huumaItem = value;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefDDS3GBWK6);
+#endif
 
+/* NON_MATCHING: 20 of 29 words match.  */
+#ifdef NON_MATCHING
+void sbtlCallBtlSearchUnitID15(s32 add) {
+    struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    SBTL_DEVIL_DATA *data = sbtlIfDrawActionSub(wk->unit.devilId);
+    s16 *value;
+    s32 sum;
+
+    if (wk != NULL) {
+        value = &DDS3_GBWK->devilWork[data->field82].field2;
+        sum = *value + add;
+        if (sum > 50) {
+            sum = 50;
+        }
+        *value = sum;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlSearchUnitID15);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlSearchUnitID16);
 
@@ -337,7 +472,22 @@ s32 nbCallGetProcessData13(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", nbCallGetProcessData14);
+s32 nbCallGetProcessData14(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+
+    if (slCallGetProcessData7(1) == 0) {
+        return 1;
+    }
+    wk->field16 = evtGetCapturedWindowPanelValue();
+    if (wk->field46 != 0) {
+        wk->field1A = wk->field1C;
+        return 1;
+    }
+    wk->field46 = 0;
+    wk->field1A = wk->field1C;
+    mapMenuStart();
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", nbCallGetProcessData15);
 
@@ -458,17 +608,77 @@ INCLUDE_ASM(const s32, "code_00309FE0", slCallGetProcessData9);
 
 INCLUDE_ASM(const s32, "code_00309FE0", slCallGetProcessData10);
 
-INCLUDE_ASM(const s32, "code_00309FE0", slCallBtlSearchUnitID);
+s32 slCallBtlSearchUnitID(void) {
+    struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    SBTL_DEVIL_DATA *data = sbtlIfDrawActionSub(wk->unit.devilId);
+    sdatUnitWork_t *stock;
+    s32 i;
+
+    for (i = 0; i < wk_sbtl->field64C; i++) {
+        stock = sbtlRefDDS3GBWK2(i);
+        if (stock != NULL && stock->devilId == data->field82) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", slRefSbtl);
 
 INCLUDE_ASM(const s32, "code_00309FE0", slCallBitCheck2);
 
-INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlSearchUnitID);
+s32 trmCallBtlSearchUnitID(void) {
+    struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    struct SBTLUNIT_WORK *partner;
+    SBTL_STAGE_DATA *stage;
 
-INCLUDE_ASM(const s32, "code_00309FE0", trmCallGetProcessData);
+    if (wk_sbtl->field42C0 == 4) {
+        return 1;
+    }
+    stage = &sbtlData100[wk_sbtl->stageNo];
+    if (wk_sbtl->battleMode != 0 && wk_sbtl->battleMode != 2) {
+        return 0;
+    }
+    if (stage->flags & 6) {
+        return 0;
+    }
+    partner = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    if (partner != NULL && wk_sbtl->field42C0 != 3 && partner->field6E9) {
+        sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_HUUMAMISS_NORMAL, SKLID_NONE);
+        return 0;
+    }
+    return slCallBitCheck2(partner->unit.devilId, 0) == 0;
+}
 
-INCLUDE_ASM(const s32, "code_00309FE0", trmBtlAnalyzeMeisiSub);
+s32 trmCallGetProcessData(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    struct SBTLUNIT_WORK *unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    SBTL_DEVIL_DATA *data = sbtlIfDrawActionSub(unit->unit.devilId);
+    s32 index = data->field82;
+
+    if (DDS3_GBWK->devilWork[index].field0 != 0 && !wk_sbtl->field42DD) {
+        if (DDS3_GBWK->devilWork[index].field0 == 1) {
+            wk->field98 = 1;
+        }
+        if (DDS3_GBWK->devilWork[index].field0 == 2) {
+            wk->field98 = 2;
+        }
+        if (DDS3_GBWK->devilWork[index].field0 == 4) {
+            wk->field98 = 4;
+        }
+        if (DDS3_GBWK->devilWork[index].field0 == 3) {
+            wk->field98 = 3;
+        }
+        DDS3_GBWK->devilWork[index].field0 = 0;
+        return 0;
+    }
+    wk->field98 = 0;
+    return 1;
+}
+
+s32 trmBtlAnalyzeMeisiSub(s16 id) {
+    return datRefDDS3GBWK20(id);
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", trmLeaf);
 
@@ -494,13 +704,41 @@ INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlSearchUnitID3);
 
 INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlSearchUnitID4);
 
-INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlClearHitC);
+void trmCallBtlClearHitC(struct SBTLUNIT_WORK *wk) {
+    if (wk->mode < 5 || (wk->flg & 0x800)) {
+        return;
+    }
+    sbtlClearHitC(wk_sbtl->hitList, wk);
+    sbtlForceReset(wk_sbtl->effList, wk);
+    sbtlResetAAI(wk);
+    wk->model->dataflg = 0;
+    sbtlResetAction_Flag(wk);
+    if (wk->field1A0 == wk_sbtl->targetUnitID) {
+        sbtlResetAction(wk);
+    } else {
+        sbtlSetAIWkStat(wk);
+        wk->aiwk->mode = 0;
+        ResetAction(wk, 0);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlCheckReturnUnit);
 
 INCLUDE_ASM(const s32, "code_00309FE0", ChangeTarget_BSHelper_sbtlAI);
 
-INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlCreateUnitList);
+struct SBTLUNIT_LISTWORK *trmCallBtlCreateUnitList(u8 group) {
+    struct SBTLUNIT_LISTWORK *list = sbtlCreateUnitList(48);
+    struct SBTLUNIT_WORK *pUnit;
+    s32 i;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        pUnit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (pUnit != NULL && (pUnit->field414 & 0x3F) == group && !(pUnit->flg & 0x1000) && sbtlCheckDamageTarget(pUnit)) {
+            sbtlEntryUnitList(list, pUnit);
+        }
+    }
+    return list;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", SetBSHelper);
 
@@ -514,7 +752,33 @@ INCLUDE_ASM(const s32, "code_00309FE0", trmCallBtlSetMode3);
 
 INCLUDE_ASM(const s32, "code_00309FE0", evtCallBtlSearchUnitID);
 
+/* NON_MATCHING: 35 of 41 words match.  */
+#ifdef NON_MATCHING
+void evtCallMemset3(s32 index, s32 value) {
+    s32 flags[4];
+
+    memset(flags, 0, sizeof(flags));
+    if (index != 0) {
+        flags[index - 1] = value;
+    } else {
+        flags[2] = value;
+        flags[1] = value;
+        flags[0] = value;
+    }
+    if (flags[1]) {
+        wk_sbtl->field42CB = 1;
+    } else {
+        wk_sbtl->field42CB = 0;
+    }
+    if (flags[1]) {
+        wk_sbtl->field42CC = 1;
+    } else {
+        wk_sbtl->field42CC = 0;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", evtCallMemset3);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", evtCallMemset4);
 
@@ -526,9 +790,30 @@ INCLUDE_ASM(const s32, "code_00309FE0", evtCallGetProcessData);
 
 INCLUDE_ASM(const s32, "code_00309FE0", evtCallGetProcessData2);
 
-INCLUDE_ASM(const s32, "code_00309FE0", evtCallBtlSearchUnitID2);
+void evtCallBtlSearchUnitID2(void) {
+    struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    f32 dz = wk_sbtl->camera.camerapos.z - wk->pos.z;
 
-INCLUDE_ASM(const s32, "code_00309FE0", evtCallGetProcessData3);
+    if (dz < 0.0f) {
+        dz = -dz;
+    }
+    if (dz < 60.0f) {
+        wk->vstatus |= 0x1000;
+    } else {
+        wk->vstatus &= ~0x1000;
+    }
+}
+
+void evtCallGetProcessData3(void) {
+    sbtlKaiwa_t *kwk = dds3GetProcessData(inputpanel_id2);
+    struct SBTLUNIT_WORK *wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+
+    if (wk != NULL && kwk->fieldAB && sbtlCheckMotionNo(wk, SBTLUNIT_MOTION_KIKAN) && sbtlCallBtlCheckLoopMotion(wk)) {
+        wk->vstatus |= 0x2000000;
+        sbtlSetMotion_sbtlUnit(wk, 0, 6, 0, 2);
+        kwk->fieldAB = 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", evtKAIWANoEnemy);
 
@@ -556,7 +841,25 @@ void evtMoonShutdown(dds3ProcessID_t *id) {
     inputpanel_id2 = NULL;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", evtCallGetProcessData4);
+s32 evtCallGetProcessData4(dds3ProcessID_t *pid) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(pid);
+    s32 id;
+    s32 no;
+
+    if (wk->fieldAA) {
+        id = itfMenuGetSelectID(wk->menuPID);
+        id = cmpCallGetProcessData10Work[id];
+        if (id == 100) {
+            no = 1;
+        } else if (id == 900) {
+            no = 2;
+        } else {
+            no = id + 3;
+        }
+        sbtlHelp(5, no, 0xFF);
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpPartyAnimFunc);
 
@@ -754,7 +1057,24 @@ void sbtlLeaf42(void) {
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlFirstSummonTextSet);
 
+/* NON_MATCHING: 20 of 24 words match.  */
+#ifdef NON_MATCHING
+void sbtlLeaf43(sbtlSummonText_t *text) {
+    if (text->type == 1) {
+        text->sprNo = text->count + 16;
+        text->field58 = 13;
+        text->field44 = 80;
+        text->field48 = -10;
+        text->field3C = 1.5f;
+        text->hSpr = sbtlData135[0];
+        text->field60 = 0;
+        text->field40 = 0;
+        text->field64 = 0.0f;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlLeaf43);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlSearchUnitID18);
 
@@ -803,7 +1123,21 @@ s32 sbtlBtlFirstSummonTextSetSub(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", Add_AW_MagWait);
+void Add_AW_MagWait(s32 type, s32 count) {
+    s32 i;
+
+    if (!sbtlBtlFirstSummonTextSetSub(type, 0, 0, 0, count)) {
+        return;
+    }
+    if (count > 10) {
+        count = 10;
+    }
+    for (i = 0; i < count; i++) {
+        if (!sbtlBtlFirstSummonTextSetSub(type, 0, 0, 0, 0)) {
+            return;
+        }
+    }
+}
 
 datSword_t *sbtlDat(void) {
     return &datData20[wk_sbtl->fieldE84];
@@ -836,7 +1170,29 @@ INCLUDE_ASM(const s32, "code_00309FE0", ResetBtlParam);
 
 INCLUDE_ASM(const s32, "code_00309FE0", SkillChkUseUnit);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl15);
+s32 sbtlCallBtlGetSkilltbl15(SKLID skillid) {
+    struct SBTLSKILLP_TBL *ptbl = sbtlGetSkilltbl(skillid);
+
+    if (ptbl == NULL) {
+        return 0;
+    }
+    if (ptbl->type & 0x1000) {
+        return 0;
+    }
+    if (ptbl->area & 0x100) {
+        return 0;
+    }
+    if (ptbl->flg & 0x20) {
+        return 0;
+    }
+    if (skillid == 134 || skillid == 1124 || skillid == 1169) {
+        return 0;
+    }
+    if (ptbl->flg & 0x200) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_RODATA(const s32, "code_00309FE0", sbtlCallSetOtTable);
 

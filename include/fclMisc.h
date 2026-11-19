@@ -23,5 +23,6 @@ void fclSetMessageInvalid(s32 Mode);
 s32 fclSetModelLight(char *pKeyWord, dds3Basic_t *Model);
 s32 fclStartSelMessage(s32 SelMsgNo);
 void fclUpdateMessage(void);
+s8 evtGetCapturedWindowPanelValue(void);
 
 #endif

@@ -99,15 +99,23 @@ typedef struct {
     dds3ProcessID_t *drawPID;
     dds3ProcessID_t *menuPID;
     sbtlKaiwaData_t *data;
-    u8 pad10[0xA];
+    u8 pad10[0x6];
+    s16 field16; /* evtGetCapturedWindowPanelValue */
+    u8 pad18[0x2];
     u16 field1A;
     u16 field1C;
     u8 pad1E[0x6];
     s16 kind;
     s16 field26;
-    u8 pad28[0x20];
+    u8 pad28[0x1E];
+    s16 field46;
     sbtlKaiwaMsg_t msg[3]; /* copies of the talk files */
-    u8 pad6C[0xF4 - 0x6C];
+    u8 pad6C[0x98 - 0x6C];
+    s16 field98; /* talk result from the devil table entry, 0 for none */
+    u8 pad9A[0xAA - 0x9A];
+    s8 fieldAA;
+    s8 fieldAB;
+    u8 padAC[0xF4 - 0xAC];
 } sbtlKaiwa_t;
 
 extern u8 evtKAIWANoEnemyData2;
@@ -123,6 +131,35 @@ s32 slCallGetProcessData8(s32 arg0);
 s32 nbCallGetProcessData13(void);
 s32 nbCallGetProcessData16(void);
 s32 trmSetProcessTerm(void);
+s32 slCallBitCheck2(s32 devilId, s32 arg1);
+s32 trmCallBtlSearchUnitID(void);
+s32 trmCallGetProcessData(void);
+struct SBTLUNIT_LISTWORK *trmCallBtlCreateUnitList(u8 group);
+extern struct sprHandle_t *sbtlData135[];
+extern s32 cmpCallGetProcessData10Work[];
+s32 mapMenuStart(void);
+s32 sbtlCheckLoopMotion(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
+struct sdatUnitWork_t *sbtlRefDDS3GBWK2(u32 index);
+void sbtlHelp(s32 type, s32 num, u8 alphaRate);
+s32 cmpGetNowSummonerRank(void);
+void sbtlResetAction_Flag(struct SBTLUNIT_WORK *wk);
+s32 trmBtlAnalyzeMeisiSub(s16 id);
+s32 sbtlRefDDS3GBWK4(s32 id);
+void sbtlRefDDS3GBWK5(s32 id, s32 value);
+s32 sbtlCallBtlCheckLoopMotion(struct SBTLUNIT_WORK *wk);
+void sbtlLeaf43(sbtlSummonText_t *text);
+void evtCallBtlSearchUnitID2(void);
+void sbtlCallBtlSearchUnitID15(s32 add);
+s32 nbCallGetProcessData14(void);
+void sbtlSetCmbBfrPos(void);
+s32 sbtlCallBtlGetSkilltbl15(SKLID skillid);
+void Add_AW_MagWait(s32 type, s32 count);
+s32 cmpCallBtlSearchUnitID2(void);
+s32 slCallBtlSearchUnitID(void);
+void evtCallMemset3(s32 index, s32 value);
+void evtCallGetProcessData3(void);
+s32 cmpCallGetNowSummonerRank(s32 flag);
+void trmCallBtlClearHitC(struct SBTLUNIT_WORK *wk);
 #endif
 
 #endif

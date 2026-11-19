@@ -290,9 +290,24 @@ extern s32 sbtlCheckModelDataLoadEnd_sbtlUnitData[];
 extern s32 sbtlBtlCheckMotionNoSubData[][56];
 
 #ifdef VERSION_RAIDOU2
+/* A kaja (stat change) slot of a unit; only the count is read so far. */
+typedef struct SBTLSKL_KAJA_WORK {
+    s32 m_cnt;
+    s32 field4;
+} SBTLSKL_KAJA_WORK;
+
+typedef struct SBTLSKL_BARRIER_WORK {
+    s32 field0;
+    s32 field4;
+    s32 size;
+    s32 fieldC;
+} SBTLSKL_BARRIER_WORK;
+
 /* Partial raidou2 layout: only the fields read so far are named, the rest is padding. */
 struct SBTLUNIT_WORK {
-    u8 pad000[0x40];
+    u8 pad000[0x20];
+    sdfVector4_t vPosBfrCmb; /* pos saved by sbtlSetCmbBfrPos */
+    u8 pad030[0x10];
     sdfVector4_t mv_spd;
     sdfVector4_t max_mvspd;
     sdfVector4_t mv_spdbk;
@@ -312,7 +327,13 @@ struct SBTLUNIT_WORK {
     s32 haveskill[16]; /* copied to unit.haveskill by sbtlCheckAutoSkill_Enemy */
     u8 pad3A0[0x3F4 - 0x3A0];
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
-    u8 pad40C[0x4AC - 0x40C];
+    u8 pad40C[0x4];
+    SBTLSKL_KAJA_WORK kaja[3][2];
+    u8 pad440[0x4];
+    s32 karnCnt;
+    u8 pad448[0x474 - 0x448];
+    SBTLSKL_BARRIER_WORK barrier;
+    u8 pad484[0x4AC - 0x484];
     u32 field4AC;
     u8 pad4B0[0x4BC - 0x4B0];
     s32 major;
@@ -384,11 +405,13 @@ struct SBTLUNIT_WORK {
     s8 light_buff[3];
     s8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;
-    u8 pad688[0x6C0 - 0x688];
+    u8 pad688[0x6A4 - 0x688];
+    s8 bOldDispOff; /* vstatus bit 0x1000 when sbtlSetCmbBfrPos ran */
+    u8 pad6A5[0x6C0 - 0x6A5];
     s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */
     u32 field6C4; /* bit 0x40 blocks hitback */
     u8 pad6C8[0x6E9 - 0x6C8];
-    u8 field6E9; /* set by trmSetProcessTerm */
+    s8 field6E9; /* set by trmSetProcessTerm */
     u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
     u8 pad6F5[0x740 - 0x6F5];

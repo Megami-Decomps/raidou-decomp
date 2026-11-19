@@ -28,11 +28,48 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlBtlCheckEnableUseSkillSub);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckEnableUseSkill);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlResetBtlMagicStatus);
+void sbtlResetBtlMagicStatus(struct SBTLUNIT_WORK *wk) {
+    s32 i;
+    s32 j;
+
+    if (wk == NULL) {
+        return;
+    }
+    if (wk->barrier.size != 0) {
+        wk->barrier.size = 0;
+        wk->barrier.field0 = 0;
+        wk->barrier.field4 = 0;
+        wk->barrier.fieldC = 0;
+        sbtlCheckBattlePara(wk);
+    }
+    for (i = 0; i < 3; i++) {
+        for (j = 1; j >= 0; j--) {
+            wk->kaja[i][j].m_cnt = 0;
+        }
+    }
+    wk->karnCnt = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetBothSide);
 
+/* NON_MATCHING: 45 of 46 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlUnit_CheckSummon_LoadExecOk_sub(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *pUnit;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        pUnit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (pUnit != NULL && (pUnit->field414 & 1) && !(pUnit->field414 & 0x80) && sbtlSearchReturn_Unit(pUnit)) {
+            pUnit->flg |= 0x10;
+            return 0;
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlUnit_CheckSummon_LoadExecOk_sub);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSummon_LoadExecOk);
 
@@ -133,7 +170,43 @@ INCLUDE_RODATA(const s32, "code_0027A1E8", sbtlSetVibeTable);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallGetActiveScene2);
 
+/* NON_MATCHING: 15 of 42 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCheckMove_BadStatus(struct SBTLUNIT_WORK *wk) {
+    if (wk_sbtl->flg2 & 0x20000000) {
+        return 0;
+    }
+    if (wk_sbtl->mode == 9) {
+        return 1;
+    }
+    if (wk->status == 34 || wk->status == 42 || wk->status == 10) {
+        return 0;
+    }
+    switch (sbtlGetBadStatus(&wk->unit)) {
+        case BST_STONE:
+        case BST_BOUDO:
+        case BST_MOUDOKU:
+        case BST_SLEEP:
+        case BST_DEAD:
+        case BST_RAND0:
+        case BST_BOYCOTT:
+            return 1;
+        case BST_CHARM:
+        case BST_PANIC:
+        case BST_MAHUU:
+        case BST_KIZETU:
+        case BST_GUN:
+        case BST_KANSEN:
+        case BST_HUUIN:
+        case BST_UNK18:
+        case BST_UNK19:
+            return 0;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckMove_BadStatus);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetRandomTarget);
 
@@ -688,11 +761,39 @@ s32 Proc_sbtlAI(SBTLAI_WORK *aiwk)
 
 INCLUDE_ASM(const s32, "code_0027A1E8", IsKaja);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", IsEnemyZenmetsu);
+s32 IsEnemyZenmetsu(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *pUnit;
+
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        pUnit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (pUnit != NULL && (pUnit->field414 & 2) && CheckLiveTarget(pUnit)) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlSetByct);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlProc_YoyakuEndChk);
+void sbtlProc_YoyakuEndChk(struct SBTLUNIT_WORK *wk) {
+    struct SBTLSKILLP_TBL *ptbl = sbtlGetSkilltbl(wk->aiwk->rsvSkl);
+
+    if (!sbtlCheckCost(wk, 0)) {
+        wk->aiwk->rsvTgt = -1;
+        wk->aiwk->rsvSkl = 0;
+        return;
+    }
+    if (ptbl->flg2 & 1) {
+        if (wk->aiwk->usedSkl == sbtlCallBtlGetSkilltbl23(wk->aiwk->rsvSkl, NULL)) {
+            wk->aiwk->rsvTgt = -1;
+            wk->aiwk->rsvSkl = 0;
+        }
+    } else if (wk->aiwk->usedSkl == wk->aiwk->rsvSkl) {
+        wk->aiwk->rsvSkl = 0;
+        wk->aiwk->rsvTgt = -1;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlProc_YoyakuEnd);
 
@@ -766,7 +867,31 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallReleaseScript2);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl13);
 
+/* NON_MATCHING: 41 of 48 words match.  */
+#ifdef NON_MATCHING
+void Init_sbtlScript(struct SBTLUNIT_WORK *wk) {
+    s32 i;
+
+    wk->aiwk->scrTargetCode = 0x20000;
+    wk->aiwk->scrSkillID = -1;
+    wk->aiwk->scrflag = 0;
+    wk->aiwk->act_p = 0;
+    wk->aiwk->scrStep = 0;
+    wk->aiwk->scrStep2 = 0;
+    wk->aiwk->scrStep3 = 0;
+    wk->aiwk->scrListID = -1;
+    for (i = 0; i < 5; i++) {
+        wk->aiwk->scrMagNum[i] = 0;
+        wk->aiwk->scrMagHp[i] = 0;
+        wk->aiwk->scrMagFlg[i] = 0;
+    }
+    if (!(wk_sbtl->scrFlag & 0x40000) && (wk->field414 & 1) && !(wk->field414 & 0x80) && wk_sbtl->battleMode != 3) {
+        wk->vstatus |= 0x2000000;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", Init_sbtlScript);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSetHITNONE);
 
@@ -774,7 +899,14 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlEncountInit);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlDeath);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", Delete_sbtlScript);
+void Delete_sbtlScript(struct SBTLUNIT_WORK *wk) {
+    s32 id = wk->aiwk->scrListID;
+
+    if (id != -1) {
+        wk_sbtl->scrUnitList[id] = NULL;
+        wk_sbtl->scrUnitNum--;
+    }
+}
 
 void sbtlBattleStart(SBTL_STAGE_DATA *stage)
 {
@@ -791,7 +923,15 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlBtlCheckBadStatusSBtlCalcSub);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckSkillCancel);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckEnshutuSummonUnit);
+s32 sbtlCheckEnshutuSummonUnit(struct SBTLUNIT_WORK *wk) {
+    if (wk == NULL || !(wk_sbtl->scrFlag & 0x40000)) {
+        return 0;
+    }
+    if ((wk->field414 & 1) && !(wk->field414 & 0x80) && wk_sbtl->battleMode != 3) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_RODATA(const s32, "code_0027A1E8", sbtlCheckSetHITNONETable);
 

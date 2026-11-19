@@ -15,7 +15,10 @@ typedef struct SBTLAI_WORK {
     s16 stat;
     u16 mode;
     u16 backmode;
-    u8 pad00A[0x5E - 0xA];
+    u8 pad00A[0x2];
+    u32 status;
+    s16 act_p;
+    u8 pad012[0x5E - 0x12];
     u8 bstside; /* bit 0: confused unit stays on its own side */
     u8 pad05F[0x64 - 0x5F];
     s32 syscnt_stop;
@@ -23,15 +26,40 @@ typedef struct SBTLAI_WORK {
     s8 scr_actcheckflg;
     u8 pad06D[0x3];
     u32 scrflag;
-    u8 pad074[0x84 - 0x74];
+    s32 scrcnt;
+    s32 cmpscrcnt;
+    s32 scrAutoCnt;
+    s32 scrCmpCnt;
     s32 scrStep;
-    u8 pad088[0xC0 - 0x88];
+    s32 scrStep2;
+    s32 scrStep3;
+    s32 scrListID; /* slot in wk_sbtl->scrUnitList, -1 for none */
+    f32 scrReactDist;
+    s32 scrReactSkillID;
+    s32 scrTargetCode;
+    s32 scrSkillID;
+    s16 scrMagHp[5];
+    s16 scrMagNum[5];
+    s8 scrMagFlg[5];
+    u8 pad0BD[0x3];
     s32 actcnt;
-    u8 pad0C4[0xE0 - 0xC4];
+    s32 cmpactcnt;
+    u32 cmndFrm;
+    u32 cmndFrmMax;
+    SKLID cmndSkl;
+    s32 cmndTgt;
+    s32 cmndStk;
+    s32 bCmndEnd;
     SKLID dfltOdrSkl;
-    u8 pad0E4[0xF8 - 0xE4];
+    s32 dfltOdrTgt;
+    s32 dfltOdrStk;
+    SKLID rsvSkl;
+    s32 rsvTgt;
+    s32 rsvStk;
     s32 atkCnt;
-    u8 pad0FC[0x118 - 0xFC];
+    s32 bFarOk;
+    SKLID usedSkl;
+    u8 pad104[0x118 - 0x104];
 } SBTLAI_WORK;
 #else
 /* AI state of a unit, 0x90 bytes, made by Create_sbtlAI. */

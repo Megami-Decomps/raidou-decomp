@@ -141,6 +141,14 @@ typedef struct {
 
 /* Shared persistent work ("GBWK"), laid out per version from its consumers.
  * unkXXXX fields are accessed at that offset with that width; the rest is unknown. */
+/* One devil entry of the raidou2 global work table at 0x4268. */
+typedef struct {
+    s16 field0;
+    s16 field2;
+    s16 huumaItem;
+    s16 field6;
+} dds3GbDevil_t;
+
 typedef struct
 {
 #ifdef VERSION_RAIDOU1
@@ -250,7 +258,8 @@ typedef struct
     /* 0x4264 */ u8 unk4264;
     /* 0x4265 */ u8 unk4265;
     /* 0x4266 */ u8 unk4266;
-    /* 0x4267 */ u8 unk4267[0x681];
+    /* 0x4267 */ u8 unk4267;
+    /* 0x4268 */ dds3GbDevil_t devilWork[0xD0];
     /* 0x48E8 */ u32 unk48E8;
     /* 0x48EC */ u16 unk48EC;
     /* 0x48EE */ u8 unk48EE[0x2];

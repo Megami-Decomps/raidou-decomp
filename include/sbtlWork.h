@@ -160,9 +160,24 @@ typedef struct HITEFFLIST {
 
 /* Battle text entry (0x80 bytes) in SBTL_WORK's textPool; type 0 is free. */
 typedef struct sbtlSummonText_t {
-    u8 pad00[0x30];
+    sdfVector4_t pos;
+    sdfVector4_t field10;
+    sdfVector4_t field20;
     s32 type;
-    u8 pad34[0x6C - 0x34];
+    f32 field34;
+    f32 field38;
+    f32 field3C;
+    s32 field40;
+    s32 field44;
+    s32 field48;
+    s32 count;
+    struct sprHandle_t *hSpr;
+    s32 sprNo;
+    s32 field58;
+    s32 field5C;
+    s32 field60;
+    f32 field64;
+    s32 unitID;
     struct sbtlSummonText_t *prev;
     struct sbtlSummonText_t *next;
     s32 field74;
@@ -214,7 +229,8 @@ typedef struct SBTL_WORK {
     struct SBTLUNIT_LISTWORK *tgtList;
     u8 pad59C[0x5A0 - 0x59C];
     struct SBTLUNIT_LISTWORK *list2D4;
-    u8 pad5A4[0x650 - 0x5A4];
+    u8 pad5A4[0x64C - 0x5A4];
+    s32 field64C; /* stock devil count, the bound of sbtlRefDDS3GBWK2 */
     s32 member_num; /* HD name; partners in the battle */
     u8 pad654[0x6EC - 0x654];
     SBTLVIBE_WORK vibe[2];
@@ -287,7 +303,13 @@ typedef struct SBTL_WORK {
     struct SBTLUNIT_WORK *scrUnit;
     u8 pad9F0[0xA0C - 0x9F0];
     s32 field678;
-    u8 padA10[0xC4C - 0xA10];
+    s32 scrUnitNum;
+    struct SBTLUNIT_WORK *scrUnitList[16];
+    s32 scrCmpCnt;
+    s32 scrCnt[4];
+    s32 scrEncountNo;
+    s32 scrFlag;
+    u8 padA70[0xC4C - 0xA70];
     s32 midiSkillCount;
     u8 pad_C50[0x4];
     u8 field878;
@@ -310,15 +332,20 @@ typedef struct SBTL_WORK {
     s16 field42A8;
     u8 pad42AA[0x4];
     s16 field42AE;
-    u8 pad42B0[0x42CA - 0x42B0];
+    u8 pad42B0[0x42C0 - 0x42B0];
+    s16 field42C0;
+    u8 pad42C2[0x42CA - 0x42C2];
     s8 field42CA; /* Proc skips the pause checks when nonzero */
-    u8 pad42CB[0x2];
+    s8 field42CB;
+    s8 field42CC;
     s8 timeState; /* time limit battle: 1 counting, 2 result */
     u8 field42CE;
     u8 pad42CF;
     s32 timeLimit;
     s32 timeMode;
-    u8 pad42D8[0x4324 - 0x42D8];
+    u8 pad42D8[0x42DD - 0x42D8];
+    s8 field42DD;
+    u8 pad42DE[0x4324 - 0x42DE];
     s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
 } SBTL_WORK;
 #else
@@ -594,7 +621,9 @@ typedef struct SBTL_DEVIL_DATA {
     u32 flag;
     u8 pad04[0x68 - 0x4];
     SBTLITEM_WORK item[4];
-    u8 pad78[0x94 - 0x78];
+    u8 pad78[0x82 - 0x78];
+    s16 field82; /* index into DDS3_GBWK->devilWork */
+    u8 pad84[0x94 - 0x84];
 } SBTL_DEVIL_DATA;
 
 SIZE_CHECK(SBTL_DEVIL_DATASizeCheck, SBTL_DEVIL_DATA, 0x94);

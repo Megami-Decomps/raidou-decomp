@@ -183,8 +183,6 @@ void evtReleaseResourcePairHandle(evtResourcePair_t *record);
 
 struct itfMesResource_t;
 
-s8 evtGetCapturedWindowPanelValue(void);
-
 /* Advance the singleton window through its active, gated and cleanup phases. */
 void dspAdvanceMessageWindowControl(s32 notify);
 void fclSetMessageVar(s32 slotIndex, const char *sourceText);
