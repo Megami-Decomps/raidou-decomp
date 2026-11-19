@@ -294,7 +294,7 @@ void MenuPlayCancelSE(MenuCB_tag *cb);
 s32 itfCallMenuSetMoverDisappear(Menu_t *wk, s32 a_type);
 void itfCallMenuGetSelectMenu(Menu_t *wk);
 void itfCallMenuGetSelectMenu2(Menu_t *wk);
-void itfLeaf(Menu_t *wk);
+void MenuPadCtrlSelect(Menu_t *wk);
 void itfCallGetProcessData5(dds3ProcessID_t *PID, s32 a_id);
 u8 MoneyCheckProcEnd(struct tagITF_MONEY_WORK *wk);
 void itfDrawFont(ITF_DM_STYLE a_style, s32 a_x, s32 a_y, s32 a_z, s32 a_w, s32 a_space, u32 a_color, f32 a_alphaRate, DDS3_OT a_ot, char *a_str);

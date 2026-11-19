@@ -897,7 +897,6 @@
 0x00191378	itfCallGetProcessData8	func	tier=D	derived-callee	na	unit code_00190668, neighbour itfMenuSetAnimBakMenu; calls dds3GetProcessData
 0x001919E0	itfMenuCtrlSelectSub	func	tier=D	derived-caller	na	unit code_00190668, neighbour itfMenuGetFlashCount; called by MenuCtrlSelect
 0x00191B98	itfMenuCtrlSelectSub2	func	tier=D	derived-caller	na	unit code_00190668, neighbour itfMenuGetFlashCount; called by MenuCtrlSelect
-0x00191D28	itfLeaf	func	tier=D	derived-unit	na	unit code_00190668, neighbour itfMenuGetFlashCount; no named callee, caller or string
 0x00191E98	itfCallMenuSetMoverDisappear	func	tier=D	derived-callee	na	unit code_00190668, neighbour itfMenuGetFlashCount; calls MenuSetMoverDisappear
 0x00192708	cmpItfmenuScrollbarTexture	func	tier=D	derived-string	na	unit code_00190668, neighbour cmpSklTypeSet; string '  itfmenu : scrollbar texture none!\n'
 0x00193618	cmpSklTypeSet	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD cmpStatus.cmpSklTypeSet, score 7.15 band B
@@ -4334,9 +4333,6 @@
 0x00316320	cmpCampTestMomiji	func	tier=D	derived-string	na	unit code_00300578, neighbour cmpSetDraw; string '/camp/test_momiji.tmx'
 0x00316380	cmpCallTexFreeDelayed	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpSetDraw; calls sdfTexFreeDelayed
 0x00316420	cmpSetType	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD cmpHelp.cmpSetType, score 10.5 band A
-0x00316460	cmpLeaf44	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpSetId; no named callee, caller or string
-0x00316478	cmpLeaf45	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpSetId; no named callee, caller or string
-0x003164B0	fldLeaf34	func	tier=D	derived-unit	na	unit code_00300578, neighbour fldCamUpdateDefault; no named callee, caller or string
 0x00316540	fldCallSetFontColor	func	tier=D	derived-callee	na	unit code_00300578, neighbour fldCamUpdateDefault; calls frSetFontColor
 0x00316710	fldDrawProcessSub	func	tier=D	derived-caller	na	unit code_00300578, neighbour fldCamUpdateDefault; called by shpDrawProcess
 0x00316728	fldShopSetumeiSpr	func	tier=D	derived-string	na	unit code_00300578, neighbour fldCamUpdateDefault; string '/shop/setumei.spr'
@@ -4719,7 +4715,6 @@
 0x00338EF8	gohRootDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRootDrawProcess, score 8.55 band B
 0x00338F48	gohRootUpdateProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRootUpdateProcess, score 7.95 band B
 0x00339E18	gohCallSeqJumpAndFree	func	tier=D	derived-callee	na	unit gohMain; calls jmsSeqJumpAndFree
-0x0033A5E0	gohLeaf25	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
 0x0033A7B8	gohCyuuseiStartDirection	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohCyuuseiStartDirection, score 9.6 band B
 0x0033A868	gohCallStrongSwordFlag	func	tier=D	derived-callee	na	unit gohMain; calls gohStrongSwordFlag
 0x0033B420	gohRecoverCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRecoverCalcProcess, score 9.15 band B
@@ -17719,6 +17714,7 @@
 0x00191120	itfMenuSetAnimDelMenu	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfMenuSetAnimDelMenu score 3.6 flag I: calls1 prev gap7/8 st2:gap r2-only
 0x00191250	itfMenuSetAnimBakMenu	func	tier=C	hd-d	0.53 (n=98)	Raidou HD itf.itfMenuSetAnimBakMenu score 3.6 flag I: calls1 prev gap6/7 st2:gap r2-only
 0x00191BD0	MenuCtrlSelect	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD itf.MenuCtrlSelect score 4.2 flag -: calls2 calls-of-match votes2 st1:call r2-disagree:0x1a7360
+0x00191D28	MenuPadCtrlSelect	func	tier=C	derived-derived-role	na	Raidou HD itf.MenuPadCtrlSelect(wk): unless gflag & 0x200, maps pad trigger/repeat to 3, 4, 1, 2 and calls MenuCtrlSelect(wk, v, 1); right after MenuCtrlSelect, called from MenuProcess as in HD; replaces itfLeaf
 0x00191E38	MenuMoveEnd	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD itf.MenuMoveEnd score 1.8 flag -: calls1 gap11/11 votes2 st1:gap r2-disagree:0x1a7638
 0x001926A8	MenuDrawFont	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD itf.MenuDrawFont score 5.0 flag -: calls1 prev gap11/5 votes2 st1:gap r1-only
 0x00192D50	MenuDrawPanel	func	tier=C	hd-c	0.69 (n=45)	Raidou HD itf.MenuDrawPanel score 5.6 flag -: calls2 calls-of-match votes3 st1:call r1-only
@@ -18226,6 +18222,9 @@
 0x00314FA8	cmpFreeSpriteToGS	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpFile.cmpFreeSpriteToGS score 5.0 flag I: calls1 callers-of-match votes2 st2:call r2-only
 0x00315268	pipeMessDraw	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x2a4508 sim 0.684 margin 0.68 single
 0x00315A98	datDlcNoneCheck	func	tier=C	hd-d	0.53 (n=98)	Raidou HD dat.datDlcNoneCheck score 3.7 flag I: calls1 calls-of-match st2:call r2-only
+0x00316460	cmpSetNew	func	tier=C	derived-derived-role	na	Raidou HD cmpHelp.cmpSetNew: help work stat |= 4; right after cmpSetDraw, cmpGetDraw, cmpSetType, cmpSetId as in HD; replaces cmpLeaf44
+0x00316478	cmpDrawSpriteDef	func	tier=C	derived-derived-role	na	Raidou HD cmpHelp.cmpDrawSpriteDef(x, y, z, alphaRate, sprno): draws sprite sprno of the help sprite handle at (16x, 8y); after cmpSetNew as in HD; replaces cmpLeaf45
+0x003164B0	cmpSetAlphaRate	func	tier=C	derived-derived-role	na	Raidou HD cmpHelp.cmpSetAlphaRate(color, alphaRate): color with its low byte replaced by (u8)(low byte * alphaRate / 255); after cmpDrawSpriteDef as in HD; replaces fldLeaf34
 0x00317418	cmpGetMotionSpeed	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpModel.cmpGetMotionSpeed score 4.1 flag I: calls1 next gap6/5 st2:gap r2-only
 0x00317B68	cmpAddScl	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpModel.cmpAddScl score 5.7 flag I: calls1 prev calls-of-match st2:call r2-only
 0x00317B90	cmpClearDat	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpModel.cmpClearDat score 5.4 flag I: calls2 calls-of-match votes3 st2:call r2-only
@@ -18321,6 +18320,7 @@
 0x0033A398	gohStatCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), CalcProcess slot; replaces gohCallGetProcessData9
 0x0033A570	gohStatDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), DrawProcess slot; raidou1 row matched by 4 paired functions; replaces gohCallGetProcessData25
 0x0033A5A8	gohStatUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), UpdateProcess slot; raidou1 row matched by 4 paired functions; replaces gohCallGetProcessData26
+0x0033A5E0	gohSeqReturn	func	tier=C	derived-derived-role	na	Raidou HD gohMain.gohSeqReturn(pData): jmsSeqJumpAndFree(&pData->pSeqUnit) to one of two sequence units by m_eCombineType == 2; called from gohConfirmCalcProcess and gohCyuuseiCalcProcess as in HD; replaces gohLeaf25
 0x0033A628	gohConfirmInit	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), Init slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData10
 0x0033A690	gohConfirmDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), Destroy slot; raidou1 row matched by 3 paired functions; replaces gohLeaf26
 0x0033A698	gohConfirmCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), CalcProcess slot; raidou1 row matched by 3 paired functions; replaces gohCallGetProcessData11

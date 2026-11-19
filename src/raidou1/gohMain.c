@@ -59,7 +59,7 @@ dds3ProcessFunc_t gohStatUpdateProcess(dds3ProcessID_t *PID) {
     return menuRunPanel(&work->panel, &work->seqUnit, 2, PID);
 }
 
-INCLUDE_ASM(const s32, "gohMain", gohLeaf25);
+INCLUDE_ASM(const s32, "gohMain", gohSeqReturn);
 
 INCLUDE_ASM(const s32, "gohMain", gohConfirmInit);
 

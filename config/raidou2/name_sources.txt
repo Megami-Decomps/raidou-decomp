@@ -10070,9 +10070,9 @@
 0x00372FB0	cmpGetDraw	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD cmpHelp.cmpGetDraw score 10.2 flag I: calls1 prev calls-of-match votes2 st1:call r1+r2
 0x00372FC8	cmpSetType	hd-inferred	hd: Raidou HD cmpHelp.cmpSetType, score 10.5 band A
 0x00372FE8	cmpSetId	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD cmpHelp.cmpSetId score 8.0 flag I: calls2 calls-of-match votes3 st1:call r1+r2
-0x00373008	cmpLeaf44	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpSetId; no named callee, caller or string
-0x00373020	cmpLeaf45	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour cmpSetId; no named callee, caller or string
-0x00373058	fldLeaf34	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00300578, neighbour fldCamUpdateDefault; no named callee, caller or string
+0x00373008	cmpSetNew	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD cmpHelp.cmpSetNew: help work stat |= 4; right after cmpSetDraw, cmpGetDraw, cmpSetType, cmpSetId as in HD; replaces cmpLeaf44
+0x00373020	cmpDrawSpriteDef	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD cmpHelp.cmpDrawSpriteDef(x, y, z, alphaRate, sprno): draws sprite sprno of the help sprite handle at (16x, 8y); after cmpSetNew as in HD; replaces cmpLeaf45
+0x00373058	cmpSetAlphaRate	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD cmpHelp.cmpSetAlphaRate(color, alphaRate): color with its low byte replaced by (u8)(low byte * alphaRate / 255); after cmpDrawSpriteDef as in HD; replaces fldLeaf34
 0x003730E8	fldCallButtonLineHelpTextSet	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour fldCamUpdateDefault; calls ButtonLineHelpTextSet
 0x003732B8	fldCamUpdateDefault	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 1 game(s)
 0x003732D8	fldLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_003648C0, neighbour fldCamUpdateDefault; no named callee, caller or string
@@ -10871,7 +10871,7 @@
 0x0039FFE0	gohStatCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), CalcProcess slot; replaces gohCallGetProcessData9
 0x003A0260	gohStatDrawProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), DrawProcess slot; replaces gohCallGetProcessData25
 0x003A0298	gohStatUpdateProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData26
-0x003A02D0	gohLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit gohMain; no named callee, caller or string
+0x003A02D0	gohSeqReturn	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD gohMain.gohSeqReturn(pData): jmsSeqJumpAndFree(&pData->pSeqUnit) to one of two sequence units by m_eCombineType == 2; called from gohConfirmCalcProcess and gohCyuuseiCalcProcess as in HD; replaces gohLeaf25
 0x003A0318	gohConfirmInit	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD gohMain.gohConfirmInit score 8.4 flag I: calls4 callers-of-match votes5 st2:call r2-only
 0x003A03A8	gohConfirmDestroy	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), Destroy slot; replaces gohLeaf26
 0x003A03B0	gohConfirmCalcProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), CalcProcess slot; replaces gohCallGetProcessData10

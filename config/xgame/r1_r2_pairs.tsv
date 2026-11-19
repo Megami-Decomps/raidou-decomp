@@ -8081,9 +8081,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00316408	0x00372FB0	cmpGetDraw	no	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
 0x00316420	0x00372FC8	cmpSetType	no	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
 0x00316440	0x00372FE8	cmpSetId	no	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
-0x00316460	0x00373008	cmpLeaf44	no	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
-0x00316478	0x00373020	cmpLeaf45	no	no	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-masked-hash
-0x003164B0	0x00373058	fldLeaf34	yes	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
+0x00316460	0x00373008	cmpSetNew	no	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
+0x00316478	0x00373020	cmpDrawSpriteDef	no	no	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-masked-hash
+0x003164B0	0x00373058	cmpSetAlphaRate	yes	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
 0x003167A8	0x00373380	cmpCallMemFreeDelayedDirect	no	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
 0x003167F0	0x00373400	cmpGetFlagScreenShot	no	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	masked-hash-in-gap
 0x00316848	0x00373418	cmpInitCmpModelSub	no	yes	asm/raidou1/code_00300578.s	asm/raidou2/code_003648C0.s	size
@@ -8490,7 +8490,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00339F48	0x0039F858	gohStatDestroy	yes	yes	asm/raidou1/gohMain.s	asm/raidou2/gohMain.s	masked-hash-in-gap
 0x0033A570	0x003A0260	gohStatDrawProcess	no	yes	asm/raidou1/gohMain.s	asm/raidou2/gohMain.s	masked-hash-in-gap
 0x0033A5A8	0x003A0298	gohStatUpdateProcess	no	yes	asm/raidou1/gohMain.s	asm/raidou2/gohMain.s	masked-hash-in-gap
-0x0033A5E0	0x003A02D0	gohLeaf25	no	no	asm/raidou1/gohMain.s	asm/raidou2/gohMain.s	unique-masked-hash
+0x0033A5E0	0x003A02D0	gohSeqReturn	no	no	asm/raidou1/gohMain.s	asm/raidou2/gohMain.s	unique-masked-hash
 0x0033A690	0x003A03A8	gohConfirmDestroy	yes	yes	asm/raidou1/gohMain.s	asm/raidou2/gohMain.s	masked-hash-in-gap
 0x0033A738	0x003A0488	gohConfirmDrawProcess	no	yes	asm/raidou1/gohMain.s	asm/raidou2/gohMain.s	masked-hash-in-gap
 0x0033A770	0x003A04C0	gohConfirmUpdateProcess	no	yes	asm/raidou1/gohMain.s	asm/raidou2/gohMain.s	masked-hash-in-gap

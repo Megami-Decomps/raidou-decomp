@@ -723,11 +723,11 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpSetType);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetId);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpLeaf44);
+INCLUDE_ASM(const s32, "code_003648C0", cmpSetNew);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpLeaf45);
+INCLUDE_ASM(const s32, "code_003648C0", cmpDrawSpriteDef);
 
-INCLUDE_ASM(const s32, "code_003648C0", fldLeaf34);
+INCLUDE_ASM(const s32, "code_003648C0", cmpSetAlphaRate);
 
 INCLUDE_ASM(const s32, "code_003648C0", fldCallButtonLineHelpTextSet);
 

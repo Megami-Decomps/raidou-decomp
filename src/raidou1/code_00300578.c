@@ -928,11 +928,11 @@ INCLUDE_ASM(const s32, "code_00300578", cmpSetType);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpSetId);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpLeaf44);
+INCLUDE_ASM(const s32, "code_00300578", cmpSetNew);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpLeaf45);
+INCLUDE_ASM(const s32, "code_00300578", cmpDrawSpriteDef);
 
-INCLUDE_ASM(const s32, "code_00300578", fldLeaf34);
+INCLUDE_ASM(const s32, "code_00300578", cmpSetAlphaRate);
 
 INCLUDE_ASM(const s32, "code_00300578", fldCallSetFontColor);
 

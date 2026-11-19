@@ -4918,9 +4918,6 @@
 0x00372EC8	cmpCampTestMomiji	func	tier=D	derived-string	na	unit code_00300578, neighbour cmpSetDraw; string '/camp/test_momiji.tmx'
 0x00372F28	cmpCallTexFreeDelayed	func	tier=D	derived-callee	na	unit code_00300578, neighbour cmpSetDraw; calls sdfTexFreeDelayed
 0x00372FC8	cmpSetType	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD cmpHelp.cmpSetType, score 10.5 band A
-0x00373008	cmpLeaf44	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpSetId; no named callee, caller or string
-0x00373020	cmpLeaf45	func	tier=D	derived-unit	na	unit code_00300578, neighbour cmpSetId; no named callee, caller or string
-0x00373058	fldLeaf34	func	tier=D	derived-unit	na	unit code_00300578, neighbour fldCamUpdateDefault; no named callee, caller or string
 0x003730E8	fldCallButtonLineHelpTextSet	func	tier=D	derived-callee	na	unit code_003648C0, neighbour fldCamUpdateDefault; calls ButtonLineHelpTextSet
 0x003732B8	fldCamUpdateDefault	func	tier=D	idb-smt3	na	IDB name in 1 game(s)
 0x003732D8	fldLeaf5	func	tier=D	derived-unit	na	unit code_003648C0, neighbour fldCamUpdateDefault; no named callee, caller or string
@@ -5292,7 +5289,6 @@
 0x0039E490	gohRootDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRootDrawProcess, score 8.55 band B
 0x0039E4E0	gohRootUpdateProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRootUpdateProcess, score 7.95 band B
 0x0039F748	gohCallSeqJumpAndFree	func	tier=D	derived-callee	na	unit gohMain; calls jmsSeqJumpAndFree
-0x003A02D0	gohLeaf25	func	tier=D	derived-unit	na	unit gohMain; no named callee, caller or string
 0x003A0508	gohCyuuseiStartDirection	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohCyuuseiStartDirection, score 9.6 band B
 0x003A1370	gohRecoverCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRecoverCalcProcess, score 9.15 band B
 0x003A1470	gohRecoverDrawProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD gohMain.gohRecoverDrawProcess, score 9.15 band B
@@ -23391,6 +23387,9 @@
 0x00371570	cmpFreeSpriteToGS	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpFile.cmpFreeSpriteToGS score 5.0 flag I: calls1 callers-of-match votes2 st2:call r2-only
 0x003718E8	cmpGetBstNo	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpMisc.cmpGetBstNo score 3.6 flag I: calls2 calls-of-match votes2 st2:call r1-disagree:0x3152b8
 0x00372640	datDlcNoneCheck	func	tier=C	hd-d	0.53 (n=98)	Raidou HD dat.datDlcNoneCheck score 3.7 flag I: calls1 calls-of-match st2:call r2-only
+0x00373008	cmpSetNew	func	tier=C	derived-derived-role	na	Raidou HD cmpHelp.cmpSetNew: help work stat |= 4; right after cmpSetDraw, cmpGetDraw, cmpSetType, cmpSetId as in HD; replaces cmpLeaf44
+0x00373020	cmpDrawSpriteDef	func	tier=C	derived-derived-role	na	Raidou HD cmpHelp.cmpDrawSpriteDef(x, y, z, alphaRate, sprno): draws sprite sprno of the help sprite handle at (16x, 8y); after cmpSetNew as in HD; replaces cmpLeaf45
+0x00373058	cmpSetAlphaRate	func	tier=C	derived-derived-role	na	Raidou HD cmpHelp.cmpSetAlphaRate(color, alphaRate): color with its low byte replaced by (u8)(low byte * alphaRate / 255); after cmpDrawSpriteDef as in HD; replaces fldLeaf34
 0x00373CC8	cmpLoadStatusModel	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x240230 sim 0.686 margin 0.39 single
 0x00373FD0	cmpCheckHandle	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpModel.cmpCheckHandle score 2.3 flag I: calls1 calls-of-match st2:call r2-only
 0x00374098	cmpGetMotionSpeed	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD cmpModel.cmpGetMotionSpeed score 4.1 flag I: calls1 next gap6/5 st2:gap r2-only
@@ -23517,6 +23516,7 @@
 0x0039FFE0	gohStatCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), CalcProcess slot; replaces gohCallGetProcessData9
 0x003A0260	gohStatDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), DrawProcess slot; replaces gohCallGetProcessData25
 0x003A0298	gohStatUpdateProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_STAT (name string in the row), UpdateProcess slot; replaces gohCallGetProcessData26
+0x003A02D0	gohSeqReturn	func	tier=C	derived-derived-role	na	Raidou HD gohMain.gohSeqReturn(pData): jmsSeqJumpAndFree(&pData->pSeqUnit) to one of two sequence units by m_eCombineType == 2; called from gohConfirmCalcProcess and gohCyuuseiCalcProcess as in HD; replaces gohLeaf25
 0x003A03A8	gohConfirmDestroy	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), Destroy slot; replaces gohLeaf26
 0x003A03B0	gohConfirmCalcProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), CalcProcess slot; replaces gohCallGetProcessData10
 0x003A0488	gohConfirmDrawProcess	func	tier=C	derived-derived-role	na	raidou2 jmsSeqUnit row SEQ_CONFIRM (name string in the row), DrawProcess slot; replaces gohCallGetProcessData27

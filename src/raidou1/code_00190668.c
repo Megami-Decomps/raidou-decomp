@@ -245,7 +245,7 @@ INCLUDE_ASM(const s32, "code_00190668", itfMenuCtrlSelectSub2);
 
 INCLUDE_ASM(const s32, "code_00190668", MenuCtrlSelect);
 
-INCLUDE_ASM(const s32, "code_00190668", itfLeaf);
+INCLUDE_ASM(const s32, "code_00190668", MenuPadCtrlSelect);
 
 INCLUDE_ASM(const s32, "code_00190668", MenuMoveNextHierarchy);
 
@@ -344,7 +344,7 @@ s32 MenuProcess(dds3ProcessID_t *PID) {
                     return 0;
                 }
             }
-            itfLeaf(wk);
+            MenuPadCtrlSelect(wk);
             return 0;
         }
         if (dds3PadButtonState[0x21] < 0 && itfCallMenuSetMoverDisappear(wk, 1)) {
@@ -390,7 +390,7 @@ s32 MenuProcess(dds3ProcessID_t *PID) {
                 }
             }
         }
-        itfLeaf(wk);
+        MenuPadCtrlSelect(wk);
         return 0;
     case 3:
         MenuUpdateMover(wk);
