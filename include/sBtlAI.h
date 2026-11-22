@@ -49,7 +49,8 @@ typedef struct SBTLAI_WORK {
     SKLID cmndSkl;
     s32 cmndTgt;
     s32 cmndStk;
-    s32 bCmndEnd;
+    s8 bCmndEnd;
+    u8 padDD[0x3];
     SKLID dfltOdrSkl;
     s32 dfltOdrTgt;
     s32 dfltOdrStk;

@@ -95,3 +95,15 @@ The address of the local pos vector (SDF_VU0_STOREVECTOR/LOADVECTOR) is hoisted 
 Raidou 2: 44 of 405 words differ, first at +0xEC.
 
 44 words, all in the smoothing arm after the first div.s: retail keeps v.x and v.y in $f13/$f12 and 5.0 in $f14, one register above this draft, and divides dx, dy, dz in that order where the draft starts with dz. Tried the trail stores in Data5, Data3, Data4, Data2 order (72 words) against Data2..Data5 order (44) and a named difference vector before fsqrtf (70). The two screen points are one SBTLPROJECTEDSCREEN_POINT pt[2]: two separate 8-byte structs each take a 16-byte slot and grow the frame to 0xC0. Vectors do not reach (vsum.py: no scenario); checked against the asm.
+
+## DrawStatusBar (code_002F5CF0, raidou2 0x870)
+
+Raidou 2: 377 of 540 words differ, first at +0x8; emitted 2216 bytes, native 2160 bytes.
+
+First draft, more than 30% off: the C is 14 words longer than the original and allocates one callee-saved register fewer (the original keeps 2*idx in $fp for the 12-byte aRedGuage/aStatusBar strides and keeps cTex and the flash alpha on the stack), so the registers differ from +0x8 on. Only the first draft was tried. Vector checked (battle rows). nm_behaviour's one missing sbtlCallGetSmallFontFRQ4 is the two name calls (item name or player name) merged into one call by the compiler; the source keeps both.
+
+## sbtlSummonDevilData_Sub (code_002F5CF0, raidou2 0x8EC)
+
+Raidou 2: 549 of 562 words differ, first at +0x0; emitted 2248 bytes, native 2284 bytes.
+
+First draft from the asm, more than 30% off and recorded at once: the original uses a 0x70 frame with $fp holding x - 105 and 4*idx spilled to 0x10($sp), where the C allocates one register fewer; the switch on status (cases 3, 6, 31) compiles with its case tree rooted at 6 instead of 3; later branches compute x - 97 as (x - 100) + 3 in the original. Behaviour checked against the asm branch by branch (vectors do not reach it). nm_behaviour's one extra immediate (7) is the case tree's range test rooted at 6.

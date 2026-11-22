@@ -1489,7 +1489,124 @@ INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrSummoner2);
 
 INCLUDE_RODATA(const s32, "code_002F5CF0", sbtlStrKuzunoha);
 
+/* NON_MATCHING: 163 of 540 words match.  */
+#ifdef NON_MATCHING
+void DrawStatusBar(struct sdatUnitWork_t *pUnit, struct effRefObj_t *cTex, s32 y, s32 mode, s32 idx) {
+    sdfTexHandle_t *tex;
+    s32 blink;
+    s32 flash;
+    s32 shake;
+    s32 alpha;
+    s32 x;
+    s32 grn;
+    char *name;
+
+    blink = 0;
+    flash = 0;
+    if (pUnit->now.hp < wk_sbtl->aRedGuage[idx].bgn) {
+        wk_sbtl->aStatusBar[idx].cnt = 40;
+    }
+    if (wk_sbtl->aStatusBar[idx].cnt) {
+        if (--wk_sbtl->aStatusBar[idx].cnt) {
+            shake = wk_sbtl->aStatusBar[idx].cnt / 7 + 1;
+            wk_sbtl->aStatusBar[idx].x = GetIntervalRand(-shake, shake);
+            wk_sbtl->aStatusBar[idx].y = GetIntervalRand(-shake, shake);
+        } else {
+            wk_sbtl->aStatusBar[idx].x = 0;
+            wk_sbtl->aStatusBar[idx].y = 0;
+        }
+    }
+    if (pUnit->devilId == 0) {
+        sbtlBarCtrl();
+    }
+    alpha = (wk_sbtl->field4200 * 96 - 19200) / 150 + 159;
+    if (alpha > 255) {
+        alpha = 255;
+    }
+    itfDrawMiscSpriteAlpha(wk_sbtl->field41FC + wk_sbtl->aStatusBar[idx].x, y + wk_sbtl->aStatusBar[idx].y + 3, 0, alpha,
+                           sbtlData135.hSpr, 13, 103);
+    itfDrawMiscSpriteAlpha(wk_sbtl->field41FC + wk_sbtl->field4200 + wk_sbtl->aStatusBar[idx].x,
+                           y + wk_sbtl->aStatusBar[idx].y + 3, 0, alpha, sbtlData135.hSpr, 12, 103);
+    if (wk_sbtl->aStatusBar[idx].cnt) {
+        blink = (wk_sbtl->aStatusBar[idx].cnt >> 2) % 2;
+    } else if (idx == 0 && wk_sbtl->grnCnt) {
+        grn = wk_sbtl->grnCnt;
+        flash = grn * 51 - grn * grn * 5;
+    } else if (pUnit->now.maxhp * 3 / 10 >= pUnit->now.hp) {
+        blink = DrawTimeData / 7 % 2;
+    }
+    if (idx == 0 && wk_sbtl->grnCnt) {
+        wk_sbtl->grnCnt--;
+    }
+    if (blink) {
+        itfDrawMiscSpriteAlpha(wk_sbtl->field41FC + wk_sbtl->aStatusBar[idx].x, y + wk_sbtl->aStatusBar[idx].y + 3, 0, 0x80,
+                               sbtlData135.hSpr, 41, 103);
+        itfDrawMiscSpriteAlpha(wk_sbtl->field41FC + wk_sbtl->field4200 + wk_sbtl->aStatusBar[idx].x,
+                               y + wk_sbtl->aStatusBar[idx].y + 3, 0, 0x80, sbtlData135.hSpr, 40, 103);
+    }
+    if (flash) {
+        itfDrawMiscSpriteAlpha(wk_sbtl->field41FC + wk_sbtl->aStatusBar[idx].x, y + wk_sbtl->aStatusBar[idx].y + 3, 0, flash,
+                               sbtlData135.hSpr, 44, 103);
+        itfDrawMiscSpriteAlpha(wk_sbtl->field41FC + wk_sbtl->field4200 + wk_sbtl->aStatusBar[idx].x,
+                               y + wk_sbtl->aStatusBar[idx].y + 3, 0, flash, sbtlData135.hSpr, 43, 103);
+    }
+    if (cTex != NULL && fldMAPMenuData) {
+        eglSetOt(104);
+        eglLinkTest(1, 0, 128, 3, 0, 0, 1, 2);
+        eglLinkAlpha(0);
+        tex = sdfGetOrCreateTextureForReference(&evtData2, cTex);
+        eglLinkSprite(wk_sbtl->field41FC - 25, y, 32, 32, 1, 1, 32, 32, 0x80808080, 0x80808080, 0x80808080, 0x80808080, tex);
+    }
+    if (wk_sbtl->field4200 >= 201) {
+        alpha = 255 - (350 - wk_sbtl->field4200) * 2;
+        if (alpha > 0) {
+            if (pUnit->devilId) {
+                sbtlCallGetSmallFontFRQ4(wk_sbtl->field41FC + 9, y + 5, 0, 0xA09DC380, alpha, 104, g_itemNo[pUnit->devilId]);
+            } else {
+                sbtlCallGetSmallFontFRQ4(wk_sbtl->field41FC + 9, y + 5, 0, 0xA09DC380, alpha, 104, sbtlGetPlayerName());
+            }
+        }
+    }
+    x = wk_sbtl->field41FC + wk_sbtl->field4200;
+    itfDrawMiscSprite(x - 200, y + 14, 0, sbtlData135.hSpr, 9, 104);
+    sbtlAnalyzeLoyalty(x - 197, y + 14, &wk_sbtl->aRedGuage[idx], pUnit->now.hp, pUnit->now.maxhp);
+    itfCalcSpriteWidth(sbtlData135.hSpr, 7, pUnit->now.hp, pUnit->now.maxhp);
+    itfDrawMiscSpriteAlpha(x - 197, y + 14, 0, 0xFF, sbtlData135.hSpr, 7, 104);
+    sbtlCallCheckDying(256, x - 137, y + 4, 0xFF, 104, pUnit->now.hp, pUnit->now.maxhp, 0, pUnit);
+    sbtlGetIdling_HD(wk_sbtl->field41FC - 23, y + 2, 0xFF, 104, pUnit);
+    if (wk_sbtl->field4200 >= 251 && pUnit->devilId == 0) {
+        alpha = 255 - (350 - wk_sbtl->field4200) * 2;
+        if (alpha < 0) {
+            alpha = 0;
+        }
+        f_uncnt += 0.08f;
+        alpha = alpha - (s32)(sdfSin(f_uncnt) * 64.0f) - 65;
+        x = wk_sbtl->field41FC + wk_sbtl->field4200 - 248;
+        switch (sbtlGetPlayerLuckStep()) {
+        case 0:
+            sbtlDrawRedGg(x, y + 3, alpha, 59, 104);
+            break;
+        case 1:
+            sbtlDrawRedGg(x, y + 3, alpha, 58, 104);
+            break;
+        case 2:
+            sbtlDrawRedGg(x, y + 3, alpha, 57, 104);
+            break;
+        case 4:
+            sbtlDrawRedGg(x, y + 3, alpha, 60, 104);
+            break;
+        case 5:
+            sbtlDrawRedGg(x, y + 3, alpha, 61, 104);
+            break;
+        case 6:
+            sbtlDrawRedGg(x, y + 3, alpha, 62, 104);
+            break;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", DrawStatusBar);
+#endif
 
 void btlLoadInterfaceSprite(void) {
     struct sprHandle_t *hSpr;
@@ -1930,7 +2047,149 @@ void sbtlSummonDevilAshimoto(struct SBTLUNIT_WORK *wk, s32 idx)
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilAshimoto);
 #endif
 
+/* NON_MATCHING: 22 of 571 words match.  */
+#ifdef NON_MATCHING
+void sbtlSummonDevilData_Sub(struct SBTLUNIT_WORK *wk, s32 idx) {
+    sdfVector4_t pos;
+    s32 bCursor;
+    s32 y;
+    s32 sy;
+    s32 x;
+
+    if (wk->unit.devilId == 0 || wk == NULL) {
+        return;
+    }
+    if (sbtlGetMode() == E_CAMERA_MODE_End) {
+        return;
+    }
+    if (wk_sbtl->flg2 & 0x20000) {
+        return;
+    }
+    switch (wk->status) {
+    case 3:
+    case 6:
+    case 31:
+        wk->field6A8 = wk->skillid;
+        if (wk->skillid == 149) {
+            wk->field6A8 = 0;
+        }
+        break;
+    default:
+        wk->field6A8 = 0;
+        break;
+    }
+    if (!(wk->vstatus & 0x1000)) {
+        bCursor = 0;
+        if (sbtlData121 && wk_sbtl->battleMode != 3 && CheckLiveTarget(wk)) {
+            if (wk->aiwk->mode != 4 || (wk->color & 0xFF000000) > 0x3FFFFFFF) {
+                bCursor = 1;
+            }
+        }
+        if (sbtlGetCutFlg() & 4) {
+            bCursor = 0;
+        }
+        if (bCursor) {
+            sdfModelEvalTm(wk->hEveUnit->owner->inner);
+            if (!sdfModelGetMarkPos_sdfModel(wk->hEveUnit->owner->inner, 1)) {
+                sdfModelGetMarkPos_sdfModel(wk->hEveUnit->owner->inner, 0);
+            }
+            VU0_STORE_VF($vf10, &pos);
+            sbtlCallSetFontDrawOT(wk, &pos);
+        }
+    }
+    y = idx * 27 + 37;
+    sy = idx * 27 + 51;
+    DrawStatusBar(&wk->unit, wk->field624, y, 1, idx + 1);
+    x = wk_sbtl->field41FC + wk_sbtl->field4200;
+    itfDrawMiscSprite(x - 100, sy, 0, sbtlData135.hSpr, 9, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+    if (wk->byctCnt) {
+        sbtlCallGetSmallFontFRQ3(x - 115, y, 128, 0xB05050A0, 255, 104, sbtlSummonDevilData_SubData);
+    } else if (wk_sbtl->rsvCmbSkl[idx]) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, 8, 1, 1);
+        itfDrawMiscSpriteAlpha(x - 97, sy, 0, 0x60, sbtlData135.hSpr, 8, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        if (wk_sbtl->rsvCmbSkl[idx] != 149) {
+            sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0x80808080, 255, 104, sbtlData95[wk_sbtl->rsvCmbSkl[idx]]);
+        }
+    } else if (wk_sbtl->fieldCA2 && (wk_sbtl->pNakama0 == wk || wk_sbtl->pNakama1 == wk)) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, 8, 1, 1);
+        itfDrawMiscSpriteAlpha(x - 99, sy, 0, wk_sbtl->aAiGgFlsAlpha[idx], sbtlData135.hSpr, 8,
+                               DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        if (wk_sbtl->sklId != 149) {
+            sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk_sbtl->sklId]);
+        }
+        if (wk_sbtl->aAiGgFlsAlpha[idx] < 64) {
+            wk_sbtl->aAiGgFlsAlpha[idx] = 255;
+        }
+    } else if (wk->aiwk->rsvSkl) {
+        if (wk_sbtl->aAiGgFlsAlpha[idx]) {
+            itfCalcSpriteWidth(sbtlData135.hSpr, 8, 1, 1);
+            itfDrawMiscSpriteAlpha(x - 97, sy, 0, wk_sbtl->aAiGgFlsAlpha[idx], sbtlData135.hSpr, 8,
+                                   DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        }
+        if (wk->aiwk->rsvSkl != 149) {
+            sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk->aiwk->rsvSkl]);
+        }
+    } else if (wk->karnSkillid && wk->karnCnt) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, 8, wk->karnCnt, wk->aiwk->cmndFrmMax);
+        itfDrawMiscSpriteAlpha(x - 97, sy, 0, 255, sbtlData135.hSpr, 8, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk->karnSkillid]);
+    } else if (wk->drawgaugetype == 1 && wk->barrier.size && wk->barrier.fieldC) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, 8, wk->barrier.size, wk->aiwk->cmndFrmMax);
+        itfDrawMiscSpriteAlpha(x - 97, sy, 0, 255, sbtlData135.hSpr, 8, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        if (wk->barrier.fieldC != 149) {
+            sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk->barrier.fieldC]);
+        }
+    } else if (wk->drawgaugetype == 2 && wk->enchantcnt) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, 8, wk->enchantcnt, wk->aiwk->cmndFrmMax);
+        itfDrawMiscSpriteAlpha(x - 97, sy, 0, 255, sbtlData135.hSpr, 8, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        if (wk_sbtl->sword_eff_skl != 149) {
+            sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk_sbtl->sword_eff_skl]);
+        }
+    } else if (wk->drawgaugetype == 3 && wk->field4A4) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, 8, wk->field4A4, wk->aiwk->cmndFrmMax);
+        itfDrawMiscSpriteAlpha(x - 97, sy, 0, 255, sbtlData135.hSpr, 8, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        if (wk->bulletskl != 149) {
+            sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk->bulletskl]);
+        }
+    } else if (wk->drawgaugetype == 4 && wk->field4AC && wk->auraskl) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, 8, wk->field4AC, wk->aiwk->cmndFrmMax);
+        itfDrawMiscSpriteAlpha(x - 97, sy, 0, 255, sbtlData135.hSpr, 8, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        if (wk->auraskl != 149) {
+            sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk->auraskl]);
+        }
+    } else if (wk->aiwk->cmndFrm) {
+        itfCalcSpriteWidth(sbtlData135.hSpr, 8, wk->aiwk->cmndFrm, wk->aiwk->cmndFrmMax);
+        if (wk->aiwk->bCmndEnd) {
+            itfDrawMiscSprite(x - 97, sy, 0, sbtlData135.hSpr, 8, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+            if (wk->aiwk->cmndSkl != 149) {
+                sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk->aiwk->cmndSkl]);
+            }
+        } else {
+            itfDrawMiscSpriteAlpha(x - 97, sy, 0, 0x60, sbtlData135.hSpr, 8, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+            if (wk->aiwk->cmndSkl != 149) {
+                sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0x80808080, 255, 104, sbtlData95[wk->aiwk->cmndSkl]);
+            }
+        }
+    } else if (wk->aiwk->dfltOdrSkl) {
+        if (wk_sbtl->aAiGgFlsAlpha[idx]) {
+            itfCalcSpriteWidth(sbtlData135.hSpr, 8, 1, 1);
+            itfDrawMiscSpriteAlpha(x - 97, sy, 0, wk_sbtl->aAiGgFlsAlpha[idx], sbtlData135.hSpr, 8,
+                                   DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+        }
+        if (wk->aiwk->dfltOdrSkl != 149) {
+            sbtlCallGetSmallFontFRQ3(x - 105, y, 110, 0xA0A0A0A0, 255, 104, sbtlData95[wk->aiwk->dfltOdrSkl]);
+        }
+    }
+    if (wk_sbtl->aAiGgFlsAlpha[idx]) {
+        wk_sbtl->aAiGgFlsAlpha[idx] -= 10;
+        if (wk_sbtl->aAiGgFlsAlpha[idx] < 0) {
+            wk_sbtl->aAiGgFlsAlpha[idx] = 0;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilData_Sub);
+#endif
 
 void sbtlSummonDevilData(void) {
     struct SBTLUNIT_WORK *nakama[2];

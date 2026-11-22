@@ -21,6 +21,9 @@
 #include "sBtlSound.h"
 #include "sbtlSub.h"
 #include "effStat.h"
+#include "sBtlScript.h"
+#include "sBtlItem.h"
+#include "sBtlCalc.h"
 
 s32 OnDataLoadProc(dds3ProcessID_t *id) {
     s32 i;
@@ -650,7 +653,278 @@ s32 SetDamageProc(struct SBTLUNIT_WORK *wklock, struct SBTLUNIT_WORK *wk, SKLID 
     return ret;
 }
 
+/* NON_MATCHING: 768 of 833 words match.  */
+#ifdef NON_MATCHING
+s32 CheckEffectData_Core_sbtlEff(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s32 index, s32 id, u16 acterside, s32 serialID2,
+                                s16 tflg, s32 sttime, s16 count)
+{
+    SBTLDMG_HITWORK hwk;
+    struct SBTLUNIT_LISTWORK *lwk;
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLSKILLP_TBL *skltbl;
+    struct SBTLSKILLP_TBL *tbl;
+    SBTLEFF_WORK *ewk;
+    const sdfVector4_t *pos = NULL;
+    sdatUnitWork_t *stock;
+    BST badst;
+    SBTLUNIT_SIDE side;
+    s32 nakama;
+    s32 i;
+    s32 j;
+
+    skltbl = sbtlGetSkilltbl(sklid);
+    lwk = sbtlCreateUnitList(48);
+    switch (tflg) {
+    case 0:
+        CheckEffectData_Core(lwk, wk, sklid);
+        break;
+    case 1:
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckLiveTarget_NotHitDmg(unit)) {
+                sbtlEntryUnitList(lwk, unit);
+            }
+        }
+        break;
+    case 2:
+        side = sbtlGetBothSide(wk, acterside);
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckLiveTarget_NotHitDmg(unit) && (unit->field414 & 0x3F & side)) {
+                sbtlEntryUnitList(lwk, unit);
+            }
+        }
+        break;
+    case 3:
+        side = sbtlGetBothSide(wk, acterside);
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (unit != NULL && sbtlCheckLiveTarget_NotHitDmg(unit) && !(unit->field414 & 0x3F & side)) {
+                sbtlEntryUnitList(lwk, unit);
+            }
+        }
+        break;
+    case 4:
+        sbtlEntryUnitList(lwk, wk);
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+        if (unit != NULL && sbtlCheckLiveTarget_NotHitDmg(unit)) {
+            sbtlEntryUnitList(lwk, unit);
+        }
+        break;
+    case 5:
+        break;
+    case 6:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+        if (unit != NULL && sbtlCheckLiveTarget_NotHitDmg(unit)) {
+            sbtlEntryUnitList(lwk, unit);
+        }
+        break;
+    }
+
+    for (i = 0; i < lwk->count; i++) {
+        unit = lwk->pUnitL[i].pUnit;
+        if (sbtlCheckEffectCancel(wk, sklid, sbtlBtlSetEffectDataSub(index, id))) {
+            continue;
+        }
+        if (!sbtlCallBtlGetSkilltbl16(unit, sklid)) {
+            continue;
+        }
+        ewk = sbtlCallMemAllocDirect3(wk_sbtl->effList, unit, index, id);
+        pos = &ewk->pos;
+        if (skltbl->flg2 & 0x10) {
+            if (wk_sbtl->sword_eff_cmb != NULL) {
+                ewk->rgba = swordEffClrTbl[wk_sbtl->tateClr];
+            } else if (wk_sbtl->sword_eff_step != 0) {
+                ewk->rgba = swordEffClrTbl[wk_sbtl->sword_eff_kind];
+            } else {
+            switch (sklid) {
+            case 144:
+            case 145:
+            case 146:
+            case 147:
+            case 148:
+            case 167:
+            case 674:
+                ewk->rgba = 0x80808080;
+                break;
+            default:
+                ewk->rgba = 0x800A800A;
+                break;
+            }
+            }
+        } else {
+            ewk->rgba = 0x80808080;
+        }
+        if (unit->vstatus & 0x4000) {
+            ewk->flg |= SBTLEFF_FLG_NONSTOP;
+        }
+        if (sbtlCallBtlGetSkilltbl16(unit, sklid) == 2) {
+            sbtlSetEffectData(ewk, unit, sklid, index, type, id, acterside, serialID2, sttime);
+        } else {
+            sbtlSetEffectData(ewk, unit, sklid, index, type, id, acterside, serialID2, sttime + i * 12);
+        }
+    }
+
+    tbl = sbtlGetSkilltbl(sklid);
+    if ((wk_sbtl->flg & 0x2000000) || type >= 2 || lwk->count <= 0 || !(tbl->area & 0x10) || count != 0) {
+        goto end;
+    }
+    if (tbl->area & 0x4000) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        if (unit == NULL || unit->status == 34) {
+            goto end;
+        }
+        if (tflg == 0 && (tbl->area & 2)) {
+            sbtlDeleteUnitList(lwk);
+            lwk = sbtlCreateUnitList(48);
+            for (i = 0; i < wk_sbtl->unitList->number; i++) {
+                unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+                if (unit != NULL && CheckLiveTarget(unit) && (unit->field414 & 0x3F & acterside)) {
+                    sbtlEntryUnitList(lwk, unit);
+                }
+            }
+            for (i = 0; i < lwk->count; i++) {
+                unit = lwk->pUnitL[i].pUnit;
+                if (unit != NULL && CheckLiveTarget(unit) && sbtlCallBtlGetSkilltbl16(unit, sklid)) {
+                    if ((unit->field414 & 1) && !(unit->unit.flag & 2)) {
+                        nakama = 0;
+                        for (j = 0; j < 2; j++) {
+                            if (unit == sbtlGetNakama(j)) {
+                                nakama = 1;
+                                break;
+                            }
+                        }
+                        if (!nakama) {
+                            continue;
+                        }
+                    }
+                    memset(&hwk, 0, sizeof(hwk));
+                    sbtlCreateHitC_None(wk_sbtl->hitList, unit, wk, &hwk, sklid, tbl, pos, -1);
+                    sbtlAddSerialID2();
+                    sbtlSEISHINCNTR(unit, &hwk, 0);
+                    sbtlDeleteUnitList(hwk.hitlwk);
+                }
+            }
+        } else if (tflg != 0) {
+            for (i = 0; i < lwk->count; i++) {
+                unit = lwk->pUnitL[i].pUnit;
+                if (unit != NULL && CheckLiveTarget(unit) && sbtlCallBtlGetSkilltbl16(unit, sklid)) {
+                    if ((unit->field414 & 1) && !(unit->unit.flag & 2)) {
+                        nakama = 0;
+                        for (j = 0; j < 2; j++) {
+                            if (unit == sbtlGetNakama(j)) {
+                                nakama = 1;
+                                break;
+                            }
+                        }
+                        if (!nakama) {
+                            continue;
+                        }
+                    }
+                    memset(&hwk, 0, sizeof(hwk));
+                    sbtlCreateHitC_None(wk_sbtl->hitList, unit, wk, &hwk, sklid, tbl, pos, -1);
+                    sbtlAddSerialID2();
+                    sbtlSEISHINCNTR(unit, &hwk, 0);
+                    sbtlDeleteUnitList(hwk.hitlwk);
+                }
+            }
+        } else if (wk->model->field104 >= 0) {
+            if (wk->stockID >= 0 && !(wk->field414 & 2)) {
+                if (!(tbl->type & 8)) {
+                    /* A stocked demon's skill on its own side reaches the player's stock. */
+                    stock = sbtlRefDDS3GBWK2(wk->stockID);
+                    if ((tbl->area & 0x100) || sbtlCheckLive(stock)) {
+                        sbtlGetDamage_GB(&wk->unit, stock, sklid);
+                    }
+                }
+            } else {
+                unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+                if (unit != NULL && CheckLiveTarget(unit)) {
+                    memset(&hwk, 0, sizeof(hwk));
+                    sbtlCreateHitC_None(wk_sbtl->hitList, unit, wk, &hwk, sklid, tbl, pos, -1);
+                    sbtlAddSerialID2();
+                    sbtlSEISHINCNTR(unit, &hwk, 0);
+                    sbtlDeleteUnitList(hwk.hitlwk);
+                }
+            }
+        }
+
+        if (tbl->type & 8) {
+            if (wk_sbtl->battleMode == 3) {
+                goto end;
+            }
+            if (sbtlGetItemtbl(wk_sbtl->useitemID)->side & 4) {
+                for (i = 0; i < wk_sbtl->field64C; i++) {
+                    stock = sbtlRefDDS3GBWK2(i);
+                    if (sbtlCheckLive(stock)) {
+                        CalcItem(stock, wk_sbtl->useitemID);
+                        sbtlCheckItemMember(i);
+                    }
+                }
+                goto end;
+            }
+            if (wk_sbtl->useitem_stock == -1) {
+                goto end;
+            }
+            stock = sbtlRefDDS3GBWK2(wk_sbtl->useitem_stock);
+            if (!(tbl->area & 0x100)) {
+                if (sbtlCheckLive(stock)) {
+                    CalcItem(stock, wk_sbtl->useitemID);
+                    sbtlCheckItemMember(wk_sbtl->useitem_stock);
+                }
+            } else {
+                sbtlCheckItemMember(wk_sbtl->useitem_stock);
+                CalcItem(stock, wk_sbtl->useitemID);
+                sbtlCheckItemMember_Dead(wk_sbtl->useitem_stock);
+            }
+            wk_sbtl->useitem_stock = -1;
+        } else if (((tbl->area & 2) || (tbl->area & 4)) && (wk->field414 & 1) && wk_sbtl->battleMode != 3) {
+            badst = sbtlGetBadStatus(&wk->unit);
+            if (badst == BST_BOUDO || badst == BST_MAHUU) {
+                goto end;
+            }
+            for (i = 0; i < wk_sbtl->field64C; i++) {
+                if (wk_sbtl->member_num > 0 && wk_sbtl->summonIndex[0] == i) {
+                    continue;
+                }
+                stock = sbtlRefDDS3GBWK2(i);
+                if (!(tbl->area & 0x100)) {
+                    if (sbtlCheckLive(stock)) {
+                        sbtlGetDamage_GB(&wk->unit, stock, sklid);
+                    }
+                } else {
+                    sbtlGetDamage_GB(&wk->unit, stock, sklid);
+                }
+            }
+        }
+    } else if (tflg == 0 && (tbl->area & 2)) {
+        sbtlDeleteUnitList(lwk);
+        lwk = sbtlCreateUnitList(48);
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (unit != NULL && CheckLiveTarget(unit) && !(unit->field414 & 0x3F & acterside)) {
+                sbtlEntryUnitList(lwk, unit);
+            }
+        }
+        for (i = 0; i < lwk->count; i++) {
+            SetDamageProc(lwk->pUnitL[i].pUnit, wk, sklid, pos);
+        }
+    } else if (tflg == 0) {
+        if (wk->model->field104 != -1) {
+            SetDamageProc(sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104), wk, sklid, pos);
+        }
+    } else {
+        for (i = 0; i < lwk->count; i++) {
+            SetDamageProc(lwk->pUnitL[i].pUnit, wk, sklid, pos);
+        }
+    }
+end:
+    sbtlDeleteUnitList(lwk);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckEffectData_Core_sbtlEff);
+#endif
 
 void sbtlSetEffectData(SBTLEFF_WORK *ewk, struct SBTLUNIT_WORK *wk, SKLID sklid, s32 workID, u8 type, s32 no,
                                    u16 acterside, s32 serialID2, s32 sttime)
@@ -1869,7 +2143,206 @@ s32 sbtlLoadEffectData(struct SBTLUNIT_WORK *wk) {
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlLoadEffectData);
 #endif
 
+/* NON_MATCHING: 150 of 553 words match.  */
+#ifdef NON_MATCHING
+s32 CheckLoadEffectData(SBTLEFF_PACLIST *pac, SKLID skillid, u16 pacflg, void *ppData)
+{
+    s32 size[SBTLEFF_PACDATA_MAX] = { 0 };
+    s32 hitidx[SBTLEFF_PACDATA_MAX];
+    char filename[128];
+    s32 ready;
+    s32 hitcount;
+    s32 hitnum;
+    s32 *p;
+    u8 *src;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 sz;
+    SBTLEFF_PACDATAWORK *pwk;
+    sdfMemHandle_t *handle;
+    void *data;
+    s16 cnt;
+
+    if (pac->status & EFFPAC_ST_LOADEND) {
+        return 1;
+    }
+    if (ppData != NULL && pac->gstat == 0) {
+        pac->skillID = skillid;
+        pac->gstat = 1;
+        wk_sbtl->flg |= 0x20000;
+    }
+    switch (pac->gstat) {
+    case 0:
+        if (ppData == NULL) {
+            sprintf(filename, "/sobed_lb/%03X.LB", skillid);
+            pac->pacHandle = pacLoad(filename);
+        }
+        pac->skillID = skillid;
+        pac->gstat++;
+        wk_sbtl->flg |= 0x20000;
+        return 0;
+    case 1:
+        break;
+    case 2:
+        goto load_se;
+    case 5:
+        pac->status |= EFFPAC_ST_LOADEND;
+        return 0;
+    default:
+        return 0;
+    }
+
+    ready = 0;
+    if (ppData != NULL) {
+        ready = 1;
+    } else if (pac->pData == NULL) {
+        ready = pacCheckEnd(pac->pacHandle) != 0;
+    }
+    if (!ready) {
+        return 0;
+    }
+    if (ppData != NULL) {
+        pac->pData = ppData;
+        pac->handle = NULL;
+    } else {
+        pac->handle = pac->pacHandle->pac.resrcHead->resrc;
+        pac->pData = sdfMemLock(pac->handle);
+        pacFileHandleFree_(pac->pacHandle);
+        pac->pacHandle = NULL;
+    }
+    pac->file = NULL;
+
+    p = pac->pData;
+    pac->num = *p++;
+    pac->gstat++;
+    hitcount = *p++;
+    for (i = 0; i < hitcount; i++) {
+        hitidx[i] = *p++;
+    }
+    for (i = 0; i < pac->num; i++) {
+        size[i] = *p++;
+    }
+    for (i = 0; i < pac->num; i++) {
+        handle = sdfMemAllocDirect(sizeof(SBTLEFF_PACDATAWORK));
+        pwk = sdfMemLock(handle);
+        memset(pwk, 0, sizeof(SBTLEFF_PACDATAWORK));
+        pwk->selfHandle = handle;
+        pac->pwk[i] = pwk;
+    }
+    for (i = 0; i < pac->num; i++) {
+        pac->pwk[i]->wk = *(EFFPDATA_WORK *)p;
+        p += sizeof(EFFPDATA_WORK) / sizeof(s32);
+    }
+
+    /* Effects that share an EPL with an earlier entry copy its data. */
+    src = (u8 *)p;
+    for (i = 0; i < pac->num; i++) {
+        if (pac->pwk[i]->wk.eplno == i) {
+            handle = sdfMemAllocDirect(size[i]);
+            data = sdfMemLock(handle);
+            pac->pwk[i]->flg = 0;
+            pac->pwk[i]->handle = handle;
+            pac->pwk[i]->pData = data;
+            memcpy(data, src, size[i]);
+        } else {
+            handle = sdfMemAllocDirect(size[pac->pwk[i]->wk.eplno]);
+            data = sdfMemLock(handle);
+            pwk = pac->pwk[i];
+            pwk->pData = data;
+            pwk->flg = 0;
+            pwk->handle = handle;
+            memcpy(data, pac->pwk[pwk->wk.eplno]->pData, size[pwk->wk.eplno]);
+        }
+        pac->pwk[i]->hitnum = 0;
+        if (pacflg & EFFPAC_ST_DECODE) {
+            pac->pwk[i]->hPartsList = Create_effPartsList(pac->pwk[i]->pData);
+            pac->status |= EFFPAC_ST_DECON;
+        }
+        src += size[i];
+    }
+    for (i = 0; i < pac->num; i++) {
+        if (pacflg & EFFPAC_ST_DECODE) {
+            sdfMemFreeDirect(pac->pwk[i]->handle);
+            pac->pwk[i]->pData = NULL;
+            pac->pwk[i]->handle = NULL;
+        }
+    }
+
+    /* Hit records: per listed effect, a count then each SBTLSKILLHIT_TBL with its optional data. */
+    p = (s32 *)src;
+    if (hitcount != 0) {
+        for (j = 0; j < hitcount; j++) {
+            hitnum = *p++;
+            pac->pwk[hitidx[j]]->hitnum = hitnum;
+            for (k = 0; k < hitnum; k++) {
+                SBTL_HIT_PACDATA *hit;
+
+                handle = sdfMemAllocDirect(sizeof(SBTL_HIT_PACDATA));
+                pac->pwk[hitidx[j]]->flg = 1;
+                hit = sdfMemLock(handle);
+                hit->handle = handle;
+                pac->pwk[hitidx[j]]->hit[k] = hit;
+                hit->entry = *(SBTLSKILLHIT_TBL *)p;
+                p += sizeof(SBTLSKILLHIT_TBL) / sizeof(s32);
+                if (pac->pwk[hitidx[j]]->hit[k]->entry.flg & 0x1000) {
+                    pac->pwk[hitidx[j]]->hit[k]->BpSize = *p;
+                    handle = sdfMemAllocDirect(pac->pwk[hitidx[j]]->hit[k]->BpSize);
+                    data = sdfMemLock(handle);
+                    pac->pwk[hitidx[j]]->hit[k]->BpData = data;
+                    memcpy(data, p + 1, pac->pwk[hitidx[j]]->hit[k]->BpSize);
+                    pac->pwk[hitidx[j]]->hit[k]->handle08 = handle;
+                    p = (s32 *)((u8 *)p + pac->pwk[hitidx[j]]->hit[k]->BpSize + sizeof(s32));
+                } else {
+                    pac->pwk[hitidx[j]]->hit[k]->handle08 = NULL;
+                }
+                if (pac->pwk[hitidx[j]]->hit[k]->entry.flg & 0x2000) {
+                    sz = *p;
+                    src = (u8 *)(p + 1);
+                    p = (s32 *)(src + sz + sizeof(SBTLEFF_EFFTIME));
+                    handle = sdfMemAllocDirect(sz);
+                    data = sdfMemLock(handle);
+                    pac->pwk[hitidx[j]]->hit[k]->hPartsList = NULL;
+                    pac->pwk[hitidx[j]]->hit[k]->EpData = data;
+                    memcpy(data, src, sz);
+                    pac->pwk[hitidx[j]]->hit[k]->handle10 = handle;
+                    pac->pwk[hitidx[j]]->hit[k]->time = *(SBTLEFF_EFFTIME *)(src + sz);
+                    if (sz == 0) {
+                        pac->pwk[hitidx[j]]->hit[k]->entry.flg &= ~0x2000;
+                    }
+                } else {
+                    pac->pwk[hitidx[j]]->hit[k]->handle10 = NULL;
+                }
+            }
+        }
+    }
+
+    if (pac->handle != NULL) {
+        sdfMemFreeDirect(pac->handle);
+    }
+    pac->handle = NULL;
+    pac->pData = NULL;
+    cnt = sbtlData83->effpaccnt + 1;
+    sbtlData83->effpaccnt = cnt;
+    if (cnt <= 0) {
+        cnt = 0;
+    } else if (cnt >= SBTLEFF_PACLIST_MAX) {
+        cnt = SBTLEFF_PACLIST_MAX - 1;
+    }
+    sbtlData83->effpaccnt = cnt;
+    pac->gstat = 2;
+    wk_sbtl->flg &= ~0x20000;
+load_se:
+    if (sbtlLoadSkillSE(pac)) {
+        pac->gstat = 5;
+        pac->status |= EFFPAC_ST_LOADEND;
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", CheckLoadEffectData);
+#endif
 
 /* NON_MATCHING: 43 of 53 words match.  */
 #ifdef NON_MATCHING

@@ -121,3 +121,15 @@ Retail reads the pack status bits and gstat through base + no*0x60 + 0x10 (the a
 Raidou 2: 98 of 188 words differ, first at +0x4; emitted 756 bytes, native 748 bytes.
 
 Retail reads the pack status as base + (i*0x60 + 0x10) + 6, with i*0x60 + 0x10 kept as a spilled induction variable; the draft reads offset 0x16 from the entry, which changes the register allocation and spill (98 words). The pack loop body matches the sbtlForceDelete_EffectWork_ID draft. Vector checked (R2 battle/menu rows, the paths they take). nm_behaviour reports the same address reassociation as sbtlForceDelete_EffectWork_ID (+0x10 then +0x4/+0x50/+0x54 against the entry offsets).
+
+## CheckEffectData_Core_sbtlEff (sbtlEff_00289E50, raidou2 0xD04)
+
+Raidou 2: 65 of 833 words differ, first at +0x2C.
+
+65 of 833 words: every opcode matches; the loop counter i and the id argument trade s2 and s3, which moves the prologue saves and every use of the two. Ported from the Raidou 1 body (sbtlCallBtlCreateUnitList3) with the Raidou 2 differences: sbtlGetBothSide for tflg 2 and 3, tflg 5 and 6, the sword effect colour from swordEffClrTbl by cmbSkl tateClr or sword_eff_kind, the player side check that skips summoned nakama, and SetDamageProc for skills without area 0x4000. The block order needs the conditions written inverted (tflg == 0 && area & 2 before tflg != 0; stockID >= 0 && !(field414 & 2) first; !(area & 0x100) first), (area & 2) || (area & 4) gives retail's lw 0xC & 0x60000, and an SBTLUNIT_SIDE return type for sbtlGetBothSide keeps the andi 0x3F ahead of the and. Vector checked (battle, 32 rows); nm_behaviour clean (D/logs/nmb6c.txt).
+
+## CheckLoadEffectData (sbtlEff_00289E50, raidou2 0x8A4)
+
+Raidou 2: 403 of 539 words differ, first at +0x14; emitted 2156 bytes, native 2212 bytes.
+
+403 of 539 words: first draft, ported from the Raidou 1 body (sbtlCallMemset18) with the Raidou 2 pack loader (pacLoad, pacCheckEnd, the pack's first resource, pacFileHandleFree_), the ppData prelude that moves gstat 0 to 1, and the sbtlLoadSkillSE tail shared by gstat 1 and 2. pacflg is u16 (andi 0xFFFF on entry). Differs from the first word on by register allocation: retail keeps pacflg in s7 and status in a3 and re-reads pac->pwk[hitidx[j]]->hit[k] through a saved &hitidx[j] and a byte offset. Vector checked (battle, 32 rows with pacflg 0x28 and ppData set). nm_behaviour reports only immediates (retail 0x50, 0x54, 0x98; draft 0x60, 0x64, 0x94, 0x95): induction bases and offsets of the hit-table walk that the two allocations start differently; both bodies step the same 0x94 field and clamp at 149.

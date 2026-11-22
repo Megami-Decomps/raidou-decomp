@@ -272,7 +272,7 @@ s32 sbtlDeleteSTPList(struct SBTL_STP *lwk);
 s32 sbtlDeleteMainPanel(void);
 extern const s32 sbtlFunc6Table[46];
 s32 sbtlFunc6(s32 id, void *pData);
-s32 CheckLoadEffectData(SBTLEFF_PACLIST *pac, SKLID skillid, EFFPAC_ST pacflg, void *ppData);
+s32 CheckLoadEffectData(SBTLEFF_PACLIST *pac, SKLID skillid, u16 pacflg, void *ppData);
 s32 sbtlCheckLoadEnd_EffectWork(void);
 struct SBTL_PANEL;
 s32 DeletePanel(struct SBTL_PANEL *wk);
@@ -318,6 +318,8 @@ s32 sbtlLeaf7(s32 id);
 /* raidou2 returns the pack effect's wk. */
 EFFPDATA_WORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
 SBTLEFF_PACDATAWORK *sbtlGetEffectPacData(s32 id, s32 no);
+/* RGBA of the sword effect, by sword_eff_kind and cmbSkl tateClr. */
+extern const u32 swordEffClrTbl[];
 f32 sbtlGetDmgEffScale(struct SBTLUNIT_WORK *wk);
 void sbtlSetDmgEffShinad(struct SBTLEFF_WORK *pEff, struct SBTLUNIT_WORK *pUnit, s32 Type);
 s32 CheckEffectData_Core_sbtlEff(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s32 index, s32 id, u16 acterside,

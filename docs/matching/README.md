@@ -23,8 +23,8 @@ menu scenarios); an entry says which paths they covered.
 | 25 | code_003648C0 | raidou2 | [code_003648C0.md](code_003648C0.md) |
 | 25 | sbtlDMG | raidou1, raidou2 | [sbtlDMG.md](sbtlDMG.md) |
 | 22 | code_00309FE0 | raidou2 | [code_00309FE0.md](code_00309FE0.md) |
-| 20 | sbtlEff_00289E50 | raidou1, raidou2 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
-| 16 | code_002F5CF0 | raidou2 | [code_002F5CF0.md](code_002F5CF0.md) |
+| 22 | sbtlEff_00289E50 | raidou1, raidou2 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
+| 18 | code_002F5CF0 | raidou2 | [code_002F5CF0.md](code_002F5CF0.md) |
 | 14 | code_00261DF0 | raidou2 | [code_00261DF0.md](code_00261DF0.md) |
 | 13 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
 | 13 | sbtl | raidou1, raidou2 | [sbtl.md](sbtl.md) |

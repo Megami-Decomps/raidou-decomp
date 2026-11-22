@@ -363,9 +363,9 @@ struct SBTLUNIT_WORK {
     sdatParaWork_t kajyapara; /* stat changes added to unit.now by sbtlCheckBattlePara */
     u8 pad40C[0x4];
     SBTLSKL_KAJA_WORK kaja[3][2];
-    u8 pad440[0x4];
+    SKLID karnSkillid; /* HD wkKarn[0]->m_skillid */
     s32 karnCnt;
-    u8 pad448[0x44C - 0x448];
+    s32 drawgaugetype; /* HD name: 1 barrier, 2 enchant, 3 bullet, 4 aura gauge on the status bar */
     s32 field44C;
     u8 pad450[0x474 - 0x450];
     SBTLSKL_BARRIER_WORK barrier;
@@ -375,11 +375,12 @@ struct SBTLUNIT_WORK {
     SKLID tdan_sklid;
     u8 pad494[0x4];
     s32 tdanpara;
-    u8 pad49C[0x4A4 - 0x49C];
+    u8 pad49C[0x4A0 - 0x49C];
+    s32 enchantcnt; /* HD name */
     s32 field4A4;
-    u8 pad4A8[0x4AC - 0x4A8];
+    SKLID bulletskl; /* HD name */
     s32 field4AC;
-    u8 pad4B0[0x4B4 - 0x4B0];
+    SKLID auraskl; /* HD wkAura[0]->auraskl */
     u32 aurakind;
     s32 aurapara;
     s32 major;
@@ -436,7 +437,8 @@ struct SBTLUNIT_WORK {
     s32 field564;
     u8 pad568[0x4];
     SKLID skillid;
-    u8 pad570[0x10];
+    u8 pad570[0x57C - 0x570];
+    s32 stockID; /* stock slot of a summoned demon, -1 otherwise */
     SKLID order_sklidbk;
     u8 pad584[0x1];
     s8 action_flg;

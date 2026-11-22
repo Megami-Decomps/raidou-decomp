@@ -9,6 +9,7 @@ struct SBTLUNIT_WORK;
 extern s32 sbtlCancelSystemSubData[];
 
 s32 sbtlCancelSystemSub(s32 id);
+SBTLUNIT_SIDE sbtlGetBothSide(struct SBTLUNIT_WORK *wk, u8 side);
 s32 sbtlEscapeCheck(void);
 SKLID sbtlCallBtlGetSkilltbl23(SKLID skillid, s32 *base);
 void Delete_sbtlScript(struct SBTLUNIT_WORK *wk);

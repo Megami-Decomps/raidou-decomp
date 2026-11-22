@@ -199,6 +199,8 @@ DrawAddMag	code_002F5CF0	raidou2 0x2D4	21 of 181 words differ	docs/matching/code
 sbtlSummonDevilAshimoto	code_002F5CF0	raidou2 0x5A0	44 of 360 words differ	docs/matching/code_002F5CF0.md	81		
 sbtlEnemyData	code_002F5CF0	raidou2 0x404	248 of 258 words differ	docs/matching/code_002F5CF0.md	87		
 sbtlTargetCursor	code_002F5CF0	raidou2 0x654	44 of 405 words differ	docs/matching/code_002F5CF0.md	93		
+DrawStatusBar	code_002F5CF0	raidou2 0x870	377 of 540 words differ	docs/matching/code_002F5CF0.md	99		
+sbtlSummonDevilData_Sub	code_002F5CF0	raidou2 0x8EC	549 of 562 words differ	docs/matching/code_002F5CF0.md	105		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	13		
 fclCallSetFontColorNo3	code_002FA4F0	raidou1 0x118	4 of 70 words differ	docs/matching/code_002FA4F0.md	21		
@@ -645,6 +647,8 @@ sbtlForceDeleteAll	sbtlEff_00289E50	raidou2 0x1C0	5 of 112 words differ	docs/mat
 sbtlDeleteHaveSkill_EffectWork	sbtlEff_00289E50	raidou2 0x224	107 of 136 words differ	docs/matching/sbtlEff_00289E50.md	107		
 sbtlForceDelete_EffectWork_ID	sbtlEff_00289E50	raidou2 0x2BC	51 of 174 words differ	docs/matching/sbtlEff_00289E50.md	113		
 sbtlForceDelete_EffectWork	sbtlEff_00289E50	raidou2 0x2EC	98 of 188 words differ	docs/matching/sbtlEff_00289E50.md	119		
+CheckEffectData_Core_sbtlEff	sbtlEff_00289E50	raidou2 0xD04	65 of 833 words differ	docs/matching/sbtlEff_00289E50.md	125		
+CheckLoadEffectData	sbtlEff_00289E50	raidou2 0x8A4	403 of 539 words differ	docs/matching/sbtlEff_00289E50.md	131		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		
 sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSub.md	19		

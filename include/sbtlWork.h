@@ -277,7 +277,11 @@ typedef struct SBTL_WORK {
     s16 summonIndex[2];
     s16 returnindex[2]; /* HD name; summonIndex slot of the demon returning to its tube */
     s32 summonindex_menu[2]; /* HD name; summonIndex as the command menu last showed it */
-    u8 pad4B0[0x518 - 0x4B0];
+    u8 pad4B0[0x4B8 - 0x4B0];
+    s32 useitemID;
+    u8 pad4BC[0x4C0 - 0x4BC];
+    s16 useitem_stock; /* stock slot the item is used on, -1 for none */
+    u8 pad4C2[0x518 - 0x4C2];
     SKLID stock_useskill[10];
     u16 stock_useskill_num;
     u8 pad542[0x544 - 0x542];
@@ -442,7 +446,8 @@ typedef struct SBTL_WORK {
     s32 ctrlSmnIdx; /* HD name; summoned demon the panel order is for (sbtlSetMenuPara smnid); sbtlProcess reads its low byte */
     u8 fieldC84; /* hit stops sbtlProcHitStop still has to start */
     u8 fieldC85; /* frames until the next of them */
-    u8 padC86[0xC8C - 0xC86];
+    u8 padC86[0xC88 - 0xC86];
+    SKLID sklId; /* HD cmbSkl.sklId: the combination skill being run */
     struct SBTLUNIT_WORK *pNakama0; /* HD name */
     struct SBTLUNIT_WORK *pNakama1;
     u8 pad_C94[0xCA2 - 0xC94];
@@ -451,7 +456,11 @@ typedef struct SBTL_WORK {
     s32 fieldCAC; /* skill SetFirstAtk_Core uses for the gun when set */
     u8 padCB0[0x1];
     s8 fieldCB1; /* sbtlGetNakama index for fieldCAC */
-    u8 padCB2[0xD90 - 0xCB2];
+    u8 padCB2[0xCC0 - 0xCB2];
+    s32 tateClr; /* HD cmbSkl.tateClr: swordEffClrTbl colour of the combination sword effect */
+    u8 padCC4[0xCD0 - 0xCC4];
+    SKLID rsvCmbSkl[2]; /* HD name: combination skill reserved per summon */
+    u8 padCD8[0xD90 - 0xCD8];
     SUMMON_CTRL smnCtrl;
     u32 mapmdl; /* HD name; index into LoadMap_FromMemory's map model tables, below 23 */
     struct dds3Basic_t *apMarkerUnit[8];
@@ -461,9 +470,14 @@ typedef struct SBTL_WORK {
     s32 grnCnt; /* HD name; frames of the green flash on the player's bar, sbtlCallSetOt sets 10 when a text adds magnetite */
     u8 padE30[0xE40 - 0xE30];
     s32 fieldE40; /* sbtlCallSetOt sets 100 when a kind 0 text ends */
-    u8 padE44[0xE4C - 0xE44];
+    s32 aAiGgFlsAlpha[2]; /* HD name: flash alpha of each summon's AI gauge */
     s32 step; /* HD name; sbtlCheckStartBattle waits for it to be positive */
-    u8 padE50[0xE81 - 0xE50];
+    SKLID sword_eff_skl; /* HD name */
+    s32 sword_eff_step; /* HD name */
+    s32 sword_eff_kind; /* HD name; swordEffClrTbl index of the sword effect colour */
+    u8 padE5C[0xE7C - 0xE5C];
+    struct SBTLEFF_WORK *sword_eff_cmb; /* HD name */
+    u8 padE80[0xE81 - 0xE80];
     s8 bEffNoDraw; /* HD name */
     u8 padE82[0xE84 - 0xE82];
     s32 fieldE84; /* sbtlDat's index into datData20 */
