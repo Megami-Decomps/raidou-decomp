@@ -34,19 +34,30 @@ typedef struct SBTLDROP_WORK {
     s32 eventitem[DROPEITEM_NUM];
 } SBTLDROP_WORK;
 
+/* HD S_PosCtrl: a camera or target position move in progress. */
+typedef struct S_PosCtrl {
+    sdfVector4_t vLast;
+    struct S_PosMove *m_pPosMove;
+    s32 m_cnt;
+    s32 m_stp;
+    s32 m_run; /* -1 once the move ended */
+} S_PosCtrl;
 /* HD SBTLCAMERA_WORK, the head of SBTL_WORK; the PS2 layout starts at targetpos. */
 typedef struct SBTLCAMERA_WORK {
     sdfVector4_t targetpos;
     sdfVector4_t direction;
     sdfVector4_t camerapos;
 #ifdef VERSION_RAIDOU2
-    u8 pad030[0x70];
+    u8 pad030[0x60 - 0x30];
+    S_PosCtrl m_PosCtrlCam; /* HD m_CamMov->m_PosCtrlCam, held inline */
+    S_PosCtrl m_PosCtrlTgt;
 #endif
     struct dds3Basic_t *cm;
     f32 distance;
     f32 fovy;
 #ifdef VERSION_RAIDOU2
-    u8 padAC[4];
+    s8 mode; /* E_CAMERA_MODE */
+    u8 padAD[3];
 #else
     u8 pad3C[4];
 #endif
@@ -201,7 +212,10 @@ typedef struct SUMMON_CTRL {
 /* Partial raidou2 layout of the battle main work: only the fields read so far are named, the rest is padding. */
 typedef struct SBTL_WORK {
     sdfVector4_t vPosBossEvent; /* HD name; boss event camera target */
-    u8 pad010[0x150 - 0x10];
+    u8 pad010[0x110 - 0x10];
+    sdfVector4_t field110; /* set by sbtlBgnPosSlp */
+    sdfVector4_t field120; /* set by sbtlRefSbtl59 */
+    u8 pad130[0x150 - 0x130];
     sdfVector4_t field150; /* position of the first gun target, set by sbtlCallBtlGetPChara2 */
     u8 pad160[0x180 - 0x160];
     SBTLCAMERA_WORK camera;
@@ -1295,6 +1309,18 @@ void sbtlSetGunNum(s32 num);
 extern s32 Exit_sbtlData;  /* stage Init_sbtl uses when the caller gives none */
 extern s32 Exit_sbtlData2; /* sword Init_sbtl equips in that case */
 E_CAMERA_MODE sbtlGetMode(void);
+extern s32 sbtlGetIdlingData2; /* HD camera_bossmode */
+extern s32 sbtlGetIdlingData3; /* HD camera_bossmode_cnt */
+void sbtlSetBossMode(s32 mode);
+void sbtlSetMoveEnd(void);
+s32 sbtlBtlDrawTextSub2(void);
+void sbtlBgnPosSlp(const sdfVector4_t *pos);
+s32 SetPara(SBTLCAMERA_WORK *wk);
+void MenuStealth(s32 mode);
+extern f32 sbtlLeaf110Work[4];
+extern s32 sbtlData169;
+extern s32 sbtlData170;
+extern f32 sbtlData171;
 extern s32 sbtlSbattle3Data; /* frames counted by sbtlSbattle3 */
 void cmpRefSbtl2(void);
 s32 Exit_sbtl(s32 mode);

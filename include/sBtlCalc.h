@@ -42,6 +42,9 @@ s32 sbtlCheckBadStatus(struct SBTLUNIT_WORK *wk);
 void sbtlCheckBadStatus_Weak(struct SBTLUNIT_WORK *wk, SKLID sklid, struct SBTLSKILLP_TBL *ptbl, s32 acterID);
 void sbtlCheckBattlePara(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckCost(struct SBTLUNIT_WORK *wk, s32 flg);
+#ifdef VERSION_RAIDOU2
+u8 sbtlCheckCost2(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 flg);
+#endif
 s32 sbtlGetMagCost(struct sdatUnitWork_t *player, struct sdatUnitWork_t *unit, s32 devilid);
 s32 sbtlCheckMagCost_GB(struct sdatUnitWork_t *player, struct sdatUnitWork_t *unit, s32 devilid, s8 flg);
 s32 sbtlCheckMagCost(struct sdatUnitWork_t *unit, s32 devilid, s8 flg);

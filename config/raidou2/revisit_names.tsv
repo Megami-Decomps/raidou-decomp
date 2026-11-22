@@ -24530,7 +24530,6 @@
 0x002D4588	CalcItem	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.CalcItem score 6.0 flag -: calls3 callers-of-match-uniq votes3 st2:call r1-disagree:0x29a988
 0x002D4820	CalcItem_Battle_sbtlCalc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.CalcItem_Battle score 6.9 flag -: calls5 callers-of-match votes2 st2:call r1-disagree:0x29ace0
 0x002D5328	sbtlSetAutoSkill_ID	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlSetAutoSkill_ID score 6.0 flag I: calls2 callers-of-match votes2 st2:call r2-only
-0x002D5438	cmbClearUnitSkills	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1ff070 sim 0.929 margin 0.26 single
 0x002D5560	sbtlGetAutoSkill_ID	func	tier=B	hd-role	na	HD sBtlGetAutoSkill_ID; same role as raidou1 sbtlGetAutoSkill_ID; replaces sbtlCallBtlGetSkilltbl19
 0x002D5D30	sbtlCheckMoon	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckMoon(moon), evtBitCheck of a nine-entry u16 table, between sBtlGetDropMoney and sBtlGetSkillCost; replaces sbtlCheckEvtBit_Table
 0x002D5E28	sbtlGetMagCost	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlGetMagCost score 5.2 flag I: calls1 prev calls-of-match-uniq votes2 st2:call r2-only

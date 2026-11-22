@@ -29,10 +29,11 @@ void sbtlCallGetRandIntA6(void);
 void sbtlCallBtlSearchUnitID37(void);
 s32 sbtlCallBtlSearchUnitID27(void);
 s32 sbtlCallCheckSkillEnable(struct SBTLUNIT_WORK *wk);
-void sbtlRefSbtl59(struct SBTLUNIT_WORK *wk, s32 a_x, s32 a_y);
 #ifdef VERSION_RAIDOU2
+void sbtlRefSbtl59(const sdfVector4_t *pos);
 void sbtlRefSbtl61(const sdfVector4_t *pos);
 #else
+void sbtlRefSbtl59(struct SBTLUNIT_WORK *wk, s32 a_x, s32 a_y);
 void sbtlRefSbtl61(struct SBTLUNIT_WORK *wk, s32 a_x, s32 a_y);
 #endif
 void sbtlCallBtlDrawRedGg(struct SBTLUNIT_WORK *wk);

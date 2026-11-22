@@ -84,6 +84,7 @@ extern S_CameraMoveDt CheckEndData[];
 #endif
 
 extern u8 sbtlData138[][7]; /* camera move pattern per event kind and cam_size */
+extern S_CameraMoveDt sbtlBtlRunSklProcSubData[];
 S_CameraMoveDt *sbtlBtlRunSklProcSub(s32 idx); /* HD sBtlGetCamMovePtn */
 void sbtlRefSbtl65(S_CameraMoveDt *dt); /* HD sBtlSetMove */
 extern u32 btlLoadBossEventTableData;

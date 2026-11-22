@@ -4,6 +4,6 @@
 #include "common.h"
 #include "enums.h"
 
-s32 sbtlGetViceLevel(SKLID skillid);
+s32 sbtlGetViceLevel(s32 vice);
 
 #endif

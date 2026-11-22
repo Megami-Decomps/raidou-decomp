@@ -20,12 +20,28 @@
 #include "dds3CameraObjectBasic.h"
 #include "sBtlSkill.h"
 #include "EventBit.h"
+#include "sBtlCmndMenuNew.h"
+#include "sBtlDraw.h"
+#include "sbtlplayertbl.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlRunSklProcSub);
+S_CameraMoveDt *sbtlBtlRunSklProcSub(s32 idx) {
+    return &sbtlBtlRunSklProcSubData[idx];
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl65);
+void sbtlRefSbtl65(S_CameraMoveDt *dt) {
+    SBTLCAMERA_WORK *camera = &wk_sbtl->camera;
+
+    camera->m_PosCtrlCam.m_pPosMove = dt->m_pPosMoveCam;
+    camera->m_PosCtrlTgt.m_pPosMove = dt->m_pPosMoveTgt;
+    camera->m_PosCtrlCam.m_cnt = 0;
+    camera->m_PosCtrlCam.m_stp = 0;
+    camera->m_PosCtrlCam.m_run = 1;
+    camera->m_PosCtrlTgt.m_cnt = 0;
+    camera->m_PosCtrlTgt.m_stp = 0;
+    camera->m_PosCtrlTgt.m_run = 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl64);
 
@@ -80,11 +96,21 @@ s32 sbtlCallBgSetScrollReset(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlSetBossMode);
+void sbtlSetBossMode(s32 mode) {
+    sbtlGetIdlingData2 = mode;
+    sbtlGetIdlingData3 = 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlInitSBtlSub3);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf110);
+void sbtlLeaf110(f32 x, f32 y, f32 z) {
+    sbtlData169 = 1;
+    sbtlData171 = 1.0f;
+    sbtlData170 = 0x45;
+    sbtlLeaf110Work[0] = x;
+    sbtlLeaf110Work[1] = y;
+    sbtlLeaf110Work[2] = z;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetIdling);
 
@@ -92,7 +118,9 @@ INCLUDE_ASM(const s32, "sbtl", Slerp_sbtlCamera);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlIsMoveEnd);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlSetMoveEnd);
+void sbtlSetMoveEnd(void) {
+    wk_sbtl->camera.m_PosCtrlCam.m_run = 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", GetNowPosAS);
 
@@ -106,9 +134,20 @@ INCLUDE_ASM(const s32, "sbtl", SetEnemyCPos);
 
 INCLUDE_ASM(const s32, "sbtl", MenuStealth);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlMenuOpen);
+void sbtlMenuOpen(void) {
+    if (wk_sbtl->flg >= 0) {
+        sbtlSetMode(E_CAMERA_MODE_Menu2);
+    } else {
+        sbtlSetMode(E_CAMERA_MODE_Menu);
+    }
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlMenuClose);
+void sbtlMenuClose(void) {
+    if (!wk_sbtl->fieldCA2) {
+        sbtlSetMode(E_CAMERA_MODE_Normal);
+    }
+    MenuStealth(0);
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl67);
 
@@ -163,7 +202,12 @@ s32 ProcCamera(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", ShutdownCamera);
+s32 ShutdownCamera(dds3ProcessID_t *id)
+{
+#ifdef FIX_BUGS
+    return 0;
+#endif
+}
 
 s32 sbtlLeaf118(void)
 {
@@ -172,13 +216,18 @@ s32 sbtlLeaf118(void)
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlSearchUnitID35);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallSetPara);
+s32 sbtlCallSetPara(void) {
+    SetPara(&wk_sbtl->camera);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlNoHokan);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlSetMode);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetMode);
+E_CAMERA_MODE sbtlGetMode(void) {
+    return wk_sbtl->camera.mode;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallMemset31);
 
@@ -198,19 +247,38 @@ INCLUDE_RODATA(const s32, "sbtl", jtbl_004C6860);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckDamageTargetUseItem);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetCutFlg);
+E_CAMMOD_CUT sbtlGetCutFlg(void) {
+    switch (wk_sbtl->camera.mode) {
+    case E_CAMERA_MODE_TAME1:
+    case E_CAMERA_MODE_TAME2:
+        return E_CAMMOD_CUT_DmgNum | E_CAMMOD_CUT_Stp | E_CAMMOD_CUT_NakamaIcon | E_CAMMOD_CUT_ExcRenkeiTameEff;
+    }
+    return E_CAMMOD_CUT_Non;
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl56);
+void sbtlRefSbtl56(const sdfVector4_t *pos) {
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&wk_sbtl->camera.camerapos);
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBgnPosSlp);
+void sbtlBgnPosSlp(const sdfVector4_t *pos) {
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&wk_sbtl->field110);
+}
 
 INCLUDE_ASM(const s32, "sbtl", ClrAction);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl55);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl61);
+void sbtlRefSbtl61(const sdfVector4_t *pos) {
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&wk_sbtl->camera.targetpos);
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl59);
+void sbtlRefSbtl59(const sdfVector4_t *pos) {
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&wk_sbtl->field120);
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl57);
 
@@ -320,7 +388,12 @@ INCLUDE_ASM(const s32, "sbtl", sbtlSetAutoSkill_GBID);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlSetAutoSkill_ID);
 
-INCLUDE_ASM(const s32, "sbtl", cmbClearUnitSkills);
+s32 sbtlResetAutoSkill(sdatUnitWork_t *unit) {
+    memset(&unit->pbtl, 0, sizeof(unit->pbtl));
+    unit->autost_cnt = 0;
+    unit->autost_cnt2 = 0;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetAutoSkillPara);
 
@@ -418,11 +491,15 @@ s32 sbtlCheckMagCost_GB(sdatUnitWork_t *player, sdatUnitWork_t *unit, s32 devili
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckMagCost);
+s32 sbtlCheckMagCost(sdatUnitWork_t *unit, s32 devilid, s8 flg) {
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost2);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost);
+s32 sbtlCheckCost(struct SBTLUNIT_WORK *wk, s32 flg) {
+    return sbtlCheckCost2(wk, wk->skillid, flg);
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost_SkillID);
 
@@ -432,7 +509,12 @@ INCLUDE_ASM(const s32, "sbtl", sbtlDecMag);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl71);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl54);
+void sbtlRefSbtl54(s32 num) {
+    SBTL_WORK *sbtl = wk_sbtl;
+
+    sbtl->mag += num;
+    sbtl->mag = (sbtl->mag <= 0) ? 0 : (sbtl->mag >= sbtl->magMax) ? sbtl->magMax : sbtl->mag;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlDecHP);
 
@@ -442,9 +524,17 @@ INCLUDE_ASM(const s32, "sbtl", sbtlDecItem_GBWK);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlDecItem);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlSetGunNum);
+void sbtlSetGunNum(s32 num) {
+    sbtlGetPlayerData();
+    wk_sbtl->hgunNum = num;
+}
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl66);
+void sbtlRefSbtl66(s32 num) {
+    wk_sbtl->hgunNum -= num;
+    if (wk_sbtl->hgunNum < 0) {
+        wk_sbtl->hgunNum = 0;
+    }
+}
 
 s32 sbtlGetGun_Num(void)
 {
@@ -458,7 +548,16 @@ SBTL_AISYO_TBL *sbtlGetAisyotbl(s32 id)
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAttrFlg);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckAisyo_Old);
+s32 sbtlCheckAisyo_Old(u32 attr) {
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        if ((attr >> i) & 1) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlBtlCheckAisyoExSub);
 
@@ -466,7 +565,23 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckAisyoEx);
 
 INCLUDE_ASM(const s32, "sbtl", WeakBstDvlTk);
 
-INCLUDE_ASM(const s32, "sbtl", LimitRange);
+s32 LimitRange(sdatUnitWork_t *unit, s32 value, s32 isMp) {
+    s32 max;
+    s32 cur;
+
+    if (!isMp) {
+        cur = unit->now.hp;
+        max = unit->now.maxhp;
+    } else {
+        cur = unit->now.mp;
+        max = unit->now.maxmp;
+    }
+    cur += value;
+    if (cur > max) {
+        return value - (cur - max);
+    }
+    return value;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlAutoRec);
 
@@ -657,7 +772,18 @@ INCLUDE_ASM(const s32, "sbtl", sbtlGetDamage_ITEMFLG);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf97);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetViceLevel);
+s32 sbtlGetViceLevel(s32 vice) {
+    if (vice >= 300) {
+        return 3;
+    }
+    if (vice >= 238) {
+        return 2;
+    }
+    if (vice < 166) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRecalcAisyoMember);
 
@@ -1092,7 +1218,11 @@ s32 sbtlReleaseDvltk_List(SBTLDVLTK_LISTWORK *stp, u8 flg)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlDeleteDvltkList);
+s32 sbtlDeleteDvltkList(SBTLDVLTK_LISTWORK *lwk) {
+    sbtlReleaseDvltk_List(lwk, 1);
+    sdfChipFreeDirect(lwk);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallMessageNumSearch3);
 
@@ -1102,7 +1232,9 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlSearchUnitID34);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlDrawTextFont);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlDrawTextSub2);
+s32 sbtlBtlDrawTextSub2(void) {
+    return 1;
+}
 
 struct sprHandle_t *sbtlGetSpriteHandle(void)
 {
