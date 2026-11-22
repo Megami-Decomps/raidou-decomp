@@ -3148,7 +3148,6 @@
 0x0028EAE8	sbtlSobedSAB	func	tier=D	derived-string	na	unit sbtlEff_00289E50; string '%s'
 0x0028EC50	sbtlCallBtlGetSkilltbl10	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls sbtlGetSkilltbl
 0x0028ED60	sbtlCallMemset18	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls memset
-0x0028F5F8	sbtlRefSbtl24	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x0028F6C0	sbtlRefSbtl25	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x0028FA08	sbtlRefSbtl26	func	tier=D	derived-data	na	unit sbtlEff_00289E50; references wk_sbtl
 0x002905D8	sbtlCallLoadOnMemoryDataSBtlEff	func	tier=D	derived-callee	na	unit sbtlEff_00289E50; calls LoadOnMemoryData_sbtlEff
@@ -3223,13 +3222,11 @@
 0x0029A310	sbtlCallSetPosPoseSetDds3Basic2	func	tier=D	derived-callee	na	unit sbtl; calls dds3SetPosPoseSet
 0x0029A3F0	sbtlCallBitCheck5	func	tier=D	derived-callee	na	unit sbtl; calls evtBitCheck
 0x0029B798	sbtlLeaf123	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x0029C1F0	sbtlRefSbtl64	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x0029C2B0	sbtlCallBtlGetPlayerData7	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetPlayerData
 0x0029C2F0	sbtlCallBtlGetPlayerData6	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetPlayerData
 0x0029C360	sbtlCallBtlGetPlayerData3	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetPlayerData
 0x0029C400	sbtlSEquationno03Sub	func	tier=D	derived-caller	na	unit sbtl; called by SEquationno_03
 0x0029C518	sbtlCallLimitRange	func	tier=D	derived-callee	na	unit sbtl; calls LimitRange
-0x0029C800	sbtlRefSbtl68	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x0029CF40	sbtlCallEventBattleStopChack	func	tier=D	derived-callee	na	unit sbtl; calls EventBattleStopChack
 0x0029D3D0	sbtlResetBadStatus	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlResetBadStatus, score 9.8 band B, hd-ab: calls3 callers-of-match votes2 st1:call r1+r2
 0x0029D568	sbtlCheckBadStatus	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlCheckBadStatus, score 7.15 band B
@@ -19136,6 +19133,7 @@
 0x0028DEF8	sbtlReleaseDelList	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlEff.sBtlReleaseDelList score 6.3 flag I: calls1 calls-of-match st1:call r1+r2
 0x0028E160	sbtlForceDelete_EffectWork_ID	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlEff.sBtlForceDelete_EffectWork_ID score 6.0 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2c0aa8
 0x0028EB80	sbtlLoadEffectData_Nakama	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlEff.sBtlLoadEffectData_Nakama score 5.8 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2c13e0
+0x0028F5F8	sbtlSetSummonEffect_Nakama	func	tier=B	hd-role	na	HD sBtlSetSummonEffect_Nakama: R1 0x28F5F8 is the summon effect switch (0 EFFID_SUMMON_FR, 1 EFFID_SUMMON_ND, 2 EFFID_SWTIN_FR), which R2 names at 0x2C1F28; replaces sbtlRefSbtl24
 0x0028F738	sbtlCheckYukaDamageEffect	func	tier=B	hd-role	na	HD sBtlCheckYukaDamageEffect; R2 already uses the name; replaces sbtlCallBtlGetSklVisualTbl
 0x002911D0	sbtlDeleteTalk	func	tier=B	hd-role	na	HD sBtlDeleteTalk, called on wk->talkwk by DeletePanel; replaces sbtlCallMemFreeDirect4
 0x00291F48	sbtlDeleteMainPanel	func	tier=B	hd-role	na	HD sBtlDeleteMainPanel: status 0x800 test, DeletePanel, clears panelwk and the bit; replaces sbtlRefSbtl46
@@ -19180,6 +19178,7 @@
 0x0029BE98	sbtlCheckMagCost	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckMagCost(unit, devilid, flg), R2 sbtlCheckMagCost; replaces sbtlCallBtlSearchUnitID34
 0x0029BF50	sbtlCheckCost	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckCost(wk, flg), calls sBtlCheckCost_SkillID with wk->skillid; replaces sdfRemoveTaskItem
 0x0029BFB8	sbtlCheckCost_SkillID	func	tier=B	hd-role	na	HD SEquationno_12 returns sBtlCheckCost_SkillID(wk, skillid, 0), the call at the same place in Raidou SEquationno_12; replaces sbtlCallBtlGetSkilltbl22
+0x0029C1F0	sbtlDecMag	func	tier=B	hd-role	na	HD sBtlDecMag(s32 mag), called with the skill cost; R2 sbtlDecMag 0x2D62C0 was inferred from HD with R1 counterpart 0x29C1F0; replaces sbtlRefSbtl64
 0x0029C258	sbtlDecItem_GBWK	func	tier=B	hd-role	na	HD sBtlCalc.sBtlDecItem_GBWK(itemid), called by sBtlCheckItemCost_GBWK; replaces sbtlRefDDS3GBWK22
 0x0029C288	sbtlDecItem	func	tier=B	hd-role	na	HD sBtlCalc.sBtlDecItem(index, itemid): decrements itemList->data[index].num; replaces sbtlRefSbtl63
 0x0029C608	sbtlCheckKuishibari	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlCheckKuishibari score 6.1 flag I: calls4 callee-index votes3 st1:cidx r2-disagree:0x2d68b8

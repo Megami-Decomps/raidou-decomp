@@ -284,7 +284,7 @@ s32 sbtlCallMemset18(SBTLEFF_PACLIST *pac, SKLID skillid, u16 flg, void *pData)
 INCLUDE_ASM(const s32, "code_0028EB80", sbtlCallMemset18);
 #endif
 
-INCLUDE_ASM(const s32, "code_0028EB80", sbtlRefSbtl24);
+INCLUDE_ASM(const s32, "code_0028EB80", sbtlSetSummonEffect_Nakama);
 
 INCLUDE_ASM(const s32, "code_0028EB80", sbtlRefSbtl25);
 

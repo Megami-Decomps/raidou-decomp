@@ -17,7 +17,7 @@ s32 sbtlCheckUseSkill(struct SBTLUNIT_WORK *wk, SKLID sklid);
 struct SBTLSKILLP_TBL *sbtlGetSkilltbl(SKLID skillid);
 void sbtlDecVice(struct SBTLUNIT_WORK *wk, s32 vice);
 #ifdef VERSION_RAIDOU1 /* Raidou 2's sbtlRefSbtl64 is other code: the highest unit of the given sides */
-void sbtlRefSbtl64(s32 mag);
+void sbtlDecMag(s32 mag);
 #else
 f32 sbtlRefSbtl64(SBTLUNIT_SIDE side);
 #endif

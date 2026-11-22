@@ -2744,7 +2744,7 @@ s32 sbtlCallBtlSearchUnitID10(struct SBTLUNIT_WORK *wk) {
     case 0:
         if (unit != NULL && sbtlCheckDamageTarget(unit)) {
             wk_sbtl->field358[wk_sbtl->summonIndex[0]] = 3;
-            sbtlRefSbtl24(sbtlCallMemset6(wk_sbtl->summonIndex[0], 0), 0);
+            sbtlSetSummonEffect_Nakama(sbtlCallMemset6(wk_sbtl->summonIndex[0], 0), 0);
             wk_sbtl->field484++;
         } else {
             wk_sbtl->field484 = 4;
@@ -2822,13 +2822,13 @@ s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 flg, s8 usePos, 
     sbtlSetactcounter(unit);
     unit->actCounter = unit->actMax;
     if (mode == 0 || mode == 2) {
-        sbtlRefSbtl24(unit, 0);
+        sbtlSetSummonEffect_Nakama(unit, 0);
     }
     mag = 0;
     if (wk_sbtl->battleMode != 3) {
         mag = sbtlGetMagCost(&wk->unit, &unit->unit, unit->unit.devilId);
     }
-    sbtlRefSbtl64(mag);
+    sbtlDecMag(mag);
     sbtlCheckBattlePara(unit);
     return 1;
 }

@@ -7294,7 +7294,7 @@
 0x0028EB80	sbtlLoadEffectData_Nakama	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlEff.sBtlLoadEffectData_Nakama score 5.8 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2c13e0
 0x0028EC50	sbtlCallBtlGetSkilltbl10	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls sbtlGetSkilltbl
 0x0028ED60	sbtlCallMemset18	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; calls memset
-0x0028F5F8	sbtlRefSbtl24	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
+0x0028F5F8	sbtlSetSummonEffect_Nakama	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetSummonEffect_Nakama: R1 0x28F5F8 is the summon effect switch (0 EFFID_SUMMON_FR, 1 EFFID_SUMMON_ND, 2 EFFID_SWTIN_FR), which R2 names at 0x2C1F28; replaces sbtlRefSbtl24
 0x0028F6C0	sbtlRefSbtl25	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlEff_00289E50; references wk_sbtl
 0x0028F710	LoadOnMemoryData	hd	hd: Raidou HD sBtlEff.LoadOnMemoryData, score 8.0 band B
 0x0028F738	sbtlCheckYukaDamageEffect	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCheckYukaDamageEffect; R2 already uses the name; replaces sbtlCallBtlGetSklVisualTbl
@@ -7517,7 +7517,7 @@
 0x0029BF50	sbtlCheckCost	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlCheckCost(wk, flg), calls sBtlCheckCost_SkillID with wk->skillid; replaces sdfRemoveTaskItem
 0x0029BFB8	sbtlCheckCost_SkillID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD SEquationno_12 returns sBtlCheckCost_SkillID(wk, skillid, 0), the call at the same place in Raidou SEquationno_12; replaces sbtlCallBtlGetSkilltbl22
 0x0029C1A8	sbtlDecVice	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlDecVice score 12.8 flag I: calls1 callers-of-match-uniq votes2 st1:call r1+r2
-0x0029C1F0	sbtlRefSbtl64	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
+0x0029C1F0	sbtlDecMag	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDecMag(s32 mag), called with the skill cost; R2 sbtlDecMag 0x2D62C0 was inferred from HD with R1 counterpart 0x29C1F0; replaces sbtlRefSbtl64
 0x0029C238	sbtlDecHP	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlDecHP score 7.8 flag I: calls1 prev gap2/5 votes2 st1:gap r1+r2
 0x0029C248	sbtlDecMP	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlCalc.sBtlDecMP score 5.0 flag I: prev gap1/4 st1:gap r1+r2
 0x0029C258	sbtlDecItem_GBWK	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlDecItem_GBWK(itemid), called by sBtlCheckItemCost_GBWK; replaces sbtlRefDDS3GBWK22
@@ -7533,7 +7533,7 @@
 0x0029C4D8	LimitRange	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtl.LimitRange score 7.6 flag -: calls3 calls-of-match votes3 st1:call r1-only
 0x0029C518	sbtlCallLimitRange	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls LimitRange
 0x0029C608	sbtlCheckKuishibari	hd-inferred	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckKuishibari score 6.1 flag I: calls4 callee-index votes3 st1:cidx r2-disagree:0x2d68b8
-0x0029C800	sbtlRefSbtl68	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
+0x0029C800	sbtlCheckSpecialDamage_Stop	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlCheckSpecialDamage_Stop body: 1 on the 0x2000000 flag, on the scene stop flag, or devil 263/302 in status 7; R2 0x2D6B78 has the same body (R2-C6); replaces sbtlRefSbtl68
 0x0029C858	CalcBtlMagicStatus	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD sBtlCalc.CalcBtlMagicStatus score 7.5 flag -: calls4 callers-of-match votes2 st1:call r2-disagree:0x2d6bf0
 0x0029CF40	sbtlCallEventBattleStopChack	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls EventBattleStopChack
 0x0029CFB8	sbtlGetBadStatus	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetBadStatus score 11.5 flag I: calls3 calls-of-match st1:call r1+r2

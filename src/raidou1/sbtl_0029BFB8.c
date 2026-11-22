@@ -57,7 +57,7 @@ u8 sbtlCheckCost_SkillID(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg)
                 return 0;
             }
             if (arg == 1) {
-                sbtlRefSbtl64(skill->para);
+                sbtlDecMag(skill->para);
             }
             return 1;
         case 1:
@@ -93,7 +93,7 @@ u8 sbtlCheckCost_SkillID(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg)
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlDecVice);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlRefSbtl64);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlDecMag);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlDecHP);
 
@@ -144,7 +144,7 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallLimitRange);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCheckKuishibari);
 
-s32 sbtlRefSbtl68(struct SBTLUNIT_WORK *wk)
+s32 sbtlCheckSpecialDamage_Stop(struct SBTLUNIT_WORK *wk)
 {
     if (wk_sbtl->flg & 0x2000000) {
         return 1;
@@ -244,7 +244,7 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
         sbtlCheckBattlePara(wk);
     }
 
-    if (!sbtlRefSbtl68(wk) && wk->field370 > 0) {
+    if (!sbtlCheckSpecialDamage_Stop(wk) && wk->field370 > 0) {
         if (wk->mv_spd.z == wk->max_mvspd.z) {
             wk->mv_spd.z *= 0.5f;
         }
@@ -292,7 +292,7 @@ s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk)
         }
     }
 
-    if (!sbtlRefSbtl68(wk) && wk->tdancnt > 0) {
+    if (!sbtlCheckSpecialDamage_Stop(wk) && wk->tdancnt > 0) {
         if (--wk->tdancnt <= 0) {
             wk->tdanhitcnt = 0;
             wk->tdancnt = 0;
@@ -411,7 +411,7 @@ s32 CalcBadStatus(struct SBTLUNIT_WORK *wk)
             sbtlCreateAnim_Unit(wk, dmg, 0, 0);
             break;
         case 7:
-            if (sbtlRefSbtl68(wk)) {
+            if (sbtlCheckSpecialDamage_Stop(wk)) {
                 break;
             }
             cnt = ++wk->unit.badst_cnt2;
@@ -466,7 +466,7 @@ s32 CalcBadStatus(struct SBTLUNIT_WORK *wk)
             }
             wk->unit.badst_cnt2 = cnt;
             if (cnt >= 10) {
-                sbtlRefSbtl64(1);
+                sbtlDecMag(1);
             }
             break;
         }

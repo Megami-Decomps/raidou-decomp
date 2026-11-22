@@ -2907,7 +2907,7 @@ vice:
 
         /* wk's counter auto skill hits the attacker back. */
         unit = sbtlSearchUnit_ID(wk_sbtl->unitList, acterID);
-        if (unit != NULL && sbtlCheckDamageTarget(unit) && wk->unit.now.hp - damage >= 2 && !sbtlRefSbtl68(unit)) {
+        if (unit != NULL && sbtlCheckDamageTarget(unit) && wk->unit.now.hp - damage >= 2 && !sbtlCheckSpecialDamage_Stop(unit)) {
             counter = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, 0), &wk->unit.autost_cnt, &wk->unit.autost_cnt2);
             if (counter != 3) {
                 counter = sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(&wk->unit, 1), &wk->unit.autost_cnt, &wk->unit.autost_cnt2);

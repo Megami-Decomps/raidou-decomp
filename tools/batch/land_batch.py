@@ -243,7 +243,10 @@ class Run:
         if added:
             self.batch.renames = rows
             self.maps = {g: renames.name_map(self.batch.applied + rows, g) for g in ("raidou1", "raidou2")}
-        renames.apply(self.tree, self.batch.renames)
+        try:
+            renames.apply(self.tree, self.batch.renames)
+        except ValueError as e:
+            raise SystemExit(f"land_batch: refused: {e}")
         renames.drop(self.tree, self.batch.drop)
         self.say(f"renames: {len(self.batch.renames)} rows, {len(self.batch.drop)} labels dropped")
         if self.py("tools/revisit_names.py"):

@@ -715,7 +715,7 @@ s32 sbtlNakamaSetUp(void)
         if (wk->mode == 0) {
             wk->mode = 2;
             if (wk_sbtl->battleMode == 3) {
-                sbtlRefSbtl24(wk, 0);
+                sbtlSetSummonEffect_Nakama(wk, 0);
             }
             return 0;
         }

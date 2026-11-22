@@ -341,7 +341,7 @@ s32 sbtlCreateAnim_Unit(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *atk_wk, 
 s32 GetDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 acterID, struct SBTLDMG_HITWORK *hwk, s32 attr);
 s32 sbtlCallBtlGetPlayerData4(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, SKLID skillid, s32 attr);
 #ifdef VERSION_RAIDOU1 /* Raidou 2's sbtlRefSbtl68 is other code: a distance without the camera depth */
-s32 sbtlRefSbtl68(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheckSpecialDamage_Stop(struct SBTLUNIT_WORK *wk);
 #else
 f32 sbtlRefSbtl68(sdfVector4_t *pos0, sdfVector4_t *pos1);
 #endif

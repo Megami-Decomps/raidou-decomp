@@ -109,10 +109,15 @@ in order (skip any with `--skip step,...`):
    (tier from the reason), the carried config tables and the pair tables of
    both games, then `src`, `include` and `docs`, untracked files included; then `drop_symbols.tsv` and
    `revisit_names.py`. It lists derived data labels used only by a batch
-   function as candidates for `drop_symbols.tsv`. The sources are renamed once
-   for both games, so a row for one game whose old name the other game also
-   has gets the other game's row added; it refuses when the other game already
-   has the new name or the function is in `r1only.txt`.
+   function as candidates for `drop_symbols.tsv`. A row for one game whose old
+   name the other game also has gets the other game's row added, unless the
+   other game's symbol is another function: the other game already has the new
+   name, or the table has its keep row (`raidou2 old old reason`). Then each
+   game's lines (by `src/<game>/`, `VERSION_` blocks and docs sections) take
+   that game's name, a shared C line both games call gets a `VERSION_` guard,
+   and a macro line that cannot take one is refused with its file and line, with
+   nothing written. A shared name of a function in `r1only.txt` needs the other
+   game's row. `tools/batch/renames.py TABLE` applies a table to a tree by hand.
 4. `splice`: the includes in `includes.tsv` go after each unit's last
    `#include`; each final draft replaces its `INCLUDE_ASM` (and any older
    NON_MATCHING draft around it). When a shared unit holds the line twice, in

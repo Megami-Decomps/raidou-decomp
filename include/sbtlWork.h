@@ -1563,7 +1563,7 @@ void sbtlPacData_Init(void);
 s32 sbtlRefSbtl15(s32 x, s32 y);
 s32 sbtlCallBtlSprite(s32 a, s32 b);
 s32 sbtlRefSbtl23(void);
-s32 sbtlRefSbtl24(struct SBTLUNIT_WORK *wk, s8 flg);
+s32 sbtlSetSummonEffect_Nakama(struct SBTLUNIT_WORK *wk, s8 flg);
 s32 sbtlRefSbtl36(void);
 u32 sbtlRefSbtl37(void);
 s32 sbtlCutMotion(struct SBTLUNIT_WORK *wk, f32 frame);

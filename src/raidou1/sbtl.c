@@ -888,7 +888,7 @@ s32 sbtlCheckMagCost(sdatUnitWork_t *unit, s32 devilid, s8 flg) {
     if (!flg) {
         return 1;
     }
-    sbtlRefSbtl64(cost);
+    sbtlDecMag(cost);
     return 1;
 }
 

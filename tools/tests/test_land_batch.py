@@ -111,12 +111,18 @@ class RenameTests(unittest.TestCase):
             self.assertEqual(added, [("raidou2", "a", "x", "HD")])
             self.assertEqual(out, rows[:1] + added + rows[1:])
 
-    def test_a_raidou1_row_onto_a_raidou2_name_is_refused(self) -> None:
+    def test_a_raidou1_row_onto_a_raidou2_name_keeps_the_raidou2_name(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
             self.symbols(root, "a", "a x")
-            with self.assertRaises(ValueError):
-                renames.complete(root, [("raidou1", "a", "x", "HD")])
+            self.assertEqual(renames.complete(root, [("raidou1", "a", "x", "HD")]), ([("raidou1", "a", "x", "HD")], []))
+
+    def test_a_keep_row_stops_the_other_games_rename(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            self.symbols(root, "a", "a")
+            rows = [("raidou2", "a", "a", "another function"), ("raidou1", "a", "x", "HD")]
+            self.assertEqual(renames.complete(root, rows, {"a"}), (rows, []))
 
     def test_a_raidou1_only_function_is_refused(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -180,6 +186,74 @@ class RenameTests(unittest.TestCase):
         has = {"raidou1": True, "raidou2": False}
         self.assertEqual(renames.rename_text("include/u.h", "void a(void);\n", "a", {"raidou1": "x"}, has),
                          "void x(void);\n")
+
+
+class OneGameRenameTests(unittest.TestCase):
+    """A Raidou 1 rename of a name Raidou 2 uses for another function: Raidou 2's config, units, shared lines it
+    calls and docs keep the name."""
+    HEADER = "s32 a(s32 x);\nvoid b(void);\n"
+
+    def tree(self, tmp: str, macro: bool = False) -> pathlib.Path:
+        root = pathlib.Path(tmp)
+        for game, addr in (("raidou1", "0x00100000"), ("raidou2", "0x00200000")):
+            cfg = root / "config" / game
+            cfg.mkdir(parents=True)
+            (cfg / "symbol_addrs.txt").write_text(f"a = {addr}; // type:func\n")
+            (cfg / "name_sources.txt").write_text(f"{addr}\ta\tinferred\tmethod=derived-data; tier=D\n")
+            (root / "src" / game).mkdir(parents=True)
+            (root / "src" / game / "u.c").write_text(f'#include "u.h"\n\nvoid f_{game}(void) {{\n    a(1);\n}}\n')
+        (root / "src/raidou2/v.c").write_text('INCLUDE_ASM(const s32, "v", a);\n')
+        (root / "include").mkdir()
+        (root / "include/u.h").write_text(self.HEADER + ("#define CALL_A() \\\n    a(0)\n" if macro else ""))
+        (root / "docs/matching").mkdir(parents=True)
+        (root / "docs/matching/u.md").write_text("# Draft notes: u\n\n## a (u, raidou1 0x10)\n\na calls b.\n\n"
+                                                 "## a (v, raidou2 0x20)\n\na reads c.\n")
+        (root / "docs/matching/INDEX.tsv").write_text("a\tu\traidou1 0x10\na\tv\traidou2 0x20\n")
+        subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+        return root
+
+    def test_only_raidou1_is_renamed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self.tree(tmp)
+            rows, added = renames.complete(root, [("raidou2", "a", "a", "another function"),
+                                                  ("raidou1", "a", "x", "HD sBtlX")])
+            self.assertEqual(added, [])
+            renames.apply(root, rows)
+            read = lambda f: (root / f).read_text()
+            self.assertEqual(read("config/raidou1/symbol_addrs.txt"), "x = 0x00100000; // type:func\n")
+            self.assertIn("\tx\tinferred\t", read("config/raidou1/name_sources.txt"))
+            self.assertEqual(read("config/raidou2/symbol_addrs.txt"), "a = 0x00200000; // type:func\n")
+            self.assertIn("    x(1);", read("src/raidou1/u.c"))
+            self.assertIn("    a(1);", read("src/raidou2/u.c"))
+            self.assertEqual(read("src/raidou2/v.c"), 'INCLUDE_ASM(const s32, "v", a);\n')
+            self.assertEqual(read("include/u.h"), "#ifdef VERSION_RAIDOU1\ns32 x(s32 x);\n#else\ns32 a(s32 x);\n"
+                                                  "#endif\nvoid b(void);\n")
+            self.assertEqual(read("docs/matching/u.md"), "# Draft notes: u\n\n## x (u, raidou1 0x10)\n\nx calls b.\n\n"
+                                                         "## a (v, raidou2 0x20)\n\na reads c.\n")
+            self.assertEqual(read("docs/matching/INDEX.tsv"), "x\tu\traidou1 0x10\na\tv\traidou2 0x20\n")
+
+    def test_a_prototype_only_raidou1_calls_takes_the_new_name(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self.tree(tmp)
+            (root / "src/raidou2/u.c").write_text('#include "u.h"\n')
+            renames.apply(root, [("raidou1", "a", "x", "HD")])
+            self.assertEqual((root / "include/u.h").read_text(), "s32 x(s32 x);\nvoid b(void);\n")
+            self.assertEqual((root / "config/raidou2/symbol_addrs.txt").read_text(), "a = 0x00200000; // type:func\n")
+
+    def test_a_guard_comment_keeps_the_name_it_explains(self) -> None:
+        text = ("#ifdef VERSION_RAIDOU1 /* Raidou 2's a is other code */\ns32 a(s32 x);\n#else\nf32 a(void);\n"
+                "#endif\n")
+        has = {"raidou1": True, "raidou2": True}
+        out = renames.rename_text("include/u.h", text, "a", {"raidou1": "x"}, has, frozenset({"raidou2"}))
+        self.assertEqual(out, text.replace("s32 a(", "s32 x("))
+
+    def test_a_macro_both_games_call_is_refused_and_nothing_is_written(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self.tree(tmp, macro=True)
+            before = {f: f.read_text() for f in root.rglob("*") if f.is_file() and ".git" not in f.parts}
+            with self.assertRaisesRegex(ValueError, r"include/u\.h:4: "):
+                renames.apply(root, [("raidou2", "a", "a", "another function"), ("raidou1", "a", "x", "HD")])
+            self.assertEqual({f: f.read_text() for f in before}, before)
 
 
 class DocsTests(unittest.TestCase):
