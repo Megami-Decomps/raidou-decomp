@@ -223,8 +223,8 @@ typedef struct SBTL_WORK {
     s32 equipbullet; /* HD name */
     s32 flg;
     u32 flg2;
-    u32 status3;
-    u8 pad448[0x4];
+    s32 status3;
+    s32 field448; /* 1..11, set with status3 0x80 or 0x80000 by the roulette result */
     u32 status4; /* HD name; 0x10 hides the summon foot markers, 0x200 forces the ND summon effect */
     u8 pad450[0x4];
     s32 targetUnitID;
@@ -506,7 +506,7 @@ typedef struct SBTL_WORK {
     s32 field4334;
     s32 field4338; /* roulette item kind 1..11 of the slot sbtlROULETTECHKPer picked */
     s32 field433C; /* message number slCallSin draws while nonzero */
-    s32 field4340;
+    s32 field4340; /* set to 1 by most roulette results */
     s32 field4344; /* sbtlSummonKey counts it down; the summon menu waits for 0 */
     s32 field4348; /* counted down to 0 by sbtlSbattle3 */
     s32 field434C;
@@ -1308,7 +1308,7 @@ void sbtlKettouProc(void);
 s32 sbtlCallObjectBaseSetPadControl(void);
 s32 sbtlProcHitStop(void);
 s32 sbtlGeneratorProc(void);
-s32 slCallPlaySE(void);
+void slCallPlaySE(void);
 void slQueryYesNoDraw_slMain(void);
 void Proc_sbtlSound(void);
 s32 CheckEnd(void);
@@ -1567,8 +1567,12 @@ extern u32 sbtlData142, sbtlData143, sbtlData144, sbtlData145;
 extern u32 sbtlData146, sbtlData147, sbtlData148, sbtlData149, sbtlBattleTmxData9;
 extern f32 slCallSinData;
 s32 sbtlLeaf94(s32 x, s32 y, s32 w, s32 msgNo, u32 color, s32 alpha);
-/* Roulette state: three counters, the result (98 hit, 99 miss), the miss chance in percent and the slot picked. */
-extern s32 slCallPlaySEData, slCallPlaySEData2, slCallPlaySEData3;
+s32 sbtlLeaf120(s32 x, s32 y, s32 w, s32 msgNo, u32 color, s32 alpha);
+/* Roulette state: step, frame count and sine phase, the result (98 hit, 99 miss), the miss chance in percent and the slot picked. */
+extern s32 slCallPlaySEData, slCallPlaySEData2;
+extern f32 slCallPlaySEData3; /* sine phase */
+extern s32 slCallPlaySEData4, slCallPlaySEData5, slCallPlaySEData6, slCallPlaySEData7, slCallPlaySEData8;
+extern s32 slCallPlaySEData9, slCallPlaySEData10, slCallPlaySEData11, slCallPlaySEData12; /* 10, 11: picked and other row colour */
 extern s32 sbtlCallGetRandData5, sbtlROULETTECHKPerData, sbtlCallGetRandData6;
 extern s32 sbtlCallGetRandWork[4]; /* item of each roulette slot */
 extern u8 sbtlCallGetRandData[][8]; /* roulette item ids, one row per luck result */
@@ -1577,6 +1581,12 @@ s32 sbtlCallUnlock2(s32 item, s32 slot, s32 flg);
 void sbtlCallTexSetFromHead(s32 flg);
 void pbCallEffectReset(s32 flg);
 void sbtlROULETTECHKPer(void);
+void slLeaf(s32 mode);
+void slCallSetOt(void);
+void slCallSetOt2(void);
+void slCallSetOt3(void);
+void slCallSetOt4(s32 y);
+void sbtlCallTexFreeDelayed(void);
 #endif
 
 #endif

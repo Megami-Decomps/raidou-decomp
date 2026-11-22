@@ -330,6 +330,8 @@ s32 sbtlCheckDeadEventMag(struct SBTLUNIT_WORK *wk);
 SKLID sbtlChkHaveMemSklParty(SKLID id);
 void gohFunc6(s32 devilId);
 void gohKarteRegistDevilBtl(struct sdatUnitWork_t *unit, u32 *karte, s32 a2, s32 a3);
+void sbtlSetDamage_L_EnemyAll(void);
+void sbtlCallBtlCreateSideListSBtlUnit4(void);
 #endif
 s32 sbtlGetDamageSub2(struct SBTLUNIT_WORK *wk, s32 skillid);
 s32 sbtlSetRirituNakamaHD(struct SBTLEXP_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, s32 id, s32 time, u32 bstf);

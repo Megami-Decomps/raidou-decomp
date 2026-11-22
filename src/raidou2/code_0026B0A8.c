@@ -2543,7 +2543,7 @@ INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable18);
 
 INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable19);
 
-/* NON_MATCHING: 228 of 332 words match.  */
+/* NON_MATCHING: 232 of 332 words match.  */
 #ifdef NON_MATCHING
 void sbtlResetAtkSklEff(struct SBTLUNIT_WORK *wk)
 {
@@ -2574,9 +2574,9 @@ void sbtlResetAtkSklEff(struct SBTLUNIT_WORK *wk)
     memcpy(tbl3, sbtlResetAtkSklEffTable3, sizeof(tbl3));
     memcpy(tbl4, sbtlResetAtkSklEffTable4, sizeof(tbl4));
     memcpy(tbl5, sbtlResetAtkSklEffTable5, sizeof(tbl5));
-    memcpy(tbl6, sbtlResetAtkSklEffTable6, sizeof(tbl6));
     memcpy(tbl7, sbtlResetAtkSklEffTable7, sizeof(tbl7));
     memcpy(tbl8, sbtlResetAtkSklEffTable8, sizeof(tbl8));
+    memcpy(tbl6, sbtlResetAtkSklEffTable6, sizeof(tbl6));
     memcpy(tbl9, sbtlResetAtkSklEffTable9, sizeof(tbl9));
     memcpy(tbl10, sbtlResetAtkSklEffTable10, sizeof(tbl10));
     memcpy(tbl11, sbtlResetAtkSklEffTable11, sizeof(tbl11));

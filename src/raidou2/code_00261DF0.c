@@ -1835,7 +1835,418 @@ INCLUDE_ASM(const s32, "code_00261DF0", slCallSetOt3);
 
 INCLUDE_ASM(const s32, "code_00261DF0", slCallSetOt4);
 
+/* NON_MATCHING: 828 of 914 words match.  */
+#ifdef NON_MATCHING
+void slCallPlaySE(void) {
+    s32 x;
+    s32 y;
+    s32 ofs;
+    u32 color;
+    u32 c;
+
+    if (slCallPlaySEData >= 1 && slCallPlaySEData < 5) {
+        slCallSetOt3();
+        if (sbtlCallGetRandData5 == 98) {
+            slCallSetOt();
+        } else {
+            slCallSetOt2();
+        }
+    }
+    switch (slCallPlaySEData) {
+    case 0:
+        slCallPlaySEData2++;
+        if (wk_sbtl->flg2 & 0x800) {
+            if (sbtlCallGetRandData5 == 98) {
+                p2sdPlaySE(16, 127, 63);
+            } else {
+                p2sdPlaySE(23, 127, 63);
+            }
+            slCallPlaySEData4 = 1;
+            slCallPlaySEData7 = 5;
+            slCallPlaySEData9 = -1;
+            slCallPlaySEData10 = 0xA09DC380;
+            slCallPlaySEData11 = 0x80808080;
+            slCallPlaySEData12 = slCallPlaySEData6 = 2;
+            slCallPlaySEData = 1;
+            slCallPlaySEData3 = 0.0f;
+            slCallPlaySEData5 = 0;
+            slCallPlaySEData8 = 0;
+            slCallPlaySEData2 = 0;
+            slLeaf(0);
+        }
+        break;
+    case 1:
+        slCallPlaySEData2++;
+        slCallPlaySEData3 += 0.2f;
+        sdfSin(slCallPlaySEData3);
+        if (slCallPlaySEData2 >= 16) {
+            slCallPlaySEData2 = 0;
+            slCallPlaySEData = 2;
+        }
+        break;
+    case 2:
+        slCallPlaySEData2++;
+        slCallPlaySEData3 += 0.2f;
+        sdfSin(slCallPlaySEData3);
+        color = slCallPlaySEData11;
+        if (slCallPlaySEData2 == 0) {
+            p2sdPlaySE(13, 127, 63);
+        }
+        if (slCallPlaySEData2 == 4) {
+            p2sdPlaySE(13, 127, 63);
+        }
+        if (slCallPlaySEData2 == 8) {
+            p2sdPlaySE(13, 127, 63);
+        }
+        if (slCallPlaySEData2 == 12) {
+            p2sdPlaySE(13, 127, 63);
+        }
+        ofs = (15 - slCallPlaySEData2) * 32;
+        if (ofs < 0) {
+            ofs = 0;
+        }
+        sbtlLeaf120(ofs + 96, 195, 320, sbtlCallGetRandWork[0], color, 255);
+        ofs = -((19 - slCallPlaySEData2) * 32);
+        if (ofs > 0) {
+            ofs = 0;
+        }
+        sbtlLeaf120(ofs + 96, 221, 320, sbtlCallGetRandWork[1], color, 255);
+        ofs = (23 - slCallPlaySEData2) * 32;
+        if (ofs < 0) {
+            ofs = 0;
+        }
+        sbtlLeaf120(ofs + 96, 247, 320, sbtlCallGetRandWork[2], color, 255);
+        ofs = -((27 - slCallPlaySEData2) * 32);
+        if (ofs > 0) {
+            ofs = 0;
+        }
+        sbtlLeaf120(96 - ofs, 273, 320, sbtlCallGetRandWork[3], color, 255);
+        if (slCallPlaySEData2 >= 33) {
+            slCallPlaySEData = 3;
+            slCallPlaySEData2 = 0;
+            slLeaf(1);
+        }
+        break;
+    case 3:
+        slCallPlaySEData4++;
+        if (slCallPlaySEData8 == 0) {
+            slCallPlaySEData10 = 0xA09DC380;
+            slCallPlaySEData11 = 0x80808080;
+        } else {
+            slCallPlaySEData10 = 0xA09DC380;
+            if ((s32)(slCallPlaySEData11 - 0x04040400u) < 0x40404000) {
+                slCallPlaySEData11 = 0x40404080;
+            } else {
+                slCallPlaySEData11 -= 0x04040400u;
+            }
+        }
+        slCallPlaySEData12--;
+        if (slCallPlaySEData8 == 0) {
+            if (slCallPlaySEData12 <= 0) {
+                if (slCallPlaySEData9 != -1 && slCallPlaySEData5 == slCallPlaySEData9) {
+                    slCallPlaySEData6 = 2;
+                    slCallPlaySEData7 = 5;
+                    slCallPlaySEData9 = -1;
+                    slCallPlaySEData8 = 70;
+                    if (sbtlCallGetRandData5 == 98) {
+                        p2sdPlaySE(26, 127, 63);
+                    } else {
+                        p2sdPlaySE(7, 127, 63);
+                    }
+                }
+                if (slCallPlaySEData8 == 0) {
+                    slCallPlaySEData5 = (slCallPlaySEData5 + 1) % 4;
+                    if (sbtlCallGetRandData5 == 98) {
+                        p2sdPlaySE(5, 127, 63);
+                    } else {
+                        p2sdPlaySE(2, 127, 63);
+                    }
+                    if (slCallPlaySEData5 == 0) {
+                        if (slCallPlaySEData7 == 0) {
+                            if (slCallPlaySEData6 < 8) {
+                                slCallPlaySEData6++;
+                            } else {
+                                slCallPlaySEData9 = sbtlCallGetRandData6;
+                            }
+                        } else {
+                            slCallPlaySEData7--;
+                        }
+                    }
+                }
+                slCallPlaySEData12 = slCallPlaySEData6;
+            }
+        } else {
+            if (sbtlCallGetRandData5 == 98) {
+                dds3DrawAddMagSub(105);
+                if (slCallPlaySEData8 < 30) {
+                    if (slCallPlaySEData8 & 1) {
+                        x = (30 - slCallPlaySEData8) * 11 + 96;
+                        y = slCallPlaySEData5 * 26 + 195;
+                        nbResultCountEntries(x, y - GetRand(26), 0);
+                    } else {
+                        x = (30 - slCallPlaySEData8) * 11 + 96;
+                        y = slCallPlaySEData5 * 26 + 195;
+                        nbResultCountEntries(x, y + GetRand(26) + 26, 0);
+                    }
+                    x = GetRand(320) + 96;
+                    y = slCallPlaySEData5 * 26 + 195;
+                    nbResultCountEntries(x, y + GetRand(40) - 14, 0);
+                }
+            }
+            if (--slCallPlaySEData8 == 0) {
+                slCallPlaySEData = 4;
+                slCallPlaySEData2 = 0;
+                slLeaf(2);
+            }
+        }
+        slCallPlaySEData3 += 0.2f;
+        sdfSin(slCallPlaySEData3);
+        slCallSetOt4(slCallPlaySEData5 * 26 + 195);
+        c = slCallPlaySEData5 != 0 ? slCallPlaySEData11 : slCallPlaySEData10;
+        sbtlLeaf120(96, 195, 320, sbtlCallGetRandWork[0], c, 255);
+        c = slCallPlaySEData5 != 1 ? slCallPlaySEData11 : slCallPlaySEData10;
+        sbtlLeaf120(96, 221, 320, sbtlCallGetRandWork[1], c, 255);
+        c = slCallPlaySEData5 != 2 ? slCallPlaySEData11 : slCallPlaySEData10;
+        sbtlLeaf120(96, 247, 320, sbtlCallGetRandWork[2], c, 255);
+        c = slCallPlaySEData5 != 3 ? slCallPlaySEData11 : slCallPlaySEData10;
+        sbtlLeaf120(96, 273, 320, sbtlCallGetRandWork[3], c, 255);
+        break;
+    case 4:
+        if (sbtlCallGetRandData5 == 98 && slCallPlaySEData2 < 10) {
+            x = GetRand(320) + 96;
+            y = slCallPlaySEData5 * 26 + 195;
+            nbResultCountEntries(x, y + GetRand(40) - 14, 0);
+        }
+        slCallPlaySEData2++;
+        slCallPlaySEData3 += 0.2f;
+        sdfSin(slCallPlaySEData3);
+        slCallSetOt4(slCallPlaySEData5 * 26 + 195);
+        c = slCallPlaySEData5 != 0 ? slCallPlaySEData11 : slCallPlaySEData10;
+        sbtlLeaf120(96, 195, 320, sbtlCallGetRandWork[0], (c & ~0xFF) + (128 - slCallPlaySEData2 * 4),
+                    255 - slCallPlaySEData2 * 8);
+        c = slCallPlaySEData5 != 1 ? slCallPlaySEData11 : slCallPlaySEData10;
+        sbtlLeaf120(96, 221, 320, sbtlCallGetRandWork[1], (c & ~0xFF) + (128 - slCallPlaySEData2 * 4),
+                    255 - slCallPlaySEData2 * 8);
+        c = slCallPlaySEData5 != 2 ? slCallPlaySEData11 : slCallPlaySEData10;
+        sbtlLeaf120(96, 247, 320, sbtlCallGetRandWork[2], (c & ~0xFF) + (128 - slCallPlaySEData2 * 4),
+                    255 - slCallPlaySEData2 * 8);
+        c = slCallPlaySEData5 != 3 ? slCallPlaySEData11 : slCallPlaySEData10;
+        sbtlLeaf120(96, 273, 320, sbtlCallGetRandWork[3], (c & ~0xFF) + (128 - slCallPlaySEData2 * 4),
+                    255 - slCallPlaySEData2 * 8);
+        if (slCallPlaySEData2 >= 30) {
+            slCallPlaySEData2 = 0;
+            slCallPlaySEData = 5;
+        }
+        break;
+    case 5:
+        if (++slCallPlaySEData2 >= 2) {
+            wk_sbtl->status3 = wk_sbtl->status3 & ~0x1100 & 0x80009FFF;
+            wk_sbtl->field433C = sbtlCallGetRandWork[slCallPlaySEData5];
+            wk_sbtl->field4340 = 0;
+            switch (sbtlCallGetRandWork[slCallPlaySEData5]) {
+            case 0x64:
+                wk_sbtl->status3 |= 0x1;
+                break;
+            case 0x65:
+                wk_sbtl->status3 |= 0x2;
+                break;
+            case 0x66:
+                wk_sbtl->status3 |= 0x4;
+                break;
+            case 0x67:
+                wk_sbtl->status3 |= 0x8;
+                break;
+            case 0x68:
+                wk_sbtl->field448 = 1;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x69:
+                wk_sbtl->field448 = 2;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x6A:
+                wk_sbtl->field448 = 3;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x6B:
+                wk_sbtl->field448 = 4;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x6C:
+                wk_sbtl->field448 = 5;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x6D:
+                wk_sbtl->field448 = 6;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x6E:
+                wk_sbtl->field448 = 7;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x6F:
+                wk_sbtl->field448 = 8;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x70:
+                wk_sbtl->field448 = 9;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x71:
+                wk_sbtl->field448 = 10;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x72:
+                wk_sbtl->field448 = 11;
+                wk_sbtl->status3 |= 0x80;
+                break;
+            case 0x73:
+                wk_sbtl->status3 |= 0x10;
+                break;
+            case 0x74:
+                wk_sbtl->status3 |= 0x20;
+                break;
+            case 0x75:
+                wk_sbtl->status3 |= 0x40;
+                break;
+            case 0x76:
+                wk_sbtl->status3 |= 0x1000;
+                sbtlSetDamage_L_EnemyAll();
+                break;
+            case 0x7A:
+            case 0x8E:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x10000;
+                break;
+            case 0x7B:
+                wk_sbtl->status3 |= 0x20000;
+                sbtlCallBtlCreateSideListSBtlUnit4();
+                wk_sbtl->field4340 = 1;
+                break;
+            case 0x7C:
+                wk_sbtl->status3 |= 0x40000;
+                break;
+            case 0x7D:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 1;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x7E:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 2;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x7F:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 3;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x80:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 4;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x81:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 5;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x82:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 6;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x83:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 7;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x84:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 8;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x85:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 9;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x86:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 10;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x87:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->field448 = 11;
+                wk_sbtl->status3 |= 0x80000;
+                break;
+            case 0x88:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x100000;
+                break;
+            case 0x89:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x200000;
+                break;
+            case 0x8F:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x400000;
+                break;
+            case 0x90:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x800000;
+                break;
+            case 0x91:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x1000000;
+                break;
+            case 0x92:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x2000000;
+                break;
+            case 0x94:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x8000000;
+                break;
+            case 0x95:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x10000000;
+                break;
+            case 0x5A:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x20000000;
+                break;
+            case 0x5B:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x40000000;
+                break;
+            case 0x5C:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x2000;
+                break;
+            case 0x5D:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x4000;
+                break;
+            case 0x5E:
+            case 0x93:
+                wk_sbtl->field4340 = 1;
+                wk_sbtl->status3 |= 0x4000000;
+                break;
+            }
+            sbtlCallTexFreeDelayed();
+            pbCallEffectReset(0);
+            wk_sbtl->flg2 &= ~0x1000;
+            slCallPlaySEData = -1;
+            slCallPlaySEData2 = 0;
+        }
+        break;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", slCallPlaySE);
+#endif
 
 /* NON_MATCHING: 88 of 101 words match.  */
 #ifdef NON_MATCHING
