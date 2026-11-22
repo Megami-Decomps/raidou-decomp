@@ -148,6 +148,12 @@ s32 mapCallBitCheck5(void);
 s32 mapCallBitCheck9(void);
 s32 mapCallBitCheck10(void);
 s32 mapCallBitCheck11(void);
+void fldCallPlayerALoad(void);
+void fldCallObjectBaseOnFlag2(s32 unused);
+void fldGITAIUNIT(s32 unused);
+void fldLeaf4(f32 x, f32 y, f32 z);
+/* Object id of the ppos01 point basic that fldSetUnit adds. */
+extern s32 nbData21;
 #endif
 s32 mapGetSkilTakumiMapCheck(void);
 void mapProcRandomEncountCheckFldSub(s32 type);

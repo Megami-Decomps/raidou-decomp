@@ -19,7 +19,7 @@ menu scenarios); an entry says which paths they covered.
 | 58 | sbtlActAI | raidou1, raidou2 | [sbtlActAI.md](sbtlActAI.md) |
 | 43 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
 | 43 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
-| 21 | code_00309FE0 | raidou2 | [code_00309FE0.md](code_00309FE0.md) |
+| 22 | code_00309FE0 | raidou2 | [code_00309FE0.md](code_00309FE0.md) |
 | 21 | sbtlDMG | raidou1, raidou2 | [sbtlDMG.md](sbtlDMG.md) |
 | 20 | code_003BF2E0 | raidou2 | [code_003BF2E0.md](code_003BF2E0.md) |
 | 19 | sbtlEff_00289E50 | raidou1, raidou2 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
@@ -70,6 +70,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | basic/dds3ObjectBase | raidou1, raidou2 | [basic/dds3ObjectBase.md](basic/dds3ObjectBase.md) |
 | 2 | code_00140960 | raidou1 | [code_00140960.md](code_00140960.md) |
 | 2 | code_001431D0 | raidou2 | [code_001431D0.md](code_001431D0.md) |
+| 2 | code_00169A40 | raidou2 | [code_00169A40.md](code_00169A40.md) |
 | 2 | code_0016AD90 | raidou1 | [code_0016AD90.md](code_0016AD90.md) |
 | 2 | code_00174790 | raidou1 | [code_00174790.md](code_00174790.md) |
 | 2 | code_00179808 | raidou1 | [code_00179808.md](code_00179808.md) |
@@ -102,6 +103,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_00109A70 | raidou1 | [code_00109A70.md](code_00109A70.md) |
 | 1 | code_0012A2E0 | raidou1 | [code_0012A2E0.md](code_0012A2E0.md) |
 | 1 | code_0012B6A0 | raidou1 | [code_0012B6A0.md](code_0012B6A0.md) |
+| 1 | code_0012ECC0 | raidou2 | [code_0012ECC0.md](code_0012ECC0.md) |
 | 1 | code_00131C90 | raidou1 | [code_00131C90.md](code_00131C90.md) |
 | 1 | code_001326C0 | raidou1 | [code_001326C0.md](code_001326C0.md) |
 | 1 | code_00138DE8 | raidou2 | [code_00138DE8.md](code_00138DE8.md) |
@@ -114,7 +116,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_001626B0 | raidou2 | [code_001626B0.md](code_001626B0.md) |
 | 1 | code_00163C50 | raidou2 | [code_00163C50.md](code_00163C50.md) |
 | 1 | code_001677F0 | raidou1 | [code_001677F0.md](code_001677F0.md) |
-| 1 | code_00169A40 | raidou2 | [code_00169A40.md](code_00169A40.md) |
 | 1 | code_0016CA30 | raidou1 | [code_0016CA30.md](code_0016CA30.md) |
 | 1 | code_00173D20 | raidou1 | [code_00173D20.md](code_00173D20.md) |
 | 1 | code_00175908 | raidou1 | [code_00175908.md](code_00175908.md) |

@@ -130,6 +130,7 @@ void mapBadEffDrawTask_fld(void);
 void mapCallSetOt4(s32 amSBlock, s32 nameU, s32 encountState);
 void mapIsFldKeyFreeSub2(void);
 void saveIsFldKeyFreeSub(void);
+void mapCampBADEPL(s32 slot, s32 status);
 #endif
 void mnuQueueTitleSoundStreamEntry(s32 id);
 void mapTitleStart_fld(s32 a, s32 b, s32 c, s32 d);

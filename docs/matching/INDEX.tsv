@@ -19,6 +19,7 @@ sbtlCallCheckItem	code_0010F2C0	raidou1 0x174	7 of 93 words differ	docs/matching
 sbtlCallGetDevilLevelUpUnit	code_0010F2C0	raidou1 0x254	66 of 147 words differ	docs/matching/code_0010F2C0.md	51		
 fldSetUnit	code_0012A2E0	raidou1 0x7FC	1 of 511 words differ	docs/matching/code_0012A2E0.md	3		
 ProcMskSub_B	code_0012B6A0	raidou1 0x2DC	8 of 183 words differ	docs/matching/code_0012B6A0.md	3		
+fldSetUnit	code_0012ECC0	raidou2 0x7E4	1 of 505 words differ	docs/matching/code_0012ECC0.md	3		
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3		
 fldCallTexListFree	code_001326C0	raidou1 0x188	1 of 98 words differ	docs/matching/code_001326C0.md	3		
 fldMakeResouceBasicFL2	code_00138DE8	raidou2 0x3F0	131 of 246 words differ	docs/matching/code_00138DE8.md	3		
@@ -74,6 +75,7 @@ fldCallGrAllocPacketBuff4	code_001626B0	raidou2 0x160	5 of 88 words differ	docs/
 mefMistFastCreate	code_00163C50	raidou2 0x160	3 of 88 words differ	docs/matching/code_00163C50.md	3		
 mapIfDrawActionMaster	code_001677F0	raidou1 0x4A8	271 of 284 words differ	docs/matching/code_001677F0.md	3		
 mapBadEffDrawTask_fld	code_00169A40	raidou2 0x198	7 of 102 words differ	docs/matching/code_00169A40.md	3		
+mapSoundKankyoSeSet	code_00169A40	raidou2 0x5EC	156 of 375 words differ	docs/matching/code_00169A40.md	9		
 mapFunc	code_0016AD90	raidou1 0x178	2 of 94 words differ	docs/matching/code_0016AD90.md	3		
 mapCallSin11	code_0016AD90	raidou1 0xF8	44 of 58 words differ	docs/matching/code_0016AD90.md	13		
 mapNakamaWakeUp	code_0016CA30	raidou1 0x60	7 of 24 words differ	docs/matching/code_0016CA30.md	3		
@@ -212,6 +214,7 @@ trmCallBtlSearchUnitID5	code_00309FE0	raidou2 0x1DC	23 of 119 words differ	docs/
 sbtlCallGetProcessData5	code_00309FE0	raidou2 0x1F4	3 of 125 words differ	docs/matching/code_00309FE0.md	111		
 SetBSHelper	code_00309FE0	raidou2 0x1F8	25 of 126 words differ	docs/matching/code_00309FE0.md	117		
 Result_sbtlTime	code_00309FE0	raidou2 0x2C8	129 of 178 words differ	docs/matching/code_00309FE0.md	123		
+DrawProc	code_00309FE0	raidou2 0x42C	260 of 264 words differ	docs/matching/code_00309FE0.md	129		
 cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
 cmpCallGetProcessData6	code_00323280	raidou1 0x1AC	4 of 107 words differ	docs/matching/code_00323280.md	11		
 rstCallGetProcessData42	code_0034F3B8	raidou1 0x38		docs/matching/code_0034F3B8.md	3		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, the same form as fclCallGetProcessData. Tried: no read (tail j), an s32 return with no return statement (still j), a dds3ProcessFunc_t return (still j). Only a dead store or dummy use after the call remains, which is banned.

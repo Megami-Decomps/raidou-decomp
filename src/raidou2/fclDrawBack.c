@@ -55,7 +55,7 @@ void fldAllTblLoad(void) {
     sdfFileRead(file, fldCallGetIntParaData, 2560);
     sdfFileRead(file, mapData3, 2048);
     sdfFileRead(file, mapData156, 1536);
-    sdfFileRead(file, mapData157, 10240);
+    sdfFileRead(file, mapData4, 10240);
     sdfFileRead(file, mapData5, 3072);
     sdfFileRead(file, fldData, 3072);
     sdfFileRead(file, mapData6, 1536);

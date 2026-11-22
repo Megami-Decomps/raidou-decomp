@@ -40,6 +40,10 @@
 #include "mdlManager.h"
 #include "sBtlEncount.h"
 #include "dds3Randomize.h"
+#include "code_r1_002CA3F0.h"
+#include "dds3KernelDraw.h"
+#include "code_r1_001CC1D0.h"
+#include "frFont.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -2155,7 +2159,101 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlLeaf43);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlSearchUnitID18);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallSetOt);
+void sbtlCallSetOt(sbtlSummonText_t *text) {
+    s32 end;
+    s32 flags;
+    f32 scale;
+    f32 z;
+    f32 s;
+    s32 w;
+    s32 h;
+    s32 off;
+    f32 speed;
+    f32 dist;
+
+    end = FALSE;
+    sbtlCallSetOtTable[text->field5C](text);
+    if (text->field58 & 1) {
+        s = 5.0f;
+        z = text->pos.z + s;
+        w = text->hSpr->workEntries[text->sprNo].geometry.bounds[2];
+        h = text->hSpr->workEntries[text->sprNo].geometry.bounds[3];
+        if (z > 0.0f) {
+            s = z / s;
+            s = s * text->field3C;
+            text->hSpr->workEntries[text->sprNo].geometry.bounds[2] *= s;
+            text->hSpr->workEntries[text->sprNo].geometry.bounds[3] *= s;
+            if ((s32)text->pos.x >= 0 && (s32)text->pos.x < 512 && (s32)text->pos.y >= 0 && (s32)text->pos.y < 448) {
+                off = s * -16.0f;
+                eglSetOt(0x68);
+                eglLinkTest(1, 5, 1, 1, 0, 0, 1, 1);
+                eglLinkAlpha(0);
+                effDrawSpriteWithCornerFade(((s32)text->pos.x + off) * 16, ((s32)text->pos.y + off) * 8, 0,
+                                            text->field44, 32, text->hSpr, text->sprNo, 0x68);
+            }
+        }
+        text->hSpr->workEntries[text->sprNo].geometry.bounds[2] = w;
+        text->hSpr->workEntries[text->sprNo].geometry.bounds[3] = h;
+    }
+    flags = text->field58;
+    scale = text->field3C;
+    if (flags & 2) {
+        SDF_VU0_LOADVECTOR(&text->field20);
+        SDF_VU0_LOADVECTOR_B(&text->pos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_SCALEVECTOR_BITS(text->field34);
+        SDF_VU0_LOADVECTOR_B(&text->field10);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_SCALEVECTOR_BITS(text->field38);
+        SDF_VU0_STOREVECTOR(&text->field10);
+        SDF_VU0_LOADVECTOR_B(&text->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&text->pos);
+    }
+    text->field44 += text->field48;
+    if (text->field44 < 0) {
+        text->field44 = 0;
+    } else if (text->field44 >= 256) {
+        text->field44 = 255;
+    }
+    if (flags & 4) {
+        end = text->field44 == 0;
+    }
+    text->field3C = scale + text->field40;
+    if (text->field3C < 0.0f) {
+        text->field3C = 0.0f;
+    }
+    if ((flags & 8) && text->field3C == 0.0f) {
+        end = TRUE;
+    }
+    text->type++;
+    SDF_VU0_LOADVECTOR(&text->field10);
+    SDF_VU0_GETLENGTH(speed);
+    SDF_VU0_LOADVECTOR(&text->field20);
+    SDF_VU0_LOADVECTOR_B(&text->pos);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_SETVECTOR_Z(0.0f);
+    SDF_VU0_GETLENGTH(dist);
+    if (text->field64 != 0.0f && dist < text->field64) {
+        end = TRUE;
+    }
+    if (text->field60 != 0 && text->field60 < text->type) {
+        end = TRUE;
+    }
+    if (end) {
+        text->type = 0;
+        if (text->field5C == 0) {
+            wk_sbtl->fieldE40 = 100;
+        }
+        sbtlRefSbtl26(text);
+        if (text->field74 != 0) {
+            sbtlRefSbtl54(text->field74);
+            wk_sbtl->fieldE2C = 10;
+            SetAddMag(text->field74);
+        }
+    }
+}
 
 void sbtlRefSbtl28(void) {
     if (wk_sbtl != NULL) {
@@ -2325,7 +2423,77 @@ void Shutdown_sbtlCmndMenuNew(dds3ProcessID_t *id) {
     }
 }
 
+/* NON_MATCHING: 7 of 267 words match.  */
+#ifdef NON_MATCHING
+s32 DrawProc(dds3ProcessID_t *id) {
+    sbtlCmndMenuNew_t *wk;
+    s32 stat;
+
+    wk = dds3GetProcessData(id);
+    stat = wk->stat;
+    switch (stat) {
+    case 0:
+    case 1:
+        break;
+    case 2: {
+        struct SBTLUNIT_WORK *unit;
+
+        itfMenuGetSelectID(wk->menuPID);
+        if (wk->field28 != 1 && sbtlIsStart(wk->field11 == 0)) {
+            unit = sbtlGetNakama(wk->field11 == 0);
+            if (unit != NULL) {
+                wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = DrawProcData;
+                itfDrawMiscSpriteAlpha(365, 110, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
+                itfDrawMiscSpriteAlpha(485, 111, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 15, 0x67);
+                frData3 = 23;
+                itfDrawFont(0, 385, 118, 0x100000, 0, -1, 0x80808080, 1.0f, 0x67, g_itemNo[unit->unit.devilId]);
+                frData3 = 0;
+            }
+        }
+        unit = sbtlGetNakama(wk->field11);
+        if (unit != NULL) {
+            wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = DrawProcData;
+            itfDrawMiscSpriteAlpha(300, 90, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
+            itfDrawMiscSpriteAlpha(420, 91, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 15, 0x67);
+            frData3 = 23;
+            itfDrawFont(0, 320, 98, 0x100000, 0, -1, 0xA0A0A0A0, 1.0f, 0x67, g_itemNo[unit->unit.devilId]);
+            frData3 = 0;
+        }
+        break;
+    }
+    case 3: {
+        struct SBTLUNIT_WORK *unit;
+        SKLID skill;
+        s32 min;
+        s32 max;
+
+        unit = sbtlGetNakama(wk->field11);
+        skill = wk_sbtl->stock_useskill[itfMenuGetSelectID(wk->menuPID)];
+        wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = DrawProcData;
+        itfDrawMiscSpriteAlpha(300, 90, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
+        itfDrawMiscSpriteAlpha(420, 91, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 15, 0x67);
+        frData3 = 23;
+        itfDrawFont(0, 320, 98, 0x100000, 0, -1, 0xA0A0A0A0, 1.0f, 0x67, g_itemNo[sbtlGetNakama(wk->field11)->unit.devilId]);
+        frData3 = 0;
+        wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = DrawProcData + 24;
+        itfDrawMiscSpriteAlpha(341, 110, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
+        itfDrawMiscSpriteAlpha(485, 111, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 15, 0x67);
+        frData3 = 23;
+        itfDrawFont(0, 361, 118, 0x100000, 0, -1, 0xA0A0A0A0, 1.0f, 0x67, sbtlData95[skill]);
+        frData3 = 0;
+        DrawRepeatIconEx(470, 114, 0, wk->field20, 1.0f, 0x68, unit, skill);
+        GetTabLimit(&min, &max);
+        if (wk->field14) {
+            sbtlBtlDrawProcessSBtlMenuSub(min, max, wk->field18, 0, 1.0f);
+        }
+        break;
+    }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", DrawProc);
+#endif
 
 void sbtlInit(void) {
     sdfMemHandle_t *hMem;

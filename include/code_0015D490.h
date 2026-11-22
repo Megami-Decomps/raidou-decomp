@@ -71,7 +71,11 @@ extern struct sprHandle_t *fldDrwZBuf2;
 extern f32 fldWork7[33][33];
 extern f32 fldCallSetOtWork[33][33];
 extern mapSoundSe_t mapFileLoadSub8Work[8];
+#ifdef VERSION_RAIDOU1
 extern mapSoundSe_t mapSoundKankyoSeSetWork[64];
+#else
+extern mapSoundSe_t mapSoundKankyoSeSetWork[128];
+#endif
 extern mapSeDelay_t datWork7[16];
 /* Scroll phases of the water and mist layers drawn by fldCallSetOt. */
 extern f32 fldCallSetOtData;
@@ -134,6 +138,9 @@ void fldCallSetOt(s32 area, s32 floor, s32 cut);
 #endif
 void mapNakamaCashLoadEndCheckSub(s32 id);
 s32 sndCallLoadCheckMidi(void);
+#ifdef VERSION_RAIDOU2
+s32 mapSoundNakamaSmgLoadhk(void);
+#endif
 
 extern const char DecisionFeedInStrMapAll[];
 extern const char DecisionFeedInStrMapMeiSpr[];

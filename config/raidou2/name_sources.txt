@@ -13911,7 +13911,7 @@
 0x00433846	fldCallGetIntParaData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallGetIntPara
 0x00434240	mapData3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: fldAllTblLoad, mapRetuenFromSave, mapRetuenFromLoad
 0x00434A40	mapData156	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallBitCheck7, fldAllTblLoad
-0x00435040	mapData157	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapCallBitCheck5, mapCallBitCheck6, fldAllTblLoad
+0x00435040	mapData4	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R1 name: the fldSeId_t ambient sound table (128 entries of 0x50) mapSoundKankyoSeSet scans, as raidou1 mapData4; replaces mapData157
 0x0043504C	mapCallBitCheck5Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallBitCheck5
 0x00437840	mapData5	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapCutBgLoad, mapCutBgLoad_NB, fldAllTblLoad
 0x00438440	fldData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: fldMapMapBg, mapCutBgLoad_NB, fldJmsQuestMapLoad_fld

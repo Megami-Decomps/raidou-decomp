@@ -103,8 +103,22 @@ extern char slDrawInfoData[], slDrawInfoData2[], slDrawInfoData3[], slDrawInfoDa
 extern char slDrawInfoData5[], slDrawInfoData6[], slDrawInfoData7[], slDrawInfoData8[];
 extern char slDrawInfoData9[], slDrawInfoData10[], slDrawInfoData11[], slDrawInfoData12[];
 extern char slDrawInfoData13[], slDrawInfoData14[];
+extern char slInsertedInMEMORYData3[], slInsertedInMEMORYData4[], slInsertedInMEMORYData11[];
+extern char slInsertedInMEMORYData12[], slInsertedInMEMORYData13[], slInsertedInMEMORYData18[];
 #ifdef VERSION_RAIDOU2
 extern char slDrawInfoData18[];
+/* slDrawError's messages for the slNewCycleData99 languages 0, 1 and 2. */
+extern char slDrawErrorData[], slDrawErrorData2[], slDrawErrorData3[], slDrawErrorData4[], slDrawErrorData5[];
+extern char slDrawErrorData6[], slDrawErrorData7[], slDrawErrorData8[], slDrawErrorData9[], slDrawErrorData10[];
+extern char slDrawErrorData11[], slDrawErrorData12[], slDrawErrorData13[], slDrawErrorData14[], slDrawErrorData15[];
+extern char slDrawErrorData16[], slDrawErrorData17[], slDrawErrorData18[], slDrawErrorData19[], slDrawErrorData20[];
+extern char slDrawErrorData21[], slDrawErrorData22[], slDrawErrorData23[], slDrawErrorData24[], slDrawErrorData25[];
+extern char slDrawErrorData26[], slDrawErrorData27[], slDrawErrorData28[], slDrawErrorData29[], slDrawErrorData30[];
+extern char slDrawErrorData31[], slDrawErrorData32[], slDrawErrorData33[], slDrawErrorData34[], slDrawErrorData35[];
+extern char slDrawErrorData36[], slDrawErrorData37[], slDrawErrorData38[], slDrawErrorData39[], slDrawErrorData40[];
+extern char slDrawErrorData41[], slDrawErrorData42[], slDrawErrorData43[], slDrawErrorData44[], slDrawErrorData45[];
+extern char slDrawErrorData46[], slDrawErrorData47[], slDrawErrorData48[], slDrawErrorData49[], slDrawErrorData50[];
+extern char slDrawErrorData51[], slDrawErrorData52[], slDrawErrorData53[], slDrawErrorData54[];
 #else
 extern char slDrawInfoData17[];
 #endif

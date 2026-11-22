@@ -16,6 +16,7 @@
 #include "dds3KernelCore.h"
 #include "sdfTex.h"
 #include "code_r1_002C8188.h"
+#include "EventBit.h"
 
 INCLUDE_ASM(const s32, "code_00169A40", mapLeaf4);
 
@@ -236,7 +237,184 @@ INCLUDE_ASM(const s32, "code_00169A40", mapBgTexLoad);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapSoundKankyoTaskSub);
 
+/* NON_MATCHING: 223 of 379 words match.  */
+#ifdef NON_MATCHING
+void mapSoundKankyoSeSet(s32 map, s32 floor, s32 cut) {
+    s32 playSe[8];
+    s32 playIdx[8];
+    s32 playVol[8];
+    s32 stopSe[8];
+    s32 stopIdx[8];
+    s32 volSe[8];
+    s32 volIdx[8];
+    s32 volVol[8];
+    s32 playNum;
+    s32 stopNum;
+    s32 volNum;
+    s32 i;
+    s32 j;
+    s32 idx;
+    s32 se;
+    s32 vol;
+    s32 found;
+
+    playNum = 0;
+    volNum = 0;
+    stopNum = 0;
+    for (i = 0; i < 8; i++) {
+        playSe[i] = 0;
+        playIdx[i] = 0;
+        playVol[i] = 0;
+        stopSe[i] = 0;
+        stopIdx[i] = 0;
+        volSe[i] = 0;
+        volIdx[i] = 0;
+        volVol[i] = 0;
+    }
+    for (i = 0; i < 128; i++) {
+        idx = -1;
+        vol = 0;
+        se = 0;
+        if (mapData4[i].map == map) {
+            for (j = 0; j < 32; j++) {
+                if (mapData4[i].cutvol[j].cut == cut) {
+                    idx = j;
+                    vol = mapData4[i].cutvol[j].vol;
+                    se = mapData4[i].se;
+                    break;
+                }
+            }
+        }
+        if (mapSoundKankyoSeSetWork[i].active != 0) {
+            if (idx != -1 && se != 0 && vol != 0) {
+                volSe[volNum] = se;
+                volIdx[volNum] = i;
+                volVol[volNum] = vol;
+                volNum++;
+                continue;
+            }
+            stopSe[stopNum] = mapSoundKankyoSeSetWork[i].se;
+            stopIdx[stopNum] = i;
+            stopNum++;
+            continue;
+        }
+        if (idx == -1 || se == 0 || vol == 0) {
+            continue;
+        }
+        if (evtBitCheck(6020)) {
+            if (map == 1) {
+                if (mapData4[i].se == 51) {
+                    continue;
+                }
+                if (mapData4[i].se == 52) {
+                    continue;
+                }
+                if (mapData4[i].se == 53) {
+                    continue;
+                }
+            }
+            if (map == 2) {
+                if (mapData4[i].se == 51) {
+                    continue;
+                }
+                if (mapData4[i].se == 52) {
+                    continue;
+                }
+            }
+            if (map == 3) {
+                if (mapData4[i].se == 49) {
+                    continue;
+                }
+                if (mapData4[i].se == 50) {
+                    continue;
+                }
+                if (mapData4[i].se == 51) {
+                    continue;
+                }
+            }
+            if (map == 4) {
+                if (mapData4[i].se == 52) {
+                    continue;
+                }
+                if (mapData4[i].se == 53) {
+                    continue;
+                }
+            }
+            if (map == 7) {
+                if (mapData4[i].se == 50) {
+                    continue;
+                }
+                if (mapData4[i].se == 51) {
+                    continue;
+                }
+            }
+            if (map == 18) {
+                if (mapData4[i].se == 48) {
+                    continue;
+                }
+            }
+            if (map == 29) {
+                if (mapData4[i].se == 48) {
+                    continue;
+                }
+            }
+        }
+        playSe[playNum] = se;
+        playIdx[playNum] = i;
+        playVol[playNum] = vol;
+        playNum++;
+    }
+    for (i = 0; i < playNum; i++) {
+        found = 0;
+        for (j = 0; j < stopNum; j++) {
+            if (stopSe[j] == playSe[i]) {
+                found = 1;
+                break;
+            }
+        }
+        idx = playIdx[i];
+        vol = playVol[i];
+        se = playSe[i];
+        mapSoundKankyoSeSetWork[idx].active = 1;
+        mapSoundKankyoSeSetWork[idx].se = mapData4[idx].se;
+        mapSoundKankyoSeSetWork[idx].vol = vol;
+        mapSoundKankyoSeSetWork[idx].update = 0;
+        mapSoundKankyoSeSetWork[idx].state = mapData4[idx].waittime;
+        if (mapSoundKankyoSeSetWork[idx].state == 0) {
+            vol = vol * mapSoundKankyoTaskSubData / 100;
+            if (found) {
+                p2sdVolume2(se, vol);
+            } else {
+                p2sdPlaySE_Vol(se, vol);
+            }
+        }
+    }
+    for (i = 0; i < volNum; i++) {
+        p2sdVolume2(volSe[i], volVol[i] * mapSoundKankyoTaskSubData / 100);
+    }
+    for (i = 0; i < stopNum; i++) {
+        found = 0;
+        for (j = 0; j < playNum; j++) {
+            if (playSe[j] == stopSe[i]) {
+                found = 1;
+                break;
+            }
+        }
+        for (j = 0; j < volNum; j++) {
+            if (volSe[j] == stopSe[i]) {
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            p2sdPlaySE_Vol_Loop(stopSe[i]);
+        }
+        mapSoundKankyoSeSetWork[stopIdx[i]].active = 0;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00169A40", mapSoundKankyoSeSet);
+#endif
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallBitCheck6);
 

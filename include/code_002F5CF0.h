@@ -27,6 +27,6 @@ extern char *sbtlDrawProcess_sbtlMenuData2[]; /* .data, not small data */
 extern s8 sbtlFuncDecideItem_sbtlMenuData;
 s32 sbtlBtlFuncDecideItemSBtlMenuSub(s32 *a_tab, s32 *a_max);
 s32 sbtlBtlFuncDecideItemSBtlMenuSub2(s32 *a_tab, s32 *a_max);
-void sbtlBtlDrawProcessSBtlMenuSub(s32 a_tab, s32 a_max, s8 a_sel, s32 a_flag, f32 a_alphaRate);
+void sbtlBtlDrawProcessSBtlMenuSub(s32 a_tab, s32 a_max, s32 a_sel, s32 a_flag, f32 a_alphaRate);
 
 #endif

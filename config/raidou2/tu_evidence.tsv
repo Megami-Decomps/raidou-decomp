@@ -89,7 +89,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0012C440	0012C498	field/fldCamera	c	smt3:names:1+smt3:map:1 of 2	field/fldCamera
 0012C640	0012C738	code_0012C640	asm	none	
 0012C998	0012EC80	code_r1_00128378	c	dds:4 of 84	
-0012ECC0	0012FDD0	code_0012ECC0	asm	none	
+0012ECC0	0012FDD0	code_0012ECC0	c	none	
 0012FFB8	0012FFB8	field/fldMain	c	smt3:map:1 of 1	field/fldMain
 001300B0	001300C0	code_001300B0	c	none	
 00130838	00130838	field/fldTest	c	smt3:names:1 of 1	field/fldTest

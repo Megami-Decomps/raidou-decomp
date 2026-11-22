@@ -644,6 +644,20 @@ typedef struct mapCallBitCheckData_t {
 #endif
 extern mapCallBitCheckData_t mapCallBitCheckData[MAPCALLBITCHECK_NUM];
 
+/* Ambient (kankyo) sound effect per map: its volume for each cut of the map. */
+typedef struct fldSeCutVol_t {
+    u8 cut;
+    u8 vol;
+} fldSeCutVol_t;
+
+typedef struct fldSeId_t {
+    s32 map;
+    s32 floor;
+    s32 se;
+    s32 waittime;
+    fldSeCutVol_t cutvol[32];
+} fldSeId_t;
+
 #ifdef VERSION_RAIDOU1
 
 /* The other MAPALL.TBL tables, loaded by fldAllTblLoad. */
@@ -676,20 +690,6 @@ typedef struct nbCallGetIntParaEntry_t {
 extern nbCallGetIntParaEntry_t nbCallGetIntParaData[256];
 extern u8 mapData3[1024];
 extern s16 p2sdData[48][16];
-/* Ambient (kankyo) sound effect per map: its volume for each cut of the map. */
-typedef struct fldSeCutVol_t {
-    u8 cut;
-    u8 vol;
-} fldSeCutVol_t;
-
-typedef struct fldSeId_t {
-    s32 map;
-    s32 floor;
-    s32 se;
-    s32 waittime;
-    fldSeCutVol_t cutvol[32];
-} fldSeId_t;
-
 extern fldSeId_t mapData4[64];
 extern u8 fldData2[48];
 extern mapMapObjectRefreshData_t mapMapObjectRefreshData[64];
@@ -1091,7 +1091,7 @@ extern u8 mapMapObjectRefreshData[1536];
 extern u8 mapData155[11840];
 extern u8 fldCallGetIntParaData[2560];
 extern u8 mapData156[1536];
-extern u8 mapData157[10240];
+extern fldSeId_t mapData4[128];
 extern u8 mapAutoMapDraw3Data[768];
 extern u8 mapData158[1024];
 extern u8 mapAutoMapDraw3Data2[288];

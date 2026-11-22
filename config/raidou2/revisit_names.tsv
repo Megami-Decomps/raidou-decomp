@@ -6430,7 +6430,6 @@
 0x00433846	fldCallGetIntParaData3	data	tier=D	derived-sole	na	used by fldCallGetIntPara
 0x00434240	mapData3	data	tier=D	derived-shared	na	used by 4 functions: fldAllTblLoad, mapRetuenFromSave, mapRetuenFromLoad
 0x00434A40	mapData156	data	tier=D	derived-shared	na	used by 2 functions: mapCallBitCheck7, fldAllTblLoad
-0x00435040	mapData157	data	tier=D	derived-shared	na	used by 3 functions: mapCallBitCheck5, mapCallBitCheck6, fldAllTblLoad
 0x0043504C	mapCallBitCheck5Data	data	tier=D	derived-sole	na	used by mapCallBitCheck5
 0x00437840	mapData5	data	tier=D	derived-shared	na	used by 3 functions: mapCutBgLoad, mapCutBgLoad_NB, fldAllTblLoad
 0x00438440	fldData	data	tier=D	derived-shared	na	used by 4 functions: fldMapMapBg, mapCutBgLoad_NB, fldJmsQuestMapLoad_fld
@@ -23737,6 +23736,7 @@
 0x00427A78	dds3LightParam3	data	tier=C	smt3-ref	0.88 (n=D_r1_003AD5F8)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=GetBaseLightDir2; dds3LightParam is another symbol
 0x00427A90	FogParam	data	tier=C	hd	0.37 (n=D_r1_003AD610)	hd/medium: conf=medium, agree=2, using=3
 0x00427C90	DrawEnv	data	tier=C	hd	0.37 (n=D_r1_003AD810)	hd/medium: conf=medium, agree=3, using=5
+0x00435040	mapData4	data	tier=C	derived-derived-role	na	R1 name: the fldSeId_t ambient sound table (128 entries of 0x50) mapSoundKankyoSeSet scans, as raidou1 mapData4; replaces mapData157
 0x0043C8F0	mapMskEveHitTbl	data	tier=C	hd	0.37 (n=D_r1_003BEFF0)	hd/medium: conf=medium, agree=2, using=2
 0x0043EA10	evtWorkScriptContextReturnValue	data	tier=C	dds-ref	0.59 (n=D_r1_003BF190)	dds-ref/loose: nfun=1, other=0, sim=1.0, games=1, size=False, sec=False, fn=fldCallSetIntReturnValue2
 0x0043EA18	evtWorkScriptContextReturnValue2	data	tier=C	dds-ref	0.59 (n=D_r1_003BF198)	dds-ref/loose: nfun=1, other=0, sim=1.0, games=1, size=False, sec=False, fn=fldCallSetIntReturnValue3; evtWorkScriptContextReturnValue is another symbol

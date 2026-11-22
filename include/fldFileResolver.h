@@ -42,7 +42,11 @@ void fldSetUnitSub3(s32 motion, f32 speed);
 void fldPlayerMotion(s32 hisMotion, s32 upMotion, f32 hokan);
 void fldPlayerMotionS(s32 hisMotion, s32 upMotion, f32 hokan);
 f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz);
+#ifdef VERSION_RAIDOU1
 s32 mapCallSetPlayerTargetData5(s32 se, struct mdlObj_t *model, f32 x, f32 z);
+#else
+s32 mapCallSetPlayerTargetData5(s32 se, f32 x, f32 z);
+#endif
 void fldSetCameraObjectTransitionFlag(void);
 
 /* Aibo and summoned-devil trails: position rings read behind the player. */

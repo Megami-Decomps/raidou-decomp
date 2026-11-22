@@ -561,7 +561,128 @@ void slDrawError(void) {
     }
 }
 #else
-INCLUDE_ASM(const s32, "mc/slMain", slDrawError);
+void slDrawError(void) {
+    if (gslErrorCode == 0) {
+        return;
+    }
+    if (gslErrorCode == 1) {
+        slFileSelError = 0;
+        slData2 = 0;
+        fileResetLoadContextSlide();
+        if (slDrawWindow() != 0) {
+            if (slNewCycleData99 == 0) {
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData);
+                slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData2);
+                slKanjiDrawH(70, 162, 0x64E6AA80, slInsertedInMEMORYData3);
+                slKanjiDrawH(70, 186, 0x64E6AA80, slInsertedInMEMORYData4);
+                slKanjiDrawH(70, 210, 0x64E6AA80, slDrawErrorData3);
+            } else if (slNewCycleData99 == 1) {
+                slKanjiDrawH(70, 90, 0x64E6AA80, slDrawErrorData4);
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData5);
+                slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData6);
+                slKanjiDrawH(70, 162, 0x64E6AA80, slDrawErrorData7);
+                slKanjiDrawH(70, 186, 0x64E6AA80, slDrawErrorData8);
+                slKanjiDrawH(70, 210, 0x64E6AA80, slDrawErrorData9);
+                slKanjiDrawH(70, 234, 0x64E6AA80, slDrawErrorData10);
+                slKanjiDrawH(70, 258, 0x64E6AA80, slDrawErrorData54);
+            } else if (slNewCycleData99 == 2) {
+                slKanjiDrawH(70, 90, 0x64E6AA80, slDrawErrorData11);
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData12);
+                slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData13);
+                slKanjiDrawH(70, 162, 0x64E6AA80, slDrawErrorData14);
+                slKanjiDrawH(70, 186, 0x64E6AA80, slDrawErrorData15);
+                slKanjiDrawH(70, 210, 0x64E6AA80, slDrawErrorData16);
+                slKanjiDrawH(70, 234, 0x64E6AA80, slDrawErrorData17);
+                slKanjiDrawH(70, 258, 0x64E6AA80, slDrawErrorData18);
+                slKanjiDrawH(70, 282, 0x64E6AA80, slDrawErrorData19);
+            }
+            slNextPageDraw();
+            gslDrawFlagFile = 0;
+        }
+    }
+    if (gslErrorCode == 2) {
+        if (slDrawWindow() != 0) {
+            if (slNewCycleData99 == 0) {
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData20);
+                slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData21);
+                slKanjiDrawH(70, 162, 0x64E6AA80, slDrawErrorData22);
+                slKanjiDrawH(70, 186, 0x64E6AA80, slDrawErrorData23);
+                slKanjiDrawH(70, 210, 0x64E6AA80, slDrawErrorData24);
+            } else if (slNewCycleData99 == 1) {
+                slKanjiDrawH(70, 90, 0x64E6AA80, slDrawErrorData25);
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData26);
+                slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData27);
+                slKanjiDrawH(70, 162, 0x64E6AA80, slDrawErrorData28);
+                slKanjiDrawH(70, 186, 0x64E6AA80, slDrawErrorData29);
+                slKanjiDrawH(70, 210, 0x64E6AA80, slDrawErrorData30);
+                slKanjiDrawH(70, 234, 0x64E6AA80, slDrawErrorData31);
+                slKanjiDrawH(70, 258, 0x64E6AA80, slDrawErrorData32);
+            } else if (slNewCycleData99 == 2) {
+                slKanjiDrawH(70, 90, 0x64E6AA80, slDrawErrorData33);
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData34);
+                slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData35);
+                slKanjiDrawH(70, 162, 0x64E6AA80, slDrawErrorData36);
+                slKanjiDrawH(70, 186, 0x64E6AA80, slDrawErrorData37);
+                slKanjiDrawH(70, 210, 0x64E6AA80, slDrawErrorData38);
+                slKanjiDrawH(70, 234, 0x64E6AA80, slDrawErrorData39);
+                slKanjiDrawH(70, 258, 0x64E6AA80, slDrawErrorData40);
+                slKanjiDrawH(70, 282, 0x64E6AA80, slDrawErrorData41);
+            }
+            slNextPageDraw();
+            gslDrawFlagFile = 0;
+        }
+    }
+    if (gslErrorCode == 3) {
+        if (slDrawWindow() != 0) {
+            slKanjiDrawH(70, 114, 0x64E6AA80, slInsertedInMEMORYData11);
+            slNextPageDraw();
+            gslDrawFlagFile = 0;
+        }
+    }
+    if (gslErrorCode == 4) {
+        if (slDrawWindow() != 0) {
+            slKanjiDrawH(70, 114, 0x64E6AA80, slInsertedInMEMORYData12);
+            slNextPageDraw();
+            gslDrawFlagFile = 0;
+        }
+    }
+    if (gslErrorCode == 5) {
+        if (slDrawWindow() != 0) {
+            slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData42);
+            slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData43);
+            slKanjiDrawH(70, 162, 0x64E6AA80, slDrawErrorData44);
+            slKanjiDrawH(70, 186, 0x64E6AA80, slDrawErrorData45);
+            slKanjiDrawH(70, 210, 0x64E6AA80, slInsertedInMEMORYData18);
+            slNextPageDraw();
+            gslDrawFlagFile = 0;
+        }
+    }
+    if (gslErrorCode == 6) {
+        if (slDrawWindow() != 0) {
+            slKanjiDrawH(70, 114, 0x64E6AA80, slInsertedInMEMORYData13);
+            slNextPageDraw();
+            gslDrawFlagFile = 0;
+        }
+    }
+    if (gslErrorCode == 7) {
+        if (slDrawWindow() != 0) {
+            if (slNewCycleData99 == 1) {
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData47);
+                slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData48);
+                slKanjiDrawH(70, 162, 0x64E6AA80, slDrawErrorData49);
+            } else if (slNewCycleData99 == 2) {
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData50);
+                slKanjiDrawH(70, 138, 0x64E6AA80, slDrawErrorData51);
+                slKanjiDrawH(70, 162, 0x64E6AA80, slDrawErrorData52);
+                slKanjiDrawH(70, 186, 0x64E6AA80, slDrawErrorData53);
+            } else {
+                slKanjiDrawH(70, 114, 0x64E6AA80, slDrawErrorData46);
+            }
+            slNextPageDraw();
+            gslDrawFlagFile = 0;
+        }
+    }
+}
 #endif
 
 void slSetInfo(u32 id) {

@@ -2510,7 +2510,235 @@ frFontHandle_t *frAnalyzeMessage(frFontCtx_t *ctx) {
     return ctx->glyphChain;
 }
 #else
-INCLUDE_ASM(const s32, "interface/frFont", execTag_0);
+s32 execTag_0(s32 code, frFontCtx_t *ctx) {
+    s32 *position = &ctx->encodedTextOffset;
+    const u8 *bytes = ctx->encodedText;
+    s32 payloadWords = code & 0xF;
+    s32 payloadPosition = *position;
+    s32 arg;
+
+    code = (code << 8) | bytes[payloadPosition++];
+    *position = payloadPosition;
+    switch (code) {
+    case 0xF206:
+        /* A style 1 tag right after a style 2 tag (directly, after one
+         * character, after a line feed, or after variable 1 and a return)
+         * is skipped. */
+        if (bytes[payloadPosition] == 1) {
+            if (((bytes[payloadPosition - 6] << 8) | bytes[payloadPosition - 5]) == 0xF206
+                && bytes[payloadPosition - 4] == 2) {
+                *position = payloadPosition + 2;
+                break;
+            }
+            if ((bytes[ctx->encodedTextOffset] == 1
+                 && ((bytes[ctx->encodedTextOffset - 8] << 8) | bytes[ctx->encodedTextOffset - 7]) == 0xF206
+                 && bytes[ctx->encodedTextOffset - 6] == 2)) {
+                ctx->encodedTextOffset += 2;
+                break;
+            }
+            if ((bytes[ctx->encodedTextOffset] == 1
+                    && ((bytes[ctx->encodedTextOffset - 7] << 8) | bytes[ctx->encodedTextOffset - 6]) == 0xF206
+                    && bytes[ctx->encodedTextOffset - 5] == 2
+                    && bytes[ctx->encodedTextOffset - 3] == '\n')) {
+                ctx->encodedTextOffset += 2;
+                break;
+            }
+            if ((bytes[ctx->encodedTextOffset] == 1
+                    && ((bytes[ctx->encodedTextOffset - 12] << 8) | bytes[ctx->encodedTextOffset - 11]) == 0xF206
+                    && bytes[ctx->encodedTextOffset - 10] == 2
+                    && ((bytes[ctx->encodedTextOffset - 8] << 8) | bytes[ctx->encodedTextOffset - 7]) == 0xF203
+                    && bytes[ctx->encodedTextOffset - 6] == 1
+                    && ((bytes[ctx->encodedTextOffset - 4] << 8) | bytes[ctx->encodedTextOffset - 3]) == 0xF10F)) {
+                ctx->encodedTextOffset += 2;
+                break;
+            }
+            if ((bytes[ctx->encodedTextOffset] == 1
+                    && ((bytes[ctx->encodedTextOffset - 12] << 8) | bytes[ctx->encodedTextOffset - 11]) == 0xF206
+                    && bytes[ctx->encodedTextOffset - 10] == 2
+                    && ((bytes[ctx->encodedTextOffset - 8] << 8) | bytes[ctx->encodedTextOffset - 7]) == 0xF10F
+                    && ((bytes[ctx->encodedTextOffset - 6] << 8) | bytes[ctx->encodedTextOffset - 5]) == 0xF202
+                    && bytes[ctx->encodedTextOffset - 4] == 2)) {
+                ctx->encodedTextOffset += 2;
+                break;
+            }
+            if ((bytes[ctx->encodedTextOffset] == 1
+                    && ((bytes[ctx->encodedTextOffset - 10] << 8) | bytes[ctx->encodedTextOffset - 9]) == 0xF206
+                    && bytes[ctx->encodedTextOffset - 8] == 2
+                    && ((bytes[ctx->encodedTextOffset - 6] << 8) | bytes[ctx->encodedTextOffset - 5]) == 0xF202)) {
+                ctx->encodedTextOffset += 2;
+                break;
+            }
+            if ((bytes[ctx->encodedTextOffset] == 1
+                    && ((bytes[ctx->encodedTextOffset - 9] << 8) | bytes[ctx->encodedTextOffset - 8]) == 0xF206
+                    && bytes[ctx->encodedTextOffset - 7] == 2
+                    && ((bytes[ctx->encodedTextOffset - 5] << 8) | bytes[ctx->encodedTextOffset - 4]) == 0xF10F
+                    && bytes[ctx->encodedTextOffset - 3] == '\n')) {
+                ctx->encodedTextOffset += 2;
+                break;
+            }
+        }
+        {
+            s32 offset = *position;
+
+            ctx->fontIndex = bytes[offset] - 1;
+            *position = offset + 2;
+        }
+        break;
+    case 0xF202:
+        ctx->firstOption = bytes[payloadPosition] - 1;
+        *position = payloadPosition + 2;
+        break;
+    case 0xF209:
+        ctx->secondOption = bytes[payloadPosition] - 1;
+        *position = payloadPosition + 2;
+        break;
+    case 0xF207:
+        ctx->contextEncodedByte = bytes[payloadPosition] - 1;
+        *position = payloadPosition + 2;
+        break;
+    case 0xF203:
+        if (gVarStr[bytes[payloadPosition] - 1] != 0) {
+            frFontCheckPendingGlyphState(ctx);
+            frFontAppendIndexedTextToGlyphChain(ctx->encodedText[*position] - 1, ctx);
+        }
+        *position += 2;
+        break;
+    case 0xF20A: {
+        s32 arg = bytes[payloadPosition] - 1;
+        *position = payloadPosition + 2;
+        frFontCheckPendingGlyphState(ctx);
+        if (arg == 1) {
+            frTag0Sub(ctx);
+        } else {
+            nbCallSetFormPosRot(arg, ctx);
+        }
+        frSetFontSpace(ctx->glyphChain, gMessageSpaceX);
+        break;
+    }
+    case 0xF20B:
+        arg = bytes[payloadPosition] - 1;
+        *position = payloadPosition + 2;
+        frFontCheckPendingGlyphState(ctx);
+        nbSetFormPosRot(nbTag0Sub2(arg), ctx);
+        frSetFontSpace(ctx->glyphChain, gMessageSpaceX);
+        break;
+    case 0xF20C:
+        arg = bytes[payloadPosition] - 1;
+        *position = payloadPosition + 2;
+        frFontCheckPendingGlyphState(ctx);
+        nbSetFormPosRot(nbTag0Sub(arg), ctx);
+        frSetFontSpace(ctx->glyphChain, gMessageSpaceX);
+        break;
+    case 0xF20D:
+        break;
+    case 0xF20E: {
+        s32 arg = bytes[payloadPosition];
+        *position = payloadPosition + 2;
+        frFontCheckPendingGlyphState(ctx);
+        if (arg == 0) {
+            arg = DDS3_GBWK->mapSummonID;
+        }
+        ctx->glyphChain = frSetFontString((u8 *)g_itemNo[arg], ctx->fontIndex, ctx->firstOption,
+                                          ctx->secondOption, ctx->glyphChain);
+        frSetFontSpace(ctx->glyphChain, gMessageSpaceX);
+        break;
+    }
+    case 0xF10F:
+        if (!(gModeFlag & 4)) {
+            goto advanceLine;
+        }
+        break;
+    case 0xF110:
+        gMessageRequestResult |= 2;
+        return 1;
+    case 0xF111:
+        if (!(gModeFlag & 8)) {
+            goto checkAutomaticLine;
+        }
+    case 0xF104:
+        gMessageRequestResult |= 1;
+        return 1;
+
+    checkAutomaticLine:
+        if (!(gModeFlag & 0x20)) {
+            break;
+        }
+    advanceLine:
+        frMessageReturnCode(ctx);
+        break;
+    case 0xF112:
+        gMessageRequestResult |= 4;
+        break;
+    case 0xF413:
+        mnuSetTitleVoicePrefixIndex(itfReadEncodedTextLead(ctx));
+        fldNowPlayengStart(itfReadEncodedCode(ctx));
+        break;
+    case CCN_MW:
+        frFontCheckPendingGlyphState(ctx);
+        ctx->glyphChain->tag_flag[0] = code;
+        ctx->glyphChain->wait = itfReadEncodedCode(ctx);
+        break;
+    case CCN_VMW:
+        frFontCheckPendingGlyphState(ctx);
+        ctx->glyphChain->tag_flag[0] = code;
+        ctx->glyphChain->wait = itfReadEncodedCode(ctx);
+        if (ctx->glyphChain->wait != CCN_VMW_VOICE) {
+            ctx->glyphChain->wait -= mnuGetTitleEffectFrameCounter();
+        }
+        if (ctx->glyphChain->wait < 0) {
+            ctx->glyphChain->wait = 0;
+        }
+        break;
+    case 0xF416:
+        itfTextLipsUnitId = itfReadEncodedTextLead(ctx);
+        itfTextLipsMotionId = itfReadEncodedTextLead(ctx);
+        gMessageRequestResult |= 8;
+        break;
+    case CCN_LIPS_STOP:
+        frFontCheckPendingGlyphState(ctx);
+        ctx->glyphChain->tag_flag[2] = code;
+        break;
+    case CCN_CHIME:
+        if (itfReadEncodedTextLead(ctx) != 0) {
+            break;
+        }
+        frFontCheckPendingGlyphState(ctx);
+        ctx->glyphChain->work[1] = 1;
+        ctx->glyphChain->tag_flag[1] = code;
+        ctx->glyphChain->work[0] = 0;
+        break;
+    case CCN_QUAKE_ON:
+        frFontCheckPendingGlyphState(ctx);
+        ctx->glyphChain->tag_flag[3] = code;
+        ctx->glyphChain->work[0] = itfReadEncodedTextLead(ctx);
+        ctx->glyphChain->work[1] = itfReadEncodedCode(ctx);
+        break;
+    case CCN_QUAKE_OFF:
+        frFontCheckPendingGlyphState(ctx);
+        ctx->glyphChain->tag_flag[4] = code;
+        break;
+    case CCN_LIPS_STOP2:
+        frFontCheckPendingGlyphState(ctx);
+        ctx->glyphChain->tag_flag[5] = code;
+        ctx->glyphChain->work[0] = itfReadEncodedTextLead(ctx);
+        break;
+    case 0xF11C:
+        gMessageRequestResult |= 0x10;
+        return 1;
+    case 0xF11D:
+        frFontCheckPendingGlyphState(ctx);
+        ctx->glyphChain->tag_flag[6] = code;
+        ctx->glyphChain->work[0] = 1;
+        break;
+    default:
+        ctx->encodedTextOffset += (payloadWords - 1) << 1;
+        break;
+    }
+    if (ctx->pendingCreate == 0) {
+        ctx->pendingCreate = 1;
+    }
+    return 0;
+}
 
 /* NON_MATCHING: 56 of 142 words match. branch layout around the code < 0x80 test. */
 #ifdef NON_MATCHING

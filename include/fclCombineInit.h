@@ -13,5 +13,8 @@ s32 mapNakamaGankTask(void);
 s32 mapNakamaSpotTask(void);
 void mapNakamaStockOnCheck(void);
 void mapNakamaTakumi_FLUSH(void);
+#ifdef VERSION_RAIDOU2
+void fclCallBitOff(void);
+#endif
 
 #endif
