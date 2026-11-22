@@ -147,3 +147,27 @@ Retail fills the delay slot of the first field414 & 2 test with the wk_sbtl load
 Raidou 2: 231 of 264 words differ, first at +0xC; emitted 1056 bytes, native 1072 bytes.
 
 gcc swaps the saved registers of wk and the attack time (retail keeps wk in s1, time in s0) and folds the devilId 455..456 test into one unsigned compare where retail tests < 457 and < 455 separately; retail also schedules the time * 3 >> 1 into the delay slots around sbtlChkHaveMemSklParty. Tried: the party check before the multiply, time declared first, the range test as a negated >= 455.
+
+## sbtlCallBtlGetStartTimeDamage (sbtlDMG, raidou2 0xA4)
+
+Raidou 2: 13 of 42 words differ, first at +0x24; emitted 168 bytes, native 164 bytes.
+
+Register shape: the result local is allocated to $4 and copied to $2 at the shared exit; retail writes $2 in each arm's delay slot, and also orders the lui of the colour after the wk argument copy. Tried early returns per arm (34 of 42), the result initialised at its declaration (38), and the hoisted pos local with a result per arm (13). Vectors do not reach (no scenario), checked against the asm.
+
+## datSetKillDevil (sbtlDMG, raidou2 0xB4)
+
+Raidou 2: 8 of 46 words differ, first at +0x2C; emitted 184 bytes, native 180 bytes.
+
+Tail-call shape only: retail's last switch arm (devil 391) calls evtBitOn with jal and falls into the shared epilogue, the other three sibcall with j; cc1 sibcalls all four. Tried a switch, an if/else chain and a return per arm; the smt3 lever (control-flow.md, a dead store in that arm) is not allowed here, and FAKEMATCH_ASM_READ(0) after the call stops the sibcall but adds a move $2,$0 (6 words). Vector checked (battle: devil 466, default path).
+
+## sbtlBtlSetDamageProcSBtlDMGSub (sbtlDMG, raidou2 0xE0)
+
+Raidou 2: 29 of 54 words differ, first at +0x4; emitted 216 bytes, native 224 bytes.
+
+Case-tree shape: the hit-stop switch builds the same root (673) and right half (pivot 676-677) as retail, but balance_case_nodes picks 147 as the left pivot where retail tests 146 first; retail's left half counts as if one node below 146 were a range. Values per case follow the asm (144, 147, 673, 678, 681 -> 10; 146 -> 11; 148 -> 6; 672 -> 7; 674 -> 14; else 9). Vector checked (battle: 148 -> 6, 176 -> 9).
+
+## CheckAutoSkill (sbtlDMG, raidou2 0x1C0)
+
+Raidou 2: 76 of 109 words differ, first at +0x4; emitted 436 bytes, native 448 bytes.
+
+Register and scheduling shape: retail zeroes the slot result in $3 ahead of the prologue stores and reloads wk_sbtl for the sbtlSetBit argument, cc1 keeps the result in $4 and reuses the cached wk_sbtl, so every later word shifts. Tried a for and a post-increment while loop over the six auto-skill slots, a result variable for the tail (84 of 112) and early returns (76). Vector checked (battle: returns 1).

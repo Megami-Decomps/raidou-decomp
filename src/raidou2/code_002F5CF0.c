@@ -1424,7 +1424,7 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlEscapeGauge);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlResetEscapeGauge);
 
-void sbtlDamagePanelE(const sdfVector4_t *pos, s32 dmg, u32 rgba) {
+void sbtlDamagePanelE(const sdfVector4_t *pos, s32 dmg, u32 rgba, u32 rgba2) {
     sdfVector4_t v;
     SBTLPROJECTEDSCREEN_POINT point;
     char str[32];
@@ -1447,7 +1447,7 @@ void sbtlDamagePanelE(const sdfVector4_t *pos, s32 dmg, u32 rgba) {
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDamagePanelN);
 
-void sbtlDamagePanelR(const sdfVector4_t *pos, s32 dmg, u32 rgba) {
+void sbtlDamagePanelR(const sdfVector4_t *pos, s32 dmg, u32 rgba, u32 rgba2) {
     struct SBTLUNIT_WORK *unit;
     sdfVector4_t v;
     SBTLPROJECTEDSCREEN_POINT point;

@@ -283,7 +283,10 @@ void sbtlCallBtlSearchUnitID15(s32 add);
 s32 nbCallGetProcessData14(void);
 void sbtlSetCmbBfrPos(void);
 s32 sbtlCallBtlGetSkilltbl15(SKLID skillid);
-void Add_AW_MagWait(s32 type, s32 count);
+void Add_AW_MagWait(sdfVector4_t *pos, s32 count);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCallGetProcessStat(void);
+#endif
 s32 cmpCallBtlSearchUnitID2(void);
 s32 slCallBtlSearchUnitID(void);
 void evtCallMemset3(s32 index, s32 value);

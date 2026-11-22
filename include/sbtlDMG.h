@@ -256,6 +256,31 @@ typedef struct SBTLSKILL_TBL {
 SIZE_CHECK(sbtlSkillTblSizeCheck, SBTLSKILL_TBL, 0x40);
 
 /* Damage number animation. */
+#ifdef VERSION_RAIDOU2
+typedef struct SBTLDMG_ANIMWORK {
+    sdfVector4_t pos;
+    struct sdfMemHandle_t *handle;
+    s16 ID;
+    s16 st;
+    u32 rgba;
+    u32 rgba2;
+    s32 counter;
+    s32 counter_pos;
+    s32 dmg;
+    s32 dmg_anm;
+    s32 dmg_anm_add;
+    s32 field34;
+    s16 time;
+    s16 cmptime;
+    s32 Atk_ListID;
+    s32 Dmg_ListID;
+    s32 side; /* 0, 1 or 2: sbtlDamagePanelR, N or E */
+    s32 minor;
+    s32 rgbano;
+} SBTLDMG_ANIMWORK;
+
+SIZE_CHECK(sbtlDmgAnimWorkSizeCheck, SBTLDMG_ANIMWORK, 0x50);
+#else
 typedef struct SBTLDMG_ANIMWORK {
     sdfVector4_t pos;
     struct sdfMemHandle_t *handle;
@@ -268,6 +293,7 @@ typedef struct SBTLDMG_ANIMWORK {
     s16 time;
     s16 cmptime;
 } SBTLDMG_ANIMWORK;
+#endif
 
 typedef struct SBTLDMG_LISTWORK {
     s32 num;
@@ -346,6 +372,8 @@ s32 sbtlCallMemAllocDirect(s32 dmg, const sdfVector4_t *pos, s32 type, s16 cmpti
 void sbtlSetStoneDeadDamage(struct SBTLUNIT_WORK *wk, s32 damage);
 #ifdef VERSION_RAIDOU2
 s32 sbtlBtlSetDamageProcSBtlDMGSub(SKLID skillid);
+s32 sbtlCallBtlGetStartTimeDamage(struct SBTLUNIT_WORK *wk, s32 attr);
+void sbtlCallBtlCreateAnimUnit2(struct SBTLUNIT_WORK *wk, s32 damage);
 /* flg is unused; retail callers pass 0. */
 s32 sbtlSEISHINCNTR(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, s32 flg);
 void sbtlDltHit_by_UnitSkl(struct SBTLDMG_HITLISTWORK *lwk, s32 unitID, SKLID sklID);
@@ -396,6 +424,7 @@ s32 sbtlSetHitEndPos(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, stru
 s32 sbtlSetHitPos(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, struct SBTLEFF_WORK *ewk, struct SBTLSKILLHIT_POSWORK *pwk, sdfVector4_t *pos, sdfVector4_t *rot, sdfVector4_t *rott, u16 tbltype);
 s32 sbtlSetHitPos_XYZ(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *twk, struct SBTLEFF_WORK *ewk, struct SBTLSKILLHIT_POSWORK *pwk, sdfVector4_t *pos, sdfVector4_t *rot, u16 tbltype);
 void sbtlUnsetKaraburi(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLDMG_HITWORK *hwk);
+s32 sbtlSetDeadDamageProc(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock, struct SBTLDMG_HITWORK *hwk, s32 damage, u32 attr);
 
 
 /* Unit that holds the hit data loaded once from the player's data (HD playerhit). */

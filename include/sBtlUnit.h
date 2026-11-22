@@ -379,7 +379,9 @@ struct SBTLUNIT_WORK {
     s32 field4A4;
     u8 pad4A8[0x4AC - 0x4A8];
     s32 field4AC;
-    u8 pad4B0[0x4BC - 0x4B0];
+    u8 pad4B0[0x4B4 - 0x4B0];
+    u32 aurakind;
+    s32 aurapara;
     s32 major;
     s32 minor;
     s32 motionno;
@@ -526,7 +528,7 @@ struct SBTLUNIT_WORK {
     s32 miusinai;
     s32 kuramasi;
     s32 field778;
-    u8 pad77C[0x4];
+    s32 field77C;
     s32 field780;
     u8 pad784[0x78C - 0x784];
     s32 field78C;

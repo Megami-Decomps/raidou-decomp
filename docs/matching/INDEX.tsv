@@ -599,6 +599,10 @@ sbtlSetDamage	sbtlDMG	raidou1 0x318	169 of 194 words differ	docs/matching/sbtlDM
 sbtlGetHit_OnlyEndPos	sbtlDMG	raidou1 0x468	39 of 281 words differ	docs/matching/sbtlDMG.md	133		
 sbtlSetSpecialDamage	sbtlDMG	raidou2 0x338	55 of 206 words differ	docs/matching/sbtlDMG.md	139		
 sbtlSetDyingDamage	sbtlDMG	raidou2 0x430	231 of 264 words differ	docs/matching/sbtlDMG.md	145		
+sbtlCallBtlGetStartTimeDamage	sbtlDMG	raidou2 0xA4	13 of 42 words differ	docs/matching/sbtlDMG.md	151		
+datSetKillDevil	sbtlDMG	raidou2 0xB4	8 of 46 words differ	docs/matching/sbtlDMG.md	157		
+sbtlBtlSetDamageProcSBtlDMGSub	sbtlDMG	raidou2 0xE0	29 of 54 words differ	docs/matching/sbtlDMG.md	163		
+CheckAutoSkill	sbtlDMG	raidou2 0x1C0	76 of 109 words differ	docs/matching/sbtlDMG.md	169		
 sbtlFunc	sbtlEff_00289E50	raidou1 0x144	58 of 79 words differ	docs/matching/sbtlEff_00289E50.md	3		
 sbtlFunc6	sbtlEff_00289E50	raidou2 0x80	6 of 30 words differ	docs/matching/sbtlEff_00289E50.md	11		
 sbtlBtlCheckEffectDataSub	sbtlEff_00289E50	raidou2 0x38	9 of 13 words differ	docs/matching/sbtlEff_00289E50.md	17		

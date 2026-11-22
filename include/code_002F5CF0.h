@@ -21,6 +21,9 @@ extern char DrawTimeData2[]; /* "%02d" */
 extern const char btlLoadInterfaceSpriteStrBattlePanel[];
 extern const char btlLoadInterfaceSpriteStrBattleInterfaceSpr[];
 void btlLoadInterfaceSprite(void);
+void sbtlDamagePanelE(const sdfVector4_t *pos, s32 dmg, u32 rgba, u32 rgba2);
+void sbtlDamagePanelN(const sdfVector4_t *pos, s32 dmg, u32 rgba, u32 rgba2, s32 minor);
+void sbtlDamagePanelR(const sdfVector4_t *pos, s32 dmg, u32 rgba, u32 rgba2);
 void sbtlInitSBtlSub2(void);
 extern s32 sbtlDrawProcess_sbtlMenuData[]; /* help number per battle menu entry */
 extern char *sbtlDrawProcess_sbtlMenuData2[]; /* .data, not small data */

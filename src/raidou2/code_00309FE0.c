@@ -2307,17 +2307,17 @@ s32 sbtlBtlFirstSummonTextSetSub(sdfVector4_t *pos, s32 arg1, s32 arg2, s32 arg3
     return 1;
 }
 
-void Add_AW_MagWait(s32 type, s32 count) {
+void Add_AW_MagWait(sdfVector4_t *pos, s32 count) {
     s32 i;
 
-    if (!sbtlBtlFirstSummonTextSetSub(type, 0, 0, 0, count)) {
+    if (!sbtlBtlFirstSummonTextSetSub(pos, 0, 0, 0, count)) {
         return;
     }
     if (count > 10) {
         count = 10;
     }
     for (i = 0; i < count; i++) {
-        if (!sbtlBtlFirstSummonTextSetSub(type, 0, 0, 0, 0)) {
+        if (!sbtlBtlFirstSummonTextSetSub(pos, 0, 0, 0, 0)) {
             return;
         }
     }
