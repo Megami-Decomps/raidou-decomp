@@ -286,7 +286,7 @@ INCLUDE_ASM(const s32, "code_003B38B0", jmsCallAddTalkTarget);
 
 INCLUDE_ASM(const s32, "code_003B38B0", jmsBgmLoad);
 
-INCLUDE_ASM(const s32, "code_003B38B0", jmsDestroy);
+INCLUDE_ASM(const s32, "code_003B38B0", jmsBgmPlay);
 
 INCLUDE_RODATA(const s32, "code_003B38B0", campDrawProcName3);
 

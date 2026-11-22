@@ -27,7 +27,8 @@ struct sprHandle_t;
 
 s32 frLeaf15(struct jmsData_t *pData);
 s32 jmsDebugProcessCheck(void);
-s32 jmsDestroy(dds3ProcessID_t *PID);
+s32 jmsBgmLoad(struct jmsData_t *pData);
+s32 jmsBgmPlay(struct jmsData_t *pData);
 struct sprHandle_t *jmsGetSpriteHandle(void);
 s32 jmsProcessCheck(void);
 void jmsProcessEnd(void);
@@ -36,6 +37,7 @@ s32 jmsScrCmd_JMS_MOTION(void);
 s32 jmsScrCmd_JMS_SET_MODE(void);
 void jmsStartEtcProcess(dds3ProcessID_t *PID);
 #ifdef VERSION_RAIDOU2
+jmsData_t *jmsProcessJmsMenuSub(void);
 s32 jmsJimusyoYoigoshiHiru(dds3ProcessID_t *PID);
 s32 rstCallGetProcessData27(dds3ProcessID_t *PID);
 #endif

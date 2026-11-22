@@ -32,6 +32,10 @@ typedef struct jmsWork_t {
 } jmsWork_t;
 
 /* HD MenuFlag: the event bit each jmsMenu entry needs, 0 for none. */
+/* "%2d", the level format shared by rstResultPlayerLevel and rstCallBlendColor3/4. */
+extern const char rstCallBlendColor4Data[];
+/* Phase of the result screen gauge glow, fed to sdfSin. */
+extern f32 rstData14;
 extern u16 SetRootMenuData[];
 /* HD strJmsMenu: each jmsMenu entry's text. */
 extern char *cmpData34[];
@@ -70,15 +74,15 @@ void jmsMenuMain(void);
    per-stock flags and skills reset for the 20 stock slots. */
 extern struct SBTL_PLAYER_DATA *rstData8;
 extern struct SBTL_PLAYER_DATA *rstData9;
-extern struct sdatUnitWork_t *evtCallCheckRankUpData;
-extern struct sdatUnitWork_t *rstData10;
+extern struct sdatUnitWork_t *g_pUnitSrc;
+extern struct sdatUnitWork_t *g_pUnitDst;
 extern s32 evtCallCheckRankUpData2;
 extern s32 evtCallCheckRankUpData3;
-extern s32 evtCallCheckRankUpWork[20];
+extern s32 g_dvlLevelUpNum[20];
 extern u8 rstWork2[20];
 extern s32 rstOmoideGaIppaiWork4[20];
 extern s32 rstOmoideGaIppaiWork5[20];
-extern u8 rstOmoideGaIppaiWork9[20][2];
-void evtBgnNum(s32 index, s32 *count);
+extern u8 s_bRegistMemSkill[20][2];
+void rstSetLvUpSkl(s32 index, s32 *count);
 
 #endif

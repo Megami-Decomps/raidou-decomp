@@ -124,6 +124,7 @@ void datInitPlayer(void);
 void datLoadGohmadenTable(void);
 #ifdef VERSION_RAIDOU2
 void datRefDDS3GBWK19(void);
+s32 datCheckEventItem(s32 id);
 #endif
 void cmpLoadModelTables(void);
 void datCallMemset(void);

@@ -32,6 +32,10 @@
 #include "code_r1_002CA3F0.h"
 #include "fclDrawBack.h"
 #include "dds3Randomize.h"
+#include "frFont.h"
+#include "code_r1_002CD5A8.h"
+#include "sBtlSM.h"
+#include "sdfMath.h"
 
 INCLUDE_ASM(const s32, "code_003BF2E0", cmpCallGetProcessData27);
 
@@ -179,7 +183,80 @@ u8 CheckProcEnd(jmsInputPanelWork_t *wk) {
     return ret;
 }
 
-INCLUDE_ASM(const s32, "code_003BF2E0", Process_jmsMenu);
+s32 Process_jmsMenu(dds3ProcessID_t *PID) {
+    jmsInputPanelWork_t *work = dds3GetProcessData(PID);
+    jmsData_t *data;
+
+    work->unk28 += 0.1f;
+    switch (work->unk2C) {
+    case 0:
+        break;
+    case 1:
+        sndBgmLoadId_XF(93);
+        data = jmsProcessJmsMenuSub();
+        data->flag &= ~0x100;
+        data->flag &= ~0x200;
+        work->unk2C = 2;
+        break;
+    case 2:
+        if (sndBgmStatus_XF() == 2) {
+            sndBgmPlay();
+            work->unk2C = 4;
+        }
+        break;
+    case 3:
+        if (sndBgmStatus_XF() == 2) {
+            work->unk2C = 5;
+        }
+        break;
+    case 5:
+        jmsBgmLoad(jmsProcessJmsMenuSub());
+        work->unk2C = 6;
+        break;
+    case 6:
+        if (jmsBgmPlay(jmsProcessJmsMenuSub())) {
+            work->unk2C = 0;
+        }
+        break;
+    case 7:
+        if (sndBgmStatus_XF() == 2) {
+            work->unk2C = 1;
+        }
+        break;
+    }
+    switch (work->step) {
+    case 0:
+        work->unk1C = -1;
+        if (!itfMenuProcessCheck(work->menuPID)) {
+            work->step = 1;
+            work->count = 0;
+            break;
+        }
+        if (itfMenuGetCtrlType(work->menuPID) == ITFMENU_CTRL_TYPE_PREV) {
+            work->unk1C = -1;
+        }
+        if (itfMenuGetCtrlType(work->menuPID) == ITFMENU_CTRL_TYPE_CANCEL) {
+            work->unk1C = -1;
+            work->flags |= 8;
+        }
+        break;
+    case 1:
+        if (work->count == 0) {
+            CallProcEnd(work);
+            work->flags &= ~4;
+        }
+        if (!CheckProcEnd(work)) {
+            work->count = 0;
+            work->step = 2;
+        } else {
+            work->count++;
+        }
+        break;
+    case 2:
+        return -1;
+    }
+    return 0;
+}
 
 void Release_jmsMenu(jmsInputPanelWork_t *pWork) {
     if (pWork->flags & 2) {
@@ -917,7 +994,7 @@ s32 rstCalcRankUp(rstInitWork_t *pData)
                 evtBitOn(0x843);
             }
             datAddStock(devil);
-            pData->stockMax = DDS3_GBWK->unk4246;
+            pData->stockMax = DDS3_GBWK->partyNum;
             return i + 2;
         }
     }
@@ -963,7 +1040,7 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstPreCalcUnit);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", Init_rstInit);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstResultDraw);
+INCLUDE_ASM(const s32, "code_003BF2E0", Destroy_rstInit);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstProcessStartRstInitSub);
 
@@ -980,7 +1057,7 @@ dds3ProcessID_t *ProcessStart_rstInit(void) {
             src = &rstWork;
         }
         pid = dds3StartProcess(cmpCalcProcName, 0x403, 0, 1, (dds3ProcessFunc_t)rstResultStartWaitProcess,
-                               rstResultDraw, Init_rstInit(src));
+                               Destroy_rstInit, Init_rstInit(src));
     } else if (evtBitCheck(864)) {
         sndBgmFadeOut();
         seq = 501;
@@ -1489,7 +1566,71 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcScale);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcPosition);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstCallCalcAlphaRate);
+INCLUDE_SDATA(const s32, "code_003BF2E0", inputpanel_id);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", SetCommand_jmsMenuData4Entry);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", SetCommand_jmsMenuData4Entry2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", _gp2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData50);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry3);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry4);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData35Entry);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData51);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", jmsLeaf11Data);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData52);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData53);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", ProcessStart_rstInitData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData4);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstLoadMapResourceData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstLoadMapResourceData2);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData5);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData6);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData14);
+
+void rstCallCalcAlphaRate(rstBG_t *bg, s32 alpha, s32 ot) {
+    f32 scale[2] = { 1.0f, 1.0f };
+    titleKey_t key[3] = { { 0, 50 }, { 120, 70 }, { 240, 50 } };
+    s32 rate = rstCalcAlphaRate(bg->frame, key, 3);
+
+    if (++bg->frame > key[2].frame) {
+        bg->frame = 0;
+    }
+    rate = rate * alpha / 256;
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 0, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 1, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, rate, 0, 2, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, rate, 0, 3, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 4, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 5, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 6, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 7, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 8, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 9, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 10, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 11, bg->pSpr, ot);
+    rstResultLevelUpAnimSub(0, 0, scale, alpha, 0, 12, bg->pSpr, ot);
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultGetExpCyuusei);
 
@@ -1525,13 +1666,85 @@ void rstResultLevelUpAnim(s32 X, s32 Y, s32 AlphaRate, s32 Type, s32 *pQue, sprH
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultLevelUpAnim);
 #endif
 
+/* NON_MATCHING: 161 of 170 words match.  */
+#ifdef NON_MATCHING
+void rstCallBlendColor2(rstInitWork_t *pData, s32 X, s32 Y, s32 AlphaRate, s32 Rate, struct sprHandle_t *pSpr) {
+    f32 scale[2] = { 1.0f, 1.0f };
+    itfBdWork_t *work = pSpr->workEntries + rstResultCyuuseiGaugeSub(1, 27);
+    s32 width = work->sourceWidth;
+    s32 w = width * Rate / 100;
+    u32 color;
+
+    work->parameters[2] = w - width;
+    work->geometry.bounds[2] = w * 16;
+    fclBlendColor(0xA09DC380, 0, AlphaRate);
+    if (pData->unk178 & 2) {
+        if (pData->unk8058 >= 7) {
+            color = (s32)(sdfSin(rstData14) * 30.0f + 30.0f);
+            color = (((color << 24) | color) | ((color << 16) | (color << 8))) + 0xA0966480;
+            rstResultGetExpCyuuseiSub(X, Y, scale, AlphaRate, 1, 25, pSpr, color, 105);
+            rstResultGetExpCyuuseiSub(X, Y, scale, AlphaRate, 1, 26, pSpr, color, 105);
+            rstResultGetExpCyuuseiSub(X, Y, scale, AlphaRate, 1, 27, pSpr, color, 105);
+        } else {
+            rstResultLevelUpAnimSub(X, Y, scale, AlphaRate, 1, 25, pSpr, 105);
+            rstResultLevelUpAnimSub(X, Y, scale, AlphaRate, 1, 26, pSpr, 105);
+            rstResultLevelUpAnimSub(X, Y, scale, AlphaRate, 1, 27, pSpr, 105);
+        }
+    } else {
+        rstResultLevelUpAnimSub(X, Y, scale, AlphaRate, 1, 25, pSpr, 105);
+        rstResultLevelUpAnimSub(X, Y, scale, AlphaRate, 1, 26, pSpr, 105);
+        rstResultLevelUpAnimSub(X, Y, scale, AlphaRate, 1, 27, pSpr, 105);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallBlendColor2);
+#endif
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstResultAddCyuuseiMaxAnimQue);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstResultCyuuseiMaxAnim);
+/* NON_MATCHING: 142 of 172 words match.  */
+#ifdef NON_MATCHING
+s32 rstResultCyuuseiMaxAnim(s32 X, s32 Y, s32 AlphaRate, s32 *pQue, sprHandle_t *pSpr)
+{
+    sdfVector2_t scale;
+    titleKey_t key[4] = { { 0, 0 }, { 7, 0 }, { 10, 110 }, { 50, 110 } };
+    titleKey_t key2[3] = { { 0, 0 }, { 10, 128 }, { 50, 0 } };
+    rstScaleTable_t table[3] = { { 0, { 0.7f, 0.5f } }, { 10, { 1.6f, 1.3f } }, { 50, { 1.0f, 1.0f } } };
+    s32 idx;
+    s32 alpha;
+    s32 i;
+    s32 frame;
+    s32 w;
+    s32 h;
+    s32 ret;
 
-INCLUDE_RODATA(const s32, "code_003BF2E0", rstCallCalcAlphaRateTable);
+    ret = key[3].value * 2;
+    for (i = 7; i >= 0; i--, pQue++) {
+        if (*pQue) {
+            frame = 50 - *pQue;
+            scale.x = 1.0f;
+            scale.y = 1.0f;
+            alpha = rstCalcAlphaRate(frame, key, 4) * AlphaRate / 256;
+            rstResultLevelUpAnimSub(X, Y, &scale.x, alpha, 1, 28, pSpr, 105);
+            rstCalcScale(frame, table, 3, &scale);
+            idx = rstResultCyuuseiGaugeSub(1, 29);
+            w = pSpr->workEntries[idx].sourceWidth;
+            h = pSpr->workEntries[idx].sourceHeight;
+            w -= (s32)(w * scale.x);
+            h -= (s32)(h * scale.y);
+            alpha = rstCalcAlphaRate(frame, key2, 3) * AlphaRate / 256;
+            h = Y + h * 4;
+            w = X + w * 8;
+            rstResultLevelUpAnimSub(w, h, &scale.x, alpha, 1, 29, pSpr, 105);
+            ret = 0;
+            (*pQue)--;
+        }
+    }
+    return ret;
+}
+#else
+INCLUDE_ASM(const s32, "code_003BF2E0", rstResultCyuuseiMaxAnim);
+#endif
 
 INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultLevelUpAnimTable);
 
@@ -1543,7 +1756,52 @@ INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultCyuuseiMaxAnimTable2);
 
 INCLUDE_RODATA(const s32, "code_003BF2E0", rstResultCyuuseiMaxAnimTable3);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", rstResultPlayerLevel);
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultGetExpCyuuseiData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstData15);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultExpGaugeData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultLevelUpAnimData);
+
+INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor2Data3);
+
+void rstResultPlayerLevel(s32 X, s32 Y, s32 AlphaRate, rstInitWork_t *pData, struct sprHandle_t *pSpr) {
+    char text[32];
+    u32 color = fclBlendColor(0xA09DC380, 0, AlphaRate);
+    s32 parts[6] = { 13, 14, 15, 16, 17, 18 };
+    f32 scale[2] = { 1.0f, 1.0f };
+    s32 x;
+    s32 y;
+    frFontHandle_t *frq;
+    s32 exp;
+    s32 cur;
+
+    rstResultLevelUpAnimSub(X, Y, scale, AlphaRate, 1, 7, pSpr, 105);
+    rstResultNakamaLevelSub(1, 8, &x, &y);
+    x += X;
+    y += Y;
+    sprintf(text, rstCallBlendColor4Data, pData->player.unit.level);
+    frq = frwGetSmallNumFontFRQ(x, y, 0, color, (u8 *)text, NULL);
+    frSetFontSpace(frq, 0);
+    frDrawFontOt(frq, 1, 105);
+    frDestroyFontRequestAfter(frq);
+    rstResultNakamaLevelSub(1, 9, &x, &y);
+    x += X;
+    y += Y;
+    frq = frwGetSmallFontFRQ2(x, y, 0, color, g_itemNo, NULL);
+    frSetFontSpace(frq, -1);
+    frDrawFontOt(frq, 1, 105);
+    frDestroyFontRequestAfter(frq);
+    exp = pData->playerExp;
+    cur = datGetPlayerExp(pData->player.unit.level) << 8;
+    rstResultExpGauge(pData, X, Y, AlphaRate, exp, cur, datGetPlayerExp(pData->player.unit.level + 1) << 8, parts,
+                      pSpr);
+    rstResultLevelUpAnim(X, Y, AlphaRate, 0, pData->aLevelUpAnimQue, pSpr);
+    if ((pData->unk178 & 1) && pData->unk8058 >= 6) {
+        rstCallPlaySE(pData, 3, X + 0x17C0, Y + 0x410, pData->hResultSpr);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallBlendColor3);
 
@@ -1585,7 +1843,7 @@ INCLUDE_ASM(const s32, "code_003BF2E0", rstSetFlagPlayBgm);
 
 INCLUDE_ASM(const s32, "code_003BF2E0", evtCheckPolygonMovieRun);
 
-INCLUDE_ASM(const s32, "code_003BF2E0", evtBgnNum);
+INCLUDE_ASM(const s32, "code_003BF2E0", rstSetLvUpSkl);
 
 /* NON_MATCHING: 105 of 113 words match.  */
 #ifdef NON_MATCHING
@@ -1599,7 +1857,7 @@ s32 cmpLoadLocalizeText(void)
     evtCallCheckRankUpData2 = 0;
     evtCallCheckRankUpData3 = 0;
     for (i = 0; i < 20; i++) {
-        evtCallCheckRankUpWork[i] = 0;
+        g_dvlLevelUpNum[i] = 0;
         rstWork2[i] = 0;
         rstOmoideGaIppaiWork4[i] = SKLID_INIT;
         rstOmoideGaIppaiWork5[i] = SKLID_INIT;
@@ -1612,18 +1870,18 @@ s32 cmpLoadLocalizeText(void)
         count++;
     }
     for (i = 0; i < 20; i++) {
-        rstOmoideGaIppaiWork9[i][0] = 0;
-        rstOmoideGaIppaiWork9[i][1] = 0;
-        evtCallCheckRankUpData = &rstData8->stock[i];
-        rstData10 = &rstData9->stock[i];
-        evtBgnNum(i, &count);
-        if (!(evtCallCheckRankUpData->flag & 1)) {
+        s_bRegistMemSkill[i][0] = 0;
+        s_bRegistMemSkill[i][1] = 0;
+        g_pUnitSrc = &rstData8->stock[i];
+        g_pUnitDst = &rstData9->stock[i];
+        rstSetLvUpSkl(i, &count);
+        if (!(g_pUnitSrc->flag & 1)) {
             continue;
         }
-        if (!(rstData10->flag & 1)) {
+        if (!(g_pUnitDst->flag & 1)) {
             continue;
         }
-        if (rstData10->chuusei >= 100 && evtCallCheckRankUpData->chuusei < 100) {
+        if (g_pUnitDst->chuusei >= 100 && g_pUnitSrc->chuusei < 100) {
             rstWork2[i] = 1;
             count++;
         }
@@ -1686,62 +1944,6 @@ void rstCloseStreamSub(void) {
 
 INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrResultGrowth);
 
-INCLUDE_SDATA(const s32, "code_003BF2E0", inputpanel_id);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", SetCommand_jmsMenuData4Entry);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", SetCommand_jmsMenuData4Entry2);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", _gp2);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData50);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry2);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry3);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData34Entry4);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData35Entry);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData51);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", jmsLeaf11Data);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData52);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", cmpData53);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", ProcessStart_rstInitData);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstData4);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstLoadMapResourceData);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstLoadMapResourceData2);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstData5);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstData6);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstData14);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallCalcAlphaRateData);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultGetExpCyuuseiData);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstData15);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultExpGaugeData);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultLevelUpAnimData);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor2Data3);
-
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstResultPlayerLevelData);
-
 INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor4Data);
 
 INCLUDE_SDATA(const s32, "code_003BF2E0", rstCallBlendColor3Data4);
@@ -1762,9 +1964,9 @@ INCLUDE_SDATA(const s32, "code_003BF2E0", rstData8);
 
 INCLUDE_SDATA(const s32, "code_003BF2E0", rstData9);
 
-INCLUDE_SDATA(const s32, "code_003BF2E0", evtCallCheckRankUpData);
+INCLUDE_SDATA(const s32, "code_003BF2E0", g_pUnitSrc);
 
-INCLUDE_SDATA(const s32, "code_003BF2E0", rstData10);
+INCLUDE_SDATA(const s32, "code_003BF2E0", g_pUnitDst);
 
 INCLUDE_SDATA(const s32, "code_003BF2E0", evtCallCheckRankUpData2);
 

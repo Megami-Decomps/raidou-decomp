@@ -171,7 +171,7 @@ INCLUDE_ASM(const s32, "code_0034F3B8", rstCallGetPlayerLevelUpUnit);
 
 INCLUDE_ASM(const s32, "code_0034F3B8", rstCallMemAllocDirect);
 
-INCLUDE_ASM(const s32, "code_0034F3B8", rstResultDraw);
+INCLUDE_ASM(const s32, "code_0034F3B8", Destroy_rstInit);
 
 INCLUDE_ASM(const s32, "code_0034F3B8", rstCheckTaiitsu);
 

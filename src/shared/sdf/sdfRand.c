@@ -144,10 +144,6 @@ void sdfRandomizeByTime(sdfRandCB_t *aCB) {
     sdfRandomize(aCB, secondsSinceEpoch * 0x3C + now.sec);
 }
 
-INCLUDE_SDATA(const s32, "sdf/sdfRand", sdfCdClock);
-
-INCLUDE_SDATA(const s32, "sdf/sdfRand", sdfCdClockCache);
-
 s32 sdfGetCdClock(sdfClock_t *now) {
     sdfCdClock_t clock;
     s32 result = 1;
@@ -171,3 +167,19 @@ s32 sdfGetCdClock(sdfClock_t *now) {
     *now = sdfCdClockCache;
     return result;
 }
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "sdf/sdfRand", sdfCdClock);
+
+INCLUDE_SDATA(const s32, "sdf/sdfRand", sdfCdClockCache);
+
+INCLUDE_SDATA(const s32, "sdf/sdfRand", sdfGetCdClockData);
+
+#endif
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "sdf/sdfRand", sdfCdClock);
+
+INCLUDE_SDATA(const s32, "sdf/sdfRand", sdfCdClockCache);
+
+INCLUDE_SDATA(const s32, "sdf/sdfRand", sdfGetCdClockData);
+
+#endif

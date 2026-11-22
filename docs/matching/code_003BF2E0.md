@@ -122,4 +122,16 @@ Twelve words: the key table's address and pSpr swap $22 and $23 (every use of ei
 
 Raidou 2: 8 of 113 words differ, first at +0xA8.
 
-Eight words: the store of evtCallCheckRankUpData2 against the count local, and the rstData10/evtCallCheckRankUpData stores in the second loop, are scheduled in a different order. First draft; not tuned.
+Eight words: the store of evtCallCheckRankUpData2 against the count local, and the g_pUnitDst/g_pUnitSrc stores in the second loop, are scheduled in a different order. First draft; not tuned.
+
+## rstCallBlendColor2 (code_003BF2E0, raidou2 0x2A8)
+
+Raidou 2: 9 of 170 words differ, first at +0x68.
+
+Nine words, registers only: retail forms the slot pointer in the index register and groups the colour or-tree as (v<<24|v)|(v<<8|v<<16); cc1 forms it in the workEntries register and regroups the ors. Tried &workEntries[i] and workEntries + i, three spellings of the or-tree.
+
+## rstResultCyuuseiMaxAnim (code_003BF2E0, raidou2 0x2B0)
+
+Raidou 2: 30 of 170 words differ, first at +0x134; emitted 680 bytes, native 688 bytes.
+
+Thirty words from one kept copy: retail holds X + w*8 and Y + h*4 in $16/$17 and copies them into $4/$5 for the second rstResultLevelUpAnimSub, two words more than this draft, which coalesces them into the argument registers; everything after shifts. Tried assigning them to w/h before the call and reading the width into its own local first.

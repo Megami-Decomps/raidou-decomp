@@ -1170,6 +1170,8 @@ segments:
       - [0x3E4AC0, .sdata, code_r1_002F93D8]
       - [0x3E4AD0, .sdata, code_r1_002FA480]
       - [0x3E4B1C, sdata, sdata_004E3B1C]
+      - [0x3E4B80, .sdata, code_003648C0]
+      - [0x3E4DF8, sdata, sdata_004E3DF8]
       - [0x3E5148, .sdata, code_r1_0034D128]
       - [0x3E5150, .sdata, code_003BF2E0]
       - [0x3E5274, .sdata, sdf/sdfSystem]

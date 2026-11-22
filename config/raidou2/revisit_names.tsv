@@ -258,7 +258,6 @@
 0x00125048	datPartyDamageMapSub	func	tier=D	derived-caller	na	unit newdata/datCalc; called by datPartyDamageMap
 0x00125080	datPartyDamageMapSub2	func	tier=D	derived-caller	na	unit newdata/datCalc; called by datPartyDamageMap
 0x001255A8	datMemSetSeqStatusStepUpdateSub	func	tier=D	derived-caller	na	unit newdata/datCalc; called by cmpMemSetSeqStatusStepUpdate
-0x00125620	datCallDelKoukaPacket	func	tier=D	derived-callee	na	unit newdata/datCalc; calls nbDelKoukaPacket
 0x00125798	datLeaf46	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
 0x001257A0	datLeaf47	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
 0x001257A8	datLeaf48	func	tier=D	derived-unit	na	unit newdata/datCalc; no named callee, caller or string
@@ -5610,7 +5609,6 @@
 0x003B6C08	jmsStartEtcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD jmsInit.jmsStartEtcProcess, score 14.3 band A
 0x003B6C58	jmsJimusyoDraw	func	tier=D	derived-string	na	unit code_003B38B0, neighbour jmsStartEtcProcess; string 'jimusyo_draw'
 0x003B6CD0	jmsCallAddTalkTarget	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour jmsBgmLoad; calls jmsAddTalkTarget
-0x003B6DD0	jmsDestroy	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD jmsInit.jmsDestroy, score 14.6 band A
 0x003B6E30	jmsJimusyoYoigoshiHiru	func	tier=D	derived-string	na	unit code_003B38B0, neighbour jmsDestroy; string '/jimusyo/yoigoshi_hiru.tmx'
 0x003B6FD0	jmsCallGetProcessData	func	tier=D	derived-callee	na	unit code_003B38B0, neighbour jmsDestroy; calls dds3GetProcessData
 0x003B7048	fclJimusyoJmsMes	func	tier=D	derived-string	na	unit code_003B38B0, neighbour fclAllocTerminalWork; string '/jimusyo/jms_mes.bmd'
@@ -5893,7 +5891,6 @@
 0x003C38E0	rstStorySelectDebug	func	tier=D	derived-string	na	unit code_0034F3B8, neighbour rstLoadMapResource; string 'StorySelectDebugProc'
 0x003C3A48	rstMapReturnChkXFade	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstInit.rstMapReturnChkXFade, score 7.85 band B
 0x003C3A68	rstLeaf13	func	tier=D	derived-unit	na	unit code_0034F3B8, neighbour rstMapReturnChkXFade; no named callee, caller or string
-0x003C4798	rstResultDraw	func	tier=D	derived-string	na	unit code_003BF2E0, neighbour rstPreCalcUnit; string 'result_draw'
 0x003C4AC8	rstProcessStartRstInitSub	func	tier=D	derived-caller	na	unit code_003BF2E0, neighbour rstPreCalcUnit; called by ProcessStart_rstInit
 0x003C4D20	rstResultLoadWaitProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstInit.rstResultLoadWaitProcess, score 14.15 band A
 0x003C5178	rstCalcProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstResult.rstCalcProcess, score 10.85 band A
@@ -5922,7 +5919,6 @@
 0x003CB1D8	rstCallProcEnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstGrowth.rstCallProcEnd, score 7.45 band B
 0x003CB208	rstCallProcessCheckCmpStatus	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstCallProcEnd; calls ProcessCheck_cmpStatus
 0x003CB270	rstCallKillProcess	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstCallProcEnd; calls dds3KillProcess
-0x003CB4C0	evtBgnNum	func	tier=D	derived-string	na	unit code_003BF2E0, neighbour evtCheckPolygonMovieRun; string 'bgn %d,num %d\n'
 0x003CBA48	rstCallGetProcessData42	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstInit; calls dds3GetProcessData
 0x003CBA80	rstCmpItemGrowthStart	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstGrowth.rstCmpItemGrowthStart, score 7.1 band B
 0x003CBB28	rstProcessEnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstGrowth.rstProcessEnd, score 9.0 band B
@@ -20562,8 +20558,6 @@
 0x004E4248	rstCallPlaySEData2	data	tier=D	derived-sole	na	used by rstCallPlaySE
 0x004E4254	rstData8	data	tier=D	derived-shared	na	used by 3 functions: evtCallCheckRankUp, rstCallStartLevelUp2, rstCallStartLevelUp
 0x004E4258	rstData9	data	tier=D	derived-shared	na	used by 4 functions: rstCallPlaySE3, evtCallCheckRankUp, rstCallStartLevelUp
-0x004E425C	evtCallCheckRankUpData	data	tier=D	derived-dominant	na	used by evtCallCheckRankUp (4 of 7 refs, 3 functions)
-0x004E4260	rstData10	data	tier=D	derived-shared	na	used by 3 functions: rstCallStartLevelUp2, evtCallCheckRankUp, rstCallStartLevelUp
 0x004E4264	evtCallCheckRankUpData2	data	tier=D	derived-dominant	na	used by evtCallCheckRankUp (2 of 3 refs, 2 functions)
 0x004E4268	evtCallCheckRankUpData3	data	tier=D	derived-dominant	na	used by evtCallCheckRankUp (2 of 4 refs, 3 functions)
 0x004E426C	rstData11	data	tier=D	derived-shared	na	used by 2 functions: rstCallStartLevelUp, rstCallStartLevelUp2
@@ -22339,14 +22333,11 @@
 0x0057003C	bssWork205	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x44
 0x00570080	nbFunc6Table2Entry9	data	tier=D	derived-table	na	pointed to by nbFunc6Table2Entry2
 0x00571D00	rstWork	data	tier=D	derived-shared	na	used by 2 functions: ProcessStart_rstInit, rstSetReward
-0x00571E30	evtCallCheckRankUpWork	data	tier=D	derived-dominant	na	used by evtCallCheckRankUp (4 of 8 refs, 3 functions)
 0x00571E80	rstWork2	data	tier=D	derived-shared	na	used by 3 functions: rstCallStartLevelUp2, evtCallCheckRankUp, rstMenuCursorCtrlSub
 0x00571E98	rstOmoideGaIppaiWork4	data	tier=D	derived-dominant	na	used by rstOmoideGaIppai (6 of 8 refs, 2 functions)
 0x00571EE8	rstOmoideGaIppaiWork5	data	tier=D	derived-dominant	na	used by rstOmoideGaIppai (8 of 10 refs, 2 functions)
-0x00571F38	rstOmoideGaIppaiWork6	data	tier=D	derived-dominant	na	used by rstOmoideGaIppai (19 of 23 refs, 2 functions)
 0x00571F44	rstOmoideGaIppaiWork7	data	tier=D	derived-sole	na	used by rstOmoideGaIppai
 0x00571F50	rstOmoideGaIppaiWork8	data	tier=D	derived-sole	na	used by rstOmoideGaIppai
-0x00572208	rstOmoideGaIppaiWork9	data	tier=D	derived-dominant	na	used by rstOmoideGaIppai (4 of 8 refs, 3 functions)
 0x00574453	bssWork206	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0xF6
 0x00574549	bssWork207	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x5
 0x0057454E	bssWork208	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x3FA
@@ -24170,6 +24161,7 @@
 0x00124EA0	datAddMag	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD dat.datAddMag score 3.6 flag I: prev~ next gap1/1 st2:gap r2-only
 0x00124F68	datPartyDevilRecovery	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD dat.datPartyDevilRecovery score 6.8 flag I: calls1 next gap5/4 st1:gap r1+r2
 0x001253F0	datCheckBadPartyMap	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD dat.datCheckBadPartyMap score 6.3 flag I: calls2 next calls-of-match votes3 st2:call r1-disagree:0x121ae8
+0x00125620	datOmoideSkillGetMaster	func	tier=B	hd-role	na	HD dat.c datOmoideSkillGetMaster: tests bit skill of aOmoideSkillMaster (unit+0x160); rstSetLvUpSkl stores its result in s_bRegistMemSkill; replaces datCallDelKoukaPacket
 0x00125690	datOmoideSkillSetMaster	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD dat.datOmoideSkillSetMaster score 6.4 flag I: calls2 calls-of-match votes3 st2:call r2-only
 0x00125900	datCheckSyojiSkill	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x243f40 sim 0.762 margin 0.76 pair
 0x00125AD0	datGetBadStatusAttr	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2440c0 sim 0.923 margin 0.70 pair
@@ -24845,6 +24837,7 @@
 0x003C3878	cmpStartProcessPanelEff	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x23f860 sim 0.914 margin 0.13 pair
 0x003C3D18	rstDevilGiftCalc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD rstInit.rstDevilGiftCalc score 6.5 flag I: calls1 prev callers-of-match votes2 st2:call r2-only
 0x003C3F18	rstCalcRankUp	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD rstInit.rstCalcRankUp score 6.3 flag I: calls3 calls-of-match votes3 st2:call r1-disagree:0x350f70
+0x003C4798	Destroy_rstInit	func	tier=B	hd-role	na	HD rstInit.c static Destroy between Init and rstCheckTaiitsu: copies the result player data back to DDS3_GBWK, kills result_draw/result_updt, frees the work; it is rstInit's destroy callback (dds3StartProcess deleteExit); replaces rstResultDraw
 0x003C5038	rstResultFadeCheck	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD rstInit.rstResultFadeCheck score 6.5 flag I: calls1 prev gap3/4 st1:gap r1+r2
 0x003C5078	rstGetPlayerUnit	func	tier=B	hd-role	na	HD rstGetPlayerUnit (rstInit.c): the player data in the rstInit process work, or NULL without the process; replaces rstCallGetProcessData36
 0x003C50F8	rstGetGiftItemNums	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD rstInit.rstGetGiftItemNums score 6.8 flag I: calls1 next gap3/4 st1:gap r1+r2
@@ -24854,6 +24847,7 @@
 0x003C5E20	rstBtlEndWaitDestroy	func	tier=B	hd-role	na	HD rstResult.rstBtlEndWaitDestroy: Destroy slot of the scene table entry whose Init/Calc/Draw are rstBtlEndWait*; replaces rstLeaf15
 0x003C9BF8	MapMoveCalc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD DitectiveBook.MapMoveCalc score 6.6 flag -: calls3 callers-of-match votes2 st2:call r2-only
 0x003CB438	rstGetGiftMsgPID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD rstGrowth.rstGetGiftMsgPID score 6.1 flag I: calls1 next gap1/4 st1:gap r1+r2
+0x003CB4C0	rstSetLvUpSkl	func	tier=B	hd-role	na	HD rstGrowth.c rstSetLvUpSkl(i, pTmp): fills g_aLvUpSkl[i] (_LvUpSkl) with aRsvSkl level-up skills and memskill omoide skills, sets g_dvlLevelUpNum[i]; prints bgn/num; replaces evtBgnNum
 0x003CD590	SdfIopInit	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2a99b0 sim 0.817 margin 0.21 pair
 0x003E1800	sdfPrintIopInit	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2bd3f8 sim 0.905 margin 0.29 pair
 0x003E1CD0	sdfCdImageSearchFileDirect	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2bd838 sim 0.912 margin 0.46 pair
@@ -25035,6 +25029,8 @@
 0x004E3E9C	effBTLFieldColorProcess	data	tier=B	smt3-ref	0.80 (n=None)	smt3-ref/close: nfun=1, other=0, sim=0.7857, games=1, size=True, sec=True, fn=cmpCallProcessEnd; R1/R2 pair by this name (smt3-ref / smt3-ref)
 0x004E3FA8	campDhUpdateWork	data	tier=B	smt3-ref	0.80 (n=D_r1_0046F048)	smt3-ref/close: nfun=1, other=0, sim=0.8226, games=1, size=True, sec=False, fn=cmpReturnParamDH
 0x004E4150	inputpanel_id	data	tier=B	smt3-ref	0.88 (n=D_004E4150)	smt3-ref/loose: nfun=1, other=0, sim=0.9167, games=1, size=False, sec=True, fn=jmsCallGetProcessData8
+0x004E425C	g_pUnitSrc	data	tier=B	hd-role	na	HD rstSetLvUpSkl: source unit (before the battle), cmpLoadLocalizeText sets it to &rstData8->stock[i]; replaces evtCallCheckRankUpData
+0x004E4260	g_pUnitDst	data	tier=B	hd-role	na	HD rstSetLvUpSkl: destination unit (after the battle), &rstData9->stock[i]; replaces rstData10
 0x004E4274	sdfDmacHandlerTable	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F25C)	smt3-ref/loose: nfun=4, other=2, sim=1.0, games=2, size=True, sec=True, fn=DmacAddHandler
 0x004E4284	sdfMemFullCallback	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F26C)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfMemInit
 0x004E42DC	sdfReqDrawDelaySleepCount	data	tier=B	smt3-ref	0.88 (n=D_r1_0046F2C4)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfGrReqDraw
@@ -25083,6 +25079,9 @@
 0x00547498	Data_evtCutIn	data	tier=B	hd-role	na	HD evtCutIn.c static Data (evtCutInData_t), R1 holds the struct itself; replaces scrEventSkipEndWork
 0x005558C0	slTopMenuSel	data	tier=B	smt3-ref	0.88 (n=D_r1_004C5C80)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=slChooseData
 0x00566BA8	sb_gen_work	data	tier=B	hd-role	na	HD sBtlClearGeneratorWork clears sb_gen_work entries, same site; replaces sbtlWork3
+0x00571E30	g_dvlLevelUpNum	data	tier=B	hd-role	na	HD rstSetLvUpSkl: g_dvlLevelUpNum[i] = dst level - src level, -1 when only a memory skill was learned; replaces evtCallCheckRankUpWork
+0x00571F38	g_aLvUpSkl	data	tier=B	hd-role	na	HD rstGrowth.c g_aLvUpSkl: per-stock _LvUpSkl (0x24 bytes) filled by rstSetLvUpSkl; replaces rstOmoideGaIppaiWork6
+0x00572208	s_bRegistMemSkill	data	tier=B	hd-role	na	HD rstSetLvUpSkl: s_bRegistMemSkill[i][n] = datOmoideSkillGetMaster(dst, memSkl[n]); replaces rstOmoideGaIppaiWork9
 0x0058BBA0	corePktFaceDivParm	data	tier=B	smt3-ref	0.88 (n=D_r1_004FD150)	smt3-ref/loose: nfun=12, other=0, sim=1.0, games=2, size=False, sec=True, fn=corePktXfmLightClip
 0x0058C300	sdfCdImageSearchFileDirect_ent	data	tier=B	smt3-ref	0.80 (n=D_r1_004FD880)	smt3-ref/close: nfun=2, other=0, sim=0.9117500000000001, games=2, size=True, sec=True, fn=sdfCdImageSearchFileDirect
 0x00590400	sdfSndMap	data	tier=B	smt3-ref	0.88 (n=D_r1_00501980)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=p2sdLoadCheckMidi

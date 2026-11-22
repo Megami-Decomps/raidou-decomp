@@ -32,6 +32,13 @@
 #include "sdfDelayedResrc.h"
 #include "scr.h"
 #include "itfMesManager.h"
+#include "ps2asm.h"
+#include "draw3d.h"
+#include "kernel_draw.h"
+#include "dds3CameraObjectBasic.h"
+#include "sBtlItem.h"
+#include "sBtlSM.h"
+#include "sBtlCalc.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -673,7 +680,71 @@ dds3ProcessID_t *cmpStockListProcessStart(void)
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpPartyList);
 
+/* NON_MATCHING: 187 of 225 words match.  */
+#ifdef NON_MATCHING
+void cmpStockListMake(dds3ProcessID_t *PID) {
+    struct tagCMP_WORK *wk;
+    s32 idx;
+    s32 i;
+    s32 max;
+    s32 devilId;
+    s32 id;
+
+    wk = cmpGetStockPID();
+    itfMenuSetRootMenu(PID, 0, g_itemNo[0], NULL);
+    itfMenuSetDrawFunc(PID, 0, cmpPartyDrawFunc);
+    idx = DDS3_GBWK->stack_p[0];
+    if (idx != -1) {
+        if (cmpChkDevilStockExist(idx)) {
+            devilId = cmpGetDevilStockDevilID(idx);
+            itfMenuSetRootMenu(PID, 1, g_itemNo[devilId], NULL);
+            itfMenuSetDrawFunc(PID, 1, cmpPartyDrawFunc);
+            itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+        }
+    } else {
+        itfMenuSetRootMenu(PID, 1, "", NULL);
+        itfMenuSetDrawFunc(PID, 1, cmpPartyDrawFunc);
+        itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+    }
+    idx = DDS3_GBWK->stack_p[1];
+    if (idx != -1) {
+        if (cmpChkDevilStockExist(idx)) {
+            devilId = cmpGetDevilStockDevilID(idx);
+            itfMenuSetRootMenu(PID, 2, g_itemNo[devilId], NULL);
+            itfMenuSetDrawFunc(PID, 2, cmpPartyDrawFunc);
+            itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+        }
+    } else {
+        itfMenuSetRootMenu(PID, 2, "", NULL);
+        itfMenuSetDrawFunc(PID, 2, cmpPartyDrawFunc);
+        itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+    }
+    itfMenuSetRootMenu(PID, 3, "", NULL);
+    itfMenuSetDrawFunc(PID, 3, NULL);
+    itfMenuSetFlagMenu(PID, 3, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+    itfMenuSetFlagMenu(PID, 3, ITFMENU_CB_GF_PANEL_DRAW_OFF, 1);
+    for (i = wk->page * 8; i < DDS3_GBWK->partyNum && i < wk->page * 8 + 8; i++) {
+        if (cmpChkDevilStockExist(i)) {
+            devilId = cmpGetDevilStockDevilID(i);
+            id = i - wk->page * 8 + 4;
+            itfMenuSetRootMenu(PID, id, g_itemNo[devilId], NULL);
+            itfMenuSetDrawFunc(PID, id, cmpPartyDrawFunc);
+        }
+    }
+    max = DDS3_GBWK->partyNum - wk->page * 8;
+    if (max > 8) {
+        max = 8;
+    }
+    itfMenuSetDrawParam(PID, max + 4, 1);
+    itfMenuSetFlag(PID, 2, 0);
+    itfMenuSetFlag(PID, 8, 0);
+    itfMenuSetFlag(PID, 0x10, 0);
+    itfMenuSetFlag(PID, 0x20, 1);
+    itfMenuSetOt(PID);
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpStockListMake);
+#endif
 
 void datDlcNoneCheck(dds3ProcessID_t *PID, struct sprHandle_t *hSpr) {
     if (!itfMenuLinkSprite(PID, hSpr)) {
@@ -759,9 +830,45 @@ void cmpInitCmpModelSub(void) {
     cmpInitCore2();
 }
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpSetLight);
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrGohmadenGohDevilParamDat);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpInitCore2);
+INCLUDE_RODATA(const s32, "code_003648C0", cmpStrGohmadenGohSameDevilsDat);
+
+void cmpSetLight(void) {
+    f32 color[3][4] = {
+        { 2.0f, 1.95f, 1.7f, 0.0f },
+        { 0.6f, 0.4f, 0.35f, 0.0f },
+        { 0.0f, 0.0f, 0.0f, 0.0f },
+    };
+    f32 dir[3][4] = {
+        { 0.95f, 0.2f, 0.15f, 1.0f },
+        { -1.0f, -0.1f, 0.15f, 1.0f },
+        { 0.0f, 0.0f, 0.0f, 1.0f },
+    };
+    f32 ambient[4] = { 0.1f, 0.05f, 0.0f, 0.0f };
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        dds3SetLightColor(0, i, color[i]);
+        dds3SetLightDir(0, i, dir[i]);
+    }
+    dds3SetAmbientColor(0, ambient);
+}
+
+void cmpInitCore2(void) {
+    f32 fogColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
+
+    dds3SetSoftenBias(0, 5.0f, 0.0f);
+    cmpSetLight();
+    dds3SetFogColor(0, fogColor);
+    dds3SetFogPara(0, 255.0f, 255.0f, 2000.0f, 30000.0f);
+    dds3ScreenParam.fovy = 0.43633229f;
+    SDF_VU0_COPYVECTOR(&aViewEye, &cmpStatusModelBasePos);
+    SDF_VU0_COPYVECTOR(&aViewTarget, &cmpStatusModelPos);
+    SDF_VU0_COPYVECTOR(&aViewDown, &cmpData2);
+    SDF_VU0_LOADMATRIX(&CameraTM);
+    sdf3DSetCamera(&dds3ScreenParam, &CameraTM);
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetLightUnit);
 
@@ -1070,18 +1177,6 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpLvUpSeqFadeInStepUpdate);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallWaitLoadModel);
 
-INCLUDE_RODATA(const s32, "code_003648C0", cmpStrGohmadenGohDevilParamDat);
-
-INCLUDE_RODATA(const s32, "code_003648C0", cmpStrGohmadenGohSameDevilsDat);
-
-INCLUDE_RODATA(const s32, "code_003648C0", cmpSetLightTable);
-
-INCLUDE_RODATA(const s32, "code_003648C0", cmpSetLightTable2);
-
-INCLUDE_RODATA(const s32, "code_003648C0", cmpStrL);
-
-INCLUDE_RODATA(const s32, "code_003648C0", cmpDefaultFogColor);
-
 INCLUDE_RODATA(const s32, "code_003648C0", cmpStrCampBad01Epl);
 
 INCLUDE_RODATA(const s32, "code_003648C0", cmpStrCampBad04Epl);
@@ -1258,7 +1353,139 @@ s32 cmpGetSummonerRank2SprNo(void) {
 INCLUDE_ASM(const s32, "code_003648C0", cmpGetSummonerRank2SprNo);
 #endif
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpSummnerRankObjectInit);
+INCLUDE_SDATA(const s32, "code_003648C0", titleFunc6Data);
+
+INCLUDE_SDATA(const s32, "code_003648C0", titleData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", sbtlData127);
+
+INCLUDE_SDATA(const s32, "code_003648C0", nbData8);
+
+INCLUDE_SDATA(const s32, "code_003648C0", nbCallLinkTestData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", nbCallChipAllocDirect2Data);
+
+INCLUDE_SDATA(const s32, "code_003648C0", nbFileOpenData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", sysData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", sysTYPETEXTUREData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", frCallMemGetPtrData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", frCallMemGetPtrData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", frCallMemGetPtrData3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", frCallMemGetPtrData4);
+
+INCLUDE_SDATA(const s32, "code_003648C0", frCallMemGetPtrData5);
+
+INCLUDE_SDATA(const s32, "code_003648C0", frCallMemGetPtrData6);
+
+INCLUDE_SDATA(const s32, "code_003648C0", frCallMemGetPtr6Data);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpLinkMotFunc);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpResetMotFunc);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpPartyDrawFuncData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpPartyDrawFuncData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpPartyDrawFuncData3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpStockListMakeData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", datData8);
+
+INCLUDE_SDATA(const s32, "code_003648C0", fldCallSetFontColorData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", fldShopSetumeiSprData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallPrepareData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawStatusModel_cmpModelData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDeleteBstEffData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDeleteBstEffData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", g_hEffBst);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData10);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData11);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData12);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData13);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData14);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData15);
+
+INCLUDE_SDATA(const s32, "code_003648C0", g_bstID);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpAddSclData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpSetModelMotionData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData16);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData17);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData18);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData19);
+
+INCLUDE_SDATA(const s32, "code_003648C0", fldTitleMiniWork5);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCampEFFTESData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", fldTitleMiniTex5);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData36);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData37);
+
+INCLUDE_SDATA(const s32, "code_003648C0", datCallCheckStrongSwordAttackData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", datData6);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpLoadModelTablesData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", datCallGetStockDevilIDData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", g_mainPID);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpSetModeSqData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpSeqGoodbyData3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpSeqGoodbyData4);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpSTATUSSTEPData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawPartsNameData3);
+
+void cmpSummnerRankObjectInit(tagOBJECT_WORK *psSelf) {
+    psSelf->bEnabled = FALSE;
+    strcpy(psSelf->szString, "");
+    psSelf->iSprNo = 103;
+    psSelf->fSize = 1.0f;
+    psSelf->fSizeW = 1.0f;
+    psSelf->fSizeH = 1.0f;
+    psSelf->fDelta = 0.0f;
+    psSelf->iAlpha = 255;
+    psSelf->fAlpha = 0.0f;
+    psSelf->fCounter = 0.0f;
+    psSelf->iMode = 0;
+    psSelf->fQ_x_range = 0.0f;
+    psSelf->fQ_y_range = 0.0f;
+    psSelf->iQ_frame = -1;
+    psSelf->iInX = 0;
+}
 
 void cmpSummnerRankMngInit(cmpSummnerRankMng_t *psSelf) {
     cmpSummnerRankInit(&psSelf->sSummnerRank);
@@ -1627,9 +1854,9 @@ s32 cmpCallMenuGetSelectID(void) {
     s32 ret = -1;
 
     if (id == 1) {
-        ret = DDS3_GBWK->unk4242[0];
+        ret = DDS3_GBWK->stack_p[0];
     } else if (id == 2) {
-        ret = DDS3_GBWK->unk4242[1];
+        ret = DDS3_GBWK->stack_p[1];
     } else if (id >= 4) {
         ret = id + cmpGetStockPID()->page * 8 - 4;
     }
@@ -1646,7 +1873,84 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpRefDDS3GBWK3);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpMenuFilterUnit);
 
+/* NON_MATCHING: 85 of 191 words match.  */
+#ifdef NON_MATCHING
+s32 cmpMenuFilter(struct tagCMP_WORK *wk) {
+    sdatUnitWork_t *units[12];
+    s32 num;
+    dds3ProcessID_t *PID;
+    ecmpKudaSelectMode eSelMode;
+    BSTF iBadStatus;
+    s32 stockNums;
+    s32 i;
+    s32 j;
+    s32 max;
+    s32 sel;
+    s32 dec;
+
+    PID = cmpPartyDrawFuncSub();
+    eSelMode = wk->eSelMode;
+    itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+    num = 0;
+    itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+    itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_FORCED_DECIDE, 0);
+    itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_CURSOR, 0);
+    itfMenuSetFlag(PID, ITFMENU_GF_LOCK_SELECT, 0);
+    wk->listNum = 0;
+    iBadStatus = wk->iBadStatus;
+    stockNums = datGetStockDevilNums();
+    units[0] = &DDS3_GBWK->playerData.unit;
+    for (i = 0; i < 2; i++) {
+        if (DDS3_GBWK->stack_p[i] >= 0) {
+            units[i + 1] = &DDS3_GBWK->playerData.stock[DDS3_GBWK->stack_p[i]];
+        } else {
+            units[i + 1] = NULL;
+        }
+    }
+    units[3] = NULL;
+    max = 4;
+    for (j = wk->page * 8; j < wk->page * 8 + 8; j++) {
+        units[max] = (j < stockNums) ? &DDS3_GBWK->playerData.stock[j] : NULL;
+        max++;
+    }
+    for (i = 0; i < max; i++) {
+        sel = 0;
+        dec = 0;
+        if (units[i] != NULL) {
+            if (eSelMode == ecmpKudaSelectMode_ecmpKSM_NotMine && wk->psUse == units[i]) {
+            } else if (eSelMode == ecmpKudaSelectMode_ecmpKSM_Summon && i >= 4) {
+            } else if (eSelMode == ecmpKudaSelectMode_ecmpKSM_NakamaTab && i < 4) {
+                sel = 0;
+            } else if (eSelMode == ecmpKudaSelectMode_ecmpKSM_Raido && i != 0) {
+                sel = 0;
+            } else if (eSelMode == ecmpKudaSelectMode_ecmpKSM_Mine && wk->psUse != units[i]) {
+                sel = 0;
+            } else {
+                sel = cmpMenuFilterUnit(units[i], wk->psUse, wk->iSelectAttrId, iBadStatus);
+            }
+            if (sel) {
+                dec = cmpMenuFilterUnit(units[i], wk->psUse, wk->iDecideAttrId, iBadStatus);
+            }
+        }
+        if (eSelMode == ecmpKudaSelectMode_ecmpKSM_All) {
+            itfMenuSetFlagMenu(PID, i, ITFMENU_CB_GF_SELECT, sel);
+            itfMenuSetFlagMenu(PID, i, ITFMENU_CB_GF_CURSOR, sel);
+            itfMenuSetFlagMenu(PID, i, ITFMENU_CB_GF_FORCED_DECIDE, 1);
+        }
+        itfMenuSetFlagMenu(PID, i, ITFMENU_CB_GF_ENABLE_SELECT, sel);
+        itfMenuSetFlagMenu(PID, i, ITFMENU_CB_GF_ENABLE_DECIDE, dec);
+        if (sel) {
+            num++;
+            if (i >= 4) {
+                wk->listNum++;
+            }
+        }
+    }
+    return num;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpMenuFilter);
+#endif
 
 s32 cmpCallGetStockPID(void)
 {
@@ -1679,7 +1983,75 @@ void cmpClearFilter(void) {
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpChkEnableUseSkill);
 
+/* NON_MATCHING: 155 of 188 words match.  */
+#ifdef NON_MATCHING
+void cmpChkSkillSelect(sdatUnitWork_t *a_pUseUnit) {
+    s32 i;
+    s32 j;
+    s32 ok;
+    SKLID id;
+
+    if (fldGlobalBase.nakamaMode && a_pUseUnit->devilId != DDS3_GBWK->mapSummonID) {
+        for (i = 0; i < 8; i++) {
+            if (cmpWork9[i] >= 0) {
+                itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+            } else {
+                itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+            }
+            itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        }
+        return;
+    }
+    if (a_pUseUnit->badStatus & 0x8C800) {
+        for (i = 0; i < 8; i++) {
+            if (cmpWork9[i] >= 0) {
+                itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+            } else {
+                itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+            }
+            itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        }
+        return;
+    }
+    for (i = 0; i < 8; i++) {
+        id = cmpWork9[i];
+        if (id >= 0) {
+            itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+            ok = 0;
+            if ((sbtlCallBtlDrawRedGgData[id].useflg & 2) && sbtlGetSkillCost(a_pUseUnit, id) <= DDS3_GBWK->playerData.mag) {
+                if (!fldGlobalBase.nakamaMode) {
+                    if (cmpChkEnableUseSkill(a_pUseUnit, &DDS3_GBWK->playerData.unit, id)) {
+                        itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+                        ok = 1;
+                    }
+                    if (!ok) {
+                        for (j = 0; j < DDS3_GBWK->partyNum; j++) {
+                            if (cmpChkEnableUseSkill(a_pUseUnit, &DDS3_GBWK->playerData.stock[j], id)) {
+                                itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+                                ok = 1;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    if (cmpChkEnableUseSkill(a_pUseUnit, a_pUseUnit, id)) {
+                        itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+                        ok = 1;
+                    }
+                }
+            }
+            if (!ok) {
+                itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+            }
+        } else {
+            itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+            itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpChkSkillSelect);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateEnableUseSkillUnit);
 
@@ -1705,7 +2077,42 @@ INCLUDE_ASM(const s32, "code_003648C0", DrawFuncSkl_sbtlCmndMenuNew);
 
 INCLUDE_ASM(const s32, "code_003648C0", mapCallGetStockPID);
 
+/* NON_MATCHING: 126 of 128 words match.  */
+#ifdef NON_MATCHING
+void mapMenuCreateMenuPID_itf(void) {
+    s32 i;
+
+    cmpData39 = cmpGetCharPID();
+    itfCallGetProcessData7(cmpData39, 1, -85);
+    itfCallGetProcessData7(cmpData39, 2, -85);
+    itfMenuClearMenuAll(cmpData39);
+    itfMenuSetFlag(cmpData39, 0x8, 1);
+    itfMenuSetFlag(cmpData39, 0x20, 0);
+    itfMenuSetFlag(cmpData39, 0x100, 0);
+    itfMenuSetFlag(cmpData39, 0x200, 0);
+    itfMenuSetFlag(cmpData39, 0x1000, 0);
+    itfMenuSetFlag(cmpData39, 0x2000, 0);
+    itfMenuSetFlag(cmpData39, 0x4000, 0);
+    itfMenuSetFlag(cmpData39, 0x1, 1);
+    itfCallGetProcessData5(cmpData39, 0);
+    for (i = 0; i < 8; i++) {
+        itfMenuSetRootMenu(cmpData39, i, cmpData43, NULL);
+        itfMenuSetDrawFunc(cmpData39, i, DrawFuncSkl_sbtlCmndMenuNew);
+    }
+    mapCallGetStockPID();
+    itfMenuLinkSprite(cmpData39, cmpGetSpriteHnd(CMP_SPR_LIST));
+    itfMenuSetSpriteData(cmpData39, ITFMENU_IMG_DAT_PANEL, 28, 65, 175, 23, 23, 1, NULL, mapMenuCreateMenuPID_itfData);
+    itfMenuSetSpriteData(cmpData39, ITFMENU_IMG_DAT_SELECT, 28, 65, 175, 23, 23, 1, NULL, mapMenuCreateMenuPID_itfData2);
+    itfMenuSetFlag(cmpData39, 0x2, 0);
+    itfMenuSetFlag(cmpData39, 0x10, 0);
+    itfMenuSetFlag(cmpData39, 0x20, 1);
+    itfMenuSetDrawParam(cmpData39, 8, 1);
+    itfMenuSetFlag(cmpData39, 0x8, 0);
+    itfMenuStart(cmpData39);
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", mapMenuCreateMenuPID_itf);
+#endif
 
 void mapSetupCmpKudaSub(void) {
     sdatUnitWork_t *unit = NULL;
@@ -1761,9 +2168,166 @@ void cmpCallGetStockDevilNums(void)
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockDevilNums);
 #endif
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockPID3);
+/* NON_MATCHING: 93 of 159 words match.  */
+#ifdef NON_MATCHING
+void cmpCallGetStockPID3(void) {
+    struct {
+        s32 id;
+        sdatUnitWork_t *unit;
+    } list[32];
+    struct tagCMP_WORK *wk;
+    dds3ProcessID_t *PID;
+    s32 nums;
+    ecmpKudaCMU attr;
+    BSTF bad;
+    sdatUnitWork_t *unit;
+    s32 i;
+    s32 n = 0;
+    s32 sel = 0;
+    s32 no;
+    s32 id;
+    s32 k;
+    s32 page;
 
+    wk = cmpGetStockPID();
+    PID = cmpPartyDrawFuncSub();
+    nums = datGetStockDevilNums();
+    attr = wk->iDecideAttrId;
+    bad = wk->iBadStatus;
+    for (i = 0; i < nums + 4; i++) {
+        unit = NULL;
+        id = i;
+        if (i == 0) {
+            unit = &DDS3_GBWK->playerData.unit;
+        } else if (i < 3) {
+            k = DDS3_GBWK->stack_p[i - 1];
+            if (k >= 0) {
+                unit = &DDS3_GBWK->playerData.stock[k];
+            }
+        } else if (i >= 4) {
+            k = i + wk->page * 8 - 4;
+            if (k >= nums) {
+                k -= nums;
+            }
+            id = k + 4;
+            unit = &DDS3_GBWK->playerData.stock[k];
+        }
+        if (unit != NULL) {
+            list[n].id = id;
+            list[n].unit = unit;
+            n++;
+        }
+    }
+    id = itfMenuGetSelectID(PID);
+    if (id >= 4) {
+        id += wk->page * 8;
+    }
+    for (i = 0; i < n; i++) {
+        if (list[i].id == id) {
+            sel = i;
+            break;
+        }
+    }
+    for (i = 0; i < n; i++) {
+        if (sel >= n) {
+            sel -= n;
+        }
+        k = sel++;
+        if (cmpMenuFilterUnit(list[k].unit, wk->psUse, attr, bad)) {
+            no = list[k].id;
+            if (no >= 4) {
+                no -= 4;
+                page = no / 8;
+                no = no % 8 + 4;
+                if (page != wk->page) {
+                    wk->page = page;
+                    cmpCallGetStockPID();
+                    cmpUpdateFontCharPID();
+                }
+            }
+            itfCallGetProcessData5(PID, no);
+            return;
+        }
+    }
+}
+#else
+INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetStockPID3);
+#endif
+
+/* NON_MATCHING: 87 of 219 words match.  */
+#ifdef NON_MATCHING
+s32 cmpUpdateFontCharPID(void) {
+    s32 num;
+    dds3ProcessID_t *PID;
+    s32 stockNums;
+    struct tagCMP_WORK *wk;
+    s16 devilId;
+    s32 i;
+    s32 id;
+
+    num = 0;
+    PID = cmpPartyDrawFuncSub();
+    stockNums = datGetStockDevilNums();
+    wk = cmpGetStockPID();
+    if (DDS3_GBWK->stack_p[0] == -1) {
+        itfMenuSetFont(PID, 1, cmpData43);
+    } else {
+        devilId = DDS3_GBWK->playerData.stock[DDS3_GBWK->stack_p[0]].devilId;
+        if (devilId > 0) {
+            itfMenuSetFont(PID, 1, g_itemNo[devilId]);
+        }
+    }
+    if (DDS3_GBWK->stack_p[1] == -1) {
+        itfMenuSetFont(PID, 2, cmpData43);
+    } else {
+        devilId = DDS3_GBWK->playerData.stock[DDS3_GBWK->stack_p[1]].devilId;
+        if (devilId > 0) {
+            itfMenuSetFont(PID, 2, g_itemNo[devilId]);
+        }
+    }
+    itfMenuSetFlagMenu(PID, 3, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+    if (stockNums < 9) {
+        wk->pageMax = 0;
+    } else if (stockNums < 17) {
+        wk->pageMax = 1;
+    } else {
+        wk->pageMax = 2;
+    }
+    if (wk->pageMax < wk->page) {
+        wk->page = wk->pageMax;
+    }
+    for (i = wk->page * 8; i < wk->page * 8 + 8; i++) {
+        id = i - wk->page * 8 + 4;
+        if (i < stockNums) {
+            num++;
+            itfMenuSetFont(PID, id, g_itemNo[DDS3_GBWK->playerData.stock[i].devilId]);
+            itfMenuSetDrawFunc(PID, id, cmpPartyDrawFunc);
+            itfMenuSetFlagMenu(PID, id, ITFMENU_CB_GF_PANEL_DRAW_OFF, 0);
+            if (wk->markID == CMP_MENU_ID_SUMMON) {
+                if (DDS3_GBWK->playerData.stock[i].badStatus & 0x8C800) {
+                    itfMenuSetFlagMenu(PID, id, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+                    num--;
+                } else {
+                    itfMenuSetFlagMenu(PID, id, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+                }
+            }
+            if (wk->markID == CMP_MENU_ID_SWAP) {
+                itfMenuSetFlagMenu(PID, id, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+            }
+        } else {
+            itfMenuSetFont(PID, id, cmpData43);
+            itfMenuSetDrawFunc(PID, id, NULL);
+            itfMenuSetFlagMenu(PID, id, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+            if (i >= DDS3_GBWK->partyNum) {
+                itfMenuSetFlagMenu(PID, id, ITFMENU_CB_GF_PANEL_DRAW_OFF, 1);
+            }
+        }
+    }
+    return num;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateFontCharPID);
+#endif
 
 /* NON_MATCHING: 51 of 101 words match.  */
 #ifdef NON_MATCHING
@@ -1936,12 +2500,12 @@ void cmpChkSkillSelectHd(void) {
 
     itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
     itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
-    if (DDS3_GBWK->unk4242[0] == -1) {
+    if (DDS3_GBWK->stack_p[0] == -1) {
         itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
     } else {
         itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
     }
-    if (DDS3_GBWK->unk4242[1] == -1) {
+    if (DDS3_GBWK->stack_p[1] == -1) {
         itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 0);
     } else {
         itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 1);
@@ -1997,7 +2561,58 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpDrawSwordParam);
 
 INCLUDE_ASM(const s32, "code_003648C0", DrawFunc);
 
+/* NON_MATCHING: 62 of 139 words match.  */
+#ifdef NON_MATCHING
+s32 MakeList(CMP_MENU_ID a_id) {
+    u16 i;
+    u16 id;
+    SBTLITEM_TBL *tbl;
+
+    cmpCallBitCheck2Data = 0;
+    for (i = 0; i < 443; i++) {
+        id = cmpData30[i];
+        if (datCallCalcGetItemNum2(id, 1) == 0) {
+            continue;
+        }
+        if (a_id == CMP_MENU_ID_USE) {
+            if (id != 44) {
+                tbl = &tbldata[id];
+                if ((tbl->usetype & 6) || (tbl->type & 0x80) || (tbl->type & 0x1000)) {
+                    cmpCallBitCheck2Work[cmpCallBitCheck2Data++] = id;
+                }
+            }
+        } else if (a_id == CMP_MENU_ID_BULLET) {
+            if (tbldata[id].type & 4) {
+                cmpCallBitCheck2Work[cmpCallBitCheck2Data++] = id;
+            }
+        } else if (a_id == CMP_MENU_ID_THROW) {
+            tbl = &tbldata[id];
+            if (tbl->type != 0 && !(tbl->flg & 4)) {
+                cmpCallBitCheck2Work[cmpCallBitCheck2Data++] = id;
+            }
+        } else if (a_id == CMP_MENU_ID_CHECK) {
+            if (datCheckEventItem(id)) {
+                cmpCallBitCheck2Work[cmpCallBitCheck2Data++] = id;
+            }
+        } else if (a_id == CMP_MENU_ID_SWORD) {
+            if (tbldata[id].type & 0x400) {
+                cmpCallBitCheck2Work[cmpCallBitCheck2Data++] = id;
+            }
+        } else if (a_id == CMP_MENU_ID_JEWEL) {
+            if (tbldata[id].type & 0x200) {
+                cmpCallBitCheck2Work[cmpCallBitCheck2Data++] = id;
+            }
+        } else if (a_id == CMP_MENU_ID_MATERIAL) {
+            if (tbldata[id].type & 0x800) {
+                cmpCallBitCheck2Work[cmpCallBitCheck2Data++] = id;
+            }
+        }
+    }
+    return cmpCallBitCheck2Data;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", MakeList);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", Setup_cmpItem);
 
@@ -2086,7 +2701,53 @@ void cmpDrawFunc(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alph
     }
 }
 
+/* NON_MATCHING: 27 of 180 words match.  */
+#ifdef NON_MATCHING
+void cmpCallGetCharPID(CMP_MENU_ID a_id) {
+    s32 i;
+    u16 *id;
+
+    cmpCallGetCharPIDData7 = a_id;
+    cmpCallMakeCateChk(a_id);
+    cmpCallGetCharPIDData3 = cmpGetCharPID();
+    itfMenuClearMenuAll(cmpCallGetCharPIDData3);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 8, 1);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 0x20, 0);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 0x100, 0);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 0x200, 0);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 0x1000, 0);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 0x2000, 0);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 0x4000, 0);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 1, 1);
+    itfCallGetProcessData5(cmpCallGetCharPIDData3, 0);
+    id = cmpCallMakeCateChkWork;
+    for (i = 0; i < cmpCallMakeCateChkData; i++, id++) {
+        if (cmpCallGetCharPIDData7 == CMP_MENU_ID_KEYWORD || cmpCallGetCharPIDData7 == CMP_MENU_ID_CHECK2 ||
+            cmpCallGetCharPIDData7 == CMP_MENU_ID_MUSHI || cmpCallGetCharPIDData7 == CMP_MENU_ID_EVENT) {
+            itfMenuSetRootMenu(cmpCallGetCharPIDData3, i, cmpSetupData4[*id], NULL);
+        }
+        itfMenuSetDrawFunc(cmpCallGetCharPIDData3, i, cmpDrawFunc);
+    }
+    itfMenuLinkSprite(cmpCallGetCharPIDData3, cmpGetSpriteHnd(CMP_SPR_LIST));
+    itfMenuSetSpriteData(cmpCallGetCharPIDData3, ITFMENU_IMG_DAT_PANEL, 28, 65, 175, 23, 2, 1, NULL, cmpSetupData);
+    itfMenuSetSpriteData(cmpCallGetCharPIDData3, ITFMENU_IMG_DAT_SELECT, 28, 65, 175, 23, 2, 1, NULL,
+                         cmpCallGetCharPIDData);
+    itfMenuSetSpriteData(cmpCallGetCharPIDData3, ITFMENU_IMG_DAT_SCROLL, 15, 65, 2, 184, 181, 0, NULL,
+                         cmpCallGetCharPIDData2);
+    itfMenuSetImageColor(cmpCallGetCharPIDData3, ITFMENU_IMG_DAT_SCROLL, 190, 155, 70, 110);
+    itfMenuSetFlag(cmpCallGetCharPIDData3, 2, 0);
+    itfMenuSetDrawParam(cmpCallGetCharPIDData3, 8, 1);
+    itfMenuStart(cmpCallGetCharPIDData3);
+    cmpCallGetCharPIDData4 = cmpPartyDrawFuncSub();
+    itfMenuSetFlag(cmpCallGetCharPIDData4, 0x200, 0);
+    itfCallGetProcessData5(cmpCallGetCharPIDData4, 0);
+    cmpData46 = 0;
+    cmpCallGetCharPIDData6 = -1;
+    cmpCallGetCharPIDData5 = -1;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetCharPID);
+#endif
 
 s32 cmpCallMakeCateChk(CMP_MENU_ID a_id)
 {
@@ -2424,4 +3085,126 @@ void cmpDrawBack(tagCMP_MAP_WORK *wk) {
     eglLinkAlpha(0);
     itfDrawGridWithResolvedSlot(320, 448, 0, 96, cmpGetSpriteHnd(CMP_SPR_MAP), 1, 44);
 }
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawPartsNameData6);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData38);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprListData4);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawPartsExpData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawEquipData3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprList2Data);
+
+INCLUDE_SDATA(const s32, "code_003648C0", sbtlDrawSkillNameExSubData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprList2Data2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetProcessData3Data3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpSetBtlSklData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", mtrCallMultiBlurOffData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData39);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData40);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetStockPID5Data);
+
+INCLUDE_SDATA(const s32, "code_003648C0", Setup_cmpKudaData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData41);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetStockPID5Data2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpUpdateSkillHD_cmpKudaData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpUpdateSkillListHdData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData42);
+
+INCLUDE_SDATA(const s32, "code_003648C0", DrawFuncSkl_sbtlCmndMenuNewData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", mapData171);
+
+INCLUDE_SDATA(const s32, "code_003648C0", mapCallGetStockPIDData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData43);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpSetupData5);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData23);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData24);
+
+INCLUDE_SDATA(const s32, "code_003648C0", awdMenuProcessData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData25);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpUpdateSkillHDData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData26);
+
+INCLUDE_SDATA(const s32, "code_003648C0", Update_cmpItemData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallBitCheck2Data);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData44);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpFreeScriptData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", effScalyTextureHandle2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData27);
+
+INCLUDE_SDATA(const s32, "code_003648C0", hWorkArea3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallFuncUseData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData28);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData45);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawSwordParamData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawSwordParamData3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetCharPIDData3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetCharPIDData4);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData46);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetCharPIDData5);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetCharPIDData6);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetCharPIDData7);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpLeaf16Data2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallMakeCateChkData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpMenuCreateMenuPIDDataEntry);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpMenuCreateMenuPIDDataEntry2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpMenuCreateMenuPIDDataEntry3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpMenuCreateMenuPIDDataEntry4);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpMenuCreateMenuPIDDataEntry5);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpMenuCreateMenuPIDDataEntry6);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpMenuCreateListPIDDataEntry);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpMenuCreateListPIDDataEntry2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData47);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData48);
 

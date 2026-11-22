@@ -117,6 +117,17 @@ def place(version):
         asm_funcs = set(re.findall(r'^INCLUDE_ASM\([^\n]*\b(\w+)\);', text, re.M))
         still_asm = set().union(*(refs.get(f, set()) for f in asm_funcs)) if asm_funcs else set()
         addr_of = {s: a for a, s in syms}
+        sym_at = {a: s for a, s in syms}
+
+        def names_container(sym, code):
+            # `(u32)word >> 16` reads the word's upper half through a label the
+            # split put there; that label is the named word's data, not a literal.
+            a = addr_of[sym]
+            return any(
+                (b := a & ~k) != a and b in sym_at and re.search(rf"\b{sym_at[b]}\b", code)
+                for k in (1, 3, 7)
+            )
+
         for m in DEF.finditer(text):
             code = function_text(text, m.start())
             for sym in refs.get(m.group(1), ()):
@@ -128,6 +139,7 @@ def place(version):
                     and sym not in still_asm
                     and sym not in written_symbols
                     and not any(re.search(rf"\b{n}\b", code) for n in [sym, *alias_names.get(addr_of[sym], ())])
+                    and not names_container(sym, code)
                 ):
                     anchors.append((addr_of[sym], m.start(), sym))
         compiled = {s for _, _, s in anchors}

@@ -208,7 +208,7 @@ INCLUDE_ASM(const s32, "code_00346258", jmsAddTalkMenu);
 
 INCLUDE_ASM(const s32, "code_00346258", jmsBgmLoad);
 
-INCLUDE_ASM(const s32, "code_00346258", jmsDestroy);
+INCLUDE_ASM(const s32, "code_00346258", jmsBgmPlay);
 
 INCLUDE_ASM(const s32, "code_00346258", jmsLoad2ndProcess);
 

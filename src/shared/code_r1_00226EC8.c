@@ -5657,14 +5657,6 @@ effTrackSet_t *effCreateTrackSet(s32 count, u16 kind) {
     return set;
 }
 
-INCLUDE_SDATA(const s32, "code_r1_00226EC8", effLoadFlashTexturesData);
-
-INCLUDE_SDATA(const s32, "code_r1_00226EC8", effFlashTextureHandles);
-
-INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCreateTrackSetWithSharedReferencesData);
-
-INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCreateTrackSetWithSharedReferencesData2);
-
 effTrackSet_t *effCreateTrackSetWithSharedReferences(u32 count, u32 kind, u32 sharedRef) {
     effTrackSet_t *effect = effCreateTrackSet(count, (u16)kind);
 
@@ -11943,7 +11935,31 @@ INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPartsList);
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrEffectEditor);
 
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectEp);
+#ifdef VERSION_RAIDOU2
 
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effLoadFlashTexturesData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effFlashTextureHandles);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCreateTrackSetWithSharedReferencesData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCreateTrackSetWithSharedReferencesData2);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData33);
+#endif
+
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effLoadFlashTexturesData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effFlashTextureHandles);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCreateTrackSetWithSharedReferencesData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCreateTrackSetWithSharedReferencesData2);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData33);
+
+#endif
 INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData34);
 
 INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData35);
@@ -12291,6 +12307,16 @@ INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrPartsList);
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrEffectEditor);
 
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", effStrToolEffectEp);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effLoadFlashTexturesData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effFlashTextureHandles);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCreateTrackSetWithSharedReferencesData);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effCreateTrackSetWithSharedReferencesData2);
+
+INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData33);
 
 INCLUDE_SDATA(const s32, "code_r1_00226EC8", effData34);
 

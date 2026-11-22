@@ -1044,7 +1044,7 @@
 0x00125498	datDebtFromGouto	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD dat.datDebtFromGouto score 4.8 flag I: calls1 prev calls-of-match votes2 st2:call r1-disagree:0x121b88
 0x00125568	datOmoideSkillHaveSkill	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD dat.datOmoideSkillHaveSkill score 4.0 flag I: calls1 calls-of-match-uniq st2:call r2-only
 0x001255A8	datMemSetSeqStatusStepUpdateSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; called by cmpMemSetSeqStatusStepUpdate
-0x00125620	datCallDelKoukaPacket	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; calls nbDelKoukaPacket
+0x00125620	datOmoideSkillGetMaster	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD dat.c datOmoideSkillGetMaster: tests bit skill of aOmoideSkillMaster (unit+0x160); rstSetLvUpSkl stores its result in s_bRegistMemSkill; replaces datCallDelKoukaPacket
 0x00125690	datOmoideSkillSetMaster	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD dat.datOmoideSkillSetMaster score 6.4 flag I: calls2 calls-of-match votes3 st2:call r2-only
 0x00125730	datOmoideSkillDelOfcSkl	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD dat.datOmoideSkillDelOfcSkl score 2.9 flag I: prev gap18/58 st2:gap r2-only
 0x00125798	datLeaf46	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit newdata/datCalc; no named callee, caller or string
@@ -11463,7 +11463,7 @@
 0x003B6C58	jmsJimusyoDraw	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003B38B0, neighbour jmsStartEtcProcess; string 'jimusyo_draw'
 0x003B6CD0	jmsCallAddTalkTarget	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003B38B0, neighbour jmsBgmLoad; calls jmsAddTalkTarget
 0x003B6D88	jmsBgmLoad	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD jmsInit.jmsBgmLoad score 14.3 flag I: calls2 prev calls-of-match votes3 st1:call r1+r2
-0x003B6DD0	jmsDestroy	hd-inferred	hd: Raidou HD jmsInit.jmsDestroy, score 14.6 band A
+0x003B6DD0	jmsBgmPlay	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=same body as R1 0x348D30 (HD jmsInit.c jmsBgmPlay); Process_jmsMenu calls it with jmsProcessJmsMenuSub() and tests the result; replaces jmsDestroy
 0x003B6E30	jmsJimusyoYoigoshiHiru	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003B38B0, neighbour jmsDestroy; string '/jimusyo/yoigoshi_hiru.tmx'
 0x003B6FD0	jmsCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_003B38B0, neighbour jmsDestroy; calls dds3GetProcessData
 0x003B7048	fclJimusyoJmsMes	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003B38B0, neighbour fclAllocTerminalWork; string '/jimusyo/jms_mes.bmd'
@@ -11842,7 +11842,7 @@
 0x003C3F18	rstCalcRankUp	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD rstInit.rstCalcRankUp score 6.3 flag I: calls3 calls-of-match votes3 st2:call r1-disagree:0x350f70
 0x003C4038	rstPreCalcUnit	hd-inferred	method=hd-gap-single-raidou2; p=0.96 (n=405); tier=A; source=hd; evidence=Raidou HD rstInit.rstPreCalcUnit score 6.3 flag I: calls1 prev~ next calls-of-match votes2 st2:call r1-disagree:0x351070
 0x003C4190	Init_rstInit	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD rstInit.Init score 4.1 flag -: calls1 next calls-of-match votes2 st2:call r1-disagree:0x3511b0
-0x003C4798	rstResultDraw	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour rstPreCalcUnit; string 'result_draw'
+0x003C4798	Destroy_rstInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstInit.c static Destroy between Init and rstCheckTaiitsu: copies the result player data back to DDS3_GBWK, kills result_draw/result_updt, frees the work; it is rstInit's destroy callback (dds3StartProcess deleteExit); replaces rstResultDraw
 0x003C4AC8	rstProcessStartRstInitSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour rstPreCalcUnit; called by ProcessStart_rstInit
 0x003C4AD0	ProcessStart_rstInit	hd	hd: Raidou HD rstInit.ProcessStart, score 11.2 band A
 0x003C4C48	ProcessEnd_rstInit	hd	hd: Raidou HD rstInit.ProcessEnd, score 16.0 band A
@@ -11916,7 +11916,7 @@
 0x003CB438	rstGetGiftMsgPID	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD rstGrowth.rstGetGiftMsgPID score 6.1 flag I: calls1 next gap1/4 st1:gap r1+r2
 0x003CB460	rstSetFlagPlayBgm	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstGrowth.rstSetFlagPlayBgm score 10.1 flag I: calls2 next calls-of-match votes2 st1:call r1+r2
 0x003CB490	evtCheckPolygonMovieRun	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x1f1cd0 sim 0.952 margin 0.19 pair
-0x003CB4C0	evtBgnNum	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_003BF2E0, neighbour evtCheckPolygonMovieRun; string 'bgn %d,num %d\n'
+0x003CB4C0	rstSetLvUpSkl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstGrowth.c rstSetLvUpSkl(i, pTmp): fills g_aLvUpSkl[i] (_LvUpSkl) with aRsvSkl level-up skills and memskill omoide skills, sets g_dvlLevelUpNum[i]; prints bgn/num; replaces evtBgnNum
 0x003CB820	cmpLoadLocalizeText	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD cmpMain.cmpLoadLocalizeText score 3.3 flag I: calls1 calls-of-match st2:call r2-only
 0x003CB9E8	rstInit	hd	hd: Raidou HD rstGrowth.rstInit, score 9.5 band B
 0x003CBA48	rstCallGetProcessData42	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstInit; calls dds3GetProcessData
@@ -29289,8 +29289,8 @@
 0x004E4250	g_mainPID3	inferred	method=hd; p=0.37 (n=D_r1_0046F238); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2; g_mainPID is another symbol
 0x004E4254	rstData8	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: evtCallCheckRankUp, rstCallStartLevelUp2, rstCallStartLevelUp
 0x004E4258	rstData9	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: rstCallPlaySE3, evtCallCheckRankUp, rstCallStartLevelUp
-0x004E425C	evtCallCheckRankUpData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by evtCallCheckRankUp (4 of 7 refs, 3 functions)
-0x004E4260	rstData10	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: rstCallStartLevelUp2, evtCallCheckRankUp, rstCallStartLevelUp
+0x004E425C	g_pUnitSrc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstSetLvUpSkl: source unit (before the battle), cmpLoadLocalizeText sets it to &rstData8->stock[i]; replaces evtCallCheckRankUpData
+0x004E4260	g_pUnitDst	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstSetLvUpSkl: destination unit (after the battle), &rstData9->stock[i]; replaces rstData10
 0x004E4264	evtCallCheckRankUpData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by evtCallCheckRankUp (2 of 3 refs, 2 functions)
 0x004E4268	evtCallCheckRankUpData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by evtCallCheckRankUp (2 of 4 refs, 3 functions)
 0x004E426C	rstData11	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: rstCallStartLevelUp, rstCallStartLevelUp2
@@ -31576,14 +31576,14 @@
 0x0057003C	bssWork205	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x44
 0x00570080	nbFunc6Table2Entry9	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by nbFunc6Table2Entry2
 0x00571D00	rstWork	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: ProcessStart_rstInit, rstSetReward
-0x00571E30	evtCallCheckRankUpWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by evtCallCheckRankUp (4 of 8 refs, 3 functions)
+0x00571E30	g_dvlLevelUpNum	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstSetLvUpSkl: g_dvlLevelUpNum[i] = dst level - src level, -1 when only a memory skill was learned; replaces evtCallCheckRankUpWork
 0x00571E80	rstWork2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: rstCallStartLevelUp2, evtCallCheckRankUp, rstMenuCursorCtrlSub
 0x00571E98	rstOmoideGaIppaiWork4	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by rstOmoideGaIppai (6 of 8 refs, 2 functions)
 0x00571EE8	rstOmoideGaIppaiWork5	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by rstOmoideGaIppai (8 of 10 refs, 2 functions)
-0x00571F38	rstOmoideGaIppaiWork6	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by rstOmoideGaIppai (19 of 23 refs, 2 functions)
+0x00571F38	g_aLvUpSkl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstGrowth.c g_aLvUpSkl: per-stock _LvUpSkl (0x24 bytes) filled by rstSetLvUpSkl; replaces rstOmoideGaIppaiWork6
 0x00571F44	rstOmoideGaIppaiWork7	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by rstOmoideGaIppai
 0x00571F50	rstOmoideGaIppaiWork8	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by rstOmoideGaIppai
-0x00572208	rstOmoideGaIppaiWork9	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by rstOmoideGaIppai (4 of 8 refs, 3 functions)
+0x00572208	s_bRegistMemSkill	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD rstSetLvUpSkl: s_bRegistMemSkill[i][n] = datOmoideSkillGetMaster(dst, memSkl[n]); replaces rstOmoideGaIppaiWork9
 0x00572230	sdfSystemThreadStack	inferred	method=smt3-alias; p=0.90 (n=D_r1_004E37E0); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x00574230	sdfVblankThreadStack	inferred	method=smt3-alias; p=0.90 (n=D_r1_004E57E0); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x00574453	bssWork206	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0xF6

@@ -32,6 +32,12 @@ typedef struct rstPositionTable_t {
     sdfIVector2_t pos;
 } rstPositionTable_t;
 void rstCalcPosition(s32 frame, const rstPositionTable_t *table, s32 count, sdfIVector2_t *pos);
+/* A key of the scale curves rstCalcScale interpolates (HD rstScaleTable_t). */
+typedef struct rstScaleTable_t {
+    s32 frame;
+    sdfVector2_t scale;
+} rstScaleTable_t;
+void rstCalcScale(s32 frame, const rstScaleTable_t *table, s32 count, sdfVector2_t *scale);
 void rstResultLevelUpAnimSub(s32 a_x, s32 a_y, f32 *a_scale, u32 a_blend, s32 a_table, s32 a_step, struct sprHandle_t *a_hSpr,
                              s32 a_layer);
 
@@ -46,7 +52,8 @@ typedef struct jmsInputPanelWork_t {
     s32 flags; /* 0x14 */
     s32 count;
     s32 unk1C;
-    u8 unk20[0xC];
+    u8 unk20[8];
+    f32 unk28;
     s32 unk2C;
     u8 unk30[8];
     u8 unk38; /* 0x38: second fclBackSprite alpha */

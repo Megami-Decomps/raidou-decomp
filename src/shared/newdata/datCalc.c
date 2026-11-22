@@ -410,7 +410,7 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datOmoideSkillHaveSkill);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datMemSetSeqStatusStepUpdateSub);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datCallDelKoukaPacket);
+INCLUDE_ASM(const s32, "newdata/datCalc", datOmoideSkillGetMaster);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datOmoideSkillSetMaster);
 

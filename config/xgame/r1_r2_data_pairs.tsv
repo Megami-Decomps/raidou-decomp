@@ -9813,8 +9813,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046F238	0x004E4250	g_mainPID3	.sdata	0x4	yes	code-ref
 0x0046F23C	0x004E4254	rstData8	.sdata	0x4	yes	run-order-size
 0x0046F240	0x004E4258	rstData9	.sdata	0x4	yes	run-order-size
-0x0046F244	0x004E425C	evtCallCheckRankUpData	.sdata	0x4	yes	run-order-size
-0x0046F248	0x004E4260	rstData10	.sdata	0x4	yes	run-order-size
+0x0046F244	0x004E425C	g_pUnitSrc	.sdata	0x4	yes	run-order-size
+0x0046F248	0x004E4260	g_pUnitDst	.sdata	0x4	yes	run-order-size
 0x0046F24C	0x004E4264	evtCallCheckRankUpData2	.sdata	0x4	yes	code-ref
 0x0046F250	0x004E4268	evtCallCheckRankUpData3	.sdata	0x4	yes	code-ref
 0x0046F254	0x004E426C	rstData11	.sdata	0x1	yes	run-order-size
@@ -11749,7 +11749,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x004E23E0	0x0056F0B0	shpWork5	.bss	0x200	no	code-ref
 0x004E25E0	0x0056F2B0	shpCallGetRandIntAWork	.bss	0x100	no	code-ref
 0x004E3680	0x00571D00	rstWork	.bss	0xB8	no	code-ref
-0x004E3738	0x00571E30	evtCallCheckRankUpWork	.bss	0x30	no	code-ref
+0x004E3738	0x00571E30	g_dvlLevelUpNum	.bss	0x30	no	code-ref
 0x004E3768	0x00571E80	rstWork2	.bss	0x10	no	code-ref
 0x004E37E0	0x00572230	sdfSystemThreadStack	.bss	0x969	no	code-ref
 0x004E57E0	0x00574230	sdfVblankThreadStack	.bss	0x765	no	code-ref

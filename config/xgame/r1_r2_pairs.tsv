@@ -8649,7 +8649,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x003485C8	0x003B5D48	PosReset	no	no	asm/raidou1/code_00346258.s	asm/raidou2/code_003B38B0.s	size
 0x00348B78	0x003B6C08	jmsStartEtcProcess	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003B38B0.s	unique-reloc-hash
 0x00348CE8	0x003B6D88	jmsBgmLoad	no	no	asm/raidou1/code_00346258.s	asm/raidou2/code_003B38B0.s	unique-masked-hash
-0x00348D30	0x003B6DD0	jmsDestroy	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003B38B0.s	masked-hash-in-gap
+0x00348D30	0x003B6DD0	jmsBgmPlay	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003B38B0.s	masked-hash-in-gap
 0x003492A0	0x003B7508	jmsProcessEnd	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003B38B0.s	masked-hash-in-gap
 0x003492E0	0x003B7548	jmsProcessCheck	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003B38B0.s	masked-hash-in-gap
 0x00349330	0x003B75F8	jmsDebugProcessEnd	no	yes	asm/raidou1/code_00346258.s	asm/raidou2/code_003B38B0.s	masked-hash-in-gap

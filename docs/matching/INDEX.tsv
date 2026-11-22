@@ -233,6 +233,14 @@ cmpMakeCateChk	code_003648C0	raidou2 0xD0	26 of 52 words differ	docs/matching/co
 cmpCallGetStockDevilNums	code_003648C0	raidou2 0x170	2 of 92 words differ	docs/matching/code_003648C0.md	69		
 cmpChangeChkTabPage	code_003648C0	raidou2 0x194	50 of 99 words differ	docs/matching/code_003648C0.md	75		
 cmpCallGetProcessData11	code_003648C0	raidou2 0x1CC	1 of 115 words differ	docs/matching/code_003648C0.md	81		
+cmpStockListMake	code_003648C0	raidou2 0x384	38 of 225 words differ	docs/matching/code_003648C0.md	87		
+cmpMenuFilter	code_003648C0	raidou2 0x2FC	106 of 191 words differ	docs/matching/code_003648C0.md	93		
+cmpChkSkillSelect	code_003648C0	raidou2 0x2F0	33 of 188 words differ	docs/matching/code_003648C0.md	99		
+mapMenuCreateMenuPID_itf	code_003648C0	raidou2 0x200	2 of 128 words differ	docs/matching/code_003648C0.md	105		
+cmpCallGetStockPID3	code_003648C0	raidou2 0x27C	66 of 159 words differ	docs/matching/code_003648C0.md	111		
+cmpUpdateFontCharPID	code_003648C0	raidou2 0x36C	132 of 216 words differ	docs/matching/code_003648C0.md	117		
+MakeList	code_003648C0	raidou2 0x22C	77 of 140 words differ	docs/matching/code_003648C0.md	123		
+cmpCallGetCharPID	code_003648C0	raidou2 0x2D0	153 of 178 words differ	docs/matching/code_003648C0.md	129		
 CheckFlagTGS	code_003BF2E0	raidou2 0x48	9 of 17 words differ	docs/matching/code_003BF2E0.md	3		
 SetFlagMenu	code_003BF2E0	raidou2 0x98	14 of 38 words differ	docs/matching/code_003BF2E0.md	9		
 SetRootMenu	code_003BF2E0	raidou2 0x94	15 of 38 words differ	docs/matching/code_003BF2E0.md	15		
@@ -253,6 +261,8 @@ cmpCallGetProcessData33	code_003BF2E0	raidou2 0x1E0	9 of 120 words differ	docs/m
 cmpCallBitCheck10	code_003BF2E0	raidou2 0x148	23 of 81 words differ	docs/matching/code_003BF2E0.md	109		
 rstResultLevelUpAnim	code_003BF2E0	raidou2 0x1D0	12 of 116 words differ	docs/matching/code_003BF2E0.md	115		
 cmpLoadLocalizeText	code_003BF2E0	raidou2 0x1C4	8 of 113 words differ	docs/matching/code_003BF2E0.md	121		
+rstCallBlendColor2	code_003BF2E0	raidou2 0x2A8	9 of 170 words differ	docs/matching/code_003BF2E0.md	127		
+rstResultCyuuseiMaxAnim	code_003BF2E0	raidou2 0x2B0	30 of 170 words differ	docs/matching/code_003BF2E0.md	133		
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
 dds3CallDLinkTexPacket	code_r1_00104370	raidou1 0x128, raidou2 0x128	37 of 73 words differ	docs/matching/code_r1_00104370.md	12		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		

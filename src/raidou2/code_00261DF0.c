@@ -96,9 +96,9 @@ s32 Exit_sbtl(s32 restart)
         for (i = 0; i < 2; i++) {
             nakama = sbtlGetNakama(i);
             if (nakama == NULL) {
-                DDS3_GBWK->unk4242[i] = -1;
+                DDS3_GBWK->stack_p[i] = -1;
             } else {
-                DDS3_GBWK->unk4242[i] = datGetStockDevilIndex(nakama->unit.devilId);
+                DDS3_GBWK->stack_p[i] = datGetStockDevilIndex(nakama->unit.devilId);
             }
         }
     }

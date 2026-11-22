@@ -73,7 +73,11 @@ s32 cmpChangeChkTabPage(CMP_MENU_ID a_id);
 s32 cmpCallGetStockPID(void);
 void cmpCallGetStockDevilNums(void);
 u32 Init_cmpStatus(void);
-void cmpUpdateFontCharPID(void);
+s32 cmpUpdateFontCharPID(void);
+void cmpPartyDrawFunc(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha);
+void cmpCallGetStockPID3(void);
+s32 cmpMenuFilterUnit(struct sdatUnitWork_t *psUnit, struct sdatUnitWork_t *psUnitChk, ecmpKudaCMU iAttrId,
+                      BSTF iBadStatus);
 void cmpCallGetStockDevilNums2(dds3ProcessID_t *PID);
 s32 cmpCallMenuGetFlag(void);
 s32 cmpGetNowSummonerRank(void);
@@ -85,6 +89,16 @@ extern s32 (*cmpLeaf16Data[4])(void);
 /* Help text id of each book menu row. */
 extern u16 cmpCallMakeCateChkWork[];
 extern s32 cmpCallMakeCateChkData; /* entries in cmpCallMakeCateChkWork */
+/* Party menu process, and the item and party ids last chosen (-1 for none). */
+extern dds3ProcessID_t *cmpCallGetCharPIDData4;
+extern s32 cmpCallGetCharPIDData5;
+extern s32 cmpCallGetCharPIDData6;
+/* Panel, select and scroll sprite lists of the category menu. */
+extern struct itfSprList_t cmpSetupData[];
+extern struct itfSprList_t cmpCallGetCharPIDData[];
+extern struct itfSprList_t cmpCallGetCharPIDData2[];
+s32 cmpCallMakeCateChk(CMP_MENU_ID a_id);
+void cmpCallGetCharPID(CMP_MENU_ID a_id);
 extern struct itfSprList_t cmpDrawFuncData[];
 
 struct tagCMP_STATUS_WORK;
@@ -93,5 +107,19 @@ void cmpSTATUSSTEP(struct tagCMP_STATUS_WORK *wk);
 void cmpMemSetSeqStatusStepUpdate(struct tagCMP_STATUS_WORK *wk);
 void cmpSeqGoodby(struct tagCMP_STATUS_WORK *wk);
 s32 Process_cmpStatus(struct tagCMP_STATUS_WORK *wk);
+
+/* The camp submenu built by mapMenuCreateMenuPID_itf. */
+extern dds3ProcessID_t *cmpData39;
+extern char cmpData43[];
+extern struct itfSprList_t mapMenuCreateMenuPID_itfData[];
+extern struct itfSprList_t mapMenuCreateMenuPID_itfData2[];
+void DrawFuncSkl_sbtlCmndMenuNew(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha);
+void mapCallGetStockPID(void);
+void mapMenuCreateMenuPID_itf(void);
+
+/* Skill ids of the camp skill menu rows, negative for an empty row. */
+extern SKLID cmpWork9[8];
+s32 cmpChkEnableUseSkill(struct sdatUnitWork_t *use, struct sdatUnitWork_t *tgt, SKLID id);
+void cmpChkSkillSelect(struct sdatUnitWork_t *a_pUseUnit);
 
 #endif
