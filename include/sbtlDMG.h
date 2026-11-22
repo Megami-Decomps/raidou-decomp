@@ -352,6 +352,7 @@ s32 CheckAutoSkill(struct SBTLUNIT_WORK *wk);
 void datSetKillDevil(struct SBTLUNIT_WORK *wk);
 void sbtlSetAddMag_Setsuma(struct SBTLUNIT_WORK *wk, s32 mag);
 u16 sbtlGetDevilHuumaItem(s32 devilId);
+PLAYER_LUCK sbtlGetPlayerLuckStep(void);
 void sbtlRefDDS3GBWK6(s32 devilId, s32 num);
 struct SBTLUNIT_WORK *sbtlGetPChara(void);
 s32 sbtlIsDeadBgn(struct SBTLUNIT_WORK *wk);

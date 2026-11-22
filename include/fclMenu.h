@@ -28,6 +28,8 @@ void UpdatePrevLink(void);
 void UpdateTargetMenu(void);
 void fclCreate(s32 a_nMenu);
 void fclDraw(void);
+void fclLoadData(const char *name);
+void ButtonLineHelpDispSet(void);
 s32 fclGetHierarchy(void);
 u8 fclGetPanelAlpha(void);
 s16 fclGetSelectId(void);

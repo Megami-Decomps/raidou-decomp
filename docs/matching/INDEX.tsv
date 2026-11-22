@@ -136,6 +136,10 @@ sbtlSummonKey	code_0027A1E8	raidou2 0x2C0	88 of 176 words differ	docs/matching/c
 sbtlCallBtlGetSkilltbl2	code_0027A1E8	raidou2 0x26C	4 of 155 words differ	docs/matching/code_0027A1E8.md	55		
 TEquationno_01	code_0027A1E8	raidou2 0x214	31 of 133 words differ	docs/matching/code_0027A1E8.md	63		
 sbtlCallBtlGetBadStatus2	code_0027A1E8	raidou2 0x284	11 of 161 words differ	docs/matching/code_0027A1E8.md	71		
+KaihiInit_Nakama	code_0027A1E8	raidou2 0x344	143 of 207 words differ	docs/matching/code_0027A1E8.md	79		
+sbtlCallBtlCreateEff	code_0027A1E8	raidou2 0x2DC	4 of 183 words differ	docs/matching/code_0027A1E8.md	85		
+sbtlGetNearTarget_Random	code_0027A1E8	raidou2 0x4E4	282 of 306 words differ	docs/matching/code_0027A1E8.md	91		
+KaihiInit_Sub	code_0027A1E8	raidou2 0x374	17 of 221 words differ	docs/matching/code_0027A1E8.md	97		
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3		
 sbtlCallBtlCreateUnitList3	code_0028A320	raidou1 0xA78	533 of 662 words differ	docs/matching/code_0028A320.md	13		
 sbtlCallBtlLoadEffectDataIDMask	code_0028A320	raidou1 0x80	21 of 32 words differ	docs/matching/code_0028A320.md	25		
@@ -228,6 +232,11 @@ sbtlCallGetProcessData5	code_00309FE0	raidou2 0x1F4	3 of 125 words differ	docs/m
 SetBSHelper	code_00309FE0	raidou2 0x1F8	25 of 126 words differ	docs/matching/code_00309FE0.md	117		
 Result_sbtlTime	code_00309FE0	raidou2 0x2C8	129 of 178 words differ	docs/matching/code_00309FE0.md	123		
 DrawProc	code_00309FE0	raidou2 0x42C	260 of 264 words differ	docs/matching/code_00309FE0.md	129		
+slCallGetProcessData6	code_00309FE0	raidou2 0x4E0	8 of 312 words differ	docs/matching/code_00309FE0.md	137		
+PosReSet_sbtlBossEvent	code_00309FE0	raidou2 0x4EC	52 of 315 words differ	docs/matching/code_00309FE0.md	143	the literal-load placement moves with the headers and text around it (exact alone at f348ef07, not at 0f5907ed).	
+sbtlRefSbtl24	code_00309FE0	raidou2 0x80	1 of 32 words differ	docs/matching/code_00309FE0.md	151		
+Process_sbtlBossEvent	code_00309FE0	raidou2 0x428	11 of 266 words differ	docs/matching/code_00309FE0.md	157		
+Proc_sbtlCmndMenuNew	code_00309FE0	raidou2 0x400	86 of 256 words differ	docs/matching/code_00309FE0.md	165	the function matches alone and only the unit context moves it, as with sbtlGetPointData.	
 cmpProcessStartEx	code_00323280	raidou1 0x54	4 of 20 words differ	docs/matching/code_00323280.md	3		
 cmpCallGetProcessData6	code_00323280	raidou1 0x1AC	4 of 107 words differ	docs/matching/code_00323280.md	11		
 rstCallGetProcessData42	code_0034F3B8	raidou1 0x38		docs/matching/code_0034F3B8.md	3		FAKEMATCH_ASM_READ(wk) after sdfMemFreeDirect blocks the sibcall where retail has jal and a full epilogue, the same form as fclCallGetProcessData. Tried: no read (tail j), an s32 return with no return statement (still j), a dds3ProcessFunc_t return (still j). Only a dead store or dummy use after the call remains, which is banned.

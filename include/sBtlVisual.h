@@ -73,5 +73,8 @@ s32 sbtlCallBtlCheckDamageTarget8(struct SBTLVISUAL_DATA *data);
 s32 sbtlCalcAnim_DmgNumPos(struct SBTLVISUAL_DATA *data, struct SBTLUNIT_WORK *wk);
 struct V_POSITION_WORK *sbtlGetEffCylinderData(MODELTYPE major, s32 id);
 s32 sbtlGetCylinderData(struct SBTLUNIT_WORK *wk, SBTLVISUAL_DATA *data);
+#ifdef VERSION_RAIDOU2
+f32 sbtlGetActionTime(struct SBTLUNIT_WORK *wk, s32 flg);
+#endif
 
 #endif

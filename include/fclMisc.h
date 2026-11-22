@@ -22,6 +22,8 @@ void fclInitPanelPos(s32 X, s32 Y, s32 Z, s16 W, s16 H, s32 Work, struct fclPane
 void fclSetMessageInvalid(s32 Mode);
 s32 fclSetModelLight(char *pKeyWord, dds3Basic_t *Model);
 s32 fclStartSelMessage(s32 SelMsgNo);
+void fclSetSelMessagePos(s32 SelPos);
+u32 fclRefMsgIDFclMisc(u32 flag);
 void fclUpdateMessage(void);
 s8 evtGetCapturedWindowPanelValue(void);
 s8 fclInitMessage(void *pData);

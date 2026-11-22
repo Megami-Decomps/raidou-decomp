@@ -44,6 +44,15 @@
 #include "dds3KernelDraw.h"
 #include "code_r1_001CC1D0.h"
 #include "frFont.h"
+#include "sBtlVisual.h"
+#include "sBtlSound.h"
+#include "dds3PadManager.h"
+#include "fclMenu.h"
+#include "evtMoon.h"
+#include "scr.h"
+#include "dds3KernelDraw_0010A750.h"
+#include "dds3ObjectBase.h"
+#include "sndAt3.h"
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallBtlGetSkilltbl11);
 
@@ -292,7 +301,7 @@ s32 cmpCallGetProcessData5(void) {
                 && !evtBitCheck(i + 0x850)) {
                 evtBitOn(i + 0x850);
                 wk->fieldC0 = i;
-                wk->field3C = j;
+                wk->field3C[0] = j;
                 wk->fieldCA = 1;
                 wk->fieldCC[0] = cmpData29[i].field0C[4];
                 wk->fieldC2 = 0;
@@ -376,7 +385,129 @@ s32 cmpCallGetNowSummonerRank(s32 flag) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", cmpCallBtlSearchUnitID);
+s32 cmpCallBtlSearchUnitID(s32 kind) {
+    struct SBTLUNIT_WORK *huuma;
+    SBTL_DEVIL_DATA *data;
+    struct SBTLUNIT_WORK *target;
+    SBTL_DEVIL_DATA *p;
+    s32 step;
+    s32 luck;
+    s32 r;
+    s32 i;
+    s32 rate;
+
+    huuma = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    data = sbtlIfDrawActionSub(huuma->unit.devilId);
+    target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (kind == 0) {
+        return 1;
+    }
+    r = GetRand(6) - 2;
+    if (kind == 1 && huuma->unit.now.str + r <= target->unit.now.str) {
+        return 1;
+    }
+    if (kind == 2 && huuma->unit.now.vit + r <= target->unit.now.vit) {
+        return 1;
+    }
+    if (kind == 3 && huuma->unit.now.tec + r <= target->unit.now.tec) {
+        return 1;
+    }
+    if (kind == 4 && huuma->unit.now.luck + r <= target->unit.now.luck) {
+        return 1;
+    }
+    if (kind == 5 && cmpCallGetNowSummonerRank(0)) {
+        return 1;
+    }
+    if (kind == 19 && cmpCallGetNowSummonerRank(1)) {
+        return 1;
+    }
+    if (kind == 7 && sbtlCheckMoon(0)) {
+        return 1;
+    }
+    if (kind == 8 && sbtlCheckMoon(8)) {
+        return 1;
+    }
+    if (kind == 9) {
+        return 0;
+    }
+    if (kind == 10 && (s32)(GetRand(5) + 3) <= sbtlGetDevilHuumaItem(data->field82)) {
+        return 1;
+    }
+    if (kind == 11 && trmBtlAnalyzeMeisiSub(data->field82)) {
+        return 1;
+    }
+    if (kind == 12) {
+        for (i = 0; i < 208; i++) {
+            p = sbtlIfDrawActionSub(i);
+            if (huuma->unit.raceId == p->kuda_id && huuma->unit.level < p->level &&
+                trmBtlAnalyzeMeisiSub(p->motionId)) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+    if (kind == 13) {
+        for (i = 0; i < 208; i++) {
+            p = sbtlIfDrawActionSub(i);
+            if (huuma->unit.level < p->level && trmBtlAnalyzeMeisiSub(p->motionId)) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+    if (kind == 14 && data->field8A == 0) {
+        return 1;
+    }
+    if (kind == 15 && (data->field8A == 0 || data->field8A == 1)) {
+        return 1;
+    }
+    if (kind == 16 && data->field8A == 2) {
+        return 1;
+    }
+    if (kind == 17 && (data->field8A == 3 || data->field8A == 4)) {
+        return 1;
+    }
+    if (kind == 18 && data->field8A == 4) {
+        return 1;
+    }
+    if (kind == 20 && evtBitCheck(0x844)) {
+        step = sbtlGetPlayerLuckStep();
+        if (step >= PLAYER_LUCK_NORMAL) {
+            rate = 30;
+            if (step == PLAYER_LUCK_BEST__) {
+                rate = 90;
+            }
+            if (step == PLAYER_LUCK_BETTER) {
+                rate = 70;
+            }
+            if (step == PLAYER_LUCK_GOOD__) {
+                rate = 50;
+            }
+            if ((s32)GetRand(100) < rate) {
+                return 1;
+            }
+        }
+    }
+    if (kind == 21 && evtBitCheck(0x844)) {
+        luck = sbtlGetPlayerLuckStep();
+        if (luck < PLAYER_LUCK_BAD___) {
+            rate = 30;
+            if (luck == PLAYER_LUCK_WORST_) {
+                rate = 90;
+            }
+            if (luck == PLAYER_LUCK_WORSE_) {
+                rate = 70;
+            }
+            if (luck == PLAYER_LUCK_BAD___) {
+                rate = 50;
+            }
+            if ((s32)GetRand(100) < rate) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", cmpCallGetProcessData6);
 
@@ -685,7 +816,99 @@ INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData22);
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData23);
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlJumpProc_Eve);
+s32 sbtlJumpProc_Eve(void) {
+    sbtlKaiwa_t *wk = dds3GetProcessData(inputpanel_id2);
+    struct SBTLUNIT_WORK *target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    struct SBTLUNIT_WORK *huuma = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->huumaTargetID);
+    s32 devilId;
+    SKLID skill;
+    f32 rate;
+    s32 damage;
+
+    switch (wk->field9C) {
+        case 0:
+            wk_sbtl->field42CB = 1;
+            wk->field9C++;
+            break;
+        case 1:
+            devilId = huuma->unit.devilId;
+            skill = huuma->haveskill[0];
+            huuma->model->field104 = -1;
+            if (devilId == 473 || devilId == 493) {
+                sbtlSetMotion_sbtlUnit(huuma, 19, 6, 0, 2);
+                sbtlJumpProc_EveWork2 = 70.0f;
+            } else if (devilId == 494) {
+                sbtlSetMotion_sbtlUnit(huuma, 19, 6, 0, 2);
+                sbtlJumpProc_EveWork2 = 100.0f;
+            } else {
+                sbtlSetUseSkill_sbtlActAI(huuma, skill, 0);
+                sbtlJumpProc_EveWork2 = sbtlGetActionTime(huuma, 0);
+            }
+            wk->field9E = 0;
+            wk->field9C++;
+            break;
+        case 2:
+            if (sbtlJumpProc_EveWork2 <= wk->field9E) {
+                wk->field9C++;
+            }
+            wk->field9E++;
+            break;
+        case 3:
+            sbtlPlayDamageSE(&target->pos, 3);
+            sbtlPlaySE(0x1000A);
+            sbtlSetVibe(SBTLPLAYER_VTYPE_NORMALD);
+            dds3SetQuake(120, 150);
+            wk->field9E = 0;
+            wk->field9C++;
+            break;
+        case 4:
+            dds3FadeOut(255, 0, 0, 3);
+            wk->field9E = 0;
+            wk->field9C++;
+            break;
+        case 5:
+            if (wk->field9E++ >= 4) {
+                wk->field9C++;
+            }
+            break;
+        case 6:
+            rate = (s32)(GetRand(20) + 10) / 100.0f;
+            sbtlJumpProc_EveWork = rate;
+            damage = target->unit.now.maxhp * rate;
+            if (target->unit.now.hp - damage <= 0) {
+                damage = target->unit.now.hp - 1;
+            }
+            sbtlSetDamage(target, huuma->haveskill[0], damage);
+            dds3FadeIn2(6);
+            wk->field9E = 0;
+            wk->field9C++;
+            break;
+        case 7:
+            if (wk->field9E++ >= 7) {
+                wk->field9C++;
+            }
+            break;
+        case 8:
+            if (sbtlCallBtlCheckLoopMotion(huuma)) {
+                wk->field9C++;
+            }
+            break;
+        case 9:
+            wk->field9E = 0;
+            wk->field9C++;
+            break;
+        case 10:
+            wk->field9C = 99;
+            break;
+        case 99:
+            wk->field9C = 0;
+            wk_sbtl->field42A8 = 43;
+            wk->field1A = 3;
+            wk->field1C = 88;
+            break;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00309FE0", sbtlCallGetProcessData24);
 
@@ -995,7 +1218,110 @@ INCLUDE_ASM(const s32, "code_00309FE0", slCallGetRand);
 
 INCLUDE_ASM(const s32, "code_00309FE0", slCallGetProcessData5);
 
+/* NON_MATCHING: 304 of 312 words match.  */
+#ifdef NON_MATCHING
+s32 slCallGetProcessData6(void *msg, s32 msgNo, struct SBTLUNIT_WORK *unit, s32 type, s32 selMsgNo, s32 sel) {
+    sbtlKaiwa_t *kwk = dds3GetProcessData(inputpanel_id2);
+    struct SBTLUNIT_WORK *nakama;
+    char buf[16];
+    s16 id;
+
+    switch (wk_sbtl->kaiwa_gstat) {
+        case 0:
+            fclInitMessage(msg);
+            wk_sbtl->kaiwa_gstat++;
+            return 0;
+        case 1:
+            if (type == 0) {
+                fclSetMessageVar(0, sbtlData94[unit->unit.raceId]);
+                fclSetMessageVar(1, g_itemNo[unit->unit.devilId]);
+            } else if (type == 1) {
+                id = sbtlIfDrawActionSub(unit->unit.devilId)->field82;
+                if (unit->unit.devilId == 473 || unit->unit.devilId == 493 || unit->unit.devilId == 494) {
+                    fclSetMessageVar(0, g_itemNo[unit->unit.devilId]);
+                } else {
+                    fclSetMessageVar(0, g_itemNo[id]);
+                }
+                fclSetMessageVar(6, sbtlData94[unit->unit.raceId]);
+                fclSetMessageVar(7, slCallGetProcessData6Data[cmpGetNowSummonerRank()]);
+            } else {
+                id = sbtlIfDrawActionSub(unit->unit.devilId)->field82;
+                if (unit->unit.devilId == 473 || unit->unit.devilId == 493 || unit->unit.devilId == 494) {
+                    fclSetMessageVar(0, g_itemNo[unit->unit.devilId]);
+                } else {
+                    fclSetMessageVar(0, g_itemNo[id]);
+                }
+                nakama = sbtlGetNakama(kwk->field3C[kwk->field40]);
+                if (nakama != NULL) {
+                    id = nakama->unit.devilId;
+                    fclSetMessageVar(2, g_itemNo[id]);
+                }
+                if (kwk->field36 >= 2) {
+                    nakama = sbtlGetNakama(kwk->field3C[1]);
+                    if (nakama != NULL) {
+                        id = nakama->unit.devilId;
+                        fclSetMessageVar(3, g_itemNo[id]);
+                    }
+                }
+                fclSetMessageVar(6, sbtlData94[unit->unit.raceId]);
+                fclSetMessageVar(7, slCallGetProcessData6Data[cmpGetNowSummonerRank()]);
+            }
+            if (kwk->field8E != 0) {
+                id = sbtlRefDDS3GBWK2(wk_sbtl->field42B4)->devilId;
+                fclSetMessageVar(1, g_itemNo[id]);
+            }
+            if (kwk->field90 != 0) {
+                fclSetMessageVar(1, cmpSetupData4[wk_sbtl->field42B0]);
+            }
+            if (kwk->field92 != 0) {
+                sprintf(buf, slCallGetProcessData6Data2, wk_sbtl->field42B2);
+                fclSetMessageVar(2, buf);
+            }
+            if (kwk->field94 != 0) {
+                sprintf(buf, slCallGetProcessData6Data2, wk_sbtl->field42B4);
+                fclSetMessageVar(1, buf);
+            }
+            if (kwk->field96 != 0) {
+                id = sbtlIfDrawActionSub(unit->unit.devilId)->field82;
+                fclSetMessageVar(2, g_itemNo[id]);
+            }
+            wk_sbtl->kaiwa_gstat++;
+            return 0;
+        case 2:
+            fclStartMessage(msgNo);
+            if (sel != 0) {
+                fclStartSelMessage(selMsgNo);
+                fclSetSelMessagePos(0);
+                fclRefMsgIDFclMisc(0x2000000);
+            }
+            fclChangeMessageWindowAlpha(1);
+            wk_sbtl->kaiwa_gstat++;
+            return 0;
+        case 3:
+            if (fclChkMessage() != 0) {
+                fclUpdateMessage();
+            } else {
+                wk_sbtl->kaiwa_gstat++;
+            }
+            return 0;
+        case 4:
+            wk_sbtl->kaiwa_gstat++;
+            return 0;
+        case 5:
+            fclDestroyMessage();
+            kwk->field96 = 0;
+            wk_sbtl->kaiwa_gstat = 0;
+            kwk->field8E = 0;
+            kwk->field90 = 0;
+            kwk->field92 = 0;
+            kwk->field94 = 0;
+            return 1;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", slCallGetProcessData6);
+#endif
 
 INCLUDE_ASM(const s32, "code_00309FE0", slChoiceMsgDraw);
 
@@ -1676,7 +2002,128 @@ void CameraPosSet(s32 hpos) {
 
 INCLUDE_ASM(const s32, "code_00309FE0", PosSet);
 
+/* NON_MATCHING: 263 of 315 words match.  */
+#ifdef NON_MATCHING
+void PosReSet_sbtlBossEvent(void) {
+    sbtlBossEvent_t *pwk;
+    struct SBTLUNIT_WORK *wk;
+    s32 i;
+    s32 point;
+    sdfVector4_t rot;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 r;
+
+    memset(&rot, 0, sizeof(rot));
+    rot.w = 1.0f;
+    pwk = dds3GetProcessData(sbtlCallGetProcessStatData);
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (wk != NULL) {
+        mapEncPointGet(sbtlData100[wk_sbtl->stageNo].encPoint, &x, &y, &z, &r);
+        wk->pos.x = x;
+        wk->pos.y = y;
+        wk->pos.z = z;
+        FromEuler(0.0f, r * 0.0174532925f, 0.0f);
+        SDF_VU0_STOREVECTOR(&wk->rot);
+        SDF_VU0_LOADVECTOR(&rot);
+        SDF_VU0_STOREVECTOR(&wk->rotBase);
+        wk->angleY = r;
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        mdlSetPosition(wk->hModel);
+        SDF_VU0_LOADVECTOR(&wk->rot);
+        mdlSetRotate(wk->hModel);
+        sbtlResetAction(wk);
+        sbtlSetAction(wk, SBTLACTION_ST_WAIT, 0);
+        wk->flg &= ~0x10;
+    }
+    wk = sbtlGetNakama(1);
+    if (wk != NULL) {
+        rot.x = 0.0f;
+        rot.y = 0.0f;
+        rot.z = 0.0f;
+        rot.w = 1.0f;
+        wk->pos.x = x + 200.0f;
+        wk->pos.y = y;
+        wk->pos.z = z + 200.0f;
+        FromEuler(0.0f, r * 0.0174532925f, 0.0f);
+        SDF_VU0_STOREVECTOR(&wk->rot);
+        SDF_VU0_LOADVECTOR(&rot);
+        SDF_VU0_STOREVECTOR(&wk->rotBase);
+        wk->angleY = r;
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        mdlSetPosition(wk->hModel);
+        SDF_VU0_LOADVECTOR(&wk->rot);
+        mdlSetRotate(wk->hModel);
+        wk->vstatus &= ~0x1000;
+    }
+    wk = sbtlGetNakama(0);
+    if (wk != NULL) {
+        rot.x = 0.0f;
+        rot.y = 0.0f;
+        rot.z = 0.0f;
+        rot.w = 1.0f;
+        wk->pos.x = x - 200.0f;
+        wk->pos.y = y;
+        wk->pos.z = z + 200.0f;
+        FromEuler(0.0f, r * 0.0174532925f, 0.0f);
+        SDF_VU0_STOREVECTOR(&wk->rot);
+        SDF_VU0_LOADVECTOR(&rot);
+        SDF_VU0_STOREVECTOR(&wk->rotBase);
+        wk->angleY = r;
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        mdlSetPosition(wk->hModel);
+        SDF_VU0_LOADVECTOR(&wk->rot);
+        mdlSetRotate(wk->hModel);
+        wk->vstatus &= ~0x1000;
+    }
+    sbtlShugouKaijyo();
+    if (pwk->field1B == 1) {
+        wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->boss_eventID);
+        if (wk != NULL) {
+            point = wk->field6EC;
+            if (point == 0) {
+                for (i = 0; i < 13; i++) {
+                    if (sbtlData100[wk_sbtl->stageNo].enc1[i].devil == wk_sbtl->boss_devilID) {
+                        point = sbtlData100[wk_sbtl->stageNo].enc1[i].pos;
+                        break;
+                    }
+                }
+            }
+            sbtlGetPointData(point, &wk->pos, &wk->rot);
+            if (wk->unit.devilId == 440) {
+                wk->pos.z += 200.0f;
+            }
+            SDF_VU0_LOADVECTOR(&wk->pos);
+            SDF_VU0_STOREVECTOR(&wk->posSaved);
+            SDF_VU0_LOADVECTOR(&wk->pos);
+            mdlSetPosition(wk->hModel);
+            SDF_VU0_LOADVECTOR(&wk->rot);
+            mdlSetRotate(wk->hModel);
+        }
+        for (i = 0; i < wk_sbtl->unitList->number; i++) {
+            wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+            if (wk != NULL && (wk->field414 & 0x3F) == 2) {
+                wk->vstatus &= ~0x1000;
+                wk->flg &= ~0x10;
+            }
+        }
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL) {
+            if (wk->field414 & 2) {
+                wk->field71C = 200;
+                wk->field718 = 240;
+            } else if (!(wk->field414 & 0x80) && (wk->field414 & 1)) {
+                wk->model->target_frame = dds3GetRandIntA(NULL, 30) + 40;
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", PosReSet_sbtlBossEvent);
+#endif
 
 void CameraSet(void) {
     sbtlBossEvent_t *wk = dds3GetProcessData(sbtlCallGetProcessStatData);
@@ -1877,9 +2324,159 @@ s32 sbtlCheck(struct SBTLUNIT_WORK *wk, s16 type, s16 skillid) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl24);
+/* NON_MATCHING: 31 of 32 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlRefSbtl24(void) {
+    s32 i = 0;
+    s32 no;
 
+    for (;; i++) {
+        if (arrBossEveTable[i].devil_id == -1) {
+            return -1;
+        }
+        no = wk_sbtl->stageNo;
+        if (no != 0 && no == arrBossEveTable[i].enc_id && arrBossEveTable[i].start_on && (sbtlData100[no].flags & 0x20)) {
+            return i;
+        }
+    }
+}
+#else
+INCLUDE_ASM(const s32, "code_00309FE0", sbtlRefSbtl24);
+#endif
+
+/* NON_MATCHING: 255 of 266 words match.  */
+#ifdef NON_MATCHING
+s32 Process_sbtlBossEvent(dds3ProcessID_t *id) {
+    sBtlBossEvent_t *wk;
+    s32 started;
+
+    wk = dds3GetProcessData(id);
+    switch (wk->step) {
+    case 0:
+        StopBattle();
+        wk_sbtl->bosseventflg = 1;
+        wk_sbtl->bosseveloadflg = 0;
+        wk_sbtl->boss_devilID = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->boss_eventID)->unit.devilId;
+        wk_sbtl->scrFlag |= 0x80000;
+        wk_sbtl->effNoStop = 1;
+        wk_sbtl->kaiwa_gstat = 0;
+        wk_sbtl->flg2 |= 0x20;
+        BattleMag_EffectData2 = 0;
+        wk->step = 1;
+        wk->cdstep = 0;
+        break;
+    case 1:
+        if (sbtlCheckSummon_LoadExecOk(0)) {
+            wk->step = 2;
+            Create_fclMsg();
+            fclLoadData("/battle/btlbossevent.bmd");
+            ButtonLineHelpDispSet();
+            wk->hDatScr = sdfDevLoadFileEx("/battle/boss_scr.bf", (u32 *)&wk->pDatScr, NULL);
+        }
+        break;
+    case 2:
+        wk->cdstep = 0;
+        wk_sbtl->status4 &= ~0x20000;
+        wk_sbtl->flg2 |= 0x80;
+        wk->step = 3;
+        break;
+    case 3:
+        started = 0;
+        switch (wk->eventtype) {
+        case 0:
+            if (wk->pTypeBossNmlEvent->start_on == 2) {
+                wk->eventtype = 8;
+                started = BattleSummon_Effect();
+            } else if (wk->pTypeBossNmlEvent->start_on == 4) {
+                started = BattleStartApo_Effect();
+            } else {
+                started = sbtlEffect();
+            }
+            break;
+        case 1:
+        case 2:
+        case 3:
+            started = BattleMag_Effect();
+            break;
+        case 4:
+            started = BattleDead_Effect();
+            break;
+        case 5:
+            started = BattleLose_Effect();
+            break;
+        case 6:
+            if (wk_sbtl->stageNo == 602) {
+                started = BattleDyingSinado1_Effect();
+            } else {
+                started = BattleDying_Effect();
+            }
+            break;
+        case 7:
+            started = BattleTime_Effect();
+            break;
+        case 8:
+            started = BattleSummon_Effect();
+            break;
+        case 9:
+            started = BattleRestart_Effect();
+            break;
+        case 10:
+            started = BattleRaidoDying_Effect();
+            break;
+        }
+        if (started) {
+            return 0;
+        }
+        wk_sbtl->scrFlag &= ~0x80000;
+        wk_sbtl->effNoStop = 0;
+        if (wk->pTypeBossNmlEvent->start_on != 3 || wk->eventtype != 0) {
+            ReStartBattle();
+            if (!wk->end_mode) {
+                RestartBattle();
+            }
+        }
+        wk_sbtl->flg2 &= ~0x80;
+        wk->step = 4;
+        fclEndMessage();
+        return 0;
+    case 4:
+        if (wk->eventtype != 4) {
+            wk_sbtl->boss_eventID = 0;
+        }
+        wk_sbtl->bBfrBtlEnd = 1;
+        wk_sbtl->flg2 &= ~0x10;
+        wk_sbtl->flg2 &= ~0x2;
+        wk_sbtl->flg2 &= ~0x20;
+        wk_sbtl->bosseventflg = 0;
+        wk_sbtl->status4 &= ~0x10000;
+        wk_sbtl->status4 &= ~0x20000;
+        if (wk_sbtl->flg2 & 0x100000) {
+            if (wk->end_mode == 1 && (wk_sbtl->stageNo == 573 || wk_sbtl->stageNo == 574)) {
+                RestartBattle();
+            }
+            if (wk_sbtl->flg2 & 0x100000) {
+                return -1;
+            }
+        }
+        if (wk->end_mode != 1) {
+            return -1;
+        }
+        if (wk_sbtl->stageNo >= 458 && wk_sbtl->stageNo < 463) {
+            RestartBattle();
+            return -1;
+        }
+        wk_sbtl->bBfrBtlEnd = 0;
+        wk_sbtl->flg |= 0x80000000;
+        wk_sbtl->flg2 |= 0x80000;
+        RestartBattle();
+        IsStart(1);
+        return -1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", Process_sbtlBossEvent);
+#endif
 
 void Shutdown(dds3ProcessID_t *PID) {
     sBtlBossEvent_t *wk = dds3GetProcessData(PID);
@@ -1898,7 +2495,22 @@ void Shutdown(dds3ProcessID_t *PID) {
     sbtlCallGetProcessStatData = NULL;
 }
 
-INCLUDE_ASM(const s32, "code_00309FE0", sbtlProcessStart);
+void sbtlProcessStart(s16 type, s16 eventno) {
+    sdfMemHandle_t *hMem = sdfMemAllocDirect(sizeof(sBtlBossEvent_t));
+    sBtlBossEvent_t *wk = sdfMemLock(hMem);
+
+    memset(wk, 0, sizeof(sBtlBossEvent_t));
+    wk->hMem = hMem;
+    sbtlCallGetProcessStatData = dds3StartProcess("sbtlbossevent_main", 0x3FE, 0, 0, Process_sbtlBossEvent,
+                                                  (dds3ProcessFunc_t)Shutdown, wk);
+    wk->pTypeBossNmlEvent = &arrBossEveTable[eventno];
+    wk->eventtype = type;
+    wk->end_mode = 0;
+    wk->end_enemypos_no_reset = 0;
+    wk->step = 0;
+    wk_sbtl->status4 |= 0x10000;
+    StopBattle();
+}
 
 s32 sbtlCallGetProcessStat(void) {
     if (sbtlCallGetProcessStatData == NULL) {
@@ -2412,7 +3024,124 @@ INCLUDE_ASM(const s32, "code_00309FE0", SetSklMenu);
 
 INCLUDE_ASM(const s32, "code_00309FE0", GetTabLimit);
 
+/* NON_MATCHING: 168 of 256 words match.  */
+#ifdef NON_MATCHING
+s32 Proc_sbtlCmndMenuNew(dds3ProcessID_t *id) {
+    sbtlCmndMenuNew_t *wk;
+    struct SBTLUNIT_WORK *nakama;
+    s32 sel;
+    s32 ctrl;
+    SKLID skillid;
+    s8 ng;
+    s32 min;
+    s32 max;
+
+    wk = dds3GetProcessData(id);
+    switch (wk->stat) {
+    case 0:
+        if (sbtlCheckLoadFlg()) {
+            wk->menuPID = sbtlInitMenuPID(5);
+            wk->menuPID2 = sbtlInitMenuPID(32);
+            cmpCallMenuProcessCheck(wk->menuPID, 1, 0, -10, 0);
+            cmpCallMenuProcessCheck(wk->menuPID2, 1, 0, 12, 0);
+            itfCallGetProcessData7(wk->menuPID2, 1, -87);
+            itfCallGetProcessData7(wk->menuPID2, 2, -87);
+            wk->stat = 1;
+        }
+        break;
+    case 1:
+        break;
+    case 2:
+        sel = itfMenuGetSelectID(wk->menuPID);
+        skillid = wk_sbtl->stock_useskill[sel];
+        itfMenuGetFlagMenu(wk->menuPID, sel, 2);
+        ctrl = itfMenuGetCtrlType(wk->menuPID);
+        if (wk->type == 1) {
+            if (itfMenuGetWaitType(wk->menuPID) == ITFMENU_WAIT_TYPE_CANCEL) {
+                if (wk->cntLoop > 0) {
+                    wk->cntLoop--;
+                    wk->mode = wk->index[wk->cntLoop];
+                    SetSklMenu(wk->sklNo[wk->mode], 0);
+                } else {
+                    sbtlEnd();
+                }
+                break;
+            }
+        } else {
+            if (itfMenuGetWaitType(wk->menuPID) == ITFMENU_WAIT_TYPE_CANCEL) {
+                sbtlEnd();
+                break;
+            }
+            if (dds3PadButtonState[0x2B] < 0) {
+                sbtlGetShortCutFlg(wk->menuPID);
+                break;
+            }
+            if (ctrl != ITFMENU_CTRL_TYPE_WAIT) {
+                break;
+            }
+            if ((dds3PadButtonState[0x24] < 0 || dds3PadButtonState[0x25] < 0) && Start_Local(wk->mode == 0)) {
+                sbtlPlaySE(0x1001F);
+                break;
+            }
+        }
+        if (ctrl == ITFMENU_CTRL_TYPE_WAIT && dds3PadButtonState[0x22] < 0 && sbtlCallBtlGetSkilltbl15(skillid)) {
+            nakama = sbtlGetNakama(wk->mode);
+            sbtlFuncDecideTgtSub(&ng, nakama, skillid);
+            if (!ng) {
+                sbtlProcSBtlCmndMenuNewSub(1, nakama, skillid);
+                sbtlPlaySE(12);
+            }
+        }
+        break;
+    case 3:
+        sel = itfMenuGetSelectID(wk->menuPID2);
+        itfMenuGetFlagMenu(wk->menuPID2, sel, 2);
+        ctrl = itfMenuGetCtrlType(wk->menuPID2);
+        if (itfMenuGetWaitType(wk->menuPID2) == ITFMENU_WAIT_TYPE_CANCEL) {
+            SetSklMenu(itfMenuGetSelectID(wk->menuPID), 0);
+            break;
+        }
+        if (ctrl == ITFMENU_CTRL_TYPE_WAIT && wk->bSideMove) {
+            GetTabLimit(&min, &max);
+            if (max > 0) {
+                if (dds3PadButtonState[0x24] < 0) {
+                    wk->tabStock--;
+                    if (wk->tabStock < min) {
+                        wk->tabStock = max;
+                    }
+                } else if (dds3PadButtonState[0x25] < 0) {
+                    wk->tabStock++;
+                    if (max < wk->tabStock) {
+                        wk->tabStock = min;
+                    }
+                } else {
+                    break;
+                }
+                SetTgtMenu(-1);
+                sbtlPlaySE(0x1001F);
+            }
+        }
+        break;
+    case 4:
+        sdfMemFreeDirect(wk->hMem);
+        return -1;
+    }
+    if (wk->stat == 2 || wk->stat == 3) {
+        wk->RepeatIconTimer++;
+        if (wk->RepeatIconTimer >= 60) {
+            wk->RepeatIconTimer = 0;
+        }
+        if (wk->RepeatIconTimer < 0) {
+            wk->RepeatIconAngle = 0.0f;
+        } else {
+            wk->RepeatIconAngle = 360.0f - wk->RepeatIconTimer * 360.0f / 60.0f;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00309FE0", Proc_sbtlCmndMenuNew);
+#endif
 
 void Shutdown_sbtlCmndMenuNew(dds3ProcessID_t *id) {
     sbtlCmndMenuNew_t *wk = dds3GetProcessData(id);
@@ -2439,8 +3168,8 @@ s32 DrawProc(dds3ProcessID_t *id) {
         struct SBTLUNIT_WORK *unit;
 
         itfMenuGetSelectID(wk->menuPID);
-        if (wk->field28 != 1 && sbtlIsStart(wk->field11 == 0)) {
-            unit = sbtlGetNakama(wk->field11 == 0);
+        if (wk->type != 1 && sbtlIsStart(wk->mode == 0)) {
+            unit = sbtlGetNakama(wk->mode == 0);
             if (unit != NULL) {
                 wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = DrawProcData;
                 itfDrawMiscSpriteAlpha(365, 110, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
@@ -2450,7 +3179,7 @@ s32 DrawProc(dds3ProcessID_t *id) {
                 frData3 = 0;
             }
         }
-        unit = sbtlGetNakama(wk->field11);
+        unit = sbtlGetNakama(wk->mode);
         if (unit != NULL) {
             wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = DrawProcData;
             itfDrawMiscSpriteAlpha(300, 90, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
@@ -2467,13 +3196,13 @@ s32 DrawProc(dds3ProcessID_t *id) {
         s32 min;
         s32 max;
 
-        unit = sbtlGetNakama(wk->field11);
+        unit = sbtlGetNakama(wk->mode);
         skill = wk_sbtl->stock_useskill[itfMenuGetSelectID(wk->menuPID)];
         wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = DrawProcData;
         itfDrawMiscSpriteAlpha(300, 90, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
         itfDrawMiscSpriteAlpha(420, 91, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 15, 0x67);
         frData3 = 23;
-        itfDrawFont(0, 320, 98, 0x100000, 0, -1, 0xA0A0A0A0, 1.0f, 0x67, g_itemNo[sbtlGetNakama(wk->field11)->unit.devilId]);
+        itfDrawFont(0, 320, 98, 0x100000, 0, -1, 0xA0A0A0A0, 1.0f, 0x67, g_itemNo[sbtlGetNakama(wk->mode)->unit.devilId]);
         frData3 = 0;
         wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = DrawProcData + 24;
         itfDrawMiscSpriteAlpha(341, 110, 0, 0xFF, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
@@ -2481,10 +3210,10 @@ s32 DrawProc(dds3ProcessID_t *id) {
         frData3 = 23;
         itfDrawFont(0, 361, 118, 0x100000, 0, -1, 0xA0A0A0A0, 1.0f, 0x67, sbtlData95[skill]);
         frData3 = 0;
-        DrawRepeatIconEx(470, 114, 0, wk->field20, 1.0f, 0x68, unit, skill);
+        DrawRepeatIconEx(470, 114, 0, wk->RepeatIconAngle, 1.0f, 0x68, unit, skill);
         GetTabLimit(&min, &max);
-        if (wk->field14) {
-            sbtlBtlDrawProcessSBtlMenuSub(min, max, wk->field18, 0, 1.0f);
+        if (wk->bSideMove) {
+            sbtlBtlDrawProcessSBtlMenuSub(min, max, wk->tabStock, 0, 1.0f);
         }
         break;
     }

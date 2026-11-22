@@ -5,6 +5,14 @@
 
 struct SBTLUNIT_WORK;
 
+/* One target candidate of SetNextTarget_sbtlEquat (HD TargetCand). */
+typedef struct TargetCand {
+    s32 id;
+    s32 hp;
+    f32 dis;
+    u32 attr;
+} TargetCand;
+
 /* Zero-terminated ids that sbtlCancelSystemSub accepts. */
 extern s32 sbtlCancelSystemSubData[];
 
@@ -17,6 +25,7 @@ void sbtlResetBtlMagicStatus(struct SBTLUNIT_WORK *wk);
 s32 IsEnemyZenmetsu(void);
 s32 SetNextTarget_sbtlEquat(struct SBTLUNIT_WORK *wk);
 s32 CancelSystem(void);
+s32 sbtlCheckSummon_LoadExecOk(s32 type);
 s32 sbtlCheckMove_BadStatus(struct SBTLUNIT_WORK *wk);
 void sbtlProc_YoyakuEndChk(struct SBTLUNIT_WORK *wk);
 s32 sbtlUnit_CheckSummon_LoadExecOk_sub(void);

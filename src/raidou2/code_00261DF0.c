@@ -2316,7 +2316,7 @@ void slQueryYesNoDraw_slMain(void)
     }
     switch (slQueryYesNoDraw_slMainData) {
     case 0:
-        wk_sbtl->field42BC = 0;
+        wk_sbtl->kaiwa_gstat = 0;
         slQueryYesNoDraw_slMainData3 = 1;
         slQueryYesNoDraw_slMainData4 = 50;
         slQueryYesNoDraw_slMainData++;

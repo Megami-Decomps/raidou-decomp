@@ -60,7 +60,7 @@ typedef struct SBTLAI_WORK {
     s32 atkCnt;
     s32 bFarOk;
     SKLID usedSkl;
-    u8 pad104;
+    u8 field104; /* KaihiInit_Nakama does nothing while set */
     s8 bWait2; /* HD name; set when the unit's boss event starts and when a talk ends the boss (sbtlFuncDecideTalk) */
     u8 pad106[0x108 - 0x106];
     SKLID RepeatOdrSkl;

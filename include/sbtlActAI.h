@@ -158,6 +158,7 @@ s32 sbtlCallBtlSearchUnitID4(struct SBTLUNIT_WORK *wk, s32 type, s8 flg);
 s32 sbtlNakamaGoalChk(struct SBTLUNIT_WORK *wk);
 s32 sbtlGetSmnNo(struct SBTLUNIT_WORK *wk);
 void sbtlEisyoWaitTask(void);
+s32 sbtlMawariChk(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *pTgt);
 #else
 s32 sbtlCallBtlSearchUnitID4(s32 no, s32 flg);
 #endif

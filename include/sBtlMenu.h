@@ -127,6 +127,7 @@ extern struct itfSprList_t sbtlSetMenuImageData3[];
 extern struct itfSprList_t sbtlSetMenuImageData4[];
 #ifdef VERSION_RAIDOU2
 extern struct itfSprList_t cmpPartyAnimFuncData[];
+s32 sbtlGetShortCutFlg(dds3ProcessID_t *id);
 extern struct itfSprList_t cmpPartyAnimFuncData2[];
 extern struct itfSprList_t cmpPartyAnimFuncData3[];
 extern struct itfSprList_t cmpPartyAnimFuncData4[];

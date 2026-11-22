@@ -329,7 +329,7 @@ typedef struct SBTL_WORK {
     s16 field436;
     s16 gstat[2];
     s16 walk_counter;
-    u8 pad77E[0x2];
+    s16 field77E;
     s16 field440;
     u8 pad782[0x6];
     s32 mag;
@@ -481,7 +481,7 @@ typedef struct SBTL_WORK {
     s8 bEffNoDraw; /* HD name */
     u8 padE82[0xE84 - 0xE82];
     s32 fieldE84; /* sbtlDat's index into datData20 */
-    u8 padE88[0x4];
+    s32 fieldE88;
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */
     s8 fieldE8D; /* with fieldE8C: battle talk type 7 instead of 4 */
     s8 hitStop;
@@ -495,7 +495,8 @@ typedef struct SBTL_WORK {
     s32 bltNumDrwCnt; /* HD name; frames left to draw the bullet count over the player */
     u8 padEB4[0xEC0 - 0xEB4];
     s32 fieldEC0;
-    u8 padEC4[0xED8 - 0xEC4];
+    s8 fieldEC4; /* set by KaihiInit_Nakama when the stick or a direction button is held */
+    u8 padEC5[0xED8 - 0xEC5];
     s8 fieldED8; /* slCallSetFirstAtkCore input flags */
     s8 fieldED9;
     s8 fieldEDA;
@@ -523,13 +524,16 @@ typedef struct SBTL_WORK {
     u8 pad42AA[0x2];
     s16 field42AC;
     s16 field42AE;
-    u8 pad42B0[0x42BC - 0x42B0];
-    s32 field42BC;
+    s16 field42B0; /* cmpSetupData4 entry slCallGetProcessData6 names */
+    s16 field42B2;
+    s32 field42B4; /* sbtlRefDDS3GBWK2 index */
+    u8 pad42B8[0x42BC - 0x42B8];
+    s32 kaiwa_gstat; /* HD name */
     s16 field42C0;
     u8 pad42C2[0x2];
     struct SBTLUNIT_WORK *field42C4; /* enemy cmpCallBtlCreateTargetList found for a party talk */
-    u8 pad42C8[0x42C9 - 0x42C8];
-    s8 bosseventflg;
+    s8 bosseveloadflg; /* HD name */
+    s8 bosseventflg; /* HD name */
     s8 field42CA; /* Proc skips the pause checks when nonzero */
     s8 field42CB;
     s8 field42CC;
@@ -886,7 +890,8 @@ typedef struct SBTL_DEVIL_DATA {
     f32 field64;
     s16 field80;
     s16 field82; /* index into DDS3_GBWK->playerData.devilWork */
-    u8 pad84[0x8C - 0x84];
+    u8 pad84[0x8A - 0x84];
+    s16 field8A;
     u8 mskskill; /* HD name */
     u8 pad8D[0x94 - 0x8D];
 } SBTL_DEVIL_DATA;
@@ -963,7 +968,7 @@ s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg);
 /* One generator entry of a stage. Partial raidou2 layout: HD's s16 devil and s8 groupID, the rest unread so far. */
 typedef struct SB_ENCOUNT1 {
     s8 type; /* 0x00: 2-5 start a generator, 1 and 6 are enemies (HD ENC1_TYPE) */
-    s8 pos;
+    s8 pos; /* HD name */
     s16 devil;
     s8 groupID;
     s8 disp_max;
@@ -1329,8 +1334,9 @@ typedef struct sBtlBossEvent_t {
     s8 end_enemypos_no_reset;       /* 0x1B */
     s16 fade_count;                 /* 0x1C */
     s16 eventtype;                  /* 0x1E */
-    u8 unk20[0xC];
-    void *pTypeBossNmlEvent;        /* 0x2C */
+    s16 cdstep;                     /* 0x20 */
+    u8 unk22[0x2C - 0x22];
+    struct TYPE_BOSS_NML_EVENT *pTypeBossNmlEvent; /* 0x2C */
 } sBtlBossEvent_t;
 SIZE_CHECK(sBtlBossEvent_t_size, sBtlBossEvent_t, 0x30);
 extern dds3ProcessID_t *inputpanel_id2;
@@ -1591,6 +1597,7 @@ void sbtlMap_Init(void);
 #ifdef VERSION_RAIDOU2
 struct SBTLUNIT_WORK *sbtlGetNakama(s8 idx);
 s32 sbtlGetGun_Num(void);
+void sbtlSetGunNum(s32 num);
 void sbtlRefSbtl66(s32 num);
 s32 sbtlRefSbtl71(s32 num);
 E_CAMMOD_CUT sbtlGetCutFlg(void);
@@ -1603,6 +1610,9 @@ s32 sbtlRefSbtl15(s32 x, s32 y);
 s32 sbtlCallBtlSprite(s32 a, s32 b);
 s32 sbtlRefSbtl23(void);
 s32 sbtlSetSummonEffect_Nakama(struct SBTLUNIT_WORK *wk, s8 flg);
+#ifdef VERSION_RAIDOU2
+s32 sbtlRefSbtl24(void);
+#endif
 s32 sbtlRefSbtl36(void);
 u32 sbtlRefSbtl37(void);
 s32 sbtlCutMotion(struct SBTLUNIT_WORK *wk, f32 frame);

@@ -30,7 +30,15 @@
 #include "sBtlEncount.h"
 #include "model.h"
 #include "motion.h"
+#include "fld.h"
+#include "sdfVu0.h"
+#include "fpu.h"
 #include "dds3Randomize.h"
+#include "code_r1_0010DF68.h"
+#include "fldProcess.h"
+#include "dds3WorldBasic.h"
+#include "sBtlPanel.h"
+#include "sBtlSound.h"
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCheckKajaAnyEx);
 
@@ -501,7 +509,82 @@ f32 slCallMemset(struct SBTLUNIT_WORK *wk, sdfVector4_t *dir)
 
 INCLUDE_ASM(const s32, "code_0027A1E8", UseItemProc_sbtlPlayer);
 
+/* NON_MATCHING: 66 of 209 words match.  */
+#ifdef NON_MATCHING
+s32 KaihiInit_Nakama(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t dir;
+    sdfVector4_t pos;
+    f32 len;
+    f32 spd;
+    s32 eff;
+    s32 moved;
+
+    if (wk->aiwk->field104 != 0 || wk->aiwk->bWait2 != 0) {
+        return -1;
+    }
+    if (wk->status == 12) {
+        return -1;
+    }
+    if (wk_sbtl->fieldCA2 != 0) {
+        return -1;
+    }
+    moved = 0;
+    len = slCallMemset(wk, &dir);
+    eff = sbtlCallBtlCreateEff(wk);
+    if ((sbtlNormalProcNakamaSub(wk) || (wk->status == 15 && wk_sbtl->field7C8 == 4)) && len >= 48.0f) {
+        spd = wk->max_mvspd.z;
+        if (wk->vstatus & 0x1000000) {
+            spd *= 0.29999999f;
+        }
+        wk->mv_spd.z = spd;
+        SetRotateMatrixY(-mapGetScreenDir(wk->pos.x, wk->pos.y, wk->pos.z, 0.0f) * 0.0174532925f);
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_SCALEVECTOR_V0_BARRIER(2.0f);
+        SDF_VU0_LOADVECTOR_B(&wk->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&pos);
+        moved = 1;
+        sbtlGetRotate(wk, &pos);
+        UnitMV(wk, &pos);
+        sbtlSetAction(wk, 2, 0);
+        wk_sbtl->field77E = 0;
+        wk->flg &= ~0x100;
+    }
+    if (eff == 0 && sbtlNormalProcNakamaSub(wk) && !(wk->vstatus & 0x80) && dds3PadButtonState[0x23] < 0) {
+        if (dds3PadButtonState[0x28]) {
+            sbtlKaihiInitNakamaSub2(wk);
+        } else {
+            sbtlKaihiInit(wk);
+        }
+        wk->flg &= ~0x100;
+        return 2;
+    }
+    if (eff == 0 && sbtlNormalProcNakamaSub(wk) && !(wk->vstatus & 0x80) && dds3PadButtonState[0x28] &&
+        !(wk_sbtl->member_num > 0 && dds3PadButtonState[0x2A])) {
+        wk_sbtl->field7D8 = 0;
+        wk_sbtl->mode = 14;
+        wk_sbtl->field7C8 = 0;
+        wk_sbtl->field7CC = 0;
+        sbtlSetAction(wk, 15, 0);
+        sbtlSetMotion_sbtlUnit(wk, 29, 0, 0, 0);
+        sbtlRefSbtl11(wk);
+        wk_sbtl->fieldEC4 = 0;
+        if (GetAnlogKeyData[0] < 0x40 || dds3PadButtonState[0x26] || GetAnlogKeyData[0] >= 0xC1 ||
+            dds3PadButtonState[0x27] || GetAnlogKeyData[1] < 0x40 || dds3PadButtonState[0x24] ||
+            GetAnlogKeyData[1] >= 0xC1 || dds3PadButtonState[0x25]) {
+            wk_sbtl->fieldEC4 = 1;
+        }
+        return 2;
+    }
+    if (slCallSetFirstAtkCore(wk, eff) != -1) {
+        return 4;
+    }
+    return moved;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", KaihiInit_Nakama);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", slCallBtlGetPChara);
 
@@ -566,7 +649,76 @@ void sbtlRefSbtl11(struct SBTLUNIT_WORK *wk)
     wk_sbtl->fieldEC0 = 0;
 }
 
+/* NON_MATCHING: 179 of 183 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCallBtlCreateEff(struct SBTLUNIT_WORK *wk) {
+    switch (wk_sbtl->field7FC) {
+    case 1:
+        if (wk_sbtl->battleMode == 1) {
+            sbtlRefSbtl11(wk);
+            return 3;
+        }
+        if (dds3PadButtonState[0x20] != 0) {
+            wk_sbtl->field800++;
+            wk_sbtl->field800 = wk_sbtl->field800 <= 0 ? 0 : wk_sbtl->field800 > 20 ? 20 : wk_sbtl->field800;
+            if (wk_sbtl->field800 >= 20) {
+                wk_sbtl->field7FC++;
+                wk->vstatus |= 0x1000000;
+                sbtlCreateEff(wk_sbtl->effList, wk, EFFID_CHARGE, 0, &wk->pos.x, 0x80808080, 0);
+                return 1;
+            }
+        }
+        if (dds3PadButtonState[0x20] != 0 || wk_sbtl->field800 >= 20) {
+            return 5;
+        }
+        sbtlRefSbtl11(wk);
+        return 3;
+    case 2:
+        return dds3PadButtonState[0x20] != 0 ? 4 : 2;
+    }
+    switch (wk_sbtl->field80C) {
+    case 1:
+        if (dds3PadButtonState[0x20] != 0) {
+            wk_sbtl->field810++;
+            wk_sbtl->field810 = wk_sbtl->field810 <= 0 ? 0 : wk_sbtl->field810 > 10 ? 10 : wk_sbtl->field810;
+            if (wk_sbtl->field810 >= 10) {
+                wk_sbtl->field80C++;
+                wk->vstatus |= 0x1000000;
+                if (sbtlGetGun_Num() == 6) {
+                    sbtlCreateEff(wk_sbtl->effList, wk, EFFID_CHARGE, 0, &wk->pos.x, 0x80808080, 0);
+                }
+                return 1;
+            }
+        }
+        if (dds3PadButtonState[0x20] != 0 || wk_sbtl->field810 >= 20) {
+            return 5;
+        }
+        sbtlRefSbtl11(wk);
+        return 6;
+    case 2:
+        if (dds3PadButtonState[0x20] == 0) {
+            return 2;
+        }
+        wk_sbtl->bltNumDrwCnt = 80;
+        if (sbtlGetGun_Num() >= 6) {
+            return 4;
+        }
+        if (wk_sbtl->fieldEC0 == 0) {
+            wk_sbtl->fieldEC0 = 5;
+            sbtlSetGunNum(sbtlGetGun_Num() + 1);
+        } else {
+            wk_sbtl->fieldEC0--;
+        }
+        if (sbtlGetGun_Num() == 6) {
+            sbtlCreateEff(wk_sbtl->effList, wk, EFFID_CHARGE, 0, &wk->pos.x, 0x80808080, 0);
+        }
+        return 4;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlCreateEff);
+#endif
 
 INCLUDE_ASM(const s32, "code_0027A1E8", NormalProc);
 
@@ -790,7 +942,151 @@ s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 flg, s8 usePos, 
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlSearchUnitID4);
 
+/* NON_MATCHING: 31 of 313 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetNearTarget_Random(struct SBTLUNIT_WORK *wk, const sdfVector4_t *rot, f32 range, f32 width, f32 width2, s8 type)
+{
+    sdfVector4_t vrot;
+    sdfVector4_t pos;
+    sdfVector4_t tpos;
+    sdfVector4_t pos2;
+    sdfVector4_t tpos2;
+    s16 para[48];
+    struct SBTLUNIT_WORK *unit;
+    s32 i;
+    s32 num;
+    s32 nearest;
+    s32 ok;
+    s32 hit;
+    s32 id;
+    f32 len;
+    f32 nearLen;
+    f32 hitR;
+
+    memset(para, 0, 48);
+    if (wk_sbtl->field40C != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->field40C);
+        wk_sbtl->field40C = NULL;
+    }
+    nearest = -1;
+    nearLen = range;
+    SDF_VU0_LOADVECTOR(rot);
+    SDF_VU0_STOREVECTOR(&vrot);
+    wk_sbtl->field40C = sbtlCreateTargetList_MASK(2, 0, 0x10000);
+    num = 0;
+    for (i = 0; i < wk_sbtl->field40C->count; i++) {
+        unit = wk_sbtl->field40C->pUnitL[i].pUnit;
+        hitR = unit->model->field11C;
+        if (unit == NULL) {
+            continue;
+        }
+        if (!sbtlCheckLiveTarget_NotHitDmg(wk)) {
+            continue;
+        }
+        if (unit->vstatus & 0x10000) {
+            continue;
+        }
+        ok = 0;
+        if (type != 1) {
+            if (type == 2) {
+                if ((unit->flg2 & 0x10) && unit->field4A2 == 0) {
+                    ok = 1;
+                }
+            } else {
+                ok = 1;
+            }
+        }
+        if (ok != 1) {
+            continue;
+        }
+        hit = 0;
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&pos);
+        SDF_VU0_STOREVECTOR(&pos2);
+        SDF_VU0_LOADVECTOR(&unit->pos);
+        SDF_VU0_STOREVECTOR(&tpos);
+        SDF_VU0_STOREVECTOR(&tpos2);
+        pos.y = 0.0f;
+        tpos.y = 0.0f;
+        pos2.z = 0.0f;
+        tpos2.z = 0.0f;
+        if (type == 5) {
+            SDF_VU0_LOADVECTOR(&wk->pos);
+            SDF_VU0_LOADVECTOR_B(&unit->pos);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_GETLENGTH(len);
+            len -= hitR;
+            if (len < 1.0f) {
+                len = 1.0f;
+            }
+            if (len < range) {
+                hit = 1;
+            }
+        } else if (type == 2 || type == 4) {
+            if (sbtlCheckVerticalArea(&pos, &vrot, &tpos, range)) {
+                hit = 1;
+            }
+        } else if (width < 1.0f && sbtlCheckCrossCircle_Rot(&pos, &vrot, range, &tpos, unit->model->field11C, width)) {
+            hit = 1;
+        } else if (width2 < 1.0f && sbtlCheckCrossCircle_Rot(&pos2, &vrot, range, &tpos2, unit->model->field11C, width2)) {
+            hit = 1;
+        }
+        if (hit != 1) {
+            continue;
+        }
+        if (type == 5) {
+            SDF_VU0_LOADVECTOR(&wk->pos);
+            SDF_VU0_LOADVECTOR_B(&unit->pos);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_GETLENGTH(len);
+            len -= hitR;
+            if (len < 1.0f) {
+                len = 1.0f;
+            }
+            if (len <= nearLen) {
+                nearest = i;
+                nearLen = len;
+            }
+            para[i] = 20;
+        } else {
+            if (type >= 2 && type <= 4) {
+                SDF_VU0_LOADVECTOR(&wk->pos);
+                SDF_VU0_LOADVECTOR_B(&unit->pos);
+                SDF_VU0_SUBVECTOR();
+                SDF_VU0_GETLENGTH(len);
+                len -= hitR;
+                if (len < 1.0f) {
+                    len = 1.0f;
+                }
+                if (len <= nearLen) {
+                    nearest = i;
+                    nearLen = len;
+                }
+            }
+            para[i] = GetIntervalRand(0, 15) + 20;
+        }
+        num++;
+    }
+    if (num == 0) {
+        sbtlDeleteUnitList(wk_sbtl->field40C);
+        wk_sbtl->field40C = NULL;
+        return -1;
+    }
+    if (type >= 2 && type <= 4 && nearest != -1) {
+        para[nearest] = 60;
+    }
+    if (type == 5 && nearest != -1) {
+        para[nearest] = 100;
+    }
+    i = sbtlGetLargePara(para, wk_sbtl->field40C->count);
+    id = wk_sbtl->field40C->pUnitL[i].pUnit->field1A0;
+    sbtlDeleteUnitList(wk_sbtl->field40C);
+    wk_sbtl->field40C = NULL;
+    return id;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlGetNearTarget_Random);
+#endif
 
 s32 ShugouKaijyoSub(struct SBTLUNIT_WORK *wk) {
     s32 flg;
@@ -1011,7 +1307,99 @@ INCLUDE_ASM(const s32, "code_0027A1E8", sbtlRefSbtl12);
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallBtlResetAction2);
 
+/* NON_MATCHING: 203 of 221 words match.  */
+#ifdef NON_MATCHING
+void KaihiInit_Sub(struct SBTLUNIT_WORK *wk, s32 mode) {
+    sdfVector4_t mtx[4];
+    sdfVector4_t target;
+    sdfVector4_t dir;
+    f32 deg;
+    f32 dot;
+    s32 id;
+    struct SBTLUNIT_WORK *tgt;
+    f32 dx;
+    f32 dz;
+    f32 r;
+    f32 len;
+
+    wk->flg &= ~0x100;
+    deg = mapGetScreenDir(wk->pos.x, wk->pos.y, wk->pos.z, 0.0f);
+    slCallMemset(wk, &dir);
+    SetRotateMatrixY(-deg * 0.0174532925f);
+    SDF_VU0_LOADVECTOR(&dir);
+    SDF_VU0_APPLYMATRIX();
+    SDF_VU0_STOREVECTOR(&dir);
+    SDF_VU0_LOADVECTOR(&wk->rot);
+    ToMatrix();
+    SDF_VU0_STOREMATRIX(mtx);
+    target.x = -mtx[2].x;
+    target.y = -mtx[2].y;
+    target.z = -mtx[2].z;
+    SDF_VU0_LOADVECTOR(&dir);
+    SDF_VU0_LOADVECTOR_B(&target);
+    SDF_VU0_INNERPRODUCT(dot);
+    if (mode == 0 && ((dot > -0.01f && dot < 0.01f) || dot < -0.79999996f)) {
+        sbtlPlaySE(0x10008);
+        sbtlSetMotion_sbtlUnit(wk, 36, 2, 0, 0);
+        wk_sbtl->fieldE88 = 28;
+        sbtlPlaySE(0x1002E);
+    } else if (mode == 1) {
+        id = sbtlGetNearTarget_Random(wk, &wk->rot, 100.0f, 0.59999997f, 1.0f, 0);
+        wk->model->field104 = id;
+        tgt = sbtlSearchUnit_ID(wk_sbtl->unitList, id);
+        if (tgt == NULL) {
+            return;
+        }
+        dx = wk->pos.x - tgt->pos.x;
+        dz = wk->pos.z - tgt->pos.z;
+        r = tgt->model->field11C;
+        len = fsqrtf(dx * dx + dz * dz);
+        if (r < 150.0f && len < r + 50.0f + 10.0f + 50.0f) {
+            if ((wk->mawari_lr = sbtlMawariChk(wk, tgt)) != 0) {
+                switch (tgt->status) {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 21:
+                    case 23:
+                    case 33:
+                    case 53:
+                    case 55:
+                        sbtlSetAction(wk, 56, 0);
+                        sbtlSetMotion_sbtlUnit(wk, 37, 10, 0, 0);
+                        sbtlPlaySE(0x10007);
+                        sbtlPlaySE(0x10031);
+                        wk_sbtl->mode = 20;
+                        wk->mawari_pos_x = tgt->pos.x;
+                        wk->mawari_pos_z = tgt->pos.z;
+                        break;
+                }
+            }
+        }
+        return;
+    } else {
+        sbtlPlaySE(0x10007);
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_LOADVECTOR_B(&wk->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&target);
+        sbtlAddUnitDeg(wk, sbtlGetChorikiDeg(&wk->pos, &wk->rot, &target, 1.0f));
+        SDF_VU0_STOREVECTOR(&wk->rot);
+        SDF_VU0_STOREVECTOR(&wk->rotbk);
+        sbtlSetMotion_sbtlUnit(wk, 37, 10, 0, 0);
+        wk_sbtl->fieldE88 = 30;
+        sbtlPlaySE(0x1002E);
+    }
+    wk_sbtl->mode = 18;
+}
+#else
 INCLUDE_ASM(const s32, "code_0027A1E8", KaihiInit_Sub);
+#endif
 
 void sbtlKaihiInit(struct SBTLUNIT_WORK *wk)
 {
@@ -1020,7 +1408,93 @@ void sbtlKaihiInit(struct SBTLUNIT_WORK *wk)
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlKaihiInitNakamaSub2);
 
-INCLUDE_ASM(const s32, "code_0027A1E8", sbtlCallGetScreenDir2);
+s32 sbtlCallGetScreenDir2(struct SBTLUNIT_WORK *wk) {
+    sdfVector4_t dir;
+    sdfVector4_t pos;
+    sdfVector4_t *ppos;
+
+    if (wk->motionID == 37 && (u32)(wk_sbtl->fieldE88 - 7) < 19) {
+        if (slCallMemset(wk, &dir) > 48.0f) {
+            SetRotateMatrixY(-mapGetScreenDir(wk->pos.x, wk->pos.y, wk->pos.z, 0.0f) * 0.0174532925f);
+            SDF_VU0_LOADVECTOR(&dir);
+            SDF_VU0_APPLYMATRIX();
+            SDF_VU0_SCALEVECTOR_V0(2.0f);
+            SDF_VU0_LOADVECTOR_B(&wk->pos);
+            SDF_VU0_ADDVECTOR();
+            ppos = &pos;
+            SDF_VU0_STOREVECTOR_RWADDR(ppos);
+            sbtlGetRotate_Kaihi(wk, &pos);
+            UnitMV(wk, &pos);
+        }
+    }
+    if (wk->motionID == 37) {
+        if (wk_sbtl->fieldE88 == 27) {
+            sbtlPlaySE(0x1002C);
+        }
+        if (wk_sbtl->fieldE88 == 10) {
+            sbtlPlaySE(0x10006);
+        }
+        if (wk_sbtl->fieldE88 == 7) {
+            sbtlPlaySE(0x10009);
+        }
+    } else {
+        if (wk_sbtl->fieldE88 == 25) {
+            sbtlPlaySE(0x1002C);
+        }
+        if (wk_sbtl->fieldE88 == 4) {
+            sbtlPlaySE(0x10006);
+        }
+        if (wk_sbtl->fieldE88 == 1) {
+            sbtlPlaySE(0x10009);
+        }
+    }
+    if (wk_sbtl->fieldE88 != 0) {
+        wk_sbtl->fieldE88--;
+    } else {
+        if (dds3PadButtonState[0x22] < 0) {
+            SetFirstAtk_Core(sbtlCallBtlDat(), 2);
+            wk_sbtl->raido_magwaza_costnot = sbtlRefSbtl71(5);
+            return 2;
+        }
+        if (dds3PadButtonState[0x28] == 0) {
+            if (dds3PadButtonState[0x21] < 0) {
+                SetFirstAtk_Core(0x93, 2);
+                return 2;
+            }
+            if (dds3PadButtonState[0x20] < 0) {
+                SetFirstAtk_Core(0xB0, 0);
+                return 2;
+            }
+            if (dds3PadButtonState[0x23] != 0) {
+                sbtlKaihiInit(wk);
+                return 2;
+            }
+        } else {
+            if (dds3PadButtonState[0x26] < 0 || dds3PadButtonState[0x27] < 0 || dds3PadButtonState[0x24] < 0 ||
+                dds3PadButtonState[0x25] < 0) {
+                sbtlKaihiInit(wk);
+                return 2;
+            }
+            sbtlResetAction(wk);
+            sbtlSetUseSkill_sbtlActAI(wk, 0, 0);
+            return 2;
+        }
+        if (GetAnlogKeyData[0] < 0x40 || dds3PadButtonState[0x26] || GetAnlogKeyData[0] >= 0xC1 ||
+            dds3PadButtonState[0x27] || GetAnlogKeyData[1] < 0x40 || dds3PadButtonState[0x24] ||
+            GetAnlogKeyData[1] >= 0xC1 || dds3PadButtonState[0x25]) {
+            sbtlResetAction(wk);
+            sbtlSetUseSkill_sbtlActAI(wk, 0, 0);
+            sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+            return 2;
+        }
+    }
+    if (sbtlCheckMotionEnd(wk) || sbtlCheckLoopMotion(wk, wk->motionID)) {
+        sbtlResetAction(wk);
+        sbtlSetUseSkill_sbtlActAI(wk, 0, 0);
+        sbtlSetMotion_sbtlUnit(wk, 0, 0, 0, 0);
+    }
+    return 2;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", sbtlPlayerRJigenKiriProc);
 
@@ -1486,7 +1960,145 @@ s32 SetNextTarget(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *tbl, s32 no) 
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0027A1E8", SetNextTarget_sbtlEquat);
+s32 SetNextTarget_sbtlEquat(struct SBTLUNIT_WORK *wk) {
+    struct SBTLSKILLP_TBL *tbl;
+    SBTL_MOTION_VISUAL *visual;
+    u32 attr;
+    struct SBTLUNIT_WORK *target;
+    s32 damage;
+    s32 ok;
+    s32 i;
+    s32 no;
+    f32 dis;
+    f32 len;
+    TargetCand cand[6];
+    struct SBTLDMG_HITWORK hwk;
+
+    no = -1;
+    tbl = sbtlGetSkilltbl(wk->skillid);
+    visual = sbtlGetMotionVisualData(wk->major, wk->minor);
+    if (!(wk->field414 & 1)) {
+        return 0;
+    }
+    ok = 0;
+    target = sbtlSearchUnit_ID(wk_sbtl->unitList, wk->model->field104);
+    if (target != NULL && sbtlCheckDamageTarget(target) && ((wk->field414 & 0x80) || (wk->field414 & 1))) {
+        if (target->field414 & 2) {
+            ok = 1;
+        }
+    }
+    if (!ok) {
+        target = NULL;
+    }
+    if (target != NULL) {
+        attr = sbtlCheckAisyoEx(target, tbl->attr, NULL);
+        if (attr != 0x1000 && attr != 0x2000) {
+            memset(&hwk, 0, sizeof(hwk));
+            sbtlCreateHitC_None(wk_sbtl->hitList, wk, wk, &hwk, wk->skillid, sbtlGetSkilltbl(wk->skillid), &target->pos, -1);
+            damage = sbtlGetDamage_sbtlCalc(target, wk, &hwk, wk->skillid, attr);
+            sbtlDeleteUnitList(hwk.hitlwk);
+            if (target->unit.now.hp < damage * 3) {
+                return 1;
+            }
+            if (tbl->area & 0x80) {
+                SDF_VU0_LOADVECTOR(&wk->pos);
+                SDF_VU0_LOADVECTOR_B(&target->pos);
+                SDF_VU0_SUBVECTOR();
+                SDF_VU0_GETLENGTH(dis);
+                if (dis < visual->field24 * 1.8f) {
+                    return 1;
+                }
+            }
+        }
+    }
+    for (i = 0; i < 6; i++) {
+        cand[i].id = -1;
+        cand[i].hp = 9999;
+        cand[i].dis = 100000.0f;
+        cand[i].attr = 0x1000;
+    }
+    SDF_VU0_LOADVECTOR_B(&wk->pos);
+    for (i = 0; i < wk_sbtl->field408->count; i++) {
+        target = wk_sbtl->field408->pUnitL[i].pUnit;
+        attr = sbtlCheckAisyoEx(target, tbl->attr, NULL);
+        if (target == NULL || !sbtlCheckDamageTarget(target)) {
+            continue;
+        }
+        SDF_VU0_LOADVECTOR(&target->pos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_GETLENGTH(len);
+        if (len < cand[4].dis) {
+            cand[4].id = i;
+            cand[4].dis = len;
+            cand[4].hp = target->unit.now.hp;
+            cand[4].attr = attr;
+        }
+        if (wk->model->bk_targetID != -1 && wk->model->bk_devilID == target->unit.devilId && len < cand[5].dis) {
+            cand[5].id = i;
+            cand[5].dis = len;
+            cand[5].hp = target->unit.now.hp;
+            cand[5].attr = attr;
+        }
+        if (attr == 0x1000 || attr == 0x2000) {
+            continue;
+        }
+        if (target->unit.now.hp < cand[0].hp) {
+            cand[0].id = i;
+            cand[0].dis = len;
+            cand[0].hp = target->unit.now.hp;
+            cand[0].attr = attr;
+        }
+        if (len < cand[1].dis) {
+            cand[1].id = i;
+            cand[1].dis = len;
+            cand[1].hp = target->unit.now.hp;
+            cand[1].attr = attr;
+        }
+        if (attr == 0x4000) {
+            if (cand[2].hp > target->unit.now.hp) {
+                cand[2].id = i;
+                cand[2].dis = len;
+                cand[2].hp = target->unit.now.hp;
+                cand[2].attr = 0x4000;
+            }
+            if (len < cand[3].dis) {
+                cand[3].id = i;
+                cand[3].dis = len;
+                cand[3].hp = target->unit.now.hp;
+                cand[3].attr = 0x4000;
+            }
+        }
+    }
+    if (tbl->area & 0x80) {
+        if (cand[5].id != -1) {
+            no = cand[5].id;
+        } else if (cand[3].id != -1) {
+            no = cand[3].id;
+        } else if (cand[1].id != -1) {
+            no = cand[1].id;
+        } else if (cand[2].id != -1) {
+            no = cand[2].id;
+        } else if (cand[0].id != -1) {
+            no = cand[0].id;
+        }
+    } else {
+        if (cand[5].id != -1) {
+            no = cand[5].id;
+        } else if (cand[2].id != -1) {
+            no = cand[2].id;
+        } else if (cand[4].id != -1) {
+            no = cand[4].id;
+        } else if (cand[3].id != -1) {
+            no = cand[3].id;
+        }
+    }
+    if (no == -1) {
+        no = cand[4].id;
+    }
+    wk->model->field104 = wk_sbtl->field408->pUnitL[no].pUnit->field1A0;
+    wk->model->target_frame = dds3GetRandIntA(NULL, 15) + 5;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0027A1E8", CheckEnemyTarget);
 

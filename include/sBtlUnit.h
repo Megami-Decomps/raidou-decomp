@@ -42,7 +42,9 @@ typedef struct SBTLUNIT_MODEL {
     s32 cmpframe;
     s32 target_frame;
     s32 mahaskl_waitframe;
-    u8 pad138[0xC];
+    u8 pad138[0x4];
+    s32 bk_targetID; /* HD name */
+    s32 bk_devilID; /* HD name */
     u8 field118;
     u8 pad145;
     u16 stat;
@@ -499,7 +501,9 @@ struct SBTLUNIT_WORK {
     u8 pad6D0[0x6E8 - 0x6D0];
     s8 field6E8; /* set once the unit has asked to talk (sbtlSetCameraLockOnTgtUpdate) */
     s8 field6E9; /* set by trmSetProcessTerm; HD talkBreakDownFlg, blocks talk */
-    u8 pad6EA[0x6F4 - 0x6EA];
+    u8 pad6EA[0x6EC - 0x6EA];
+    s32 field6EC; /* boss point for sbtlGetPointData, 0 takes the stage generator's */
+    u8 pad6F0[0x6F4 - 0x6F0];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
     u8 pad6F5[0x704 - 0x6F5];
     s32 field704;
@@ -509,7 +513,9 @@ struct SBTLUNIT_WORK {
     s32 field714;
     s32 field718;
     s32 field71C;
-    u8 pad720[0x72C - 0x720];
+    s32 mawari_lr; /* HD names; sbtlMawariChk's side */
+    f32 mawari_pos_x;
+    f32 mawari_pos_z;
     s32 field72C;
     s32 mag_on1; /* HD names; -1 takes the boss event table's value */
     s32 mag_on2;
@@ -745,6 +751,9 @@ void sbtlDamage(struct SBTLUNIT_WORK *wk, SKLID skillid, s32 damage);
 void sbtlCallSync(void);
 void KaihiInit_Sub(struct SBTLUNIT_WORK *wk, s32 mode);
 void sbtlKaihiInit(struct SBTLUNIT_WORK *wk);
+void sbtlKaihiInitNakamaSub2(struct SBTLUNIT_WORK *wk);
+void sbtlGetRotate_Kaihi(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos);
+s32 sbtlCallBtlCreateEff(struct SBTLUNIT_WORK *wk);
 u32 sbtlCheckKajaAnyEx(struct SBTLUNIT_WORK *wk, s32 *count);
 s32 sbtlCheckEnableUseKaja(struct SBTLUNIT_WORK *wk, SKLID skillid);
 s32 sbtlCheckDamageTargetTemp(struct SBTLUNIT_WORK *wk);

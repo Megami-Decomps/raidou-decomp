@@ -19,17 +19,23 @@ typedef struct {
     dds3ProcessID_t *menuPID;
     dds3ProcessID_t *menuPID2;
     u8 unk10;
-    u8 field11; /* party slot: DrawProc draws sbtlGetNakama(field11) */
+    u8 mode; /* HD name; party slot: DrawProc draws sbtlGetNakama(mode) */
     u8 stat; /* 1 and 2 count as started (sbtlIsStart), 4 deleted */
     u8 unk13;
-    s8 field14; /* DrawProc draws the tab panel when set */
-    u8 unk15[0x3];
-    s32 field18;
-    u8 unk1C[0x4];
-    f32 field20;
-    u8 unk24[0x4];
-    s32 field28;
-    u8 unk2C[0x20];
+    s8 bSideMove; /* HD name; DrawProc draws the tab panel when set */
+    u8 pad15[0x18 - 0x15];
+    s32 tabStock; /* HD name */
+    s32 RepeatIconTimer; /* HD name */
+    f32 RepeatIconAngle; /* HD name */
+    u8 unk24;
+    s8 bCallStopBattle; /* HD name */
+    u8 pad26[0x28 - 0x26];
+    s32 type; /* HD name; 1 for the start menu */
+    s32 cntLoop; /* HD name */
+    s32 maxLoop; /* HD name */
+    s32 index[2]; /* HD name */
+    s32 sklNo[2]; /* HD name */
+    s32 tgtNo[2]; /* HD name */
 } sbtlCmndMenuNew_t;
 SIZE_CHECK(sbtlCmndMenuNew_tSizeCheck, sbtlCmndMenuNew_t, 0x4C);
 
@@ -39,6 +45,26 @@ extern dds3ProcessID_t *sbtlData181;
 s32 Proc_sbtlCmndMenuNew(dds3ProcessID_t *id);
 void Shutdown_sbtlCmndMenuNew(dds3ProcessID_t *id);
 sbtlCmndMenuNew_t *GetProcessData(void);
+void SetTgtMenu(s32 a_selectNo);
+void SetSklMenu(s32 a_selectNo, s32 a_bAutoDecide);
+s32 GetTabLimit(s32 *a_pmin, s32 *a_pmax);
+s32 Start_Local(s32 mode);
+s32 sbtlFuncDecideTgtSub(s8 *ng, struct SBTLUNIT_WORK *nakama, SKLID skillid);
+s32 sbtlProcSBtlCmndMenuNewSub(s8 mode, struct SBTLUNIT_WORK *nakama, SKLID skillid);
+void sbtlEnd(void);
+extern s32 BattleMag_EffectData2;
+void ReStartBattle(void);
+s32 sbtlEffect(void);
+s32 BattleStartApo_Effect(void);
+s32 BattleMag_Effect(void);
+s32 BattleDead_Effect(void);
+s32 BattleLose_Effect(void);
+s32 BattleDying_Effect(void);
+s32 BattleDyingSinado1_Effect(void);
+s32 BattleTime_Effect(void);
+s32 BattleSummon_Effect(void);
+s32 BattleRestart_Effect(void);
+s32 BattleRaidoDying_Effect(void);
 void Delete_sbtlCmndMenuNew(void);
 s32 sbtlGetStat(void);
 s32 sbtlProcessCheck(void);
@@ -68,10 +94,13 @@ typedef struct TYPE_BOSS_NML_EVENT {
 } TYPE_BOSS_NML_EVENT;
 
 extern TYPE_BOSS_NML_EVENT *arrBossEveTable;
+s32 Process_sbtlBossEvent(dds3ProcessID_t *id);
 
 /* Boss event process work (sbtlCallGetProcessStatData); only the fields read so far. */
 typedef struct sbtlBossEvent_t {
-    u8 pad00[0x1E];
+    u8 pad00[0x1B];
+    s8 field1B; /* 1: PosReSet_sbtlBossEvent places the boss again */
+    u8 pad1C[0x1E - 0x1C];
     s16 eventtype; /* HD SBTLBOSSEVENT: 0 start, 1-3 mag, 4 dead, 5 lose, 6 dying, 7 time */
     u8 pad20[0x2C - 0x20];
     TYPE_BOSS_NML_EVENT *pTypeBossNmlEvent;
@@ -106,6 +135,8 @@ extern sbtlTimeTbl_t Start_sbtlTimeData[29];
 extern s32 gb_btltime; /* frames counted by the time limit battle */
 extern s32 Result_sbtlTimeData;
 extern s32 Result_sbtlTimeData2;
+extern f32 sbtlJumpProc_EveWork; /* damage rate of the jump event */
+extern f32 sbtlJumpProc_EveWork2; /* frames the jump event waits */
 s32 Start_sbtlTime(s32 arg0, s32 arg1);
 s32 Result_sbtlTime(void);
 s32 End_sbtlTime(void);
@@ -195,18 +226,25 @@ typedef struct {
     s16 field26;
     s16 field28;
     s16 field2A;
-    u8 pad2C[0x3C - 0x2C];
-    s16 field3C; /* party slot of the devil cmpCallGetProcessData5 picked */
-    u8 pad3E[0x2];
+    u8 pad2C[0x36 - 0x2C];
+    s16 field36; /* party devils in the talk */
+    u8 pad38[0x3C - 0x38];
+    s16 field3C[2]; /* party slots; [0] is the devil cmpCallGetProcessData5 picked */
     s16 field40;
     u8 pad42[0x46 - 0x42];
     s16 field46;
     sbtlKaiwaMsg_t msg[3]; /* copies of the talk files */
-    u8 pad6C[0x98 - 0x6C];
+    u8 pad6C[0x8E - 0x6C];
+    s16 field8E;
+    s16 field90;
+    s16 field92;
+    s16 field94;
+    s16 field96;
     s16 field98; /* talk result from the devil table entry, 0 for none */
     s16 field9A;
     s16 field9C;
-    u8 pad9E[0xAA - 0x9E];
+    s16 field9E;
+    u8 padA0[0xAA - 0xA0];
     s8 fieldAA;
     s8 fieldAB;
     s32 fieldAC; /* unit ID sbtlCallGetProcessData5 picked to join the talk */
@@ -233,7 +271,7 @@ s32 evtKAIWANoEnemy(dds3ProcessID_t *id);
 void evtMoonShutdown(dds3ProcessID_t *id);
 s32 evtCallGetProcessData4(dds3ProcessID_t *id);
 void cmpSbtlkaiwaMain(void);
-void sbtlProcessStart(SBTLBOSSEVENT type, s16 eventno);
+void sbtlProcessStart(s16 type, s16 eventno);
 s32 cmpCallGetProcessData2(s32 index, s32 kind);
 s32 slRefSbtl(s32 devilId);
 
@@ -253,7 +291,9 @@ s32 sbtlLeaf37(s32 devilId, s32 kind);
 void sbtlCallGetProcessData2(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallGetProcessData29(void);
 void cmpPartyListMake_cmpMisc(dds3ProcessID_t *menuPID);
-s32 slCallGetProcessData6(void *msg, s32 arg1, struct SBTLUNIT_WORK *unit, s32 arg3, s32 arg4, s32 arg5);
+extern char (*slCallGetProcessData6Data)[25]; /* summoner rank names */
+extern char slCallGetProcessData6Data2[];
+s32 slCallGetProcessData6(void *msg, s32 msgNo, struct SBTLUNIT_WORK *unit, s32 type, s32 selMsgNo, s32 sel);
 s32 slCallGetProcessData7(s32 arg0);
 s32 slCallGetProcessData8(s32 arg0);
 s32 nbCallGetProcessData12(void);
