@@ -3577,9 +3577,7 @@
 0x002CE2C0	sbtlLeaf125	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002CE2C8	sbtlBtlRunSklProcSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlRunSklProc
 0x002CE2E0	sbtlRefSbtl65	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
-0x002CE318	sbtlRefSbtl64	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002CE3B0	sbtlLeaf123	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002CE3C8	sbtlRefSbtl68	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002CE468	sbtlRefSbtl62	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002CE4D8	sbtlCallFptodp3	func	tier=D	derived-callee	na	unit sbtl; calls fptodp
 0x002CE5C8	sbtlSbtlCameraproc	func	tier=D	derived-string	na	unit sbtl; string 'sbtl_cameraproc'
@@ -3609,7 +3607,6 @@
 0x002D6390	sbtlRefSbtl54	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002D6478	sbtlRefSbtl66	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002D6518	sbtlBtlCheckAisyoExSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlCheckAisyoEx
-0x002D68B8	sbtlCallBtlGetAutoSkillPara	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetAutoSkillPara
 0x002D6BF0	sbtlCallBtlChkHaveMemSkl2	func	tier=D	derived-callee	na	unit sbtl; calls sbtlChkHaveMemSkl
 0x002D78B0	sbtlResetBadStatus	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlResetBadStatus, score 9.8 band B, hd-ab: calls3 callers-of-match votes2 st1:call r1+r2
 0x002D7A70	sbtlCheckBadStatus	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlCheckBadStatus, score 7.15 band B
@@ -3638,9 +3635,6 @@
 0x002DD5E0	sbtlBtlLoadHuumaMesDataSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlLoadHuuma_MesData
 0x002DD620	sbtlCallChipAllocZeroDirect	func	tier=D	derived-callee	na	unit sbtl; calls sdfChipAllocZeroDirect
 0x002DD648	sbtlLeaf101	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002DE330	sbtlCallMessageNumSearch3	func	tier=D	derived-callee	na	unit sbtl; calls MessageNumSearch
-0x002DE470	sbtlLeaf99	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002DE560	sbtlCallBtlSearchUnitID34	func	tier=D	derived-callee	na	unit sbtl; calls sbtlSearchUnit_ID
 0x002DEB00	sbtlBtlDrawTextSub2	func	tier=D	derived-caller	na	unit sbtl; called by sbtlDrawText
 0x002DED30	sbtlExt_ShutDown	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDvltk.sBtlExt_ShutDown, score 11.95 band A
 0x002DED78	sbtlExt_CreateBuffer	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDvltk.sBtlExt_CreateBuffer, score 6.0 band C, hd-consensus: calls1 calls-of-match-uniq st1:call r1+r2; 10/10 fold runs agree, fold scores 6.0,7.0,8.5,7.0,8.5,6.0,6.0,8.5,6.0,6.0
@@ -19763,7 +19757,6 @@
 0x004E2B68	sbtlCreateWorkData3	data	tier=D	derived-sole	na	used by sbtlCreateWork
 0x004E2B70	sbtlCallBtlDrawRedGgData	data	tier=D	derived-dominant	na	used by sbtlCallBtlDrawRedGg (2 of 25 refs, 24 functions)
 0x004E2B74	sbtlGetSklVisualTblData	data	tier=D	derived-sole	na	used by sbtlGetSklVisualTbl
-0x004E2B78	sbtlZokuseiDmgData	data	tier=D	derived-dominant	na	used by sbtlZokuseiDmg (3 of 7 refs, 5 functions)
 0x004E2B80	sbtlCallSprintf8Data	data	tier=D	derived-sole	na	used by sbtlCallSprintf8
 0x004E2B88	sbtlData107	data	tier=D	derived-shared	na	used by 2 functions: sbtlCallGrAllocPacketBuff7, sbtlCallGrAllocPacketBuff6
 0x004E2B90	sbtlLenDirDataEntry	data	tier=D	derived-table	na	pointed to by sbtlLenDirData
@@ -24498,6 +24491,8 @@
 0x002CDB70	sbtlGetPathDataCount	func	tier=B	hd-role	na	HD sBtlPath.sBtlGetPathDataCount, reads tbldatacnt[id]; replaces sbtlLeaf83
 0x002CDB90	sbtlGetPathACTData	func	tier=B	hd-role	na	HD sBtlPath.sBtlGetPathACTData, returns &data[id][no]; replaces sbtlBtlSetNextPathDataSub
 0x002CDBC0	sbtlGetPathData	func	tier=B	hd-role	na	HD sBtlPath.sBtlGetPathData, returns &pathdata[id]; replaces sbtlBtlSetNextPathDataSub2
+0x002CE318	GetHighest	func	tier=B	hd-role	na	HD sBtlCamera.c static GetHighest(SBTLUNIT_SIDE flg) at the address before GetDisNoCamDep: highest unit height over the 48 unit slots whose side bits match; R1 sbtlRefSbtl64 is other code (R1's sbtlDecMag), so the rename is per game; replaces sbtlRefSbtl64
+0x002CE3C8	GetDisNoCamDep	func	tier=B	hd-role	na	HD sBtlCamera.c static GetDisNoCamDep(pos0, pos1): |pos0 - pos1| less its part along the camera direction with y cleared, next to GetHighest; R1 sbtlRefSbtl68 takes SBTLUNIT_WORK* and is other code, so the rename is per game; replaces sbtlRefSbtl68
 0x002CE948	sbtlSetStaticInit	func	tier=B	hd-role	na	HD sBtlSetStaticInit: clears camera_bossmode/_cnt, gsBtlCamera_Hokan_Not, gSbtlCam_offset_pos[3] and sets gSbtlCam_len 100.0 and 1.0; name free in raidou2; replaces sbtlInitSBtlSub3
 0x002CE9C8	sbtlGetIdling	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCamera.sBtlGetIdling score 5.6 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x002CFAE8	sbtlIsMoveEnd	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCamera.sBtlIsMoveEnd score 6.7 flag I: calls1 next calls-of-match-uniq votes2 st2:call r2-only
@@ -24524,6 +24519,7 @@
 0x002D6498	sbtlGetGun_Num	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlGetGun_Num score 5.3 flag I: calls3 calls-of-match votes3 st2:call r1-disagree:0x29c360
 0x002D65C8	sbtlCheckAisyoEx	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlCheckAisyoEx score 6.9 flag I: calls4 calls-of-match votes4 st2:call r1-disagree:0x29c400
 0x002D6798	sbtlAutoRec	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlAutoRec score 6.3 flag I: calls3 callers-of-match votes4 st2:call r1-disagree:0x29c518
+0x002D68B8	sbtlCheckKuishibari	func	tier=B	hd-role	na	HD sBtlCalc.c sBtlCheckKuishibari(wk, para): auto skill para 5 (endure) leaves the unit at 1 HP under the listed bad statuses, posts SBTLSM_MODE_BOSS and sets kuishibBit; R1 0x0029C608 already carries the name; R2 old name unused in R1; replaces sbtlCallBtlGetAutoSkillPara
 0x002D9258	sbtlCheckBadStatus_Color	func	tier=B	hd-role	na	HD sBtlCheckBadStatus_Color(wk, badstno): returns bstcolor_tbldata[badstno].flg != 0; R2 has no raidou table or null check; name free in both games; replaces sbtlBtlSetBadStatusNoSub2
 0x002D9438	SetBadStatusCounter	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.SetBadStatusCounter score 5.7 flag -: calls3 calls-of-match st2:call r2-only
 0x002D9778	sbtlCheckBadStatus_Hit	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlCheckBadStatus_Hit score 6.7 flag I: calls5 calls-of-match votes5 st2:call r1-disagree:0x29ec10
@@ -24542,6 +24538,9 @@
 0x002DD650	sbtlCreateWork	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlDvltk.sBtlCreateWork score 6.5 flag I: calls2 str1 calls-of-match votes2 st2:call r1-disagree:0x2a20e0
 0x002DDA80	sbtlCreateDvltk_Priority	func	tier=B	hd-role	na	HD sBtlCreateDvltk_Priority, R1 name; replaces sbtlCallBtlGetNakama6
 0x002DDBD8	sbtlCreateDvltk	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlDvltk.sBtlCreateDvltk score 5.2 flag I: calls2 prev calls-of-match votes2 st2:call r1-disagree:0x2a2598
+0x002DE330	sbtlDrawTextFont	func	tier=B	hd-role	na	HD sBtlDvltk.c sBtlDrawTextFont(x, y, z, rgba, wk, mode, dwk): draws the devil talk text found by mode in wk->msgData and stores its width; apply after sbtlDrawTextFont -> sbtlAnimWaku (renames.p4.tsv) frees the name; R1 0x002A2CA0 has the same label; replaces sbtlCallMessageNumSearch3
+0x002DE470	sbtlCheckPriority_Battle	func	tier=B	hd-role	na	HD sBtlDvltk.c sBtlCheckPriority_Battle(mode1, mode2): returns 1 for 22 over 18, else compares a 32-entry priority table (sbtlLeaf99Table); sbtlCreateDvltk calls it on the current and new mode; R1 0x002A2DF0 is the same pair; name free in both games; replaces sbtlLeaf99
+0x002DE560	sbtlDrawText	func	tier=B	hd-role	na	HD sBtlDrawText(dwk) and R1 sbtlDrawText (0x002A2EE0): called by Draw_sbtlDvltk on the last window; name free in raidou2; after the rename drop the VERSION_RAIDOU2 sbtlCallBtlSearchUnitID34 prototype in sBtlDvltk.h, the shared sbtlDrawText one covers it; replaces sbtlCallBtlSearchUnitID34
 0x002DEA80	sbtlAnimWaku	func	tier=B	hd-role	na	HD sBtlDvltk.c sBtlAnimWaku(dwk): st 0 fades each of the 7 SBTLDVLTK_WAKUWORK alphas to 1, st 1 to 128; HD sBtlDrawTextFont is the text draw with seven arguments; R1 0x002A31B0 is the same pair; name free in both games; replaces sbtlDrawTextFont
 0x002DF1D8	InitTarSelProcessData	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x25e800 sim 0.732 margin 0.14 pair
 0x002DF990	sbtlCheckDrop	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlEXP.sBtlCheckDrop score 5.3 flag I: calls3 callers-of-match votes2 st2:call r1-disagree:0x2a3c18
@@ -25018,6 +25017,7 @@
 0x004E2618	encmax	data	tier=B	hd-role	na	HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2
 0x004E263C	aisyo_tbldata	data	tier=B	hd-role	na	HD sBtlGetAisyotbl indexes aisyo_tbldata; replaces datData7
 0x004E2640	bstcolor_tbldata	data	tier=B	hd-role	na	HD sBtlCalc.c bstcolor_tbldata: the TEXCOLOR_WORK table indexed by bad status (32-byte rows, flg at 0x1C read by sBtlCheckBadStatus_Color, colors read by sBtlSetBadStatus_Color = sbtlCallSetClutColor2); only sbtlRefGlobalPID reads it; R1 0x0046DD20 is the same pair; replaces GlobalPID
+0x004E2B78	autotbldata	data	tier=B	hd-role	na	HD autotbldata: sbtlKudaDmg and sbtlZokuseiDmg index it by SBTLSKILLP_TBL.weapontype (HD sBtlGetSkilltbl(id)->weapontype) and read the 88-byte entry aisyo percentages; name free in raidou2; replaces sbtlZokuseiDmgData
 0x004E3480	gAddMagNumDrawCnt	data	tier=B	hd-role	na	HD SetAddMag sets it to 100; replaces DrawAddMagData2
 0x004E3484	gAddMagNumNow	data	tier=B	hd-role	na	HD SetAddMag subtracts it; replaces DrawAddMagData3
 0x004E3488	gAddMagNumUp	data	tier=B	hd-role	na	HD SetAddMag stores the step; replaces sbtlData174

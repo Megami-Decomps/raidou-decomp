@@ -156,9 +156,9 @@ s32 sbtlReleaseDvltk_List(SBTLDVLTK_LISTWORK *stp, u8 flg)
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlDeleteDvltkList);
 
-INCLUDE_ASM(const s32, "code_002A20E0", sbtlCallMessageNumSearch3);
+INCLUDE_ASM(const s32, "code_002A20E0", sbtlDrawTextFont);
 
-INCLUDE_ASM(const s32, "code_002A20E0", sbtlLeaf99);
+INCLUDE_ASM(const s32, "code_002A20E0", sbtlCheckPriority_Battle);
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlDrawText);
 

@@ -6837,8 +6837,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x002A2A70	0x002DE100	Draw_sbtlDvltk	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	size
 0x002A2B88	0x002DE218	sbtlReleaseDvltk_List	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A2C68	0x002DE2F8	sbtlDeleteDvltkList	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	masked-hash-in-gap
-0x002A2CA0	0x002DE330	sbtlCallMessageNumSearch3	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	run-order-near
-0x002A2DF0	0x002DE470	sbtlLeaf99	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
+0x002A2CA0	0x002DE330	sbtlDrawTextFont	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	run-order-near
+0x002A2DF0	0x002DE470	sbtlCheckPriority_Battle	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A31B0	0x002DEA80	sbtlAnimWaku	yes	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A3230	0x002DEB00	sbtlBtlDrawTextSub2	yes	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	masked-hash-in-gap
 0x002A3238	0x002DEB08	sbtlGetSpriteHandle	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash

@@ -344,7 +344,7 @@ s32 sbtlCallBtlGetPlayerData4(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK 
 #ifdef VERSION_RAIDOU1 /* Raidou 2's sbtlRefSbtl68 is other code: a distance without the camera depth */
 s32 sbtlCheckSpecialDamage_Stop(struct SBTLUNIT_WORK *wk);
 #else
-f32 sbtlRefSbtl68(sdfVector4_t *pos0, sdfVector4_t *pos1);
+f32 GetDisNoCamDep(sdfVector4_t *pos0, sdfVector4_t *pos1);
 #endif
 s32 sbtlCallCheckBadStatus(struct SBTLUNIT_WORK *acter, struct SBTLUNIT_WORK *wk, SKLID skillid, s32 flg);
 s32 CheckAutoSkill(struct SBTLUNIT_WORK *wk);

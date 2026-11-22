@@ -3262,8 +3262,6 @@
 0x002A1E48	sbtlCallBtlGetDevilDataSBtlSub4	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetDevilData_sbtlSub
 0x002A20E0	sbtlCallBtlCheckMsgMemType	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckMsgMemType
 0x002A2598	sbtlCallMemAllocDirect10	func	tier=D	derived-callee	na	unit sbtl; calls sdfMemAllocDirect
-0x002A2CA0	sbtlCallMessageNumSearch3	func	tier=D	derived-callee	na	unit sbtl; calls MessageNumSearch
-0x002A2DF0	sbtlLeaf99	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002A3230	sbtlBtlDrawTextSub2	func	tier=D	derived-caller	na	unit sbtl; called by sbtlDrawText
 0x002A3450	sbtlExt_ShutDown	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDvltk.sBtlExt_ShutDown, score 11.95 band A
 0x002A3498	sbtlExt_CreateBuffer	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlDvltk.sBtlExt_CreateBuffer, score 6.0 band C, hd-consensus: calls1 calls-of-match-uniq st1:call r1+r2; 10/10 fold runs agree, fold scores 6.0,7.0,8.5,7.0,8.5,6.0,6.0,8.5,6.0,6.0
@@ -19189,6 +19187,8 @@
 0x002A02C8	sbtlGetDamage_ATK	func	tier=B	hd-role	na	HD sBtlGetDamage_ATK: (sword_power*0.5*(aatk+alevel)*0.033333 + sword_power*0.333333) * n0 * 0.01 * (100 - (tlevel+tdef)*0.5) * 0.01, clamped to 1, then the aisyo percentage; first of the SBTLCALC_DMGWORK run before Old3..Old6 (C_GUN, GUN, C_MAGIC, MAGIC); R1 0x002A02C8 is the same pair; name free in both games; replaces sbtlCallBtlCheckAisyoOld
 0x002A0910	sbtlGetDamage_The_W	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlCalc.sBtlGetDamage_The_W score 6.3 flag I: calls1 callers-of-match-uniq st1:call r1+r2
 0x002A1630	sbtlGetDamage_I_REC_PARA	func	tier=B	hd-role	na	HD sBtlCalc.sBtlGetDamage_I_REC_PARA(unit, wk, ptbl), called between I_REC_P and P_STR in CalcItem; replaces sbtlplayertblPlayerSkill_GetMag3
+0x002A2CA0	sbtlDrawTextFont	func	tier=B	hd-role	na	HD sBtlDvltk.c sBtlDrawTextFont(x, y, z, rgba, wk, mode, dwk): draws the devil talk text found by mode in wk->msgData and stores its width; apply after sbtlDrawTextFont -> sbtlAnimWaku (renames.p4.tsv) frees the name; R1 0x002A2CA0 has the same label; replaces sbtlCallMessageNumSearch3
+0x002A2DF0	sbtlCheckPriority_Battle	func	tier=B	hd-role	na	HD sBtlDvltk.c sBtlCheckPriority_Battle(mode1, mode2): returns 1 for 22 over 18, else compares a 32-entry priority table (sbtlLeaf99Table); sbtlCreateDvltk calls it on the current and new mode; R1 0x002A2DF0 is the same pair; name free in both games; replaces sbtlLeaf99
 0x002A31B0	sbtlAnimWaku	func	tier=B	hd-role	na	HD sBtlDvltk.c sBtlAnimWaku(dwk): st 0 fades each of the 7 SBTLDVLTK_WAKUWORK alphas to 1, st 1 to 128; HD sBtlDrawTextFont is the text draw with seven arguments; R1 0x002A31B0 is the same pair; name free in both games; replaces sbtlDrawTextFont
 0x002A38E0	InitTarSelProcessData	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x25e800 sim 0.732 margin 0.14 pair
 0x002A52F8	sbtlCreateSM	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlSM.sBtlCreateSM score 6.2 flag I: calls4 calls-of-match votes3 st1:call r2-disagree:0x2e1588

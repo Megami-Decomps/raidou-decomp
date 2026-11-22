@@ -7973,9 +7973,9 @@
 0x002CE2C0	sbtlLeaf125	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002CE2C8	sbtlBtlRunSklProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlRunSklProc
 0x002CE2E0	sbtlRefSbtl65	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
-0x002CE318	sbtlRefSbtl64	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
+0x002CE318	GetHighest	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCamera.c static GetHighest(SBTLUNIT_SIDE flg) at the address before GetDisNoCamDep: highest unit height over the 48 unit slots whose side bits match; R1 sbtlRefSbtl64 is other code (R1's sbtlDecMag), so the rename is per game; replaces sbtlRefSbtl64
 0x002CE3B0	sbtlLeaf123	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002CE3C8	sbtlRefSbtl68	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
+0x002CE3C8	GetDisNoCamDep	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCamera.c static GetDisNoCamDep(pos0, pos1): |pos0 - pos1| less its part along the camera direction with y cleared, next to GetHighest; R1 sbtlRefSbtl68 takes SBTLUNIT_WORK* and is other code, so the rename is per game; replaces sbtlRefSbtl68
 0x002CE468	sbtlRefSbtl62	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references wk_sbtl
 0x002CE4D8	sbtlCallFptodp3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls fptodp
 0x002CE5C8	sbtlSbtlCameraproc	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtl; string 'sbtl_cameraproc'
@@ -8084,7 +8084,7 @@
 0x002D6720	WeakBstDvlTk	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD sBtlCalc.WeakBstDvlTk score 4.9 flag -: calls1 calls-of-match st1:call r1+r2
 0x002D6758	LimitRange	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtl.LimitRange score 7.6 flag -: calls3 calls-of-match votes3 st1:call r1-only
 0x002D6798	sbtlAutoRec	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlAutoRec score 6.3 flag I: calls3 callers-of-match votes4 st2:call r1-disagree:0x29c518
-0x002D68B8	sbtlCallBtlGetAutoSkillPara	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetAutoSkillPara
+0x002D68B8	sbtlCheckKuishibari	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.c sBtlCheckKuishibari(wk, para): auto skill para 5 (endure) leaves the unit at 1 HP under the listed bad statuses, posts SBTLSM_MODE_BOSS and sets kuishibBit; R1 0x0029C608 already carries the name; R2 old name unused in R1; replaces sbtlCallBtlGetAutoSkillPara
 0x002D6B78	sbtlCheckSpecialDamage_Stop	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckSpecialDamage_Stop score 8.3 flag I: calls3 next calls-of-match votes3 st2:call r1-disagree:0x29c800
 0x002D6BF0	sbtlCallBtlChkHaveMemSkl2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlChkHaveMemSkl
 0x002D73C0	sbtlCheckBadStatus_Return	hd-inferred	method=hd-gap-single-raidou2; p=0.96 (n=405); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckBadStatus_Return score 6.5 flag I: calls2 prev next~ gap1/1 st2:gap r2-only
@@ -8159,9 +8159,9 @@
 0x002DE100	Draw_sbtlDvltk	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDvltk.Draw score 8.2 flag -: calls1 next gap9/4 votes2 st1:gap r1+r2
 0x002DE218	sbtlReleaseDvltk_List	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDvltk.sBtlReleaseDvltk_List score 10.3 flag I: calls2 calls-of-match st1:call r1+r2
 0x002DE2F8	sbtlDeleteDvltkList	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDvltk.sBtlDeleteDvltkList score 9.9 flag I: calls2 prev callers-of-match st1:call r1+r2
-0x002DE330	sbtlCallMessageNumSearch3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls MessageNumSearch
-0x002DE470	sbtlLeaf99	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
-0x002DE560	sbtlCallBtlSearchUnitID34	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlSearchUnit_ID
+0x002DE330	sbtlDrawTextFont	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDvltk.c sBtlDrawTextFont(x, y, z, rgba, wk, mode, dwk): draws the devil talk text found by mode in wk->msgData and stores its width; apply after sbtlDrawTextFont -> sbtlAnimWaku (renames.p4.tsv) frees the name; R1 0x002A2CA0 has the same label; replaces sbtlCallMessageNumSearch3
+0x002DE470	sbtlCheckPriority_Battle	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDvltk.c sBtlCheckPriority_Battle(mode1, mode2): returns 1 for 22 over 18, else compares a 32-entry priority table (sbtlLeaf99Table); sbtlCreateDvltk calls it on the current and new mode; R1 0x002A2DF0 is the same pair; name free in both games; replaces sbtlLeaf99
+0x002DE560	sbtlDrawText	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDrawText(dwk) and R1 sbtlDrawText (0x002A2EE0): called by Draw_sbtlDvltk on the last window; name free in raidou2; after the rename drop the VERSION_RAIDOU2 sbtlCallBtlSearchUnitID34 prototype in sBtlDvltk.h, the shared sbtlDrawText one covers it; replaces sbtlCallBtlSearchUnitID34
 0x002DEA80	sbtlAnimWaku	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDvltk.c sBtlAnimWaku(dwk): st 0 fades each of the 7 SBTLDVLTK_WAKUWORK alphas to 1, st 1 to 128; HD sBtlDrawTextFont is the text draw with seven arguments; R1 0x002A31B0 is the same pair; name free in both games; replaces sbtlDrawTextFont
 0x002DEB00	sbtlBtlDrawTextSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlDrawText
 0x002DEB08	sbtlGetSpriteHandle	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDvltk.sBtlGetSpriteHandle score 7.8 flag I: calls2 calls-of-match-uniq votes2 st1:call r1+r2
@@ -28450,7 +28450,7 @@
 0x004E2B68	sbtlCreateWorkData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCreateWork
 0x004E2B70	sbtlCallBtlDrawRedGgData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlDrawRedGg (2 of 25 refs, 24 functions)
 0x004E2B74	sbtlGetSklVisualTblData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetSklVisualTbl
-0x004E2B78	sbtlZokuseiDmgData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlZokuseiDmg (3 of 7 refs, 5 functions)
+0x004E2B78	autotbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD autotbldata: sbtlKudaDmg and sbtlZokuseiDmg index it by SBTLSKILLP_TBL.weapontype (HD sBtlGetSkilltbl(id)->weapontype) and read the 88-byte entry aisyo percentages; name free in raidou2; replaces sbtlZokuseiDmgData
 0x004E2B80	sbtlCallSprintf8Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallSprintf8
 0x004E2B88	sbtlData107	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallGrAllocPacketBuff7, sbtlCallGrAllocPacketBuff6
 0x004E2B90	sbtlLenDirDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlLenDirData

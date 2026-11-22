@@ -83,3 +83,45 @@ R1 sbtlSetWeakBit with the Raidou 2 devil pairs and anlyzBit at GBWK 0xBF50. Reg
 Raidou 2: 6 of 86 words differ, first at +0xEC.
 
 HD SetEnemyCPos: the enemies' mean x/z at the tallest enemy's height, left in vf10. Only 1.0f / n differs: the original loads the 1.0 constant into f0 before converting n into f1, cc1 converts n first. Tried the boss flag as && (78 words, folded into sltiu), as an if-assigned flag (6), the constant-first quotient lever value = 1.0f; value = value / n (8). 6 words. Vectors do not reach, checked against the asm.
+
+## sbtlCheckBadStatus_Number (sbtl, raidou2 0x170)
+
+Raidou 2: 14 of 92 words differ, first at +0x114.
+
+Register only: retail copies the first index to a2 before the second search over the copied sbtlLeaf107Table and reuses its register for the second index; cc1 keeps the first index in place and gives the second a new register. Tried two early returns (84 words), one ret local (18), one loop variable for both searches (20), and the relational else guard from the lever index (14, size exact). 14 words. Vectors do not reach, checked against the asm. nm_behaviour reports only retail's no-op xori 0 before the movn.
+
+## sbtlGetPlayerTec_ParaUp (sbtl, raidou2 0x1D0)
+
+Raidou 2: 18 of 116 words differ, first at +0x148.
+
+Search loop over the 13 tec thresholds: retail zeroes a separate index and the loop counter, indexes the copied table with a shift on every pass and copies the counter to the index on the break before the movz; cc1 strength-reduces the loop to a pointer and keeps the index in the counter's register. Tried resetting the counter after the loop (29 words), idx = i < 13 ? i : 0 (18), the index assigned in the loop (79) and HD's explicit first-threshold guard (33). 18 words. Vectors do not reach, checked against the asm. nm_behaviour reports the paratbl row read at +4 under another base; both read the same stack row.
+
+## sbtlCreateDvltk (sbtl, raidou2 0x1FC)
+
+Raidou 2: 32 of 127 words differ, first at +0x118.
+
+Store scheduling only: retail keeps the stores after the seikaku lb in source order, cc1 hoists wk[4].st and ofs_y ahead. The copy reads sbtlCallMemAllocDirect10Data[i - 7]: both games compute %lo(sym) - 0x64 and load -0xC..0, so the original reads the 7 entries before the waku table at the symbol (R2 0x480660, R1 0x41D1E8, xref only from here); the bytes it reads are icon name pointers in both games. Tried ofs_x/ofs_y first (37 words) and wk[3].st/wk[4].st after fieldD8 (32). 32 words. Vector checked (battle rows take the early return); the copy path checked against the asm.
+
+## CalcAisyo_sbtlCalc (sbtl, raidou2 0x210)
+
+Raidou 2: 26 of 132 words differ, first at +0xF0.
+
+Register only: retail gives the inner index $6, the skill table pointer $7 and the aisyo base copy $8; cc1 gives the pointer $6 and the index $9. j = 0 written before the attr test puts it in the beqz delay slot as retail has (69 to 26 words); nested ifs, the continue form and the declaration order leave the allocation as is. 26 words. Vector checked (battle). nm_behaviour reports retail's two ANDs (~0x4000, then ~0x800000) against the draft's one folded mask; same value.
+
+## SetBadStatusCounter (sbtl, raidou2 0x218)
+
+Raidou 2: 4 of 134 words differ, first at +0x64.
+
+Scheduling only: retail computes attrtime * 3 before the sbtlChkHaveMemSklParty call (sll in the side test delay slot, addu in the call's) and the >> 1 in the delay slot of the test of its result; cc1 puts the sra in the call's delay slot. The call written before the multiply is 21 words. 4 words. Vector checked (battle).
+
+## sbtlZokuseiDmg (sbtl, raidou2 0x22C)
+
+Raidou 2: 7 of 139 words differ, first at +0xA8.
+
+Register only, in the SHINGETDOWN case: retail computes the auto table row as weapontype * 88 in s0 and adds the base loaded into a1, where cc1 loads the base into s0 and adds the product to it. Needed the row in a local before the sbtlCheckAisyo_Old call (28 words to 13) and the 0xFFF mask as its own statement in each case (13 to 7); the index-first pointer sum changed nothing. 7 words. Vector checked (battle, menu).
+
+## sbtlCheckKuishibari (sbtl, raidou2 0x2BC)
+
+Raidou 2: 153 of 171 words differ, first at +0x0; emitted 684 bytes, native 700 bytes.
+
+Frame only: cc1 hoists the constant 5 of the auto skill para compare into $fp and spills per to the stack (frame 0x60); retail keeps the li 5 inside the loop and per in $30 (frame 0x50), and every later word follows the 16-byte shift. Tried a switch with case 5 and a do-while with i++ in the call. 153 words. Vector checked (battle). nm_behaviour reports the side test: retail lbu with andi 0x80 and andi 2, cc1 lw of the aligned word with andi 0x82; same result (the byte is the low byte).

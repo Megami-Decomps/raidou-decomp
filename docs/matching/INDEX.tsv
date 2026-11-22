@@ -553,6 +553,13 @@ sbtlGetDamage_ATK	sbtl	raidou2 0x114	43 of 68 words differ	docs/matching/sbtl.md
 sbtlAutoRec	sbtl	raidou2 0x120	5 of 72 words differ	docs/matching/sbtl.md	69		
 sbtlSetWeakBit	sbtl	raidou2 0x124	8 of 73 words differ	docs/matching/sbtl.md	75		
 SetEnemyCPos	sbtl	raidou2 0x158	6 of 86 words differ	docs/matching/sbtl.md	81		
+sbtlCheckBadStatus_Number	sbtl	raidou2 0x170	14 of 92 words differ	docs/matching/sbtl.md	87		
+sbtlGetPlayerTec_ParaUp	sbtl	raidou2 0x1D0	18 of 116 words differ	docs/matching/sbtl.md	93		
+sbtlCreateDvltk	sbtl	raidou2 0x1FC	32 of 127 words differ	docs/matching/sbtl.md	99		
+CalcAisyo_sbtlCalc	sbtl	raidou2 0x210	26 of 132 words differ	docs/matching/sbtl.md	105		
+SetBadStatusCounter	sbtl	raidou2 0x218	4 of 134 words differ	docs/matching/sbtl.md	111		
+sbtlZokuseiDmg	sbtl	raidou2 0x22C	7 of 139 words differ	docs/matching/sbtl.md	117		
+sbtlCheckKuishibari	sbtl	raidou2 0x2BC	153 of 171 words differ	docs/matching/sbtl.md	123		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		

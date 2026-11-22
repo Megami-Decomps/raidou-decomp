@@ -41,7 +41,7 @@ typedef struct SBTLAUTO_TBL {
     SBTL_AISYO_TBL aisyo;
 } SBTLAUTO_TBL;
 
-extern SBTLAUTO_TBL *sbtlZokuseiDmgData; /* HD autotbldata */
+extern SBTLAUTO_TBL *autotbldata; /* HD autotbldata */
 
 /* A unit's work: the player and each stock devil, and embedded in SBTLUNIT_WORK. The raidou2 tail is partial. */
 typedef struct sdatUnitWork_t {
@@ -70,7 +70,7 @@ typedef struct sdatUnitWork_t {
     /* 0xF5 */ u8 padF5[0xF8 - 0xF5];
     /* 0xF8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
     /* 0xFC */ s16 badst_cnt;
-    /* 0xFE */ u8 padFE[0x2];
+    /* 0xFE */ s16 badst_cnt2;
     /* 0x100 */ s16 autost_cnt;
     /* 0x102 */ s16 autost_cnt2; /* frames between auto skill heals */
     /* 0x104 */ u32 itemstatus;

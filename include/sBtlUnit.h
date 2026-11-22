@@ -488,7 +488,8 @@ struct SBTLUNIT_WORK {
     SBTL_PACDATA_HITLIST hitwk;
     s32 field688;
     s16 field68C; /* 1 or 2: UnitMV_sbtlUnit sets the basic's speed to 12 or 20 once */
-    u8 pad68E[0x6A0 - 0x68E];
+    u8 pad68E[0x69C - 0x68E];
+    s32 noWeakStfCnt; /* the bad status time; 0 when the bad status action runs */
     s32 field6A0; /* nonzero: motion column sbtlGetMotionNo uses for motions 0..2 */
     s8 bOldDispOff; /* vstatus bit 0x1000 when sbtlSetCmbBfrPos ran */
     u8 pad6A5[0x6A8 - 0x6A5];

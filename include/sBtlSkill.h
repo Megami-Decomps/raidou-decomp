@@ -19,7 +19,7 @@ void sbtlDecVice(struct SBTLUNIT_WORK *wk, s32 vice);
 #ifdef VERSION_RAIDOU1 /* Raidou 2's sbtlRefSbtl64 is other code: the highest unit of the given sides */
 void sbtlDecMag(s32 mag);
 #else
-f32 sbtlRefSbtl64(SBTLUNIT_SIDE side);
+f32 GetHighest(SBTLUNIT_SIDE side);
 #endif
 void sbtlDecHP(struct SBTLUNIT_WORK *wk, s32 hp);
 void sbtlDecMP(struct SBTLUNIT_WORK *wk, s32 mp);
@@ -61,7 +61,7 @@ struct SBTLSKILLP_TBL {
     f32 hitbk_rate;
 #ifdef VERSION_RAIDOU2
     u32 flg2;
-    s32 weapontype; /* HD name; index into sbtlZokuseiDmgData */
+    s32 weapontype; /* HD name; index into autotbldata */
     u8 pad3C[0x4];
 #endif
 };
