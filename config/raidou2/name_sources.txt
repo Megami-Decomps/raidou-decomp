@@ -7983,7 +7983,7 @@
 0x002CE880	sbtlCallGetActiveScene4	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=same body as R1 sbtlCallGetActiveScene4 less the pb call: restores the backed up camera; replaces sbtlCallGetActiveScene3
 0x002CE908	sbtlCallBgSetScrollReset	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls mapBgSetScrollReset
 0x002CE938	sbtlSetBossMode	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCamera.sBtlSetBossMode score 8.2 flag I: calls4 calls-of-match votes3 st2:call r2-only
-0x002CE948	sbtlInitSBtlSub3	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by Init_sbtl
+0x002CE948	sbtlSetStaticInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetStaticInit: clears camera_bossmode/_cnt, gsBtlCamera_Hokan_Not, gSbtlCam_offset_pos[3] and sets gSbtlCam_len 100.0 and 1.0; name free in raidou2; replaces sbtlInitSBtlSub3
 0x002CE990	sbtlLeaf110	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002CE9C8	sbtlGetIdling	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlCamera.sBtlGetIdling score 5.6 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x002CFA58	Slerp_sbtlCamera	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlCamera.Slerp score 3.7 flag -: calls1 next calls-of-match st2:call r2-only

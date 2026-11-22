@@ -771,7 +771,7 @@ void Init_sbtl(s32 battleMode, s32 stageNo)
     wk_sbtl->field430C = 0;
     wk_sbtl->field432C = 0;
     wk_sbtl->field4330 = 0;
-    sbtlInitSBtlSub3();
+    sbtlSetStaticInit();
     if (battleMode >= 4) {
         wk_sbtl->battleMode = 0;
     } else if (battleMode < 0) {

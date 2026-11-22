@@ -316,7 +316,7 @@ extern s32 sbtlBtlCheckMotionNoSubData[][56];
 /* A kaja (stat change) slot of a unit; only the count is read so far. */
 typedef struct SBTLSKL_KAJA_WORK {
     s32 m_cnt;
-    s32 field4;
+    f32 m_fPara;
 } SBTLSKL_KAJA_WORK;
 
 typedef struct SBTLSKL_BARRIER_WORK {
@@ -369,7 +369,13 @@ struct SBTLUNIT_WORK {
     s32 field44C;
     u8 pad450[0x474 - 0x450];
     SBTLSKL_BARRIER_WORK barrier;
-    u8 pad484[0x4A4 - 0x484];
+    s32 tdancounter;
+    s32 tdancnt;
+    s32 tdancmpcnt;
+    SKLID tdan_sklid;
+    u8 pad494[0x4];
+    s32 tdanpara;
+    u8 pad49C[0x4A4 - 0x49C];
     s32 field4A4;
     u8 pad4A8[0x4AC - 0x4A8];
     s32 field4AC;

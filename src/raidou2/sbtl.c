@@ -23,6 +23,11 @@
 #include "sBtlCmndMenuNew.h"
 #include "sBtlDraw.h"
 #include "sbtlplayertbl.h"
+#include "model.h"
+#include "sBtlAI.h"
+#include "dds3ObjectBase.h"
+#include "code_r1_00104370.h"
+#include "sBtlPlayer.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
@@ -101,7 +106,23 @@ void sbtlSetBossMode(s32 mode) {
     sbtlGetIdlingData3 = 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlInitSBtlSub3);
+/* NON_MATCHING: 15 of 17 words match.  */
+#ifdef NON_MATCHING
+void sbtlSetStaticInit(void) {
+    sbtlData171 = 1.0f;
+    sbtlData172 = 100.0f;
+    sbtlGetIdlingData2 = 0;
+    sbtlGetIdlingData3 = 0;
+    SetParaData = 0;
+    sbtlData169 = 0;
+    sbtlData170 = 0;
+    sbtlGetIdlingData[0] = 0.0f;
+    sbtlGetIdlingData[1] = 0.0f;
+    sbtlGetIdlingData[2] = 0.0f;
+}
+#else
+INCLUDE_ASM(const s32, "sbtl", sbtlSetStaticInit);
+#endif
 
 void sbtlLeaf110(f32 x, f32 y, f32 z) {
     sbtlData169 = 1;
@@ -114,7 +135,28 @@ void sbtlLeaf110(f32 x, f32 y, f32 z) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetIdling);
 
-INCLUDE_ASM(const s32, "sbtl", Slerp_sbtlCamera);
+/* vu0 routine: move the camera position and target towards vPos and vTgt by f. */
+void Slerp_sbtlCamera(SBTLCAMERA_WORK *wk, sdfVector4_t *vPos, sdfVector4_t *vTgt, f32 f)
+{
+    sdfVector4_t tmp;
+
+    SDF_VU0_LOADVECTOR(&wk->camerapos);
+    SDF_VU0_SCALEVECTOR(1.0f - f);
+    SDF_VU0_STOREVECTOR(&tmp);
+    SDF_VU0_LOADVECTOR(vPos);
+    SDF_VU0_SCALEVECTOR(f);
+    SDF_VU0_LOADVECTOR_B(&tmp);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&wk->camerapos);
+    SDF_VU0_LOADVECTOR(&wk->targetpos);
+    SDF_VU0_SCALEVECTOR(1.0f - f);
+    SDF_VU0_STOREVECTOR(&tmp);
+    SDF_VU0_LOADVECTOR(vTgt);
+    SDF_VU0_SCALEVECTOR(f);
+    SDF_VU0_LOADVECTOR_B(&tmp);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&wk->targetpos);
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlIsMoveEnd);
 
@@ -122,13 +164,41 @@ void sbtlSetMoveEnd(void) {
     wk_sbtl->camera.m_PosCtrlCam.m_run = 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", GetNowPosAS);
+void GetNowPosAS(sdfVector4_t *vPosRes, const sdfVector4_t *vPosBgn, const sdfVector4_t *vPosEnd, f32 fTime, f32 x) {
+    f32 x2;
+    f32 x3;
+    f32 time2;
+    f32 time3;
+    f32 t;
+
+    if (x == fTime) {
+        SDF_VU0_LOADVECTOR(vPosEnd);
+        SDF_VU0_STOREVECTOR(vPosRes);
+        return;
+    }
+    x2 = x * x;
+    time2 = fTime * fTime;
+    x3 = x2 * x;
+    time3 = time2 * fTime;
+    SDF_VU0_LOADVECTOR(vPosEnd);
+    SDF_VU0_LOADVECTOR_B(vPosBgn);
+    SDF_VU0_SUBVECTOR();
+    t = x3 * -2.0f / time3 + x2 * 3.0f / time2;
+    SDF_VU0_SCALEVECTOR(t);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(vPosRes);
+}
 
 INCLUDE_ASM(const s32, "sbtl", GetNowPosS);
 
 INCLUDE_ASM(const s32, "sbtl", PosCtrlSystem);
 
-INCLUDE_ASM(const s32, "sbtl", CameraMoveSystem);
+f32 CameraMoveSystem(SBTLCAMERA_WORK *wk) {
+    f32 t = PosCtrlSystem(&wk->m_PosCtrlCam, &wk->camerapos);
+
+    PosCtrlSystem(&wk->m_PosCtrlTgt, &wk->targetpos);
+    return t;
+}
 
 INCLUDE_ASM(const s32, "sbtl", SetEnemyCPos);
 
@@ -245,7 +315,34 @@ INCLUDE_RODATA(const s32, "sbtl", SetParaTable3);
 
 INCLUDE_RODATA(const s32, "sbtl", jtbl_004C6860);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckDamageTargetUseItem);
+void sbtlCheckDamageTargetUseItem(s32 num) {
+    SBTL_WORK *sbtl = wk_sbtl;
+
+    switch (sbtl->stageNo) {
+    case 600:
+    case 601:
+    case 602:
+    case 604:
+        return;
+    case 605:
+    case 606:
+    case 607:
+        if (sbtlGetIdlingData2 != 3) {
+            return;
+        }
+    case 603:
+        break;
+    }
+    sbtl->fieldC64 = 100;
+    if (sbtl->camTgtConsI < 20) {
+        sbtl->camTgtConsI = 20;
+        return;
+    }
+    sbtl->camTgtConsI += num;
+    if (sbtl->camTgtConsI >= 31) {
+        sbtl->camTgtConsI = 30;
+    }
+}
 
 E_CAMMOD_CUT sbtlGetCutFlg(void) {
     switch (wk_sbtl->camera.mode) {
@@ -418,7 +515,18 @@ s32 sbtlCheckAutoSkill_ActerDamage(s32 autono) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_TargetDamage);
+s32 sbtlCheckAutoSkill_TargetDamage(s32 autono) {
+    s32 result = 0;
+
+    switch (autono) {
+    case AUTO_EDAMAGE:
+    case AUTO_Z_DMGDOWN:
+    case AUTO_BS_DOWN:
+    case AUTO_JS_DOWN:
+        result = 1;
+    }
+    return result;
+}
 
 s32 sbtlCheckAutoSkill_Action(struct SBTLUNIT_WORK *wk, SBTLDMG_HITWORK *hwk, s32 attr) {
     BST bst;
@@ -505,9 +613,39 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost_SkillID);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlDecVice);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlDecMag);
+void sbtlDecMag(s32 mag) {
+    SBTL_WORK *sbtl = wk_sbtl;
+    s32 shift = 0;
 
-INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl71);
+    if (sbtl->status3 & 0x2000000) {
+        shift = 1;
+    }
+    sbtl->mag -= mag << shift;
+    sbtl->mag = (sbtl->mag <= 0) ? 0 : (sbtl->mag >= sbtl->magMax) ? sbtl->magMax : sbtl->mag;
+}
+
+s32 sbtlRefSbtl71(s32 num) {
+    SBTL_WORK *sbtl = wk_sbtl;
+    s32 max = sbtl->magMax;
+    s32 shift = 0;
+    s32 dec;
+    s32 short_of_mag;
+
+    if (sbtl->status3 & 0x2000000) {
+        shift = 1;
+    }
+    dec = max * (num << shift) / 100;
+    if (dec <= 0) {
+        dec = 1;
+    }
+    sbtl->mag -= dec;
+    short_of_mag = 0;
+    if (sbtl->mag < 0) {
+        short_of_mag = 1;
+    }
+    sbtl->mag = (sbtl->mag <= 0) ? 0 : (sbtl->mag >= max) ? max : sbtl->mag;
+    return short_of_mag;
+}
 
 void sbtlRefSbtl54(s32 num) {
     SBTL_WORK *sbtl = wk_sbtl;
@@ -587,7 +725,22 @@ INCLUDE_ASM(const s32, "sbtl", sbtlAutoRec);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetAutoSkillPara);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckSpecialDamage_Stop);
+s32 sbtlCheckSpecialDamage_Stop(struct SBTLUNIT_WORK *wk) {
+    if (wk_sbtl->flg & 0x2000000) {
+        return 1;
+    }
+    if (IsSceanStop()) {
+        return 1;
+    }
+    switch (wk->unit.devilId) {
+    case 631:
+    case 672:
+        if (wk->status == 7) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlChkHaveMemSkl2);
 
@@ -625,7 +778,19 @@ s32 sbtlGetBadStatus_Attr(BST id)
     return table[id];
 }
 
+/* NON_MATCHING: 7 of 20 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCheckBadStatus(struct SBTLUNIT_WORK *wk) {
+    s32 bst = sbtlGetBadStatus(&wk->unit);
+
+    if (bst != BST_RAND0 && bst != BST_BOYCOTT) {
+        return sbtlResetBadStatus(wk, 1 << bst);
+    }
+    return bst;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus);
+#endif
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallCheckBadStatus);
 
@@ -649,11 +814,33 @@ INCLUDE_ASM(const s32, "sbtl", sbtlBtlSetBadStatusNoSub2);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallSetClutColor2);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlSetBadStatusAction);
+void sbtlSetBadStatusAction(struct SBTLUNIT_WORK *wk, u32 action, s32 cnt) {
+    sbtlSetAction(wk, action, cnt);
+    sbtlClearHitC(wk_sbtl->hitList, wk);
+    sbtlForceReset(wk_sbtl->effList, wk);
+    wk->model->flags &= ~0x20;
+    wk->field474 = 0;
+    wk->flg |= 0x20;
+    wk->vstatus |= 0x80;
+    sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
+}
 
 INCLUDE_ASM(const s32, "sbtl", SetBadStatusCounter);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlCheckBadStatusWeakSub);
+s32 sbtlBtlCheckBadStatusWeakSub(SKLID skill) {
+    s32 result = 0;
+
+    switch (skill) {
+    case 427:
+    case 432:
+    case 443:
+    case 450:
+    case 903:
+    case 1131:
+        result = 1;
+    }
+    return result;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_WeakNumber);
 
@@ -738,7 +925,26 @@ INCLUDE_ASM(const s32, "sbtl", sbtlBtlGetDamageSBtlCalcSub3);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlBtlGetDamageSBtlCalcSub4);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckRegistKaja);
+s32 sbtlCheckRegistKaja(SBTLSKL_KAJA_WORK *kaja, struct SBTLSKILLP_TBL *skill) {
+    s32 i;
+    s32 result;
+    f32 n1;
+
+    for (i = 0; i < 2; i++) {
+        if (kaja[i].m_cnt == 0) {
+            return i;
+        }
+    }
+    n1 = skill->n1;
+    result = -1;
+    for (i = 0; i < 2; i++) {
+        if (kaja[i].m_cnt != 0 && kaja[i].m_fPara < n1) {
+            n1 = kaja[i].m_fPara;
+            result = i;
+        }
+    }
+    return result;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckRegistKajaMaxNewAI);
 
@@ -787,7 +993,15 @@ s32 sbtlGetViceLevel(s32 vice) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlRecalcAisyoMember);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlLoadHuumaMesDataSub);
+s32 sbtlBtlLoadHuumaMesDataSub(s32 huumaMesNo) {
+    switch (huumaMesNo) {
+    case 208:
+        return 15;
+    case 209:
+        return 16;
+    }
+    return gohData7[huumaMesNo].field80;
+}
 
 SBTLDVLTK_LISTWORK *sbtlCallChipAllocZeroDirect(void)
 {
@@ -1226,7 +1440,19 @@ s32 sbtlDeleteDvltkList(SBTLDVLTK_LISTWORK *lwk) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallMessageNumSearch3);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlLeaf99);
+s32 sbtlLeaf99(s32 a, s32 b)
+{
+    s32 tbl[32];
+
+    memcpy(tbl, sbtlLeaf99Table, sizeof(tbl));
+    if (a == 22 && b == 18) {
+        return 1;
+    }
+    if (tbl[a] > tbl[b]) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlSearchUnitID34);
 

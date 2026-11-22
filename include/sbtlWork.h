@@ -48,7 +48,9 @@ typedef struct SBTLCAMERA_WORK {
     sdfVector4_t direction;
     sdfVector4_t camerapos;
 #ifdef VERSION_RAIDOU2
-    u8 pad030[0x60 - 0x30];
+    sdfVector4_t targetpos_bk;
+    sdfVector4_t direction_bk;
+    sdfVector4_t camerapos_bk;
     S_PosCtrl m_PosCtrlCam; /* HD m_CamMov->m_PosCtrlCam, held inline */
     S_PosCtrl m_PosCtrlTgt;
 #endif
@@ -57,7 +59,9 @@ typedef struct SBTLCAMERA_WORK {
     f32 fovy;
 #ifdef VERSION_RAIDOU2
     s8 mode; /* E_CAMERA_MODE */
-    u8 padAD[3];
+    u8 padAD[1];
+    s8 fieldAE; /* sbtlSetMode sets it to 1 */
+    u8 padAF[1];
 #else
     u8 pad3C[4];
 #endif
@@ -222,7 +226,10 @@ typedef struct SBTL_WORK {
     SBTLCAMERA_WORK camerabk;
     u8 pad2E0[0x3BC - 0x2E0];
     u32 field3BC; /* HD scene->status; LoadMap_FromMemory sets 0x20 when the battle starts summoned */
-    u8 pad3C0[0x400 - 0x3C0];
+    u8 pad3C0[0x3F0 - 0x3C0];
+    s32 camCnt;
+    s32 camCnt2;
+    u8 pad3F8[0x400 - 0x3F8];
     fileRequest_t *panelPack;
     u32 panelPackPos;
     s32 panelPackLen;
@@ -281,7 +288,9 @@ typedef struct SBTL_WORK {
     u8 summon[20];
     u8 summonflg[20]; /* HD name; 2 while the stock slot's demon is out */
     s32 stockUnitID[20];
-    u8 pad6D0[0x6EC - 0x6D0];
+    u32 kuishibBit; /* HD kuishibBit, one bit per stock slot (sbtlCheckBit) */
+    u32 deadbombBit; /* HD deadbombBit */
+    u8 pad6D8[0x6EC - 0x6D8];
     SBTLVIBE_WORK vibe[2];
     s32 vibe_startf[2];
     s32 vibe_frame[2];
@@ -411,7 +420,12 @@ typedef struct SBTL_WORK {
     u8 field878;
     u8 field879;
     u8 field87A;
-    u8 padC57[0xC74 - 0xC57];
+    u8 padC57[0xC58 - 0xC57];
+    f32 camTgtConsF;
+    s32 camTgtConsI; /* sbtlCheckDamageTargetUseItem keeps it in 20..30 */
+    u8 padC60[0xC64 - 0xC60];
+    s32 fieldC64;
+    u8 padC68[0xC74 - 0xC68];
     s32 fieldC74; /* field1A0 of the first gun target */
     u8 padC78[0xC7B - 0xC78];
     s8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
@@ -489,7 +503,8 @@ typedef struct SBTL_WORK {
     s16 field42C0;
     u8 pad42C2[0x2];
     struct SBTLUNIT_WORK *field42C4; /* enemy cmpCallBtlCreateTargetList found for a party talk */
-    u8 pad42C8[0x42CA - 0x42C8];
+    u8 pad42C8[0x42C9 - 0x42C8];
+    s8 bosseventflg;
     s8 field42CA; /* Proc skips the pause checks when nonzero */
     s8 field42CB;
     s8 field42CC;
@@ -1302,7 +1317,7 @@ s32 sbtlCheckScriptData(s32 devilId);
 s32 sbtlCheckTutorialBattle(void);
 #ifdef VERSION_RAIDOU2
 s32 IsSceanStop(void);
-void sbtlInitSBtlSub3(void);
+void sbtlSetStaticInit(void);
 void sbtlCallBtlCheckTutorialBattle(void);
 s32 sbtlClearGeneratorWork(void);
 void sbtlSetGunNum(s32 num);
@@ -1321,6 +1336,17 @@ extern f32 sbtlLeaf110Work[4];
 extern s32 sbtlData169;
 extern s32 sbtlData170;
 extern f32 sbtlData171;
+extern f32 sbtlData172;
+extern s32 SetParaData; /* HD gsBtlCamera_Hokan_Not */
+extern f32 sbtlGetIdlingData[3]; /* HD gSbtlCam_offset_pos */
+extern const s32 sbtlCallGetPercentageTable[5];
+extern const s32 sbtlLeaf99Table[32];
+f32 PosCtrlSystem(S_PosCtrl *ctrl, sdfVector4_t *ret);
+f32 CameraMoveSystem(SBTLCAMERA_WORK *wk);
+s32 sbtlCheckSpecialDamage_Stop(struct SBTLUNIT_WORK *wk);
+void sbtlSetBadStatusAction(struct SBTLUNIT_WORK *wk, u32 action, s32 cnt);
+void GetNowPosAS(sdfVector4_t *vPosRes, const sdfVector4_t *vPosBgn, const sdfVector4_t *vPosEnd, f32 fTime, f32 x);
+void sbtlCheckDamageTargetUseItem(s32 num);
 extern s32 sbtlSbattle3Data; /* frames counted by sbtlSbattle3 */
 void cmpRefSbtl2(void);
 s32 Exit_sbtl(s32 mode);
@@ -1531,6 +1557,8 @@ void sbtlInitTutorial(void);
 s32 sbtlRefSbtl47(void);
 s32 sbtlRefSbtl62(struct SBTLUNIT_WORK *wk);
 void CalcAisyo_sbtlCalc(struct SBTLUNIT_WORK *wk);
+void sbtlBtlFadeOutBadStatusEffectSub(struct SBTLUNIT_WORK *wk);
+void sbtlBtlFadeOutBadStatusEffectSub2(struct SBTLUNIT_WORK *wk);
 void sbtlGetPlayerTec_ParaUp(sdatUnitWork_t *unit, sdatParaWork_t *para);
 s32 sbtlReleaseDelList(struct SBTLEFF_DELLISTWORK *lwk, u8 flg);
 s32 sbtlReleaseDvltk_List(struct SBTLDVLTK_LISTWORK *lwk, u8 flg);

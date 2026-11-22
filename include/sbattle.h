@@ -201,7 +201,7 @@ s32 sbtlResetEPLData(s32 i);
 void sbtlResetMotionMovePos(void);
 void sbtlSetEffHitPara_S(struct SBTLSKILLHIT_TBL *hwk, struct SBDEBUG_CSRWORK *wk, s32 flg);
 void sbtlSetModelData(struct SBTLUNIT_WORK *unit, MODELTYPE major, s32 point);
-void sbtlSetMode(E_CAMERA_MODE mode);
+s32 sbtlSetMode(E_CAMERA_MODE mode);
 s32 sbtlSetMotionMoveData_Buffer(void);
 s32 sbtlSetPathMotion(struct SBTLSKLHIT_PACDATAWORK *pac, s32 point);
 s32 sbtlSetPreViewModel(void);

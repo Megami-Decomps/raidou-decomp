@@ -6,6 +6,7 @@
 
 struct SBTLDMG_HITWORK;
 struct SBTLSKILLP_TBL;
+struct SBTLSKL_KAJA_WORK;
 struct SBTLUNIT_WORK;
 struct sdatUnitWork_t;
 struct SBTL_AISYO_TBL;
@@ -54,7 +55,11 @@ s32 LimitRange(struct sdatUnitWork_t *unit, s32 value, s32 isMp);
 s32 sbtlCallLimitRange(struct SBTLUNIT_WORK *wk, s32 value);
 s32 sbtlCheckMoon(u16 moon);
 s32 sbtlResetAutoSkill(struct sdatUnitWork_t *unit);
+#ifdef VERSION_RAIDOU2
+s32 sbtlSetAutoSkill_GBID(struct sdatUnitWork_t *unit, s32 id, SKLID sklid);
+#else
 s32 sbtlSetAutoSkill_GBID(struct sdatUnitWork_t *unit, s32 id);
+#endif
 s32 sbtlCheckAutoSkill_ActerDamage_ID(SKLID sklid);
 s32 sbtlCheckAutoSkill_TargetDamage_ID(SKLID sklid);
 s32 sbtlCheckAutoSkill_ActerDamage(s32 autono);

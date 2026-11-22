@@ -61,7 +61,8 @@ typedef struct sdatUnitWork_t {
     /* 0xE4 */ s8 autoskill[17]; /* set for a haveskill entry the unit repeats on its own */
     /* 0xF5 */ u8 padF5[0xF8 - 0xF5];
     /* 0xF8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
-    /* 0xFC */ u8 padFC[0x4];
+    /* 0xFC */ s16 badst_cnt;
+    /* 0xFE */ u8 padFE[0x2];
     /* 0x100 */ s16 autost_cnt;
     /* 0x102 */ s16 autost_cnt2; /* frames between auto skill heals */
     /* 0x104 */ u32 itemstatus;
@@ -69,7 +70,9 @@ typedef struct sdatUnitWork_t {
     /* 0x10A */ s16 itemst_cnt2;
     /* 0x10C */ SBTL_AISYO_TBL aisyo;
     /* 0x14C */ s16 field14C;
-    /* 0x14E */ u8 pad14E[0x178 - 0x14E];
+    /* 0x14E */ s16 aOmoideSkill[17]; /* HD aOmoideSkill: the auto skills of a non-enemy unit */
+    /* 0x170 */ s16 iOmoideSkillCnt;
+    /* 0x172 */ u8 pad172[0x178 - 0x172];
 #else
     /* 0x90 */ s32 haveskill[10];
     /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */

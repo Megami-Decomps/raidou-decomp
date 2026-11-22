@@ -119,9 +119,9 @@ sbtlLoadDevilSE	code_0026B0A8	raidou2 0x134	12 of 77 words differ	docs/matching/
 sbtlFadeProc	code_0026B0A8	raidou2 0x2CC	115 of 168 words differ	docs/matching/code_0026B0A8.md	27		
 RGBFade	code_0026B0A8	raidou2 0x130	30 of 76 words differ	docs/matching/code_0026B0A8.md	33		
 sbtlCheckTalkSelectTarget	code_0026B0A8	raidou2 0x114	36 of 70 words differ	docs/matching/code_0026B0A8.md	39		
-LoadMap_FromMemory	code_0026B0A8	raidou2 0x83C	23 of 527 words differ	docs/matching/code_0026B0A8.md	45		
-GetSkillSE	code_0026B0A8	raidou2 0x318	6 of 198 words differ	docs/matching/code_0026B0A8.md	51		
-sbtlResetAtkSklEff	code_0026B0A8	raidou2 0x530	100 of 332 words differ	docs/matching/code_0026B0A8.md	57		
+LoadMap_FromMemory	code_0026B0A8	raidou2 0x83C	23 of 527 words differ	docs/matching/code_0026B0A8.md	45	the -DNON_MATCHING full unit moves with declarations in headers the unit includes. The R2-C6 part 2 edits to sBtlCalc.h, sBtlUnit.h, sbattle.h, sbtlWork.h and sdatUnit.h turn it from DIFF 8/527 into CONTEXT 9/527, and reverting any one of them alone leaves it CONTEXT, so it shifts with the count of declarations, not its own C.	
+GetSkillSE	code_0026B0A8	raidou2 0x318	6 of 198 words differ	docs/matching/code_0026B0A8.md	53		
+sbtlResetAtkSklEff	code_0026B0A8	raidou2 0x530	100 of 332 words differ	docs/matching/code_0026B0A8.md	59		
 sbtlCreateEnemyList	code_002743E0	raidou2 0xB8	1 of 46 words differ	docs/matching/code_002743E0.md	3		
 sbtlCreateSideList	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	11		
 sbtlCreateSideList_sbtlUnit	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	19		
@@ -512,6 +512,8 @@ sbtlSetAutoSkill_GBID	sbtl	raidou1 0xC0	16 of 48 words differ	docs/matching/sbtl
 sbtlCheckHaveskill_Atk	sbtl	raidou1 0xA8	7 of 42 words differ	docs/matching/sbtl.md	9		
 sbtlSetWeakBit	sbtl	raidou1 0x120	4 of 72 words differ	docs/matching/sbtl.md	17		
 CalcAutoSkill	sbtl	raidou1 0x310	40 of 196 words differ	docs/matching/sbtl.md	25		
+sbtlSetStaticInit	sbtl	raidou2 0x44	2 of 17 words differ	docs/matching/sbtl.md	33		
+sbtlCheckBadStatus	sbtl	raidou2 0x50	13 of 20 words differ	docs/matching/sbtl.md	39		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		
