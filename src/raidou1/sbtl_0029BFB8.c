@@ -631,11 +631,11 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlCheckAisyoOld2);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlCheckAisyoOld3);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlCheckAisyoOld4);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_GUN);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlCheckAisyoOld5);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlCheckAisyoOld6);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_MAGIC);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlLeaf118);
 

@@ -12,9 +12,14 @@ struct sprHandle_t;
 
 extern struct dds3ProcessID_t *sbtlData104;
 extern struct sprHandle_t *sbtlData105;
+extern s32 sbtlData106; /* the last devil talk text width */
 
 struct sprHandle_t *sbtlGetSpriteHandle(void);
 s32 sbtlDrawText(struct SBTLDVLTK_WORK *dwk);
+void sbtlDrawTextFont(struct SBTLDVLTK_WORK *dwk);
+#ifdef VERSION_RAIDOU2 /* Raidou 1's sbtlDrawText under its Raidou 2 label */
+s32 sbtlCallBtlSearchUnitID34(struct SBTLDVLTK_WORK *dwk);
+#endif
 
 char *GetDrawText(u32 rgba, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode, struct SBTLDVLTK_WORK *_dwk);
 s32 sbtlCallBtlCheckMsgMemType(struct SBTLUNIT_WORK *wk);

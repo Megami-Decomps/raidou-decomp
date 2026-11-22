@@ -7566,9 +7566,9 @@
 0x002A02C8	sbtlCallBtlCheckAisyoOld	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
 0x002A03F0	sbtlCallBtlCheckAisyoOld2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
 0x002A0558	sbtlCallBtlCheckAisyoOld3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
-0x002A0658	sbtlCallBtlCheckAisyoOld4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
+0x002A0658	sbtlGetDamage_GUN	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same row in R1 (0x002A0658), name shared by both games; replaces sbtlCallBtlCheckAisyoOld4
 0x002A0750	sbtlCallBtlCheckAisyoOld5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
-0x002A0818	sbtlCallBtlCheckAisyoOld6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
+0x002A0818	sbtlGetDamage_MAGIC	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same row in R1 (0x002A0818, the SBTLCALC_DMGWORK sibling of sbtlCallBtlCheckAisyoOld5 and 7, HD order sBtlGetDamage_C_MAGIC then sBtlGetDamage_MAGIC); name shared by both games; replaces sbtlCallBtlCheckAisyoOld6
 0x002A08E8	sbtlLeaf118	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002A0910	sbtlGetDamage_The_W	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetDamage_The_W score 6.3 flag I: calls1 callers-of-match-uniq st1:call r1+r2
 0x002A0938	sbtlCallBtlCheckAisyoOld7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old

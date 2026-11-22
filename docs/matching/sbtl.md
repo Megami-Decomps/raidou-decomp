@@ -41,3 +41,15 @@ Schedule only: retail stores sbtlGetIdlingData[2] between the 1.0f and 100.0f fl
 Raidou 2: 13 of 20 words differ, first at +0x1C; emitted 88 bytes, native 80 bytes.
 
 Register only: cc1 copies the sbtlGetBadStatus result into $4 before the (bst - 20) < 2 range test, where retail works on $2 and moves wk into $4 in the branch delay slot. Tried a switch, a BST local (unsigned compare, more words) and the inverted test; all 13 words. Vector checked.
+
+## sbtlResetBadStatus (sbtl, raidou2 0xCC)
+
+Raidou 2: 3 of 51 words differ, first at +0x14.
+
+Register swap only: retail keeps $2 for the 0 return value in the first branch's delay slot and tests flg & 0x800 in $3; cc1 tests in $2. Tried early return, the if-block form (3 words) and a result local (46 words). 3 words. Vector checked.
+
+## sbtlSetAutoSkill_ID (sbtl, raidou2 0x110)
+
+Raidou 2: 48 of 65 words differ, first at +0x28; emitted 260 bytes, native 272 bytes.
+
+Block order and flag targets match (0x5000 kuishibBit/flg first, 0x1000 deadbombBit/flg2 second, from attr != 0x1000 nesting); retail keeps idx in $3 and copies it to $5, and every return takes ld $16 in a bnel delay slot before a shared li 1. Tried if/else if (55), switch (47), explicit returns per HD (44, block order lost). 48 words. Vector checked.

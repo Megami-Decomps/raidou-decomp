@@ -3605,7 +3605,6 @@
 0x002D3F98	sbtlCallBtlGetNakama5	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetNakama
 0x002D4340	sbtlBtlSetBadStatusRandSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlSetBadStatusRand
 0x002D4370	sbtlCallGetPercentage	func	tier=D	derived-callee	na	unit sbtl; calls GetPercentage
-0x002D4FF0	sbtlCallClearUnitSkills	func	tier=D	derived-callee	na	unit sbtl; calls cmbClearUnitSkills
 0x002D5F88	sbtlCheckCost	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlCheckCost, score 7.3 band B
 0x002D6310	sbtlRefSbtl71	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002D6390	sbtlRefSbtl54	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
@@ -3628,13 +3627,10 @@
 0x002DB9F8	sbtlBtlGetDamageSBtlCalcSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlGetDamage_sbtlCalc
 0x002DBAA0	sbtlCallBtlCheckAisyoOld	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002DBBB8	sbtlCallBtlCheckAisyoOld3	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
-0x002DBCB8	sbtlCallBtlCheckAisyoOld4	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002DBDB0	sbtlCallBtlCheckAisyoOld5	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
-0x002DBE78	sbtlCallBtlCheckAisyoOld6	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002DBF48	sbtlBtlGetDamageSBtlCalcSub2	func	tier=D	derived-caller	na	unit sbtl; called by sbtlGetDamage_sbtlCalc
 0x002DBF78	sbtlCallBtlCheckAisyoOld7	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002DC0A0	sbtlCallBtlCheckAisyoOld2	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
-0x002DC1C8	sbtlBtlGetDamageSBtlCalcSub3	func	tier=D	derived-caller	na	unit sbtl; called by sbtlGetDamage_sbtlCalc
 0x002DC270	sbtlBtlGetDamageSBtlCalcSub4	func	tier=D	derived-caller	na	unit sbtl; called by sbtlGetDamage_sbtlCalc
 0x002DC670	sbtlLeaf115	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002DC6F0	sbtlITEMRECUP	func	tier=D	derived-string	na	unit sbtl; string 'ITEMRECUP %d * [H]%d/100 -> %d\n'
@@ -24529,6 +24525,7 @@
 0x002D3E70	sbtlSetWeakBit	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlSetWeakBit score 6.5 flag I: calls2 next calls-of-match votes2 st2:call r1-disagree:0x29a500
 0x002D4588	CalcItem	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.CalcItem score 6.0 flag -: calls3 callers-of-match-uniq votes3 st2:call r1-disagree:0x29a988
 0x002D4820	CalcItem_Battle_sbtlCalc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.CalcItem_Battle score 6.9 flag -: calls5 callers-of-match votes2 st2:call r1-disagree:0x29ace0
+0x002D4FF0	sbtlSetAutoSkill_GB	func	tier=B	hd-role	na	HD sBtlSetAutoSkill_GB (reset, then per auto skill slot GetAutoSkill_ID, GetAutoSkillPara, SetAutoSkill_GBID with 3 args); R1 sbtlSetAutoSkill_GB is the 2-slot form; name free in raidou2, sbtlWork.h declares it; replaces sbtlCallClearUnitSkills
 0x002D5328	sbtlSetAutoSkill_ID	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlSetAutoSkill_ID score 6.0 flag I: calls2 callers-of-match votes2 st2:call r2-only
 0x002D5560	sbtlGetAutoSkill_ID	func	tier=B	hd-role	na	HD sBtlGetAutoSkill_ID; same role as raidou1 sbtlGetAutoSkill_ID; replaces sbtlCallBtlGetSkilltbl19
 0x002D5D30	sbtlCheckMoon	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckMoon(moon), evtBitCheck of a nine-entry u16 table, between sBtlGetDropMoney and sBtlGetSkillCost; replaces sbtlCheckEvtBit_Table
@@ -24546,8 +24543,11 @@
 0x002DB320	sbtlResetBattlePara	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlResetBattlePara score 6.2 flag I: calls4 calls-of-match votes4 st2:call r1-disagree:0x29fc70
 0x002DB430	sbtlGetPlayerTec_ParaUp	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlGetPlayerTec_ParaUp score 5.6 flag I: calls3 calls-of-match votes3 st2:call r1-disagree:0x29fd80
 0x002DB7E8	CalcAisyo_sbtlCalc	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.CalcAisyo score 6.0 flag -: calls3 calls-of-match votes2 st2:call r1-disagree:0x2a0148
+0x002DBCB8	sbtlGetDamage_GUN	func	tier=B	hd-role	na	HD sBtlGetDamage_GUN: (gun_power + alevel) * n0 / (tlevel/10 + 16.5 + tdef/10) / damage_per, then the aisyo percentage; HD order C_GUN, GUN, C_MAGIC, MAGIC matches Old3..Old6; replaces sbtlCallBtlCheckAisyoOld4
+0x002DBE78	sbtlGetDamage_MAGIC	func	tier=B	hd-role	na	HD sBtlGetDamage_MAGIC: (3*atec + alevel + 20) * n0 / (ttec + 15) * damage_per, then the aisyo_tbl percentage; R2 picks the slot with sbtlCheckAisyo_Old; replaces sbtlCallBtlCheckAisyoOld6
 0x002DBF50	sbtlGetDamage_The_W	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlCalc.sBtlGetDamage_The_W score 6.3 flag I: calls1 callers-of-match-uniq st1:call r1+r2
 0x002DC010	sbtlGetDamage_MRecover	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlGetDamage_MRecover score 5.2 flag I: calls2 calls-of-match votes2 st2:call r2-only
+0x002DC1C8	sbtlGetDamage_Tadan	func	tier=B	hd-role	na	HD sBtlGetDamage_Tadan (tdan_sklid/tdancounter/tdancmpcnt/tdanpara set from para2, count and n1); R2 lacks the skill 168 branch; name free in both games; replaces sbtlBtlGetDamageSBtlCalcSub3
 0x002DC2F0	sbtlCheckRegistKaja	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlCheckRegistKaja score 6.1 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x002DC3C8	sbtlGetDamage_ParaUP	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlCalc.sBtlGetDamage_ParaUP score 6.3 flag I: calls3 callers-of-match votes3 st2:call r1-disagree:0x2a0ec0
 0x002DD650	sbtlCreateWork	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlDvltk.sBtlCreateWork score 6.5 flag I: calls2 str1 calls-of-match votes2 st2:call r1-disagree:0x2a20e0

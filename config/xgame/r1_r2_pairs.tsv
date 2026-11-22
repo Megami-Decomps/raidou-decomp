@@ -6816,9 +6816,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0029EB60	0x002D96C8	sbtlCheckBadStatus_WeakNumber	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
 0x0029FF60	0x002DB600	sbtlCheckBattlePara	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-masked-hash
 0x002A0558	0x002DBBB8	sbtlCallBtlCheckAisyoOld3	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
-0x002A0658	0x002DBCB8	sbtlCallBtlCheckAisyoOld4	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
+0x002A0658	0x002DBCB8	sbtlGetDamage_GUN	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A0750	0x002DBDB0	sbtlCallBtlCheckAisyoOld5	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
-0x002A0818	0x002DBE78	sbtlCallBtlCheckAisyoOld6	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
+0x002A0818	0x002DBE78	sbtlGetDamage_MAGIC	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A0910	0x002DBF50	sbtlGetDamage_The_W	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A0938	0x002DBF78	sbtlCallBtlCheckAisyoOld7	no	yes	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	unique-reloc-hash
 0x002A0E40	0x002DC670	sbtlLeaf115	no	no	asm/raidou1/sbtl.s	asm/raidou2/sbtl.s	size

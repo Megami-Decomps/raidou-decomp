@@ -1007,6 +1007,15 @@ typedef struct SBTL_STP {
     SBTL_STP_NODE *head;
 } SBTL_STP;
 
+/* A devil talk window frame: st 0 fades alpha down to 1, st 1 up to 128. */
+typedef struct SBTLDVLTK_WAKUWORK {
+    s32 st;
+    s32 x;
+    s32 y;
+    s32 alpha;
+    u32 rgb;
+} SBTLDVLTK_WAKUWORK;
+
 /* Devil talk window (HD SBTLDVLTK_WORK, with the work's own handle first in R1). Partial layout. */
 typedef struct SBTLDVLTK_WORK {
     sdfMemHandle_t *handle;
@@ -1025,7 +1034,8 @@ typedef struct SBTLDVLTK_WORK {
     s32 ofs_x;
     s32 ofs_y;
     s32 alpha;
-    u8 pad40[0xE0 - 0x40];
+    SBTLDVLTK_WAKUWORK wk[7];
+    u8 padCC[0xE0 - 0xCC];
     struct SBTLDVLTK_WORK *prev;
     struct SBTLDVLTK_WORK *next;
 } SBTLDVLTK_WORK;

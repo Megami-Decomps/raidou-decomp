@@ -59,6 +59,8 @@ typedef struct frTextBank_t frTextBank_t;
 u8 *MessageNumSearch(s32 Index, frTextBank_t *pData, s32 Size);
 frFontHandle_t *frCallMessageRequestEx2(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32 Tp, s32 Spd, u8 *pMsg,
     frFontHandle_t *pFRQ, s32 Line);
+frFontHandle_t *frCallMessageRequestEx22(s32 X, s32 Y, s32 Z, s32 Style, s32 ColNo, s32 Tp, s32 Spd, u8 *pMsg,
+    frFontHandle_t *pFRQ, s32 Line, s32 Width);
 s32 frCallGetStrWidth3(s32 requestedLine, const _FRQ *glyph);
 void frFontMoveChainTo(s32 targetX, s32 targetY, _FRQ *glyphChain);
 void frLeaf(_FRQ *glyph);

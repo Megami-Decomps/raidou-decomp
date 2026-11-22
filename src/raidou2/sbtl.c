@@ -202,7 +202,35 @@ f32 CameraMoveSystem(SBTLCAMERA_WORK *wk) {
 
 INCLUDE_ASM(const s32, "sbtl", SetEnemyCPos);
 
-INCLUDE_ASM(const s32, "sbtl", MenuStealth);
+void MenuStealth(s32 mode)
+{
+    struct SBTLUNIT_WORK *pchara;
+    struct SBTLUNIT_WORK *nakama0;
+    struct SBTLUNIT_WORK *nakama1;
+
+    pchara = sbtlGetPChara();
+    nakama0 = sbtlGetNakama(0);
+    nakama1 = sbtlGetNakama(1);
+    if (mode == 0) {
+        dds3Data48 = 0;
+        dds3ObjectBaseOffFlag(pchara->pBasic, 0x400000);
+        if (nakama0 != NULL) {
+            dds3ObjectBaseOffFlag(nakama0->pBasic, 0x400000);
+        }
+        if (nakama1 != NULL) {
+            dds3ObjectBaseOffFlag(nakama1->pBasic, 0x400000);
+        }
+    } else {
+        dds3Data48 = 1;
+        dds3ObjectBaseOnFlag(pchara->pBasic, 0x400000);
+        if (nakama0 != NULL) {
+            dds3ObjectBaseOnFlag(nakama0->pBasic, 0x400000);
+        }
+        if (nakama1 != NULL) {
+            dds3ObjectBaseOnFlag(nakama1->pBasic, 0x400000);
+        }
+    }
+}
 
 void sbtlMenuOpen(void) {
     if (wk_sbtl->flg >= 0) {
@@ -293,7 +321,40 @@ s32 sbtlCallSetPara(void) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlNoHokan);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlSetMode);
+s32 sbtlSetMode(E_CAMERA_MODE no)
+{
+    SBTLCAMERA_WORK *camera;
+    s8 mode;
+
+    mode = no;
+    if (mode == E_CAMERA_MODE_Normal && !wk_sbtl->bBfrBtlEnd && !wk_sbtl->bosseventflg) {
+        mode = 0;
+        wk_sbtl->camCnt = 200;
+    } else {
+        wk_sbtl->camCnt = 0;
+    }
+    wk_sbtl->camCnt2 = 0;
+    camera = &wk_sbtl->camera;
+    if (camera != NULL) {
+        camera->mode = mode;
+        wk_sbtl->camTgtConsF = 0.0f;
+        wk_sbtl->camTgtConsI = 0;
+        camera->fieldAE = 1;
+        if (mode == 13) {
+            SDF_VU0_LOADVECTOR(&camera->camerapos);
+            SDF_VU0_STOREVECTOR(&camera->m_PosCtrlCam.vLast);
+            SDF_VU0_LOADVECTOR(&camera->targetpos);
+            SDF_VU0_STOREVECTOR(&camera->m_PosCtrlTgt.vLast);
+        }
+        SDF_VU0_LOADVECTOR(&camera->camerapos);
+        SDF_VU0_STOREVECTOR(&camera->camerapos_bk);
+        SDF_VU0_LOADVECTOR(&camera->direction);
+        SDF_VU0_STOREVECTOR(&camera->direction_bk);
+        SDF_VU0_LOADVECTOR(&camera->targetpos);
+        SDF_VU0_STOREVECTOR(&camera->targetpos_bk);
+    }
+    return 1;
+}
 
 E_CAMERA_MODE sbtlGetMode(void) {
     return wk_sbtl->camera.mode;
@@ -422,7 +483,27 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckItemMember);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlBtlSetBadStatusRandSub);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallGetPercentage);
+s32 sbtlCallGetPercentage(s32 id)
+{
+    s32 tbl[5];
+    s32 percentage;
+    s32 num;
+    s32 max;
+    s32 i;
+
+    memcpy(tbl, sbtlCallGetPercentageTable, sizeof(tbl));
+    if (id == 16) {
+        num = 5;
+        max = 100;
+        percentage = GetPercentage();
+        for (i = 0; i < num; i++) {
+            if (percentage < max / num * (i + 1)) {
+                return tbl[i];
+            }
+        }
+    }
+    return id;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlSetBadStatusRand);
 
@@ -479,11 +560,63 @@ s32 sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk) {
 
 INCLUDE_ASM(const s32, "sbtl", CalcAisyo);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallClearUnitSkills);
+s32 sbtlSetAutoSkill_GB(sdatUnitWork_t *unit)
+{
+    s32 i;
+    SKLID sklid;
+    s32 id;
+
+    sbtlResetAutoSkill(unit);
+    for (i = 0; i < 6; i++) {
+        sklid = sbtlGetAutoSkill_ID(unit, i);
+        id = sbtlGetAutoSkillPara(sklid, &unit->autost_cnt, &unit->autost_cnt2);
+        if (id >= 0) {
+            sbtlSetAutoSkill_GBID(unit, id, sklid);
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlSetAutoSkill_GBID);
 
+/* NON_MATCHING: 20 of 68 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSetAutoSkill_ID(struct SBTLUNIT_WORK *wk, SKLID sklid)
+{
+    u32 attr;
+    s32 idx;
+
+    attr = sbtlGetSkilltbl(sklid)->attr & 0xFFFFF000;
+    if (attr != 0x1000) {
+        if (attr == 0x5000) {
+            if ((wk->field414 & 1) && !(wk->field414 & 0x80)) {
+                idx = wk_sbtl->summonIndex[0];
+                if (wk->field1A0 != wk_sbtl->stockUnitID[idx]) {
+                    idx = wk_sbtl->summonIndex[1];
+                }
+                if (sbtlCheckBit(&wk_sbtl->kuishibBit, idx)) {
+                    return 1;
+                }
+            }
+            wk->flg |= 0x20000000;
+        }
+    } else {
+        if ((wk->field414 & 1) && !(wk->field414 & 0x80)) {
+            idx = wk_sbtl->summonIndex[0];
+            if (wk->field1A0 != wk_sbtl->stockUnitID[idx]) {
+                idx = wk_sbtl->summonIndex[1];
+            }
+            if (sbtlCheckBit(&wk_sbtl->deadbombBit, idx)) {
+                return 1;
+            }
+        }
+        wk->flg2 |= 0x800;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlSetAutoSkill_ID);
+#endif
 
 s32 sbtlResetAutoSkill(sdatUnitWork_t *unit) {
     memset(&unit->pbtl, 0, sizeof(unit->pbtl));
@@ -492,9 +625,60 @@ s32 sbtlResetAutoSkill(sdatUnitWork_t *unit) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetAutoSkillPara);
+s32 sbtlGetAutoSkillPara(SKLID id, s16 *badst, s16 *power)
+{
+    struct SBTLSKILLP_TBL *tbl;
+    u32 attr;
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetAutoSkill_ID);
+    if (id == SKLID_NONE) {
+        return -1;
+    }
+    tbl = sbtlGetSkilltbl(id);
+    attr = tbl->attr & 0xFFFFF000;
+    *badst = tbl->badst & 0xFFF;
+    *power = tbl->n1;
+    if (attr == 0x3000) {
+        *badst = 0;
+    }
+    if (attr == 0xF000 || attr == 0x12000 || attr == 0x56000 || attr == 0x57000) {
+        *badst = sbtlCheckAisyo_Old(*badst);
+    }
+    if (attr == 0x2B000 || attr == 0x5C000) {
+        *badst = tbl->n0;
+    }
+    return attr >> 12;
+}
+
+SKLID sbtlGetAutoSkill_ID(sdatUnitWork_t *unit, s32 id)
+{
+    s32 i;
+    s32 n;
+    SKLID sklid;
+    SKLID result;
+    s32 cnt;
+
+    result = SKLID_NONE;
+    cnt = unit->iOmoideSkillCnt;
+    if (unit->devilId >= 208) {
+        for (i = 0, n = 0; i < 17; i++) {
+            sklid = unit->haveskill[i];
+            if (sklid == SKLID_NONE || sklid == SKLID_OFS_PROGRAM || sklid == SKLID_ATK) {
+                continue;
+            }
+            if (sbtlGetSkilltbl(sklid)->type & 0x2000) {
+                if (n == id) {
+                    return unit->haveskill[i];
+                }
+                n++;
+            }
+        }
+        return SKLID_NONE;
+    }
+    if (id >= 0 && id < cnt) {
+        result = unit->aOmoideSkill[id];
+    }
+    return result;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAutoSkill_ActerDamage_ID);
 
@@ -576,7 +760,27 @@ s32 sbtlCheckMoon(u16 moon) {
     return evtBitCheck(tbl[moon]) != 0;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetSkillCost);
+s32 sbtlGetSkillCost(sdatUnitWork_t *unit, SKLID skillid)
+{
+    struct SBTLSKILLP_TBL *tbl;
+    s32 cost;
+
+    if (unit == NULL) {
+        return 0;
+    }
+    tbl = sbtlGetSkilltbl(skillid);
+    if (tbl == NULL) {
+        return 0;
+    }
+    cost = tbl->para;
+    if (sbtlChkHaveMemSkl(unit, AUTO_COSTRATE)) {
+        cost = cost * unit->autost_cnt2 / 100;
+    }
+    if (cost == 0) {
+        cost = cost < tbl->para;
+    }
+    return cost;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetMagCost);
 
@@ -603,7 +807,32 @@ s32 sbtlCheckMagCost(sdatUnitWork_t *unit, s32 devilid, s8 flg) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost2);
+u8 sbtlCheckCost2(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 flg)
+{
+    struct SBTLSKILLP_TBL *cmnd;
+    struct SBTLSKILLP_TBL *tbl;
+
+    if (wk->field414 & 2) {
+        return 1;
+    }
+    if (wk->aiwk->cmndFrm != 0) {
+        cmnd = sbtlGetSkilltbl(wk->aiwk->cmndSkl);
+        if ((cmnd->flg2 & 1) && wk->skillid == cmnd->badst) {
+            return 1;
+        }
+    }
+    if (wk->flg & 0x100000) {
+        return 1;
+    }
+    tbl = sbtlGetSkilltbl(wk->skillid);
+    if (tbl->type & 0x1000) {
+        return 1;
+    }
+    if (tbl->flg2 & 2) {
+        sklid = tbl->badst;
+    }
+    return sbtlCheckCost_SkillID(wk, sklid, flg);
+}
 
 s32 sbtlCheckCost(struct SBTLUNIT_WORK *wk, s32 flg) {
     return sbtlCheckCost2(wk, wk->skillid, flg);
@@ -697,7 +926,44 @@ s32 sbtlCheckAisyo_Old(u32 attr) {
     return -1;
 }
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlCheckAisyoExSub);
+u32 sbtlBtlCheckAisyoExSub(SBTL_AISYO_TBL *aisyo, u32 attr)
+{
+    u32 result;
+    s32 i;
+    s32 para;
+
+    result = 0;
+    for (i = 0; i < 16; i++) {
+        if ((attr >> i) & 1) {
+            para = aisyo->word[i];
+            if (para & 0x10000) {
+                return 0x10000;
+            }
+            if (para & 0x2000) {
+                return 0x2000;
+            }
+            if (para & 0x1000) {
+                return 0x1000;
+            }
+            if (para & 0x80000) {
+                return 0x80000;
+            }
+            if (para & 0x4000) {
+                result |= 0x4000;
+            }
+            if (para & 0x8000) {
+                result |= 0x8000;
+            }
+            if (para & 0x20000) {
+                result |= 0x20000;
+            }
+            if (para & 0x40000) {
+                result |= 0x40000;
+            }
+        }
+    }
+    return result;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckAisyoEx);
 
@@ -765,7 +1031,35 @@ INCLUDE_ASM(const s32, "sbtl", CalcBadStatus);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlResetBadStatus_GB);
 
+/* NON_MATCHING: 48 of 51 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlResetBadStatus(struct SBTLUNIT_WORK *wk, BSTF flg)
+{
+    if (!(wk->flg & 0x800) && flg != 0) {
+        wk->unit.badst_cnt = 0;
+        wk->unit.badStatus &= ~flg;
+        if (wk->hModel != NULL) {
+            mdlSetClutColor(wk->hModel, 0x80808080, 0.0f);
+        }
+        sbtlBtlFadeOutBadStatusEffectSub(wk);
+        sbtlBtlFadeOutBadStatusEffectSub2(wk);
+        if (wk->unit.devilId != 455 && wk->unit.devilId != 456) {
+            CalcAisyo_sbtlCalc(wk);
+        }
+        if (wk->bst_effserialID2 != -1) {
+            sbtlDeleteEffectData_SerialID2(wk_sbtl->effList, wk->bst_effserialID2);
+            wk->bst_effserialID2 = -1;
+        }
+        if (wk->hModel != NULL) {
+            wk->hModel->flags &= ~2;
+        }
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlResetBadStatus);
+#endif
 
 INCLUDE_RODATA(const s32, "sbtl", CalcBadStatusTable3);
 
@@ -905,11 +1199,41 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlCheckAisyoOld);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlCheckAisyoOld3);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlCheckAisyoOld4);
+s32 sbtlGetDamage_GUN(SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl)
+{
+    f32 damage_per;
+    f32 damage;
+    s32 idx;
+
+    damage_per = wk->damage_per;
+    damage = (wk->alevel + wk->gun_power) * wk->n0;
+    damage /= wk->tlevel / 10.0f + 16.5f + wk->tdef / 10.0f;
+    damage /= damage_per;
+    idx = sbtlCheckAisyo_Old(ptbl->attr);
+    if (idx != -1) {
+        damage *= (wk->aisyo_tbl->word[idx] & 0xFFF) / 100.0f;
+    }
+    return damage;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlCheckAisyoOld5);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlCheckAisyoOld6);
+s32 sbtlGetDamage_MAGIC(SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl)
+{
+    f32 damage_per;
+    f32 damage;
+    s32 idx;
+
+    damage_per = wk->damage_per;
+    damage = wk->n0 * (wk->alevel + wk->atec * 3 + 20.0f);
+    damage /= wk->ttec + 15;
+    damage *= damage_per;
+    idx = sbtlCheckAisyo_Old(ptbl->attr);
+    if (idx != -1) {
+        damage *= (wk->aisyo_tbl->word[idx] & 0xFFF) / 100.0f;
+    }
+    return damage;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlBtlGetDamageSBtlCalcSub2);
 
@@ -917,11 +1241,34 @@ INCLUDE_ASM(const s32, "sbtl", sbtlGetDamage_The_W);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlCheckAisyoOld7);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlGetDamage_MRecover);
+s32 sbtlGetDamage_MRecover(SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *tbl)
+{
+    return (wk->tmaxhp * (wk->n0 / 100.0f) + (wk->alevel * 0.5f + wk->atec * 1.5f + wk->tluck * 1.5f) + 20.0f) *
+           wk->damage_per;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlCheckAisyoOld2);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlBtlGetDamageSBtlCalcSub3);
+s32 sbtlGetDamage_Tadan(struct SBTLUNIT_WORK *wk, struct SBTLSKILLP_TBL *ptbl, SKLID skillid, s32 damage)
+{
+    f32 fdamage;
+
+    if ((wk->flg & 0x100) && !(ptbl->flg2 & 0x20000)) {
+        return damage;
+    }
+    fdamage = damage;
+    if (wk->tdan_sklid == 0) {
+        wk->tdan_sklid = skillid;
+        wk->tdancounter = ptbl->para2;
+        wk->tdancnt = 0;
+        wk->tdancmpcnt = ptbl->para2 / ptbl->count;
+        wk->tdanpara = fdamage * (ptbl->n1 / 100.0f);
+        if (wk->tdanpara < 2) {
+            wk->tdanpara = 1;
+        }
+    }
+    return damage;
+}
 
 INCLUDE_ASM(const s32, "sbtl", sbtlBtlGetDamageSBtlCalcSub4);
 

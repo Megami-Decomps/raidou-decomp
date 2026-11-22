@@ -3249,9 +3249,7 @@
 0x002A02C8	sbtlCallBtlCheckAisyoOld	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002A03F0	sbtlCallBtlCheckAisyoOld2	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002A0558	sbtlCallBtlCheckAisyoOld3	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
-0x002A0658	sbtlCallBtlCheckAisyoOld4	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002A0750	sbtlCallBtlCheckAisyoOld5	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
-0x002A0818	sbtlCallBtlCheckAisyoOld6	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002A08E8	sbtlLeaf118	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
 0x002A0938	sbtlCallBtlCheckAisyoOld7	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002A09D0	sbtlCallFptodp3	func	tier=D	derived-callee	na	unit sbtl; calls fptodp
@@ -18027,6 +18025,8 @@
 0x0029C3C8	sbtlCheckAisyo_Old	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlCalc.sBtlCheckAisyo_Old score 2.1 flag I: prev gap2/2 st1:gap r1-only
 0x0029C4A0	WeakBstDvlTk	func	tier=C	hd-both	0.71 (n=206)	Raidou HD sBtlCalc.WeakBstDvlTk score 4.9 flag -: calls1 calls-of-match st1:call r1+r2
 0x0029E9C8	sbtlSetBadStatusAction	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlCalc.sBtlSetBadStatusAction score 6.5 flag I: calls3 calls-of-match votes3 st1:call r1-only
+0x002A0658	sbtlGetDamage_GUN	func	tier=C	derived-derived-role	na	same row in R1 (0x002A0658), name shared by both games; replaces sbtlCallBtlCheckAisyoOld4
+0x002A0818	sbtlGetDamage_MAGIC	func	tier=C	derived-derived-role	na	same row in R1 (0x002A0818, the SBTLCALC_DMGWORK sibling of sbtlCallBtlCheckAisyoOld5 and 7, HD order sBtlGetDamage_C_MAGIC then sBtlGetDamage_MAGIC); name shared by both games; replaces sbtlCallBtlCheckAisyoOld6
 0x002A0DA8	GetDamage_Rejyene	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlCalc.GetDamage_Rejyene score 3.8 flag -: calls1 next~ gap2/5 st1:gap r1-only
 0x002A1468	sbtlGetDamage_I_REC_P	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlCalc.sBtlGetDamage_I_REC_P score 6.2 flag I: calls3 callers-of-match votes3 st1:call r1-only
 0x002A1CC0	sbtlGetViceLevel	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlCalc.sBtlGetViceLevel score 6.5 flag I: calls2 calls-of-match votes2 st1:call r1-only

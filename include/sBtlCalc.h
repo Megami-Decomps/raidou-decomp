@@ -11,6 +11,21 @@ struct SBTLUNIT_WORK;
 struct sdatUnitWork_t;
 struct SBTL_AISYO_TBL;
 
+/* A bad status's model colors: the clut color, then the ratio and model color for sbtlLeaf60. */
+struct TEXCOLOR_WORK {
+    s32 cr;
+    s32 cg;
+    s32 cb;
+    f32 ratio;
+    s32 mr;
+    s32 mg;
+    s32 mb;
+    s8 flg;
+};
+
+extern struct TEXCOLOR_WORK *GlobalPID;
+
+
 /* Attacker and target figures for one damage calculation, on the caller's stack. */
 typedef struct SBTLCALC_DMGWORK {
     /* 0x00 */ s16 alevel;
@@ -37,6 +52,8 @@ typedef struct SBTLCALC_DMGWORK {
 SIZE_CHECK(SBTLCALC_DMGWORKSizeCheck, SBTLCALC_DMGWORK, 0x4C);
 
 s32 CalcAisyo(struct SBTLUNIT_WORK *wk);
+struct TEXCOLOR_WORK *sbtlRefGlobalPID(BST badstno);
+s32 sbtlBtlSetBadStatusNoSub2(struct SBTLUNIT_WORK *wk, BST badstno);
 s32 sbtlSetAutoSkill_ID(struct SBTLUNIT_WORK *wk, SKLID id);
 SKLID sbtlGetAutoSkill_ID(struct sdatUnitWork_t *unit, s32 id);
 s32 sbtlCheckBadStatus(struct SBTLUNIT_WORK *wk);

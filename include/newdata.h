@@ -297,7 +297,8 @@ typedef struct
     /* 0x7110 */ u32 unk7110;
     /* 0x7114 */ u8 unk7114[0x4E00];
     /* 0xBF14 */ u32 unkBF14;
-    /* 0xBF18 */ u8 unkBF18[0x78];
+    /* 0xBF18 */ u8 unkBF18[0x38];
+    /* 0xBF50 */ u32 anlyzBit[16]; /* analysed devils, one bit per devil ID */
     /* 0xBF90 */ dds3NameImage_t nbNameImage[16];
     /* 0xD190 */ dds3NameChar_t nbNameCode[16];
     /* 0xD1B0 */ u8 unkD1B0;

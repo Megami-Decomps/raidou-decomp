@@ -8043,7 +8043,7 @@
 0x002D4F28	sbtlCheckAutoSkill	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckAutoSkill score 9.0 flag I: calls1 next gap=exact votes2 st1:gap r1+r2
 0x002D4F30	sbtlCheckAutoSkill_Enemy	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckAutoSkill_Enemy score 10.8 flag I: calls2 calls-of-match votes3 st1:call r1+r2
 0x002D4F80	CalcAisyo	hd	hd: Raidou HD sBtlCalc.CalcAisyo, score 7.9 band B
-0x002D4FF0	sbtlCallClearUnitSkills	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls cmbClearUnitSkills
+0x002D4FF0	sbtlSetAutoSkill_GB	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlSetAutoSkill_GB (reset, then per auto skill slot GetAutoSkill_ID, GetAutoSkillPara, SetAutoSkill_GBID with 3 args); R1 sbtlSetAutoSkill_GB is the 2-slot form; name free in raidou2, sbtlWork.h declares it; replaces sbtlCallClearUnitSkills
 0x002D5090	sbtlSetAutoSkill_GBID	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlSetAutoSkill_GBID score 7.9 flag I: calls3 calls-of-match votes2 st2:call r2-only
 0x002D5328	sbtlSetAutoSkill_ID	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlSetAutoSkill_ID score 6.0 flag I: calls2 callers-of-match votes2 st2:call r2-only
 0x002D5438	sbtlResetAutoSkill	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R1 sbtlResetAutoSkill body (autost_cnt, autost_cnt2 and the pbtl bonus cleared, return 1) with the whole pbtl memset; SMT3 name was a fuzzy match; name free in raidou2, sBtlCalc.h declares it; replaces cmbClearUnitSkills
@@ -8121,15 +8121,15 @@
 0x002DB9F8	sbtlBtlGetDamageSBtlCalcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlGetDamage_sbtlCalc
 0x002DBAA0	sbtlCallBtlCheckAisyoOld	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
 0x002DBBB8	sbtlCallBtlCheckAisyoOld3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
-0x002DBCB8	sbtlCallBtlCheckAisyoOld4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
+0x002DBCB8	sbtlGetDamage_GUN	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetDamage_GUN: (gun_power + alevel) * n0 / (tlevel/10 + 16.5 + tdef/10) / damage_per, then the aisyo percentage; HD order C_GUN, GUN, C_MAGIC, MAGIC matches Old3..Old6; replaces sbtlCallBtlCheckAisyoOld4
 0x002DBDB0	sbtlCallBtlCheckAisyoOld5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
-0x002DBE78	sbtlCallBtlCheckAisyoOld6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
+0x002DBE78	sbtlGetDamage_MAGIC	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetDamage_MAGIC: (3*atec + alevel + 20) * n0 / (ttec + 15) * damage_per, then the aisyo_tbl percentage; R2 picks the slot with sbtlCheckAisyo_Old; replaces sbtlCallBtlCheckAisyoOld6
 0x002DBF48	sbtlBtlGetDamageSBtlCalcSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlGetDamage_sbtlCalc
 0x002DBF50	sbtlGetDamage_The_W	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetDamage_The_W score 6.3 flag I: calls1 callers-of-match-uniq st1:call r1+r2
 0x002DBF78	sbtlCallBtlCheckAisyoOld7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
 0x002DC010	sbtlGetDamage_MRecover	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlGetDamage_MRecover score 5.2 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x002DC0A0	sbtlCallBtlCheckAisyoOld2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
-0x002DC1C8	sbtlBtlGetDamageSBtlCalcSub3	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlGetDamage_sbtlCalc
+0x002DC1C8	sbtlGetDamage_Tadan	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetDamage_Tadan (tdan_sklid/tdancounter/tdancmpcnt/tdanpara set from para2, count and n1); R2 lacks the skill 168 branch; name free in both games; replaces sbtlBtlGetDamageSBtlCalcSub3
 0x002DC270	sbtlBtlGetDamageSBtlCalcSub4	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlGetDamage_sbtlCalc
 0x002DC2F0	sbtlCheckRegistKaja	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckRegistKaja score 6.1 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x002DC370	sbtlCheckRegistKajaMaxNewAI	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckRegistKajaMaxNewAI score 2.9 flag I: prev gap5/8 st2:gap r2-only

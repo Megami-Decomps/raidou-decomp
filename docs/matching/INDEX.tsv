@@ -518,6 +518,8 @@ sbtlSetWeakBit	sbtl	raidou1 0x120	4 of 72 words differ	docs/matching/sbtl.md	17
 CalcAutoSkill	sbtl	raidou1 0x310	40 of 196 words differ	docs/matching/sbtl.md	25		
 sbtlSetStaticInit	sbtl	raidou2 0x44	2 of 17 words differ	docs/matching/sbtl.md	33		
 sbtlCheckBadStatus	sbtl	raidou2 0x50	13 of 20 words differ	docs/matching/sbtl.md	39		
+sbtlResetBadStatus	sbtl	raidou2 0xCC	3 of 51 words differ	docs/matching/sbtl.md	45		
+sbtlSetAutoSkill_ID	sbtl	raidou2 0x110	48 of 65 words differ	docs/matching/sbtl.md	51		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		
