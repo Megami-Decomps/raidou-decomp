@@ -1420,6 +1420,16 @@ s32 evtUnitMoveType0(evtUnit_t *h) {
     return 1;
 }
 
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable);
+
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable2);
+
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable3);
+
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitRotationTarget_evtTable);
+
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitUpAxis);
+
 /* NON_MATCHING: 18 of 149 words match.  */
 #ifdef NON_MATCHING
 extern const char evtStrYmoveFrameno0[], evtStrYmoveFramenoAddvalue[];
@@ -1461,16 +1471,6 @@ s32 evtCalcFrame_UnitMoveType0(evtUnit_t *org_h) {
     return frame;
 }
 #else
-INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable);
-
-INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable2);
-
-INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable3);
-
-INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitRotationTarget_evtTable);
-
-INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitUpAxis);
-
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtCalcFrame_UnitMoveType0);
 #endif
 

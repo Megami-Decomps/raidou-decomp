@@ -29,6 +29,8 @@ extern sdfVector4_t mapObjTaskData4[5][8];
 extern const sdfVector4Unaligned_t mapObjTaskTable;
 extern u32 mapCtnColor;
 
+INCLUDE_RODATA(const s32, "code_r1_00145808", mapObjTaskTable);
+
 /* NON_MATCHING: 14 of 2754 words match. Compiles; helpers are static inline. Draft emits 2224 words vs 2754: retail unrolls the vector memset loop, repeats the case 5 rotation call in both branches and keeps one more door tail copy (gcc cross-jumps two in mine). Call counts match otherwise; behaviour checked against asm and IDA. */
 #ifdef NON_MATCHING
 static inline s32 mapObjTaskSetColor(MAP_OBJ_t *o)
@@ -696,8 +698,6 @@ void mapObjTask(void)
     mapSoundMoveSeTask();
 }
 #else
-INCLUDE_RODATA(const s32, "code_r1_00145808", mapObjTaskTable);
-
 INCLUDE_ASM(const s32, "code_r1_00145808", mapObjTask);
 #endif
 

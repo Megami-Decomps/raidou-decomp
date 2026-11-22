@@ -48,6 +48,8 @@ extern void mapCallEffectGetState3(void);
 
 #define GRAY(a) (((a) << 24) | ((a) << 16) | ((a) << 8) | (a))
 
+INCLUDE_RODATA(const s32, "code_r1_0016C450", mapNakamaTaskTable);
+
 /* NON_MATCHING: 16 of 376 words match. Register allocation and branch layout differ. */
 #ifdef NON_MATCHING
 void mapNakamaTask(void) {
@@ -234,7 +236,5 @@ void mapNakamaTask(void) {
     mapCallEffectGetState3();
 }
 #else
-INCLUDE_RODATA(const s32, "code_r1_0016C450", mapNakamaTaskTable);
-
 INCLUDE_ASM(const s32, "code_r1_0016C450", mapNakamaTask);
 #endif

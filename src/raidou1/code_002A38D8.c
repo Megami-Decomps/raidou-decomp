@@ -2806,6 +2806,30 @@ end:
     return 0;
 }
 
+INCLUDE_RODATA(const s32, "code_002A38D8", sdfSetLocalMapCounterMarkerStateTable);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrILeaveItToYou);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrDonWasteMp);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrHealSupportMe);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrUseMagicAttacks);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrUsePhysicalAttacks);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrListenToMyOrders);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrCancelEscape);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrAnalyze);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrCommand);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrCommandMenu);
+
+INCLUDE_RODATA(const s32, "code_002A38D8", sbtlCallGetProcessData47Table);
+
 /* NON_MATCHING: 132 of 233 words match. Retail fills the return branch delay slots with v0 = 0 and orders the case 3/4 and 6/7 blocks differently. */
 #ifdef NON_MATCHING
 s32 sbtlCallGetProcessData56(dds3ProcessID_t *id) {
@@ -2932,30 +2956,6 @@ end:
     return 0;
 }
 #else
-INCLUDE_RODATA(const s32, "code_002A38D8", sdfSetLocalMapCounterMarkerStateTable);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrILeaveItToYou);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrDonWasteMp);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrHealSupportMe);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrUseMagicAttacks);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrUsePhysicalAttacks);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrListenToMyOrders);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrCancelEscape);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrAnalyze);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrCommand);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlStrCommandMenu);
-
-INCLUDE_RODATA(const s32, "code_002A38D8", sbtlCallGetProcessData47Table);
-
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallGetProcessData56);
 #endif
 

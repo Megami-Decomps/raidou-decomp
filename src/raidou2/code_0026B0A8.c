@@ -2505,6 +2505,44 @@ s32 sbtlGetMotionNo(struct SBTLUNIT_WORK *wk, u8 side, s32 no)
     return sbtlGetMotionNoData[0][no];
 }
 
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable2);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable3);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable4);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable5);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable6);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable7);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable8);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable9);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable10);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable11);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable12);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable13);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable14);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable15);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable16);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable17);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable18);
+
+INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable19);
+
 /* NON_MATCHING: 228 of 332 words match.  */
 #ifdef NON_MATCHING
 void sbtlResetAtkSklEff(struct SBTLUNIT_WORK *wk)
@@ -2630,44 +2668,6 @@ void sbtlResetAtkSklEff(struct SBTLUNIT_WORK *wk)
     }
 }
 #else
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable2);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable3);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable4);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable5);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable6);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable7);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable8);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable9);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable10);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable11);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable12);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable13);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable14);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable15);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable16);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable17);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable18);
-
-INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable19);
-
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlResetAtkSklEff);
 #endif
 

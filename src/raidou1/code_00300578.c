@@ -778,6 +778,26 @@ s32 pipeCreateLink(CMP_SPR a_no) {
     return 1;
 }
 
+INCLUDE_RODATA(const s32, "code_00300578", sdfCallMultMatrixRevTable);
+
+INCLUDE_RODATA(const s32, "code_00300578", sdfStr3);
+
+INCLUDE_RODATA(const s32, "code_00300578", sdfStrGs);
+
+INCLUDE_RODATA(const s32, "code_00300578", sdfStrGs2);
+
+INCLUDE_RODATA(const s32, "code_00300578", sdfStr4);
+
+INCLUDE_RODATA(const s32, "code_00300578", sdfStr5);
+
+INCLUDE_RODATA(const s32, "code_00300578", fldStrCampTizuSpr);
+
+INCLUDE_RODATA(const s32, "code_00300578", fldStrCampJoutaiSpr);
+
+INCLUDE_RODATA(const s32, "code_00300578", fldStrCampTdnSpr);
+
+INCLUDE_RODATA(const s32, "code_00300578", fldStrCampSubSpr);
+
 /* NON_MATCHING: 83 of 86 words match. Only the order of the two loop preheader addiu (evtWork6, cmpWork3 bases) differs. */
 #ifdef NON_MATCHING
 s32 pipeCampCAMPPACKLB(void) {
@@ -819,26 +839,6 @@ s32 pipeCampCAMPPACKLB(void) {
     return ret;
 }
 #else
-INCLUDE_RODATA(const s32, "code_00300578", sdfCallMultMatrixRevTable);
-
-INCLUDE_RODATA(const s32, "code_00300578", sdfStr3);
-
-INCLUDE_RODATA(const s32, "code_00300578", sdfStrGs);
-
-INCLUDE_RODATA(const s32, "code_00300578", sdfStrGs2);
-
-INCLUDE_RODATA(const s32, "code_00300578", sdfStr4);
-
-INCLUDE_RODATA(const s32, "code_00300578", sdfStr5);
-
-INCLUDE_RODATA(const s32, "code_00300578", fldStrCampTizuSpr);
-
-INCLUDE_RODATA(const s32, "code_00300578", fldStrCampJoutaiSpr);
-
-INCLUDE_RODATA(const s32, "code_00300578", fldStrCampTdnSpr);
-
-INCLUDE_RODATA(const s32, "code_00300578", fldStrCampSubSpr);
-
 INCLUDE_ASM(const s32, "code_00300578", pipeCampCAMPPACKLB);
 #endif
 

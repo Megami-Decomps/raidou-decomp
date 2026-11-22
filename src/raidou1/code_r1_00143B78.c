@@ -17,6 +17,10 @@
 #include "mapData.h"
 #include "field.h"
 
+INCLUDE_RODATA(const s32, "code_r1_00143B78", mapObjFloorAdd_CashTable);
+
+INCLUDE_RODATA(const s32, "code_r1_00143B78", mapObjFloorAdd_CashTable2);
+
 /* NON_MATCHING: 85 of 366 words match. Register allocation and prologue order differ; the loop and field stores follow the asm. */
 #ifdef NON_MATCHING
 s32 mapObjFloorAdd_Cash(s32 floor, s16 uniq, MODELTYPE major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s)
@@ -183,10 +187,6 @@ s32 mapObjFloorAdd_Cash(s32 floor, s16 uniq, MODELTYPE major, s32 minor, s32 mot
     return i;
 }
 #else
-INCLUDE_RODATA(const s32, "code_r1_00143B78", mapObjFloorAdd_CashTable);
-
-INCLUDE_RODATA(const s32, "code_r1_00143B78", mapObjFloorAdd_CashTable2);
-
 INCLUDE_ASM(const s32, "code_r1_00143B78", mapObjFloorAdd_Cash);
 #endif
 

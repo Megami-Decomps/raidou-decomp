@@ -1407,6 +1407,20 @@ s32 mdlIsDebugTimeGraph(void) {
 
 INCLUDE_ASM(const s32, "code_r1_0019D3A8", mapModelViewerTmx);
 
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrBgViewerTmx);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrModelHexNum);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrRunTimeGraph);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrDisplayMark);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrCaptureDivY);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrCaptureDivX);
+
+INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrCaptureScale);
+
 /* NON_MATCHING: 111 of 189 words match.  */
 #ifdef NON_MATCHING
 void mdlDrawViewerSettings(void) {
@@ -1463,20 +1477,6 @@ void mdlDrawViewerSettings(void) {
     sdfDrawTagLink(packetList, (u32)(sdfDevPrintf(0x7300, 0x7F60, 0xFF0080, 0, "SAVE CONFIG")));
 }
 #else
-INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrBgViewerTmx);
-
-INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrModelHexNum);
-
-INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrRunTimeGraph);
-
-INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrDisplayMark);
-
-INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrCaptureDivY);
-
-INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrCaptureDivX);
-
-INCLUDE_RODATA(const s32, "code_r1_0019D3A8", mdlStrCaptureScale);
-
 INCLUDE_ASM(const s32, "code_r1_0019D3A8", mdlDrawViewerSettings);
 #endif
 

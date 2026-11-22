@@ -3429,6 +3429,14 @@ u32 evtViewerReturnZero(void) {
     return 0;
 }
 
+INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrWhiteOut);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrBlackOut);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrCurrentFrame);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrFirstFrame);
+
 /* NON_MATCHING: 26 of 121 words match.  */
 #ifdef NON_MATCHING
 extern const char evtStrFrameSetOk[], evtStrStartFrameSelect[], evtStrSetBistamode[], evtStrSetSkipmode[];
@@ -3499,14 +3507,6 @@ s32 evtFRAMESETOK(s32 arg0, s32 arg1, evtViewerInfo_t *viewer)
     return 0;
 }
 #else
-INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrWhiteOut);
-
-INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrBlackOut);
-
-INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrCurrentFrame);
-
-INCLUDE_RODATA(const s32, "event/evtEventViewer", evtStrFirstFrame);
-
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtFRAMESETOK);
 #endif
 

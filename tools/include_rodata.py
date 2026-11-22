@@ -21,6 +21,9 @@ function's asm file, and each C function brings what the compiler emits for it
 - rodata several functions share, or that only .data tables point at; splat
   migrated it nowhere. It goes where its address
   falls: before the first function whose rodata comes after it, or at the end.
+  A line that would land on the asm side (#else) of a NON_MATCHING block goes
+  before the block instead, unless every function using it is a draft whose C
+  emits it (tools/nm_rodata_placement.py checks this).
 - named rodata defined by the C unit (including aligned vectors) stays at its
   definition. The compiler provides that symbol even if an asm function still
   references it, so no INCLUDE_RODATA may duplicate it.
@@ -199,7 +202,6 @@ def place(version):
         owned -= defined_at.keys()
         have = set(INCLUDE.findall(text))
         anchors = []   # (address, position in text or None, symbol, needs a line)
-        c_owned = set()   # floating rodata of C functions, needed whichever way an asm function builds
         for sym, pos in defined_at.items():
             anchors.append((int(labels[sym], 16), pos, None, False))
         for m in INCLUDE_ASM.finditer(text):
@@ -225,7 +227,6 @@ def place(version):
                 # Placed by address like any other included symbol: a function may
                 # use rodata the compiler emitted after later functions.
                 anchors.append((addr, None, sym, sym not in have))
-                c_owned.add(sym)
         for sym, pos in compiled_at.items():
             if not any(a[2] == sym for a in anchors):
                 anchors.append((int(labels[sym], 16), pos, None, False))
@@ -241,12 +242,23 @@ def place(version):
             if m and m.group(1) in owned and not any(sym == m.group(1) for _, _, sym, _ in anchors):
                 anchors.append((int(m.group(2), 16), None, m.group(1), m.group(1) not in have))
         anchors.sort(key=lambda a: (a[0], a[1] is None, a[1] if a[1] is not None else -1, a[2] or ""))
-        # Floating symbols take the position of the next anchored one.
+        # Floating symbols take the position of the next anchored one. When that is
+        # on the asm side (#else) of a NON_MATCHING block, a -DNON_MATCHING build
+        # drops the line, so it stays there only if that build needs no copy:
+        # every function using the symbol is a draft whose C emits it. Otherwise
+        # it goes before the block.
+        drafts = nm_asm_functions(text)
+
+        def nm_build_needs(sym):
+            users = {f for f, refs in retail_refs.items() if sym in refs}
+            return not users or any(
+                f not in drafts or f not in bodies or sym in named_refs(f, set()) for f in users)
+
         following = len(text)
         placed = []
         for addr, pos, sym, needed in reversed(anchors):
             if pos is None:
-                pos = asm_start(text, following) if sym in c_owned else following
+                pos = asm_start(text, following) if nm_build_needs(sym) else following
             following = pos
             placed.append((pos, addr, sym, needed))
         positions = [pos for pos, *_ in sorted(placed, key=lambda p: p[1])]
@@ -315,16 +327,31 @@ def data_chunk_labels(version):
     return _DATA_CHUNK_LABELS[version]
 
 
+PREPROCESSOR = re.compile(r"^[ \t]*#[ \t]*(if\w*|else|elif|endif)\b(.*)$", re.M)
+
+
+def nm_asm_functions(text):
+    """Functions included as asm on the #else side of a NON_MATCHING block."""
+    return {m.group(1) for m in INCLUDE_ASM.finditer(text) if asm_start(text, m.start()) != m.start()}
+
+
 def asm_start(text, pos):
-    """`pos`, or the head of the NON_MATCHING block whose #else line it follows."""
-    before = text[:pos]
-    if not before.endswith("#else\n"):
+    """`pos`, or the head of the NON_MATCHING block whose asm side (#else) holds it,
+    with the `/* NON_MATCHING` comment line above it."""
+    stack = []   # [start, is a NON_MATCHING block, past its #else]
+    for m in PREPROCESSOR.finditer(text, 0, pos):
+        if m.group(1).startswith("if"):
+            stack.append([m.start(), m.group(1) == "ifdef" and m.group(2).split() == ["NON_MATCHING"], False])
+        elif m.group(1) == "endif":
+            if stack:
+                stack.pop()
+        elif stack:
+            stack[-1][2] = True
+    start = next((s for s, nm, asm in stack if nm and asm), None)
+    if start is None:
         return pos
-    start = before.rfind("\n#ifdef NON_MATCHING\n") + 1
-    if start == 0:
-        return pos
-    comment = before.rfind("\n", 0, start - 1) + 1
-    return comment if before.startswith("/* NON_MATCHING", comment) else start
+    comment = text.rfind("\n", 0, start - 1) + 1
+    return comment if start and text.startswith("/* NON_MATCHING", comment) else start
 
 
 def function_text(text, start):
