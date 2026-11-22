@@ -47,3 +47,11 @@ Raidou 2: 14 of 14 words differ, first at +0x0; emitted 56 bytes, native 64 byte
 The mapSummonDvGet body over map_aibo_buff. Retail copies the row pointer through a3, t0 and v0 and adds the base last, as an inlined getter would; the direct index adds the base first, as in mapSummonDvGet. Behaviour checked with nm_behaviour in both games and a Raidou 2 vector sweep.
 
 Related: [smt3 levers: scalar spill slots](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scalar-spills.md).
+
+## PlayerMotionSe2 (field/fldFileResolver, raidou2 0x7EC)
+
+Raidou 2: 146 of 491 words differ, first at +0x3C; emitted 1964 bytes, native 2028 bytes.
+
+R2 body (new code: the Hakuro wet-floor footstep path with fldLeaf4 ripples, and the word1A8/word1AC per-cutscene step frames). Register allocation differs: retail keeps prev in $f20 and frame in $f21 and hoists the nameU == 1 constant into $9; retail also keeps the switch case 0 and the se == 1 path's (x, 15.0) tails apart where this cross-jumps them. Tried a separate wet-path id variable (kept), frame declared before prev, a separate switch threshold variable. nm_behaviour clean; vector checked (ingame, opening reach only se 0).
+
+Related: regalloc.

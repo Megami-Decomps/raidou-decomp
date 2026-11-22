@@ -1142,7 +1142,159 @@ INCLUDE_RODATA(const s32, "field/fldFileResolver", mapEnemy_SetFAtk_PlayerDirTab
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", mapSummonDvTaskTable2);
 
+/* NON_MATCHING: 361 of 507 words match.  */
+#ifdef NON_MATCHING
+void PlayerMotionSe2(s32 se, f32 x, f32 z) {
+    s32 id = 0;
+    f32 prev = fldGlobalBase.PlayerMotionFrame;
+    f32 frame = playerModel->first->frame;
+    f32 next;
+    f32 dx;
+    f32 dz;
+    s32 wet;
+
+    fldGlobalBase.PlayerMotionFrame = frame;
+    switch (mapCallSetPlayerTargetData5(se, x, z)) {
+    case 0:
+        break;
+    case 1:
+        id = 4;
+        break;
+    case 2:
+        id = 8;
+        break;
+    case 3:
+        id = 12;
+        break;
+    }
+    id += PlayerMotionSe2Data % 4;
+    if (fldGlobalBase.amSBlock == 19 && fldGlobalBase.nameU == 1 &&
+        fldEveHitTaskFldSub(fldGlobalBase.focusX, fldGlobalBase.focusZ)) {
+        wet = PlayerMotionSe2Data % 2 + 32;
+        dx = (dds3GetRandA(NULL) & 0xFF) * 0.015625f;
+        dz = (dds3GetRandA(NULL) & 0xFF) * 0.015625f;
+        if (se == 5 || se == 0) {
+            if (prev < -1.5f && frame + 0.099999995f >= -1.5f) {
+                p2sdPlaySE_Vol(wet, 127);
+                PlayerMotionSe2Data++;
+                fldLeaf4(fldGlobalBase.focusX + dx, -62.0f, fldGlobalBase.focusZ + dz);
+            }
+        } else if (se == 1) {
+            if (prev < -3.5f && frame + 0.099999995f >= -3.5f) {
+                p2sdPlaySE_Vol(wet, 127);
+                PlayerMotionSe2Data++;
+                fldLeaf4(fldGlobalBase.focusX + dx, -62.0f, fldGlobalBase.focusZ + dz);
+            } else if (prev < 1.0f && frame >= 1.0f) {
+                fldLeaf4(fldGlobalBase.focusX + dx, -62.0f, fldGlobalBase.focusZ + dz);
+            } else if (prev < 5.0f && frame >= 5.0f) {
+                p2sdPlaySE_Vol(wet, 127);
+                PlayerMotionSe2Data++;
+                fldLeaf4(fldGlobalBase.focusX + dx, -62.0f, fldGlobalBase.focusZ + dz);
+            } else if (prev < 8.0f && frame >= 8.0f) {
+                fldLeaf4(fldGlobalBase.focusX + dx, -62.0f, fldGlobalBase.focusZ + dz);
+            } else if (prev < 11.0f && frame >= 11.0f) {
+                fldLeaf4(fldGlobalBase.focusX + dx, -62.0f, fldGlobalBase.focusZ + dz);
+            } else if (prev < 15.0f && frame >= 15.0f) {
+                p2sdPlaySE_Vol(wet, 127);
+                PlayerMotionSe2Data++;
+                fldLeaf4(fldGlobalBase.focusX + dx, -62.0f, fldGlobalBase.focusZ + dz);
+            } else if (prev < 18.0f && frame >= 18.0f) {
+                fldLeaf4(fldGlobalBase.focusX + dx, -62.0f, fldGlobalBase.focusZ + dz);
+            }
+        }
+        return;
+    }
+    if (fldGlobalBase.word1A8 != 0) {
+        switch (fldGlobalBase.word1AC) {
+        case 0:
+            if (se != 6) {
+                return;
+            }
+            if (prev < 8.0f && frame >= 8.0f) {
+                goto play;
+            }
+            next = 15.0f;
+            break;
+        case 1:
+            if (se != 1) {
+                return;
+            }
+            if (prev < 25.0f && frame >= 25.0f) {
+                goto play;
+            }
+            next = 1.0f;
+            break;
+        case 2:
+            if (se != 6) {
+                return;
+            }
+            if (prev < 9.0f && frame >= 9.0f) {
+                goto play;
+            }
+            next = 16.0f;
+            break;
+        case 3:
+            if (se != 1) {
+                return;
+            }
+            if (prev < 1.0f && frame >= 1.0f) {
+                goto play;
+            }
+            next = 19.0f;
+            break;
+        case 4:
+            if (se != 1) {
+                return;
+            }
+            if (prev < 13.0f && frame >= 13.0f) {
+                goto play;
+            }
+            next = 35.0f;
+            break;
+        case 5:
+            if (se != 1) {
+                return;
+            }
+            if (prev < 2.0f && frame >= 2.0f) {
+                goto play;
+            }
+            next = 22.0f;
+            break;
+        case 6:
+            if (se != 1) {
+                return;
+            }
+            if (prev < 15.0f && frame >= 15.0f) {
+                goto play;
+            }
+            next = 35.0f;
+            break;
+        default:
+            return;
+        }
+    } else if (se == 1) {
+        if (prev < 5.0f && frame >= 5.0f) {
+            goto play;
+        }
+        next = 15.0f;
+    } else if (se == 6) {
+        if (prev < 16.0f && frame >= 16.0f) {
+            goto play;
+        }
+        next = 36.0f;
+    } else {
+        return;
+    }
+    if (!(prev < next && frame >= next)) {
+        return;
+    }
+play:
+    p2sdPlaySE_Vol(id, 127);
+    PlayerMotionSe2Data += ((dds3GetRandA(NULL) >> 4) & 1) + 1;
+}
+#else
 INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerMotionSe2);
+#endif
 #endif
 
 void PlayerMotionSe(s32 hisMotion, s32 upMotion) {
