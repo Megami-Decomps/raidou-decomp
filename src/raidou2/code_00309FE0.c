@@ -1209,7 +1209,7 @@ void trmCallBtlCheckReturnUnit(s32 motionFlag) {
         if (!(unit->field414 & 0x18) && !(unit->flg & 0x10) && !sbtlCheckReturn_Unit(unit) && unit->status != 10
             && !(unit->flg & 0x800) && unit->mode >= 5 && unit->status != 40 && unit->status != 34) {
             if (!sbtlSetMotion(unit, SBTLUNIT_MOTION_WAIT)) {
-                unit->field79C = 1;
+                unit->next_motion_not_hokan = 1;
             }
             trmCallBtlClearHitC(unit);
             sbtlSetAction(unit, SBTLACTION_ST_WAIT, 0);

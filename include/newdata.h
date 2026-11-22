@@ -260,8 +260,7 @@ typedef struct
     /* 0x1F9C */ s32 mapSummonID;
     /* 0x1FA0 */ SBTL_PLAYER_DATA playerData;
     /* 0x4240 */ u8 unk4240[2];
-    /* 0x4242 */ s16 unk4242;
-    /* 0x4244 */ s16 unk4244;
+    /* 0x4242 */ s16 unk4242[2]; /* stock index of each partner demon at battle exit, -1 for none */
     /* 0x4246 */ u8 unk4246;
     /* 0x4247 */ u8 unk4247[0x1];
     /* 0x4248 */ u16 unk4248;

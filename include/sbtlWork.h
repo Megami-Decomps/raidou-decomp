@@ -185,6 +185,12 @@ typedef struct sbtlSummonText_t {
 } sbtlSummonText_t;
 
 /* HD SUMMON_CTRL: a pending summon (io set) or return of a demon, run by SmnCtrlRun. */
+typedef struct RED_GUAGE {
+    s32 bgn;
+    s32 len;
+    s32 cnt;
+} RED_GUAGE;
+
 typedef struct SUMMON_CTRL {
     s32 bNoOk;
     s32 stkId;
@@ -200,7 +206,9 @@ typedef struct SBTL_WORK {
     u8 pad160[0x180 - 0x160];
     SBTLCAMERA_WORK camera;
     SBTLCAMERA_WORK camerabk;
-    u8 pad2E0[0x400 - 0x2E0];
+    u8 pad2E0[0x3BC - 0x2E0];
+    u32 field3BC; /* HD scene->status; LoadMap_FromMemory sets 0x20 when the battle starts summoned */
+    u8 pad3C0[0x400 - 0x3C0];
     fileRequest_t *panelPack;
     u32 panelPackPos;
     s32 panelPackLen;
@@ -393,7 +401,8 @@ typedef struct SBTL_WORK {
     s32 fieldC74; /* field1A0 of the first gun target */
     u8 padC78[0xC7B - 0xC78];
     s8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
-    u8 padC7C[0xC84 - 0xC7C];
+    s8 fieldC7C; /* CheckEnd sets it when the battle end starts */
+    u8 padC7D[0xC84 - 0xC7D];
     u8 fieldC84; /* hit stops sbtlProcHitStop still has to start */
     u8 fieldC85; /* frames until the next of them */
     u8 padC86[0xC8C - 0xC86];
@@ -407,20 +416,23 @@ typedef struct SBTL_WORK {
     s8 fieldCB1; /* sbtlGetNakama index for fieldCAC */
     u8 padCB2[0xD90 - 0xCB2];
     SUMMON_CTRL smnCtrl;
-    u8 padDA0[0xDA4 - 0xDA0];
+    u32 mapmdl; /* HD name; index into LoadMap_FromMemory's map model tables, below 23 */
     struct dds3Basic_t *apMarkerUnit[8];
     struct dds3Basic_t *apMarkerUnitR[8];
-    u8 padDE4[0xE2C - 0xDE4];
+    RED_GUAGE aRedGuage[3]; /* HD name (pointers there) */
+    u8 padE08[0xE2C - 0xE08];
     s32 fieldE2C; /* sbtlCallSetOt sets 10 when a text adds magnetite */
     u8 padE30[0xE40 - 0xE30];
     s32 fieldE40; /* sbtlCallSetOt sets 100 when a kind 0 text ends */
-    u8 padE44[0xE81 - 0xE44];
+    u8 padE44[0xE4C - 0xE44];
+    s32 step; /* HD name; sbtlCheckStartBattle waits for it to be positive */
+    u8 padE50[0xE81 - 0xE50];
     s8 bEffNoDraw; /* HD name */
     u8 padE82[0xE84 - 0xE82];
     s32 fieldE84; /* sbtlDat's index into datData20 */
     u8 padE88[0x4];
     s8 fieldE8C; /* nonzero: Start_sbtlTime starts no time limit */
-    u8 padE8D;
+    s8 fieldE8D; /* with fieldE8C: battle talk type 7 instead of 4 */
     s8 hitStop;
     u8 padE8F[0xE94 - 0xE8F];
     s8 effNoStop; /* nonzero: effects keep running while the scene is stopped */
@@ -483,8 +495,8 @@ typedef struct SBTL_WORK {
     s32 boss_eventID; /* HD name; unit ID the boss event camera follows */
     s32 boss_devilID; /* HD name; sbtlCheck skips start events for this devil */
     s16 boss_timeno; /* HD name; time event row Result_sbtlTime found */
-    s8 bNoEndCam; /* HD name */
-    s8 field431B; /* set: sbtlEnemyData draws no enemy name plates */
+    s8 bNoEndCam; /* HD name; CheckEnd skips the victory camera when set */
+    s8 bNoEnemyName; /* HD name; set: sbtlEnemyData draws no enemy name plates */
     s8 field431C; /* 1: sbtlSENSEIDMGCHK always starts the talk */
     u8 pad431D[0x4324 - 0x431D];
     s32 raido_magwaza_costnot; /* HD name; sbtlResetAction clears it */
@@ -492,7 +504,9 @@ typedef struct SBTL_WORK {
     s32 field432C;
     s32 field4330; /* frames while 0x80000 of flg2 is clear and the scene runs */
     s32 field4334;
-    u8 pad4338[0x4344 - 0x4338];
+    s32 field4338; /* roulette item kind 1..11 of the slot sbtlROULETTECHKPer picked */
+    s32 field433C; /* message number slCallSin draws while nonzero */
+    s32 field4340;
     s32 field4344; /* sbtlSummonKey counts it down; the summon menu waits for 0 */
     s32 field4348; /* counted down to 0 by sbtlSbattle3 */
     s32 field434C;
@@ -757,6 +771,28 @@ typedef char SBTL_WORKSizeCheck[sizeof(SBTL_WORK) == 0x87C ? 1 : -1];
 #endif
 
 extern SBTL_WORK *wk_sbtl;
+#ifdef VERSION_RAIDOU2
+extern const SKLID sbtlResetAtkSklEffTable[];
+extern const SKLID sbtlResetAtkSklEffTable2[];
+extern const SKLID sbtlResetAtkSklEffTable3[];
+extern const SKLID sbtlResetAtkSklEffTable4[];
+extern const SKLID sbtlResetAtkSklEffTable5[];
+extern const SKLID sbtlResetAtkSklEffTable6[];
+extern const SKLID sbtlResetAtkSklEffTable7[];
+extern const SKLID sbtlResetAtkSklEffTable8[];
+extern const SKLID sbtlResetAtkSklEffTable9[];
+extern const SKLID sbtlResetAtkSklEffTable10[];
+extern const SKLID sbtlResetAtkSklEffTable11[];
+extern const SKLID sbtlResetAtkSklEffTable12[];
+extern const SKLID sbtlResetAtkSklEffTable13[];
+extern const SKLID sbtlResetAtkSklEffTable14[];
+extern const SKLID sbtlResetAtkSklEffTable15[];
+extern const SKLID sbtlResetAtkSklEffTable16[];
+extern const SKLID sbtlResetAtkSklEffTable17[];
+extern const SKLID sbtlResetAtkSklEffTable18[];
+extern const SKLID sbtlResetAtkSklEffTable19[];
+extern SKLID sbtlResetAtkSklEffData[];
+#endif
 extern sdfVector4_t sbtlCallSetPosPoseSetDds3BasicData;  /* camera up vector (0, 1, 0, 0) */
 extern sdfVector4_t sbtlCallSetPosPoseSetDds3BasicData2; /* camera rotation (0, 0, 0, 1) */
 extern sdfVector4_t sbtlCallSetPosPoseSetDds3Basic2Data;
@@ -1083,7 +1119,7 @@ extern char sbtlStrSoundat3Boss02At3[]; /* "/soundat3/boss02.at3" */
 extern char sbtlStr0204[];              /* "%02d %04x %d" */
 extern char sbtlStrEnmy[];              /* "ENMY: %d" */
 extern char sbtlENMYData[];             /* "SKL: %d" */
-extern s32 sbtlSbattleData;
+extern s32 sbtlSbattleData; /* kernel count when the battle load started */
 #ifdef VERSION_RAIDOU2
 extern s32 sbtlBGMLOADSTARTData;
 #endif
@@ -1225,7 +1261,11 @@ s32 sbtlSetZoomLock(struct SBTLUNIT_WORK *unit, f32 zoom);
 s32 sbtlCheckZoom(void);
 s32 sbtlSetLoadPanelData(void);
 s32 sbtlCallCheckEnd(void);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCallBitCheck(void);
+#else
 s32 sbtlCallBitCheck(s32 stageNo);
+#endif
 s32 DrawProc(dds3ProcessID_t *id);
 s32 RestartBattle(void);
 s32 CheckStopBattle(void);
@@ -1263,14 +1303,14 @@ s32 sbtlRunSklProc(void);
 void sbtlEisyoWaitTask(void);
 void sbtlAttackwaitWaitTask(void);
 void sbtlLeaf42(void);
-s32 sbtlSetCameraLockOnTgtUpdate(void);
+void sbtlSetCameraLockOnTgtUpdate(void);
 void sbtlKettouProc(void);
 s32 sbtlCallObjectBaseSetPadControl(void);
 s32 sbtlProcHitStop(void);
 s32 sbtlGeneratorProc(void);
 s32 slCallPlaySE(void);
 void slQueryYesNoDraw_slMain(void);
-s32 Proc_sbtlSound(void);
+void Proc_sbtlSound(void);
 s32 CheckEnd(void);
 #endif
 s64 sbtlCallBtlCheckTutorialBattle3(void);
@@ -1359,6 +1399,25 @@ s32 sbtlChkHaveMemSkl(sdatUnitWork_t *unit, SKLID id);
 s32 sbtlBtlNakamaSetUpSub(sdatUnitWork_t *unit);
 void sbtlCallBtlCheckEnshutuSummonUnit(void);
 s32 sbtlCheckGenerator_ND(void);
+void evtCallGetProcessData28(void);
+s32 sbtlBattleEnd(struct SBTL_MODELBIND_LIST *list);
+s32 sbtlDeleteDvltkList(struct SBTLDVLTK_LISTWORK *lwk);
+s32 sbtlDeleteEXPList(struct SBTLEXP_LISTWORK *lwk);
+s32 sbtlLeaf57(void);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCheckGeneratorAll(void);
+void Exit2Set(s32 mode);
+void evtExitSBtlSub(s32 mode);
+void fldReleaseTitleMiniTexture(void);
+void sbtlCheckDrop(void);
+void sbtlDrawON(void);
+s32 sbtlFree_sbtlScene(void);
+void sbtlPacData_Free(void);
+void sbtlProcessEnd(void);
+void sbtlBgnWait(struct SBTLUNIT_WORK *wk);
+void sbtlGetAutoSkillPoint(void);
+void sbtlGetChuuseiPoint(void);
+#endif
 void sbtlCheckBattleWin(void);
 s32 sbtlSetAction(struct SBTLUNIT_WORK *wk, u32 action, s32 flg);
 s32 sbtlSetMotionHit(struct SBTLUNIT_WORK *wk, s32 motionno, SKLID skillid);
@@ -1472,12 +1531,14 @@ s32 sbtlCheckDrink(void);
 u16 GetPercentage(void);
 
 #ifdef VERSION_RAIDOU2
-typedef struct RED_GUAGE {
-    s32 bgn;
-    s32 len;
-    s32 cnt;
-} RED_GUAGE;
 void sbtlInitRedGg(RED_GUAGE *pRedGg, s32 hp);
+s32 sbtlCheckStartBattle(void);
+s32 sbtlCheckSummon(s32 idx);
+s32 GetPartyLevelDfference(void);
+s32 sbtlSENSEIDMGCHK(void);
+s32 sbtlChkBossEventStart(void);
+void slCallBitCheck(void);
+s32 sbtlSetSummonEffect_Nakama(struct SBTLUNIT_WORK *wk, s8 flg);
 void sbtlAnalyzeLoyalty(s32 x, s32 y, RED_GUAGE *pRedGg, s32 hp, s32 maxhp);
 extern s32 slQueryYesNoDraw_slMainData;
 extern s32 slQueryYesNoDraw_slMainData2;
@@ -1504,6 +1565,18 @@ extern void *sbtlBattleTmxData, *sbtlBattleTmxData2, *sbtlBattleTmxData3, *sbtlB
 extern void *sbtlBattleTmxData5, *sbtlBattleTmxData6, *sbtlBattleTmxData7, *sbtlBattleTmxData8, *sbtlData150;
 extern u32 sbtlData142, sbtlData143, sbtlData144, sbtlData145;
 extern u32 sbtlData146, sbtlData147, sbtlData148, sbtlData149, sbtlBattleTmxData9;
+extern f32 slCallSinData;
+s32 sbtlLeaf94(s32 x, s32 y, s32 w, s32 msgNo, u32 color, s32 alpha);
+/* Roulette state: three counters, the result (98 hit, 99 miss), the miss chance in percent and the slot picked. */
+extern s32 slCallPlaySEData, slCallPlaySEData2, slCallPlaySEData3;
+extern s32 sbtlCallGetRandData5, sbtlROULETTECHKPerData, sbtlCallGetRandData6;
+extern s32 sbtlCallGetRandWork[4]; /* item of each roulette slot */
+extern u8 sbtlCallGetRandData[][8]; /* roulette item ids, one row per luck result */
+s32 sbtlRefSbtl2(void);
+s32 sbtlCallUnlock2(s32 item, s32 slot, s32 flg);
+void sbtlCallTexSetFromHead(s32 flg);
+void pbCallEffectReset(s32 flg);
+void sbtlROULETTECHKPer(void);
 #endif
 
 #endif

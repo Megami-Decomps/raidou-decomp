@@ -336,8 +336,9 @@ struct SBTLUNIT_WORK {
     sdfVector4_t mv_spdbk;
     sdfVector4_t pos;
     sdfVector4_t rot;
-    u8 pad090[0x20];
-    sdfVector4_t field0B0;
+    sdfVector4_t rotBase;
+    sdfVector4_t nextpos;
+    sdfVector4_t rotbk;
     u8 pad0C0[0x10];
     sdfVector4_t posSaved;
     u8 pad0E0[0xF0 - 0xE0];
@@ -390,10 +391,12 @@ struct SBTLUNIT_WORK {
     u32 dstcolor;
     s32 fadergb;
     u32 field3D4;
-    u8 pad4F4[0x8];
+    u8 pad4F4[0x4FA - 0x4F4];
+    s16 field4FA; /* CheckEnd waits for it to be positive before the win */
     s32 next_motionno;
     s32 next_motionID;
-    u8 pad504[0x4];
+    s16 beforeframe;
+    u8 pad506[0x508 - 0x506];
     struct dds3Basic_t *pBasic;
     struct evtUnit_t *hEveUnit;
     struct mdlObj_t *hModel;
@@ -412,7 +415,7 @@ struct SBTLUNIT_WORK {
     u32 flg;
     u32 vstatus;
     u32 flg2;
-    f32 field424;
+    f32 field424; /* yaw in degrees UnitMV_sbtlUnit turns rot by */
     f32 field428;
     f32 angleY;
     f32 deg;
@@ -472,7 +475,8 @@ struct SBTLUNIT_WORK {
     s8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;
     s32 field688;
-    u8 pad68C[0x6A0 - 0x68C];
+    s16 field68C; /* 1 or 2: UnitMV_sbtlUnit sets the basic's speed to 12 or 20 once */
+    u8 pad68E[0x6A0 - 0x68E];
     s32 field6A0; /* nonzero: motion column sbtlGetMotionNo uses for motions 0..2 */
     s8 bOldDispOff; /* vstatus bit 0x1000 when sbtlSetCmbBfrPos ran */
     u8 pad6A5[0x6A8 - 0x6A5];
@@ -481,7 +485,8 @@ struct SBTLUNIT_WORK {
     s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */
     u32 field6C4; /* bit 0x40 blocks hitback */
     s32 byctCnt;
-    u8 pad6CC[0x6E9 - 0x6CC];
+    u8 pad6CC[0x6E8 - 0x6CC];
+    s8 field6E8; /* set once the unit has asked to talk (sbtlSetCameraLockOnTgtUpdate) */
     s8 field6E9; /* set by trmSetProcessTerm; HD talkBreakDownFlg, blocks talk */
     u8 pad6EA[0x6F4 - 0x6EA];
     s8 field6F4; /* sbtlForceDelete_SkillFlag_Acter returns 0 when set */
@@ -518,10 +523,10 @@ struct SBTLUNIT_WORK {
     s32 field780;
     u8 pad784[0x78C - 0x784];
     s32 field78C;
-    f32 field790; /* -4000.0 from sbtlCreateUnit */
+    f32 field790; /* -4000.0 from sbtlCreateUnit; height offset of devils 444, 459 and 461, rising to 0 */
     s32 field794;
     s32 L2_muteki; /* HD name */
-    s32 field79C; /* set when trmCallBtlCheckReturnUnit cannot start the wait motion */
+    s32 next_motion_not_hokan; /* HD name; set when trmCallBtlCheckReturnUnit cannot start the wait motion */
     s32 field7A0;
     s32 field7A4;
     s32 field7A8;

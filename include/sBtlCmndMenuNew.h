@@ -79,6 +79,9 @@ typedef struct S_CameraMoveDt {
     struct S_PosMove *m_pPosMoveCam;
     struct S_PosMove *m_pPosMoveTgt;
 } S_CameraMoveDt;
+#ifdef VERSION_RAIDOU2
+extern S_CameraMoveDt CheckEndData[];
+#endif
 
 extern u8 sbtlData138[][7]; /* camera move pattern per event kind and cam_size */
 S_CameraMoveDt *sbtlBtlRunSklProcSub(s32 idx); /* HD sBtlGetCamMovePtn */
@@ -303,7 +306,7 @@ s32 cmpCallGetProcessData3(s32 devilId);
 s32 cmpCallBtlSearchUnitID(s32 devilId);
 s16 cmpCallGetProcessData4(s32 second);
 void sbtlInit(void);
-void slCallSin(u8 a_alphaRate);
+void slCallSin(s32 a_alphaRate);
 #endif
 
 #endif

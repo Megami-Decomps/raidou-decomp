@@ -27,6 +27,17 @@
 #include "code_r1_0010DF68.h"
 #include "sBtlScript.h"
 #include "code_0027A1E8.h"
+#include "dds3obj.h"
+#include "dds3UnitObjectBasic.h"
+#include "dds3KernelDraw.h"
+#include "code_r1_00128378.h"
+#include "evtStage.h"
+#include "evtMoon.h"
+#include "fld.h"
+#include "mapData.h"
+#include "dds3Basic.h"
+#include "dds3WorldBasic.h"
+#include "sdfDelayedResrc.h"
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlReLoadMap);
 
@@ -125,7 +136,155 @@ void sbtlCallSync2(void) {
     sbtlCallPackDecode();
 }
 
+/* NON_MATCHING: 518 of 527 words match.  */
+#ifdef NON_MATCHING
+s32 LoadMap_FromMemory(s32 fldno, s32 floorno) {
+    sdfVector4_t rotBase = { 0.0f, 0.0f, 0.0f, 1.0f };
+    s32 aMapMdl[23] = {
+        0x2B, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B,
+        0x3C, 0x3D, 0x3E, 0x3F, 0x65, 0x66, 0x3F, 0x82, 0xA0, 0x97, 0x98,
+    };
+    s32 aMapMdl2[23] = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0x7E, 0x7F, 0, 0x7E, 0x7E, 0, 0, 0,
+    };
+    sdfVector4_t aPos = { 0.0f, 0.0f, 0.0f, 1.0f };
+    sdfVector4_t aRot = { 0.0f, 0.0f, 0.0f, 0.0f };
+    f32 x, y, z, r;
+    dds3Basic_t *unit;
+    SBTL_STAGE_DATA *stage;
+    struct SBTLUNIT_WORK *pchara;
+    s32 i;
+
+    sbtlData156 = 0;
+    sbtlCallMemset4Data4 = 0;
+    sbtlCallMemset4Data5 = 0.0f;
+    sbtlCallMemset4Data6 = 0.0f;
+    sbtlCallMemset4Data7 = 0.0f;
+    sbtlData90 = 0;
+    sbtlData91 = 0;
+    sdfLoadMapFromMemorySub();
+    sbtlRefDDS3GBWK();
+    sdfBtlReLoadMapSBtlSceneSub();
+    dds3BistaClear();
+    BasicSceneFree();
+    mapBtlReLoadMapSBtlSceneSub2();
+    evtLoadArea(fldno, floorno);
+    if (wk_sbtl->mapmdl == 0) {
+        wk_sbtl->mapmdl = floorno;
+    }
+    if (wk_sbtl->mapmdl >= 23) {
+        wk_sbtl->mapmdl = 0;
+    }
+    if (aMapMdl2[wk_sbtl->mapmdl] != 0) {
+        aPos.z = 1.0f;
+        unit = dds3AddUnitObjectBasic(dds3AllocObjectId(), &aPos, &aRot);
+        dds3SetActiveUnitSceneBasic(dds3GetControlScene(), unit);
+        LoadMap_FromMemoryData3 = aMapMdl2[wk_sbtl->mapmdl];
+        sbtlCallSync2();
+        dds3ObjectBaseMakeUnit(unit, MODELTYPE_FIELD, aMapMdl2[wk_sbtl->mapmdl]);
+        wk_sbtl->hMapMdl2 = dds3ObjectBaseGetModelHandle(unit);
+        wk_sbtl->hMapMdl2->first->speed = 0.5f;
+        mdlLoopMotion(wk_sbtl->hMapMdl2, 0, 0);
+        dds3ObjectBaseOffFlag(unit, 1);
+        dds3UnitObjectBasicSetOt(unit, 3);
+        SetMapLight(unit, 0, 0x80808080);
+        wk_sbtl->mapclr = 0x80808080;
+        mdlSetColor(wk_sbtl->hMapMdl2, 0x80808080);
+    }
+    if (aMapMdl[wk_sbtl->mapmdl] != 0) {
+        aPos.z = 0.0f;
+        unit = dds3AddUnitObjectBasic(dds3AllocObjectId(), &aPos, &aRot);
+        dds3SetActiveUnitSceneBasic(dds3GetControlScene(), unit);
+        LoadMap_FromMemoryData3 = aMapMdl[wk_sbtl->mapmdl];
+        sbtlCallSync2();
+        dds3ObjectBaseMakeUnit(unit, MODELTYPE_FIELD, aMapMdl[wk_sbtl->mapmdl]);
+        wk_sbtl->hMapMdl = dds3ObjectBaseGetModelHandle(unit);
+        wk_sbtl->hMapMdl->first->speed = 0.5f;
+        mdlLoopMotion(wk_sbtl->hMapMdl, 0, 0);
+        dds3ObjectBaseOffFlag(unit, 1);
+        dds3UnitObjectBasicSetOt(unit, 4);
+        SetMapLight(unit, 0, 0x80808080);
+        wk_sbtl->mapclr = 0x80808080;
+        mdlSetColor(wk_sbtl->hMapMdl, 0x80808080);
+    }
+    for (i = 0; i < 8; i++) {
+        wk_sbtl->apMarkerUnit[i] = dds3AddUnitObjectBasic(dds3AllocObjectId(), &aPos, &aRot);
+        if (i == 0) {
+            sbtlLoadMapFromMemorySub();
+        }
+        dds3ObjectBaseMakeUnit(wk_sbtl->apMarkerUnit[i], MODELTYPE_FIELD, 45);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[i], 1);
+        dds3ObjectBaseOffFlag(wk_sbtl->apMarkerUnit[i], 0x400);
+        dds3UnitObjectBasicSetOt(wk_sbtl->apMarkerUnit[i], 1);
+    }
+    for (i = 0; i < 8; i++) {
+        wk_sbtl->apMarkerUnitR[i] = dds3AddUnitObjectBasic(dds3AllocObjectId(), &aPos, &aRot);
+        if (i == 0) {
+            sbtlLoadMapFromMemorySub2();
+        }
+        dds3ObjectBaseMakeUnit(wk_sbtl->apMarkerUnitR[i], MODELTYPE_FIELD, 159);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[i], 1);
+        dds3ObjectBaseOffFlag(wk_sbtl->apMarkerUnitR[i], 0x400);
+        dds3UnitObjectBasicSetOt(wk_sbtl->apMarkerUnitR[i], 1);
+    }
+    evtEnableMoonDraw();
+    SetTestCamera();
+    sbtlSbtlCameraproc();
+    sbtlResetRndEncCount();
+    mapMapSetEnc(wk_sbtl->stageNo);
+    stage = &sbtlData100[wk_sbtl->stageNo];
+    if (stage->form != 0) {
+        mapMapSetForm(stage->form);
+    }
+    mapCutSetCam(dds3GetActiveCameraSceneBasic(dds3GetActiveScene()), 0);
+    pchara = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (main_data.mode == 1 && pchara != NULL) {
+        mapEncPointGet(sbtlData100[wk_sbtl->stageNo].encPoint, &x, &y, &z, &r);
+        pchara->pos.x = x;
+        pchara->pos.y = y;
+        pchara->pos.z = z;
+        FromEuler(0.0f, r * 0.0174532925f, 0.0f);
+        SDF_VU0_STOREVECTOR(&pchara->rot);
+        SDF_VU0_LOADVECTOR(&rotBase);
+        SDF_VU0_STOREVECTOR(&pchara->rotBase);
+        pchara->angleY = r;
+        if (sbtlCheckSummon(0)) {
+            wk_sbtl->field3BC |= 0x20;
+            LoadMap_FromMemoryData.y = y;
+            LoadMap_FromMemoryData.z = z;
+            LoadMap_FromMemoryData.x = x;
+            if (r > -45.0f && r < 45.0f) {
+                LoadMap_FromMemoryData.x = x - 200.0f;
+            } else if (r < -45.0f && r > -135.0f) {
+                LoadMap_FromMemoryData.z -= 200.0f;
+            } else if (r > 45.0f && r < 135.0f) {
+                LoadMap_FromMemoryData.z += 200.0f;
+            } else {
+                LoadMap_FromMemoryData.x += 200.0f;
+            }
+            FromEuler(0.0f, r * 0.0174532925f, 0.0f);
+            SDF_VU0_STOREVECTOR(&LoadMap_FromMemoryData2);
+            sbtlData161 = r;
+        }
+    }
+    if (pchara != NULL) {
+        sbtlCallMemset4Data4 = 0;
+        sbtlCallMemset4Data5 = pchara->pos.x;
+        sbtlCallMemset4Data6 = pchara->pos.y;
+        sbtlCallMemset4Data7 = pchara->pos.z;
+        mapCutSet_From_Pos(pchara->pos.x, pchara->pos.y - 100.0f, pchara->pos.z);
+    }
+    mapCutSetLight();
+    sbtlRefSbtl31();
+    while (sdfDelayedResrcCheck()) {
+    }
+    pbSetGameCamera0();
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_0026B0A8", LoadMap_FromMemory);
+#endif
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlCallMemset2);
 
@@ -566,7 +725,207 @@ void sbtlStopSE(u32 seid) {
     p2sdStopSe(seid);
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", Proc_sbtlSound);
+void Proc_sbtlSound(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *wk;
+    f32 prev;
+    f32 frame;
+    u32 se;
+    s32 vol;
+    s16 id;
+    s32 cnt;
+    s32 motion;
+
+    if (wk_sbtl == NULL || wk_sbtl->unitList == NULL) {
+        return;
+    }
+    for (i = 0; i < 256; i++) {
+        sbtlWork10[i].count++;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk == NULL || wk->hModel == NULL || wk->mode < 3 || wk->mode == 9) {
+            continue;
+        }
+        if ((wk_sbtl->flg & 0x40) && !(wk->flg & 0x10) && !(wk->vstatus & 0x2000000) &&
+            !sbtlCheckEnshutuSummonUnit(wk)) {
+            continue;
+        }
+        if (wk->se.mot_status == 3 && wk->se.mot_nowcnt >= wk->se.mot_startcnt) {
+            sbtlRefSbtl6(wk, wk->se.mot_seid, wk->se.mot_vol, wk->se.mot_motionID);
+            wk->se.mot_status = 4;
+        }
+        wk->se.mot_nowcnt++;
+        if (wk->field1A0 != wk_sbtl->targetUnitID || wk_sbtl->battleMode == 3 || wk_sbtl->battleMode == 1 ||
+            wk->motionno != 1) {
+            continue;
+        }
+        if (wk->hModel != NULL) {
+            frame = wk->hModel->first->frame;
+        } else {
+            frame = 0.0f;
+        }
+        prev = wk->se.footwk.prevFrame;
+        wk->se.footwk.prevFrame = frame;
+        if ((prev < 25.0f && frame >= 25.0f) || frame < prev) {
+            se = sbtlCallGetRandIntA4(wk);
+            sbtlSEVolAngleCalc(se, sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96));
+            wk->se.footwk.prevSMGID = se;
+        }
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL && sbtlCheckDamageTarget(wk) && wk->motionno == 1 &&
+            (wk->field1A0 != wk_sbtl->targetUnitID || wk_sbtl->battleMode == 3 || wk_sbtl->battleMode == 1)) {
+            DevilFootSEProc(wk);
+        }
+    }
+    sbtlCallBtlSEVolAngleCalc();
+    if (IsSceanStop()) {
+        return;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk == NULL) {
+            continue;
+        }
+        if (wk->unit.devilId == 473) {
+            se = 0;
+            vol = sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            if (wk->motionno == 18) {
+                if (wk->se.mot_nowcnt == 50) se = 0x1000E;
+                if (wk->se.mot_nowcnt == 85) se = 0x1000F;
+                if (wk->se.mot_nowcnt == 104) se = 0x10010;
+                if (wk->se.mot_nowcnt == 100) se = 0x5D90006;
+            }
+            if (wk->motionno == 21) {
+                if (wk->se.mot_nowcnt == 80) se = 0x10017;
+                if (wk->se.mot_nowcnt == 88) se = 0x10017;
+                if (wk->se.mot_nowcnt == 96) se = 0x10017;
+                if (wk->se.mot_nowcnt == 104) se = 0x10017;
+            }
+            if (se != 0) {
+                sbtlSEVolAngleCalc(se, vol);
+            }
+        }
+        if (wk->unit.devilId == 493) {
+            se = 0;
+            vol = sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            if (wk->motionno == 21) {
+                if (wk->se.mot_nowcnt == 80) se = 0x10017;
+                if (wk->se.mot_nowcnt == 88) se = 0x10017;
+                if (wk->se.mot_nowcnt == 96) se = 0x10017;
+                if (wk->se.mot_nowcnt == 104) se = 0x10017;
+            }
+            if (se != 0) {
+                sbtlSEVolAngleCalc(se, vol);
+            }
+        }
+        if (wk->unit.devilId == 494) {
+            se = 0;
+            vol = sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            if (wk->motionno == 21) {
+                if (wk->se.mot_nowcnt == 80) se = 0x10017;
+                if (wk->se.mot_nowcnt == 88) se = 0x10017;
+                if (wk->se.mot_nowcnt == 96) se = 0x10017;
+                if (wk->se.mot_nowcnt == 104) se = 0x10017;
+            }
+            if (wk->motionno == 18) {
+                if (wk->se.mot_nowcnt == 20) se = 0x5EE0011;
+                if (wk->se.mot_nowcnt == 90) se = 0x1002C;
+                if (wk->se.mot_nowcnt == 150) se = 0x9AE0001;
+            }
+            if (se != 0) {
+                sbtlSEVolAngleCalc(se, vol);
+            }
+        }
+        if (wk->unit.devilId == 451) {
+            se = 0;
+            vol = sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            if (wk->motionno == 16) {
+                if (wk->se.mot_nowcnt == 15) se = 0x1002C;
+            }
+            if (wk->motionno == 17) {
+                if (wk->se.mot_nowcnt == 45) se = 0x1000E;
+                if (wk->se.mot_nowcnt == 65) se = 0x1000F;
+                if (wk->se.mot_nowcnt == 85) se = 0x10010;
+            }
+            if (wk->motionno == 20) {
+                if (wk->se.mot_nowcnt == 62) se = 0x10017;
+            }
+            if (wk->motionno == 22) {
+                if (wk->se.mot_nowcnt == 82) se = 0x10017;
+                if (wk->se.mot_nowcnt == 88) se = 0x10017;
+                if (wk->se.mot_nowcnt == 94) se = 0x10017;
+            }
+            if (se != 0) {
+                sbtlSEVolAngleCalc(se, vol);
+            }
+        }
+        if (wk->unit.devilId == 452) {
+            se = 0;
+            vol = sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            if (wk->motionno == 18) {
+                if (wk->se.mot_nowcnt == 45) se = 0x1000E;
+                if (wk->se.mot_nowcnt == 65) se = 0x1000F;
+                if (wk->se.mot_nowcnt == 85) se = 0x10010;
+                if (wk->se.mot_nowcnt == 80) se = 0x5C40011;
+            }
+            if (wk->motionno == 19) {
+                if (wk->se.mot_nowcnt == 4) se = 0x5C40011;
+            }
+            if (wk->motionno == 21) {
+                if (wk->se.mot_nowcnt == 4) se = 0x5C40011;
+                if (wk->se.mot_nowcnt == 90) se = 0x1002C;
+                if (wk->se.mot_nowcnt == 150) se = 0x9BC0001;
+            }
+            if (se != 0) {
+                sbtlSEVolAngleCalc(se, vol);
+            }
+        }
+        id = wk->unit.devilId;
+        if (id == 67 || id == 274) {
+            sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            if ((wk->motionno == 7 || wk->motionno == 8) && wk->se.mot_nowcnt == 12) {
+                sbtlPlaySE(sbtlGetDevilSESub(wk->unit.devilId, 13));
+            }
+        } else if (id == 192 || id == 399 || id == 195 || id == 402 || id == 194 || id == 401) {
+            sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            if (wk->motionno == 7 && wk->se.mot_nowcnt == 10) {
+                sbtlPlaySE(sbtlGetDevilSESub(wk->unit.devilId, 13));
+            }
+        }
+        id = wk->unit.devilId;
+        if (id == 197 || id == 404 || id == 542 || id == 198 || id == 405 || id == 543 || id == 199 || id == 406 ||
+            id == 544) {
+            sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            motion = wk->motionno;
+            if (motion == 7) {
+                if (wk->se.mot_nowcnt == 55) {
+                    sbtlPlaySE(sbtlGetDevilSESub(wk->unit.devilId, 6));
+                }
+            } else if (motion == 9) {
+                cnt = wk->se.mot_nowcnt;
+                if (cnt == 60 || cnt == 104 || cnt == 150) {
+                    sbtlPlaySE(sbtlGetDevilSESub(wk->unit.devilId, 6));
+                }
+            } else if (motion == 14) {
+                if (wk->se.mot_nowcnt == 8) {
+                    sbtlPlaySE(sbtlGetDevilSESub(wk->unit.devilId, 13));
+                }
+            } else if ((wk->unit.devilId == 197 || wk->unit.devilId == 404) && motion == 15) {
+                if (wk->se.mot_nowcnt == 30 || wk->se.mot_nowcnt == 60 || wk->se.mot_nowcnt == 98) {
+                    sbtlPlaySE(sbtlGetDevilSESub(wk->unit.devilId, 6));
+                }
+            }
+        } else if (id == 77 || id == 284 || id == 483) {
+            sbtlSEVolAngleCalc_sbtlSound(&wk->pos, 2000.0f, 1000.0f, 127, 96);
+            if (wk->motionno == 15 && wk->se.mot_nowcnt == 24) {
+                sbtlPlaySE(sbtlGetDevilSESub(wk->unit.devilId, 6));
+            }
+        }
+    }
+}
 
 u32 sbtlGetDevilSESub(s32 devilID, s32 motionID) {
     return GetDevilSE(devilID, motionID);
@@ -665,9 +1024,602 @@ s32 sbtlLoadDevilSE(struct SBTLUNIT_WORK *wk)
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlLoadDevilSE);
 #endif
 
-INCLUDE_ASM(const s32, "code_0026B0A8", GetR1CombSklSmg);
+u32 GetR1CombSklSmg(SKLID skillID) {
+    switch (skillID) {
+    case 512:
+        return 0x9000000;
+    case 532:
+        return 0x9010000;
+    case 533:
+        return 0x9020000;
+    case 548:
+        return 0x9030000;
+    case 549:
+        return 0x9040000;
+    case 550:
+        return 0x9050000;
+    case 551:
+        return 0x9060000;
+    case 564:
+        return 0x9070000;
+    case 565:
+        return 0x9080000;
+    case 580:
+        return 0x9090000;
+    case 581:
+        return 0x90A0000;
+    case 610:
+        return 0x90B0000;
+    case 656:
+        return 0x90C0000;
+    case 657:
+        return 0x90D0000;
+    case 658:
+        return 0x90E0000;
+    case 659:
+        return 0x90F0000;
+    case 660:
+        return 0x9100000;
+    case 661:
+        return 0x9110000;
+    case 685:
+        return 0x9120000;
+    case 686:
+        return 0x9130000;
+    case 687:
+        return 0x9140000;
+    case 688:
+        return 0x9150000;
+    case 689:
+        return 0x9160000;
+    case 690:
+        return 0x9170000;
+    case 691:
+        return 0x9180000;
+    case 692:
+        return 0x9190000;
+    case 693:
+        return 0x91A0000;
+    case 694:
+        return 0x91B0000;
+    case 695:
+        return 0x91C0000;
+    case 696:
+        return 0x91D0000;
+    case 697:
+        return 0x91E0000;
+    case 698:
+        return 0x91F0000;
+    case 699:
+        return 0x9200000;
+    case 700:
+        return 0x9210000;
+    case 701:
+        return 0x9220000;
+    case 736:
+        return 0x9230000;
+    case 737:
+        return 0x9240000;
+    case 738:
+        return 0x9250000;
+    case 739:
+        return 0x9260000;
+    case 740:
+        return 0x9270000;
+    case 741:
+        return 0x9280000;
+    case 742:
+        return 0x9290000;
+    case 743:
+        return 0x92A0000;
+    case 744:
+        return 0x92B0000;
+    case 745:
+        return 0x92C0000;
+    case 746:
+        return 0x92D0000;
+    case 747:
+        return 0x92E0000;
+    case 748:
+        return 0x92F0000;
+    case 749:
+        return 0x9300000;
+    case 750:
+        return 0x9310000;
+    case 751:
+        return 0x9320000;
+    case 768:
+        return 0x9330000;
+    case 769:
+        return 0x9340000;
+    case 770:
+        return 0x9350000;
+    case 771:
+        return 0x9360000;
+    case 772:
+        return 0x9370000;
+    case 773:
+        return 0x9380000;
+    case 774:
+        return 0x9390000;
+    case 775:
+        return 0x93A0000;
+    case 776:
+        return 0x93B0000;
+    case 777:
+        return 0x93C0000;
+    case 778:
+        return 0x93D0000;
+    case 865:
+        return 0x93E0000;
+    case 866:
+        return 0x93F0000;
+    case 867:
+        return 0x9400000;
+    case 873:
+        return 0x9410000;
+    case 874:
+        return 0x9420000;
+    case 880:
+        return 0x9430000;
+    case 881:
+        return 0x9440000;
+    case 882:
+        return 0x9450000;
+    case 884:
+        return 0x9460000;
+    case 885:
+        return 0x9470000;
+    case 886:
+        return 0x9480000;
+    case 890:
+        return 0x9490000;
+    case 897:
+        return 0x94A0000;
+    case 898:
+        return 0x94B0000;
+    case 902:
+        return 0x94C0000;
+    case 903:
+        return 0x94D0000;
+    case 908:
+        return 0x94E0000;
+    case 913:
+        return 0x94F0000;
+    case 914:
+        return 0x9500000;
+    case 915:
+        return 0x9510000;
+    case 916:
+        return 0x9520000;
+    case 993:
+        return 0x9530000;
+    case 994:
+        return 0x9540000;
+    case 995:
+        return 0x9550000;
+    case 1001:
+        return 0x9560000;
+    case 1002:
+        return 0x9570000;
+    case 1006:
+        return 0x9580000;
+    case 1008:
+        return 0x9590000;
+    case 1010:
+        return 0x95A0000;
+    case 1011:
+        return 0x95B0000;
+    case 1012:
+        return 0x95C0000;
+    case 1091:
+        return 0x95D0000;
+    case 1093:
+        return 0x95E0000;
+    case 1095:
+        return 0x95F0000;
+    case 1096:
+        return 0x9600000;
+    case 1097:
+        return 0x9610000;
+    case 1098:
+        return 0x9620000;
+    case 1099:
+        return 0x9630000;
+    case 1101:
+        return 0x9640000;
+    case 1103:
+        return 0x9650000;
+    case 1104:
+        return 0x9660000;
+    case 1105:
+        return 0x9670000;
+    case 1106:
+        return 0x9680000;
+    case 1107:
+        return 0x9690000;
+    case 1108:
+        return 0x96A0000;
+    case 1110:
+        return 0x96B0000;
+    case 1112:
+        return 0x96C0000;
+    case 1113:
+        return 0x96D0000;
+    case 1114:
+        return 0x96E0000;
+    case 1120:
+        return 0x96F0000;
+    case 1121:
+        return 0x9700000;
+    case 1122:
+        return 0x9710000;
+    case 1123:
+        return 0x9720000;
+    case 1124:
+        return 0x9730000;
+    case 1125:
+        return 0x9740000;
+    case 1126:
+        return 0x9750000;
+    case 1127:
+        return 0x9760000;
+    case 1128:
+        return 0x9770000;
+    case 1129:
+        return 0x9780000;
+    case 1136:
+        return 0x9790000;
+    case 1137:
+        return 0x97A0000;
+    case 1138:
+        return 0x97B0000;
+    case 1139:
+        return 0x97C0000;
+    case 1140:
+        return 0x97D0000;
+    case 1141:
+        return 0x97E0000;
+    case 1142:
+        return 0x97F0000;
+    case 1143:
+        return 0x9800000;
+    case 1144:
+        return 0x9810000;
+    case 1145:
+        return 0x9820000;
+    case 1146:
+        return 0x9830000;
+    case 1148:
+        return 0x9840000;
+    case 1149:
+        return 0x9850000;
+    case 1150:
+        return 0x9860000;
+    case 1151:
+        return 0x9870000;
+    case 1152:
+        return 0x9880000;
+    case 1153:
+        return 0x9890000;
+    case 1154:
+        return 0x98A0000;
+    case 1155:
+        return 0x98B0000;
+    case 1156:
+        return 0x98C0000;
+    case 1157:
+        return 0x98D0000;
+    case 1158:
+        return 0x98E0000;
+    case 1159:
+        return 0x98F0000;
+    case 1160:
+        return 0x9900000;
+    case 1161:
+        return 0x9910000;
+    case 1164:
+        return 0x9920000;
+    case 1165:
+        return 0x9930000;
+    case 1166:
+        return 0x9940000;
+    case 1167:
+        return 0x9950000;
+    case 1168:
+        return 0x9960000;
+    case 1169:
+        return 0x9970000;
+    case 1170:
+        return 0x9980000;
+    case 1171:
+        return 0x9990000;
+    case 1172:
+        return 0x99A0000;
+    case 1175:
+        return 0x99B0000;
+    case 1178:
+        return 0x99C0000;
+    case 1179:
+        return 0x99D0000;
+    case 1180:
+        return 0x99E0000;
+    case 1181:
+        return 0x99F0000;
+    case 1182:
+        return 0x9A00000;
+    case 1183:
+        return 0x9A10000;
+    case 1184:
+        return 0x9A20000;
+    case 1185:
+        return 0x9A30000;
+    case 1186:
+        return 0x9A40000;
+    case 1188:
+        return 0x9A50000;
+    case 1190:
+        return 0x9A60000;
+    case 1191:
+        return 0x9A70000;
+    case 1192:
+        return 0x9A80000;
+    case 1193:
+        return 0x9A90000;
+    case 1194:
+        return 0x9AA0000;
+    case 1199:
+        return 0x9AB0000;
+    case 1200:
+        return 0x9AC0000;
+    case 1201:
+        return 0x9AD0000;
+    case 1204:
+        return 0x9AE0000;
+    case 1205:
+        return 0x9AF0000;
+    case 1206:
+        return 0x9B00000;
+    case 1210:
+        return 0x9B10000;
+    case 1211:
+        return 0x9B20000;
+    case 1212:
+        return 0x9B30000;
+    case 1213:
+        return 0x9B40000;
+    case 1214:
+        return 0x9B50000;
+    case 1215:
+        return 0x9B60000;
+    case 1216:
+        return 0x9B70000;
+    case 1217:
+        return 0x9B80000;
+    case 1218:
+        return 0x9B90000;
+    case 1219:
+        return 0x9BA0000;
+    case 1220:
+        return 0x9BB0000;
+    case 1221:
+        return 0x9BC0000;
+    case 1223:
+        return 0x9BD0000;
+    case 1224:
+        return 0x9BE0000;
+    case 1225:
+        return 0x9BF0000;
+    case 1226:
+        return 0x9C00000;
+    case 1227:
+        return 0x9C10000;
+    case 1228:
+        return 0x9C20000;
+    case 1229:
+        return 0x9C30000;
+    case 1232:
+        return 0x9C40000;
+    case 1233:
+        return 0x9C50000;
+    case 1234:
+        return 0x9C60000;
+    case 1235:
+        return 0x9C70000;
+    case 1236:
+        return 0x9C80000;
+    case 1237:
+        return 0x9C90000;
+    case 1240:
+        return 0x9CA0000;
+    case 1242:
+        return 0x9CB0000;
+    case 1243:
+        return 0x9CC0000;
+    case 1246:
+        return 0x9CD0000;
+    case 1247:
+        return 0x9CE0000;
+    case 1248:
+        return 0x9CF0000;
+    case 1249:
+        return 0x9D00000;
+    case 1250:
+        return 0x9D10000;
+    case 1251:
+        return 0x9D20000;
+    case 1252:
+        return 0x9D30000;
+    case 1254:
+        return 0x9D40000;
+    case 1255:
+        return 0x9D50000;
+    case 1256:
+        return 0x9D60000;
+    case 1257:
+        return 0x9D70000;
+    case 1258:
+        return 0x9D80000;
+    case 1259:
+        return 0x9D90000;
+    case 1260:
+        return 0x9DA0000;
+    case 1261:
+        return 0x9DB0000;
+    case 1264:
+        return 0x9DC0000;
+    case 1265:
+        return 0x9DD0000;
+    case 1266:
+        return 0x9DE0000;
+    case 1267:
+        return 0x9DF0000;
+    case 1268:
+        return 0x9E00000;
+    case 1269:
+        return 0x9E10000;
+    default:
+        return 0;
+    }
+}
 
+/* NON_MATCHING: 192 of 198 words match.  */
+#ifdef NON_MATCHING
+u32 GetSkillSE(s32 skillID, s32 type)
+{
+    struct SBTLSKILLP_TBL *tbl;
+    u32 se;
+    u32 ret;
+
+    ret = 0;
+    switch (skillID) {
+    case SKLID_NOUSE_IAITATE:
+        switch (type) {
+        case -1:
+            break;
+        case 1:
+            return 0x9E40000;
+        case 2:
+            return 0x9E40001;
+        }
+        break;
+    case SKLID_NOUSE_MAGTUKI:
+        switch (type) {
+        case -1:
+            break;
+        case 1:
+            return 0x9E40002;
+        case 2:
+            return 0x9E40003;
+        }
+        break;
+    case SKLID_NOUSE_DORIRUPIKE:
+        switch (type) {
+        case -1:
+            break;
+        case 1:
+            return 0x9E30000;
+        case 2:
+            return 0x9E30001;
+        }
+        break;
+    case SKLID_NOUSE_RAINPIKE:
+        switch (type) {
+        case -1:
+            break;
+        case 1:
+            return 0x9E30002;
+        case 2:
+            return 0x9E30003;
+        }
+        break;
+    case SKLID_NOUSE_SHORTPIKE:
+        switch (type) {
+        case -1:
+            break;
+        case 1:
+            return 0x9E30004;
+        case 2:
+            return 0x9E30005;
+        }
+        break;
+    case SKLID_NOUSE_MEGATONWARI:
+        switch (type) {
+        case -1:
+            break;
+        case 1:
+            return 0x9E20000;
+        case 2:
+            return 0x10003;
+        }
+        break;
+    case SKLID_NOUSE_MIZOOCHITUKI:
+        switch (type) {
+        case -1:
+            break;
+        case 1:
+            return 0x9E20002;
+        case 2:
+            return 0x9E20003;
+        }
+        break;
+    case SKLID_MAWASIKERI:
+        switch (type) {
+        case -1:
+            break;
+        case 1:
+            return 0x1002B;
+        case 2:
+            return 0x1002C;
+        }
+        break;
+    }
+    tbl = sbtlGetSkilltbl(skillID);
+    if (tbl->s_type & 4) {
+        switch (type) {
+        case -1:
+        case 1:
+            ret = 0x10017;
+            break;
+        case 2:
+            ret = 0x10017;
+            break;
+        }
+        return ret;
+    }
+    if ((tbl->type & 0xFFF) == 8) {
+        if (skillID != SKLID_ITM_STUNGREN) {
+            se = (skillID << 16) + 0x8C00000;
+            return se;
+        }
+        se = 0xA120000;
+        return se;
+    }
+    if (skillID < SKLID_MENETUKE) {
+        se = (skillID << 16) + 0x7000000;
+    } else {
+        se = GetR1CombSklSmg(skillID);
+        if (se == 0) {
+            return se;
+        }
+    }
+    switch (type) {
+    case -1:
+    case 1:
+        ret = se;
+        break;
+    case 2:
+        ret = se + 1;
+        break;
+    case 5:
+        ret = se + 2;
+        break;
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_0026B0A8", GetSkillSE);
+#endif
 
 /* NON_MATCHING: 61 of 69 words match.  */
 #ifdef NON_MATCHING
@@ -1185,7 +2137,7 @@ struct SBTLUNIT_WORK *sbtlCreateUnit(s32 major, s32 minor, s16 mode) {
     wk->field78C = 0;
     wk->field794 = 0;
     wk->L2_muteki = 0;
-    wk->field79C = 0;
+    wk->next_motion_not_hokan = 0;
     wk->field780 = 0;
     wk->field7A0 = 0;
     wk->field7A4 = 0;
@@ -1398,7 +2350,89 @@ void UnitMV(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos)
     }
 }
 
-INCLUDE_ASM(const s32, "code_0026B0A8", UnitMV_sbtlUnit);
+s32 UnitMV_sbtlUnit(struct SBTLUNIT_WORK *wk)
+{
+    sdfVector4_t mv;
+    sdfVector4_t rot;
+    f32 y;
+
+    memset(&mv, 0, sizeof(mv));
+    if (IsSceanStop() && !(wk->flg & 0x10)) {
+        return 0;
+    }
+    if (wk->flg & 0x80000) {
+        wk->model->flags = (wk->model->flags | 0x20) & ~0x40;
+        SDF_VU0_LOADVECTOR(&wk->posSaved);
+        SDF_VU0_STOREVECTOR(&wk->pos);
+    }
+    mv.x = -wk->mv_spd.x;
+    mv.z = -wk->mv_spd.z;
+    if (wk_sbtl->battleMode == 3 ? wk->field414 & 1 : wk->field414 & 0x80) {
+        SDF_VU0_LOADVECTOR(&wk->rotbk);
+        SDF_VU0_STOREVECTOR(&rot);
+    } else {
+        SDF_VU0_LOADVECTOR(&wk->rot);
+        SDF_VU0_STOREVECTOR(&rot);
+    }
+    SDF_VU0_LOADVECTOR_B(&mv);
+    SDF_VU0_LOADVECTOR(&rot);
+    ToMatrix();
+    SDF_VU0_APPLYMATRIX_B();
+    SDF_VU0_LOADVECTOR(&wk->pos);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_VECTOR_W_SET_ONE();
+    SDF_VU0_STOREVECTOR(&wk->pos);
+    if (wk->field424 != 0.0f) {
+        FromRotation(-wk->field424 * 0.017453293f);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_LOADVECTOR(&wk->rot);
+        Mult();
+        SDF_VU0_STOREVECTOR(&wk->rot);
+    }
+    if (wk->field68C == 1) {
+        dds3UnitMVSBtlUnitSub(wk->pBasic, 12.0f);
+        wk->field68C = 0;
+    } else if (wk->field68C == 2) {
+        dds3UnitMVSBtlUnitSub(wk->pBasic, 20.0f);
+        wk->field68C = 0;
+    }
+    switch (wk->unit.devilId) {
+    case 444:
+    case 459:
+    case 461:
+        y = wk->field790;
+        if (y > -250.0f) {
+            wk->field790 = y + 5.0f;
+        } else if (y > -500.0f) {
+            wk->field790 = y + 10.0f;
+        } else {
+            wk->field790 = y + 15.0f;
+        }
+        if (wk->field790 < -3400.0f && wk->field790 > -3416.0f) {
+            sbtlPlaySE(sbtlGetDevilSESub(wk->unit.devilId, 6));
+        }
+        if (wk->field790 > -3500.0f && !(wk->field790 > -300.0f)) {
+            if (wk->field790 > -500.0f) {
+                dds3SetQuake(90, 300);
+            } else {
+                dds3SetQuake(90, 200);
+            }
+        }
+        if (wk->field790 > 0.0f) {
+            wk->field790 = 0.0f;
+            wk_sbtl->status4 |= 8;
+        }
+        wk->pos.y = wk->field790;
+        break;
+    }
+    if (!(wk->vstatus & 0x2000)) {
+        dds3SetPosPoseSet(wk->pBasic, &wk->pos);
+        if (!(wk->vstatus & 8)) {
+            dds3SetRotPoseSet(wk->pBasic, &wk->rot);
+        }
+    }
+    return 1;
+}
 
 s32 sbtlCheckMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no)
 {
@@ -1471,6 +2505,131 @@ s32 sbtlGetMotionNo(struct SBTLUNIT_WORK *wk, u8 side, s32 no)
     return sbtlGetMotionNoData[0][no];
 }
 
+/* NON_MATCHING: 228 of 332 words match.  */
+#ifdef NON_MATCHING
+void sbtlResetAtkSklEff(struct SBTLUNIT_WORK *wk)
+{
+    SKLID tbl[7];
+    SKLID tbl2[3];
+    SKLID tbl3[4];
+    SKLID tbl4[4];
+    SKLID tbl5[5];
+    SKLID tbl6[4];
+    SKLID tbl7[4];
+    SKLID tbl8[4];
+    SKLID tbl9[3];
+    SKLID tbl10[3];
+    SKLID tbl11[3];
+    SKLID tbl12[4];
+    SKLID tbl13[4];
+    SKLID tbl14[8];
+    SKLID tbl15[9];
+    SKLID tbl16[5];
+    SKLID tbl17[3];
+    SKLID tbl18[4];
+    SKLID tbl19[6];
+    SKLID tbl20[2];
+    SKLID *list;
+
+    memcpy(tbl, sbtlResetAtkSklEffTable, sizeof(tbl));
+    memcpy(tbl2, sbtlResetAtkSklEffTable2, sizeof(tbl2));
+    memcpy(tbl3, sbtlResetAtkSklEffTable3, sizeof(tbl3));
+    memcpy(tbl4, sbtlResetAtkSklEffTable4, sizeof(tbl4));
+    memcpy(tbl5, sbtlResetAtkSklEffTable5, sizeof(tbl5));
+    memcpy(tbl6, sbtlResetAtkSklEffTable6, sizeof(tbl6));
+    memcpy(tbl7, sbtlResetAtkSklEffTable7, sizeof(tbl7));
+    memcpy(tbl8, sbtlResetAtkSklEffTable8, sizeof(tbl8));
+    memcpy(tbl9, sbtlResetAtkSklEffTable9, sizeof(tbl9));
+    memcpy(tbl10, sbtlResetAtkSklEffTable10, sizeof(tbl10));
+    memcpy(tbl11, sbtlResetAtkSklEffTable11, sizeof(tbl11));
+    memcpy(tbl12, sbtlResetAtkSklEffTable12, sizeof(tbl12));
+    memcpy(tbl13, sbtlResetAtkSklEffTable13, sizeof(tbl13));
+    memcpy(tbl14, sbtlResetAtkSklEffTable14, sizeof(tbl14));
+    memcpy(tbl15, sbtlResetAtkSklEffTable15, sizeof(tbl15));
+    memcpy(tbl16, sbtlResetAtkSklEffTable16, sizeof(tbl16));
+    memcpy(tbl17, sbtlResetAtkSklEffTable17, sizeof(tbl17));
+    memcpy(tbl18, sbtlResetAtkSklEffTable18, sizeof(tbl18));
+    memcpy(tbl19, sbtlResetAtkSklEffTable19, sizeof(tbl19));
+    memcpy(tbl20, sbtlResetAtkSklEffData, sizeof(tbl20));
+
+    switch (wk->unit.devilId) {
+    case 437:
+    case 438:
+    case 446:
+        list = tbl2;
+        break;
+    case 435:
+    case 445:
+    case 447:
+        list = tbl3;
+        break;
+    case 436:
+    case 522:
+        list = tbl4;
+        break;
+    case 439:
+        list = tbl5;
+        break;
+    case 473:
+        list = tbl6;
+        break;
+    case 493:
+        list = tbl7;
+        break;
+    case 494:
+        list = tbl8;
+        break;
+    case 434:
+    case 448:
+        list = tbl9;
+        break;
+    case 440:
+        list = tbl10;
+        break;
+    case 484:
+        list = tbl11;
+        break;
+    case 449:
+    case 450:
+    case 454:
+        list = tbl12;
+        break;
+    case 453:
+    case 523:
+        list = tbl13;
+        break;
+    case 451:
+        list = tbl14;
+        break;
+    case 452:
+    case 457:
+        list = tbl15;
+        break;
+    case 441:
+        list = tbl16;
+        break;
+    case 442:
+        list = tbl17;
+        break;
+    case 455:
+        list = tbl18;
+        break;
+    case 456:
+        list = tbl19;
+        break;
+    case 502:
+        list = tbl20;
+        break;
+    default:
+        list = tbl;
+        break;
+    }
+    while (*list != 0) {
+        sbtlDeleteEffectData_SkillIDTypeUnit(wk_sbtl->effList, *list, 1, wk->field1A0);
+        sbtlDltHit_by_UnitSkl(wk_sbtl->hitList, wk->field1A0, *list++);
+    }
+}
+#else
 INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable);
 
 INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable2);
@@ -1510,10 +2669,200 @@ INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable18);
 INCLUDE_RODATA(const s32, "code_0026B0A8", sbtlResetAtkSklEffTable19);
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlResetAtkSklEff);
+#endif
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlSetMotion_sbtlUnit);
 
-INCLUDE_ASM(const s32, "code_0026B0A8", sbtlplayertblSetPlayerMotionData_Hokan);
+void sbtlplayertblSetPlayerMotionData_Hokan(struct SBTLUNIT_WORK *wk)
+{
+    if (wk->next_motion_not_hokan) {
+        wk->beforeframe = 0;
+        return;
+    }
+    wk->beforeframe = 4;
+    switch (wk->next_motionno) {
+    case 33:
+        if (sbtlDat()->kind == 3 && wk_sbtl->fieldCA2 == 0) {
+            wk->beforeframe = 0;
+        }
+        break;
+    case 23:
+        switch (wk->motionno) {
+        case 0:
+        case 1:
+        case 2:
+        case 27:
+        case 28:
+            wk->beforeframe = 3;
+            break;
+        case 23:
+            wk->beforeframe = 0;
+            break;
+        case 24:
+        case 29:
+            wk->beforeframe = 8;
+            break;
+        default:
+            wk->beforeframe = 5;
+            break;
+        }
+        break;
+    case 0:
+    case 2:
+        switch (wk->motionno) {
+        case 15:
+            wk->beforeframe = 10;
+            break;
+        case 27:
+            wk->beforeframe = 6;
+            break;
+        case 1:
+            wk->beforeframe = 8;
+            break;
+        }
+        break;
+    case 30:
+        switch (wk->motionno) {
+        case 0:
+        case 1:
+        case 2:
+        case 15:
+        case 16:
+            wk->beforeframe = 1;
+            break;
+        }
+        break;
+    case 31:
+    case 32:
+    case 35:
+    case 36:
+        switch (wk->motionno) {
+        case 0:
+        case 1:
+        case 2:
+        case 15:
+        case 16:
+            wk->beforeframe = 4;
+            break;
+        }
+        break;
+    case 1:
+        switch (wk->motionno) {
+        case 0:
+        case 2:
+        case 4:
+        case 5:
+        case 11:
+        case 15:
+        case 16:
+            wk->beforeframe = 8;
+            break;
+        }
+        break;
+    case 11:
+        switch (wk->motionno) {
+        case 0:
+        case 2:
+            wk->beforeframe = 1;
+            break;
+        case 15:
+        case 16:
+            wk->beforeframe = 3;
+            break;
+        case 7:
+            wk->beforeframe = 3;
+            break;
+        case 1:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 17:
+        case 18:
+        case 19:
+        case 20:
+        case 21:
+        case 22:
+        case 23:
+        case 24:
+        case 25:
+        case 26:
+        case 27:
+        case 28:
+        default:
+            wk->beforeframe = 2;
+            break;
+        }
+        if (wk_sbtl->fieldCA2) {
+            wk->beforeframe = 0;
+        }
+        break;
+    case 27:
+        switch (wk->motionno) {
+        case 0:
+        case 2:
+        case 15:
+        case 16:
+        case 19:
+        case 28:
+        case 29:
+            wk->beforeframe = 2;
+            break;
+        case 42:
+            wk->beforeframe = 6;
+            break;
+        }
+        break;
+    case 28:
+        if (wk->motionno == 27) {
+            wk->beforeframe = 0;
+        }
+        break;
+    case 29:
+        switch (wk->motionno) {
+        case 27:
+            wk->beforeframe = 2;
+            break;
+        case 28:
+            wk->beforeframe = 0;
+            break;
+        }
+        break;
+    case 24:
+        switch (wk->motionno) {
+        case 27:
+        case 28:
+        case 30:
+            wk->beforeframe = 3;
+            break;
+        case 29:
+            wk->beforeframe = 2;
+            break;
+        }
+        break;
+    case 21:
+        wk->beforeframe = 2;
+        break;
+    case 7:
+    case 17:
+    case 38:
+        if (wk_sbtl->fieldCA2) {
+            wk->beforeframe = 0;
+        }
+        break;
+    case 41:
+    case 42:
+        wk->beforeframe = 0;
+        break;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0026B0A8", sbtlplayertblLeaf);
 

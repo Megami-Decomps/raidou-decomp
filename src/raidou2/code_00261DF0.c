@@ -38,6 +38,15 @@
 #include "sBtlScript.h"
 #include "dds3KernelMain.h"
 #include "sbattle.h"
+#include "code_0027A1E8.h"
+#include "sdfMath.h"
+#include "dds3Randomize.h"
+#include "sBtlPlayer.h"
+#include "BsFlow.h"
+#include "dds3AdminiProcess.h"
+#include "fld.h"
+#include "fldProcess.h"
+#include "sndAt3.h"
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlRaidouKatana);
 
@@ -71,7 +80,211 @@ s32 sbtlSbattle(SBTL_START_DATA *start, s8 flag)
     return 1;
 }
 
+/* NON_MATCHING: 391 of 411 words match.  */
+#ifdef NON_MATCHING
+s32 Exit_sbtl(s32 restart)
+{
+    struct SBTLUNIT_WORK *nakama;
+    s32 ok;
+    s32 i;
+
+    ok = 1;
+    if (wk_sbtl == NULL || dds3SearchProcessName(sbtlData85) == NULL) {
+        return 1;
+    }
+    if (wk_sbtl->unitList != NULL) {
+        for (i = 0; i < 2; i++) {
+            nakama = sbtlGetNakama(i);
+            if (nakama == NULL) {
+                DDS3_GBWK->unk4242[i] = -1;
+            } else {
+                DDS3_GBWK->unk4242[i] = datGetStockDevilIndex(nakama->unit.devilId);
+            }
+        }
+    }
+    wk_sbtl->flg |= 8;
+    if (!(wk_sbtl->flg2 & 0x80000000)) {
+        if (!(wk_sbtl->flg & 0x20)) {
+            if (!ProcessCheck_rstInit()) {
+                rstSetEncountDlcID(wk_sbtl->stageNo);
+                if (wk_sbtl->battleMode == 3) {
+                    rstSetFlag(0x80000);
+                }
+                sbtlCheckDrop();
+                sbtlCallEffectShutdown3(0);
+                if (!restart) {
+                    if (wk_sbtl->stageNo == 477) {
+                        rstSetFlag(0x10000);
+                    }
+                    ProcessStart_rstInit();
+                    rstResultStart();
+                    return 1;
+                }
+                dds3AdminiCallSequence(12, NULL, 0, 0);
+                rstResultStart();
+                sndBgmFadeOut();
+            } else {
+                if (!rstCheckFlag(0x40)) {
+                    return 1;
+                }
+                wk_sbtl->flg2 |= 0x80000000;
+            }
+        } else if (!rstCheckFlag(0x40000)) {
+            rstSetFlag(0x40000);
+            sndBgmFadeOut();
+            sbtlCallEffectShutdown3(0);
+            return 1;
+        }
+    }
+    wk_sbtl->flg2 |= 4;
+    sbtlStopVibe();
+    sbtlDrawON();
+    if (!sbtlCheckUnit_Exec()) {
+        return 0;
+    }
+    if (wk_sbtl->list3E8 != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->list3E8);
+        wk_sbtl->list3E8 = NULL;
+    }
+    if (wk_sbtl->tgtList != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->tgtList);
+        wk_sbtl->tgtList = NULL;
+    }
+    if (wk_sbtl->list2D4 != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->list2D4);
+        wk_sbtl->list2D4 = NULL;
+    }
+    if (wk_sbtl->field404 != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->field404);
+        wk_sbtl->field404 = NULL;
+    }
+    if (wk_sbtl->field408 != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->field408);
+        wk_sbtl->field408 = NULL;
+    }
+    if (wk_sbtl->field40C != NULL) {
+        sbtlDeleteUnitList(wk_sbtl->field40C);
+        wk_sbtl->field40C = NULL;
+    }
+    if (!sbtlCheckLoadEnd_EffectWork()) {
+        return 0;
+    }
+    if (wk_sbtl->effList != NULL) {
+        ok = 0;
+        if (sbtlDeleteEffList(wk_sbtl->effList)) {
+            if (wk_sbtl->animList != NULL) {
+                sbtlDeleteAnimList(wk_sbtl->animList);
+                wk_sbtl->animList = NULL;
+            }
+            if (wk_sbtl->hitList != NULL) {
+                sbtlDeleteHitList(wk_sbtl->hitList);
+                wk_sbtl->hitList = NULL;
+            }
+            if (wk_sbtl->modelBindings != NULL) {
+                sbtlBattleEnd(wk_sbtl->modelBindings);
+                wk_sbtl->modelBindings = NULL;
+            }
+            if (wk_sbtl->dvltkList != NULL) {
+                sbtlDeleteDvltkList(wk_sbtl->dvltkList);
+                wk_sbtl->dvltkList = NULL;
+            }
+            if (wk_sbtl->expList != NULL) {
+                sbtlDeleteEXPList(wk_sbtl->expList);
+                wk_sbtl->expList = NULL;
+            }
+            if (wk_sbtl->stp != NULL) {
+                sbtlDeleteSTPList(wk_sbtl->stp);
+                wk_sbtl->stp = NULL;
+            }
+            if (wk_sbtl->itemList != NULL) {
+                sbtlDeleteItemList(wk_sbtl->itemList);
+                wk_sbtl->itemList = NULL;
+            }
+            if (wk_sbtl->bulletList != NULL) {
+                sbtlDeleteItemList(wk_sbtl->bulletList);
+                wk_sbtl->bulletList = NULL;
+            }
+            if (wk_sbtl->sysmsgList != NULL) {
+                sbtlDeleteSMList(wk_sbtl->sysmsgList);
+                wk_sbtl->sysmsgList = NULL;
+            }
+            if (wk_sbtl->effdelList != NULL) {
+                sbtlDeleteDelList(wk_sbtl->effdelList);
+                wk_sbtl->effdelList = NULL;
+            }
+            sbtlProcessEnd();
+            Delete_sbtlCmndMenuNew();
+            wk_sbtl->effList = NULL;
+            return 0;
+        }
+    }
+    if (ProcessCheck() == 1) {
+        ok = 0;
+    }
+    fldReleaseTitleMiniTexture();
+    if (!sbtlDeleteOnData(0)) {
+        ok = 0;
+    }
+    if (!sbtlForceDelete_EffectWork(1)) {
+        ok = 0;
+    }
+    if (!sbtlEvent_DeleteEventScript()) {
+        ok = 0;
+    }
+    sbtlForceDelete_EffectWork(2);
+    sbtlForceDelete_AttackHitData();
+    sbtlInitEffectWork();
+    sbtlInitLoadAttackHitData_pData();
+    fldHirukoYukaGo_Idx2_B(0x80808080);
+    if (!(wk_sbtl->flg & 0x800000)) {
+        ok = 0;
+        if (wk_sbtl->effList == NULL && Exit_sbtlUnit() && sbtlFree_sbtlScene()) {
+            evtCallGetProcessData28();
+            fclFilterOFF();
+            wk_sbtl->flg |= 0x800000;
+            return 0;
+        }
+    }
+    if (!ok) {
+        return 0;
+    }
+    if (!sbtlDeleteMainPanel()) {
+        return 0;
+    }
+    if (wk_sbtl->flg & 0x80) {
+        fclDestroyMessage();
+        fclEndMessage();
+    }
+    Exit_sbtlData = wk_sbtl->stageNo;
+    Exit_sbtlData2 = wk_sbtl->fieldE84;
+    sbtlPacData_Free();
+    scrAllReleaseScript();
+    if (wk_sbtl->flg & 0x20) {
+        Exit2Set(0);
+        if (wk_sbtl->battleMode == 3) {
+            rstSetFlag(0x80000);
+        }
+        ProcessStart_rstInit();
+    } else if (wk_sbtl->flg & 0x1000000) {
+        Exit2Set(2);
+    } else {
+        Exit2Set(1);
+    }
+    RestartBattle();
+    sbtlLeaf57();
+    if (dds3SearchProcessPriority(0x3F7) != NULL) {
+        dds3KillProcess(wk_sbtl->process, 1);
+    }
+    wk_sbtl->field424 = 0;
+    wk_sbtl->field430 = 0;
+    wk_sbtl->flg &= 0xFB7FFFEC;
+    evtExitSBtlSub(0);
+    dds3FadeIn2(1);
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", Exit_sbtl);
+#endif
 
 s32 StopBattle(void) {
     if (dds3SearchProcessName(sbtlData85) == NULL) {
@@ -543,7 +756,96 @@ void sbtlCallMemFreeDirect(MODELTYPE major, s32 minor, s32 devilid)
     }
 }
 
+/* NON_MATCHING: 158 of 188 words match.  */
+#ifdef NON_MATCHING
+void Init_sbtl(s32 battleMode, s32 stageNo)
+{
+    s32 i;
+
+    memset(wk_sbtl, 0, sizeof(SBTL_WORK));
+    VRF_DeltaTime = 0;
+    pbData = 0;
+    wk_sbtl->field4334 = 1;
+    wk_sbtl->returnindex[1] = -1;
+    wk_sbtl->returnindex[0] = -1;
+    wk_sbtl->field430C = 0;
+    wk_sbtl->field432C = 0;
+    wk_sbtl->field4330 = 0;
+    sbtlInitSBtlSub3();
+    if (battleMode >= 4) {
+        wk_sbtl->battleMode = 0;
+    } else if (battleMode < 0) {
+        wk_sbtl->battleMode = 0;
+    } else {
+        wk_sbtl->battleMode = battleMode;
+    }
+    for (i = 0; i < 16; i++) {
+        evtBitOff(i + 0xBE0);
+    }
+    if (stageNo == 0) {
+        wk_sbtl->field4328 = 1;
+        wk_sbtl->stageNo = Exit_sbtlData;
+    } else {
+        wk_sbtl->stageNo = stageNo;
+        wk_sbtl->field4328 = 0;
+    }
+    wk_sbtl->mode = 1;
+    wk_sbtl->mf_abgr = 0x80808080;
+    wk_sbtl->mfh_abgr = 0x80808080;
+    wk_sbtl->flg &= ~8;
+    wk_sbtl->flg2 &= ~0x10000000;
+    wk_sbtl->animList = sbtlAnimListProc();
+    wk_sbtl->hitList = sbtlCreateHitList();
+    wk_sbtl->effList = sbtlCreateEffList();
+    wk_sbtl->modelBindings = effAllocateModelBindings();
+    wk_sbtl->dvltkList = sbtlCallChipAllocZeroDirect();
+    wk_sbtl->expList = InitTarSelProcessData();
+    wk_sbtl->stp = evtAllocateContext();
+    wk_sbtl->tgtList = NULL;
+    wk_sbtl->field404 = 0;
+    wk_sbtl->field408 = 0;
+    wk_sbtl->field40C = 0;
+    wk_sbtl->list3E8 = sbtlCreateUnitList(48);
+    wk_sbtl->list2D4 = sbtlCreateUnitList(48);
+    wk_sbtl->itemList = sbtlCreateItemList();
+    wk_sbtl->bulletList = sbtlCreateItemList();
+    wk_sbtl->sysmsgList = sbtlCreateSMList();
+    wk_sbtl->effdelList = sbtlCreateDelList();
+    sbtlEntryItemList(wk_sbtl->itemList);
+    sbtlEntryItemList_Type(wk_sbtl->bulletList, 4);
+    sbtlCallBtlCheckTutorialBattle();
+    sbtlRefSbtl45();
+    sbtlClearGeneratorWork();
+    sbtlRefSbtl7();
+    sbtlAllInit();
+    ProcessStart();
+    sbtlInit();
+    sbtlInitSBtlSub2();
+    sbtlCallMemset();
+    sbtlEisyoWaitTask();
+    sbtlInitAddMag();
+    wk_sbtl->textCursor = wk_sbtl->textPool;
+    if (wk_sbtl->field4328) {
+        wk_sbtl->fieldE84 = Exit_sbtlData2;
+        DDS3_GBWK->playerData.sword = wk_sbtl->fieldE84;
+    } else if (wk_sbtl->fieldE84 != 0) {
+        DDS3_GBWK->playerData.sword = wk_sbtl->fieldE84;
+        datRefDDS3GBWK12(DDS3_GBWK->playerData.sword);
+        datCalcNowParam(&sbtlGetPChara()->unit, DDS3_GBWK->playerData.sword);
+    } else {
+        wk_sbtl->fieldE84 = sbtlGetPlayerData()->sword;
+    }
+    sbtlInitLoadPlayerOnMemData();
+    while (!sbtlLoadEndCheck_PlayerOnMemData()) {
+    }
+    while (!sbtlLoadPlayerOnMemData()) {
+    }
+    sbtlSetGunNum(6);
+    wk_sbtl->timeLimit = 18000;
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", Init_sbtl);
+#endif
 
 void SmnCtrlRun(void)
 {
@@ -561,11 +863,238 @@ void SmnCtrlRun(void)
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlSbattle3);
 
+/* NON_MATCHING: 52 of 463 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCheckStartBattle(void)
+{
+    SBTL_PLAYER_DATA *player;
+    struct SBTLUNIT_WORK *wk;
+    struct SBTLUNIT_WORK *pchara;
+    SBTL_STAGE_DATA *stage;
+    BST bst;
+    s32 i;
+    s32 flg;
+    s32 done;
+    u32 count;
+
+    if (wk_sbtl->field424 <= 0) {
+        return 0;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL && (wk->field414 & 2) && (u16)(wk->mode - 1) < 2) {
+            return 0;
+        }
+    }
+    player = &DDS3_GBWK->playerData;
+    if (wk_sbtl->flg < 0) {
+        return 1;
+    }
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (wk == NULL) {
+        return 0;
+    }
+    flg = wk_sbtl->flg;
+    if (!(flg & 0x8000)) {
+        if (wk->mode == 0) {
+            wk->mode = 2;
+            if (wk_sbtl->battleMode == 3) {
+                sbtlSetSummonEffect_Nakama(wk, 0);
+            }
+            return 0;
+        }
+        if (wk->mode < 3) {
+            return 0;
+        }
+        wk_sbtl->flg = flg | 0x8000;
+        done = 0;
+        if (wk_sbtl->battleMode == 1) {
+            wk->color = 0;
+            wk->mode = 5;
+            wk->vstatus |= 0x200000;
+            bst = sbtlGetBadStatus(&wk->unit);
+            if (bst != BST_BOYCOTT) {
+                sbtlSetBadStatus_No(wk, SKLID_NONE, bst, 1, -1);
+            }
+            done = 2;
+            sbtlCheckBattlePara(wk);
+        }
+        if (done) {
+            return 0;
+        }
+        if (wk_sbtl->battleMode == 3) {
+            return 0;
+        }
+        wk->color = 0;
+        wk->mode = 5;
+        wk->vstatus |= 0x200000;
+        bst = sbtlGetBadStatus(&wk->unit);
+        if (bst != BST_BOYCOTT) {
+            sbtlSetBadStatus_No(wk, SKLID_NONE, bst, 1, -1);
+        }
+        sbtlInitRedGg(&wk_sbtl->aRedGuage[0], sbtlGetPChara()->unit.now.hp);
+        sbtlCheckBattlePara(wk);
+        return 0;
+    }
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (wk == NULL) {
+        return 0;
+    }
+    if (wk->mode < 4) {
+        return 0;
+    }
+    if (wk_sbtl->member_num > 0) {
+        for (i = 0; i < 2; i++) {
+            if (wk_sbtl->summonIndex[i] >= 0 && sbtlBtlCheckSummonSub(&player->stock[wk_sbtl->summonIndex[i]])) {
+                wk = sbtlGetNakama(i);
+                if (wk == NULL) {
+                    return 0;
+                }
+                if (!sbtlCheckDamageTarget(wk)) {
+                    return 0;
+                }
+            }
+        }
+        if (!sbtlLoadEffectData_Decode(NULL)) {
+            return 0;
+        }
+        if (!sbtlLoadAttackHitData_Decode(NULL)) {
+            return 0;
+        }
+        if (wk_sbtl->smnCtrl.bNoOk) {
+            return 0;
+        }
+        if (wk_sbtl->step <= 0) {
+            return 0;
+        }
+        if (wk_sbtl->flg2 & 0x1000) {
+            return 0;
+        }
+        slCallBitCheck();
+        if (wk_sbtl->flg2 & 0x2000000) {
+            return 0;
+        }
+        if (!(wk_sbtl->status4 & 4)) {
+            return 0;
+        }
+        stage = &sbtlData100[wk_sbtl->stageNo];
+        if (!sbtlChkBossEventStart()) {
+            if ((u32)(wk_sbtl->stageNo - 752) < 16 && wk_sbtl->fieldE8C) {
+                wk_sbtl->huumaTargetID = 1;
+                wk_sbtl->field42C0 = 4;
+                wk_sbtl->flg |= 0x80000000;
+                cmpSbtlkaiwaMain();
+            } else if (stage->flags & 0x36) {
+                wk_sbtl->bNoEnemyName = 1;
+                wk_sbtl->flg |= 0x80000000;
+                IsStart(1);
+            } else if (wk_sbtl->fieldE8C) {
+                wk_sbtl->field42C0 = wk_sbtl->fieldE8D ? 7 : 4;
+                wk_sbtl->huumaTargetID = 1;
+                wk_sbtl->flg |= 0x80000000;
+                cmpSbtlkaiwaMain();
+            } else if ((wk_sbtl->flg2 & 0x400000)
+                       || (!GetPartyLevelDfference() && !sbtlSENSEIDMGCHK() && !sbtlCallBitCheck())) {
+                wk_sbtl->bNoEnemyName = 1;
+                wk_sbtl->flg |= 0x80000000;
+                IsStart(1);
+            }
+        }
+        pchara = sbtlGetPChara();
+        mapDebugLightSet(mapGetLight(pchara->pos.x, sbtlGetPChara()->pos.z));
+        sbtlBattleStart(stage);
+        count = dds3GetKernelCount();
+        datDebugPrintf("LoadTime:%d %d\n", count, dds3GetKernelCount() - sbtlSbattleData);
+        return 0;
+    }
+    if (!sbtlLoadEffectData_Decode(NULL)) {
+        return 0;
+    }
+    if (!sbtlLoadAttackHitData_Decode(NULL)) {
+        return 0;
+    }
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (wk == NULL) {
+        return 0;
+    }
+    if (sbtlCheckDamageTarget(wk)) {
+        if (wk_sbtl->smnCtrl.bNoOk) {
+            return 0;
+        }
+        if (wk_sbtl->step <= 0) {
+            return 0;
+        }
+        if (wk_sbtl->flg2 & 0x1000) {
+            return 0;
+        }
+        slCallBitCheck();
+        if (wk_sbtl->flg2 & 0x2000000) {
+            return 0;
+        }
+        if (!(wk_sbtl->status4 & 4)) {
+            return 0;
+        }
+        stage = &sbtlData100[wk_sbtl->stageNo];
+        if (!sbtlChkBossEventStart()) {
+            if ((u32)(wk_sbtl->stageNo - 752) < 16 && wk_sbtl->fieldE8C) {
+                wk_sbtl->huumaTargetID = 1;
+                wk_sbtl->field42C0 = 4;
+                wk_sbtl->flg |= 0x80000000;
+                cmpSbtlkaiwaMain();
+            } else if (stage->flags & 0x36) {
+                wk_sbtl->bNoEnemyName = 1;
+                wk_sbtl->flg |= 0x80000000;
+                IsStart(1);
+            } else if (wk_sbtl->fieldE8C) {
+                wk_sbtl->field42C0 = wk_sbtl->fieldE8D ? 7 : 4;
+                wk_sbtl->huumaTargetID = 1;
+                wk_sbtl->flg |= 0x80000000;
+                cmpSbtlkaiwaMain();
+            } else if ((wk_sbtl->flg2 & 0x400000)
+                       || (!GetPartyLevelDfference() && !sbtlSENSEIDMGCHK() && !sbtlCallBitCheck())) {
+                wk_sbtl->bNoEnemyName = 1;
+                wk_sbtl->flg |= 0x80000000;
+                IsStart(1);
+            }
+        }
+        pchara = sbtlGetPChara();
+        mapDebugLightSet(mapGetLight(pchara->pos.x, sbtlGetPChara()->pos.z));
+        sbtlBattleStart(stage);
+        count = dds3GetKernelCount();
+        datDebugPrintf("LoadTime:%d %d\n", count, dds3GetKernelCount() - sbtlSbattleData);
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlCheckStartBattle);
+#endif
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlFunc);
 
-INCLUDE_ASM(const s32, "code_00261DF0", sbtlSbattle4);
+s32 sbtlSbattle4(dds3ProcessID_t *id) {
+    if (dds3SearchProcessName(sbtlData85) == NULL) {
+        return 0;
+    }
+    if (wk_sbtl == NULL) {
+        return 0;
+    }
+    if (wk_sbtl->flg & 8) {
+        if (!(wk_sbtl->flg2 & 4)) {
+            sbtlCallBtlGetCutFlg();
+            sbtlDrawAttachEPL(wk_sbtl->hitList);
+        }
+        return 0;
+    }
+    sbtlCallGetActiveScene();
+    Draw_sbtlUnit();
+    sbtlMainDraw();
+    sbtlDrawEscapeGauge(32, 384);
+    Draw_sbtlDvltk(wk_sbtl->dvltkList);
+    Draw_sbtlSTP(wk_sbtl->stp);
+    EventProc();
+    sbtlRefSbtl28();
+    return 0;
+}
 
 s32 DrawProc2_sbtl(dds3ProcessID_t *id)
 {
@@ -603,7 +1132,148 @@ s32 Proc_sbtl(void)
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlProcSequenceSub);
 
+/* NON_MATCHING: 132 of 364 words match.  */
+#ifdef NON_MATCHING
+s32 CheckEnd(void)
+{
+    struct SBTLUNIT_WORK *wk;
+    struct SBTLUNIT_WORK *nakama;
+    BST bst;
+
+    if (!sbtlCheckLoadFlg()) {
+        return 1;
+    }
+    wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (wk->status == 34 && !(wk_sbtl->flg & 0x1000000) && wk_sbtl->mode != 8 && wk_sbtl->mode != 9 &&
+        wk_sbtl->mode != 16) {
+        wk_sbtl->flg |= 0x40000000;
+        End_sbtlTime();
+        if (!(wk->unit.badStatus & 0x8000) && sbtlCheckUnit_Exec()) {
+            if (!sbtlCheckTutorialBattle()) {
+                wk_sbtl->flg |= 0x20;
+            }
+            wk->unit.badStatus |= 0x8000;
+            wk_sbtl->flg |= 8;
+            wk_sbtl->flg2 &= ~0x10000000;
+            sbtlInitDropWork();
+            sbtlSetEndData();
+            sbtlCheckBattleLose();
+            return 1;
+        }
+    }
+    if (!(wk_sbtl->field42CA || wk_sbtl->bNoEndCam || wk_sbtl->fieldCA2 || wk->status == 34 ||
+          (wk_sbtl->flg & 0x1000000) || wk->status == 40 || wk->status == 10 || wk_sbtl->mode == 8 ||
+          wk_sbtl->mode == 9 || wk_sbtl->mode == 16 || wk_sbtl->field424 ||
+          (sbtlCheckGeneratorAll() && sbtlCheckGenerator_ND())) ||
+        (wk_sbtl->flg2 & 0x10000)) {
+        wk_sbtl->fieldC7C = 1;
+        End_sbtlTime();
+        wk_sbtl->flg |= 0x40000000;
+        wk_sbtl->mode = 19;
+        wk_sbtl->field430++;
+        if (wk_sbtl->field430 <= 0) {
+            wk_sbtl->field430 = 0;
+        } else if (wk_sbtl->field430 > 0x7FFF) {
+            wk_sbtl->field430 = 0x7FFF;
+        }
+        wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        if (wk_sbtl->field430 == 1) {
+            sbtlShugouKaijyo();
+            wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+            bst = sbtlGetBadStatus(&wk->unit);
+            if (wk->status != 42) {
+                wk->vstatus |= 0x8000000;
+                if (bst != BST_STONE) {
+                    sbtlResetBadStatus(wk, 0x25FBF);
+                }
+                wk->next_motion_not_hokan = 1;
+                sbtlSetMotion_sbtlUnit(wk, 12, 0, 0, 0);
+                sbtlForceDelete_ID_Acter(wk_sbtl->effList, wk, EFFID_RENKEIOR);
+                sbtlRefSbtl11(wk);
+                sbtlReleaseSTP_List(wk_sbtl->stp, 1);
+                if (!wk_sbtl->bNoEndCam) {
+                    nakama = sbtlGetPChara();
+                    if (nakama != NULL) {
+                        nakama->L2_muteki = 1;
+                        nakama->pos.x = 0.0f;
+                        nakama->pos.y = 0.0f;
+                        nakama->pos.z = 0.0f;
+                        nakama->rot.x = 0.0f;
+                        nakama->rot.y = 0.0f;
+                        nakama->rot.z = 0.0f;
+                        nakama->rot.w = 1.0f;
+                    }
+                    nakama = sbtlGetNakama(0);
+                    if (nakama != NULL) {
+                        sbtlBgnWait(nakama);
+                        nakama->pos.x = 197.64499f;
+                        nakama->pos.y = 0.0f;
+                        nakama->pos.z = 151.62999f;
+                        nakama->rot.x = 0.0f;
+                        nakama->rot.y = 0.0f;
+                        nakama->rot.z = 0.0f;
+                        nakama->rot.w = 1.0f;
+                        nakama->next_motion_not_hokan = 1;
+                        sbtlSetMotion_sbtlUnit(nakama, 0, 0, 0, 0);
+                        sbtlGetNakama(0)->flg &= ~6;
+                        nakama->L2_muteki = 1;
+                        sbtlSetAction(nakama, 1, 0);
+                        nakama->skillid = 0;
+                        nakama->aiwk->mode = 12;
+                        nakama->model->stat = 1;
+                    }
+                    nakama = sbtlGetNakama(1);
+                    if (nakama != NULL) {
+                        sbtlBgnWait(nakama);
+                        nakama->pos.x = -197.64499f;
+                        nakama->pos.y = 0.0f;
+                        nakama->pos.z = 151.62999f;
+                        nakama->rot.x = 0.0f;
+                        nakama->rot.y = 0.0f;
+                        nakama->rot.z = 0.0f;
+                        nakama->rot.w = 1.0f;
+                        nakama->next_motion_not_hokan = 1;
+                        sbtlSetMotion_sbtlUnit(nakama, 0, 0, 0, 0);
+                        sbtlGetNakama(1)->flg &= ~6;
+                        nakama->L2_muteki = 1;
+                        sbtlSetAction(nakama, 1, 0);
+                        nakama->skillid = 0;
+                        nakama->aiwk->mode = 12;
+                        nakama->model->stat = 1;
+                    }
+                    sbtlRefSbtl65(&CheckEndData[dds3GetRandIntA(NULL, 3)]);
+                    sbtlSetMode(1);
+                    sbtlCallBgSetScrollReset();
+                }
+            }
+            sbtlResetATKEffect();
+            sbtlSetAction(wk, 42, 0);
+            sbtlSetEndBadStatus();
+        }
+        if (wk_sbtl->field430 < 180 && (!sbtlCheckNextAction(wk) || wk->field4FA <= 0)) {
+            return 1;
+        }
+        if ((wk_sbtl->flg2 & 1) && wk_sbtl->field430 < 180) {
+            return 0;
+        }
+        if (!sbtlCheckUnit_Exec()) {
+            return 1;
+        }
+        wk_sbtl->flg |= 8;
+        wk_sbtl->field430 = 0;
+        wk_sbtl->flg2 |= 0x10000000;
+        sbtlCheckBattleWin();
+        sbtlGetAutoSkillPoint();
+        sbtlGetChuuseiPoint();
+        sbtlSetEndData();
+        return 1;
+    }
+    wk_sbtl->field430 = 0;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", CheckEnd);
+#endif
 
 struct SBTLUNIT_WORK *sbtlGetNakama(s8 idx) {
     s32 index;
@@ -689,7 +1359,144 @@ void sbtlAnalyzeLoyalty(s32 x, s32 y, RED_GUAGE *pRedGg, s32 hp, s32 maxhp)
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlAnalyzeLoyalty);
 #endif
 
+/* NON_MATCHING: 34 of 294 words match.  */
+#ifdef NON_MATCHING
+void sbtlSetCameraLockOnTgtUpdate(void)
+{
+    struct SBTLUNIT_WORK *wk;
+    struct SBTLUNIT_WORK *player;
+    SBTL_DEVIL_DATA *devil;
+    s32 found;
+    s32 count;
+    s32 i;
+    s32 j;
+    s32 per;
+
+    if (wk_sbtl == NULL || wk_sbtl->unitList == NULL) {
+        return;
+    }
+    if (wk_sbtl->flg & 0x40) {
+        return;
+    }
+    if (IsSceanStop()) {
+        return;
+    }
+    if (wk_sbtl->field430) {
+        return;
+    }
+    if (wk_sbtl->mode == 12 || wk_sbtl->mode == 21) {
+        return;
+    }
+    if (wk_sbtl->flg & 0x1400000) {
+        return;
+    }
+    if (wk_sbtl->fieldCA2) {
+        return;
+    }
+    if (!(wk_sbtl->flg & 0x80010000)) {
+        return;
+    }
+    if (wk_sbtl->flg & 0x400) {
+        return;
+    }
+    if (wk_sbtl->battleMode == 3) {
+        return;
+    }
+    if (evtBitCheck(2228)) {
+        return;
+    }
+    if (wk_sbtl->flg < 0) {
+        return;
+    }
+    if (sbtlCheckPlayerDead()) {
+        return;
+    }
+    if (sbtlData100[wk_sbtl->stageNo].flags & 0x36) {
+        return;
+    }
+    count = 0;
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk != NULL && (wk->field414 & 0x3F) == 2 && !(wk->flg & 0x1000) && wk->status != 35 && sbtlCheckDamageTarget(wk)) {
+            count++;
+        }
+    }
+    if (count >= 2) {
+        return;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        wk = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (wk == NULL || (wk->field414 & 0x3F) != 2 || (wk->flg & 0x1000) || wk->status == 35) {
+            continue;
+        }
+        if (!sbtlCheckDamageTarget(wk)) {
+            continue;
+        }
+        if (wk->unit.now.hp * 100 / wk->unit.now.maxhp >= 60) {
+            continue;
+        }
+        if (wk->field6E8) {
+            continue;
+        }
+        if (!sbtlCheckMotionNo(wk, 0) && !sbtlCheckMotionNo(wk, 2)) {
+            continue;
+        }
+        if (wk->unit.badStatus) {
+            continue;
+        }
+        wk->field6E8 = 1;
+        devil = sbtlIfDrawActionSub(wk->unit.devilId);
+        if (gohData7[wk->unit.devilId].field80 == 12 && sbtlRefDDS3GBWK4(devil->field82) < 4) {
+            continue;
+        }
+        found = 0;
+        for (j = 0; j < datGetStockDevilNums(); j++) {
+            if (wk->unit.devilId - 207 == DDS3_GBWK->playerData.stock[j].devilId) {
+                found = 1;
+                break;
+            }
+        }
+        if (found) {
+            continue;
+        }
+        per = 10;
+        player = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        if (sbtlGetDevilHuumaItem(devil->field82) >= 3) {
+            if (wk_sbtl->status3 & 0x40) {
+                per = 20;
+            }
+            if (sbtlGetDevilHuumaItem(devil->field82) >= 8) {
+                per += 5;
+            }
+            if (wk->unit.level < 10) {
+                per += 10;
+            }
+            if (player->unit.level - wk->unit.level >= 5) {
+                per += 5;
+            }
+        }
+        if ((s32)GetRand(100) >= per) {
+            continue;
+        }
+        if (slCallBitCheck2(wk->unit.devilId, 0)) {
+            continue;
+        }
+        if (gohData7[wk->unit.devilId].field80 == 13) {
+            continue;
+        }
+        if (sbtlCheckMoon(8)) {
+            continue;
+        }
+        StopBattle();
+        wk_sbtl->field42C0 = 3;
+        wk_sbtl->huumaTargetID = wk->field1A0;
+        cmpSbtlkaiwaMain();
+        return;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlSetCameraLockOnTgtUpdate);
+#endif
 
 s32 GetPartyLevelDfference(void)
 {
@@ -865,7 +1672,154 @@ INCLUDE_ASM(const s32, "code_00261DF0", sbtlCallUnlock2);
 
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlRefSbtl2);
 
+/* NON_MATCHING: 264 of 278 words match.  */
+#ifdef NON_MATCHING
+void sbtlROULETTECHKPer(void)
+{
+    s32 force = 0;
+    s32 row = 0;
+    s32 per;
+    s32 next;
+    s32 item;
+    s32 i;
+
+    wk_sbtl->field433C = 0;
+    wk_sbtl->field4340 = 0;
+    if (wk_sbtl->stageNo == 466) {
+        force = 1;
+    } else if (sbtlRefSbtl2()) {
+        return;
+    }
+    if (!wk_sbtl->field4328 && evtBitCheck(3000) && !evtBitCheck(2960) && evtBitCheck(2116) && !evtBitCheck(3001)) {
+        force = 1;
+    }
+    per = dds3GetRandIntA(NULL, 100);
+    datDebugPrintf("ROULETTE CHK per:%d / %d\n", per, sbtlROULETTECHKPerData + 30);
+    if (!force && sbtlROULETTECHKPerData + 30 < per) {
+        next = sbtlROULETTECHKPerData + 10;
+        if (next > 40) {
+            next = 40;
+        }
+        sbtlROULETTECHKPerData = next;
+        return;
+    }
+    if (!wk_sbtl->field4328 && !force && !evtBitCheck(2116)) {
+        return;
+    }
+    sbtlCallGetRandData6 = GetRand(4);
+    slCallPlaySEData = 0;
+    slCallPlaySEData2 = 0;
+    slCallPlaySEData3 = 0;
+    sbtlROULETTECHKPerData = 0;
+    if (wk_sbtl->stageNo == 466) {
+        sbtlCallGetRandData5 = 99;
+        sbtlCallGetRandWork[0] = 141;
+        sbtlCallGetRandWork[1] = 141;
+        sbtlCallGetRandWork[2] = 141;
+        sbtlCallGetRandWork[3] = 141;
+    } else {
+        switch (sbtlGetPlayerLuckStep()) {
+        case 0:
+            if (dds3GetRandIntA(NULL, 100) < 80) {
+                sbtlCallGetRandData5 = 98;
+                row = 0;
+            } else {
+                sbtlCallGetRandData5 = 99;
+                row = 7;
+            }
+            break;
+        case 1:
+            if (dds3GetRandIntA(NULL, 100) < 80) {
+                sbtlCallGetRandData5 = 98;
+                row = 1;
+            } else {
+                sbtlCallGetRandData5 = 99;
+                row = 8;
+            }
+            break;
+        case 2:
+        case 3:
+        case 4:
+            if (dds3GetRandIntA(NULL, 100) < 60) {
+                sbtlCallGetRandData5 = 98;
+                row = 1;
+            } else {
+                sbtlCallGetRandData5 = 99;
+                row = 8;
+            }
+            break;
+        case 5:
+            if (dds3GetRandIntA(NULL, 100) < 20) {
+                sbtlCallGetRandData5 = 98;
+                row = 1;
+            } else {
+                sbtlCallGetRandData5 = 99;
+                row = 8;
+            }
+            break;
+        case 6:
+            if (dds3GetRandIntA(NULL, 100) < 20) {
+                sbtlCallGetRandData5 = 98;
+                row = 2;
+            } else {
+                sbtlCallGetRandData5 = 99;
+                row = 9;
+            }
+            break;
+        }
+        if (sbtlCallGetRandData5 == 98) {
+            pbCallEffectReset(1);
+        }
+        item = sbtlCallGetRandData[row][dds3GetRandIntA(NULL, 8)];
+        for (i = 0; i < 4; i++) {
+            sbtlCallGetRandWork[i] = sbtlCallUnlock2(item, i, 0);
+        }
+    }
+    switch (sbtlCallGetRandWork[sbtlCallGetRandData6]) {
+    case 125:
+        wk_sbtl->field4338 = 1;
+        break;
+    case 126:
+        wk_sbtl->field4338 = 2;
+        break;
+    case 127:
+        wk_sbtl->field4338 = 3;
+        break;
+    case 128:
+        wk_sbtl->field4338 = 4;
+        break;
+    case 129:
+        wk_sbtl->field4338 = 5;
+        break;
+    case 130:
+        wk_sbtl->field4338 = 6;
+        break;
+    case 131:
+        wk_sbtl->field4338 = 7;
+        break;
+    case 132:
+        wk_sbtl->field4338 = 8;
+        break;
+    case 133:
+        wk_sbtl->field4338 = 9;
+        break;
+    case 134:
+        wk_sbtl->field4338 = 10;
+        break;
+    case 135:
+        wk_sbtl->field4338 = 11;
+        break;
+    }
+    if (sbtlCallGetRandData5 == 98) {
+        sbtlCallTexSetFromHead(0);
+    } else {
+        sbtlCallTexSetFromHead(1);
+    }
+    wk_sbtl->flg2 |= 0x401000;
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", sbtlROULETTECHKPer);
+#endif
 
 INCLUDE_ASM(const s32, "code_00261DF0", DeleteAll_MenuItemUse);
 
@@ -1010,7 +1964,35 @@ void slQueryYesNoDraw_slMain(void)
     }
 }
 
+/* NON_MATCHING: 19 of 70 words match.  */
+#ifdef NON_MATCHING
+void slCallSin(s32 alpha)
+{
+    f32 angle;
+    f32 t;
+    f32 u;
+    s32 hi;
+    s32 lo;
+    s32 r;
+    s32 g;
+
+    if (wk_sbtl->field433C) {
+        angle = slCallSinData + 0.08f;
+        wk_sbtl->status4 |= 0x2000;
+        slCallSinData = angle;
+        t = sdfSin(angle) * 0.5f + 0.5f;
+        u = 1.0f - t;
+        r = 200;
+        g = 208;
+        hi = t * r + u * 224.0f;
+        lo = t * g + u * 232.0f;
+        sbtlLeaf94(0, 96, 320, wk_sbtl->field433C, (hi << 24) + alpha / 2 + (lo << 8) + (hi << 16),
+                   alpha < 177 ? alpha : 176);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_00261DF0", slCallSin);
+#endif
 
 void slFirstInitSub(void)
 {

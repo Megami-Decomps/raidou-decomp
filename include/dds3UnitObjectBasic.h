@@ -45,5 +45,8 @@ void dds3UnitObjectBasicSetKubiTerget(dds3Basic_t *pBasic, const sdfVector4_t *a
 void dds3UnitObjectBasicSetKubiModori(dds3Basic_t *pBasic);
 void dds3UnitObjectBasicKubiOn(dds3Basic_t *pBasic, s32 posid);
 void dds3UnitObjectBasicKubiOff(dds3Basic_t *pBasic);
+#ifdef VERSION_RAIDOU2
+void dds3UnitMVSBtlUnitSub(dds3Basic_t *pBasic, f32 speed);
+#endif
 
 #endif

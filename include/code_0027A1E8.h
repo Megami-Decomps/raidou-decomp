@@ -25,7 +25,7 @@ s32 sbtlCallBtlGetNakama3(void);
 s32 ShugouKaijyoSub(struct SBTLUNIT_WORK *wk);
 void Check_Stls(struct SBTLUNIT_WORK *wk);
 s32 sbtlReset_SupportAction_Shugou(struct SBTLUNIT_WORK *wk);
-s32 sbtlDrawEscapeGauge(void);
+s32 sbtlDrawEscapeGauge(s32 x, s32 y);
 void sbtlResetATKEffect(void);
 s32 sbtlCheckSetHITNONE(s32 Group, u32 DevilID);
 void sbtlCallBtlResetJump(struct SBTLUNIT_WORK *wk, s32 frame);

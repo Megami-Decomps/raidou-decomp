@@ -28,6 +28,10 @@ extern u8 *sbtlCallPackDecodeData2;
 extern s32 sbtlCallPackDecodeData3;
 extern fileRequest_t *sbtlCallMemGetPtr3Data;
 extern s32 LoadMap_FromMemoryData3;
+extern sdfVector4_t LoadMap_FromMemoryData; /* HD nakama_pos */
+extern sdfVector4_t LoadMap_FromMemoryData2; /* HD nakama_rot */
+extern s32 sbtlData156;
+extern f32 sbtlData161;
 void sbtlModelFieldLb(void);
 void sbtlModelFieldLb2(void);
 void sbtlModelFieldLb3(void);

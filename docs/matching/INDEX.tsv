@@ -102,6 +102,13 @@ sbtlSetHitStop	code_00261DF0	raidou2 0x40	6 of 16 words differ	docs/matching/cod
 sbtlProcHitStop	code_00261DF0	raidou2 0x124	3 of 73 words differ	docs/matching/code_00261DF0.md	21		
 sbtlAnalyzeLoyalty	code_00261DF0	raidou2 0x12C	30 of 75 words differ	docs/matching/code_00261DF0.md	27		
 slCallBitCheck	code_00261DF0	raidou2 0x194	13 of 101 words differ	docs/matching/code_00261DF0.md	33		
+Exit_sbtl	code_00261DF0	raidou2 0x66C	20 of 411 words differ	docs/matching/code_00261DF0.md	39		
+Init_sbtl	code_00261DF0	raidou2 0x2F0	30 of 188 words differ	docs/matching/code_00261DF0.md	45		
+sbtlCheckStartBattle	code_00261DF0	raidou2 0x73C	411 of 463 words differ	docs/matching/code_00261DF0.md	51		
+CheckEnd	code_00261DF0	raidou2 0x5B0	232 of 360 words differ	docs/matching/code_00261DF0.md	59		
+sbtlSetCameraLockOnTgtUpdate	code_00261DF0	raidou2 0x498	260 of 292 words differ	docs/matching/code_00261DF0.md	65		
+sbtlROULETTECHKPer	code_00261DF0	raidou2 0x458	14 of 275 words differ	docs/matching/code_00261DF0.md	71		
+slCallSin	code_00261DF0	raidou2 0x118	51 of 66 words differ	docs/matching/code_00261DF0.md	77		
 sbtlLoadSkillSE	code_0026B0A8	raidou2 0x114	8 of 69 words differ	docs/matching/code_0026B0A8.md	3		
 sbtlStopSkillSE	code_0026B0A8	raidou2 0x5C	1 of 23 words differ	docs/matching/code_0026B0A8.md	9		
 GetDevilSE	code_0026B0A8	raidou2 0x188	96 of 96 words differ	docs/matching/code_0026B0A8.md	15		
@@ -109,6 +116,9 @@ sbtlLoadDevilSE	code_0026B0A8	raidou2 0x134	12 of 77 words differ	docs/matching/
 sbtlFadeProc	code_0026B0A8	raidou2 0x2CC	115 of 168 words differ	docs/matching/code_0026B0A8.md	27		
 RGBFade	code_0026B0A8	raidou2 0x130	30 of 76 words differ	docs/matching/code_0026B0A8.md	33		
 sbtlCheckTalkSelectTarget	code_0026B0A8	raidou2 0x114	36 of 70 words differ	docs/matching/code_0026B0A8.md	39		
+LoadMap_FromMemory	code_0026B0A8	raidou2 0x83C	23 of 527 words differ	docs/matching/code_0026B0A8.md	45		
+GetSkillSE	code_0026B0A8	raidou2 0x318	6 of 198 words differ	docs/matching/code_0026B0A8.md	51		
+sbtlResetAtkSklEff	code_0026B0A8	raidou2 0x530	104 of 332 words differ	docs/matching/code_0026B0A8.md	57		
 sbtlCreateEnemyList	code_002743E0	raidou2 0xB8	1 of 46 words differ	docs/matching/code_002743E0.md	3		
 sbtlCreateSideList	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	11		
 sbtlCreateSideList_sbtlUnit	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	19		

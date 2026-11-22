@@ -1627,9 +1627,9 @@ s32 cmpCallMenuGetSelectID(void) {
     s32 ret = -1;
 
     if (id == 1) {
-        ret = DDS3_GBWK->unk4242;
+        ret = DDS3_GBWK->unk4242[0];
     } else if (id == 2) {
-        ret = DDS3_GBWK->unk4244;
+        ret = DDS3_GBWK->unk4242[1];
     } else if (id >= 4) {
         ret = id + cmpGetStockPID()->page * 8 - 4;
     }
@@ -1936,12 +1936,12 @@ void cmpChkSkillSelectHd(void) {
 
     itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
     itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
-    if (DDS3_GBWK->unk4242 == -1) {
+    if (DDS3_GBWK->unk4242[0] == -1) {
         itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
     } else {
         itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
     }
-    if (DDS3_GBWK->unk4244 == -1) {
+    if (DDS3_GBWK->unk4242[1] == -1) {
         itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 0);
     } else {
         itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 1);

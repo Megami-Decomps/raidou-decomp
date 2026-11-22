@@ -71,6 +71,7 @@ void sbtlStopSE(u32 seid);
 #ifdef VERSION_RAIDOU2
 void sbtlPlayDeadVoice(struct SBTLUNIT_WORK *wk);
 s32 sbtlSEVolAngleCalc_sbtlSound(const sdfVector4_t *pos, f32 maxlen, f32 minlen, s32 basevol, s32 minvol);
+void sbtlCallBtlSEVolAngleCalc(void);
 #endif
 void sbtlRefSbtl6(struct SBTLUNIT_WORK *wk, u32 seid, s32 vol, s32 motionID);
 u32 sbtlCallGetRandIntA4(struct SBTLUNIT_WORK *wk);
@@ -92,6 +93,7 @@ u32 sbtlCallBtlGetSkilltbl(s32 skillID, s32 type);
 /* raidou1 names this function sbtlCallBtlGetSkilltbl. */
 u32 GetSkillSE(s32 skillID, s32 type);
 void sbtlStopSkillSE(SKLID skillid, s32 type);
+u32 GetR1CombSklSmg(SKLID skillID);
 #endif
 void sbtlCheckBossSE(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetBadStatus(struct SBTLUNIT_WORK *wk);

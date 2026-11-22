@@ -342,6 +342,7 @@ void sbtlSetStoneDeadDamage(struct SBTLUNIT_WORK *wk, s32 damage);
 s32 sbtlBtlSetDamageProcSBtlDMGSub(SKLID skillid);
 /* flg is unused; retail callers pass 0. */
 s32 sbtlSEISHINCNTR(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, s32 flg);
+void sbtlDltHit_by_UnitSkl(struct SBTLDMG_HITLISTWORK *lwk, s32 unitID, SKLID sklID);
 #endif
 s32 CheckDamageTarget(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, SKLID skillid);
 s32 sbtlCheckGround_sbtlDMG(struct SBTLDMG_HITWORK *hwk, s32 *hitflg);

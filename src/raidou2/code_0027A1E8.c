@@ -171,7 +171,7 @@ void sbtlCallBtlGetPChara2(s8 flag) {
             sbtlAddUnitDeg(pchara, deg);
             FromEuler(0.0f, pchara->angleY * 0.0174532925f, 0.0f);
             SDF_VU0_STOREVECTOR(&pchara->rot);
-            SDF_VU0_STOREVECTOR(&pchara->field0B0);
+            SDF_VU0_STOREVECTOR(&pchara->rotbk);
             if (wk_sbtl->fieldC74 == 0) {
                 wk_sbtl->fieldC74 = target->field1A0;
                 SDF_VU0_LOADVECTOR(&target->pos);
@@ -578,7 +578,7 @@ INCLUDE_ASM(const s32, "code_0027A1E8", CheckAutoSkill_Escape);
 
 /* NON_MATCHING: 9 of 62 words match.  */
 #ifdef NON_MATCHING
-s32 sbtlDrawEscapeGauge(void) {
+s32 sbtlDrawEscapeGauge(s32 x, s32 y) {
     struct SBTLUNIT_WORK *unit;
     s16 mode;
     s32 ret = 0;
