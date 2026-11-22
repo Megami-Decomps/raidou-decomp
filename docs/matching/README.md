@@ -44,6 +44,7 @@ menu scenarios); an entry says which paths they covered.
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 5 | code_0015D490 | raidou1 | [code_0015D490.md](code_0015D490.md) |
+| 5 | code_002C5D78 | raidou2 | [code_002C5D78.md](code_002C5D78.md) |
 | 5 | kernel/dds3AdminiProcess | raidou1, raidou2 | [kernel/dds3AdminiProcess.md](kernel/dds3AdminiProcess.md) |
 | 5 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
 | 5 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
@@ -122,7 +123,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_001AD4E8 | raidou1 | [code_001AD4E8.md](code_001AD4E8.md) |
 | 1 | code_00291C78 | raidou1 | [code_00291C78.md](code_00291C78.md) |
 | 1 | code_002929C8 | raidou1 | [code_002929C8.md](code_002929C8.md) |
-| 1 | code_002C5D78 | raidou2 | [code_002C5D78.md](code_002C5D78.md) |
 | 1 | code_002D7950 | raidou1 | [code_002D7950.md](code_002D7950.md) |
 | 1 | code_0034F3B8 | raidou1 | [code_0034F3B8.md](code_0034F3B8.md) |
 | 1 | code_0035E5B8 | raidou2 | [code_0035E5B8.md](code_0035E5B8.md) |

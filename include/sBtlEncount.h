@@ -17,7 +17,6 @@ typedef struct datRndEncTbl_t {
 #ifdef VERSION_RAIDOU2
     s8 map;
     s8 floor;
-    u8 pad02[2];
 #else
     s16 mapNo[2]; /* HD has u8 map, u8 floor, u16 flag0; Raidou reads two halfwords (pbCallBtlGetRndEncJoken) */
 #endif
@@ -25,7 +24,12 @@ typedef struct datRndEncTbl_t {
     u16 flag1;
     u16 flag0j;
     u16 flag1j;
+#ifdef VERSION_RAIDOU2
+    s16 normalritu;
+    s32 type;
+#else
     s32 normalritu;
+#endif
     datRndEncRitu_t ritu[8];
 } datRndEncTbl_t;
 

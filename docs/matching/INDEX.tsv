@@ -178,6 +178,10 @@ sbtlCallExistProcess2	code_002A38D8	raidou1 0x68	8 of 26 words differ	docs/match
 sbtlDraw3DSphere	code_002A38D8	raidou1 0x294	26 of 165 words differ	docs/matching/code_002A38D8.md	79		
 sbtlCallVsprintf2	code_002A38D8	raidou1 0xC8	20 of 48 words differ	docs/matching/code_002A38D8.md	89		
 sbtlGetPointData	code_002C5D78	raidou2 0xF4	3 of 61 words differ	docs/matching/code_002C5D78.md	3	the full-unit result moves with declarations in headers the unit includes. At dcf72cfd the R2-C3 part 4 header edits (sBtlUnit.h, sbtlWork.h, itf.h) turn OK into CONTEXT 3/61.	
+sbtlGetSETime	code_002C5D78	raidou2 0xC0	13 of 48 words differ	docs/matching/code_002C5D78.md	11		
+sbtlGetRndEncJoken	code_002C5D78	raidou2 0xE8	10 of 58 words differ	docs/matching/code_002C5D78.md	17		
+sbtlSetMenuPara	code_002C5D78	raidou2 0xFC	8 of 63 words differ	docs/matching/code_002C5D78.md	23		
+sbtlCheckBattleWin	code_002C5D78	raidou2 0x148	8 of 82 words differ	docs/matching/code_002C5D78.md	29		
 campDhIconIsReady	code_002D7950	raidou1 0x2C	5 of 11 words differ	docs/matching/code_002D7950.md	3		
 SetAddMag	code_002F5CF0	raidou2 0x60	9 of 21 words differ	docs/matching/code_002F5CF0.md	3		
 sbtlInitSBtlSub2	code_002F5CF0	raidou2 0x5C	22 of 24 words differ	docs/matching/code_002F5CF0.md	9		

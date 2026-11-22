@@ -28,9 +28,10 @@ struct tagCMP_WORK {
     s32 markID;                  /* 0x1C */
     s32 count;                   /* 0x20 */
 #ifdef VERSION_RAIDOU2
-    u8 unk24[8];
+    s32 unk24;                   /* 0x24 */
+    s32 unk28;                   /* 0x28 */
     s16 page;                    /* 0x2C: stock list page, 8 entries each */
-    u8 unk2E[2];
+    s16 unk2E;                   /* 0x2E: stock capacity / 9 */
     s16 pageMax;                 /* 0x30: last stock list page */
     u8 unk32[6];
     /* the Kuda list filter (cmpSetFilterEx) */
@@ -57,6 +58,8 @@ void cmpCallDrawKeyHelp2(struct tagCMP_WORK *wk, u8 a_alphaRate);
 extern ITFMENU_CTRL_TYPE cmpCallGetProcessData6Data;
 s32 cmpCallGetProcessData6(dds3ProcessID_t *PID);
 void cmpFunc8(s32 a_x, s32 a_y, s32 a_alphaRate);
+void cmpCallGetSpriteHnd11(void);
+void cmpStatusDrawSub(s32 a_x, s32 a_y, s32 a_alphaRate);
 CMP_MODE cmpGetEndMode(void);
 s32 cmpGetMarkID(void);
 dds3ProcessFunc_t cmpProcess(dds3ProcessID_t *PID);

@@ -14,7 +14,7 @@ s32 sbtlGetMenuStatus(void);
 void sbtlResetMenuPara(void);
 void sbtlResetMidashiAnim(s8 flg);
 void sbtlResetSelectAnim(s8 flg);
-s32 sbtlSetMenuPara(SBTLPNL_MENU mode, s32 stock_id, SKLID skillid, s32 itemid, s32 targetid, s32 smnid);
+s32 sbtlSetMenuPara(u16 mode, s32 stock_id, SKLID skillid, s32 itemid, s32 targetid, s32 smnid);
 void sbtlSetSelectAnim(s8 flg);
 
 #endif

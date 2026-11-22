@@ -24,5 +24,8 @@ struct itfSprList_t;
 void cmpLeaf49(s32 a_sprNo, s32 a_x, s32 a_y, u32 a_alphaRate, struct sprHandle_t *a_hSpr);
 extern struct itfSprList_t cmpDrawKeyHelp2Data[];
 void cmpDrawKeyHelp2(u8 a_alphaRate, DDS3_OT a_otNo);
+extern s8 cmpCallGetProcessData25Data;
+extern struct itfSprList_t cmpCallGetSpriteHnd7Data[];
+extern char cmpCallGetSpriteHnd2Data2[]; /* "%7d" */
 
 #endif

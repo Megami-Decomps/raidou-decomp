@@ -5,7 +5,7 @@
 
 struct tagCMP_STATUS_WORK;
 
-void CmpStatusDraw(struct tagCMP_STATUS_WORK *_wk);
+void CmpStatusDraw(s32 a_alphaRate); /* passed down as the sprite alpha */
 void cmpLvUpSeqFadeInStepUpdate(struct tagCMP_STATUS_WORK *wk);
 
 #endif

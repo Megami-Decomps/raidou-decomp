@@ -82,6 +82,9 @@ void cmpCallGetStockDevilNums2(dds3ProcessID_t *PID);
 s32 cmpCallMenuGetFlag(void);
 s32 cmpGetNowSummonerRank(void);
 s32 cmpGetSummonerRank2SprNo(void);
+s32 cmpResetMotion(s32 a_motNo);
+void cmpUpdateBulletNum(void);
+s32 MakeList(CMP_MENU_ID a_id);
 /* HD g_menuID: the open camp menu; the high half selects the cmpLeaf16Data entry. */
 extern s32 cmpCallGetCharPIDData7;
 /* HD cmpBookFunc: per-page update of the book menu. */

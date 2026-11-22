@@ -29,6 +29,12 @@
 #include "sdfQuat.h"
 #include "sbtlSub.h"
 #include "fld.h"
+#include "code_r1_001CC1D0.h"
+#include "code_r1_002CA3F0.h"
+#include "model.h"
+#include "motion.h"
+#include "sBtlCmndMenuNew.h"
+#include "dds3Randomize.h"
 
 s32 sbtlCheckLoadFlg(void) {
     u32 load;
@@ -84,7 +90,16 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf79);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf80);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlBtlDrawTextSub);
+void sbtlBtlDrawTextSub(s32 x, s32 y, u32 alpha, struct sprHandle_t *handle, s32 sprno)
+{
+    u32 rgba[4];
+
+    rgba[0] = (handle->workEntries[sprno].savedColors[0] & ~0xFF) | alpha;
+    rgba[1] = (handle->workEntries[sprno].savedColors[1] & ~0xFF) | alpha;
+    rgba[2] = (handle->workEntries[sprno].savedColors[2] & ~0xFF) | alpha;
+    rgba[3] = (handle->workEntries[sprno].savedColors[3] & ~0xFF) | alpha;
+    effDrawSpriteWithCornerColors(x * 16, y * 8, 0, rgba, 0, handle, sprno, DDS3_OT_2D_HIGH | DDS3_OT_BACKEX_NORMAL);
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlLeaf81);
 
@@ -143,7 +158,52 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCancelMenuPara);
 
 INCLUDE_RODATA(const s32, "code_002C5D78", SummonMenuFunc_10Table);
 
+/* NON_MATCHING: 55 of 63 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlSetMenuPara(u16 mode, s32 stock_id, SKLID skillid, s32 itemid, s32 targetid, s32 smnid) {
+    wk_sbtl->panel->setdata[0].flg = 1;
+    wk_sbtl->panel->setdata[0].select_no = mode;
+    switch (mode) {
+    case SBTLPNL_MENU_S_MEIREI:
+        wk_sbtl->panel->setdata[smnid].skillid = skillid;
+        wk_sbtl->panel->setdata[smnid].target_p = stock_id;
+        wk_sbtl->panel->setdata[smnid].targetid = targetid;
+        wk_sbtl->panel->setdata[smnid].meirei_no = mode;
+        wk_sbtl->fieldC80 = smnid;
+        break;
+    case SBTLPNL_MENU_S_Y_ATK:
+    case SBTLPNL_MENU_S_Y_REC:
+    case SBTLPNL_MENU_S_Y_HOJ:
+    case SBTLPNL_MENU_S_Y_NMP:
+    case SBTLPNL_MENU_S_DEF:
+        wk_sbtl->fieldC80 = smnid;
+        wk_sbtl->panel->setdata[smnid].meirei_no = mode;
+        wk_sbtl->panel->setdata[0].target_p = stock_id;
+        break;
+    case SBTLPNL_MENU_SUMMON:
+    case SBTLPNL_MENU_RETURN:
+        wk_sbtl->fieldC80 = smnid;
+        wk_sbtl->panel->setdata[0].target_p = stock_id;
+        break;
+    case SBTLPNL_MENU_ITEM:
+        wk_sbtl->panel->setdata[0].targetid = targetid;
+        wk_sbtl->panel->setdata[0].target_p = stock_id;
+        wk_sbtl->panel->setdata[0].itemid = itemid;
+        break;
+    case SBTLPNL_MENU_BULLET:
+        wk_sbtl->panel->setdata[0].itemid = itemid;
+        break;
+    case SBTLPNL_MENU_NONE:
+    case SBTLPNL_MENU_ESCAPE:
+    case SBTLPNL_MENU_ORDER:
+        break;
+    }
+    wk_sbtl->field436 = 0;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetMenuPara);
+#endif
 
 INCLUDE_ASM(const s32, "code_002C5D78", SummonMenuFunc_50);
 
@@ -258,7 +318,53 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckTutorialEnd);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlCheckTutorialBattle);
 
+/* NON_MATCHING: 74 of 82 words match.  */
+#ifdef NON_MATCHING
+void sbtlCheckBattleWin(void) {
+    s32 win = 0;
+    struct SBTLUNIT_WORK *wk;
+
+    if (sbtlCheckTutorialBattle()) {
+        if (evtBitCheck(248) && wk_sbtl->field64C > 0) {
+            if (wk_sbtl->member_num > 0) {
+                wk = sbtlGetNakama(0);
+                if (wk == NULL || !CheckLiveTarget(wk)) {
+                    win = 1;
+                }
+            } else {
+                win = 1;
+            }
+        }
+        if (!win && !evtBitCheck(248)) {
+        }
+        if (!win) {
+            win = 3;
+        }
+    }
+    switch (win) {
+    case 1:
+        evtBitOff(2096);
+        evtBitOff(2097);
+        evtBitOff(2098);
+        evtBitOn(2099);
+        break;
+    case 2:
+        evtBitOff(2096);
+        evtBitOff(2097);
+        evtBitOn(2098);
+        evtBitOff(2099);
+        break;
+    case 3:
+        evtBitOn(2096);
+        evtBitOff(2097);
+        evtBitOff(2098);
+        evtBitOff(2099);
+        break;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckBattleWin);
+#endif
 
 void sbtlCheckBattleLose(void) {
     if (sbtlCheckTutorialBattle()) {
@@ -352,7 +458,30 @@ INCLUDE_ASM(const s32, "code_002C5D78", sbtlEvent_NegoProc);
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlMessageProc);
 
-INCLUDE_ASM(const s32, "code_002C5D78", EventProc);
+s32 EventProc(void)
+{
+    s32 stop = 0;
+
+    if (wk_sbtl->flg2 & 2) {
+        stop = 1;
+    }
+    if (sbtlGetStat() == 2) {
+        stop |= 2;
+    }
+    if (sbtlProcessCheck() && wk_sbtl->eventno != 6) {
+        stop |= 4;
+    }
+    if (sbtlCallGetProcessStat()) {
+        stop |= 8;
+    }
+    if (stop == 0) {
+        if (wk_sbtl->flg & 0x400) {
+            return EventProcData[wk_sbtl->eventno]();
+        }
+        return 0;
+    }
+    return 0;
+}
 
 s32 EventProcTbl_00(void) {
     s16 no[8] = { 2, 3, 3, 3, 3, 0, 1, 3 };
@@ -473,7 +602,33 @@ MOTIONMOVE_WORK *sbtlGetMotionMoveData(MODELTYPE major, s32 minor) {
     return &sbtlmotionmv_tbldata[minor];
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetMotionMove);
+f32 sbtlGetMotionMove(struct SBTLUNIT_WORK *wk, f32 frame) {
+    MOTIONMOVE_WORK *mv;
+    s32 i;
+
+    mv = sbtlGetMotionMoveData(wk->major, wk->minor);
+    if (mv == NULL) {
+        return 0.0f;
+    }
+    if (IsSceanStop() && !(wk->flg & 0x10)) {
+        return 0.0f;
+    }
+    if (wk->status == 9) {
+        return 0.0f;
+    }
+    if (wk->field6CC != 0) {
+        return 0.0f;
+    }
+    for (i = 0; i < 8; i++) {
+        if (mv->para[i].motionno == wk->next_motionno && mv->para[i].startframe <= frame && frame <= mv->para[i].endframe) {
+            return mv->para[i].sokudo;
+        }
+    }
+    if (wk->major == 0 && wk->minor == 5 && wk->next_motionno == 33 && frame >= 24.0f && frame <= 39.0f) {
+        return 30.0f;
+    }
+    return 0.0f;
+}
 
 V_POSITION_WORK *sbtlGetEffCylinderData(MODELTYPE major, s32 id) {
     if (major == 0) {
@@ -509,11 +664,95 @@ SBTL_UNIT_SUB *sbtlGetMotionVisualData_sbtlVisual(s32 a, s32 id, s32 b) {
     return &sbtlData168[id - 416].mwk[b];
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallBtlGetMotionVisualDataSBtlVi2);
+s32 sbtlCallBtlGetMotionVisualDataSBtlVi2(struct SBTLUNIT_WORK *wk)
+{
+    f32 frame;
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetActionTime);
+    if (sbtlGetMotionVisualData_sbtlVisual(wk->major, wk->minor, wk->next_motionno)->flags & 2) {
+        return 0;
+    }
+    if (sbtlCheckLoopMotion(wk, wk->motionID) || wk->motionID == 1 || wk->motionID == 14) {
+        return 1;
+    }
+    if (wk->hModel != NULL) {
+        frame = wk->hModel->first->frame;
+    } else {
+        frame = 0.0f;
+    }
+    if (frame >= 10.0f) {
+        return 0;
+    }
+    return 1;
+}
 
+f32 sbtlGetActionTime(struct SBTLUNIT_WORK *wk, s32 type) {
+    f32 frame = 0.0f;
+    SBTL_MOTION_VISUAL *visual;
+    SBTL_UNIT_SUB *sub;
+    f32 speed;
+
+    if (wk->major == 0) {
+        visual = sbtlGetVisualData(0, wk->minor);
+        sub = &visual->mwk[wk->next_motionno];
+        switch (type) {
+        case 0:
+            frame = sub->e_startrate + wk->beforeframe;
+            break;
+        case 1:
+            frame = sub->m_stoprate + wk->beforeframe;
+            break;
+        }
+    } else {
+        visual = sbtlGetMotionVisualData(wk->major, wk->minor);
+        sub = &visual->mwk[wk->next_motionno];
+        switch (type) {
+        case 0:
+            frame = sub->e_startrate + wk->beforeframe;
+            break;
+        case 1:
+            frame = sub->m_stoprate + wk->beforeframe;
+            break;
+        }
+    }
+    if (sub->flags & 1) {
+        speed = sub->field10;
+    } else {
+        speed = visual->field0C;
+    }
+    if (speed <= 0.0f) {
+        return 0.0f;
+    }
+    return frame / speed;
+}
+
+/* NON_MATCHING: 35 of 48 words match.  */
+#ifdef NON_MATCHING
+f32 sbtlGetSETime(struct SBTLUNIT_WORK *wk, s32 motionID) {
+    SBTL_MOTION_VISUAL *visual;
+    SBTL_UNIT_SUB *sub;
+    f32 frame;
+    f32 speed;
+
+    if (wk->major == 0) {
+        visual = sbtlGetVisualData(0, wk->minor);
+    } else {
+        visual = sbtlGetMotionVisualData(wk->major, wk->minor);
+    }
+    sub = &visual->mwk[motionID];
+    frame = (f32)sub->se_rate + wk->beforeframe;
+    if (sub->flags & 1) {
+        speed = sub->field10;
+    } else {
+        speed = visual->field0C;
+    }
+    if (speed <= 0.0f) {
+        return 0.0f;
+    }
+    return frame / speed;
+}
+#else
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetSETime);
+#endif
 
 s32 sbtlGetCylinderData_ID(MODELTYPE major, s32 minor, struct SBTLVISUAL_DATA *data) {
     sdfVector4_t ofs;
@@ -704,7 +943,36 @@ s32 sbtlClearGeneratorWork(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetGeneratorData);
+s32 sbtlSetGeneratorData(s32 encountno) {
+    SB_ENCOUNT1 *enc;
+    s32 i;
+    s32 j;
+
+    sbtlClearGeneratorWork();
+    for (i = 0; i < 13; i++) {
+        enc = &sbtlData100[encountno].enc1[i];
+        if (enc->type == 2 || enc->type == 3 || enc->type == 4 || enc->type == 5 || enc->type == 8 || enc->type == 9) {
+            for (j = 0; j < 13; j++) {
+                if (sb_gen_work[j].use == 0) {
+                    sb_gen_work[j].use = 1;
+                    sb_gen_work[j].zan_cnt = enc->zan_num;
+                    sb_gen_work[j].type_d_sommon_flg = 0;
+                    if (sbtlCallBitCheckData == 524 && enc->type == 5) {
+                        sb_gen_work[j].wait = j;
+                    } else {
+                        sb_gen_work[j].wait = GetIntervalRand(0, 30);
+                    }
+                    if (enc->type == 8) {
+                        sb_gen_work[j].wait = GetIntervalRand(0, 30) + 100;
+                    }
+                    sb_gen_work[j].penc = enc;
+                    break;
+                }
+            }
+        }
+    }
+    return 1;
+}
 
 void sbtlGeneratorD_On(void) {
     sb_gen_d_flag = 1;
@@ -724,7 +992,18 @@ s32 sbtlCheckGeneratorGroupID(s32 group)
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckGeneratorGroupID2);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckGenerator_ND);
+s32 sbtlCheckGenerator_ND(void) {
+    SB_GENERATOR_WORK *gen = sb_gen_work;
+    s32 i;
+
+    for (i = 0; i < 13; i++, gen++) {
+        if (gen->use && (gen->penc->type == 2 || gen->penc->type == 3 || gen->penc->type == 4) && !(gen->penc->devil == 523 && gen->penc->groupID == 20)
+            && sbtlCheckGeneratorGroupID(gen->penc->groupID)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCheckGenerator_D);
 
@@ -746,17 +1025,83 @@ s32 sbtlCheckGeneratorAll(void)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlSetGeneCam);
+void sbtlSetGeneCam(s16 posID)
+{
+    sdfVector4_t rot;
+
+    if (wk_sbtl->addEnemyCamCnt != 0) {
+        return;
+    }
+    if (sbtlGetMode() != E_CAMERA_MODE_Normal) {
+        return;
+    }
+    if (wk_sbtl->stageNo != 543 && wk_sbtl->stageNo != 535 && wk_sbtl->stageNo != 547 && wk_sbtl->stageNo != 551
+        && wk_sbtl->stageNo != 601 && wk_sbtl->stageNo != 557) {
+        wk_sbtl->addEnemyCamCnt = 120;
+    }
+    sbtlGetPointData(posID, &wk_sbtl->vAddEnemy, &rot);
+}
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGeneratorProc);
 
+/* NON_MATCHING: 48 of 58 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetRndEncJoken(s32 id) {
+    datRndEncTbl_t *tbl;
+    s32 i = 0;
+
+    do {
+        tbl = &sbtlData101[id][i];
+        if (tbl->flag0 == 0 || (tbl->flag0j == 0 ? !evtBitCheck(tbl->flag0) : evtBitCheck(tbl->flag0))) {
+            if (tbl->flag1 == 0) {
+                return i;
+            }
+            if (tbl->flag1j != 0 ? evtBitCheck(tbl->flag1) : !evtBitCheck(tbl->flag1)) {
+                return i;
+            }
+        }
+        i++;
+    } while (i < 5);
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetRndEncJoken);
+#endif
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetRndEncType);
 
 INCLUDE_ASM(const s32, "code_002C5D78", campUpdateEffectStep);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlGetRndEncMax);
+s32 sbtlGetRndEncMax(s32 id) {
+    datRndEncTbl_t *tbl;
+    s32 total;
+    s32 i;
+    s32 base;
+
+    if (id == 0) {
+        return 0;
+    }
+    if (evtBitCheck(2999)) {
+        return 0;
+    }
+    tbl = &sbtlData101[id][sbtlGetRndEncJoken(id)];
+    total = 0;
+    for (i = 0; i < 8; i++) {
+        total += tbl->ritu[i].ritu;
+    }
+    if (total == 0) {
+        return 0;
+    }
+    if (encmax > 0) {
+        return encmax;
+    }
+    base = datRndEncBase - tbl->normalritu * 48 / 100;
+    if (base < 50) {
+        base = 50;
+    }
+    encmax = dds3GetRandIntA(NULL, base * 2 - 96) + 48;
+    return encmax;
+}
 
 s32 sbtlGetRndEncCnt(void)
 {
@@ -765,7 +1110,37 @@ s32 sbtlGetRndEncCnt(void)
 
 INCLUDE_ASM(const s32, "code_002C5D78", sbtlCallGetRandIntA);
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlRefDDS3GBWK3);
+s32 sbtlRefDDS3GBWK3(s32 id) {
+    SB_ENCOUNT1 *enc;
+    s32 total;
+    s32 cnt;
+    s32 devil;
+    s32 i;
+
+    if (id == 0) {
+        return 0;
+    }
+    total = 0;
+    cnt = 0;
+    for (i = 0; i < 13; i++) {
+        enc = &sbtlData100[id].enc1[i];
+        devil = 0;
+        if (enc->type == 1 || enc->type == 6) {
+            devil = enc->devil;
+        }
+        if (devil != 0) {
+            cnt++;
+            total += sbtlIfDrawActionSub(devil)->field04;
+        }
+    }
+    if (cnt == 0) {
+        return 0;
+    }
+    if (total / cnt + DDS3_GBWK->playerData.unit.level / 4 < DDS3_GBWK->playerData.unit.level) {
+        return 0;
+    }
+    return 1;
+}
 
 void sbtlResetRndEncCount(void)
 {
@@ -801,7 +1176,28 @@ SBTLENMY_PATHDATA *sbtlGetPathData(s16 id) {
     return &pathdata[id];
 }
 
-INCLUDE_ASM(const s32, "code_002C5D78", sbtlInitEffect);
+void sbtlInitEffect(void) {
+    sbtlFileEntry_t *entry = sbtlInitEffectData;
+    u32 i;
+
+    for (i = 0; i < 11; i++) {
+        sbtlCallFileOpen(entry++);
+    }
+    for (i = 0; i < 0x400; i++) {
+        if (sbtlData100[i].mapNo[0] == 37) {
+            sbtlData100[i].mapNo[0] = 40;
+        }
+        if (sbtlData100[i].mapNo[0] == 38) {
+            sbtlData100[i].mapNo[0] = 41;
+        }
+        if (sbtlData100[i].mapNo[0] == 39) {
+            sbtlData100[i].mapNo[0] = 42;
+        }
+        if (sbtlData100[i].mapNo[0] == 41) {
+            sbtlData100[i].mapNo[0] = 43;
+        }
+    }
+}
 
 s32 sbtlCallFreeAuto(void **dst, s32 size, s32 *src)
 {

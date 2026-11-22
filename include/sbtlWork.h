@@ -221,7 +221,8 @@ typedef struct SBTL_WORK {
     sdfVector4_t field120; /* set by sbtlRefSbtl59 */
     u8 pad130[0x150 - 0x130];
     sdfVector4_t field150; /* position of the first gun target, set by sbtlCallBtlGetPChara2 */
-    u8 pad160[0x180 - 0x160];
+    u8 pad160[0x170 - 0x160];
+    sdfVector4_t vAddEnemy; /* HD name; camera target of a generator's new enemy (sbtlSetGeneCam) */
     SBTLCAMERA_WORK camera;
     SBTLCAMERA_WORK camerabk;
     u8 pad2E0[0x3BC - 0x2E0];
@@ -430,7 +431,8 @@ typedef struct SBTL_WORK {
     u8 padC78[0xC7B - 0xC78];
     s8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
     s8 fieldC7C; /* CheckEnd sets it when the battle end starts */
-    u8 padC7D[0xC84 - 0xC7D];
+    u8 padC7D[0xC80 - 0xC7D];
+    s32 fieldC80; /* summoned demon the panel order is for (sbtlSetMenuPara smnid) */
     u8 fieldC84; /* hit stops sbtlProcHitStop still has to start */
     u8 fieldC85; /* frames until the next of them */
     u8 padC86[0xC8C - 0xC86];
@@ -489,7 +491,9 @@ typedef struct SBTL_WORK {
     s32 field4200; /* bar length sbtlBarCtrl steps toward 350 or 200 */
     u8 pad4204[0x420C - 0x4204];
     s32 field420C; /* sbtlSummonKey refuses the summon menu when set */
-    u8 pad4210[0x4264 - 0x4210];
+    u8 pad4210[0x4250 - 0x4210];
+    s32 addEnemyCamCnt; /* HD name; frames the generator camera holds */
+    u8 pad4254[0x4264 - 0x4254];
     s8 field4264; /* set: sbtlCreateSTP_Unit creates nothing */
     u8 pad4265[0x4288 - 0x4265];
     s8 field4288; /* nonzero: sbtlReset_SupportAction_Shugou does nothing and sbtlCallBtlGetBadStatus2 returns 0 */
@@ -838,7 +842,7 @@ typedef struct SBTLITEM_WORK {
 /* Devil table entry returned by sbtlIfDrawActionSub (0x94 bytes). Partial raidou2 layout. */
 typedef struct SBTL_DEVIL_DATA {
     u32 flag;
-    u8 pad04[0x6 - 0x4];
+    u16 field04; /* averaged over a stage's enemies and compared with the player level */
     s16 motionId;
     u8 pad08[0xA - 0x8];
     s16 field0A;
@@ -930,10 +934,13 @@ s32 sbtlForceDelete_SkillFlag_Acter(struct SBTLUNIT_WORK *wk, u32 flg);
 #ifdef VERSION_RAIDOU2
 /* One generator entry of a stage. Partial raidou2 layout: HD's s16 devil and s8 groupID, the rest unread so far. */
 typedef struct SB_ENCOUNT1 {
-    u8 pad00[2];
+    s8 type; /* 0x00: 2-5 start a generator, 1 and 6 are enemies (HD ENC1_TYPE) */
+    s8 pos;
     s16 devil;
     s8 groupID;
-    u8 pad05[3];
+    s8 disp_max;
+    s8 zan_num;
+    s8 groupID2;
 } SB_ENCOUNT1;
 #else
 /* One generator entry of a stage (HD SB_ENCOUNT1, PS2 layout). */
@@ -1058,8 +1065,10 @@ typedef struct SBTL_UNIT_SUB {
     f32 field10;
     f32 field14;
     s16 field18;
+#ifdef VERSION_RAIDOU2
+    s16 se_rate;
+#else
     u8 pad1A[2];
-#ifndef VERSION_RAIDOU2
     f32 cancelrate;
     f32 se_rate; /* s32 in HD */
 #endif
@@ -1097,6 +1106,8 @@ typedef struct SBTL_MOTION_VISUAL {
     s16 field30;
     s16 field32;
     SBTL_UNIT_SUB mwk[43]; /* HD VISUALDATA_WORK.mwk, inline on the PS2 */
+#else
+    SBTL_UNIT_SUB mwk[0]; /* 43, 16 or 27 records follow, per table */
 #endif
 } SBTL_MOTION_VISUAL;
 
@@ -1412,6 +1423,8 @@ s32 ShutdownCamera(dds3ProcessID_t *id);
 s32 sbtlSetScrollID(s32 id);
 struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index, s32 flg);
 #ifdef VERSION_RAIDOU2
+/* Battle event handlers indexed by SBTL_WORK.eventno, run by EventProc. */
+extern s32 (*EventProcData[])(void);
 /* The raidou2 symbol of this name takes sbtlGetVisualData's arguments. */
 SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id);
 SBTL_UNIT_SUB *sbtlGetMotionVisualData_sbtlVisual(s32 a, s32 id, s32 b);

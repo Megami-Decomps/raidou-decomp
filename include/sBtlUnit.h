@@ -491,7 +491,8 @@ struct SBTLUNIT_WORK {
     s32 field6C0; /* 1 or 2 when sbtlCheck finds type 4 or 6 at death */
     u32 field6C4; /* bit 0x40 blocks hitback */
     s32 byctCnt;
-    u8 pad6CC[0x6E8 - 0x6CC];
+    s32 field6CC; /* nonzero stops motion-move speed */
+    u8 pad6D0[0x6E8 - 0x6D0];
     s8 field6E8; /* set once the unit has asked to talk (sbtlSetCameraLockOnTgtUpdate) */
     s8 field6E9; /* set by trmSetProcessTerm; HD talkBreakDownFlg, blocks talk */
     u8 pad6EA[0x6F4 - 0x6EA];

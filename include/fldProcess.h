@@ -106,6 +106,7 @@ void fldCallFindSceneEntryData(f32 x, f32 z, f32 x2, f32 z2, s32 map, s32 floor,
 void mapWallObjTask(f32 x, f32 y, f32 z);
 s32 sbtlProcSequenceSub(s32 arg);
 s32 pbProcSequenceSub(void);
+s8 pbCheckPreviousRecord(void);
 s32 scrSearchScriptName(char *name);
 void mapAM_MaskOpen_ID(s32 map, s32 floor, s32 arg);
 void mapAM_MaskSetCurrent(s32 map, s32 floor);

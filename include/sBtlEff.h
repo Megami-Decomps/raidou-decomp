@@ -173,12 +173,22 @@ typedef struct sbtlFileEntry_t {
     struct {
         void **dst;
         s32 arg;
+#ifdef VERSION_RAIDOU2
+    } slot[22];
+#else
     } slot[18];
+#endif
 } sbtlFileEntry_t;
 
 extern sbtlFileEntry_t sbtlFunc2Data[10];
+#ifdef VERSION_RAIDOU2
+extern sbtlFileEntry_t sbtlInitEffectData[11];
+#endif
 
 void sbtlCallFileOpen(sbtlFileEntry_t *entry);
+#ifdef VERSION_RAIDOU2
+void sbtlInitEffect(void);
+#endif
 s32 sbtlCallFreeAuto(void **dst, s32 size, s32 *src);
 
 s32 sbtlLoadEffectData_Nakama(struct SBTLUNIT_WORK *wk);

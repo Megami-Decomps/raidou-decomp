@@ -15,6 +15,13 @@
 #include "code_r1_002CA3F0.h"
 #include "EventBit.h"
 #include "fclMsg.h"
+#include "cmpItem.h"
+#include "code_003648C0.h"
+#include "dat.h"
+#include "fclMisc.h"
+#include "newdata.h"
+#include "dds3KernelDraw.h"
+#include "cfg.h"
 
 void DrawTop(struct tagCMP_MAP_WORK *wk) {
     struct sprHandle_t *spr;
@@ -175,13 +182,138 @@ s32 cmpChkTabChg(void) {
     return cmpRefMainPIDCmpMain()->pageMax != 0;
 }
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpCallMenuSetFlagMenu);
+void cmpCallMenuSetFlagMenu(void) {
+    struct tagCMP_WORK *wk = cmpRefMainPIDCmpMain();
+
+    if (!(wk->markID & 1)) {
+        return;
+    }
+    if (wk->markID != CMP_MENU_ID_SKILLBT && wk->markID != CMP_MENU_ID_STATUS && wk->markID != CMP_MENU_ID_SWAP
+        && wk->markID != CMP_MENU_ID_PART && wk->markID != CMP_MENU_ID_SUMMON) {
+        return;
+    }
+    itfMenuSetFlagMenu(wk->menuPID, -1, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+    itfMenuSetFlagMenu(wk->menuPID, wk->markID, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallMenuGetSelectID3);
 
-INCLUDE_ASM(const s32, "code_0038AD80", ChkEnableSelectMenuBook);
+INCLUDE_RODATA(const s32, "code_0038AD80", ProcessStart_cmpMapStrCampAutomapMain);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpChkEnableSelectMenuItem);
+INCLUDE_RODATA(const s32, "code_0038AD80", ProcessStart_cmpMapStrCampAutomapDraw);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrInheritedPassiveSkills);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrInvestigativeSkills);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrPassiveSkills);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrCombatSkills);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrKnownPassiveSkills);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrSelectPassiveSkill);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrCannotUseAutoSettings);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrCancelBattleSettings);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrCancelAutoSettings);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrBattleSetting);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrSettings);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrCaseFile);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrInsectCages);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrNotebook);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrCrystals);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrEquipSword);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrValuables);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrThrowAway);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrVibration);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrReference);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrMainMenu);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrSetWhetherToHaveTheSkill);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrSetUpToFiveSkillsForEach);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrUseDemonSkill);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrViewCurrentlyAccepted);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrViewInsectCages);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrViewKeyItems);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrViewEntriesInThe);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrViewCrystalsOnHand);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrViewGemsOnHand);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrEquipAnotherSword);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrMoneyOnHand);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrReleaseDemon);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrOrganizeYourDemons);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrChooseDemonTo);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrCheckValuables);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrThrowAwayItems);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrChangeTheEquippedBullets);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrUseItems);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrLoadSavedGame);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrVibrationSettings);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrCheckTheCurrentLocation);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrViewRaidouAndHisDemons);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrViewTheDetectiveNotebook);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrAdjustDemonSettings);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrConsumeItemsEquipSwords);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpStrSetAndUseDemonAbilities);
+
+void ChkEnableSelectMenuBook(struct tagCMP_WORK *wk) {
+    CMP_MENU_ID ids[3] = { CMP_MENU_ID_KEYWORD, CMP_MENU_ID_CHECK2, CMP_MENU_ID_MUSHI };
+    u32 i;
+
+    for (i = 0; i < 3; i++) {
+        itfMenuSetFlagMenu(wk->menuPID, ids[i], ITFMENU_CB_GF_ENABLE_DECIDE, cmpCallMakeCateChk(ids[i]) > 0);
+    }
+}
+
+void cmpChkEnableSelectMenuItem(struct tagCMP_WORK *wk) {
+    CMP_MENU_ID ids[6] = { CMP_MENU_ID_USE,   CMP_MENU_ID_BULLET, CMP_MENU_ID_THROW,
+                           CMP_MENU_ID_SWORD, CMP_MENU_ID_JEWEL,  CMP_MENU_ID_MATERIAL };
+    u32 i;
+
+    for (i = 0; i < 6; i++) {
+        itfMenuSetFlagMenu(wk->menuPID, ids[i], ITFMENU_CB_GF_ENABLE_DECIDE, MakeList(ids[i]) > 0);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpProcess);
 
@@ -205,7 +337,20 @@ s32 cmpGetstrCmpMenuHD(void) {
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpSetMenu);
 
-INCLUDE_ASM(const s32, "code_0038AD80", Init_cmpMain);
+void Init_cmpMain(struct tagCMP_WORK *wk) {
+    s32 num = datGetStockDevilNums();
+
+    wk->markID = -1;
+    wk->count = -1;
+    wk->flag = 0;
+    wk->unk24 = 0;
+    wk->page = 0;
+    wk->pageMax = num / 9;
+    wk->unk2E = DDS3_GBWK->partyNum / 9;
+    cmpUpdateBulletNum();
+    cmpResetMotion(0);
+    wk->unk28 = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetProcessData25);
 
@@ -215,21 +360,78 @@ void cmpDrawKeyHelp2(u8 a_alphaRate, DDS3_OT a_otNo) {
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawHelpText);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawKeyReturnHelp);
+void cmpDrawKeyReturnHelp(struct tagCMP_WORK *wk, u8 a_alphaRate1, u8 a_alphaRate2) {
+    struct sprHandle_t *hSpr = cmpGetSpriteHnd(CMP_SPR_COMMON);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawKeyHelp);
+    if (fclChkMessageDraw() != 1 && cmpChkMessageDraw() != 1) {
+        itfIconDrawSprite(438, 413, 0, a_alphaRate2, 13, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(460, 414, 0, a_alphaRate2, hSpr, 0, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+}
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawKeyHelp2_cmpMain);
+void cmpDrawKeyHelp(struct tagCMP_WORK *wk, u8 a_alphaRate1, u8 a_alphaRate2) {
+    struct sprHandle_t *hSpr = cmpGetSpriteHnd(CMP_SPR_COMMON);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawKeyHelp3);
+    if (fclChkMessageDraw() != 1 && cmpChkMessageDraw() != 1) {
+        itfIconDrawSprite(365, 413, 0, a_alphaRate1, 12, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(387, 414, 0, a_alphaRate1, hSpr, 1, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfIconDrawSprite(438, 413, 0, a_alphaRate2, 13, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(460, 414, 0, a_alphaRate2, hSpr, 0, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+}
+
+void cmpDrawKeyHelp2_cmpMain(struct tagCMP_WORK *wk, u8 a_alphaRate1, u8 a_alphaRate2) {
+    struct sprHandle_t *hSpr = cmpGetSpriteHnd(CMP_SPR_COMMON);
+
+    if (fclChkMessageDraw() != 1 && cmpChkMessageDraw() != 1) {
+        itfIconDrawSprite(295, 413, 0, a_alphaRate2, 11, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(317, 414, 0, a_alphaRate2, hSpr, 188, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+}
+
+void cmpDrawKeyHelp3(struct tagCMP_WORK *wk, u8 a_alphaRate, s32 a_x) {
+    struct sprHandle_t *hSpr = cmpGetSpriteHnd(CMP_SPR_COMMON);
+    s32 num = datGetStockDevilNums();
+
+    if (fclChkMessageDraw() != 1 && cmpChkMessageDraw() != 1 && num >= 9) {
+        itfIconDrawSprite(a_x + 247, 413, 0, a_alphaRate, 15, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfDrawMiscSpriteAlpha(a_x + 269, 414, 0, a_alphaRate, hSpr, 185, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetSpriteHnd);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawMenuFunc);
+void cmpDrawMenuFunc(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha) {
+    struct sprHandle_t *hSpr = cmpGetSpriteHnd(CMP_SPR_COMMON);
+
+    if (itfMenuChkMenuTop(cmpRefMainPIDCmpMain()->menuPID, a_id)) {
+        itfDrawMiscSpriteList(0, 0, a_z, a_alpha, hSpr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL, cmpDrawMenuFuncData);
+    }
+    if (a_id & 0x10) {
+        if (dds3RefDDS3GBWK(0)) {
+            if (a_id == 0xF010) {
+                itfDrawMiscSpriteAlpha(a_x - 8, a_y - 4, a_z, a_alpha, hSpr, 69, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+            }
+        } else if (a_id == 0x10010) {
+            itfDrawMiscSpriteAlpha(a_x - 8, a_y - 4, a_z, a_alpha, hSpr, 69, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpGetEvtItemSprNo);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetSpriteHnd2);
+void cmpCallGetSpriteHnd2(struct tagCMP_WORK *wk, u8 a_alphaRate) {
+    char buf[16];
+    dds3GlobalWork_t *gbwk;
+    struct sprHandle_t *hSpr = cmpGetSpriteHnd(CMP_SPR_COMMON);
+
+    if (cmpCallGetProcessData25Data == 0) {
+        itfDrawMiscSpriteList(0, 0, 0, a_alphaRate, hSpr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL, cmpCallGetSpriteHnd7Data);
+        gbwk = DDS3_GBWK;
+        sprintf(buf, cmpCallGetSpriteHnd2Data2, gbwk->playerData.maka);
+        itfDrawMiscFont(ITF_DM_STYLE_SNUM, 405, 357, 0, 0, 0xA09DC380, a_alphaRate, buf);
+    }
+}
 
 void cmpLeaf49(s32 a_sprNo, s32 a_x, s32 a_y, u32 a_alphaRate, struct sprHandle_t *a_hSpr) {
     effDrawSpriteWithCornerFade(a_x * 16, a_y * 8, 0, a_alphaRate, 96, a_hSpr, a_sprNo, DDS3_OT_BACK5_NORMAL);
@@ -241,9 +443,33 @@ void cmpCallGetSpriteHnd9(s32 a_sprNo, s32 a_x, s32 a_y, s32 a_alphaRate) {
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetSpriteHnd10);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpFunc8);
+void cmpFunc8(s32 a_x, s32 a_y, s32 a_alphaRate) {
+    cmpCallGetSpriteHnd9(127, a_x + 27, a_y + 28, a_alphaRate);
+    cmpCallGetSpriteHnd9(127, a_x + 97, a_y + 67, a_alphaRate);
+    cmpCallGetSpriteHnd9(128, a_x + 9, a_y + 42, a_alphaRate);
+    cmpCallGetSpriteHnd9(126, a_x + 13, a_y + 54, a_alphaRate);
+    cmpCallGetSpriteHnd9(129, a_x + 36, a_y + 97, a_alphaRate);
+    cmpCallGetSpriteHnd9(128, a_x + 101, a_y + 12, a_alphaRate);
+    cmpCallGetSpriteHnd9(126, a_x + 50, a_y + 75, a_alphaRate);
+    cmpCallGetSpriteHnd9(129, a_x + 61, a_y + 69, a_alphaRate);
+    cmpCallGetSpriteHnd9(126, a_x + 85, a_y + 32, a_alphaRate);
+    cmpCallGetSpriteHnd9(126, a_x + 109, a_y + 44, a_alphaRate);
+    cmpCallGetSpriteHnd9(128, a_x + 83, a_y + 85, a_alphaRate);
+}
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpStatusDrawSub);
+void cmpStatusDrawSub(s32 a_x, s32 a_y, s32 a_alphaRate) {
+    cmpCallGetSpriteHnd9(100, a_x + 27, a_y + 28, a_alphaRate);
+    cmpCallGetSpriteHnd9(100, a_x + 97, a_y + 67, a_alphaRate);
+    cmpCallGetSpriteHnd9(101, a_x + 9, a_y + 42, a_alphaRate);
+    cmpCallGetSpriteHnd9(99, a_x + 13, a_y + 54, a_alphaRate);
+    cmpCallGetSpriteHnd9(102, a_x + 36, a_y + 97, a_alphaRate);
+    cmpCallGetSpriteHnd9(101, a_x + 101, a_y + 12, a_alphaRate);
+    cmpCallGetSpriteHnd9(99, a_x + 50, a_y + 75, a_alphaRate);
+    cmpCallGetSpriteHnd9(102, a_x + 61, a_y + 69, a_alphaRate);
+    cmpCallGetSpriteHnd9(99, a_x + 85, a_y + 32, a_alphaRate);
+    cmpCallGetSpriteHnd9(99, a_x + 109, a_y + 44, a_alphaRate);
+    cmpCallGetSpriteHnd9(101, a_x + 83, a_y + 85, a_alphaRate);
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallGetSpriteHnd11);
 
@@ -251,11 +477,49 @@ INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawRaidouSkill);
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallSetOt3);
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpCallSetOt4);
+void cmpCallSetOt4(s32 a_alphaRate) {
+    cmpCallGetSpriteHnd11();
+    eglSetOt(28);
+    eglLinkTest(1, 0, 128, 1, 0, 0, 1, 2);
+    eglLinkAlpha(0);
+    cmpCallGetSpriteHnd9(122, 171, 82, a_alphaRate);
+    cmpCallGetSpriteHnd9(123, 171, 82, a_alphaRate);
+    cmpCallGetSpriteHnd9(124, 171, 235, a_alphaRate);
+    cmpFunc8(269, 64, a_alphaRate);
+    cmpFunc8(265, 81, a_alphaRate);
+    cmpFunc8(404, 96, a_alphaRate);
+    cmpFunc8(103, 192, a_alphaRate);
+    cmpFunc8(243, 185, a_alphaRate);
+    cmpFunc8(352, 192, a_alphaRate);
+    cmpFunc8(345, 228, a_alphaRate);
+    cmpCallGetSpriteHnd9(105, 386, 193, a_alphaRate);
+    cmpCallGetSpriteHnd9(107, 351, 232, a_alphaRate);
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallSetOt5);
 
-INCLUDE_ASM(const s32, "code_0038AD80", CmpStatusDraw);
+void CmpStatusDraw(s32 a_alphaRate) {
+    eglSetOt(28);
+    eglLinkTest(1, 0, 128, 1, 0, 0, 1, 2);
+    eglLinkAlpha(0);
+    cmpStatusDrawSub(84, -39, a_alphaRate);
+    cmpStatusDrawSub(179, -22, a_alphaRate);
+    cmpStatusDrawSub(319, -62, a_alphaRate);
+    cmpStatusDrawSub(7, 142, a_alphaRate);
+    cmpStatusDrawSub(-20, 277, a_alphaRate);
+    cmpStatusDrawSub(25, 320, a_alphaRate);
+    cmpStatusDrawSub(32, 378, a_alphaRate);
+    cmpStatusDrawSub(168, 379, a_alphaRate);
+    cmpStatusDrawSub(362, 378, a_alphaRate);
+    cmpStatusDrawSub(-52, 148, a_alphaRate);
+    cmpStatusDrawSub(180, -41, a_alphaRate);
+    cmpStatusDrawSub(71, -37, a_alphaRate);
+    cmpStatusDrawSub(321, -56, a_alphaRate);
+    cmpCallGetSpriteHnd9(103, 94, 0, a_alphaRate);
+    cmpCallGetSpriteHnd9(104, -25, -17, a_alphaRate);
+    cmpCallGetSpriteHnd9(106, 287, -35, a_alphaRate);
+    cmpCallGetSpriteHnd9(104, 392, 2, a_alphaRate);
+}
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpDrawProcess);
 
@@ -285,7 +549,37 @@ void cmpCallProcEnd(struct tagCMP_WORK *wk) {
     ProcessEnd_cmpStatus();
 }
 
-INCLUDE_ASM(const s32, "code_0038AD80", cmpCheckProcEnd);
+u8 cmpCheckProcEnd(struct tagCMP_WORK *wk) {
+    u8 cnt = ProcessCheck_cmpMap() == 0;
+
+    if (!itfMenuProcessCheck(wk->menuPID)) {
+        wk->menuPID = NULL;
+    } else {
+        cnt++;
+    }
+    if (!itfMenuProcessCheck(wk->partyPID)) {
+        wk->partyPID = NULL;
+    } else {
+        cnt++;
+    }
+    if (!itfMenuProcessCheck(wk->charPID)) {
+        wk->charPID = NULL;
+    } else {
+        cnt++;
+    }
+    if (!itfMenuProcessCheck(wk->submPID)) {
+        wk->submPID = NULL;
+    } else {
+        cnt++;
+    }
+    if (pbCheckPreviousRecord()) {
+        cnt++;
+    }
+    if (ProcessCheck_cmpStatus()) {
+        cnt++;
+    }
+    return cnt;
+}
 
 void cmpRelease(struct tagCMP_WORK *wk) {
     End_cmpItem();
@@ -293,6 +587,8 @@ void cmpRelease(struct tagCMP_WORK *wk) {
 }
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpProcessStartEx);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", cmpDrawHelpTextTable);
 
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCampMain);
 
@@ -316,6 +612,30 @@ INCLUDE_ASM(const s32, "code_0038AD80", cmpCallAddDevil);
 INCLUDE_ASM(const s32, "code_0038AD80", cmpCallProcessEnd);
 
 INCLUDE_ASM(const s32, "code_0038AD80", fclCheck);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews01201Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews01101Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews01001Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews00901Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews00801Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews00701Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdLoadSpriteDataEntry);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews00501Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews00401Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews00301Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews00201Spr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", nwdStrShopNewsNews00101Spr);
 
 INCLUDE_ASM(const s32, "code_0038AD80", Process_nwdNews);
 
@@ -346,6 +666,24 @@ INCLUDE_ASM(const s32, "code_0038AD80", shpMakeLightPacket);
 INCLUDE_ASM(const s32, "code_0038AD80", SetLight);
 
 INCLUDE_ASM(const s32, "code_0038AD80", shpSetCamera);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", shpMakeLightPacketTable);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", shpMakeLightPacketTable2);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", shpMakeLightPacketTable3);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", SetLightTable);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", SetLightTable2);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", SetLightTable3);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", SetLightTable4);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", SetLightTable5);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", SetLightTable6);
 
 INCLUDE_ASM(const s32, "code_0038AD80", shpShopCamera);
 
@@ -508,3 +846,14 @@ INCLUDE_ASM(const s32, "code_0038AD80", fldRefShpDraw);
 INCLUDE_ASM(const s32, "code_0038AD80", fldShopMilkhallTmx);
 
 INCLUDE_ASM(const s32, "code_0038AD80", nbRefShpDraw);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", shpSetRotYModelTable);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", shpStrShopKonnouyaTmx);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", shpStrShopBackKonnouSpr);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", shpStrShopMilkhallTmx);
+
+INCLUDE_RODATA(const s32, "code_0038AD80", shpStrShopBackMilkSpr);
+
