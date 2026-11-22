@@ -140,11 +140,16 @@ void mapNakamaCashLoadEndCheckSub(s32 id);
 s32 sndCallLoadCheckMidi(void);
 #ifdef VERSION_RAIDOU2
 s32 mapSoundNakamaSmgLoadhk(void);
+s32 mapCallBitCheck7(s32 id, u32 idx);
 #endif
 
 extern const char DecisionFeedInStrMapAll[];
 extern const char DecisionFeedInStrMapMeiSpr[];
 extern const char mapStrTakaraOpenanmObjid[];
+#ifdef VERSION_RAIDOU2
+extern const char mapStrMapAll2[];
+extern const char mapStrMapMeiSpr[];
+#endif
 void fldReleaseTitleTextures(struct dds3ProcessID_t *task);
 
 #endif

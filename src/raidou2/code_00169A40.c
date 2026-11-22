@@ -17,6 +17,11 @@
 #include "sdfTex.h"
 #include "code_r1_002C8188.h"
 #include "EventBit.h"
+#include "frFont.h"
+#include "dds3KernelDraw.h"
+#include "code_r1_002CAFD8.h"
+#include "code_r1_002CA3F0.h"
+#include "sdfMath.h"
 
 INCLUDE_ASM(const s32, "code_00169A40", mapLeaf4);
 
@@ -170,7 +175,14 @@ s32 fldIsMapTitleActive(void) {
     return dds3SearchProcessName(fldTitleTaskName) != 0;
 }
 
-INCLUDE_ASM(const s32, "code_00169A40", fldCallLinkSprite);
+void fldCallLinkSprite(u32 color) {
+    s32 alpha = color >> 24;
+
+    if (fldData30 != NULL) {
+        color = (color & 0xFFFFFF) | ((alpha * 110 / 128) << 24);
+        eglLinkSprite(128, 96, 256, 256, 0, 0, 256, 256, color, color, color, color, fldData30);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallLinkSprite);
 
@@ -231,9 +243,27 @@ void fldSe_Init(void) {
     mapSoundKankyoTaskSubData = 100;
 }
 
-INCLUDE_ASM(const s32, "code_00169A40", fldCallSoundKankyoSeSet);
+void fldCallSoundKankyoSeSet(s32 on) {
+    if (on == 0) {
+        mapSoundKankyoTaskSubData = 100;
+        mapData131 = 0;
+        mapSoundKankyoSeSet(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.cutIdx);
+        mapSoundMoveSeFade0();
+    } else {
+        mapData131 = 1;
+    }
+}
 
-INCLUDE_ASM(const s32, "code_00169A40", mapBgTexLoad);
+void mapBgTexLoad(s32 on) {
+    if (on == 0) {
+        mapData131 = 0;
+        mapSoundKankyoTaskSubData = 0;
+        mapSoundKankyoSeSet(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.cutIdx);
+        mapSoundMoveSeFade0();
+    } else {
+        mapData131 = -1;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapSoundKankyoTaskSub);
 
@@ -507,7 +537,19 @@ INCLUDE_ASM(const s32, "code_00169A40", mapLeaf24);
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallBitCheck7);
 
+/* NON_MATCHING: 2 of 11 words match.  */
+#ifdef NON_MATCHING
+s32 p2sdProcSequenceSub(s32 id, u32 idx) {
+    s32 result = 8;
+
+    if (id < 48) {
+        result = mapCallBitCheck7(id, idx);
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "code_00169A40", p2sdProcSequenceSub);
+#endif
 
 s32 p2sdSoundSmgLoadChkSub(s32 map) {
     return p2sdSoundSmgLoadChkSubData[map];
@@ -517,7 +559,9 @@ void p2sdPlaySE_Vol(s32 se, s32 vol) {
     p2sdPlaySE(p2sdData2 + se, vol, 63);
 }
 
-INCLUDE_ASM(const s32, "code_00169A40", p2sdVolume2);
+void p2sdVolume2(s32 se, s32 vol) {
+    sdfCallSndSendSyncCmd2(p2sdData2 + se, vol);
+}
 
 void p2sdPlaySE_Vol_Loop(s32 se)
 {
@@ -532,11 +576,57 @@ void mapSoundSmgLoadChk(s32 map) {
     fldBgmLoadStep = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00169A40", mapCallLoadCheckMidi);
+s32 mapCallLoadCheckMidi(void) {
+    switch (fldBgmLoadStep) {
+    case 0:
+        if (p2sdLoadCheckMidi(fldBgmSmgAddr) == 0) {
+            p2sdLoadSMGFile(fldBgmSmgAddr);
+            fldBgmLoadStep = fldBgmLoadStep + 1;
+        } else {
+            fldBgmLoadStep = -1;
+            return 1;
+        }
+        break;
+    case 1:
+        if (p2sdLoadCheckMidi(fldBgmSmgAddr) == 1) {
+            fldBgmLoadStep = -1;
+            return 1;
+        }
+        break;
+    default:
+        fldBgmLoadStep = -1;
+        return 1;
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "code_00169A40", mapNakamaCashLoadEndCheckSub);
+void mapNakamaCashLoadEndCheckSub(s32 id) {
+    fldBgmLoadStep = 0;
+    mapData129 = fldBgmSmgAddr = (id << 16) + 0x4000000;
+}
 
-INCLUDE_ASM(const s32, "code_00169A40", mapSoundNakamaSmgLoadhk);
+s32 mapSoundNakamaSmgLoadhk(void) {
+    switch (fldBgmLoadStep) {
+    case 0:
+        if (p2sdLoadCheckMidi(fldBgmSmgAddr) == 0) {
+            p2sdLoadSMGFile(fldBgmSmgAddr);
+            fldBgmLoadStep = fldBgmLoadStep + 1;
+        } else {
+            fldBgmLoadStep = -1;
+            return 1;
+        }
+        break;
+    case 1:
+        if (p2sdLoadCheckMidi(fldBgmSmgAddr) == 1) {
+            fldBgmLoadStep = fldBgmLoadStep + 1;
+        }
+        break;
+    default:
+        fldBgmLoadStep = -1;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapNakamaChikaraTaskSub2);
 
@@ -574,7 +664,24 @@ void mapTakaraOpen(void) {
 
 INCLUDE_ASM(const s32, "code_00169A40", mapNowAnmRe);
 
+/* NON_MATCHING: 11 of 26 words match.  */
+#ifdef NON_MATCHING
+s32 mapRefDDS3GBWK6(s32 id) {
+    if (id > 256) {
+        id -= 256;
+        if ((DDS3_GBWK->unk4900[id >> 3] >> (id & 7)) & 1) {
+            return 1;
+        }
+        return 0;
+    }
+    if ((DDS3_GBWK->unk4900[(id >> 3) + 16] >> (id & 7)) & 1) {
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00169A40", mapRefDDS3GBWK6);
+#endif
 
 void mapTakaraTask(void) {
     mdlObj_t *model;
@@ -597,7 +704,23 @@ struct mapUnloadRequestSubWork_t *mapUnloadRequestSub(void) {
     return &mapUnloadRequestSubWork;
 }
 
+/* NON_MATCHING: 20 of 26 words match.  */
+#ifdef NON_MATCHING
+void mapAll2(void) {
+    struct mapUnloadRequestSubWork_t *work = mapUnloadRequestSub();
+    struct sprHandle_t *spr = effLoadIndexedResource(mapStrMapAll2, mapStrMapMeiSpr, 0);
+
+    work->fieldD8 = 1;
+    work->fieldC4 = spr;
+    work->fieldC0 = 4;
+    work->fieldCC = 128;
+    work->fieldC8 = 0;
+    work->fieldD0 = 0;
+    work->fieldD4 = 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_00169A40", mapAll2);
+#endif
 
 void mapProcShutDownSub(void)
 {
@@ -610,15 +733,49 @@ void mapProcShutDownSub(void)
     }
 }
 
-INCLUDE_ASM(const s32, "code_00169A40", mapLeaf5);
+void mapLeaf5(u8 *dst, u8 *src0, u8 *src1, f32 rate1, f32 rate0) {
+    dst[0] = (u32)(src0[0] * rate0 + src1[0] * rate1);
+    dst[1] = (u32)(src0[1] * rate0 + src1[1] * rate1);
+    dst[2] = (u32)(src0[2] * rate0 + src1[2] * rate1);
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallBtlGetRndEncCnt);
 
-INCLUDE_ASM(const s32, "code_00169A40", mapCallSetOt3);
+void mapCallSetOt3(struct mapUnloadRequestSubWork_t *work) {
+    u32 rgba[4];
+    u8 color[4];
+    u32 col;
 
-INCLUDE_ASM(const s32, "code_00169A40", mapIsFldKeyFreeSub2);
+    eglSetOt(0x68);
+    eglLinkAlpha(1);
+    eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 1);
+    eglLinkAlpha(0);
+    itfDrawGridWithResolvedSlot(6864, 2736, 0, 32, work->fieldC4, 3, 0x68);
+    mapCallBtlGetRndEncCnt(work, color);
+    col = ((s32)(sdfSin(work->fieldD0) * 25.0f) + 65) | (color[2] << 8) | (color[1] << 16) | (color[0] << 24);
+    rgba[0] = col;
+    rgba[1] = col;
+    rgba[2] = col;
+    rgba[3] = col;
+    effDrawSpriteWithCornerColors(7184, 2816, 0, rgba, 32, work->fieldC4, 4, 0x68);
+    eglLinkAlpha(0);
+}
 
-INCLUDE_ASM(const s32, "code_00169A40", mapIfDrawActionWin2);
+void mapIsFldKeyFreeSub2(void) {
+    struct mapUnloadRequestSubWork_t *work = mapUnloadRequestSub();
+
+    if (work->fieldC4 != NULL) {
+        mapCallSetOt3(work);
+    }
+}
+
+void mapIfDrawActionWin2(s32 x, s32 y, u32 color, const char *str) {
+    frFontHandle_t *font;
+
+    font = frwGetSmallFontFRQ2(x << 4, y << 3, 0, color, str, NULL);
+    frDrawFont(font);
+    frDestroyFontRequestAfter(font);
+}
 
 INCLUDE_ASM(const s32, "code_00169A40", mapCallSetOt4);
 

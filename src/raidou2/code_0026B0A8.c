@@ -553,7 +553,7 @@ s32 NakamaMotion3DSE(struct SBTLSOUND_FOOTWORK *fwk, s32 devilID, f32 frame)
     return -1;
 }
 
-void sbtlPlayViceSE(struct SBTLUNIT_WORK *wk, s32 motionID)
+void sbtlPlayViceSE(struct SBTLUNIT_WORK *wk, s32 motionID, s32 frame)
 {
     u32 se;
     s32 start;

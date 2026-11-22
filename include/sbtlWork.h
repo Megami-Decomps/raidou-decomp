@@ -1602,7 +1602,7 @@ void sbtlRefSbtl66(s32 num);
 s32 sbtlRefSbtl71(s32 num);
 E_CAMMOD_CUT sbtlGetCutFlg(void);
 s32 sbtlCheckSummonUnit(void);
-s32 sbtlCheckSummonUnit_Dead_or_ALive(s8 idx);
+s32 sbtlCheckSummonUnit_Dead_or_ALive(s32 idx);
 #endif
 s32 sbtlNakamaSetUp(void);
 void sbtlPacData_Init(void);

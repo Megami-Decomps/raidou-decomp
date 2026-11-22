@@ -9431,7 +9431,6 @@
 0x004ACE80	mapCallBtlGetRndEncCntTable	data	tier=D	derived-sole	na	used by mapCallBtlGetRndEncCnt
 0x004ACE98	mapStr3	data	tier=D	derived-string	na	used by mapCallBtlGetRndEncCnt; string "?#(??#(??#(?"
 0x004ACEA8	mapStrMapAll2	data	tier=D	derived-string	na	used by mapAll2; string "/map/all/"
-0x004ACEB8	mapAll2Table	data	tier=D	derived-sole	na	used by mapAll2
 0x004ACECB	mapCallLinkAlphaTable2	data	tier=D	derived-sole	na	used by mapCallLinkAlpha
 0x004AD000	mapStrBunriHajiki4	data	tier=D	derived-string	na	used by mapBUNRIHAJIKI; string "BUNRI_HAJIKI4"
 0x004AD010	mapStrJimusyoHajiki3Label	data	tier=D	derived-string	na	used by mapBUNRIHAJIKI; string "jimusyo_hajiki3_label"
@@ -23782,6 +23781,7 @@
 0x004AAD30	VRF_Disable	data	tier=C	hd	0.37 (n=D_r1_00447C80)	hd/medium: conf=medium, agree=2, using=2
 0x004AC2C8	fldTitleTaskName	data	tier=C	dds-ref	0.59 (n=D_r1_00448AA0)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldDestroyTitleTask
 0x004AC920	p2sdSoundSmgLoadChkSubData	data	tier=C	derived-derived-role	na	same object as R1 p2sdSoundSmgLoadChkSubData: p2sdSoundSmgLoadChkSub alignment; replaces p2sdSoundSmgLoadChkSubTable
+0x004ACEB8	mapStrMapMeiSpr	data	tier=C	derived-derived-role	na	string "map_mei.spr" (mapAll2 loads it from /map/all/); data convention prefix + Str + text, as DecisionFeedInStrMapMeiSpr; replaces mapAll2Table
 0x004ADD28	fldEncDrawName2	data	tier=C	smt3-ref	0.88 (n=D_r1_00449B30)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=mapFadeProc; fldEncDrawName is another symbol
 0x004AF020	dds3EffectDirPathFormat2	data	tier=C	smt3-ref	0.88 (n=D_r1_0044A300)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=btlOpenPfsDebugDirectory; dds3EffectDirPathFormat is another symbol
 0x004B5DD8	evtViewerTaskName	data	tier=C	dds-ref	0.59 (n=D_r1_0044FC08)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=mapInit

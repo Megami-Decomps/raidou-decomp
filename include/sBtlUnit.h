@@ -256,6 +256,8 @@ void cmpLeaf3(struct SBTLUNIT_WORK *wk);
 s32 sbtlDrawShadow(struct SBTLUNIT_WORK *wk);
 void sbtlCallBtlGetRaceName(struct SBTLUNIT_WORK *wk);
 s32 sbtlGetMotionNo(struct SBTLUNIT_WORK *wk, u8 side, s32 no);
+void sbtlPlayViceSE(struct SBTLUNIT_WORK *wk, s32 motionID, s32 frame);
+s32 sbtlSetModelDataLoadEnd(struct SBTLUNIT_WORK *wk);
 #endif
 s32 sbtlCheckMotionNo(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
 s32 sbtlCheckTateSkillSelectTarget(struct SBTLUNIT_WORK *wk);

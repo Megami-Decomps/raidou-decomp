@@ -38,12 +38,14 @@ menu scenarios); an entry says which paths they covered.
 | 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 8 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
 | 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
+| 6 | code_002743E0 | raidou2 | [code_002743E0.md](code_002743E0.md) |
 | 6 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
 | 6 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 6 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 5 | code_0015D490 | raidou1 | [code_0015D490.md](code_0015D490.md) |
+| 5 | code_00169A40 | raidou2 | [code_00169A40.md](code_00169A40.md) |
 | 5 | code_002C5D78 | raidou2 | [code_002C5D78.md](code_002C5D78.md) |
 | 5 | kernel/dds3AdminiProcess | raidou1, raidou2 | [kernel/dds3AdminiProcess.md](kernel/dds3AdminiProcess.md) |
 | 5 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
@@ -59,7 +61,6 @@ menu scenarios); an entry says which paths they covered.
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
 | 3 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
 | 3 | code_0024DF70 | raidou1 | [code_0024DF70.md](code_0024DF70.md) |
-| 3 | code_002743E0 | raidou2 | [code_002743E0.md](code_002743E0.md) |
 | 3 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
 | 3 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 3 | fclDrawBack | raidou1, raidou2 | [fclDrawBack.md](fclDrawBack.md) |
@@ -71,7 +72,6 @@ menu scenarios); an entry says which paths they covered.
 | 2 | basic/dds3ObjectBase | raidou1, raidou2 | [basic/dds3ObjectBase.md](basic/dds3ObjectBase.md) |
 | 2 | code_00140960 | raidou1 | [code_00140960.md](code_00140960.md) |
 | 2 | code_001431D0 | raidou2 | [code_001431D0.md](code_001431D0.md) |
-| 2 | code_00169A40 | raidou2 | [code_00169A40.md](code_00169A40.md) |
 | 2 | code_0016AD90 | raidou1 | [code_0016AD90.md](code_0016AD90.md) |
 | 2 | code_00174790 | raidou1 | [code_00174790.md](code_00174790.md) |
 | 2 | code_00179808 | raidou1 | [code_00179808.md](code_00179808.md) |

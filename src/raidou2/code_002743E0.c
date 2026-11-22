@@ -13,6 +13,7 @@
 #include "evtUnitManager.h"
 #include "sbtlActAI.h"
 #include "sdfQuat.h"
+#include "sBtlCalc.h"
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlRefSbtl8);
 
@@ -47,11 +48,58 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlRefSbtl9);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCallBtlGetNakama);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlCheckSummonUnit_Dead_or_ALive);
+s32 sbtlCheckSummonUnit_Dead_or_ALive(s32 idx) {
+    struct SBTLUNIT_WORK *wk;
+    u32 status;
+
+    if (wk_sbtl->member_num < 1) {
+        return 2;
+    }
+    wk = sbtlGetNakama(idx);
+    if (wk != NULL) {
+        status = wk->status;
+        if (status == 10 || status == 40) {
+            return 0;
+        }
+        return 2;
+    }
+    return 2;
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCheckSummonUnit_Exist);
 
+/* NON_MATCHING: 33 of 40 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCheckSummonUnit(void) {
+    s32 i;
+    u8 flg0;
+    u8 flg1;
+    s32 result = wk_sbtl->field64C < 1;
+
+    if (wk_sbtl->member_num > 0) {
+        flg0 = wk_sbtl->summonflg[wk_sbtl->summonIndex[0]];
+        if (flg0 == 1) {
+            result = 3;
+        } else {
+            flg1 = wk_sbtl->summonflg[wk_sbtl->summonIndex[1]];
+            if (flg1 == 1) {
+                result = 3;
+            } else if (flg0 == 2 && flg1 == 2) {
+                result = 2;
+            }
+        }
+    } else {
+        for (i = 0; i < 20; i++) {
+            if (wk_sbtl->summonflg[i] != 0) {
+                result = 3;
+            }
+        }
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCheckSummonUnit);
+#endif
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlGetStockPoint);
 
@@ -185,7 +233,33 @@ struct SBTLUNIT_LISTWORK *sbtlCreateSideList_sbtlUnit(u8 side, s32 flg)
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCreateSideList_sbtlUnit);
 #endif
 
+/* NON_MATCHING: 52 of 58 words match.  */
+#ifdef NON_MATCHING
+s32 SetMotion_Core(struct SBTLUNIT_WORK *wk) {
+    s32 next = wk->next_motionno;
+
+    if (wk->motionno == next && sbtlCheckLoopMotion(wk, wk->motionID)) {
+        if (wk->hModel != NULL) {
+            wk->hModel->first->speed = wk->m_rate;
+        }
+        return 1;
+    }
+    wk->motionno = wk->next_motionno;
+    wk->motionID = wk->next_motionID;
+    if (wk->hModel != NULL) {
+        wk->hModel->first->speed = wk->m_rate;
+        sbtlPlayViceSE(wk, wk->motionno, wk->beforeframe);
+        if (sbtlCheckLoopMotion(wk, wk->motionID)) {
+            mdlSmoothLoopMotion(wk->hModel, 0, wk->motionno, wk->beforeframe, wk->beforeframe);
+        } else {
+            mdlSmoothSingleMotion(wk->hModel, 0, wk->motionno, wk->beforeframe, wk->beforeframe);
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "code_002743E0", SetMotion_Core);
+#endif
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCheckLoopMotion);
 
@@ -232,7 +306,31 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlModelLbBattle);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCallUnitRegist);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlCallBtlSetModelDataLoadEnd);
+void sbtlCallBtlSetModelDataLoadEnd(struct SBTLUNIT_WORK *wk) {
+    switch (wk->unit.devilId) {
+    case 500:
+    case 501:
+    case 630:
+    case 654:
+    case 655:
+    case 656:
+    case 670:
+    case 674:
+    case 675:
+    case 677:
+    case 678:
+    case 679:
+        wk->gstat = 4;
+        break;
+    default:
+        wk->gstat = 5;
+        if (!(wk_sbtl->flg & 0x10000)) {
+            sbtlSetModelDataLoadEnd(wk);
+        }
+        break;
+    }
+    wk_sbtl->flg &= ~0x20000000;
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlSetModelDataLoadEnd);
 
@@ -384,13 +482,26 @@ u32 UnitRegist(MODELTYPE major, s32 minor)
     return id;
 }
 
-INCLUDE_ASM(const s32, "code_002743E0", GetCommListCnt);
+s32 GetCommListCnt(s32 talk, s32 type) {
+    s32 cntTalk[4] = {1, 2, 3, 0};
+    s32 cnt[4] = {0, 4, 5, 6};
+
+    if (talk == 0) {
+        return cnt[type];
+    }
+    return cntTalk[type];
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlSetPlayerData);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlGetPlayer_HitTarget);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlIsDeadBgn);
+s32 sbtlIsDeadBgn(struct SBTLUNIT_WORK *wk) {
+    if ((wk->field414 & 2) && wk->status == 9 && (wk->flg2 & 0x10)) {
+        return 0;
+    }
+    return wk->unit.now.hp < 1;
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlSetRunAway);
 
@@ -410,13 +521,58 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlCallBtlGetBadStatus);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlEndWaitALL);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlChkHaveMemSkl);
+s32 sbtlChkHaveMemSkl(sdatUnitWork_t *unit, SKLID id) {
+    s16 badst;
+    s16 power;
+    SKLID found = 0;
+    SKLID skl;
+    s32 i;
+
+    if (unit == NULL) {
+        return 0;
+    }
+    {
+        unit->autost_cnt = 0;
+        unit->autost_cnt2 = 0;
+        for (i = 0; i < 6; i++) {
+            skl = sbtlGetAutoSkill_ID(unit, i);
+            if (skl != 0 && id == sbtlGetAutoSkillPara(skl, &badst, &power)) {
+                found = skl;
+                unit->autost_cnt += badst;
+                unit->autost_cnt2 += power;
+            }
+        }
+    }
+    return found;
+}
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlChkHaveMemSklParty);
 
+/* NON_MATCHING: 23 of 24 words match.  */
+#ifdef NON_MATCHING
+f32 sbtlGetKajaParamEx(struct SBTLUNIT_WORK *wk, s32 type, s32 *count) {
+    s32 i;
+    s32 n;
+    f32 para;
+    f32 result = 0.0f;
+
+    if (wk != NULL && (u32)type < 3) {
+        n = 0;
+        para = 0.0f;
+        for (i = 0; i < 2; i++) {
+            if (wk->kaja[type][i].m_cnt != 0) {
+                n++;
+                para += wk->kaja[type][i].m_fPara;
+            }
+        }
+        if (count != NULL) {
+            *count = n;
+        }
+        result = para;
+    }
+    return result;
+}
+#else
 INCLUDE_ASM(const s32, "code_002743E0", sbtlGetKajaParamEx);
-
-INCLUDE_RODATA(const s32, "code_002743E0", sbtlCallBtlCreateUnitTable);
-
-INCLUDE_RODATA(const s32, "code_002743E0", GetCommListCntTable);
+#endif
 

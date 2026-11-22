@@ -947,13 +947,19 @@ void mdlCallMemFreeDirect(void);
 void sbtlCheckEndEscape(void);
 /* Partial layout. */
 struct mapUnloadRequestSubWork_t {
-    u8 pad00[0xC4];
+    u8 pad00[0xC0];
+    s32 fieldC0; /* mapAll2 sets 4 */
     struct sprHandle_t *fieldC4; /* read by mapProcShutDownSub and mapIsFldKeyFreeSub2 */
     s32 fieldC8; /* fldCallSetOt2: -1 fades the screen dim in, 1 out */
     s32 fieldCC; /* dim alpha, 0 to 80 */
+    f32 fieldD0; /* sdfSin angle of mapCallSetOt3's blink */
+    s32 fieldD4;
+    u8 fieldD8;
 };
 extern struct mapUnloadRequestSubWork_t mapUnloadRequestSubWork;
 struct mapUnloadRequestSubWork_t *mapUnloadRequestSub(void);
+void mapCallBtlGetRndEncCnt(struct mapUnloadRequestSubWork_t *work, u8 *color);
+void mapCallSetOt3(struct mapUnloadRequestSubWork_t *work);
 extern struct effBlurScatterWork_t *DeadMoonTmx3; /* nbCallEffectDistortionBlurCreate */
 #endif
 struct sdfMat_t *dds3CallMatNew2(struct sdfTexHandle_t *tex);

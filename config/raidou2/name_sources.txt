@@ -17448,7 +17448,7 @@
 0x004ACE80	mapCallBtlGetRndEncCntTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallBtlGetRndEncCnt
 0x004ACE98	mapStr3	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapCallBtlGetRndEncCnt; string "?#(??#(??#(?"
 0x004ACEA8	mapStrMapAll2	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapAll2; string "/map/all/"
-0x004ACEB8	mapAll2Table	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapAll2
+0x004ACEB8	mapStrMapMeiSpr	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=string "map_mei.spr" (mapAll2 loads it from /map/all/); data convention prefix + Str + text, as DecisionFeedInStrMapMeiSpr; replaces mapAll2Table
 0x004ACECB	mapCallLinkAlphaTable2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallLinkAlpha
 0x004AD000	mapStrBunriHajiki4	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapBUNRIHAJIKI; string "BUNRI_HAJIKI4"
 0x004AD010	mapStrJimusyoHajiki3Label	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mapBUNRIHAJIKI; string "jimusyo_hajiki3_label"

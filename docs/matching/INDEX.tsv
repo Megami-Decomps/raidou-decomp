@@ -76,6 +76,9 @@ mefMistFastCreate	code_00163C50	raidou2 0x160	3 of 88 words differ	docs/matching
 mapIfDrawActionMaster	code_001677F0	raidou1 0x4A8	271 of 284 words differ	docs/matching/code_001677F0.md	3		
 mapBadEffDrawTask_fld	code_00169A40	raidou2 0x198	7 of 102 words differ	docs/matching/code_00169A40.md	3		
 mapSoundKankyoSeSet	code_00169A40	raidou2 0x5EC	156 of 375 words differ	docs/matching/code_00169A40.md	9		
+p2sdProcSequenceSub	code_00169A40	raidou2 0x2C	9 of 12 words differ	docs/matching/code_00169A40.md	17		
+mapRefDDS3GBWK6	code_00169A40	raidou2 0x68	15 of 20 words differ	docs/matching/code_00169A40.md	23		
+mapAll2	code_00169A40	raidou2 0x68	6 of 26 words differ	docs/matching/code_00169A40.md	29		
 mapFunc	code_0016AD90	raidou1 0x178	2 of 94 words differ	docs/matching/code_0016AD90.md	3		
 mapCallSin11	code_0016AD90	raidou1 0xF8	44 of 58 words differ	docs/matching/code_0016AD90.md	13		
 mapNakamaWakeUp	code_0016CA30	raidou1 0x60	7 of 24 words differ	docs/matching/code_0016CA30.md	3		
@@ -125,6 +128,9 @@ sbtlResetAtkSklEff	code_0026B0A8	raidou2 0x530	100 of 332 words differ	docs/matc
 sbtlCreateEnemyList	code_002743E0	raidou2 0xB8	1 of 46 words differ	docs/matching/code_002743E0.md	3		
 sbtlCreateSideList	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	11		
 sbtlCreateSideList_sbtlUnit	code_002743E0	raidou2 0x120	2 of 72 words differ	docs/matching/code_002743E0.md	19		
+sbtlGetKajaParamEx	code_002743E0	raidou2 0x60	1 of 24 words differ	docs/matching/code_002743E0.md	27		
+sbtlCheckSummonUnit	code_002743E0	raidou2 0xA0	7 of 40 words differ	docs/matching/code_002743E0.md	33		
+SetMotion_Core	code_002743E0	raidou2 0xE8	6 of 58 words differ	docs/matching/code_002743E0.md	39		
 sbtlUnit_CheckSummon_LoadExecOk_sub	code_0027A1E8	raidou2 0xB8	1 of 46 words differ	docs/matching/code_0027A1E8.md	3		
 sbtlCheckMove_BadStatus	code_0027A1E8	raidou2 0xA8	27 of 40 words differ	docs/matching/code_0027A1E8.md	9		
 Init_sbtlScript	code_0027A1E8	raidou2 0xC0	7 of 48 words differ	docs/matching/code_0027A1E8.md	15		
