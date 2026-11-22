@@ -321,7 +321,7 @@ typedef struct SBTLSKL_KAJA_WORK {
 
 typedef struct SBTLSKL_BARRIER_WORK {
     s32 field0;
-    s32 field4;
+    u32 field4;
     s32 size;
     s32 fieldC;
 } SBTLSKL_BARRIER_WORK;

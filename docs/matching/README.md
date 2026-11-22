@@ -27,6 +27,7 @@ menu scenarios); an entry says which paths they covered.
 | 16 | code_002F5CF0 | raidou2 | [code_002F5CF0.md](code_002F5CF0.md) |
 | 14 | code_00261DF0 | raidou2 | [code_00261DF0.md](code_00261DF0.md) |
 | 13 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
+| 13 | sbtl | raidou1, raidou2 | [sbtl.md](sbtl.md) |
 | 11 | code_0027A1E8 | raidou2 | [code_0027A1E8.md](code_0027A1E8.md) |
 | 11 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 11 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
@@ -36,7 +37,6 @@ menu scenarios); an entry says which paths they covered.
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
 | 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 8 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
-| 8 | sbtl | raidou1, raidou2 | [sbtl.md](sbtl.md) |
 | 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 6 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
 | 6 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |

@@ -7550,7 +7550,7 @@
 0x0029DE00	sbtlBtlSetBadStatusNoSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlSetBadStatus_No
 0x0029DFD0	sbtlSetBadStatus_No	hd-inferred	hd: Raidou HD sBtlCalc.sBtlSetBadStatus_No, score 10.0 band A
 0x0029E858	sbtlRefGlobalPID	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtl; references GlobalPID
-0x0029E868	sbtlBtlSetBadStatusNoSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlSetBadStatus_No
+0x0029E868	sbtlCheckBadStatus_Color	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCheckBadStatus_Color(wk, badstno): returns bstcolor_tbldata[badstno].flg != 0; R2 has no raidou table or null check; name free in both games; replaces sbtlBtlSetBadStatusNoSub2
 0x0029E890	sbtlCallSetClutColor2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls mdlSetClutColor
 0x0029E9C8	sbtlSetBadStatusAction	hd-inferred	method=hd-c; p=0.69 (n=45); tier=C; source=hd; evidence=Raidou HD sBtlCalc.sBtlSetBadStatusAction score 6.5 flag I: calls3 calls-of-match votes3 st1:call r1-only
 0x0029EA48	sbtlCallBtlSetBadStatusAction	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlSetBadStatusAction
@@ -7563,7 +7563,7 @@
 0x0029FD80	sbtlGetPlayerTec_ParaUp	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlGetPlayerTec_ParaUp (R2 tier B): sbtlCheckBattlePara calls it with (unit, &para) at the same site in both games; replaces sbtlBtlGetDamageGBSub
 0x0029FF60	sbtlCheckBattlePara	hd-inferred	hd: Raidou HD sBtlCalc.sBtlCheckBattlePara, score 8.8 band B
 0x002A0148	CalcAisyo_sbtlCalc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.CalcAisyo (R2 tier B): sbtlCheckBattlePara calls it with wk at the same site in both games; replaces sbtlBtlSetDamageSub
-0x002A02C8	sbtlCallBtlCheckAisyoOld	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
+0x002A02C8	sbtlGetDamage_ATK	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetDamage_ATK: (sword_power*0.5*(aatk+alevel)*0.033333 + sword_power*0.333333) * n0 * 0.01 * (100 - (tlevel+tdef)*0.5) * 0.01, clamped to 1, then the aisyo percentage; first of the SBTLCALC_DMGWORK run before Old3..Old6 (C_GUN, GUN, C_MAGIC, MAGIC); R1 0x002A02C8 is the same pair; name free in both games; replaces sbtlCallBtlCheckAisyoOld
 0x002A03F0	sbtlCallBtlCheckAisyoOld2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
 0x002A0558	sbtlCallBtlCheckAisyoOld3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlCheckAisyo_Old
 0x002A0658	sbtlGetDamage_GUN	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same row in R1 (0x002A0658), name shared by both games; replaces sbtlCallBtlCheckAisyoOld4
@@ -7606,7 +7606,7 @@
 0x002A2CA0	sbtlCallMessageNumSearch3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls MessageNumSearch
 0x002A2DF0	sbtlLeaf99	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtl; no named callee, caller or string
 0x002A2EE0	sbtlDrawText	hd-inferred	method=hd-d-single-raidou1; p=0.71 (n=403); tier=C; source=hd; evidence=Raidou HD sBtlDvltk.sBtlDrawText score 2.6 flag I: calls2 calls-of-match st1:call r2-disagree:0x2de560
-0x002A31B0	sbtlDrawTextFont	hd-inferred	method=hd-gap-both; p=0.69 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlDvltk.sBtlDrawTextFont score 5.2 flag I: calls1 prev next~ gap1/2 st1:gap r1+r2
+0x002A31B0	sbtlAnimWaku	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDvltk.c sBtlAnimWaku(dwk): st 0 fades each of the 7 SBTLDVLTK_WAKUWORK alphas to 1, st 1 to 128; HD sBtlDrawTextFont is the text draw with seven arguments; R1 0x002A31B0 is the same pair; name free in both games; replaces sbtlDrawTextFont
 0x002A3230	sbtlBtlDrawTextSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlDrawText
 0x002A3238	sbtlGetSpriteHandle	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDvltk.sBtlGetSpriteHandle score 7.8 flag I: calls2 calls-of-match-uniq votes2 st1:call r1+r2
 0x002A3268	sbtlExt_CalcProcess	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlDvltk.sBtlExt_CalcProcess score 9.4 flag I: calls2 callers-of-match votes3 st1:call r1+r2
@@ -23057,7 +23057,7 @@
 0x0046DD14	encmax	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2
 0x0046DD18	tbldata	hd	hd: Raidou HD sBtlItem.tbldata, 5 of 6 functions agree, high confidence
 0x0046DD1C	aisyo_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetAisyotbl indexes aisyo_tbldata; replaces datData7
-0x0046DD20	GlobalPID	hd	hd: Raidou HD sBtlDvltk.GlobalPID, 5 of 5 functions agree, high confidence
+0x0046DD20	bstcolor_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.c bstcolor_tbldata: the TEXCOLOR_WORK table indexed by bad status (32-byte rows, flg at 0x1C read by sBtlCheckBadStatus_Color, colors read by sBtlSetBadStatus_Color = sbtlCallSetClutColor2); only sbtlRefGlobalPID reads it; R1 0x0046DD20 is the same pair; replaces GlobalPID
 0x0046DD24	sbtlData104	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 13 functions: sbtlDrawText, sbtlExt_MesReqEx, sbtlCallMemAllocDirect10
 0x0046DD28	GlobalCurrentArray	hd	hd: Raidou HD sBtlDvltk.GlobalCurrentArray, 3 of 3 functions agree, high confidence
 0x0046DD2C	sbtlData105	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: sbtlExt_CreateBuffer, sbtlExt_ShutDown, sbtlExt_FreeBuffer

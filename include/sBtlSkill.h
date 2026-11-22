@@ -61,7 +61,8 @@ struct SBTLSKILLP_TBL {
     f32 hitbk_rate;
 #ifdef VERSION_RAIDOU2
     u32 flg2;
-    u8 pad38[0x8];
+    s32 weapontype; /* HD name; index into sbtlZokuseiDmgData */
+    u8 pad3C[0x4];
 #endif
 };
 #ifdef VERSION_RAIDOU1

@@ -16,7 +16,7 @@ extern s32 sbtlData106; /* the last devil talk text width */
 
 struct sprHandle_t *sbtlGetSpriteHandle(void);
 s32 sbtlDrawText(struct SBTLDVLTK_WORK *dwk);
-void sbtlDrawTextFont(struct SBTLDVLTK_WORK *dwk);
+void sbtlAnimWaku(struct SBTLDVLTK_WORK *dwk);
 #ifdef VERSION_RAIDOU2 /* Raidou 1's sbtlDrawText under its Raidou 2 label */
 s32 sbtlCallBtlSearchUnitID34(struct SBTLDVLTK_WORK *dwk);
 #endif
@@ -25,7 +25,9 @@ char *GetDrawText(u32 rgba, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode, struc
 s32 sbtlCallBtlCheckMsgMemType(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckMsgMemType(void);
 s32 sbtlSearchDvltk(struct SBTLDVLTK_LISTWORK *lwk, struct SBTLUNIT_WORK *wk);
+struct SBTLDVLTK_WORK *sbtlCreateDvltk(struct SBTLDVLTK_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode);
 struct SBTLDVLTK_WORK *sbtlCreateDvltk_Priority(struct SBTLDVLTK_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode);
+s32 sbtlLeaf99(s32 a, s32 b);
 s32 sbtlExtCommand_DVLTK_DSP(void);
 s32 sbtlExtCommand_DVLTK_WAIT(void);
 s32 sbtlExt_ChkMes(void);

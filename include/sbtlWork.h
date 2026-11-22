@@ -1023,6 +1023,16 @@ typedef struct SBTLDVLTK_WAKUWORK {
     u32 rgb;
 } SBTLDVLTK_WAKUWORK;
 
+/* Starting position, colour and alpha of each SBTLDVLTK_WAKUWORK frame. */
+typedef struct SBTLDVLTK_WAKUDATA {
+    s32 x;
+    s32 y;
+    u32 rgb;
+    s32 alpha;
+} SBTLDVLTK_WAKUDATA;
+
+extern SBTLDVLTK_WAKUDATA sbtlCallMemAllocDirect10Data[7];
+
 /* Devil talk window (HD SBTLDVLTK_WORK, with the work's own handle first in R1). Partial layout. */
 typedef struct SBTLDVLTK_WORK {
     sdfMemHandle_t *handle;
@@ -1042,7 +1052,9 @@ typedef struct SBTLDVLTK_WORK {
     s32 ofs_y;
     s32 alpha;
     SBTLDVLTK_WAKUWORK wk[7];
-    u8 padCC[0xE0 - 0xCC];
+    u8 padCC[0xD8 - 0xCC];
+    s32 fieldD8;
+    s32 fieldDC;
     struct SBTLDVLTK_WORK *prev;
     struct SBTLDVLTK_WORK *next;
 } SBTLDVLTK_WORK;
@@ -1369,6 +1381,11 @@ extern s32 SetParaData; /* HD gsBtlCamera_Hokan_Not */
 extern f32 sbtlGetIdlingData[3]; /* HD gSbtlCam_offset_pos */
 extern const s32 sbtlCallGetPercentageTable[5];
 extern const s32 sbtlLeaf99Table[32];
+extern const u32 sbtlLeaf107Table[18];
+extern const s32 sbtlBtlGetDamageGBSubTable[13];
+extern const s32 sbtlGetPlayerTec_ParaUpTable[13][4];
+extern const s32 sbtlKudaDmgTable[8];
+extern const char sbtlStrZKeisaNorKeisanShimuA100[];
 f32 PosCtrlSystem(S_PosCtrl *ctrl, sdfVector4_t *ret);
 f32 CameraMoveSystem(SBTLCAMERA_WORK *wk);
 s32 sbtlCheckSpecialDamage_Stop(struct SBTLUNIT_WORK *wk);
@@ -1609,6 +1626,7 @@ s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 flg, s8 usePos, 
 void sbtlUpdateVibe(void);
 
 s32 sbtlInitPlayerData(void);
+s32 sbtlSetData_Unit_Stock(struct SBTLUNIT_WORK *wk, s32 stock);
 
 extern SBTL_DEVIL_DATA *gohData7;
 s32 sbtlCheckDrink(void);

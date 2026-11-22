@@ -527,6 +527,11 @@ sbtlSetStaticInit	sbtl	raidou2 0x44	2 of 17 words differ	docs/matching/sbtl.md	3
 sbtlCheckBadStatus	sbtl	raidou2 0x50	13 of 20 words differ	docs/matching/sbtl.md	39		
 sbtlResetBadStatus	sbtl	raidou2 0xCC	3 of 51 words differ	docs/matching/sbtl.md	45		
 sbtlSetAutoSkill_ID	sbtl	raidou2 0x110	48 of 65 words differ	docs/matching/sbtl.md	51		
+sbtlAnimWaku	sbtl	raidou2 0x7C	4 of 31 words differ	docs/matching/sbtl.md	57		
+sbtlGetDamage_ATK	sbtl	raidou2 0x114	43 of 68 words differ	docs/matching/sbtl.md	63		
+sbtlAutoRec	sbtl	raidou2 0x120	5 of 72 words differ	docs/matching/sbtl.md	69		
+sbtlSetWeakBit	sbtl	raidou2 0x124	8 of 73 words differ	docs/matching/sbtl.md	75		
+SetEnemyCPos	sbtl	raidou2 0x158	6 of 86 words differ	docs/matching/sbtl.md	81		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		

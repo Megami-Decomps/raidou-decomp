@@ -162,7 +162,7 @@ INCLUDE_ASM(const s32, "code_002A20E0", sbtlLeaf99);
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlDrawText);
 
-INCLUDE_ASM(const s32, "code_002A20E0", sbtlDrawTextFont);
+INCLUDE_ASM(const s32, "code_002A20E0", sbtlAnimWaku);
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlBtlDrawTextSub2);
 

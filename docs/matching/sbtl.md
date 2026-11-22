@@ -53,3 +53,33 @@ Register swap only: retail keeps $2 for the 0 return value in the first branch's
 Raidou 2: 48 of 65 words differ, first at +0x28; emitted 260 bytes, native 272 bytes.
 
 Block order and flag targets match (0x5000 kuishibBit/flg first, 0x1000 deadbombBit/flg2 second, from attr != 0x1000 nesting); retail keeps idx in $3 and copies it to $5, and every return takes ld $16 in a bnel delay slot before a shared li 1. Tried if/else if (55), switch (47), explicit returns per HD (44, block order lost). 48 words. Vector checked.
+
+## sbtlAnimWaku (sbtl, raidou2 0x7C)
+
+Raidou 2: 4 of 31 words differ, first at +0x40.
+
+HD sBtlAnimWaku over the seven SBTLDVLTK_WAKUWORK frames. Register only: in the st 0 clamp retail loads a fresh 1 into v0 for st = 1 and stores alpha = 1 from a2, the constant the case 1 compare holds; cc1 stores both from a2. Tried a frame pointer local (27 words), a switch over dwk->wk[i] (4) and st before alpha (4). 4 words. Vectors do not reach, checked against the asm.
+
+## sbtlGetDamage_ATK (sbtl, raidou2 0x114)
+
+Raidou 2: 43 of 68 words differ, first at +0x3C; emitted 272 bytes, native 276 bytes.
+
+HD sBtlGetDamage_ATK. The original computes the damage into f20, copies it to f0 for the zero test and the 1.0 clamp, and copies it back in the jal delay slot; the HD if/else with the expression written twice stops 100.0f being held in f21 across the call (57 to 43 words) but tests the expression in f0 and moves it to f20 only on the nonzero path. Tried one damage local with an if clamp (57), a base local plus the clamp (58), the if/else (43) with both operand orders. 43 words. Vector checked (battle).
+
+## sbtlAutoRec (sbtl, raidou2 0x120)
+
+Raidou 2: 5 of 72 words differ, first at +0x44.
+
+HD sBtlAutoRec. In the battleMode 2 path the original halves para from a1 into a2 and tests the result with slt 0 < v before the movn; cc1 halves the a2 copy and tests slti v < 1 in the branch delay slot. Tried the body inside the hp < maxhp test (9 words), an early return (12), a value copy with the ternary in both senses (5). 5 words. Vectors do not reach, checked against the asm.
+
+## sbtlSetWeakBit (sbtl, raidou2 0x124)
+
+Raidou 2: 8 of 73 words differ, first at +0xC.
+
+R1 sbtlSetWeakBit with the Raidou 2 devil pairs and anlyzBit at GBWK 0xBF50. Register swap only in devilid / 32: the original puts the sign test in v1 and the copy in v0, cc1 the other way round; the R1 copy (anlyzBit at 0x5D00, an addiu offset) matches with the same C, so the difference may come from the la expansion of the 0xBF50 offset. Tried a masked shift (69 words) and a pointer local for the bit array (28). 8 words. Vector checked (battle).
+
+## SetEnemyCPos (sbtl, raidou2 0x158)
+
+Raidou 2: 6 of 86 words differ, first at +0xEC.
+
+HD SetEnemyCPos: the enemies' mean x/z at the tallest enemy's height, left in vf10. Only 1.0f / n differs: the original loads the 1.0 constant into f0 before converting n into f1, cc1 converts n first. Tried the boss flag as && (78 words, folded into sltiu), as an if-assigned flag (6), the constant-first quotient lever value = 1.0f; value = value / n (8). 6 words. Vectors do not reach, checked against the asm.

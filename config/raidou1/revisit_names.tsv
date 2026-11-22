@@ -3236,14 +3236,12 @@
 0x0029DE00	sbtlBtlSetBadStatusNoSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlSetBadStatus_No
 0x0029DFD0	sbtlSetBadStatus_No	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlSetBadStatus_No, score 10.0 band A
 0x0029E858	sbtlRefGlobalPID	func	tier=D	derived-data	na	unit sbtl; references GlobalPID
-0x0029E868	sbtlBtlSetBadStatusNoSub2	func	tier=D	derived-caller	na	unit sbtl; called by sbtlSetBadStatus_No
 0x0029E890	sbtlCallSetClutColor2	func	tier=D	derived-callee	na	unit sbtl; calls mdlSetClutColor
 0x0029EA48	sbtlCallBtlSetBadStatusAction	func	tier=D	derived-callee	na	unit sbtl; calls sbtlSetBadStatusAction
 0x0029EB08	sbtlBtlCheckBadStatusWeakSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlCheckBadStatus_Weak
 0x0029F058	sbtlCallBtlGetPlayerData4	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetPlayerData
 0x0029FC70	sbtlBtlSetEndDataSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlSetEndData
 0x0029FF60	sbtlCheckBattlePara	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlCheckBattlePara, score 8.8 band B
-0x002A02C8	sbtlCallBtlCheckAisyoOld	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002A03F0	sbtlCallBtlCheckAisyoOld2	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002A0558	sbtlCallBtlCheckAisyoOld3	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
 0x002A0750	sbtlCallBtlCheckAisyoOld5	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
@@ -18027,7 +18025,6 @@
 0x002A1468	sbtlGetDamage_I_REC_P	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlCalc.sBtlGetDamage_I_REC_P score 6.2 flag I: calls3 callers-of-match votes3 st1:call r1-only
 0x002A1CC0	sbtlGetViceLevel	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlCalc.sBtlGetViceLevel score 6.5 flag I: calls2 calls-of-match votes2 st1:call r1-only
 0x002A2EE0	sbtlDrawText	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD sBtlDvltk.sBtlDrawText score 2.6 flag I: calls2 calls-of-match st1:call r2-disagree:0x2de560
-0x002A31B0	sbtlDrawTextFont	func	tier=C	hd-gap-both	0.69 (n=16)	Raidou HD sBtlDvltk.sBtlDrawTextFont score 5.2 flag I: calls1 prev next~ gap1/2 st1:gap r1+r2
 0x002A3800	sbtlExtCommand_DVLTK_WAIT	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlDvltk.sBtlExtCommand_DVLTK_WAIT score 4.0 flag I: prev edge st1:edge r1+r2
 0x002A3820	sbtlLoadOnMemMsg	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlDvltk.sBtlLoadOnMemMsg score 5.9 flag I: calls1 prev calls-of-match votes2 st2:call r2-only
 0x002A38D8	sbtlCheckMsgMemType	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlDvltk.sBtlCheckMsgMemType score 5.3 flag I: calls1 calls-of-match st1:call r1+r2
@@ -19184,12 +19181,15 @@
 0x0029C608	sbtlCheckKuishibari	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlCheckKuishibari score 6.1 flag I: calls4 callee-index votes3 st1:cidx r2-disagree:0x2d68b8
 0x0029D490	sbtlGetBadStatus_Attr	func	tier=B	hd-role	na	HD sBtlCalc.sBtlGetBadStatus_Attr(bstno); its result is the attr argument of sbtlCheckBadStatus_Hit; replaces sbtlBtlCheckBadStatusWeakNumberSub
 0x0029D9E0	sbtlCheckBadStatus_Number	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckBadStatus_Number(badstatus, bstno); CalcItem calls it as HD does; replaces sbtlLeaf107
+0x0029E868	sbtlCheckBadStatus_Color	func	tier=B	hd-role	na	HD sBtlCheckBadStatus_Color(wk, badstno): returns bstcolor_tbldata[badstno].flg != 0; R2 has no raidou table or null check; name free in both games; replaces sbtlBtlSetBadStatusNoSub2
 0x0029EC10	sbtlCheckBadStatus_Hit	func	tier=B	hd-role	na	HD sBtlCalc.sBtlCheckBadStatus_Hit; R2 already uses the name; replaces sbtlCallBtlGetSkilltbl17
 0x0029EE00	sbtlGetDamage_GB	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlCalc.sBtlGetDamage_GB score 6.0 flag I: calls3 calls-of-match votes3 st1:call r2-disagree:0x2d9ad8
 0x0029FD80	sbtlGetPlayerTec_ParaUp	func	tier=B	hd-role	na	HD sBtlCalc.sBtlGetPlayerTec_ParaUp (R2 tier B): sbtlCheckBattlePara calls it with (unit, &para) at the same site in both games; replaces sbtlBtlGetDamageGBSub
 0x002A0148	CalcAisyo_sbtlCalc	func	tier=B	hd-role	na	HD sBtlCalc.CalcAisyo (R2 tier B): sbtlCheckBattlePara calls it with wk at the same site in both games; replaces sbtlBtlSetDamageSub
+0x002A02C8	sbtlGetDamage_ATK	func	tier=B	hd-role	na	HD sBtlGetDamage_ATK: (sword_power*0.5*(aatk+alevel)*0.033333 + sword_power*0.333333) * n0 * 0.01 * (100 - (tlevel+tdef)*0.5) * 0.01, clamped to 1, then the aisyo percentage; first of the SBTLCALC_DMGWORK run before Old3..Old6 (C_GUN, GUN, C_MAGIC, MAGIC); R1 0x002A02C8 is the same pair; name free in both games; replaces sbtlCallBtlCheckAisyoOld
 0x002A0910	sbtlGetDamage_The_W	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD sBtlCalc.sBtlGetDamage_The_W score 6.3 flag I: calls1 callers-of-match-uniq st1:call r1+r2
 0x002A1630	sbtlGetDamage_I_REC_PARA	func	tier=B	hd-role	na	HD sBtlCalc.sBtlGetDamage_I_REC_PARA(unit, wk, ptbl), called between I_REC_P and P_STR in CalcItem; replaces sbtlplayertblPlayerSkill_GetMag3
+0x002A31B0	sbtlAnimWaku	func	tier=B	hd-role	na	HD sBtlDvltk.c sBtlAnimWaku(dwk): st 0 fades each of the 7 SBTLDVLTK_WAKUWORK alphas to 1, st 1 to 128; HD sBtlDrawTextFont is the text draw with seven arguments; R1 0x002A31B0 is the same pair; name free in both games; replaces sbtlDrawTextFont
 0x002A38E0	InitTarSelProcessData	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x25e800 sim 0.732 margin 0.14 pair
 0x002A52F8	sbtlCreateSM	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD sBtlSM.sBtlCreateSM score 6.2 flag I: calls4 calls-of-match votes3 st1:call r2-disagree:0x2e1588
 0x002A70D8	MainDraw	func	tier=B	hd-role	na	HD sbattle.MainDraw: sbdebug_drawmenu[SBDEBUG_MODE_MAIN]; sbdebug_procmenu/sbdebug_drawmenu index = HD sbattle.h SBDEBUG_MODE (named slots Main, ModelSelect, MotionChng, UnitChng, Sousa, Visual, Option, BST, Para agree); HD sbattle.c pair, sbattle prefix as sbtl; replaces sbtlFunc26
@@ -19568,6 +19568,7 @@
 0x0046DD10	datRndEncBase	data	tier=B	hd-role	na	HD sBtlGetRndEncMax reads datRndEncBase at this site; replaces nbGetEncountMaxData
 0x0046DD14	encmax	data	tier=B	hd-role	na	HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2
 0x0046DD1C	aisyo_tbldata	data	tier=B	hd-role	na	HD sBtlGetAisyotbl indexes aisyo_tbldata; replaces datData7
+0x0046DD20	bstcolor_tbldata	data	tier=B	hd-role	na	HD sBtlCalc.c bstcolor_tbldata: the TEXCOLOR_WORK table indexed by bad status (32-byte rows, flg at 0x1C read by sBtlCheckBadStatus_Color, colors read by sBtlSetBadStatus_Color = sbtlCallSetClutColor2); only sbtlRefGlobalPID reads it; R1 0x0046DD20 is the same pair; replaces GlobalPID
 0x0046EB28	gGlobal	data	tier=B	smt3-ref	0.88 (n=None)	smt3-ref/loose: nfun=3, other=1, sim=1.0, games=1, size=True, sec=True, fn=rstCallPlaySE
 0x0046EB30	mselProcName	data	tier=B	smt3-ref	0.88 (n=None)	smt3-ref/loose: nfun=1, other=0, sim=1.0, games=1, size=False, sec=False, fn=mselInit
 0x0046EED4	effBTLFieldColorProcess	data	tier=B	smt3-ref	0.80 (n=None)	smt3-ref/close: nfun=1, other=0, sim=0.7857, games=1, size=True, sec=True, fn=cmpCallProcessEnd; R1/R2 pair by this name (smt3-ref / smt3-ref)

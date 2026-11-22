@@ -23,7 +23,7 @@ struct TEXCOLOR_WORK {
     s8 flg;
 };
 
-extern struct TEXCOLOR_WORK *GlobalPID;
+extern struct TEXCOLOR_WORK *bstcolor_tbldata;
 
 
 /* Attacker and target figures for one damage calculation, on the caller's stack. */
@@ -53,7 +53,7 @@ SIZE_CHECK(SBTLCALC_DMGWORKSizeCheck, SBTLCALC_DMGWORK, 0x4C);
 
 s32 CalcAisyo(struct SBTLUNIT_WORK *wk);
 struct TEXCOLOR_WORK *sbtlRefGlobalPID(BST badstno);
-s32 sbtlBtlSetBadStatusNoSub2(struct SBTLUNIT_WORK *wk, BST badstno);
+s32 sbtlCheckBadStatus_Color(struct SBTLUNIT_WORK *wk, BST badstno);
 s32 sbtlSetAutoSkill_ID(struct SBTLUNIT_WORK *wk, SKLID id);
 SKLID sbtlGetAutoSkill_ID(struct sdatUnitWork_t *unit, s32 id);
 s32 sbtlCheckBadStatus(struct SBTLUNIT_WORK *wk);

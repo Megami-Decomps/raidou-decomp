@@ -35,6 +35,14 @@ typedef struct SBTL_AISYO_TBL {
 
 extern SBTL_AISYO_TBL *aisyo_tbldata;
 
+/* Auto skill table entry: stat bonus and the damage percentage per attribute. */
+typedef struct SBTLAUTO_TBL {
+    sdatParaWork_t paraBns;
+    SBTL_AISYO_TBL aisyo;
+} SBTLAUTO_TBL;
+
+extern SBTLAUTO_TBL *sbtlZokuseiDmgData; /* HD autotbldata */
+
 /* A unit's work: the player and each stock devil, and embedded in SBTLUNIT_WORK. The raidou2 tail is partial. */
 typedef struct sdatUnitWork_t {
     /* 0x00 */ u32 flag;

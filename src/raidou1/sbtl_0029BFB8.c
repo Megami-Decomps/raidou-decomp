@@ -509,7 +509,7 @@ INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlSetBadStatus_No);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlRefGlobalPID);
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlBtlSetBadStatusNoSub2);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCheckBadStatus_Color);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallSetClutColor2);
 
@@ -625,7 +625,7 @@ void CalcAisyo_sbtlCalc(struct SBTLUNIT_WORK *wk)
     }
 }
 
-INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlCheckAisyoOld);
+INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlGetDamage_ATK);
 
 INCLUDE_ASM(const s32, "sbtl_0029BFB8", sbtlCallBtlCheckAisyoOld2);
 

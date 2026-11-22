@@ -9229,7 +9229,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046DD14	0x004E2618	encmax	.sdata	0x4	yes	code-ref
 0x0046DD18	0x004E261C	tbldata	.sdata	0x4	yes	code-ref
 0x0046DD1C	0x004E263C	aisyo_tbldata	.sdata	0x4	yes	code-ref
-0x0046DD20	0x004E2640	GlobalPID	.sdata	0x4	no	code-ref
+0x0046DD20	0x004E2640	bstcolor_tbldata	.sdata	0x4	no	code-ref
 0x0046DD24	0x004E2B50	sbtlData104	.sdata	0x4	yes	code-ref
 0x0046DD28	0x004E2B54	GlobalCurrentArray	.sdata	0x4	yes	code-ref
 0x0046DD2C	0x004E2B58	sbtlData105	.sdata	0x4	yes	code-ref
