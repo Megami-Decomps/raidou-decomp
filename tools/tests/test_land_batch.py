@@ -256,6 +256,99 @@ class OneGameRenameTests(unittest.TestCase):
             self.assertEqual({f: f.read_text() for f in before}, before)
 
 
+
+class GuardSafetyTests(unittest.TestCase):
+    """A one-game rename never guards a comment, a literal, a directive or a line inside a block comment, and a
+    guarded file keeps its #if/#endif balance."""
+    HAS = {"raidou1": True, "raidou2": True}
+
+    def rename(self, text: str, path: str = "include/u.h") -> str:
+        return renames.rename_text(path, text, "a", {"raidou1": "x"}, self.HAS)
+
+    def test_a_version_directive_comment_is_left(self) -> None:
+        text = "#ifndef VERSION_RAIDOU2 /* Raidou 2's a is other code */\nvoid a(void);\n#endif\n"
+        self.assertEqual(self.rename(text), text.replace("void a(", "void x("))
+
+    def test_a_directive_comment_both_games_read_is_left(self) -> None:
+        for text in ("#ifdef X\nvoid b(void);\n#endif /* a */\n", "#if 0 // a\n#endif\n",
+                     '#include "u.h" /* a */\n'):
+            self.assertEqual(self.rename(text), text)
+
+    def test_a_directive_using_the_name_is_refused(self) -> None:
+        with self.assertRaisesRegex(ValueError, r"include/u\.h:1: .*preprocessor directive"):
+            self.rename("#define CALL a\n")
+
+    def test_a_line_comment_both_games_read_is_left(self) -> None:
+        text = "void f(void); // calls a\n"
+        self.assertEqual(self.rename(text), text)
+
+    def test_an_unambiguous_comment_is_renamed(self) -> None:
+        self.assertEqual(self.rename("void f(void); // calls a\n", "src/raidou1/u.c"), "void f(void); // calls x\n")
+
+    def test_a_block_comment_spanning_lines_is_left(self) -> None:
+        text = "/* first\n a(); second */\nvoid b(void);\n"
+        self.assertEqual(self.rename(text), text)
+
+    def test_a_use_before_an_open_block_comment_is_refused(self) -> None:
+        with self.assertRaisesRegex(ValueError, r"include/u\.h:1: .*block comment"):
+            self.rename("void c(void) { a(); } /* see\n a */\n")
+
+    def test_a_use_after_a_block_comment_closes_is_refused(self) -> None:
+        with self.assertRaisesRegex(ValueError, r"include/u\.h:2: .*block comment"):
+            self.rename("/* see\n */ void c(void) { a(); }\n")
+
+    def test_string_literals_are_never_renamed(self) -> None:
+        self.assertEqual(self.rename('void f(void) { p("a"); }\n'), 'void f(void) { p("a"); }\n')
+        self.assertEqual(self.rename('void f(void) { p("a.dat"); }\n', "src/raidou1/u.c"),
+                         'void f(void) { p("a.dat"); }\n')
+        self.assertEqual(self.rename('void f(void) { a(); p("a", \'"\'); }\n'),
+                         '#ifdef VERSION_RAIDOU1\nvoid f(void) { x(); p("a", \'"\'); }\n#else\n'
+                         'void f(void) { a(); p("a", \'"\'); }\n#endif\n')
+
+    def test_a_guarded_line_renames_its_comment_per_game(self) -> None:
+        self.assertEqual(self.rename("void f(void) { a(); } // calls a\n"),
+                         "#ifdef VERSION_RAIDOU1\nvoid f(void) { x(); } // calls x\n#else\n"
+                         "void f(void) { a(); } // calls a\n#endif\n")
+
+    def test_a_macro_continuation_is_refused(self) -> None:
+        with self.assertRaisesRegex(ValueError, r"include/u\.h:2: .*inside a macro"):
+            self.rename("#define M() \\\n    a()\n")
+
+    def test_a_comment_mention_is_not_a_use(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = OneGameRenameTests().tree(tmp)
+            (root / "src/raidou2/u.c").write_text('#include "u.h"\n/* a(1) was here */\n')
+            renames.apply(root, [("raidou1", "a", "x", "HD")])
+            self.assertEqual((root / "include/u.h").read_text(), "s32 x(s32 x);\nvoid b(void);\n")
+
+    def test_balance_is_checked(self) -> None:
+        renames.check_balance("u.h", "#ifdef X\n#if 0 /* #endif */\n#endif\n#else\n#endif\n")
+        for text, error in (("#ifdef X\n", "unterminated"), ("#endif\n", "without #if"),
+                            ("#ifdef VERSION_RAIDOU1\n#else\n#else\n#endif\n", "after #else")):
+            with self.assertRaisesRegex(ValueError, error):
+                renames.check_balance("u.h", text)
+
+    def test_an_unbalanced_result_restores_every_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = OneGameRenameTests().tree(tmp)
+            (root / "include/w.h").write_text("void f(void) { a(); }\n")
+            before = {f: f.read_text() for f in root.rglob("*") if f.is_file() and ".git" not in f.parts}
+            real = renames.check_balance
+
+            def fail_on_w(path: str, text: str) -> None:
+                if path.endswith("w.h"):
+                    raise ValueError(f"{path}: 1 unterminated #if after renaming")
+                real(path, text)
+            renames.check_balance = fail_on_w
+            try:
+                with self.assertRaisesRegex(ValueError, "unterminated"):
+                    renames.apply(root, [("raidou2", "a", "a", "another function"), ("raidou1", "a", "x", "HD")])
+                with self.assertRaisesRegex(ValueError, "unterminated"):
+                    renames.rename_sources_per_game(root, "a", {"raidou1": "x"}, self.HAS)
+            finally:
+                renames.check_balance = real
+            self.assertEqual({f: f.read_text() for f in before}, before)
+
 class DocsTests(unittest.TestCase):
     PAGE = "# Draft notes: u\n\n## f (u, raidou1 0x8)\n\nA.\n\n## g (u, raidou1 0x8)\n\nB.\n"
 

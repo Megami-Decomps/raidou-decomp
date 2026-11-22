@@ -5,7 +5,9 @@
 TABLE rows are game<TAB>old<TAB>new<TAB>reason (# lines skipped). A row renames its game only when the other
 game's symbol of that name is another function: the other game has a row old<TAB>old (it keeps the name) or
 already holds the new name. Otherwise the other game gets the same rename. Shared lines that each game would
-name differently get a VERSION_ guard; a line that cannot take one is refused, naming the file and line."""
+name differently get a VERSION_ guard; a line that cannot take one (a preprocessor directive, a macro continuation,
+a line inside a block comment) is refused, naming the file and line. A name in a comment is renamed only when every
+game reading the line takes the same name, and a name in a string or character literal is never renamed."""
 import argparse
 import re
 import subprocess
@@ -132,38 +134,127 @@ def is_use(line: str, old: str) -> bool:
                         % ((re.escape(old),) * 2), line)
 
 
+CODE, COMMENT, LITERAL = "c", "/", '"'
+
+
+def classify(text: str) -> list[tuple[str, str, bool, bool]]:
+    """(line, kinds, starts in a block comment, ends in one) for each line; kinds has one of CODE, COMMENT, LITERAL per
+    character. A literal's quotes count as LITERAL, a comment's delimiters as COMMENT."""
+    out, in_comment = [], False
+    for line in text.splitlines(keepends=True):
+        starts, kinds, i, quote = in_comment, [], 0, ""
+        while i < len(line):
+            two = line[i:i + 2]
+            if in_comment:
+                kinds += COMMENT * (2 if two == "*/" else 1)
+                in_comment = two != "*/"
+                i += 2 if two == "*/" else 1
+            elif quote:
+                kinds += LITERAL * (2 if line[i] == "\\" else 1)
+                if line[i] == quote:
+                    quote = ""
+                i += 2 if line[i] == "\\" else 1
+            elif two == "//":
+                kinds += COMMENT * (len(line) - i)
+                i = len(line)
+            elif two == "/*":
+                kinds += COMMENT * 2
+                in_comment, i = True, i + 2
+            elif line[i] in "\"'":
+                quote = line[i]
+                kinds += LITERAL
+                i += 1
+            else:
+                kinds += CODE
+                i += 1
+        out.append((line, "".join(kinds[:len(line)]), starts, in_comment))
+    return out
+
+
+def code_of(line: str, kinds: str) -> str:
+    """The line with comments and literals blanked."""
+    return "".join(ch if k == CODE or ch == "\n" else " " for ch, k in zip(line, kinds))
+
+
+def substitute(word: re.Pattern, new: str, line: str, kinds: str) -> str:
+    """Rename the matches in code and comments; literals keep their text."""
+    return word.sub(lambda m: m.group(0) if kinds[m.start()] == LITERAL else new, line)
+
+
+def check_balance(path: str, text: str) -> None:
+    """ValueError unless every #if/#ifdef/#ifndef has its #endif, #else/#elif/#endif have an open #if and no
+    #else or #elif follows an #else."""
+    open_ifs = []  # per open #if: whether its #else was seen
+    for number, (line, kinds, starts, _) in enumerate(classify(text), 1):
+        m = None if starts else re.match(r"\s*#\s*(if|ifdef|ifndef|elif|else|endif)\b", code_of(line, kinds))
+        if not m:
+            continue
+        kind = m.group(1)
+        if kind.startswith("if"):
+            open_ifs.append(False)
+        elif not open_ifs:
+            raise ValueError(f"{path}:{number}: #{kind} without #if after renaming")
+        elif open_ifs[-1] and kind != "endif":
+            raise ValueError(f"{path}:{number}: #{kind} after #else after renaming")
+        elif kind == "endif":
+            open_ifs.pop()
+        elif kind == "else":
+            open_ifs[-1] = True
+    if open_ifs:
+        raise ValueError(f"{path}: {len(open_ifs)} unterminated #if after renaming")
+    if version_guard.GAME.search(text):
+        for game in GAMES:
+            version_guard.lines_for(text, game)
+
+
 def rename_text(path: str, text: str, old: str, new: dict[str, str], has: dict[str, bool],
                 unused: frozenset = frozenset()) -> str:
     """Rename old to new[game] in the lines each game reads (new[game] == old: that game keeps it). `has`: games
     where old is a symbol; `unused`: those whose C never uses it, so a line both games read is the other game's.
-    A C line games would name differently gets a VERSION_ guard; one that cannot (a macro continuation) is
-    refused with ValueError, a docs line is left with a warning."""
+    A C line games would name differently gets a VERSION_ guard when the name is used in its code. A line that
+    cannot take one (a preprocessor directive, a macro continuation, a line in or opening a block comment) is
+    refused with ValueError; a name only in a comment is left as is, as is a docs line, with a warning. Names in
+    string and character literals are never renamed. The result is checked for #if/#endif balance."""
     word = re.compile(r"\b%s\b" % re.escape(old))
+    c_file = path.endswith((".c", ".h"))
+    lines = game_lines(path, text)
+    kinds_of = classify(text) if c_file else [(line, CODE * len(line), False, False) for line, _ in lines]
     out = []
     prev = ""
-    for number, (line, games) in enumerate(game_lines(path, text), 1):
+    guarded = False
+    for number, ((line, games), (_, kinds, starts, ends)) in enumerate(zip(lines, kinds_of), 1):
         if games and word.search(line):
             relevant = [g for g in sorted(games) if has.get(g)] or sorted(new)
             if len(relevant) > 1:
                 relevant = [g for g in relevant if g not in unused] or relevant
             names = {g: new.get(g, old) for g in relevant}
+            code = code_of(line, kinds)
             if len(set(names.values())) == 1:
-                line = word.sub(names[relevant[0]], line)
-            elif path.endswith((".c", ".h")) and not prev.rstrip("\n").endswith("\\") \
-                    and not line.rstrip("\n").endswith("\\"):
-                body = line if line.endswith("\n") else line + "\n"
-                first, *rest = relevant
-                line = (f"#ifdef {version_guard._macro(first)}\n" + word.sub(names[first], body) + "#else\n"
-                        + word.sub(names[rest[0]], body) + "#endif\n")
-                print(f"{path}: guarded {old} -> {names}")
-            elif path.endswith((".c", ".h")):
-                raise ValueError(f"{path}:{number}: {old} would be {names} on a line both games read inside a macro;"
-                                 f" guard the macro by hand: {line.strip()}")
-            else:
+                line = substitute(word, names[relevant[0]], line, kinds)
+            elif not c_file:
                 print(f"{path}:{number}: left {old} on a line both games read: {line.strip()}")
+            elif not word.search(code):
+                print(f"{path}:{number}: left {old} in a comment or literal both games read: {line.strip()}")
+            else:
+                why = ("a preprocessor directive" if re.match(r"\s*#", code) and not starts else
+                       "inside a macro" if prev.rstrip("\n").endswith("\\") or line.rstrip("\n").endswith("\\") else
+                       "in a block comment" if starts or ends else "")
+                if why:
+                    raise ValueError(f"{path}:{number}: {old} would be {names} on a line both games read, {why};"
+                                     f" guard it by hand: {line.strip()}")
+                body = line if line.endswith("\n") else line + "\n"
+                body_kinds = kinds if line.endswith("\n") else kinds + CODE
+                first, *rest = relevant
+                line = (f"#ifdef {version_guard._macro(first)}\n" + substitute(word, names[first], body, body_kinds)
+                        + "#else\n" + substitute(word, names[rest[0]], body, body_kinds) + "#endif\n")
+                guarded = True
+                print(f"{path}: guarded {old} -> {names}")
         out.append(line)
         prev = line
-    return "".join(out)
+    result = "".join(out)
+    if guarded:
+        check_balance(path, result)
+    return result
 
 
 def rename_sources_per_game(tree: Path, old: str, new: dict[str, str], has: dict[str, bool]) -> int:
@@ -175,15 +266,29 @@ def rename_sources_per_game(tree: Path, old: str, new: dict[str, str], has: dict
     for f in files:
         if not f.endswith((".c", ".h")):
             continue
-        for line, games in game_lines(f, (tree / f).read_text()):
-            if word.search(line) and is_use(line, old):
+        text = (tree / f).read_text()
+        for (line, games), (_, kinds, _, _) in zip(game_lines(f, text), classify(text)):
+            code = code_of(line, kinds)
+            if word.search(code) and is_use(code, old):
                 used |= games
     renamed = {g for g, n in new.items() if n != old}
     if not renamed:
         return 0
     unused = frozenset(g for g in GAMES if has.get(g) and g not in renamed and g not in used)
-    for f in files:
-        rewrite(tree / f, lambda t: rename_text(f, t, old, new, has, unused))
+    global journal
+    own = journal is None
+    if own:
+        journal = {}
+    try:
+        for f in files:
+            rewrite(tree / f, lambda t: rename_text(f, t, old, new, has, unused))
+    except ValueError:
+        if own:
+            restore(journal)
+        raise
+    finally:
+        if own:
+            journal = None
     return len(files)
 
 

@@ -115,8 +115,12 @@ in order (skip any with `--skip step,...`):
    name, or the table has its keep row (`raidou2 old old reason`). Then each
    game's lines (by `src/<game>/`, `VERSION_` blocks and docs sections) take
    that game's name, a shared C line both games call gets a `VERSION_` guard,
-   and a macro line that cannot take one is refused with its file and line, with
-   nothing written. A shared name of a function in `r1only.txt` needs the other
+   and a line that cannot take one (a preprocessor directive, a macro
+   continuation, a line in or opening a block comment) is refused with its file
+   and line, with nothing written. A name in a shared comment is renamed only
+   when both games take the same name; string literals are never renamed. A
+   file with a guard added must keep its `#if`/`#endif` balance, or every file
+   is restored and the table refused. A shared name of a function in `r1only.txt` needs the other
    game's row. `tools/batch/renames.py TABLE` applies a table to a tree by hand.
 4. `splice`: the includes in `includes.tsv` go after each unit's last
    `#include`; each final draft replaces its `INCLUDE_ASM` (and any older
