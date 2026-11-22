@@ -256,7 +256,197 @@ f32 sbtlGetDmgEffScale(struct SBTLUNIT_WORK *wk)
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlSetDmgEffShinad);
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCreateEff);
+SBTLEFF_WORK *sbtlCreateEff(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, EFFID effectid, s32 starttime, const f32 *defpos,
+                            u32 rgba, s8 flg)
+{
+    sdfVector4_t a;
+    sdfVector4_t b;
+    sdfVector4_t defrot;
+    s32 start;
+    s32 life;
+    sdfMemHandle_t *handle;
+    SBTLEFF_WORK *ewk;
+    SBTLEFF_WORK *last;
+
+    memset(&defrot, 0, sizeof(defrot));
+    defrot.w = 1.0f;
+    handle = sdfMemAllocDirect(sizeof(SBTLEFF_WORK));
+    ewk = sdfMemLock(handle);
+    memset(ewk, 0, sizeof(SBTLEFF_WORK));
+    ewk->handle = handle;
+    ewk->starttime = starttime;
+    ewk->effectid = effectid;
+    Draw_sbtlEff(effectid, &start, &life);
+    ewk->scale = 1.0f;
+    ewk->life = life;
+    ewk->rgba = rgba;
+    ewk->workID = 0;
+    ewk->st = SBTLEFF_ST_INIT;
+    ewk->flg |= sbtlCallMemset17Data[ewk->effectid];
+    ewk->dwk.hData = NULL;
+    ewk->dwk.hFile = NULL;
+    ewk->dwk.pData = NULL;
+    ewk->dwk.hPartsList = NULL;
+    if (wk->flg & 0x10) {
+        ewk->flg |= 0x10;
+    }
+    if (flg == 1) {
+        ewk->flg |= SBTLEFF_FLG_RGBASET;
+    }
+    ewk->prev = NULL;
+    ewk->next = NULL;
+    if (wk != NULL) {
+        ewk->acterID = wk->field1A0;
+        ewk->targetID = wk->model->field104;
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&ewk->pos);
+    } else {
+        ewk->acterID = 0;
+        ewk->targetID = 0;
+        SDF_VU0_LOADVECTOR(defpos);
+        SDF_VU0_STOREVECTOR(&ewk->pos);
+    }
+    last = lwk->wk;
+    if (last == NULL) {
+        lwk->wk = ewk;
+        lwk->num = 1;
+    } else {
+        while (last->next != NULL) {
+            last = last->next;
+        }
+        last->next = ewk;
+        ewk->prev = last;
+        lwk->num++;
+    }
+    switch (ewk->effectid) {
+    case 8:
+    case 9:
+    case 12:
+    case 15:
+    case 20:
+    case 21:
+    case 26:
+    case 27:
+    case 28:
+    case 29:
+    case 33:
+        sbtlGetUnitHelperPos(wk, 0);
+        SDF_VU0_STOREVECTOR(&ewk->pos);
+        if (ewk->pos.y >= -1.0) {
+            ewk->pos.y -= 50.0f;
+        }
+        SDF_VU0_LOADVECTOR(&wk_sbtl->camera.camerapos);
+        SDF_VU0_LOADVECTOR_B(&ewk->pos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_SCALEVECTOR(sbtlGetMotionVisualData(wk->major, wk->minor)->field24);
+        SDF_VU0_LOADVECTOR_B(&ewk->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&ewk->pos);
+        ewk->scale = sbtlGetDmgEffScale(wk);
+        if (wk->unit.devilId >= 455 && wk->unit.devilId <= 456) {
+            sbtlSetDmgEffShinad(ewk, wk, 0);
+        }
+        break;
+    case 34:
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&ewk->pos);
+        ewk->scale = sbtlGetDmgEffScale(wk);
+        break;
+    case 56:
+        sbtlGetUnitHelperPos(wk, 0);
+        SDF_VU0_STOREVECTOR(&ewk->pos);
+        break;
+    case 1:
+    case 2:
+    case 6:
+    case 10:
+    case 11:
+    case 13:
+    case 50:
+    case 55:
+        sbtlGetUnitHelperPos(wk, 0);
+        SDF_VU0_STOREVECTOR(&ewk->pos);
+        SDF_VU0_STOREVECTOR(&a);
+        ewk->pos.y = 0.0f;
+        SDF_VU0_LOADVECTOR(defpos);
+        SDF_VU0_STOREVECTOR_NOMEM(&b);
+        a.y = 0.0f;
+        b.y = 0.0f;
+        sbtlGetQuat(&b, &a);
+        SDF_VU0_STOREVECTOR(&ewk->rot);
+        ewk->pos.y = sbtlFree(ewk->pos.x, ewk->pos.z);
+        ewk->scale = sbtlGetDmgEffScale(wk);
+        if (wk->unit.devilId >= 455 && wk->unit.devilId <= 456) {
+            sbtlSetDmgEffShinad(ewk, wk, 1);
+        }
+        break;
+    case 16:
+    case 17:
+    case 19:
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&a);
+        sbtlGetPosforDistance(wk, 10.0f);
+        SDF_VU0_STOREVECTOR_NOMEM(&b);
+        a.y = 0.0f;
+        b.y = 0.0f;
+        sbtlGetQuat(&b, &a);
+        SDF_VU0_STOREVECTOR_NOMEM(&ewk->rot);
+        a.x = ewk->pos.y;
+        a.y = ewk->pos.x;
+        a.z = ewk->pos.z;
+        a.w = ewk->pos.w;
+        b.x = defpos[4];
+        b.y = defpos[0];
+        b.z = defpos[8];
+        b.w = defpos[12];
+        sbtlGetQuat(&a, &b);
+        SDF_VU0_STOREVECTOR(&a);
+        ewk->rot.x = 0.5f;
+        sbtlGetUnitHelperPos(wk, 0);
+        SDF_VU0_STOREVECTOR(&a);
+        ewk->pos.y = a.y;
+        ewk->scale = sbtlGetDmgEffScale(wk);
+        break;
+    case 3:
+    case 4:
+    case 40:
+    case 41:
+    case 42:
+    case 43:
+    case 45:
+    case 46:
+    case 47:
+    case 48:
+        SDF_VU0_LOADVECTOR(&wk->pos);
+        SDF_VU0_STOREVECTOR(&ewk->pos);
+        ewk->scale = GetDataScale(wk, 0);
+        SDF_VU0_LOADVECTOR(&defrot);
+        SDF_VU0_STOREVECTOR(&ewk->rot);
+        ewk->pos.y = sbtlFree(ewk->pos.x, ewk->pos.z);
+        break;
+    }
+    ewk->eListID = ++lwk->serial;
+    switch (ewk->effectid) {
+    case 1:
+    case 9:
+    case 10:
+    case 11:
+    case 13:
+    case 15:
+    case 16:
+    case 17:
+    case 19:
+    case 33:
+    case 50:
+        sbtlAddHitEff(ewk);
+        break;
+    default:
+        ewk->pHitEff = NULL;
+        break;
+    }
+    return ewk;
+}
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallMemset9);
 
@@ -1468,7 +1658,80 @@ s32 sbtlForceDelete_EffectWork_ID(SKLID id, s8 flg)
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_EffectWork_ID);
 #endif
 
+/* NON_MATCHING: 89 of 187 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlForceDelete_EffectWork(s8 flg)
+{
+    SBTLEFF_PACLIST *pac;
+    s32 i;
+    s32 j;
+    s32 k;
+
+    for (i = 0; i < SBTLEFF_PACLIST_MAX; i++) {
+        if (flg != 2) {
+            if (sbtlData83->effpac[i].status & 0x20) {
+                continue;
+            }
+            if ((sbtlData83->effpac[i].status & 4) && flg != 1) {
+                continue;
+            }
+        }
+        pac = &sbtlData83->effpac[i];
+        if (pac->status & 1) {
+            sbtlBtlForceDeleteEffectWorkIDSub(pac->SMGID);
+            pac->SMGID = 0;
+            for (j = 0; j < pac->num; j++) {
+                if (pac->pwk[j]->hPartsList != NULL) {
+                    effPartsDelete(pac->pwk[j]->hPartsList);
+                    pac->pwk[j]->hPartsList = NULL;
+                }
+                if (pac->pwk[j]->flg) {
+                    for (k = 0; k < pac->pwk[j]->hitnum; k++) {
+                        if (pac->pwk[j]->hit[k]->handle != NULL) {
+                            if (pac->pwk[j]->hit[k]->handle08 != NULL) {
+                                sdfMemFreeDirect(pac->pwk[j]->hit[k]->handle08);
+                                pac->pwk[j]->hit[k]->BpData = NULL;
+                                pac->pwk[j]->hit[k]->handle08 = NULL;
+                            }
+                            if (pac->pwk[j]->hit[k]->handle10 != NULL) {
+                                if (pac->pwk[j]->hit[k]->hPartsList != NULL) {
+                                    effPartsDelete(pac->pwk[j]->hit[k]->hPartsList);
+                                    pac->pwk[j]->hit[k]->hPartsList = NULL;
+                                }
+                                sdfMemFreeDirect(pac->pwk[j]->hit[k]->handle10);
+                                pac->pwk[j]->hit[k]->EpData = NULL;
+                                pac->pwk[j]->hit[k]->handle10 = NULL;
+                            }
+                            sdfMemFreeDirect(pac->pwk[j]->hit[k]->handle);
+                            pac->pwk[j]->hit[k]->handle = NULL;
+                        }
+                    }
+                }
+                if (pac->pwk[j]->handle != NULL) {
+                    sdfMemFreeDirect(pac->pwk[j]->handle);
+                    pac->pwk[j]->handle = NULL;
+                }
+                sdfMemFreeDirect(pac->pwk[j]->selfHandle);
+                pac->pwk[j]->selfHandle = NULL;
+                pac->pwk[j]->pData = NULL;
+            }
+            if (sbtlData83->effpac[i].handle != NULL) {
+                sdfMemFreeDirect(sbtlData83->effpac[i].handle);
+            }
+            sbtlBtlForceDeleteEffectWorkIDSub2(i);
+            sbtlData83->effpaccnt--;
+            sbtlData83->effpaccnt = sbtlData83->effpaccnt <= 0                    ? 0
+                                    : sbtlData83->effpaccnt >= SBTLEFF_PACLIST_MAX ? SBTLEFF_PACLIST_MAX - 1
+                                                                                   : sbtlData83->effpaccnt;
+        } else if (pac->gstat != 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlForceDelete_EffectWork);
+#endif
 
 /* NON_MATCHING: 4 of 18 words match.  */
 #ifdef NON_MATCHING
@@ -1640,7 +1903,70 @@ SBTLEFFDMG_TBL *LoadOnMemoryData(s32 major, s32 minor) {
     return &dmg_tbldata[minor];
 }
 
-INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCheckYukaDamageEffect);
+s32 sbtlCheckYukaDamageEffect(struct SBTLUNIT_WORK *wk, SKLID sklid, u16 htype, s32 time, s8 type)
+{
+    EFFID dmgEff[5] = { 9, 0x21, 15, 15, 15 };
+    EFFID yukaEff[5] = { 0x32, 1, 2, 2, 2 };
+    EFFID dmgEffE[5] = { 0x13, 0x10, 0x11, 0x11, 0x11 };
+    EFFID yukaEffE[5] = { 10, 11, 13, 13, 13 };
+    SBTLEFFDMG_TBL *tbl;
+    u32 rgba;
+    s8 flg;
+    s32 r;
+    s32 g;
+    s32 b;
+
+    flg = 0;
+    if (sbtlGetSklVisualTbl(sklid)->flg & 0x80) {
+        flg = 1;
+    } else {
+        switch (htype & 0xFFF) {
+        case 1:
+        case 4:
+        case 12:
+        case 13:
+        case 14:
+            flg = 1;
+            break;
+        }
+    }
+    if (flg) {
+        tbl = LoadOnMemoryData(wk->major, wk->minor);
+        if (tbl->flg & 1) {
+            rgba = 0x80808080;
+            flg = 0;
+            if (tbl->flg & 4) {
+                flg = 1;
+                r = tbl->dr;
+                g = tbl->dg;
+                b = tbl->db;
+                rgba = (b << 16) | r | (g << 8) | 0x80000000;
+            }
+            if (type == 0) {
+                sbtlCreateEff(wk_sbtl->effList, wk, dmgEff[tbl->d_eplno], time, &wk->pos, rgba, flg);
+            } else {
+                sbtlCreateEff(wk_sbtl->effList, wk, dmgEffE[tbl->d_eplno], time, &wk->pos, rgba, flg);
+            }
+        }
+        if (tbl->flg & 2) {
+            rgba = 0x80808080;
+            flg = 0;
+            if (tbl->flg & 8) {
+                flg = 1;
+                r = tbl->yr;
+                g = tbl->yg;
+                b = tbl->yb;
+                rgba = (b << 16) | r | (g << 8) | 0x80000000;
+            }
+            if (type == 0) {
+                sbtlCreateEff(wk_sbtl->effList, wk, yukaEff[tbl->y_eplno], time, &wk->pos, rgba, flg);
+            } else {
+                sbtlCreateEff(wk_sbtl->effList, wk, yukaEffE[tbl->y_eplno], time, &wk->pos, rgba, flg);
+            }
+        }
+    }
+    return 1;
+}
 
 /* NON_MATCHING: 5 of 19 words match.  */
 #ifdef NON_MATCHING
@@ -1758,10 +2084,6 @@ void LoadOnMemoryData_BED(SBTLEFF_WORK *wk, struct SBTLUNIT_WORK *wklock, u16 no
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_Slip_G);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", EffFunc_Hanyou);
-
-INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlCallBtlGetSklVisualTblTable3);
-
-INCLUDE_RODATA(const s32, "sbtlEff_00289E50", sbtlCheckYukaDamageEffectTable);
 
 INCLUDE_ASM(const s32, "sbtlEff_00289E50", sbtlCallBtlSearchUnitID9);
 

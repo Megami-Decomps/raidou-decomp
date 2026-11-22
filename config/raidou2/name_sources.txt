@@ -8027,7 +8027,7 @@
 0x002D3DA0	sbtlCheckItemCost_GBWK	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlCheckItemCost_GBWK(itemid, flg): item count > 0, and uses one when flg; replaces sbtlRefDDS3GBWK21
 0x002D3DE8	sbtlCheckItemCost	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.sBtlCheckItemCost(itemid, flg): battle item list count > 0, uses one when flg; after sBtlCheckItemCost_GBWK; replaces CalcItem_Battle
 0x002D3E70	sbtlSetWeakBit	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlSetWeakBit score 6.5 flag I: calls2 next calls-of-match votes2 st2:call r1-disagree:0x29a500
-0x002D3F98	sbtlCallBtlGetNakama5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetNakama
+0x002D3F98	sbtlCheckItemMember_Dead	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R1 name: the same call site in R1 sbtlCallBtlCreateUnitList3 (CheckItemMember, CalcItem, then this on useitem_stock); body restores a dead summoned nakama from its stock slot; replaces sbtlCallBtlGetNakama5
 0x002D4120	sbtlCheckItemMember	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckItemMember score 7.4 flag I: calls8 callers-of-match-uniq votes5 st2:call r1-disagree:0x29a7a0
 0x002D4340	sbtlBtlSetBadStatusRandSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlSetBadStatusRand
 0x002D4370	sbtlCallGetPercentage	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls GetPercentage
@@ -8109,7 +8109,7 @@
 0x002D9650	sbtlBtlCheckBadStatusWeakSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlCheckBadStatus_Weak
 0x002D96C8	sbtlCheckBadStatus_WeakNumber	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckBadStatus_WeakNumber score 8.8 flag I: calls2 calls-of-match votes2 st1:call r1+r2
 0x002D9778	sbtlCheckBadStatus_Hit	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlCalc.sBtlCheckBadStatus_Hit score 6.7 flag I: calls5 calls-of-match votes5 st2:call r1-disagree:0x29ec10
-0x002D9AD8	sbtlCallBtlGetSkilltbl21	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtl; calls sbtlGetSkilltbl
+0x002D9AD8	sbtlGetDamage_GB	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R1 name: same calls (&wk->unit, stock, sklid) at both R1 sbtlCallBtlCreateUnitList3 sites; replaces sbtlCallBtlGetSkilltbl21
 0x002D9DF8	sbtlKudaDmg	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlKudaDmg score 8.1 flag I: calls3 callers-of-match votes2 st2:call r2-only
 0x002D9FD8	sbtlFullMoonDmg	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlFullMoonDmg score 11.4 flag I: calls2 prev next gap=exact votes2 st2:gap r2-only
 0x002DA170	sbtlZokuseiDmg	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlCalc.sBtlZokuseiDmg score 8.1 flag I: calls3 next callers-of-match votes2 st2:call r2-only
@@ -8492,7 +8492,7 @@
 0x00300B00	sbtlCheckProcEnd	hd-inferred	method=hd-gap-single-raidou2; p=0.96 (n=405); tier=A; source=hd; evidence=Raidou HD sBtlMenu.sBtlCheckProcEnd score 5.8 flag I: calls1 prev next~ gap1/1 st2:gap r2-only
 0x00300B88	sbtlCallEnd	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlMenu.sBtlCallEnd score 7.3 flag I: calls4 calls-of-match votes4 st2:call r1-disagree:0x2c2d50
 0x00300C68	sbtlChkCallEnd	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlMenu.sBtlChkCallEnd score 5.7 flag I: calls3 callers-of-match votes3 st2:call r2-only
-0x00300DF0	sbtlFuncDecideItem_sbtlMenu	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlMenu.sBtlFuncDecideItem score 6.2 flag I: calls6 callers-of-match-uniq st2:call r2-only
+0x00300DF0	sbtlProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlMenu.c sBtlProcess: the sbtlmenu_main process function started by sbtlMenuOpen (dds3StartProcess "sbtlmenu Main"), step switch with ctrlSmnIdx/sBtlLoadEffectData_Decode and smnCtrl->bNoOk as in HD; replaces sbtlFuncDecideItem_sbtlMenu
 0x003015D0	sbtlBtlDrawProcessSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit sbtl; called by sbtlDrawProcess
 0x003015D8	sbtlDrawProcess	hd-inferred	hd: Raidou HD sBtlMenu.sBtlDrawProcess, score 7.35 band B
 0x00301630	sbtlDrawProcess_sbtlMenu	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlMenu.sBtlDrawProcess score 8.3 flag I: calls4 callee-index votes2 st2:cidx r2-only
@@ -16124,11 +16124,11 @@
 0x00485110	sbtlData133	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlHelpEx, sbtlHelpCantUseEx
 0x00485880	sbtlData134	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlHelpEx, sbtlHelpCantUseEx
 0x004859F0	sbtlData81	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlLeaf112, sbtlAnalyzeLvEx
-0x00485A00	sbtlTargetCursorData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlTargetCursor
-0x00485A10	sbtlTargetCursorData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlTargetCursor
-0x00485A20	sbtlTargetCursorData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlTargetCursor
-0x00485A30	sbtlTargetCursorData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlTargetCursor
-0x00485A40	sbtlTargetCursorData5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlTargetCursor
+0x00485A00	gTargetPosHokanBuff0	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlTargetCursor: smoothed cursor position, eased by 1/10 per call; replaces sbtlTargetCursorData
+0x00485A10	gTargetPosHokanBuff1	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlTargetCursor: first trail point (v + d); replaces sbtlTargetCursorData2
+0x00485A20	gTargetPosHokanBuff2	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlTargetCursor: second trail point (v + 2d); replaces sbtlTargetCursorData3
+0x00485A30	gTargetPosHokanBuff3	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlTargetCursor: third trail point (v + 3d); replaces sbtlTargetCursorData4
+0x00485A40	gTargetPosHokanBuff4	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlTargetCursor: fourth trail point (v + 4d); replaces sbtlTargetCursorData5
 0x00485A50	sbtlData135	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 23 functions: sbtlCallGetFigure, sbtlBarCtrl, sbtlSummonDevilData_Sub
 0x00485A70	awdMenuMakeList_itfData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by awdMenuMakeList_itf
 0x00485A80	sbtlCallMenuLinkSpriteData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallMenuLinkSprite
@@ -21401,7 +21401,7 @@
 0x004C5828	sbtlTable	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: sbtlPlayerDirectDmg, sbtlTIMEUP2, sbtlCallMemset14
 0x004C583C	sbtlConst	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallGetActiveScene2, sbtlCallMemset14
 0x004C5840	sbtlTable2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlForceDeleteAll_TimeStopSkill, sbtlForceDeleteAll
-0x004C5880	sbtlTable3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlPlayerDirectDmg, CheckEffectData_Core_sbtlEff
+0x004C5880	swordEffClrTbl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sbtleff.h swordEffClrTbl: CheckEffectData_Core_sbtlEff indexes it by cmbSkl tateClr and sword_eff_kind for the sword effect rgba, as HD CheckEffectData_Core does; replaces sbtlTable3
 0x004C5898	btlLoadSbPackStrBattleSbPack4Lb	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by btlLoadSbPack; string "/battle/SB_PACK4.LB"
 0x004C58B0	sbtlStrSbtleffonmemLoad	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by sbtlOnDataLoadInit; string "sbtleffonmem_load"
 0x004C58C8	sbtlStrBattleSbPack3SLb	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by sbtlInitLoadPlayerOnMemData; string "/battle/SB_PACK3S.LB"
@@ -28747,9 +28747,9 @@
 0x004E3484	gAddMagNumNow	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD SetAddMag subtracts it; replaces DrawAddMagData3
 0x004E3488	gAddMagNumUp	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD SetAddMag stores the step; replaces sbtlData174
 0x004E348C	DrawTimeData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by DrawTime (2 of 3 refs, 2 functions)
-0x004E3490	DrawStatusBarData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by DrawStatusBar
+0x004E3490	f_uncnt	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD DrawStatusBar: f_uncnt += 0.08, sdfSin phase of the luck icon; replaces DrawStatusBarData
 0x004E3494	sbtlData121	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: sbtlLeaf113, sbtlEnableSceneGroupAdvancementSub, Init_sbtlDraw
-0x004E3498	sbtlRefSbtl57Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl57 (3 of 5 refs, 3 functions)
+0x004E3498	g_cntTgtCur	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlTargetCursor: 0..59 cursor pulse counter; replaces sbtlRefSbtl57Data
 0x004E349C	sbtlRefSbtl61Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl61 (8 of 10 refs, 3 functions)
 0x004E34A0	sbtlRefSbtl59Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl59 (4 of 6 refs, 3 functions)
 0x004E34A4	sbtlCallBtlSearchUnitID37Data2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID37 (4 of 9 refs, 5 functions)
@@ -28776,7 +28776,7 @@
 0x004E3500	sbtlAnalyzeLvExData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlAnalyzeLvEx
 0x004E3508	sbtlAnalyzeAisyoData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlAnalyzeAisyo
 0x004E3510	sbtlData176	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCallBtlAnalyzeBack2, sbtlAnalyzeBoss
-0x004E3514	sbtlTargetCursorData6	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlTargetCursor (2 of 3 refs, 2 functions)
+0x004E3514	gTargetPosHokanFastFlag	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlTargetCursor/sBtlResetTargetCursor: snap flag, set by the reset; replaces sbtlTargetCursorData6
 0x004E3518	sbtlHelpCantUseExData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlHelpCantUseEx
 0x004E3520	DrawTimeData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by DrawTime
 0x004E3528	awdMenuMakeList_itfDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by awdMenuMakeList_itfData

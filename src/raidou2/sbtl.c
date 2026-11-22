@@ -477,7 +477,7 @@ s32 sbtlCheckItemCost(s32 itemid, s32 flg) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlSetWeakBit);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetNakama5);
+INCLUDE_ASM(const s32, "sbtl", sbtlCheckItemMember_Dead);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckItemMember);
 
@@ -1140,7 +1140,7 @@ INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_WeakNumber);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_Hit);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCallBtlGetSkilltbl21);
+INCLUDE_ASM(const s32, "sbtl", sbtlGetDamage_GB);
 
 INCLUDE_ASM(const s32, "sbtl", sbtlKudaDmg);
 

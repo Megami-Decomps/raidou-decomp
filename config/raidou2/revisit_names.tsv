@@ -3602,7 +3602,6 @@
 0x002D3D50	sbtlRefSbtl57	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002D3D88	sbtlRefSbtl69	func	tier=D	derived-data	na	unit sbtl; references wk_sbtl
 0x002D3D98	sbtlLeaf93	func	tier=D	derived-unit	na	unit sbtl; no named callee, caller or string
-0x002D3F98	sbtlCallBtlGetNakama5	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetNakama
 0x002D4340	sbtlBtlSetBadStatusRandSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlSetBadStatusRand
 0x002D4370	sbtlCallGetPercentage	func	tier=D	derived-callee	na	unit sbtl; calls GetPercentage
 0x002D5F88	sbtlCheckCost	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlCheckCost, score 7.3 band B
@@ -3622,7 +3621,6 @@
 0x002D9258	sbtlBtlSetBadStatusNoSub2	func	tier=D	derived-caller	na	unit sbtl; called by sbtlSetBadStatus_No
 0x002D9280	sbtlCallSetClutColor2	func	tier=D	derived-callee	na	unit sbtl; calls mdlSetClutColor
 0x002D9650	sbtlBtlCheckBadStatusWeakSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlCheckBadStatus_Weak
-0x002D9AD8	sbtlCallBtlGetSkilltbl21	func	tier=D	derived-callee	na	unit sbtl; calls sbtlGetSkilltbl
 0x002DB600	sbtlCheckBattlePara	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlCalc.sBtlCheckBattlePara, score 8.8 band B
 0x002DB9F8	sbtlBtlGetDamageSBtlCalcSub	func	tier=D	derived-caller	na	unit sbtl; called by sbtlGetDamage_sbtlCalc
 0x002DBAA0	sbtlCallBtlCheckAisyoOld	func	tier=D	derived-callee	na	unit sbtl; calls sbtlCheckAisyo_Old
@@ -8296,11 +8294,6 @@
 0x00485110	sbtlData133	data	tier=D	derived-shared	na	used by 2 functions: sbtlHelpEx, sbtlHelpCantUseEx
 0x00485880	sbtlData134	data	tier=D	derived-shared	na	used by 2 functions: sbtlHelpEx, sbtlHelpCantUseEx
 0x004859F0	sbtlData81	data	tier=D	derived-shared	na	used by 2 functions: sbtlLeaf112, sbtlAnalyzeLvEx
-0x00485A00	sbtlTargetCursorData	data	tier=D	derived-sole	na	used by sbtlTargetCursor
-0x00485A10	sbtlTargetCursorData2	data	tier=D	derived-sole	na	used by sbtlTargetCursor
-0x00485A20	sbtlTargetCursorData3	data	tier=D	derived-sole	na	used by sbtlTargetCursor
-0x00485A30	sbtlTargetCursorData4	data	tier=D	derived-sole	na	used by sbtlTargetCursor
-0x00485A40	sbtlTargetCursorData5	data	tier=D	derived-sole	na	used by sbtlTargetCursor
 0x00485A50	sbtlData135	data	tier=D	derived-shared	na	used by 23 functions: sbtlCallGetFigure, sbtlBarCtrl, sbtlSummonDevilData_Sub
 0x00485A70	awdMenuMakeList_itfData	data	tier=D	derived-sole	na	used by awdMenuMakeList_itf
 0x00485A80	sbtlCallMenuLinkSpriteData	data	tier=D	derived-sole	na	used by sbtlCallMenuLinkSprite
@@ -13358,7 +13351,6 @@
 0x004C5828	sbtlTable	data	tier=D	derived-shared	na	used by 4 functions: sbtlPlayerDirectDmg, sbtlTIMEUP2, sbtlCallMemset14
 0x004C583C	sbtlConst	data	tier=D	derived-shared	na	used by 2 functions: sbtlCallGetActiveScene2, sbtlCallMemset14
 0x004C5840	sbtlTable2	data	tier=D	derived-shared	na	used by 2 functions: sbtlForceDeleteAll_TimeStopSkill, sbtlForceDeleteAll
-0x004C5880	sbtlTable3	data	tier=D	derived-shared	na	used by 2 functions: sbtlPlayerDirectDmg, CheckEffectData_Core_sbtlEff
 0x004C5898	btlLoadSbPackStrBattleSbPack4Lb	data	tier=D	derived-string	na	used by btlLoadSbPack; string "/battle/SB_PACK4.LB"
 0x004C58B0	sbtlStrSbtleffonmemLoad	data	tier=D	derived-string	na	used by sbtlOnDataLoadInit; string "sbtleffonmem_load"
 0x004C58C8	sbtlStrBattleSbPack3SLb	data	tier=D	derived-string	na	used by sbtlInitLoadPlayerOnMemData; string "/battle/SB_PACK3S.LB"
@@ -20060,9 +20052,7 @@
 0x004E3468	fldMAPMenuData	data	tier=D	derived-sole	na	used by fldMAPMenu
 0x004E3478	sbtlSummonDevilData_SubData	data	tier=D	derived-sole	na	used by sbtlSummonDevilData_Sub
 0x004E348C	DrawTimeData	data	tier=D	derived-dominant	na	used by DrawTime (2 of 3 refs, 2 functions)
-0x004E3490	DrawStatusBarData	data	tier=D	derived-sole	na	used by DrawStatusBar
 0x004E3494	sbtlData121	data	tier=D	derived-shared	na	used by 4 functions: sbtlLeaf113, sbtlEnableSceneGroupAdvancementSub, Init_sbtlDraw
-0x004E3498	sbtlRefSbtl57Data	data	tier=D	derived-dominant	na	used by sbtlRefSbtl57 (3 of 5 refs, 3 functions)
 0x004E349C	sbtlRefSbtl61Data	data	tier=D	derived-dominant	na	used by sbtlRefSbtl61 (8 of 10 refs, 3 functions)
 0x004E34A0	sbtlRefSbtl59Data	data	tier=D	derived-dominant	na	used by sbtlRefSbtl59 (4 of 6 refs, 3 functions)
 0x004E34A4	sbtlCallBtlSearchUnitID37Data2	data	tier=D	derived-dominant	na	used by sbtlCallBtlSearchUnitID37 (4 of 9 refs, 5 functions)
@@ -20089,7 +20079,6 @@
 0x004E3500	sbtlAnalyzeLvExData4	data	tier=D	derived-sole	na	used by sbtlAnalyzeLvEx
 0x004E3508	sbtlAnalyzeAisyoData	data	tier=D	derived-sole	na	used by sbtlAnalyzeAisyo
 0x004E3510	sbtlData176	data	tier=D	derived-shared	na	used by 2 functions: sbtlCallBtlAnalyzeBack2, sbtlAnalyzeBoss
-0x004E3514	sbtlTargetCursorData6	data	tier=D	derived-dominant	na	used by sbtlTargetCursor (2 of 3 refs, 2 functions)
 0x004E3518	sbtlHelpCantUseExData	data	tier=D	derived-sole	na	used by sbtlHelpCantUseEx
 0x004E3520	DrawTimeData2	data	tier=D	derived-sole	na	used by DrawTime
 0x004E3528	awdMenuMakeList_itfDataEntry	data	tier=D	derived-table	na	pointed to by awdMenuMakeList_itfData
@@ -23162,6 +23151,7 @@
 0x002D7980	sbtlGetBadStatus_Attr	func	tier=C	derived-derived-role	na	R1 sbtlGetBadStatus_Attr counterpart (r1_r2_pairs); replaces sbtlBtlCheckBadStatusWeakNumberSub
 0x002D82B0	sbtlCheckBadStatus_Number	func	tier=C	derived-derived-role	na	R1 sbtlCheckBadStatus_Number counterpart (r1_r2_pairs); replaces sbtlLeaf107
 0x002D93B8	sbtlSetBadStatusAction	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlCalc.sBtlSetBadStatusAction score 6.5 flag I: calls3 calls-of-match votes3 st1:call r1-only
+0x002D9AD8	sbtlGetDamage_GB	func	tier=C	derived-derived-role	na	R1 name: same calls (&wk->unit, stock, sklid) at both R1 sbtlCallBtlCreateUnitList3 sites; replaces sbtlCallBtlGetSkilltbl21
 0x002DC370	sbtlCheckRegistKajaMaxNewAI	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlCalc.sBtlCheckRegistKajaMaxNewAI score 2.9 flag I: prev gap5/8 st2:gap r2-only
 0x002DCE50	sbtlGetDamage_I_REC_PARA	func	tier=C	derived-derived-role	na	R1 sbtlGetDamage_I_REC_PARA counterpart (r1_r2_pairs); replaces sbtlplayertblPlayerSkill_GetMag3
 0x002DD4E0	sbtlGetViceLevel	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlCalc.sBtlGetViceLevel score 6.5 flag I: calls2 calls-of-match votes2 st1:call r1-only
@@ -24594,7 +24584,7 @@
 0x003005B8	sbtlChkEnableDecideMenu	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMenu.sBtlChkEnableDecideMenu score 6.5 flag I: calls4 callee-index st2:cidx r1-disagree:0x2c2758
 0x003008B0	Init_sbtlMenu	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMenu.Init score 6.5 flag -: calls2 callers-of-match votes4 st2:call r2-only
 0x00300C68	sbtlChkCallEnd	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMenu.sBtlChkCallEnd score 5.7 flag I: calls3 callers-of-match votes3 st2:call r2-only
-0x00300DF0	sbtlFuncDecideItem_sbtlMenu	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMenu.sBtlFuncDecideItem score 6.2 flag I: calls6 callers-of-match-uniq st2:call r2-only
+0x00300DF0	sbtlProcess	func	tier=B	hd-role	na	HD sBtlMenu.c sBtlProcess: the sbtlmenu_main process function started by sbtlMenuOpen (dds3StartProcess "sbtlmenu Main"), step switch with ctrlSmnIdx/sBtlLoadEffectData_Decode and smnCtrl->bNoOk as in HD; replaces sbtlFuncDecideItem_sbtlMenu
 0x003019D0	sbtlIsMenuStartScript	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD sBtlMenu.sBtlIsMenuStartScript score 4.6 flag I: next gap=exact st2:gap r2-only
 0x00301A48	IsStart	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlMenu.IsStart score 5.5 flag -: calls2 next~ callers-of-match votes2 st2:call r1-disagree:0x2c3528
 0x003022D8	DrawAddMag	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD sBtlDraw.DrawAddMag score 6.0 flag -: calls2 calls-of-match votes2 st2:call r2-only
@@ -24881,6 +24871,11 @@
 0x0047B720	tbldatacnt	data	tier=B	hd-role	na	HD enemypath tbldatacnt, read by sBtlGetPathDataCount; replaces sbtlLeaf83Data
 0x0047B730	pathdata	data	tier=B	hd-role	na	HD enemypath pathdata, read by sBtlGetPathData; replaces sbtlBtlSetNextPathDataSub2Data
 0x0047B8B0	data	data	tier=B	hd-role	na	HD enemypath data, read by sBtlGetPathACTData; replaces sbtlBtlSetNextPathDataSubData
+0x00485A00	gTargetPosHokanBuff0	data	tier=B	hd-role	na	HD sBtlTargetCursor: smoothed cursor position, eased by 1/10 per call; replaces sbtlTargetCursorData
+0x00485A10	gTargetPosHokanBuff1	data	tier=B	hd-role	na	HD sBtlTargetCursor: first trail point (v + d); replaces sbtlTargetCursorData2
+0x00485A20	gTargetPosHokanBuff2	data	tier=B	hd-role	na	HD sBtlTargetCursor: second trail point (v + 2d); replaces sbtlTargetCursorData3
+0x00485A30	gTargetPosHokanBuff3	data	tier=B	hd-role	na	HD sBtlTargetCursor: third trail point (v + 3d); replaces sbtlTargetCursorData4
+0x00485A40	gTargetPosHokanBuff4	data	tier=B	hd-role	na	HD sBtlTargetCursor: fourth trail point (v + 4d); replaces sbtlTargetCursorData5
 0x0049B160	cmpStatusModelPos	data	tier=B	smt3-ref	0.80 (n=D_r1_00435410)	smt3-ref/close: nfun=2, other=0, sim=0.90325, games=2, size=True, sec=True, fn=cmpSetStatusModelParam
 0x0049B170	cmpStatusModelBasePos	data	tier=B	smt3-ref	0.80 (n=D_r1_00435420)	smt3-ref/close: nfun=2, other=0, sim=0.90325, games=2, size=True, sec=True, fn=cmpSetStatusModelParam
 0x004A0958	sdfIpuRgbModeBits	data	tier=B	smt3-ref	0.88 (n=D_r1_0043F2F8)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfIpuDecode
@@ -24891,6 +24886,7 @@
 0x004B4A78	evtMsgSetSkyAlphaHigh	data	tier=B	smt3-ref	0.88 (n=D_r1_0044E858)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=evtCommand_SET_SKY_A
 0x004B4BE8	evtSceneDispRows	data	tier=B	smt3-ref	0.88 (n=D_r1_0044EA18)	smt3-ref/loose: nfun=2, other=0, sim=0.9511499999999999, games=2, size=False, sec=True, fn=evtSceneDispProcess
 0x004B6248	evtFmtIndentInt_evtEventViewerMenu	data	tier=B	smt3-ref	0.88 (n=D_r1_00450078)	smt3-ref/loose: nfun=2, other=0, sim=0.9299, games=2, size=False, sec=False, fn=evtFrameChangeItem; evtFmtIndentInt is another symbol
+0x004C5880	swordEffClrTbl	data	tier=B	hd-role	na	HD sbtleff.h swordEffClrTbl: CheckEffectData_Core_sbtlEff indexes it by cmbSkl tateClr and sword_eff_kind for the sword effect rgba, as HD CheckEffectData_Core does; replaces sbtlTable3
 0x004CDCF0	stfProcName	data	tier=B	smt3-ref	0.88 (n=D_r1_00460B10)	smt3-ref/loose: nfun=2, other=2, sim=0.9, games=2, size=False, sec=True, fn=stfInit
 0x004D6820	cmpCalcProcName	data	tier=B	smt3-ref	0.88 (n=D_r1_00464170)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=ProcessEnd_rstInit
 0x004D73B0	sdfDev9ResidentFailMsg	data	tier=B	smt3-ref	0.88 (n=D_r1_00464B90)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfDev9LoadModule
@@ -25024,6 +25020,9 @@
 0x004E3480	gAddMagNumDrawCnt	data	tier=B	hd-role	na	HD SetAddMag sets it to 100; replaces DrawAddMagData2
 0x004E3484	gAddMagNumNow	data	tier=B	hd-role	na	HD SetAddMag subtracts it; replaces DrawAddMagData3
 0x004E3488	gAddMagNumUp	data	tier=B	hd-role	na	HD SetAddMag stores the step; replaces sbtlData174
+0x004E3490	f_uncnt	data	tier=B	hd-role	na	HD DrawStatusBar: f_uncnt += 0.08, sdfSin phase of the luck icon; replaces DrawStatusBarData
+0x004E3498	g_cntTgtCur	data	tier=B	hd-role	na	HD sBtlTargetCursor: 0..59 cursor pulse counter; replaces sbtlRefSbtl57Data
+0x004E3514	gTargetPosHokanFastFlag	data	tier=B	hd-role	na	HD sBtlTargetCursor/sBtlResetTargetCursor: snap flag, set by the reset; replaces sbtlTargetCursorData6
 0x004E366C	arrBossEveTable	data	tier=B	hd-role	na	HD sBtlCheck walks arrBossEveTable rows (enc_id, devil_id, start_on, mag_on1-3, dead_on, lose_on, dying_on, time_on) exactly as R2 sbtlCheck walks this pointer, loaded from /battle/sb_bossevtbl.dat; replaces sbtlCheckData
 0x004E3E9C	effBTLFieldColorProcess	data	tier=B	smt3-ref	0.80 (n=None)	smt3-ref/close: nfun=1, other=0, sim=0.7857, games=1, size=True, sec=True, fn=cmpCallProcessEnd; R1/R2 pair by this name (smt3-ref / smt3-ref)
 0x004E3FA8	campDhUpdateWork	data	tier=B	smt3-ref	0.80 (n=D_r1_0046F048)	smt3-ref/close: nfun=1, other=0, sim=0.8226, games=1, size=True, sec=False, fn=cmpReturnParamDH

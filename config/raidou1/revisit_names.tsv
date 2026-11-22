@@ -15207,7 +15207,6 @@
 0x0046E670	sbtlData120	data	tier=D	derived-shared	na	used by 4 functions: sbtlCallGetProcessData48, sbtlCallGetProcessData52, sbtlCallGetProcessData58
 0x0046E678	sbtlData81Entry	data	tier=D	derived-table	na	pointed to by sbtlData81
 0x0046E67F	sbtlData121	data	tier=D	derived-shared	na	used by 4 functions: sbtlLeaf113, sbtlEnableSceneGroupAdvancementSub, Init_sbtlDraw
-0x0046E680	sbtlRefSbtl57Data	data	tier=D	derived-dominant	na	used by sbtlRefSbtl57 (3 of 5 refs, 3 functions)
 0x0046E684	sbtlRefSbtl61Data	data	tier=D	derived-dominant	na	used by sbtlRefSbtl61 (8 of 10 refs, 3 functions)
 0x0046E688	sbtlRefSbtl59Data	data	tier=D	derived-dominant	na	used by sbtlRefSbtl59 (4 of 6 refs, 3 functions)
 0x0046E68C	sbtlCallBtlSearchUnitID37Data2	data	tier=D	derived-dominant	na	used by sbtlCallBtlSearchUnitID37 (4 of 9 refs, 5 functions)
@@ -18741,6 +18740,7 @@
 0x0046DB30	sbtlStrDummy	data	tier=C	derived-derived-role	na	string data "Dummy" (sbtlSub_0027ED08.sdata.s), raidou2 "ダミー" in the game glyph encoding at the same table slot; named by content in the module string style; replaces sbtlLeaf73DataEntry2
 0x0046DEA8	sbtlStrVisual	data	tier=C	derived-derived-role	na	string data "VISUAL" (sdata_0046DC80.sdata.s); named by content in the module string style; replaces sbtlLeaf114DataEntry
 0x0046DEB0	sbtlStrSousa	data	tier=C	derived-derived-role	na	string data "SOUSA" (sdata_0046DC80.sdata.s); named by content in the module string style; replaces sbtlLeaf114DataEntry2
+0x0046E680	g_cntTgtCur	data	tier=C	derived-derived-role	na	same variable as raidou2 0x4E3498 (r1_r2_data_pairs run-order-size); Init_sbtlDraw clears it in both games; replaces sbtlRefSbtl57Data
 0x0046E7E0	gMjnRun	data	tier=C	hd	0.37 (n=D_r1_0046E7E0)	hd/medium: conf=medium, agree=2, using=3
 0x0046EA0C	MenuWork2	data	tier=C	hd	0.37 (n=D_r1_0046EA0C)	hd/medium: conf=medium, agree=2, using=2; MenuWork is another symbol
 0x0046EA68	DDS3_GBWK2	data	tier=C	smt3-ref	0.88 (n=D_r1_0046EA68)	smt3-ref/loose: nfun=2, other=4, sim=1.0, games=2, size=True, sec=True, fn=datAllClearCommMemory; DDS3_GBWK is another symbol

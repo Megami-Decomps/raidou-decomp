@@ -153,13 +153,13 @@ void fldSetUnit(void)
         dds3SetSclPoseSet(summonDvBasic, &scl);
         summonDvModel = dds3ObjectBaseGetModelHandle(summonDvBasic);
         evtBitOn(2996);
-        if (visual->field00 & 4) {
+        if (visual->sdw_flg & 4) {
             dds3GetRadiusPoseSet(summonDvBasic, 50.0f);
-        } else if (visual->field00 & 8) {
+        } else if (visual->sdw_flg & 8) {
             dds3GetRadiusPoseSet(summonDvBasic, 100.0f);
-        } else if (visual->field00 & 0x10) {
+        } else if (visual->sdw_flg & 0x10) {
             dds3GetRadiusPoseSet(summonDvBasic, 150.0f);
-        } else if (visual->field00 & 0x20) {
+        } else if (visual->sdw_flg & 0x20) {
             dds3GetRadiusPoseSet(summonDvBasic, 200.0f);
         } else {
             dds3GetRadiusPoseSet(summonDvBasic, 100.0f);

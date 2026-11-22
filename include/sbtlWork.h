@@ -214,6 +214,13 @@ typedef struct SUMMON_CTRL {
 } SUMMON_CTRL;
 
 /* Partial raidou2 layout of the battle main work: only the fields read so far are named, the rest is padding. */
+/* HD STATUS_BAR: shake of a status bar after damage. */
+typedef struct STATUS_BAR {
+    s32 cnt;
+    s32 x;
+    s32 y;
+} STATUS_BAR;
+
 typedef struct SBTL_WORK {
     sdfVector4_t vPosBossEvent; /* HD name; boss event camera target */
     u8 pad010[0x110 - 0x10];
@@ -432,7 +439,7 @@ typedef struct SBTL_WORK {
     s8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
     s8 fieldC7C; /* CheckEnd sets it when the battle end starts */
     u8 padC7D[0xC80 - 0xC7D];
-    s32 fieldC80; /* summoned demon the panel order is for (sbtlSetMenuPara smnid) */
+    s32 ctrlSmnIdx; /* HD name; summoned demon the panel order is for (sbtlSetMenuPara smnid); sbtlProcess reads its low byte */
     u8 fieldC84; /* hit stops sbtlProcHitStop still has to start */
     u8 fieldC85; /* frames until the next of them */
     u8 padC86[0xC8C - 0xC86];
@@ -449,9 +456,9 @@ typedef struct SBTL_WORK {
     u32 mapmdl; /* HD name; index into LoadMap_FromMemory's map model tables, below 23 */
     struct dds3Basic_t *apMarkerUnit[8];
     struct dds3Basic_t *apMarkerUnitR[8];
-    RED_GUAGE aRedGuage[3]; /* HD name (pointers there) */
-    u8 padE08[0xE2C - 0xE08];
-    s32 fieldE2C; /* sbtlCallSetOt sets 10 when a text adds magnetite */
+    RED_GUAGE aRedGuage[3];
+    STATUS_BAR aStatusBar[3];
+    s32 grnCnt; /* HD name; frames of the green flash on the player's bar, sbtlCallSetOt sets 10 when a text adds magnetite */
     u8 padE30[0xE40 - 0xE30];
     s32 fieldE40; /* sbtlCallSetOt sets 100 when a kind 0 text ends */
     u8 padE44[0xE4C - 0xE44];
@@ -1092,7 +1099,7 @@ SIZE_CHECK(SBTL_UNIT_SUBSizeCheck, SBTL_UNIT_SUB, 0x24);
 
 typedef struct SBTL_MOTION_VISUAL {
 #ifdef VERSION_RAIDOU2
-    u8 field00;
+    u8 sdw_flg; /* HD SBTLSDW_FLG: helper/circle shadow and size bits (4, 8, 0x10, 0x20) */
     u8 kind; /* Raidou 2 reads the kind from byte 1 */
 #else
     u8 kind;

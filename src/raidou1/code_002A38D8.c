@@ -3101,7 +3101,7 @@ void Init_sbtlDraw(void)
 {
     sbtlCallMoverInit();
     sbtlData121 = 1;
-    sbtlRefSbtl57Data = 0;
+    g_cntTgtCur = 0;
     sbtlRefSbtl61Data = -1;
     sbtlRefSbtl59Data = -1;
     sbtlCallBtlSearchUnitID37Data2 = -1;

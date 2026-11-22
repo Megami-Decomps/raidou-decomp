@@ -2249,7 +2249,7 @@ void sbtlCallSetOt(sbtlSummonText_t *text) {
         sbtlRefSbtl26(text);
         if (text->field74 != 0) {
             sbtlRefSbtl54(text->field74);
-            wk_sbtl->fieldE2C = 10;
+            wk_sbtl->grnCnt = 10;
             SetAddMag(text->field74);
         }
     }

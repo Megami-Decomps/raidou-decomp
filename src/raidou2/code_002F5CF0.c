@@ -35,6 +35,10 @@
 #include "sdfMath.h"
 #include "dds3Basic.h"
 #include "mdlManager.h"
+#include "code_r1_002CA3F0.h"
+#include "fpu.h"
+#include "dds3PadManager.h"
+#include "itf.h"
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallSprintf7);
 
@@ -523,7 +527,77 @@ s32 TutorialMenuCtrl(sBtlMenu_t *wk)
     return 1;
 }
 
+/* NON_MATCHING: 134 of 190 words match.  */
+#ifdef NON_MATCHING
+void sbtlChkEnableDecideMenu(sBtlMenu_t *wk)
+{
+    struct SBTLUNIT_LISTWORK *list;
+    struct SBTLUNIT_WORK *unit;
+    s32 enable;
+    s32 talk;
+    BST bst;
+
+    if (wk_sbtl->battleMode == 3) {
+        itfMenuSetFlagMenu(wk->menuPID, 1, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        itfMenuSetFlagMenu(wk->menuPID, 2, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        itfMenuSetFlagMenu(wk->menuPID, 3, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        itfMenuSetFlagMenu(wk->menuPID, 6, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        itfMenuSetFlagMenu(wk->menuPID, 4, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        itfMenuSetFlagMenu(wk->menuPID, 14, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+        itfMenuSetFlagMenu(wk->menuPID, 5, ITFMENU_CB_GF_ENABLE_DECIDE, wk_sbtl->itemList->num > 0);
+        ChkEnableDecideEscape(wk);
+        return;
+    }
+    enable = 1;
+    unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+    if (unit != NULL && CheckLiveTarget(unit)) {
+        bst = sbtlGetBadStatus(&unit->unit);
+        enable = !(bst == BST_BOUDO || bst == BST_MAHUU);
+    }
+    if (enable) {
+        enable = sbtlIsStart(0) || sbtlIsStart(1);
+    }
+    itfMenuSetFlagMenu(wk->menuPID, 1, ITFMENU_CB_GF_ENABLE_DECIDE, enable);
+    enable = sbtlCheckSummonUnit() != 1;
+    if (!sbtlCheckSummonUnit_Dead_or_ALive(0) && !sbtlCheckSummonUnit_Dead_or_ALive(1)) {
+        enable = 0;
+    }
+    itfMenuSetFlagMenu(wk->menuPID, 2, ITFMENU_CB_GF_ENABLE_DECIDE, enable);
+    enable = wk_sbtl->member_num > 0;
+    if (enable && sbtlCheckTutorialBattle()) {
+        enable = 0;
+    }
+    itfMenuSetFlagMenu(wk->menuPID, 3, ITFMENU_CB_GF_ENABLE_DECIDE, enable);
+    enable = 0;
+    if (!(wk_sbtl->status3 & 0x100000)) {
+        enable = wk_sbtl->itemList->num > 0;
+    }
+    itfMenuSetFlagMenu(wk->menuPID, 5, ITFMENU_CB_GF_ENABLE_DECIDE, enable);
+    list = sbtlCreateTargetList(2);
+    talk = (list != NULL ? list->count : 0) > 0;
+    itfMenuSetFlagMenu(wk->menuPID, 6, ITFMENU_CB_GF_ENABLE_DECIDE, talk);
+    ChkEnableDecideEscape(wk);
+    if (talk) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
+        if (unit != NULL && CheckLiveTarget(unit)) {
+            bst = sbtlGetBadStatus(&unit->unit);
+            if (bst != BST_BOYCOTT && bst != BST_MOUDOKU && bst != BST_STONE) {
+                talk = 0;
+            }
+        }
+        if (!sbtlCheckStatus_Move(unit)) {
+            talk = 0;
+        }
+        if (evtBitCheck(2228)) {
+            talk = 0;
+        }
+    }
+    itfMenuSetFlagMenu(wk->menuPID, 14, ITFMENU_CB_GF_ENABLE_DECIDE, TutorialMenuCtrl(wk) ? 0 : talk);
+    sbtlDeleteUnitList(list);
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlChkEnableDecideMenu);
+#endif
 
 void Init_sbtlMenu(sBtlMenu_t *wk) {
     wk->menuPID = sbtlInitMenuPID(8);
@@ -658,7 +732,302 @@ s32 sbtlChkCallEnd(sBtlMenu_t *wk) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlFuncDecideItem_sbtlMenu);
+/* NON_MATCHING: 104 of 504 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlProcess(dds3ProcessID_t *id) {
+    sBtlMenu_t *wk;
+    struct SBTLUNIT_WORK *nakama;
+    s32 min;
+    s32 max;
+
+    wk = dds3GetProcessData(id);
+    if (wk->step != 0 && wk->step != 15 && wk->step != 16 && wk->step != 17 && wk->type == 0) {
+        if (sbtlChkCallEnd(wk)) {
+            wk->flag |= 0x20;
+            return 0;
+        }
+    }
+    switch (wk->step) {
+    case 0:
+        if (sbtlCheckLoadFlg()) {
+            Init_sbtlMenu(wk);
+            wk->step = 1;
+        }
+        return 0;
+    case 1:
+        if (!(wk->flag & 0x10)) {
+            wk->flag &= ~2;
+            return 0;
+        }
+        if (wk_sbtl->smnCtrl.bNoOk && wk->type == 1) {
+            return 0;
+        }
+        wk->flag = (wk->flag & ~0x32) | 2;
+        sbtlCallMenuClearMenuAll(wk);
+        sbtlChkEnableDecideMenu(wk);
+        if (wk->type == 1) {
+            itfMenuSetFlag(wk->menuPID, 0x10000, 1);
+        } else {
+            itfMenuSetFlag(wk->menuPID, 0x10000, 0);
+        }
+        itfMenuStart(wk->menuPID);
+        wk->endtype = 0;
+        wk->step = 2;
+        return 0;
+    case 2:
+        if (itfMenuGetWaitType(wk->menuPID) == ITFMENU_WAIT_TYPE_CANCEL) {
+            sbtlCallEnd(wk);
+            return 0;
+        }
+        if (dds3PadButtonState[0x22] < 0 && wk->type == 1 && wk_sbtl->member_num > 0) {
+            sbtlGetShortCutFlg(wk->menuPID);
+        }
+        return 0;
+    case 3:
+        if (itfMenuGetWaitType(wk->listPID) != ITFMENU_WAIT_TYPE_CANCEL) {
+            return 0;
+        }
+        wk_sbtl->flg &= ~0x80000;
+        if (wk->flag & 0x20) {
+            sbtlCallEnd(wk);
+        } else {
+            sbtlChkEnableDecideMenu(wk);
+            itfMenuStart(wk->menuPID);
+            wk->step = 2;
+        }
+        sbtlUseItemProcSBtlPlayerSub();
+        return 0;
+    case 4:
+        if (itfMenuGetWaitType(wk->charPID) != ITFMENU_WAIT_TYPE_CANCEL) {
+            return 0;
+        }
+        wk_sbtl->flg &= ~0x80000;
+        if (wk->flag & 0x20) {
+            sbtlCallEnd(wk);
+        } else {
+            sbtlChkEnableDecideMenu(wk);
+            itfMenuStart(wk->menuPID);
+            wk->step = 2;
+        }
+        sbtlUseItemProcSBtlPlayerSub();
+        return 0;
+    case 5:
+        if (itfMenuGetWaitType(wk->charPID) != ITFMENU_WAIT_TYPE_CANCEL) {
+            return 0;
+        }
+        wk_sbtl->flg &= ~0x80000;
+        if (wk->flag & 0x20) {
+            sbtlCallEnd(wk);
+        } else {
+            sbtlChkEnableDecideMenu(wk);
+            itfMenuStart(wk->listPID);
+            wk->step = 3;
+        }
+        sbtlUseItemProcSBtlPlayerSub();
+        return 0;
+    case 6:
+        if (itfMenuGetWaitType(wk->nakamaPID) != ITFMENU_WAIT_TYPE_CANCEL) {
+            return 0;
+        }
+        wk_sbtl->flg &= ~0x80000;
+        if (wk->flag & 0x20) {
+            sbtlCallEnd(wk);
+        } else {
+            sbtlChkEnableDecideMenu(wk);
+            itfMenuStart(wk->menuPID);
+            wk->step = 2;
+        }
+        sbtlUseItemProcSBtlPlayerSub();
+        return 0;
+    case 7:
+        if (itfMenuGetWaitType(wk->nakamaPID) != ITFMENU_WAIT_TYPE_CANCEL) {
+            return 0;
+        }
+        wk_sbtl->flg &= ~0x80000;
+        if (wk->flag & 0x20) {
+            sbtlCallEnd(wk);
+        } else {
+            sbtlChkEnableDecideMenu(wk);
+            itfMenuStart(wk->charPID);
+            wk->step = 9;
+        }
+        sbtlUseItemProcSBtlPlayerSub();
+        return 0;
+    case 8:
+        if (sbtlGetStat() == 2) {
+            return 0;
+        }
+        if (!sbtlChkDecide()) {
+            sbtlChkEnableDecideMenu(wk);
+            itfMenuStart(wk->menuPID);
+            wk->step = 2;
+            return 0;
+        }
+        wk->step = 1;
+        wk->flag &= ~0x10;
+        return 0;
+    case 9:
+        if (itfMenuGetWaitType(wk->charPID) == ITFMENU_WAIT_TYPE_CANCEL) {
+            wk_sbtl->flg &= ~0x80000;
+            if (wk->flag & 0x20) {
+                sbtlCallEnd(wk);
+            } else {
+                sbtlChkEnableDecideMenu(wk);
+                itfMenuStart(wk->menuPID);
+                wk->step = 2;
+            }
+            sbtlUseItemProcSBtlPlayerSub();
+            return 0;
+        }
+        if (itfMenuGetCtrlType(wk->charPID) != ITFMENU_CTRL_TYPE_WAIT) {
+            return 0;
+        }
+        sbtlBtlFuncDecideItemSBtlMenuSub(&min, &max);
+        if (max <= 0) {
+            return 0;
+        }
+        if (dds3PadButtonState[0x24] < 0) {
+            if ((s8)(sbtlFuncDecideItem_sbtlMenuData - 1) < min) {
+                sbtlFuncDecideItem_sbtlMenuData = max;
+            } else {
+                sbtlFuncDecideItem_sbtlMenuData--;
+            }
+            sbtlCallGetProcessData44();
+            sbtlPlaySE(0x1001F);
+        } else if (dds3PadButtonState[0x25] < 0) {
+            if (max < (s8)(sbtlFuncDecideItem_sbtlMenuData + 1)) {
+                sbtlFuncDecideItem_sbtlMenuData = min;
+            } else {
+                sbtlFuncDecideItem_sbtlMenuData++;
+            }
+            sbtlCallGetProcessData44();
+            sbtlPlaySE(0x1001F);
+        }
+        return 0;
+    case 10:
+        if (itfMenuGetWaitType(wk->charPID) == ITFMENU_WAIT_TYPE_CANCEL) {
+            wk_sbtl->flg &= ~0x80000;
+            if (wk->flag & 0x20) {
+                sbtlCallEnd(wk);
+            } else {
+                sbtlChkEnableDecideMenu(wk);
+                itfMenuStart(wk->listPID);
+                wk->step = 3;
+            }
+            sbtlUseItemProcSBtlPlayerSub();
+            return 0;
+        }
+        if (itfMenuGetCtrlType(wk->charPID) != ITFMENU_CTRL_TYPE_WAIT) {
+            return 0;
+        }
+        if (!sbtlFuncDecideItemStockData) {
+            return 0;
+        }
+        sbtlBtlFuncDecideItemSBtlMenuSub2(&min, &max);
+        if (max <= 0) {
+            return 0;
+        }
+        if (dds3PadButtonState[0x24] < 0) {
+            if ((s8)(sbtlFuncDecideItem_sbtlMenuData - 1) >= min) {
+                sbtlFuncDecideItem_sbtlMenuData--;
+            } else {
+                sbtlFuncDecideItem_sbtlMenuData = max;
+            }
+        } else if (dds3PadButtonState[0x25] < 0) {
+            if (max >= (s8)(sbtlFuncDecideItem_sbtlMenuData + 1)) {
+                sbtlFuncDecideItem_sbtlMenuData++;
+            } else {
+                sbtlFuncDecideItem_sbtlMenuData = min;
+            }
+        } else {
+            return 0;
+        }
+        sbtlFuncDecideItemStock();
+        sbtlPlaySE(0x1001F);
+        return 0;
+    case 11:
+        if (wk->flag & 0x20) {
+            wk_sbtl->flg &= ~0x80000;
+            sbtlCallEnd(wk);
+            return 0;
+        }
+        if (wk->count) {
+            if (wk_sbtl->mag < 0) {
+                itfMenuSetFlagMenu(wk->charPID, -1, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+            }
+            itfMenuSetFlag(wk->charPID, 8, 1);
+            itfMenuSetFlagMenu(wk->charPID, -1, ITFMENU_CB_GF_SELECT, 0);
+            wk->count = 0;
+            wk->cntAnalyze = 0;
+            wk->step = 4;
+        } else {
+            if (dds3PadButtonState[0x21] < 0) {
+                wk->count = 1;
+            }
+            if (++wk->cntAnalyze >= 11) {
+                wk->cntAnalyze = 10;
+            }
+        }
+        return 0;
+    case 12:
+        if (sbtlGetStat() == 2) {
+            return 0;
+        }
+        if (!sbtlChkDecide()) {
+            sbtlChkEnableDecideMenu(wk);
+            itfMenuStart(wk->menuPID);
+            wk->step = 2;
+            return 0;
+        }
+        wk->flag |= 0x40;
+        sbtlCallEnd(wk);
+        return 0;
+    case 13:
+        if (slChoiceMsgDraw(195)) {
+            wk->step = 1;
+            wk->flag |= 0x10;
+        }
+        return 0;
+    case 14:
+        nakama = sbtlGetNakama((s8)wk_sbtl->ctrlSmnIdx);
+        if (nakama == NULL) {
+            return 0;
+        }
+        if (sbtlLoadEffectData_Decode(nakama)) {
+            wk->step = 1;
+            wk->flag |= 0x10;
+        }
+        return 0;
+    case 15:
+        if (wk->count == 0) {
+            sbtlCallProcEnd(wk);
+        }
+        if (sbtlCheckProcEnd(wk)) {
+            wk->count++;
+            return 0;
+        }
+        wk->count = 0;
+        wk->step = 16;
+        return 0;
+    case 16:
+        if (wk->count == 0) {
+            wk->flag &= ~2;
+            wk->count = 1;
+        } else if (wk->count < 2) {
+            wk->count++;
+        } else {
+            wk->count = 0;
+            wk->step = 17;
+        }
+        return 0;
+    case 17:
+        return -1;
+    }
+    return 0;
+}
+#else
+INCLUDE_ASM(const s32, "code_002F5CF0", sbtlProcess);
+#endif
 
 s32 sbtlBtlDrawProcessSub(struct sBtlMenu_t *menu) {
 }
@@ -679,7 +1048,76 @@ s32 sbtlDrawProcess(dds3ProcessID_t *PID)
 #endif
 }
 
+/* NON_MATCHING: 200 of 203 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlDrawProcess_sbtlMenu(dds3ProcessID_t *id)
+{
+    sBtlMenu_t *wk = dds3GetProcessData(id);
+    struct SBTLUNIT_WORK *unit;
+    s32 tab;
+    s32 max;
+    s32 sel;
+    s32 num;
+    u32 alpha;
+    u32 color;
+    u8 rate;
+
+    if (!(wk->flag & 2)) {
+        return 0;
+    }
+    switch (wk->step) {
+    case 2:
+        sel = itfMenuGetSelectID(wk->menuPID);
+        if (sel >= 0) {
+            num = sbtlDrawProcess_sbtlMenuData[sel];
+            if (num >= 0) {
+                if (num == 7 && sbtlEscapeCheck() == 1) {
+                    num = 8;
+                }
+                sbtlHelp(3, num, GetSelectRootID(wk->menuPID, 2));
+            }
+        }
+        slCallSin(GetSelectRootID(wk->menuPID, 2));
+        if (wk->type == 1 && wk_sbtl->member_num > 0) {
+            alpha = GetSelectRootID(wk->menuPID, 2);
+            itfDrawMiscSpriteAlpha(368, 335, 0, alpha, sbtlData135.hSpr, 15, 104);
+            color = 0xA09DC300 | ((alpha << 7) / 255);
+            itfIconDrawSprite(384, 336, 0, alpha, 14, 104);
+            itfDrawFont(ITF_DM_STYLE_SFNT_CNV, 407, 336, 0x100000, 0, 0, color, 1.0f, 104, sbtlDrawProcess_sbtlMenuData2[0]);
+        }
+        break;
+    case 9:
+        sbtlBtlFuncDecideItemSBtlMenuSub(&tab, &max);
+        sbtlBtlDrawProcessSBtlMenuSub(tab, max, sbtlFuncDecideItem_sbtlMenuData, 1, 1.0f);
+        break;
+    case 5:
+        sel = itfMenuGetSelectID(wk->menuPID);
+        rate = GetSelectRootID(wk->charPID, 2);
+        if (sel == 5) {
+            sbtlHelp(3, 15, rate);
+        }
+        break;
+    case 10:
+        rate = GetSelectRootID(wk->charPID, 2);
+        sbtlBtlFuncDecideItemSBtlMenuSub2(&tab, &max);
+        sbtlBtlDrawProcessSBtlMenuSub(tab, max, sbtlFuncDecideItem_sbtlMenuData, 0, rate / 255.0f);
+        sbtlHelp(3, 15, rate);
+        break;
+    case 11:
+        sel = itfMenuGetSelectID(wk->charPID);
+        unit = wk_sbtl->tgtList->pUnitL[sel].pUnit;
+        rate = (u32)(wk->cntAnalyze * 255.0f / 10.0f);
+        if (unit->flg & 0x800) {
+            unit = sbtlSearchUnit_ID(wk_sbtl->unitList, unit->field492);
+        }
+        sbtlCallBtlAnalyzeBack2(unit, rate);
+        break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlDrawProcess_sbtlMenu);
+#endif
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallMemFreeDelayedDirect);
 
@@ -710,7 +1148,7 @@ void ProcessStart(void) {
     wk = sdfMemLock(hMem);
     memset(wk, 0, sizeof(sBtlMenu_t));
     wk->hMem = hMem;
-    ProcessCheckData = dds3StartProcess(sbtlStrSbtlmenuMain, 0x3FE, 0, 0, sbtlFuncDecideItem_sbtlMenu, sbtlDrawProcess, wk);
+    ProcessCheckData = dds3StartProcess(sbtlStrSbtlmenuMain, 0x3FE, 0, 0, sbtlProcess, sbtlDrawProcess, wk);
     wk->drawPID = dds3StartProcess(sbtlStrSbtlmenuDraw, 0x2B15, 0, 0, sbtlDrawProcess_sbtlMenu, NULL, wk);
     wk->step = 0;
     sbtlFuncEscapeData = 0;
@@ -892,7 +1330,77 @@ void SetAddMag(s32 num) {
 INCLUDE_ASM(const s32, "code_002F5CF0", SetAddMag);
 #endif
 
+/* NON_MATCHING: 160 of 181 words match.  */
+#ifdef NON_MATCHING
+void DrawAddMag(s32 x, s32 y)
+{
+    s32 ofs;
+    s32 bx;
+    s32 t;
+    s32 now;
+
+    if (wk_sbtl->status3 & 2) {
+        if (gAddMagNumDrawCnt == 90) {
+            ofs = 72;
+            sbtlPlaySE(0x10020);
+            dds3DrawAddMagSub(104);
+            if (gAddMagNum < 101) {
+                ofs = 48;
+                if (gAddMagNum < 11) {
+                    ofs = 24;
+                }
+            }
+            bx = x + ofs;
+            nbResultCountEntries(bx + GetRand(2), y + GetRand(2) + 24, 0);
+            nbResultCountEntries(bx + GetRand(2), y + GetRand(2), 4);
+            nbResultCountEntries(x + GetRand(2) + 2, y + GetRand(2), 8);
+            nbResultCountEntries(x + GetRand(2) + 2, y + GetRand(2) + 24, 12);
+        }
+        if (gAddMagNumDrawCnt == 80) {
+            sbtlPlaySE(0x10020);
+        }
+        if (gAddMagNumDrawCnt == 70) {
+            sbtlPlaySE(0x10020);
+        }
+    }
+    if (gAddMagNumNow < gAddMagNum) {
+        now = gAddMagNum;
+        if (now >= gAddMagNumNow + gAddMagNumUp) {
+            now = gAddMagNumNow + gAddMagNumUp;
+        }
+        gAddMagNumNow = now;
+    }
+    if (gAddMagNumDrawCnt <= 0) {
+        gAddMagNum = 0;
+        gAddMagNumDrawCnt = 0;
+        gAddMagNumNow = 0;
+        gAddMagNumUp = 0;
+        return;
+    }
+    if (gAddMagNumNow >= gAddMagNum) {
+        gAddMagNumDrawCnt--;
+    }
+    if (gAddMagNumDrawCnt < 10) {
+        t = 10 - gAddMagNumDrawCnt;
+        sbtlNum3(x - t * 4, y, ((64 - t * 6) << 24) | 0x804080, 0xFF - t * 25, gAddMagNum, 103,
+                 ((64 - t * 6) << 24) | 0x804080, 0.79999996f - t / 20.0f);
+    } else {
+        sbtlNum3(x, y, 0x40804080, 0xFF, gAddMagNum, 103, 0x40804080, 0.79999996f);
+    }
+    if ((wk_sbtl->status3 & 2) && (gAddMagNumDrawCnt & 1)) {
+        ofs = 72;
+        if (gAddMagNum < 101) {
+            ofs = 48;
+            if (gAddMagNum < 11) {
+                ofs = 24;
+            }
+        }
+        nbResultCountEntries(x + GetRand(ofs), y + GetRand(24), 0);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", DrawAddMag);
+#endif
 
 void sbtlGetIdling_HD(s32 a_x, s32 a_y, u8 a_alphaRate, s32 a_otNo, struct sdatUnitWork_t *unit) {
     if (unit != NULL) {
@@ -1024,7 +1532,7 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlEnableSceneGroupAdvancementSub);
 void sbtlInitSBtlSub2(void) {
     sbtlData121 = 1;
     sbtlData123 = -1;
-    sbtlRefSbtl57Data = 0;
+    g_cntTgtCur = 0;
     sbtlRefSbtl61Data = -1;
     sbtlRefSbtl59Data = -1;
     sbtlCallBtlSearchUnitID37Data2 = -1;
@@ -1079,7 +1587,56 @@ void sbtlNum(s32 a_x, s32 a_y, u32 a_color, u8 a_alpha, s32 a_num, DDS3_OT a_ot)
     }
 }
 
-INCLUDE_ASM(const s32, "code_002F5CF0", sbtlNum3);
+void sbtlNum3(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_OT a_ot, u32 rinkaku_rgba, f32 scale) {
+    u32 colors[4];
+    s32 i;
+    s32 j;
+    s32 figure;
+    s32 sprNo;
+    s32 width;
+    s32 height;
+
+    figure = itfGetFigure(a_num);
+    for (i = 0; i < figure; i++) {
+        sprNo = itfGetFigureNum(a_num, figure - i);
+        if (sprNo >= 0) {
+            sprNo += 27;
+            for (j = 0; j < 4; j++) {
+                colors[j] = sbtlData135.hSpr->workEntries[sprNo].geometry.cornerColors[j];
+            }
+            width = sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[2];
+            height = sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[3];
+            sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[2] = width * scale;
+            sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[3] = height * scale;
+            for (j = 0; j < 4; j++) {
+                sbtlData135.hSpr->workEntries[sprNo].geometry.cornerColors[j] = (rinkaku_rgba & 0xFFFFFF00) | (a_rgba & 0xFF);
+            }
+            itfCallLinkAlpha(a_x - 4, a_y, 0, 0x20, sbtlData135.hSpr, sprNo, a_ot);
+            itfCallLinkAlpha(a_x + 4, a_y, 0, 0x20, sbtlData135.hSpr, sprNo, a_ot);
+            itfCallLinkAlpha(a_x, a_y - 4, 0, 0x20, sbtlData135.hSpr, sprNo, a_ot);
+            itfCallLinkAlpha(a_x, a_y + 4, 0, 0x20, sbtlData135.hSpr, sprNo, a_ot);
+            sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[2] += 64.0f;
+            sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[3] += 32.0f;
+            itfCallLinkAlpha(a_x - 2, a_y - 2, 0, 0x60, sbtlData135.hSpr, sprNo, a_ot);
+            itfCallLinkAlpha(a_x - 6, a_y - 2, 0, 0x20, sbtlData135.hSpr, sprNo, a_ot);
+            itfCallLinkAlpha(a_x + 2, a_y - 2, 0, 0x20, sbtlData135.hSpr, sprNo, a_ot);
+            itfCallLinkAlpha(a_x - 2, a_y - 6, 0, 0x20, sbtlData135.hSpr, sprNo, a_ot);
+            itfCallLinkAlpha(a_x - 2, a_y + 2, 0, 0x20, sbtlData135.hSpr, sprNo, a_ot);
+            sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[2] -= 64.0f;
+            sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[3] -= 32.0f;
+            for (j = 0; j < 4; j++) {
+                sbtlData135.hSpr->workEntries[sprNo].geometry.cornerColors[j] = a_rgba;
+            }
+            itfDrawMiscSpriteAlpha(a_x, a_y, 0, a_alphaRate, sbtlData135.hSpr, sprNo, a_ot);
+            a_x += scale * 24.0f;
+            sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[2] = width;
+            sbtlData135.hSpr->workEntries[sprNo].geometry.bounds[3] = height;
+            for (j = 0; j < 4; j++) {
+                sbtlData135.hSpr->workEntries[sprNo].geometry.cornerColors[j] = colors[j];
+            }
+        }
+    }
+}
 
 /* NON_MATCHING: 2 of 21 words match.  */
 #ifdef NON_MATCHING
@@ -1216,7 +1773,162 @@ INCLUDE_ASM(const s32, "code_002F5CF0", sbtlPlayerData);
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilAshimotoReset);
 
+/* NON_MATCHING: 316 of 360 words match.  */
+#ifdef NON_MATCHING
+void sbtlSummonDevilAshimoto(struct SBTLUNIT_WORK *wk, s32 idx)
+{
+    sdfVector4_t pos;
+    sdfVector4_t pos2;
+    sdfVector4_t pos3;
+    sdfVector4_t pos4;
+    sdfVector4_t scl;
+    dds3Basic_t *basic;
+    dds3Basic_t *basic2 = NULL;
+    dds3Basic_t *basic3 = NULL;
+    dds3Basic_t *basic4 = NULL;
+    s32 lowhp = 0;
+    f32 size;
+    u8 sdw_flg;
+    u32 color;
+    s32 alpha;
+    mdlObj_t *model;
+
+    if (idx == 0) {
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[2], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[2], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[3], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[3], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[4], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[4], 1);
+    } else {
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[5], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[5], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[6], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[6], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[7], 1);
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[7], 1);
+    }
+    if (wk->unit.now.maxhp / 4 < wk->unit.now.hp) {
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnitR[idx], 1);
+        dds3ObjectBaseOffFlag(wk_sbtl->apMarkerUnit[idx], 1);
+        basic = wk_sbtl->apMarkerUnit[idx];
+        if (!IsSceanStop()) {
+            wk->nakama_asimoto_anim += 0.05f;
+        }
+    } else {
+        lowhp = 1;
+        dds3ObjectBaseOnFlag(wk_sbtl->apMarkerUnit[idx], 1);
+        dds3ObjectBaseOffFlag(wk_sbtl->apMarkerUnitR[idx], 1);
+        basic = wk_sbtl->apMarkerUnitR[idx];
+        if (!IsSceanStop()) {
+            wk->nakama_asimoto_anim += 0.2f;
+        }
+    }
+    if (wk->asimoto_mode == 1) {
+        if (!lowhp) {
+            if (!idx) {
+                basic4 = wk_sbtl->apMarkerUnit[4];
+                basic2 = wk_sbtl->apMarkerUnit[2];
+                basic3 = wk_sbtl->apMarkerUnit[3];
+            } else {
+                basic4 = wk_sbtl->apMarkerUnit[7];
+                basic2 = wk_sbtl->apMarkerUnit[5];
+                basic3 = wk_sbtl->apMarkerUnit[6];
+            }
+        } else {
+            if (!idx) {
+                basic4 = wk_sbtl->apMarkerUnitR[4];
+                basic2 = wk_sbtl->apMarkerUnitR[2];
+                basic3 = wk_sbtl->apMarkerUnitR[3];
+            } else {
+                basic4 = wk_sbtl->apMarkerUnitR[7];
+                basic2 = wk_sbtl->apMarkerUnitR[5];
+                basic3 = wk_sbtl->apMarkerUnitR[6];
+            }
+        }
+    }
+    if ((wk->vstatus & 0x1000) || wk_sbtl->field42CA == 1 || wk_sbtl->field42CA == 2) {
+        dds3ObjectBaseOnFlag(basic, 1);
+        if (basic2) dds3ObjectBaseOnFlag(basic2, 1);
+        if (basic3) dds3ObjectBaseOnFlag(basic3, 1);
+        if (basic4) dds3ObjectBaseOnFlag(basic4, 1);
+        return;
+    }
+    dds3ObjectBaseOffFlag(basic, 1);
+    if (basic2) dds3ObjectBaseOffFlag(basic2, 1);
+    if (basic3) dds3ObjectBaseOffFlag(basic3, 1);
+    if (basic4) dds3ObjectBaseOffFlag(basic4, 1);
+    SDF_VU0_LOADVECTOR(&wk->pos);
+    SDF_VU0_STOREVECTOR(&pos);
+    SDF_VU0_STOREVECTOR(&pos2);
+    SDF_VU0_STOREVECTOR(&pos3);
+    SDF_VU0_STOREVECTOR(&pos4);
+    if (wk->asimoto_mode == 1) {
+        pos2.x = wk->asimoto_pos_x2;
+        pos2.z = wk->asimoto_pos_z2;
+        pos.x = wk->asimoto_pos_x;
+        pos.z = wk->asimoto_pos_z;
+        dds3SetPosPoseSet(basic2, &pos2);
+        pos3.x = wk->asimoto_pos_x3;
+        pos3.z = wk->asimoto_pos_z3;
+        dds3SetPosPoseSet(basic3, &pos3);
+        pos4.x = wk->asimoto_pos_x4;
+        pos4.z = wk->asimoto_pos_z4;
+        dds3SetPosPoseSet(basic4, &pos4);
+    }
+    dds3SetPosPoseSet(basic, &pos);
+    size = 100.0f;
+    sdw_flg = sbtlGetMotionVisualData(wk->major, wk->minor)->sdw_flg;
+    if (sdw_flg & 4) {
+        size = 34.999996185302734375f;
+    } else if (sdw_flg & 8) {
+        size = 50.99999237060546875f;
+    } else if (sdw_flg & 0x10) {
+        size = 58.79998779296875f;
+    } else if (sdw_flg & 0x20) {
+        size = 83.99997711181640625f;
+    }
+    size += sdfSin(wk->nakama_asimoto_anim) * 4.0f;
+    if (size < 1.0f) {
+        size = 1.0f;
+    }
+    scl.w = 1.0f;
+    scl.y = 1.0f;
+    scl.z = size * 0.03f;
+    scl.x = scl.z;
+    dds3SetSclPoseSet(basic, &scl);
+    if (basic2) dds3SetSclPoseSet(basic2, &scl);
+    if (basic3) dds3SetSclPoseSet(basic3, &scl);
+    if (basic4) dds3SetSclPoseSet(basic4, &scl);
+    color = 0x808080;
+    alpha = (s32)(sdfSin(wk->nakama_asimoto_anim * 1.37f) * 31.0f) + 88;
+    if ((wk->unit.badStatus & 0x40000) || wk->byctCnt) {
+        color = 0x101010;
+    }
+    model = dds3ObjectBaseGetModelHandle(basic);
+    mdlSetColor(model, color | (alpha << 24));
+    if (basic2) {
+        alpha -= 24;
+        model = dds3ObjectBaseGetModelHandle(basic2);
+        if (alpha < 16) alpha = 16;
+        mdlSetColor(model, color | (alpha << 24));
+    }
+    if (basic3) {
+        alpha -= 24;
+        model = dds3ObjectBaseGetModelHandle(basic3);
+        if (alpha < 16) alpha = 16;
+        mdlSetColor(model, color | (alpha << 24));
+    }
+    if (basic4) {
+        alpha -= 24;
+        model = dds3ObjectBaseGetModelHandle(basic4);
+        if (alpha < 16) alpha = 16;
+        mdlSetColor(model, color | (alpha << 24));
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilAshimoto);
+#endif
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlSummonDevilData_Sub);
 
@@ -1242,7 +1954,93 @@ void sbtlSummonDevilData(void) {
     }
 }
 
+/* NON_MATCHING: 9 of 257 words match.  */
+#ifdef NON_MATCHING
+void sbtlEnemyData(void)
+{
+    SBTLPROJECTEDSCREEN_POINT point;
+    sdfVector4_t pos;
+    struct SBTLUNIT_WORK *unit;
+    struct SBTLSKILLP_TBL *skill;
+    SKLID id;
+    u32 ot;
+    s32 raceWidth;
+    s32 width;
+    s32 i;
+
+    if (sbtlGetCutFlg() & 1) {
+        return;
+    }
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit == NULL || !(unit->field414 & 2)) {
+            continue;
+        }
+        if (!(unit->vstatus & 0x1000)) {
+            skill = sbtlGetSkilltbl(unit->skillid);
+            if (!(unit->flg & 0x100000) && !(skill->flg & 0x40000000) && !(skill->flg2 & 0x40000) &&
+                !(wk_sbtl->flg2 & 0x1000)) {
+                id = SKLID_NONE;
+                switch (unit->status) {
+                case 3:
+                case 6:
+                case 31:
+                    id = unit->skillid;
+                    if (id == SKLID_ATK) {
+                        id = SKLID_NONE;
+                    }
+                    break;
+                }
+                if (id != SKLID_NONE) {
+                    sdfModelEvalTm(unit->hEveUnit->owner->inner);
+                    if (!sdfModelGetMarkPos_sdfModel(unit->hEveUnit->owner->inner, 1)) {
+                        sdfModelGetMarkPos_sdfModel(unit->hEveUnit->owner->inner, 0);
+                    }
+                    if (btlProjectForwardPositionToScreen(&point)) {
+                        ot = frBtlEnemyDataSub();
+                        frSetFontDrawOT(0x68);
+                        unit->cap_skillname_x = point.x - 32;
+                        unit->cap_skillname_y = point.y + 16;
+                        sbtlDrawSkillName(unit->cap_skillname_x, unit->cap_skillname_y, 0, 0xB080A080, id);
+                        frSetFontDrawOT(ot);
+                    }
+                }
+            }
+        }
+        if (wk_sbtl->bNoEnemyName || (wk_sbtl->flg2 & 0x4400000) || unit->unit.devilId == 462) {
+            continue;
+        }
+        if (wk_sbtl->fieldE8C || wk_sbtl->bBfrBtlEnd) {
+            continue;
+        }
+        if ((unit->vstatus & 0x2000) || unit->mode != 8 || (unit->vstatus & 0x1000)) {
+            continue;
+        }
+        if (wk_sbtl->field42CA) {
+            continue;
+        }
+        SDF_VU0_LOADVECTOR(&unit->pos);
+        SDF_VU0_STOREVECTOR(&pos);
+        pos.y -= sbtlGetMotionVisualData(unit->major, unit->minor)->field28 * 0.5f;
+        SDF_VU0_LOADVECTOR(&pos);
+        if (btlProjectForwardPositionToScreen(&point)) {
+            raceWidth = frPreCalcStrWidth(sbtlGetRaceName(unit->unit.raceId), 1, 1);
+            width = raceWidth + frPreCalcStrWidth(g_itemNo[unit->unit.devilId], 1, 1);
+            wk_sbtl->panel->hPanelSpr3->descriptions[11].rect[3] = width + 6;
+            width += 30;
+            point.x -= width >> 1;
+            itfDrawMiscSpriteAlpha(point.x, point.y - 7, 0, 0x80, wk_sbtl->panel->hPanelSpr3, 11, 0x67);
+            itfDrawMiscSpriteAlpha(point.x + width, point.y - 6, 0, 0x80, wk_sbtl->panel->hPanelSpr3, 15, 0x67);
+            sbtlCallGetSmallFontFRQ4(point.x + 17, point.y + 1, 0, 0xA09DC380, 0xFF, 0x67,
+                                     sbtlGetRaceName(unit->unit.raceId));
+            sbtlCallGetSmallFontFRQ4(point.x + raceWidth + 32, point.y + 1, 0, 0xA09DC380, 0xFF, 0x67,
+                                     g_itemNo[unit->unit.devilId]);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlEnemyData);
+#endif
 
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlCallBtlGetRaceName);
 
@@ -1319,11 +2117,118 @@ void sbtlCallSetFontDrawOT(struct SBTLUNIT_WORK *wk, sdfVector4_t *pos)
     }
 }
 
+/* NON_MATCHING: 361 of 405 words match.  */
+#ifdef NON_MATCHING
+void sbtlTargetCursor(const sdfVector4_t *pos, char *str) {
+    struct sprHandle_t *spr;
+    itfBdWork_t *bd;
+    sdfVector4_t v;
+    sdfVector4_t w;
+    SBTLPROJECTEDSCREEN_POINT pt[2];
+    f32 len;
+    f32 dx, dy, dz;
+    f32 width, height;
+    f32 growW, growH;
+    u8 alpha;
+
+    if (wk_sbtl->panel == NULL) {
+        return;
+    }
+    spr = wk_sbtl->panel->hPanelSpr4;
+    if (spr == NULL) {
+        return;
+    }
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&v);
+    if (gTargetPosHokanFastFlag) {
+        gTargetPosHokanFastFlag = 0;
+        gTargetPosHokanBuff0.x = v.x;
+        gTargetPosHokanBuff0.y = v.y;
+        gTargetPosHokanBuff0.z = v.z;
+        gTargetPosHokanBuff1.x = v.x;
+        gTargetPosHokanBuff1.y = v.y;
+        gTargetPosHokanBuff1.z = v.z;
+        gTargetPosHokanBuff2.x = v.x;
+        gTargetPosHokanBuff2.y = v.y;
+        gTargetPosHokanBuff2.z = v.z;
+        gTargetPosHokanBuff3.x = v.x;
+        gTargetPosHokanBuff3.y = v.y;
+        gTargetPosHokanBuff3.z = v.z;
+        gTargetPosHokanBuff4.x = v.x;
+        gTargetPosHokanBuff4.y = v.y;
+        gTargetPosHokanBuff4.z = v.z;
+    } else {
+        w.x = gTargetPosHokanBuff0.x += (v.x - gTargetPosHokanBuff0.x) / 10.0f;
+        w.y = gTargetPosHokanBuff0.y += (v.y - gTargetPosHokanBuff0.y) / 10.0f;
+        w.z = gTargetPosHokanBuff0.z += (v.z - gTargetPosHokanBuff0.z) / 10.0f;
+        len = fsqrtf((w.x - v.x) * (w.x - v.x) + (w.y - v.y) * (w.y - v.y) + (w.z - v.z) * (w.z - v.z));
+        dx = (w.x - v.x) / len * (len / 5.0f);
+        dy = (w.y - v.y) / len * (len / 5.0f);
+        dz = (w.z - v.z) / len * (len / 5.0f);
+        gTargetPosHokanBuff1.x = v.x + dx;
+        gTargetPosHokanBuff1.y = v.y + dy;
+        gTargetPosHokanBuff1.z = v.z + dz;
+        gTargetPosHokanBuff2.x = v.x + (dx + dx);
+        gTargetPosHokanBuff2.y = v.y + (dy + dy);
+        gTargetPosHokanBuff2.z = v.z + (dz + dz);
+        gTargetPosHokanBuff3.x = v.x + dx * 3.0f;
+        gTargetPosHokanBuff3.y = v.y + dy * 3.0f;
+        gTargetPosHokanBuff3.z = v.z + dz * 3.0f;
+        gTargetPosHokanBuff4.x = v.x + dx * 4.0f;
+        gTargetPosHokanBuff4.y = v.y + dy * 4.0f;
+        gTargetPosHokanBuff4.z = v.z + dz * 4.0f;
+    }
+    if (g_cntTgtCur < 20) {
+        alpha = (g_cntTgtCur << 7) / 20;
+    } else {
+        alpha = ((60 - g_cntTgtCur) << 7) / 40;
+    }
+    spr->descriptions[1].presetMode = 1;
+    SDF_VU0_LOADVECTOR(&gTargetPosHokanBuff1);
+    if (btlProjectForwardPositionToScreen(&pt[0]) && (u32)(pt[0].x + 15) < 543 && pt[0].y > 0 && pt[0].y < 448) {
+        effDrawSpriteWithCornerFade(pt[0].x * 16, pt[0].y * 8, 0, 0x80, 0, spr, 1, 103);
+    }
+    SDF_VU0_LOADVECTOR(&gTargetPosHokanBuff2);
+    if (btlProjectForwardPositionToScreen(&pt[0]) && (u32)(pt[0].x + 15) < 543 && pt[0].y > 0 && pt[0].y < 448) {
+        effDrawSpriteWithCornerFade(pt[0].x * 16, pt[0].y * 8, 0, 0x60, 0, spr, 1, 103);
+    }
+    SDF_VU0_LOADVECTOR(&gTargetPosHokanBuff3);
+    if (btlProjectForwardPositionToScreen(&pt[0]) && (u32)(pt[0].x + 15) < 543 && pt[0].y > 0 && pt[0].y < 448) {
+        effDrawSpriteWithCornerFade(pt[0].x * 16, pt[0].y * 8, 0, 0x40, 0, spr, 1, 103);
+    }
+    SDF_VU0_LOADVECTOR(&gTargetPosHokanBuff4);
+    if (btlProjectForwardPositionToScreen(&pt[0]) && (u32)(pt[0].x + 15) < 543 && pt[0].y > 0 && pt[0].y < 448) {
+        effDrawSpriteWithCornerFade(pt[0].x * 16, pt[0].y * 8, 0, 0x30, 0, spr, 1, 103);
+    }
+    spr->descriptions[1].presetMode = 0;
+    SDF_VU0_LOADVECTOR(pos);
+    if (btlProjectForwardPositionToScreen(&pt[0]) && (u32)(pt[0].x + 15) < 543 && pt[0].y > 0 && pt[0].y < 448) {
+        bd = spr->workEntries;
+        width = bd->sourceWidth;
+        height = bd->sourceHeight;
+        growW = width * 0.79999996f * g_cntTgtCur / 59.0f;
+        growH = height * 0.79999996f * g_cntTgtCur / 59.0f;
+        spr->workEntries->geometry.bounds[2] = itfCalcSpriteWidthSub(width + growW, 4);
+        spr->workEntries->geometry.bounds[3] = itfCalcSpriteWidthSub(height + growH, 3);
+        pt[1].x = itfCalcSpriteWidthSub(pt[0].x - growW * 0.5f, 4);
+        pt[1].y = itfCalcSpriteWidthSub(pt[0].y - growH * 0.5f, 3);
+        effDrawSpriteWithCornerFade(pt[1].x, pt[1].y, 0, alpha, 0, spr, 0, 103);
+        effDrawSpriteWithCornerFade(pt[0].x * 16, pt[0].y * 8, 0, 0xFF, 0, spr, 1, 103);
+        if (str != NULL) {
+            itfDrawFont(ITF_DM_STYLE_SFNT_CNV, pt[0].x, pt[0].y, 0x100000, 0, 0, 0xA0A0A0A0, 1.0f, 103, str);
+        }
+    }
+    if (++g_cntTgtCur >= 60) {
+        g_cntTgtCur = 0;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_002F5CF0", sbtlTargetCursor);
+#endif
 
 void sbtlResetTargetCursor(void) {
-    sbtlRefSbtl57Data = 0;
-    sbtlTargetCursorData6 = 1;
+    g_cntTgtCur = 0;
+    gTargetPosHokanFastFlag = 1;
 }
 
 s32 sbtlSelectTargetCursorSub(struct SBTLUNIT_WORK *wk, s8 bDrawName) {

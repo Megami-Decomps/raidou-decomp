@@ -31,10 +31,11 @@ extern const char sbtlStrSbtlmenuMain[];
 extern const char sbtlStrSbtlmenuDraw[];
 extern dds3ProcessID_t *ProcessCheckData;
 extern u8 sbtlFuncEscapeData;
-s32 sbtlFuncDecideItem_sbtlMenu(dds3ProcessID_t *id);
+s32 sbtlProcess(dds3ProcessID_t *id);
 s32 sbtlDrawProcess_sbtlMenu(dds3ProcessID_t *id);
 s32 ProcessCheck(void);
 void sbtlCallProcEnd(sBtlMenu_t *wk);
+void sbtlChkEnableDecideMenu(sBtlMenu_t *wk);
 void IsStart(s32 type);
 void sbtlMenuOpen(void);
 /* Battle menu strings by menu index. */
@@ -131,5 +132,8 @@ extern struct itfSprList_t cmpPartyAnimFuncData3[];
 extern struct itfSprList_t cmpPartyAnimFuncData4[];
 void ProcessStart(void);
 #endif
+s32 sbtlGetShortCutFlg(dds3ProcessID_t *PID);
+s32 sbtlFuncDecideItemStock(void);
+s32 sbtlCallGetProcessData44(void);
 
 #endif

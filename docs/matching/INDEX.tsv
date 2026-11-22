@@ -192,6 +192,13 @@ sbtlCheckProcEnd	code_002F5CF0	raidou2 0x88	18 of 29 words differ	docs/matching/
 sbtlHelpEx	code_002F5CF0	raidou2 0x174	6 of 93 words differ	docs/matching/code_002F5CF0.md	39		
 sbtlBarCtrl	code_002F5CF0	raidou2 0x21C	2 of 135 words differ	docs/matching/code_002F5CF0.md	45		
 sbtlPlayerData	code_002F5CF0	raidou2 0x288	118 of 157 words differ	docs/matching/code_002F5CF0.md	51		
+sbtlChkEnableDecideMenu	code_002F5CF0	raidou2 0x2F8	56 of 190 words differ	docs/matching/code_002F5CF0.md	57		
+sbtlProcess	code_002F5CF0	raidou2 0x7E0	400 of 468 words differ	docs/matching/code_002F5CF0.md	63		
+sbtlDrawProcess_sbtlMenu	code_002F5CF0	raidou2 0x32C	3 of 203 words differ	docs/matching/code_002F5CF0.md	69		
+DrawAddMag	code_002F5CF0	raidou2 0x2D4	21 of 181 words differ	docs/matching/code_002F5CF0.md	75		
+sbtlSummonDevilAshimoto	code_002F5CF0	raidou2 0x5A0	44 of 360 words differ	docs/matching/code_002F5CF0.md	81		
+sbtlEnemyData	code_002F5CF0	raidou2 0x404	248 of 258 words differ	docs/matching/code_002F5CF0.md	87		
+sbtlTargetCursor	code_002F5CF0	raidou2 0x654	44 of 405 words differ	docs/matching/code_002F5CF0.md	93		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	13		
 fclCallSetFontColorNo3	code_002FA4F0	raidou1 0x118	4 of 70 words differ	docs/matching/code_002FA4F0.md	21		
@@ -622,6 +629,7 @@ sbtlCreateSTP_Unit	sbtlEff_00289E50	raidou2 0xF4	2 of 61 words differ	docs/match
 sbtlForceDeleteAll	sbtlEff_00289E50	raidou2 0x1C0	5 of 112 words differ	docs/matching/sbtlEff_00289E50.md	101		
 sbtlDeleteHaveSkill_EffectWork	sbtlEff_00289E50	raidou2 0x224	107 of 136 words differ	docs/matching/sbtlEff_00289E50.md	107		
 sbtlForceDelete_EffectWork_ID	sbtlEff_00289E50	raidou2 0x2BC	51 of 174 words differ	docs/matching/sbtlEff_00289E50.md	113		
+sbtlForceDelete_EffectWork	sbtlEff_00289E50	raidou2 0x2EC	98 of 188 words differ	docs/matching/sbtlEff_00289E50.md	119		
 sbtlCheckCrossCircle_Rot	sbtlSub	raidou1 0x180	27 of 96 words differ	docs/matching/sbtlSub.md	3		
 sbtlSetPushPos	sbtlSub	raidou1 0x208	52 of 130 words differ	docs/matching/sbtlSub.md	11		
 sbtlSetPullPos	sbtlSub	raidou1 0x390	98 of 222 words differ	docs/matching/sbtlSub.md	19		

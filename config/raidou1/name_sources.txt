@@ -23364,7 +23364,7 @@
 0x0046E670	sbtlData120	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: sbtlCallGetProcessData48, sbtlCallGetProcessData52, sbtlCallGetProcessData58
 0x0046E678	sbtlData81Entry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlData81
 0x0046E67F	sbtlData121	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: sbtlLeaf113, sbtlEnableSceneGroupAdvancementSub, Init_sbtlDraw
-0x0046E680	sbtlRefSbtl57Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl57 (3 of 5 refs, 3 functions)
+0x0046E680	g_cntTgtCur	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same variable as raidou2 0x4E3498 (r1_r2_data_pairs run-order-size); Init_sbtlDraw clears it in both games; replaces sbtlRefSbtl57Data
 0x0046E684	sbtlRefSbtl61Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl61 (8 of 10 refs, 3 functions)
 0x0046E688	sbtlRefSbtl59Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlRefSbtl59 (4 of 6 refs, 3 functions)
 0x0046E68C	sbtlCallBtlSearchUnitID37Data2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCallBtlSearchUnitID37 (4 of 9 refs, 5 functions)

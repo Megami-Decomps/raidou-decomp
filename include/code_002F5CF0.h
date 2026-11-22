@@ -4,7 +4,12 @@
 #include "common.h"
 #include "sBtlUnit.h"
 #include "sBtlEff.h"
-extern s32 sbtlTargetCursorData6;
+extern sdfVector4_t gTargetPosHokanBuff0;
+extern sdfVector4_t gTargetPosHokanBuff1;
+extern sdfVector4_t gTargetPosHokanBuff2;
+extern sdfVector4_t gTargetPosHokanBuff3;
+extern sdfVector4_t gTargetPosHokanBuff4;
+extern s32 gTargetPosHokanFastFlag;
 extern struct SBTLUNIT_LISTWORK *effQueuedResourceNameRecord7;
 
 /* Battle interface sprite set (0x1C bytes), loaded by btlLoadInterfaceSprite. */
@@ -28,6 +33,7 @@ void sbtlInitSBtlSub2(void);
 extern s32 sbtlDrawProcess_sbtlMenuData[]; /* help number per battle menu entry */
 extern char *sbtlDrawProcess_sbtlMenuData2[]; /* .data, not small data */
 extern s8 sbtlFuncDecideItem_sbtlMenuData;
+extern s8 sbtlFuncDecideItemStockData;
 s32 sbtlBtlFuncDecideItemSBtlMenuSub(s32 *a_tab, s32 *a_max);
 s32 sbtlBtlFuncDecideItemSBtlMenuSub2(s32 *a_tab, s32 *a_max);
 void sbtlBtlDrawProcessSBtlMenuSub(s32 a_tab, s32 a_max, s32 a_sel, s32 a_flag, f32 a_alphaRate);

@@ -169,20 +169,20 @@ s32 sbtlSetMenuPara(u16 mode, s32 stock_id, SKLID skillid, s32 itemid, s32 targe
         wk_sbtl->panel->setdata[smnid].target_p = stock_id;
         wk_sbtl->panel->setdata[smnid].targetid = targetid;
         wk_sbtl->panel->setdata[smnid].meirei_no = mode;
-        wk_sbtl->fieldC80 = smnid;
+        wk_sbtl->ctrlSmnIdx = smnid;
         break;
     case SBTLPNL_MENU_S_Y_ATK:
     case SBTLPNL_MENU_S_Y_REC:
     case SBTLPNL_MENU_S_Y_HOJ:
     case SBTLPNL_MENU_S_Y_NMP:
     case SBTLPNL_MENU_S_DEF:
-        wk_sbtl->fieldC80 = smnid;
+        wk_sbtl->ctrlSmnIdx = smnid;
         wk_sbtl->panel->setdata[smnid].meirei_no = mode;
         wk_sbtl->panel->setdata[0].target_p = stock_id;
         break;
     case SBTLPNL_MENU_SUMMON:
     case SBTLPNL_MENU_RETURN:
-        wk_sbtl->fieldC80 = smnid;
+        wk_sbtl->ctrlSmnIdx = smnid;
         wk_sbtl->panel->setdata[0].target_p = stock_id;
         break;
     case SBTLPNL_MENU_ITEM:

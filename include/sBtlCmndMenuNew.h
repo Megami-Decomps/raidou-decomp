@@ -43,6 +43,7 @@ void Delete_sbtlCmndMenuNew(void);
 s32 sbtlGetStat(void);
 s32 sbtlProcessCheck(void);
 s32 sbtlCallGetProcessStat(void);
+s32 sbtlChkDecide(void);
 s32 DrawProc(dds3ProcessID_t *id);
 extern u32 DrawProcData;
 s32 GetTabLimit(s32 *a_pmin, s32 *a_pmax);

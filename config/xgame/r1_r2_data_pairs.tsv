@@ -9499,7 +9499,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046E668	0x004E3548	sbtlFuncDecideItemData	.sdata	0x8	yes	code-ref
 0x0046E670	0x004E3460	sbtlData120	.sdata	0x8	yes	code-ref
 0x0046E67F	0x004E3494	sbtlData121	.sdata	0x1	no	code-ref
-0x0046E680	0x004E3498	sbtlRefSbtl57Data	.sdata	0x4	yes	run-order-size
+0x0046E680	0x004E3498	g_cntTgtCur	.sdata	0x4	yes	run-order-size
 0x0046E684	0x004E349C	sbtlRefSbtl61Data	.sdata	0x4	yes	code-ref
 0x0046E688	0x004E34A0	sbtlRefSbtl59Data	.sdata	0x4	yes	code-ref
 0x0046E68C	0x004E34A4	sbtlCallBtlSearchUnitID37Data2	.sdata	0x4	yes	code-ref

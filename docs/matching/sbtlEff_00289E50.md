@@ -115,3 +115,9 @@ Register allocation (107 words): retail keeps the haveskill pointer in fp and sp
 Raidou 2: 51 of 174 words differ, first at +0x3C; emitted 696 bytes, native 700 bytes.
 
 Retail reads the pack status bits and gstat through base + no*0x60 + 0x10 (the address of effpac[no].num) with offsets 6 and 4; the draft reads them from the pac pointer at 0x16 and 0x14 (51 words). Tried a pwk pointer walk, pac->pwk[i] indexing, the store order and a single clamp ternary. Vectors do not reach, checked against the asm. nm_behaviour reports base+no*0x60+0x10 with +0x50/+0x54 where the draft uses +0x60/+0x64 from the entry: the same addresses.
+
+## sbtlForceDelete_EffectWork (sbtlEff_00289E50, raidou2 0x2EC)
+
+Raidou 2: 98 of 188 words differ, first at +0x4; emitted 756 bytes, native 748 bytes.
+
+Retail reads the pack status as base + (i*0x60 + 0x10) + 6, with i*0x60 + 0x10 kept as a spilled induction variable; the draft reads offset 0x16 from the entry, which changes the register allocation and spill (98 words). The pack loop body matches the sbtlForceDelete_EffectWork_ID draft. Vector checked (R2 battle/menu rows, the paths they take). nm_behaviour reports the same address reassociation as sbtlForceDelete_EffectWork_ID (+0x10 then +0x4/+0x50/+0x54 against the entry offsets).

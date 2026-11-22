@@ -8,7 +8,7 @@
 struct itfSprList_t;
 
 struct SBTLUNIT_WORK;
-struct effCtexHandle_t;
+struct effRefObj_t;
 struct sdatUnitWork_t;
 struct sprHandle_t;
 
@@ -21,7 +21,11 @@ void sbtlHelpCantUse(s32 a_type, s32 a_num, u8 a_alphaRate);
 void sbtlCallBtlAnalyzeBack2(struct SBTLUNIT_WORK *wk, u8 a_alphaRate);
 void sbtlCallBtlAnalyzeBack3(struct SBTLUNIT_WORK *wk, u8 a_alphaRate);
 char *sbtlGetPlayerName(void);
+#ifdef VERSION_RAIDOU2
+void sbtlCallCheckDying(u16 mode, s32 x, s32 y, u8 alpha, DDS3_OT ot, s32 hp, s32 maxhp, s8 bUnknown, struct sdatUnitWork_t *unit);
+#else
 void sbtlCallCheckDying(u16 mode, s32 x, s32 y, u8 alpha, DDS3_OT ot, struct sdatUnitWork_t *unit, s8 bUnknown);
+#endif
 s32 sbtlCallCheckDying2(struct SBTLUNIT_WORK *wk, s32 x, s32 y);
 s32 sbtlCallCheckDying3(struct SBTLUNIT_WORK *wk, s32 x, s32 y);
 f32 sbtlLeaf90(s32 count);
@@ -66,7 +70,7 @@ extern u8 sbtlData119;
 extern s8 sbtlData121;
 void sbtlLeaf113(void);
 void sbtlEnableSceneGroupAdvancementSub(void);
-extern s32 sbtlRefSbtl57Data;
+extern s32 g_cntTgtCur;
 extern s32 sbtlRefSbtl61Data;
 extern s32 sbtlRefSbtl59Data;
 extern struct itfSprList_t sbtlCallBtlSearchUnitID37Data[];
@@ -110,7 +114,9 @@ void sbtlDrawNum4(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, s32 a_num, DDS3_
 void sbtlSummonDevilData_Sub(struct SBTLUNIT_WORK *wk, s32 no);
 void sbtlSummonDevilData(void);
 void DrawAddMag(s32 x, s32 y);
-void DrawStatusBar(struct sdatUnitWork_t *pUnit, struct effCtexHandle_t *cTex, s32 y, s32 mode, s32 idx);
+void DrawStatusBar(struct sdatUnitWork_t *pUnit, struct effRefObj_t *cTex, s32 y, s32 mode, s32 idx);
+extern f32 f_uncnt; /* HD f_uncnt: phase of the luck icon pulse */
+extern s8 fldMAPMenuData; /* HD g_bDrawNakamaIcon, set by sBtlSetNakamaIconOn */
 void sbtlPlayerData(void);
 void sbtlEnemyData(void);
 void sbtlCallSetFontDrawOT(struct SBTLUNIT_WORK *wk, sdfVector4_t *pos);

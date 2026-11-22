@@ -53,3 +53,45 @@ The final evtBtlBarCtrlSub argument (field41FC - 126) * 16 is compiled as sll th
 Raidou 2: 118 of 157 words differ, first at +0x2C; emitted 628 bytes, native 648 bytes.
 
 The bullet animation counter (118 words): retail keeps the incremented sbtlPlayerDataData byte in a register stored on both arms and sign-extended at each use; this reloads it with lb after the store. Tried an s8 local set on both arms, ++ on the global, and a u8 global with (s8) casts. Vector checked: R2 battle/menu rows are TRUNC with no inputs or stores, checked against the asm.
+
+## sbtlChkEnableDecideMenu (code_002F5CF0, raidou2 0x2F8)
+
+Raidou 2: 56 of 190 words differ, first at +0x124.
+
+56 words: the bad-status range test is negated with xori where retail uses a second sltiu, and retail builds the sbtlIsStart(0) || sbtlIsStart(1) result in another register and copies it. The two-statement negation with a temporary made it worse (72). Vectors do not reach, checked against the asm. nm_behaviour reports one extra conditional branch: the sbtlIsStart(0) || sbtlIsStart(1) codegen; the original computes the same 0/1 result.
+
+## sbtlProcess (code_002F5CF0, raidou2 0x7E0)
+
+Raidou 2: 400 of 468 words differ, first at +0x64; emitted 1872 bytes, native 2016 bytes.
+
+First draft, more than 30% off: the C emits 468 of the 504 words because ee-gcc cross-jumps the repeated cancel tails of steps 3 to 7, 9 and 10 (clear wk_sbtl->flg 0x80000, sbtlCallEnd or back to the previous menu, sbtlUseItemProcSBtlPlayerSub) that the original keeps as separate copies, so every branch offset after +0x64 differs. Only the first draft was tried. Vector checked (battle rows).
+
+## sbtlDrawProcess_sbtlMenu (code_002F5CF0, raidou2 0x32C)
+
+Raidou 2: 3 of 203 words differ, first at +0x120.
+
+The font colour's lui 0xA09D lands two words after retail's, behind the 255 and the sll of the divu (3 words). Tried a color local before the icon call (fixed the register homes), both operand orders, a |= split and a u8 alpha with 255U. Vector checked (R2 battle/menu rows, the paths they take).
+
+## DrawAddMag (code_002F5CF0, raidou2 0x2D4)
+
+Raidou 2: 21 of 181 words differ, first at +0x6C.
+
+21 words: the 48/24 constants before the first movn are materialised in the other order, the gAddMagNumNow clamp selects with movn (sum as default) where retail copies gAddMagNum and uses movz, and one bne is bnel in retail. Tried the clamp as a ternary both ways and through a local initialised from gAddMagNum. The 0.8 constant is written 0.79999996f, the literal that gives the original 0x3F4CCCCC under ee-gcc (0.79999995f gives 0x3F4CCCCB). Vector checked (R2 battle/menu rows, the paths they take).
+
+## sbtlSummonDevilAshimoto (code_002F5CF0, raidou2 0x5A0)
+
+Raidou 2: 44 of 360 words differ, first at +0x14.
+
+The main marker and marker 2 use s20/s19 instead of s19/s20; asimoto_mode loads schedule differently (44 words). The first difference is sd s19 vs sd s20. Read the register-priority and cross-block-locals levers; find_similar found no same-shape sibling. Vectors do not reach, checked against the asm. The size test reads SBTL_MOTION_VISUAL byte 0, the HD sdw_flg (Raidou 2 keeps kind in byte 1); nm_behaviour is clean with that field.
+
+## sbtlEnemyData (code_002F5CF0, raidou2 0x404)
+
+Raidou 2: 248 of 258 words differ, first at +0x14; emitted 1044 bytes, native 1028 bytes.
+
+The address of the local pos vector (SDF_VU0_STOREVECTOR/LOADVECTOR) is hoisted out of the unit loop into s20, where retail rematerialises addiu sp+0x10 at each use; that one extra saved register shifts the whole body. The status test (3, 6, 31) pivots at 6 as a switch, where retail tests 3 then status < 4; an if chain and a default arm were tried. Retail reads wk_sbtl->flg2 with ld at the 0x4400000 test and lw at the 0x1000 test. Vector checked (R2 battle/menu rows, the paths they take). nm_behaviour reports the ld of wk_sbtl->flg2 (the draft uses lw; the 0x4400000 mask is in the low word) and the switch pivot constant 4 against 7: same behaviour.
+
+## sbtlTargetCursor (code_002F5CF0, raidou2 0x654)
+
+Raidou 2: 44 of 405 words differ, first at +0xEC.
+
+44 words, all in the smoothing arm after the first div.s: retail keeps v.x and v.y in $f13/$f12 and 5.0 in $f14, one register above this draft, and divides dx, dy, dz in that order where the draft starts with dz. Tried the trail stores in Data5, Data3, Data4, Data2 order (72 words) against Data2..Data5 order (44) and a named difference vector before fsqrtf (70). The two screen points are one SBTLPROJECTEDSCREEN_POINT pt[2]: two separate 8-byte structs each take a 16-byte slot and grow the frame to 0xC0. Vectors do not reach (vsum.py: no scenario); checked against the asm.
