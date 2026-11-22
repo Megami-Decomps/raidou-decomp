@@ -846,10 +846,16 @@ typedef struct SBTLITEM_WORK {
 } SBTLITEM_WORK;
 
 #ifdef VERSION_RAIDOU2
+/* A memory skill a devil learns at a loyalty level. */
+typedef struct SBTLMEMORYSKILL_WORK {
+    s16 level;
+    s16 skill;
+} SBTLMEMORYSKILL_WORK;
+
 /* Devil table entry returned by sbtlIfDrawActionSub (0x94 bytes). Partial raidou2 layout. */
 typedef struct SBTL_DEVIL_DATA {
     u32 flag;
-    u16 field04; /* averaged over a stage's enemies and compared with the player level */
+    u16 level; /* averaged over a stage's enemies and compared with the player level */
     s16 motionId;
     u8 pad08[0xA - 0x8];
     s16 field0A;
@@ -859,12 +865,13 @@ typedef struct SBTL_DEVIL_DATA {
     s16 field14;
     u8 pad16[0x30 - 0x16];
     s16 haveskill[16]; /* HD DEVILDATA_WORK haveskill */
-    u8 pad50[0x68 - 0x50];
+    SBTLMEMORYSKILL_WORK memskill[2]; /* HD name */
+    u8 pad58[0x68 - 0x58];
     SBTLITEM_WORK item[4];
     f32 field60;
     f32 field64;
     s16 field80;
-    s16 field82; /* index into DDS3_GBWK->devilWork */
+    s16 field82; /* index into DDS3_GBWK->playerData.devilWork */
     u8 pad84[0x8C - 0x84];
     u8 mskskill; /* HD name */
     u8 pad8D[0x94 - 0x8D];
@@ -1355,6 +1362,7 @@ s32 sbtlCallSetPosPoseSetDds3Basic(SBTLCAMERA_WORK *wk);
 s32 sbtlCallSetPosPoseSetDds3Basic2(SBTLCAMERA_WORK *wk);
 s32 sbtlCheckScriptData(s32 devilId);
 s32 sbtlCheckTutorialBattle(void);
+void sbtlCheckTutorialEnd(void);
 #ifdef VERSION_RAIDOU2
 s32 IsSceanStop(void);
 void sbtlSetStaticInit(void);

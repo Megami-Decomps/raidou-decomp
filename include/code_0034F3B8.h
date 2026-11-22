@@ -8,6 +8,21 @@
 
 /* A battle's rewards, built by sbtlCallBtlSearchUnitID30 from the battle's
  * drop work and copied by rstSetReward. Each count is clamped by the builder. */
+#ifdef VERSION_RAIDOU2
+typedef struct rstWork_t {
+    /* 0x00 */ s32 money;
+    /* 0x04 */ s32 item[8][3]; /* item id, count and a second count added to it */
+    /* 0x64 */ s32 unk64;
+    /* 0x68 */ s32 exp;               /* Raidou's */
+    /* 0x6C */ s32 exCyuusei;         /* loyalty reward, 0 for none */
+    /* 0x70 */ s32 stockExp[20];
+    /* 0xC0 */ s32 stockCyuusei[20];
+    /* 0x110 */ s32 unk110;
+    /* 0x114 */ u8 unk114[0xC];
+    /* 0x120 */ u32 unk120; /* bit 0 plays the level up sound */
+    /* 0x124 */ u8 unk124[0xC];
+} rstWork_t;
+#else
 typedef struct rstWork_t {
     s32 money;          /* 0..99999 */
     s32 item[8][2];     /* item id and count */
@@ -18,6 +33,7 @@ typedef struct rstWork_t {
     s32 mag;            /* 0..9999 */
     s32 summonIndex;    /* the stock slot summoned, or -1 */
 } rstWork_t;
+#endif
 
 extern rstWork_t rstWork;
 extern u32 rstData4;

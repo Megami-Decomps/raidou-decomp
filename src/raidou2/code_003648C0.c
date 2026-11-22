@@ -39,6 +39,13 @@
 #include "sBtlItem.h"
 #include "sBtlSM.h"
 #include "sBtlCalc.h"
+#include "CmpStatusItmSklSet.h"
+#include "sbtlSub_0027ED08.h"
+#include "sbtlWork.h"
+#include "frFont.h"
+#include "sBtlMenu.h"
+#include "code_r1_002CA3F0.h"
+#include "datCalc.h"
 
 INCLUDE_ASM(const s32, "code_003648C0", titleFunc4);
 
@@ -668,7 +675,158 @@ void cmpUpdateBulletNum(void) {
     }
 }
 
+/* NON_MATCHING: 82 of 492 words match.  */
+#ifdef NON_MATCHING
+void cmpPartyDrawFunc(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate) {
+    char str[16];
+    struct sprHandle_t *hSpr;
+    struct tagCMP_WORK *work;
+    sdatUnitWork_t *unit;
+    s32 count;
+    s32 alpha;
+    f32 scale;
+    f32 width;
+    f32 height;
+    f32 dw;
+    f32 dh;
+    s32 x;
+    s32 hp;
+    s32 maxhp;
+    s32 mag;
+    s32 maxmag;
+    s32 level;
+    s32 bst;
+    u32 color;
+
+    hSpr = cmpGetSpriteHnd(CMP_SPR_COMMON);
+    work = cmpGetStockPID();
+    if (a_id == 0) {
+        itfDrawMiscSpriteList(a_x - 219, a_y - 27, a_z, a_alphaRate, hSpr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL,
+                              cmpCallGetSpriteHndData2);
+        itfDrawMiscSpriteList(a_x, a_y, a_z, a_alphaRate, hSpr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL,
+                              cmpCallGetSpriteHndData);
+    }
+    if (a_id == 1) {
+        itfDrawMiscSpriteList(a_x, a_y, a_z, a_alphaRate, hSpr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL,
+                              cmpCallGetSpriteHndData);
+        if (DDS3_GBWK->playerData.stack_p[0] == -1) {
+            return;
+        }
+    }
+    if (a_id == 2) {
+        itfDrawMiscSpriteList(a_x, a_y, a_z, a_alphaRate, hSpr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL,
+                              cmpCallGetSpriteHndData);
+        if (DDS3_GBWK->playerData.stack_p[1] == -1) {
+            return;
+        }
+    }
+    if (a_id == 3) {
+        return;
+    }
+    count = itfMenuGetFlashCount(cmpPartyDrawFuncSub(), a_id);
+    if (count >= 0) {
+        if (count < 12) {
+            alpha = count * 160 / 12;
+        } else {
+            alpha = 160 - (count * 160 - 1920) / 38;
+        }
+        alpha = a_alphaRate * alpha / 255;
+        scale = (f32)count / 50.0f;
+        eglSetOt(DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        eglLinkTest(1, 5, 1, 1, 0, 0, 1, 1);
+        eglLinkAlpha(0);
+        width = hSpr->workEntries[165].sourceWidth;
+        height = hSpr->workEntries[165].sourceHeight;
+        dw = width * 0.0f * scale;
+        dh = height * scale;
+        hSpr->workEntries[165].geometry.bounds[2] = itfCalcSpriteWidthSub(width + dw, 4);
+        hSpr->workEntries[165].geometry.bounds[3] = itfCalcSpriteWidthSub(height + dh, 3);
+        x = itfCalcSpriteWidthSub(a_x - dw * 0.5f, 4);
+        effDrawSpriteWithCornerFade(x, itfCalcSpriteWidthSub(a_y - dh * 0.5f, 3), 0, alpha, 96, hSpr, 165,
+                                    DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (a_id >= 4) {
+        a_id += work->page * 8;
+    }
+    if (cmpCallGetProcessData26() == a_id) {
+        itfDrawMiscSpriteAlpha(a_x, a_y, a_z, a_alphaRate, hSpr, 164, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (a_id >= 4) {
+        if (DDS3_GBWK->playerData.stack_p[0] >= 0 && DDS3_GBWK->playerData.stack_p[0] == a_id - 4) {
+            itfIconDrawSprite(a_x - 15, a_y, a_z, a_alphaRate, 87, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        }
+        if (DDS3_GBWK->playerData.stack_p[1] >= 0 && DDS3_GBWK->playerData.stack_p[1] == a_id - 4) {
+            itfIconDrawSprite(a_x - 15, a_y, a_z, a_alphaRate, 87, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        }
+        if (DDS3_GBWK->mapSummonID > 0 && DDS3_GBWK->mapSummonID == datRefDDS3GBWK11(a_id - 4)) {
+            itfIconDrawSprite(a_x - 15, a_y, a_z, a_alphaRate, 88, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        }
+    }
+    unit = &DDS3_GBWK->playerData.unit;
+    if (a_id > 0) {
+        if (a_id == 1) {
+            unit = &DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[0]];
+        } else if (a_id == 2) {
+            unit = &DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[1]];
+        } else {
+            unit = &DDS3_GBWK->playerData.stock[a_id - 4];
+        }
+    }
+    hp = unit->now.hp;
+    maxhp = unit->now.maxhp;
+    itfDrawMiscSpriteAlpha(a_x + 195, a_y + 16, a_z, a_alphaRate, hSpr, 13, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    itfCalcSpriteWidth(hSpr, 157, hp, maxhp);
+    itfDrawMiscSpriteAlpha(a_x + 196, a_y + 15, a_z, a_alphaRate, hSpr, 157, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    sprintf(str, cmpPartyDrawFuncData, hp);
+    color = a_fontColor;
+    if (a_fontColor == 0xA09DC380) {
+        color = 0x754B3D80;
+        if (maxhp > 0 && !datCheckDying(unit)) {
+            color = 0xB4A06480;
+            if (hp * 100 / maxhp >= 50) {
+                color = a_fontColor;
+            }
+        }
+    }
+    itfDrawMiscFont(ITF_DM_STYLE_SNUM, a_x + 203, a_y + 1, a_z, 0, color, a_alphaRate, str);
+    switch (a_id) {
+    case 0:
+        mag = DDS3_GBWK->playerData.mag;
+        maxmag = DDS3_GBWK->playerData.val24;
+        itfDrawMiscSpriteAlpha(a_x + 238, a_y + 16, a_z, a_alphaRate, hSpr, 13, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        itfCalcSpriteWidth(hSpr, 166, mag, maxmag);
+        itfDrawMiscSpriteAlpha(a_x + 239, a_y + 15, a_z, a_alphaRate, hSpr, 166,
+                               DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        sprintf(str, cmpPartyDrawFuncData2, mag);
+        itfDrawMiscFont(ITF_DM_STYLE_SNUM, a_x + 246, a_y + 1, a_z, 0, a_fontColor, a_alphaRate, str);
+        level = DDS3_GBWK->playerData.unit.level;
+        break;
+    case 1:
+        level = DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[0]].level;
+        break;
+    case 2:
+        level = DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[1]].level;
+        break;
+    default:
+        level = DDS3_GBWK->playerData.stock[a_id - 4].level;
+        break;
+    }
+    sprintf(str, cmpPartyDrawFuncData3, level);
+    itfDrawMiscFont(ITF_DM_STYLE_SNUM, a_x + 171, a_y + 4, a_z, 0, a_fontColor, a_alphaRate, str);
+    if (a_id == 0) {
+        bst = DDS3_GBWK->playerData.unit.badStatus;
+    } else if (a_id == 1) {
+        bst = DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[0]].badStatus;
+    } else if (a_id == 2) {
+        bst = DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[1]].badStatus;
+    } else {
+        bst = DDS3_GBWK->playerData.stock[a_id - 4].badStatus;
+    }
+    itfIconDrawBadStatus(a_x + 127, a_y + 1, a_z, a_alphaRate, cmpGetBstNo(bst), DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpPartyDrawFunc);
+#endif
 
 dds3ProcessID_t *cmpStockListProcessStart(void)
 {
@@ -693,7 +851,7 @@ void cmpStockListMake(dds3ProcessID_t *PID) {
     wk = cmpGetStockPID();
     itfMenuSetRootMenu(PID, 0, g_itemNo[0], NULL);
     itfMenuSetDrawFunc(PID, 0, cmpPartyDrawFunc);
-    idx = DDS3_GBWK->stack_p[0];
+    idx = DDS3_GBWK->playerData.stack_p[0];
     if (idx != -1) {
         if (cmpChkDevilStockExist(idx)) {
             devilId = cmpGetDevilStockDevilID(idx);
@@ -706,7 +864,7 @@ void cmpStockListMake(dds3ProcessID_t *PID) {
         itfMenuSetDrawFunc(PID, 1, cmpPartyDrawFunc);
         itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
     }
-    idx = DDS3_GBWK->stack_p[1];
+    idx = DDS3_GBWK->playerData.stack_p[1];
     if (idx != -1) {
         if (cmpChkDevilStockExist(idx)) {
             devilId = cmpGetDevilStockDevilID(idx);
@@ -723,7 +881,7 @@ void cmpStockListMake(dds3ProcessID_t *PID) {
     itfMenuSetDrawFunc(PID, 3, NULL);
     itfMenuSetFlagMenu(PID, 3, ITFMENU_CB_GF_ENABLE_SELECT, 0);
     itfMenuSetFlagMenu(PID, 3, ITFMENU_CB_GF_PANEL_DRAW_OFF, 1);
-    for (i = wk->page * 8; i < DDS3_GBWK->partyNum && i < wk->page * 8 + 8; i++) {
+    for (i = wk->page * 8; i < DDS3_GBWK->playerData.partyNum && i < wk->page * 8 + 8; i++) {
         if (cmpChkDevilStockExist(i)) {
             devilId = cmpGetDevilStockDevilID(i);
             id = i - wk->page * 8 + 4;
@@ -731,7 +889,7 @@ void cmpStockListMake(dds3ProcessID_t *PID) {
             itfMenuSetDrawFunc(PID, id, cmpPartyDrawFunc);
         }
     }
-    max = DDS3_GBWK->partyNum - wk->page * 8;
+    max = DDS3_GBWK->playerData.partyNum - wk->page * 8;
     if (max > 8) {
         max = 8;
     }
@@ -1241,10 +1399,10 @@ s32 cmpCallGetProcessData11(dds3ProcessID_t *id)
 {
     cmpStatusWork_t *wk = dds3GetProcessData(id);
 
-    if (wk->type != CMP_STATUS_TYPE_COMB_SWD_DSP && (wk->flags2 & 2) && !wk->luckSet) {
+    if (wk->type != CMP_STATUS_TYPE_COMB_SWD_DSP && (wk->unit.flag & 2) && !wk->luckSet) {
         datCalcLuckParam();
-        wk->luck = DDS3_GBWK->playerData.unit.now.luck;
-        wk->luckBackup = DDS3_GBWK->playerData.unit.backup.luck;
+        wk->unit.now.luck = DDS3_GBWK->playerData.unit.now.luck;
+        wk->unit.backup.luck = DDS3_GBWK->playerData.unit.backup.luck;
         wk->luckSet = 1;
     }
     if (wk->step2 != 3) {
@@ -1616,7 +1774,142 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCallMoverGetPosition);
 
 INCLUDE_ASM(const s32, "code_003648C0", DrawProcess_cmpStatus);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetProcessData12);
+s32 cmpCallGetProcessData12(dds3ProcessID_t *PID) {
+    cmpStatusWork_t *wk;
+    s32 alpha;
+    s32 aisyo;
+    u32 color;
+    s32 help;
+    s32 sword;
+    frFontHandle_t *frq;
+
+    wk = dds3GetProcessData(PID);
+    if (!(wk->flags & 0x100)) {
+        return 0;
+    }
+    alpha = 255;
+    if (wk->step2 == 0) {
+        alpha = 0;
+        if (wk->step == 4) {
+            alpha = (f32)wk->count * 255.0f / 10.0f;
+            if (wk->unk1C != 1 && wk->unk1C != 16) {
+                alpha = 255 - alpha;
+            }
+        } else if (wk->step == 1 || wk->step == 3 || wk->step == 5 || wk->step == 6) {
+            alpha = 255;
+        }
+    } else if (wk->step2 == 5) {
+        alpha = 0;
+    }
+    cmpCallSetOt4(255);
+    cmpDrawRaidouSkill(255);
+    cmpCallSetOt5(255);
+    cmpCallSetOt3(255);
+    CmpStatusDraw(255);
+    cmpCallGetSpriteHnd3(-10, -10, 255, CMP_SPR_STATUS, 121);
+    cmpEffectSetRGBA(0x80808080);
+    cmpDrawEffect();
+    if (wk->flags & 0x200) {
+        cmpCallLoadStatusModel(ModelOt);
+    }
+    cmpCallDrawSprList(wk, alpha);
+    cmpDrawPartsExp(&wk->unit, alpha);
+    cmpDrawParameter(wk, alpha);
+    cmpDrawSprList(-10, 379, alpha, CMP_SPR_COMMON, cmpCallGetProcessData3Data);
+    cmpDrawSprList(0, 0, alpha, CMP_SPR_STATUS, cmpCallGetProcessData3Data2);
+    if (wk->unit.devilId <= 0) {
+        sbtlFunc7(wk, alpha);
+    } else {
+        cmpCallDrawFont2(140, 62, 0xA0A0A0A0, alpha, sbtlGetWajutsuNameFont(wk->unit.field14C));
+        if (wk->type & 0x4000000) {
+            cmpRefDDS3GBWK4(&wk->unit);
+        }
+        cmpCallDrawSprList2(wk, alpha);
+        cmpDrawPartsOmoideSkill(wk, alpha);
+        if (wk->type & 0x4000000) {
+            cmpCallGetCsrSelSkl();
+        }
+    }
+    if (wk->unit.devilId == 0) {
+        if (cmpDrawParamSub(wk) && wk->unk311C) {
+            if (!(wk->unk3120 & 0x40)) {
+                help = datData20[DDS3_GBWK->playerData.sword].unk20;
+                if (help) {
+                    itfDrawMiscHelp(18, 383, 0x1000, 0, 0xA09DC380, 104, 0, help, alpha / 255.0f, 0);
+                }
+            } else {
+                help = datData20[wk->unk656].unk20;
+                if (help) {
+                    itfDrawMiscHelp(18, 383, 0x1000, 0, 0x64E6AA80, 104, 0, help, alpha / 255.0f, 0);
+                }
+            }
+            wk->unk3120 = (wk->unk3120 + 1) & 0x7F;
+        } else {
+            if (wk->type == CMP_STATUS_TYPE_COMB_SWD_DSP) {
+                sword = wk->unk656;
+            } else {
+                sword = DDS3_GBWK->playerData.sword;
+            }
+            help = datData20[sword].unk20;
+            if (help) {
+                itfDrawMiscHelp(18, 383, 0x1000, 0, 0xA09DC380, 104, 0, help, alpha / 255.0f, 0);
+            }
+        }
+    } else if (cmpDrawPartsOmoideSkillSub2(wk)) {
+        color = 0xA09DC380;
+        if (wk->unit.flag & 2) {
+            if (wk->type == CMP_STATUS_TYPE_COMB_SWD_DSP) {
+                aisyo = datGetSwordAisyoEx(wk->unk656);
+                if (aisyo != datGetSwordAisyo()) {
+                    color = 0x64E6AA80;
+                }
+            } else {
+                aisyo = datGetSwordAisyo();
+            }
+        } else {
+            aisyo = gohData7[wk->unit.devilId].aisyoId;
+        }
+        frSetVariableRequest(0, EE_ADDR_S(cmpCallGetProcessData3Data3));
+        frq = itfDrawBankTextWithLayoutFlags(288, 3064, 0x1000, aisyo, cmpData9, 0);
+        frSetFontColor(frq, (color & 0xFFFFFF00) | ((color & 0xFF) * alpha / 255));
+        frDrawFontOt(frq, 1, 104);
+        frDestroyFontRequestAfter(frq);
+    }
+    DrawHelp(wk, 255);
+    if (wk->flags & 0x4000) {
+        cmpCallMoverGetPosition(wk);
+    }
+    if (wk->step2 == 1 && (wk->step == 9 || wk->step == 13)) {
+        DrawProcess_cmpStatus(wk);
+    }
+    if (wk->unk2EDC) {
+        cmpCallGetSpriteHnd3(285, 265, 255, CMP_SPR_STATUS, 66);
+        cmpDrawSkillNameEx(wk->unk2EDC, 287, 268, 0x40804080, 255);
+        if (wk->unk2EE0 == -1) {
+            frq = itfDrawBankTextWithLayoutFlags(288, 2752, 0, wk->unk2EDC, cmpCallGetProcessData12Data, 1);
+            cmpCallGetSpriteHnd3(285, 265, 64, CMP_SPR_STATUS, 108);
+        } else {
+            frq = itfDrawBankTextWithLayoutFlags(288, 2752, 0, wk->unit.aOmoideSkill[wk->unk2EE0],
+                                                 cmpCallGetProcessData12Data, 1);
+        }
+        frSetFontColor(frq, 0x80808080);
+        frDrawFontOt(frq, 1, 103);
+        frDestroyFontRequestAfter(frq);
+    }
+    if (wk->unk2ED0) {
+        if (wk->unk2ED0 < 30) {
+            alpha = wk->unk2ED0 * 140 / 30;
+        } else {
+            alpha = 140 - (wk->unk2ED0 * 140 - 4200) / 30;
+        }
+        cmpCallGetSpriteHnd3(wk->unk2ED4, wk->unk2ED8, alpha, CMP_SPR_STATUS, 108);
+        wk->unk2ED0 += 2;
+        if (wk->unk2ED0 >= 51) {
+            wk->unk2ED0 = 0;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_003648C0", Start_cmpStatus);
 
@@ -1854,9 +2147,9 @@ s32 cmpCallMenuGetSelectID(void) {
     s32 ret = -1;
 
     if (id == 1) {
-        ret = DDS3_GBWK->stack_p[0];
+        ret = DDS3_GBWK->playerData.stack_p[0];
     } else if (id == 2) {
-        ret = DDS3_GBWK->stack_p[1];
+        ret = DDS3_GBWK->playerData.stack_p[1];
     } else if (id >= 4) {
         ret = id + cmpGetStockPID()->page * 8 - 4;
     }
@@ -1871,7 +2164,107 @@ INCLUDE_ASM(const s32, "code_003648C0", cmpCallCombineDraw2);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpRefDDS3GBWK3);
 
-INCLUDE_ASM(const s32, "code_003648C0", cmpMenuFilterUnit);
+s32 cmpMenuFilterUnit(sdatUnitWork_t *psUnit, sdatUnitWork_t *psUnitChk, ecmpKudaCMU iAttrId, BSTF iBadStatus) {
+    s32 para;
+
+    if (iAttrId & 1) {
+        if ((psUnit->flag & 6) == 4) {
+            if (psUnit->devilId == 0) {
+                return 0;
+            }
+        } else if (psUnit->devilId == 0) {
+            return 0;
+        }
+    }
+    if ((iAttrId & 2) && !(psUnit->flag & 2)) {
+        return 0;
+    }
+    if ((iAttrId & 4) && psUnit->now.hp >= psUnit->now.maxhp) {
+        return 0;
+    }
+    if ((iAttrId & 8) && DDS3_GBWK->playerData.mag >= DDS3_GBWK->playerData.val24) {
+        return 0;
+    }
+    if ((iAttrId & 0x10) && Unlock_2(psUnit->devilId) != 1) {
+        return 0;
+    }
+    if ((iAttrId & 0x20) && Unlock_2(psUnit->devilId) != 2) {
+        return 0;
+    }
+    if ((iAttrId & 0x40) && Unlock_2(psUnit->devilId) != 3) {
+        return 0;
+    }
+    if ((iAttrId & 0x80) && Unlock_2(psUnit->devilId) != 4) {
+        return 0;
+    }
+    if ((iAttrId & 0x100) && Unlock_2(psUnit->devilId) != 5) {
+        return 0;
+    }
+    if ((iAttrId & 0x200) && Unlock_2(psUnit->devilId) != 6) {
+        return 0;
+    }
+    if ((iAttrId & 0x400) && Unlock_2(psUnit->devilId) != 7) {
+        return 0;
+    }
+    if ((iAttrId & 0x800) && (psUnit->badStatus & 0x8000)) {
+        return 0;
+    }
+    if ((iAttrId & 0x1000) && !(psUnit->badStatus & iBadStatus)) {
+        return 0;
+    }
+    if (iAttrId & 0x2000) {
+        para = psUnit->backup.str + psUnit->pitem.str[0];
+        if (psUnit->flag & 2) {
+            para -= datGetSword4Param(DDS3_GBWK->playerData.sword, 0);
+        }
+        if (para >= 40) {
+            return 0;
+        }
+    }
+    if (iAttrId & 0x4000) {
+        para = psUnit->backup.tec + psUnit->pitem.tec[0];
+        if (psUnit->flag & 2) {
+            para -= datGetSword4Param(DDS3_GBWK->playerData.sword, 1);
+        }
+        if (para >= 40) {
+            return 0;
+        }
+    }
+    if (iAttrId & 0x8000) {
+        para = psUnit->backup.vit + psUnit->pitem.vit[0];
+        if (psUnit->flag & 2) {
+            para -= datGetSword4Param(DDS3_GBWK->playerData.sword, 2);
+        }
+        if (para >= 40) {
+            return 0;
+        }
+    }
+    if (iAttrId & 0x10000) {
+        para = psUnit->backup.luck + psUnit->pitem.luck[0];
+        if (psUnit->flag & 2) {
+            para -= datGetSword4Param(DDS3_GBWK->playerData.sword, 3);
+        }
+        if (para >= 40) {
+            return 0;
+        }
+    }
+    if ((iAttrId & 0x20000) && psUnit->chuusei >= 99) {
+        return 0;
+    }
+    if ((iAttrId & 0x40000) && (psUnit->badStatus & 0x80000)) {
+        return 0;
+    }
+    if ((iAttrId & 0x100000) && !(psUnit->flag & 2)) {
+        return 0;
+    }
+    if ((iAttrId & 0x200000) && psUnit != psUnitChk) {
+        return 0;
+    }
+    if ((iAttrId & 0x400000) && psUnit == psUnitChk) {
+        return 0;
+    }
+    return 1;
+}
 
 /* NON_MATCHING: 85 of 191 words match.  */
 #ifdef NON_MATCHING
@@ -1901,8 +2294,8 @@ s32 cmpMenuFilter(struct tagCMP_WORK *wk) {
     stockNums = datGetStockDevilNums();
     units[0] = &DDS3_GBWK->playerData.unit;
     for (i = 0; i < 2; i++) {
-        if (DDS3_GBWK->stack_p[i] >= 0) {
-            units[i + 1] = &DDS3_GBWK->playerData.stock[DDS3_GBWK->stack_p[i]];
+        if (DDS3_GBWK->playerData.stack_p[i] >= 0) {
+            units[i + 1] = &DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[i]];
         } else {
             units[i + 1] = NULL;
         }
@@ -2025,7 +2418,7 @@ void cmpChkSkillSelect(sdatUnitWork_t *a_pUseUnit) {
                         ok = 1;
                     }
                     if (!ok) {
-                        for (j = 0; j < DDS3_GBWK->partyNum; j++) {
+                        for (j = 0; j < DDS3_GBWK->playerData.partyNum; j++) {
                             if (cmpChkEnableUseSkill(a_pUseUnit, &DDS3_GBWK->playerData.stock[j], id)) {
                                 itfMenuSetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
                                 ok = 1;
@@ -2073,9 +2466,209 @@ INCLUDE_ASM(const s32, "code_003648C0", itfGeneralMenuReturnFunc);
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpSetupDvlSkl);
 
-INCLUDE_ASM(const s32, "code_003648C0", DrawFuncSkl_sbtlCmndMenuNew);
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawPartsNameData6);
 
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData38);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprListData4);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawPartsExpData2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawEquipData3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprList2Data);
+
+INCLUDE_SDATA(const s32, "code_003648C0", sbtlDrawSkillNameExSubData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprList2Data2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetProcessData3Data3);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpSetBtlSklData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", mtrCallMultiBlurOffData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData39);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData40);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetStockPID5Data);
+
+INCLUDE_SDATA(const s32, "code_003648C0", Setup_cmpKudaData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData41);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetStockPID5Data2);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpUpdateSkillHD_cmpKudaData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpUpdateSkillListHdData);
+
+INCLUDE_SDATA(const s32, "code_003648C0", cmpData42);
+
+void DrawFuncSkl_sbtlCmndMenuNew(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_color, u8 a_alpha) {
+    struct sprHandle_t *hSpr;
+    sdatUnitWork_t *unit;
+    s32 x;
+    s32 y;
+    s32 icon;
+    s32 cost;
+    SKLID *skill;
+    u32 rootAlpha;
+    char buf[16];
+
+    hSpr = cmpGetSpriteHnd(CMP_SPR_LIST);
+    if (hSpr == NULL) {
+        return;
+    }
+    x = a_x + 19;
+    y = a_y + 1;
+    itfDrawMiscSpriteAlpha(x, y, a_z, a_alpha, cmpGetSpriteHnd(CMP_SPR_COMMON), 84, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    x = a_x;
+    y = a_y + 21;
+    if (a_id == 0) {
+        itfDrawMiscSpriteAlpha(x, y, a_z, a_alpha, hSpr, 66, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    } else {
+        itfDrawMiscSpriteAlpha(x, y, a_z, a_alpha, hSpr, 49, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (a_id == itfMenuGetSelectID(cmpData39)) {
+        rootAlpha = GetSelectRootID(cmpData39, 2);
+        x = a_x;
+        y = a_y;
+        itfDrawMiscSpriteAlpha(x, y, a_z, rootAlpha, cmpGetSpriteHnd(CMP_SPR_COMMON), 21, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        x = a_x + 49;
+        itfDrawMiscSpriteAlpha(x, y, a_z, rootAlpha, hSpr, 50, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+        if (itfMenuGetFlag(cmpData39, 8) && a_id < 8) {
+            icon = cmpWork9[a_id];
+            if (icon > 0) {
+                x = 18;
+                y = 384;
+                itfDrawMiscHelp(x, y, a_z, 0, 0xA09DC380, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL, 0, icon, a_alpha / 255.0f, 0);
+            }
+        }
+    }
+    skill = &cmpWork9[a_id];
+    icon = sbtlChkRepeat(*skill);
+    if (icon >= 0) {
+        x = a_x + 1;
+        y = a_y + 1;
+        itfIconDrawSprite(x, y, a_z, a_alpha, icon, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (itfMenuChkMenuTop(cmpData39, a_id)) {
+        itfDrawMiscSpriteList(0, 0, a_z, a_alpha, hSpr, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL, cmpCallGetSpriteHnd5Data2);
+        x = a_x + 135;
+        y = a_y - 18;
+        itfDrawMiscSpriteAlpha(x, y, a_z, a_alpha, cmpGetSpriteHnd(CMP_SPR_COMMON), 4, DDS3_OT_2D_NORMAL | DDS3_OT_BACKEX_NORMAL);
+    }
+    if (*skill >= 0) {
+        if (cmpData41 >= 0) {
+            unit = &DDS3_GBWK->playerData.stock[cmpData41];
+        } else {
+            unit = &DDS3_GBWK->playerData.unit;
+        }
+        cost = sbtlGetSkillCost(unit, cmpWork9[a_id]);
+        if (cost <= 0) {
+            return;
+        }
+        x = a_x + 133;
+        y = a_y + 5;
+        sprintf(buf, "%3d", cost);
+    } else {
+        sprintf(buf, mapData171);
+    }
+    itfDrawMiscFont(ITF_DM_STYLE_SNUM, x, y, a_z, 0, a_color, a_alpha, buf);
+}
+
+/* NON_MATCHING: 234 of 242 words match.  */
+#ifdef NON_MATCHING
+void mapCallGetStockPID(void) {
+    dds3ProcessID_t *pid;
+    struct tagCMP_WORK *cmp;
+    s32 sel;
+    s32 i;
+    s32 found;
+    SKLID id;
+    s32 n;
+    SKLID list[8];
+
+    pid = cmpPartyDrawFuncSub();
+    cmp = cmpGetStockPID();
+    sel = itfMenuGetSelectID(pid);
+    if (sel == 0 || sel == 3) {
+        return;
+    }
+    if (sel == 1) {
+        sel = DDS3_GBWK->playerData.stack_p[0];
+    } else if (sel == 2) {
+        sel = DDS3_GBWK->playerData.stack_p[1];
+    } else if (sel >= 4) {
+        sel = sel + cmp->page * 8 - 4;
+    }
+    for (i = 0; i < 8; i++) {
+        list[i] = -1;
+    }
+    for (i = 0; i < 4; i++) {
+        mapCallGetStockPIDWork2[i] = DDS3_GBWK->playerData.stock[sel].battleskill[i];
+    }
+    mapCallGetStockPIDWork[0] = 1;
+    for (i = 1; i < 4; i++) {
+        mapCallGetStockPIDWork[i] = DDS3_GBWK->playerData.stock[sel].autoskill[i - 1];
+    }
+    list[0] = 149;
+    n = 0;
+    for (i = 0; i < 17; i++) {
+        id = DDS3_GBWK->playerData.stock[sel].haveskill[i];
+        if (id == 149 || id == 0 || id == 288) {
+            continue;
+        }
+        found = sbtlCallBtlDrawRedGgData[id].type & 0xF000;
+        if (found == 0 || found == 0x1000) {
+            list[++n] = id;
+        }
+    }
+    for (i = 0; i < 8; i++) {
+        id = list[i];
+        if (id > 0) {
+            itfMenuSetFont(cmpData39, i, sbtlData95[id]);
+            itfMenuSetFunc(cmpData39, i, CallFuncSkill2);
+        } else if (id == 0) {
+            itfMenuSetFont(cmpData39, i, mapCallGetStockPIDData);
+            itfMenuSetFunc(cmpData39, i, NULL);
+        } else {
+            itfMenuSetFont(cmpData39, i, mapData171);
+            itfMenuSetFunc(cmpData39, i, NULL);
+        }
+        cmpWork9[i] = id;
+    }
+    itfMenuSetFlagMenu(cmpData39, -1, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+    found = 0;
+    cmpChkSkillSelect(&DDS3_GBWK->playerData.stock[sel]);
+    itfMenuSetFlagMenu(cmpData39, 0, ITFMENU_CB_GF_ENABLE_DECIDE, 0);
+    for (i = 0; i < 8; i++) {
+        if (itfMenuGetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_DECIDE)) {
+            itfCallGetProcessData5(cmpData39, i);
+            found = 1;
+            break;
+        }
+    }
+    if (found) {
+        return;
+    }
+    for (i = 0; i < 8; i++) {
+        if (itfMenuGetFlagMenu(cmpData39, i, ITFMENU_CB_GF_ENABLE_SELECT)) {
+            itfCallGetProcessData5(cmpData39, i);
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        itfMenuSetFlagMenu(cmpData39, 0, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+        itfCallGetProcessData5(cmpData39, 0);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", mapCallGetStockPID);
+#endif
 
 /* NON_MATCHING: 126 of 128 words match.  */
 #ifdef NON_MATCHING
@@ -2131,7 +2724,78 @@ INCLUDE_ASM(const s32, "code_003648C0", nmeSetupCmpKudaSub);
 
 INCLUDE_ASM(const s32, "code_003648C0", nmeSetupCmpKudaSub2);
 
-INCLUDE_ASM(const s32, "code_003648C0", Setup_cmpKuda);
+void Setup_cmpKuda(s32 a_mode) {
+    dds3ProcessID_t *pid;
+
+    pid = cmpPartyDrawFuncSub();
+    Setup_cmpKudaData = a_mode;
+    cmpData41 = -1;
+    cmpCallGetStockPID5Data2 = -1;
+    switch (a_mode) {
+    case 0x50001:
+        itfMenuSetFunc(pid, -1, CallFuncSkill);
+        break;
+    case 0x60001:
+        itfMenuSetFunc(pid, -1, CallFuncSkillSet);
+        break;
+    case 0x10001:
+        itfMenuSetFunc(pid, -1, cmpSetSavePanel);
+        break;
+    case 0x40001:
+        itfMenuSetFunc(pid, -1, cmpSetupDvlSkl);
+        break;
+    case 0x30001:
+        itfMenuSetFunc(pid, -1, cmpCharSelectSetDefault);
+        break;
+    case 0x20001:
+        itfMenuSetFunc(pid, -1, cmpCallFuncOraganize);
+        break;
+    }
+    if (Setup_cmpKudaData == 0x10001) {
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 0);
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_CALL_FUNC, 0);
+        cmpSetFilter(NULL, ecmpKudaSelectMode_ecmpKSM_Target, ecmpKudaCMU_None);
+    } else if (Setup_cmpKudaData == 0x50001) {
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 1);
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+        mapSetupCmpKudaSub();
+    } else if (Setup_cmpKudaData == 0x60001) {
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 0);
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_CALL_FUNC, 0);
+        nmeDrawBox();
+    } else if (Setup_cmpKudaData == 0x40001) {
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 1);
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+        nmeCallSetFilter();
+    } else if (Setup_cmpKudaData == 0x30001) {
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 1);
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+        nmeSetupCmpKudaSub();
+    } else if (Setup_cmpKudaData == 0x20001) {
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 1);
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+        nmeSetupCmpKudaSub2();
+    } else {
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 1);
+        itfMenuSetFlagMenu(pid, -1, ITFMENU_CB_GF_DRAW_CALL_FUNC, 1);
+        cmpSetFilter(NULL, ecmpKudaSelectMode_ecmpKSM_Target, ecmpKudaCMU_NoMaigo | ecmpKudaCMU_NoDead | ecmpKudaCMU_Devil);
+    }
+    cmpSetFilterBadStatus(0);
+    cmpCallGetStockPID();
+    itfMenuSetFlagMenu(pid, 3, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+    itfMenuSetFlag(pid, 8, 1);
+    itfMenuSetFlag(pid, 0x200, 0);
+    if (fldGlobalBase.nakamaMode) {
+        itfCallGetProcessData5(pid, datGetStockDevilIndex(DDS3_GBWK->mapSummonID));
+    } else {
+        cmpCallGetStockDevilNums();
+        cmpCallGetStockPID3();
+    }
+    if (Setup_cmpKudaData == 0x50001) {
+        mapMenuCreateMenuPID_itf();
+    }
+    cmpData40 = 0;
+}
 
 /* NON_MATCHING: 90 of 92 words match.  */
 #ifdef NON_MATCHING
@@ -2200,7 +2864,7 @@ void cmpCallGetStockPID3(void) {
         if (i == 0) {
             unit = &DDS3_GBWK->playerData.unit;
         } else if (i < 3) {
-            k = DDS3_GBWK->stack_p[i - 1];
+            k = DDS3_GBWK->playerData.stack_p[i - 1];
             if (k >= 0) {
                 unit = &DDS3_GBWK->playerData.stock[k];
             }
@@ -2269,18 +2933,18 @@ s32 cmpUpdateFontCharPID(void) {
     PID = cmpPartyDrawFuncSub();
     stockNums = datGetStockDevilNums();
     wk = cmpGetStockPID();
-    if (DDS3_GBWK->stack_p[0] == -1) {
+    if (DDS3_GBWK->playerData.stack_p[0] == -1) {
         itfMenuSetFont(PID, 1, cmpData43);
     } else {
-        devilId = DDS3_GBWK->playerData.stock[DDS3_GBWK->stack_p[0]].devilId;
+        devilId = DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[0]].devilId;
         if (devilId > 0) {
             itfMenuSetFont(PID, 1, g_itemNo[devilId]);
         }
     }
-    if (DDS3_GBWK->stack_p[1] == -1) {
+    if (DDS3_GBWK->playerData.stack_p[1] == -1) {
         itfMenuSetFont(PID, 2, cmpData43);
     } else {
-        devilId = DDS3_GBWK->playerData.stock[DDS3_GBWK->stack_p[1]].devilId;
+        devilId = DDS3_GBWK->playerData.stock[DDS3_GBWK->playerData.stack_p[1]].devilId;
         if (devilId > 0) {
             itfMenuSetFont(PID, 2, g_itemNo[devilId]);
         }
@@ -2318,7 +2982,7 @@ s32 cmpUpdateFontCharPID(void) {
             itfMenuSetFont(PID, id, cmpData43);
             itfMenuSetDrawFunc(PID, id, NULL);
             itfMenuSetFlagMenu(PID, id, ITFMENU_CB_GF_ENABLE_SELECT, 0);
-            if (i >= DDS3_GBWK->partyNum) {
+            if (i >= DDS3_GBWK->playerData.partyNum) {
                 itfMenuSetFlagMenu(PID, id, ITFMENU_CB_GF_PANEL_DRAW_OFF, 1);
             }
         }
@@ -2446,7 +3110,150 @@ INCLUDE_RODATA(const s32, "code_003648C0", ProcessStart_cmpStatusStrCampStatusMa
 
 INCLUDE_RODATA(const s32, "code_003648C0", ProcessStart_cmpStatusStrCampStatusDraw);
 
+/* NON_MATCHING: 358 of 365 words match.  */
+#ifdef NON_MATCHING
+s32 cmpUpdateSkillHD_cmpKuda(void) {
+    dds3ProcessID_t *PID;
+    struct tagCMP_WORK *wk;
+
+    PID = cmpPartyDrawFuncSub();
+    itfMenuGetSelectID(PID);
+    wk = cmpGetStockPID();
+    switch (cmpData40) {
+    case 0:
+        if (!itfMenuGetFlag(PID, 8)) {
+            itfMenuSetFlag(cmpData39, 0x1000, 1);
+            cmpData40 = 10;
+            break;
+        }
+        cmpData41 = cmpCallMenuGetSelectID();
+        mapCallGetStockPID();
+        if (itfMenuGetCtrlType(PID) != ITFMENU_CTRL_TYPE_WAIT) {
+            break;
+        }
+        if (dds3Data[0] >= 0) {
+            break;
+        }
+        itfMenuSetFlag(cmpData39, 0x1000, 1);
+        itfMenuSetFlag(PID, 0x1000, 1);
+        itfMenuSetFlagMenu(wk->menuPID, 0x50001, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 0);
+        cmpUpdateSkillHDCmpKudaSub(1);
+        cmpUpdateSkillHDCmpKudaSub2(1);
+        cmpUpdateSkillHDCmpKudaSub4(0);
+        cmpUpdateSkillHDCmpKudaSub3(1);
+        cmpData40 = 19;
+        break;
+    case 1:
+        if (itfMenuGetFlag(cmpData39, 8)) {
+            break;
+        }
+        itfMenuSetFlagMenu(cmpData39, -1, ITFMENU_CB_GF_SELECT, 0);
+        itfMenuSetFlagMenu(cmpData39, -1, ITFMENU_CB_GF_CURSOR, 0);
+        itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_SELECT, 0);
+        itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_CURSOR, 0);
+        itfMenuSetFlag(PID, 8, 1);
+        itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+        itfMenuSetFlagMenu(PID, 0, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+        itfMenuSetFlagMenu(PID, 3, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+        if (DDS3_GBWK->playerData.stack_p[0] == -1) {
+            itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+        } else {
+            itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+        }
+        if (DDS3_GBWK->playerData.stack_p[1] == -1) {
+            itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+        } else {
+            itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+        }
+        itfCallGetProcessData5(PID, cmpUpdateSkillHD_cmpKudaData);
+        mapSetupCmpKudaSub();
+        cmpCallGetStockPID();
+        cmpData40 = 0;
+        wk->unk36 = 1;
+        break;
+    case 3:
+        if (!itfMenuGetFlag(PID, 8)) {
+            itfMenuSetFlagMenu(cmpData39, -1, ITFMENU_CB_GF_SELECT, 0);
+            itfMenuSetFlagMenu(cmpData39, -1, ITFMENU_CB_GF_CURSOR, 0);
+            itfMenuSetFlag(cmpData39, 8, 1);
+            itfMenuSetFlag(PID, 0x100, 0);
+            itfMenuSetFlag(PID, 0x200, 0);
+            itfMenuSetSelectID(PID, -1, -1);
+            if (cmpUpdateSkillHD_cmpKudaData >= 5) {
+                wk->page = cmpData41 / 8;
+            }
+            cmpCallGetStockPID();
+            cmpUpdateFontCharPID();
+            itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_SELECT, 0);
+            itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_CURSOR, 0);
+            itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
+            itfMenuSetFlagMenu(PID, cmpUpdateSkillHD_cmpKudaData, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+            itfMenuSetFlagMenu(PID, cmpUpdateSkillHD_cmpKudaData, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
+            cmpData40 = 1;
+        } else if (cmpCallGetStockPID5Data >= 0) {
+            if (cmpCallGetStockPID5Data >= 50) {
+                if (!itfMenuGetFlagMenu(cmpData39, itfMenuGetSelectID(cmpData39), 2)) {
+                    itfMenuSetFlag(PID, 8, 0);
+                }
+                cmpCallGetStockPID5Data = -1;
+            } else {
+                cmpCallGetStockPID5Data++;
+            }
+        }
+        break;
+    case 10:
+        if (!itfMenuGetFlag(cmpData39, 0x4000)) {
+            break;
+        }
+        cmpClearFilter();
+        cmpCallGetStockPID();
+        itfMenuSetFlagMenu(PID, 0, ITFMENU_CB_GF_ENABLE_SELECT, 1);
+        itfMenuSetFlag(cmpData39, 0x1000, 0);
+        itfMenuSetFlag(cmpData39, 0x2000, 0);
+        itfMenuSetFlag(cmpData39, 0x4000, 0);
+        itfMenuSetSelectID(PID, -1, -1);
+        itfMenuSetFlag(cmpData39, 1, 0);
+        cmpData40 = 0;
+        wk->unk36 = 1;
+        return 1;
+    case 19:
+        if (itfMenuGetWaitType2(PID) != 2) {
+            break;
+        }
+        cmpNakamaView();
+        p2sdPlaySE(17, 127, 63);
+        cmpData40 = 20;
+        break;
+    case 20:
+        if (cmpChkEnd()) {
+            mapSetupCmpKudaSub();
+            cmpCallGetStockPID();
+            itfMenuSetFlag(PID, 0x2000, 1);
+            cmpData40 = 0;
+            itfMenuSetFlag(cmpData39, 0x2000, 1);
+            itfMenuSetFlagMenu(wk->menuPID, 0x50001, ITFMENU_CB_GF_DRAW_TITLE_DECIDE, 1);
+            cmpUpdateSkillHDCmpKudaSub(0);
+            cmpUpdateSkillHDCmpKudaSub2(0);
+            cmpUpdateSkillHDCmpKudaSub4(1);
+            cmpUpdateSkillHDCmpKudaSub3(0);
+            wk->flag |= 0x20;
+            break;
+        }
+        wk->flag &= ~0x20;
+        if (Init_cmpStatus() & 0x10000) {
+            break;
+        }
+        if (Init_cmpStatus() & 8) {
+            break;
+        }
+        cmpCallGetStockDevilNums3(PID, 1);
+        break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "code_003648C0", cmpUpdateSkillHD_cmpKuda);
+#endif
 
 INCLUDE_ASM(const s32, "code_003648C0", cmpCallGetCsrSelSkl);
 
@@ -2500,12 +3307,12 @@ void cmpChkSkillSelectHd(void) {
 
     itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_DECIDE, 1);
     itfMenuSetFlagMenu(PID, -1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
-    if (DDS3_GBWK->stack_p[0] == -1) {
+    if (DDS3_GBWK->playerData.stack_p[0] == -1) {
         itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 0);
     } else {
         itfMenuSetFlagMenu(PID, 1, ITFMENU_CB_GF_ENABLE_SELECT, 1);
     }
-    if (DDS3_GBWK->stack_p[1] == -1) {
+    if (DDS3_GBWK->playerData.stack_p[1] == -1) {
         itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 0);
     } else {
         itfMenuSetFlagMenu(PID, 2, ITFMENU_CB_GF_ENABLE_SELECT, 1);
@@ -3085,48 +3892,6 @@ void cmpDrawBack(tagCMP_MAP_WORK *wk) {
     eglLinkAlpha(0);
     itfDrawGridWithResolvedSlot(320, 448, 0, 96, cmpGetSpriteHnd(CMP_SPR_MAP), 1, 44);
 }
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawPartsNameData6);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpData38);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprListData4);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawPartsExpData2);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpDrawEquipData3);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprList2Data);
-
-INCLUDE_SDATA(const s32, "code_003648C0", sbtlDrawSkillNameExSubData);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpCallDrawSprList2Data2);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetProcessData3Data3);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpSetBtlSklData);
-
-INCLUDE_SDATA(const s32, "code_003648C0", mtrCallMultiBlurOffData);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpData39);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpData40);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetStockPID5Data);
-
-INCLUDE_SDATA(const s32, "code_003648C0", Setup_cmpKudaData);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpData41);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpCallGetStockPID5Data2);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpUpdateSkillHD_cmpKudaData);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpUpdateSkillListHdData);
-
-INCLUDE_SDATA(const s32, "code_003648C0", cmpData42);
-
-INCLUDE_SDATA(const s32, "code_003648C0", DrawFuncSkl_sbtlCmndMenuNewData);
 
 INCLUDE_SDATA(const s32, "code_003648C0", mapData171);
 

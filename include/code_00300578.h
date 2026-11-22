@@ -4,10 +4,13 @@
 #include "common.h"
 #include "kernel.h"
 #include "cmpStatus.h"
+#include "sdatUnit.h"
 extern dds3ProcessID_t *g_mainPID;
 void titleFunc7(void);
 s32 fldCallSetFontColor(f32 arg);
+#ifdef VERSION_RAIDOU1
 void cmpCallDrawSprList(s32 mode, s32 kind, dds3ProcessID_t *target, u32 flag, s32 type);
+#endif
 void *sysLeaf50(s32 arg);
 /* Process data of the cmpStatus process (g_mainPID). */
 typedef struct tagCMP_STATUS_WORK {
@@ -19,25 +22,32 @@ typedef struct tagCMP_STATUS_WORK {
     s32 step;                    /* 0x0C */
     u8 unk10[4];
     s32 step2;                   /* 0x14 */
-    u8 unk18[8];
+    u8 unk18[4];
+    s32 unk1C;
     s32 type;                    /* 0x20: CMP_STATUS_TYPE */
     s16 count;                   /* 0x24 */
     u8 unk26[2];
     s32 unk28;
     s32 unk2C;
     u8 unk30[0xC];
-    s32 flags2;                  /* 0x3C: bit 1 refreshes the luck values once */
-    u8 unk40[0x2A];
-    s16 luck;                    /* 0x6A: playerData.unit.now.luck */
-    u8 unk6C[0x16];
-    s16 luckBackup;              /* 0x82: playerData.unit.backup.luck */
-    u8 unk84[0x2E00 - 0x84];
+    sdatUnitWork_t unit;         /* 0x3C: the unit shown; flag bit 1 refreshes the luck values once */
+    u8 unk1B4[0x656 - 0x1B4];
+    s16 unk656;                  /* sword shown by a sword status */
+    u8 unk658[0x2E00 - 0x658];
     s32 unk2E00;
     u8 unk2E04[0x2ECC - 0x2E04];
     s32 unk2ECC;
-    u8 unk2ED0[0x2F1C - 0x2ED0];
+    s32 unk2ED0;                 /* frame of the sprite blink at unk2ED4/unk2ED8, 0 for none */
+    s32 unk2ED4;
+    s32 unk2ED8;
+    SKLID unk2EDC;               /* skill whose name is drawn, 0 for none */
+    s32 unk2EE0;                 /* index into unit.aOmoideSkill, -1 for none */
+    u8 unk2EE4[0x2F1C - 0x2EE4];
     cmpSummnerRankMng_t rankMng;   /* 0x2F1C */
-    u8 unk310C[0x314C - 0x310C];
+    u8 unk310C[0x311C - 0x310C];
+    s32 unk311C;
+    s32 unk3120;                 /* help blink counter; bit 6 shows the sword help */
+    u8 unk3124[0x314C - 0x3124];
     s8 luckSet;                  /* 0x314C */
     u8 unk314D;
     u8 unk314E[2];
@@ -49,6 +59,9 @@ typedef struct tagCMP_STATUS_WORK {
     u8 unk16[0x13D4 - 0x16];
 #endif
 } cmpStatusWork_t;
+#ifdef VERSION_RAIDOU2
+void cmpCallDrawSprList(cmpStatusWork_t *wk, s32 a_alphaRate);
+#endif
 void Release_cmpStatus(cmpStatusWork_t *wk);
 #ifdef VERSION_RAIDOU1
 s32 cmpCallGetProcessData2(dds3ProcessID_t *id);

@@ -1130,7 +1130,7 @@ s32 sbtlRefDDS3GBWK3(s32 id) {
         }
         if (devil != 0) {
             cnt++;
-            total += sbtlIfDrawActionSub(devil)->field04;
+            total += sbtlIfDrawActionSub(devil)->level;
         }
     }
     if (cnt == 0) {

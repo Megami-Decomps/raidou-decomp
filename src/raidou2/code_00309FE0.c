@@ -459,7 +459,7 @@ s32 sbtlCallGetProcessData5(void) {
     if (wk->fieldB2 != 0) {
         return 0;
     }
-    if (DDS3_GBWK->devilWork[devil->field82].field0 != 0) {
+    if (DDS3_GBWK->playerData.devilWork[devil->field82].field0 != 0) {
         return 0;
     }
     if (GetRand(100) < 10) {
@@ -699,7 +699,7 @@ s32 sbtlRefDDS3GBWK4(s32 id) {
     s32 index = id >= 209 ? id - 209 : id;
 
     if (id < 433) {
-        return DDS3_GBWK->devilWork[index].field6;
+        return DDS3_GBWK->playerData.devilWork[index].field6;
     }
     return 0;
 }
@@ -713,7 +713,7 @@ void sbtlRefDDS3GBWK5(s32 id, s32 value) {
     s32 index = id >= 209 ? id - 209 : id;
 
     if (id < 433) {
-        DDS3_GBWK->devilWork[index].field6 = value;
+        DDS3_GBWK->playerData.devilWork[index].field6 = value;
     }
 }
 #else
@@ -726,7 +726,7 @@ u16 sbtlGetDevilHuumaItem(s32 id) {
     s32 index = id >= 209 ? id - 207 : id;
 
     if (id < 433) {
-        return DDS3_GBWK->devilWork[index].huumaItem;
+        return DDS3_GBWK->playerData.devilWork[index].huumaItem;
     }
     return 0;
 }
@@ -740,7 +740,7 @@ void sbtlRefDDS3GBWK6(s32 id, s32 value) {
     s32 index = id >= 209 ? id - 207 : id;
 
     if (id < 433) {
-        DDS3_GBWK->devilWork[index].huumaItem = value;
+        DDS3_GBWK->playerData.devilWork[index].huumaItem = value;
     }
 }
 #else
@@ -756,7 +756,7 @@ void sbtlCallBtlSearchUnitID15(s32 add) {
     s32 sum;
 
     if (wk != NULL) {
-        value = &DDS3_GBWK->devilWork[data->field82].field2;
+        value = &DDS3_GBWK->playerData.devilWork[data->field82].field2;
         sum = *value + add;
         if (sum > 50) {
             sum = 50;
@@ -1132,20 +1132,20 @@ s32 trmCallGetProcessData(void) {
     SBTL_DEVIL_DATA *data = sbtlIfDrawActionSub(unit->unit.devilId);
     s32 index = data->field82;
 
-    if (DDS3_GBWK->devilWork[index].field0 != 0 && !wk_sbtl->field42DD) {
-        if (DDS3_GBWK->devilWork[index].field0 == 1) {
+    if (DDS3_GBWK->playerData.devilWork[index].field0 != 0 && !wk_sbtl->field42DD) {
+        if (DDS3_GBWK->playerData.devilWork[index].field0 == 1) {
             wk->field98 = 1;
         }
-        if (DDS3_GBWK->devilWork[index].field0 == 2) {
+        if (DDS3_GBWK->playerData.devilWork[index].field0 == 2) {
             wk->field98 = 2;
         }
-        if (DDS3_GBWK->devilWork[index].field0 == 4) {
+        if (DDS3_GBWK->playerData.devilWork[index].field0 == 4) {
             wk->field98 = 4;
         }
-        if (DDS3_GBWK->devilWork[index].field0 == 3) {
+        if (DDS3_GBWK->playerData.devilWork[index].field0 == 3) {
             wk->field98 = 3;
         }
-        DDS3_GBWK->devilWork[index].field0 = 0;
+        DDS3_GBWK->playerData.devilWork[index].field0 = 0;
         return 0;
     }
     wk->field98 = 0;

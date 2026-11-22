@@ -346,7 +346,7 @@ void Init_cmpMain(struct tagCMP_WORK *wk) {
     wk->unk24 = 0;
     wk->page = 0;
     wk->pageMax = num / 9;
-    wk->unk2E = DDS3_GBWK->partyNum / 9;
+    wk->unk2E = DDS3_GBWK->playerData.partyNum / 9;
     cmpUpdateBulletNum();
     cmpResetMotion(0);
     wk->unk28 = 0;

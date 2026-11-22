@@ -252,6 +252,9 @@ cmpCallGetStockPID3	code_003648C0	raidou2 0x27C	66 of 159 words differ	docs/matc
 cmpUpdateFontCharPID	code_003648C0	raidou2 0x36C	132 of 216 words differ	docs/matching/code_003648C0.md	117		
 MakeList	code_003648C0	raidou2 0x22C	77 of 140 words differ	docs/matching/code_003648C0.md	123		
 cmpCallGetCharPID	code_003648C0	raidou2 0x2D0	153 of 178 words differ	docs/matching/code_003648C0.md	129		
+cmpPartyDrawFunc	code_003648C0	raidou2 0x7B0	410 of 487 words differ	docs/matching/code_003648C0.md	135		
+mapCallGetStockPID	code_003648C0	raidou2 0x3C8	8 of 242 words differ	docs/matching/code_003648C0.md	141		
+cmpUpdateSkillHD_cmpKuda	code_003648C0	raidou2 0x5B4	5 of 365 words differ	docs/matching/code_003648C0.md	147		
 CheckFlagTGS	code_003BF2E0	raidou2 0x48	9 of 17 words differ	docs/matching/code_003BF2E0.md	3		
 SetFlagMenu	code_003BF2E0	raidou2 0x98	14 of 38 words differ	docs/matching/code_003BF2E0.md	9		
 SetRootMenu	code_003BF2E0	raidou2 0x94	15 of 38 words differ	docs/matching/code_003BF2E0.md	15		
@@ -274,6 +277,13 @@ rstResultLevelUpAnim	code_003BF2E0	raidou2 0x1D0	12 of 116 words differ	docs/mat
 cmpLoadLocalizeText	code_003BF2E0	raidou2 0x1C4	8 of 113 words differ	docs/matching/code_003BF2E0.md	121		
 rstCallBlendColor2	code_003BF2E0	raidou2 0x2A8	9 of 170 words differ	docs/matching/code_003BF2E0.md	127		
 rstResultCyuuseiMaxAnim	code_003BF2E0	raidou2 0x2B0	30 of 170 words differ	docs/matching/code_003BF2E0.md	133		
+cmpCallMenuGetMenuNum	code_003BF2E0	raidou2 0x394	6 of 229 words differ	docs/matching/code_003BF2E0.md	139		
+Init_rstInit	code_003BF2E0	raidou2 0x604	58 of 385 words differ	docs/matching/code_003BF2E0.md	147		
+Destroy_rstInit	code_003BF2E0	raidou2 0x330	186 of 188 words differ	docs/matching/code_003BF2E0.md	155		
+rstResultGetExpCyuusei	code_003BF2E0	raidou2 0x578	0 of 350 words differ	docs/matching/code_003BF2E0.md	161		
+rstResultExpGauge	code_003BF2E0	raidou2 0x400	3 of 256 words differ	docs/matching/code_003BF2E0.md	167		
+rstCallBlendColor3	code_003BF2E0	raidou2 0x3B0	0 of 236 words differ	docs/matching/code_003BF2E0.md	173		
+rstSetLvUpSkl	code_003BF2E0	raidou2 0x360	45 of 216 words differ	docs/matching/code_003BF2E0.md	181		
 dds3InitDrawEnvSub	code_r1_00104370	raidou1 0x1C4, raidou2 0x1C4	3 of 113 words differ	docs/matching/code_r1_00104370.md	3		
 dds3CallDLinkTexPacket	code_r1_00104370	raidou1 0x128, raidou2 0x128	37 of 73 words differ	docs/matching/code_r1_00104370.md	12		
 mapAM_MaskChk_ID	code_r1_00128378	raidou1 0xAC	7 of 43 words differ	docs/matching/code_r1_00128378.md	3		

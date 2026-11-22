@@ -33,7 +33,11 @@ struct tagCMP_WORK {
     s16 page;                    /* 0x2C: stock list page, 8 entries each */
     s16 unk2E;                   /* 0x2E: stock capacity / 9 */
     s16 pageMax;                 /* 0x30: last stock list page */
-    u8 unk32[6];
+    u8 unk32[2];
+    u8 unk34; /* 0x34: cmpUpdateSkillHDCmpKudaSub */
+    u8 unk35; /* 0x35: cmpUpdateSkillHDCmpKudaSub2 */
+    u8 unk36; /* 0x36: cmpUpdateSkillHDCmpKudaSub4 */
+    u8 unk37;
     /* the Kuda list filter (cmpSetFilterEx) */
     struct sdatUnitWork_t *psUse;   /* 0x38 */
     ecmpKudaSelectMode eSelMode;    /* 0x3C */

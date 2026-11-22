@@ -49,6 +49,14 @@ s32 cmpCallGetProcessData27(void);
 void cmpCallGetProcessData32(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate);
 void cmpCallGetProcessData28(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate);
 extern char cmpData50[];
+void cmpCallGetProcessData31(s32 a_id, s32 a_x, s32 a_y, s32 a_z, u32 a_fontColor, u8 a_alphaRate);
+void jmsDisableSelect(s32 MenuID);
+/* Menu flags copied into SetRootMenuData[14..25]. */
+extern u32 cmpCallMenuGetMenuNumData[4];
+extern u32 cmpCallMenuGetMenuNumData2[4];
+extern u32 cmpCallMenuGetMenuNumData3[4];
+extern struct itfSprList_t cmpCallMenuGetMenuNumData4[];
+extern struct itfSprList_t cmpCallMenuGetMenuNumData5[];
 
 extern jmsVtblEntry_t jmsData12[34];
 extern jmsVtblEntry_t jmsData13[33];
@@ -83,6 +91,16 @@ extern u8 rstWork2[20];
 extern s32 rstOmoideGaIppaiWork4[20];
 extern s32 rstOmoideGaIppaiWork5[20];
 extern u8 s_bRegistMemSkill[20][2];
-void rstSetLvUpSkl(s32 index, s32 *count);
+/* A stock devil's level-up skills for the growth screen (HD _LvUpSkl). */
+typedef struct _LvUpSkl {
+    /* 0x00 */ s32 nmlSkl[3];
+    /* 0x0C */ s32 nmlSklPos[3];
+    /* 0x18 */ s32 memSkl[2];
+    /* 0x20 */ u8 bGetMemSkl[2];
+    /* 0x22 */ u8 ofcMemSkl[2];
+} _LvUpSkl;
+
+extern _LvUpSkl g_aLvUpSkl[20];
+s32 rstSetLvUpSkl(s32 index, s32 *count);
 
 #endif

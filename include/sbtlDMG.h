@@ -321,6 +321,7 @@ s32 sbtlCalcVibe(void);
 #ifdef VERSION_RAIDOU2
 /* the aura value when wk has an aura whose kind is in kindFlg, else -1 */
 s32 sbtlIsAura(struct SBTLUNIT_WORK *wk, s32 kindFlg);
+s32 sbtlGetCorrectionParamLuck(void);
 #endif
 struct SBTLUNIT_WORK *sbtlCheckALLSkill(struct SBTLUNIT_WORK *wk, s32 mode);
 s32 sbtlCallColorSet3(void);

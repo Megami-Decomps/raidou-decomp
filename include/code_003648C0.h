@@ -67,6 +67,10 @@ s32 cmpMakeCateChk(void);
 void cmpChkSkillSelectHd(void);
 extern s8 cmpData40;
 extern s8 cmpCallGetStockPID5Data;
+extern s32 cmpUpdateSkillHD_cmpKudaData;
+s32 cmpNakamaView(void);
+void cmpCallGetStockDevilNums3(dds3ProcessID_t *PID, s32 a_mode);
+s32 cmpUpdateSkillHD_cmpKuda(void);
 s32 cmpChangeChkTabPageSub(void);
 s32 cmpChangeChkTabPageSub2(void);
 s32 cmpChangeChkTabPage(CMP_MENU_ID a_id);
@@ -122,7 +126,61 @@ void mapMenuCreateMenuPID_itf(void);
 
 /* Skill ids of the camp skill menu rows, negative for an empty row. */
 extern SKLID cmpWork9[8];
+extern struct itfSprList_t cmpCallGetSpriteHnd5Data2[];
+/* mapCallGetStockPID's copy of the selected devil's battle skills and auto flags. */
+extern SKLID mapCallGetStockPIDWork2[4];
+extern u8 mapCallGetStockPIDWork[4];
+s32 CallFuncSkill2(void);
+/* "---" and "???" skill list labels. */
+extern char mapData171[];
+extern char mapCallGetStockPIDData[];
+/* Setup_cmpKuda's mode (CMP_MENU_ID style 0x10001..0x60001) and the selection it resets. */
+extern s32 Setup_cmpKudaData;
+extern s16 cmpCallGetStockPID5Data2;
+/* Party menu callbacks Setup_cmpKuda installs per mode. */
+s32 CallFuncSkillSet(void);
+s32 CallFuncSkill(void);
+s32 cmpSetSavePanel(void);
+s32 cmpCallFuncOraganize(void);
+s32 cmpCharSelectSetDefault(void);
+s32 cmpSetupDvlSkl(void);
+void nmeDrawBox(void);
+void nmeCallSetFilter(void);
+void nmeSetupCmpKudaSub(void);
+void nmeSetupCmpKudaSub2(void);
 s32 cmpChkEnableUseSkill(struct sdatUnitWork_t *use, struct sdatUnitWork_t *tgt, SKLID id);
 void cmpChkSkillSelect(struct sdatUnitWork_t *a_pUseUnit);
+
+/* The cmpStatus draw process and its parts. */
+struct tagCMP_STATUS_WORK;
+extern struct itfSprList_t cmpCallGetProcessData3Data[];
+extern struct itfSprList_t cmpCallGetProcessData3Data2[];
+extern char cmpCallGetProcessData3Data3[];
+extern struct frTextBank_t *cmpData9;
+s32 cmpCallGetProcessData12(dds3ProcessID_t *PID);
+void cmpCallGetSpriteHnd3(s32 a_x, s32 a_y, u8 a_alphaRate, CMP_SPR a_no, s32 a_sprNo);
+void cmpCallLoadStatusModel(sdfModelOt_t *pModelOt);
+void cmpDrawParameter(struct tagCMP_STATUS_WORK *wk, s32 a_alphaRate);
+void cmpDrawSprList(s32 a_x, s32 a_y, u8 a_alphaRate, CMP_SPR a_no, struct itfSprList_t *a_list);
+void sbtlFunc7(struct tagCMP_STATUS_WORK *wk, s32 a_alphaRate);
+void cmpCallDrawFont2(s32 a_x, s32 a_y, u32 a_rgba, u8 a_alphaRate, char *a_str);
+void cmpRefDDS3GBWK4(struct sdatUnitWork_t *pUnit);
+void cmpCallDrawSprList2(struct tagCMP_STATUS_WORK *wk, s32 a_alphaRate);
+void cmpDrawPartsOmoideSkill(struct tagCMP_STATUS_WORK *wk, s32 a_alphaRate);
+SKLID cmpCallGetCsrSelSkl(void);
+s32 cmpDrawPartsOmoideSkillSub2(struct tagCMP_STATUS_WORK *wk);
+s32 cmpDrawParamSub(struct tagCMP_STATUS_WORK *wk);
+void DrawHelp(struct tagCMP_STATUS_WORK *wk, s32 a_alphaRate);
+void cmpCallMoverGetPosition(struct tagCMP_STATUS_WORK *wk);
+void cmpDrawSkillNameEx(SKLID a_id, s32 a_x, s32 a_y, u32 a_rgba, s32 a_alphaRate);
+
+/* The camp party list rows. */
+extern struct itfSprList_t cmpCallGetSpriteHndData[];
+extern struct itfSprList_t cmpCallGetSpriteHndData2[];
+extern char cmpPartyDrawFuncData[];
+extern char cmpPartyDrawFuncData2[];
+extern char cmpPartyDrawFuncData3[];
+s32 cmpCallGetProcessData26(void);
+BST cmpGetBstNo(BSTF a_bst);
 
 #endif

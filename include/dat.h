@@ -49,6 +49,7 @@ void UserInit(void);
 s32 datAddDevil(void);
 s32 datMoonAddMoveSub(void);
 s32 datGetPlayerExp(s32 level);
+s32 datGetDevilExp(s32 devilId, s32 level);
 #ifdef VERSION_RAIDOU2
 void datGetPlayerLevelUpUnit(struct SBTL_PLAYER_DATA *pDst, struct SBTL_PLAYER_DATA *pSrc);
 #else
@@ -66,6 +67,11 @@ void datGlobalWorkDestroy(void);
 void dds3GlobalWorkInit(void);
 s32 sdatCalc_GetBadStatus(struct sdatUnitWork_t *unit);
 s32 datGetTotalCyuusei(struct sdatUnitWork_t *pUnit);
+s32 datGetSword4Param(s32 SwordID, s32 Type);
+s32 datGetSwordAisyoEx(s32 SwordID);
+s32 datGetSwordAisyo(void);
+/* The devil's kuda (tube) id, 1 to 7, through datCalcDevilMaxParCheck. */
+s32 Unlock_2(s32 devilId);
 void datAddTotalCyuusei(struct sdatUnitWork_t *pUnit, s32 Val);
 s32 datCallCalcGetItemNum2(s32 id, s32 num);
 s32 datGetItemNum(s32 id);
@@ -111,7 +117,9 @@ extern u32 datCallGetStockDevilIDData;
 typedef struct {
     s32 field0;
     s32 kind; /* row of sbtlData140 */
-    u8 pad8[0x44];
+    u8 pad8[0x20 - 0x8];
+    s32 unk20; /* help text id shown on the status screen, 0 for none */
+    u8 pad24[0x4C - 0x24];
 } datSword_t;
 
 extern datSword_t *datData20;
@@ -137,6 +145,7 @@ void datGlobalWorkDestroySub(void);
 
 s32 datGetStockDevilID(s32 index);
 s32 datGetStockDevilNums(void);
+s32 datGetSummonerRank(void);
 void datCreateDevilUnitEx(s32 devilId, s32 skillMode, struct sdatUnitWork_t *unit);
 s32 datCallCreateDevilUnitEx(u32 itemId, s32 nums);
 s32 datCallGetStockDevilID2(u32 id);
@@ -144,6 +153,9 @@ s32 datCallGetStockDevilID2(u32 id);
 s32 datGetStockDevilIndex(u32 id);
 s16 datRefDDS3GBWK20(s16 id);
 s32 datOmoideSkillHaveSkill(struct sdatUnitWork_t *pWork, SKLID skill);
+s32 datOmoideSkillGetMaster(struct sdatUnitWork_t *pWork, SKLID skill);
+void datOmoideSkillSetMaster(struct sdatUnitWork_t *pWork, SKLID skill, s32 flag);
+s32 datRefDDS3GBWK11(s32 index);
 s32 datRefDDS3GBWK12(s32 sword);
 void datCalcNowParam(struct sdatUnitWork_t *unit, s32 sword);
 #endif

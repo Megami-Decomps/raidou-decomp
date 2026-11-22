@@ -78,9 +78,13 @@ typedef struct sdatUnitWork_t {
     /* 0x10A */ s16 itemst_cnt2;
     /* 0x10C */ SBTL_AISYO_TBL aisyo;
     /* 0x14C */ s16 field14C;
-    /* 0x14E */ s16 aOmoideSkill[17]; /* HD aOmoideSkill: the auto skills of a non-enemy unit */
-    /* 0x170 */ s16 iOmoideSkillCnt;
-    /* 0x172 */ u8 pad172[0x178 - 0x172];
+    /* 0x14E */ s16 aOmoideSkill[6]; /* HD name: the auto skills of a non-enemy unit */
+    /* 0x15A */ s16 aRsvSkl[3]; /* HD name */
+    /* 0x160 */ s8 aOmoideSkillMaster[16]; /* HD name */
+    /* 0x170 */ s16 iOmoideSkillCnt; /* HD name */
+    /* 0x172 */ s8 bChuuseiDrink; /* HD name */
+    /* 0x173 */ s8 bOmoideLearned[2]; /* HD name */
+    /* 0x175 */ u8 pad175[0x178 - 0x175];
 #else
     /* 0x90 */ s32 haveskill[10];
     /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
@@ -108,8 +112,15 @@ typedef sdatUnitWork_t datPartyDevil_t;
 #define SDAT_ITEM_NUM 160
 
 #ifdef VERSION_RAIDOU2
-/* Player data at DDS3_GBWK+0x1FA0, 0x2950 bytes (datInitPlayer). Partial raidou2 layout: it ends at the last of the
-   20 stock devils, the rest is still in dds3GlobalWork_t. */
+/* One entry of the devil table at the end of the player data. */
+typedef struct {
+    s16 field0;
+    s16 field2;
+    s16 huumaItem;
+    s16 field6;
+} dds3GbDevil_t;
+
+/* Player data at DDS3_GBWK+0x1FA0, 0x2950 bytes (datInitPlayer). */
 typedef struct SBTL_PLAYER_DATA {
     /* 0x000 */ sdfVector4_t vec[2];
     /* 0x020 */ s32 mag;
@@ -127,9 +138,20 @@ typedef struct SBTL_PLAYER_DATA {
     /* 0x200 */ s16 item[SDAT_ITEM_NUM]; /* stock per item id; R2's item count is not established */
     /* 0x340 */ u8 pad340[0x540 - 0x340];
     /* 0x540 */ sdatUnitWork_t stock[20];
+    /* 0x22A0 */ u8 unk22A0[2];
+    /* 0x22A2 */ s16 stack_p[2]; /* stock index of the two party members, -1 for none */
+    /* 0x22A6 */ s8 partyNum;    /* stock devils held */
+    /* 0x22A7 */ u8 unk22A7;
+    /* 0x22A8 */ u16 unk22A8;
+    /* 0x22AA */ u8 unk22AA[0x1A];
+    /* 0x22C4 */ u8 unk22C4[4];
+    /* 0x22C8 */ dds3GbDevil_t devilWork[0xD0];
+    /* 0x2948 */ u32 unk2948;
+    /* 0x294C */ u16 unk294C;
+    /* 0x294E */ u8 unk294E[2];
 } SBTL_PLAYER_DATA;
 
-SIZE_CHECK(SBTL_PLAYER_DATASizeCheck, SBTL_PLAYER_DATA, 0x22A0);
+SIZE_CHECK(SBTL_PLAYER_DATASizeCheck, SBTL_PLAYER_DATA, 0x2950);
 #else
 /* Player data, 0xFA0 bytes at DDS3_GBWK+0x1CA0. Only the fields used so far are named. */
 typedef struct SBTL_PLAYER_DATA {

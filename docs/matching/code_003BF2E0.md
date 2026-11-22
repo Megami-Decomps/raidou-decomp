@@ -135,3 +135,51 @@ Nine words, registers only: retail forms the slot pointer in the index register 
 Raidou 2: 30 of 170 words differ, first at +0x134; emitted 680 bytes, native 688 bytes.
 
 Thirty words from one kept copy: retail holds X + w*8 and Y + h*4 in $16/$17 and copies them into $4/$5 for the second rstResultLevelUpAnimSub, two words more than this draft, which coalesces them into the argument registers; everything after shifts. Tried assigning them to w/h before the call and reading the width into its own local first.
+
+## cmpCallMenuGetMenuNum (code_003BF2E0, raidou2 0x394)
+
+Raidou 2: 6 of 229 words differ, first at +0x230.
+
+The jmsAnimFunc guard emits bnel where retail has bnez with the same move into $a2 in the delay slot, and the 26-entry draw func loop and the i * 10 + 36 index take $v0 where retail uses $v1. Tried a separate loop variable, a ranged inner loop and the declaration order. 7 of 229 words.
+
+Related: docs/levers/addressing-and-types.md:526.
+
+## Init_rstInit (code_003BF2E0, raidou2 0x604)
+
+Raidou 2: 58 of 385 words differ, first at +0x4.
+
+The source pointer and the new work come out in swapped callee-saved registers (retail: src in $s1, the work in $s2, the loop index reusing $s0 after the handle), which moves every later use; separate declarations and assignment order leave the pair swapped. A rank local for datGetSummonerRank() - 1 keeps retail's separate decrement. 58 of 385 words.
+
+Related: docs/levers/cross-block-locals.md:1.
+
+## Destroy_rstInit (code_003BF2E0, raidou2 0x330)
+
+Raidou 2: 186 of 188 words differ, first at +0x0; emitted 752 bytes, native 816 bytes.
+
+The reward item loop and the gift loop keep a byte offset register stepping by 12 plus one base register per field, with an addu per load, where cc1 reduces each loop to a single pointer; that frees three saved registers and shifts every word. Per-field locals and an unsigned index compile the same way. 186 of 188 words (retail 204). nm_behaviour: memx/imm facts differ only in that addressing (offset register plus field bases versus one pointer); the same fields are read.
+
+## rstResultGetExpCyuusei (code_003BF2E0, raidou2 0x578)
+
+Raidou 2: 0 of 350 words differ.
+
+One annul bit: the unk8058 > 0 test of the first rstCallPlaySE block is blezl where retail has blez, with andi flags & 2 in the delay slot either way. Tried the && form and nested ifs. 1 of 350 words.
+
+## rstResultExpGauge (code_003BF2E0, raidou2 0x400)
+
+Raidou 2: 3 of 256 words differ, first at +0x2FC.
+
+cc1 swaps the two stores of the gauge's then arm, so its bounds store is cross-jumped into one tail with the else arm where retail keeps a store in each arm. Tried an entry pointer and an index local. 3 of 256 words.
+
+## rstCallBlendColor3 (code_003BF2E0, raidou2 0x3B0)
+
+Raidou 2: 0 of 236 words differ.
+
+The two guards before the last rstResultLevelUpAnimSub call emit blezl and bnel where retail has plain blez and bne with the ld $16 epilogue restore executed in the first slot; an early return for the stock guard and a split rate guard compile identically. 3 of 236 words.
+
+Related: docs/levers/addressing-and-types.md:526.
+
+## rstSetLvUpSkl (code_003BF2E0, raidou2 0x360)
+
+Raidou 2: 45 of 216 words differ, first at +0x1BC.
+
+The level-up skill part matches. In the omoide skill loop cc1 folds gohData7[id].memskill[i] into one (id*37+i)*4 index where retail adds i*4+0x50 to the devil pointer, enters the loop through a jump to its test, and uses bne where retail uses bnel to the epilogue. Tried a skill local, a goto out of the aOmoideSkill search, an early return for the loyalty check and nested ifs (32 bytes longer). 45 of 216 words. nm_behaviour: memx/imm facts differ only in the folded +0x50 index; the same memskill entries are read.

@@ -22,6 +22,8 @@ extern rstGaugeTable_t rstData3[];
 
 u16 rstResultCyuuseiGaugeSub(s32 a_table, s32 a_step);
 void rstResultNakamaLevelSub(s32 a_table, s32 a_step, s32 *a_x, s32 *a_y);
+void rstResultGetExpCyuuseiSub(s32 a_x, s32 a_y, f32 *a_scale, s32 a_unused, s32 a_table, s32 a_step,
+                               struct sprHandle_t *a_hSpr, u32 a_color, s32 a_layer);
 s32 rstBtlEndWaitInit(dds3ProcessID_t *PID);
 struct rstInitWork_t;
 s32 rstCalcProcess(struct rstInitWork_t *pWork);

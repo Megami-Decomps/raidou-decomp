@@ -19,10 +19,10 @@ menu scenarios); an entry says which paths they covered.
 | 58 | sbtlActAI | raidou1, raidou2 | [sbtlActAI.md](sbtlActAI.md) |
 | 43 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
 | 43 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
+| 29 | code_003BF2E0 | raidou2 | [code_003BF2E0.md](code_003BF2E0.md) |
+| 25 | code_003648C0 | raidou2 | [code_003648C0.md](code_003648C0.md) |
 | 25 | sbtlDMG | raidou1, raidou2 | [sbtlDMG.md](sbtlDMG.md) |
 | 22 | code_00309FE0 | raidou2 | [code_00309FE0.md](code_00309FE0.md) |
-| 22 | code_003648C0 | raidou2 | [code_003648C0.md](code_003648C0.md) |
-| 22 | code_003BF2E0 | raidou2 | [code_003BF2E0.md](code_003BF2E0.md) |
 | 20 | sbtlEff_00289E50 | raidou1, raidou2 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
 | 16 | code_002F5CF0 | raidou2 | [code_002F5CF0.md](code_002F5CF0.md) |
 | 14 | code_00261DF0 | raidou2 | [code_00261DF0.md](code_00261DF0.md) |

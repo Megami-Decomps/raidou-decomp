@@ -5,6 +5,7 @@
 #include "kernel.h"
 
 struct tagCMP_STATUS_WORK;
+struct sdatUnitWork_t;
 
 #ifdef VERSION_RAIDOU2
 /* HD tagOBJECT_WORK: one sprite object of the summoner rank screen. */
@@ -57,7 +58,7 @@ void cmpSummnerRankInit(cmpSummnerRank_t *psSelf);
 void *cmpSummnerRankStateWait(cmpSummnerRank_t *psSelf);
 #endif
 
-dds3ProcessFunc_t DrawProcess_cmpStatus(dds3ProcessID_t *PID);
+void DrawProcess_cmpStatus(struct tagCMP_STATUS_WORK *wk);
 void ProcessEnd_cmpStatus(void);
 s32 ProcessCheck_cmpStatus(void);
 dds3ProcessID_t *ProcessStart_cmpStatus(void);
@@ -65,7 +66,7 @@ void Shutdown_cmpStatus(dds3ProcessID_t *PID);
 s32 StatusGoSword(void);
 s32 cmpChkDraw(void);
 s32 cmpChkEnd(void);
-void cmpDrawPartsExp(struct tagCMP_STATUS_WORK *wk, s32 a_alphaRate);
+void cmpDrawPartsExp(struct sdatUnitWork_t *a_pUnit, s32 a_alphaRate);
 s32 cmpGetFlagCallDebug(void);
 s32 cmpGetFlagScreenShot(void);
 void cmpGetMotionParam(struct tagCMP_STATUS_WORK *wk);
