@@ -1130,14 +1130,14 @@ rstInitWork_t *Init_rstInit(rstWork_t *src) {
         pData->reward.unk64 = 0;
         pData->reward.exp = 0;
         pData->reward.unk110 = 10;
-        pData->unk2BC = 0;
+        pData->KiraTimer = 0;
         for (i = 0; i < datGetStockDevilNums(); i++) {
             pData->reward.stockExp[i] = 200;
             pData->reward.stockCyuusei[i] = 50;
         }
         pData->flags |= 2;
     }
-    pData->unk2BC = 0;
+    pData->KiraTimer = 0;
     for (i = 3; i >= 0; i--) {
         pData->playSE[i].unk00 = 0;
     }
@@ -1473,7 +1473,211 @@ INCLUDE_RODATA(const s32, "code_003BF2E0", rstStrSeqResultEnd);
 
 INCLUDE_RODATA(const s32, "code_003BF2E0", jmsStrSeqResult);
 
+/* NON_MATCHING: 368 of 549 words match.  */
+#ifdef NON_MATCHING
+dds3ProcessFunc_t rstCalcProcess_rstResult(dds3ProcessID_t *PID) {
+    s32 flag = FALSE;
+    rstInitWork_t *pData = dds3GetProcessData(PID);
+    dds3ProcessFunc_t next = menuRunPanel(&pData->panel, &pData->seqUnit, 0, PID);
+    s32 i;
+    s32 level;
+    s32 add;
+    s32 started;
+
+    if (next != NULL) {
+        return next;
+    }
+    if (pData->flags & 0x100) {
+        pData->AlphaRate = 256;
+        if (dds3FadeCheck()) {
+            return NULL;
+        }
+    }
+    if (!(pData->flags & 0x20)) {
+        if (pData->AlphaRate < 256) {
+            pData->AlphaRate += 8;
+            if (pData->AlphaRate > 256) {
+                pData->AlphaRate = 256;
+            }
+        } else {
+            fldBgTexClear();
+            pData->flags |= 0x60;
+            return NULL;
+        }
+        return NULL;
+    }
+    rstCallGetGlobalEncountNo(pData);
+    switch (pData->unk8058) {
+    case 0:
+        if ((dds3Data[3] < 0 && pData->Timer >= 10) || pData->Timer >= 30) {
+            if (pData->reward.unk120 == 0) {
+                pData->unk8058 = 7;
+            } else {
+                pData->unk8058 = 1;
+            }
+            pData->Timer = 0;
+        }
+        break;
+    case 1:
+        if (pData->Timer >= 10) {
+            pData->Timer = 0;
+            pData->unk8058 = 2;
+        }
+        break;
+    case 2:
+        if (pData->Timer >= 10) {
+            pData->Timer = 0;
+            pData->unk8058 = 3;
+        }
+        break;
+    case 3:
+        if (pData->Timer >= 10) {
+            pData->unk8058 = 7;
+            pData->Timer = 0;
+            if (pData->reward.unk120 & 7) {
+                pData->unk8058 = 4;
+            }
+        }
+        break;
+    case 4:
+        started = FALSE;
+        if ((pData->reward.unk120 & 1) && pData->reward.drawexp > 0) {
+            pData->countPID[0] = itfCountProcessStart(pData->reward.drawexp, 30, 2, 5);
+            itfCountSetData(pData->countPID[0], &pData->reward.drawexp, ITF_COUNT_TYPE_ADD);
+            started = TRUE;
+        }
+        if ((pData->reward.unk120 & 2) && pData->reward.drawchu > 0) {
+            pData->countPID[1] = itfCountProcessStart(pData->reward.drawchu, 30, 2, started ? -1 : 5);
+            itfCountSetData(pData->countPID[1], &pData->reward.drawchu, ITF_COUNT_TYPE_ADD);
+            started = TRUE;
+        }
+        if ((pData->reward.unk120 & 4) && pData->reward.drawmon > 0) {
+            pData->countPID[2] = itfCountProcessStart(pData->reward.drawmon, 30, 2, started ? -1 : 5);
+            itfCountSetData(pData->countPID[2], &pData->reward.drawmon, ITF_COUNT_TYPE_ADD);
+            started = TRUE;
+        }
+        if (started) {
+            pData->unk8058 = 5;
+        } else {
+            pData->unk8058 = 6;
+        }
+        pData->Timer = 0;
+        break;
+    case 5:
+        if (dds3Data[3] < 0 || pData->Timer >= 40) {
+            for (i = 0; i < 3; i++) {
+                if (pData->countPID[i] != NULL) {
+                    itfCountProcessEnd(pData->countPID[i]);
+                    pData->countPID[i] = NULL;
+                }
+            }
+            pData->Timer = 0;
+            pData->unk8058 = 6;
+        }
+        break;
+    case 6:
+        if (++pData->Timer > 50) {
+            pData->Timer = 0;
+            pData->unk8058 = 7;
+            pData->KiraTimer = 0;
+        }
+        break;
+    case 7:
+        if (dds3Data[3] < 0 && (pData->Timer >= 10 || pData->unk8058 >= 8)) {
+            pData->Timer = 60;
+        }
+        if (pData->Timer <= 60) {
+            if (pData->reward.exp != 0) {
+                flag = DDS3_GBWK->playerData.unit.level < 99;
+            }
+            for (i = 0; i < datGetStockDevilNums(); i++) {
+                if (pData->reward.stockExp[i] != 0 && DDS3_GBWK->playerData.stock[i].level < 99) {
+                    flag = TRUE;
+                }
+                if (pData->reward.stockCyuusei[i] != 0 && DDS3_GBWK->playerData.stock[i].chuusei < 100) {
+                    flag = TRUE;
+                }
+            }
+            if (flag) {
+                if (pData->Timer == 1) {
+                    p2sdPlaySE(6, 127, 63);
+                }
+            } else {
+                pData->Timer = 60;
+                pData->unk8058 = 11;
+                return NULL;
+            }
+            level = pData->player.unit.level;
+            add = ((pData->reward.exp * pData->Timer) << 8) / 60;
+            pData->reward2.exp = pData->reward.exp - add / 256;
+            pData->player.unit.exp = DDS3_GBWK->playerData.unit.exp + add / 256;
+            pData->player1.unit.exp = (DDS3_GBWK->playerData.unit.exp << 8) + add;
+            datGetPlayerLevelUpUnit(&pData->player, &pData->player);
+            if (level < pData->player.unit.level) {
+                rstResultAddLevelUpAnimQue(pData->aLevelUpAnimQue[0]);
+                p2sdPlaySE(8, 127, 63);
+            }
+            for (i = 0; i < datGetStockDevilNums(); i++) {
+                add = ((pData->reward.stockExp[i] * pData->Timer) << 8) / 60;
+                pData->reward2.stockExp[i] = pData->reward.stockExp[i] - add / 256;
+                level = pData->player.stock[i].level;
+                pData->player.stock[i].exp = DDS3_GBWK->playerData.stock[i].exp + add / 256;
+                pData->player1.stock[i].exp = (DDS3_GBWK->playerData.stock[i].exp << 8) + add;
+                datGetDevilLevelUpUnit(&pData->player.stock[i], &pData->player.stock[i]);
+                if (level < pData->player.stock[i].level) {
+                    if (i == pData->reward.StockIndex0) {
+                        rstResultAddLevelUpAnimQue(pData->aLevelUpAnimQue[1]);
+                        p2sdPlaySE(8, 127, 63);
+                    } else if (i == pData->reward.StockIndex1) {
+                        rstResultAddLevelUpAnimQue(pData->aLevelUpAnimQue[2]);
+                        p2sdPlaySE(8, 127, 63);
+                    }
+                }
+            }
+            for (i = 0; i < datGetStockDevilNums(); i++) {
+                add = pData->reward.stockCyuusei[i] * pData->Timer / 60;
+                level = pData->player.stock[i].chuusei;
+                pData->reward2.stockCyuusei[i] = pData->reward.stockCyuusei[i] - add;
+                pData->player.stock[i].chuusei = DDS3_GBWK->playerData.stock[i].chuusei + add;
+                if (pData->player.stock[i].chuusei > 100) {
+                    pData->player.stock[i].chuusei = 100;
+                }
+                if (level < 100 && pData->player.stock[i].chuusei == 100) {
+                    if (i == pData->reward.StockIndex0) {
+                        rstResultAddCyuuseiMaxAnimQue(pData->aLevelUpAnimQue[3]);
+                        p2sdPlaySE(7, 127, 63);
+                    } else if (i == pData->reward.StockIndex1) {
+                        rstResultAddCyuuseiMaxAnimQue(pData->aLevelUpAnimQue[4]);
+                        p2sdPlaySE(7, 127, 63);
+                    }
+                }
+            }
+        } else {
+            pData->Timer = 0;
+            pData->unk8058 = 11;
+        }
+        break;
+    case 11:
+        pData->drawMoney += pData->addMoney;
+        jmsSeqJumpAndFree(&pData->seqUnit, &rstCalcProcess_rstResultData);
+        p2sdStopSe(6);
+        break;
+    }
+    if (pData->unk8058 != 11) {
+        if (++pData->Timer > 10000) {
+            pData->Timer = 10000;
+        }
+    }
+    if (pData->unk8058 >= 4) {
+        if (++pData->KiraTimer >= 30) {
+            pData->KiraTimer = 30;
+        }
+    }
+    return NULL;
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCalcProcess_rstResult);
+#endif
 
 dds3ProcessFunc_t rstDrawProcess(dds3ProcessID_t *PID) {
     gohData_t *work = dds3GetProcessData(PID);
@@ -2190,7 +2394,184 @@ void rstCallBlendColor3(s32 X, s32 Y, s32 AlphaRate, rstInitWork_t *pData, struc
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallBlendColor3);
 #endif
 
+/* NON_MATCHING: 41 of 721 words match.  */
+#ifdef NON_MATCHING
+void rstCallBlendColor4(s32 X, s32 Y, s32 AlphaRate, rstInitWork_t *pData, struct sprHandle_t *pSpr) {
+    char str[32];
+    rstAnimScale_t scale;
+    s32 x;
+    s32 y;
+    s32 i;
+    s32 c;
+    u32 color;
+    u32 itemColor;
+    s32 mode;
+    s32 count;
+    s32 nums;
+    s32 rate;
+    f32 fade;
+    frFontHandle_t *pFRQ;
+
+    scale = rstCallBlendColor4Data2;
+    rstResultLevelUpAnimSub(X, Y, scale.scale, AlphaRate, 2, 0, pSpr, 105);
+    mode = 0;
+    rstResultLevelUpAnimSub(X, Y, scale.scale, AlphaRate, 2, 2, pSpr, 105);
+    count = 0;
+    for (i = 0; i < 5; i++) {
+        rstResultLevelUpAnimSub(X, Y + i * 224, scale.scale, AlphaRate, 2, 4, pSpr, 105);
+    }
+    color = fclBlendColor(0xA09DC380, 0, AlphaRate);
+    itemColor = fclBlendColor(0xA09DC380, 0, AlphaRate);
+    if (pData->reward.unk120 & 4) {
+        if (pData->unk8058 >= 5) {
+            rstData14 += 0.099999995f;
+            c = sdfSin(rstData14) * 30.0f + 30.0f;
+            color = (c << 24 | c | c << 8 | c << 16) + 0xA0966480;
+            rstResultGetExpCyuuseiSub(X, Y, scale.scale, AlphaRate, 2, 12, pSpr, color, 105);
+            rstResultGetExpCyuuseiSub(X, Y, scale.scale, AlphaRate, 2, 16, pSpr, color, 105);
+        } else {
+            rstResultLevelUpAnimSub(X, Y, scale.scale, AlphaRate, 2, 12, pSpr, 105);
+            rstResultLevelUpAnimSub(X, Y, scale.scale, AlphaRate, 2, 16, pSpr, 105);
+        }
+    } else {
+        rstResultLevelUpAnimSub(X, Y, scale.scale, AlphaRate, 2, 12, pSpr, 105);
+        rstResultLevelUpAnimSub(X, Y, scale.scale, AlphaRate, 2, 16, pSpr, 105);
+    }
+    rstResultNakamaLevelSub(2, 15, &x, &y);
+    x += X;
+    y += Y;
+    sprintf(str, rstCallBlendColor4Data3, pData->reward.drawmon);
+    pFRQ = frwGetSmallNumFontFRQ(x, y, 0, color, (u8 *)str, NULL);
+    frSetFontSpace(pFRQ, 0);
+    frDrawFontOt(pFRQ, 1, 105);
+    frDestroyFontRequestAfter(pFRQ);
+    if (pData->reward.unk120 & 4) {
+        rstResultNakamaLevelSub(2, 19, &x, &y);
+        x += X;
+        y += Y;
+    }
+    if (pData->unk8058 == 3) {
+        fade = pData->Timer / 10.0f;
+    } else if (pData->unk8058 >= 4) {
+        fade = 1.0f;
+    } else {
+        fade = 0.0f;
+    }
+    rate = AlphaRate * fade;
+    for (i = 0; i < 8; i++) {
+        if (pData->reward.item[i][0] == 0) {
+            continue;
+        }
+        if (pData->unk8058 >= 3) {
+            nums = pData->reward.item[i][1] + pData->reward.item[i][2];
+        } else {
+            nums = pData->reward.item[i][1];
+        }
+        if (pData->reward.item[i][2] <= 0 && pData->reward.item[i][1]) {
+            itemColor = fclBlendColor(0xA09DC380, 0, AlphaRate);
+            mode = 1;
+        }
+        if (pData->reward.item[i][2] > 0 && pData->reward.item[i][1]) {
+            count++;
+            if (pData->unk8058 < 3) {
+                itemColor = fclBlendColor(0xA09DC380, 0, AlphaRate);
+                mode = 1;
+            } else {
+                mode = 2;
+                rstData14 += 0.099999995f;
+                c = sdfSin(rstData14) * 30.0f + 30.0f;
+                itemColor = (c << 24 | c << 16 | c << 8) + 0xA0966480;
+            }
+        }
+        if (pData->reward.item[i][2] > 0 && !pData->reward.item[i][1]) {
+            count++;
+            if (pData->unk8058 < 3) {
+                mode = 0;
+            } else {
+                mode = 2;
+                rstData14 += 0.099999995f;
+                c = sdfSin(rstData14) * 30.0f + 30.0f;
+                itemColor = (c << 24 | c << 16 | c << 8) + 0xA0966480;
+            }
+        }
+        rstResultNakamaLevelSub(2, 7, &x, &y);
+        x += X;
+        y += Y;
+        if (pData->reward.item[i][2] > 0) {
+            rstCallGetRand(pData, x, y + i * 224, 2);
+        }
+        if (mode >= 2) {
+            rstResultGetExpCyuuseiSub(X, Y, scale.scale, AlphaRate, 2, 3, pSpr, itemColor, 105);
+        } else {
+            rstResultLevelUpAnimSub(X, Y, scale.scale, AlphaRate, 2, 3, pSpr, 105);
+        }
+        if (mode) {
+            pFRQ = frwGetSmallFontFRQ2(x, y + i * 224, 0, itemColor, cmpSetupData4[pData->reward.item[i][0]], NULL);
+            frSetFontSpace(pFRQ, -1);
+            frDrawFontOt(pFRQ, 1, 105);
+            frDestroyFontRequestAfter(pFRQ);
+            rstResultGetExpCyuuseiSub(X, Y + i * 224, scale.scale, rate, 2, 11, pSpr, itemColor, 105);
+            rstResultNakamaLevelSub(2, 10, &x, &y);
+            x += X;
+            y += Y;
+            sprintf(str, rstCallBlendColor4Data, nums);
+            pFRQ = frwGetSmallNumFontFRQ(x, y + i * 224, 0, itemColor, (u8 *)str, NULL);
+            frSetFontSpace(pFRQ, 0);
+            frDrawFontOt(pFRQ, 1, 105);
+            frDestroyFontRequestAfter(pFRQ);
+        }
+    }
+    if ((pData->reward.unk120 & 4) && pData->unk8058 > 0) {
+        rstResultNakamaLevelSub(2, 18, &x, &y);
+        x += X;
+        y += Y;
+        rstCallPlaySE(pData, 2, x - 320, y - 160, pSpr);
+    }
+    for (i = 0; i < 8; i++) {
+        if (pData->reward.item[i][0] && pData->reward.item[i][2]) {
+            rstResultNakamaLevelSub(2, 7, &x, &y);
+            x += X;
+            y += Y;
+            if (pData->unk8058 > 0) {
+                rstCallPlaySE(pData, 2, x - 1120, y + 160, pSpr);
+            }
+        }
+    }
+    if (pData->playSE[2].step == 0) {
+        pData->playSE[2].ofst_y = 1;
+        pData->playSE[2].rate = -3;
+        pData->playSE[2].rate_cnt = 0;
+    }
+    if (count && pData->unk8058 >= 4) {
+        if (pData->playSE[2].step >= 4) {
+            pData->playSE[2].ofst_y += 3 * pData->playSE[2].rate;
+        }
+        if (pData->playSE[2].ofst_y < -50) {
+            pData->playSE[2].rate = 1;
+        } else if (pData->playSE[2].ofst_y >= 3) {
+            pData->playSE[2].rate = -3;
+        }
+        if (++pData->playSE[2].rate_cnt > 999999) {
+            pData->playSE[2].rate_cnt = 0;
+        }
+        sprintf(str, rstCallBlendColor4Data4);
+        pFRQ = frLinkKanjiSub(x - 480, y + pData->playSE[2].ofst_y + 352, 0, itemColor, str, NULL);
+        frSetFontSpace(pFRQ, 0);
+        frDrawFontOt(pFRQ, 1, 105);
+        frDestroyFontRequestAfter(pFRQ);
+        sprintf(str, rstCallBlendColor4Data, count);
+        pFRQ = frwGetSmallNumFontFRQ(x - 448, y + pData->playSE[2].ofst_y + 368, 0, itemColor, (u8 *)str, NULL);
+        frSetFontSpace(pFRQ, 0);
+        frDrawFontOt(pFRQ, 1, 105);
+        frDestroyFontRequestAfter(pFRQ);
+    }
+    if (rstData14 > 10000.0f) {
+        rstData14 = 0.0f;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallBlendColor4);
+#endif
 
 INCLUDE_ASM(const s32, "code_003BF2E0", rstCallGetStockDevilNums);
 

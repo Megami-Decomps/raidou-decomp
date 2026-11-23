@@ -18,9 +18,13 @@ typedef struct rstWork_t {
     /* 0x70 */ s32 stockExp[20];
     /* 0xC0 */ s32 stockCyuusei[20];
     /* 0x110 */ s32 unk110;
-    /* 0x114 */ u8 unk114[0xC];
+    /* 0x114 */ s32 StockIndex0; /* HD name: stock slot of the first party devil */
+    /* 0x118 */ s32 StockIndex1; /* HD name */
+    /* 0x11C */ u8 unk11C[4];
     /* 0x120 */ u32 unk120; /* bit 0 plays the level up sound */
-    /* 0x124 */ u8 unk124[0xC];
+    /* 0x124 */ s32 drawexp; /* HD names: the amounts counted up on the result screen */
+    /* 0x128 */ s32 drawchu;
+    /* 0x12C */ s32 drawmon;
 } rstWork_t;
 #else
 typedef struct rstWork_t {

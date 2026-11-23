@@ -34,6 +34,8 @@ typedef struct jmsWork_t {
 /* HD MenuFlag: the event bit each jmsMenu entry needs, 0 for none. */
 /* "%2d", the level format shared by rstResultPlayerLevel and rstCallBlendColor3/4. */
 extern const char rstCallBlendColor4Data[];
+extern const char rstCallBlendColor4Data3[]; /* "%7d" */
+extern const char rstCallBlendColor4Data4[]; /* "+" */
 /* Phase of the result screen gauge glow, fed to sdfSin. */
 extern f32 rstData14;
 extern u16 SetRootMenuData[];

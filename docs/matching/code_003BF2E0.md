@@ -183,3 +183,15 @@ Related: docs/levers/addressing-and-types.md:526.
 Raidou 2: 45 of 216 words differ, first at +0x1BC.
 
 The level-up skill part matches. In the omoide skill loop cc1 folds gohData7[id].memskill[i] into one (id*37+i)*4 index where retail adds i*4+0x50 to the devil pointer, enters the loop through a jump to its test, and uses bne where retail uses bnel to the epilogue. Tried a skill local, a goto out of the aOmoideSkill search, an early return for the loyalty check and nested ifs (32 bytes longer). 45 of 216 words. nm_behaviour: memx/imm facts differ only in the folded +0x50 index; the same memskill entries are read.
+
+## rstCalcProcess_rstResult (code_003BF2E0, raidou2 0x894)
+
+Raidou 2: 181 of 550 words differ, first at +0x54; emitted 2204 bytes, native 2196 bytes.
+
+Control flow, block order and every constant match. Two register-allocation differences remain: the count-up SE argument is -1 then movz 5 in retail where mine loads 5 then movn -1 (tried se=-1 with if (!started), a ternary local and a ternary argument), and the chuusei loop swaps $20/$21 (GBWK byte offset and the constant 60), one word longer. 181 of 550 words, mostly shifted branch offsets; behaviour equal (nm_behaviour clean).
+
+## rstCallBlendColor4 (code_003BF2E0, raidou2 0xB44)
+
+Raidou 2: 680 of 683 words differ, first at +0x0; emitted 2732 bytes, native 2884 bytes.
+
+Register allocation and spilling: retail keeps pSpr, both loop counters, mode, count, rate, nums and the strength-reduced item pointers (pData+12/+16/+20 indexed by 80+12i) on the stack; the draft holds them in registers and addresses item[i] from pData+100. Control flow, calls and constants match (the flag and step tests nest with a duplicated else). 680 of 683 words; needs a run of its own. Behaviour equal except item addressing (nm_behaviour: memx/imm only).
