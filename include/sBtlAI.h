@@ -20,7 +20,8 @@ typedef struct SBTLAI_WORK {
     s16 act_p;
     u8 pad012[0x5E - 0x12];
     u8 bstside; /* bit 0: confused unit stays on its own side */
-    u8 pad05F[0x64 - 0x5F];
+    u8 hcnt;
+    u8 pad060[0x64 - 0x60];
     s32 syscnt_stop;
     s32 field4C;
     s8 scr_actcheckflg;
@@ -60,7 +61,7 @@ typedef struct SBTLAI_WORK {
     s32 atkCnt;
     s32 bFarOk;
     SKLID usedSkl;
-    u8 field104; /* KaihiInit_Nakama does nothing while set */
+    s8 bWait; /* HD name */
     s8 bWait2; /* HD name; set when the unit's boss event starts and when a talk ends the boss (sbtlFuncDecideTalk) */
     u8 pad106[0x108 - 0x106];
     SKLID RepeatOdrSkl;

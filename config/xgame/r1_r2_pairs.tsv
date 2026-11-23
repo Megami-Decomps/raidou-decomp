@@ -6457,7 +6457,6 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00278CC8	0x0029ECA8	sbtlAAIProc_SUMMON	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00278DD0	0x0029EDB0	sbtlAAIProc_N_GuardH	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x00278E68	0x0029EE48	sbtlAAIProc_SAttack	no	yes	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	masked-hash-in-gap
-0x0027BF40	0x002A5708	sbtlSetUseSkill	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	size
 0x0027C7F8	0x002A6E10	sbtlBS_MUNAKA_Init_Imad_Restart	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	unique-masked-hash
 0x0027C878	0x002A6E90	sbtlCheckStatus_Move	no	no	asm/raidou1/sbtlActAI.s	asm/raidou2/sbtlActAI.s	masked-hash-in-gap
 0x0027CBE8	0x002A9518	GetRand	no	yes	asm/raidou1/code_0027CBE8.s	asm/raidou2/code_002A9518.s	unique-reloc-hash

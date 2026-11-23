@@ -446,7 +446,9 @@ typedef struct SBTL_WORK {
     s32 fieldC64;
     u8 padC68[0xC74 - 0xC68];
     s32 fieldC74; /* field1A0 of the first gun target */
-    u8 padC78[0xC7B - 0xC78];
+    s8 nakamaAtkPos; /* HD name */
+    s8 nakamaAtkPos0; /* HD name; cleared when partner 0 starts its attack AI */
+    s8 nakamaAtkPos1;
     s8 bBfrBtlEnd; /* set when the battle menu ends with type 1 */
     s8 fieldC7C; /* CheckEnd sets it when the battle end starts */
     u8 padC7D[0xC80 - 0xC7D];
@@ -501,7 +503,8 @@ typedef struct SBTL_WORK {
     u32 mapclr;
     u8 padEA4[0xEB0 - 0xEA4];
     s32 bltNumDrwCnt; /* HD name; frames left to draw the bullet count over the player */
-    u8 padEB4[0xEC0 - 0xEB4];
+    s8 bEnemyFrcWait; /* HD name; FrcSklEnd ends every unit's wait when set */
+    u8 padEB5[0xEC0 - 0xEB5];
     s32 fieldEC0;
     s8 fieldEC4; /* set by KaihiInit_Nakama when the stick or a direction button is held */
     u8 padEC5[0xED8 - 0xEC5];
@@ -520,8 +523,10 @@ typedef struct SBTL_WORK {
     s32 field41FC; /* bar alpha sbtlBarCtrl steps toward 126 or 40 */
     s32 field4200; /* bar length sbtlBarCtrl steps toward 350 or 200 */
     u8 pad4204[0x420C - 0x4204];
-    s32 field420C; /* sbtlSummonKey refuses the summon menu when set */
-    u8 pad4210[0x4250 - 0x4210];
+    struct SBTLUNIT_WORK *pCamSklUser; /* HD name; unit whose skill camera runs, sbtlSummonKey refuses the summon menu while set */
+    u8 pad4210[0x4214 - 0x4210];
+    s8 bCamSklNoWait; /* HD name; the skill camera ends once the camera move is done */
+    u8 pad4215[0x4250 - 0x4215];
     s32 addEnemyCamCnt; /* HD name; frames the generator camera holds */
     u8 pad4254[0x4264 - 0x4254];
     s8 field4264; /* set: sbtlCreateSTP_Unit creates nothing */
@@ -541,7 +546,7 @@ typedef struct SBTL_WORK {
     u8 pad42C2[0x2];
     struct SBTLUNIT_WORK *field42C4; /* enemy cmpCallBtlCreateTargetList found for a party talk */
     s8 bosseveloadflg; /* HD name */
-    s8 bosseventflg; /* HD name */
+    s8 bosseventflg; /* HD name; the AI skips its action checks while set */
     s8 field42CA; /* Proc skips the pause checks when nonzero */
     s8 field42CB;
     s8 field42CC;
@@ -1435,6 +1440,10 @@ s32 sbtlCheckStartBattle(void);
 s32 sbtlRunSklProc(void);
 void sbtlEisyoWaitTask(void);
 void sbtlAttackwaitWaitTask(void);
+void sbtlEndWaitALL(struct SBTLUNIT_WORK *wk);
+s32 sbtlIsMoveEnd(void);
+void SklCameraEnd(struct SBTLUNIT_WORK *wk);
+s32 sbtlDeleteHaveSkill_EffectWork(struct SBTLUNIT_WORK *wk);
 void sbtlLeaf42(void);
 void sbtlSetCameraLockOnTgtUpdate(void);
 void sbtlKettouProc(void);

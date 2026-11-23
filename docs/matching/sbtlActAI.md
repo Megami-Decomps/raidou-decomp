@@ -387,3 +387,15 @@ R1 C plus the R2 skip check; R1's flag register difference (s2/s3 swap, bnel/bc1
 Raidou 2: 13 of 223 words differ, first at +0xD8.
 
 Scheduling in the combine branch: retail reads skl->area before order_sklidbk and sets model->flags |= 0x4000 with a1 for the model; the draft loads them in source order.
+
+## sbtlGetAITBL (sbtlActAI, raidou2 0x20)
+
+Raidou 2: 6 of 7 words differ, first at +0x0; emitted 28 bytes, native 32 bytes.
+
+Register shape only: retail tests the devil id with xori $2,$4,0 and keeps it through movn $4,$3,$2 (id - 207 when nonzero); cc1 folds the zero arm into movz $3,$0,$4. Tried an if, two returns, a local, a ternary and an inline helper with two returns. Vectors do not reach, checked against the asm.
+
+## sbtlGetAIPatternData (sbtlActAI, raidou2 0x3C)
+
+Raidou 2: 13 of 14 words differ, first at +0x0; emitted 56 bytes, native 60 bytes.
+
+Same xori 0 then movn residual as sbtlGetAITBL on the devil index (id - 207 when nonzero); the pat_tbl address schedule shifts after it. Vector checked.

@@ -7319,9 +7319,9 @@
 0x00294258	sbtlDelete	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlActAI.sBtlDelete score 6.7 flag I: calls1 next calls-of-match st1:call r1+r2
 0x00294280	sbtlCallBtlAAIProc	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlAAIProc
 0x002943A0	sbtlGetAITBL	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same callee as R1 sbtlGetAITBL (HD sBtlActAI.sBtlGetAITBL) in sbtlCheckScriptData; replaces sbtlBtlCheckScriptDataSub
-0x002943C0	sbtlLeaf23	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
+0x002943C0	sbtlGetAIPatternData	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R1 sbtlGetAIPatternData body (ai_tbldata[id].pat_tbl[p1][p2]) with the R2 id - 207 index; sbtlActAI.h declares it; name free in raidou2; replaces sbtlLeaf23
 0x00294400	sbtlSetSkillData_AI	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlActAI.sBtlSetSkillData_AI score 9.4 flag I: calls3 callers-of-match votes4 st1:call r1+r2
-0x00294458	sbtlCallBtlCheckEquationProc	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlCheckEquationProc
+0x00294458	sbtlCheckEquation	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD sBtlCheckEquation body (scr_actcheckflg, actaiwk mode 9-10, aiwk stat, bosseventflg, status2 0x80000, bWait/bWait2, then UseTableDataProc or CheckEquationProc); R1 sbtlCheckEquation; sbtlActAI.h declares it; replaces sbtlCallBtlCheckEquationProc
 0x00294538	sbtlSetChkskl	hd-inferred	method=hd-gap; p=0.76 (n=21); tier=B; source=hd; evidence=Raidou HD sBtlActAI.sBtlSetChkskl score 3.6 flag I: prev~ next gap1/1 st2:gap r2-only
 0x00294570	SetChkskl	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD sBtlActAI.SetChkskl score 2.0 flag -: next~ gap2/3 st2:gap r2-only
 0x002945B0	sbtlResetChkskl	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=Raidou HD sBtlActAI.sBtlResetChkskl: clears bit sklid of chkskl; right after SetChkskl as in HD, mirrors sbtlResetUseskl; replaces sbtlLeaf65
@@ -7362,9 +7362,9 @@
 0x00295E28	sbtlCallBtlSearchUnitID5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls sbtlSearchUnit_ID
 0x00295FA0	AICHK_HPP	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI AICHK_HPP (0x1db5d90): HP percentage check of the side list, GetRand 90/40/20 by kaifuku_skl_cnt; replaces sbtlCallBtlCreateSideListSBtlUnit3
 0x00296120	sbtlLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
-0x00296130	sbtlLeaf26	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sbtlActAI; no named callee, caller or string
+0x00296130	AICHK_CNT	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD AICHK_CNT: aiwk->hcnt >= arg sets actaiwk->ai_target[index] = ListID and returns 1, as R2 sbtlLeaf26 does; replaces sbtlLeaf26
 0x00296168	sbtlRefSbtl14	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit sbtlActAI; references wk_sbtl
-0x002961C0	sbtlCallEffectFldTypeIsSpecial	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sbtlActAI; calls dds3EffectFldTypeIsSpecial
+0x002961C0	sbtlUseTableDataProc	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCheckEquation calls sBtlUseTableDataProc when actaiwk dataflg is set, as R2 sbtlCheckEquation calls this function; R1 sbtlUseTableDataProc; sbtlActAI.h declares it; replaces sbtlCallEffectFldTypeIsSpecial
 0x002965A8	dds3EffectFldTypeIsSpecial	inferred	method=smt3-fuzzy-100-m-single; p=1.00 (n=3699); tier=A; source=smt3; evidence=smt3 body 0x1201a8 sim 1.000 margin 0.24 single
 0x002965E0	sbtlSetAIData	hd-inferred	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlActAI.sBtlSetAIData score 6.0 flag I: calls7 callers-of-match votes5 st2:call r1-disagree:0x271bc8
 0x00297030	sbtlGetUseTable_Target_sbtlActAI	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI.sBtlGetUseTable_Target (R1 tier A): same call sites as R1 sbtlGetUseTable_Target_sbtlActAI (part 3); replaces sbtlCallBtlSearchUnitID6
@@ -7473,7 +7473,7 @@
 0x002A0570	sbtlSKINBodyLeft	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sbtlActAI; string 'SKIN_body_left'
 0x002A5558	SklCameraEnd	hd	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD sBtlAction.SklCameraEnd score 6.8 flag -: calls2 calls-of-match votes3 st2:call r2-only
 0x002A56C8	FrcSklEnd	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlAction.FrcSklEnd score 7.3 flag -: calls1 prev gap=exact st2:gap r2-only
-0x002A5708	sbtlSetUseSkill	hd-inferred	hd: Raidou HD sBtlAction.sBtlSetUseSkill, score 8.05 band B
+0x002A5708	ChkSklCamEnd	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD ChkSklCamEnd: with bCamSklNoWait set and sBtlIsMoveEnd true, SklCameraEnd(wk) when wk is pCamSklUser, as R2 0x2A5708 does; R1 sbtlSetUseSkill is other code (the R2 CheckSkillMessage body); replaces sbtlSetUseSkill
 0x002A5768	sbtlCheckNextAction	hd-inferred	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlAction.sBtlCheckNextAction score 7.3 flag I: calls3 next callers-of-match st2:call r1-disagree:0x27bd88
 0x002A58F0	sbtlSetMotionHit	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same call site: R2 sbtlCheckMHTData calls it with (wk, wk->next_motionno, sklid) where R1 sbtlCheckMHTData calls sbtlSetMotionHit; replaces sbtlCallBtlGetSkilltbl6
 0x002A5A18	CheckSkillMessage	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlAction.CheckSkillMessage score 7.5 flag -: calls3 callers-of-match votes2 st2:call r2-only
@@ -15593,8 +15593,8 @@
 0x00477F18	CheckFuncTbl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlActAI CheckFuncTbl; table of check functions indexed by code >> 20 in sbtlCheckEquationProc; replaces sbtlData14
 0x00477F90	sbtlEnemyAIData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEnemyAI
 0x00477FD0	sbtlEnemyAIData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlEnemyAI
-0x00478010	sbtlAAIProcData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlAAIProc
-0x00478068	sbtlAAIProcData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlAAIProc
+0x00478010	AAIInit_Func	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlAAIProc: actaiwk stat 1 calls AAIInit_Func[aiwk->mode](wk), as R2 sbtlAAIProc does through this table; R1 AAIInit_Func; replaces sbtlAAIProcData
+0x00478068	AAIProc_Func	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlAAIProc: actaiwk stat 2 calls AAIProc_Func[aiwk->mode](wk), as R2 sbtlAAIProc does through this table; R1 AAIProc_Func; replaces sbtlAAIProcData2
 0x004780C0	sbtlRunSklProcData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlRunSklProc (4 of 16 refs, 7 functions)
 0x00478C18	sbtlSetUseSkill_sbtlActionData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSetUseSkill_sbtlAction
 0x00478C30	sbtlLeaf73Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf73
@@ -28172,7 +28172,7 @@
 0x004E2384	ai_scr	inferred	method=hd; p=0.37 (n=D_r1_0046DAD0); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
 0x004E2388	sbtlCallRegistScript2Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallRegistScript2
 0x004E238C	sbtlWkScrDataData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlWkScrData
-0x004E2390	sbtlData162	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlBtlCheckScriptDataSub, sbtlLeaf23
+0x004E2390	ai_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD ai_tbldata and R1 ai_tbldata: R2 sbtlGetAITBL returns this pointer plus 0x36C per devil (id - 207), sbtlCheckEquationProc reads the AI table rows through it; replaces sbtlData162
 0x004E2398	sbtlRunSklProcData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRunSklProc
 0x004E23A0	sbtlRunSklProcData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRunSklProc
 0x004E23A8	sbtlRunSklProcData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlRunSklProc
@@ -28189,8 +28189,8 @@
 0x004E2400	sbtlSetUseSkill_sbtlActionData9	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSetUseSkill_sbtlAction
 0x004E2408	sbtlSetUseSkill_sbtlActionData10	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSetUseSkill_sbtlAction
 0x004E2410	sbtlSKINBodyLeftData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSKINBodyLeft
-0x004E2414	sbtlData163	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlEisyoWaitTask, EisyoEndCheck, sbtlLeaf28
-0x004E2418	sbtlData164	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlAttackwaitWaitTask, AttackwaitEndCheck, sbtlLeaf28
+0x004E2414	gEisyoNasiWaitTime	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD gEisyoNasiWaitTime: sBtlEisyoWaitTask decrements it while positive and wk status bit 0x40 is clear, as R2 sbtlEisyoWaitTask does with this word; replaces sbtlData163
+0x004E2418	gAttackwaitNasiWaitTime	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD gAttackwaitNasiWaitTime: sBtlAttackwaitWaitTask decrements it while positive and wk status bit 0x40 is clear, as R2 sbtlAttackwaitWaitTask does with this word; replaces sbtlData164
 0x004E2420	gohData7	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 30 functions: gohCallGetProcessData13, cmpCallCheckSkillEnable, gohLeaf10
 0x004E2424	GetRandData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by GetRand
 0x004E2428	GetPercentageData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by GetPercentage

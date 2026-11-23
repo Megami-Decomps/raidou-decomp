@@ -631,6 +631,8 @@ sbtlAAIInit_N_Kaihi	sbtlActAI	raidou2 0x1C8	92 of 114 words differ	docs/matching
 sbtlAAIProc_Skl_SMV	sbtlActAI	raidou2 0x27C	68 of 160 words differ	docs/matching/sbtlActAI.md	373		
 sbtlAAIProc_Skl_S	sbtlActAI	raidou2 0x3E8	151 of 250 words differ	docs/matching/sbtlActAI.md	379		
 sbtlAAIProc_N_Comb_E	sbtlActAI	raidou2 0x37C	13 of 223 words differ	docs/matching/sbtlActAI.md	385		
+sbtlGetAITBL	sbtlActAI	raidou2 0x20	6 of 7 words differ	docs/matching/sbtlActAI.md	391		
+sbtlGetAIPatternData	sbtlActAI	raidou2 0x3C	13 of 14 words differ	docs/matching/sbtlActAI.md	397		
 sbtlCheckHitArea_sbtlDMG	sbtlDMG	raidou1 0x270	71 of 154 words differ	docs/matching/sbtlDMG.md	3		
 sbtlCreateHitC_New	sbtlDMG	raidou1 0x884	294 of 545 words differ	docs/matching/sbtlDMG.md	11		
 sbtlGetSide	sbtlDMG	raidou1 0x114	53 of 70 words differ	docs/matching/sbtlDMG.md	21		

@@ -3992,7 +3992,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 3:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -4026,7 +4026,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 37:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if ((wk->vstatus & 0x4000) && wk->skillid == SKLID_OFS_PROGRAM) {
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_OFS_PROGRAM);
             } else if (sbtlSearchEffectData(wk->skillid) != -1) {
@@ -4046,7 +4046,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 6:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -4057,7 +4057,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 47:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -4097,7 +4097,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
         }
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && wk->action_flg == 3) {
             wk->action_flg = 4;
-            sbtlSetUseSkill(wk, SKLID_BS14_GIGATO);
+            CheckSkillMessage(wk, SKLID_BS14_GIGATO);
             if (sbtlSearchEffectData(SKLID_BS14_GIGATO) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, SKLID_BS14_GIGATO);
             } else {
@@ -4116,7 +4116,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 31:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -4140,7 +4140,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
         unit = wk_sbtl->scrUnitList[2];
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -4269,7 +4269,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
         if (!wk->action_flg) {
             wk->action_flg = 1;
             wk->flg |= 0x4001;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -4304,7 +4304,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 45:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -4323,7 +4323,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 12:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
                 if ((wk->field414 & 0x80) && wk_sbtl->battleMode != 3) {
@@ -4446,7 +4446,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 41:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (wk->unit.devilId == 290) {
                 sbtlSetEncountData(166, 2, 1);
                 sbtlSetEncountData(166, 3, 1);
@@ -4487,7 +4487,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             if (wk->skillid == SKLID_BS14_DEAD) {
                 sbtlSetMapFade(30, 0x80191919, 0);
             }
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             wk_sbtl->enshutuCnt[3] = 0;
             wk_sbtl->scrCnt[3] = 0;
             wk->cmpframecnt2 = frame;
@@ -4648,7 +4648,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 44:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -4859,7 +4859,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
             sbtlSetMapFade(15, 0x80404040, 0);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
-                sbtlSetUseSkill(wk, SKLID_BS14_CHOUSIN_HIT);
+                CheckSkillMessage(wk, SKLID_BS14_CHOUSIN_HIT);
             } else {
                 sbtlForceDelete_SkillFlag_Acter(wk, 0x400);
             }
@@ -5027,7 +5027,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
         SDF_VU0_STOREVECTOR(&wk->model->scrPos3);
         if (wk->framecnt >= frame && wk->action_flg == 1) {
             wk->action_flg = 2;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -5052,7 +5052,7 @@ s32 Proc(struct SBTLUNIT_WORK *wk) {
     case 52:
         if (wk->framecnt >= (s32)sbtlCallBtlGetMotionVisualData4(wk, 0) && !wk->action_flg) {
             wk->action_flg = 1;
-            sbtlSetUseSkill(wk, wk->skillid);
+            CheckSkillMessage(wk, wk->skillid);
             if (sbtlSearchEffectData(wk->skillid) != -1) {
                 sbtlCallBtlGetSklVisualTbl2(wk, wk->skillid);
             } else {
@@ -5117,7 +5117,7 @@ s32 sbtlSetMotionHit(struct SBTLUNIT_WORK *wk, s32 motionno, SKLID skillid) {
     return 1;
 }
 
-void sbtlSetUseSkill(struct SBTLUNIT_WORK *wk, SKLID skillid) {
+void CheckSkillMessage(struct SBTLUNIT_WORK *wk, SKLID skillid) {
     if (sbtlGetSkilltbl(skillid)->flg & 0x40000000) {
         sbtlCreateSM(wk_sbtl->sysmsgList, wk, SBTLSM_MODE_BOSS, SKLID_NONE);
     }
@@ -5500,7 +5500,7 @@ void SetAction_ProgramSkill(struct SBTLUNIT_WORK *wk, SKLID skillID) {
         wk->status = 39;
     } else if (skillID == SKLID_BS11_SLEEP) {
         wk->status = 48;
-        sbtlSetUseSkill(wk, SKLID_BS11_SLEEP);
+        CheckSkillMessage(wk, SKLID_BS11_SLEEP);
     } else if (skillID == SKLID_BS14_CHOUSIN) {
         wk->status = 49;
     } else if (skillID >= SKLID_BS14_MHRAGIDA && skillID <= SKLID_BS14_MEGIDO) {

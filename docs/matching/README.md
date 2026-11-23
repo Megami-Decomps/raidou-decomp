@@ -16,7 +16,7 @@ menu scenarios); an entry says which paths they covered.
 
 | Entries | Unit | Games | Page |
 |---|---|---|---|
-| 58 | sbtlActAI | raidou1, raidou2 | [sbtlActAI.md](sbtlActAI.md) |
+| 60 | sbtlActAI | raidou1, raidou2 | [sbtlActAI.md](sbtlActAI.md) |
 | 43 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
 | 43 | code_r1_00259A88 | raidou1 | [code_r1_00259A88.md](code_r1_00259A88.md) |
 | 31 | code_003BF2E0 | raidou2 | [code_003BF2E0.md](code_003BF2E0.md) |

@@ -3001,7 +3001,6 @@
 0x00278258	sbtlAAIProc_Skl_S	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_Skl_S, score 10.0 band A
 0x002787D8	sbtlAAIProc_Skl_SRT	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlActAI.sBtlAAIProc_Skl_SRT, score 9.5 band B
 0x0027BE18	sbtlRefSbtl22	func	tier=D	derived-data	na	unit sbtlActAI; references wk_sbtl
-0x0027BF40	sbtlSetUseSkill	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlAction.sBtlSetUseSkill, score 8.05 band B
 0x0027C888	sbtlCallBtlDeleteHitHelper	func	tier=D	derived-callee	na	unit sbtlActAI; calls sbtlDeleteHitHelper
 0x0027D118	sbtlGetUnitHelperPos	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetUnitHelperPos, score 9.8 band B
 0x0027D208	sbtlGetUnitHelperMatrix	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlSub.sBtlGetUnitHelperMatrix, score 11.45 band A

@@ -38,12 +38,17 @@ typedef struct AICHK_WORK {
     s8 jmptbl[8];
 } AICHK_WORK;
 
-/* AI table entry, 0x46C bytes. */
+/* AI table entry, 0x46C bytes (Raidou 2: 0x36C). */
 typedef struct AITBLDATA_WORK {
     s32 scr_no;
     AICHK_WORK act[2];
+#ifdef VERSION_RAIDOU2
+    AIACT_TBL acttbl[4][4];
+    s32 pat_tbl[8][20];
+#else
     AIACT_TBL acttbl[8][4];
     s32 pat_tbl[8][22];
+#endif
 } AITBLDATA_WORK;
 
 AITBLDATA_WORK *sbtlGetAITBL(s32 devilId);
@@ -70,7 +75,9 @@ s32 sbtlGetAIPatternData(s32 id, s32 p1, s32 p2);
 s32 sbtlRefSbtl22(struct SBTLUNIT_WORK *wk);
 s32 sbtlBtlUseTableDataProcSub(s32 type);
 s32 sbtlBtlMVSupportSub(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *wklock);
-void sbtlSetUseSkill(struct SBTLUNIT_WORK *wk, SKLID skillid);
+#ifndef VERSION_RAIDOU2 /* the Raidou 2 copy of this body has no declaration here */
+void CheckSkillMessage(struct SBTLUNIT_WORK *wk, SKLID skillid);
+#endif
 void SetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
 void sbtlResetUseskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
 void sbtlResetChkskl(struct SBTLUNIT_WORK *wk, SKLID sklid);
@@ -159,6 +166,9 @@ s32 sbtlNakamaGoalChk(struct SBTLUNIT_WORK *wk);
 s32 sbtlGetSmnNo(struct SBTLUNIT_WORK *wk);
 void sbtlEisyoWaitTask(void);
 s32 sbtlMawariChk(struct SBTLUNIT_WORK *wk, struct SBTLUNIT_WORK *pTgt);
+/* Frames left before a skill without a chant (attack wait) may start. */
+extern s32 gEisyoNasiWaitTime;
+extern s32 gAttackwaitNasiWaitTime;
 #else
 s32 sbtlCallBtlSearchUnitID4(s32 no, s32 flg);
 #endif

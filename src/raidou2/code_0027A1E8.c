@@ -362,7 +362,7 @@ s32 sbtlSummonKey(struct SBTLUNIT_WORK *wk) {
     if (wk_sbtl->battleMode == 1 || wk_sbtl->mode == 15) {
         return 0;
     }
-    if (wk_sbtl->fieldCA2 == 0 && wk_sbtl->field420C == 0 && !(wk_sbtl->status4 & 0x21000)) {
+    if (wk_sbtl->fieldCA2 == 0 && wk_sbtl->pCamSklUser == NULL && !(wk_sbtl->status4 & 0x21000)) {
         sBtlPlayer_R1R2NoInput = 4;
         if (back) {
             sbtlStart();
@@ -519,7 +519,7 @@ s32 KaihiInit_Nakama(struct SBTLUNIT_WORK *wk) {
     s32 eff;
     s32 moved;
 
-    if (wk->aiwk->field104 != 0 || wk->aiwk->bWait2 != 0) {
+    if (wk->aiwk->bWait != 0 || wk->aiwk->bWait2 != 0) {
         return -1;
     }
     if (wk->status == 12) {
