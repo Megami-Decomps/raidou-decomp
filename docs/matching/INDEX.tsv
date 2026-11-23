@@ -349,6 +349,7 @@ effCreateSurfaceGridNode	code_r1_00226EC8	raidou1 0x150, raidou2 0x150	33 of 84 
 effDrawTrackSet	code_r1_00226EC8	raidou1 0x504, raidou2 0x504	214 of 313 words differ	docs/matching/code_r1_00226EC8.md	27		
 effCallGetRandFloatA	code_r1_00226EC8	raidou1 0x6FC, raidou2 0x6FC	280 of 448 words differ	docs/matching/code_r1_00226EC8.md	33		
 PartsCalc	code_r1_00226EC8	raidou1 0x7C, raidou2 0x7C	12 of 31 words differ	docs/matching/code_r1_00226EC8.md	42		
+sbtlLeaf52	code_r1_00226EC8	raidou1 0x98, raidou2 0x98	28 of 38 words differ	docs/matching/code_r1_00226EC8.md	51		
 effEditMColorTrack	code_r1_00242308	raidou1 0x64, raidou2 0x64	7 of 25 words differ	docs/matching/code_r1_00242308.md	3		
 effSelectCameraFileJobFromRows	code_r1_00242308	raidou1 0x390, raidou2 0x390	2 of 228 words differ	docs/matching/code_r1_00242308.md	9		
 sbtlInitPlayerData	code_r1_0024B510	raidou1 0x274	114 of 157 words differ	docs/matching/code_r1_0024B510.md	3		
@@ -550,6 +551,7 @@ dds3DrawFirstProcess	kernel/dds3KernelProcess	raidou1 0x7C0	461 of 490 words dif
 fmProcTrigSequence_slMain	mc/slMain	raidou1 0x300	68 of 190 words differ	docs/matching/mc/slMain.md	3		
 slQueryYesNoDraw	mc/slMain	raidou1 0x960	0 of 600 words differ	docs/matching/mc/slMain.md	11		
 slLoadProc_openFile	mc/slMain	raidou1 0xA4, raidou2 0xA4	1 of 41 words differ	docs/matching/mc/slMain.md	23		
+slCallPlaySE4	mc/slMain	raidou1 0x74, raidou2 0x7C	18 of 25 words differ	docs/matching/mc/slMain.md	30		
 mnuUpdateMovieDrawShutdownCountdown	movie/mviManager	raidou1 0xA8, raidou2 0xA8	1 of 42 words differ	docs/matching/movie/mviManager.md	3		
 sbtlSetAutoSkill_GBID	sbtl	raidou1 0xC0	16 of 48 words differ	docs/matching/sbtl.md	3		
 sbtlCheckHaveskill_Atk	sbtl	raidou1 0xA8	7 of 42 words differ	docs/matching/sbtl.md	9		

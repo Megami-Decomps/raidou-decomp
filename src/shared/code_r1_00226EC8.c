@@ -755,6 +755,14 @@ typedef struct ptexHandle_t {
     s32 unkE4;
 } ptexHandle_t;
 
+/* Draw_effPolygonTex's frame record: Update_effPolygonTex fills it, Render reads it. */
+typedef struct effPolygonTexTemp_t {
+    sdfVector4_t color;
+    f32 rotate;
+    f32 scale;
+    struct effCacheTexList_Anim_t *CTexAnim;
+} effPolygonTexTemp_t;
+
 typedef char effQuadParamsSizeCheck[(sizeof(effQuadParams_t) == 0x98) ? 1 : -1];
 
 typedef char ptexHandleSizeCheck[(sizeof(ptexHandle_t) == 0xE8) ? 1 : -1];
@@ -7322,7 +7330,12 @@ void effResetRenderResourceFrame(ptexHandle_t *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", Draw_effPolygonTex);
+void Draw_effPolygonTex(struct effPartsHandle_t *handle) {
+    effPolygonTexTemp_t wk;
+
+    Update_effPolygonTex((ptexHandle_t *)handle, &wk);
+    Render((ptexHandle_t *)handle, &wk);
+}
 
 void effSetRenderResourcePosition(ptexHandle_t *work, const f32 position[4]) {
     SDF_VU0_COPYVECTOR(work->pos, position);
@@ -7342,7 +7355,12 @@ void effSetRenderResourceScale(ptexHandle_t *work, f32 scale) {
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", Update_effPolygonTex);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", GetOT);
+s32 CheckOT(void) {
+    if (Proc_sbtl() && sbtlCallSetOtData == 1) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", Render);
 
@@ -11316,7 +11334,16 @@ INCLUDE_ASM(const s32, "code_r1_00226EC8", Calc);
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", Draw_effObjectParticle);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", CalcAndDraw);
+void CalcAndDraw(struct effPartsHandle_t *handle) {
+    opcHandle_t *hParticle = (opcHandle_t *)handle;
+
+    if ((u16)(hParticle->flags & EFFOPRT_FLAG_IGNORESTOP) != 0) {
+        Calc(hParticle);
+    } else if ((effGetFlags() & 1) == 0) {
+        Calc(hParticle);
+    }
+    Draw_effObjectParticle(hParticle);
+}
 
 void effSetActiveSlotPrimaryRecordVector(void *node, f32 vector[4]) {
     mnuRecordSetVector(((effSlotNode80_t *)node)->record, vector);
@@ -11512,9 +11539,48 @@ void sbtlLeaf51(effActiveResource_t *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlCallBtlSetLightMap2);
+void sbtlCallBtlSetLightMap2(void) {
+    s32 i;
+    struct SBTLUNIT_WORK *unit;
 
+    for (i = 0; i < wk_sbtl->unitList->number; i++) {
+        unit = wk_sbtl->unitList->pUnitL[i].pUnit;
+        if (unit != NULL && unit->hModel != NULL) {
+            unit->vstatus &= ~0x1C0000;
+            sbtlSetLight_Map(unit, 0, 1);
+        }
+    }
+}
+
+/* NON_MATCHING: 10 of 38 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlLeaf52(s32 from, s32 to, f32 rate) {
+    f32 step;
+    f32 value;
+    f32 limit;
+
+    step = (f32)(to < from ? from - to : to - from) * (1.0f - rate);
+    if (to < from) {
+        value = from - step;
+        if (value <= 0.0f) {
+            return 0.0f;
+        }
+        limit = from;
+    } else {
+        value = step + from;
+        if (value <= 0.0f) {
+            return 0.0f;
+        }
+        limit = to;
+    }
+    if (limit <= value) {
+        value = limit;
+    }
+    return value;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlLeaf52);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlCallBtlEffCreateUnitList2);
 

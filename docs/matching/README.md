@@ -37,10 +37,10 @@ menu scenarios); an entry says which paths they covered.
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
 | 8 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 8 | code_00295390 | raidou1 | [code_00295390.md](code_00295390.md) |
+| 7 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 6 | code_002743E0 | raidou2 | [code_002743E0.md](code_002743E0.md) |
 | 6 | code_00298540 | raidou1 | [code_00298540.md](code_00298540.md) |
-| 6 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 6 | field/fldFileResolver | raidou1, raidou2 | [field/fldFileResolver.md](field/fldFileResolver.md) |
 | 5 | code_0013CDE0 | raidou1 | [code_0013CDE0.md](code_0013CDE0.md) |
 | 5 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
@@ -56,6 +56,7 @@ menu scenarios); an entry says which paths they covered.
 | 4 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 4 | event/evtEventViewerMenu | raidou1, raidou2 | [event/evtEventViewerMenu.md](event/evtEventViewerMenu.md) |
 | 4 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
+| 4 | mc/slMain | raidou1, raidou2 | [mc/slMain.md](mc/slMain.md) |
 | 4 | sbtl_0029BFB8 | raidou1 | [sbtl_0029BFB8.md](sbtl_0029BFB8.md) |
 | 3 | code_00139330 | raidou1 | [code_00139330.md](code_00139330.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
@@ -65,7 +66,6 @@ menu scenarios); an entry says which paths they covered.
 | 3 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
 | 3 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 3 | fclDrawBack | raidou1, raidou2 | [fclDrawBack.md](fclDrawBack.md) |
-| 3 | mc/slMain | raidou1, raidou2 | [mc/slMain.md](mc/slMain.md) |
 | 3 | sbtlSub | raidou1 | [sbtlSub.md](sbtlSub.md) |
 | 3 | sdf/sdfMovie | raidou1, raidou2 | [sdf/sdfMovie.md](sdf/sdfMovie.md) |
 | 3 | sdk/libcdvd/cdvd000 | raidou1, raidou2 | [sdk/libcdvd/cdvd000.md](sdk/libcdvd/cdvd000.md) |

@@ -405,7 +405,7 @@ INCLUDE_ASM(const s32, "code_002743E0", sbtlSetUnitLight);
 
 INCLUDE_ASM(const s32, "code_002743E0", sbtlCallSetUnitLightAndAmbient3);
 
-INCLUDE_ASM(const s32, "code_002743E0", sbtlCallToMatrix);
+INCLUDE_ASM(const s32, "code_002743E0", sbtlSetLight_Map);
 
 s32 sbtlCheckMotionMove(struct SBTLUNIT_WORK *wk)
 {

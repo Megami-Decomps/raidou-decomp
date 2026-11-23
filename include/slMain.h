@@ -5,6 +5,8 @@
 
 void fmShutDown(void);
 void fmShutDownFade(void);
+void slKillLoadProcess(void);
+void setCallMemcpy(void);
 
 typedef s32 (*FileSelectionCallback)(void);
 
@@ -42,11 +44,11 @@ void gohKarteRegStatInit(void);
 void fmProcTrigSequence_slMain(s32 mode);
 s32 fmProcessChk_slMain(void);
 s32 fmShutDown2_slMain(void);
-dds3ProcessFunc_t sl1Ken(void);
+s32 sl1Ken(void);
 dds3ProcessFunc_t slBootRetry_slMain(void);
 saddr_t slBootRetry(void);
 dds3ProcessFunc_t slCallMcClearCardStat(void);
-dds3ProcessFunc_t slCallMcFuncClose12(void);
+saddr_t slCallMcFuncClose12(void);
 dds3ProcessFunc_t slCallSetInfo2(void);
 dds3ProcessFunc_t slCallSetInfo3(void);
 s32 slCallPlaySE2(dds3ProcessID_t *id);
@@ -58,7 +60,7 @@ void slMcAccessDraw(void);
 s32 slQueryYesNoProcSub(void);
 void fileResetLoadContextSlide(void);
 dds3ProcessFunc_t slCancel(void);
-dds3ProcessFunc_t slChooseData(void);
+saddr_t slChooseData(void);
 dds3ProcessFunc_t slChooseData_B(void);
 void slDrawInfo(void);
 #ifdef VERSION_RAIDOU1
@@ -70,9 +72,13 @@ void slNewCycle(dds3ProcessID_t *id);
 void slQueryYesNoDraw(void);
 dds3ProcessFunc_t slDraw_slMain(dds3ProcessID_t *id);
 dds3ProcessFunc_t slErrorWaitMc(void);
-dds3ProcessFunc_t slExitWait(dds3ProcessID_t *procId);
+saddr_t slExitWait(void *nextFunc);
 saddr_t slTop(void);
-dds3ProcessFunc_t slHitAnyKeyNoChkProc(void);
+saddr_t slSaveProc_CheckCard(void);
+saddr_t slHitAnyKeyNoChk(u32 nextFunc);
+saddr_t slCallPlaySE3(void);
+saddr_t slCallPlaySE4(void);
+s32 slHitAnyKeyNoChkProc(void);
 void gohKarteResResultUpdateProcess(s32 msgNum);
 void slKanjiDraw3(s32 x, s32 y, u32 rgba, char **moji, s32 ot);
 s32 slExitToTitle(void);

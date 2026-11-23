@@ -19035,6 +19035,7 @@
 0x00225C28	RotateSet_effModel	func	tier=B	hd-role	na	HD effModel.c RotateSet: same shape with mdlSetRotate; replaces effLeaf352
 0x00225C48	ColorSet_effModel	func	tier=B	hd-role	na	HD effModel.c ColorSet: mdlSetColor on the part model (PS2 passes a packed u32); replaces effLeaf353
 0x00225C60	ScaleSet_effModel	func	tier=B	hd-role	na	HD effModel.c ScaleSet: scale * part scale into vf10, mdlSetScale; replaces effCallSetScale
+0x00233AA0	CheckOT	func	tier=B	hd-role	na	HD effPolygonTex.c CheckOT (0x198fe40): returns CheckRun() && epl_otchkflg; Raidou returns Proc_sbtl() && sbtlCallSetOtData == 1, a flag, not an OT; HD GetOT is the caller that picks the OT table; replaces GetOT
 0x0023EFE0	Create_effObjectParticle	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD effObjectParticle.Create score 6.3 flag -: gap=exact st1:gap r1+r2
 0x0023F408	ResourceCopy_effObjectParticle	func	tier=B	hd-role	na	HD effObjectParticle.c ResourceCopy (same kind 3/6 logic on opcHandle_t); unit already uses ResourceCopy_effPolygonTex; replaces effCloneSlotNodeSecondaryResources
 0x002420F0	effPadVibeFadeUpdate	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a14c0 sim 0.760 margin 0.43 pair

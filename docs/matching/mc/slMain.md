@@ -26,3 +26,10 @@ Raidou 1: 1 of 41 words differ, first at +0x20.
 Raidou 2: 1 of 41 words differ, first at +0x20.
 
 1 words off: smt3 body (matched there, same 164B); beq where mine emits beql at +0x20 (delay ld s0 from the shared return); tried status!=PENDING nesting, void* buffer arg; setAutoSaveDisable is slVersionConvert_GetSize (renames.tsv); vectors do not reach, checked against the asm
+
+## slCallPlaySE4 (mc/slMain, raidou1 0x74, raidou2 0x7C)
+
+Raidou 1: 18 of 25 words differ, first at +0x0; emitted 100 bytes, native 116 bytes.
+Raidou 2: 16 of 28 words differ, first at +0x0; emitted 112 bytes, native 124 bytes.
+
+Tail calls slHitAnyKeyNoChk from two blocks with 0 preloaded in v0 before the slData5 test; the C here returns the call through a local, which drops the tail calls. Tried early returns and a ret local.

@@ -3059,7 +3059,6 @@
 0x00277BF0	sbtlCallBtlSetModelDataLoadEnd	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlSetModelDataLoadEnd; calls sbtlSetModelDataLoadEnd
 0x00278070	sbtlSetUnitLight_Dir	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD sBtlUnit.sBtlSetUnitLight_Dir, score 8.8 band B
 0x002782C8	sbtlCallSetUnitLightAndAmbient3	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlSetUnitLight; calls evtSetUnitLightAndAmbient3
-0x00278388	sbtlCallToMatrix	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlSetUnitLight; calls ToMatrix
 0x00279B68	sbtlCallBtlGetBadStatus	func	tier=D	derived-callee	na	unit code_00261DF0, neighbour sbtlBgnWaitALL_TimeStopSkill; calls sbtlGetBadStatus
 0x0027A1D0	btlAverageActorAttribute	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x001A95B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0027A2B0	sbtlCallBtlGetSkilltbl	func	tier=D	derived-callee	na	unit code_0027A1E8, neighbour sbtlCheckKajaAny; calls sbtlGetSkilltbl
@@ -23035,6 +23034,7 @@
 0x00276980	sbtlPlayerDirectDmg	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlPlayer_Spirit.sBtlPlayerDirectDmg score 4.5 flag I: calls2 callee-index st2:cidx r2-only
 0x00277FC0	sbtlGetLight_SetPos	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlGetLight_SetPos score 4.6 flag I: next gap2/1 st1:gap r1+r2
 0x00277FF0	sbtlSetLight_SetPos	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlUnit.sBtlSetLight_SetPos score 5.3 flag I: next gap3/2 st1:gap r1+r2
+0x00278388	sbtlSetLight_Map	func	tier=C	derived-derived-role	na	R1 sbtlSetLight_Map: R1 and R2 sbtlCallBtlSetLightMap2 call it at the same site with (unit, 0, 1) after clearing vstatus bits 0x1C0000; the R2 name was inferred (tier D) from a neighbour; replaces sbtlCallToMatrix
 0x002788B0	sbtlCheckMotionMove	func	tier=C	derived-derived-role	na	raidou1 sbtlCheckMotionMove by body (motion move along rot, sbtlCheckMapHit_Cross, field415); replaces sbtlCallMemset3
 0x00278DC8	GetCommListCnt	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x259c90 sim 0.638 margin 0.25 single
 0x00279518	sbtlGetPlayer_HitTarget	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlUnit.sBtlGetPlayer_HitTarget score 3.7 flag I: calls1 calls-of-match st2:call r2-only
@@ -24314,6 +24314,7 @@
 0x0023CF30	RotateSet_effModel	func	tier=B	hd-role	na	HD effModel.c RotateSet: same shape with mdlSetRotate; replaces effLeaf352
 0x0023CF50	ColorSet_effModel	func	tier=B	hd-role	na	HD effModel.c ColorSet: mdlSetColor on the part model (PS2 passes a packed u32); replaces effLeaf353
 0x0023CF68	ScaleSet_effModel	func	tier=B	hd-role	na	HD effModel.c ScaleSet: scale * part scale into vf10, mdlSetScale; replaces effCallSetScale
+0x0024ADA8	CheckOT	func	tier=B	hd-role	na	HD effPolygonTex.c CheckOT (0x198fe40): returns CheckRun() && epl_otchkflg; Raidou returns Proc_sbtl() && sbtlCallSetOtData == 1, a flag, not an OT; HD GetOT is the caller that picks the OT table; replaces GetOT
 0x002562E8	Create_effObjectParticle	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD effObjectParticle.Create score 6.3 flag -: gap=exact st1:gap r1+r2
 0x00256710	ResourceCopy_effObjectParticle	func	tier=B	hd-role	na	HD effObjectParticle.c ResourceCopy (same kind 3/6 logic on opcHandle_t); unit already uses ResourceCopy_effPolygonTex; replaces effCloneSlotNodeSecondaryResources
 0x00259408	effPadVibeFadeUpdate	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a14c0 sim 0.760 margin 0.43 pair

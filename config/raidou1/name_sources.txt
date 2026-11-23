@@ -5970,7 +5970,7 @@
 0x00232F70	effSetRenderResourceColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00232F78	effSetRenderResourceScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00232F80	Update_effPolygonTex	hd	hd: Raidou HD effPolygonTex.Update, score 7.9 band B
-0x00233AA0	GetOT	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD effPolygonTex.GetOT score 7.5 flag -: calls2 calls-of-match votes2 st1:call r1+r2
+0x00233AA0	CheckOT	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD effPolygonTex.c CheckOT (0x198fe40): returns CheckRun() && epl_otchkflg; Raidou returns Proc_sbtl() && sbtlCallSetOtData == 1, a flag, not an OT; HD GetOT is the caller that picks the OT table; replaces GetOT
 0x00233AD8	Render	hd	hd: Raidou HD effPolygonTex.Render, score 9.0 band B
 0x00234080	effRandomizeParticleFields	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A85E8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234108	effCreateAlphaRampPointSetRows	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A8670, masked-words-identical (strict map pair); dds-decomp: descriptive

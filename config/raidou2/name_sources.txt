@@ -6244,7 +6244,7 @@
 0x0024A278	effSetRenderResourceColor	inferred	twin-of-raidou1-0x00232F70
 0x0024A280	effSetRenderResourceScale	inferred	twin-of-raidou1-0x00232F78
 0x0024A288	Update_effPolygonTex	hd	hd: Raidou HD effPolygonTex.Update, score 7.9 band B
-0x0024ADA8	GetOT	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD effPolygonTex.GetOT score 7.5 flag -: calls2 calls-of-match votes2 st1:call r1+r2
+0x0024ADA8	CheckOT	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD effPolygonTex.c CheckOT (0x198fe40): returns CheckRun() && epl_otchkflg; Raidou returns Proc_sbtl() && sbtlCallSetOtData == 1, a flag, not an OT; HD GetOT is the caller that picks the OT table; replaces GetOT
 0x0024ADE0	Render	hd	hd: Raidou HD effPolygonTex.Render, score 9.0 band B
 0x0024B388	effRandomizeParticleFields	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A85E8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0024B410	effCreateAlphaRampPointSetRows	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A8670, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -6946,7 +6946,7 @@
 0x00278070	sbtlSetUnitLight_Dir	hd-inferred	hd: Raidou HD sBtlUnit.sBtlSetUnitLight_Dir, score 8.8 band B
 0x00278160	sbtlSetUnitLight	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD sBtlUnit.sBtlSetUnitLight score 9.4 flag I: calls1 prev callers-of-match votes2 st1:call r1+r2
 0x002782C8	sbtlCallSetUnitLightAndAmbient3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlSetUnitLight; calls evtSetUnitLightAndAmbient3
-0x00278388	sbtlCallToMatrix	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00261DF0, neighbour sbtlSetUnitLight; calls ToMatrix
+0x00278388	sbtlSetLight_Map	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=R1 sbtlSetLight_Map: R1 and R2 sbtlCallBtlSetLightMap2 call it at the same site with (unit, 0, 1) after clearing vstatus bits 0x1C0000; the R2 name was inferred (tier D) from a neighbour; replaces sbtlCallToMatrix
 0x002788B0	sbtlCheckMotionMove	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=raidou1 sbtlCheckMotionMove by body (motion move along rot, sbtlCheckMapHit_Cross, field415); replaces sbtlCallMemset3
 0x00278A20	MotinProc	hd	method=hd-ab-single-raidou2; p=0.94 (n=1384); tier=A; source=hd; evidence=Raidou HD sBtlUnit.MotinProc score 7.0 flag -: calls4 callers-of-match votes2 st2:call r1-disagree:0x2590f8
 0x00278C90	sbtlReleaseUnitList_ID	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD sBtlUnit.sBtlReleaseUnitList_ID score 6.0 flag I: calls1 calls-of-match st1:call r1+r2

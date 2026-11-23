@@ -5630,7 +5630,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00232F70	0x0024A278	effSetRenderResourceColor	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x00232F78	0x0024A280	effSetRenderResourceScale	yes	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	run-order-size
 0x00232F80	0x0024A288	Update_effPolygonTex	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
-0x00233AA0	0x0024ADA8	GetOT	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
+0x00233AA0	0x0024ADA8	CheckOT	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
 0x00233AD8	0x0024ADE0	Render	no	no	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-masked-hash
 0x00234080	0x0024B388	effRandomizeParticleFields	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash
 0x00234108	0x0024B410	effCreateAlphaRampPointSetRows	no	yes	asm/raidou1/code_00226EC8.s	asm/raidou2/code_0023E1D0.s	unique-reloc-hash

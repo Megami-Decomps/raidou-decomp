@@ -28,6 +28,7 @@
 #include "dds3KernelCore.h"
 #include "code_r1_001D5158.h"
 #include "frFont.h"
+#include "code_r1_002CA3F0.h"
 
 
 enum sl_slot_flag
@@ -64,6 +65,9 @@ extern saddr_t slFileSel(void);
 s32 slExitToTitle(void);
 extern s32 gslCheckCardWait;
 extern u32 gSlNowCardCheck;
+extern s32 slTopMenuSel[];
+extern u8 slCallMcFuncClose12Data;
+extern f32 slCallSin2Data;
 extern u32 gslDrawFlagBg;
 extern sdfMemHandle_t *slBaseIconMemHandle;
 extern addr_t baseIconFileHandle;
@@ -419,13 +423,49 @@ void slKanjiDrawH(s32 x, s32 y, u32 rgba, const char *moji) {
 INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode);
 #endif
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode2);
+void slCallEnableMode2(s32 x, s32 y, u32 color, u8 *str, s32 ot) {
+    frFontHandle_t *handle;
 
-INCLUDE_ASM(const s32, "mc/slMain", slNextPageDraw);
+    frEnableMode(1);
+    handle = frwGetSmallNumFontFRQ(x << 4, y << 3, 0, color, str, NULL);
+    frDisableMode(1);
+    frDrawFontOt(handle, 1, ot);
+    frDestroyFontRequestAfter(handle);
+}
 
-INCLUDE_ASM(const s32, "mc/slMain", slMcAccessDraw);
+void slNextPageDraw(void) {
+    u32 colors[4];
+    u32 color;
 
-INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProcSub);
+    slCallSin2Data += 0.05f;
+    color = ((s32)(sdfSin(slCallSin2Data) * 30.0f) + 127) | 0x80808000;
+    colors[0] = color;
+    colors[1] = color;
+    colors[2] = color;
+    colors[3] = color;
+#ifdef VERSION_RAIDOU1
+    effDrawSpriteWithCornerColors(0x1970, 0x8D8, 0, colors, 32, slNewCycleData16, 27, 0x6A);
+#else
+    effDrawSpriteWithCornerColors(0x1970, 0x8D8, 0, colors, 32, slNewCycleData16, 27, 0x6B);
+#endif
+}
+
+void slMcAccessDraw(void) {
+#ifdef VERSION_RAIDOU1
+    eglSetOt(0x6A);
+#else
+    eglSetOt(0x6B);
+#endif
+    eglLinkAlpha(0);
+    gSlMcAccessCnt++;
+}
+
+s32 slQueryYesNoProcSub(void) {
+    if (gSlWindowCnt < 14) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProcSub2);
 
@@ -844,7 +884,12 @@ saddr_t slHeadLoadProc_readFile(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallMcFuncClose1);
 
-INCLUDE_ASM(const s32, "mc/slMain", slExitWait);
+saddr_t slExitWait(void *nextFunc) {
+    dds3FadeOut(0, 0, 0, 30);
+    slExitWaitNextFunc = nextFunc;
+    slExitWaitCnt = 40;
+    return EE_ADDR_S(slExitWaitProc);
+}
 
 s32 slEndingTop(void) {
     gslMode = 0;
@@ -902,7 +947,25 @@ s32 slBootError2(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slBootRetry_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", slTop);
+saddr_t slTop(void) {
+    fileClearAllSlotFlags();
+    slTopMenuSel[0] = 0;
+    slTopMenuSel[1] = 0;
+    slTopMenuSel[2] = 0;
+    slTopMenuSel[3] = 0;
+    slTopMenuSel[4] = 0;
+    slTopMenuSel[5] = 0;
+    slTopMenuSel[6] = 0;
+    slTopMenuSel[7] = 0;
+    slTopMenuSel[8] = 0;
+    slTopMenuSel[9] = 0;
+    sdfMcRegetInfo(0);
+    gslCheckCardWait = 30;
+    gSlNowCardCheck = 1;
+    slSetInfo(1);
+    gslDrawFlagFile = 1;
+    return EE_ADDR_S(slSaveProc_CheckCard);
+}
 
 s32 slExit(void) {
     slSetInfo(0);
@@ -1059,7 +1122,22 @@ INCLUDE_ASM(const s32, "mc/slMain", slHardSelect4);
 
 INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_CheckCard);
 
-INCLUDE_ASM(const s32, "mc/slMain", sl1Ken);
+s32 sl1Ken(void) {
+    s32 i = 0;
+    s32 count = 0;
+    do {
+        u32 flags = sdfMcGetSlotFlags(mccb, i);
+        i++;
+        if (flags & SL_SLOT_FLAG_CAN_READ_SAVE) {
+            if (flags & SL_SLOT_FLAG_DIRECTORY_READY) {
+                if (flags & SL_SLOT_FLAG_DELETE_BEFORE_WRITE) {
+                    count++;
+                }
+            }
+        }
+    } while (i < 10);
+    return count;
+}
 
 #ifdef VERSION_RAIDOU1
 #define SL_SAVE_DATA_SIZE 0x19000
@@ -1137,9 +1215,24 @@ s32 slExitWaitProc(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyNoChk);
+saddr_t slHitAnyKeyNoChk(u32 nextFunc) {
+    slHitAnyKeyNextFunc = nextFunc;
+    gslErrorKeyFlag = 0;
+    return EE_ADDR_S(slHitAnyKeyNoChkProc);
+}
 
-INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyNoChkProc);
+s32 slHitAnyKeyNoChkProc(void) {
+    if (slGetPadTrig(dds3PadButtonState[0x23] < 0) ||
+        slGetPadTrig(dds3PadButtonState[0x21] < 0)) {
+        slSetInfo(0);
+        gslErrorCode = 0;
+        if (slHitAnyKeyNextFunc == -1) {
+            return slExitWait((void *)-1);
+        }
+        return ((s32 (*)())slHitAnyKeyNextFunc)();
+    }
+    return 0;
+}
 
 saddr_t slHitAnyKey(addr_t nextFunc) {
     slHitAnyKeyNextFunc = nextFunc;
@@ -1198,7 +1291,21 @@ s32 slChooseData_getCardInfo3(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallMcClearCardStat);
 
-INCLUDE_ASM(const s32, "mc/slMain", slChooseData);
+saddr_t slChooseData(void) {
+    s32 i;
+    if (sdfMcGetStatus(mccb) != 0) {
+        slSetInfo(1);
+        slChooseSaveIndex = 0;
+        for (i = 0; i < 10; i++) {
+            slTopMenuSel[i] = 0;
+            sdfMcClearSlotFlags(mccb, i);
+        }
+        return slChooseData_getCardInfo_B();
+    }
+    gSlNowCardCheck = 0;
+    slSetInfo(0);
+    return slFileSel();
+}
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/mc/slMain.c:1724, near, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
 saddr_t slChooseData_getCardInfo(void) {
@@ -1528,9 +1635,51 @@ saddr_t slLoadProc_readFile(void) {
     return EE_ADDR_S(slErrorWait);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slCallMcFuncClose12);
+saddr_t slCallMcFuncClose12(void) {
+    McPollResult status = sdfMcFuncClose1();
+    if (status == MC_POLL_PENDING) {
+        return 0;
+    }
+    if (status == MC_POLL_SUCCESS) {
+        setCallMemcpy();
+        sdfMemFreeDirect(slLoadFileFd);
+        slCallMcFuncClose12Data = 1;
+        slKillLoadProcess();
+        return EE_ADDR_S(slCallPlaySE4);
+    }
+    sdfMemFreeDirect(slLoadFileFd);
+    slSetInfo(0);
+    gslErrorCode = 3;
+    return EE_ADDR_S(slCallPlaySE3);
+}
 
+/* NON_MATCHING: 13 of 31 words match.  */
+#ifdef NON_MATCHING
+saddr_t slCallPlaySE4(void) {
+    saddr_t ret = 0;
+    u32 nextFunc;
+
+    if (slData5 >= 60) {
+        p2sdPlaySE(27, 127, 63);
+        slSetInfo(13);
+#ifdef VERSION_RAIDOU1
+        nextFunc = EE_ADDR(slCallSetInfo7);
+        if (DDS3_GBWK->transition != 1) {
+            nextFunc = -1;
+        }
+#else
+        nextFunc = -1;
+        if (slNewCycleData99 == 0 && DDS3_GBWK->transition == 1) {
+            nextFunc = EE_ADDR(slCallSetInfo7);
+        }
+#endif
+        ret = slHitAnyKeyNoChk(nextFunc);
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "mc/slMain", slCallPlaySE4);
+#endif
 
 INCLUDE_ASM(const s32, "mc/slMain", slFileSelCalc);
 
