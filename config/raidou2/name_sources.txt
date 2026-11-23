@@ -28442,7 +28442,7 @@
 0x004E2B38	sbtlCreateWorkDataEntry9	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCreateWorkData
 0x004E2B40	sbtlCreateWorkDataEntry10	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCreateWorkData
 0x004E2B48	sbtlCreateWorkDataEntry11	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sbtlCreateWorkData
-0x004E2B50	sbtlData104	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 13 functions: sbtlDrawText, sbtlExt_MesReqEx, sbtlCallMemAllocDirect10
+0x004E2B50	GlobalPID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDvltk.c GlobalPID: sbtlDrawText takes the unit from GlobalUnitWK[GlobalCurrentArray] when it is set (HD tube_wk = GlobalUnitWK[GlobalCurrentArray] under if (GlobalPID)); the R2 GlobalPID name was freed by the bstcolor_tbldata rename; replaces sbtlData104
 0x004E2B54	GlobalCurrentArray	hd	hd: Raidou HD sBtlDvltk.GlobalCurrentArray, 3 of 3 functions agree, high confidence
 0x004E2B58	sbtlData105	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: sbtlExt_CreateBuffer, sbtlExt_ShutDown, sbtlExt_FreeBuffer
 0x004E2B5C	sbtlExt_CreateBufferData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlExt_CreateBuffer (3 of 5 refs, 3 functions)
@@ -31519,7 +31519,7 @@
 0x00566BA8	sb_gen_work	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlClearGeneratorWork clears sb_gen_work entries, same site; replaces sbtlWork3
 0x00566C78	sbtlLeaf110Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf110
 0x00566C88	sbtlExt_CalcProcessWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlExt_CalcProcess (4 of 12 refs, 5 functions)
-0x00566CA0	sbtlExt_CreateBufferWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlExt_CreateBuffer (4 of 12 refs, 5 functions)
+0x00566CA0	GlobalUnitWK	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlDvltk.c GlobalUnitWK indexed by GlobalCurrentArray in sBtlDrawText; an inline SBTLUNIT_WORK array on the PS2; replaces sbtlExt_CreateBufferWork
 0x00569468	sbtlWork4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: sbtlExt_CalcProcess, sbtlExt_CreateBuffer, sbtlExt_DrawProcess
 0x00569480	sbtlLoadOnMemMsgWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLoadOnMemMsg
 0x005694D0	sbtlWork5	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: sbtlCallBtlGetDevilDataSBtlSub4, sbtlCallBtlCheckMsgMemType, sbtlLoadOnMemMsg

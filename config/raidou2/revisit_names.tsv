@@ -19736,7 +19736,6 @@
 0x004E2B38	sbtlCreateWorkDataEntry9	data	tier=D	derived-table	na	pointed to by sbtlCreateWorkData
 0x004E2B40	sbtlCreateWorkDataEntry10	data	tier=D	derived-table	na	pointed to by sbtlCreateWorkData
 0x004E2B48	sbtlCreateWorkDataEntry11	data	tier=D	derived-table	na	pointed to by sbtlCreateWorkData
-0x004E2B50	sbtlData104	data	tier=D	derived-shared	na	used by 13 functions: sbtlDrawText, sbtlExt_MesReqEx, sbtlCallMemAllocDirect10
 0x004E2B58	sbtlData105	data	tier=D	derived-shared	na	used by 5 functions: sbtlExt_CreateBuffer, sbtlExt_ShutDown, sbtlExt_FreeBuffer
 0x004E2B5C	sbtlExt_CreateBufferData	data	tier=D	derived-dominant	na	used by sbtlExt_CreateBuffer (3 of 5 refs, 3 functions)
 0x004E2B60	sbtlData106	data	tier=D	derived-shared	na	used by 2 functions: sbtlDrawText, sbtlCallMessageNumSearch3
@@ -22242,7 +22241,6 @@
 0x005669E4	sbtlBtlLoadAttackHitDataDecodeSubWork	data	tier=D	derived-sole	na	used by sbtlBtlLoadAttackHitDataDecodeSub
 0x00566C78	sbtlLeaf110Work	data	tier=D	derived-sole	na	used by sbtlLeaf110
 0x00566C88	sbtlExt_CalcProcessWork	data	tier=D	derived-dominant	na	used by sbtlExt_CalcProcess (4 of 12 refs, 5 functions)
-0x00566CA0	sbtlExt_CreateBufferWork	data	tier=D	derived-dominant	na	used by sbtlExt_CreateBuffer (4 of 12 refs, 5 functions)
 0x00569468	sbtlWork4	data	tier=D	derived-shared	na	used by 5 functions: sbtlExt_CalcProcess, sbtlExt_CreateBuffer, sbtlExt_DrawProcess
 0x00569480	sbtlLoadOnMemMsgWork	data	tier=D	derived-sole	na	used by sbtlLoadOnMemMsg
 0x005694D0	sbtlWork5	data	tier=D	derived-shared	na	used by 3 functions: sbtlCallBtlGetDevilDataSBtlSub4, sbtlCallBtlCheckMsgMemType, sbtlLoadOnMemMsg
@@ -25014,6 +25012,7 @@
 0x004E2618	encmax	data	tier=B	hd-role	na	HD sBtlGetRndEncMax caches encmax; replaces nbGetEncountMaxData2
 0x004E263C	aisyo_tbldata	data	tier=B	hd-role	na	HD sBtlGetAisyotbl indexes aisyo_tbldata; replaces datData7
 0x004E2640	bstcolor_tbldata	data	tier=B	hd-role	na	HD sBtlCalc.c bstcolor_tbldata: the TEXCOLOR_WORK table indexed by bad status (32-byte rows, flg at 0x1C read by sBtlCheckBadStatus_Color, colors read by sBtlSetBadStatus_Color = sbtlCallSetClutColor2); only sbtlRefGlobalPID reads it; R1 0x0046DD20 is the same pair; replaces GlobalPID
+0x004E2B50	GlobalPID	data	tier=B	hd-role	na	HD sBtlDvltk.c GlobalPID: sbtlDrawText takes the unit from GlobalUnitWK[GlobalCurrentArray] when it is set (HD tube_wk = GlobalUnitWK[GlobalCurrentArray] under if (GlobalPID)); the R2 GlobalPID name was freed by the bstcolor_tbldata rename; replaces sbtlData104
 0x004E2B78	autotbldata	data	tier=B	hd-role	na	HD autotbldata: sbtlKudaDmg and sbtlZokuseiDmg index it by SBTLSKILLP_TBL.weapontype (HD sBtlGetSkilltbl(id)->weapontype) and read the 88-byte entry aisyo percentages; name free in raidou2; replaces sbtlZokuseiDmgData
 0x004E3480	gAddMagNumDrawCnt	data	tier=B	hd-role	na	HD SetAddMag sets it to 100; replaces DrawAddMagData2
 0x004E3484	gAddMagNumNow	data	tier=B	hd-role	na	HD SetAddMag subtracts it; replaces DrawAddMagData3
@@ -25075,6 +25074,7 @@
 0x00547498	Data_evtCutIn	data	tier=B	hd-role	na	HD evtCutIn.c static Data (evtCutInData_t), R1 holds the struct itself; replaces scrEventSkipEndWork
 0x005558C0	slTopMenuSel	data	tier=B	smt3-ref	0.88 (n=D_r1_004C5C80)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=slChooseData
 0x00566BA8	sb_gen_work	data	tier=B	hd-role	na	HD sBtlClearGeneratorWork clears sb_gen_work entries, same site; replaces sbtlWork3
+0x00566CA0	GlobalUnitWK	data	tier=B	hd-role	na	HD sBtlDvltk.c GlobalUnitWK indexed by GlobalCurrentArray in sBtlDrawText; an inline SBTLUNIT_WORK array on the PS2; replaces sbtlExt_CreateBufferWork
 0x00571E30	g_dvlLevelUpNum	data	tier=B	hd-role	na	HD rstSetLvUpSkl: g_dvlLevelUpNum[i] = dst level - src level, -1 when only a memory skill was learned; replaces evtCallCheckRankUpWork
 0x00571F38	g_aLvUpSkl	data	tier=B	hd-role	na	HD rstGrowth.c g_aLvUpSkl: per-stock _LvUpSkl (0x24 bytes) filled by rstSetLvUpSkl; replaces rstOmoideGaIppaiWork6
 0x00572208	s_bRegistMemSkill	data	tier=B	hd-role	na	HD rstSetLvUpSkl: s_bRegistMemSkill[i][n] = datOmoideSkillGetMaster(dst, memSkl[n]); replaces rstOmoideGaIppaiWork9

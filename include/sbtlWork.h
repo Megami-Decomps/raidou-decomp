@@ -34,6 +34,14 @@ typedef struct SBTLDROP_WORK {
     s32 eventitem[DROPEITEM_NUM];
 } SBTLDROP_WORK;
 
+/* HD S_PosMove: one step of a camera or target move, read by PosCtrlSystem. */
+typedef struct S_PosMove {
+    sdfVector4_t m_vPos; /* w: camera roll in degrees */
+    E_CAMERA_POSTYPE m_ePosType;
+    E_CAMERA_POSBASE m_eChar;
+    f32 m_fFrm;
+    E_CAMERA_MOVE_TYPE m_eCtrl; /* low byte: move type; high half: sbtlSetDrawChar argument */
+} S_PosMove;
 /* HD S_PosCtrl: a camera or target position move in progress. */
 typedef struct S_PosCtrl {
     sdfVector4_t vLast;
@@ -1409,6 +1417,7 @@ extern s32 sbtlGetIdlingData2; /* HD camera_bossmode */
 extern s32 sbtlGetIdlingData3; /* HD camera_bossmode_cnt */
 void sbtlSetBossMode(s32 mode);
 void sbtlSetMoveEnd(void);
+void sbtlBtlDrawTextSub(s32 x, s32 y, u32 alpha, struct sprHandle_t *handle, s32 sprno);
 s32 sbtlBtlDrawTextSub2(void);
 void sbtlBgnPosSlp(const sdfVector4_t *pos);
 s32 SetPara(SBTLCAMERA_WORK *wk);
@@ -1432,6 +1441,8 @@ f32 CameraMoveSystem(SBTLCAMERA_WORK *wk);
 s32 sbtlCheckSpecialDamage_Stop(struct SBTLUNIT_WORK *wk);
 void sbtlSetBadStatusAction(struct SBTLUNIT_WORK *wk, u32 action, s32 cnt);
 void GetNowPosAS(sdfVector4_t *vPosRes, const sdfVector4_t *vPosBgn, const sdfVector4_t *vPosEnd, f32 fTime, f32 x);
+void GetNowPosS(sdfVector4_t *vPosRes, const sdfVector4_t *vPosBgn, const sdfVector4_t *vPosEnd, f32 fTime, f32 x);
+void sbtlSetDrawChar(eCmbSklDraw draw);
 void sbtlCheckDamageTargetUseItem(s32 num);
 extern s32 sbtlSbattle3Data; /* frames counted by sbtlSbattle3 */
 void cmpRefSbtl2(void);

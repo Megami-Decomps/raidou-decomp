@@ -36,6 +36,13 @@
 #include "sdfMath.h"
 #include "sBtlMenu.h"
 #include "sBtlSM.h"
+#include "fileManager.h"
+#include "code_r1_002250F8.h"
+#include "sdfQuat.h"
+#include "sbtlSub.h"
+#include "itf.h"
+#include "effPacket.h"
+#include "code_r1_001CC1D0.h"
 
 INCLUDE_ASM(const s32, "sbtl", sbtlLeaf125);
 
@@ -272,7 +279,174 @@ void GetNowPosAS(sdfVector4_t *vPosRes, const sdfVector4_t *vPosBgn, const sdfVe
 
 INCLUDE_ASM(const s32, "sbtl", GetNowPosS);
 
-INCLUDE_ASM(const s32, "sbtl", PosCtrlSystem);
+/* Steps ctrl one frame along its current S_PosMove into ret; returns the camera roll in radians. */
+f32 PosCtrlSystem(S_PosCtrl *ctrl, sdfVector4_t *ret) {
+    sdfVector4_t pos;
+    sdfVector4_t base;
+    S_PosMove *move;
+    struct SBTLUNIT_WORK *unit;
+    s32 end;
+    f32 rad;
+    f32 w;
+    f32 cnt;
+    f32 h;
+    u32 arg;
+
+    rad = 0.0f;
+    unit = NULL;
+    end = 0;
+    w = 0.0f;
+    cnt = ctrl->m_cnt;
+    move = &ctrl->m_pPosMove[ctrl->m_stp];
+    if (ctrl->m_run == 0) {
+        return rad;
+    }
+    switch (move->m_eChar) {
+    case E_CAMERA_POSBASE_Non:
+        break;
+    case E_CAMERA_POSBASE_SklUser:
+        unit = wk_sbtl->pCamSklUser;
+        break;
+    case E_CAMERA_POSBASE_Raidou:
+        unit = sbtlGetPChara();
+        break;
+    case E_CAMERA_POSBASE_CmbNkm:
+        unit = wk_sbtl->pNakama0;
+        break;
+    case E_CAMERA_POSBASE_EventBoss:
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->boss_eventID);
+        break;
+    }
+    switch (move->m_ePosType) {
+    case E_CAMERA_POSTYPE_Non:
+        break;
+    case E_CAMERA_POSTYPE_World:
+        pos.x = move->m_vPos.x;
+        pos.y = move->m_vPos.y;
+        pos.z = move->m_vPos.z;
+        pos.w = 0.0f;
+        break;
+    case E_CAMERA_POSTYPE_Char:
+        if (move->m_eChar == E_CAMERA_POSBASE_Raidou) {
+            base.x = unit->pos.x;
+            base.y = -90.0f;
+            base.z = unit->pos.z;
+            base.w = 1.0f;
+            SDF_VU0_LOADVECTOR(&base);
+        } else {
+            sbtlGetUnitHelperPos(unit, SBTLUNIT_MARK__1SHOT);
+        }
+        pos.x = move->m_vPos.x;
+        pos.y = move->m_vPos.y;
+        pos.z = move->m_vPos.z;
+        pos.w = 0.0f;
+        SDF_VU0_LOADVECTOR_B(&pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&pos);
+        break;
+    case E_CAMERA_POSTYPE_CharLcl:
+        SDF_VU0_LOADVECTOR(&unit->rot);
+        ToMatrix();
+        pos.x = move->m_vPos.x;
+        pos.y = move->m_vPos.y;
+        pos.z = move->m_vPos.z;
+        pos.w = 0.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_LOADVECTOR_B(&unit->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&pos);
+        break;
+    case E_CAMERA_POSTYPE_CharLclNR:
+        pos.x = move->m_vPos.x;
+        pos.y = move->m_vPos.y;
+        pos.z = move->m_vPos.z;
+        pos.w = 0.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_LOADVECTOR_B(&unit->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&pos);
+        break;
+    case E_CAMERA_POSTYPE_Char2:
+        SDF_VU0_LOADVECTOR(&unit->pos);
+        SDF_VU0_STOREVECTOR(&pos);
+        pos.y -= sbtlGetMotionVisualData(unit->major, unit->minor)->field28 * 0.5f;
+        break;
+    case E_CAMERA_POSTYPE_Char3:
+        pos.x = move->m_vPos.x;
+        pos.y = move->m_vPos.y;
+        pos.z = move->m_vPos.z;
+        pos.w = 0.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        h = sbtlGetMotionVisualData(unit->major, unit->minor)->field24;
+        if (h < sbtlGetMotionVisualData(unit->major, unit->minor)->field28) {
+            h = sbtlGetMotionVisualData(unit->major, unit->minor)->field28;
+        }
+        h *= 0.01f;
+        if (h > 1.0f) {
+            SDF_VU0_SCALEVECTOR(h);
+        }
+        SDF_VU0_LOADVECTOR_B(&unit->pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&pos);
+        break;
+    case E_CAMERA_POSTYPE_EventBoss:
+        SDF_VU0_LOADVECTOR(&wk_sbtl->vPosBossEvent);
+        pos.x = move->m_vPos.x;
+        pos.y = move->m_vPos.y;
+        pos.z = move->m_vPos.z;
+        pos.w = 0.0f;
+        SDF_VU0_LOADVECTOR_B(&pos);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(&pos);
+        break;
+    }
+    arg = move->m_eCtrl & E_CAMERA_MOVE_TYPE_Arg;
+    pos.w = move->m_vPos.w;
+    switch ((s32)(move->m_eCtrl & E_CAMERA_MOVE_TYPE_Msk)) {
+    case E_CAMERA_MOVE_TYPE_Non:
+        SDF_VU0_LOADVECTOR(&ctrl->vLast);
+        SDF_VU0_STOREVECTOR(ret);
+        w = ctrl->vLast.w;
+        ret->w = 0.0f;
+        break;
+    case E_CAMERA_MOVE_TYPE_Set:
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_STOREVECTOR(ret);
+        SDF_VU0_STOREVECTOR(&ctrl->vLast);
+        w = pos.w;
+        if (arg != 0) {
+            sbtlSetDrawChar(arg);
+        }
+        break;
+    case E_CAMERA_MOVE_TYPE_LineAS:
+        GetNowPosAS(ret, &ctrl->vLast, &pos, move->m_fFrm, cnt);
+        w = move->m_vPos.w * cnt / move->m_fFrm + ctrl->vLast.w * (1.0f - cnt / move->m_fFrm);
+        break;
+    case E_CAMERA_MOVE_TYPE_LineS:
+        GetNowPosS(ret, &ctrl->vLast, &pos, move->m_fFrm, cnt);
+        w = move->m_vPos.w * cnt / move->m_fFrm + ctrl->vLast.w * (1.0f - cnt / move->m_fFrm);
+        break;
+    }
+    rad = w * 3.1415918f / 180.0f;
+    if (move->m_fFrm <= cnt) {
+        end = 1;
+    }
+    if (end) {
+        if (move->m_eCtrl & E_CAMERA_MOVE_TYPE_End) {
+            ctrl->m_run = -1;
+        } else {
+            ctrl->m_cnt = 0;
+            SDF_VU0_LOADVECTOR(ret);
+            SDF_VU0_STOREVECTOR(&ctrl->vLast);
+            ctrl->vLast.w = w;
+            ctrl->m_stp++;
+        }
+    } else {
+        ctrl->m_cnt++;
+    }
+    return rad;
+}
 
 f32 CameraMoveSystem(SBTLCAMERA_WORK *wk) {
     f32 t = PosCtrlSystem(&wk->m_PosCtrlCam, &wk->camerapos);
@@ -378,7 +552,134 @@ void sbtlMenuClose(void) {
     MenuStealth(0);
 }
 
+/* NON_MATCHING: 203 of 243 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlRefSbtl67(SBTLCAMERA_WORK *wk)
+{
+    sdfVector4_t pos;
+    sdfVector4_t tgt;
+    s32 stageNo;
+    s32 cnt;
+    f32 f;
+    f32 a;
+    f32 b;
+
+    stageNo = wk_sbtl->stageNo;
+    cnt = ++wk_sbtl->field432C;
+    if (stageNo == 600 || stageNo == 601) {
+        f = cnt;
+        a = 600.0f - (f + f);
+        b = f;
+        if (a < 0.0f) {
+            a = 0.0f;
+        }
+        if (b > 400.0f) {
+            b = 400.0f;
+        }
+        pos.x = 0.0f;
+        tgt.y = -450.0f - a;
+        tgt.z = 1000.0f;
+        pos.y = -90.0f - a;
+        pos.z = -300.0f - b;
+        pos.w = 1.0f;
+        tgt.x = 0.0f;
+        tgt.w = 1.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_STOREVECTOR(&wk->camerapos);
+        SDF_VU0_LOADVECTOR(&tgt);
+        SDF_VU0_STOREVECTOR(&wk->targetpos);
+        if (wk_sbtl->field432C > 400) {
+            wk_sbtl->status4 |= 4;
+        }
+        return 1;
+    }
+    if (stageNo == 602 || stageNo == 604) {
+        f = cnt;
+        a = 600.0f - (f + f);
+        b = f * 5.0f;
+        if (a < 0.0f) {
+            a = 0.0f;
+        }
+        if (b > 700.0f) {
+            b = 700.0f;
+        }
+        tgt.y = -700.0f;
+        tgt.z = 1000.0f;
+        pos.x = 0.0f;
+        pos.y = -34.0f - a;
+        pos.z = -400.0f - b;
+        pos.w = 1.0f;
+        tgt.x = 0.0f;
+        tgt.w = 1.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_STOREVECTOR(&wk->camerapos);
+        SDF_VU0_LOADVECTOR(&tgt);
+        SDF_VU0_STOREVECTOR(&wk->targetpos);
+        if (wk_sbtl->field432C > 300) {
+            wk_sbtl->status4 |= 4;
+        }
+        return 1;
+    }
+    if (stageNo == 603) {
+        f = cnt;
+        a = 1200.0f - f * 4.0f;
+        b = f * 5.0f;
+        if (a < 0.0f) {
+            a = 0.0f;
+        }
+        if (b > 1500.0f) {
+            b = 1500.0f;
+        }
+        tgt.z = 500.0f;
+        tgt.y = -200.0f - a;
+        pos.x = 0.0f;
+        pos.y = -500.0f;
+        pos.z = -1500.0f - b;
+        pos.w = 1.0f;
+        tgt.x = 0.0f;
+        tgt.w = 1.0f;
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_STOREVECTOR(&wk->camerapos);
+        SDF_VU0_LOADVECTOR(&tgt);
+        SDF_VU0_STOREVECTOR(&wk->targetpos);
+        if (wk_sbtl->field432C > 300) {
+            wk_sbtl->status4 |= 4;
+        }
+        return 1;
+    }
+    if (stageNo >= 605 && stageNo <= 607) {
+        f = cnt;
+        a = 200.0f - f;
+        if (a < 0.0f) {
+            a = 0.0f;
+        }
+        b = f * 4.0f;
+        if (b > 1000.0f) {
+            b = 1000.0f;
+        }
+        tgt.x = -10.0f;
+        tgt.y = -500.0f - a;
+        tgt.z = 1900.0f - b;
+        pos.x = 100.0f;
+        pos.y = -150.0f;
+        pos.w = 1.0f;
+        tgt.w = 1.0f;
+        pos.z = -100.0f - b + 1000.0f - b;
+        SDF_VU0_LOADVECTOR(&pos);
+        SDF_VU0_STOREVECTOR(&wk->camerapos);
+        SDF_VU0_LOADVECTOR(&tgt);
+        SDF_VU0_STOREVECTOR(&wk->targetpos);
+        if ((wk_sbtl->status4 & 8) && wk_sbtl->field432C > 250) {
+            wk_sbtl->status4 |= 4;
+        }
+        return 1;
+    }
+    wk_sbtl->status4 |= 4;
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlRefSbtl67);
+#endif
 
 INCLUDE_ASM(const s32, "sbtl", SetPara);
 
@@ -914,7 +1215,97 @@ s32 sbtlCheckAutoSkill_Action(struct SBTLUNIT_WORK *wk, SBTLDMG_HITWORK *hwk, s3
 
 INCLUDE_RODATA(const s32, "sbtl", sbtlCallGetPercentageTable);
 
+/* NON_MATCHING: 197 of 296 words match.  */
+#ifdef NON_MATCHING
+s32 CalcAutoSkill(sdatUnitWork_t *unit, AUTO mode, s32 value, SKLID skillid, s32 attr, s32 percent)
+{
+    s32 ret = 0;
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(skillid);
+    s32 type;
+    s32 hp;
+    s32 maxhp;
+    f32 f;
+    s32 n;
+
+    switch (mode) {
+    case AUTO_ENUP:
+    case AUTO_R_ENUP:
+        f = wk_sbtl->drop.gold;
+        n = (f * percent) / 100.0f;
+        wk_sbtl->drop.gold = n;
+        datDebugPrintf("ENUPorR_ENUP %f * [H]%d/100 -> %d\n", f, percent, n);
+        break;
+    case AUTO_R_EXPUP:
+        f = wk_sbtl->drop.nakama_exp;
+        n = f * (percent / 100.0f);
+        wk_sbtl->drop.nakama_exp = n;
+        datDebugPrintf("EXPUPorR_EXPUP(2,3) %f * [H]%d/100 -> %d\n", f, percent, n);
+        break;
+    case AUTO_R_CHUUSEIUP:
+        f = wk_sbtl->drop.chuusei;
+        n = f * (percent / 100.0f);
+        wk_sbtl->drop.chuusei = n;
+        datDebugPrintf("CHUUSEIUPorR_CHUUSEIUP %f * [H]%d/100 -> %d\n", f, percent, n);
+        break;
+    case AUTO_ENDHP:
+        maxhp = unit->now.maxhp;
+        unit->now.hp += (s32)(maxhp * (percent / 100.0f));
+        hp = unit->now.hp;
+        unit->now.hp = (hp <= 0) ? 0 : (hp < maxhp) ? hp : maxhp;
+        break;
+    case AUTO_B_DMGUP:
+        if ((tbl->flg & 1) && !(tbl->flg & 0x200000) && (s16)GetPercentage() < 50) {
+            type = tbl->type & 0xFFF;
+            if (type == 1 || type == 12 || type == 13) {
+                ret = value * (percent / 100.0f);
+                datDebugPrintf("B_DMGUP %d * [H]%d/100 -> %d\n", value, percent, ret);
+            }
+        }
+        break;
+    case AUTO_M_DMGUP:
+        if ((tbl->flg & 1) && !(tbl->flg & 0x200000) && (s16)GetPercentage() < 50) {
+            type = tbl->type & 0xFFF;
+            if (type == 3 || type == 15) {
+                ret = value * (percent / 100.0f);
+                datDebugPrintf("M_DMGUP %d * [H]%d/100 -> %d\n", value, percent, ret);
+            }
+        }
+        break;
+    case AUTO_B_M_DMGUP:
+        if ((tbl->flg & 1) && !(tbl->flg & 0x200000)) {
+            ret = value * (percent / 100.0f);
+            datDebugPrintf("B_M_DMGUP %d * [H]%d/100 -> %d\n", value, percent, ret);
+        }
+        break;
+    case AUTO_Z_DMGUP:
+        if ((tbl->flg & 1) && !(tbl->flg & 0x200000) && (tbl->attr & (1 << attr) & 0xFFF)) {
+            ret = value * (percent / 100.0f);
+            datDebugPrintf("Z_DMGUP %d * [H]%d/100 -> %d\n", value, percent, ret);
+        }
+        break;
+    case AUTO_Z_DMGDOWN:
+    case AUTO_BS_DOWN:
+    case AUTO_JS_DOWN:
+        if (tbl->attr & (1 << attr) & 0xFFF) {
+            ret = value * (percent / 100.0f);
+            datDebugPrintf("Z_DMGDOWNorBS_DOWNorJS_DOWN %d * [H]%d/100 -> %d\n", value, percent, ret);
+        }
+        break;
+    case AUTO_EDAMAGE:
+        ret = value * (percent / 100.0f);
+        break;
+    case AUTO_RECUP:
+        if ((tbl->flg & 0x10004) == 4 && !(tbl->s_type & 8)) {
+            ret = value * (percent / 100.0f);
+            datDebugPrintf("RECUP %d * [H]%d/100 -> %d\n", value, percent, ret);
+        }
+        break;
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", CalcAutoSkill);
+#endif
 
 s32 sbtlGetDropMoney(sdatUnitWork_t *unit, s32 gold) {
     if ((unit->itemstatus & 0x100) != 0) {
@@ -1021,7 +1412,107 @@ s32 sbtlCheckCost(struct SBTLUNIT_WORK *wk, s32 flg) {
     return sbtlCheckCost2(wk, wk->skillid, flg);
 }
 
+/* NON_MATCHING: 175 of 179 words match.  */
+#ifdef NON_MATCHING
+u8 sbtlCheckCost_SkillID(struct SBTLUNIT_WORK *wk, SKLID sklid, s32 arg)
+{
+    struct SBTLSKILLP_TBL *skl;
+    s32 i;
+    s32 n;
+    s32 cost;
+    s32 need;
+    u8 side;
+    struct SBTLUNIT_WORK *vwk;
+
+    skl = sbtlGetSkilltbl(sklid);
+    for (i = 0; i < 6; i++) {
+        if (!((skl->s_type >> i) & 1)) {
+            continue;
+        }
+        side = wk->field414;
+        if (side & 1) {
+            if (i == 4 || i == 5) {
+                i = 0;
+            }
+        }
+        if (arg == 1 || arg == 2) {
+            for (n = 0; n < 2; n++) {
+                if (sbtlGetNakama(n) == wk && sklid != SKLID_ATK) {
+                    wk_sbtl->aAiGgFlsAlpha[n] = 255;
+                }
+            }
+        }
+        switch (i) {
+        case 5:
+            if (wk->field414 & 2) {
+                return 1;
+            }
+            vwk = wk;
+            if (wk->field414 & 0x80) {
+                if (wk_sbtl->member_num <= 0) {
+                    return 0;
+                }
+                vwk = sbtlGetNakama(0);
+            }
+            if (vwk == NULL) {
+                return 0;
+            }
+            if (vwk->unit.vice < skl->para) {
+                return 0;
+            }
+            if (arg == 1) {
+                sbtlDecVice(vwk, skl->para);
+            }
+            return 1;
+        case 0:
+            cost = sbtlGetSkillCost(&wk->unit, sklid);
+            need = cost;
+            if (wk_sbtl->status3 & 0x2000000) {
+                need = cost * 2;
+            }
+            if (wk_sbtl->mag >= need) {
+                if (arg == 1 || arg == 2) {
+                    sbtlDecMag(cost);
+                }
+                return 1;
+            }
+            if (arg == 2) {
+                sbtlDecMag(wk_sbtl->mag);
+            }
+            return 0;
+        case 1:
+            if (wk->unit.now.hp < skl->para) {
+                return 0;
+            }
+            if (arg == 1) {
+                sbtlDecHP(wk, skl->para);
+            }
+            return 1;
+        case 4:
+            if (wk->unit.now.mp < skl->para) {
+                return 0;
+            }
+            if (arg == 1) {
+                sbtlDecMP(wk, skl->para);
+            }
+            return 1;
+        case 2:
+            if (sbtlGetGun_Num() < skl->para) {
+                return 0;
+            }
+            if (arg == 1) {
+                sbtlRefSbtl66(skl->para);
+            }
+            return 1;
+        case 3:
+            break;
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckCost_SkillID);
+#endif
 
 INCLUDE_ASM(const s32, "sbtl", sbtlDecVice);
 
@@ -1627,7 +2118,83 @@ s32 sbtlBtlCheckBadStatusWeakSub(SKLID skill) {
 
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_WeakNumber);
 
+/* NON_MATCHING: 63 of 216 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlCheckBadStatus_Hit(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx, u8 side,
+                           struct sdatUnitWork_t *atkunit)
+{
+    f32 chance;
+    f32 prev;
+    s32 pct;
+    s32 i;
+    s16 cnt;
+    s16 aluck;
+
+    pct = 0;
+    if (atkunit != NULL) {
+        switch (atkunit->devilId) {
+        case 391:
+        case 489:
+        case 501:
+            if (skill == SKLID_ATK) {
+                bst = BST_PANIC;
+                pct = 45;
+            }
+            break;
+        }
+    }
+    if (skill == SKLID_KAGE1AKUMA && unit->devilId == 0) {
+        return 0;
+    }
+    if (resist[idx] & 0x23000) {
+        return 0;
+    }
+    if (bst < BST_STONE) {
+        if (resist[idx] & 0x4000) {
+            return 1;
+        }
+        if (!sbtlBtlCheckBadStatusWeakSub(skill)) {
+            return 0;
+        }
+    }
+    if (bst == BST_GUN) {
+        return 1;
+    }
+    chance = sbtlGetSkilltbl(skill)->percentage;
+    if (pct > 0) {
+        chance = pct;
+    }
+    chance /= 100.0f;
+    chance = chance * (f32)(luck * 2 + 100) / (f32)(tgtLuck * 2 + 100) * (f32)(resist[idx] & 0xFFF);
+    if (atkunit != NULL) {
+        for (i = 0; i < 6; i++) {
+            if (sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(atkunit, i), &atkunit->autost_cnt, &atkunit->autost_cnt2) == 17) {
+                prev = chance;
+                cnt = atkunit->autost_cnt2;
+                chance *= (f32)cnt / 100.0f;
+                datDebugPrintf("SEISHINUP %f * [H]%d/100 -> %f\n", prev, cnt, chance);
+            }
+        }
+        if (sbtlChkHaveMemSkl(atkunit, AUTO_SEISHINUNUP)) {
+            prev = chance;
+            aluck = atkunit->now.luck;
+            chance += aluck;
+            datDebugPrintf("SEISHINUNUP %f + luck %d -> %f\n", prev, aluck, chance);
+        }
+    }
+    for (i = 0; i < 6; i++) {
+        if (sbtlGetAutoSkillPara(sbtlGetAutoSkill_ID(unit, i), &unit->autost_cnt, &unit->autost_cnt2) == 86) {
+            prev = chance;
+            cnt = unit->autost_cnt2;
+            chance *= (f32)cnt / 100.0f;
+            datDebugPrintf("BS_DOWN %f * [H]%d/100 -> %f\n", prev, cnt, chance);
+        }
+    }
+    return (s16)GetPercentage() < (s16)chance;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlCheckBadStatus_Hit);
+#endif
 
 INCLUDE_ASM(const s32, "sbtl", sbtlGetDamage_GB);
 
@@ -2430,7 +2997,123 @@ INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon002Tmx);
 
 INCLUDE_RODATA(const s32, "sbtl", sbtlStrIcon001Tmx);
 
-INCLUDE_ASM(const s32, "sbtl", sbtlCreateWork);
+s32 sbtlCreateWork(struct SBTLUNIT_WORK *wk)
+{
+    char path[48];
+    char *name;
+
+    if (wk->field414 & 0x82) {
+        wk->msgHandle = NULL;
+        return 1;
+    }
+    if ((u16)wk->unit.devilId >= 210) {
+        return 1;
+    }
+    if (sbtlData17[sbtlBtlLoadHuumaMesDataSub(wk->unit.devilId)] == NULL) {
+        return 1;
+    }
+    if (wk->flg2 & 1) {
+        return 1;
+    }
+    if (sbtlCheckMsgMemType() && wk->msgState == 0) {
+        wk->msgHandle = sdfMemAllocDirect(sbtlWork6[sbtlBtlLoadHuumaMesDataSub(wk->unit.devilId)]);
+        wk->msgData = sdfMemLock(wk->msgHandle);
+        memcpy(wk->msgData, (void *)sbtlWork5[sbtlBtlLoadHuumaMesDataSub(wk->unit.devilId)],
+               sbtlWork6[sbtlBtlLoadHuumaMesDataSub(wk->unit.devilId)]);
+        wk->msgState = 2;
+        wk->msgFile = NULL;
+    }
+    switch (wk->msgState) {
+    case 0:
+        if (!sbtlCheckMsgMemType()) {
+            wk->msgFile = fileLoad(sbtlData17[sbtlBtlLoadHuumaMesDataSub(wk->unit.devilId)]);
+        }
+        wk->msgState++;
+        break;
+    case 1:
+        if (!sbtlCheckMsgMemType()) {
+            if (wk->msgData != NULL) {
+                break;
+            }
+            if (!pacFileCheckEnd(wk->msgFile)) {
+                break;
+            }
+            wk->msgHandle = fileGetMemHandle(wk->msgFile);
+            wk->msgData = sdfMemLock(wk->msgHandle);
+            fileHandleFree(wk->msgFile);
+            wk->msgFile = NULL;
+            wk->msgState++;
+        } else {
+            wk->msgHandle = sdfMemAllocDirect(sbtlWork6[sbtlBtlLoadHuumaMesDataSub(wk->unit.devilId)]);
+            wk->msgData = sdfMemLock(wk->msgHandle);
+            memcpy(wk->msgData, (void *)sbtlWork5[sbtlBtlLoadHuumaMesDataSub(wk->unit.devilId)],
+                   sbtlWork6[sbtlBtlLoadHuumaMesDataSub(wk->unit.devilId)]);
+            wk->msgState++;
+        }
+        break;
+    case 2:
+        if (!(wk->field414 & 2) && (name = sbtlCreateWorkData[wk->unit.devilId]) != NULL) {
+            if (wk->field60C) {
+                wk->cacheRef = effCloneSharedReferenceWithValue(wk->field4E0, 0x10000);
+                wk->msgState = 4;
+                break;
+            }
+            sprintf(path, "/battle/dvltktex/%s", name);
+            wk->msgFile = fileLoad(path);
+            wk->msgState++;
+            break;
+        }
+        wk->cacheHandle = NULL;
+        wk->cacheRef = NULL;
+        wk->flg2 |= 1;
+        return 1;
+    case 3:
+        if (wk->field4E0 != NULL) {
+            break;
+        }
+        if (!pacFileCheckEnd(wk->msgFile)) {
+            break;
+        }
+        wk->cacheHandle = fileGetMemHandle(wk->msgFile);
+        wk->field4E0 = sdfMemLock(wk->cacheHandle);
+        fileHandleFree(wk->msgFile);
+        wk->cacheRef = effCloneSharedReferenceWithValue(wk->field4E0, 0x10000);
+        if (dds3SearchProcessName(sbtlCreateWorkData3) == NULL) {
+            wk->flg2 |= 1;
+            return 1;
+        }
+        wk->msgState++;
+        break;
+    case 4:
+        if (wk->unit.devilId < 207 && (name = sbtlCreateWorkData2[wk->unit.devilId]) != NULL) {
+            if (wk->field60D) {
+                wk->field624 = effCloneSharedReferenceWithValue(wk->field620, wk->unit.devilId + 0x10001);
+                wk->flg2 |= 1;
+                return 1;
+            }
+            sprintf(path, "/battle/dvltktex/%s", name);
+            wk->msgFile = fileLoad(path);
+            wk->msgState++;
+            break;
+        }
+        wk->flg2 |= 1;
+        return 1;
+    case 5:
+        if (wk->field620 != NULL) {
+            break;
+        }
+        if (!pacFileCheckEnd(wk->msgFile)) {
+            break;
+        }
+        wk->field61C = fileGetMemHandle(wk->msgFile);
+        wk->field620 = sdfMemLock(wk->field61C);
+        fileHandleFree(wk->msgFile);
+        wk->field624 = effCloneSharedReferenceWithValue(wk->field620, wk->unit.devilId + 0x10001);
+        wk->flg2 |= 1;
+        return 1;
+    }
+    return 0;
+}
 
 struct SBTLDVLTK_WORK *sbtlCreateDvltk_Priority(struct SBTLDVLTK_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode)
 {
@@ -2505,7 +3188,7 @@ struct SBTLDVLTK_WORK *sbtlCreateDvltk(struct SBTLDVLTK_LISTWORK *lwk, struct SB
         lwk->dwk = dwk;
     } else {
         dwk = lwk->dwk;
-        if (sbtlData104 == NULL) {
+        if (GlobalPID == NULL) {
             if (dwk->mode == mode) {
                 if (dwk->status == 1) {
                     dwk->counter = 0;
@@ -2564,7 +3247,7 @@ s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
     if (wk_sbtl->bosseventflg) {
         return 0;
     }
-    if (sbtlData104 == NULL && !wk_sbtl->field42CA) {
+    if (GlobalPID == NULL && !wk_sbtl->field42CA) {
         if (wk_sbtl->flg & 0x8000000) {
             return 0;
         }
@@ -2628,7 +3311,7 @@ s32 Draw_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
     if (wk_sbtl->bosseventflg) {
         return 0;
     }
-    if (sbtlData104 == NULL && !dds3BgSetScrollSub() && !wk_sbtl->field42CA) {
+    if (GlobalPID == NULL && !dds3BgSetScrollSub() && !wk_sbtl->field42CA) {
         if (wk_sbtl->flg2 & 0x12) {
             return 0;
         }
@@ -2737,7 +3420,81 @@ s32 sbtlCheckPriority_Battle(s32 a, s32 b)
     return 1;
 }
 
+/* NON_MATCHING: 325 of 327 words match.  */
+#ifdef NON_MATCHING
+/* Draws the devil talk window: text, the speaker's portrait with its fading trail, and the continue mark. */
+s32 sbtlDrawText(SBTLDVLTK_WORK *dwk)
+{
+    u32 col[4] = { 0x00808080, 0x00808080, 0x00808080, 0x00808080 };
+    struct SBTLUNIT_WORK *unit;
+    sdfTexHandle_t *tex;
+    SBTLDVLTK_MODE mode;
+    s32 x;
+    s32 y;
+    u32 c;
+
+    if (GlobalPID == NULL) {
+        unit = sbtlSearchUnit_ID(wk_sbtl->unitList, dwk->listID);
+    } else {
+        unit = &GlobalUnitWK[GlobalCurrentArray];
+    }
+    if (unit == NULL) {
+        return 0;
+    }
+    if (GlobalPID == NULL && unit->unit.devilId != dwk->devilid) {
+        return 0;
+    }
+    if (sbtlGetSpriteHandle() == NULL) {
+        return 0;
+    }
+    mode = dwk->mode;
+    if (sbtlDrawTextFont(dwk->ofs_x - 181, 409, 1, dwk->alpha | (mode == 0 ? 0xC0C0C000 : 0x80808000), unit, mode) == 0) {
+        return 1;
+    }
+    x = dwk->ofs_x - 6;
+    y = dwk->ofs_y + 2;
+    sbtlBtlDrawTextSub(x, y, dwk->alpha, sbtlGetSpriteHandle(), 0);
+    if (sbtlBtlDrawTextSub2() && unit->cacheRef != NULL) {
+        c = 0x80808080;
+        sbtlAnimWaku(dwk);
+        tex = sdfGetOrCreateTextureForReference(&evtData2, unit->cacheRef);
+        col[0] |= dwk->alpha << 24;
+        col[1] |= dwk->alpha << 24;
+        col[2] |= dwk->alpha << 24;
+        col[3] |= dwk->alpha << 24;
+        x = dwk->ofs_x;
+        y = dwk->ofs_y;
+        eglSetOt(0x68);
+        eglLinkTest(1, 5, 1, 1, 0, 0, 0, 1);
+        eglLinkAlpha(0);
+        LinkSprite4F(x, y, x + 126, y, x, y + 126, x + 126, y + 126, 126, 1, 1, 1, 126, 126, 1, 126, 0, c, c, c, c, tex);
+        if (dwk->alpha < 128) {
+            eglLinkAlpha(1);
+            c = ((128 - dwk->alpha) << 24) | 0x705050;
+            LinkSprite4F(x + 6, y, x + 132, y, x + 6, y + 126, x + 132, y + 126, 126, 1, 1, 1, 126, 126, 1, 126, 0, c, c, c, c,
+                         tex);
+            c = ((128 - dwk->alpha) << 24) | 0x503030;
+            LinkSprite4F(x + 12, y, x + 138, y, x + 12, y + 126, x + 138, y + 126, 126, 1, 1, 1, 126, 126, 1, 126, 0, c, c, c,
+                         c, tex);
+            c = ((128 - dwk->alpha) << 24) | 0x301010;
+            LinkSprite4F(x + 18, y, x + 144, y, x + 18, y + 126, x + 144, y + 126, 126, 1, 1, 1, 126, 126, 1, 126, 0, c, c, c,
+                         c, tex);
+            c = ((128 - dwk->alpha) << 24) | 0x201010;
+            LinkSprite4F(x + 24, y, x + 150, y, x + 24, y + 126, x + 150, y + 126, 126, 1, 1, 1, 126, 126, 1, 126, 0, c, c, c,
+                         c, tex);
+            eglLinkAlpha(0);
+        }
+    }
+    if (sbtlData106 > 0) {
+        x = dwk->ofs_x - 203;
+        sbtlGetSpriteHandle()->descriptions[1].rect[3] = 512 - x;
+        itfDrawMiscSpriteAlpha(x, 404, 0, dwk->alpha * 2 - 1, sbtlGetSpriteHandle(), 1, 0x68);
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sbtl", sbtlDrawText);
+#endif
 
 /* NON_MATCHING: 27 of 31 words match.  */
 #ifdef NON_MATCHING
@@ -2774,7 +3531,7 @@ s32 sbtlBtlDrawTextSub2(void) {
 
 struct sprHandle_t *sbtlGetSpriteHandle(void)
 {
-    if (sbtlData104 == NULL) {
+    if (GlobalPID == NULL) {
         if (wk_sbtl->panel != NULL) {
             return wk_sbtl->panel->hPanelSpr5;
         }
@@ -2806,7 +3563,7 @@ INCLUDE_ASM(const s32, "sbtl", sbtlExt_MesReq);
 INCLUDE_ASM(const s32, "sbtl", sbtlExt_EndMes);
 
 s32 sbtlExt_ChkMes(void) {
-    return sbtlData104 != NULL;
+    return GlobalPID != NULL;
 }
 
 INCLUDE_ASM(const s32, "sbtl", sbtlExtCommand_DVLTK_DSP);

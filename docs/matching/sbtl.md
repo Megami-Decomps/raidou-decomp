@@ -125,3 +125,33 @@ Register only, in the SHINGETDOWN case: retail computes the auto table row as we
 Raidou 2: 153 of 171 words differ, first at +0x0; emitted 684 bytes, native 700 bytes.
 
 Frame only: cc1 hoists the constant 5 of the auto skill para compare into $fp and spills per to the stack (frame 0x60); retail keeps the li 5 inside the loop and per in $30 (frame 0x50), and every later word follows the 16-byte shift. Tried a switch with case 5 and a do-while with i++ in the call. 153 words. Vector checked (battle). nm_behaviour reports the side test: retail lbu with andi 0x80 and andi 2, cc1 lw of the aligned word with andi 0x82; same result (the byte is the low byte).
+
+## sbtlCheckCost_SkillID (sbtl, raidou2 0x2CC)
+
+Raidou 2: 4 of 179 words differ, first at +0x10C.
+
+Register only, in case 5: retail loads wk_sbtl into $2 and moves wk into $4 in the beql slot of the side & 0x80 test; cc1 loads wk_sbtl into $4 and puts the move in a plain delay slot. Tried reassigning wk instead of a partner pointer (15 words) and an if/else for the partner pointer (24). 4 words. Vectors do not reach, checked against the asm.
+
+## sbtlCheckBadStatus_Hit (sbtl, raidou2 0x360)
+
+Raidou 2: 153 of 213 words differ, first at +0xB4; emitted 852 bytes, native 864 bytes.
+
+Retail keeps an explicit return 0 (b, move $2,$0, then an 8-aligned label) after sbtlBtlCheckBadStatusWeakSub fails, where cc1 branches straight to the epilogue on the call's zero, as in the Raidou 1 copy; every later word is 12 bytes off, and the resistance read adds its operands in the other order. Writing the /100 as its own statement fixed the float registers. 153 words. Vector checked (battle). nm_behaviour: the draft compares the two values shifted left 16 where retail shifts them back with sra first; signed order of the low halfwords is the same, so the result is equal.
+
+## sbtlRefSbtl67 (sbtl, raidou2 0x3CC)
+
+Raidou 2: 40 of 243 words differ, first at +0x24.
+
+Scheduling and float registers in the stage 600/601 branch only: retail stores pos.x first and its float temporaries start at $f0, cc1 stores tgt.x first and starts at $f3. Tried tgt declared before pos (122 words) and b = f after the clamp of a (44). 40 words. Vector checked (battle).
+
+## CalcAutoSkill (sbtl, raidou2 0x4A0)
+
+Raidou 2: 99 of 296 words differ, first at +0xB8.
+
+Float register allocation only: retail ties each percent / 100.0f quotient to the constant's register ($f0, percent in $f1), cc1 ties it to percent. Tried percent / 100.0f as the first mul operand (102 words), the quotient in a rate local (116), and rate = 100.0f; rate = percent / rate (100). 99 words. Vectors do not reach, checked against the asm.
+
+## sbtlDrawText (sbtl, raidou2 0x51C)
+
+Raidou 2: 2 of 327 words differ, first at +0xD0.
+
+Register only: retail loads dwk->alpha into $3 and ors it with the mode colour into $7 for sbtlCallMessageNumSearch3; cc1 loads it straight into $7. Tried both operand orders of the or (2 words) and alpha in a temporary (56). 2 words. Vectors do not reach, checked against the asm.

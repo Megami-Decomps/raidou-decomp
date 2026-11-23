@@ -573,6 +573,11 @@ CalcAisyo_sbtlCalc	sbtl	raidou2 0x210	26 of 132 words differ	docs/matching/sbtl.
 SetBadStatusCounter	sbtl	raidou2 0x218	4 of 134 words differ	docs/matching/sbtl.md	111		
 sbtlZokuseiDmg	sbtl	raidou2 0x22C	7 of 139 words differ	docs/matching/sbtl.md	117		
 sbtlCheckKuishibari	sbtl	raidou2 0x2BC	153 of 171 words differ	docs/matching/sbtl.md	123		
+sbtlCheckCost_SkillID	sbtl	raidou2 0x2CC	4 of 179 words differ	docs/matching/sbtl.md	129		
+sbtlCheckBadStatus_Hit	sbtl	raidou2 0x360	153 of 213 words differ	docs/matching/sbtl.md	135		
+sbtlRefSbtl67	sbtl	raidou2 0x3CC	40 of 243 words differ	docs/matching/sbtl.md	141		
+CalcAutoSkill	sbtl	raidou2 0x4A0	99 of 296 words differ	docs/matching/sbtl.md	147		
+sbtlDrawText	sbtl	raidou2 0x51C	2 of 327 words differ	docs/matching/sbtl.md	153		
 sbtlCreate	sbtlActAI	raidou1 0xAC	5 of 43 words differ	docs/matching/sbtlActAI.md	3		
 SetUseskl	sbtlActAI	raidou1 0x3C	10 of 15 words differ	docs/matching/sbtlActAI.md	13		
 sbtlCheckEquationProc	sbtlActAI	raidou1 0x32C	106 of 193 words differ	docs/matching/sbtlActAI.md	23		

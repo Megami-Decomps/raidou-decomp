@@ -14899,7 +14899,6 @@
 0x0046DCF8	sbtlData100	data	tier=D	derived-shared	na	used by 21 functions: sbtlCallBitCheck, rstCallBitCheck, sbtlCallMemset4
 0x0046DCFC	sbtlData101	data	tier=D	derived-shared	na	used by 5 functions: pbCallBtlGetRndEncJoken, sbtlGetRndEncJoken, nbGetEncountMax
 0x0046DD00	sbtlCallBitCheckData	data	tier=D	derived-sole	na	used by sbtlCallBitCheck
-0x0046DD24	sbtlData104	data	tier=D	derived-shared	na	used by 13 functions: sbtlDrawText, sbtlExt_MesReqEx, sbtlCallMemAllocDirect10
 0x0046DD2C	sbtlData105	data	tier=D	derived-shared	na	used by 5 functions: sbtlExt_CreateBuffer, sbtlExt_ShutDown, sbtlExt_FreeBuffer
 0x0046DD30	sbtlExt_CreateBufferData	data	tier=D	derived-dominant	na	used by sbtlExt_CreateBuffer (3 of 5 refs, 3 functions)
 0x0046DD34	sbtlData106	data	tier=D	derived-shared	na	used by 2 functions: sbtlDrawText, sbtlCallMessageNumSearch3
@@ -17214,7 +17213,6 @@
 0x004D6540	sbtlWork2	data	tier=D	derived-shared	na	used by 3 functions: sbtlLoadAttackHitData_pData, sbtlInitLoadAttackHitData_pData, sbtlForceDelete_AttackHitData
 0x004D6A34	sbtlBtlLoadAttackHitDataDecodeSubWork	data	tier=D	derived-sole	na	used by sbtlBtlLoadAttackHitDataDecodeSub
 0x004D6B58	sbtlExt_CalcProcessWork	data	tier=D	derived-dominant	na	used by sbtlExt_CalcProcess (4 of 12 refs, 5 functions)
-0x004D6B70	sbtlExt_CreateBufferWork	data	tier=D	derived-dominant	na	used by sbtlExt_CreateBuffer (4 of 12 refs, 5 functions)
 0x004D7327	__ieee754_rem_pio2TableEntry2	data	tier=D	derived-table	na	pointed to by __ieee754_rem_pio2Table
 0x004D85D8	sbtlWork4	data	tier=D	derived-shared	na	used by 5 functions: sbtlExt_CalcProcess, sbtlExt_CreateBuffer, sbtlExt_DrawProcess
 0x004D85F0	sbtlLoadOnMemMsgWork	data	tier=D	derived-sole	na	used by sbtlLoadOnMemMsg
@@ -18729,6 +18727,7 @@
 0x0046DB08	g_itemNo	data	tier=C	hd	0.37 (n=D_r1_0046DB08)	hd/medium: conf=medium, agree=2, using=2
 0x0046DB28	sbtlStrRaidou	data	tier=C	derived-derived-role	na	string data "Raidou" (sbtlSub_0027ED08.sdata.s); named by content in the module string style; replaces sbtlLeaf73DataEntry
 0x0046DB30	sbtlStrDummy	data	tier=C	derived-derived-role	na	string data "Dummy" (sbtlSub_0027ED08.sdata.s), raidou2 "ダミー" in the game glyph encoding at the same table slot; named by content in the module string style; replaces sbtlLeaf73DataEntry2
+0x0046DD24	GlobalPID	data	tier=C	derived-derived-role	na	same use in R1 sbtlDrawText (0x002A2EE0); replaces sbtlData104
 0x0046DEA8	sbtlStrVisual	data	tier=C	derived-derived-role	na	string data "VISUAL" (sdata_0046DC80.sdata.s); named by content in the module string style; replaces sbtlLeaf114DataEntry
 0x0046DEB0	sbtlStrSousa	data	tier=C	derived-derived-role	na	string data "SOUSA" (sdata_0046DC80.sdata.s); named by content in the module string style; replaces sbtlLeaf114DataEntry2
 0x0046E680	g_cntTgtCur	data	tier=C	derived-derived-role	na	same variable as raidou2 0x4E3498 (r1_r2_data_pairs run-order-size); Init_sbtlDraw clears it in both games; replaces sbtlRefSbtl57Data
@@ -18801,6 +18800,7 @@
 0x004D55C0	effSelectedJobHeader	data	tier=C	dds-ref	0.59 (n=D_r1_004D55C0)	dds-ref/exact: nfun=26, other=0, sim=1.0, games=2, size=True, sec=True, fn=effApplyBattleCameraToObject
 0x004D5660	effColorEditColorTrack	data	tier=C	dds-ref	0.59 (n=D_r1_004D5660)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effEditColorTrack
 0x004D5688	effColorEditAlphaTrack	data	tier=C	dds-ref	0.59 (n=D_r1_004D5688)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effEditColorTrack
+0x004D6B70	GlobalUnitWK	data	tier=C	derived-derived-role	na	same use in R1 sbtlDrawText; replaces sbtlExt_CreateBufferWork
 0x004FE8C0	sndCommandThreadParameters	data	tier=C	dds-ref	0.59 (n=D_r1_004FE8C0)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfSndInitCmdIF
 0x004FF940	sndCommandThreadStack	data	tier=C	dds-ref	0.59 (n=D_r1_004FF940)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfSndInitCmdIF
 0x00500980	sndRpcServerThreadStack	data	tier=C	dds-ref	0.59 (n=D_r1_00500980)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfSndInitCmdIF

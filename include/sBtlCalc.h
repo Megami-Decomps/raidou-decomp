@@ -94,7 +94,12 @@ s32 sbtlGetSkillCost(struct sdatUnitWork_t *unit, SKLID id);
 s32 sbtlBtlCheckBadStatusWeakSub(SKLID skill);
 u32 sbtlCheckBadStatus_Number(u32 badstatus, BST bstno);
 s32 sbtlGetBadStatus_Attr(BST bstno);
+#ifdef VERSION_RAIDOU2
+s32 sbtlCheckBadStatus_Hit(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx, u8 side,
+                           struct sdatUnitWork_t *atkunit);
+#else
 s32 sbtlCheckBadStatus_Hit(s32 *resist, s32 luck, struct sdatUnitWork_t *unit, s32 tgtLuck, SKLID skill, BST bst, s32 idx, u8 side);
+#endif
 s32 CalcBtlMagicStatus(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallSetClutColor(struct SBTLUNIT_WORK *wk, BST bst);
 s32 sbtlGetDamage_I_REC_K(struct sdatUnitWork_t *unit, struct SBTLCALC_DMGWORK *wk, struct SBTLSKILLP_TBL *ptbl, s8 flg);
@@ -113,7 +118,11 @@ s32 sbtlCheckAisyo_Old(u32 attr);
 u32 sbtlSEquationno03Sub(struct SBTL_AISYO_TBL *aisyo, u32 attr);
 s32 sbtlResetBadStatus(struct SBTLUNIT_WORK *wk, BSTF flg);
 void sbtlResetItemFlg(struct sdatUnitWork_t *unit);
+#ifdef VERSION_RAIDOU2
+s32 CalcAutoSkill(struct sdatUnitWork_t *unit, AUTO mode, s32 value, SKLID skillid, s32 attr, s32 percent);
+#else
 s32 CalcAutoSkill(struct sdatUnitWork_t *unit, s32 mode, s32 value, SKLID skillid, s16 attr, s16 percent);
+#endif
 s32 sbtlResetBadStatus_GB(struct sdatUnitWork_t *unit, BSTF flg);
 s32 sbtlSetBadStatus_No(struct SBTLUNIT_WORK *wk, SKLID sklid, BST badstno, s32 flg, s32 acterID);
 s32 sbtlSetItem(struct SBTLUNIT_WORK *wk);

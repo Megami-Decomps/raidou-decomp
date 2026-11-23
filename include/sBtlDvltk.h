@@ -10,15 +10,18 @@ struct SBTLUNIT_WORK;
 struct dds3ProcessID_t;
 struct sprHandle_t;
 
-extern struct dds3ProcessID_t *sbtlData104;
+extern struct dds3ProcessID_t *GlobalPID;
 extern struct sprHandle_t *sbtlData105;
 extern s32 sbtlData106; /* the last devil talk text width */
 
 struct sprHandle_t *sbtlGetSpriteHandle(void);
 s32 sbtlDrawText(struct SBTLDVLTK_WORK *dwk);
 void sbtlAnimWaku(struct SBTLDVLTK_WORK *dwk);
-#ifdef VERSION_RAIDOU2 /* Raidou 1's sbtlDrawText under its Raidou 2 label */
-s32 sbtlDrawText(struct SBTLDVLTK_WORK *dwk);
+#ifdef VERSION_RAIDOU2
+extern char *sbtlCreateWorkData[];  /* devil texture name per devil ID, NULL for none */
+extern char *sbtlCreateWorkData2[]; /* icon texture name per devil ID below 207 */
+extern char sbtlCreateWorkData3[];  /* "sbattle" */
+s32 sbtlCreateWork(struct SBTLUNIT_WORK *wk);
 #endif
 
 char *GetDrawText(u32 rgba, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode, struct SBTLDVLTK_WORK *_dwk);

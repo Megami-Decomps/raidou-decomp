@@ -23058,7 +23058,7 @@
 0x0046DD18	tbldata	hd	hd: Raidou HD sBtlItem.tbldata, 5 of 6 functions agree, high confidence
 0x0046DD1C	aisyo_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlGetAisyotbl indexes aisyo_tbldata; replaces datData7
 0x0046DD20	bstcolor_tbldata	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlCalc.c bstcolor_tbldata: the TEXCOLOR_WORK table indexed by bad status (32-byte rows, flg at 0x1C read by sBtlCheckBadStatus_Color, colors read by sBtlSetBadStatus_Color = sbtlCallSetClutColor2); only sbtlRefGlobalPID reads it; R1 0x0046DD20 is the same pair; replaces GlobalPID
-0x0046DD24	sbtlData104	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 13 functions: sbtlDrawText, sbtlExt_MesReqEx, sbtlCallMemAllocDirect10
+0x0046DD24	GlobalPID	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same use in R1 sbtlDrawText (0x002A2EE0); replaces sbtlData104
 0x0046DD28	GlobalCurrentArray	hd	hd: Raidou HD sBtlDvltk.GlobalCurrentArray, 3 of 3 functions agree, high confidence
 0x0046DD2C	sbtlData105	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: sbtlExt_CreateBuffer, sbtlExt_ShutDown, sbtlExt_FreeBuffer
 0x0046DD30	sbtlExt_CreateBufferData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlExt_CreateBuffer (3 of 5 refs, 3 functions)
@@ -25894,7 +25894,7 @@
 0x004D6A34	sbtlBtlLoadAttackHitDataDecodeSubWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlBtlLoadAttackHitDataDecodeSub
 0x004D6A88	sb_gen_work	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlClearGeneratorWork clears sb_gen_work entries, same site; replaces sbtlWork3
 0x004D6B58	sbtlExt_CalcProcessWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlExt_CalcProcess (4 of 12 refs, 5 functions)
-0x004D6B70	sbtlExt_CreateBufferWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlExt_CreateBuffer (4 of 12 refs, 5 functions)
+0x004D6B70	GlobalUnitWK	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same use in R1 sbtlDrawText; replaces sbtlExt_CreateBufferWork
 0x004D7327	__ieee754_rem_pio2TableEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by __ieee754_rem_pio2Table
 0x004D85D8	sbtlWork4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: sbtlExt_CalcProcess, sbtlExt_CreateBuffer, sbtlExt_DrawProcess
 0x004D85F0	sbtlLoadOnMemMsgWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLoadOnMemMsg

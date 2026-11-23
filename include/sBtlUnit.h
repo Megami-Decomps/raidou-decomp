@@ -17,6 +17,7 @@ struct SBTLAI_WORK;
 struct fileRequest;
 struct sdfMemHandle_t;
 struct effRefObj_t;
+struct sdfTextureFileHeader_t;
 struct SBTL_STP;
 
 #ifdef VERSION_RAIDOU2
@@ -477,14 +478,17 @@ struct SBTLUNIT_WORK {
     struct sdfMemHandle_t *msgHandle;
     struct fileRequest *msgFile;
     void *msgData;
-    u8 pad60C[0x4];
+    u8 field60C; /* set: the devil texture is already cached, clone it */
+    u8 field60D; /* set: the icon texture is already cached, clone it */
+    u8 pad60E[0x2];
     struct sdfMemHandle_t *cacheHandle;
-    s32 field4E0;
+    struct sdfTextureFileHeader_t *field4E0;
     struct effRefObj_t *cacheRef;
     struct sdfMemHandle_t *field61C; /* a second cache, freed like cacheHandle */
-    s32 field620;
+    struct sdfTextureFileHeader_t *field620;
     struct effRefObj_t *field624; /* icon drawn by sbtlCallSetFontDrawOT */
-    u8 pad628[0x630 - 0x628];
+    s16 msgState;
+    u8 pad62A[0x630 - 0x62A];
     s8 light_buff[3];
     s8 field4F3;
     SBTL_PACDATA_HITLIST hitwk;
@@ -744,6 +748,9 @@ typedef struct SBTLUNIT_LISTWORK {
     struct sdfMemHandle_t *handle;
     SBTLUNIT_LISTWK *pUnitL;
 } SBTLUNIT_LISTWORK;
+
+extern struct SBTLUNIT_WORK GlobalUnitWK[]; /* HD GlobalUnitWK: units shown while GlobalPID runs */
+extern s32 GlobalCurrentArray;                           /* HD name; index into GlobalUnitWK */
 
 void sbtlDeath(struct SBTLUNIT_WORK *wk);
 #ifndef VERSION_RAIDOU2

@@ -25,7 +25,7 @@ s32 Proc_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
     if (dwk == NULL || lwk->num == 0) {
         return 0;
     }
-    if (sbtlData104 == NULL) {
+    if (GlobalPID == NULL) {
         if (wk_sbtl->flg & 0x8000000) {
             return 0;
         }
@@ -86,7 +86,7 @@ s32 Draw_sbtlDvltk(struct SBTLDVLTK_LISTWORK *lwk)
     if (dwk == NULL || lwk->num == 0) {
         return 0;
     }
-    if (sbtlData104 == NULL && !dds3BgSetScrollSub()) {
+    if (GlobalPID == NULL && !dds3BgSetScrollSub()) {
         if ((wk_sbtl->flg & 0x8000000) && dwk->mode != 15) {
             return 0;
         }
@@ -168,7 +168,7 @@ INCLUDE_ASM(const s32, "code_002A20E0", sbtlBtlDrawTextSub2);
 
 struct sprHandle_t *sbtlGetSpriteHandle(void)
 {
-    if (sbtlData104 == NULL) {
+    if (GlobalPID == NULL) {
         if (wk_sbtl->panel != NULL) {
             return wk_sbtl->panel->hPanelSpr5;
         }
@@ -201,7 +201,7 @@ INCLUDE_ASM(const s32, "code_002A20E0", sbtlExt_EndMes);
 
 s32 sbtlExt_ChkMes(void)
 {
-    return sbtlData104 != NULL;
+    return GlobalPID != NULL;
 }
 
 INCLUDE_ASM(const s32, "code_002A20E0", sbtlExtCommand_DVLTK_DSP);
