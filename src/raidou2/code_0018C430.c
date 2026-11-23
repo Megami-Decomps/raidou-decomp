@@ -9,6 +9,7 @@
 #include "fldDraw.h"
 #include "code_00163C50.h"
 #include "dds3KernelDraw.h"
+#include "code_r1_0010DF68.h"
 
 INCLUDE_ASM(const s32, "code_0018C430", fldGetMAP_CUT_OVERSET_Cam);
 
@@ -53,7 +54,23 @@ s32 nbCallGetIntPara5(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0018C430", nbErrNPCMODEL);
+s32 nbErrNPCMODEL(void)
+{
+    s32 id = scrGetIntPara(0);
+    dds3Basic_t *basic;
+
+    if (id == 0) {
+        scrSetIntReturnValue(nbCallGetIntPara2Data[0]);
+    } else {
+        basic = mapObjGetBasic(id);
+        if (basic == NULL) {
+            datDEBUGCONSOLE("Err : NPC MODEL ID:%04x N", id);
+            basic = playerBasic;
+        }
+        scrSetIntReturnValue(basic->serialID);
+    }
+    return 1;
+}
 
 s32 nbCallNpcTblRefreshWait(void) {
     mdlCallMemFreeDirect();
@@ -137,7 +154,18 @@ INCLUDE_ASM(const s32, "code_0018C430", nbCallGetIntPara2);
 
 INCLUDE_ASM(const s32, "code_0018C430", nbErrNPCMODEL2);
 
-INCLUDE_ASM(const s32, "code_0018C430", nbLeaf2);
+s32 nbLeaf2(s32 a, s32 b, s32 c)
+{
+    s32 i;
+    nbData10_t *p = nbData10;
+
+    for (i = 0; i < 64; i++, p++) {
+        if (a == p->key[0] && b == p->key[1] && (p->key[2] == 0 || c == p->key[2])) {
+            return p->value;
+        }
+    }
+    return 0;
+}
 
 s32 nbLeaf3(void)
 {

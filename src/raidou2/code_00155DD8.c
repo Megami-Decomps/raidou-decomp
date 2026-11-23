@@ -6,6 +6,8 @@
 #include "code_r1_0010DF68.h"
 #include "sdfMemory.h"
 #include "nb.h"
+#include "EventBit.h"
+#include "fpu.h"
 
 INCLUDE_ASM(const s32, "code_00155DD8", mapKaidanAdd);
 
@@ -24,7 +26,28 @@ void mapCHitAdd(s16 uniq, f32 x, f32 z, f32 r) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00155DD8", mapWHitAdd);
+void mapWHitAdd(s16 uniq, s32 attr, f32 x0, f32 z0, f32 x1, f32 z1, f32 vx, f32 vz)
+{
+    MAP_WHIT_t *wh = mapData29;
+    s32 i;
+    f32 len;
+
+    for (i = 0; i < 128; i++, wh++) {
+        if (wh->use == 0) {
+            wh->use = 1;
+            wh->uniq = uniq;
+            wh->type = attr;
+            wh->x0 = x0;
+            wh->z0 = z0;
+            len = fsqrtf(vx * vx + vz * vz);
+            wh->x1 = x1;
+            wh->z1 = z1;
+            wh->vx = vx / len;
+            wh->vz = vz / len;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00155DD8", mapFileLoadSub5);
 
@@ -34,7 +57,23 @@ INCLUDE_ASM(const s32, "code_00155DD8", mapEveHitTaskFldSub3);
 
 INCLUDE_ASM(const s32, "code_00155DD8", mapNpcTblAdd_fld);
 
+/* NON_MATCHING: 27 of 37 words match.  */
+#ifdef NON_MATCHING
+s32 mapNpcTbl_GetModelID(s32 idx)
+{
+    mapNpcModel_t *model = &mapEXFloorData[idx].model;
+    mapNpcChange_t *change = &mapEXFloorData[idx].change;
+    s32 id;
+
+    id = (model->id1 << 16) | model->id2;
+    if (change->flag != 0 && evtBitCheck(change->flag)) {
+        id = (model->id1 << 16) | change->id1;
+    }
+    return id;
+}
+#else
 INCLUDE_ASM(const s32, "code_00155DD8", mapNpcTbl_GetModelID);
+#endif
 
 INCLUDE_ASM(const s32, "code_00155DD8", mapCallObjPointGet);
 

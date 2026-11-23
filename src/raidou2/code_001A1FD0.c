@@ -9,6 +9,7 @@
 #include "code_r1_002CAFD8.h"
 #include "code_r1_002CA3F0.h"
 #include "dds3KernelDraw.h"
+#include "sdk_libc.h"
 
 s32 itfMoverInit(itfMover_t *mv)
 {
@@ -26,11 +27,31 @@ s32 itfMoverInit(itfMover_t *mv)
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverSetData);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverSetParam);
+s32 itfMoverSetParam(itfMover_t *mv, s32 a_posx, s32 a_posy, s32 a_tgtx, s32 a_tgty, s32 a_frame)
+{
+    s32 ret = 0;
+
+    if (mv != NULL) {
+        itfMoverInit(mv);
+        ret = itfMoverSetData(mv, a_posx, a_posy, a_tgtx, a_tgty, 0.0f, 0, 0, a_frame);
+    }
+    return ret;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverUpdate);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMoverGetPosition);
+s32 itfMoverGetPosition(itfMover_t *mv, f32 *a_pPosX, f32 *a_pPosY)
+{
+    if (mv == NULL || a_pPosX == NULL || a_pPosY == NULL) {
+        return 0;
+    }
+    if (mv->cb_num <= 0) {
+        return 0;
+    }
+    *a_pPosX = mv->cb[mv->cb_cnt].posx;
+    *a_pPosY = mv->cb[mv->cb_cnt].posy;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", DvlMsgDrawProcess);
 
@@ -374,19 +395,43 @@ s32 MenuSetMoverAppear01(itfMover_t *mv, s32 a_no, s32 a_x, s32 a_y, s32 a_w, s3
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverAppear02);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfCallMoverInit);
+s32 itfCallMoverInit(itfMover_t *mv, s32 a_no, s32 a_x, s32 a_y, s32 a_w, s32 a_h)
+{
+    itfMoverInit(mv);
+    return itfMoverSetData(mv, 512, a_y + a_h * a_no, a_x, a_y + a_h * a_no, -0.35f, 0, 0, 10);
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverAppear04);
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverAppear);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverDisappear00);
+extern f32 MenuSetMoverDisappear00Work;
+extern f32 MenuSetMoverDisappear00Work2;
 
-INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverDisappear01);
+s32 MenuSetMoverDisappear00(itfMover_t *mv, s32 a_no, s32 a_x, s32 a_y, s32 a_w, s32 a_h)
+{
+    itfMoverGetPosition(mv, &MenuSetMoverDisappear00Work, &MenuSetMoverDisappear00Work2);
+    return itfMoverSetParam(mv, MenuSetMoverDisappear00Work, MenuSetMoverDisappear00Work2, MenuSetMoverDisappear00Work,
+                            MenuSetMoverDisappear00Work2, 10);
+}
+
+extern f32 MenuSetMoverDisappear01Work;
+extern f32 MenuSetMoverDisappear01Work2;
+
+s32 MenuSetMoverDisappear01(itfMover_t *mv, s32 a_no, s32 a_x, s32 a_y, s32 a_w, s32 a_h)
+{
+    itfMoverGetPosition(mv, &MenuSetMoverDisappear01Work, &MenuSetMoverDisappear01Work2);
+    return itfMoverSetParam(mv, MenuSetMoverDisappear01Work, MenuSetMoverDisappear01Work2, MenuSetMoverDisappear01Work, a_y,
+                            10);
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverDisappear02);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", MenuSetMoverDisappear03);
+s32 MenuSetMoverDisappear03(itfMover_t *mv, s32 a_no, s32 a_x, s32 a_y, s32 a_w, s32 a_h)
+{
+    itfMoverInit(mv);
+    return itfMoverSetData(mv, a_x, a_y + a_h * a_no, 512, a_y + a_h * a_no, -0.35f, 0, 0, 10);
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallMoverGetPosition);
 
@@ -424,7 +469,25 @@ void MenuCreateMenu(Menu_t *wk)
 
 INCLUDE_ASM(const s32, "code_001A1FD0", MenuDeleteMenu);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", MenuClearMenuSub);
+s32 MenuClearMenuSub(Menu_t *wk, MenuCB_tag *cb)
+{
+    MenuCB_tag *pPrev;
+    MenuCB_tag *pNext;
+
+    if (cb == NULL) {
+        return 0;
+    }
+    pPrev = cb->pPrev;
+    pNext = cb->pNext;
+    memset(cb, 0, sizeof(MenuCB_tag));
+    if (pPrev != NULL) {
+        cb->pPrev = pPrev;
+    }
+    if (pNext != NULL) {
+        cb->pNext = pNext;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuClearMenu);
 
@@ -493,9 +556,58 @@ void itfMenuSetFlag(dds3ProcessID_t *PID, u32 a_bit, s8 a_bSet)
     }
 }
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetFlagMenuSub);
+s8 itfMenuSetFlagMenuSub(Menu_t *wk, s32 a_id, ITFMENU_CB_GF a_bit, s8 a_bSet, s8 a_bGlobal)
+{
+    MenuCB_tag *cb;
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuSetFlagMenu);
+    if (a_id < 0) {
+        for (cb = wk->pHead; cb != NULL; cb = cb->pNext) {
+            if (!(cb->lflag & 1)) {
+                continue;
+            }
+            if (a_bSet) {
+                if (a_bGlobal) {
+                    cb->gflag |= a_bit;
+                } else {
+                    cb->lflag |= a_bit;
+                }
+            } else {
+                if (a_bGlobal) {
+                    cb->gflag &= ~a_bit;
+                } else {
+                    cb->lflag &= ~a_bit;
+                }
+            }
+        }
+        return 1;
+    }
+    for (cb = wk->pHead; cb != NULL; cb = cb->pNext) {
+        if ((cb->lflag & 1) && cb->id == a_id) {
+            if (a_bSet) {
+                if (a_bGlobal) {
+                    cb->gflag |= a_bit;
+                } else {
+                    cb->lflag |= a_bit;
+                }
+            } else {
+                if (a_bGlobal) {
+                    cb->gflag &= ~a_bit;
+                } else {
+                    cb->lflag &= ~a_bit;
+                }
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+
+s32 itfMenuSetFlagMenu(dds3ProcessID_t *PID, s32 a_id, ITFMENU_CB_GF a_bit, s32 a_bSet)
+{
+    s8 bSet = a_bSet;
+
+    return itfMenuSetFlagMenuSub(dds3GetProcessData(PID), a_id, a_bit, bSet, 1);
+}
 
 s32 itfMenuGetFlag(dds3ProcessID_t *PID, u32 a_bit)
 {
@@ -504,11 +616,38 @@ s32 itfMenuGetFlag(dds3ProcessID_t *PID, u32 a_bit)
     return (wk->gflag & a_bit) != 0;
 }
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuGetFlagMenu);
+s32 itfMenuGetFlagMenu(dds3ProcessID_t *PID, s32 a_id, ITFMENU_CB_GF a_bit)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+    MenuCB_tag *cb;
+
+    for (cb = wk->pHead; cb != NULL; cb = cb->pNext) {
+        if ((cb->lflag & 1) && cb->id == a_id) {
+            return (cb->gflag & a_bit) != 0;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfCallGetProcessData3);
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuGetWaitType);
+ITFMENU_WAIT_TYPE itfMenuGetWaitType(dds3ProcessID_t *PID)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    if (wk->step == 1) {
+        return ITFMENU_WAIT_TYPE_SET;
+    }
+    if (wk->step == 6) {
+        if (wk->ctrlType == 5) {
+            return ITFMENU_WAIT_TYPE_CANCEL;
+        }
+        if (wk->ctrlType == 4) {
+            return ITFMENU_WAIT_TYPE_DECIDE;
+        }
+    }
+    return ITFMENU_WAIT_TYPE_NONE;
+}
 
 INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuGetWaitType2);
 
@@ -586,7 +725,17 @@ void itfMenuSetOt(dds3ProcessID_t *PID)
     wk->lflag |= 8;
 }
 
-INCLUDE_ASM(const s32, "code_001A1FD0", itfMenuStart);
+void itfMenuStart(dds3ProcessID_t *PID)
+{
+    Menu_t *wk = dds3GetProcessData(PID);
+
+    if (!(wk->lflag & 0x20)) {
+        if (!(wk->lflag & 0x10)) {
+            itfMenuSetOt(PID);
+        }
+        wk->lflag |= 0x20;
+    }
+}
 
 s32 itfMenuGetSelectID(dds3ProcessID_t *PID)
 {

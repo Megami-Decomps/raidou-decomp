@@ -178,7 +178,7 @@ typedef struct Menu_t {
     s8 step;
     s8 nowHierarchy;
     u8 nMenuSet;
-    u8 ctrlType;
+    s8 ctrlType;
     s8 dispType[2];
     s8 updateType;
     s8 scrollType;
@@ -366,7 +366,11 @@ s32 itfMenuGetSelectID(dds3ProcessID_t *PID);
 s32 itfMenuGetFlashCount(dds3ProcessID_t *PID, s32 a_id);
 u8 GetSelectRootID(dds3ProcessID_t *PID, u32 a_no);
 s32 itfMenuChkMenuTop(dds3ProcessID_t *PID, s32 a_id);
+#ifdef VERSION_RAIDOU2
+s32 itfMenuGetFlagMenu(dds3ProcessID_t *PID, s32 a_id, ITFMENU_CB_GF a_bit);
+#else
 s32 itfMenuGetFlagMenu(dds3ProcessID_t *PID, s32 a_id, u16 a_bit);
+#endif
 #ifdef VERSION_RAIDOU2
 /* Draws help text a_helpID at (a_x * 16, a_y * 8) faded by a_alphaRate (0.0 to 1.0). */
 void itfDrawMiscHelp(s32 a_x, s32 a_y, s32 a_type, s32 a_space, u32 a_color, s32 a_otNo, s8 a_mode, u16 a_helpID, f32 a_alphaRate, s32 a_arg);
@@ -407,6 +411,7 @@ void itfMenuSetFlag(dds3ProcessID_t *PID, u32 a_bit, s8 a_bSet);
 #else
 void itfMenuSetFlag(dds3ProcessID_t *PID, u16 a_bit, s8 a_bSet);
 #endif
+s8 itfMenuSetFlagMenuSub(Menu_t *wk, s32 a_id, ITFMENU_CB_GF a_bit, s8 a_bSet, s8 a_bGlobal);
 s32 itfMenuSetFlagMenu(dds3ProcessID_t *PID, s32 a_id, ITFMENU_CB_GF a_bit, s32 a_bSet);
 struct sprHandle_t *itfCallDevLoadFileEx(u8 *a_strSprName);
 s32 itfMenuSetSpriteData(dds3ProcessID_t *PID, ITFMENU_IMG_DAT a_type, s32 a_baseX, s32 a_baseY, s32 a_ofsX,
@@ -420,6 +425,8 @@ void itfCallGetProcessData6(dds3ProcessID_t *PID);
 void itfMoneyProcessStart(void);
 s32 itfMoverGetPosition(struct itfMover_t *mv, f32 *a_pPosX, f32 *a_pPosY);
 s32 itfMoverInit(struct itfMover_t *mv);
+s32 itfMoverSetData(itfMover_t *mv, s32 a_posx, s32 a_posy, s32 a_tgtx, s32 a_tgty, f32 a_rate, s32 a_waitBefore, s32 a_waitAfter,
+                    s32 a_frame);
 f32 itfMoverGetRatio(struct itfMover_t *mv);
 s32 itfMoverSetParam(struct itfMover_t *mv, s32 a_posx, s32 a_posy, s32 a_tgtx, s32 a_tgty, s32 a_frame);
 ITF_MOVER_UPDATE itfMoverUpdate(struct itfMover_t *mv);

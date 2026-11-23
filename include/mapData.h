@@ -781,22 +781,39 @@ typedef struct mapNpcCond_t
 
 /* One field NPC (ALLTBL.LB resource 0); the model_c* fields replace the model once model_cflag is set. */
 #ifdef VERSION_RAIDOU2
-/* Model of an NPC; change.id1 replaces model.id2 once change.flag is set. */
+/* Model of an NPC and where it stands. */
 typedef struct mapNpcModel_t
 {
-    s16 field00;
-    s16 flag;
+    u8 map;
+    u8 flor;
+    u16 point;
     u16 id1;
     u16 id2;
     u8 pad08[0x8];
 } mapNpcModel_t;
 
-/* Partial raidou2 layout (0x68 bytes). */
+/* change.id1 replaces model.id2 once change.flag is set. */
+typedef struct mapNpcChange_t
+{
+    s16 field00;
+    s16 flag;
+    u16 id1;
+    u8 pad06[0x6];
+} mapNpcChange_t;
+
+/* Partial raidou2 layout (0x68 bytes); the NPC is placed when flag1-flag3 allow it, or flag4/flag5, or flag6/flag7. */
 typedef struct mapNpc_t
 {
-    mapNpcModel_t model;
-    mapNpcModel_t change;
-    u8 pad20[0x68 - 0x20];
+    mapNpcModel_t model;   /* 0x00 */
+    mapNpcChange_t change; /* 0x10 */
+    s16 flag1;             /* 0x1C */
+    s16 flag2;             /* 0x1E */
+    s16 flag3;             /* 0x20 */
+    s16 flag4;             /* 0x22 */
+    s16 flag5;             /* 0x24 */
+    s16 flag6;             /* 0x26 */
+    s16 flag7;             /* 0x28 */
+    u8 pad2A[0x68 - 0x2A];
 } mapNpc_t;
 #else
 typedef struct mapNpc_t
@@ -1120,7 +1137,12 @@ extern u8 mapData164[1280];
 extern u8 mapData165[1024];
 extern u8 mapData166[1280];
 extern u8 fldData45[6400];
-extern u8 nbData10[256];
+/* 64 rows; key[2] == 0 matches any third key. */
+typedef struct nbData10_t {
+    s8 key[3];
+    s8 value;
+} nbData10_t;
+extern nbData10_t nbData10[64];
 extern u8 nbData9[128];
 extern u8 nbData11[768];
 extern u8 nbData12[512];

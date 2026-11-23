@@ -64,6 +64,7 @@ mapGetFloorY	code_00153438	raidou1 0x474	168 of 277 words differ	docs/matching/c
 mapCallSetPlayerTargetData5	code_00153438	raidou1 0x5C	4 of 23 words differ	docs/matching/code_00153438.md	51		
 mapCallSetPlayerTargetData6	code_00153438	raidou1 0x70	12 of 28 words differ	docs/matching/code_00153438.md	59		
 mapCutSet_From_Pos	code_00153438	raidou1 0x204	1 of 129 words differ	docs/matching/code_00153438.md	69		
+mapNpcTbl_GetModelID	code_00155DD8	raidou2 0x94	10 of 37 words differ	docs/matching/code_00155DD8.md	3		
 fldCallGrAllocPacketBuff2	code_00156778	raidou1 0x160	2 of 88 words differ	docs/matching/code_00156778.md	3		
 fldCallLinkAlpha	code_00156EA8	raidou1 0x7E4	20 of 505 words differ	docs/matching/code_00156EA8.md	3		
 mapSoundKankyoTaskSub	code_0015D490	raidou1 0x5C	13 of 23 words differ	docs/matching/code_0015D490.md	3		
