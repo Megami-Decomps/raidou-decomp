@@ -1051,6 +1051,14 @@ extern MAP_EPL_EFF_WORK_t mapEffEplStartWork[33];
 void mapCameraInitSub(MAP_EPL_EFF_WORK_t *work);
 void mapCallEffectGetState(MAP_EPL_EFF_WORK_t *work);
 void fldCallEffectDrawDds3Effect(MAP_EPL_EFF_WORK_t *work);
+void fldGetSelectedUnitStat(MAP_EPL_EFF_WORK_t *work, f32 x, f32 y, f32 z);
+
+/* Three event effect slots; eff[1] or eff[2] is drawn by DDS3_GBWK->unk48F8. */
+typedef struct nbCallSetOtWork_t {
+    MAP_EPL_EFF_WORK_t eff[3];
+    s32 effOn[3];
+} nbCallSetOtWork_t;
+extern nbCallSetOtWork_t nbCallSetOtWork;
 #endif
 void mapEffEplAllDrawTask(void);
 void mapCutSetTblID(s32 cut);

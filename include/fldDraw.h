@@ -41,6 +41,7 @@ void nbCallSetOt4(f32 x, f32 y, f32 z, f32 size, s32 alpha);
 #ifdef VERSION_RAIDOU2
 s32 fldEveHitTaskFldSub(f32 x, f32 z);
 void fldCallSetOt(f32 x, f32 y, f32 z, f32 size, s32 alpha);
+void fldDrawBokasi(void);
 #endif
 void nbCallGetY(f32 x, f32 y, f32 z, f32 size, s32 alpha);
 

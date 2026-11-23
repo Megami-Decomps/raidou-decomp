@@ -44,6 +44,8 @@ s32 fldProcSequence2(struct dds3ProcessID_t *id);
 extern s32 mapBgDrawOnOffData[];
 extern s32 fldLoadMapResourceSubData[];
 extern s16 nbData14[];
+s32 nbLeaf3(void);
+void nbLeaf4(s32 flag);
 #else
 extern s32 mapBgDrawOnOffData;
 #endif

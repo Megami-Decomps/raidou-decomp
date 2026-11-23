@@ -5,6 +5,10 @@
 #include "fld.h"
 #include "field.h"
 #include "mapData.h"
+#include "EventBit.h"
+#include "fldDraw.h"
+#include "code_00163C50.h"
+#include "dds3KernelDraw.h"
 
 INCLUDE_ASM(const s32, "code_0018C430", fldGetMAP_CUT_OVERSET_Cam);
 
@@ -111,7 +115,13 @@ INCLUDE_ASM(const s32, "code_0018C430", prm_MAKA_PLUS);
 
 INCLUDE_ASM(const s32, "code_0018C430", prmFunc);
 
-INCLUDE_ASM(const s32, "code_0018C430", prmLeaf);
+extern s32 prmLeafData[];
+
+s32 prmLeaf(void)
+{
+    prmLeafData[0] = 1;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_0018C430", prmLeaf2);
 
@@ -129,27 +139,102 @@ INCLUDE_ASM(const s32, "code_0018C430", nbErrNPCMODEL2);
 
 INCLUDE_ASM(const s32, "code_0018C430", nbLeaf2);
 
-INCLUDE_ASM(const s32, "code_0018C430", nbLeaf3);
+s32 nbLeaf3(void)
+{
+    return nbData14[0];
+}
 
-INCLUDE_ASM(const s32, "code_0018C430", nbLeaf4);
+void nbLeaf4(s32 flag)
+{
+    nbData14[0] = flag;
+    if (flag) {
+        evtBitOn(2102);
+    } else {
+        evtBitOff(2102);
+    }
+}
 
-INCLUDE_ASM(const s32, "code_0018C430", nbCameraInit);
+void nbCameraInit(void)
+{
+    mapCameraInitSub(&nbCallSetOtWork.eff[0]);
+    mapCameraInitSub(&nbCallSetOtWork.eff[1]);
+    mapCameraInitSub(&nbCallSetOtWork.eff[2]);
+    nbCallSetOtWork.effOn[0] = 0;
+    nbCallSetOtWork.effOn[1] = 0;
+    nbCallSetOtWork.effOn[2] = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0018C430", nbFunc3);
 
-INCLUDE_ASM(const s32, "code_0018C430", nbCallFreeEventPack);
+void nbCallFreeEventPack(void)
+{
+    nbFreeEventPack(&nbCallSetOtWork.eff[0]);
+    nbFreeEventPack(&nbCallSetOtWork.eff[1]);
+    nbFreeEventPack(&nbCallSetOtWork.eff[2]);
+    nbCallSetOtWork.effOn[0] = 0;
+    nbCallSetOtWork.effOn[1] = 0;
+    nbCallSetOtWork.effOn[2] = 0;
+}
 
-INCLUDE_ASM(const s32, "code_0018C430", nbRefDDS3GBWK2);
+void nbRefDDS3GBWK2(void)
+{
+    if (!DDS3_GBWK->unk48F8) {
+        if (nbCallSetOtWork.effOn[1]) {
+            fldGetSelectedUnitStat(&nbCallSetOtWork.eff[1], fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
+        }
+    } else if (nbCallSetOtWork.effOn[2]) {
+        fldGetSelectedUnitStat(&nbCallSetOtWork.eff[2], fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
+    }
+}
 
-INCLUDE_ASM(const s32, "code_0018C430", nbRefDDS3GBWK3);
+void nbRefDDS3GBWK3(void)
+{
+    if (nbCallSetOtWork.effOn[0]) {
+        mapCallEffectGetState(&nbCallSetOtWork.eff[0]);
+    }
+    if (!DDS3_GBWK->unk48F8) {
+        if (nbCallSetOtWork.effOn[1]) {
+            mapCallEffectGetState(&nbCallSetOtWork.eff[1]);
+        }
+    } else if (nbCallSetOtWork.effOn[2]) {
+        mapCallEffectGetState(&nbCallSetOtWork.eff[2]);
+    }
+}
 
-INCLUDE_ASM(const s32, "code_0018C430", nbCallSetOt);
+void nbCallSetOt(void)
+{
+    eglSetOt(0x2C);
+    if (nbCallSetOtWork.effOn[0]) {
+        fldCallEffectDrawDds3Effect(&nbCallSetOtWork.eff[0]);
+    }
+    if (!DDS3_GBWK->unk48F8) {
+        if (nbCallSetOtWork.effOn[1]) {
+            fldCallEffectDrawDds3Effect(&nbCallSetOtWork.eff[1]);
+        }
+    } else if (nbCallSetOtWork.effOn[2]) {
+        fldCallEffectDrawDds3Effect(&nbCallSetOtWork.eff[2]);
+    }
+    if (nbCallSetOtWork.effOn[0]) {
+        fldDrawBokasi();
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0018C430", nbCallGetRandIntA);
 
 INCLUDE_ASM(const s32, "code_0018C430", nbCallGetRandIntA2);
 
-INCLUDE_ASM(const s32, "code_0018C430", nbFunc4);
+s32 nbFunc4(s32 mode)
+{
+    switch (mode) {
+    case 0:
+        return nbLeaf3() == 2;
+    case 1:
+        return nbLeaf3() == 1;
+    case 2:
+        return nbLeaf3() == 3;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_0018C430", nbLeaf5);
 

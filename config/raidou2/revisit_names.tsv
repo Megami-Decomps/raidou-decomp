@@ -1082,7 +1082,6 @@
 0x001A3E28	itfFunc5	func	tier=D	derived-unit	na	unit code_0018CE10, neighbour itfIconDrawBullet; no named callee, caller or string
 0x001A3F28	itfCallMoverInit	func	tier=D	derived-callee	na	unit code_0018CE10, neighbour itfIconDrawBullet; calls itfMoverInit
 0x001A4400	itfCallMoverGetPosition	func	tier=D	derived-callee	na	unit code_001A1FD0, neighbour itfMenuClearMenu; calls itfMoverGetPosition
-0x001A4688	itfCallMoverUpdate	func	tier=D	derived-callee	na	unit code_001A1FD0, neighbour itfMenuClearMenu; calls itfMoverUpdate
 0x001A4810	itfCallGetProcessData	func	tier=D	derived-callee	na	unit code_001A1FD0, neighbour itfMenuClearMenu; calls dds3GetProcessData
 0x001A4BC8	itfMenuSetMenu	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMenuSetMenu, score 7.4 band B
 0x001A4C60	itfMenuSetRootMenu	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD itf.itfMenuSetRootMenu, score 9.45 band B

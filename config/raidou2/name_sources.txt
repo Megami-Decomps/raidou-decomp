@@ -2802,7 +2802,7 @@
 0x001A42E0	MenuSetMoverDisappear02	hd	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD itf.MenuSetMoverDisappear02 score 6.5 flag -: next gap=exact st1:gap r1+r2
 0x001A4380	MenuSetMoverDisappear03	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.MenuSetMoverDisappear03 score 8.3 flag -: next gap=exact st1:gap r1+r2
 0x001A4400	itfCallMoverGetPosition	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001A1FD0, neighbour itfMenuClearMenu; calls itfMoverGetPosition
-0x001A4688	itfCallMoverUpdate	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001A1FD0, neighbour itfMenuClearMenu; calls itfMoverUpdate
+0x001A4688	MenuUpdateMover	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD itf.c MenuUpdateMover (static bool, Menu_t *wk): updates mv[0..drwDefNum) and mv_title, clears cb->lflag bits 0x8/0xF000 on a stopped mover, returns 1 while any runs; same loop bound and fields as the R2 body; replaces itfCallMoverUpdate
 0x001A47D0	MenuGetBlankMenu	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD itf.MenuGetBlankMenu score 9.6 flag -: prev next gap=exact st1:gap r1+r2
 0x001A4810	itfCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001A1FD0, neighbour itfMenuClearMenu; calls dds3GetProcessData
 0x001A4858	MenuCreateMenu	hd	method=hd-consensus; p=1.00 (n=38); tier=A; source=hd; evidence=Raidou HD itf.MenuCreateMenu score 5.8 flag -: calls1 gap62/25 votes2 st1:gap r1+r2
