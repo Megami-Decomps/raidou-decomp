@@ -10,6 +10,22 @@
 #include "sBtlUnit.h"
 #include "sBtlAI.h"
 
+/* Special stage rewards; sbtlGetSpecialExp and sbtlGetSpecialMoney scan to stageNo -1. */
+typedef struct sbtlData130_t {
+    s32 stageNo;
+    s32 exp;
+    s32 money;
+} sbtlData130_t;
+
+/* HD sBtlSM.c sBtlSM_Prio_t: message priority per SBTLSM mode. */
+typedef struct sBtlSM_Prio_t {
+    SBTLSM Mode;
+    s32 Prio;
+} sBtlSM_Prio_t;
+
+extern sbtlData130_t sbtlData130[];
+extern sBtlSM_Prio_t GetMessagePrioData[15];
+
 s32 sbtlCheckMsgMemType(void)
 {
     return 1;
@@ -38,19 +54,78 @@ void sbtlInitDropWork(void)
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetAutoSkillPoint);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetChuuseiPoint);
+void sbtlGetChuuseiPoint(void)
+{
+    wk_sbtl->drop.get_chuusei = wk_sbtl->drop.chuusei;
+}
 
+/* NON_MATCHING: 7 of 30 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetSpecialExp(void)
+{
+    s32 ret = -1;
+    s32 i;
+
+    for (i = 0; sbtlData130[i].stageNo != -1; i++) {
+        if (sbtlData130[i].stageNo == wk_sbtl->stageNo) {
+            ret = sbtlData130[i].exp;
+            break;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetSpecialExp);
+#endif
 
+/* NON_MATCHING: 7 of 30 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetSpecialMoney(void)
+{
+    s32 ret = -1;
+    s32 i;
+
+    for (i = 0; sbtlData130[i].stageNo != -1; i++) {
+        if (sbtlData130[i].stageNo == wk_sbtl->stageNo) {
+            ret = sbtlData130[i].money;
+            break;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetSpecialMoney);
+#endif
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetExp_ChkMemSkl);
 
+/* NON_MATCHING: 12 of 33 words match.  */
+#ifdef NON_MATCHING
+s32 sbtlGetChuusei_ChkMemSkl(s32 a_chuusei, sdatUnitWork_t *a_pUnit)
+{
+    f32 rate = 0.0f;
+
+    if (a_pUnit != NULL) {
+        if (sbtlChkHaveMemSkl(a_pUnit, AUTO_BOYCOTTUP)) {
+            rate = -50.0f;
+        }
+        a_chuusei += (s32)(((f32)a_chuusei * rate) / 100.0f);
+    }
+    return a_chuusei;
+}
+#else
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetChuusei_ChkMemSkl);
+#endif
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckDropItem);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckGetExpUnit);
+s32 sbtlCheckGetExpUnit(sdatUnitWork_t *unit)
+{
+    if (!(unit->flag & 1)) {
+        return 0;
+    }
+    return !(unit->badStatus & 0x8C000);
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCheckDrop);
 
@@ -62,7 +137,16 @@ INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallMemAllocDirect8);
 
 INCLUDE_ASM(const s32, "code_002DF1D0", DecVice);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlSetVicePara);
+void sbtlSetVicePara(SBTLEXP_LISTWORK *lwk, s32 para)
+{
+    if (lwk != NULL) {
+        if (para == 0) {
+            lwk->riritu = 100.0f;
+        } else {
+            lwk->field10 = para;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlResetVicePara);
 
@@ -166,7 +250,24 @@ s32 sbtlReleaseEXP_List(SBTLEXP_LISTWORK *lwk, u8 flg)
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeleteEXPList);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlCallBtlGetSkilltbl23);
+SKLID sbtlCallBtlGetSkilltbl23(SKLID sklid, s32 *flg)
+{
+    struct SBTLSKILLP_TBL *tbl = sbtlGetSkilltbl(sklid);
+
+    if (flg != NULL) {
+        *flg = 0;
+    }
+    if (tbl->flg2 & 1) {
+        return tbl->badst;
+    }
+    if (tbl->flg2 & 2) {
+        if (flg != NULL) {
+            *flg = sklid;
+        }
+        return tbl->badst;
+    }
+    return sklid;
+}
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlGetDamageSub2);
 
@@ -256,9 +357,39 @@ s32 sbtlCheckMHTData(struct SBTLUNIT_WORK *wk, SKLID sklid) {
 
 INCLUDE_ASM(const s32, "code_002DF1D0", sbtlRefSbtl58);
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlKettouProc);
+void sbtlKettouProc(void)
+{
+    if (wk_sbtl->kettou.m_stp == 0) {
+        return;
+    }
+    switch (wk_sbtl->kettou.m_stp) {
+    case 1:
+        sbtlBgnWaitALL(wk_sbtl->kettou.m_pUnit);
+        wk_sbtl->kettou.m_cnt = 0;
+        wk_sbtl->kettou.m_stp++;
+        break;
+    case 2:
+        if (++wk_sbtl->kettou.m_cnt > 600) {
+            sbtlEndWaitALL(wk_sbtl->kettou.m_pUnit);
+            wk_sbtl->kettou.m_stp = 0;
+        }
+        break;
+    case 3:
+        break;
+    }
+}
 
-INCLUDE_ASM(const s32, "code_002DF1D0", GetMessagePrio);
+s32 GetMessagePrio(SBTLSM Mode)
+{
+    u32 i;
+
+    for (i = 0; i < 15; i++) {
+        if (GetMessagePrioData[i].Mode == Mode) {
+            return GetMessagePrioData[i].Prio;
+        }
+    }
+    return 0;
+}
 
 void DeleteMessage(SBTLSM_LISTWORK *lwk, SBTLSM_WORK *dwk)
 {
@@ -419,7 +550,12 @@ s32 sbtlReleaseSM_List(SBTLSM_LISTWORK *lwk, u8 flg)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002DF1D0", sbtlDeleteSMList);
+s32 sbtlDeleteSMList(SBTLSM_LISTWORK *lwk)
+{
+    sbtlReleaseSM_List(lwk, 1);
+    sdfChipFreeDirect(lwk);
+    return 1;
+}
 
 s32 sbtlFunc20(s32 a_x, s32 a_y, SBTLSM_WORK *dwk)
 {

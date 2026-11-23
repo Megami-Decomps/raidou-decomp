@@ -61,6 +61,7 @@ menu scenarios); an entry says which paths they covered.
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
 | 3 | code_00190668 | raidou1 | [code_00190668.md](code_00190668.md) |
 | 3 | code_0024DF70 | raidou1 | [code_0024DF70.md](code_0024DF70.md) |
+| 3 | code_002DF1D0 | raidou2 | [code_002DF1D0.md](code_002DF1D0.md) |
 | 3 | code_002FA4F0 | raidou1 | [code_002FA4F0.md](code_002FA4F0.md) |
 | 3 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 3 | fclDrawBack | raidou1, raidou2 | [fclDrawBack.md](fclDrawBack.md) |

@@ -2014,7 +2014,7 @@
 0x00179F90	saveFunc	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00176B00, neighbour savePointMenuMoverFunc; no named callee, caller or string
 0x00179FE8	saveProcSequenceSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00176B00, neighbour savePointMenuMoverFunc; called by ProcSequence
 0x0017A058	savePointMenuMoverFunc	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD itf.savePointMenuMoverFunc score 0.6 flag -: calls1 calls-of-match st2:call r1-disagree:0x16a610
-0x0017A078	itfSetActionWndLines	hd-inferred	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD itf.itfSetActionWndLines score 4.5 flag I: calls2 calls-of-match votes2 st2:call r2-only
+0x0017A078	mapIfGetActionName	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fld.c mapIfGetActionName (0x1b01f..): returns 0 for a negative id, else gMapIfMenu_Win_Work[id]; Raidou returns NULL below 0, else a string pointer from the table at 0x441738; HD itfSetActionWndLines is a void setter; replaces itfSetActionWndLines
 0x0017A098	itfIfDrawActionSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_00176B00, neighbour itfSetActionWndLines; called by mapIfDrawAction
 0x0017A0B8	UnloadRequest	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD AtlFieldAccessor.UnloadRequest score 4.6 flag -: calls2 calls-of-match st2:call r2-only
 0x0017A110	fldCallSetOt2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00176B00, neighbour fldFindSceneEntryData; calls eglSetOt
@@ -14053,7 +14053,7 @@
 0x00441600	mapLeaf3Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapLeaf3
 0x00441688	mapData37	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: mapLoadGenbaEpl, mapCallEffectDelete, mapGenbaPosEffAdd
 0x004416C8	savePointMenuMoverFuncData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by savePointMenuMoverFunc
-0x00441738	itfSetActionWndLinesData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by itfSetActionWndLines
+0x00441738	gMapIfMenu_Win_Work	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD fld.c gMapIfMenu_Win_Work: the action name table mapIfGetActionName indexes (string pointers); replaces itfSetActionWndLinesData
 0x004418C0	mapCallGetStockDevilNumsData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallGetStockDevilNums
 0x00441900	itfIfDrawActionSubData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by itfIfDrawActionSub
 0x00441978	mapCallSetOt2Data3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallSetOt2

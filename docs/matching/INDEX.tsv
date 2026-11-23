@@ -193,6 +193,9 @@ sbtlGetRndEncJoken	code_002C5D78	raidou2 0xE8	10 of 58 words differ	docs/matchin
 sbtlSetMenuPara	code_002C5D78	raidou2 0xFC	8 of 63 words differ	docs/matching/code_002C5D78.md	23		
 sbtlCheckBattleWin	code_002C5D78	raidou2 0x148	8 of 82 words differ	docs/matching/code_002C5D78.md	29		
 campDhIconIsReady	code_002D7950	raidou1 0x2C	5 of 11 words differ	docs/matching/code_002D7950.md	3		
+sbtlGetSpecialExp	code_002DF1D0	raidou2 0x78	23 of 23 words differ	docs/matching/code_002DF1D0.md	3		
+sbtlGetSpecialMoney	code_002DF1D0	raidou2 0x78	23 of 23 words differ	docs/matching/code_002DF1D0.md	9		
+sbtlGetChuusei_ChkMemSkl	code_002DF1D0	raidou2 0x84	21 of 33 words differ	docs/matching/code_002DF1D0.md	15		
 SetAddMag	code_002F5CF0	raidou2 0x60	9 of 21 words differ	docs/matching/code_002F5CF0.md	3		
 sbtlInitSBtlSub2	code_002F5CF0	raidou2 0x5C	22 of 24 words differ	docs/matching/code_002F5CF0.md	9		
 sbtlDrawNum4	code_002F5CF0	raidou2 0x54	19 of 19 words differ	docs/matching/code_002F5CF0.md	15		

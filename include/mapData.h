@@ -960,6 +960,7 @@ extern struct mapUnloadRequestSubWork_t mapUnloadRequestSubWork;
 struct mapUnloadRequestSubWork_t *mapUnloadRequestSub(void);
 void mapCallBtlGetRndEncCnt(struct mapUnloadRequestSubWork_t *work, u8 *color);
 void mapCallSetOt3(struct mapUnloadRequestSubWork_t *work);
+void saveCallSetOt(struct mapUnloadRequestSubWork_t *work, s32 no);
 extern struct effBlurScatterWork_t *DeadMoonTmx3; /* nbCallEffectDistortionBlurCreate */
 #endif
 struct sdfMat_t *dds3CallMatNew2(struct sdfTexHandle_t *tex);

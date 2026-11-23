@@ -6535,7 +6535,6 @@
 0x00441600	mapLeaf3Data	data	tier=D	derived-sole	na	used by mapLeaf3
 0x00441688	mapData37	data	tier=D	derived-shared	na	used by 7 functions: mapLoadGenbaEpl, mapCallEffectDelete, mapGenbaPosEffAdd
 0x004416C8	savePointMenuMoverFuncData	data	tier=D	derived-sole	na	used by savePointMenuMoverFunc
-0x00441738	itfSetActionWndLinesData	data	tier=D	derived-sole	na	used by itfSetActionWndLines
 0x004418C0	mapCallGetStockDevilNumsData	data	tier=D	derived-sole	na	used by mapCallGetStockDevilNums
 0x00441900	itfIfDrawActionSubData	data	tier=D	derived-sole	na	used by itfIfDrawActionSub
 0x00441978	mapCallSetOt2Data3	data	tier=D	derived-sole	na	used by mapCallSetOt2
@@ -22637,7 +22636,6 @@
 0x001758B8	mapSeNakamaDelayTask	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapSeNakamaDelayTask score 2.5 flag -: calls1 gap7/209 st2:gap r2-only
 0x00176348	mapIfDrawActionWin2	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapIfDrawActionWin2 score 3.8 flag -: calls2 calls-of-match votes2 st2:call r2-only
 0x0017A058	savePointMenuMoverFunc	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD itf.savePointMenuMoverFunc score 0.6 flag -: calls1 calls-of-match st2:call r1-disagree:0x16a610
-0x0017A078	itfSetActionWndLines	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD itf.itfSetActionWndLines score 4.5 flag I: calls2 calls-of-match votes2 st2:call r2-only
 0x0017A0B8	UnloadRequest	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD AtlFieldAccessor.UnloadRequest score 4.6 flag -: calls2 calls-of-match st2:call r2-only
 0x0017A210	fldFindSceneEntryData	func	tier=C	dds-fuzzy-60-m-pair	0.65 (n=1)	dds body 0x141a78 sim 0.636 margin 0.64 pair
 0x0017B1C0	mapAutoMapDraw3	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD fld.mapAutoMapDraw3 score 2.0 flag -: calls1 calls-of-match-uniq st2:call r2-only
@@ -24188,6 +24186,7 @@
 0x00174690	mapSoundKankyoSeSet	func	tier=B	hd-role	na	HD fld.mapSoundKankyoSeSet (R1 tier C): same call sites as R1 mapSoundKankyoSeSet (part 3); replaces mapCallBitCheck5
 0x00175858	datInitBossPress	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x245c40 sim 0.786 margin 0.11 pair
 0x00178370	mapIfDrawAction	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.mapIfDrawAction score 5.3 flag -: calls3 callee-index st2:cidx r1-disagree:0x1690b0
+0x0017A078	mapIfGetActionName	func	tier=B	hd-role	na	HD fld.c mapIfGetActionName (0x1b01f..): returns 0 for a negative id, else gMapIfMenu_Win_Work[id]; Raidou returns NULL below 0, else a string pointer from the table at 0x441738; HD itfSetActionWndLines is a void setter; replaces itfSetActionWndLines
 0x0017A580	mapAutoMapCalcPosLimit	func	tier=B	hd-role	na	HD fld.c mapAutoMapCalcPosLimit(add_x, add_z) (0x1b040b0): calls mapAutoMapUpdateLimit(am_floor), clamps am_top_x/z by the limits, sets/clears draw_flags 0x20/0x10/8/4 the same way; replaces fldFunc18
 0x001820F8	mapNakamaHikouTask	func	tier=B	twin	0.85 (n=425)	twin of raidou1 0x00171AE0 by fclCombineInit order and opcode similarity 0.87
 0x001823A8	mapNakamaSinnTask	func	tier=B	twin	0.85 (n=425)	twin of raidou1 0x00171D78 by fclCombineInit order and opcode similarity 0.85
@@ -24852,6 +24851,7 @@
 0x0043E9B0	fldGlobalBase	data	tier=B	smt3-ref	0.88 (n=D_r1_003BF130)	smt3-ref/loose: nfun=10, other=6, sim=1.0, games=2, size=False, sec=True, fn=fldMakeBlockBasicFL2
 0x00440A38	gMapBtlReturnParam	data	tier=B	hd-role	na	HD fldProcTrigSequence copies the return scene from gMapBtlReturnParam when fldGb->btl_return_map; same site, fldSceneParam_t layout; replaces SequenceControl
 0x00441198	fldSe3DTable	data	tier=B	smt3-ref	0.88 (n=D_00441198)	smt3-ref/loose: nfun=1, other=1, sim=0.9231, games=1, size=False, sec=False, fn=fldFileLoadSub
+0x00441738	gMapIfMenu_Win_Work	data	tier=B	hd-role	na	HD fld.c gMapIfMenu_Win_Work: the action name table mapIfGetActionName indexes (string pointers); replaces itfSetActionWndLinesData
 0x00444458	gFontBaseWidth	data	tier=B	smt3-ref	0.88 (n=D_r1_003E84F8)	smt3-ref/loose: nfun=2, other=0, sim=0.9419, games=2, size=False, sec=True, fn=frSetUserImage
 0x00444798	DrawTable_itfPanel	data	tier=B	smt3-role	na	SMT3 itfPanel.c DrawTable (panel handler table indexed by kind); DrawTable is taken by the function at 0x002E0288; replaces itfPnlDrawSubData
 0x00444A50	itfMesDebug	data	tier=B	smt3-ref	0.88 (n=D_r1_003E8AF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=itfMesMngDebugProc

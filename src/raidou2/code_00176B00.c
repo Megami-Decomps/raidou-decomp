@@ -4,8 +4,19 @@
 #include "fld.h"
 #include "dds3KernelDraw.h"
 #include "dds3KernelDraw_0010A750.h"
+#include "sdfAspect.h"
 
-INCLUDE_ASM(const s32, "code_00176B00", mapIfDrawActionMasterSub);
+extern char *gMapIfMenu_Win_Work[];
+
+void mapIfDrawActionMasterSub(s32 *x, s32 *y, s32 w)
+{
+    if (*x < SDF_ASPECT_LEFT + 22) {
+        *x = SDF_ASPECT_LEFT + 22;
+    }
+    if (*x > SDF_ASPECT_RIGHT - 24 - w) {
+        *x = SDF_ASPECT_RIGHT - 24 - w;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_00176B00", mapCallSetOt9);
 
@@ -39,7 +50,10 @@ INCLUDE_ASM(const s32, "code_00176B00", mapBUNRIHAJIKI);
 
 INCLUDE_ASM(const s32, "code_00176B00", saveCallSetOt);
 
-INCLUDE_ASM(const s32, "code_00176B00", saveIsFldKeyFreeSub);
+void saveIsFldKeyFreeSub(void)
+{
+    saveCallSetOt(mapUnloadRequestSub(), 1);
+}
 
 INCLUDE_ASM(const s32, "code_00176B00", saveFunc);
 
@@ -47,11 +61,29 @@ INCLUDE_ASM(const s32, "code_00176B00", saveProcSequenceSub);
 
 INCLUDE_ASM(const s32, "code_00176B00", savePointMenuMoverFunc);
 
-INCLUDE_ASM(const s32, "code_00176B00", itfSetActionWndLines);
+char *mapIfGetActionName(s32 mapActionID)
+{
+    if (mapActionID < 0) {
+        return NULL;
+    }
+    return gMapIfMenu_Win_Work[mapActionID];
+}
 
 INCLUDE_ASM(const s32, "code_00176B00", itfIfDrawActionSub);
 
-INCLUDE_ASM(const s32, "code_00176B00", UnloadRequest);
+void UnloadRequest(s32 mode)
+{
+    struct mapUnloadRequestSubWork_t *work = mapUnloadRequestSub();
+
+    if (mode == 0) {
+        work->fieldC8 = 0;
+        work->fieldCC = 0x80;
+    } else if (mode == -1) {
+        work->fieldC8 = mode;
+    } else {
+        work->fieldC8 = 1;
+    }
+}
 
 void fldCallSetOt2(void)
 {

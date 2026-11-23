@@ -1653,7 +1653,16 @@ INCLUDE_ASM(const s32, "field/fldProcess", fldCallBtlResetRndEncCount);
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "field/fldProcess", fldCallAdminiCallSequence);
 #else
-INCLUDE_ASM(const s32, "field/fldProcess", mapReturnFromRndEncBattle);
+void mapReturnFromRndEncBattle(char *szEndScript)
+{
+    struct fldSceneParam_t param;
+
+    mapSetSceneParam(&param, fldGlobalBase.rndEncFieldID, fldGlobalBase.rndEncFloorID, -1);
+    if (szEndScript != NULL) {
+        strncpy(param.FoceScript, szEndScript, 0x1F);
+    }
+    dds3AdminiCallSequence(7, &param, sizeof(param), 0);
+}
 #endif
 
 #ifdef VERSION_RAIDOU1

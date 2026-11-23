@@ -157,6 +157,13 @@ struct SBTLEFF_WORK;
 struct scrProcessWork_s;
 
 #ifdef VERSION_RAIDOU2
+/* HD name: the duel skill's freeze of every unit, run by sbtlKettouProc. */
+typedef struct _S_KETTOU {
+    struct SBTLUNIT_WORK *m_pUnit;
+    s32 m_stp;
+    s32 m_cnt;
+} _S_KETTOU;
+
 /* Hit effect slot (0x10 bytes) in SBTL_WORK's hitEffList. */
 typedef struct SBTL_HITEFF {
     s8 bUse;
@@ -468,7 +475,8 @@ typedef struct SBTL_WORK {
     RED_GUAGE aRedGuage[3];
     STATUS_BAR aStatusBar[3];
     s32 grnCnt; /* HD name; frames of the green flash on the player's bar, sbtlCallSetOt sets 10 when a text adds magnetite */
-    u8 padE30[0xE40 - 0xE30];
+    _S_KETTOU kettou;
+    u8 padE3C[0xE40 - 0xE3C];
     s32 fieldE40; /* sbtlCallSetOt sets 100 when a kind 0 text ends */
     s32 aAiGgFlsAlpha[2]; /* HD name: flash alpha of each summon's AI gauge */
     s32 step; /* HD name; sbtlCheckStartBattle waits for it to be positive */
@@ -1542,6 +1550,8 @@ s32 sbtlFree_sbtlScene(void);
 void sbtlPacData_Free(void);
 void sbtlProcessEnd(void);
 void sbtlBgnWait(struct SBTLUNIT_WORK *wk);
+void sbtlBgnWaitALL(struct SBTLUNIT_WORK *wk);
+void sbtlEndWaitALL(struct SBTLUNIT_WORK *wk);
 void sbtlGetAutoSkillPoint(void);
 void sbtlGetChuuseiPoint(void);
 #endif
